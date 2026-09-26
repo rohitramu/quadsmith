@@ -79,8 +79,8 @@ erDiagram
         HardwareComponent component FK
         Int wheelbaseMm "e.g. 225"
         Float maxPropSizeMm "e.g. 5.1"
-        BoardMountPattern[] fcStackMounts "e.g. 30.5x30.5mm"
-        BoardMountPattern[] vtxMounts "e.g. 25.5x25.5mm"
+        FrameFcStackMount[] fcStackMounts "e.g. 30.5x30.5mm"
+        FrameVtxMount[] vtxMounts "e.g. 25.5x25.5mm"
         MotorMountPattern[] motorMountPatterns "e.g. 16x16mm, 19x19mm"
         Float cameraMountWidthMm "e.g. 19.0"
         Float maxStackHeightMm "e.g. 20.0"
@@ -259,6 +259,16 @@ erDiagram
         ReceiverConfiguration receiverConfig FK "e.g. 1"
     }
 
+
+    FrameFcStackMount {
+        Frame frame PK "e.g. 101"
+        BoardMountPattern boardMountPattern PK "e.g. 30.5x30.5mm"
+    }
+    FrameVtxMount {
+        Frame frame PK "e.g. 101"
+        BoardMountPattern boardMountPattern PK "e.g. 25.5x25.5mm"
+    }
+
     HardwareComponent ||--o{ HardwareComponentCompany : "companies"
     Company ||--o{ HardwareComponentCompany : "components"
     HardwareComponent ||--o{ HardwareComponentLink : "links"
@@ -318,8 +328,6 @@ erDiagram
     VtxConfiguration |o--o{ Build : "builds"
     ReceiverConfiguration |o--o{ Build : "builds"
 
-    Frame }o--o{ BoardMountPattern : "fcStackMounts"
-    Frame }o--o{ BoardMountPattern : "vtxMounts"
     FlightController }o--o{ BoardMountPattern : "mountPatterns"
     Esc }o--o{ BoardMountPattern : "mountPatterns"
     Vtx }o--o{ BoardMountPattern : "mountPatterns"
@@ -336,3 +344,9 @@ erDiagram
     Transmitter }o--o{ RfProtocol : "rfProtocols"
 
     RfFrequency ||--o{ Antenna : "antennas"
+
+    Frame ||--o{ FrameFcStackMount : "fcStackMounts"
+    BoardMountPattern ||--o{ FrameFcStackMount : "fcStackFrames"
+
+    Frame ||--o{ FrameVtxMount : "vtxMounts"
+    BoardMountPattern ||--o{ FrameVtxMount : "vtxMountFrames"

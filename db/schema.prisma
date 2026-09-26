@@ -78,8 +78,8 @@ model MotorMountPattern {
 
 model BoardMountPattern {
   id                String             @id
-  fcStackFrames     Frame[]            @relation("FrameFcStackMount")
-  vtxMountFrames    Frame[]            @relation("FrameVtxMount")
+  fcStackFrames     FrameFcStackMount[]
+  vtxMountFrames    FrameVtxMount[]
   flightControllers FlightController[]
   escs              Esc[]
   vtxs              Vtx[]
@@ -446,4 +446,22 @@ model Build {
   vtxConfig          VtxConfiguration? @relation(fields: [vtxConfigId], references: [id])
   receiverConfigId   Int?
   receiverConfig     ReceiverConfiguration? @relation(fields: [receiverConfigId], references: [id])
+}
+
+model FrameFcStackMount {
+  frame               Frame             @relation(fields: [frameId], references: [id], onDelete: Cascade)
+  frameId             Int
+  boardMountPattern   BoardMountPattern @relation(fields: [boardMountPatternId], references: [id], onDelete: Cascade)
+  boardMountPatternId String
+
+  @@id([frameId, boardMountPatternId])
+}
+
+model FrameVtxMount {
+  frame               Frame             @relation(fields: [frameId], references: [id], onDelete: Cascade)
+  frameId             Int
+  boardMountPattern   BoardMountPattern @relation(fields: [boardMountPatternId], references: [id], onDelete: Cascade)
+  boardMountPatternId String
+
+  @@id([frameId, boardMountPatternId])
 }
