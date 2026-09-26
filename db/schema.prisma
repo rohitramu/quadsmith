@@ -1,4 +1,3 @@
-
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -15,20 +14,19 @@ datasource db {
 // ==========================================
 
 model VtxEcosystem {
-  id       String    @id
-  vtxs     Vtx[]
-  cameras  Camera[]
-  goggles  Goggles[]
+  id      String    @id
+  vtxs    Vtx[]
+  cameras Camera[]
+  goggles Goggles[]
 }
 
-
 model RfFrequency {
-  id            String        @id
-  receivers     Receiver[]
-  transmitters  Transmitter[]
-  goggles       Goggles[]
-  vtxs          Vtx[]
-  antennas      Antenna[]
+  id           String        @id
+  receivers    Receiver[]
+  transmitters Transmitter[]
+  goggles      Goggles[]
+  vtxs         Vtx[]
+  antennas     Antenna[]
 }
 
 model RfProtocol {
@@ -56,28 +54,26 @@ model AntennaConnector {
 }
 
 model BatteryConnector {
-  id         String    @id
-  maxCurrentA   Decimal
-  maxVoltageV   Decimal
-  batteries  Battery[]
+  id          String    @id
+  maxCurrentA Decimal
+  maxVoltageV Decimal
+  batteries   Battery[]
 }
 
 model Tag {
-  id          String   @id // e.g. "freestyle", "cinewhoop"
+  id          String  @id // e.g. "freestyle", "cinewhoop"
   description String?
-  builds      Build[]  // Implicit Many-to-Many
+  builds      Build[] // Implicit Many-to-Many
 }
 
-
-
 model MotorMountPattern {
-  id       String  @id
-  frames   Frame[]
-  motors   Motor[]
+  id     String  @id
+  frames Frame[]
+  motors Motor[]
 }
 
 model BoardMountPattern {
-  id                String             @id
+  id                String              @id
   fcStackFrames     FrameFcStackMount[]
   vtxMountFrames    FrameVtxMount[]
   flightControllers FlightController[]
@@ -99,60 +95,69 @@ model BatteryChemistry {
 // ==========================================
 
 model Company {
-  id         Int                        @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   name       String
   websiteUrl String?
-  
-  components HardwareComponentCompany[]
+
+  components     ComponentCompany[]
   referenceLinks ReferenceLink[]
 }
 
-model HardwareComponent {
-  id           Int       @id @default(autoincrement())
-  modelName    String
+model Component {
+  id           Int    @id @default(autoincrement())
+  name         String
   releaseYear  Int?
   releaseMonth Int?
   releaseDay   Int?
-  weightG      Decimal?
 
-  companies       HardwareComponentCompany[]
-  referenceLinks ReferenceLink[]
-  flaggedInIssues IncompatibilityHardwareComponent[]
+  companies       ComponentCompany[]
+  referenceLinks  ReferenceLink[]
+  flaggedInIssues IncompatibilityComponent[]
 
-  // One-to-One relations for the specific component types
-  frame            Frame?
-  motor            Motor?
-  propeller        Propeller?
-  flightController FlightController?
-  esc              Esc?
-  battery          Battery?
-  vtx              Vtx?
-  camera           Camera?
-  receiver         Receiver?
-  gps              Gps?
-  transmitter      Transmitter?
-  goggles          Goggles?
-  antenna          Antenna?
+  hardwareComponent HardwareComponent?
+  softwareComponent SoftwareComponent?
 }
 
-model HardwareComponentCompany {
-  id                  Int               @id @default(autoincrement())
-  hardwareComponentId Int
-  hardwareComponent   HardwareComponent @relation(fields: [hardwareComponentId], references: [id], onDelete: Cascade)
-  companyId           Int
-  company             Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+model HardwareComponent {
+  id        Int       @id
+  component Component @relation(fields: [id], references: [id], onDelete: Cascade)
+  weightG   Decimal?
+
+  // One-to-One relations for the specific component types
+  frame                     Frame?
+  motor                     Motor?
+  propeller                 Propeller?
+  flightController          FlightController?
+  esc                       Esc?
+  battery                   Battery?
+  vtx                       Vtx?
+  camera                    Camera?
+  receiver                  Receiver?
+  gps                       Gps?
+  transmitter               Transmitter?
+  goggles                   Goggles?
+  antenna                   Antenna?
+  incompatibilityComponents IncompatibilityComponent[]
+}
+
+model ComponentCompany {
+  id          Int       @id @default(autoincrement())
+  componentId Int
+  component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  companyId   Int
+  company     Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
 model ReferenceLink {
-  id                  Int               @id @default(autoincrement())
-  hardwareComponentId Int
-  hardwareComponent   HardwareComponent @relation(fields: [hardwareComponentId], references: [id], onDelete: Cascade)
-  companyId           Int?
-  company             Company?          @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  url                 String
-  linkType            String            // e.g. "Purchase", "Manual", "Firmware"
-  title               String
-  description         String?
+  id          Int       @id @default(autoincrement())
+  componentId Int
+  component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  companyId   Int?
+  company     Company?  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  url         String
+  linkType    String // e.g. "Purchase", "Manual", "Firmware"
+  title       String
+  description String?
 }
 
 // ==========================================
@@ -160,18 +165,20 @@ model ReferenceLink {
 // ==========================================
 
 model IncompatibilityIssue {
-  id                    Int                                @id @default(autoincrement())
-  incompatibilityReason String                             // "Physical", "Noise", "Firmware"
+  id                    Int                        @id @default(autoincrement())
+  incompatibilityReason String // "Physical", "Noise", "Firmware"
   description           String
   suggestedFix          String?
-  components            IncompatibilityHardwareComponent[]
+  components            IncompatibilityComponent[]
 }
 
-model IncompatibilityHardwareComponent {
+model IncompatibilityComponent {
   issueId             Int
   issue               IncompatibilityIssue @relation(fields: [issueId], references: [id], onDelete: Cascade)
   hardwareComponentId Int
   hardwareComponent   HardwareComponent    @relation(fields: [hardwareComponentId], references: [id], onDelete: Cascade)
+  component           Component?           @relation(fields: [componentId], references: [id])
+  componentId         Int?
 
   @@id([issueId, hardwareComponentId])
 }
@@ -181,69 +188,69 @@ model IncompatibilityHardwareComponent {
 // ==========================================
 
 model Frame {
-  id                   Int               @id
-  component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  wheelbaseMm          Int
-  maxPropSizeMm        Decimal
-  fcStackMounts        FrameFcStackMount[]
-  motorMountPatterns   MotorMountPattern[]
-  cameraMountWidthMm   Decimal
-  vtxMounts            FrameVtxMount[]
-  maxBatteryLengthMm   Decimal?
-  maxBatteryWidthMm    Decimal?
-  maxBatteryHeightMm   Decimal?
+  id                 Int                 @id
+  component          HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
+  wheelbaseMm        Int
+  maxPropSizeMm      Decimal
+  fcStackMounts      FrameFcStackMount[]
+  motorMountPatterns MotorMountPattern[]
+  cameraMountWidthMm Decimal
+  vtxMounts          FrameVtxMount[]
+  maxBatteryLengthMm Decimal?
+  maxBatteryWidthMm  Decimal?
+  maxBatteryHeightMm Decimal?
 
   builds Build[]
 }
 
 model Motor {
-  id                 Int               @id
-  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  statorSize         String
-  kvRating           Int
-  inputVoltageMinV   Decimal
-  inputVoltageMaxV   Decimal
-  mountPatterns      MotorMountPattern[]
-  mountBoltSize      String
-  shaftType          String
-  maxCurrentA        Decimal?
+  id               Int                 @id
+  component        HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
+  statorSize       String
+  kvRating         Int
+  inputVoltageMinV Decimal
+  inputVoltageMaxV Decimal
+  mountPatterns    MotorMountPattern[]
+  mountBoltSize    String
+  shaftType        String
+  maxCurrentA      Decimal?
 
   builds Build[]
 }
 
 model Propeller {
-  id                 Int               @id
-  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  diameterMm         Decimal
-  pitchMm            Decimal
-  bladeCount         Int
-  mountType          String
-  recommendedStator  String[]
+  id                Int               @id
+  component         HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  diameterMm        Decimal
+  pitchMm           Decimal
+  bladeCount        Int
+  mountType         String
+  recommendedStator String[]
 
   builds Build[]
 }
 
 model FlightController {
-  id                 Int               @id
-  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  mountPatterns      BoardMountPattern[]
-  boardHeightMm      Decimal
-  mcuProcessor       String
-  gyroSensor         String?
-  inputVoltageMinV   Decimal
-  inputVoltageMaxV   Decimal
-  becOutputs         Json?
-  uartConnections    Json?
-  escInterface       String
-  supportedFirmware  String[]
+  id                Int                 @id
+  component         HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
+  mountPatterns     BoardMountPattern[]
+  boardHeightMm     Decimal
+  mcuProcessor      String
+  gyroSensor        String?
+  inputVoltageMinV  Decimal
+  inputVoltageMaxV  Decimal
+  becOutputs        Json?
+  uartConnections   Json?
+  escInterface      String
+  supportedFirmware String[]
 
   builds Build[]
 }
 
 model Esc {
-  id                 Int               @id
-  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  isIntegrated       Boolean           // True if AIO
+  id                 Int                 @id
+  component          HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
+  isIntegrated       Boolean // True if AIO
   formFactor         String
   mountPatterns      BoardMountPattern[]
   boardHeightMm      Decimal
@@ -257,39 +264,39 @@ model Esc {
 }
 
 model Battery {
-  id                 Int               @id
-  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  chemistryId        Int
-  chemistry          BatteryChemistry  @relation(fields: [chemistryId], references: [id])
-  cellCountS         Int
-  cellCountP         Int
-  capacityMah        Int
-  continuousCRating  Int
-  connectorTypeId    String
-  connectorType      BatteryConnector  @relation(fields: [connectorTypeId], references: [id])
-  lengthMm           Decimal?
-  widthMm            Decimal?
-  heightMm           Decimal?
+  id                Int               @id
+  component         HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  chemistryId       Int
+  chemistry         BatteryChemistry  @relation(fields: [chemistryId], references: [id])
+  cellCountS        Int
+  cellCountP        Int
+  capacityMah       Int
+  continuousCRating Int
+  connectorTypeId   String
+  connectorType     BatteryConnector  @relation(fields: [connectorTypeId], references: [id])
+  lengthMm          Decimal?
+  widthMm           Decimal?
+  heightMm          Decimal?
 }
 
 model Vtx {
-  id                              Int               @id
-  supportedFrequencies RfFrequency[]
-  component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  ecosystemId                     String
-  ecosystem                       VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
-  videoConnectionStandard         String?
-  mountPatterns      BoardMountPattern[]
-  boardHeightMm      Decimal
-  inputVoltageMinV                Decimal
-  inputVoltageMaxV                Decimal
-  maxPowerMw                      Int?
-  
-  antennaCount                    Int               @default(1)
-  antennaConnectorId              String?
-  antennaConnector                AntennaConnector? @relation(fields: [antennaConnectorId], references: [id])
-  includedAntennaPolarizationId   String?
-  includedAntennaPolarization     AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+  id                      Int                 @id
+  supportedFrequencies    RfFrequency[]
+  component               HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
+  ecosystemId             String
+  ecosystem               VtxEcosystem        @relation(fields: [ecosystemId], references: [id])
+  videoConnectionStandard String?
+  mountPatterns           BoardMountPattern[]
+  boardHeightMm           Decimal
+  inputVoltageMinV        Decimal
+  inputVoltageMaxV        Decimal
+  maxPowerMw              Int?
+
+  antennaCount                  Int                  @default(1)
+  antennaConnectorId            String?
+  antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
+  includedAntennaPolarizationId String?
+  includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
 
   configs VtxConfiguration[]
 }
@@ -312,81 +319,81 @@ model Camera {
 }
 
 model Receiver {
-  id                              Int               @id
+  id                   Int               @id
   supportedFrequencies RfFrequency[]
-  component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  rfProtocols                     RfProtocol[]
-  outputProtocol                  String
-  inputVoltageMinV                Decimal
-  inputVoltageMaxV                Decimal
+  component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  rfProtocols          RfProtocol[]
+  outputProtocol       String
+  inputVoltageMinV     Decimal
+  inputVoltageMaxV     Decimal
 
-  antennaCount                    Int               @default(1)
-  antennaConnectorId              String?
-  antennaConnector                AntennaConnector? @relation(fields: [antennaConnectorId], references: [id])
-  includedAntennaPolarizationId   String?
-  includedAntennaPolarization     AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+  antennaCount                  Int                  @default(1)
+  antennaConnectorId            String?
+  antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
+  includedAntennaPolarizationId String?
+  includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
 
   configs ReceiverConfiguration[]
 }
 
 model Gps {
-  id                 Int               @id
-  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  chipset            String
-  hasCompass         Boolean
-  inputVoltageMinV   Decimal
-  inputVoltageMaxV   Decimal
-  lengthMm           Decimal?
-  widthMm            Decimal?
-  heightMm           Decimal?
+  id               Int               @id
+  component        HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  chipset          String
+  hasCompass       Boolean
+  inputVoltageMinV Decimal
+  inputVoltageMaxV Decimal
+  lengthMm         Decimal?
+  widthMm          Decimal?
+  heightMm         Decimal?
 
   builds Build[]
 }
 
 model Antenna {
-  id                 Int                 @id
-  component          HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  supportedFrequencyId            String
-  supportedFrequency              RfFrequency       @relation(fields: [supportedFrequencyId], references: [id])
-  polarizationId     String
-  polarization       AntennaPolarization @relation(fields: [polarizationId], references: [id])
-  connectorId        String
-  connector          AntennaConnector    @relation(fields: [connectorId], references: [id])
-  antennaStyle       String
-  gainDbi            Decimal?
-  cableLengthMm      Decimal?
+  id                   Int                 @id
+  component            HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
+  supportedFrequencyId String
+  supportedFrequency   RfFrequency         @relation(fields: [supportedFrequencyId], references: [id])
+  polarizationId       String
+  polarization         AntennaPolarization @relation(fields: [polarizationId], references: [id])
+  connectorId          String
+  connector            AntennaConnector    @relation(fields: [connectorId], references: [id])
+  antennaStyle         String
+  gainDbi              Decimal?
+  cableLengthMm        Decimal?
 
   vtxConfigs      VtxConfiguration[]
   receiverConfigs ReceiverConfiguration[]
 }
 
 model Transmitter {
-  id                              Int               @id
+  id                   Int               @id
   supportedFrequencies RfFrequency[]
-  component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  rfProtocols                     RfProtocol[]
-  externalBayType                 String
-  operatingSystem                 String
-  
-  antennaCount                    Int               @default(1)
-  antennaConnectorId              String?
-  antennaConnector                AntennaConnector? @relation(fields: [antennaConnectorId], references: [id])
-  includedAntennaPolarizationId   String?
-  includedAntennaPolarization     AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+  component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  rfProtocols          RfProtocol[]
+  externalBayType      String
+  operatingSystem      String
+
+  antennaCount                  Int                  @default(1)
+  antennaConnectorId            String?
+  antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
+  includedAntennaPolarizationId String?
+  includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
 }
 
 model Goggles {
-  id                              Int               @id
+  id                   Int               @id
   supportedFrequencies RfFrequency[]
-  component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  ecosystemId                     String
-  ecosystem                       VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
-  
-  antennaCount                    Int               @default(1)
-  antennaConnectorId              String?
-  antennaConnector                AntennaConnector? @relation(fields: [antennaConnectorId], references: [id])
-  includedAntennaPolarizationId   String?
-  includedAntennaPolarization     AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+  component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  ecosystemId          String
+  ecosystem            VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
+
+  antennaCount                  Int                  @default(1)
+  antennaConnectorId            String?
+  antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
+  includedAntennaPolarizationId String?
+  includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
 }
 
 // ==========================================
@@ -430,25 +437,25 @@ model Build {
 
   // Hard Hardware Links
   frameId            Int
-  frame              Frame             @relation(fields: [frameId], references: [id])
+  frame              Frame            @relation(fields: [frameId], references: [id])
   motorId            Int
-  motor              Motor             @relation(fields: [motorId], references: [id])
+  motor              Motor            @relation(fields: [motorId], references: [id])
   propellerId        Int
-  propeller          Propeller         @relation(fields: [propellerId], references: [id])
+  propeller          Propeller        @relation(fields: [propellerId], references: [id])
   flightControllerId Int
-  flightController   FlightController  @relation(fields: [flightControllerId], references: [id])
+  flightController   FlightController @relation(fields: [flightControllerId], references: [id])
   escId              Int?
-  esc                Esc?              @relation(fields: [escId], references: [id])
+  esc                Esc?             @relation(fields: [escId], references: [id])
   cameraId           Int
-  camera             Camera            @relation(fields: [cameraId], references: [id])
+  camera             Camera           @relation(fields: [cameraId], references: [id])
   gpsId              Int?
-  gps                Gps?        @relation(fields: [gpsId], references: [id])
+  gps                Gps?             @relation(fields: [gpsId], references: [id])
 
   // Sub-Assembly Links
-  vtxConfigId        Int?
-  vtxConfig          VtxConfiguration? @relation(fields: [vtxConfigId], references: [id])
-  receiverConfigId   Int?
-  receiverConfig     ReceiverConfiguration? @relation(fields: [receiverConfigId], references: [id])
+  vtxConfigId      Int?
+  vtxConfig        VtxConfiguration?      @relation(fields: [vtxConfigId], references: [id])
+  receiverConfigId Int?
+  receiverConfig   ReceiverConfiguration? @relation(fields: [receiverConfigId], references: [id])
 }
 
 model FrameFcStackMount {
@@ -467,4 +474,42 @@ model FrameVtxMount {
   boardMountPatternId String
 
   @@id([frameId, boardMountPatternId])
+}
+
+model SoftwareComponent {
+  id        Int       @id
+  component Component @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  version String?
+
+  fcFirmware   FcFirmware?
+  escFirmware  EscFirmware?
+  os           OperatingSystem?
+  configurator Configurator?
+}
+
+model FcFirmware {
+  id                Int               @id
+  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  supportsGps       Boolean           @default(false)
+  isOpenSource      Boolean           @default(true)
+}
+
+model EscFirmware {
+  id                         Int               @id
+  softwareComponent          SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  supportsBidirectionalDshot Boolean           @default(false)
+}
+
+model OperatingSystem {
+  id                 Int               @id
+  softwareComponent  SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  supportsLuaScripts Boolean           @default(false)
+}
+
+model Configurator {
+  id                Int               @id
+  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  hasMobileApp      Boolean           @default(false)
+  hasWebApp         Boolean           @default(false)
 }

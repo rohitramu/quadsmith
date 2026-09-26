@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
@@ -23,8 +24,8 @@ async function main() {
   await prisma.build.deleteMany();
   await prisma.receiverConfiguration.deleteMany();
   await prisma.vtxConfiguration.deleteMany();
-  await prisma.incompatibilityHardwareComponent.deleteMany();
-  await prisma.hardwareComponentCompany.deleteMany();
+  await prisma.incompatibilityComponent.deleteMany();
+  await prisma.componentCompany.deleteMany();
   await prisma.referenceLink.deleteMany();
   
   await prisma.frameFcStackMount.deleteMany();
@@ -45,6 +46,8 @@ async function main() {
   await prisma.transmitter.deleteMany();
 
   await prisma.hardwareComponent.deleteMany();
+  await prisma.softwareComponent.deleteMany();
+  await prisma.component.deleteMany();
 
   await prisma.company.deleteMany();
   await prisma.rfFrequency.deleteMany();
@@ -113,19 +116,23 @@ async function main() {
     return c ? c.id : null;
   };
 
-  for (const comp of data.hardwareComponents) {
+  
+  const allComponents = [...(data.hardwareComponents || []), ...(data.softwareComponents || [])];
+  console.log(`Seeding ${allComponents.length} components...`);
+
+  for (const comp of allComponents) {
     const companiesConnect = (comp.referenceLinks || []).map((l: any) => getCompanyId(l.companyName)).filter((id: any) => id !== null);
     const uniqueCompanyIds = [...new Set(companiesConnect)] as number[];
 
-    const hw = await prisma.hardwareComponent.create({
+    
+    const baseComp = await prisma.component.create({
       data: {
-        modelName: comp.modelName,
+        name: comp.name || comp.modelName,
         releaseYear: comp.releaseYear,
         releaseMonth: comp.releaseMonth,
         releaseDay: comp.releaseDay,
-        weightG: comp.weightG,
         companies: {
-          create: uniqueCompanyIds.map((id: number) => ({
+          create: uniqueCompanyIds.map((id) => ({
             company: { connect: { id } }
           }))
         },
@@ -141,12 +148,66 @@ async function main() {
       }
     });
 
-    componentIdMap.set(comp.modelName, hw.id);
+    componentIdMap.set(comp.name || comp.modelName, baseComp.id);
+
+    
+    if (comp.isSoftware) {
+      await prisma.softwareComponent.create({
+        data: {
+          id: baseComp.id,
+          version: comp.version
+        }
+      });
+      
+      if (comp.softwareType === "Firmware") {
+        await prisma.fcFirmware.create({
+          data: {
+            id: baseComp.id,
+            supportsGps: comp.name === "INAV" || comp.name === "Betaflight",
+            isOpenSource: comp.name !== "Walksnail Avatar OS"
+          }
+        });
+      } else if (comp.softwareType === "ESC Firmware") {
+        await prisma.escFirmware.create({
+          data: {
+            id: baseComp.id,
+            supportsBidirectionalDshot: true
+          }
+        });
+      } else if (comp.softwareType === "Operating System") {
+        await prisma.operatingSystem.create({
+          data: {
+            id: baseComp.id,
+            supportsLuaScripts: comp.name === "EdgeTX"
+          }
+        });
+      } else if (comp.softwareType === "Configurator") {
+        await prisma.configurator.create({
+          data: {
+            id: baseComp.id,
+            hasMobileApp: comp.name === "Betaflight Configurator" || comp.name === "ExpressLRS Configurator",
+            hasWebApp: comp.name === "ExpressLRS Configurator"
+          }
+        });
+      }
+
+      continue;
+    }
+
+    const hw = await prisma.hardwareComponent.create({
+      data: {
+        id: baseComp.id,
+        weightG: comp.weightG
+      }
+    });
+
+
+    
 
     if (comp.frame) {
       await prisma.frame.create({
         data: {
-          id: hw.id,
+          id: baseComp.id,
           wheelbaseMm: comp.frame.wheelbaseMm,
           
           
@@ -168,7 +229,7 @@ async function main() {
     if (comp.motor) {
       await prisma.motor.create({
         data: {
-          id: hw.id,
+          id: baseComp.id,
           statorSize: comp.motor.statorSize || "Unknown",
           kvRating: comp.motor.kv || 0,
           inputVoltageMinV: comp.motor.inputVoltageMinV || 0,
@@ -184,7 +245,7 @@ async function main() {
     if (comp.propeller) {
       await prisma.propeller.create({
         data: {
-          id: hw.id,
+          id: baseComp.id,
           diameterMm: comp.propeller.diameterMm,
           pitchMm: comp.propeller.pitchMm,
           bladeCount: comp.propeller.bladeCount,
@@ -196,7 +257,7 @@ async function main() {
     if (comp.flightController) {
       await prisma.flightController.create({
         data: {
-          id: hw.id,
+          id: baseComp.id,
           mcuProcessor: comp.flightController.mcuProcessor || "Unknown",
           gyroSensor: comp.flightController.gyroSensor,
           mountPatterns: { connect: (comp.flightController.mountPatterns || []).map((id: string) => ({ id })) },
@@ -212,7 +273,7 @@ async function main() {
     if (comp.esc) {
        await prisma.esc.create({
          data: {
-           id: hw.id,
+           id: baseComp.id,
            continuousCurrentA: comp.esc.continuousCurrentA || 0,
            burstCurrentA: comp.esc.burstCurrentA || 0,
            firmwareProtocol: comp.esc.firmwareProtocol || "Unknown",
@@ -229,7 +290,7 @@ async function main() {
     if (comp.vtx) {
        await prisma.vtx.create({
          data: {
-           id: hw.id,
+           id: baseComp.id,
            ecosystemId: comp.vtx.ecosystemId,
            videoConnectionStandard: comp.vtx.videoConnectionStandard,
            boardHeightMm: comp.vtx.boardHeightMm || 0,
@@ -248,7 +309,7 @@ async function main() {
     if (comp.camera) {
        await prisma.camera.create({
          data: {
-           id: hw.id,
+           id: baseComp.id,
            ecosystemId: comp.camera.ecosystemId,
            videoConnectionStandard: comp.camera.videoConnectionStandard,
            widthMm: comp.camera.widthMm || 14,
@@ -265,7 +326,7 @@ async function main() {
     if (comp.receiver) {
        await prisma.receiver.create({
          data: {
-           id: hw.id,
+           id: baseComp.id,
            outputProtocol: comp.receiver.outputProtocol || "Unknown",
            inputVoltageMinV: comp.receiver.inputVoltageMinV || 0,
            inputVoltageMaxV: comp.receiver.inputVoltageMaxV || 0,
@@ -281,7 +342,7 @@ async function main() {
     if (comp.gps) {
        await prisma.gps.create({
          data: {
-           id: hw.id,
+           id: baseComp.id,
            chipset: comp.gps.chipset || "Unknown",
            hasCompass: comp.gps.hasCompass || false,
            inputVoltageMinV: comp.gps.inputVoltageMinV || 0,
@@ -296,7 +357,7 @@ async function main() {
     if (comp.antenna) {
        await prisma.antenna.create({
          data: {
-           id: hw.id,
+           id: baseComp.id,
            supportedFrequencyId: comp.antenna.supportedFrequencyId || "5.8GHz",
            polarizationId: comp.antenna.polarizationId || "RHCP",
            connectorId: comp.antenna.connectorId || "SMA",
@@ -311,7 +372,7 @@ async function main() {
        const chem = await prisma.batteryChemistry.findFirst({ where: { name: "LiPo" } });
        await prisma.battery.create({
          data: {
-           id: hw.id,
+           id: baseComp.id,
            capacityMah: comp.battery.capacityMah,
            cellCountS: comp.battery.cellCountS || comp.battery.cellCount || 1,
            cellCountP: comp.battery.cellCountP || 1,
@@ -329,7 +390,7 @@ async function main() {
     if (comp.goggles) {
       await prisma.goggles.create({
         data: {
-          id: hw.id,
+          id: baseComp.id,
           ecosystemId: comp.goggles.ecosystemId || "Analog",
           antennaCount: comp.goggles.antennaCount || 2,
           antennaConnectorId: comp.goggles.antennaConnectorId,
@@ -341,7 +402,7 @@ async function main() {
     if (comp.transmitter) {
       await prisma.transmitter.create({
         data: {
-          id: hw.id,
+          id: baseComp.id,
           externalBayType: comp.transmitter.externalBayType || "Nano",
           operatingSystem: comp.transmitter.operatingSystem || "EdgeTX",
           antennaCount: comp.transmitter.antennaCount || 1,

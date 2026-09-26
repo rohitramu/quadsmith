@@ -4758,6 +4758,30 @@
     {
       "id": "RushFPV",
       "name": "RushFPV"
+    },
+    {
+      "name": "Betaflight Open Source"
+    },
+    {
+      "name": "ExpressLRS Open Source"
+    },
+    {
+      "name": "CaddxFPV"
+    },
+    {
+      "name": "INAV Open Source"
+    },
+    {
+      "name": "Bluejay Open Source"
+    },
+    {
+      "name": "BLHeli"
+    },
+    {
+      "name": "AM32 Open Source"
+    },
+    {
+      "name": "EdgeTX Open Source"
     }
   ],
   "tags": [
@@ -4823,6 +4847,158 @@
     },
     {
       "id": "Li-Ion"
+    }
+  ],
+  "softwareComponents": [
+    {
+      "name": "Betaflight",
+      "isSoftware": true,
+      "softwareType": "Firmware",
+      "companies": [
+        "Betaflight Open Source"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://betaflight.com/",
+          "linkType": "Official",
+          "companyName": "Betaflight Open Source"
+        }
+      ]
+    },
+    {
+      "name": "ExpressLRS",
+      "isSoftware": true,
+      "softwareType": "Firmware",
+      "companies": [
+        "ExpressLRS Open Source"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://www.expresslrs.org/",
+          "linkType": "Official",
+          "companyName": "ExpressLRS Open Source"
+        }
+      ]
+    },
+    {
+      "name": "Walksnail Avatar OS",
+      "isSoftware": true,
+      "softwareType": "Firmware",
+      "companies": [
+        "CaddxFPV"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://caddxfpv.com/",
+          "linkType": "Official",
+          "companyName": "CaddxFPV"
+        }
+      ]
+    },
+    {
+      "name": "INAV",
+      "isSoftware": true,
+      "softwareType": "Firmware",
+      "companies": [
+        "INAV Open Source"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://inavflight.com/",
+          "linkType": "Official",
+          "companyName": "INAV Open Source"
+        }
+      ]
+    },
+    {
+      "name": "Bluejay",
+      "isSoftware": true,
+      "softwareType": "ESC Firmware",
+      "companies": [
+        "Bluejay Open Source"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://github.com/mathiasvr/bluejay",
+          "linkType": "Official",
+          "companyName": "Bluejay Open Source"
+        }
+      ]
+    },
+    {
+      "name": "BLHeli_32",
+      "isSoftware": true,
+      "softwareType": "ESC Firmware",
+      "companies": [
+        "BLHeli"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://github.com/bitdump/BLHeli",
+          "linkType": "Official",
+          "companyName": "BLHeli"
+        }
+      ]
+    },
+    {
+      "name": "AM32",
+      "isSoftware": true,
+      "softwareType": "ESC Firmware",
+      "companies": [
+        "AM32 Open Source"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://github.com/AlkaMotors/AM32-MultiRotor-ESC-firmware",
+          "linkType": "Official",
+          "companyName": "AM32 Open Source"
+        }
+      ]
+    },
+    {
+      "name": "EdgeTX",
+      "isSoftware": true,
+      "softwareType": "Operating System",
+      "companies": [
+        "EdgeTX Open Source"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://edgetx.org/",
+          "linkType": "Official",
+          "companyName": "EdgeTX Open Source"
+        }
+      ]
+    },
+    {
+      "name": "Betaflight Configurator",
+      "isSoftware": true,
+      "softwareType": "Configurator",
+      "companies": [
+        "Betaflight Open Source"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://github.com/betaflight/betaflight-configurator",
+          "linkType": "Official",
+          "companyName": "Betaflight Open Source"
+        }
+      ]
+    },
+    {
+      "name": "ExpressLRS Configurator",
+      "isSoftware": true,
+      "softwareType": "Configurator",
+      "companies": [
+        "ExpressLRS Open Source"
+      ],
+      "referenceLinks": [
+        {
+          "url": "https://github.com/ExpressLRS/ExpressLRS-Configurator",
+          "linkType": "Official",
+          "companyName": "ExpressLRS Open Source"
+        }
+      ]
     }
   ]
 }
