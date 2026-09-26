@@ -3,7 +3,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-go"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -57,8 +57,8 @@ model AntennaConnector {
 
 model BatteryConnector {
   id         String    @id
-  maxCurrentA   Float
-  maxVoltageV   Float
+  maxCurrentA   Decimal
+  maxVoltageV   Decimal
   batteries  Battery[]
 }
 
@@ -88,9 +88,9 @@ model BoardMountPattern {
 model BatteryChemistry {
   id                     Int       @id @default(autoincrement())
   name                   String
-  nominalVoltagePerCellV Float
-  maxVoltagePerCellV     Float
-  minVoltagePerCellV     Float
+  nominalVoltagePerCellV Decimal
+  maxVoltagePerCellV     Decimal
+  minVoltagePerCellV     Decimal
   batteries              Battery[]
 }
 
@@ -104,7 +104,7 @@ model Company {
   websiteUrl String?
   
   components HardwareComponentCompany[]
-  links      HardwareComponentLink[]
+  referenceLinks ReferenceLink[]
 }
 
 model HardwareComponent {
@@ -113,10 +113,10 @@ model HardwareComponent {
   releaseYear  Int?
   releaseMonth Int?
   releaseDay   Int?
-  weightG      Float?
+  weightG      Decimal?
 
   companies       HardwareComponentCompany[]
-  links           HardwareComponentLink[]
+  referenceLinks ReferenceLink[]
   flaggedInIssues IncompatibilityHardwareComponent[]
 
   // One-to-One relations for the specific component types
@@ -129,7 +129,7 @@ model HardwareComponent {
   vtx              Vtx?
   camera           Camera?
   receiver         Receiver?
-  gpsModule        GpsModule?
+  gps              Gps?
   transmitter      Transmitter?
   goggles          Goggles?
   antenna          Antenna?
@@ -143,7 +143,7 @@ model HardwareComponentCompany {
   company             Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
-model HardwareComponentLink {
+model ReferenceLink {
   id                  Int               @id @default(autoincrement())
   hardwareComponentId Int
   hardwareComponent   HardwareComponent @relation(fields: [hardwareComponentId], references: [id], onDelete: Cascade)
@@ -184,14 +184,14 @@ model Frame {
   id                   Int               @id
   component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   wheelbaseMm          Int
-  maxPropSizeMm        Float
+  maxPropSizeMm        Decimal
   fcStackMounts        FrameFcStackMount[]
   motorMountPatterns   MotorMountPattern[]
-  cameraMountWidthMm   Float
+  cameraMountWidthMm   Decimal
   vtxMounts            FrameVtxMount[]
-  maxBatteryLengthMm   Float?
-  maxBatteryWidthMm    Float?
-  maxBatteryHeightMm   Float?
+  maxBatteryLengthMm   Decimal?
+  maxBatteryWidthMm    Decimal?
+  maxBatteryHeightMm   Decimal?
 
   builds Build[]
 }
@@ -201,12 +201,12 @@ model Motor {
   component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   statorSize         String
   kvRating           Int
-  inputVoltageMinV   Float
-  inputVoltageMaxV   Float
+  inputVoltageMinV   Decimal
+  inputVoltageMaxV   Decimal
   mountPatterns      MotorMountPattern[]
   mountBoltSize      String
   shaftType          String
-  maxCurrentA        Float?
+  maxCurrentA        Decimal?
 
   builds Build[]
 }
@@ -214,8 +214,8 @@ model Motor {
 model Propeller {
   id                 Int               @id
   component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  diameterMm         Float
-  pitchMm            Float
+  diameterMm         Decimal
+  pitchMm            Decimal
   bladeCount         Int
   mountType          String
   recommendedStator  String[]
@@ -227,11 +227,11 @@ model FlightController {
   id                 Int               @id
   component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   mountPatterns      BoardMountPattern[]
-  boardHeightMm      Float
+  boardHeightMm      Decimal
   mcuProcessor       String
   gyroSensor         String?
-  inputVoltageMinV   Float
-  inputVoltageMaxV   Float
+  inputVoltageMinV   Decimal
+  inputVoltageMaxV   Decimal
   becOutputs         Json?
   uartConnections    Json?
   escInterface       String
@@ -246,11 +246,11 @@ model Esc {
   isIntegrated       Boolean           // True if AIO
   formFactor         String
   mountPatterns      BoardMountPattern[]
-  boardHeightMm      Float
-  continuousCurrentA Float
-  burstCurrentA      Float
-  inputVoltageMinV   Float
-  inputVoltageMaxV   Float
+  boardHeightMm      Decimal
+  continuousCurrentA Decimal
+  burstCurrentA      Decimal
+  inputVoltageMinV   Decimal
+  inputVoltageMaxV   Decimal
   firmwareProtocol   String
 
   builds Build[]
@@ -267,9 +267,9 @@ model Battery {
   continuousCRating  Int
   connectorTypeId    String
   connectorType      BatteryConnector  @relation(fields: [connectorTypeId], references: [id])
-  lengthMm           Float?
-  widthMm            Float?
-  heightMm           Float?
+  lengthMm           Decimal?
+  widthMm            Decimal?
+  heightMm           Decimal?
 }
 
 model Vtx {
@@ -280,9 +280,9 @@ model Vtx {
   ecosystem                       VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
   videoConnectionStandard         String?
   mountPatterns      BoardMountPattern[]
-  boardHeightMm      Float
-  inputVoltageMinV                Float
-  inputVoltageMaxV                Float
+  boardHeightMm      Decimal
+  inputVoltageMinV                Decimal
+  inputVoltageMaxV                Decimal
   maxPowerMw                      Int?
   
   antennaCount                    Int               @default(1)
@@ -300,11 +300,11 @@ model Camera {
   ecosystemId             String
   ecosystem               VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
   videoConnectionStandard String?
-  widthMm                 Float
-  heightMm                Float
-  depthMm                 Float
-  inputVoltageMinV        Float
-  inputVoltageMaxV        Float
+  widthMm                 Decimal
+  heightMm                Decimal
+  depthMm                 Decimal
+  inputVoltageMinV        Decimal
+  inputVoltageMaxV        Decimal
   mountingScrewSize       String
   aspectRatio             String
 
@@ -317,8 +317,8 @@ model Receiver {
   component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   rfProtocols                     RfProtocol[]
   outputProtocol                  String
-  inputVoltageMinV                Float
-  inputVoltageMaxV                Float
+  inputVoltageMinV                Decimal
+  inputVoltageMaxV                Decimal
 
   antennaCount                    Int               @default(1)
   antennaConnectorId              String?
@@ -329,13 +329,16 @@ model Receiver {
   configs ReceiverConfiguration[]
 }
 
-model GpsModule {
+model Gps {
   id                 Int               @id
   component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   chipset            String
   hasCompass         Boolean
-  inputVoltageMinV   Float
-  inputVoltageMaxV   Float
+  inputVoltageMinV   Decimal
+  inputVoltageMaxV   Decimal
+  lengthMm           Decimal?
+  widthMm            Decimal?
+  heightMm           Decimal?
 
   builds Build[]
 }
@@ -350,8 +353,8 @@ model Antenna {
   connectorId        String
   connector          AntennaConnector    @relation(fields: [connectorId], references: [id])
   antennaStyle       String
-  gainDbi            Float?
-  cableLengthMm      Float?
+  gainDbi            Decimal?
+  cableLengthMm      Decimal?
 
   vtxConfigs      VtxConfiguration[]
   receiverConfigs ReceiverConfiguration[]
@@ -420,7 +423,7 @@ model Build {
   crashResistanceRating Int?
   description           String?
   isVerified            Boolean  @default(false)
-  miscWeightG           Float?
+  miscWeightG           Decimal?
   createdAt             DateTime @default(now())
 
   tags Tag[] // Implicit Many-to-Many
@@ -439,7 +442,7 @@ model Build {
   cameraId           Int
   camera             Camera            @relation(fields: [cameraId], references: [id])
   gpsId              Int?
-  gps                GpsModule?        @relation(fields: [gpsId], references: [id])
+  gps                Gps?        @relation(fields: [gpsId], references: [id])
 
   // Sub-Assembly Links
   vtxConfigId        Int?
