@@ -257,27 +257,21 @@ erDiagram
     FcFirmware {
         Int id PK "e.g. 1"
         SoftwareComponent softwareComponent FK
-        Boolean supportsGps "e.g. true"
-        Boolean isOpenSource "e.g. true"
     }
 
     EscFirmware {
         Int id PK "e.g. 2"
         SoftwareComponent softwareComponent FK
-        Boolean supportsBidirectionalDshot "e.g. true"
     }
 
     OperatingSystem {
         Int id PK "e.g. 3"
         SoftwareComponent softwareComponent FK
-        Boolean supportsLuaScripts "e.g. true"
     }
 
     Configurator {
         Int id PK "e.g. 4"
         SoftwareComponent softwareComponent FK
-        Boolean hasMobileApp "e.g. true"
-        Boolean hasWebApp "e.g. false"
     }
 
     SoftwareComponent ||--|o FcFirmware : "fcFirmware"

@@ -491,25 +491,19 @@ model SoftwareComponent {
 model FcFirmware {
   id                Int               @id
   softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  supportsGps       Boolean           @default(false)
-  isOpenSource      Boolean           @default(true)
 }
 
 model EscFirmware {
-  id                         Int               @id
-  softwareComponent          SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  supportsBidirectionalDshot Boolean           @default(false)
+  id                Int               @id
+  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
 model OperatingSystem {
-  id                 Int               @id
-  softwareComponent  SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  supportsLuaScripts Boolean           @default(false)
+  id                Int               @id
+  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
 model Configurator {
   id                Int               @id
   softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  hasMobileApp      Boolean           @default(false)
-  hasWebApp         Boolean           @default(false)
 }

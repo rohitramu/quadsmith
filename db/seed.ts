@@ -151,6 +151,7 @@ async function main() {
     componentIdMap.set(comp.name || comp.modelName, baseComp.id);
 
     
+    
     if (comp.isSoftware) {
       await prisma.softwareComponent.create({
         data: {
@@ -159,34 +160,28 @@ async function main() {
         }
       });
       
-      if (comp.softwareType === "Firmware") {
+      if (comp.fcFirmware) {
         await prisma.fcFirmware.create({
           data: {
-            id: baseComp.id,
-            supportsGps: comp.name === "INAV" || comp.name === "Betaflight",
-            isOpenSource: comp.name !== "Walksnail Avatar OS"
+            id: baseComp.id
           }
         });
-      } else if (comp.softwareType === "ESC Firmware") {
+      } else if (comp.escFirmware) {
         await prisma.escFirmware.create({
           data: {
-            id: baseComp.id,
-            supportsBidirectionalDshot: true
+            id: baseComp.id
           }
         });
-      } else if (comp.softwareType === "Operating System") {
+      } else if (comp.os) {
         await prisma.operatingSystem.create({
           data: {
-            id: baseComp.id,
-            supportsLuaScripts: comp.name === "EdgeTX"
+            id: baseComp.id
           }
         });
-      } else if (comp.softwareType === "Configurator") {
+      } else if (comp.configurator) {
         await prisma.configurator.create({
           data: {
-            id: baseComp.id,
-            hasMobileApp: comp.name === "Betaflight Configurator" || comp.name === "ExpressLRS Configurator",
-            hasWebApp: comp.name === "ExpressLRS Configurator"
+            id: baseComp.id
           }
         });
       }

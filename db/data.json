@@ -4973,7 +4973,6 @@
     {
       "name": "Betaflight",
       "isSoftware": true,
-      "softwareType": "Firmware",
       "companies": [
         "Betaflight Open Source"
       ],
@@ -4983,12 +4982,12 @@
           "linkType": "Official",
           "companyName": "Betaflight Open Source"
         }
-      ]
+      ],
+      "fcFirmware": {}
     },
     {
       "name": "ExpressLRS",
       "isSoftware": true,
-      "softwareType": "Firmware",
       "companies": [
         "ExpressLRS Open Source"
       ],
@@ -4998,12 +4997,12 @@
           "linkType": "Official",
           "companyName": "ExpressLRS Open Source"
         }
-      ]
+      ],
+      "fcFirmware": {}
     },
     {
       "name": "Walksnail Avatar OS",
       "isSoftware": true,
-      "softwareType": "Firmware",
       "companies": [
         "CaddxFPV"
       ],
@@ -5013,12 +5012,12 @@
           "linkType": "Official",
           "companyName": "CaddxFPV"
         }
-      ]
+      ],
+      "fcFirmware": {}
     },
     {
       "name": "INAV",
       "isSoftware": true,
-      "softwareType": "Firmware",
       "companies": [
         "INAV Open Source"
       ],
@@ -5028,12 +5027,12 @@
           "linkType": "Official",
           "companyName": "INAV Open Source"
         }
-      ]
+      ],
+      "fcFirmware": {}
     },
     {
       "name": "Bluejay",
       "isSoftware": true,
-      "softwareType": "ESC Firmware",
       "companies": [
         "Bluejay Open Source"
       ],
@@ -5043,12 +5042,12 @@
           "linkType": "Official",
           "companyName": "Bluejay Open Source"
         }
-      ]
+      ],
+      "escFirmware": {}
     },
     {
       "name": "BLHeli_32",
       "isSoftware": true,
-      "softwareType": "ESC Firmware",
       "companies": [
         "BLHeli"
       ],
@@ -5058,12 +5057,12 @@
           "linkType": "Official",
           "companyName": "BLHeli"
         }
-      ]
+      ],
+      "escFirmware": {}
     },
     {
       "name": "AM32",
       "isSoftware": true,
-      "softwareType": "ESC Firmware",
       "companies": [
         "AM32 Open Source"
       ],
@@ -5073,12 +5072,12 @@
           "linkType": "Official",
           "companyName": "AM32 Open Source"
         }
-      ]
+      ],
+      "escFirmware": {}
     },
     {
       "name": "EdgeTX",
       "isSoftware": true,
-      "softwareType": "Operating System",
       "companies": [
         "EdgeTX Open Source"
       ],
@@ -5088,12 +5087,12 @@
           "linkType": "Official",
           "companyName": "EdgeTX Open Source"
         }
-      ]
+      ],
+      "os": {}
     },
     {
       "name": "Betaflight Configurator",
       "isSoftware": true,
-      "softwareType": "Configurator",
       "companies": [
         "Betaflight Open Source"
       ],
@@ -5103,12 +5102,12 @@
           "linkType": "Official",
           "companyName": "Betaflight Open Source"
         }
-      ]
+      ],
+      "configurator": {}
     },
     {
       "name": "ExpressLRS Configurator",
       "isSoftware": true,
-      "softwareType": "Configurator",
       "companies": [
         "ExpressLRS Open Source"
       ],
@@ -5118,7 +5117,8 @@
           "linkType": "Official",
           "companyName": "ExpressLRS Open Source"
         }
-      ]
+      ],
+      "configurator": {}
     }
   ]
 }
