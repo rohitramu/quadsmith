@@ -4464,6 +4464,93 @@
         "mountingScrewSize": "M2",
         "aspectRatio": "16:9 / 4:3 (switchable)"
       }
+    },
+    {
+      "name": "SUB250-Oasis Frame",
+      "weightG": 35,
+      "companies": [
+        "Sub250"
+      ],
+      "releaseYear": 2023,
+      "frame": {
+        "wheelbaseMm": 135,
+        "maxPropSizeMm": 63.5,
+        "cameraMountWidthMm": 20,
+        "maxBatteryLengthMm": 75,
+        "maxBatteryWidthMm": 35,
+        "maxBatteryHeightMm": 30,
+        "motorMountPatterns": [
+          "9x9mm"
+        ],
+        "fcStackMounts": [
+          "25.5x25.5mm"
+        ],
+        "vtxMounts": [
+          "25.5x25.5mm",
+          "20x20mm"
+        ]
+      }
+    },
+    {
+      "name": "Sub250 1404 4500KV",
+      "weightG": 9,
+      "companies": [
+        "Sub250"
+      ],
+      "motor": {
+        "statorSize": "1404",
+        "kvRating": 4500,
+        "shaftDiameterMm": 1.5,
+        "shaftType": "Hollow",
+        "mountPatterns": [
+          "9x9mm"
+        ]
+      }
+    },
+    {
+      "name": "Redfox A3 F722 AIO",
+      "weightG": 8.5,
+      "companies": [
+        "Sub250"
+      ],
+      "flightController": {
+        "processor": "STM32F722RET6",
+        "gyro": "ICM42688-P",
+        "uarts": 5,
+        "hasOsd": true,
+        "hasBec": true,
+        "hasBlackbox": true,
+        "hasWifi": false,
+        "hasBluetooth": false,
+        "isAio": true,
+        "mountPatterns": [
+          "25.5x25.5mm"
+        ]
+      },
+      "esc": {
+        "continuousCurrentA": 45,
+        "burstCurrentA": 55,
+        "inputVoltageMinV": 7.4,
+        "inputVoltageMaxV": 25.2,
+        "is4in1": true,
+        "escInterface": "DSHOT600",
+        "mountPatterns": [
+          "25.5x25.5mm"
+        ]
+      }
+    },
+    {
+      "name": "HQProp 2.5x2.5x3",
+      "weightG": 1.5,
+      "companies": [
+        "HQProp"
+      ],
+      "propeller": {
+        "diameterMm": 63.5,
+        "pitchMm": 63.5,
+        "bladeCount": 3,
+        "mountType": "T-Mount"
+      }
     }
   ],
   "builds": [
@@ -4537,6 +4624,39 @@
         "cameraName": "Caddx Ratel 2",
         "gpsName": "HGLRC M80 PRO GPS",
         "batteryName": "Tattu R-Line Version 5.0 1400mAh 6S"
+      }
+    },
+    {
+      "name": "Sub250 Oasisfly25",
+      "description": "A compact, lightweight 2.5-inch freestyle pusher drone designed for sub-250g flight.",
+      "crashResistanceRating": 7,
+      "isVerified": true,
+      "tags": [
+        "freestyle",
+        "sub250",
+        "cinewhoop"
+      ],
+      "components": {
+        "frameName": "SUB250-Oasis Frame",
+        "motorName": "Sub250 1404 4500KV",
+        "propellerName": "HQProp 2.5x2.5x3",
+        "flightControllerName": "Redfox A3 F722 AIO",
+        "escName": "Redfox A3 F722 AIO",
+        "cameraName": "Walksnail Moonlight Camera",
+        "vtxConfiguration": {
+          "vtxName": "Walksnail Moonlight VTX",
+          "antennaNames": [
+            "TrueRC Singularity 5.8GHz (LHCP)"
+          ],
+          "loadoutName": "Digital HD"
+        },
+        "receiverConfiguration": {
+          "receiverName": "HGLRC Hermes ExpressLRS 2.4GHz",
+          "antennaNames": [
+            "Radiomaster 2.4GHz Moxon"
+          ],
+          "loadoutName": "ELRS Standard"
+        }
       }
     }
   ],
