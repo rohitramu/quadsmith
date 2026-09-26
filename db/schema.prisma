@@ -22,6 +22,16 @@ model VtxEcosystem {
   goggles  Goggles[]
 }
 
+
+model RfFrequency {
+  id            String        @id
+  receivers     Receiver[]
+  transmitters  Transmitter[]
+  goggles       Goggles[]
+  vtxs          Vtx[]
+  antennas      Antenna[]
+}
+
 model RfProtocol {
   id           String        @id
   receivers    Receiver[]
@@ -48,6 +58,8 @@ model AntennaConnector {
 
 model BatteryConnector {
   id         String    @id
+  maxCurrentA   Float
+  maxVoltageV   Float
   batteries  Battery[]
 }
 
@@ -80,7 +92,6 @@ model BatteryChemistry {
   nominalVoltagePerCellV Float
   maxVoltagePerCellV     Float
   minVoltagePerCellV     Float
-  description            String?
   batteries              Battery[]
 }
 
@@ -264,6 +275,7 @@ model Battery {
 
 model Vtx {
   id                              Int               @id
+  supportedFrequencies RfFrequency[]
   component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   ecosystemId                     String
   ecosystem                       VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
@@ -302,9 +314,9 @@ model Camera {
 
 model Receiver {
   id                              Int               @id
+  supportedFrequencies RfFrequency[]
   component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  rfProtocolId                    String
-  rfProtocol                      RfProtocol        @relation(fields: [rfProtocolId], references: [id])
+  rfProtocols                     RfProtocol[]
   outputProtocol                  String
   inputVoltageMinV                Float
   inputVoltageMaxV                Float
@@ -332,7 +344,8 @@ model GpsModule {
 model Antenna {
   id                 Int                 @id
   component          HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  frequencyBand      String
+  supportedFrequencyId            String
+  supportedFrequency              RfFrequency       @relation(fields: [supportedFrequencyId], references: [id])
   polarizationId     String
   polarization       AntennaPolarization @relation(fields: [polarizationId], references: [id])
   connectorId        String
@@ -347,9 +360,9 @@ model Antenna {
 
 model Transmitter {
   id                              Int               @id
+  supportedFrequencies RfFrequency[]
   component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  rfProtocolId                    String
-  rfProtocol                      RfProtocol        @relation(fields: [rfProtocolId], references: [id])
+  rfProtocols                     RfProtocol[]
   externalBayType                 String
   operatingSystem                 String
   
@@ -362,6 +375,7 @@ model Transmitter {
 
 model Goggles {
   id                              Int               @id
+  supportedFrequencies RfFrequency[]
   component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   ecosystemId                     String
   ecosystem                       VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
