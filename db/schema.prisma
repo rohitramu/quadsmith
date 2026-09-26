@@ -1,0 +1,436 @@
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-go"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// 1. BASE INFRASTRUCTURE & LOOKUP TABLES
+// ==========================================
+
+model VtxEcosystem {
+  id       String    @id
+  vtxs     Vtx[]
+  cameras  Camera[]
+  goggles  Goggles[]
+}
+
+model RfProtocol {
+  id           String        @id
+  receivers    Receiver[]
+  transmitters Transmitter[]
+}
+
+model AntennaPolarization {
+  id           String        @id
+  vtxs         Vtx[]
+  receivers    Receiver[]
+  transmitters Transmitter[]
+  goggles      Goggles[]
+  antennas     Antenna[]
+}
+
+model AntennaConnector {
+  id           String        @id
+  vtxs         Vtx[]
+  receivers    Receiver[]
+  transmitters Transmitter[]
+  goggles      Goggles[]
+  antennas     Antenna[]
+}
+
+model BatteryConnector {
+  id         String    @id
+  batteries  Battery[]
+}
+
+model Tag {
+  id          String   @id // e.g. "freestyle", "cinewhoop"
+  description String?
+  builds      Build[]  // Implicit Many-to-Many
+}
+
+
+
+model MotorMountPattern {
+  id       String  @id
+  frames   Frame[]
+  motors   Motor[]
+}
+
+model BoardMountPattern {
+  id                String             @id
+  fcStackFrames     Frame[]            @relation("FrameFcStackMount")
+  vtxMountFrames    Frame[]            @relation("FrameVtxMount")
+  flightControllers FlightController[]
+  escs              Esc[]
+  vtxs              Vtx[]
+}
+
+model BatteryChemistry {
+  id                     Int       @id @default(autoincrement())
+  name                   String
+  nominalVoltagePerCellV Float
+  maxVoltagePerCellV     Float
+  minVoltagePerCellV     Float
+  description            String?
+  batteries              Battery[]
+}
+
+// ==========================================
+// 2. HARDWARE COMPONENT (BASE ENTITY)
+// ==========================================
+
+model Company {
+  id         Int                        @id @default(autoincrement())
+  name       String
+  websiteUrl String?
+  
+  components HardwareComponentCompany[]
+  links      HardwareComponentLink[]
+}
+
+model HardwareComponent {
+  id           Int       @id @default(autoincrement())
+  modelName    String
+  releaseYear  Int?
+  releaseMonth Int?
+  releaseDay   Int?
+  weightG      Float?
+
+  companies       HardwareComponentCompany[]
+  links           HardwareComponentLink[]
+  flaggedInIssues IncompatibilityHardwareComponent[]
+
+  // One-to-One relations for the specific component types
+  frame            Frame?
+  motor            Motor?
+  propeller        Propeller?
+  flightController FlightController?
+  esc              Esc?
+  battery          Battery?
+  vtx              Vtx?
+  camera           Camera?
+  receiver         Receiver?
+  gpsModule        GpsModule?
+  transmitter      Transmitter?
+  goggles          Goggles?
+  antenna          Antenna?
+}
+
+model HardwareComponentCompany {
+  id                  Int               @id @default(autoincrement())
+  hardwareComponentId Int
+  hardwareComponent   HardwareComponent @relation(fields: [hardwareComponentId], references: [id], onDelete: Cascade)
+  companyId           Int
+  company             Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model HardwareComponentLink {
+  id                  Int               @id @default(autoincrement())
+  hardwareComponentId Int
+  hardwareComponent   HardwareComponent @relation(fields: [hardwareComponentId], references: [id], onDelete: Cascade)
+  companyId           Int?
+  company             Company?          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  url                 String
+  linkType            String            // e.g. "Purchase", "Manual", "Firmware"
+  title               String
+  description         String?
+}
+
+// ==========================================
+// 3. EXCEPTIONS & INCOMPATIBILITIES
+// ==========================================
+
+model IncompatibilityIssue {
+  id                    Int                                @id @default(autoincrement())
+  incompatibilityReason String                             // "Physical", "Noise", "Firmware"
+  description           String
+  suggestedFix          String?
+  components            IncompatibilityHardwareComponent[]
+}
+
+model IncompatibilityHardwareComponent {
+  issueId             Int
+  issue               IncompatibilityIssue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  hardwareComponentId Int
+  hardwareComponent   HardwareComponent    @relation(fields: [hardwareComponentId], references: [id], onDelete: Cascade)
+
+  @@id([issueId, hardwareComponentId])
+}
+
+// ==========================================
+// 4. HARDWARE SUB-TYPES (ONE-TO-ONE)
+// ==========================================
+
+model Frame {
+  id                   Int               @id
+  component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  wheelbaseMm          Int
+  maxPropSizeMm        Float
+  fcStackMounts      BoardMountPattern[] @relation(\"FrameFcStackMount\")
+  motorMountPatterns MotorMountPattern[]
+  cameraMountWidthMm   Float
+  vtxMounts          BoardMountPattern[] @relation(\"FrameVtxMount\")
+  maxBatteryLengthMm   Float?
+  maxBatteryWidthMm    Float?
+  maxBatteryHeightMm   Float?
+
+  builds Build[]
+}
+
+model Motor {
+  id                 Int               @id
+  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  statorSize         String
+  kvRating           Int
+  inputVoltageMinV   Float
+  inputVoltageMaxV   Float
+  mountPatterns      MotorMountPattern[]
+  mountBoltSize      String
+  shaftType          String
+  maxCurrentA        Float?
+
+  builds Build[]
+}
+
+model Propeller {
+  id                 Int               @id
+  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  diameterMm         Float
+  pitchMm            Float
+  bladeCount         Int
+  mountType          String
+  recommendedStator  String[]
+
+  builds Build[]
+}
+
+model FlightController {
+  id                 Int               @id
+  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  mountPatterns      BoardMountPattern[]
+  boardHeightMm      Float
+  mcuProcessor       String
+  gyroSensor         String?
+  inputVoltageMinV   Float
+  inputVoltageMaxV   Float
+  becOutputs         Json?
+  uartConnections    Json?
+  escInterface       String
+  supportedFirmware  String[]
+
+  builds Build[]
+}
+
+model Esc {
+  id                 Int               @id
+  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  isIntegrated       Boolean           // True if AIO
+  formFactor         String
+  mountPatterns      BoardMountPattern[]
+  boardHeightMm      Float
+  continuousCurrentA Float
+  burstCurrentA      Float
+  inputVoltageMinV   Float
+  inputVoltageMaxV   Float
+  firmwareProtocol   String
+
+  builds Build[]
+}
+
+model Battery {
+  id                 Int               @id
+  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  chemistryId        Int
+  chemistry          BatteryChemistry  @relation(fields: [chemistryId], references: [id])
+  cellCountS         Int
+  cellCountP         Int
+  capacityMah        Int
+  continuousCRating  Int
+  connectorTypeId    String
+  connectorType      BatteryConnector  @relation(fields: [connectorTypeId], references: [id])
+  lengthMm           Float?
+  widthMm            Float?
+  heightMm           Float?
+}
+
+model Vtx {
+  id                              Int               @id
+  component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  ecosystemId                     String
+  ecosystem                       VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
+  videoConnectionStandard         String?
+  mountPatterns      BoardMountPattern[]
+  boardHeightMm      Float
+  inputVoltageMinV                Float
+  inputVoltageMaxV                Float
+  maxPowerMw                      Int?
+  
+  antennaCount                    Int               @default(1)
+  antennaConnectorId              String?
+  antennaConnector                AntennaConnector? @relation(fields: [antennaConnectorId], references: [id])
+  includedAntennaPolarizationId   String?
+  includedAntennaPolarization     AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+
+  configs VtxConfiguration[]
+}
+
+model Camera {
+  id                      Int               @id
+  component               HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  ecosystemId             String
+  ecosystem               VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
+  videoConnectionStandard String?
+  widthMm                 Float
+  heightMm                Float
+  depthMm                 Float
+  inputVoltageMinV        Float
+  inputVoltageMaxV        Float
+  mountingScrewSize       String
+  aspectRatio             String
+
+  builds Build[]
+}
+
+model Receiver {
+  id                              Int               @id
+  component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  rfProtocolId                    String
+  rfProtocol                      RfProtocol        @relation(fields: [rfProtocolId], references: [id])
+  outputProtocol                  String
+  inputVoltageMinV                Float
+  inputVoltageMaxV                Float
+
+  antennaCount                    Int               @default(1)
+  antennaConnectorId              String?
+  antennaConnector                AntennaConnector? @relation(fields: [antennaConnectorId], references: [id])
+  includedAntennaPolarizationId   String?
+  includedAntennaPolarization     AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+
+  configs ReceiverConfiguration[]
+}
+
+model GpsModule {
+  id                 Int               @id
+  component          HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  chipset            String
+  hasCompass         Boolean
+  inputVoltageMinV   Float
+  inputVoltageMaxV   Float
+
+  builds Build[]
+}
+
+model Antenna {
+  id                 Int                 @id
+  component          HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
+  frequencyBand      String
+  polarizationId     String
+  polarization       AntennaPolarization @relation(fields: [polarizationId], references: [id])
+  connectorId        String
+  connector          AntennaConnector    @relation(fields: [connectorId], references: [id])
+  antennaStyle       String
+  gainDbi            Float?
+  cableLengthMm      Float?
+
+  vtxConfigs      VtxConfiguration[]
+  receiverConfigs ReceiverConfiguration[]
+}
+
+model Transmitter {
+  id                              Int               @id
+  component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  rfProtocolId                    String
+  rfProtocol                      RfProtocol        @relation(fields: [rfProtocolId], references: [id])
+  externalBayType                 String
+  operatingSystem                 String
+  
+  antennaCount                    Int               @default(1)
+  antennaConnectorId              String?
+  antennaConnector                AntennaConnector? @relation(fields: [antennaConnectorId], references: [id])
+  includedAntennaPolarizationId   String?
+  includedAntennaPolarization     AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+}
+
+model Goggles {
+  id                              Int               @id
+  component                       HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  ecosystemId                     String
+  ecosystem                       VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
+  
+  antennaCount                    Int               @default(1)
+  antennaConnectorId              String?
+  antennaConnector                AntennaConnector? @relation(fields: [antennaConnectorId], references: [id])
+  includedAntennaPolarizationId   String?
+  includedAntennaPolarization     AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+}
+
+// ==========================================
+// 5. SUB-ASSEMBLIES / LOADOUTS 
+// ==========================================
+
+model VtxConfiguration {
+  id          Int       @id @default(autoincrement())
+  vtxId       Int
+  vtx         Vtx       @relation(fields: [vtxId], references: [id])
+  antennas    Antenna[] // Implicit Many-to-Many
+  loadoutName String?
+
+  builds Build[]
+}
+
+model ReceiverConfiguration {
+  id          Int       @id @default(autoincrement())
+  receiverId  Int
+  receiver    Receiver  @relation(fields: [receiverId], references: [id])
+  antennas    Antenna[] // Implicit Many-to-Many
+  loadoutName String?
+
+  builds Build[]
+}
+
+// ==========================================
+// 6. CORE APPLICATION ENTITY (THE AIRCRAFT)
+// ==========================================
+
+model Build {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  crashResistanceRating Int?
+  description           String?
+  isVerified            Boolean  @default(false)
+  miscWeightG           Float?
+  createdAt             DateTime @default(now())
+
+  tags Tag[] // Implicit Many-to-Many
+
+  // Hard Hardware Links
+  frameId            Int
+  frame              Frame             @relation(fields: [frameId], references: [id])
+  motorId            Int
+  motor              Motor             @relation(fields: [motorId], references: [id])
+  propellerId        Int
+  propeller          Propeller         @relation(fields: [propellerId], references: [id])
+  flightControllerId Int
+  flightController   FlightController  @relation(fields: [flightControllerId], references: [id])
+  escId              Int?
+  esc                Esc?              @relation(fields: [escId], references: [id])
+  cameraId           Int
+  camera             Camera            @relation(fields: [cameraId], references: [id])
+  gpsId              Int?
+  gps                GpsModule?        @relation(fields: [gpsId], references: [id])
+
+  // Sub-Assembly Links
+  vtxConfigId        Int?
+  vtxConfig          VtxConfiguration? @relation(fields: [vtxConfigId], references: [id])
+  receiverConfigId   Int?
+  receiverConfig     ReceiverConfiguration? @relation(fields: [receiverConfigId], references: [id])
+}

@@ -1,0 +1,311 @@
+erDiagram
+    VtxEcosystem {
+        String id PK "e.g. DJI O3, HDZero, Analog"
+    }
+    RfProtocol {
+        String id PK "e.g. ExpressLRS 2.4GHz, Crossfire"
+    }
+    AntennaPolarization {
+        String id PK "e.g. RHCP, LHCP, Linear"
+    }
+    AntennaConnector {
+        String id PK "e.g. SMA, U.FL, MMCX"
+    }
+    BatteryConnector {
+        String id PK "e.g. XT60, XT30, BT2.0"
+    }
+    MotorMountPattern {
+        String id PK "e.g. 16x16mm, 19x19mm, 12x12mm"
+    }
+    BoardMountPattern {
+        String id PK "e.g. 30.5x30.5mm, 25.5x25.5mm, 20x20mm"
+    }
+    Tag {
+        String id PK "e.g. freestyle, cinewhoop"
+        String description "e.g. Built for acrobatic flying"
+    }
+    BatteryChemistry {
+        Int id PK "e.g. 1"
+        String name "e.g. LiPo, LiHV, Li-ion"
+        Float nominalVoltagePerCellV "e.g. 3.7"
+        Float maxVoltagePerCellV "e.g. 4.2"
+        Float minVoltagePerCellV "e.g. 3.2"
+        String description "e.g. Standard Lithium Polymer"
+    }
+    Company {
+        Int id PK "e.g. 1"
+        String name "e.g. T-Motor, TBS"
+        String websiteUrl "e.g. https://tmotor.com"
+    }
+    HardwareComponent {
+        Int id PK "e.g. 101"
+        String modelName "e.g. Velox V2, F722-APP"
+        Int releaseYear "e.g. 2022"
+        Int releaseMonth "e.g. 11"
+        Int releaseDay "e.g. 15"
+        Float weightG "e.g. 34.5"
+    }
+    HardwareComponentCompany {
+        Int id PK "e.g. 1"
+        Int hardwareComponentId FK "e.g. 101"
+        Int companyId FK "e.g. 1"
+    }
+    HardwareComponentLink {
+        Int id PK "e.g. 1"
+        Int hardwareComponentId FK "e.g. 101"
+        Int companyId FK "e.g. 1"
+        String url "e.g. https://manuals.com/f722"
+        String linkType "e.g. Purchase, Datasheet, Manual"
+        String title "e.g. Official Wiring Diagram"
+        String description "e.g. PDF showing UART layout"
+    }
+    IncompatibilityIssue {
+        Int id PK "e.g. 1"
+        String incompatibilityReason "e.g. Physical, Firmware"
+        String description "e.g. FC blocks USB port on Frame"
+        String suggestedFix "e.g. Use 90-degree USB adapter"
+        Int fixDifficulty "e.g. 3"
+    }
+    IncompatibilityHardwareComponent {
+        Int issueId PK,FK "e.g. 1"
+        Int hardwareComponentId PK,FK "e.g. 101"
+    }
+    Frame {
+        Int id PK,FK "e.g. 101"
+        Int wheelbaseMm "e.g. 225"
+        Float maxPropSizeMm "e.g. 5.1"
+        BoardMountPattern[] fcStackMounts "e.g. 30.5x30.5mm"
+        BoardMountPattern[] vtxMounts "e.g. 25.5x25.5mm"
+        String[] motorMountPattern "e.g. 16x16mm, 19x19mm"
+        Float cameraMountWidthMm "e.g. 19.0"
+        Float maxStackHeightMm "e.g. 20.0"
+        Float maxBatteryLengthMm "e.g. 130.0"
+        Float maxBatteryWidthMm "e.g. 50.0"
+        Float maxBatteryHeightMm "e.g. 40.0"
+    }
+    Motor {
+        Int id PK,FK "e.g. 102"
+        String statorSize "e.g. 2207, 2306"
+        Int kvRating "e.g. 1750, 2550"
+        Float inputVoltageMinV "e.g. 14.8"
+        Float inputVoltageMaxV "e.g. 25.2"
+        
+        MotorMountPattern[] mountPatterns \"e.g. 16x16mm\"
+        String mountBoltSize "e.g. M3"
+        String shaftType "e.g. 5mm, T-Mount 1.5mm"
+        Float maxCurrentA "e.g. 45.0"
+    }
+    Propeller {
+        Int id PK,FK "e.g. 103"
+        Float diameterMm "e.g. 5.1"
+        Float pitchMm "e.g. 4.3"
+        Int bladeCount "e.g. 3"
+        String mountType "e.g. 5mm Hole, T-Mount M2"
+        String[] recommendedStator "e.g. 2207, 2306"
+    }
+    FlightController {
+        Int id PK,FK "e.g. 104"
+        
+        BoardMountPattern[] mountPatterns "e.g. 30.5x30.5mm, 20x20mm"
+        Float boardHeightMm "e.g. 6.5"
+        Float boardHeightMm "e.g. 8.0"
+        String mcuProcessor "e.g. F722, H743"
+        String gyroSensor "e.g. MPU6000, BMI270"
+        Float inputVoltageMinV "e.g. 11.1"
+        Float inputVoltageMaxV "e.g. 25.2"
+        Json becOutputs "e.g. 5V at 3A, 9V at 2A"
+        Json uartConnections "e.g. UART1 to VTX, UART2 to RX"
+        String escInterface "e.g. 8-pin Plug, Direct Solder"
+        String[] supportedFirmware "e.g. Betaflight, INAV"
+    }
+    Esc {
+        Int id PK,FK "e.g. 105"
+        Boolean isIntegrated "e.g. false (not AIO)"
+        String formFactor "e.g. 4-in-1, Individual"
+        BoardMountPattern[] mountPatterns "e.g. 30.5x30.5mm, 20x20mm"
+        
+        Float continuousCurrentA "e.g. 50.0"
+        Float burstCurrentA "e.g. 60.0"
+        Float inputVoltageMinV "e.g. 11.1"
+        Float inputVoltageMaxV "e.g. 25.2"
+        String firmwareProtocol "e.g. BLHeli_32, Bluejay"
+    }
+    Battery {
+        Int id PK,FK "e.g. 106"
+        Int chemistryId FK "e.g. 1"
+        Int cellCountS "e.g. 6"
+        Int cellCountP "e.g. 1"
+        Int capacityMah "e.g. 1100"
+        Int continuousCRating "e.g. 120"
+        String connectorTypeId FK "e.g. XT60"
+        Float lengthMm "e.g. 78.0"
+        Float widthMm "e.g. 38.0"
+        Float heightMm "e.g. 38.0"
+    }
+    Vtx {
+        Int id PK,FK "e.g. 107"
+        String ecosystemId FK "e.g. DJI O3"
+        String videoConnectionStandard "e.g. MIPI, Analog CVBS"
+        BoardMountPattern[] mountPatterns "e.g. 25.5x25.5mm, 20x20mm"
+        Float boardHeightMm "e.g. 5.5"
+        
+        Float inputVoltageMinV "e.g. 7.4"
+        Float inputVoltageMaxV "e.g. 26.4"
+        Int maxPowerMw "e.g. 1200"
+        Int antennaCount "e.g. 2"
+        String antennaConnectorId FK "e.g. U.FL"
+        String includedAntennaPolarizationId FK "e.g. LHCP"
+    }
+    Camera {
+        Int id PK,FK "e.g. 108"
+        String ecosystemId FK "e.g. HDZero"
+        String videoConnectionStandard "e.g. MIPI"
+        Float widthMm "e.g. 19.0"
+        Float heightMm "e.g. 19.0"
+        Float depthMm "e.g. 24.0"
+        Float inputVoltageMinV "e.g. 5.0"
+        Float inputVoltageMaxV "e.g. 25.2"
+        String mountingScrewSize "e.g. M2"
+        String aspectRatio "e.g. 16:9"
+    }
+    Receiver {
+        Int id PK,FK "e.g. 109"
+        String rfProtocolId FK "e.g. ExpressLRS 2.4GHz"
+        String outputProtocol "e.g. CRSF, SBUS"
+        Float inputVoltageMinV "e.g. 4.5"
+        Float inputVoltageMaxV "e.g. 5.5"
+        Int antennaCount "e.g. 1"
+        String antennaConnectorId FK "e.g. U.FL"
+        String includedAntennaPolarizationId FK "e.g. Linear"
+    }
+    GpsModule {
+        Int id PK,FK "e.g. 110"
+        String chipset "e.g. M10"
+        Boolean hasCompass "e.g. true"
+        Float inputVoltageMinV "e.g. 3.3"
+        Float inputVoltageMaxV "e.g. 5.5"
+    }
+    Antenna {
+        Int id PK,FK "e.g. 111"
+        String frequencyBand "e.g. 5.8GHz, 900MHz"
+        String polarizationId FK "e.g. RHCP"
+        String connectorId FK "e.g. SMA"
+        String antennaStyle "e.g. Omni, Patch"
+        Float gainDbi "e.g. 2.5"
+        Float cableLengthMm "e.g. 60.0"
+    }
+    Transmitter {
+        Int id PK,FK "e.g. 112"
+        String rfProtocolId FK "e.g. ExpressLRS 2.4GHz"
+        String externalBayType "e.g. JR Micro, Lite"
+        String operatingSystem "e.g. EdgeTX"
+        Int antennaCount "e.g. 1"
+        String antennaConnectorId FK "e.g. SMA"
+        String includedAntennaPolarizationId FK "e.g. Linear"
+    }
+    Goggles {
+        Int id PK,FK "e.g. 113"
+        String ecosystemId FK "e.g. Walksnail"
+        Int antennaCount "e.g. 4"
+        String antennaConnectorId FK "e.g. SMA"
+        String includedAntennaPolarizationId FK "e.g. LHCP"
+    }
+    VtxConfiguration {
+        Int id PK "e.g. 1"
+        Int vtxId FK "e.g. 107"
+        String loadoutName "e.g. O3 with Dual Matchsticks"
+    }
+    ReceiverConfiguration {
+        Int id PK "e.g. 1"
+        Int receiverId FK "e.g. 109"
+        String loadoutName "e.g. ELRS Diversity Setup"
+    }
+    Build {
+        Int id PK "e.g. 1"
+        String name "e.g. Bando Basher 5 inch"
+        Int crashResistanceRating "e.g. 9"
+        String description "e.g. My main freestyle rig"
+        Boolean isVerified "e.g. true"
+        Float miscWeightG "e.g. 25.0"
+        DateTime createdAt "e.g. 2026-09-26"
+        Int frameId FK "e.g. 101"
+        Int motorId FK "e.g. 102"
+        Int propellerId FK "e.g. 103"
+        Int flightControllerId FK "e.g. 104"
+        Int escId FK "e.g. 105"
+        Int cameraId FK "e.g. 108"
+        Int gpsId FK "e.g. 110"
+        Int vtxConfigId FK "e.g. 1"
+        Int receiverConfigId FK "e.g. 1"
+    }
+
+    HardwareComponent ||--o{ HardwareComponentCompany : "companies"
+    Company ||--o{ HardwareComponentCompany : "components"
+    HardwareComponent ||--o{ HardwareComponentLink : "links"
+    Company |o--o{ HardwareComponentLink : "links"
+
+    IncompatibilityIssue ||--o{ IncompatibilityHardwareComponent : "components"
+    HardwareComponent ||--o{ IncompatibilityHardwareComponent : "flaggedInIssues"
+
+    HardwareComponent ||--|o Frame : "frame"
+    HardwareComponent ||--|o Motor : "motor"
+    HardwareComponent ||--|o Propeller : "propeller"
+    HardwareComponent ||--|o FlightController : "flightController"
+    HardwareComponent ||--|o Esc : "esc"
+    HardwareComponent ||--|o Battery : "battery"
+    HardwareComponent ||--|o Vtx : "vtx"
+    HardwareComponent ||--|o Camera : "camera"
+    HardwareComponent ||--|o Receiver : "receiver"
+    HardwareComponent ||--|o GpsModule : "gpsModule"
+    HardwareComponent ||--|o Transmitter : "transmitter"
+    HardwareComponent ||--|o Goggles : "goggles"
+    HardwareComponent ||--|o Antenna : "antenna"
+
+    VtxEcosystem ||--o{ Vtx : "vtxs"
+    VtxEcosystem ||--o{ Camera : "cameras"
+    VtxEcosystem ||--o{ Goggles : "goggles"
+
+    RfProtocol ||--o{ Receiver : "receivers"
+    RfProtocol ||--o{ Transmitter : "transmitters"
+
+    AntennaPolarization ||--o{ Vtx : "vtxs"
+    AntennaPolarization ||--o{ Receiver : "receivers"
+    AntennaPolarization ||--o{ Transmitter : "transmitters"
+    AntennaPolarization ||--o{ Goggles : "goggles"
+    AntennaPolarization ||--o{ Antenna : "antennas"
+
+    AntennaConnector ||--o{ Vtx : "vtxs"
+    AntennaConnector ||--o{ Receiver : "receivers"
+    AntennaConnector ||--o{ Transmitter : "transmitters"
+    AntennaConnector ||--o{ Goggles : "goggles"
+    AntennaConnector ||--o{ Antenna : "antennas"
+
+    BatteryConnector ||--o{ Battery : "batteries"
+    BatteryChemistry ||--o{ Battery : "batteries"
+
+    Vtx ||--o{ VtxConfiguration : "configs"
+    Receiver ||--o{ ReceiverConfiguration : "configs"
+
+    %% Implicit Many-To-Many relations in Prisma
+    Build }o--o{ Tag : "tags"
+    VtxConfiguration }o--o{ Antenna : "antennas"
+    ReceiverConfiguration }o--o{ Antenna : "antennas"
+
+    Frame ||--o{ Build : "builds"
+    Motor ||--o{ Build : "builds"
+    Propeller ||--o{ Build : "builds"
+    FlightController ||--o{ Build : "builds"
+    Esc |o--o{ Build : "builds"
+    Camera ||--o{ Build : "builds"
+    GpsModule |o--o{ Build : "builds"
+    VtxConfiguration |o--o{ Build : "builds"
+    ReceiverConfiguration |o--o{ Build : "builds"
+
+    Frame }o--o{ BoardMountPattern : "fcStackMounts"
+    Frame }o--o{ BoardMountPattern : "vtxMounts"
+    FlightController }o--o{ BoardMountPattern : "mountPatterns"
+    Esc }o--o{ BoardMountPattern : "mountPatterns"
+    Vtx }o--o{ BoardMountPattern : "mountPatterns"
+
+    Frame }o--o{ MotorMountPattern : "motorMountPatterns"
+    Motor }o--o{ MotorMountPattern : "mountPatterns"
