@@ -1,0 +1,17 @@
+{
+  "name": "quadsmith",
+  "version": "0.1.0",
+  "description": "FPV Drone Parts Compatibility and Build Planning Database",
+  "type": "module",
+  "scripts": {
+    "prisma:validate": "prisma validate --config prisma.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@prisma/client": "^7.10.0",
+    "@types/node": "^22.0.0",
+    "dotenv": "^16.4.7",
+    "prisma": "^7.10.0",
+    "typescript": "^5.8.0"
+  }
+}

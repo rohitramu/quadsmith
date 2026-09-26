@@ -185,10 +185,10 @@ model Frame {
   component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   wheelbaseMm          Int
   maxPropSizeMm        Float
-  fcStackMounts      BoardMountPattern[] @relation(\"FrameFcStackMount\")
-  motorMountPatterns MotorMountPattern[]
+  fcStackMounts        FrameFcStackMount[]
+  motorMountPatterns   MotorMountPattern[]
   cameraMountWidthMm   Float
-  vtxMounts          BoardMountPattern[] @relation(\"FrameVtxMount\")
+  vtxMounts            FrameVtxMount[]
   maxBatteryLengthMm   Float?
   maxBatteryWidthMm    Float?
   maxBatteryHeightMm   Float?
