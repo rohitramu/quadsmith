@@ -231,18 +231,19 @@ model Propeller {
 }
 
 model FlightController {
-  id                Int                 @id
-  component         HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  mountPatterns     BoardMountPattern[]
-  boardHeightMm     Decimal
-  mcuProcessor      String
-  gyroSensor        String?
-  inputVoltageMinV  Decimal
-  inputVoltageMaxV  Decimal
-  becOutputs        Json?
-  uartConnections   Json?
-  escInterface      String
-  supportedFirmware String[]
+  id               Int                 @id
+  component        HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
+  mountPatterns    BoardMountPattern[]
+  boardHeightMm    Decimal
+  mcuProcessor     String
+  gyroSensor       String?
+  inputVoltageMinV Decimal
+  inputVoltageMaxV Decimal
+  becOutputs       Json?
+  uartConnections  Json?
+  escInterface     String
+
+  supportedFirmware FcFirmware[] // Implicit Many-to-Many
 
   builds Build[]
 }
@@ -258,7 +259,8 @@ model Esc {
   burstCurrentA      Decimal
   inputVoltageMinV   Decimal
   inputVoltageMaxV   Decimal
-  firmwareProtocol   String
+
+  supportedFirmware EscFirmware[] // Implicit Many-to-Many
 
   builds Build[]
 }
@@ -297,6 +299,8 @@ model Vtx {
   antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
   includedAntennaPolarizationId String?
   includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+
+  supportedFirmware VtxFirmware[] // Implicit Many-to-Many
 
   configs VtxConfiguration[]
 }
@@ -373,13 +377,14 @@ model Transmitter {
   component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
   rfProtocols          RfProtocol[]
   externalBayType      String
-  operatingSystem      String
 
   antennaCount                  Int                  @default(1)
   antennaConnectorId            String?
   antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
   includedAntennaPolarizationId String?
   includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
+
+  supportedOs OperatingSystem[] // Implicit Many-to-Many
 }
 
 model Goggles {
@@ -482,28 +487,36 @@ model SoftwareComponent {
 
   version String?
 
-  fcFirmware   FcFirmware?
-  escFirmware  EscFirmware?
-  os           OperatingSystem?
-  configurator Configurator?
+  fcFirmware  FcFirmware?
+  escFirmware EscFirmware?
+  vtxFirmware VtxFirmware?
+  os          OperatingSystem?
 }
 
 model FcFirmware {
   id                Int               @id
   softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  compatibleFlightControllers FlightController[] // Implicit Many-to-Many
 }
 
 model EscFirmware {
   id                Int               @id
   softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  compatibleEscs Esc[] // Implicit Many-to-Many
+}
+
+model VtxFirmware {
+  id                Int               @id
+  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  compatibleVtxs Vtx[] // Implicit Many-to-Many
 }
 
 model OperatingSystem {
   id                Int               @id
   softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-}
 
-model Configurator {
-  id                Int               @id
-  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
+  compatibleTransmitters Transmitter[] // Implicit Many-to-Many
 }

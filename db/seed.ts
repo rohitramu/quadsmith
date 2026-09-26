@@ -152,6 +152,7 @@ async function main() {
 
     
     
+
     if (comp.isSoftware) {
       await prisma.softwareComponent.create({
         data: {
@@ -159,35 +160,21 @@ async function main() {
           version: comp.version
         }
       });
-      
+
       if (comp.fcFirmware) {
-        await prisma.fcFirmware.create({
-          data: {
-            id: baseComp.id
-          }
-        });
+        await prisma.fcFirmware.create({ data: { id: baseComp.id } });
       } else if (comp.escFirmware) {
-        await prisma.escFirmware.create({
-          data: {
-            id: baseComp.id
-          }
-        });
+        await prisma.escFirmware.create({ data: { id: baseComp.id } });
+      } else if (comp.vtxFirmware) {
+        await prisma.vtxFirmware.create({ data: { id: baseComp.id } });
       } else if (comp.os) {
-        await prisma.operatingSystem.create({
-          data: {
-            id: baseComp.id
-          }
-        });
-      } else if (comp.configurator) {
-        await prisma.configurator.create({
-          data: {
-            id: baseComp.id
-          }
-        });
+        await prisma.operatingSystem.create({ data: { id: baseComp.id } });
       }
+      // Bare SoftwareComponents (e.g. configurators) need no sub-type row.
 
       continue;
     }
+
 
     const hw = await prisma.hardwareComponent.create({
       data: {
@@ -259,7 +246,6 @@ async function main() {
           boardHeightMm: comp.flightController.boardHeightMm || 0,
           inputVoltageMinV: comp.flightController.inputVoltageMinV || 0,
           inputVoltageMaxV: comp.flightController.inputVoltageMaxV || 0,
-          supportedFirmware: comp.flightController.supportedFirmware || [],
           escInterface: comp.flightController.escInterface || "Unknown"
         }
       });
@@ -271,7 +257,6 @@ async function main() {
            id: baseComp.id,
            continuousCurrentA: comp.esc.continuousCurrentA || 0,
            burstCurrentA: comp.esc.burstCurrentA || 0,
-           firmwareProtocol: comp.esc.firmwareProtocol || "Unknown",
            isIntegrated: comp.esc.isIntegrated || false,
            formFactor: comp.esc.formFactor || "4-in-1",
            mountPatterns: { connect: (comp.esc.mountPatterns || []).map((id: string) => ({ id })) },
@@ -399,11 +384,58 @@ async function main() {
         data: {
           id: baseComp.id,
           externalBayType: comp.transmitter.externalBayType || "Nano",
-          operatingSystem: comp.transmitter.operatingSystem || "EdgeTX",
           antennaCount: comp.transmitter.antennaCount || 1,
           antennaConnectorId: comp.transmitter.antennaConnectorId,
           rfProtocols: { connect: (comp.transmitter.protocol ? [{ id: comp.transmitter.protocol }] : []) }
         }
+      });
+    }
+  }
+
+  // Second pass: wire up software ↔ hardware compatibility M2M links
+  console.log('Wiring firmware compatibility...');
+  const allSoftware = [...(data.softwareComponents || [])];
+  for (const comp of allSoftware) {
+    const swId = componentIdMap.get(comp.name);
+    if (!swId) continue;
+
+    if (comp.fcFirmware?.compatibleFlightControllerNames?.length) {
+      const fcIds = (comp.fcFirmware.compatibleFlightControllerNames as string[])
+        .map((n: string) => componentIdMap.get(n))
+        .filter(Boolean) as number[];
+      await prisma.fcFirmware.update({
+        where: { id: swId },
+        data: { compatibleFlightControllers: { connect: fcIds.map(id => ({ id })) } }
+      });
+    }
+
+    if (comp.escFirmware?.compatibleEscNames?.length) {
+      const escIds = (comp.escFirmware.compatibleEscNames as string[])
+        .map((n: string) => componentIdMap.get(n))
+        .filter(Boolean) as number[];
+      await prisma.escFirmware.update({
+        where: { id: swId },
+        data: { compatibleEscs: { connect: escIds.map(id => ({ id })) } }
+      });
+    }
+
+    if (comp.vtxFirmware?.compatibleVtxNames?.length) {
+      const vtxIds = (comp.vtxFirmware.compatibleVtxNames as string[])
+        .map((n: string) => componentIdMap.get(n))
+        .filter(Boolean) as number[];
+      await prisma.vtxFirmware.update({
+        where: { id: swId },
+        data: { compatibleVtxs: { connect: vtxIds.map(id => ({ id })) } }
+      });
+    }
+
+    if (comp.os?.compatibleTransmitterNames?.length) {
+      const txIds = (comp.os.compatibleTransmitterNames as string[])
+        .map((n: string) => componentIdMap.get(n))
+        .filter(Boolean) as number[];
+      await prisma.operatingSystem.update({
+        where: { id: swId },
+        data: { compatibleTransmitters: { connect: txIds.map(id => ({ id })) } }
       });
     }
   }

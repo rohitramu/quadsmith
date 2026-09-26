@@ -4983,7 +4983,13 @@
           "companyName": "Betaflight Open Source"
         }
       ],
-      "fcFirmware": {}
+      "fcFirmware": {
+        "compatibleFlightControllerNames": [
+          "CaddxF4 AIO 20A",
+          "HGLRC Specter F460 Stack",
+          "Redfox A3 F722 AIO"
+        ]
+      }
     },
     {
       "name": "ExpressLRS",
@@ -4998,7 +5004,9 @@
           "companyName": "ExpressLRS Open Source"
         }
       ],
-      "fcFirmware": {}
+      "fcFirmware": {
+        "compatibleFlightControllerNames": []
+      }
     },
     {
       "name": "Walksnail Avatar OS",
@@ -5013,7 +5021,12 @@
           "companyName": "CaddxFPV"
         }
       ],
-      "fcFirmware": {}
+      "vtxFirmware": {
+        "compatibleVtxNames": [
+          "Walksnail Moonlight VTX",
+          "Walksnail Avatar HD Pro+"
+        ]
+      }
     },
     {
       "name": "INAV",
@@ -5028,7 +5041,11 @@
           "companyName": "INAV Open Source"
         }
       ],
-      "fcFirmware": {}
+      "fcFirmware": {
+        "compatibleFlightControllerNames": [
+          "HGLRC Specter F460 Stack"
+        ]
+      }
     },
     {
       "name": "Bluejay",
@@ -5043,7 +5060,12 @@
           "companyName": "Bluejay Open Source"
         }
       ],
-      "escFirmware": {}
+      "escFirmware": {
+        "compatibleEscNames": [
+          "HGLRC Specter F460 Stack",
+          "CaddxF4 AIO 20A"
+        ]
+      }
     },
     {
       "name": "BLHeli_32",
@@ -5058,7 +5080,12 @@
           "companyName": "BLHeli"
         }
       ],
-      "escFirmware": {}
+      "escFirmware": {
+        "compatibleEscNames": [
+          "HGLRC Specter F460 Stack",
+          "Redfox A3 F722 AIO"
+        ]
+      }
     },
     {
       "name": "AM32",
@@ -5073,7 +5100,11 @@
           "companyName": "AM32 Open Source"
         }
       ],
-      "escFirmware": {}
+      "escFirmware": {
+        "compatibleEscNames": [
+          "HGLRC Specter F460 Stack"
+        ]
+      }
     },
     {
       "name": "EdgeTX",
@@ -5088,7 +5119,13 @@
           "companyName": "EdgeTX Open Source"
         }
       ],
-      "os": {}
+      "os": {
+        "compatibleTransmitterNames": [
+          "Radiomaster Boxer",
+          "Radiomaster TX16S",
+          "Radiomaster Pocket"
+        ]
+      }
     },
     {
       "name": "Betaflight Configurator",
@@ -5102,8 +5139,7 @@
           "linkType": "Official",
           "companyName": "Betaflight Open Source"
         }
-      ],
-      "configurator": {}
+      ]
     },
     {
       "name": "ExpressLRS Configurator",
@@ -5117,8 +5153,7 @@
           "linkType": "Official",
           "companyName": "ExpressLRS Open Source"
         }
-      ],
-      "configurator": {}
+      ]
     }
   ]
 }
