@@ -245,14 +245,19 @@ model FlightController {
 
   supportedFirmware FcFirmware[] // Implicit Many-to-Many
 
-  builds Build[]
+  flightStacks FlightStack[]
+}
+
+enum EscFormFactor {
+  INTEGRATED_IN_FC
+  FOUR_IN_ONE      @map("4-in-1")
+  INDIVIDUAL       @map("Individual")
 }
 
 model Esc {
   id                 Int                 @id
   component          HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  isIntegrated       Boolean // True if AIO
-  formFactor         String
+  formFactor         EscFormFactor
   mountPatterns      BoardMountPattern[]
   boardHeightMm      Decimal
   continuousCurrentA Decimal
@@ -262,7 +267,7 @@ model Esc {
 
   supportedFirmware EscFirmware[] // Implicit Many-to-Many
 
-  builds Build[]
+  flightStacks FlightStack[]
 }
 
 model Battery {
@@ -405,6 +410,17 @@ model Goggles {
 // 5. SUB-ASSEMBLIES / LOADOUTS 
 // ==========================================
 
+model FlightStack {
+  id                 Int              @id @default(autoincrement())
+  flightControllerId Int
+  flightController   FlightController @relation(fields: [flightControllerId], references: [id])
+  escId              Int
+  esc                Esc              @relation(fields: [escId], references: [id])
+  loadoutName        String?
+
+  builds Build[]
+}
+
 model VtxConfiguration {
   id          Int       @id @default(autoincrement())
   vtxId       Int
@@ -441,22 +457,20 @@ model Build {
   tags Tag[] // Implicit Many-to-Many
 
   // Hard Hardware Links
-  frameId            Int
-  frame              Frame            @relation(fields: [frameId], references: [id])
-  motorId            Int
-  motor              Motor            @relation(fields: [motorId], references: [id])
-  propellerId        Int
-  propeller          Propeller        @relation(fields: [propellerId], references: [id])
-  flightControllerId Int
-  flightController   FlightController @relation(fields: [flightControllerId], references: [id])
-  escId              Int?
-  esc                Esc?             @relation(fields: [escId], references: [id])
-  cameraId           Int
-  camera             Camera           @relation(fields: [cameraId], references: [id])
-  gpsId              Int?
-  gps                Gps?             @relation(fields: [gpsId], references: [id])
+  frameId     Int
+  frame       Frame     @relation(fields: [frameId], references: [id])
+  motorId     Int
+  motor       Motor     @relation(fields: [motorId], references: [id])
+  propellerId Int
+  propeller   Propeller @relation(fields: [propellerId], references: [id])
+  cameraId    Int
+  camera      Camera    @relation(fields: [cameraId], references: [id])
+  gpsId       Int?
+  gps         Gps?      @relation(fields: [gpsId], references: [id])
 
   // Sub-Assembly Links
+  flightStackId    Int
+  flightStack      FlightStack            @relation(fields: [flightStackId], references: [id])
   vtxConfigId      Int?
   vtxConfig        VtxConfiguration?      @relation(fields: [vtxConfigId], references: [id])
   receiverConfigId Int?

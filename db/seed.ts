@@ -22,6 +22,7 @@ async function main() {
   console.log('Clearing database...');
   // Wipe in correct order to respect constraints
   await prisma.build.deleteMany();
+  await prisma.flightStack.deleteMany();
   await prisma.receiverConfiguration.deleteMany();
   await prisma.vtxConfiguration.deleteMany();
   await prisma.incompatibilityComponent.deleteMany();
@@ -257,8 +258,7 @@ async function main() {
            id: baseComp.id,
            continuousCurrentA: comp.esc.continuousCurrentA || 0,
            burstCurrentA: comp.esc.burstCurrentA || 0,
-           isIntegrated: comp.esc.isIntegrated || false,
-           formFactor: comp.esc.formFactor || "4-in-1",
+           formFactor: comp.esc.formFactor || "FOUR_IN_ONE",
            mountPatterns: { connect: (comp.esc.mountPatterns || []).map((id: string) => ({ id })) },
            boardHeightMm: comp.esc.boardHeightMm || 0,
            inputVoltageMinV: comp.esc.inputVoltageMinV || 0,
@@ -444,6 +444,20 @@ async function main() {
   if (data.builds) {
     for (const b of data.builds) {
       if (!b.components) continue;
+
+      const fcId = componentIdMap.get(b.components.flightStack?.flightControllerName);
+      const escId = componentIdMap.get(b.components.flightStack?.escName);
+      let flightStackId = null;
+      if (fcId && escId) {
+        const createdStack = await prisma.flightStack.create({
+          data: {
+            flightControllerId: fcId,
+            escId: escId,
+            loadoutName: b.components.flightStack.loadoutName || "Standard"
+          }
+        });
+        flightStackId = createdStack.id;
+      }
       
       const vtxId = componentIdMap.get(b.components.vtxConfiguration?.vtxName);
       let vtxConfigId = null;
@@ -478,7 +492,7 @@ async function main() {
       console.log('Frame ID:', componentIdMap.get(b.components.frameName));
       console.log('Motor ID:', componentIdMap.get(b.components.motorName));
       console.log('Prop ID:', componentIdMap.get(b.components.propellerName));
-      console.log('FC ID:', componentIdMap.get(b.components.flightControllerName));
+      console.log('FlightStack ID:', flightStackId, `(FC: ${fcId}, ESC: ${escId})`);
       console.log('Camera ID:', componentIdMap.get(b.components.cameraName));
       
       const connectIf = (id: any): any => id ? { connect: { id } } : undefined;
@@ -495,11 +509,10 @@ async function main() {
           frame: connectIf(componentIdMap.get(b.components.frameName)),
           motor: connectIf(componentIdMap.get(b.components.motorName)),
           propeller: connectIf(componentIdMap.get(b.components.propellerName)),
-          flightController: connectIf(componentIdMap.get(b.components.flightControllerName)),
-          esc: connectIf(componentIdMap.get(b.components.escName)),
           camera: connectIf(componentIdMap.get(b.components.cameraName)),
           gps: connectIf(componentIdMap.get(b.components.gpsName)),
           
+          flightStack: connectIf(flightStackId),
           vtxConfig: connectIf(vtxConfigId),
           receiverConfig: connectIf(receiverConfigId),
         }

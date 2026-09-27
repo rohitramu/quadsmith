@@ -44,20 +44,15 @@
         "gyroSensor": "ICM42688-P",
         "inputVoltageMinV": 7.4,
         "inputVoltageMaxV": 25.2,
-        "escInterface": "DShot600",
-        "supportedFirmware": [
-          "Betaflight"
-        ]
+        "escInterface": "DShot600"
       },
       "esc": {
-        "isIntegrated": true,
-        "formFactor": "AIO",
+        "formFactor": "INTEGRATED_IN_FC",
         "boardHeightMm": 6.5,
         "continuousCurrentA": 45,
         "burstCurrentA": 55,
         "inputVoltageMinV": 7.4,
-        "inputVoltageMaxV": 25.2,
-        "firmwareProtocol": "Bluejay"
+        "inputVoltageMaxV": 25.2
       },
       "referenceLinks": [
         {
@@ -595,10 +590,9 @@
         "escInterface": "DShot600"
       },
       "esc": {
-        "isIntegrated": true,
+        "formFactor": "INTEGRATED_IN_FC",
         "continuousCurrentA": 20,
-        "burstCurrentA": 25,
-        "firmwareProtocol": "Bluejay"
+        "burstCurrentA": 25
       },
       "referenceLinks": [
         {
@@ -910,33 +904,6 @@
       ]
     },
     {
-      "modelName": "TBS Source One V5",
-      "releaseYear": 2022,
-      "weightG": 123.5,
-      "frame": {
-        "wheelbaseMm": 226,
-        "maxPropSizeMm": 132,
-        "cameraMountWidthMm": 19,
-        "fcStackMounts": [
-          "30.5x30.5mm",
-          "20x20mm"
-        ],
-        "vtxMounts": [
-          "20x20mm",
-          "25.5x25.5mm",
-          "30.5x30.5mm"
-        ]
-      },
-      "referenceLinks": [
-        {
-          "url": "https://www.team-blacksheep.com/products/prod:source_one_v5",
-          "linkType": "Product Page",
-          "title": "TBS Official Page",
-          "companyName": "Team BlackSheep"
-        }
-      ]
-    },
-    {
       "modelName": "Walksnail Avatar HD Mini 1S VTX",
       "releaseYear": 2022,
       "weightG": 8.7,
@@ -1237,10 +1204,9 @@
         "escInterface": "DShot300"
       },
       "esc": {
-        "isIntegrated": true,
+        "formFactor": "INTEGRATED_IN_FC",
         "continuousCurrentA": 12,
-        "burstCurrentA": 15,
-        "firmwareProtocol": "Blheli_S"
+        "burstCurrentA": 15
       },
       "referenceLinks": [
         {
@@ -1370,10 +1336,9 @@
         "escInterface": "DShot600"
       },
       "esc": {
-        "isIntegrated": true,
+        "formFactor": "INTEGRATED_IN_FC",
         "continuousCurrentA": 5,
-        "burstCurrentA": 6,
-        "firmwareProtocol": "Bluejay"
+        "burstCurrentA": 6
       },
       "referenceLinks": [
         {
@@ -2979,11 +2944,7 @@
         "gyroSensor": "MPU6000",
         "inputVoltageMinV": 11.1,
         "inputVoltageMaxV": 22.2,
-        "escInterface": "DSHOT600",
-        "supportedFirmware": [
-          "Betaflight",
-          "INAV"
-        ]
+        "escInterface": "DSHOT600"
       },
       "referenceLinks": [
         {
@@ -2998,13 +2959,11 @@
       "releaseYear": 2021,
       "weightG": 18.3,
       "esc": {
-        "isIntegrated": false,
-        "formFactor": "4-in-1",
+        "formFactor": "FOUR_IN_ONE",
         "continuousCurrentA": 48,
         "burstCurrentA": 55,
         "inputVoltageMinV": 11.1,
-        "inputVoltageMaxV": 22.2,
-        "firmwareProtocol": "BLHeli_S"
+        "inputVoltageMaxV": 22.2
       },
       "referenceLinks": [
         {
@@ -3106,11 +3065,7 @@
         "gyroSensor": "MPU6000",
         "inputVoltageMinV": 11.1,
         "inputVoltageMaxV": 22.2,
-        "escInterface": "DSHOT600",
-        "supportedFirmware": [
-          "Betaflight",
-          "INAV"
-        ]
+        "escInterface": "DSHOT600"
       },
       "referenceLinks": [
         {
@@ -3121,31 +3076,47 @@
       ]
     },
     {
-      "modelName": "HGLRC Specter F460 Stack",
+      "modelName": "HGLRC Specter F405 V2",
       "releaseYear": 2023,
-      "weightG": 24,
+      "weightG": 9.5,
       "flightController": {
+        "mountPatterns": [
+          "30.5x30.5mm"
+        ],
+        "boardHeightMm": 6.5,
         "mcuProcessor": "STM32F405",
-        "gyroSensor": "ICM42688",
-        "inputVoltageMinV": 11.1,
-        "inputVoltageMaxV": 22.2,
-        "escInterface": "DSHOT600",
-        "supportedFirmware": [
-          "Betaflight"
-        ]
-      },
-      "esc": {
-        "isIntegrated": false,
-        "formFactor": "4-in-1",
-        "continuousCurrentA": 60,
-        "burstCurrentA": 70,
-        "inputVoltageMinV": 11.1,
-        "inputVoltageMaxV": 22.2,
-        "firmwareProtocol": "BLHeli_32"
+        "gyroSensor": "MPU6000",
+        "inputVoltageMinV": 7.4,
+        "inputVoltageMaxV": 22.8,
+        "escInterface": "DSHOT600"
       },
       "referenceLinks": [
         {
-          "url": "https://www.hglrc.com/products/hglrc-specter-f760-box-integrated-stack",
+          "url": "https://www.hglrc.com/products/rekon7-pro-long-range-fpv-analog-digital-version-racing-drone",
+          "linkType": "Manufacturer",
+          "companyName": "HGLRC"
+        }
+      ]
+    },
+    {
+      "modelName": "HGLRC Specter 60A 4-in-1 ESC",
+      "releaseYear": 2023,
+      "weightG": 19.5,
+      "esc": {
+        "formFactor": "FOUR_IN_ONE",
+        "mountPatterns": [
+          "20x20mm",
+          "30.5x30.5mm"
+        ],
+        "boardHeightMm": 7,
+        "continuousCurrentA": 60,
+        "burstCurrentA": 65,
+        "inputVoltageMinV": 11.1,
+        "inputVoltageMaxV": 25.2
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.hglrc.com/products/hglrc-specter-60a-4in1-esc-3-6s-bl32-128k-with-heat-sink-for-fpv-racing-drone-freestyle",
           "linkType": "Manufacturer",
           "companyName": "HGLRC"
         }
@@ -4466,12 +4437,9 @@
       }
     },
     {
-      "name": "SUB250-Oasis Frame",
-      "weightG": 35,
-      "companies": [
-        "Sub250"
-      ],
+      "modelName": "SUB250-Oasis Frame",
       "releaseYear": 2023,
+      "weightG": 35,
       "frame": {
         "wheelbaseMm": 135,
         "maxPropSizeMm": 63.5,
@@ -4489,68 +4457,37 @@
           "25.5x25.5mm",
           "20x20mm"
         ]
-      }
-    },
-    {
-      "name": "Sub250 1404 4500KV",
-      "weightG": 9,
-      "companies": [
-        "Sub250"
-      ],
-      "motor": {
-        "statorSize": "1404",
-        "kvRating": 4500,
-        "shaftDiameterMm": 1.5,
-        "shaftType": "Hollow",
-        "mountPatterns": [
-          "9x9mm"
-        ]
-      }
-    },
-    {
-      "name": "Redfox A3 F722 AIO",
-      "weightG": 8.5,
-      "companies": [
-        "Sub250"
-      ],
-      "flightController": {
-        "processor": "STM32F722RET6",
-        "gyro": "ICM42688-P",
-        "uarts": 5,
-        "hasOsd": true,
-        "hasBec": true,
-        "hasBlackbox": true,
-        "hasWifi": false,
-        "hasBluetooth": false,
-        "isAio": true,
-        "mountPatterns": [
-          "25.5x25.5mm"
-        ]
       },
-      "esc": {
-        "continuousCurrentA": 45,
-        "burstCurrentA": 55,
-        "inputVoltageMinV": 7.4,
-        "inputVoltageMaxV": 25.2,
-        "is4in1": true,
-        "escInterface": "DSHOT600",
-        "mountPatterns": [
-          "25.5x25.5mm"
-        ]
-      }
+      "referenceLinks": [
+        {
+          "url": "https://sub250.com/products/sub250-oasisfly25-hd-o3",
+          "linkType": "Manufacturer",
+          "title": "Sub250 Official Page",
+          "companyName": "Sub250"
+        }
+      ]
     },
     {
-      "name": "HQProp 2.5x2.5x3",
+      "modelName": "HQProp 2.5x2.5x3",
+      "releaseYear": 2022,
       "weightG": 1.5,
-      "companies": [
-        "HQProp"
-      ],
       "propeller": {
         "diameterMm": 63.5,
         "pitchMm": 63.5,
         "bladeCount": 3,
-        "mountType": "T-Mount"
-      }
+        "mountType": "T-Mount",
+        "recommendedStator": [
+          "1404"
+        ]
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.hqprop.com/",
+          "linkType": "Manufacturer",
+          "title": "HQProp Official Page",
+          "companyName": "HQProp"
+        }
+      ]
     }
   ],
   "builds": [
@@ -4572,8 +4509,11 @@
         "frameName": "Caddx Gofilm 20 Frame",
         "motorName": "Caddx 1303 6000KV",
         "propellerName": "HQProp T2x2x3",
-        "flightControllerName": "CaddxF4 AIO 20A",
-        "escName": "CaddxF4 AIO 20A",
+        "flightStack": {
+          "flightControllerName": "CaddxF4 AIO 20A",
+          "escName": "CaddxF4 AIO 20A",
+          "loadoutName": "CaddxF4 20A AIO"
+        },
         "vtxConfiguration": {
           "vtxName": "Walksnail Moonlight VTX",
           "antennaNames": [
@@ -4605,8 +4545,11 @@
         "frameName": "HGLRC Sector X5 Frame",
         "motorName": "HGLRC Specter 2207.5 1900KV",
         "propellerName": "HQProp Ethix S5 Light Grey",
-        "flightControllerName": "HGLRC Specter F460 Stack",
-        "escName": "HGLRC Specter F460 Stack",
+        "flightStack": {
+          "flightControllerName": "HGLRC Specter F405 V2",
+          "escName": "HGLRC Specter 60A 4-in-1 ESC",
+          "loadoutName": "HGLRC Specter F460 Stack"
+        },
         "vtxConfiguration": {
           "vtxName": "HGLRC Zeus 800mW VTX",
           "antennaNames": [
@@ -4640,8 +4583,11 @@
         "frameName": "SUB250-Oasis Frame",
         "motorName": "Sub250 1404 4500KV",
         "propellerName": "HQProp 2.5x2.5x3",
-        "flightControllerName": "Redfox A3 F722 AIO",
-        "escName": "Redfox A3 F722 AIO",
+        "flightStack": {
+          "flightControllerName": "Redfox A3 F722 45A AIO",
+          "escName": "Redfox A3 F722 45A AIO",
+          "loadoutName": "Redfox A3 F722 45A AIO"
+        },
         "cameraName": "Walksnail Moonlight Camera",
         "vtxConfiguration": {
           "vtxName": "Walksnail Moonlight VTX",
@@ -4986,8 +4932,12 @@
       "fcFirmware": {
         "compatibleFlightControllerNames": [
           "CaddxF4 AIO 20A",
-          "HGLRC Specter F460 Stack",
-          "Redfox A3 F722 AIO"
+          "HGLRC Specter F405 V2",
+          "Redfox A3 F722 45A AIO",
+          "HGLRC Zeus F722",
+          "HGLRC Zeus F722 Mini",
+          "Happymodel X12 5-IN-1 AIO",
+          "BetaFPV F4 1S 5A AIO"
         ]
       }
     },
@@ -5024,7 +4974,8 @@
       "vtxFirmware": {
         "compatibleVtxNames": [
           "Walksnail Moonlight VTX",
-          "Walksnail Avatar HD Pro+"
+          "Walksnail Avatar VTX V2",
+          "Walksnail Avatar HD Mini 1S VTX"
         ]
       }
     },
@@ -5043,7 +4994,9 @@
       ],
       "fcFirmware": {
         "compatibleFlightControllerNames": [
-          "HGLRC Specter F460 Stack"
+          "HGLRC Specter F405 V2",
+          "HGLRC Zeus F722",
+          "HGLRC Zeus F722 Mini"
         ]
       }
     },
@@ -5062,8 +5015,11 @@
       ],
       "escFirmware": {
         "compatibleEscNames": [
-          "HGLRC Specter F460 Stack",
-          "CaddxF4 AIO 20A"
+          "CaddxF4 AIO 20A",
+          "Redfox A3 F722 45A AIO",
+          "BetaFPV F4 1S 5A AIO",
+          "Happymodel X12 5-IN-1 AIO",
+          "HGLRC Zeus 48A"
         ]
       }
     },
@@ -5082,8 +5038,8 @@
       ],
       "escFirmware": {
         "compatibleEscNames": [
-          "HGLRC Specter F460 Stack",
-          "Redfox A3 F722 AIO"
+          "HGLRC Specter 60A 4-in-1 ESC",
+          "Redfox A3 F722 45A AIO"
         ]
       }
     },
@@ -5102,7 +5058,7 @@
       ],
       "escFirmware": {
         "compatibleEscNames": [
-          "HGLRC Specter F460 Stack"
+          "HGLRC Specter 60A 4-in-1 ESC"
         ]
       }
     },
@@ -5121,9 +5077,14 @@
       ],
       "os": {
         "compatibleTransmitterNames": [
-          "Radiomaster Boxer",
-          "Radiomaster TX16S",
-          "Radiomaster Pocket"
+          "RadioMaster Boxer",
+          "RadioMaster TX16S MKII",
+          "RadioMaster Pocket",
+          "RadioMaster Zorro",
+          "RadioMaster TX12 MKII",
+          "HelloRadio V12",
+          "HelloRadio V14",
+          "HelloRadio V16"
         ]
       }
     },

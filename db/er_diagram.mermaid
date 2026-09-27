@@ -1,201 +1,276 @@
 erDiagram
-    Component {
+    VtxEcosystem {
+        String id PK "e.g. DJI O3, HDZero, Analog"
+    }
+    RfFrequency {
+        String id PK "e.g. 2.4GHz, 5.8GHz, 900MHz"
+    }
+    RfProtocol {
+        String id PK "e.g. ExpressLRS, Crossfire"
+    }
+    AntennaPolarization {
+        String id PK "e.g. RHCP, LHCP, Linear"
+    }
+    AntennaConnector {
+        String id PK "e.g. SMA, U.FL, MMCX"
+    }
+    BatteryConnector {
+        String id PK "e.g. XT60, XT30, BT2.0"
+        Decimal maxCurrentA "e.g. 60.0"
+        Decimal maxVoltageV "e.g. 25.2"
+    }
+    MotorMountPattern {
+        String id PK "e.g. 16x16mm, 19x19mm, 12x12mm"
+    }
+    BoardMountPattern {
+        String id PK "e.g. 30.5x30.5mm, 25.5x25.5mm, 20x20mm"
+    }
+    Tag {
+        String id PK "e.g. freestyle, cinewhoop"
+        String description "e.g. Built for acrobatic flying"
+    }
+    BatteryChemistry {
         Int id PK "e.g. 1"
-        String name "e.g. Betaflight / Caddx Ratel 2"
-        Int releaseYear "e.g. 2021"
-        Int releaseMonth "e.g. 1"
-        Int releaseDay "e.g. 15"
+        String name "e.g. LiPo, LiHV, Li-ion"
+        Decimal nominalVoltagePerCellV "e.g. 3.7"
+        Decimal maxVoltagePerCellV "e.g. 4.2"
+        Decimal minVoltagePerCellV "e.g. 3.2"
     }
-
-    HardwareComponent {
-        Int id PK "e.g. 1"
-        Component component FK
-        Float weightG "e.g. 5.9"
-    }
-
-    SoftwareComponent {
-        Int id PK "e.g. 2"
-        Component component FK
-        String version "e.g. 4.4"
-        String softwareType "e.g. Firmware"
-    }
-
     Company {
         Int id PK "e.g. 1"
-        String name "e.g. CaddxFPV"
-        String websiteUrl "e.g. https://caddxfpv.com"
+        String name "e.g. T-Motor, TBS"
+        String websiteUrl "e.g. https://tmotor.com"
+    }
+    Component {
+        Int id PK "e.g. 101"
+        String name "e.g. Velox V2, Betaflight"
+        Int releaseYear "e.g. 2022"
+        Int releaseMonth "e.g. 11"
+        Int releaseDay "e.g. 15"
+    }
+    HardwareComponent {
+        Int id PK "e.g. 101"
+        Component component FK
+        Decimal weightG "e.g. 34.5"
+    }
+    SoftwareComponent {
+        Int id PK "e.g. 201"
+        Component component FK
+        String version "e.g. 4.5.0"
     }
     ComponentCompany {
-        Component component PK
-        Company company PK
+        Int id PK "e.g. 1"
+        Component component FK "e.g. 101"
+        Company company FK "e.g. 1"
     }
     ReferenceLink {
         Int id PK "e.g. 1"
-        Component component FK
-        Company company FK
-        String url "e.g. https://..."
-        String linkType "e.g. Purchase"
-        String title "e.g. Caddx Ratel 2"
-        String description "e.g. Product Page"
+        Component component FK "e.g. 101"
+        Company company FK "e.g. 1"
+        String url "e.g. https://manuals.com/f722"
+        String linkType "e.g. Purchase, Datasheet, Manual"
+        String title "e.g. Official Wiring Diagram"
+        String description "e.g. PDF showing UART layout"
     }
-    Tag {
-        Int id PK "e.g. 1"
-        String name "e.g. freestyle"
-    }
-
     IncompatibilityIssue {
         Int id PK "e.g. 1"
-        String description "e.g. Too tall for frame"
+        String incompatibilityReason "e.g. Physical, Firmware"
+        String description "e.g. FC blocks USB port on Frame"
+        String suggestedFix "e.g. Use 90-degree USB adapter"
     }
     IncompatibilityComponent {
-        IncompatibilityIssue issue PK
-        Component component PK
+        IncompatibilityIssue issue PK,FK "e.g. 1"
+        HardwareComponent hardwareComponent PK,FK "e.g. 101"
+        Component component FK "e.g. 101"
     }
-
-    %% Hardware Specific Models
     Frame {
         Int id PK "e.g. 101"
         HardwareComponent component FK
-        Int wheelbaseMm "e.g. 220"
-        Float maxPropSizeMm "e.g. 129.5"
-        Float cameraMountWidthMm "e.g. 19.0"
-        Float maxBatteryLengthMm "e.g. 130.0"
-        Float maxBatteryWidthMm "e.g. 40.0"
-        Float maxBatteryHeightMm "e.g. 35.0"
+        Int wheelbaseMm "e.g. 225"
+        Decimal maxPropSizeMm "e.g. 129.5"
+        FrameFcStackMount[] fcStackMounts "e.g. 30.5x30.5mm"
+        FrameVtxMount[] vtxMounts "e.g. 25.5x25.5mm"
+        MotorMountPattern[] motorMountPatterns "e.g. 16x16mm, 19x19mm"
+        Decimal cameraMountWidthMm "e.g. 19.0"
+        Decimal maxBatteryLengthMm "e.g. 130.0"
+        Decimal maxBatteryWidthMm "e.g. 50.0"
+        Decimal maxBatteryHeightMm "e.g. 40.0"
     }
     Motor {
         Int id PK "e.g. 102"
         HardwareComponent component FK
-        String statorSize "e.g. 2207"
-        Int kvRating "e.g. 1950"
-        Float shaftDiameterMm "e.g. 5.0"
-        String shaftType "e.g. Hollow"
+        String statorSize "e.g. 2207, 2306"
+        Int kvRating "e.g. 1750, 2550"
+        Decimal inputVoltageMinV "e.g. 14.8"
+        Decimal inputVoltageMaxV "e.g. 25.2"
+        MotorMountPattern[] mountPatterns "e.g. 16x16mm"
+        String mountBoltSize "e.g. M3"
+        String shaftType "e.g. 5mm, T-Mount 1.5mm"
+        Decimal maxCurrentA "e.g. 45.0"
     }
     Propeller {
         Int id PK "e.g. 103"
         HardwareComponent component FK
-        Float diameterInches "e.g. 5.1"
-        Float pitchInches "e.g. 3.0"
-        Int blades "e.g. 3"
-        String material "e.g. Polycarbonate"
+        Decimal diameterMm "e.g. 129.5"
+        Decimal pitchMm "e.g. 109.2"
+        Int bladeCount "e.g. 3"
+        String mountType "e.g. 5mm Hole, T-Mount M2"
+        String[] recommendedStator "e.g. 2207, 2306"
     }
     FlightController {
         Int id PK "e.g. 104"
         HardwareComponent component FK
-        String processor "e.g. F722"
-        String gyro "e.g. MPU6000"
-        Int uarts "e.g. 5"
-        Boolean hasOsd "e.g. true"
-        Boolean hasBec "e.g. true"
-        Boolean hasBlackbox "e.g. true"
-        Boolean hasWifi "e.g. false"
-        Boolean hasBluetooth "e.g. false"
-        Boolean isAio "e.g. false"
+        BoardMountPattern[] mountPatterns "e.g. 30.5x30.5mm, 20x20mm"
+        Decimal boardHeightMm "e.g. 8.0"
+        String mcuProcessor "e.g. F722, H743"
+        String gyroSensor "e.g. MPU6000, BMI270"
+        Decimal inputVoltageMinV "e.g. 11.1"
+        Decimal inputVoltageMaxV "e.g. 25.2"
+        Json becOutputs "e.g. 5V at 3A, 9V at 2A"
+        Json uartConnections "e.g. UART1 to VTX, UART2 to RX"
+        String escInterface "e.g. 8-pin Plug, Direct Solder"
+        FcFirmware[] supportedFirmware "e.g. Betaflight, INAV"
     }
     Esc {
         Int id PK "e.g. 105"
         HardwareComponent component FK
-        Int continuousCurrentA "e.g. 50"
-        Int burstCurrentA "e.g. 60"
-        Float inputVoltageMinV "e.g. 11.1"
-        Float inputVoltageMaxV "e.g. 25.2"
-        Boolean is4in1 "e.g. true"
-        String escInterface "e.g. DSHOT600"
+        EscFormFactor formFactor "e.g. INTEGRATED_IN_FC, FOUR_IN_ONE, INDIVIDUAL"
+        BoardMountPattern[] mountPatterns "e.g. 30.5x30.5mm, 20x20mm"
+        Decimal boardHeightMm "e.g. 6.5"
+        Decimal continuousCurrentA "e.g. 50.0"
+        Decimal burstCurrentA "e.g. 60.0"
+        Decimal inputVoltageMinV "e.g. 11.1"
+        Decimal inputVoltageMaxV "e.g. 25.2"
+        EscFirmware[] supportedFirmware "e.g. BLHeli_32, Bluejay, AM32"
     }
     Battery {
         Int id PK "e.g. 106"
         HardwareComponent component FK
-        BatteryChemistry chemistry FK "e.g. LiPo"
-        Int cells "e.g. 6"
+        BatteryChemistry chemistry FK "e.g. 1"
+        Int cellCountS "e.g. 6"
+        Int cellCountP "e.g. 1"
         Int capacityMah "e.g. 1100"
         Int continuousCRating "e.g. 120"
         BatteryConnector connectorType FK "e.g. XT60"
-        Float lengthMm "e.g. 78.0"
-        Float widthMm "e.g. 38.0"
-        Float heightMm "e.g. 38.0"
+        Decimal lengthMm "e.g. 78.0"
+        Decimal widthMm "e.g. 38.0"
+        Decimal heightMm "e.g. 38.0"
     }
     Vtx {
         Int id PK "e.g. 107"
         HardwareComponent component FK
+        RfFrequency[] supportedFrequencies "e.g. 2.4GHz, 5.8GHz"
+        VtxEcosystem ecosystem FK "e.g. DJI O3"
         String videoConnectionStandard "e.g. MIPI, Analog CVBS"
-        Float boardHeightMm "e.g. 5.5"
-        Float inputVoltageMinV "e.g. 7.4"
-        Float inputVoltageMaxV "e.g. 26.4"
+        BoardMountPattern[] mountPatterns "e.g. 25.5x25.5mm, 20x20mm"
+        Decimal boardHeightMm "e.g. 5.5"
+        Decimal inputVoltageMinV "e.g. 7.4"
+        Decimal inputVoltageMaxV "e.g. 26.4"
         Int maxPowerMw "e.g. 1200"
         Int antennaCount "e.g. 2"
+        AntennaConnector antennaConnector FK "e.g. U.FL"
+        AntennaPolarization includedAntennaPolarization FK "e.g. LHCP"
+        VtxFirmware[] supportedFirmware "e.g. Walksnail Avatar OS"
     }
     Camera {
         Int id PK "e.g. 108"
         HardwareComponent component FK
+        VtxEcosystem ecosystem FK "e.g. HDZero"
         String videoConnectionStandard "e.g. MIPI"
-        Float widthMm "e.g. 19.0"
-        Float heightMm "e.g. 19.0"
-        Float depthMm "e.g. 24.0"
-        Float inputVoltageMinV "e.g. 5.0"
-        Float inputVoltageMaxV "e.g. 25.2"
+        Decimal widthMm "e.g. 19.0"
+        Decimal heightMm "e.g. 19.0"
+        Decimal depthMm "e.g. 24.0"
+        Decimal inputVoltageMinV "e.g. 5.0"
+        Decimal inputVoltageMaxV "e.g. 25.2"
         String mountingScrewSize "e.g. M2"
         String aspectRatio "e.g. 16:9"
     }
     Receiver {
         Int id PK "e.g. 109"
         HardwareComponent component FK
+        RfFrequency[] supportedFrequencies "e.g. 2.4GHz, 5.8GHz"
+        RfProtocol[] rfProtocols "e.g. ExpressLRS"
         String outputProtocol "e.g. CRSF, SBUS"
-        Float inputVoltageMinV "e.g. 4.5"
-        Float inputVoltageMaxV "e.g. 5.5"
+        Decimal inputVoltageMinV "e.g. 4.5"
+        Decimal inputVoltageMaxV "e.g. 5.5"
         Int antennaCount "e.g. 1"
+        AntennaConnector antennaConnector FK "e.g. U.FL"
+        AntennaPolarization includedAntennaPolarization FK "e.g. Linear"
     }
     Gps {
         Int id PK "e.g. 110"
         HardwareComponent component FK
         String chipset "e.g. M10"
         Boolean hasCompass "e.g. true"
-        Float inputVoltageMinV "e.g. 3.3"
-        Float inputVoltageMaxV "e.g. 5.5"
+        Decimal inputVoltageMinV "e.g. 3.3"
+        Decimal inputVoltageMaxV "e.g. 5.5"
+        Decimal lengthMm "e.g. 20.0"
+        Decimal widthMm "e.g. 20.0"
+        Decimal heightMm "e.g. 10.5"
     }
     Antenna {
         Int id PK "e.g. 111"
         HardwareComponent component FK
+        RfFrequency supportedFrequency FK "e.g. 5.8GHz"
+        AntennaPolarization polarization FK "e.g. RHCP"
+        AntennaConnector connector FK "e.g. SMA"
         String antennaStyle "e.g. Omni, Patch"
-        Float gainDbi "e.g. 2.5"
-        Float cableLengthMm "e.g. 60.0"
+        Decimal gainDbi "e.g. 2.5"
+        Decimal cableLengthMm "e.g. 60.0"
     }
     Transmitter {
         Int id PK "e.g. 112"
         HardwareComponent component FK
+        RfFrequency[] supportedFrequencies "e.g. 2.4GHz, 5.8GHz"
+        RfProtocol[] rfProtocols "e.g. ExpressLRS"
         String externalBayType "e.g. JR Micro, Lite"
-        String operatingSystem "e.g. EdgeTX"
         Int antennaCount "e.g. 1"
+        AntennaConnector antennaConnector FK "e.g. SMA"
+        AntennaPolarization includedAntennaPolarization FK "e.g. Linear"
+        OperatingSystem[] supportedOs "e.g. EdgeTX"
     }
     Goggles {
         Int id PK "e.g. 113"
         HardwareComponent component FK
+        RfFrequency[] supportedFrequencies "e.g. 2.4GHz, 5.8GHz"
+        VtxEcosystem ecosystem FK "e.g. Walksnail"
         Int antennaCount "e.g. 4"
+        AntennaConnector antennaConnector FK "e.g. SMA"
+        AntennaPolarization includedAntennaPolarization FK "e.g. LHCP"
+    }
+    FlightStack {
+        Int id PK "e.g. 1"
+        FlightController flightController FK "e.g. 104"
+        Esc esc FK "e.g. 105"
+        String loadoutName "e.g. HGLRC Specter F460 Stack"
     }
     VtxConfiguration {
         Int id PK "e.g. 1"
         Vtx vtx FK "e.g. 107"
         String loadoutName "e.g. O3 with Dual Matchsticks"
+        Antenna[] antennas "e.g. 2x TrueRC Matchsticks"
     }
     ReceiverConfiguration {
         Int id PK "e.g. 1"
         Receiver receiver FK "e.g. 109"
         String loadoutName "e.g. ELRS Diversity Setup"
+        Antenna[] antennas "e.g. 2x Minimortal T"
     }
     Build {
         Int id PK "e.g. 1"
         String name "e.g. Bando Basher 5 inch"
+        Tag[] tags "e.g. freestyle, cinematic"
         Int crashResistanceRating "e.g. 9"
         String description "e.g. My main freestyle rig"
         Boolean isVerified "e.g. true"
-        Float miscWeightG "e.g. 25.0"
+        Decimal miscWeightG "e.g. 25.0"
         DateTime createdAt "e.g. 2026-09-26"
         Frame frame FK "e.g. 101"
         Motor motor FK "e.g. 102"
         Propeller propeller FK "e.g. 103"
-        FlightController flightController FK "e.g. 104"
-        Esc esc FK "e.g. 105"
         Camera camera FK "e.g. 108"
         Gps gps FK "e.g. 110"
+        FlightStack flightStack FK "e.g. 1"
         VtxConfiguration vtxConfig FK "e.g. 1"
         ReceiverConfiguration receiverConfig FK "e.g. 1"
     }
@@ -209,15 +284,33 @@ erDiagram
         BoardMountPattern boardMountPattern PK "e.g. 25.5x25.5mm"
     }
 
+    FcFirmware {
+        Int id PK "e.g. 201"
+        SoftwareComponent softwareComponent FK
+    }
+    EscFirmware {
+        Int id PK "e.g. 202"
+        SoftwareComponent softwareComponent FK
+    }
+    VtxFirmware {
+        Int id PK "e.g. 203"
+        SoftwareComponent softwareComponent FK
+    }
+    OperatingSystem {
+        Int id PK "e.g. 204"
+        SoftwareComponent softwareComponent FK
+    }
+
     Component ||--|o HardwareComponent : "hardwareComponent"
     Component ||--|o SoftwareComponent : "softwareComponent"
     Component ||--o{ ComponentCompany : "companies"
     Company ||--o{ ComponentCompany : "components"
-    Component ||--o{ ReferenceLink : "links"
-    Company |o--o{ ReferenceLink : "links"
+    Component ||--o{ ReferenceLink : "referenceLinks"
+    Company |o--o{ ReferenceLink : "referenceLinks"
 
     IncompatibilityIssue ||--o{ IncompatibilityComponent : "components"
-    Component ||--o{ IncompatibilityComponent : "flaggedInIssues"
+    HardwareComponent ||--o{ IncompatibilityComponent : "incompatibilityComponents"
+    Component |o--o{ IncompatibilityComponent : "flaggedInIssues"
 
     HardwareComponent ||--|o Frame : "frame"
     HardwareComponent ||--|o Motor : "motor"
@@ -233,48 +326,73 @@ erDiagram
     HardwareComponent ||--|o Goggles : "goggles"
     HardwareComponent ||--|o Antenna : "antenna"
 
-    VtxConfiguration |o--o{ Build : "builds"
-    ReceiverConfiguration |o--o{ Build : "builds"
-    Build }o--o{ Tag : "tags"
-    Frame ||--o{ Build : "builds"
-    Motor ||--o{ Build : "builds"
-    Propeller ||--o{ Build : "builds"
-    FlightController ||--o{ Build : "builds"
-    Esc |o--o{ Build : "builds"
-    Camera ||--o{ Build : "builds"
-    Gps |o--o{ Build : "builds"
+    SoftwareComponent ||--|o FcFirmware : "fcFirmware"
+    SoftwareComponent ||--|o EscFirmware : "escFirmware"
+    SoftwareComponent ||--|o VtxFirmware : "vtxFirmware"
+    SoftwareComponent ||--|o OperatingSystem : "os"
 
+    VtxEcosystem ||--o{ Vtx : "vtxs"
+    VtxEcosystem ||--o{ Camera : "cameras"
+    VtxEcosystem ||--o{ Goggles : "goggles"
+
+    AntennaPolarization ||--o{ Vtx : "vtxs"
+    AntennaPolarization ||--o{ Receiver : "receivers"
+    AntennaPolarization ||--o{ Transmitter : "transmitters"
+    AntennaPolarization ||--o{ Goggles : "goggles"
+    AntennaPolarization ||--o{ Antenna : "antennas"
+
+    AntennaConnector ||--o{ Vtx : "vtxs"
+    AntennaConnector ||--o{ Receiver : "receivers"
+    AntennaConnector ||--o{ Transmitter : "transmitters"
+    AntennaConnector ||--o{ Goggles : "goggles"
+    AntennaConnector ||--o{ Antenna : "antennas"
+
+    BatteryConnector ||--o{ Battery : "batteries"
+    BatteryChemistry ||--o{ Battery : "batteries"
+
+    FlightController ||--o{ FlightStack : "flightStacks"
+    Esc ||--o{ FlightStack : "flightStacks"
     Vtx ||--o{ VtxConfiguration : "configs"
     Receiver ||--o{ ReceiverConfiguration : "configs"
+
+    %% Implicit Many-To-Many relations in Prisma
+    Build }o--o{ Tag : "tags"
     VtxConfiguration }o--o{ Antenna : "antennas"
     ReceiverConfiguration }o--o{ Antenna : "antennas"
 
+    FlightController }o--o{ FcFirmware : "supportedFirmware"
+    Esc }o--o{ EscFirmware : "supportedFirmware"
+    Vtx }o--o{ VtxFirmware : "supportedFirmware"
+    Transmitter }o--o{ OperatingSystem : "supportedOs"
+
+    Frame ||--o{ Build : "builds"
+    Motor ||--o{ Build : "builds"
+    Propeller ||--o{ Build : "builds"
+    Camera ||--o{ Build : "builds"
+    Gps |o--o{ Build : "builds"
+    FlightStack ||--o{ Build : "builds"
+    VtxConfiguration |o--o{ Build : "builds"
+    ReceiverConfiguration |o--o{ Build : "builds"
+
+    FlightController }o--o{ BoardMountPattern : "mountPatterns"
+    Esc }o--o{ BoardMountPattern : "mountPatterns"
+    Vtx }o--o{ BoardMountPattern : "mountPatterns"
+
+    Frame }o--o{ MotorMountPattern : "motorMountPatterns"
+    Motor }o--o{ MotorMountPattern : "mountPatterns"
+
+    Receiver }o--o{ RfFrequency : "supportedFrequencies"
+    Transmitter }o--o{ RfFrequency : "supportedFrequencies"
+    Goggles }o--o{ RfFrequency : "supportedFrequencies"
+    Vtx }o--o{ RfFrequency : "supportedFrequencies"
+
+    Receiver }o--o{ RfProtocol : "rfProtocols"
+    Transmitter }o--o{ RfProtocol : "rfProtocols"
+
+    RfFrequency ||--o{ Antenna : "antennas"
+
     Frame ||--o{ FrameFcStackMount : "fcStackMounts"
+    BoardMountPattern ||--o{ FrameFcStackMount : "fcStackFrames"
+
     Frame ||--o{ FrameVtxMount : "vtxMounts"
-
-
-    %% Software Specific Models
-    FcFirmware {
-        Int id PK "e.g. 1"
-        SoftwareComponent softwareComponent FK
-    }
-
-    EscFirmware {
-        Int id PK "e.g. 2"
-        SoftwareComponent softwareComponent FK
-    }
-
-    OperatingSystem {
-        Int id PK "e.g. 3"
-        SoftwareComponent softwareComponent FK
-    }
-
-    Configurator {
-        Int id PK "e.g. 4"
-        SoftwareComponent softwareComponent FK
-    }
-
-    SoftwareComponent ||--|o FcFirmware : "fcFirmware"
-    SoftwareComponent ||--|o EscFirmware : "escFirmware"
-    SoftwareComponent ||--|o OperatingSystem : "os"
-    SoftwareComponent ||--|o Configurator : "configurator"
+    BoardMountPattern ||--o{ FrameVtxMount : "vtxMountFrames"
