@@ -42,6 +42,19 @@ model User {
   usernameHistory UsernameHistory[]
   oauthAccounts   OAuthAccount[]
   refreshTokens   RefreshToken[]
+
+  builds           Build[]
+  reviews          Review[]
+  reviewVotes      ReviewVote[]
+  reviewComments   ReviewComment[]
+  questions        Question[]
+  answers          Answer[]
+  questionVotes    QuestionVote[]
+  answerVotes      AnswerVote[]
+  questionComments QuestionComment[]
+  answerComments   AnswerComment[]
+  reputation       UserReputation?
+  collections      Collection[]
 }
 
 model UserProfile {
@@ -206,6 +219,10 @@ model Component {
 
   hardwareComponent HardwareComponent?
   softwareComponent SoftwareComponent?
+
+  reviews         Review[]
+  questions       Question[]
+  collectionItems CollectionItem[]
 }
 
 model HardwareComponent {
@@ -256,9 +273,10 @@ model ReferenceLink {
 
 model IncompatibilityIssue {
   id                    Int                        @id @default(autoincrement())
-  incompatibilityReason String // "Physical", "Noise", "Firmware"
+  incompatibilityReason String                     // "Physical", "Noise", "Firmware"
   description           String
   suggestedFix          String?
+  fixDifficulty         Int?                       // 1 (trivial) to 10 (extremely difficult)
   components            IncompatibilityComponent[]
 }
 
@@ -544,6 +562,9 @@ model Build {
   miscWeightG           Decimal?
   createdAt             DateTime @default(now())
 
+  userId                Int?
+  user                  User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
   tags Tag[] // Implicit Many-to-Many
 
   // Hard Hardware Links
@@ -565,6 +586,10 @@ model Build {
   vtxConfig        VtxConfiguration?      @relation(fields: [vtxConfigId], references: [id])
   receiverConfigId Int?
   receiverConfig   ReceiverConfiguration? @relation(fields: [receiverConfigId], references: [id])
+
+  reviews         Review[]
+  questions       Question[]
+  collectionItems CollectionItem[]
 }
 
 model FrameFcStackMount {
@@ -624,3 +649,219 @@ model OperatingSystem {
 
   compatibleTransmitters Transmitter[] // Implicit Many-to-Many
 }
+
+// ==========================================
+// 7. SOCIAL INTERACTIONS, REPUTATION & COLLECTIONS
+// ==========================================
+
+// ------------------------------------------
+// Reviews & Review Comments (Steam-Style)
+// ------------------------------------------
+
+model Review {
+  id             Int             @id @default(autoincrement())
+  userId         Int
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Polymorphic Target (Enforced via app logic & check constraint)
+  buildId        Int?
+  build          Build?          @relation(fields: [buildId], references: [id], onDelete: Cascade)
+  componentId    Int?
+  component      Component?      @relation(fields: [componentId], references: [id], onDelete: Cascade)
+
+  isRecommended  Boolean
+  body           String
+  isEdited       Boolean         @default(false)
+  deletedAt      DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  votes          ReviewVote[]
+  comments       ReviewComment[]
+
+  @@unique([userId, buildId])
+  @@unique([userId, componentId])
+  @@index([buildId, isRecommended])
+  @@index([componentId, isRecommended])
+}
+
+model ReviewVote {
+  id        Int      @id @default(autoincrement())
+  reviewId  Int
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isHelpful Boolean  // true = Helpful, false = Unhelpful
+  createdAt DateTime @default(now())
+
+  @@unique([userId, reviewId])
+}
+
+model ReviewComment {
+  id        Int       @id @default(autoincrement())
+  reviewId  Int
+  review    Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([reviewId, createdAt])
+}
+
+// ------------------------------------------
+// Technical Q&A (StackOverflow-Style)
+// ------------------------------------------
+
+model Question {
+  id          Int            @id @default(autoincrement())
+  userId      Int
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Polymorphic Target
+  buildId     Int?
+  build       Build?         @relation(fields: [buildId], references: [id], onDelete: Cascade)
+  componentId Int?
+  component   Component?     @relation(fields: [componentId], references: [id], onDelete: Cascade)
+
+  title       String
+  body        String
+  netScore    Int            @default(0) // Denormalized for fast sorting
+  isEdited    Boolean        @default(false)
+  deletedAt   DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  answers     Answer[]
+  votes       QuestionVote[]
+  comments    QuestionComment[]
+
+  @@index([buildId, netScore])
+  @@index([componentId, netScore])
+}
+
+model Answer {
+  id                Int             @id @default(autoincrement())
+  questionId        Int
+  question          Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userId            Int
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  body              String
+  netScore          Int             @default(0) // Denormalized for fast sorting
+  isAcceptedByAsker Boolean         @default(false) // Checkmark from Question Asker
+  isAuthorEndorsed  Boolean         @default(false) // Star badge from Build Author
+  isEdited          Boolean         @default(false)
+  deletedAt         DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  votes             AnswerVote[]
+  comments          AnswerComment[]
+
+  @@index([questionId, netScore])
+}
+
+model QuestionVote {
+  id         Int      @id @default(autoincrement())
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isUpvote   Boolean  // true = Upvote (+1), false = Downvote (-1)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, questionId])
+}
+
+model AnswerVote {
+  id        Int      @id @default(autoincrement())
+  answerId  Int
+  answer    Answer   @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isUpvote  Boolean  // true = Upvote (+1), false = Downvote (-1)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, answerId])
+}
+
+model QuestionComment {
+  id         Int       @id @default(autoincrement())
+  questionId Int
+  question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body       String
+  deletedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([questionId, createdAt])
+}
+
+model AnswerComment {
+  id        Int       @id @default(autoincrement())
+  answerId  Int
+  answer    Answer    @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([answerId, createdAt])
+}
+
+// ------------------------------------------
+// Reputation & User Karma Ledger
+// ------------------------------------------
+
+model UserReputation {
+  userId    Int      @id
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score     Int      @default(0) // Total earned reputation (minimum 0)
+  updatedAt DateTime @updatedAt
+}
+
+// ------------------------------------------
+// Favorites & Collections
+// ------------------------------------------
+
+model Collection {
+  id             Int              @id @default(autoincrement())
+  userId         Int
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  isPublic       Boolean          @default(false)
+  isDefaultLiked Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  items          CollectionItem[]
+
+  @@index([userId, isDefaultLiked])
+  @@index([userId, isPublic])
+}
+
+model CollectionItem {
+  id           Int        @id @default(autoincrement())
+  collectionId Int
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  // Polymorphic Target (Build or Component)
+  buildId      Int?
+  build        Build?     @relation(fields: [buildId], references: [id], onDelete: Cascade)
+  componentId  Int?
+  component    Component? @relation(fields: [componentId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime   @default(now())
+
+  @@unique([collectionId, buildId])
+  @@unique([collectionId, componentId])
+}
+
