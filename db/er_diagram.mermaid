@@ -1,4 +1,62 @@
 erDiagram
+    User {
+        Int id PK
+        String email "unique, lowercase"
+        String username "unique, public handle e.g. @roramu"
+        UserRole role "USER | ADMIN"
+        DateTime emailVerifiedAt "null = unverified"
+        DateTime lastRenamedAt "enforces 30-day rename limit"
+        DateTime deletedAt "soft-delete; cleared on resurrection"
+        DateTime bannedAt "set by mod/admin; blocks resurrection"
+        DateTime createdAt
+        DateTime updatedAt
+    }
+    UserProfile {
+        Int userId PK,FK
+        String displayName "pre-populated from OAuth"
+        String avatarUrl "pre-populated from OAuth"
+        DateTime updatedAt
+    }
+    UsernameHistory {
+        Int id PK
+        Int userId FK
+        String oldUsername "vacated name; hold expires 30d after renamedAt"
+        DateTime renamedAt
+    }
+    OAuthAccount {
+        Int id PK
+        Int userId FK
+        OAuthProvider provider "GOOGLE | GITHUB | DISCORD | MICROSOFT | META"
+        String providerAccountId "user ID at the provider"
+        String accessToken "encrypted at rest"
+        String refreshToken "encrypted at rest"
+        DateTime tokenExpiresAt
+        DateTime createdAt
+    }
+    EmailOtp {
+        Int id PK
+        String email "address code was sent to"
+        String codeHash "argon2 hash of 6-digit code"
+        DateTime expiresAt "3 minutes from creation"
+        DateTime usedAt "set on successful verification"
+        Int failedAttempts "code exhausted when >= 3"
+        DateTime createdAt
+    }
+    RefreshToken {
+        Int id PK
+        Int userId FK
+        String tokenHash "hash of 256-bit opaque token"
+        DateTime expiresAt "30 days from issuance"
+        DateTime lastUsedAt
+        String deviceHint "e.g. Chrome on macOS"
+        DateTime createdAt
+    }
+
+    User ||--|| UserProfile : "has"
+    User ||--o{ UsernameHistory : "previous names"
+    User ||--o{ OAuthAccount : "linked via"
+    User ||--o{ RefreshToken : "has active sessions"
+
     VtxEcosystem {
         String id PK "e.g. DJI O3, HDZero, Analog"
     }

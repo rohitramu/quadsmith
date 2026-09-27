@@ -10,6 +10,96 @@ datasource db {
 }
 
 // ==========================================
+// 0. USER & AUTHENTICATION
+// ==========================================
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum OAuthProvider {
+  GOOGLE
+  GITHUB
+  DISCORD
+  MICROSOFT
+  META
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  username        String    @unique
+  role            UserRole  @default(USER)
+  emailVerifiedAt DateTime?
+  lastRenamedAt   DateTime?
+  deletedAt       DateTime?
+  bannedAt        DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  profile         UserProfile?
+  usernameHistory UsernameHistory[]
+  oauthAccounts   OAuthAccount[]
+  refreshTokens   RefreshToken[]
+}
+
+model UserProfile {
+  userId      Int      @id
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName String
+  avatarUrl   String?
+  updatedAt   DateTime @updatedAt
+}
+
+model UsernameHistory {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  oldUsername String
+  renamedAt   DateTime @default(now())
+
+  @@index([oldUsername, renamedAt])
+}
+
+model OAuthAccount {
+  id                Int           @id @default(autoincrement())
+  userId            Int
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          OAuthProvider
+  providerAccountId String
+  accessToken       String?
+  refreshToken      String?
+  tokenExpiresAt    DateTime?
+  createdAt         DateTime      @default(now())
+
+  @@unique([provider, providerAccountId])
+}
+
+model EmailOtp {
+  id             Int       @id @default(autoincrement())
+  email          String
+  codeHash       String
+  expiresAt      DateTime
+  usedAt         DateTime?
+  failedAttempts Int       @default(0)
+  createdAt      DateTime  @default(now())
+
+  @@index([email, createdAt])
+}
+
+model RefreshToken {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String
+  expiresAt  DateTime
+  lastUsedAt DateTime?
+  deviceHint String?
+  createdAt  DateTime  @default(now())
+}
+
+// ==========================================
 // 1. BASE INFRASTRUCTURE & LOOKUP TABLES
 // ==========================================
 
