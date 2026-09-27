@@ -13,3 +13,4 @@ Do not make up names for implementation phases (e.g., "Phase 2") or dictate the 
 # Database & Schema Maintenance
 - Whenever `db/schema.prisma` is modified, update `db/er_diagram.mermaid` to match, ensuring no existing entities or relationships (such as `Build` links) are dropped or abbreviated.
 - The local Postgres database is managed by the Prisma VSCode extension. Never run a blocking foreground `npx prisma dev` task; if the database server must be started via CLI, always use `npx prisma dev -d` (`--detach`).
+- After making changes that require a database restart, tell the user to restart via VSCode and provide the Prisma Studio browse URL: http://localhost:51212
