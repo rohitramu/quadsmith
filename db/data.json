@@ -4488,6 +4488,406 @@
           "companyName": "HQProp"
         }
       ]
+    },
+    {
+      "modelName": "TBS Tracer Immortal T Antenna",
+      "releaseYear": 2020,
+      "weightG": 0.84,
+      "antenna": {
+        "supportedFrequencyId": "2.4GHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "T-Style Dipole",
+        "gainDbi": 2,
+        "cableLengthMm": 80
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.team-blacksheep.com/products/prod:tracer_immortal_t",
+          "linkType": "Manufacturer",
+          "companyName": "TBS"
+        }
+      ]
+    },
+    {
+      "modelName": "TBS Tracer Monopole RX Antenna",
+      "releaseYear": 2020,
+      "weightG": 0.33,
+      "antenna": {
+        "supportedFrequencyId": "2.4GHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "Dipole",
+        "gainDbi": 1.5,
+        "cableLengthMm": 110
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.team-blacksheep.com/products/prod:tbs_tracer_monopole_rx_antenna_5pcs",
+          "linkType": "Manufacturer",
+          "companyName": "TBS"
+        }
+      ]
+    },
+    {
+      "modelName": "TrueRC Singularity 2.4 SMA (RHCP)",
+      "releaseYear": 2021,
+      "weightG": 9.45,
+      "antenna": {
+        "supportedFrequencyId": "2.4GHz",
+        "polarizationId": "RHCP",
+        "connectorId": "SMA",
+        "antennaStyle": "Omni",
+        "gainDbi": 1.9,
+        "cableLengthMm": null
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.truerc.ca/shop/antennas/2-4ghz/singularity-2-4-sma",
+          "linkType": "Manufacturer",
+          "companyName": "TrueRC"
+        }
+      ]
+    },
+    {
+      "modelName": "TrueRC Singularity 2.4 SMA (LHCP)",
+      "releaseYear": 2021,
+      "weightG": 9.45,
+      "antenna": {
+        "supportedFrequencyId": "2.4GHz",
+        "polarizationId": "LHCP",
+        "connectorId": "SMA",
+        "antennaStyle": "Omni",
+        "gainDbi": 1.9,
+        "cableLengthMm": null
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.truerc.ca/shop/antennas/2-4ghz/singularity-2-4-sma",
+          "linkType": "Manufacturer",
+          "companyName": "TrueRC"
+        }
+      ]
+    },
+    {
+      "modelName": "TrueRC D-POLE 2.4 MK II",
+      "releaseYear": 2022,
+      "weightG": 2,
+      "antenna": {
+        "supportedFrequencyId": "2.4GHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "Dipole",
+        "gainDbi": 2.5,
+        "cableLengthMm": null
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.truerc.ca/shop/antennas/2-4ghz/d-pole-2-4-mk-ii",
+          "linkType": "Manufacturer",
+          "companyName": "TrueRC"
+        }
+      ]
+    },
+    {
+      "modelName": "TrueRC BARDpole 2.4",
+      "releaseYear": 2021,
+      "weightG": 1.3,
+      "antenna": {
+        "supportedFrequencyId": "2.4GHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "Dipole",
+        "gainDbi": 2.2,
+        "cableLengthMm": 80
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.truerc.ca/shop/antennas/2-4ghz/bardpole-2-4",
+          "linkType": "Manufacturer",
+          "companyName": "TrueRC"
+        }
+      ]
+    },
+    {
+      "modelName": "BETAFPV 2.4GHz Dipole T-Antenna",
+      "releaseYear": 2021,
+      "weightG": 1.2,
+      "antenna": {
+        "supportedFrequencyId": "2.4GHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "T-Style Dipole",
+        "gainDbi": 2,
+        "cableLengthMm": 80
+      },
+      "referenceLinks": [
+        {
+          "url": "https://betafpv.com/products/dipole-t-antenna",
+          "linkType": "Manufacturer",
+          "companyName": "BetaFPV"
+        }
+      ]
+    },
+    {
+      "modelName": "TBS Crossfire Immortal T V2 (Extra Extended)",
+      "releaseYear": 2019,
+      "weightG": 4,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "T-Style Dipole",
+        "gainDbi": 2,
+        "cableLengthMm": 220
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.team-blacksheep.com/products/prod:crossfire_immortal_v2",
+          "linkType": "Manufacturer",
+          "companyName": "TBS"
+        }
+      ]
+    },
+    {
+      "modelName": "TBS Crossfire Stock Tx V2 Antenna",
+      "releaseYear": 2019,
+      "weightG": 9,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "SMA",
+        "antennaStyle": "Dipole",
+        "gainDbi": 2,
+        "cableLengthMm": null
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.team-blacksheep.com/products/prod:crossfire_stock_tx_v2",
+          "linkType": "Manufacturer",
+          "companyName": "TBS"
+        }
+      ]
+    },
+    {
+      "modelName": "RadioMaster Bandit Moxon Antenna",
+      "releaseYear": 2023,
+      "weightG": 47.44,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "RP-SMA",
+        "antennaStyle": "Moxon",
+        "gainDbi": 4.6,
+        "cableLengthMm": 80
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.radiomasterrc.com/products/bandit-moxon-antenna",
+          "linkType": "Manufacturer",
+          "companyName": "RadioMaster"
+        }
+      ]
+    },
+    {
+      "modelName": "RadioMaster Bandit T Antenna",
+      "releaseYear": 2023,
+      "weightG": 14,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "RP-SMA",
+        "antennaStyle": "T-Style Dipole",
+        "gainDbi": 2.7,
+        "cableLengthMm": 80
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.radiomasterrc.com/products/bandit-t-antenna",
+          "linkType": "Manufacturer",
+          "companyName": "RadioMaster"
+        }
+      ]
+    },
+    {
+      "modelName": "RadioMaster UFL 915/868MHz T Antenna",
+      "releaseYear": 2023,
+      "weightG": 2.02,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "T-Style Dipole",
+        "gainDbi": 2,
+        "cableLengthMm": 92
+      },
+      "referenceLinks": [
+        {
+          "url": "https://radiomasterrc.com/products/ufl-915-868mhz-t-antenna-for-br-series-receiver",
+          "linkType": "Manufacturer",
+          "companyName": "RadioMaster"
+        }
+      ]
+    },
+    {
+      "modelName": "BETAFPV Moxon Antenna (915MHz)",
+      "releaseYear": 2021,
+      "weightG": 18,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "SMA",
+        "antennaStyle": "Moxon",
+        "gainDbi": 5.9,
+        "cableLengthMm": 90
+      },
+      "referenceLinks": [
+        {
+          "url": "https://betafpv.com/products/moxon-antenna",
+          "linkType": "Manufacturer",
+          "companyName": "BetaFPV"
+        }
+      ]
+    },
+    {
+      "modelName": "BETAFPV 900MHz Dipole T-Antenna",
+      "releaseYear": 2021,
+      "weightG": 0.94,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "T-Style Dipole",
+        "gainDbi": 2,
+        "cableLengthMm": 80
+      },
+      "referenceLinks": [
+        {
+          "url": "https://betafpv.com/products/dipole-t-antenna",
+          "linkType": "Manufacturer",
+          "companyName": "BetaFPV"
+        }
+      ]
+    },
+    {
+      "modelName": "Matek 900MHz Receiver Dipole Antenna",
+      "releaseYear": 2021,
+      "weightG": 1,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "Dipole",
+        "gainDbi": 2,
+        "cableLengthMm": 80
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.mateksys.com/?portfolio=mr900-30",
+          "linkType": "Manufacturer",
+          "companyName": "Mateksys"
+        }
+      ]
+    },
+    {
+      "modelName": "TrueRC Singularity 915 (RHCP)",
+      "releaseYear": 2021,
+      "weightG": 24,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "RHCP",
+        "connectorId": "SMA",
+        "antennaStyle": "Omni",
+        "gainDbi": 1.9,
+        "cableLengthMm": 175
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.truerc.ca/shop/antennas/900mhz/singularity-915",
+          "linkType": "Manufacturer",
+          "companyName": "TrueRC"
+        }
+      ]
+    },
+    {
+      "modelName": "TrueRC True-MoX 915",
+      "releaseYear": 2021,
+      "weightG": 22,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "SMA",
+        "antennaStyle": "Moxon",
+        "gainDbi": 5.4,
+        "cableLengthMm": null
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.truerc.ca/shop/antennas/900mhz/true-mox-915",
+          "linkType": "Manufacturer",
+          "companyName": "TrueRC"
+        }
+      ]
+    },
+    {
+      "modelName": "TrueRC BARDpole 915MHz",
+      "releaseYear": 2021,
+      "weightG": 6.3,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "Dipole",
+        "gainDbi": 2.2,
+        "cableLengthMm": 75
+      },
+      "referenceLinks": [
+        {
+          "url": "https://www.truerc.ca/shop/antennas/900mhz/bardpole-915mhz",
+          "linkType": "Manufacturer",
+          "companyName": "TrueRC"
+        }
+      ]
+    },
+    {
+      "modelName": "Happymodel 915MHz Micro T Antenna",
+      "releaseYear": 2021,
+      "weightG": 0.9,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "U.FL",
+        "antennaStyle": "T-Style Dipole",
+        "gainDbi": 0.5,
+        "cableLengthMm": 46
+      },
+      "referenceLinks": [
+        {
+          "url": "http://www.happymodel.cn/index.php/2021/07/07/happymodel-micro-t-antenna-for-elrs-915mhz-es900rx-receiver/",
+          "linkType": "Manufacturer",
+          "companyName": "Happymodel"
+        }
+      ]
+    },
+    {
+      "modelName": "Happymodel ES900TX Stock Transmitter Antenna",
+      "releaseYear": 2021,
+      "weightG": 12,
+      "antenna": {
+        "supportedFrequencyId": "900MHz",
+        "polarizationId": "Linear",
+        "connectorId": "SMA",
+        "antennaStyle": "T-Style Dipole",
+        "gainDbi": 2,
+        "cableLengthMm": null
+      },
+      "referenceLinks": [
+        {
+          "url": "http://www.happymodel.cn/index.php/2021/05/27/happymodel-elrs-es900tx-es900rx-long-range-rc-module-915mhz-868mhz/",
+          "linkType": "Manufacturer",
+          "companyName": "Happymodel"
+        }
+      ]
     }
   ],
   "builds": [

@@ -6,6 +6,7 @@ Always check the manufacturer's official website and official spec sheets as the
 - Do not run `git commit` yourself unless explicitly asked. Instead, leave changes in the working tree and suggest a commit message for the user to commit.
 - Do not use conventional commit prefixes (like "feat:", "fix:", "chore:") at the start of commit messages. Write plain, descriptive commit messages.
 - Never commit temporary or scratch scripts (e.g., `.cjs` helper scripts). Store temporary scripts in the artifact `scratch/` directory or delete them immediately before finishing a task.
+- When suggesting a commit message, do not mention changes to AGENTS.md in the subject line (top line) unless it is the only changed file.
 
 # Project Planning
 Do not make up names for implementation phases (e.g., "Phase 2") or dictate the roadmap structure without consulting the user first.
@@ -13,4 +14,4 @@ Do not make up names for implementation phases (e.g., "Phase 2") or dictate the 
 # Database & Schema Maintenance
 - Whenever `db/schema.prisma` is modified, update `db/er_diagram.mermaid` to match, ensuring no existing entities or relationships (such as `Build` links) are dropped or abbreviated.
 - The local Postgres database is managed by the Prisma VSCode extension. Never run a blocking foreground `npx prisma dev` task; if the database server must be started via CLI, always use `npx prisma dev -d` (`--detach`).
-- After making changes that require a database restart, tell the user to restart via VSCode and provide the Prisma Studio browse URL: http://localhost:51212
+- After making changes that require a database restart, restart the server via CLI (`cd db && npx prisma dev -d`) and then provide the Prisma Studio browse URL: http://localhost:51212
