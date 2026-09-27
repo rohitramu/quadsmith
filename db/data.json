@@ -37,7 +37,7 @@
     {
       "modelName": "Redfox A3 F722 45A AIO",
       "releaseYear": 2024,
-      "weightG": 7.8,
+      "weightG": 8.7,
       "flightController": {
         "boardHeightMm": 6.5,
         "mcuProcessor": "STM32F722RET6",
@@ -72,7 +72,7 @@
     {
       "modelName": "Sub250 1404 4500KV",
       "releaseYear": 2023,
-      "weightG": 9,
+      "weightG": 10.3,
       "motor": {
         "statorSize": "1404",
         "kvRating": 4500,
@@ -80,7 +80,7 @@
         "inputVoltageMaxV": 16.8,
         "mountBoltSize": "M2",
         "shaftType": "1.5mm",
-        "maxCurrentA": 13
+        "maxCurrentA": 16.93
       },
       "referenceLinks": [
         {
@@ -150,7 +150,7 @@
     {
       "modelName": "Tattu R-Line Version 5.0 1200mAh 6S",
       "releaseYear": 2022,
-      "weightG": 195,
+      "weightG": 197,
       "battery": {
         "chemistryId": 1,
         "cellCountS": 6,
@@ -240,7 +240,7 @@
     {
       "modelName": "Lumenier AXII 2 (RHCP)",
       "releaseYear": 2019,
-      "weightG": 3,
+      "weightG": 4.8,
       "antenna": {
         "supportedFrequencyId": "5.8GHz",
         "polarizationId": "RHCP",
@@ -361,7 +361,7 @@
     {
       "modelName": "Walksnail Avatar VTX V2",
       "releaseYear": 2023,
-      "weightG": 10.9,
+      "weightG": 15.4,
       "vtx": {
         "ecosystemId": "Walksnail",
         "videoConnectionStandard": "Digital",
@@ -384,7 +384,7 @@
     {
       "modelName": "ImpulseRC Apex EVO 5\"",
       "releaseYear": 2023,
-      "weightG": 125,
+      "weightG": 132,
       "frame": {
         "wheelbaseMm": 225,
         "maxPropSizeMm": 129.5,
@@ -411,7 +411,7 @@
     {
       "modelName": "iFlight AOS 5 V5",
       "releaseYear": 2023,
-      "weightG": 150,
+      "weightG": 129,
       "frame": {
         "wheelbaseMm": 228,
         "maxPropSizeMm": 132,
@@ -543,7 +543,7 @@
       "receiver": {
         "outputProtocol": "HDMI",
         "inputVoltageMinV": 7,
-        "inputVoltageMaxV": 25.2,
+        "inputVoltageMaxV": 21,
         "antennaCount": 4,
         "antennaConnectorId": "RP-SMA"
       },
@@ -559,7 +559,7 @@
     {
       "modelName": "Caddx Gofilm 20 Frame",
       "releaseYear": 2024,
-      "weightG": 30,
+      "weightG": 30.5,
       "frame": {
         "wheelbaseMm": 94,
         "maxPropSizeMm": 51,
@@ -581,7 +581,7 @@
     {
       "modelName": "CaddxF4 AIO 20A",
       "releaseYear": 2024,
-      "weightG": 7.5,
+      "weightG": 5.3,
       "flightController": {
         "mcuProcessor": "STM32F405",
         "gyroSensor": "ICM42688",
@@ -606,7 +606,7 @@
     {
       "modelName": "Caddx 1303 6000KV",
       "releaseYear": 2024,
-      "weightG": 6.5,
+      "weightG": 5.6,
       "motor": {
         "statorSize": "1303",
         "kvRating": 6000,
@@ -614,7 +614,7 @@
         "inputVoltageMaxV": 16.8,
         "mountBoltSize": "M2",
         "shaftType": "1.5mm",
-        "maxCurrentA": 15
+        "maxCurrentA": 16.9
       },
       "referenceLinks": [
         {
@@ -630,8 +630,8 @@
       "releaseYear": 2021,
       "weightG": 1.5,
       "propeller": {
-        "diameterMm": 51,
-        "pitchMm": 51,
+        "diameterMm": 50.8,
+        "pitchMm": 50.8,
         "bladeCount": 3,
         "mountType": "T-Mount 1.5mm"
       },
@@ -647,11 +647,11 @@
     {
       "modelName": "Walksnail Moonlight Camera",
       "releaseYear": 2024,
-      "weightG": 15,
+      "weightG": 8.9,
       "camera": {
         "ecosystemId": "Walksnail",
         "videoConnectionStandard": "Digital",
-        "widthMm": 19,
+        "widthMm": 19.5,
         "heightMm": 19,
         "depthMm": 24,
         "inputVoltageMinV": 5,
@@ -670,7 +670,7 @@
     {
       "modelName": "Walksnail Moonlight VTX",
       "releaseYear": 2024,
-      "weightG": 23.5,
+      "weightG": 38.5,
       "vtx": {
         "ecosystemId": "Walksnail",
         "videoConnectionStandard": "Digital",
@@ -788,7 +788,7 @@
     {
       "modelName": "HelloRadio V14",
       "releaseYear": 2024,
-      "weightG": 450,
+      "weightG": 420,
       "transmitter": {
         "externalBayType": "Nano",
         "operatingSystem": "EdgeTX",
@@ -807,7 +807,7 @@
     {
       "modelName": "HelloRadio V16",
       "releaseYear": 2024,
-      "weightG": 700,
+      "weightG": 750,
       "transmitter": {
         "externalBayType": "JR",
         "operatingSystem": "EdgeTX",
@@ -980,8 +980,8 @@
         "ecosystemId": "HDZero",
         "videoConnectionStandard": "Digital",
         "boardHeightMm": 5,
-        "inputVoltageMinV": 3.2,
-        "inputVoltageMaxV": 5.5,
+        "inputVoltageMinV": 2.8,
+        "inputVoltageMaxV": 13,
         "maxPowerMw": 200,
         "antennaCount": 1,
         "antennaConnectorId": "U.FL"
@@ -1003,8 +1003,8 @@
         "ecosystemId": "HDZero",
         "videoConnectionStandard": "Digital",
         "widthMm": 14,
-        "heightMm": 14,
-        "depthMm": 16,
+        "heightMm": 18,
+        "depthMm": 18,
         "inputVoltageMinV": 3.3,
         "inputVoltageMaxV": 5,
         "aspectRatio": "4:3"
@@ -1021,7 +1021,7 @@
     {
       "modelName": "HDZero Goggles",
       "releaseYear": 2022,
-      "weightG": 380,
+      "weightG": 294,
       "goggles": {
         "ecosystemId": "HDZero",
         "antennaCount": 4,
@@ -1103,14 +1103,14 @@
     {
       "modelName": "DJI O4 Wide VTX",
       "releaseYear": 2024,
-      "weightG": 5,
+      "weightG": 5.1,
       "vtx": {
         "ecosystemId": "DJI",
         "videoConnectionStandard": "Digital",
         "boardHeightMm": 15,
-        "inputVoltageMinV": 6,
-        "inputVoltageMaxV": 26.4,
-        "maxPowerMw": 1000,
+        "inputVoltageMinV": 3.7,
+        "inputVoltageMaxV": 13.2,
+        "maxPowerMw": 2000,
         "antennaCount": 1,
         "antennaConnectorId": "U.FL"
       },
@@ -1130,9 +1130,9 @@
       "camera": {
         "ecosystemId": "DJI",
         "videoConnectionStandard": "Digital",
-        "widthMm": 19,
-        "heightMm": 19,
-        "depthMm": 20,
+        "widthMm": 20.5,
+        "heightMm": 14,
+        "depthMm": 20.5,
         "inputVoltageMinV": 5,
         "inputVoltageMaxV": 5,
         "aspectRatio": "16:9 / 4:3"
@@ -1149,14 +1149,14 @@
     {
       "modelName": "DJI O4 Pro VTX",
       "releaseYear": 2024,
-      "weightG": 20,
+      "weightG": 15.6,
       "vtx": {
         "ecosystemId": "DJI",
         "videoConnectionStandard": "Digital",
         "boardHeightMm": 15,
         "inputVoltageMinV": 6,
         "inputVoltageMaxV": 26.4,
-        "maxPowerMw": 1000,
+        "maxPowerMw": 2000,
         "antennaCount": 2,
         "antennaConnectorId": "U.FL"
       },
@@ -1172,13 +1172,13 @@
     {
       "modelName": "DJI O4 Pro Camera",
       "releaseYear": 2024,
-      "weightG": 12,
+      "weightG": 16.4,
       "camera": {
         "ecosystemId": "DJI",
         "videoConnectionStandard": "Digital",
-        "widthMm": 20,
+        "widthMm": 25.55,
         "heightMm": 20,
-        "depthMm": 20,
+        "depthMm": 23.3,
         "inputVoltageMinV": 5,
         "inputVoltageMaxV": 5,
         "aspectRatio": "16:9 / 4:3"
@@ -1220,7 +1220,7 @@
     {
       "modelName": "Happymodel Mobula8 Frame",
       "releaseYear": 2023,
-      "weightG": 10,
+      "weightG": 11.5,
       "frame": {
         "wheelbaseMm": 85,
         "maxPropSizeMm": 51,
@@ -1391,7 +1391,7 @@
     {
       "modelName": "BetaFPV Lava 2S 450mAh",
       "releaseYear": 2023,
-      "weightG": 26.5,
+      "weightG": 26.1,
       "battery": {
         "cellCountS": 2,
         "cellCountP": 1,
@@ -1411,12 +1411,12 @@
     {
       "modelName": "GNB 3S 650mAh 80C",
       "releaseYear": 2021,
-      "weightG": 60,
+      "weightG": 45.9,
       "battery": {
         "cellCountS": 3,
         "cellCountP": 1,
         "capacityMah": 650,
-        "continuousCRating": 80,
+        "continuousCRating": 60,
         "connectorTypeId": "XT30"
       },
       "referenceLinks": [
@@ -1431,7 +1431,7 @@
     {
       "modelName": "Ovonic 4S 1300mAh 100C",
       "releaseYear": 2021,
-      "weightG": 152,
+      "weightG": 156,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -1471,12 +1471,12 @@
     {
       "modelName": "GNB 8S 1100mAh 130C",
       "releaseYear": 2023,
-      "weightG": 258,
+      "weightG": 256.7,
       "battery": {
         "cellCountS": 8,
         "cellCountP": 1,
         "capacityMah": 1100,
-        "continuousCRating": 130,
+        "continuousCRating": 120,
         "connectorTypeId": "XT60"
       },
       "referenceLinks": [
@@ -1511,7 +1511,7 @@
       "releaseYear": 2021,
       "weightG": 4.7,
       "propeller": {
-        "diameterMm": 130.8,
+        "diameterMm": 129.54,
         "pitchMm": 88.9,
         "bladeCount": 3
       },
@@ -1563,7 +1563,7 @@
     {
       "modelName": "BetaFPV LAVA 1S 450mAh",
       "releaseYear": 2023,
-      "weightG": 12.5,
+      "weightG": 12.2,
       "battery": {
         "cellCountS": 1,
         "cellCountP": 1,
@@ -1603,7 +1603,7 @@
     {
       "modelName": "BetaFPV LAVA 3S 450mAh",
       "releaseYear": 2023,
-      "weightG": 40,
+      "weightG": 37.8,
       "battery": {
         "cellCountS": 3,
         "cellCountP": 1,
@@ -1623,7 +1623,7 @@
     {
       "modelName": "BetaFPV LAVA 4S 450mAh",
       "releaseYear": 2023,
-      "weightG": 52,
+      "weightG": 49.4,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -1643,7 +1643,7 @@
     {
       "modelName": "BetaFPV LAVA 4S 850mAh",
       "releaseYear": 2023,
-      "weightG": 95,
+      "weightG": 98,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -1663,7 +1663,7 @@
     {
       "modelName": "Tattu R-Line 4S 650mAh",
       "releaseYear": 2021,
-      "weightG": 74,
+      "weightG": 82,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -1683,7 +1683,7 @@
     {
       "modelName": "Tattu R-Line 4S 1300mAh",
       "releaseYear": 2021,
-      "weightG": 148,
+      "weightG": 150,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -1703,7 +1703,7 @@
     {
       "modelName": "Tattu R-Line 4S 1550mAh",
       "releaseYear": 2021,
-      "weightG": 176,
+      "weightG": 177,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -1723,7 +1723,7 @@
     {
       "modelName": "Tattu R-Line 6S 1050mAh",
       "releaseYear": 2022,
-      "weightG": 175,
+      "weightG": 180,
       "battery": {
         "cellCountS": 6,
         "cellCountP": 1,
@@ -1748,7 +1748,7 @@
         "cellCountS": 6,
         "cellCountP": 1,
         "capacityMah": 1300,
-        "continuousCRating": 150,
+        "continuousCRating": 120,
         "connectorTypeId": "XT60"
       },
       "referenceLinks": [
@@ -1763,7 +1763,7 @@
     {
       "modelName": "Ovonic 3S 450mAh",
       "releaseYear": 2021,
-      "weightG": 42,
+      "weightG": 33.6,
       "battery": {
         "cellCountS": 3,
         "cellCountP": 1,
@@ -1783,7 +1783,7 @@
     {
       "modelName": "Ovonic 3S 850mAh",
       "releaseYear": 2021,
-      "weightG": 78,
+      "weightG": 76,
       "battery": {
         "cellCountS": 3,
         "cellCountP": 1,
@@ -1823,7 +1823,7 @@
     {
       "modelName": "Ovonic 4S 1550mAh",
       "releaseYear": 2021,
-      "weightG": 181,
+      "weightG": 184,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -1843,12 +1843,12 @@
     {
       "modelName": "Ovonic 6S 1000mAh",
       "releaseYear": 2022,
-      "weightG": 175,
+      "weightG": 171,
       "battery": {
         "cellCountS": 6,
         "cellCountP": 1,
         "capacityMah": 1000,
-        "continuousCRating": 120,
+        "continuousCRating": 100,
         "connectorTypeId": "XT60"
       },
       "referenceLinks": [
@@ -1903,7 +1903,7 @@
     {
       "modelName": "GNB 1S 530mAh",
       "releaseYear": 2021,
-      "weightG": 13,
+      "weightG": 12,
       "battery": {
         "cellCountS": 1,
         "cellCountP": 1,
@@ -1923,7 +1923,7 @@
     {
       "modelName": "GNB 2S 530mAh",
       "releaseYear": 2021,
-      "weightG": 29,
+      "weightG": 26.5,
       "battery": {
         "cellCountS": 2,
         "cellCountP": 1,
@@ -1963,7 +1963,7 @@
     {
       "modelName": "GNB 4S 1100mAh",
       "releaseYear": 2022,
-      "weightG": 125,
+      "weightG": 133,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -1983,12 +1983,12 @@
     {
       "modelName": "GNB 6S 1100mAh",
       "releaseYear": 2022,
-      "weightG": 190,
+      "weightG": 177,
       "battery": {
         "cellCountS": 6,
         "cellCountP": 1,
         "capacityMah": 1100,
-        "continuousCRating": 130,
+        "continuousCRating": 160,
         "connectorTypeId": "XT60"
       },
       "referenceLinks": [
@@ -2003,7 +2003,7 @@
     {
       "modelName": "GNB 6S 1300mAh",
       "releaseYear": 2022,
-      "weightG": 215,
+      "weightG": 189,
       "battery": {
         "cellCountS": 6,
         "cellCountP": 1,
@@ -2021,7 +2021,7 @@
       ]
     },
     {
-      "modelName": "BetaFPV LAVA 2S 300mAh",
+      "modelName": "BetaFPV 2S 300mAh (Unverified)",
       "releaseYear": 2023,
       "weightG": 15,
       "battery": {
@@ -2043,7 +2043,7 @@
     {
       "modelName": "BetaFPV LAVA 2S 550mAh",
       "releaseYear": 2023,
-      "weightG": 28,
+      "weightG": 29.5,
       "battery": {
         "cellCountS": 2,
         "cellCountP": 1,
@@ -2083,7 +2083,7 @@
     {
       "modelName": "Tattu 2S 850mAh",
       "releaseYear": 2021,
-      "weightG": 48,
+      "weightG": 40,
       "battery": {
         "cellCountS": 2,
         "cellCountP": 1,
@@ -2101,7 +2101,7 @@
       ]
     },
     {
-      "modelName": "Ovonic 2S 450mAh",
+      "modelName": "Ovonic 2S 450mAh (Unverified)",
       "releaseYear": 2021,
       "weightG": 24,
       "battery": {
@@ -2121,7 +2121,7 @@
       ]
     },
     {
-      "modelName": "Ovonic 2S 850mAh",
+      "modelName": "Ovonic 2S 850mAh (Unverified)",
       "releaseYear": 2021,
       "weightG": 45,
       "battery": {
@@ -2143,7 +2143,7 @@
     {
       "modelName": "GNB 2S 380mAh",
       "releaseYear": 2021,
-      "weightG": 23,
+      "weightG": 22,
       "battery": {
         "cellCountS": 2,
         "cellCountP": 1,
@@ -2181,7 +2181,7 @@
       ]
     },
     {
-      "modelName": "BetaFPV 2S 850mAh",
+      "modelName": "BetaFPV 2S 850mAh (Unverified)",
       "releaseYear": 2023,
       "weightG": 45,
       "battery": {
@@ -2203,7 +2203,7 @@
     {
       "modelName": "Tattu R-Line 4S 1800mAh",
       "releaseYear": 2021,
-      "weightG": 195,
+      "weightG": 197,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -2221,7 +2221,7 @@
       ]
     },
     {
-      "modelName": "Tattu R-Line 5S 1300mAh",
+      "modelName": "Tattu R-Line 5S 1300mAh (Unverified)",
       "releaseYear": 2021,
       "weightG": 185,
       "battery": {
@@ -2243,12 +2243,12 @@
     {
       "modelName": "Tattu R-Line 5S 1550mAh",
       "releaseYear": 2021,
-      "weightG": 210,
+      "weightG": 214,
       "battery": {
         "cellCountS": 5,
         "cellCountP": 1,
         "capacityMah": 1550,
-        "continuousCRating": 130,
+        "continuousCRating": 120,
         "connectorTypeId": "XT60"
       },
       "referenceLinks": [
@@ -2261,7 +2261,7 @@
       ]
     },
     {
-      "modelName": "Tattu R-Line 6S 1250mAh",
+      "modelName": "Tattu R-Line 6S 1250mAh (Unverified)",
       "releaseYear": 2022,
       "weightG": 200,
       "battery": {
@@ -2283,7 +2283,7 @@
     {
       "modelName": "Tattu R-Line 6S 1550mAh",
       "releaseYear": 2022,
-      "weightG": 235,
+      "weightG": 254,
       "battery": {
         "cellCountS": 6,
         "cellCountP": 1,
@@ -2303,12 +2303,12 @@
     {
       "modelName": "Ovonic 2S 650mAh",
       "releaseYear": 2021,
-      "weightG": 38,
+      "weightG": 45,
       "battery": {
         "cellCountS": 2,
         "cellCountP": 1,
         "capacityMah": 650,
-        "continuousCRating": 80,
+        "continuousCRating": 120,
         "connectorTypeId": "XT30"
       },
       "referenceLinks": [
@@ -2383,12 +2383,12 @@
     {
       "modelName": "GNB 1S 650mAh",
       "releaseYear": 2021,
-      "weightG": 16,
+      "weightG": 17,
       "battery": {
         "cellCountS": 1,
         "cellCountP": 1,
         "capacityMah": 650,
-        "continuousCRating": 90,
+        "continuousCRating": 70,
         "connectorTypeId": "BT2.0"
       },
       "referenceLinks": [
@@ -2403,7 +2403,7 @@
     {
       "modelName": "GNB 1S 720mAh",
       "releaseYear": 2021,
-      "weightG": 18,
+      "weightG": 16.5,
       "battery": {
         "cellCountS": 1,
         "cellCountP": 1,
@@ -2423,12 +2423,12 @@
     {
       "modelName": "GNB 2S 650mAh",
       "releaseYear": 2021,
-      "weightG": 34,
+      "weightG": 31.4,
       "battery": {
         "cellCountS": 2,
         "cellCountP": 1,
         "capacityMah": 650,
-        "continuousCRating": 90,
+        "continuousCRating": 60,
         "connectorTypeId": "XT30"
       },
       "referenceLinks": [
@@ -2443,12 +2443,12 @@
     {
       "modelName": "GNB 3S 1100mAh",
       "releaseYear": 2021,
-      "weightG": 105,
+      "weightG": 111,
       "battery": {
         "cellCountS": 3,
         "cellCountP": 1,
         "capacityMah": 1100,
-        "continuousCRating": 90,
+        "continuousCRating": 140,
         "connectorTypeId": "XT60"
       },
       "referenceLinks": [
@@ -2463,7 +2463,7 @@
     {
       "modelName": "GNB 4S 1550mAh",
       "releaseYear": 2022,
-      "weightG": 180,
+      "weightG": 189,
       "battery": {
         "cellCountS": 4,
         "cellCountP": 1,
@@ -2483,12 +2483,12 @@
     {
       "modelName": "GNB 6S 1550mAh",
       "releaseYear": 2022,
-      "weightG": 240,
+      "weightG": 273,
       "battery": {
         "cellCountS": 6,
         "cellCountP": 1,
         "capacityMah": 1550,
-        "continuousCRating": 130,
+        "continuousCRating": 140,
         "connectorTypeId": "XT60"
       },
       "referenceLinks": [
@@ -2503,12 +2503,12 @@
     {
       "modelName": "GNB 8S 1300mAh",
       "releaseYear": 2023,
-      "weightG": 305,
+      "weightG": 252,
       "battery": {
         "cellCountS": 8,
         "cellCountP": 1,
         "capacityMah": 1300,
-        "continuousCRating": 130,
+        "continuousCRating": 120,
         "connectorTypeId": "XT60"
       },
       "referenceLinks": [
@@ -2812,7 +2812,7 @@
     {
       "modelName": "Flywoo GOKU GM10 Mini",
       "releaseYear": 2022,
-      "weightG": 2.2,
+      "weightG": 4.7,
       "gps": {
         "chipset": "M10",
         "hasCompass": false,
@@ -2833,7 +2833,7 @@
     {
       "modelName": "Mateksys M10Q-5883",
       "releaseYear": 2022,
-      "weightG": 9,
+      "weightG": 8,
       "gps": {
         "chipset": "M10",
         "hasCompass": true,
@@ -2896,7 +2896,7 @@
     {
       "modelName": "Holybro Micro M8N",
       "releaseYear": 2020,
-      "weightG": 8,
+      "weightG": 20.6,
       "gps": {
         "chipset": "M8N",
         "hasCompass": true,
@@ -2917,7 +2917,7 @@
     {
       "modelName": "HGLRC M100 Mini GPS",
       "releaseYear": 2023,
-      "weightG": 2.4,
+      "weightG": 2.6,
       "gps": {
         "chipset": "M10",
         "hasCompass": false,
@@ -2976,7 +2976,7 @@
     {
       "modelName": "HGLRC Sector D5 Frame",
       "releaseYear": 2022,
-      "weightG": 110,
+      "weightG": 121.7,
       "frame": {
         "wheelbaseMm": 225,
         "maxPropSizeMm": 127,
@@ -3001,12 +3001,12 @@
     {
       "modelName": "HGLRC Aeolus 2105.5 2800KV",
       "releaseYear": 2021,
-      "weightG": 21.4,
+      "weightG": 22.3,
       "motor": {
         "statorSize": "2105.5",
         "kvRating": 2800,
         "inputVoltageMinV": 11.1,
-        "inputVoltageMaxV": 14.8,
+        "inputVoltageMaxV": 25.2,
         "mountBoltSize": "M2",
         "shaftType": "5mm"
       },
@@ -3024,7 +3024,7 @@
       "weightG": 4.8,
       "vtx": {
         "ecosystemId": "Analog",
-        "inputVoltageMinV": 7,
+        "inputVoltageMinV": 6,
         "inputVoltageMaxV": 26,
         "maxPowerMw": 800
       },
@@ -3043,7 +3043,7 @@
       "motor": {
         "statorSize": "2306.5",
         "kvRating": 1900,
-        "inputVoltageMinV": 22.2,
+        "inputVoltageMinV": 18.5,
         "inputVoltageMaxV": 22.2,
         "mountBoltSize": "M3",
         "shaftType": "5mm"
@@ -3078,7 +3078,7 @@
     {
       "modelName": "HGLRC Specter F405 V2",
       "releaseYear": 2023,
-      "weightG": 9.5,
+      "weightG": 7.2,
       "flightController": {
         "mountPatterns": [
           "30.5x30.5mm"
@@ -3175,7 +3175,7 @@
       "releaseYear": 2022,
       "weightG": 120,
       "frame": {
-        "wheelbaseMm": 225,
+        "wheelbaseMm": 210,
         "maxPropSizeMm": 127,
         "cameraMountWidthMm": 19,
         "fcStackMounts": [
@@ -3198,12 +3198,12 @@
     {
       "modelName": "HGLRC Aeolus 1102 18000KV",
       "releaseYear": 2021,
-      "weightG": 2.8,
+      "weightG": 3.2,
       "motor": {
         "statorSize": "1102",
         "kvRating": 18000,
         "inputVoltageMinV": 3.7,
-        "inputVoltageMaxV": 7.4,
+        "inputVoltageMaxV": 4.2,
         "mountBoltSize": "M1.4",
         "shaftType": "1.5mm"
       },
@@ -3218,12 +3218,12 @@
     {
       "modelName": "HGLRC Aeolus 1404 2800KV",
       "releaseYear": 2021,
-      "weightG": 9.6,
+      "weightG": 11,
       "motor": {
         "statorSize": "1404",
         "kvRating": 2800,
         "inputVoltageMinV": 11.1,
-        "inputVoltageMaxV": 14.8,
+        "inputVoltageMaxV": 25.2,
         "mountBoltSize": "M2",
         "shaftType": "1.5mm"
       },
@@ -3242,8 +3242,8 @@
       "motor": {
         "statorSize": "2004",
         "kvRating": 3000,
-        "inputVoltageMinV": 11.1,
-        "inputVoltageMaxV": 14.8,
+        "inputVoltageMinV": 14.8,
+        "inputVoltageMaxV": 21,
         "mountBoltSize": "M2",
         "shaftType": "1.5mm"
       },
@@ -3261,7 +3261,7 @@
       "weightG": 13,
       "motor": {
         "statorSize": "1804",
-        "kvRating": 3450,
+        "kvRating": 3500,
         "inputVoltageMinV": 11.1,
         "inputVoltageMaxV": 14.8,
         "mountBoltSize": "M2",
@@ -3313,7 +3313,7 @@
     {
       "modelName": "HGLRC Hermes ExpressLRS 900MHz",
       "releaseYear": 2022,
-      "weightG": 1.1,
+      "weightG": 0.8,
       "receiver": {
         "outputProtocol": "ExpressLRS (ELRS)",
         "inputVoltageMinV": 5,
@@ -3330,7 +3330,7 @@
     {
       "modelName": "HGLRC M80 PRO GPS",
       "releaseYear": 2021,
-      "weightG": 9.4,
+      "weightG": 12.5,
       "gps": {
         "chipset": "M8",
         "hasCompass": true,
@@ -3375,8 +3375,8 @@
       "motor": {
         "statorSize": "1303.5",
         "kvRating": 2500,
-        "inputVoltageMinV": 11.1,
-        "inputVoltageMaxV": 14.8,
+        "inputVoltageMinV": 14.8,
+        "inputVoltageMaxV": 25.2,
         "mountBoltSize": "M2",
         "shaftType": "1.5mm"
       },
@@ -3391,12 +3391,12 @@
     {
       "modelName": "HGLRC Aeolus 2207.5 2550KV",
       "releaseYear": 2020,
-      "weightG": 34.5,
+      "weightG": 33,
       "motor": {
         "statorSize": "2207.5",
         "kvRating": 2550,
         "inputVoltageMinV": 14.8,
-        "inputVoltageMaxV": 14.8,
+        "inputVoltageMaxV": 18.5,
         "mountBoltSize": "M3",
         "shaftType": "5mm"
       },
@@ -3411,12 +3411,12 @@
     {
       "modelName": "HGLRC Aeolus 2306.5 2550KV",
       "releaseYear": 2020,
-      "weightG": 33,
+      "weightG": 37,
       "motor": {
         "statorSize": "2306.5",
         "kvRating": 2550,
-        "inputVoltageMinV": 14.8,
-        "inputVoltageMaxV": 14.8,
+        "inputVoltageMinV": 11.1,
+        "inputVoltageMaxV": 16.8,
         "mountBoltSize": "M3",
         "shaftType": "5mm"
       },
@@ -3435,8 +3435,8 @@
       "motor": {
         "statorSize": "2806.5",
         "kvRating": 1250,
-        "inputVoltageMinV": 22.2,
-        "inputVoltageMaxV": 22.2,
+        "inputVoltageMinV": 14.8,
+        "inputVoltageMaxV": 25.2,
         "mountBoltSize": "M3",
         "shaftType": "5mm"
       },
@@ -3451,7 +3451,7 @@
     {
       "modelName": "HGLRC Specter 1003 10000KV",
       "releaseYear": 2023,
-      "weightG": 2.5,
+      "weightG": 3.35,
       "motor": {
         "statorSize": "1003",
         "kvRating": 10000,
@@ -3469,7 +3469,7 @@
       ]
     },
     {
-      "modelName": "HGLRC Specter 1103 8000KV",
+      "modelName": "T-Motor M1103 8000KV",
       "releaseYear": 2023,
       "weightG": 3.4,
       "motor": {
@@ -3491,12 +3491,12 @@
     {
       "modelName": "HGLRC Specter 1404 2750KV",
       "releaseYear": 2023,
-      "weightG": 9.5,
+      "weightG": 10,
       "motor": {
         "statorSize": "1404",
         "kvRating": 2750,
-        "inputVoltageMinV": 11.1,
-        "inputVoltageMaxV": 14.8,
+        "inputVoltageMinV": 14.8,
+        "inputVoltageMaxV": 25.2,
         "mountBoltSize": "M2",
         "shaftType": "1.5mm"
       },
@@ -3514,7 +3514,7 @@
       "weightG": 16.5,
       "motor": {
         "statorSize": "2004",
-        "kvRating": 3000,
+        "kvRating": 1800,
         "inputVoltageMinV": 11.1,
         "inputVoltageMaxV": 14.8,
         "mountBoltSize": "M2",
@@ -3551,12 +3551,12 @@
     {
       "modelName": "HGLRC Specter 2806.5 1350KV",
       "releaseYear": 2023,
-      "weightG": 48.5,
+      "weightG": 51.9,
       "motor": {
         "statorSize": "2806.5",
         "kvRating": 1350,
-        "inputVoltageMinV": 22.2,
-        "inputVoltageMaxV": 22.2,
+        "inputVoltageMinV": 14.8,
+        "inputVoltageMaxV": 25.2,
         "mountBoltSize": "M3",
         "shaftType": "5mm"
       },
@@ -3657,7 +3657,7 @@
         "polarizationId": "RHCP",
         "connectorId": "SMA",
         "antennaStyle": "Mushroom",
-        "gainDbi": 2.5,
+        "gainDbi": 1.6,
         "cableLengthMm": 50
       },
       "referenceLinks": [
@@ -3731,13 +3731,13 @@
     {
       "modelName": "Radiomaster 2.4GHz Moxon",
       "releaseYear": 2022,
-      "weightG": 15,
+      "weightG": 12,
       "antenna": {
         "supportedFrequencyId": "2.4GHz",
         "polarizationId": "Linear",
         "connectorId": "RP-SMA",
         "antennaStyle": "Moxon",
-        "gainDbi": 5.4,
+        "gainDbi": 5.98,
         "cableLengthMm": null
       },
       "referenceLinks": [
@@ -3811,7 +3811,7 @@
     {
       "modelName": "TrueRC Matchstick 5.8GHz (RHCP)",
       "releaseYear": 2021,
-      "weightG": 6.2,
+      "weightG": 7.8,
       "antenna": {
         "supportedFrequencyId": "5.8GHz",
         "polarizationId": "RHCP",
@@ -3911,7 +3911,7 @@
     {
       "modelName": "Lumenier AXII Duo 5.8GHz Patch (RHCP)",
       "releaseYear": 2019,
-      "weightG": 22,
+      "weightG": 18,
       "antenna": {
         "supportedFrequencyId": "5.8GHz",
         "polarizationId": "RHCP",
@@ -3951,13 +3951,13 @@
     {
       "modelName": "Happymodel 900MHz ELRS T-Antenna",
       "releaseYear": 2021,
-      "weightG": 2.1,
+      "weightG": 3.1,
       "antenna": {
         "supportedFrequencyId": "900MHz",
         "polarizationId": "Linear",
         "connectorId": "U.FL",
         "antennaStyle": "T-Style Dipole",
-        "gainDbi": 2.14,
+        "gainDbi": 2,
         "cableLengthMm": 60
       },
       "referenceLinks": [
@@ -4031,7 +4031,7 @@
     {
       "modelName": "Foxeer Pagoda Pro (RHCP)",
       "releaseYear": 2018,
-      "weightG": 8,
+      "weightG": 11,
       "antenna": {
         "supportedFrequencyId": "5.8GHz",
         "polarizationId": "RHCP",
@@ -4051,7 +4051,7 @@
     {
       "modelName": "Lumenier AXII 2 (LHCP)",
       "releaseYear": 2019,
-      "weightG": 3,
+      "weightG": 4.8,
       "antenna": {
         "supportedFrequencyId": "5.8GHz",
         "polarizationId": "LHCP",
@@ -4158,7 +4158,7 @@
         "polarizationId": "LHCP",
         "connectorId": "SMA",
         "antennaStyle": "Mushroom",
-        "gainDbi": 2.5,
+        "gainDbi": 1.6,
         "cableLengthMm": 50
       },
       "referenceLinks": [
@@ -4232,7 +4232,7 @@
     {
       "modelName": "TrueRC Matchstick 5.8GHz (LHCP)",
       "releaseYear": 2021,
-      "weightG": 6.2,
+      "weightG": 7.8,
       "antenna": {
         "supportedFrequencyId": "5.8GHz",
         "polarizationId": "LHCP",
@@ -4332,7 +4332,7 @@
     {
       "modelName": "Lumenier AXII Duo 5.8GHz Patch (LHCP)",
       "releaseYear": 2019,
-      "weightG": 22,
+      "weightG": 18,
       "antenna": {
         "supportedFrequencyId": "5.8GHz",
         "polarizationId": "LHCP",
@@ -4392,7 +4392,7 @@
     {
       "modelName": "Foxeer Pagoda Pro (LHCP)",
       "releaseYear": 2018,
-      "weightG": 8,
+      "weightG": 11,
       "antenna": {
         "supportedFrequencyId": "5.8GHz",
         "polarizationId": "LHCP",
@@ -4439,7 +4439,7 @@
     {
       "modelName": "SUB250-Oasis Frame",
       "releaseYear": 2023,
-      "weightG": 35,
+      "weightG": 53,
       "frame": {
         "wheelbaseMm": 135,
         "maxPropSizeMm": 63.5,
