@@ -21,9 +21,9 @@ This document outlines the conceptual domain model for Quadsmith's hardware cata
 **Rationale:** Perfect data integrity is required for the Compatibility Checker to function. Freeform tags would result in data fragmentation (e.g., "elrs" vs "ExpressLRS"), breaking compatibility logic. Static enums would require a code deployment every time a new protocol is released. Relational Entities allow administrators to dynamically add new protocols at runtime, attach extra metadata to the protocol itself, and ensure all hardware references the exact same concept. To mitigate the administrative bottleneck of requiring formal entity creation, the platform relies on a "Suggest Edit" workflow, allowing the community to queue new dictionary terms for rapid admin approval without breaking data integrity.
 
 ### 2.4 Hierarchical Software Versioning
-**Decision:** Software is modeled using a Parent-Child hierarchy. The `SoftwareComponent` entity represents the parent product family (e.g., "Betaflight"), which owns a collection of `SoftwareBuild` child entities representing specific compiled flavors of a version (e.g., "v4.3 - Target STM32F4").
+**Decision:** Software is modeled using a Parent-Child hierarchy. The `Software` entity represents the parent product family (e.g., "Betaflight"), which owns a collection of `SoftwareComponent` child entities representing specific compiled flavors of a version (e.g., "v4.3 - Target STM32F4"). Crucially, only the `SoftwareComponent` inherits from the base `Component` identity.
 
-**Rationale:** This hierarchical approach accounts for the fact that a single software version often comes in many different compiled flavors or hardware targets. It allows users to view aggregate data (like total reviews or Q&A) at the parent product level ("Betaflight"), while still providing pinpoint accuracy for `IncompatibilityIssues` and specific build reviews, which target the `SoftwareBuild` entity directly (e.g., "Build Flavor X breaks compatibility with this specific ESC").
+**Rationale:** This hierarchical approach accounts for the fact that a single software version often comes in many different compiled flavors or hardware targets. It allows users to view aggregate data (like total reviews or Q&A) at the parent product level ("Betaflight"), while still providing pinpoint accuracy for `IncompatibilityIssues` and specific build reviews, which target the `SoftwareComponent` entity directly (e.g., "Build Flavor X breaks compatibility with this specific ESC"). It also creates perfect symmetry with hardware: both `HardwareComponent` and `SoftwareComponent` represent the actual, installable artifacts that participate in the global component system.
 
 ---
 
@@ -41,10 +41,11 @@ The `HardwareComponent` entity inherits from `Component` and introduces physical
 
 Each subclass holds attributes unique to its category (e.g., `kV` for Motors, `wheelbaseMm` for Frames).
 
-### 3.3 Software Components & Versions
-The `SoftwareComponent` entity inherits from `Component` to represent the parent product. It serves as the parent class for categories like `FcFirmware`, `EscFirmware`, `VtxFirmware`, and `OperatingSystem`. 
+### 3.3 Software & Software Components
+The `Software` entity represents a parent product family (e.g., "Betaflight"). It is a standalone entity that does *not* inherit from the global `Component` identity.
 
-Each `SoftwareComponent` contains a collection of `SoftwareBuild` entities. These build entities track specific release and target data, acting as the precise targets for hardware compatibility checks and build-specific reviews.
+Each `Software` product contains a collection of `SoftwareComponent` entities. The `SoftwareComponent` entity inherits from the base `Component` table, giving it a global identity for reviews and compatibility checks. It serves as the parent class for specific firmware categories:
+- `FcFirmware`, `EscFirmware`, `VtxFirmware`, `OperatingSystem`.
 
 ### 3.4 Managed Dictionaries (Relational Taxonomy)
 Dynamic standardizations maintained at runtime as strict entities:

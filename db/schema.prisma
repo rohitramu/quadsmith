@@ -610,12 +610,22 @@ model FrameVtxMount {
   @@id([frameId, boardMountPatternId])
 }
 
+model Software {
+  id          Int                 @id @default(autoincrement())
+  name        String
+  components  SoftwareComponent[]
+}
+
 model SoftwareComponent {
-  id        Int       @id
-  component Component @relation(fields: [id], references: [id], onDelete: Cascade)
-
-  version String?
-
+  id          Int       @id
+  component   Component @relation(fields: [id], references: [id], onDelete: Cascade)
+  
+  softwareId  Int
+  software    Software  @relation(fields: [softwareId], references: [id], onDelete: Cascade)
+  
+  version     String
+  flavorTarget String?
+  
   fcFirmware  FcFirmware?
   escFirmware EscFirmware?
   vtxFirmware VtxFirmware?
