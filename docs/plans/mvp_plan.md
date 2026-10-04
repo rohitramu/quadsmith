@@ -20,7 +20,7 @@ The technology list is strictly curated to provide immense value, high performan
 *   **Go (Golang)**: The foundation. Provides blazing fast execution for the Build Evaluator physics and Compatibility loops, built-in concurrency (goroutines), and zero tooling fatigue (formatting, testing, and building are built-in).
 *   **PostgreSQL**: The database. Chosen for its robust "Hybrid" capabilities—acting as a rock-solid relational DB for Users/Builds while offering best-in-class `JSONB` support for unstructured Protobuf component payloads.
 *   **pgx & sqlc**: Replaces heavy ORMs like Prisma. `pgx` is the high-performance Postgres driver. `sqlc` generates type-safe Go functions from raw SQL queries (`queries.sql`), giving us ORM-like safety without sacrificing performance or control.
-*   **golang-migrate / goose**: Handles schema migrations via plain SQL files (`001_init.up.sql`), eliminating opaque declarative magic and giving us full control over the DB structure.
+*   **sqldef (psqldef)**: Handles database schema updates declaratively. We maintain a single `schema.sql` file containing our desired database state. `psqldef` automatically diffs this file against the live Postgres database to generate and apply the necessary `ALTER TABLE` statements, keeping our workflow purely open-source and eliminating the need for manual, sequential migration scripts.
 *   **@bufbuild/protobuf & Buf**: Canonical Protobuf management. We use `buf` to automatically generate Go types and interfaces from our `quadsmith/v1` proto files.
 *   **google/cel-go**: The native Go implementation of CEL, originally built by Google. Extremely fast and perfectly suited for our dynamic component filtering.
 *   **connect-go**: The native Go implementation of ConnectRPC. Generates API handlers from our `.proto` files automatically. It supports HTTP/1.1 and JSON out of the box, making it perfectly testable via curl or Postman while preserving gRPC compatibility.
@@ -32,7 +32,7 @@ The technology list is strictly curated to provide immense value, high performan
 *   Finalize `quadsmith/v1/hardware.proto` to strictly type all properties.
 *   Add evaluation output protos (`evaluator.proto`, `compatibility.proto`).
 *   Tear down Node.js/Prisma configurations and initialize the `go.work` workspace.
-*   Translate the Prisma schema into raw Postgres SQL (`001_init.up.sql`) using standard Foreign Keys, and set up `sqlc` to generate the Go database access layer.
+*   Translate the Prisma schema into a raw declarative Postgres schema (`db/schema.sql`) using standard Foreign Keys, and set up `sqlc` to generate the Go database access layer.
 
 ### Stage 2: Core Compatibility & Evaluation Engines (Current)
 *   **Goal**: Implement the pure physics and logical checks in Go.

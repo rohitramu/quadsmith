@@ -12,6 +12,6 @@ Always check the manufacturer's official website and official spec sheets as the
 Do not make up names for implementation phases (e.g., "Phase 2") or dictate the roadmap structure without consulting the user first.
 
 # Database & Schema Maintenance
-- Whenever `db/migrations/001_init.up.sql` (or any migration) is modified, update `db/er_diagram.mermaid` to match, ensuring no existing entities or relationships (such as `Build` links) are dropped or abbreviated.
-- The local Postgres database is managed via standard Go migration tools (`goose` or `golang-migrate`). Never use Prisma commands.
-- Run migrations explicitly and ensure the `go.work` structure reflects any module changes.
+- Whenever `db/schema.sql` is modified, update `db/diagram.mermaid` to match, ensuring no existing entities or relationships (such as `Build` links) are dropped or abbreviated.
+- The local Postgres database is managed declaratively via `psqldef` (from the `sqldef` project). We maintain a single desired state in `db/schema.sql` rather than sequential migration files. Never use Prisma commands.
+- Apply schema changes by running `psqldef` against the local database. Ensure the `go.work` structure reflects any module changes.
