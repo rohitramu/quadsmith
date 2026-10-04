@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package quadsmith.v1;
+
+import "quadsmith/v1/common.proto";
+import "quadsmith/v1/component.proto";
+
+message ListComponentsRequest {
+  ComponentType type = 1;
+  string filter = 2;       // CEL filter expression, e.g. 'motor.kv_rating >= 1800'
+  string order_by = 3;     // Order expression, e.g. 'motor.kv_rating desc, name asc'
+  int32 page_size = 4;     // Maximum items to return
+  string page_token = 5;   // Cursor token
+}
+
+message ListComponentsResponse {
+  repeated Component components = 1;
+  string next_page_token = 2; // Opaque cursor for next page
+  int32 total_count = 3;
+}
+
+message GetComponentRequest {
+  string id = 1;
+}
+
+message CheckCompatibilityRequest {
+  string frame_id = 1;
+  repeated string candidate_component_ids = 2;
+}
+
+message CompatibilityResult {
+  string component_id = 1;
+  bool is_compatible = 2;
+  repeated string reasons = 3;
+}
+
+message CheckCompatibilityResponse {
+  repeated CompatibilityResult results = 1;
+}

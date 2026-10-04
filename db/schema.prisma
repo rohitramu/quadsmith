@@ -1,5 +1,8 @@
 // This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Redesigned with Postgres + JSONB + Protobuf Architecture:
+// - Hardware and Software specifications are defined via Protobuf contracts and stored in Component.data (JSONB)
+// - Eliminates brittle subtype tables and zero-DDL migrations for hardware specs
+// - Full relational integrity for Users, Builds, Sub-Assemblies, Lookups, and Community ChangeRequests
 
 generator client {
   provider = "prisma-client-js"
@@ -10,7 +13,130 @@ datasource db {
 }
 
 // ==========================================
-// 0. USER & AUTHENTICATION
+// 1. GLOBAL NODE & CHANGE REQUESTS
+// ==========================================
+
+enum ResourceType {
+  COMPONENT
+  BUILD
+  SOFTWARE_FAMILY
+  COMPANY
+  INCOMPATIBILITY_ISSUE
+  // Lookup tables (Managed Dictionaries)
+  VTX_ECOSYSTEM
+  RF_FREQUENCY
+  RF_PROTOCOL
+  ANTENNA_POLARIZATION
+  ANTENNA_CONNECTOR
+  BATTERY_CONNECTOR
+  TAG
+  MOTOR_MOUNT_PATTERN
+  BOARD_MOUNT_PATTERN
+  BATTERY_CHEMISTRY
+}
+
+enum ComponentType {
+  FRAME
+  MOTOR
+  PROPELLER
+  FLIGHT_CONTROLLER
+  ESC
+  BATTERY
+  VTX
+  CAMERA
+  RECEIVER
+  GPS
+  ANTENNA
+  TRANSMITTER
+  GOGGLES
+  SOFTWARE_COMPONENT
+}
+
+model Resource {
+  id           String       @id @default(uuid(7))
+  resourceType ResourceType
+  createdAt    DateTime     @default(now())
+
+  // Entities
+  component             Component?
+  build                 Build?
+  softwareFamily        Software?
+  company               Company?
+  incompatibilityIssue  IncompatibilityIssue?
+  
+  // Lookups
+  vtxEcosystem          VtxEcosystem?
+  rfFrequency           RfFrequency?
+  rfProtocol            RfProtocol?
+  antennaPolarization   AntennaPolarization?
+  antennaConnector      AntennaConnector?
+  batteryConnector      BatteryConnector?
+  tag                   Tag?
+  motorMountPattern     MotorMountPattern?
+  boardMountPattern     BoardMountPattern?
+  batteryChemistry      BatteryChemistry?
+
+  // Social & Community Features 
+  reviews               Review[]
+  questions             Question[]
+  collectionItems       CollectionItem[]
+  
+  // Community Moderation
+  changeRequests        ChangeRequest[]
+}
+
+enum EditAction {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+model ChangeRequest {
+  id              String          @id @default(uuid(7))
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  componentId     String?         // Targeted component for UPDATE / DELETE
+  component       Component?      @relation(fields: [componentId], references: [id], onDelete: Cascade)
+
+  resourceId      String?         // NULL if proposing a brand new resource
+  resource        Resource?       @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  
+  targetType      ResourceType    // ResourceType enum
+  componentType   ComponentType?  // Specific ComponentType if modifying a component
+  
+  action          EditAction
+  proposedData    Json?           // Holds the Protobuf JSON payload
+  updateMask      String[]        // FieldMask paths, e.g. ["profile.motor.kvRating"]
+  rationale       String?
+  status          String          @default("PENDING") // PENDING, APPROVED, REJECTED, MERGED
+  
+  mergedIntoId    String?
+  mergedInto      ChangeRequest?  @relation("MergedRequests", fields: [mergedIntoId], references: [id])
+  mergedFrom      ChangeRequest[] @relation("MergedRequests")
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  votes           ChangeRequestVote[]
+}
+
+model ChangeRequestVote {
+  id             String        @id @default(uuid(7))
+  requestId      String
+  request        ChangeRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  isUpvote       Boolean  
+  createdAt      DateTime      @default(now())
+
+  @@unique([userId, requestId])
+}
+
+
+// ==========================================
+// 2. USER & AUTHENTICATION
 // ==========================================
 
 enum UserRole {
@@ -27,7 +153,7 @@ enum OAuthProvider {
 }
 
 model User {
-  id              Int       @id @default(autoincrement())
+  id              String       @id @default(uuid(7))
   email           String    @unique
   username        String    @unique
   role            UserRole  @default(USER)
@@ -55,10 +181,12 @@ model User {
   answerComments   AnswerComment[]
   reputation       UserReputation?
   collections      Collection[]
+  changeRequests   ChangeRequest[]
+  changeVotes      ChangeRequestVote[]
 }
 
 model UserProfile {
-  userId      Int      @id
+  userId      String       @id
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   displayName String
   avatarUrl   String?
@@ -66,8 +194,8 @@ model UserProfile {
 }
 
 model UsernameHistory {
-  id          Int      @id @default(autoincrement())
-  userId      Int
+  id          String       @id @default(uuid(7))
+  userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   oldUsername String
   renamedAt   DateTime @default(now())
@@ -76,8 +204,8 @@ model UsernameHistory {
 }
 
 model OAuthAccount {
-  id                Int           @id @default(autoincrement())
-  userId            Int
+  id                String       @id @default(uuid(7))
+  userId            String
   user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   provider          OAuthProvider
   providerAccountId String
@@ -90,7 +218,7 @@ model OAuthAccount {
 }
 
 model EmailOtp {
-  id             Int       @id @default(autoincrement())
+  id             String       @id @default(uuid(7))
   email          String
   codeHash       String
   expiresAt      DateTime
@@ -102,8 +230,8 @@ model EmailOtp {
 }
 
 model RefreshToken {
-  id         Int       @id @default(autoincrement())
-  userId     Int
+  id         String       @id @default(uuid(7))
+  userId     String
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   tokenHash  String
   expiresAt  DateTime
@@ -112,94 +240,93 @@ model RefreshToken {
   createdAt  DateTime  @default(now())
 }
 
+model UserReputation {
+  userId String  @id
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score  Int  @default(0)
+}
+
+
 // ==========================================
-// 1. BASE INFRASTRUCTURE & LOOKUP TABLES
+// 3. LOOKUP TABLES (MANAGED DICTIONARIES)
 // ==========================================
 
 model VtxEcosystem {
-  id      String    @id
-  vtxs    Vtx[]
-  cameras Camera[]
-  goggles Goggles[]
+  id       String       @id
+  resource Resource  @relation(fields: [id], references: [id], onDelete: Cascade)
+  name     String    @unique
 }
 
 model RfFrequency {
-  id           String        @id
-  receivers    Receiver[]
-  transmitters Transmitter[]
-  goggles      Goggles[]
-  vtxs         Vtx[]
-  antennas     Antenna[]
+  id           String       @id
+  resource     Resource      @relation(fields: [id], references: [id], onDelete: Cascade)
+  name         String        @unique
 }
 
 model RfProtocol {
-  id           String        @id
-  receivers    Receiver[]
-  transmitters Transmitter[]
+  id           String       @id
+  resource     Resource      @relation(fields: [id], references: [id], onDelete: Cascade)
+  name         String        @unique
 }
 
 model AntennaPolarization {
-  id           String        @id
-  vtxs         Vtx[]
-  receivers    Receiver[]
-  transmitters Transmitter[]
-  goggles      Goggles[]
-  antennas     Antenna[]
+  id           String       @id
+  resource     Resource      @relation(fields: [id], references: [id], onDelete: Cascade)
+  name         String        @unique
 }
 
 model AntennaConnector {
-  id           String        @id
-  vtxs         Vtx[]
-  receivers    Receiver[]
-  transmitters Transmitter[]
-  goggles      Goggles[]
-  antennas     Antenna[]
+  id           String       @id
+  resource     Resource      @relation(fields: [id], references: [id], onDelete: Cascade)
+  name         String        @unique
 }
 
 model BatteryConnector {
-  id          String    @id
+  id          String       @id
+  resource    Resource  @relation(fields: [id], references: [id], onDelete: Cascade)
+  name        String    @unique
   maxCurrentA Decimal
   maxVoltageV Decimal
-  batteries   Battery[]
 }
 
 model Tag {
-  id          String  @id // e.g. "freestyle", "cinewhoop"
+  id          String       @id
+  resource    Resource @relation(fields: [id], references: [id], onDelete: Cascade)
+  name        String   @unique
   description String?
-  builds      Build[] // Implicit Many-to-Many
+  builds      Build[] 
 }
 
 model MotorMountPattern {
-  id     String  @id
-  frames Frame[]
-  motors Motor[]
+  id       String       @id
+  resource Resource @relation(fields: [id], references: [id], onDelete: Cascade)
+  name     String   @unique
 }
 
 model BoardMountPattern {
-  id                String              @id
-  fcStackFrames     FrameFcStackMount[]
-  vtxMountFrames    FrameVtxMount[]
-  flightControllers FlightController[]
-  escs              Esc[]
-  vtxs              Vtx[]
+  id                String       @id
+  resource          Resource            @relation(fields: [id], references: [id], onDelete: Cascade)
+  name              String              @unique
 }
 
 model BatteryChemistry {
-  id                     Int       @id @default(autoincrement())
-  name                   String
+  id                     String       @id
+  resource               Resource  @relation(fields: [id], references: [id], onDelete: Cascade)
+  name                   String    @unique
   nominalVoltagePerCellV Decimal
   maxVoltagePerCellV     Decimal
   minVoltagePerCellV     Decimal
-  batteries              Battery[]
 }
 
+
 // ==========================================
-// 2. HARDWARE COMPONENT (BASE ENTITY)
+// 4. COMPONENT IDENTITY & HARDWARE PROFILES
 // ==========================================
 
 model Company {
-  id         Int     @id @default(autoincrement())
-  name       String
+  id         String       @id
+  resource   Resource @relation(fields: [id], references: [id], onDelete: Cascade)
+  name       String   @unique
   websiteUrl String?
 
   components     ComponentCompany[]
@@ -207,72 +334,77 @@ model Company {
 }
 
 model Component {
-  id           Int    @id @default(autoincrement())
-  name         String
-  releaseYear  Int?
-  releaseMonth Int?
-  releaseDay   Int?
+  id              String          @id
+  resource        Resource        @relation(fields: [id], references: [id], onDelete: Cascade)
+  
+  type            ComponentType
+  name            String
+  releaseYear     Int?
+  releaseMonth    Int?
+  releaseDay      Int?
+
+  // The Protobuf payload storing all hardware/software specifications (JSONB)
+  data            Json
 
   companies       ComponentCompany[]
   referenceLinks  ReferenceLink[]
   flaggedInIssues IncompatibilityComponent[]
 
-  hardwareComponent HardwareComponent?
-  softwareComponent SoftwareComponent?
+  // Reusable sub-assembly and build linkages
+  buildsAsFrame        Build[]                 @relation("BuildFrame")
+  buildsAsMotor        Build[]                 @relation("BuildMotor")
+  buildsAsPropeller    Build[]                 @relation("BuildPropeller")
+  buildsAsCamera       Build[]                 @relation("BuildCamera")
+  buildsAsGps          Build[]                 @relation("BuildGps")
+  flightStacksAsFc     FlightStack[]           @relation("FlightStackFc")
+  flightStacksAsEsc    FlightStack[]           @relation("FlightStackEsc")
+  vtxConfigsAsVtx      VtxConfiguration[]      @relation("VtxConfigVtx")
+  vtxConfigsAsAntenna  VtxConfiguration[]      @relation("VtxConfigAntennas")
+  rxConfigsAsRx        ReceiverConfiguration[] @relation("RxConfigRx")
+  rxConfigsAsAntenna   ReceiverConfiguration[] @relation("RxConfigAntennas")
 
-  reviews         Review[]
-  questions       Question[]
-  collectionItems CollectionItem[]
-}
-
-model HardwareComponent {
-  id        Int       @id
-  component Component @relation(fields: [id], references: [id], onDelete: Cascade)
-  weightG   Decimal?
-
-  // One-to-One relations for the specific component types
-  frame                     Frame?
-  motor                     Motor?
-  propeller                 Propeller?
-  flightController          FlightController?
-  esc                       Esc?
-  battery                   Battery?
-  vtx                       Vtx?
-  camera                    Camera?
-  receiver                  Receiver?
-  gps                       Gps?
-  transmitter               Transmitter?
-  goggles                   Goggles?
-  antenna                   Antenna?
-  incompatibilityComponents IncompatibilityComponent[]
+  changeRequests       ChangeRequest[]
 }
 
 model ComponentCompany {
-  id          Int       @id @default(autoincrement())
-  componentId Int
+  id          String       @id @default(uuid(7))
+  componentId String
   component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
-  companyId   Int
+  companyId   String
   company     Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
 model ReferenceLink {
-  id          Int       @id @default(autoincrement())
-  componentId Int
+  id          String       @id @default(uuid(7))
+  componentId String
   component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
-  companyId   Int?
+  companyId   String?
   company     Company?  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   url         String
-  linkType    String // e.g. "Purchase", "Manual", "Firmware"
+  linkType    String // "Purchase", "Manual", "Firmware", "Datasheet"
   title       String
   description String?
 }
 
+
 // ==========================================
-// 3. EXCEPTIONS & INCOMPATIBILITIES
+// 5. SOFTWARE HIERARCHY
+// ==========================================
+
+model Software {
+  id          String       @id
+  resource    Resource            @relation(fields: [id], references: [id], onDelete: Cascade)
+  name        String              // e.g., "Betaflight"
+}
+
+
+// ==========================================
+// 6. EXCEPTIONS & INCOMPATIBILITIES
 // ==========================================
 
 model IncompatibilityIssue {
-  id                    Int                        @id @default(autoincrement())
+  id                    String       @id
+  resource              Resource                   @relation(fields: [id], references: [id], onDelete: Cascade)
   incompatibilityReason String                     // "Physical", "Noise", "Firmware"
   description           String
   suggestedFix          String?
@@ -281,403 +413,104 @@ model IncompatibilityIssue {
 }
 
 model IncompatibilityComponent {
-  issueId             Int
-  issue               IncompatibilityIssue @relation(fields: [issueId], references: [id], onDelete: Cascade)
-  hardwareComponentId Int
-  hardwareComponent   HardwareComponent    @relation(fields: [hardwareComponentId], references: [id], onDelete: Cascade)
-  component           Component?           @relation(fields: [componentId], references: [id])
-  componentId         Int?
+  issueId     String
+  issue       IncompatibilityIssue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  componentId String
+  component   Component            @relation(fields: [componentId], references: [id], onDelete: Cascade)
 
-  @@id([issueId, hardwareComponentId])
+  @@id([issueId, componentId])
 }
+
 
 // ==========================================
-// 4. HARDWARE SUB-TYPES (ONE-TO-ONE)
-// ==========================================
-
-model Frame {
-  id                 Int                 @id
-  component          HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  wheelbaseMm        Int
-  maxPropSizeMm      Decimal
-  fcStackMounts      FrameFcStackMount[]
-  motorMountPatterns MotorMountPattern[]
-  cameraMountWidthMm Decimal
-  vtxMounts          FrameVtxMount[]
-  maxBatteryLengthMm Decimal?
-  maxBatteryWidthMm  Decimal?
-  maxBatteryHeightMm Decimal?
-
-  builds Build[]
-}
-
-model Motor {
-  id               Int                 @id
-  component        HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  statorSize       String
-  kvRating         Int
-  inputVoltageMinV Decimal
-  inputVoltageMaxV Decimal
-  mountPatterns    MotorMountPattern[]
-  mountBoltSize    String
-  shaftType        String
-  maxCurrentA      Decimal?
-
-  builds Build[]
-}
-
-model Propeller {
-  id                Int               @id
-  component         HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  diameterMm        Decimal
-  pitchMm           Decimal
-  bladeCount        Int
-  mountType         String
-  recommendedStator String[]
-
-  builds Build[]
-}
-
-model FlightController {
-  id               Int                 @id
-  component        HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  mountPatterns    BoardMountPattern[]
-  boardHeightMm    Decimal
-  mcuProcessor     String
-  gyroSensor       String?
-  inputVoltageMinV Decimal
-  inputVoltageMaxV Decimal
-  becOutputs       Json?
-  uartConnections  Json?
-  escInterface     String
-
-  supportedFirmware FcFirmware[] // Implicit Many-to-Many
-
-  flightStacks FlightStack[]
-}
-
-enum EscFormFactor {
-  INTEGRATED_IN_FC
-  FOUR_IN_ONE      @map("4-in-1")
-  INDIVIDUAL       @map("Individual")
-}
-
-model Esc {
-  id                 Int                 @id
-  component          HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  formFactor         EscFormFactor
-  mountPatterns      BoardMountPattern[]
-  boardHeightMm      Decimal
-  continuousCurrentA Decimal
-  burstCurrentA      Decimal
-  inputVoltageMinV   Decimal
-  inputVoltageMaxV   Decimal
-
-  supportedFirmware EscFirmware[] // Implicit Many-to-Many
-
-  flightStacks FlightStack[]
-}
-
-model Battery {
-  id                Int               @id
-  component         HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  chemistryId       Int
-  chemistry         BatteryChemistry  @relation(fields: [chemistryId], references: [id])
-  cellCountS        Int
-  cellCountP        Int
-  capacityMah       Int
-  continuousCRating Int
-  connectorTypeId   String
-  connectorType     BatteryConnector  @relation(fields: [connectorTypeId], references: [id])
-  lengthMm          Decimal?
-  widthMm           Decimal?
-  heightMm          Decimal?
-}
-
-model Vtx {
-  id                      Int                 @id
-  supportedFrequencies    RfFrequency[]
-  component               HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  ecosystemId             String
-  ecosystem               VtxEcosystem        @relation(fields: [ecosystemId], references: [id])
-  videoConnectionStandard String?
-  mountPatterns           BoardMountPattern[]
-  boardHeightMm           Decimal
-  inputVoltageMinV        Decimal
-  inputVoltageMaxV        Decimal
-  maxPowerMw              Int?
-
-  antennaCount                  Int                  @default(1)
-  antennaConnectorId            String?
-  antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
-  includedAntennaPolarizationId String?
-  includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
-
-  supportedFirmware VtxFirmware[] // Implicit Many-to-Many
-
-  configs VtxConfiguration[]
-}
-
-model Camera {
-  id                      Int               @id
-  component               HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  ecosystemId             String
-  ecosystem               VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
-  videoConnectionStandard String?
-  widthMm                 Decimal
-  heightMm                Decimal
-  depthMm                 Decimal
-  inputVoltageMinV        Decimal
-  inputVoltageMaxV        Decimal
-  mountingScrewSize       String
-  aspectRatio             String
-
-  builds Build[]
-}
-
-model Receiver {
-  id                   Int               @id
-  supportedFrequencies RfFrequency[]
-  component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  rfProtocols          RfProtocol[]
-  outputProtocol       String
-  inputVoltageMinV     Decimal
-  inputVoltageMaxV     Decimal
-
-  antennaCount                  Int                  @default(1)
-  antennaConnectorId            String?
-  antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
-  includedAntennaPolarizationId String?
-  includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
-
-  configs ReceiverConfiguration[]
-}
-
-model Gps {
-  id               Int               @id
-  component        HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  chipset          String
-  hasCompass       Boolean
-  inputVoltageMinV Decimal
-  inputVoltageMaxV Decimal
-  lengthMm         Decimal?
-  widthMm          Decimal?
-  heightMm         Decimal?
-
-  builds Build[]
-}
-
-model Antenna {
-  id                   Int                 @id
-  component            HardwareComponent   @relation(fields: [id], references: [id], onDelete: Cascade)
-  supportedFrequencyId String
-  supportedFrequency   RfFrequency         @relation(fields: [supportedFrequencyId], references: [id])
-  polarizationId       String
-  polarization         AntennaPolarization @relation(fields: [polarizationId], references: [id])
-  connectorId          String
-  connector            AntennaConnector    @relation(fields: [connectorId], references: [id])
-  antennaStyle         String
-  gainDbi              Decimal?
-  cableLengthMm        Decimal?
-
-  vtxConfigs      VtxConfiguration[]
-  receiverConfigs ReceiverConfiguration[]
-}
-
-model Transmitter {
-  id                   Int               @id
-  supportedFrequencies RfFrequency[]
-  component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  rfProtocols          RfProtocol[]
-  externalBayType      String
-
-  antennaCount                  Int                  @default(1)
-  antennaConnectorId            String?
-  antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
-  includedAntennaPolarizationId String?
-  includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
-
-  supportedOs OperatingSystem[] // Implicit Many-to-Many
-}
-
-model Goggles {
-  id                   Int               @id
-  supportedFrequencies RfFrequency[]
-  component            HardwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-  ecosystemId          String
-  ecosystem            VtxEcosystem      @relation(fields: [ecosystemId], references: [id])
-
-  antennaCount                  Int                  @default(1)
-  antennaConnectorId            String?
-  antennaConnector              AntennaConnector?    @relation(fields: [antennaConnectorId], references: [id])
-  includedAntennaPolarizationId String?
-  includedAntennaPolarization   AntennaPolarization? @relation(fields: [includedAntennaPolarizationId], references: [id])
-}
-
-// ==========================================
-// 5. SUB-ASSEMBLIES / LOADOUTS 
+// 7. SUB-ASSEMBLIES / LOADOUTS (AGGREGATES)
 // ==========================================
 
 model FlightStack {
-  id                 Int              @id @default(autoincrement())
-  flightControllerId Int
-  flightController   FlightController @relation(fields: [flightControllerId], references: [id])
-  escId              Int
-  esc                Esc              @relation(fields: [escId], references: [id])
+  id                 String       @id @default(uuid(7))
+  flightControllerId String
+  flightController   Component    @relation("FlightStackFc", fields: [flightControllerId], references: [id])
+  escId              String
+  esc                Component    @relation("FlightStackEsc", fields: [escId], references: [id])
   loadoutName        String?
 
   builds Build[]
 }
 
 model VtxConfiguration {
-  id          Int       @id @default(autoincrement())
-  vtxId       Int
-  vtx         Vtx       @relation(fields: [vtxId], references: [id])
-  antennas    Antenna[] // Implicit Many-to-Many
+  id          String       @id @default(uuid(7))
+  vtxId       String
+  vtx         Component    @relation("VtxConfigVtx", fields: [vtxId], references: [id])
+  antennas    Component[]  @relation("VtxConfigAntennas")
   loadoutName String?
 
   builds Build[]
 }
 
 model ReceiverConfiguration {
-  id          Int       @id @default(autoincrement())
-  receiverId  Int
-  receiver    Receiver  @relation(fields: [receiverId], references: [id])
-  antennas    Antenna[] // Implicit Many-to-Many
+  id          String       @id @default(uuid(7))
+  receiverId  String
+  receiver    Component    @relation("RxConfigRx", fields: [receiverId], references: [id])
+  antennas    Component[]  @relation("RxConfigAntennas")
   loadoutName String?
 
   builds Build[]
 }
 
+
 // ==========================================
-// 6. CORE APPLICATION ENTITY (THE AIRCRAFT)
+// 8. THE AIRCRAFT (BUILD)
 // ==========================================
 
 model Build {
-  id                    Int      @id @default(autoincrement())
+  id                    String       @id
+  resource              Resource @relation(fields: [id], references: [id], onDelete: Cascade)
+  
   name                  String
   crashResistanceRating Int?
   description           String?
   isVerified            Boolean  @default(false)
   miscWeightG           Decimal?
-  createdAt             DateTime @default(now())
 
-  userId                Int?
-  user                  User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId                String?
+  user                  User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  tags Tag[] // Implicit Many-to-Many
+  tags                  Tag[] 
 
-  // Hard Hardware Links
-  frameId     Int
-  frame       Frame     @relation(fields: [frameId], references: [id])
-  motorId     Int
-  motor       Motor     @relation(fields: [motorId], references: [id])
-  propellerId Int
-  propeller   Propeller @relation(fields: [propellerId], references: [id])
-  cameraId    Int
-  camera      Camera    @relation(fields: [cameraId], references: [id])
-  gpsId       Int?
-  gps         Gps?      @relation(fields: [gpsId], references: [id])
+  // Hard Hardware Links to Components
+  frameId               String
+  frame                 Component @relation("BuildFrame", fields: [frameId], references: [id])
+  motorId               String
+  motor                 Component @relation("BuildMotor", fields: [motorId], references: [id])
+  propellerId           String
+  propeller             Component @relation("BuildPropeller", fields: [propellerId], references: [id])
+  cameraId              String
+  camera                Component @relation("BuildCamera", fields: [cameraId], references: [id])
+  gpsId                 String?
+  gps                   Component? @relation("BuildGps", fields: [gpsId], references: [id])
 
   // Sub-Assembly Links
-  flightStackId    Int
-  flightStack      FlightStack            @relation(fields: [flightStackId], references: [id])
-  vtxConfigId      Int?
-  vtxConfig        VtxConfiguration?      @relation(fields: [vtxConfigId], references: [id])
-  receiverConfigId Int?
-  receiverConfig   ReceiverConfiguration? @relation(fields: [receiverConfigId], references: [id])
-
-  reviews         Review[]
-  questions       Question[]
-  collectionItems CollectionItem[]
+  flightStackId         String
+  flightStack           FlightStack            @relation(fields: [flightStackId], references: [id])
+  vtxConfigId           String?
+  vtxConfig             VtxConfiguration?      @relation(fields: [vtxConfigId], references: [id])
+  receiverConfigId      String?
+  receiverConfig        ReceiverConfiguration? @relation(fields: [receiverConfigId], references: [id])
 }
 
-model FrameFcStackMount {
-  frame               Frame             @relation(fields: [frameId], references: [id], onDelete: Cascade)
-  frameId             Int
-  boardMountPattern   BoardMountPattern @relation(fields: [boardMountPatternId], references: [id], onDelete: Cascade)
-  boardMountPatternId String
-
-  @@id([frameId, boardMountPatternId])
-}
-
-model FrameVtxMount {
-  frame               Frame             @relation(fields: [frameId], references: [id], onDelete: Cascade)
-  frameId             Int
-  boardMountPattern   BoardMountPattern @relation(fields: [boardMountPatternId], references: [id], onDelete: Cascade)
-  boardMountPatternId String
-
-  @@id([frameId, boardMountPatternId])
-}
-
-model Software {
-  id          Int                 @id @default(autoincrement())
-  name        String
-  components  SoftwareComponent[]
-}
-
-model SoftwareComponent {
-  id          Int       @id
-  component   Component @relation(fields: [id], references: [id], onDelete: Cascade)
-  
-  softwareId  Int
-  software    Software  @relation(fields: [softwareId], references: [id], onDelete: Cascade)
-  
-  version     String
-  flavorTarget String?
-  
-  fcFirmware  FcFirmware?
-  escFirmware EscFirmware?
-  vtxFirmware VtxFirmware?
-  os          OperatingSystem?
-}
-
-model FcFirmware {
-  id                Int               @id
-  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-
-  compatibleFlightControllers FlightController[] // Implicit Many-to-Many
-}
-
-model EscFirmware {
-  id                Int               @id
-  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-
-  compatibleEscs Esc[] // Implicit Many-to-Many
-}
-
-model VtxFirmware {
-  id                Int               @id
-  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-
-  compatibleVtxs Vtx[] // Implicit Many-to-Many
-}
-
-model OperatingSystem {
-  id                Int               @id
-  softwareComponent SoftwareComponent @relation(fields: [id], references: [id], onDelete: Cascade)
-
-  compatibleTransmitters Transmitter[] // Implicit Many-to-Many
-}
 
 // ==========================================
-// 7. SOCIAL INTERACTIONS, REPUTATION & COLLECTIONS
+// 9. SOCIAL INTERACTIONS & COLLECTIONS
 // ==========================================
-
-// ------------------------------------------
-// Reviews & Review Comments (Steam-Style)
-// ------------------------------------------
 
 model Review {
-  id             Int             @id @default(autoincrement())
-  userId         Int
+  id             String       @id @default(uuid(7))
+  userId         String
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Polymorphic Target (Enforced via app logic & check constraint)
-  buildId        Int?
-  build          Build?          @relation(fields: [buildId], references: [id], onDelete: Cascade)
-  componentId    Int?
-  component      Component?      @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  // Universal target
+  resourceId     String
+  resource       Resource        @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 
   isRecommended  Boolean
   body           String
@@ -689,29 +522,27 @@ model Review {
   votes          ReviewVote[]
   comments       ReviewComment[]
 
-  @@unique([userId, buildId])
-  @@unique([userId, componentId])
-  @@index([buildId, isRecommended])
-  @@index([componentId, isRecommended])
+  @@unique([userId, resourceId])
+  @@index([resourceId, isRecommended])
 }
 
 model ReviewVote {
-  id        Int      @id @default(autoincrement())
-  reviewId  Int
+  id        String       @id @default(uuid(7))
+  reviewId  String
   review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isHelpful Boolean  // true = Helpful, false = Unhelpful
+  isHelpful Boolean  
   createdAt DateTime @default(now())
 
   @@unique([userId, reviewId])
 }
 
 model ReviewComment {
-  id        Int       @id @default(autoincrement())
-  reviewId  Int
+  id        String       @id @default(uuid(7))
+  reviewId  String
   review    Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    String
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   body      String
   deletedAt DateTime?
@@ -721,24 +552,18 @@ model ReviewComment {
   @@index([reviewId, createdAt])
 }
 
-// ------------------------------------------
-// Technical Q&A (StackOverflow-Style)
-// ------------------------------------------
-
 model Question {
-  id          Int            @id @default(autoincrement())
-  userId      Int
+  id          String       @id @default(uuid(7))
+  userId      String
   user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Polymorphic Target
-  buildId     Int?
-  build       Build?         @relation(fields: [buildId], references: [id], onDelete: Cascade)
-  componentId Int?
-  component   Component?     @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  // Universal target
+  resourceId  String
+  resource    Resource       @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 
   title       String
   body        String
-  netScore    Int            @default(0) // Denormalized for fast sorting
+  netScore    Int            @default(0) 
   isEdited    Boolean        @default(false)
   deletedAt   DateTime?
   createdAt   DateTime       @default(now())
@@ -748,21 +573,20 @@ model Question {
   votes       QuestionVote[]
   comments    QuestionComment[]
 
-  @@index([buildId, netScore])
-  @@index([componentId, netScore])
+  @@index([resourceId, netScore])
 }
 
 model Answer {
-  id                Int             @id @default(autoincrement())
-  questionId        Int
+  id                String       @id @default(uuid(7))
+  questionId        String
   question          Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  userId            Int
+  userId            String
   user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   body              String
-  netScore          Int             @default(0) // Denormalized for fast sorting
-  isAcceptedByAsker Boolean         @default(false) // Checkmark from Question Asker
-  isAuthorEndorsed  Boolean         @default(false) // Star badge from Build Author
+  netScore          Int             @default(0) 
+  isAcceptedByAsker Boolean         @default(false) 
+  isAuthorEndorsed  Boolean         @default(false) 
   isEdited          Boolean         @default(false)
   deletedAt         DateTime?
   createdAt         DateTime        @default(now())
@@ -775,103 +599,76 @@ model Answer {
 }
 
 model QuestionVote {
-  id         Int      @id @default(autoincrement())
-  questionId Int
+  id         String       @id @default(uuid(7))
+  questionId String
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  userId     Int
+  userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isUpvote   Boolean  // true = Upvote (+1), false = Downvote (-1)
+  isUpvote   Boolean  
   createdAt  DateTime @default(now())
 
   @@unique([userId, questionId])
 }
 
 model AnswerVote {
-  id        Int      @id @default(autoincrement())
-  answerId  Int
+  id        String       @id @default(uuid(7))
+  answerId  String
   answer    Answer   @relation(fields: [answerId], references: [id], onDelete: Cascade)
-  userId    Int
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isUpvote  Boolean  // true = Upvote (+1), false = Downvote (-1)
+  isUpvote  Boolean  
   createdAt DateTime @default(now())
 
   @@unique([userId, answerId])
 }
 
 model QuestionComment {
-  id         Int       @id @default(autoincrement())
-  questionId Int
+  id         String       @id @default(uuid(7))
+  questionId String
   question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  userId     Int
+  userId     String
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   body       String
   deletedAt  DateTime?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-
-  @@index([questionId, createdAt])
 }
 
 model AnswerComment {
-  id        Int       @id @default(autoincrement())
-  answerId  Int
-  answer    Answer    @relation(fields: [answerId], references: [id], onDelete: Cascade)
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  body      String
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  @@index([answerId, createdAt])
+  id         String       @id @default(uuid(7))
+  answerId   String
+  answer     Answer    @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body       String
+  deletedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
-
-// ------------------------------------------
-// Reputation & User Karma Ledger
-// ------------------------------------------
-
-model UserReputation {
-  userId    Int      @id
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  score     Int      @default(0) // Total earned reputation (minimum 0)
-  updatedAt DateTime @updatedAt
-}
-
-// ------------------------------------------
-// Favorites & Collections
-// ------------------------------------------
 
 model Collection {
-  id             Int              @id @default(autoincrement())
-  userId         Int
-  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name           String
-  description    String?
-  isPublic       Boolean          @default(false)
-  isDefaultLiked Boolean          @default(false)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-
-  items          CollectionItem[]
-
-  @@index([userId, isDefaultLiked])
-  @@index([userId, isPublic])
+  id          String       @id @default(uuid(7))
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  isPublic    Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  
+  items       CollectionItem[]
 }
 
 model CollectionItem {
-  id           Int        @id @default(autoincrement())
-  collectionId Int
+  id           String       @id @default(uuid(7))
+  collectionId String
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  
+  // Universal target
+  resourceId   String
+  resource     Resource   @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 
-  // Polymorphic Target (Build or Component)
-  buildId      Int?
-  build        Build?     @relation(fields: [buildId], references: [id], onDelete: Cascade)
-  componentId  Int?
-  component    Component? @relation(fields: [componentId], references: [id], onDelete: Cascade)
+  addedAt      DateTime   @default(now())
 
-  createdAt    DateTime   @default(now())
-
-  @@unique([collectionId, buildId])
-  @@unique([collectionId, componentId])
+  @@unique([collectionId, resourceId])
 }
-

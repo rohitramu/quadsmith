@@ -1,16 +1,18 @@
-import "dotenv/config";
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, ComponentType } from '@prisma/client';
+import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import pg from 'pg';
+import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const connectionString = process.env.DATABASE_URL;
-const pool = new pg.Pool({ connectionString });
+const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
@@ -20,511 +22,486 @@ async function main() {
   const data = JSON.parse(rawData);
 
   console.log('Clearing database...');
-  // Wipe in correct order to respect constraints
-  await prisma.build.deleteMany();
-  await prisma.flightStack.deleteMany();
-  await prisma.receiverConfiguration.deleteMany();
-  await prisma.vtxConfiguration.deleteMany();
-  await prisma.incompatibilityComponent.deleteMany();
-  await prisma.componentCompany.deleteMany();
-  await prisma.referenceLink.deleteMany();
-  
-  await prisma.frameFcStackMount.deleteMany();
-  await prisma.frameVtxMount.deleteMany();
-
-  await prisma.antenna.deleteMany();
-  await prisma.gps.deleteMany();
-  await prisma.receiver.deleteMany();
-  await prisma.camera.deleteMany();
-  await prisma.vtx.deleteMany();
-  await prisma.esc.deleteMany();
-  await prisma.flightController.deleteMany();
-  await prisma.propeller.deleteMany();
-  await prisma.motor.deleteMany();
-  await prisma.frame.deleteMany();
-  await prisma.battery.deleteMany();
-  await prisma.goggles.deleteMany();
-  await prisma.transmitter.deleteMany();
-
-  await prisma.hardwareComponent.deleteMany();
-  await prisma.softwareComponent.deleteMany();
-  await prisma.component.deleteMany();
-
-  await prisma.company.deleteMany();
-  await prisma.rfFrequency.deleteMany();
-  await prisma.rfProtocol.deleteMany();
-  await prisma.antennaPolarization.deleteMany();
-  await prisma.antennaConnector.deleteMany();
-  await prisma.batteryConnector.deleteMany();
-  await prisma.vtxEcosystem.deleteMany();
-  await prisma.tag.deleteMany();
-  await prisma.motorMountPattern.deleteMany();
-  await prisma.boardMountPattern.deleteMany();
-  await prisma.batteryChemistry.deleteMany();
-  await prisma.incompatibilityIssue.deleteMany();
+  await prisma.resource.deleteMany();
 
   console.log('Seeding lookup tables...');
+  
+  // Maps to store name -> UUIDv7 String ID
+  const mapCompany = new Map<string, string>();
   if (data.companies) {
     for (const c of data.companies) {
-      await prisma.company.create({ data: { name: c.name } });
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'COMPANY',
+          company: { create: { name: c.name, websiteUrl: c.websiteUrl } }
+        },
+        include: { company: true }
+      });
+      mapCompany.set(c.name, res.company!.id);
+      if (c.id) mapCompany.set(c.id, res.company!.id);
     }
   }
+
+  const mapFreq = new Map<string, string>();
   if (data.rfFrequencies) {
-    for (const e of data.rfFrequencies) await prisma.rfFrequency.create({ data: e });
+    for (const e of data.rfFrequencies) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'RF_FREQUENCY',
+          rfFrequency: { create: { name: e.id } }
+        },
+        include: { rfFrequency: true }
+      });
+      mapFreq.set(e.id, res.rfFrequency!.id);
+    }
   }
+
+  const mapProtocol = new Map<string, string>();
   if (data.rfProtocols) {
-    for (const e of data.rfProtocols) await prisma.rfProtocol.create({ data: e });
+    for (const e of data.rfProtocols) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'RF_PROTOCOL',
+          rfProtocol: { create: { name: e.id } }
+        },
+        include: { rfProtocol: true }
+      });
+      mapProtocol.set(e.id, res.rfProtocol!.id);
+    }
   }
+
+  const mapPol = new Map<string, string>();
   if (data.antennaPolarizations) {
-    for (const e of data.antennaPolarizations) await prisma.antennaPolarization.create({ data: e });
+    for (const e of data.antennaPolarizations) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'ANTENNA_POLARIZATION',
+          antennaPolarization: { create: { name: e.id } }
+        },
+        include: { antennaPolarization: true }
+      });
+      mapPol.set(e.id, res.antennaPolarization!.id);
+    }
   }
+
+  const mapConn = new Map<string, string>();
   if (data.antennaConnectors) {
-    for (const e of data.antennaConnectors) await prisma.antennaConnector.create({ data: e });
+    for (const e of data.antennaConnectors) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'ANTENNA_CONNECTOR',
+          antennaConnector: { create: { name: e.id } }
+        },
+        include: { antennaConnector: true }
+      });
+      mapConn.set(e.id, res.antennaConnector!.id);
+    }
   }
+
+  const mapBattConn = new Map<string, string>();
   if (data.batteryConnectors) {
-    for (const e of data.batteryConnectors) await prisma.batteryConnector.create({ data: e });
+    for (const e of data.batteryConnectors) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'BATTERY_CONNECTOR',
+          batteryConnector: { create: { name: e.id, maxCurrentA: e.maxCurrentA, maxVoltageV: e.maxVoltageV } }
+        },
+        include: { batteryConnector: true }
+      });
+      mapBattConn.set(e.id, res.batteryConnector!.id);
+    }
   }
+
+  const mapEcosystem = new Map<string, string>();
   if (data.vtxEcosystems) {
-    for (const e of data.vtxEcosystems) await prisma.vtxEcosystem.create({ data: e });
+    for (const e of data.vtxEcosystems) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'VTX_ECOSYSTEM',
+          vtxEcosystem: { create: { name: e.id } }
+        },
+        include: { vtxEcosystem: true }
+      });
+      mapEcosystem.set(e.id, res.vtxEcosystem!.id);
+    }
   }
+
+  const mapTag = new Map<string, string>();
   if (data.tags) {
-    for (const e of data.tags) await prisma.tag.create({ data: e });
+    for (const e of data.tags) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'TAG',
+          tag: { create: { name: e.id, description: e.description } }
+        },
+        include: { tag: true }
+      });
+      mapTag.set(e.id, res.tag!.id);
+    }
   }
+
+  const mapMotorMount = new Map<string, string>();
   if (data.motorMountPatterns) {
-    for (const e of data.motorMountPatterns) await prisma.motorMountPattern.create({ data: e });
+    for (const e of data.motorMountPatterns) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'MOTOR_MOUNT_PATTERN',
+          motorMountPattern: { create: { name: e.id } }
+        },
+        include: { motorMountPattern: true }
+      });
+      mapMotorMount.set(e.id, res.motorMountPattern!.id);
+    }
   }
+
+  const mapBoardMount = new Map<string, string>();
   if (data.boardMountPatterns) {
-    for (const e of data.boardMountPatterns) await prisma.boardMountPattern.create({ data: e });
+    for (const e of data.boardMountPatterns) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'BOARD_MOUNT_PATTERN',
+          boardMountPattern: { create: { name: e.id } }
+        },
+        include: { boardMountPattern: true }
+      });
+      mapBoardMount.set(e.id, res.boardMountPattern!.id);
+    }
   }
+
+  const mapBattChem = new Map<string, string>();
   if (data.batteryChemistries) {
     for (const e of data.batteryChemistries) {
-    if (e.id === "LiPo") await prisma.batteryChemistry.create({ data: { name: "LiPo", nominalVoltagePerCellV: 3.7, maxVoltagePerCellV: 4.2, minVoltagePerCellV: 3.2 } });
-    if (e.id === "LiHV") await prisma.batteryChemistry.create({ data: { name: "LiHV", nominalVoltagePerCellV: 3.8, maxVoltagePerCellV: 4.35, minVoltagePerCellV: 3.2 } });
-    if (e.id === "Li-Ion") await prisma.batteryChemistry.create({ data: { name: "Li-Ion", nominalVoltagePerCellV: 3.6, maxVoltagePerCellV: 4.2, minVoltagePerCellV: 2.5 } });
-  }
-  }
-  if (data.incompatibilityIssues) {
-    for (const e of data.incompatibilityIssues) await prisma.incompatibilityIssue.create({ data: e });
-  }
-
-  console.log(`Seeding ${data.hardwareComponents.length} hardware components...`);
-  
-  const componentIdMap = new Map<string, number>();
-  
-  const allCompanies = await prisma.company.findMany();
-  const getCompanyId = (name: string) => {
-    const c = allCompanies.find(c => c.name === name);
-    return c ? c.id : null;
-  };
-
-  
-  const allComponents = [...(data.hardwareComponents || []), ...(data.softwareComponents || [])];
-  console.log(`Seeding ${allComponents.length} components...`);
-
-  for (const comp of allComponents) {
-    const companiesConnect = (comp.referenceLinks || []).map((l: any) => getCompanyId(l.companyName)).filter((id: any) => id !== null);
-    const uniqueCompanyIds = [...new Set(companiesConnect)] as number[];
-
-    
-    const baseComp = await prisma.component.create({
-      data: {
-        name: comp.name || comp.modelName,
-        releaseYear: comp.releaseYear,
-        releaseMonth: comp.releaseMonth,
-        releaseDay: comp.releaseDay,
-        companies: {
-          create: uniqueCompanyIds.map((id) => ({
-            company: { connect: { id } }
-          }))
-        },
-        referenceLinks: {
-          create: (comp.referenceLinks || []).map((l: any) => ({
-            url: l.url,
-            linkType: l.linkType,
-            title: l.title || l.linkType,
-            description: l.description,
-            companyId: getCompanyId(l.companyName)
-          }))
-        }
-      }
-    });
-
-    componentIdMap.set(comp.name || comp.modelName, baseComp.id);
-
-    
-    
-
-    if (comp.isSoftware) {
-      await prisma.softwareComponent.create({
+      const name = e.name || e.id;
+      const res = await prisma.resource.create({
         data: {
-          id: baseComp.id,
-          version: comp.version
-        }
-      });
-
-      if (comp.fcFirmware) {
-        await prisma.fcFirmware.create({ data: { id: baseComp.id } });
-      } else if (comp.escFirmware) {
-        await prisma.escFirmware.create({ data: { id: baseComp.id } });
-      } else if (comp.vtxFirmware) {
-        await prisma.vtxFirmware.create({ data: { id: baseComp.id } });
-      } else if (comp.os) {
-        await prisma.operatingSystem.create({ data: { id: baseComp.id } });
-      }
-      // Bare SoftwareComponents (e.g. configurators) need no sub-type row.
-
-      continue;
-    }
-
-
-    const hw = await prisma.hardwareComponent.create({
-      data: {
-        id: baseComp.id,
-        weightG: comp.weightG
-      }
-    });
-
-
-    
-
-    if (comp.frame) {
-      await prisma.frame.create({
-        data: {
-          id: baseComp.id,
-          wheelbaseMm: comp.frame.wheelbaseMm,
-          
-          
-          
-          
-          maxPropSizeMm: comp.frame.maxPropSizeMm || 5,
-          cameraMountWidthMm: comp.frame.cameraMountWidthMm || 19,
-          motorMountPatterns: { connect: (comp.frame.motorMounts || []).map((id: string) => ({ id })) },
-          fcStackMounts: {
-             create: (comp.frame.fcStackMounts || []).map((id: string) => ({ boardMountPatternId: id }))
-          },
-          vtxMounts: {
-             create: (comp.frame.vtxMounts || []).map((id: string) => ({ boardMountPatternId: id }))
+          resourceType: 'BATTERY_CHEMISTRY',
+          batteryChemistry: {
+            create: {
+              name: name,
+              nominalVoltagePerCellV: e.nominalVoltagePerCellV || 3.7,
+              maxVoltagePerCellV: e.maxVoltagePerCellV || 4.2,
+              minVoltagePerCellV: e.minVoltagePerCellV || 3.2
+            }
           }
-        }
+        },
+        include: { batteryChemistry: true }
       });
+      mapBattChem.set(name, res.batteryChemistry!.id);
+      mapBattChem.set(e.id, res.batteryChemistry!.id);
     }
+  }
 
-    if (comp.motor) {
-      await prisma.motor.create({
-        data: {
-          id: baseComp.id,
+  console.log('Seeding Hardware (Protobuf JSONB)...');
+  const compMap = new Map<string, string>();
+
+  if (data.hardwareComponents) {
+    for (const comp of data.hardwareComponents) {
+      let compType: ComponentType = ComponentType.FRAME;
+      const profileData: Record<string, any> = {};
+
+      if (comp.weightG != null) {
+        profileData.weightG = comp.weightG;
+      }
+
+      if (comp.frame) {
+        compType = ComponentType.FRAME;
+        profileData.frame = {
+          wheelbaseMm: comp.frame.wheelbaseMm || 0,
+          maxPropSizeMm: comp.frame.maxPropSizeMm || 0,
+          cameraMountWidthMm: comp.frame.cameraMountWidthMm || 0,
+          maxBatteryLengthMm: comp.frame.maxBatteryLengthMm,
+          maxBatteryWidthMm: comp.frame.maxBatteryWidthMm,
+          maxBatteryHeightMm: comp.frame.maxBatteryHeightMm,
+          fcStackMountIds: (comp.frame.fcStackMounts || []).map((m: any) => mapBoardMount.get(m.id)).filter(Boolean),
+          vtxMountIds: (comp.frame.vtxMounts || []).map((m: any) => mapBoardMount.get(m.id)).filter(Boolean),
+          motorMountPatternIds: (comp.frame.motorMountPatterns || []).map((m: any) => mapMotorMount.get(m.id)).filter(Boolean)
+        };
+      } else if (comp.motor) {
+        compType = ComponentType.MOTOR;
+        profileData.motor = {
           statorSize: comp.motor.statorSize || "Unknown",
-          kvRating: comp.motor.kv || 0,
+          kvRating: comp.motor.kvRating || 0,
           inputVoltageMinV: comp.motor.inputVoltageMinV || 0,
           inputVoltageMaxV: comp.motor.inputVoltageMaxV || 0,
-          mountPatterns: { connect: (comp.motor.mountPatterns || []).map((id: string) => ({ id })) },
-          mountBoltSize: comp.motor.mountBoltSize || "M2",
+          mountBoltSize: comp.motor.mountBoltSize || "Unknown",
           shaftType: comp.motor.shaftType || "Unknown",
-          maxCurrentA: comp.motor.maxCurrentA
-        }
-      });
-    }
-
-    if (comp.propeller) {
-      await prisma.propeller.create({
-        data: {
-          id: baseComp.id,
-          diameterMm: comp.propeller.diameterMm,
-          pitchMm: comp.propeller.pitchMm,
-          bladeCount: comp.propeller.bladeCount,
-          mountType: comp.propeller.mountType || "M5"
-        }
-      });
-    }
-
-    if (comp.flightController) {
-      await prisma.flightController.create({
-        data: {
-          id: baseComp.id,
+          maxCurrentA: comp.motor.maxCurrentA,
+          mountPatternIds: (comp.motor.mountPatterns || []).map((m: any) => mapMotorMount.get(m.id)).filter(Boolean)
+        };
+      } else if (comp.propeller) {
+        compType = ComponentType.PROPELLER;
+        profileData.propeller = {
+          diameterMm: comp.propeller.diameterMm || 0,
+          pitchMm: comp.propeller.pitchMm || 0,
+          bladeCount: comp.propeller.bladeCount || 0,
+          mountType: comp.propeller.mountType || "Unknown",
+          recommendedStators: comp.propeller.recommendedStator || []
+        };
+      } else if (comp.flightController) {
+        compType = ComponentType.FLIGHT_CONTROLLER;
+        profileData.flightController = {
+          boardHeightMm: comp.flightController.boardHeightMm || 0,
           mcuProcessor: comp.flightController.mcuProcessor || "Unknown",
           gyroSensor: comp.flightController.gyroSensor,
-          mountPatterns: { connect: (comp.flightController.mountPatterns || []).map((id: string) => ({ id })) },
-          boardHeightMm: comp.flightController.boardHeightMm || 0,
           inputVoltageMinV: comp.flightController.inputVoltageMinV || 0,
           inputVoltageMaxV: comp.flightController.inputVoltageMaxV || 0,
-          escInterface: comp.flightController.escInterface || "Unknown"
-        }
-      });
-    }
-    
-    if (comp.esc) {
-       await prisma.esc.create({
-         data: {
-           id: baseComp.id,
-           continuousCurrentA: comp.esc.continuousCurrentA || 0,
-           burstCurrentA: comp.esc.burstCurrentA || 0,
-           formFactor: comp.esc.formFactor || "FOUR_IN_ONE",
-           mountPatterns: { connect: (comp.esc.mountPatterns || []).map((id: string) => ({ id })) },
-           boardHeightMm: comp.esc.boardHeightMm || 0,
-           inputVoltageMinV: comp.esc.inputVoltageMinV || 0,
-           inputVoltageMaxV: comp.esc.inputVoltageMaxV || 0
-         }
-       });
-    }
+          escInterface: comp.flightController.escInterface || "DShot300",
+          mountPatternIds: (comp.flightController.mountPatterns || []).map((m: any) => mapBoardMount.get(m.id)).filter(Boolean),
+          becOutputsJson: JSON.stringify(comp.flightController.becOutputs || {}),
+          uartConnectionsJson: JSON.stringify(comp.flightController.uartConnections || {})
+        };
+      } else if (comp.esc) {
+        compType = ComponentType.ESC;
+        let ff = 'FOUR_IN_ONE';
+        if (comp.esc.formFactor === 'Individual') ff = 'INDIVIDUAL';
+        if (comp.esc.formFactor === 'INTEGRATED_IN_FC') ff = 'INTEGRATED_IN_FC';
 
-    if (comp.vtx) {
-       await prisma.vtx.create({
-         data: {
-           id: baseComp.id,
-           ecosystemId: comp.vtx.ecosystemId,
-           videoConnectionStandard: comp.vtx.videoConnectionStandard,
-           boardHeightMm: comp.vtx.boardHeightMm || 0,
-           inputVoltageMinV: comp.vtx.inputVoltageMinV || 0,
-           inputVoltageMaxV: comp.vtx.inputVoltageMaxV || 0,
-           maxPowerMw: comp.vtx.maxPowerMw,
-           antennaCount: comp.vtx.antennaCount || 1,
-           antennaConnectorId: comp.vtx.antennaConnectorId,
-           includedAntennaPolarizationId: comp.vtx.includedAntennaPolarizationId,
-           mountPatterns: { connect: (comp.vtx.mountPatterns || []).map((id: string) => ({ id })) },
-           supportedFrequencies: { connect: (comp.vtx.supportedFrequencies || []).map((id: string) => ({ id })) }
-         }
-       });
-    }
-    
-    if (comp.camera) {
-       await prisma.camera.create({
-         data: {
-           id: baseComp.id,
-           ecosystemId: comp.camera.ecosystemId,
-           videoConnectionStandard: comp.camera.videoConnectionStandard,
-           widthMm: comp.camera.widthMm || 14,
-           heightMm: comp.camera.heightMm || 14,
-           depthMm: comp.camera.depthMm || 14,
-           inputVoltageMinV: comp.camera.inputVoltageMinV || 0,
-           inputVoltageMaxV: comp.camera.inputVoltageMaxV || 0,
-           mountingScrewSize: comp.camera.mountingScrewSize || "M2",
-           aspectRatio: comp.camera.aspectRatio || "16:9"
-         }
-       });
-    }
-    
-    if (comp.receiver) {
-       await prisma.receiver.create({
-         data: {
-           id: baseComp.id,
-           outputProtocol: comp.receiver.outputProtocol || "Unknown",
-           inputVoltageMinV: comp.receiver.inputVoltageMinV || 0,
-           inputVoltageMaxV: comp.receiver.inputVoltageMaxV || 0,
-           antennaCount: comp.receiver.antennaCount || 1,
-           antennaConnectorId: comp.receiver.antennaConnectorId,
-           includedAntennaPolarizationId: comp.receiver.includedAntennaPolarizationId,
-           rfProtocols: { connectOrCreate: (comp.receiver.outputProtocol ? [{ where: { id: comp.receiver.outputProtocol }, create: { id: comp.receiver.outputProtocol } }] : []) },
-           supportedFrequencies: { connect: (comp.receiver.supportedFrequencies || []).map((id: string) => ({ id })) }
-         }
-       });
-    }
-
-    if (comp.gps) {
-       await prisma.gps.create({
-         data: {
-           id: baseComp.id,
-           chipset: comp.gps.chipset || "Unknown",
-           hasCompass: comp.gps.hasCompass || false,
-           inputVoltageMinV: comp.gps.inputVoltageMinV || 0,
-           inputVoltageMaxV: comp.gps.inputVoltageMaxV || 0,
-           lengthMm: comp.gps.lengthMm,
-           widthMm: comp.gps.widthMm,
-           heightMm: comp.gps.heightMm
-         }
-       });
-    }
-
-    if (comp.antenna) {
-       await prisma.antenna.create({
-         data: {
-           id: baseComp.id,
-           supportedFrequencyId: comp.antenna.supportedFrequencyId || "5.8GHz",
-           polarizationId: comp.antenna.polarizationId || "RHCP",
-           connectorId: comp.antenna.connectorId || "SMA",
-           antennaStyle: comp.antenna.antennaStyle || "Omni",
-           gainDbi: comp.antenna.gainDbi,
-           cableLengthMm: comp.antenna.cableLengthMm
-         }
-       });
-    }
-
-    if (comp.battery) {
-       const chem = await prisma.batteryChemistry.findFirst({ where: { name: "LiPo" } });
-       await prisma.battery.create({
-         data: {
-           id: baseComp.id,
-           capacityMah: comp.battery.capacityMah,
-           cellCountS: comp.battery.cellCountS || comp.battery.cellCount || 1,
-           cellCountP: comp.battery.cellCountP || 1,
-           continuousCRating: comp.battery.continuousCRating || comp.battery.cRating || 0,
-           
-           connectorTypeId: comp.battery.connectorTypeId || "XT60",
-             chemistryId: chem!.id,
-           lengthMm: comp.battery.lengthMm,
-           widthMm: comp.battery.widthMm,
-           heightMm: comp.battery.heightMm
-         }
-       });
-    }
-    
-    if (comp.goggles) {
-      await prisma.goggles.create({
-        data: {
-          id: baseComp.id,
-          ecosystemId: comp.goggles.ecosystemId || "Analog",
-          antennaCount: comp.goggles.antennaCount || 2,
-          antennaConnectorId: comp.goggles.antennaConnectorId,
-          includedAntennaPolarizationId: comp.goggles.includedAntennaPolarizationId
-        }
-      });
-    }
-    
-    if (comp.transmitter) {
-      await prisma.transmitter.create({
-        data: {
-          id: baseComp.id,
-          externalBayType: comp.transmitter.externalBayType || "Nano",
+        profileData.esc = {
+          formFactor: ff,
+          boardHeightMm: comp.esc.boardHeightMm || 0,
+          continuousCurrentA: comp.esc.continuousCurrentA || 0,
+          burstCurrentA: comp.esc.burstCurrentA || 0,
+          inputVoltageMinV: comp.esc.inputVoltageMinV || 0,
+          inputVoltageMaxV: comp.esc.inputVoltageMaxV || 0,
+          mountPatternIds: (comp.esc.mountPatterns || []).map((m: any) => mapBoardMount.get(m.id)).filter(Boolean)
+        };
+      } else if (comp.battery) {
+        compType = ComponentType.BATTERY;
+        profileData.battery = {
+          chemistryId: mapBattChem.get(comp.battery.chemistryId) || "",
+          cellCountS: comp.battery.cellCountS || 0,
+          cellCountP: comp.battery.cellCountP || 1,
+          capacityMah: comp.battery.capacityMah || 0,
+          continuousCRating: comp.battery.continuousCRating || 0,
+          connectorTypeId: mapBattConn.get(comp.battery.connectorTypeId) || "",
+          lengthMm: comp.battery.lengthMm,
+          widthMm: comp.battery.widthMm,
+          heightMm: comp.battery.heightMm
+        };
+      } else if (comp.vtx) {
+        compType = ComponentType.VTX;
+        profileData.vtx = {
+          ecosystemId: mapEcosystem.get(comp.vtx.ecosystemId) || "",
+          videoConnectionStandard: comp.vtx.videoConnectionStandard,
+          boardHeightMm: comp.vtx.boardHeightMm || 0,
+          inputVoltageMinV: comp.vtx.inputVoltageMinV || 0,
+          inputVoltageMaxV: comp.vtx.inputVoltageMaxV || 0,
+          maxPowerMw: comp.vtx.maxPowerMw,
+          antennaCount: comp.vtx.antennaCount || 1,
+          antennaConnectorId: mapConn.get(comp.vtx.antennaConnectorId),
+          includedAntennaPolarizationId: mapPol.get(comp.vtx.includedAntennaPolarizationId),
+          mountPatternIds: (comp.vtx.mountPatterns || []).map((m: any) => mapBoardMount.get(m.id)).filter(Boolean),
+          supportedFrequencyIds: (comp.vtx.supportedFrequencies || []).map((f: any) => mapFreq.get(f.id)).filter(Boolean)
+        };
+      } else if (comp.camera) {
+        compType = ComponentType.CAMERA;
+        profileData.camera = {
+          ecosystemId: mapEcosystem.get(comp.camera.ecosystemId) || "",
+          videoConnectionStandard: comp.camera.videoConnectionStandard,
+          widthMm: comp.camera.widthMm || 0,
+          heightMm: comp.camera.heightMm || 0,
+          depthMm: comp.camera.depthMm || 0,
+          inputVoltageMinV: comp.camera.inputVoltageMinV || 0,
+          inputVoltageMaxV: comp.camera.inputVoltageMaxV || 0,
+          mountingScrewSize: comp.camera.mountingScrewSize || "M2",
+          aspectRatio: comp.camera.aspectRatio || "16:9"
+        };
+      } else if (comp.receiver) {
+        compType = ComponentType.RECEIVER;
+        profileData.receiver = {
+          outputProtocol: comp.receiver.outputProtocol || "CRSF",
+          inputVoltageMinV: comp.receiver.inputVoltageMinV || 0,
+          inputVoltageMaxV: comp.receiver.inputVoltageMaxV || 0,
+          antennaCount: comp.receiver.antennaCount || 1,
+          antennaConnectorId: mapConn.get(comp.receiver.antennaConnectorId),
+          includedAntennaPolarizationId: mapPol.get(comp.receiver.includedAntennaPolarizationId),
+          supportedFrequencyIds: (comp.receiver.supportedFrequencies || []).map((f: any) => mapFreq.get(f.id)).filter(Boolean),
+          rfProtocolIds: (comp.receiver.rfProtocols || []).map((p: any) => mapProtocol.get(p.id)).filter(Boolean)
+        };
+      } else if (comp.gps) {
+        compType = ComponentType.GPS;
+        profileData.gps = {
+          chipset: comp.gps.chipset || "Unknown",
+          hasCompass: !!comp.gps.hasCompass,
+          inputVoltageMinV: comp.gps.inputVoltageMinV || 0,
+          inputVoltageMaxV: comp.gps.inputVoltageMaxV || 0,
+          lengthMm: comp.gps.lengthMm,
+          widthMm: comp.gps.widthMm,
+          heightMm: comp.gps.heightMm
+        };
+      } else if (comp.antenna) {
+        compType = ComponentType.ANTENNA;
+        profileData.antenna = {
+          supportedFrequencyId: mapFreq.get(comp.antenna.supportedFrequencyId) || "",
+          polarizationId: mapPol.get(comp.antenna.polarizationId) || "",
+          connectorId: mapConn.get(comp.antenna.connectorId) || "",
+          antennaStyle: comp.antenna.antennaStyle || "Linear",
+          gainDbi: comp.antenna.gainDbi,
+          cableLengthMm: comp.antenna.cableLengthMm
+        };
+      } else if (comp.transmitter) {
+        compType = ComponentType.TRANSMITTER;
+        profileData.transmitter = {
+          externalBayType: comp.transmitter.externalBayType || "None",
           antennaCount: comp.transmitter.antennaCount || 1,
-          antennaConnectorId: comp.transmitter.antennaConnectorId,
-          rfProtocols: { connect: (comp.transmitter.protocol ? [{ id: comp.transmitter.protocol }] : []) }
+          antennaConnectorId: mapConn.get(comp.transmitter.antennaConnectorId),
+          includedAntennaPolarizationId: mapPol.get(comp.transmitter.includedAntennaPolarizationId),
+          supportedFrequencyIds: (comp.transmitter.supportedFrequencies || []).map((f: any) => mapFreq.get(f.id)).filter(Boolean),
+          rfProtocolIds: (comp.transmitter.rfProtocols || []).map((p: any) => mapProtocol.get(p.id)).filter(Boolean)
+        };
+      } else if (comp.goggles) {
+        compType = ComponentType.GOGGLES;
+        profileData.goggles = {
+          ecosystemId: mapEcosystem.get(comp.goggles.ecosystemId) || "",
+          antennaCount: comp.goggles.antennaCount || 2,
+          antennaConnectorId: mapConn.get(comp.goggles.antennaConnectorId),
+          includedAntennaPolarizationId: mapPol.get(comp.goggles.includedAntennaPolarizationId),
+          supportedFrequencyIds: (comp.goggles.supportedFrequencies || []).map((f: any) => mapFreq.get(f.id)).filter(Boolean)
+        };
+      }
+
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'COMPONENT',
+          component: {
+            create: {
+              name: comp.modelName,
+              type: compType,
+              releaseYear: comp.releaseYear,
+              data: profileData,
+            }
+          }
+        },
+        include: { component: true }
+      });
+
+      const compId = res.component!.id;
+      compMap.set(comp.modelName, compId);
+
+      if (comp.companies) {
+        for (const c of comp.companies) {
+          const cid = mapCompany.get(c.companyName);
+          if (cid) {
+            await prisma.componentCompany.create({
+              data: { componentId: compId, companyId: cid }
+            });
+          }
         }
-      });
+      }
     }
   }
 
-  // Second pass: wire up software ↔ hardware compatibility M2M links
-  console.log('Wiring firmware compatibility...');
-  const allSoftware = [...(data.softwareComponents || [])];
-  for (const comp of allSoftware) {
-    const swId = componentIdMap.get(comp.name);
-    if (!swId) continue;
-
-    if (comp.fcFirmware?.compatibleFlightControllerNames?.length) {
-      const fcIds = (comp.fcFirmware.compatibleFlightControllerNames as string[])
-        .map((n: string) => componentIdMap.get(n))
-        .filter(Boolean) as number[];
-      await prisma.fcFirmware.update({
-        where: { id: swId },
-        data: { compatibleFlightControllers: { connect: fcIds.map(id => ({ id })) } }
+  console.log('Seeding Software Families...');
+  const softwareFamilyMap = new Map<string, string>();
+  if (data.softwareFamilies) {
+    for (const sf of data.softwareFamilies) {
+      const res = await prisma.resource.create({
+        data: {
+          resourceType: 'SOFTWARE_FAMILY',
+          softwareFamily: { create: { name: sf.name } }
+        },
+        include: { softwareFamily: true }
       });
-    }
-
-    if (comp.escFirmware?.compatibleEscNames?.length) {
-      const escIds = (comp.escFirmware.compatibleEscNames as string[])
-        .map((n: string) => componentIdMap.get(n))
-        .filter(Boolean) as number[];
-      await prisma.escFirmware.update({
-        where: { id: swId },
-        data: { compatibleEscs: { connect: escIds.map(id => ({ id })) } }
-      });
-    }
-
-    if (comp.vtxFirmware?.compatibleVtxNames?.length) {
-      const vtxIds = (comp.vtxFirmware.compatibleVtxNames as string[])
-        .map((n: string) => componentIdMap.get(n))
-        .filter(Boolean) as number[];
-      await prisma.vtxFirmware.update({
-        where: { id: swId },
-        data: { compatibleVtxs: { connect: vtxIds.map(id => ({ id })) } }
-      });
-    }
-
-    if (comp.os?.compatibleTransmitterNames?.length) {
-      const txIds = (comp.os.compatibleTransmitterNames as string[])
-        .map((n: string) => componentIdMap.get(n))
-        .filter(Boolean) as number[];
-      await prisma.operatingSystem.update({
-        where: { id: swId },
-        data: { compatibleTransmitters: { connect: txIds.map(id => ({ id })) } }
-      });
+      softwareFamilyMap.set(sf.name, res.softwareFamily!.id);
     }
   }
 
-  console.log(`Seeding builds...`);
+  console.log('Seeding Builds & Sub-Assemblies...');
   if (data.builds) {
     for (const b of data.builds) {
-      if (!b.components) continue;
+      const frameId = compMap.get(b.components.frameName);
+      const motorId = compMap.get(b.components.motorName);
+      const propId = compMap.get(b.components.propellerName);
+      const camId = compMap.get(b.components.cameraName);
+      const gpsId = b.components.gpsName ? compMap.get(b.components.gpsName) : undefined;
+      const fcId = compMap.get(b.components.flightStack?.flightControllerName);
+      const escId = compMap.get(b.components.flightStack?.escName);
 
-      const fcId = componentIdMap.get(b.components.flightStack?.flightControllerName);
-      const escId = componentIdMap.get(b.components.flightStack?.escName);
-      let flightStackId = null;
-      if (fcId && escId) {
-        const createdStack = await prisma.flightStack.create({
-          data: {
-            flightControllerId: fcId,
-            escId: escId,
-            loadoutName: b.components.flightStack.loadoutName || "Standard"
-          }
-        });
-        flightStackId = createdStack.id;
-      }
-      
-      const vtxId = componentIdMap.get(b.components.vtxConfiguration?.vtxName);
-      let vtxConfigId = null;
-      if (vtxId) {
-         const antennasConnect = (b.components.vtxConfiguration.antennaNames || []).map((name: string) => componentIdMap.get(name)).filter(Boolean);
-         const created = await prisma.vtxConfiguration.create({
-           data: {
-             vtxId: vtxId,
-             loadoutName: b.components.vtxConfiguration.loadoutName || "Standard",
-             antennas: { connect: antennasConnect.map((id: number) => ({ id })) }
-           }
-         });
-         vtxConfigId = created.id;
+      if (!frameId || !motorId || !propId || !camId || !fcId || !escId) {
+        continue;
       }
 
-      const receiverId = componentIdMap.get(b.components.receiverConfiguration?.receiverName);
-      let receiverConfigId = null;
-      if (receiverId) {
-         const antennasConnect = (b.components.receiverConfiguration.antennaNames || []).map((name: string) => componentIdMap.get(name)).filter(Boolean);
-         const created = await prisma.receiverConfiguration.create({
-           data: {
-             receiverId: receiverId,
-             loadoutName: b.components.receiverConfiguration.loadoutName || "Standard",
-             antennas: { connect: antennasConnect.map((id: number) => ({ id })) }
-           }
-         });
-         receiverConfigId = created.id;
-      }
-
-      
-      console.log('Build components:', b.components);
-      console.log('Frame ID:', componentIdMap.get(b.components.frameName));
-      console.log('Motor ID:', componentIdMap.get(b.components.motorName));
-      console.log('Prop ID:', componentIdMap.get(b.components.propellerName));
-      console.log('FlightStack ID:', flightStackId, `(FC: ${fcId}, ESC: ${escId})`);
-      console.log('Camera ID:', componentIdMap.get(b.components.cameraName));
-      
-      const connectIf = (id: any): any => id ? { connect: { id } } : undefined;
-      
-      await prisma.build.create({
+      const stack = await prisma.flightStack.create({
         data: {
-          name: b.name,
-          crashResistanceRating: b.crashResistanceRating,
-          description: b.description,
-          isVerified: b.isVerified,
-          miscWeightG: b.miscWeightG,
-          tags: { connectOrCreate: (b.tags || []).map((t: string) => ({ where: { id: t }, create: { id: t } })) },
-          
-          frame: connectIf(componentIdMap.get(b.components.frameName)),
-          motor: connectIf(componentIdMap.get(b.components.motorName)),
-          propeller: connectIf(componentIdMap.get(b.components.propellerName)),
-          camera: connectIf(componentIdMap.get(b.components.cameraName)),
-          gps: connectIf(componentIdMap.get(b.components.gpsName)),
-          
-          flightStack: connectIf(flightStackId),
-          vtxConfig: connectIf(vtxConfigId),
-          receiverConfig: connectIf(receiverConfigId),
+          flightControllerId: fcId,
+          escId: escId,
+          loadoutName: b.components.flightStack.loadoutName || 'Default Stack'
+        }
+      });
+
+      let vtxConfigId: string | undefined = undefined;
+      if (b.components.vtxConfiguration) {
+        const vtxId = compMap.get(b.components.vtxConfiguration.vtxName);
+        if (vtxId) {
+          const antennas = (b.components.vtxConfiguration.antennaNames || [])
+            .map((n: string) => compMap.get(n))
+            .filter(Boolean) as string[];
+
+          const vc = await prisma.vtxConfiguration.create({
+            data: {
+              vtxId: vtxId,
+              loadoutName: b.components.vtxConfiguration.loadoutName || 'Default VTX Config',
+              antennas: { connect: antennas.map(id => ({ id })) }
+            }
+          });
+          vtxConfigId = vc.id;
+        }
+      }
+
+      let rxConfigId: string | undefined = undefined;
+      if (b.components.receiverConfiguration) {
+        const rxId = compMap.get(b.components.receiverConfiguration.receiverName);
+        if (rxId) {
+          const antennas = (b.components.receiverConfiguration.antennaNames || [])
+            .map((n: string) => compMap.get(n))
+            .filter(Boolean) as string[];
+
+          const rc = await prisma.receiverConfiguration.create({
+            data: {
+              receiverId: rxId,
+              loadoutName: b.components.receiverConfiguration.loadoutName || 'Default RX Config',
+              antennas: { connect: antennas.map(id => ({ id })) }
+            }
+          });
+          rxConfigId = rc.id;
+        }
+      }
+
+      const tags = (b.tags || [])
+        .map((t: string) => mapTag.get(t))
+        .filter(Boolean) as string[];
+
+      await prisma.resource.create({
+        data: {
+          resourceType: 'BUILD',
+          build: {
+            create: {
+              name: b.name,
+              description: b.description,
+              isVerified: b.isVerified ?? false,
+              crashResistanceRating: b.crashResistanceRating,
+              miscWeightG: b.miscWeightG,
+              frameId: frameId,
+              motorId: motorId,
+              propellerId: propId,
+              cameraId: camId,
+              gpsId: gpsId,
+              flightStackId: stack.id,
+              vtxConfigId: vtxConfigId,
+              receiverConfigId: rxConfigId,
+              tags: { connect: tags.map(id => ({ id })) }
+            }
+          }
         }
       });
     }
   }
 
-  console.log('Database seeded successfully!');
+  console.log('Database seeded successfully with Postgres + JSONB + Protobuf architecture!');
 }
 
 main()
-  .catch(e => {
+  .catch((e) => {
     console.error(e);
     process.exit(1);
   })

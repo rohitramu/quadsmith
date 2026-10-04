@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package quadsmith.v1;
+
+import "quadsmith/v1/common.proto";
+import "quadsmith/v1/hardware.proto";
+import "quadsmith/v1/software.proto";
+
+message Component {
+  string id = 1;
+  string name = 2;
+  ComponentType type = 3;
+  optional int32 release_year = 4;
+  optional int32 release_month = 5;
+  optional int32 release_day = 6;
+  repeated string company_ids = 7;
+  repeated ReferenceLink reference_links = 8;
+  optional double weight_g = 9;
+
+  oneof profile {
+    FrameProfile frame = 10;
+    MotorProfile motor = 11;
+    PropellerProfile propeller = 12;
+    FlightControllerProfile flight_controller = 13;
+    EscProfile esc = 14;
+    BatteryProfile battery = 15;
+    VtxProfile vtx = 16;
+    CameraProfile camera = 17;
+    ReceiverProfile receiver = 18;
+    GpsProfile gps = 19;
+    AntennaProfile antenna = 20;
+    TransmitterProfile transmitter = 21;
+    GogglesProfile goggles = 22;
+    SoftwareComponentProfile software = 23;
+  }
+}

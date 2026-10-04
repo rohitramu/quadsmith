@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package quadsmith.v1;
+
+enum ComponentType {
+  COMPONENT_TYPE_UNSPECIFIED = 0;
+  COMPONENT_TYPE_FRAME = 1;
+  COMPONENT_TYPE_MOTOR = 2;
+  COMPONENT_TYPE_PROPELLER = 3;
+  COMPONENT_TYPE_FLIGHT_CONTROLLER = 4;
+  COMPONENT_TYPE_ESC = 5;
+  COMPONENT_TYPE_BATTERY = 6;
+  COMPONENT_TYPE_VTX = 7;
+  COMPONENT_TYPE_CAMERA = 8;
+  COMPONENT_TYPE_RECEIVER = 9;
+  COMPONENT_TYPE_GPS = 10;
+  COMPONENT_TYPE_ANTENNA = 11;
+  COMPONENT_TYPE_TRANSMITTER = 12;
+  COMPONENT_TYPE_GOGGLES = 13;
+  COMPONENT_TYPE_SOFTWARE_COMPONENT = 14;
+}
+
+enum EscFormFactor {
+  ESC_FORM_FACTOR_UNSPECIFIED = 0;
+  ESC_FORM_FACTOR_FOUR_IN_ONE = 1;
+  ESC_FORM_FACTOR_INDIVIDUAL = 2;
+  ESC_FORM_FACTOR_INTEGRATED_IN_FC = 3;
+}
+
+enum EditAction {
+  EDIT_ACTION_UNSPECIFIED = 0;
+  EDIT_ACTION_CREATE = 1;
+  EDIT_ACTION_UPDATE = 2;
+  EDIT_ACTION_DELETE = 3;
+}
+
+enum ChangeStatus {
+  CHANGE_STATUS_UNSPECIFIED = 0;
+  CHANGE_STATUS_PENDING = 1;
+  CHANGE_STATUS_APPROVED = 2;
+  CHANGE_STATUS_REJECTED = 3;
+  CHANGE_STATUS_MERGED = 4;
+}
+
+message ReferenceLink {
+  string id = 1;
+  string url = 2;
+  string link_type = 3; // "Purchase", "Manual", "Firmware", "Datasheet"
+  string title = 4;
+  optional string description = 5;
+  optional string company_id = 6;
+}

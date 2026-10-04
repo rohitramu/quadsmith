@@ -8,9 +8,40 @@
   }
 }%%
 erDiagram
+    subgraph GlobalNode ["Global Node & Community Edits"]
+        Resource {
+            String id PK
+            ResourceType resourceType "COMPONENT | BUILD | COMPANY | VTX_ECOSYSTEM | ..."
+            DateTime createdAt
+        }
+        ChangeRequest {
+            String id PK
+            String userId FK
+            String componentId FK "nullable if new component"
+            String resourceId FK "nullable if CREATE"
+            ResourceType targetType
+            ComponentType componentType "nullable"
+            EditAction action "CREATE | UPDATE | DELETE"
+            Json proposedData "Protobuf JSON payload"
+            String updateMask "FieldMask paths array"
+            String rationale
+            String status "PENDING | APPROVED | REJECTED | MERGED"
+            String mergedIntoId FK "nullable"
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        ChangeRequestVote {
+            String id PK
+            String requestId FK
+            String userId FK
+            Boolean isUpvote
+            DateTime createdAt
+        }
+    end
+
     subgraph UserAuth ["User & Authentication"]
         User {
-            Int id PK
+            String id PK
             String email "unique, lowercase"
             String username "unique, public handle e.g. @roramu"
             UserRole role "USER | ADMIN"
@@ -22,20 +53,20 @@ erDiagram
             DateTime updatedAt
         }
         UserProfile {
-            Int userId PK,FK
+            String userId PK,FK
             String displayName "pre-populated from OAuth"
             String avatarUrl "pre-populated from OAuth"
             DateTime updatedAt
         }
         UsernameHistory {
-            Int id PK
-            Int userId FK
+            String id PK
+            String userId FK
             String oldUsername "vacated name; hold expires 30d after renamedAt"
             DateTime renamedAt
         }
         OAuthAccount {
-            Int id PK
-            Int userId FK
+            String id PK
+            String userId FK
             OAuthProvider provider "GOOGLE | GITHUB | DISCORD | MICROSOFT | META"
             String providerAccountId "user ID at the provider"
             String accessToken "encrypted at rest"
@@ -44,7 +75,7 @@ erDiagram
             DateTime createdAt
         }
         EmailOtp {
-            Int id PK
+            String id PK
             String email "address code was sent to"
             String codeHash "argon2 hash of 6-digit code"
             DateTime expiresAt "3 minutes from creation"
@@ -53,581 +84,344 @@ erDiagram
             DateTime createdAt
         }
         RefreshToken {
-            Int id PK
-            Int userId FK
+            String id PK
+            String userId FK
             String tokenHash "hash of 256-bit opaque token"
             DateTime expiresAt "30 days from issuance"
             DateTime lastUsedAt
             String deviceHint "e.g. Chrome on macOS"
             DateTime createdAt
         }
+        UserReputation {
+            String userId PK,FK
+            Int score "cached reputation points"
+        }
     end
 
     subgraph BaseInfrastructure ["Base Infrastructure & Lookups"]
         VtxEcosystem {
-            String id PK "e.g. DJI O3, HDZero, Analog"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
         }
         RfFrequency {
-            String id PK "e.g. 2.4GHz, 5.8GHz, 900MHz"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
         }
         RfProtocol {
-            String id PK "e.g. ExpressLRS, Crossfire"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
         }
         AntennaPolarization {
-            String id PK "e.g. RHCP, LHCP, Linear"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
         }
         AntennaConnector {
-            String id PK "e.g. SMA, U.FL, MMCX"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
         }
         BatteryConnector {
-            String id PK "e.g. XT60, XT30, BT2.0"
-            Decimal maxCurrentA "e.g. 60.0"
-            Decimal maxVoltageV "e.g. 25.2"
-        }
-        MotorMountPattern {
-            String id PK "e.g. 16x16mm, 19x19mm, 12x12mm"
-        }
-        BoardMountPattern {
-            String id PK "e.g. 30.5x30.5mm, 25.5x25.5mm, 20x20mm"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
+            Decimal maxCurrentA
+            Decimal maxVoltageV
         }
         Tag {
-            String id PK "e.g. freestyle, cinewhoop"
-            String description "e.g. Built for acrobatic flying"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
+            String description
+        }
+        MotorMountPattern {
+            String id PK,FK "Inherits Resource"
+            String name "unique"
+        }
+        BoardMountPattern {
+            String id PK,FK "Inherits Resource"
+            String name "unique"
         }
         BatteryChemistry {
-            Int id PK "e.g. 1"
-            String name "e.g. LiPo, LiHV, Li-ion"
-            Decimal nominalVoltagePerCellV "e.g. 3.7"
-            Decimal maxVoltagePerCellV "e.g. 4.2"
-            Decimal minVoltagePerCellV "e.g. 3.2"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
+            Decimal nominalVoltagePerCellV
+            Decimal maxVoltagePerCellV
+            Decimal minVoltagePerCellV
         }
     end
 
-    subgraph CatalogComponents ["Hardware & Software Catalog"]
+    subgraph ComponentIdentity ["Component Identity & Protobuf Storage"]
         Company {
-            Int id PK "e.g. 1"
-            String name "e.g. T-Motor, TBS"
-            String websiteUrl "e.g. https://tmotor.com"
+            String id PK,FK "Inherits Resource"
+            String name "unique"
+            String websiteUrl
         }
         Component {
-            Int id PK "e.g. 101"
-            String name "e.g. Velox V2, Betaflight"
-            Int releaseYear "e.g. 2022"
-            Int releaseMonth "e.g. 11"
-            Int releaseDay "e.g. 15"
-        }
-        HardwareComponent {
-            Int id PK "e.g. 101"
-            Component component FK
-            Decimal weightG "e.g. 34.5"
-        }
-        SoftwareComponent {
-            Int id PK "e.g. 201"
-            Component component FK
-            String version "e.g. 4.5.0"
+            String id PK,FK "Inherits Resource"
+            ComponentType type "FRAME | MOTOR | FC | ESC | VTX | ..."
+            String name
+            Int releaseYear
+            Int releaseMonth
+            Int releaseDay
+            Json data "Protobuf Hardware/Software Specifications"
         }
         ComponentCompany {
-            Int id PK "e.g. 1"
-            Component component FK "e.g. 101"
-            Company company FK "e.g. 1"
+            String id PK
+            String componentId FK
+            String companyId FK
         }
         ReferenceLink {
-            Int id PK "e.g. 1"
-            Component component FK "e.g. 101"
-            Company company FK "e.g. 1"
-            String url "e.g. https://manuals.com/f722"
-            String linkType "e.g. Purchase, Datasheet, Manual"
-            String title "e.g. Official Wiring Diagram"
-            String description "e.g. PDF showing UART layout"
+            String id PK
+            String componentId FK
+            String companyId FK "optional"
+            String url
+            String linkType "Purchase | Manual | Firmware | Datasheet"
+            String title
+            String description
         }
-        Frame {
-            Int id PK "e.g. 101"
-            HardwareComponent component FK
-            Int wheelbaseMm "e.g. 225"
-            Decimal maxPropSizeMm "e.g. 129.5"
-            FrameFcStackMount[] fcStackMounts "e.g. 30.5x30.5mm"
-            FrameVtxMount[] vtxMounts "e.g. 25.5x25.5mm"
-            MotorMountPattern[] motorMountPatterns "e.g. 16x16mm, 19x19mm"
-            Decimal cameraMountWidthMm "e.g. 19.0"
-            Decimal maxBatteryLengthMm "e.g. 130.0"
-            Decimal maxBatteryWidthMm "e.g. 50.0"
-            Decimal maxBatteryHeightMm "e.g. 40.0"
-        }
-        Motor {
-            Int id PK "e.g. 102"
-            HardwareComponent component FK
-            String statorSize "e.g. 2207, 2306"
-            Int kvRating "e.g. 1750, 2550"
-            Decimal inputVoltageMinV "e.g. 14.8"
-            Decimal inputVoltageMaxV "e.g. 25.2"
-            MotorMountPattern[] mountPatterns "e.g. 16x16mm"
-            String mountBoltSize "e.g. M3"
-            String shaftType "e.g. 5mm, T-Mount 1.5mm"
-            Decimal maxCurrentA "e.g. 45.0"
-        }
-        Propeller {
-            Int id PK "e.g. 103"
-            HardwareComponent component FK
-            Decimal diameterMm "e.g. 129.5"
-            Decimal pitchMm "e.g. 109.2"
-            Int bladeCount "e.g. 3"
-            String mountType "e.g. 5mm Hole, T-Mount M2"
-            String[] recommendedStator "e.g. 2207, 2306"
-        }
-        FlightController {
-            Int id PK "e.g. 104"
-            HardwareComponent component FK
-            BoardMountPattern[] mountPatterns "e.g. 30.5x30.5mm, 20x20mm"
-            Decimal boardHeightMm "e.g. 8.0"
-            String mcuProcessor "e.g. F722, H743"
-            String gyroSensor "e.g. MPU6000, BMI270"
-            Decimal inputVoltageMinV "e.g. 11.1"
-            Decimal inputVoltageMaxV "e.g. 25.2"
-            Json becOutputs "e.g. 5V at 3A, 9V at 2A"
-            Json uartConnections "e.g. UART1 to VTX, UART2 to RX"
-            String escInterface "e.g. 8-pin Plug, Direct Solder"
-            FcFirmware[] supportedFirmware "e.g. Betaflight, INAV"
-        }
-        Esc {
-            Int id PK "e.g. 105"
-            HardwareComponent component FK
-            EscFormFactor formFactor "e.g. INTEGRATED_IN_FC, FOUR_IN_ONE, INDIVIDUAL"
-            BoardMountPattern[] mountPatterns "e.g. 30.5x30.5mm, 20x20mm"
-            Decimal boardHeightMm "e.g. 6.5"
-            Decimal continuousCurrentA "e.g. 50.0"
-            Decimal burstCurrentA "e.g. 60.0"
-            Decimal inputVoltageMinV "e.g. 11.1"
-            Decimal inputVoltageMaxV "e.g. 25.2"
-            EscFirmware[] supportedFirmware "e.g. BLHeli_32, Bluejay, AM32"
-        }
-        Battery {
-            Int id PK "e.g. 106"
-            HardwareComponent component FK
-            BatteryChemistry chemistry FK "e.g. 1"
-            Int cellCountS "e.g. 6"
-            Int cellCountP "e.g. 1"
-            Int capacityMah "e.g. 1100"
-            Int continuousCRating "e.g. 120"
-            BatteryConnector connectorType FK "e.g. XT60"
-            Decimal lengthMm "e.g. 78.0"
-            Decimal widthMm "e.g. 38.0"
-            Decimal heightMm "e.g. 38.0"
-        }
-        Vtx {
-            Int id PK "e.g. 107"
-            HardwareComponent component FK
-            RfFrequency[] supportedFrequencies "e.g. 2.4GHz, 5.8GHz"
-            VtxEcosystem ecosystem FK "e.g. DJI O3"
-            String videoConnectionStandard "e.g. MIPI, Analog CVBS"
-            BoardMountPattern[] mountPatterns "e.g. 25.5x25.5mm, 20x20mm"
-            Decimal boardHeightMm "e.g. 5.5"
-            Decimal inputVoltageMinV "e.g. 7.4"
-            Decimal inputVoltageMaxV "e.g. 26.4"
-            Int maxPowerMw "e.g. 1200"
-            Int antennaCount "e.g. 2"
-            AntennaConnector antennaConnector FK "e.g. U.FL"
-            AntennaPolarization includedAntennaPolarization FK "e.g. LHCP"
-            VtxFirmware[] supportedFirmware "e.g. Walksnail Avatar OS"
-        }
-        Camera {
-            Int id PK "e.g. 108"
-            HardwareComponent component FK
-            VtxEcosystem ecosystem FK "e.g. HDZero"
-            String videoConnectionStandard "e.g. MIPI"
-            Decimal widthMm "e.g. 19.0"
-            Decimal heightMm "e.g. 19.0"
-            Decimal depthMm "e.g. 24.0"
-            Decimal inputVoltageMinV "e.g. 5.0"
-            Decimal inputVoltageMaxV "e.g. 25.2"
-            String mountingScrewSize "e.g. M2"
-            String aspectRatio "e.g. 16:9"
-        }
-        Receiver {
-            Int id PK "e.g. 109"
-            HardwareComponent component FK
-            RfFrequency[] supportedFrequencies "e.g. 2.4GHz, 5.8GHz"
-            RfProtocol[] rfProtocols "e.g. ExpressLRS"
-            String outputProtocol "e.g. CRSF, SBUS"
-            Decimal inputVoltageMinV "e.g. 4.5"
-            Decimal inputVoltageMaxV "e.g. 5.5"
-            Int antennaCount "e.g. 1"
-            AntennaConnector antennaConnector FK "e.g. U.FL"
-            AntennaPolarization includedAntennaPolarization FK "e.g. Linear"
-        }
-        Gps {
-            Int id PK "e.g. 110"
-            HardwareComponent component FK
-            String chipset "e.g. M10"
-            Boolean hasCompass "e.g. true"
-            Decimal inputVoltageMinV "e.g. 3.3"
-            Decimal inputVoltageMaxV "e.g. 5.5"
-            Decimal lengthMm "e.g. 20.0"
-            Decimal widthMm "e.g. 20.0"
-            Decimal heightMm "e.g. 10.5"
-        }
-        Antenna {
-            Int id PK "e.g. 111"
-            HardwareComponent component FK
-            RfFrequency supportedFrequency FK "e.g. 5.8GHz"
-            AntennaPolarization polarization FK "e.g. RHCP"
-            AntennaConnector connector FK "e.g. SMA"
-            String antennaStyle "e.g. Omni, Patch"
-            Decimal gainDbi "e.g. 2.5"
-            Decimal cableLengthMm "e.g. 60.0"
-        }
-        Transmitter {
-            Int id PK "e.g. 112"
-            HardwareComponent component FK
-            RfFrequency[] supportedFrequencies "e.g. 2.4GHz, 5.8GHz"
-            RfProtocol[] rfProtocols "e.g. ExpressLRS"
-            String externalBayType "e.g. JR Micro, Lite"
-            Int antennaCount "e.g. 1"
-            AntennaConnector antennaConnector FK "e.g. SMA"
-            AntennaPolarization includedAntennaPolarization FK "e.g. Linear"
-            OperatingSystem[] supportedOs "e.g. EdgeTX"
-        }
-        Goggles {
-            Int id PK "e.g. 113"
-            HardwareComponent component FK
-            RfFrequency[] supportedFrequencies "e.g. 2.4GHz, 5.8GHz"
-            VtxEcosystem ecosystem FK "e.g. Walksnail"
-            Int antennaCount "e.g. 4"
-            AntennaConnector antennaConnector FK "e.g. SMA"
-            AntennaPolarization includedAntennaPolarization FK "e.g. LHCP"
-        }
-        FcFirmware {
-            Int id PK "e.g. 201"
-            SoftwareComponent softwareComponent FK
-        }
-        EscFirmware {
-            Int id PK "e.g. 202"
-            SoftwareComponent softwareComponent FK
-        }
-        VtxFirmware {
-            Int id PK "e.g. 203"
-            SoftwareComponent softwareComponent FK
-        }
-        OperatingSystem {
-            Int id PK "e.g. 204"
-            SoftwareComponent softwareComponent FK
+        Software {
+            String id PK,FK "Inherits Resource"
+            String name "unique e.g. Betaflight"
         }
     end
 
     subgraph Incompatibilities ["Exceptions & Incompatibilities"]
         IncompatibilityIssue {
-            Int id PK "e.g. 1"
-            String incompatibilityReason "e.g. Physical, Firmware"
-            String description "e.g. FC blocks USB port on Frame"
-            String suggestedFix "e.g. Use 90-degree USB adapter"
-            Int fixDifficulty "1 to 10 scale, e.g. 3"
+            String id PK,FK "Inherits Resource"
+            String incompatibilityReason "Physical | Electrical | Protocol | Firmware"
+            String description
+            String suggestedFix
+            Int fixDifficulty "1 to 10"
         }
         IncompatibilityComponent {
-            IncompatibilityIssue issue PK,FK "e.g. 1"
-            HardwareComponent hardwareComponent PK,FK "e.g. 101"
-            Component component FK "e.g. 101"
+            String issueId PK,FK
+            String componentId PK,FK
         }
     end
 
-    subgraph SubAssemblies ["Sub-Assemblies & Mounts"]
+    subgraph SubAssemblies ["Sub-Assemblies / Loadouts"]
         FlightStack {
-            Int id PK "e.g. 1"
-            FlightController flightController FK "e.g. 104"
-            Esc esc FK "e.g. 105"
-            String loadoutName "e.g. HGLRC Specter F460 Stack"
+            String id PK
+            String flightControllerId FK
+            String escId FK
+            String loadoutName
         }
         VtxConfiguration {
-            Int id PK "e.g. 1"
-            Vtx vtx FK "e.g. 107"
-            String loadoutName "e.g. O3 with Dual Matchsticks"
-            Antenna[] antennas "e.g. 2x TrueRC Matchsticks"
+            String id PK
+            String vtxId FK
+            String loadoutName
         }
         ReceiverConfiguration {
-            Int id PK "e.g. 1"
-            Receiver receiver FK "e.g. 109"
-            String loadoutName "e.g. ELRS Diversity Setup"
-            Antenna[] antennas "e.g. 2x Minimortal T"
-        }
-        FrameFcStackMount {
-            Frame frame PK "e.g. 101"
-            BoardMountPattern boardMountPattern PK "e.g. 30.5x30.5mm"
-        }
-        FrameVtxMount {
-            Frame frame PK "e.g. 101"
-            BoardMountPattern boardMountPattern PK "e.g. 25.5x25.5mm"
+            String id PK
+            String receiverId FK
+            String loadoutName
         }
     end
 
-    subgraph CoreAircraft ["Core Aircraft Build"]
+    subgraph Aircraft ["The Aircraft (Build)"]
         Build {
-            Int id PK "e.g. 1"
-            Int userId FK "nullable, creator of the build"
-            String name "e.g. Bando Basher 5 inch"
-            Tag[] tags "e.g. freestyle, cinematic"
-            Int crashResistanceRating "e.g. 9"
-            String description "e.g. My main freestyle rig"
-            Boolean isVerified "e.g. true"
-            Decimal miscWeightG "e.g. 25.0"
-            DateTime createdAt "e.g. 2026-09-26"
-            Frame frame FK "e.g. 101"
-            Motor motor FK "e.g. 102"
-            Propeller propeller FK "e.g. 103"
-            Camera camera FK "e.g. 108"
-            Gps gps FK "e.g. 110"
-            FlightStack flightStack FK "e.g. 1"
-            VtxConfiguration vtxConfig FK "e.g. 1"
-            ReceiverConfiguration receiverConfig FK "e.g. 1"
+            String id PK,FK "Inherits Resource"
+            String name
+            Int crashResistanceRating "1-5"
+            String description
+            Boolean isVerified
+            Decimal miscWeightG
+            String userId FK
+            String frameId FK
+            String motorId FK
+            String propellerId FK
+            String cameraId FK
+            String gpsId FK "nullable"
+            String flightStackId FK
+            String vtxConfigId FK "nullable"
+            String receiverConfigId FK "nullable"
         }
     end
 
-    subgraph SocialInteractions ["Social Interactions, Q&A & Collections"]
+    subgraph SocialInteractions ["Social Interactions & Collections"]
         Review {
-            Int id PK
-            Int userId FK
-            Int buildId FK "nullable"
-            Int componentId FK "nullable"
-            Boolean isRecommended "true = recommended, false = not recommended"
-            String body "markdown"
+            String id PK
+            String userId FK
+            String resourceId FK "Universal Resource target"
+            Boolean isRecommended
+            String body
             Boolean isEdited
-            DateTime deletedAt "soft-delete"
+            DateTime deletedAt
             DateTime createdAt
             DateTime updatedAt
         }
         ReviewVote {
-            Int id PK
-            Int reviewId FK
-            Int userId FK
-            Boolean isHelpful "true = helpful, false = unhelpful"
+            String id PK
+            String reviewId FK
+            String userId FK
+            Boolean isHelpful
             DateTime createdAt
         }
         ReviewComment {
-            Int id PK
-            Int reviewId FK
-            Int userId FK
+            String id PK
+            String reviewId FK
+            String userId FK
             String body
-            DateTime deletedAt "soft-delete"
+            DateTime deletedAt
             DateTime createdAt
             DateTime updatedAt
         }
         Question {
-            Int id PK
-            Int userId FK
-            Int buildId FK "nullable"
-            Int componentId FK "nullable"
+            String id PK
+            String userId FK
+            String resourceId FK "Universal Resource target"
             String title
-            String body "markdown"
-            Int netScore "denormalized score"
+            String body
+            Int netScore
             Boolean isEdited
-            DateTime deletedAt "soft-delete"
+            DateTime deletedAt
             DateTime createdAt
             DateTime updatedAt
         }
         Answer {
-            Int id PK
-            Int questionId FK
-            Int userId FK
-            String body "markdown"
-            Int netScore "denormalized score"
-            Boolean isAcceptedByAsker "accepted answer checkmark"
-            Boolean isAuthorEndorsed "build author endorsement badge"
+            String id PK
+            String questionId FK
+            String userId FK
+            String body
+            Int netScore
+            Boolean isAcceptedByAsker
+            Boolean isAuthorEndorsed
             Boolean isEdited
-            DateTime deletedAt "soft-delete"
+            DateTime deletedAt
             DateTime createdAt
             DateTime updatedAt
         }
         QuestionVote {
-            Int id PK
-            Int questionId FK
-            Int userId FK
-            Boolean isUpvote "true = upvote, false = downvote"
+            String id PK
+            String questionId FK
+            String userId FK
+            Boolean isUpvote
             DateTime createdAt
         }
         AnswerVote {
-            Int id PK
-            Int answerId FK
-            Int userId FK
-            Boolean isUpvote "true = upvote, false = downvote"
+            String id PK
+            String answerId FK
+            String userId FK
+            Boolean isUpvote
             DateTime createdAt
         }
         QuestionComment {
-            Int id PK
-            Int questionId FK
-            Int userId FK
+            String id PK
+            String questionId FK
+            String userId FK
             String body
-            DateTime deletedAt "soft-delete"
+            DateTime deletedAt
             DateTime createdAt
             DateTime updatedAt
         }
         AnswerComment {
-            Int id PK
-            Int answerId FK
-            Int userId FK
+            String id PK
+            String answerId FK
+            String userId FK
             String body
-            DateTime deletedAt "soft-delete"
+            DateTime deletedAt
             DateTime createdAt
             DateTime updatedAt
         }
-        UserReputation {
-            Int userId PK,FK
-            Int score "total reputation, min 0"
-            DateTime updatedAt
-        }
         Collection {
-            Int id PK
-            Int userId FK
-            String name "e.g. Liked, 5-inch Ideas"
+            String id PK
+            String userId FK
+            String name
             String description
-            Boolean isPublic "default false"
-            Boolean isDefaultLiked "system collection for 1-click likes"
+            Boolean isPublic
             DateTime createdAt
             DateTime updatedAt
         }
         CollectionItem {
-            Int id PK
-            Int collectionId FK
-            Int buildId FK "nullable"
-            Int componentId FK "nullable"
-            DateTime createdAt
+            String id PK
+            String collectionId FK
+            String resourceId FK "Universal Resource target"
+            DateTime addedAt
         }
     end
 
-    %% ==========================================
-    %% RELATIONSHIPS & CONSTRAINTS
-    %% ==========================================
+    %% Global Node Polymorphic Inheritance (1-to-0..1)
+    Resource ||--o| Component : "inherits"
+    Resource ||--o| Build : "inherits"
+    Resource ||--o| Software : "inherits"
+    Resource ||--o| Company : "inherits"
+    Resource ||--o| IncompatibilityIssue : "inherits"
+    Resource ||--o| VtxEcosystem : "inherits"
+    Resource ||--o| RfFrequency : "inherits"
+    Resource ||--o| RfProtocol : "inherits"
+    Resource ||--o| AntennaPolarization : "inherits"
+    Resource ||--o| AntennaConnector : "inherits"
+    Resource ||--o| BatteryConnector : "inherits"
+    Resource ||--o| Tag : "inherits"
+    Resource ||--o| MotorMountPattern : "inherits"
+    Resource ||--o| BoardMountPattern : "inherits"
+    Resource ||--o| BatteryChemistry : "inherits"
 
-    %% User & Auth Internal Relations
-    User ||--|| UserProfile : "has"
-    User ||--o{ UsernameHistory : "previous names"
-    User ||--o{ OAuthAccount : "linked via"
-    User ||--o{ RefreshToken : "has active sessions"
+    %% User Relations
+    User ||--o| UserProfile : "has"
+    User ||--o{ UsernameHistory : "renamed"
+    User ||--o{ OAuthAccount : "links"
+    User ||--o{ RefreshToken : "owns"
+    User ||--o| UserReputation : "earns"
+    User ||--o{ Build : "authors"
+    User ||--o{ ChangeRequest : "proposes"
+    User ||--o{ ChangeRequestVote : "votes"
 
-    %% Component Inheritance & Companies
-    Component ||--|o HardwareComponent : "hardwareComponent"
-    Component ||--|o SoftwareComponent : "softwareComponent"
-    Component ||--o{ ComponentCompany : "companies"
-    Company ||--o{ ComponentCompany : "components"
-    Component ||--o{ ReferenceLink : "referenceLinks"
-    Company |o--o{ ReferenceLink : "referenceLinks"
+    %% Component & Company Relations
+    Component ||--o{ ComponentCompany : "associated"
+    Company ||--o{ ComponentCompany : "participates"
+    Component ||--o{ ReferenceLink : "referenced_by"
+    Company ||--o{ ReferenceLink : "brands"
 
-    %% Incompatibility Links
-    IncompatibilityIssue ||--o{ IncompatibilityComponent : "components"
-    HardwareComponent ||--o{ IncompatibilityComponent : "incompatibilityComponents"
-    Component |o--o{ IncompatibilityComponent : "flaggedInIssues"
+    %% Incompatibilities Relations
+    IncompatibilityIssue ||--|{ IncompatibilityComponent : "flags"
+    Component ||--o{ IncompatibilityComponent : "involved_in"
 
-    %% Hardware Sub-types
-    HardwareComponent ||--|o Frame : "frame"
-    HardwareComponent ||--|o Motor : "motor"
-    HardwareComponent ||--|o Propeller : "propeller"
-    HardwareComponent ||--|o FlightController : "flightController"
-    HardwareComponent ||--|o Esc : "esc"
-    HardwareComponent ||--|o Battery : "battery"
-    HardwareComponent ||--|o Vtx : "vtx"
-    HardwareComponent ||--|o Camera : "camera"
-    HardwareComponent ||--|o Receiver : "receiver"
-    HardwareComponent ||--|o Gps : "gps"
-    HardwareComponent ||--|o Transmitter : "transmitter"
-    HardwareComponent ||--|o Goggles : "goggles"
-    HardwareComponent ||--|o Antenna : "antenna"
+    %% Sub-Assemblies to Components
+    FlightStack }|--|| Component : "flightController"
+    FlightStack }|--|| Component : "esc"
+    VtxConfiguration }|--|| Component : "vtx"
+    VtxConfiguration ||--o{ Component : "antennas"
+    ReceiverConfiguration }|--|| Component : "receiver"
+    ReceiverConfiguration ||--o{ Component : "antennas"
 
-    %% Software Sub-types
-    SoftwareComponent ||--|o FcFirmware : "fcFirmware"
-    SoftwareComponent ||--|o EscFirmware : "escFirmware"
-    SoftwareComponent ||--|o VtxFirmware : "vtxFirmware"
-    SoftwareComponent ||--|o OperatingSystem : "os"
+    %% Build to Components & Sub-Assemblies
+    Build }|--|| Component : "frame"
+    Build }|--|| Component : "motor"
+    Build }|--|| Component : "propeller"
+    Build }|--|| Component : "camera"
+    Build }|--o| Component : "gps"
+    Build }|--|| FlightStack : "electronics"
+    Build }|--o| VtxConfiguration : "vtxLoadout"
+    Build }|--o| ReceiverConfiguration : "rxLoadout"
+    Build }o--o{ Tag : "tagged"
 
-    %% Base Infrastructure / Protocols / Connectors
-    VtxEcosystem ||--o{ Vtx : "vtxs"
-    VtxEcosystem ||--o{ Camera : "cameras"
-    VtxEcosystem ||--o{ Goggles : "goggles"
+    %% Change Request Hierarchy
+    Resource ||--o{ ChangeRequest : "targeted_by"
+    Component ||--o{ ChangeRequest : "suggested_edits"
+    ChangeRequest ||--o{ ChangeRequestVote : "receives"
+    ChangeRequest ||--o| ChangeRequest : "merged_into"
 
-    AntennaPolarization ||--o{ Vtx : "vtxs"
-    AntennaPolarization ||--o{ Receiver : "receivers"
-    AntennaPolarization ||--o{ Transmitter : "transmitters"
-    AntennaPolarization ||--o{ Goggles : "goggles"
-    AntennaPolarization ||--o{ Antenna : "antennas"
+    %% Social Interactions (Targeting Global Resource Node)
+    Resource ||--o{ Review : "reviewed"
+    Resource ||--o{ Question : "asked_about"
+    Resource ||--o{ CollectionItem : "collected_in"
 
-    AntennaConnector ||--o{ Vtx : "vtxs"
-    AntennaConnector ||--o{ Receiver : "receivers"
-    AntennaConnector ||--o{ Transmitter : "transmitters"
-    AntennaConnector ||--o{ Goggles : "goggles"
-    AntennaConnector ||--o{ Antenna : "antennas"
+    User ||--o{ Review : "writes"
+    Review ||--o{ ReviewVote : "voted"
+    Review ||--o{ ReviewComment : "commented"
+    User ||--o{ ReviewVote : "casts"
+    User ||--o{ ReviewComment : "authors"
 
-    BatteryConnector ||--o{ Battery : "batteries"
-    BatteryChemistry ||--o{ Battery : "batteries"
+    User ||--o{ Question : "asks"
+    Question ||--o{ Answer : "answered"
+    Question ||--o{ QuestionVote : "voted"
+    Question ||--o{ QuestionComment : "commented"
+    User ||--o{ QuestionVote : "casts"
+    User ||--o{ QuestionComment : "authors"
 
-    FlightController ||--o{ FlightStack : "flightStacks"
-    Esc ||--o{ FlightStack : "flightStacks"
-    Vtx ||--o{ VtxConfiguration : "configs"
-    Receiver ||--o{ ReceiverConfiguration : "configs"
+    User ||--o{ Answer : "provides"
+    Answer ||--o{ AnswerVote : "voted"
+    Answer ||--o{ AnswerComment : "commented"
+    User ||--o{ AnswerVote : "casts"
+    User ||--o{ AnswerComment : "authors"
 
-    %% Implicit Many-To-Many relations in Prisma
-    Build }o--o{ Tag : "tags"
-    VtxConfiguration }o--o{ Antenna : "antennas"
-    ReceiverConfiguration }o--o{ Antenna : "antennas"
-
-    FlightController }o--o{ FcFirmware : "supportedFirmware"
-    Esc }o--o{ EscFirmware : "supportedFirmware"
-    Vtx }o--o{ VtxFirmware : "supportedFirmware"
-    Transmitter }o--o{ OperatingSystem : "supportedOs"
-
-    Frame ||--o{ Build : "builds"
-    Motor ||--o{ Build : "builds"
-    Propeller ||--o{ Build : "builds"
-    Camera ||--o{ Build : "builds"
-    Gps |o--o{ Build : "builds"
-    FlightStack ||--o{ Build : "builds"
-    VtxConfiguration |o--o{ Build : "builds"
-    ReceiverConfiguration |o--o{ Build : "builds"
-
-    FlightController }o--o{ BoardMountPattern : "mountPatterns"
-    Esc }o--o{ BoardMountPattern : "mountPatterns"
-    Vtx }o--o{ BoardMountPattern : "mountPatterns"
-
-    Frame }o--o{ MotorMountPattern : "motorMountPatterns"
-    Motor }o--o{ MotorMountPattern : "mountPatterns"
-
-    Receiver }o--o{ RfFrequency : "supportedFrequencies"
-    Transmitter }o--o{ RfFrequency : "supportedFrequencies"
-    Goggles }o--o{ RfFrequency : "supportedFrequencies"
-    Vtx }o--o{ RfFrequency : "supportedFrequencies"
-
-    Receiver }o--o{ RfProtocol : "rfProtocols"
-    Transmitter }o--o{ RfProtocol : "rfProtocols"
-
-    RfFrequency ||--o{ Antenna : "antennas"
-
-    Frame ||--o{ FrameFcStackMount : "fcStackMounts"
-    BoardMountPattern ||--o{ FrameFcStackMount : "fcStackFrames"
-
-    Frame ||--o{ FrameVtxMount : "vtxMounts"
-    BoardMountPattern ||--o{ FrameVtxMount : "vtxMountFrames"
-
-    %% Social Relations
-    User |o--o{ Build : "builds"
-    User ||--o{ Review : "reviews"
-    User ||--o{ ReviewVote : "reviewVotes"
-    User ||--o{ ReviewComment : "reviewComments"
-    User ||--o{ Question : "questions"
-    User ||--o{ Answer : "answers"
-    User ||--o{ QuestionVote : "questionVotes"
-    User ||--o{ AnswerVote : "answerVotes"
-    User ||--o{ QuestionComment : "questionComments"
-    User ||--o{ AnswerComment : "answerComments"
-    User ||--|| UserReputation : "reputation"
-    User ||--o{ Collection : "collections"
-
-    Build |o--o{ Review : "reviews"
-    Component |o--o{ Review : "reviews"
-    Review ||--o{ ReviewVote : "votes"
-    Review ||--o{ ReviewComment : "comments"
-
-    Build |o--o{ Question : "questions"
-    Component |o--o{ Question : "questions"
-    Question ||--o{ Answer : "answers"
-    Question ||--o{ QuestionVote : "votes"
-    Question ||--o{ QuestionComment : "comments"
-    Answer ||--o{ AnswerVote : "votes"
-    Answer ||--o{ AnswerComment : "comments"
-
-    Collection ||--o{ CollectionItem : "items"
-    Build |o--o{ CollectionItem : "collectionItems"
-    Component |o--o{ CollectionItem : "collectionItems"
+    User ||--o{ Collection : "curates"
+    Collection ||--o{ CollectionItem : "contains"
