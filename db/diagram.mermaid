@@ -160,6 +160,7 @@ erDiagram
             Int releaseYear
             Int releaseMonth
             Int releaseDay
+            Decimal weightG "Physical weight in grams"
             Json data "Protobuf Hardware/Software Specifications"
         }
         ComponentCompany {
@@ -224,12 +225,12 @@ erDiagram
             Boolean isVerified
             Decimal miscWeightG
             String userId FK
-            String frameId FK
-            String motorId FK
-            String propellerId FK
-            String cameraId FK
+            String frameId FK "nullable"
+            String motorId FK "nullable"
+            String propellerId FK "nullable"
+            String cameraId FK "nullable"
             String gpsId FK "nullable"
-            String flightStackId FK
+            String flightStackId FK "nullable"
             String vtxConfigId FK "nullable"
             String receiverConfigId FK "nullable"
         }
@@ -383,12 +384,12 @@ erDiagram
     ReceiverConfiguration ||--o{ Component : "antennas"
 
     %% Build to Components & Sub-Assemblies
-    Build }|--|| Component : "frame"
-    Build }|--|| Component : "motor"
-    Build }|--|| Component : "propeller"
-    Build }|--|| Component : "camera"
+    Build }|--o| Component : "frame"
+    Build }|--o| Component : "motor"
+    Build }|--o| Component : "propeller"
+    Build }|--o| Component : "camera"
     Build }|--o| Component : "gps"
-    Build }|--|| FlightStack : "electronics"
+    Build }|--o| FlightStack : "electronics"
     Build }|--o| VtxConfiguration : "vtxLoadout"
     Build }|--o| ReceiverConfiguration : "rxLoadout"
     Build }o--o{ Tag : "tagged"

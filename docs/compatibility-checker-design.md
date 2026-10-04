@@ -27,7 +27,7 @@ The compatibility logic lives entirely in the backend to ensure consistency.
 **API Operation**
 The API exposes a standalone endpoint (e.g., `POST /api/compatibility/check`) that accepts an arbitrary array of component IDs. It does not require a saved `Build` entity—users can send any random assortment of components to see how they interact. 
 1. **Batch Fetch**: The backend makes a single optimized query to fetch all specifications for the provided component IDs, alongside any explicit overrides from the `IncompatibilityIssue` table.
-2. **Synchronous Evaluation**: The loaded data is passed into an array of in-memory TypeScript rules.
+2. **Synchronous Evaluation**: The loaded data is passed into an array of in-memory Go rules.
 3. **Response**: The API returns an array of evaluated messages.
 
 ---

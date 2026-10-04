@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package quadsmith.v1;
+option go_package = "quadsmith/db/gen/quadsmith/v1;quadsmithv1";
 
 import "quadsmith/v1/common.proto";
 
@@ -14,17 +15,24 @@ message FrameProfile {
   optional double max_battery_length_mm = 7;
   optional double max_battery_width_mm = 8;
   optional double max_battery_height_mm = 9;
+  
+  // Aerodynamics & handling
+  bool is_ducted = 10;
+  bool is_pusher = 11;
+  optional double available_stack_height_mm = 12;
+  optional double frontal_area_cm2 = 13;
 }
 
 message MotorProfile {
-  string stator_size = 1;
-  int32 kv_rating = 2;
-  double input_voltage_min_v = 3;
-  double input_voltage_max_v = 4;
-  repeated string mount_pattern_ids = 5;
-  string mount_bolt_size = 6;
-  string shaft_type = 7;
-  optional double max_current_a = 8;
+  double stator_diameter_mm = 1;
+  double stator_height_mm = 2;
+  int32 kv_rating = 3;
+  double input_voltage_min_v = 4;
+  double input_voltage_max_v = 5;
+  repeated string mount_pattern_ids = 6;
+  string mount_bolt_size = 7;
+  string shaft_type = 8;
+  optional double max_current_a = 9;
 }
 
 message PropellerProfile {
@@ -33,6 +41,19 @@ message PropellerProfile {
   int32 blade_count = 3;
   string mount_type = 4;
   repeated string recommended_stators = 5;
+}
+
+message BecOutput {
+  double voltage_v = 1;
+  double continuous_current_a = 2;
+  optional double burst_current_a = 3;
+}
+
+message UartPort {
+  string id = 1; // e.g. "UART1"
+  bool supports_rx = 2;
+  bool supports_tx = 3;
+  bool has_inverter = 4;
 }
 
 message FlightControllerProfile {
@@ -44,8 +65,8 @@ message FlightControllerProfile {
   double input_voltage_max_v = 6;
   string esc_interface = 7;
   repeated string supported_firmware_ids = 8;
-  string bec_outputs_json = 9;
-  string uart_connections_json = 10;
+  repeated BecOutput bec_outputs = 9;
+  repeated UartPort uart_connections = 10;
 }
 
 message EscProfile {
@@ -96,6 +117,7 @@ message CameraProfile {
   double input_voltage_max_v = 7;
   string mounting_screw_size = 8;
   string aspect_ratio = 9;
+  repeated string supported_adapters = 10; // e.g. ["micro-to-nano"]
 }
 
 message ReceiverProfile {

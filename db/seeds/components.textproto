@@ -1,0 +1,2517 @@
+components {
+  id: "c79fade8-8023-4455-a161-a0393e76b3f1"
+  name: "DJI O3 Air Unit"
+  release_year: 2022
+  weight_g: 36.4
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "DJI"
+    input_voltage_min_v: 7.4
+    input_voltage_max_v: 26.4
+    max_power_mw: 1995
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "d4be10c2-a1ac-496b-a5f8-8d12c4c9c2c3"
+  name: "Redfox A3 F722 45A AIO"
+  release_year: 2024
+  weight_g: 8.7
+  type: COMPONENT_TYPE_FLIGHT_CONTROLLER
+  flight_controller {
+    mcu_processor: "STM32F722RET6"
+  }
+}
+
+components {
+  id: "bcd3f5b4-1f07-485e-804e-ad1a3f8dedf4"
+  name: "Sub250 1404 4500KV"
+  release_year: 2023
+  weight_g: 10.3
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 4500
+  }
+}
+
+components {
+  id: "63293362-7038-4f07-97bc-2e12c870b1e0"
+  name: "TBS Source One V5"
+  release_year: 2022
+  weight_g: 123.5
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 226
+    max_prop_size_mm: 129.5
+  }
+}
+
+components {
+  id: "bd4abae8-b741-4ca2-b85a-bb11a638ab37"
+  name: "HQProp 5x4.3x3 V1S"
+  release_year: 2018
+  weight_g: 3.81
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 127
+    pitch_mm: 109.2
+    blade_count: 3
+  }
+}
+
+components {
+  id: "231b10c7-148d-42a8-b0c2-505be6009de5"
+  name: "Tattu R-Line Version 5.0 1200mAh 6S"
+  release_year: 2022
+  weight_g: 197
+}
+
+components {
+  id: "70a0df5a-3de2-41fb-8564-06ed89616870"
+  name: "RunCam Phoenix 2"
+  release_year: 2020
+  weight_g: 9
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "Analog"
+  }
+}
+
+components {
+  id: "c06f8fd8-e08a-48d0-8e4b-f5b1d6e2e0e8"
+  name: "TBS Crossfire Nano RX"
+  release_year: 2018
+  weight_g: 0.5
+  type: COMPONENT_TYPE_RECEIVER
+  receiver {
+    output_protocol: "TBS Crossfire (CRSF)"
+  }
+}
+
+components {
+  id: "9456e22b-1554-41c8-bb41-351d637a31d2"
+  name: "Matek M8Q-5883"
+  release_year: 2019
+  weight_g: 7
+  type: COMPONENT_TYPE_GPS
+  gps {
+    chipset: "u-blox SAM-M8Q"
+  }
+}
+
+components {
+  id: "09eb68be-d928-4327-a3eb-9a96034ce409"
+  name: "Lumenier AXII 2 (RHCP)"
+  release_year: 2019
+  weight_g: 4.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Omni"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "2a7a01c5-7f9c-4bb1-82d4-2ec85f03edef"
+  name: "RadioMaster TX16S MKII"
+  release_year: 2022
+  weight_g: 750
+}
+
+components {
+  id: "84458611-9270-4ebb-babd-6dea4fcfffc2"
+  name: "Fat Shark HDO 2"
+  release_year: 2019
+  weight_g: 206.8
+}
+
+components {
+  id: "3fc8f259-4116-4c37-90a4-f9696a72cbab"
+  name: "DJI Goggles 2"
+  release_year: 2022
+  weight_g: 290
+}
+
+components {
+  id: "5ad16afe-5f08-40c8-97ba-48a13261aaeb"
+  name: "Caddx Vista"
+  release_year: 2020
+  weight_g: 19
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "DJI"
+    input_voltage_min_v: 7.4
+    input_voltage_max_v: 26.4
+    max_power_mw: 1000
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "f09c2350-58b0-44f8-930e-755bf674e7d3"
+  name: "Walksnail Avatar HD Pro Camera"
+  release_year: 2023
+  weight_g: 9.5
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "Walksnail"
+  }
+}
+
+components {
+  id: "595640a0-0450-4319-b1b9-4aaa38c591dd"
+  name: "Walksnail Avatar VTX V2"
+  release_year: 2023
+  weight_g: 15.4
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "Walksnail"
+    input_voltage_min_v: 6
+    input_voltage_max_v: 25.2
+    max_power_mw: 1200
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "5eee1839-7e6f-4272-8fd0-2d7dc1d94ca9"
+  name: "ImpulseRC Apex EVO 5\""
+  release_year: 2023
+  weight_g: 132
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 225
+    max_prop_size_mm: 129.5
+  }
+}
+
+components {
+  id: "5ca9ac11-e60f-408c-98a3-728be8830c86"
+  name: "iFlight AOS 5 V5"
+  release_year: 2023
+  weight_g: 129
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 228
+    max_prop_size_mm: 132
+  }
+}
+
+components {
+  id: "ab1437e2-e6fa-4573-859a-a1a14ed4dfd5"
+  name: "FlyFishRC Volador II VX5"
+  release_year: 2023
+  weight_g: 177
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 225
+    max_prop_size_mm: 129.5
+  }
+}
+
+components {
+  id: "37050ece-2198-493c-a5c1-e5ad4db93504"
+  name: "DJI FPV Goggles V2"
+  release_year: 2021
+  weight_g: 420
+}
+
+components {
+  id: "9abdd2a9-ed68-4223-ab35-a59106e2bbef"
+  name: "DJI Goggles Integra"
+  release_year: 2023
+  weight_g: 410
+}
+
+components {
+  id: "4122d099-d90a-4039-94ea-54d5da3458b7"
+  name: "Walksnail Avatar HD Goggles X"
+  release_year: 2023
+  weight_g: 290
+}
+
+components {
+  id: "e163a58c-2c23-4e13-bb8e-9573ae5443da"
+  name: "Caddx Nebula Pro"
+  release_year: 2020
+  weight_g: 6
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "DJI"
+  }
+}
+
+components {
+  id: "ecd57e3c-55bc-4650-8b87-a996a265c6a0"
+  name: "Walksnail Avatar VRX"
+  release_year: 2022
+  weight_g: 83
+  type: COMPONENT_TYPE_RECEIVER
+  receiver {
+    output_protocol: "HDMI"
+  }
+}
+
+components {
+  id: "84e51f6e-a951-4ceb-a5c2-7917d1af5f9b"
+  name: "Caddx Gofilm 20 Frame"
+  release_year: 2024
+  weight_g: 30.5
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 94
+    max_prop_size_mm: 51
+  }
+}
+
+components {
+  id: "e9fe0c52-c54b-4763-abbb-8b236e52669d"
+  name: "CaddxF4 AIO 20A"
+  release_year: 2024
+  weight_g: 5.3
+  type: COMPONENT_TYPE_FLIGHT_CONTROLLER
+  flight_controller {
+    mcu_processor: "STM32F405"
+  }
+}
+
+components {
+  id: "8ae702fe-6398-45c3-9cd0-c8b624042b6b"
+  name: "Caddx 1303 6000KV"
+  release_year: 2024
+  weight_g: 5.6
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 6000
+  }
+}
+
+components {
+  id: "9a1df8fd-f523-4e8d-84e8-a54e94089904"
+  name: "HQProp T2x2x3"
+  release_year: 2021
+  weight_g: 1.5
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 50.8
+    pitch_mm: 50.8
+    blade_count: 3
+  }
+}
+
+components {
+  id: "f941d3ed-93d0-43ba-b870-092b7ed936ca"
+  name: "Walksnail Moonlight Camera"
+  release_year: 2024
+  weight_g: 8.9
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "Walksnail"
+  }
+}
+
+components {
+  id: "2e7bb55d-2e89-4b38-96da-b7bf7bed39d3"
+  name: "Walksnail Moonlight VTX"
+  release_year: 2024
+  weight_g: 38.5
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "Walksnail"
+    input_voltage_min_v: 7.4
+    input_voltage_max_v: 25.2
+    max_power_mw: 1000
+    antenna_count: 2
+  }
+}
+
+components {
+  id: "aebe4930-5e98-43a8-b941-be3dac035947"
+  name: "RadioMaster Boxer"
+  release_year: 2023
+  weight_g: 532.5
+}
+
+components {
+  id: "a94e8110-b96f-4f51-b176-66d83eab672e"
+  name: "RadioMaster Pocket"
+  release_year: 2023
+  weight_g: 288
+}
+
+components {
+  id: "ba9b8838-b032-47f5-b25d-5da20dbf2238"
+  name: "RadioMaster Zorro"
+  release_year: 2022
+  weight_g: 350
+}
+
+components {
+  id: "0e0aa54b-df49-4f49-9416-55fde99729a3"
+  name: "RadioMaster TX12 MKII"
+  release_year: 2022
+  weight_g: 363
+}
+
+components {
+  id: "3eba8cfa-22d8-4f83-8054-8bd16ea32d0c"
+  name: "HelloRadio V12"
+  release_year: 2024
+  weight_g: 360
+}
+
+components {
+  id: "6f7c7316-5a53-4e2b-91f9-10b1b5d85790"
+  name: "HelloRadio V14"
+  release_year: 2024
+  weight_g: 420
+}
+
+components {
+  id: "f08af1b9-6c6e-4747-969f-06772af110bf"
+  name: "HelloRadio V16"
+  release_year: 2024
+  weight_g: 750
+}
+
+components {
+  id: "b85ebe55-48a7-4b27-b780-41163215932b"
+  name: "TBS Tango 2 Pro"
+  release_year: 2020
+  weight_g: 350
+}
+
+components {
+  id: "58541980-b6a0-472a-9945-70703d9be2aa"
+  name: "TBS Mambo"
+  release_year: 2021
+  weight_g: 565
+}
+
+components {
+  id: "8b919efe-8ff2-49f1-a88b-2eb0ca080fcd"
+  name: "TBS Tracer Nano RX"
+  release_year: 2021
+  weight_g: 0.5
+  type: COMPONENT_TYPE_RECEIVER
+  receiver {
+    output_protocol: "TBS Crossfire (CRSF)"
+  }
+}
+
+components {
+  id: "12b4c359-11e2-4ca8-be81-55ed9698c989"
+  name: "TBS Unify Pro32 Nano"
+  release_year: 2019
+  weight_g: 1
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "Analog"
+    input_voltage_min_v: 3
+    input_voltage_max_v: 13
+    max_power_mw: 500
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "ec6cff9f-8bf7-442e-a6cc-3b40dcb8fc9f"
+  name: "Walksnail Avatar HD Mini 1S VTX"
+  release_year: 2022
+  weight_g: 8.7
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "Walksnail"
+    input_voltage_min_v: 3.1
+    input_voltage_max_v: 5
+    max_power_mw: 350
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "6431d649-a63a-4ac3-8d58-cad7b658f6ff"
+  name: "Walksnail Avatar HD Nano Camera V3"
+  release_year: 2023
+  weight_g: 3
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "Walksnail"
+  }
+}
+
+components {
+  id: "80817728-ee74-4a68-8a5e-bc09686476a4"
+  name: "HDZero Freestyle V2 VTX"
+  release_year: 2023
+  weight_g: 22.3
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "HDZero"
+    input_voltage_min_v: 7
+    input_voltage_max_v: 25
+    max_power_mw: 1000
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "10ff0bab-1644-49c2-b8f3-e53ab6a8f0fe"
+  name: "HDZero Whoop Lite VTX"
+  release_year: 2022
+  weight_g: 4.5
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "HDZero"
+    input_voltage_min_v: 2.8
+    input_voltage_max_v: 13
+    max_power_mw: 200
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "fcdaf793-2c36-46cd-a085-cba463d0948a"
+  name: "HDZero Nano 90 Camera"
+  release_year: 2022
+  weight_g: 5.2
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "HDZero"
+  }
+}
+
+components {
+  id: "32310851-0679-45c7-a9d4-abb0cb4ea4d2"
+  name: "HDZero Goggles"
+  release_year: 2022
+  weight_g: 294
+}
+
+components {
+  id: "1ccd17f7-94d2-4a36-af51-f550c97730cb"
+  name: "DJI Goggles 3"
+  release_year: 2024
+  weight_g: 470
+}
+
+components {
+  id: "6e386d73-d96d-4cc6-b9a9-17e1cc610a80"
+  name: "DJI O4 Lite VTX"
+  release_year: 2024
+  weight_g: 5
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "DJI"
+    input_voltage_min_v: 6
+    input_voltage_max_v: 26.4
+    max_power_mw: 1000
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "cb7477ca-e29f-4270-b7c3-84e664055c82"
+  name: "DJI O4 Lite Camera"
+  release_year: 2024
+  weight_g: 3.2
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "DJI"
+  }
+}
+
+components {
+  id: "bc032a8c-d6a0-4e04-b7a9-12f00d1c3d6f"
+  name: "DJI O4 Wide VTX"
+  release_year: 2024
+  weight_g: 5.1
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "DJI"
+    input_voltage_min_v: 3.7
+    input_voltage_max_v: 13.2
+    max_power_mw: 2000
+    antenna_count: 1
+  }
+}
+
+components {
+  id: "ae308371-a0d7-40f1-9149-0e7f73c62cea"
+  name: "DJI O4 Wide Camera"
+  release_year: 2024
+  weight_g: 8.3
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "DJI"
+  }
+}
+
+components {
+  id: "3f97c746-f9e7-49cc-bd32-e0455010720c"
+  name: "DJI O4 Pro VTX"
+  release_year: 2024
+  weight_g: 15.6
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "DJI"
+    input_voltage_min_v: 6
+    input_voltage_max_v: 26.4
+    max_power_mw: 2000
+    antenna_count: 2
+  }
+}
+
+components {
+  id: "04f3da74-a813-4766-9c03-8ee0559fa49c"
+  name: "DJI O4 Pro Camera"
+  release_year: 2024
+  weight_g: 16.4
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "DJI"
+  }
+}
+
+components {
+  id: "7f950e3c-f432-4c1b-bc70-dcb8b59fad7f"
+  name: "Happymodel X12 5-IN-1 AIO"
+  release_year: 2022
+  weight_g: 5.1
+  type: COMPONENT_TYPE_FLIGHT_CONTROLLER
+  flight_controller {
+    mcu_processor: "STM32F411CEU6"
+  }
+}
+
+components {
+  id: "5ce7d436-9607-4733-90f5-3d3cb6b3e739"
+  name: "Happymodel Mobula8 Frame"
+  release_year: 2023
+  weight_g: 11.5
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 85
+    max_prop_size_mm: 51
+  }
+}
+
+components {
+  id: "2cbd5b99-baff-4ecf-bf63-1317151cb571"
+  name: "Happymodel EX1103 8000KV"
+  release_year: 2021
+  weight_g: 3.8
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 8000
+  }
+}
+
+components {
+  id: "a2e4714a-6e91-41e3-a9dd-094320b59cbb"
+  name: "Flywoo Explorer LR 4 Frame"
+  release_year: 2020
+  weight_g: 41
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 168
+    max_prop_size_mm: 101.6
+  }
+}
+
+components {
+  id: "dbac0277-d5e5-49b0-a94f-9ef1cbdd47bc"
+  name: "Flywoo ROBO 1002 15500KV"
+  release_year: 2023
+  weight_g: 2.5
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 15500
+  }
+}
+
+components {
+  id: "007aeedf-1c7f-460a-9473-cf2b49095dce"
+  name: "BetaFPV Meteor75 Pro Frame"
+  release_year: 2023
+  weight_g: 5.8
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 80.8
+    max_prop_size_mm: 45
+  }
+}
+
+components {
+  id: "d5717af2-212e-4905-b79d-3724daf164ca"
+  name: "BetaFPV F4 1S 5A AIO"
+  release_year: 2021
+  weight_g: 2.96
+  type: COMPONENT_TYPE_FLIGHT_CONTROLLER
+  flight_controller {
+    mcu_processor: "STM32F411"
+  }
+}
+
+components {
+  id: "6dc8e480-b08d-4bf0-aedf-6430748848cd"
+  name: "BetaFPV 0802SE 19500KV"
+  release_year: 2021
+  weight_g: 1.83
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 19500
+  }
+}
+
+components {
+  id: "e4a01675-f8fe-4ac8-912a-e0aff05dde21"
+  name: "BetaFPV Lava 1S 300mAh"
+  release_year: 2023
+  weight_g: 8.3
+}
+
+components {
+  id: "335ab616-0bea-417e-8fe9-a583c0c74d15"
+  name: "BetaFPV Lava 2S 450mAh"
+  release_year: 2023
+  weight_g: 26.1
+}
+
+components {
+  id: "f04eaadb-0233-498f-b444-166270887d8a"
+  name: "GNB 3S 650mAh 80C"
+  release_year: 2021
+  weight_g: 45.9
+}
+
+components {
+  id: "af3c58e2-c158-487d-8cd8-67b5efa21215"
+  name: "Ovonic 4S 1300mAh 100C"
+  release_year: 2021
+  weight_g: 156
+}
+
+components {
+  id: "22be9a87-fa04-4ff4-aacf-5cdb85100919"
+  name: "Tattu R-Line Version 5.0 1400mAh 6S"
+  release_year: 2022
+  weight_g: 222
+}
+
+components {
+  id: "158bfa97-6a09-4dac-945a-6ed681028f38"
+  name: "GNB 8S 1100mAh 130C"
+  release_year: 2023
+  weight_g: 256.7
+}
+
+components {
+  id: "5947edc6-5d6f-46a8-9282-9363dee88aa3"
+  name: "Gemfan Hurricane 51466 V2"
+  release_year: 2021
+  weight_g: 4.2
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 131.8
+    pitch_mm: 91.4
+    blade_count: 3
+  }
+}
+
+components {
+  id: "245a35fd-f3bc-4249-ad37-2f5d8f6a5900"
+  name: "Gemfan Floppy Proppy F5135"
+  release_year: 2021
+  weight_g: 4.7
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 129.54
+    pitch_mm: 88.9
+    blade_count: 3
+  }
+}
+
+components {
+  id: "906eeb82-2198-4a55-956a-961ffeed4f40"
+  name: "HQProp Ethix S5 Light Grey"
+  release_year: 2020
+  weight_g: 3.7
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 127
+    pitch_mm: 101.6
+    blade_count: 3
+  }
+}
+
+components {
+  id: "af6568a3-23ed-4ca0-bd22-fc179483ee4d"
+  name: "HQProp 7X4X3"
+  release_year: 2021
+  weight_g: 9.1
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 177.8
+    pitch_mm: 101.6
+    blade_count: 3
+  }
+}
+
+components {
+  id: "2cb1cea0-841d-41f2-ae33-b9e5ad324226"
+  name: "BetaFPV LAVA 1S 450mAh"
+  release_year: 2023
+  weight_g: 12.2
+}
+
+components {
+  id: "10bd59c5-e989-4c11-b713-ae5a6be2efbf"
+  name: "BetaFPV LAVA 1S 550mAh"
+  release_year: 2023
+  weight_g: 14
+}
+
+components {
+  id: "0191d49a-53df-4776-b005-9249a4ce5bea"
+  name: "BetaFPV LAVA 3S 450mAh"
+  release_year: 2023
+  weight_g: 37.8
+}
+
+components {
+  id: "2eb32031-ca80-4fcd-98eb-0b316026b20e"
+  name: "BetaFPV LAVA 4S 450mAh"
+  release_year: 2023
+  weight_g: 49.4
+}
+
+components {
+  id: "0debbcaa-09d5-4808-aea5-c0620a8540a4"
+  name: "BetaFPV LAVA 4S 850mAh"
+  release_year: 2023
+  weight_g: 98
+}
+
+components {
+  id: "2d4bc884-cbcf-4e04-be29-95147c23c34b"
+  name: "Tattu R-Line 4S 650mAh"
+  release_year: 2021
+  weight_g: 82
+}
+
+components {
+  id: "1e589898-10bd-4b61-90b2-aeb14997f52c"
+  name: "Tattu R-Line 4S 1300mAh"
+  release_year: 2021
+  weight_g: 150
+}
+
+components {
+  id: "7a5b969c-9042-48aa-91d4-6641d3c03701"
+  name: "Tattu R-Line 4S 1550mAh"
+  release_year: 2021
+  weight_g: 177
+}
+
+components {
+  id: "2c903d92-d6e2-4e23-9ce6-cce1cbfb9281"
+  name: "Tattu R-Line 6S 1050mAh"
+  release_year: 2022
+  weight_g: 180
+}
+
+components {
+  id: "fb0c6837-1959-4bae-82ba-919e16ee65d7"
+  name: "Tattu R-Line 6S 1300mAh"
+  release_year: 2022
+  weight_g: 208
+}
+
+components {
+  id: "a77f839b-731e-428f-abbb-059bc1f1e2dc"
+  name: "Ovonic 3S 450mAh"
+  release_year: 2021
+  weight_g: 33.6
+}
+
+components {
+  id: "8c4c5ed7-9bcc-40d0-a0eb-acaaf93c4840"
+  name: "Ovonic 3S 850mAh"
+  release_year: 2021
+  weight_g: 76
+}
+
+components {
+  id: "de2b694d-d431-45b7-b408-f969fa00e27a"
+  name: "Ovonic 4S 850mAh"
+  release_year: 2021
+  weight_g: 102
+}
+
+components {
+  id: "b2585a02-89ab-498a-8f0c-f8180f64490c"
+  name: "Ovonic 4S 1550mAh"
+  release_year: 2021
+  weight_g: 184
+}
+
+components {
+  id: "a957fa65-532f-4fe7-8690-08ef7a5e46ac"
+  name: "Ovonic 6S 1000mAh"
+  release_year: 2022
+  weight_g: 171
+}
+
+components {
+  id: "7ceefdd0-6dfe-45b4-b261-639fb3b11eb2"
+  name: "Ovonic 6S 1200mAh"
+  release_year: 2022
+  weight_g: 195
+}
+
+components {
+  id: "f67d213b-6c59-4fa5-853d-b123197123d2"
+  name: "GNB 1S 380mAh"
+  release_year: 2021
+  weight_g: 10
+}
+
+components {
+  id: "3b60365d-b58d-4870-8445-8a93683d89fe"
+  name: "GNB 1S 530mAh"
+  release_year: 2021
+  weight_g: 12
+}
+
+components {
+  id: "4ddb1ca6-d6d9-4b71-8c3b-7ac11523abb6"
+  name: "GNB 2S 530mAh"
+  release_year: 2021
+  weight_g: 26.5
+}
+
+components {
+  id: "b0805b23-8135-4268-9d0f-bf6e8c7228a7"
+  name: "GNB 4S 650mAh"
+  release_year: 2021
+  weight_g: 70
+}
+
+components {
+  id: "ac10bbd9-97b0-4b2c-9480-35fe37693c67"
+  name: "GNB 4S 1100mAh"
+  release_year: 2022
+  weight_g: 133
+}
+
+components {
+  id: "b377b583-b09f-428a-9d50-8659848360fb"
+  name: "GNB 6S 1100mAh"
+  release_year: 2022
+  weight_g: 177
+}
+
+components {
+  id: "8744c8d8-0df2-4bc7-83b4-1dfad9dbbcf0"
+  name: "GNB 6S 1300mAh"
+  release_year: 2022
+  weight_g: 189
+}
+
+components {
+  id: "99893df6-bdca-403c-97a1-783f96c9d84e"
+  name: "BetaFPV 2S 300mAh (Unverified)"
+  release_year: 2023
+  weight_g: 15
+}
+
+components {
+  id: "fa491596-dea9-45b3-a1f7-ae2980043f55"
+  name: "BetaFPV LAVA 2S 550mAh"
+  release_year: 2023
+  weight_g: 29.5
+}
+
+components {
+  id: "f1b47afb-a671-47c6-a7be-ad77e77ae588"
+  name: "Tattu 2S 450mAh"
+  release_year: 2021
+  weight_g: 29
+}
+
+components {
+  id: "2c556e35-6d8c-48c8-b023-57de591bada4"
+  name: "Tattu 2S 850mAh"
+  release_year: 2021
+  weight_g: 40
+}
+
+components {
+  id: "5fe24961-23ca-4a14-879a-6838db6f63f1"
+  name: "Ovonic 2S 450mAh (Unverified)"
+  release_year: 2021
+  weight_g: 24
+}
+
+components {
+  id: "e2a5aed6-38cc-4757-8164-70b67044dabe"
+  name: "Ovonic 2S 850mAh (Unverified)"
+  release_year: 2021
+  weight_g: 45
+}
+
+components {
+  id: "8063057b-49d5-467c-8030-f8b986fffb25"
+  name: "GNB 2S 380mAh"
+  release_year: 2021
+  weight_g: 22
+}
+
+components {
+  id: "ce237e6d-bf53-4c70-a48e-287b567e82ba"
+  name: "GNB 2S 450mAh"
+  release_year: 2021
+  weight_g: 27
+}
+
+components {
+  id: "62ae4835-e00a-4784-9ac0-75072d115f6a"
+  name: "BetaFPV 2S 850mAh (Unverified)"
+  release_year: 2023
+  weight_g: 45
+}
+
+components {
+  id: "289fb0ee-85f9-4910-a744-e560c9e90c86"
+  name: "Tattu R-Line 4S 1800mAh"
+  release_year: 2021
+  weight_g: 197
+}
+
+components {
+  id: "011221f8-01e2-49d1-9d42-4b31e1cd35ca"
+  name: "Tattu R-Line 5S 1300mAh (Unverified)"
+  release_year: 2021
+  weight_g: 185
+}
+
+components {
+  id: "472f0830-2b0d-4de0-a747-44ade876e152"
+  name: "Tattu R-Line 5S 1550mAh"
+  release_year: 2021
+  weight_g: 214
+}
+
+components {
+  id: "a7e5785c-084a-43da-ac6a-d5f741f16438"
+  name: "Tattu R-Line 6S 1250mAh (Unverified)"
+  release_year: 2022
+  weight_g: 200
+}
+
+components {
+  id: "ac9a323a-8223-40bb-a36d-f6cbbf59708e"
+  name: "Tattu R-Line 6S 1550mAh"
+  release_year: 2022
+  weight_g: 254
+}
+
+components {
+  id: "5c3b4493-5ce0-4fd7-8bf4-370365dd610f"
+  name: "Ovonic 2S 650mAh"
+  release_year: 2021
+  weight_g: 45
+}
+
+components {
+  id: "d76df359-00b7-4d67-82a4-776072420a5a"
+  name: "Ovonic 3S 1300mAh"
+  release_year: 2021
+  weight_g: 115
+}
+
+components {
+  id: "00a29b13-9a7a-495d-a5bf-366d603a2a06"
+  name: "Ovonic 4S 1800mAh"
+  release_year: 2021
+  weight_g: 205
+}
+
+components {
+  id: "bd2dee36-70b8-4892-a4a2-31878fc2b586"
+  name: "Ovonic 6S 1550mAh"
+  release_year: 2022
+  weight_g: 245
+}
+
+components {
+  id: "80fa6547-9823-40a7-a06a-47d8768b6a8e"
+  name: "GNB 1S 650mAh"
+  release_year: 2021
+  weight_g: 17
+}
+
+components {
+  id: "8e62a8cc-64e5-493f-8786-b4eaf06b02e1"
+  name: "GNB 1S 720mAh"
+  release_year: 2021
+  weight_g: 16.5
+}
+
+components {
+  id: "3f21bb93-783e-403b-9222-817eefca2572"
+  name: "GNB 2S 650mAh"
+  release_year: 2021
+  weight_g: 31.4
+}
+
+components {
+  id: "be27cf91-aa97-4222-be1e-38fc17a7b61c"
+  name: "GNB 3S 1100mAh"
+  release_year: 2021
+  weight_g: 111
+}
+
+components {
+  id: "7b5af628-dbf3-48d3-b314-25d5eb7ab4fb"
+  name: "GNB 4S 1550mAh"
+  release_year: 2022
+  weight_g: 189
+}
+
+components {
+  id: "593bd383-d98f-47aa-9e69-67e9675ec3fd"
+  name: "GNB 6S 1550mAh"
+  release_year: 2022
+  weight_g: 273
+}
+
+components {
+  id: "c2ae3b4b-9f4b-4efa-aa50-ddbaf4887ff5"
+  name: "GNB 8S 1300mAh"
+  release_year: 2023
+  weight_g: 252
+}
+
+components {
+  id: "bfcc7614-6682-4a59-9c4e-72136f30127f"
+  name: "Gemfan 1219 3-Blade"
+  release_year: 2020
+  weight_g: 0.28
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 31
+    pitch_mm: 48
+    blade_count: 3
+  }
+}
+
+components {
+  id: "5af513d4-c9fe-4d83-8506-1344706e1a2f"
+  name: "Gemfan 1636 4-Blade"
+  release_year: 2020
+  weight_g: 0.5
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 40
+    pitch_mm: 91.4
+    blade_count: 4
+  }
+}
+
+components {
+  id: "fc2c3e76-880d-4b1f-9e0e-0aae92cf2bcc"
+  name: "Gemfan 2023 3-Blade"
+  release_year: 2021
+  weight_g: 0.88
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 50.8
+    pitch_mm: 58.4
+    blade_count: 3
+  }
+}
+
+components {
+  id: "a58c6c9c-d829-402e-8810-137346a7e8f5"
+  name: "Gemfan 3016 3-Blade"
+  release_year: 2020
+  weight_g: 1.18
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 76.2
+    pitch_mm: 40.6
+    blade_count: 3
+  }
+}
+
+components {
+  id: "4de6f197-1d7b-435f-bb3e-5c66dcfa63df"
+  name: "Gemfan 4023 3-Blade"
+  release_year: 2021
+  weight_g: 1.9
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 101.6
+    pitch_mm: 58.4
+    blade_count: 3
+  }
+}
+
+components {
+  id: "91c5a3ba-9d13-4faf-8689-746f85663363"
+  name: "Gemfan Hurricane 51433"
+  release_year: 2020
+  weight_g: 3.8
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 130.8
+    pitch_mm: 110
+    blade_count: 3
+  }
+}
+
+components {
+  id: "0f26e6bc-7ed3-4d53-a63e-835b27fd539c"
+  name: "Gemfan Hurricane 51499"
+  release_year: 2020
+  weight_g: 5.1
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 130.8
+    pitch_mm: 126.7
+    blade_count: 3
+  }
+}
+
+components {
+  id: "bdfbdf82-7f55-4d72-bc03-e2d64d3f046e"
+  name: "Gemfan 7040 3-Blade"
+  release_year: 2021
+  weight_g: 8.7
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 177.8
+    pitch_mm: 101.6
+    blade_count: 3
+  }
+}
+
+components {
+  id: "f9f73051-4830-4721-a9b6-1c2131c82c58"
+  name: "HQProp Micro Whoop 31x3"
+  release_year: 2020
+  weight_g: 0.27
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 31
+    pitch_mm: 30
+    blade_count: 3
+  }
+}
+
+components {
+  id: "7a279892-7d44-4569-b559-5311232827a7"
+  name: "HQProp Micro Whoop 40x4"
+  release_year: 2020
+  weight_g: 0.5
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 40
+    pitch_mm: 40
+    blade_count: 4
+  }
+}
+
+components {
+  id: "1681b79d-7560-49d8-9077-a4ef4f9890dd"
+  name: "HQProp T65MM 2.5 Inch"
+  release_year: 2021
+  weight_g: 1.2
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 65
+    pitch_mm: 40
+    blade_count: 2
+  }
+}
+
+components {
+  id: "baf9291c-94b1-44f8-af4b-ec44378b07a7"
+  name: "HQProp T3x3x3"
+  release_year: 2020
+  weight_g: 1.5
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 76.2
+    pitch_mm: 76.2
+    blade_count: 3
+  }
+}
+
+components {
+  id: "b4f86184-0883-41ba-be40-a3eb7f118596"
+  name: "HQProp T4x2.5x2"
+  release_year: 2021
+  weight_g: 1.4
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 101.6
+    pitch_mm: 63.5
+    blade_count: 2
+  }
+}
+
+components {
+  id: "01669d65-ecfd-477d-a50c-ab7ec9a11172"
+  name: "HQProp Ethix P3 Peanut Butter"
+  release_year: 2020
+  weight_g: 3.8
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 129.5
+    pitch_mm: 76.2
+    blade_count: 3
+  }
+}
+
+components {
+  id: "e39a28e8-57d1-408a-adc6-0440df6a5f4b"
+  name: "HQProp Ethix S3 Watermelon"
+  release_year: 2019
+  weight_g: 3.6
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 127
+    pitch_mm: 78.7
+    blade_count: 3
+  }
+}
+
+components {
+  id: "b188c5de-4ebe-483d-a4d2-fece6638d0de"
+  name: "HQProp 5.1x4.1x3"
+  release_year: 2021
+  weight_g: 4.7
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 129.5
+    pitch_mm: 104.1
+    blade_count: 3
+  }
+}
+
+components {
+  id: "86a33c13-4041-45c5-beb8-d692a2996d9c"
+  name: "HQProp 7x3.5x3"
+  release_year: 2021
+  weight_g: 8.8
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 177.8
+    pitch_mm: 88.9
+    blade_count: 3
+  }
+}
+
+components {
+  id: "e1c8598d-56e9-4c7b-a586-4ba319f84f64"
+  name: "Flywoo GOKU GM10 Mini"
+  release_year: 2022
+  weight_g: 4.7
+  type: COMPONENT_TYPE_GPS
+  gps {
+    chipset: "M10"
+  }
+}
+
+components {
+  id: "6bd8c769-5b77-41cb-8414-134df5400703"
+  name: "Mateksys M10Q-5883"
+  release_year: 2022
+  weight_g: 8
+  type: COMPONENT_TYPE_GPS
+  gps {
+    chipset: "M10"
+  }
+}
+
+components {
+  id: "37d16fd8-8528-4691-a2f6-41805cb85742"
+  name: "TBS M8.2 GPS"
+  release_year: 2021
+  weight_g: 5.2
+  type: COMPONENT_TYPE_GPS
+  gps {
+    chipset: "M8"
+  }
+}
+
+components {
+  id: "92e2d5ca-5f9d-4253-8c5f-47d0bc82a99d"
+  name: "Foxeer M10Q 120"
+  release_year: 2023
+  weight_g: 2.7
+  type: COMPONENT_TYPE_GPS
+  gps {
+    chipset: "M10"
+  }
+}
+
+components {
+  id: "2e600c4b-2ce7-4d56-b518-c24ebcb19c6b"
+  name: "Holybro Micro M8N"
+  release_year: 2020
+  weight_g: 20.6
+  type: COMPONENT_TYPE_GPS
+  gps {
+    chipset: "M8N"
+  }
+}
+
+components {
+  id: "c4ec5236-6842-42d0-bc73-dba86f92838f"
+  name: "HGLRC M100 Mini GPS"
+  release_year: 2023
+  weight_g: 2.6
+  type: COMPONENT_TYPE_GPS
+  gps {
+    chipset: "M10"
+  }
+}
+
+components {
+  id: "5b08427e-2fc1-4719-98e3-46e86d84de60"
+  name: "HGLRC Zeus F722"
+  release_year: 2021
+  weight_g: 8.1
+  type: COMPONENT_TYPE_FLIGHT_CONTROLLER
+  flight_controller {
+    mcu_processor: "STM32F722RET6"
+  }
+}
+
+components {
+  id: "6e7584c5-b864-4cd4-b91b-c085f09096e7"
+  name: "HGLRC Zeus 48A"
+  release_year: 2021
+  weight_g: 18.3
+  type: COMPONENT_TYPE_ESC
+  esc {
+    continuous_current_a: 48
+    burst_current_a: 55
+  }
+}
+
+components {
+  id: "45b893b9-399a-4d71-b59b-7f6672326d49"
+  name: "HGLRC Sector D5 Frame"
+  release_year: 2022
+  weight_g: 121.7
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 225
+    max_prop_size_mm: 127
+  }
+}
+
+components {
+  id: "b1adee30-0f00-430e-94c8-f96021ffcb64"
+  name: "HGLRC Aeolus 2105.5 2800KV"
+  release_year: 2021
+  weight_g: 22.3
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 2800
+  }
+}
+
+components {
+  id: "3829d91b-e1c0-4462-8f81-69aa2666e155"
+  name: "HGLRC Zeus 800mW VTX"
+  release_year: 2021
+  weight_g: 4.8
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "Analog"
+    input_voltage_min_v: 6
+    input_voltage_max_v: 26
+    max_power_mw: 800
+  }
+}
+
+components {
+  id: "663cd1ea-35a9-4f01-80b5-6c1e798d8220"
+  name: "HGLRC Specter 2306.5 1900KV"
+  release_year: 2023
+  weight_g: 34
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 1900
+  }
+}
+
+components {
+  id: "f62fdb09-2e3b-491e-b2d0-79e113792802"
+  name: "HGLRC Zeus F722 Mini"
+  release_year: 2021
+  weight_g: 4.6
+  type: COMPONENT_TYPE_FLIGHT_CONTROLLER
+  flight_controller {
+    mcu_processor: "STM32F722"
+  }
+}
+
+components {
+  id: "19802061-2d78-4488-a292-459a682868e7"
+  name: "HGLRC Specter F405 V2"
+  release_year: 2023
+  weight_g: 7.2
+  type: COMPONENT_TYPE_FLIGHT_CONTROLLER
+  flight_controller {
+    mcu_processor: "STM32F405"
+  }
+}
+
+components {
+  id: "51518a7e-1dc9-4149-b274-98661c3602d4"
+  name: "HGLRC Specter 60A 4-in-1 ESC"
+  release_year: 2023
+  weight_g: 19.5
+  type: COMPONENT_TYPE_ESC
+  esc {
+    continuous_current_a: 60
+    burst_current_a: 65
+  }
+}
+
+components {
+  id: "953ef739-6f18-40f7-9aee-0c5726ac438e"
+  name: "HGLRC Rekon3 Frame"
+  release_year: 2021
+  weight_g: 23
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 140
+    max_prop_size_mm: 76.2
+  }
+}
+
+components {
+  id: "9fc8ee22-c659-45ff-804d-905ca4733ac6"
+  name: "HGLRC Rekon5 Frame"
+  release_year: 2021
+  weight_g: 72
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 210
+    max_prop_size_mm: 127
+  }
+}
+
+components {
+  id: "aeb36f23-4b78-4a0d-b46b-f5c4d1f72e67"
+  name: "HGLRC Sector X5 Frame"
+  release_year: 2022
+  weight_g: 120
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 210
+    max_prop_size_mm: 127
+  }
+}
+
+components {
+  id: "3d36c96b-993a-4de5-a893-d027878ff4c8"
+  name: "HGLRC Aeolus 1102 18000KV"
+  release_year: 2021
+  weight_g: 3.2
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 18000
+  }
+}
+
+components {
+  id: "6c1d4d70-0909-497d-99d6-4e7f72ad23ed"
+  name: "HGLRC Aeolus 1404 2800KV"
+  release_year: 2021
+  weight_g: 11
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 2800
+  }
+}
+
+components {
+  id: "8c7cdd68-5c45-4c00-8e9b-e8c6470ae96a"
+  name: "HGLRC Aeolus 2004 3000KV"
+  release_year: 2021
+  weight_g: 16.6
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 3000
+  }
+}
+
+components {
+  id: "e8b59a56-a739-424e-8b1e-4a5c9ff3b184"
+  name: "HGLRC Specter 1804 3450KV"
+  release_year: 2023
+  weight_g: 13
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 3500
+  }
+}
+
+components {
+  id: "576a9993-2e3c-49ff-9323-40e97a712033"
+  name: "HGLRC Zeus Nano VTX 350mW"
+  release_year: 2021
+  weight_g: 2.4
+  type: COMPONENT_TYPE_VTX
+  vtx {
+    ecosystem_id: "Analog"
+    input_voltage_min_v: 5
+    input_voltage_max_v: 5
+    max_power_mw: 350
+  }
+}
+
+components {
+  id: "fe47fe43-4118-4109-b115-ac8e675e833e"
+  name: "HGLRC Hermes ExpressLRS 2.4GHz"
+  release_year: 2022
+  weight_g: 0.8
+  type: COMPONENT_TYPE_RECEIVER
+  receiver {
+    output_protocol: "ExpressLRS (ELRS)"
+  }
+}
+
+components {
+  id: "924d10e1-5c75-4900-bbba-c979819f187b"
+  name: "HGLRC Hermes ExpressLRS 900MHz"
+  release_year: 2022
+  weight_g: 0.8
+  type: COMPONENT_TYPE_RECEIVER
+  receiver {
+    output_protocol: "ExpressLRS (ELRS)"
+  }
+}
+
+components {
+  id: "3ef9f885-b15e-48c1-8624-90e8b637d861"
+  name: "HGLRC M80 PRO GPS"
+  release_year: 2021
+  weight_g: 12.5
+  type: COMPONENT_TYPE_GPS
+  gps {
+    chipset: "M8"
+  }
+}
+
+components {
+  id: "16746fa4-333e-41c2-acbf-793541778c71"
+  name: "HGLRC Specter 1202.5 11000KV"
+  release_year: 2021
+  weight_g: 4.6
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 11000
+  }
+}
+
+components {
+  id: "ecf460c9-7dbc-4559-8b88-5247a5523361"
+  name: "HGLRC Aeolus 1303.5 2500KV"
+  release_year: 2021
+  weight_g: 6.5
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 2500
+  }
+}
+
+components {
+  id: "b2b6ef35-49a6-4e55-9fe0-2ba85255ebdb"
+  name: "HGLRC Aeolus 2207.5 2550KV"
+  release_year: 2020
+  weight_g: 33
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 2550
+  }
+}
+
+components {
+  id: "5171f1f4-66f9-4a81-91f7-bf2530a2fdbc"
+  name: "HGLRC Aeolus 2306.5 2550KV"
+  release_year: 2020
+  weight_g: 37
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 2550
+  }
+}
+
+components {
+  id: "edb796f7-de7d-4697-8055-548dcbc4d004"
+  name: "HGLRC Aeolus 2806.5 1250KV"
+  release_year: 2021
+  weight_g: 47
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 1250
+  }
+}
+
+components {
+  id: "2fdf93c8-f104-41eb-8857-c222b7eff458"
+  name: "HGLRC Specter 1003 10000KV"
+  release_year: 2023
+  weight_g: 3.35
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 10000
+  }
+}
+
+components {
+  id: "7604c848-cfc8-401e-b11f-fc8d54b3cdce"
+  name: "T-Motor M1103 8000KV"
+  release_year: 2023
+  weight_g: 3.4
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 8000
+  }
+}
+
+components {
+  id: "244da36c-06d2-4758-a689-1dcc8502a48d"
+  name: "HGLRC Specter 1404 2750KV"
+  release_year: 2023
+  weight_g: 10
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 2750
+  }
+}
+
+components {
+  id: "7583951c-0efc-443e-953a-be7cb3a4914a"
+  name: "HGLRC Specter 2004 3000KV"
+  release_year: 2023
+  weight_g: 16.5
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 1800
+  }
+}
+
+components {
+  id: "2a808556-9a13-4c4d-a374-7c07bee7eac0"
+  name: "HGLRC Specter 2207.5 1900KV"
+  release_year: 2023
+  weight_g: 34
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 1900
+  }
+}
+
+components {
+  id: "4fb58a7b-2be6-45af-8260-40ccb3c5ff74"
+  name: "HGLRC Specter 2806.5 1350KV"
+  release_year: 2023
+  weight_g: 51.9
+  type: COMPONENT_TYPE_MOTOR
+  motor {
+    kv_rating: 1350
+  }
+}
+
+components {
+  id: "1eb4a7ef-fecf-4e9b-85f3-0e6735a989e1"
+  name: "Lumenier AXII 2 5.8GHz (RHCP)"
+  release_year: 2019
+  weight_g: 7.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "fe909bd8-fc11-4d8e-a4bd-9032b0896158"
+  name: "TrueRC Singularity 5.8GHz (RHCP)"
+  release_year: 2020
+  weight_g: 1.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "8c904368-79c8-4137-863c-8e04e5431353"
+  name: "Foxeer Lollipop 4 (RHCP)"
+  release_year: 2021
+  weight_g: 7.3
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "af00bb27-1fd1-4d53-8496-756beec4998b"
+  name: "Foxeer Lollipop 4 Micro (RHCP)"
+  release_year: 2021
+  weight_g: 1.6
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "b72ff55c-292a-4e07-a08d-bf1ed774c095"
+  name: "TBS Triumph Pro (RHCP)"
+  release_year: 2019
+  weight_g: 11.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "80ad18c7-c67f-4844-9c87-562c28df790b"
+  name: "Rush Cherry 5.8GHz (RHCP)"
+  release_year: 2020
+  weight_g: 7.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "dac67bd6-1fb6-48a3-8b7e-f4e5eddddebd"
+  name: "TBS Immortal T V2"
+  release_year: 2019
+  weight_g: 3.4
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "48035829-a833-4af9-bd01-fff3cc96dfbc"
+  name: "TBS Diamond Antenna"
+  release_year: 2018
+  weight_g: 20.6
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Diamond Dipole"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "23146d8c-506e-4860-8384-db89494a67ee"
+  name: "Radiomaster 2.4GHz Moxon"
+  release_year: 2022
+  weight_g: 12
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Moxon"
+    connector_id: "RP-SMA"
+  }
+}
+
+components {
+  id: "08483e12-19fa-4177-9c06-e7520bfd9547"
+  name: "BetaFPV Moxon Antenna"
+  release_year: 2021
+  weight_g: 12
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Moxon"
+    connector_id: "RP-SMA"
+  }
+}
+
+components {
+  id: "4f2f21de-1045-4dcc-9b67-206c90ef8828"
+  name: "TrueRC X-AIR 5.8 MK II (RHCP)"
+  release_year: 2021
+  weight_g: 12
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Patch"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "4e5a12f7-4e0f-41a3-a6de-b3d8063aa6ec"
+  name: "Lumenier AXII Patch Antenna (RHCP)"
+  release_year: 2020
+  weight_g: 10.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Patch"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "e4729fb2-dc19-4229-9f77-cbeab97a072c"
+  name: "TrueRC Matchstick 5.8GHz (RHCP)"
+  release_year: 2021
+  weight_g: 7.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "954b3456-668a-415d-bc3a-df0ec3980887"
+  name: "TrueRC OCP 5.8GHz (RHCP)"
+  release_year: 2020
+  weight_g: 7.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "1dc2547f-a296-48e6-99fa-9436ac4489a4"
+  name: "TrueRC Sniper 5.8GHz (RHCP)"
+  release_year: 2021
+  weight_g: 15
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Directional"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "3d85c198-4cee-4676-b2c8-fc9dec1758b1"
+  name: "Lumenier Micro AXII 2 5.8GHz (RHCP)"
+  release_year: 2020
+  weight_g: 1.4
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "7256f31a-d0dd-411a-817e-821cd08decef"
+  name: "Lumenier Double AXII 2 5.8GHz (RHCP)"
+  release_year: 2020
+  weight_g: 12
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "5753b914-f228-4b1a-afce-26bb36fd2af2"
+  name: "Lumenier AXII Duo 5.8GHz Patch (RHCP)"
+  release_year: 2019
+  weight_g: 18
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Patch"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "1fde22d6-c3a2-43a8-9e6f-c180c801b527"
+  name: "Happymodel 2.4GHz ELRS T-Antenna"
+  release_year: 2021
+  weight_g: 1.2
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "a6a9acd7-1773-429f-84d9-2fc64099480c"
+  name: "Happymodel 900MHz ELRS T-Antenna"
+  release_year: 2021
+  weight_g: 3.1
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "1cab1cd3-e106-4924-8976-0aafacc75dbc"
+  name: "Happymodel 5.8GHz Dipole Antenna"
+  release_year: 2019
+  weight_g: 0.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "12936405-c125-45f5-bf70-4d4205902706"
+  name: "Foxeer Lollipop 3 Stubby (RHCP)"
+  release_year: 2020
+  weight_g: 4.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "000e30a5-e7cd-4b43-9378-53c04a98ee35"
+  name: "Foxeer Echo 2 Patch Antenna (RHCP)"
+  release_year: 2021
+  weight_g: 11.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Patch"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "735216a7-9bd4-4d47-b74c-02acbc1678b8"
+  name: "Foxeer Pagoda Pro (RHCP)"
+  release_year: 2018
+  weight_g: 11
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Pagoda"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "ff0b8f7c-5e4f-4ac9-973f-f2ff9839150a"
+  name: "Lumenier AXII 2 (LHCP)"
+  release_year: 2019
+  weight_g: 4.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Omni"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "6a35fe4d-f05d-4fae-8377-00ae534c871e"
+  name: "Lumenier AXII 2 5.8GHz (LHCP)"
+  release_year: 2019
+  weight_g: 7.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "b28435da-84c3-4347-868f-98afceaa9ac5"
+  name: "TrueRC Singularity 5.8GHz (LHCP)"
+  release_year: 2020
+  weight_g: 1.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "46bbe95b-7105-44c0-973d-4511beac4b66"
+  name: "Foxeer Lollipop 4 (LHCP)"
+  release_year: 2021
+  weight_g: 7.3
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "f463a266-ebb4-459f-a9b0-a0a5b23c390f"
+  name: "Foxeer Lollipop 4 Micro (LHCP)"
+  release_year: 2021
+  weight_g: 1.6
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "a57228a7-53d4-4594-b2f3-c9f6f90982a3"
+  name: "TBS Triumph Pro (LHCP)"
+  release_year: 2019
+  weight_g: 11.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "e403a75b-b3c7-4183-b407-33444cace951"
+  name: "Rush Cherry 5.8GHz (LHCP)"
+  release_year: 2020
+  weight_g: 7.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "75c5aaa7-4464-4e94-bf4b-2b66afaac36c"
+  name: "TrueRC X-AIR 5.8 MK II (LHCP)"
+  release_year: 2021
+  weight_g: 12
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Patch"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "69457dd0-1495-4cb4-8de0-8ec806ac96d1"
+  name: "Lumenier AXII Patch Antenna (LHCP)"
+  release_year: 2020
+  weight_g: 10.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Patch"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "2e05f8a1-e1d9-4116-b972-4c122a8c0098"
+  name: "TrueRC Matchstick 5.8GHz (LHCP)"
+  release_year: 2021
+  weight_g: 7.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "353e114e-aebd-434a-8a14-bdc82c225c98"
+  name: "TrueRC OCP 5.8GHz (LHCP)"
+  release_year: 2020
+  weight_g: 7.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "dc9d4254-22ba-4dfe-b8bd-3fde0ed17df7"
+  name: "TrueRC Sniper 5.8GHz (LHCP)"
+  release_year: 2021
+  weight_g: 15
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Directional"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "56c5d39c-cbc5-463d-8222-88fb6b3bfd71"
+  name: "Lumenier Micro AXII 2 5.8GHz (LHCP)"
+  release_year: 2020
+  weight_g: 1.4
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "6cacd364-ec4c-4319-9b8b-3ff65be142a4"
+  name: "Lumenier Double AXII 2 5.8GHz (LHCP)"
+  release_year: 2020
+  weight_g: 12
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "82288ffb-f98d-495c-9815-1bb0e4dc3286"
+  name: "Lumenier AXII Duo 5.8GHz Patch (LHCP)"
+  release_year: 2019
+  weight_g: 18
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Patch"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "d0989d82-a44d-4ea6-b74f-50d89e37ed96"
+  name: "Foxeer Lollipop 3 Stubby (LHCP)"
+  release_year: 2020
+  weight_g: 4.8
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Mushroom"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "d0ca55ba-7e76-4701-a2e4-825f1e6aada0"
+  name: "Foxeer Echo 2 Patch Antenna (LHCP)"
+  release_year: 2021
+  weight_g: 11.5
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Patch"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "302e580a-1840-45d4-b599-ce236c2830ff"
+  name: "Foxeer Pagoda Pro (LHCP)"
+  release_year: 2018
+  weight_g: 11
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Pagoda"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "75f3ea86-06dc-4bec-8610-3a7ec013cc55"
+  name: "Caddx Ratel 2"
+  release_year: 2021
+  weight_g: 5.9
+  type: COMPONENT_TYPE_CAMERA
+  camera {
+    ecosystem_id: "Analog"
+  }
+}
+
+components {
+  id: "13e69937-4c98-4053-a2cd-a02288911102"
+  name: "SUB250-Oasis Frame"
+  release_year: 2023
+  weight_g: 53
+  type: COMPONENT_TYPE_FRAME
+  frame {
+    wheelbase_mm: 135
+    max_prop_size_mm: 63.5
+  }
+}
+
+components {
+  id: "b3a8a51c-878e-43b0-86bf-352ae9873ea0"
+  name: "HQProp 2.5x2.5x3"
+  release_year: 2022
+  weight_g: 1.5
+  type: COMPONENT_TYPE_PROPELLER
+  propeller {
+    diameter_mm: 63.5
+    pitch_mm: 63.5
+    blade_count: 3
+  }
+}
+
+components {
+  id: "9f8e81dd-3944-454c-9a0a-0773fb422bed"
+  name: "TBS Tracer Immortal T Antenna"
+  release_year: 2020
+  weight_g: 0.84
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "b62eb14b-fbd4-4dd1-84d6-8a642a9f1fda"
+  name: "TBS Tracer Monopole RX Antenna"
+  release_year: 2020
+  weight_g: 0.33
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "d55f72b2-aba9-45d7-a831-79a58d1472fa"
+  name: "TrueRC Singularity 2.4 SMA (RHCP)"
+  release_year: 2021
+  weight_g: 9.45
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Omni"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "22778445-7793-47f4-b802-1b9b08d0cefb"
+  name: "TrueRC Singularity 2.4 SMA (LHCP)"
+  release_year: 2021
+  weight_g: 9.45
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Omni"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "f267b5ce-2aba-44ce-8fbd-470cea2323ac"
+  name: "TrueRC D-POLE 2.4 MK II"
+  release_year: 2022
+  weight_g: 2
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "eb855320-eb0a-4a49-b95d-90cdfb742ca7"
+  name: "TrueRC BARDpole 2.4"
+  release_year: 2021
+  weight_g: 1.3
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "b655e033-45aa-4039-bd53-4ac1c7345cbb"
+  name: "BETAFPV 2.4GHz Dipole T-Antenna"
+  release_year: 2021
+  weight_g: 1.2
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "f7aeebd1-437b-4c9e-9eb4-b57afc5e6c81"
+  name: "TBS Crossfire Immortal T V2 (Extra Extended)"
+  release_year: 2019
+  weight_g: 4
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "3aaf46ae-39f3-46c1-88a8-04c19b38aa85"
+  name: "TBS Crossfire Stock Tx V2 Antenna"
+  release_year: 2019
+  weight_g: 9
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Dipole"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "f910cd70-a7b1-4ebc-88fa-34f69809dea6"
+  name: "RadioMaster Bandit Moxon Antenna"
+  release_year: 2023
+  weight_g: 47.44
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Moxon"
+    connector_id: "RP-SMA"
+  }
+}
+
+components {
+  id: "ed6ceba2-7cd2-4de1-8438-12ba2e7ff0bc"
+  name: "RadioMaster Bandit T Antenna"
+  release_year: 2023
+  weight_g: 14
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "RP-SMA"
+  }
+}
+
+components {
+  id: "5d9b26c7-defe-40c8-8415-8edf60746de1"
+  name: "RadioMaster UFL 915/868MHz T Antenna"
+  release_year: 2023
+  weight_g: 2.02
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "37158e62-f5ea-4923-8ff9-268444fc996d"
+  name: "BETAFPV Moxon Antenna (915MHz)"
+  release_year: 2021
+  weight_g: 18
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Moxon"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "e7292414-82ca-4ba6-89f4-2f774aa92960"
+  name: "BETAFPV 900MHz Dipole T-Antenna"
+  release_year: 2021
+  weight_g: 0.94
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "4394225b-d864-482f-9cea-2dbeac831815"
+  name: "Matek 900MHz Receiver Dipole Antenna"
+  release_year: 2021
+  weight_g: 1
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "67e8244c-d343-4b4b-9ab5-8f3b45633b7a"
+  name: "TrueRC Singularity 915 (RHCP)"
+  release_year: 2021
+  weight_g: 24
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Omni"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "d680e6bd-9f49-4a84-99b1-dc7ff76e8b1d"
+  name: "TrueRC True-MoX 915"
+  release_year: 2021
+  weight_g: 22
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Moxon"
+    connector_id: "SMA"
+  }
+}
+
+components {
+  id: "4f971748-98ba-45a7-bf17-e40719245253"
+  name: "TrueRC BARDpole 915MHz"
+  release_year: 2021
+  weight_g: 6.3
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "68eb4142-0bd3-4781-8457-8a3bc06c8a5f"
+  name: "Happymodel 915MHz Micro T Antenna"
+  release_year: 2021
+  weight_g: 0.9
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "U.FL"
+  }
+}
+
+components {
+  id: "02e0b5f2-ff86-4d80-8c53-cdbf02f84340"
+  name: "Happymodel ES900TX Stock Transmitter Antenna"
+  release_year: 2021
+  weight_g: 12
+  type: COMPONENT_TYPE_ANTENNA
+  antenna {
+    antenna_style: "T-Style Dipole"
+    connector_id: "SMA"
+  }
+}
+

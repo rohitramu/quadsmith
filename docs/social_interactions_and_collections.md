@@ -5,7 +5,7 @@
 | Decision | Choice | Rationale |
 |---|---|---|
 | **Target Entities** | `Build` and `Component` | Unified polymorphic social interactions across full aircraft builds and individual catalog components |
-| **Polymorphic Database Strategy** | Explicit Foreign Keys (`buildId?`, `componentId?`) | Enforces PostgreSQL foreign key constraints and type-safe Prisma relations; uses `CHECK (num_nonnulls(buildId, componentId) = 1)` |
+| **Polymorphic Database Strategy** | Explicit Foreign Keys (`buildId?`, `componentId?`) | Enforces PostgreSQL foreign key constraints; uses `CHECK (num_nonnulls(buildId, componentId) = 1)` |
 | **Review System** | Steam-style Recommendations | Binary Thumbs Up / Down recommendation + text writeup; 1 review per user per entity; author cannot review their own build; aggregate rating is displayed as `% Positive` + qualitative tier |
 | **Review Voting** | Helpful / Unhelpful | Binary feedback on review quality; drives "Most Helpful" sorting; comments under reviews are chronological discussion threads without individual comment voting |
 | **Discussion & Technical Help** | Dedicated Q&A Section (StackOverflow-style) | Separated from Reviews to keep technical troubleshooting, wiring questions, and fitment guidance organized and searchable |
@@ -151,7 +151,7 @@ Users can create unlimited custom collections (e.g. *"Sub-250g Ideas"*, *"7-inch
 
 ## 6. Database Schema Specifications
 
-The following Prisma models reflect these architectural decisions:
+The following conceptual data models (using pseudo-schema syntax) reflect these architectural decisions:
 
 ```prisma
 // ==========================================

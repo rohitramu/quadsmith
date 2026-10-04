@@ -69,7 +69,7 @@ message ListComponentsResponse {
 
 ### 3.1 Why Common Expression Language (CEL)?
 
-Rather than inventing a proprietary query syntax or exposing SQL/Prisma dialect directly to clients:
+Rather than inventing a proprietary query syntax or exposing SQL/ORM dialect directly to clients:
 - **Standardized & Battle-Tested:** CEL was developed by Google for Kubernetes policies, Firebase rules, and GCP APIs.
 - **Non-Turing Complete & Sandboxed:** CEL contains no infinite loops or external system calls, executing deterministically with bounded compute cost.
 - **Parsed into an Abstract Syntax Tree (AST):** Clients send human-readable expressions that parse into a strict AST. The backend inspects and validates the AST against a field whitelist before compiling to SQL.
@@ -389,20 +389,30 @@ To prevent SQL injection, information disclosure, and resource exhaustion, all q
 
 ### 8.1 Schema Whitelist Registry
 
-```typescript
-export interface FieldDefinition {
-  type: 'STRING' | 'INT' | 'FLOAT' | 'BOOLEAN' | 'ARRAY_STRING';
-  sqlTarget: string; // Target SQL column or JSONB accessor
-  cast?: string;     // Explicit SQL cast (e.g. 'int', 'float8')
+```go
+type FieldType string
+
+const (
+	TypeString      FieldType = "STRING"
+	TypeInt         FieldType = "INT"
+	TypeFloat       FieldType = "FLOAT"
+	TypeBoolean     FieldType = "BOOLEAN"
+	TypeArrayString FieldType = "ARRAY_STRING"
+)
+
+type FieldDefinition struct {
+	Type      FieldType
+	SQLTarget string // Target SQL column or JSONB accessor
+	Cast      string // Explicit SQL cast (e.g. 'int', 'float8')
 }
 
-export const COMPONENT_QUERY_WHITELIST: Record<string, FieldDefinition> = {
-  // Base Relational Fields
-  'id': { type: 'STRING', sqlTarget: '"Component"."id"' },
-  'name': { type: 'STRING', sqlTarget: '"Component"."name"' },
-  'type': { type: 'STRING', sqlTarget: '"Component"."type"', cast: '"ComponentType"' },
-  'release_year': { type: 'INT', sqlTarget: '"Component"."releaseYear"', cast: 'int' },
-  'weight_g': { type: 'FLOAT', sqlTarget: '"Component"."weightG"', cast: 'float8' },
+var ComponentQueryWhitelist = map[string]FieldDefinition{
+	// Base Relational Fields
+	"id":           {Type: TypeString, SQLTarget: `"Component"."id"`},
+	"name":         {Type: TypeString, SQLTarget: `"Component"."name"`},
+	"type":         {Type: TypeString, SQLTarget: `"Component"."type"`, Cast: `"ComponentType"`},
+	"release_year": {Type: TypeInt, SQLTarget: `"Component"."releaseYear"`, Cast: "int"},
+	"weight_g":     {Type: TypeFloat, SQLTarget: `"Component"."weightG"`, Cast: "float8"},
 
   // Motor Subtype Fields
   'motor.stator_size': { type: 'STRING', sqlTarget: "data->'motor'->>'statorSize'" },
@@ -463,7 +473,7 @@ For a production catalog containing 100,000 components and 500,000 build records
 | **Filtered Subtype Query (Indexed)** | Functional B-Tree index scan (e.g. `idx_component_motor_kv`) | $< 8\text{ ms}$ | $< 20\text{ ms}$ |
 | **Array Containment / Mount Match** | GIN index scan (`idx_component_data_gin`) | $< 12\text{ ms}$ | $< 25\text{ ms}$ |
 | **Full-Text Component Search** | Trigram GIN index scan (`idx_component_name_trgm`) | $< 15\text{ ms}$ | $< 35\text{ ms}$ |
-| **CEL AST Parsing & Validation** | In-memory compiled TypeScript / V8 | $< 0.5\text{ ms}$ | $< 1.0\text{ ms}$ |
+| **CEL AST Parsing & Validation** | Compiled Go / Native | $< 0.5\text{ ms}$ | $< 1.0\text{ ms}$ |
 
 ---
 

@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package quadsmith.v1;
+option go_package = "quadsmith/db/gen/quadsmith/v1;quadsmithv1";
 
 import "google/protobuf/field_mask.proto";
 import "quadsmith/v1/common.proto";

@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package quadsmith.v1;
+option go_package = "quadsmith/db/gen/quadsmith/v1;quadsmithv1";
 
 import "quadsmith/v1/common.proto";
 import "quadsmith/v1/component.proto";
@@ -23,17 +24,3 @@ message GetComponentRequest {
   string id = 1;
 }
 
-message CheckCompatibilityRequest {
-  string frame_id = 1;
-  repeated string candidate_component_ids = 2;
-}
-
-message CompatibilityResult {
-  string component_id = 1;
-  bool is_compatible = 2;
-  repeated string reasons = 3;
-}
-
-message CheckCompatibilityResponse {
-  repeated CompatibilityResult results = 1;
-}
