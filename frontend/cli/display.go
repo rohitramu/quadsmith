@@ -42,12 +42,28 @@ func getField(data map[string]any, path string) string {
 	if current == nil {
 		return ""
 	}
+
 	switch v := current.(type) {
+	case string:
+		if strings.Contains(path, "id") && strings.Contains(v, "/") {
+			parts := strings.Split(v, "/")
+			return parts[len(parts)-1]
+		}
+		return v
 	case map[string]any:
+
 		return formatInlineMap(v)
 	case []any:
-		b, _ := json.Marshal(v)
-		return string(b)
+		var formatted []string
+		for _, item := range v {
+			if s, ok := item.(string); ok && strings.Contains(path, "id") && strings.Contains(s, "/") {
+				parts := strings.Split(s, "/")
+				formatted = append(formatted, parts[len(parts)-1])
+			} else {
+				formatted = append(formatted, fmt.Sprintf("%v", item))
+			}
+		}
+		return strings.Join(formatted, ", ")
 	default:
 		return fmt.Sprintf("%v", current)
 	}
