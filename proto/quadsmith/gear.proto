@@ -34,7 +34,7 @@ message Goggles {
   option (quadsmith.plural_name) = "goggles";
 
 
-  option (quadsmith.default_columns) = "supported_ecosystems";
+  option (quadsmith.default_columns) = "ecosystem";
   repeated string supported_frequency_ids = 1;
   Ecosystem.Value ecosystem = 2;
   int32 antenna_count = 3;

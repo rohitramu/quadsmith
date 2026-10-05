@@ -153,7 +153,7 @@ message Vtx {
   option (quadsmith.plural_name) = "vtxs";
 
 
-  option (quadsmith.default_columns) = "supported_ecosystem";
+  option (quadsmith.default_columns) = "ecosystem";
   repeated string supported_frequency_ids = 1;
   Ecosystem.Value ecosystem = 2;
   VideoStandard.Value video_connection_standard = 3;
@@ -172,8 +172,8 @@ message Camera {
   option (quadsmith.plural_name) = "cameras";
 
 
-  option (quadsmith.default_columns) = "supported_ecosystem";
-  option (quadsmith.default_columns) = "sensor_size";
+  option (quadsmith.default_columns) = "ecosystem";
+  option (quadsmith.default_columns) = "aspect_ratio";
   Ecosystem.Value ecosystem = 1;
   VideoStandard.Value video_connection_standard = 2;
   double width_mm = 3;
@@ -196,7 +196,7 @@ message Receiver {
   option (quadsmith.plural_name) = "receivers";
 
 
-  option (quadsmith.default_columns) = "rf_protocol";
+  option (quadsmith.default_columns) = "rf_protocol_ids";
   repeated string supported_frequency_ids = 1;
   repeated string rf_protocol_ids = 2;
   enum WireProtocol {
@@ -217,7 +217,7 @@ message Gps {
   option (quadsmith.plural_name) = "gps";
 
 
-  option (quadsmith.default_columns) = "supports_galileo";
+  option (quadsmith.default_columns) = "chipset";
   string chipset = 1;
   bool has_compass = 2;
   double input_voltage_min_v = 3;
