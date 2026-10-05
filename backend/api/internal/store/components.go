@@ -198,7 +198,7 @@ func (s *ComponentStore) SearchComponents(ctx context.Context, filterCEL string,
 		}
 
 		// Ensure the returned ID is always the human readable one
-		comp.SetId(id)
+		if comp.GetResource() == nil { comp.SetResource(&pb.ResourceMetadata{}) }; comp.GetResource().SetId(id)
 
 		results = append(results, comp)
 	}
@@ -208,6 +208,7 @@ func (s *ComponentStore) SearchComponents(ctx context.Context, filterCEL string,
 
 func (s *ComponentStore) CreateComponent(ctx context.Context, comp *pb.Component) error {
 	jsonBytes, err := protojson.MarshalOptions{EmitUnpopulated: false, UseProtoNames: true}.Marshal(comp)
+
 	if err != nil {
 		return fmt.Errorf("failed to marshal component: %w", err)
 	}
@@ -223,13 +224,13 @@ func (s *ComponentStore) CreateComponent(ctx context.Context, comp *pb.Component
 	}
 	defer tx.Rollback(ctx)
 
-	_, err = tx.Exec(ctx, `INSERT INTO resources (uuid, id, resource_type) VALUES ($1, $2, 'COMPONENT')`, newUuid, comp.GetId())
+	_, err = tx.Exec(ctx, `INSERT INTO resources (uuid, id, resource_type) VALUES ($1, $2, 'COMPONENT')`, newUuid, comp.GetResource().GetId())
 	if err != nil {
 		return err
 	}
 
 	_, err = tx.Exec(ctx, `INSERT INTO components (uuid, type, name, weight_g, data) VALUES ($1, $2, $3, $4, $5)`,
-		newUuid, getComponentTypeString(comp), comp.GetName(), comp.GetWeightG(), jsonBytes)
+		newUuid, getComponentTypeString(comp), comp.GetResource().GetName(), comp.GetWeightG(), jsonBytes)
 	if err != nil {
 		return err
 	}
@@ -239,6 +240,7 @@ func (s *ComponentStore) CreateComponent(ctx context.Context, comp *pb.Component
 
 func (s *ComponentStore) UpdateComponent(ctx context.Context, comp *pb.Component) error {
 	jsonBytes, err := protojson.MarshalOptions{EmitUnpopulated: false, UseProtoNames: true}.Marshal(comp)
+
 	if err != nil {
 		return fmt.Errorf("failed to marshal component: %w", err)
 	}
@@ -246,7 +248,7 @@ func (s *ComponentStore) UpdateComponent(ctx context.Context, comp *pb.Component
 	_, err = s.db.Exec(ctx, `
 		UPDATE components SET type = $2, name = $3, weight_g = $4, data = $5 
 		WHERE uuid = (SELECT uuid FROM resources WHERE (id = $1 OR uuid::text = $1 OR id LIKE '%/' || $1) AND resource_type = 'COMPONENT' LIMIT 1)
-	`, comp.GetId(), getComponentTypeString(comp), comp.GetName(), comp.GetWeightG(), jsonBytes)
+	`, comp.GetResource().GetId(), getComponentTypeString(comp), comp.GetResource().GetName(), comp.GetWeightG(), jsonBytes)
 	return err
 }
 

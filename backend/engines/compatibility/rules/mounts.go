@@ -41,7 +41,7 @@ func (r *MountRule) Check(components []*pb.Component) *pb.CompatibilityResult {
 	frameSpec := frame.GetFrame()
 	var messages []*pb.CompatibilityMessage
 	var involvedIds []string
-	involvedIds = append(involvedIds, frame.GetId())
+	involvedIds = append(involvedIds, frame.GetResource().GetId())
 
 	for _, motor := range motors {
 		if motor.GetMotor() == nil {
@@ -59,7 +59,7 @@ func (r *MountRule) Check(components []*pb.Component) *pb.CompatibilityResult {
 			}
 
 			if !supported {
-				involvedIds = append(involvedIds, motor.GetId())
+				involvedIds = append(involvedIds, motor.GetResource().GetId())
 				msg := &pb.CompatibilityMessage{}
 				msg.SetSeverity(pb.CompatibilityMessage_DEFINITE_INCOMPATIBILITY)
 				msg.SetMessage(fmt.Sprintf("Motor mounting patterns [%s] are not supported by the frame.", strings.Join(m.GetMountPatternIds(), ", ")))

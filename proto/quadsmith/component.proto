@@ -13,11 +13,8 @@ import "quadsmith/software.proto";
 import "quadsmith/gear.proto";
 
 message Component {
-  option (quadsmith.default_columns) = "id";
-  option (quadsmith.default_columns) = "name";
   option (quadsmith.default_columns) = "weight_g";
-  string id = 1;
-  string name = 2;
+  ResourceMetadata resource = 1;
   // field 3 was type enum
   ReleaseDate release_date = 4;
   repeated string company_ids = 7;

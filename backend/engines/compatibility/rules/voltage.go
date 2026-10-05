@@ -35,13 +35,13 @@ func (r *VoltageRule) Check(components []*pb.Component) *pb.CompatibilityResult 
 	if battery == nil || battery.GetBattery() == nil {
 		return nil
 	}
-	involvedComponentIds = append(involvedComponentIds, battery.GetId())
+	involvedComponentIds = append(involvedComponentIds, battery.GetResource().GetId())
 
 	batteryMaxV := float64(battery.GetBattery().GetCellCountS()) * 4.2
 
 	var becVoltages []float64
 	if fc != nil && fc.GetFlightController() != nil {
-		involvedComponentIds = append(involvedComponentIds, fc.GetId())
+		involvedComponentIds = append(involvedComponentIds, fc.GetResource().GetId())
 		for _, bec := range fc.GetFlightController().GetBecOutputs() {
 			becVoltages = append(becVoltages, bec.GetVoltageV())
 		}
@@ -72,22 +72,22 @@ func (r *VoltageRule) Check(components []*pb.Component) *pb.CompatibilityResult 
 		case pb.Component_Vtx_case:
 			p := c.GetVtx()
 			if p != nil {
-				peripherals = append(peripherals, PeripheralVoltage{ComponentId: c.GetId(), Name: "VTX", MinV: p.GetInputVoltageMinV(), MaxV: p.GetInputVoltageMaxV()})
+				peripherals = append(peripherals, PeripheralVoltage{ComponentId: c.GetResource().GetId(), Name: "VTX", MinV: p.GetInputVoltageMinV(), MaxV: p.GetInputVoltageMaxV()})
 			}
 		case pb.Component_Camera_case:
 			p := c.GetCamera()
 			if p != nil {
-				peripherals = append(peripherals, PeripheralVoltage{ComponentId: c.GetId(), Name: "Camera", MinV: p.GetInputVoltageMinV(), MaxV: p.GetInputVoltageMaxV()})
+				peripherals = append(peripherals, PeripheralVoltage{ComponentId: c.GetResource().GetId(), Name: "Camera", MinV: p.GetInputVoltageMinV(), MaxV: p.GetInputVoltageMaxV()})
 			}
 		case pb.Component_Receiver_case:
 			p := c.GetReceiver()
 			if p != nil {
-				peripherals = append(peripherals, PeripheralVoltage{ComponentId: c.GetId(), Name: "Receiver", MinV: p.GetInputVoltageMinV(), MaxV: p.GetInputVoltageMaxV()})
+				peripherals = append(peripherals, PeripheralVoltage{ComponentId: c.GetResource().GetId(), Name: "Receiver", MinV: p.GetInputVoltageMinV(), MaxV: p.GetInputVoltageMaxV()})
 			}
 		case pb.Component_Gps_case:
 			p := c.GetGps()
 			if p != nil {
-				peripherals = append(peripherals, PeripheralVoltage{ComponentId: c.GetId(), Name: "GPS", MinV: p.GetInputVoltageMinV(), MaxV: p.GetInputVoltageMaxV()})
+				peripherals = append(peripherals, PeripheralVoltage{ComponentId: c.GetResource().GetId(), Name: "GPS", MinV: p.GetInputVoltageMinV(), MaxV: p.GetInputVoltageMaxV()})
 			}
 		}
 	}

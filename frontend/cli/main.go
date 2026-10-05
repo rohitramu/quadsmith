@@ -252,11 +252,17 @@ If you use the Makefile, you can permanently add the auto-generated files to you
 		}
 
 		var cols []string
+		
+		resOpts := (&pb.ResourceMetadata{}).ProtoReflect().Descriptor().Options().(*descriptorpb.MessageOptions)
+		if proto.HasExtension(resOpts, pb.E_DefaultColumns) {
+			for _, col := range proto.GetExtension(resOpts, pb.E_DefaultColumns).([]string) {
+				cols = append(cols, "resource."+col)
+			}
+		}
+
 		compOpts := (&pb.Component{}).ProtoReflect().Descriptor().Options().(*descriptorpb.MessageOptions)
 		if proto.HasExtension(compOpts, pb.E_DefaultColumns) {
-			baseCols := proto.GetExtension(compOpts, pb.E_DefaultColumns).([]string)
-			cols = make([]string, len(baseCols))
-			copy(cols, baseCols)
+			cols = append(cols, proto.GetExtension(compOpts, pb.E_DefaultColumns).([]string)...)
 		}
 
 		subMsg := field.Message()
@@ -415,9 +421,9 @@ If you use the Makefile, you can permanently add the auto-generated files to you
 
 			var completions []string
 			for _, c := range res.Msg.GetComponents() {
-				if strings.HasPrefix(c.GetId(), searchStr) {
+				if strings.HasPrefix(c.GetResource().GetId(), searchStr) {
 					// We return prefix + id so bash replaces the whole token, but only visually completes the last ID
-					completions = append(completions, fmt.Sprintf("%s%s\t%s", prefix, c.GetId(), c.GetName()))
+					completions = append(completions, fmt.Sprintf("%s%s\t%s", prefix, c.GetResource().GetId(), c.GetResource().GetName()))
 				}
 			}
 			// Use NoSpace so the user can easily type the next comma without deleting spaces

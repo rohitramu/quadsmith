@@ -8,11 +8,11 @@ cd "$ROOT_DIR"
 # Allow passing an optional port, default to 8080
 PORT="${1:-8080}"
 
-echo "--- Building Sandbox Docker Image ---"
-docker build -t quadsmith-sandbox -f backend/Dockerfile .
-
 echo "--- Stopping any existing sandbox instance ---"
 docker rm -f quadsmith-sandbox-run >/dev/null 2>&1 || true
+
+echo "--- Building Sandbox Docker Image ---"
+docker build -t quadsmith-sandbox -f backend/Dockerfile .
 
 echo "--- Starting Quadsmith Sandbox (API on port $PORT, DB on 5432) ---"
 # Passing the PORT env var down into the container so the Go server listens on it

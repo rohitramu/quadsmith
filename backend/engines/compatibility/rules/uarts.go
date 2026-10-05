@@ -39,10 +39,10 @@ func (r *UartRule) Check(components []*pb.Component) *pb.CompatibilityResult {
 
 	var messages []*pb.CompatibilityMessage
 	var involvedIds []string
-	involvedIds = append(involvedIds, fc.GetId())
+	involvedIds = append(involvedIds, fc.GetResource().GetId())
 
 	for _, p := range peripherals {
-		involvedIds = append(involvedIds, p.GetId())
+		involvedIds = append(involvedIds, p.GetResource().GetId())
 	}
 
 	if requiredUarts > availableUarts {

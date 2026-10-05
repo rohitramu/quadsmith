@@ -1,6 +1,8 @@
 builds {
+  resource {
   id: "builds/bando-basher-5-inch"
   name: "Bando Basher 5 inch"
+  }
   description: "A durable 5 inch quad designed for hitting concrete bandos."
   crash_resistance_rating: 9
   is_verified: true
@@ -13,8 +15,10 @@ builds {
 }
 
 builds {
+  resource {
   id: "builds/long-range-explorer"
   name: "Long Range Explorer"
+  }
   description: "7 inch long range cruiser for mountain surfing."
   crash_resistance_rating: 6
   is_verified: true
@@ -26,8 +30,10 @@ builds {
 }
 
 builds {
+  resource {
   id: "builds/ultralight-toothpick"
   name: "Ultralight Toothpick"
+  }
   description: "Sub-250g 3-inch toothpick for park flying."
   crash_resistance_rating: 4
   is_verified: false

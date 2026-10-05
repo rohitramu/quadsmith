@@ -54,7 +54,7 @@ func main() {
 			UseProtoNames:   true,
 		}.Marshal(comp)
 		if err != nil {
-			log.Printf("Failed to marshal %s: %v", comp.GetId(), err)
+			log.Printf("Failed to marshal %s: %v", comp.GetResource().GetId(), err)
 			continue
 		}
 
@@ -63,7 +63,7 @@ func main() {
 
 		// 1. Check if resource exists, or generate new UUID
 		var newUuid string
-		err = pool.QueryRow(context.Background(), `SELECT uuid FROM resources WHERE id = $1 LIMIT 1`, comp.GetId()).Scan(&newUuid)
+		err = pool.QueryRow(context.Background(), `SELECT uuid FROM resources WHERE id = $1 LIMIT 1`, comp.GetResource().GetId()).Scan(&newUuid)
 		if err != nil {
 			u, _ := uuid.NewV7()
 			newUuid = u.String()
@@ -71,7 +71,7 @@ func main() {
 
 		tx, err := pool.Begin(context.Background())
 		if err != nil {
-			log.Printf("Failed to begin transaction for %s: %v", comp.GetId(), err)
+			log.Printf("Failed to begin transaction for %s: %v", comp.GetResource().GetId(), err)
 			continue
 		}
 
@@ -81,8 +81,8 @@ func main() {
 			VALUES ($1, $2, 'COMPONENT') 
 			ON CONFLICT (uuid) DO UPDATE SET resource_type = EXCLUDED.resource_type
 		`
-		if _, err = tx.Exec(context.Background(), resourceQuery, newUuid, comp.GetId()); err != nil {
-			log.Printf("Failed to upsert resource %s: %v", comp.GetId(), err)
+		if _, err = tx.Exec(context.Background(), resourceQuery, newUuid, comp.GetResource().GetId()); err != nil {
+			log.Printf("Failed to upsert resource %s: %v", comp.GetResource().GetId(), err)
 			tx.Rollback(context.Background())
 			continue
 		}
@@ -94,14 +94,14 @@ func main() {
 			ON CONFLICT (uuid) DO UPDATE SET data = EXCLUDED.data, name = EXCLUDED.name, type = EXCLUDED.type
 		`
 		cType := getComponentTypeString(comp)
-		if _, err = tx.Exec(context.Background(), query, newUuid, cType, comp.GetName(), string(jsonBytes)); err != nil {
-			log.Printf("Failed to upsert component %s: %v", comp.GetId(), err)
+		if _, err = tx.Exec(context.Background(), query, newUuid, cType, comp.GetResource().GetName(), string(jsonBytes)); err != nil {
+			log.Printf("Failed to upsert component %s: %v", comp.GetResource().GetId(), err)
 			tx.Rollback(context.Background())
 			continue
 		}
 
 		if err := tx.Commit(context.Background()); err != nil {
-			log.Printf("Failed to commit transaction for %s: %v", comp.GetId(), err)
+			log.Printf("Failed to commit transaction for %s: %v", comp.GetResource().GetId(), err)
 		}
 	}
 	fmt.Println("Components seeding complete!")
@@ -124,7 +124,7 @@ func main() {
 
 		for _, b := range buildSeedList.GetBuilds() {
 			var newUuid string
-			err = pool.QueryRow(context.Background(), `SELECT uuid FROM resources WHERE id = $1 LIMIT 1`, b.GetId()).Scan(&newUuid)
+			err = pool.QueryRow(context.Background(), `SELECT uuid FROM resources WHERE id = $1 LIMIT 1`, b.GetResource().GetId()).Scan(&newUuid)
 			if err != nil {
 				u, _ := uuid.NewV7()
 				newUuid = u.String()
@@ -132,7 +132,7 @@ func main() {
 
 			tx, err := pool.Begin(context.Background())
 			if err != nil {
-				log.Printf("Failed to begin transaction for build %s: %v", b.GetId(), err)
+				log.Printf("Failed to begin transaction for build %s: %v", b.GetResource().GetId(), err)
 				continue
 			}
 
@@ -142,8 +142,8 @@ func main() {
 				VALUES ($1, $2, 'BUILD') 
 				ON CONFLICT (uuid) DO UPDATE SET resource_type = EXCLUDED.resource_type
 			`
-			if _, err = tx.Exec(context.Background(), resourceQuery, newUuid, b.GetId()); err != nil {
-				log.Printf("Failed to upsert resource %s: %v", b.GetId(), err)
+			if _, err = tx.Exec(context.Background(), resourceQuery, newUuid, b.GetResource().GetId()); err != nil {
+				log.Printf("Failed to upsert resource %s: %v", b.GetResource().GetId(), err)
 				tx.Rollback(context.Background())
 				continue
 			}
@@ -151,7 +151,7 @@ func main() {
 			// 2. Upsert build data
 			jsonBytes, err := protojson.MarshalOptions{EmitUnpopulated: false, UseProtoNames: true}.Marshal(b)
 			if err != nil {
-				log.Printf("Failed to marshal build %s: %v", b.GetId(), err)
+				log.Printf("Failed to marshal build %s: %v", b.GetResource().GetId(), err)
 				tx.Rollback(context.Background())
 				continue
 			}
@@ -186,13 +186,13 @@ func main() {
 				newUuid, jsonBytes,
 				nullIfEmpty(b.GetFrameId()), nullIfEmpty(b.GetMotorId()), nullIfEmpty(b.GetPropellerId()), nullIfEmpty(b.GetCameraId()), nullIfEmpty(b.GetGpsId()),
 			); err != nil {
-				log.Printf("Failed to upsert build %s: %v", b.GetId(), err)
+				log.Printf("Failed to upsert build %s: %v", b.GetResource().GetId(), err)
 				tx.Rollback(context.Background())
 				continue
 			}
 
 			if err := tx.Commit(context.Background()); err != nil {
-				log.Printf("Failed to commit transaction for build %s: %v", b.GetId(), err)
+				log.Printf("Failed to commit transaction for build %s: %v", b.GetResource().GetId(), err)
 			}
 		}
 		fmt.Println("Builds seeding complete!")

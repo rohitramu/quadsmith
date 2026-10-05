@@ -86,3 +86,11 @@ enum AntennaStyle {
   ANTENNA_STYLE_DIRECTIONAL = 2;
   ANTENNA_STYLE_PATCH = 3;
 }
+
+message ResourceMetadata {
+  option (quadsmith.default_columns) = "id";
+  option (quadsmith.default_columns) = "name";
+
+  string id = 1;
+  string name = 2;
+}

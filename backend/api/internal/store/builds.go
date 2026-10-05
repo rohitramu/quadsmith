@@ -64,7 +64,7 @@ func (s *BuildStore) ListBuilds(ctx context.Context, filter string, fieldMask []
 			}
 		}
 		
-		b.SetId(id)
+		if b.GetResource() == nil { b.SetResource(&pb.ResourceMetadata{}) }; b.GetResource().SetId(id)
 		if frame != nil { b.SetFrameId(*frame) }
 		if motor != nil { b.SetMotorId(*motor) }
 		if prop != nil { b.SetPropellerId(*prop) }
@@ -103,7 +103,7 @@ func (s *BuildStore) GetBuild(ctx context.Context, id string, fieldMask []string
 		return nil, fmt.Errorf("build not found: %w", err)
 	}
 
-	b.SetId(id)
+	if b.GetResource() == nil { b.SetResource(&pb.ResourceMetadata{}) }; b.GetResource().SetId(id)
 
 	if len(dataBytes) > 0 {
 		if err := protojson.Unmarshal(dataBytes, b); err != nil {
@@ -137,7 +137,7 @@ func (s *BuildStore) CreateBuild(ctx context.Context, b *pb.Build) error {
 	}
 	defer tx.Rollback(ctx)
 
-	_, err = tx.Exec(ctx, `INSERT INTO resources (uuid, id, resource_type) VALUES ($1, $2, 'BUILD')`, newUuid, b.GetId())
+	_, err = tx.Exec(ctx, `INSERT INTO resources (uuid, id, resource_type) VALUES ($1, $2, 'BUILD')`, newUuid, b.GetResource().GetId())
 	if err != nil {
 		return err
 	}
@@ -182,7 +182,7 @@ func (s *BuildStore) UpdateBuild(ctx context.Context, b *pb.Build) error {
 		WHERE uuid = (SELECT uuid FROM resources WHERE id = $1 OR uuid::text = $1 OR id LIKE '%%/' || $1 LIMIT 1)
 	`
 	_, err = s.db.Exec(ctx, query,
-		b.GetId(), jsonBytes,
+		b.GetResource().GetId(), jsonBytes,
 		nullIfEmpty(b.GetFrameId()), nullIfEmpty(b.GetMotorId()), nullIfEmpty(b.GetPropellerId()), nullIfEmpty(b.GetCameraId()), nullIfEmpty(b.GetGpsId()),
 	)
 	return err
