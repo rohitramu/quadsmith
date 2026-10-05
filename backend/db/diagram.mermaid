@@ -1,0 +1,429 @@
+%%{
+  init: {
+    "er": {
+      "diagramPadding": 40,
+      "entityPadding": 15
+    },
+    "themeCSS": ".cluster rect { fill: #0f172a !important; fill-opacity: 0.3 !important; stroke: #475569 !important; stroke-width: 2px !important; rx: 12px !important; ry: 12px !important; } .cluster text, .cluster-label text, g.cluster text, .cluster tspan { font-size: 50px !important; font-weight: 800 !important; fill: #ffffff !important; color: #ffffff !important; paint-order: stroke fill !important; stroke: #0f172a !important; stroke-width: 8px !important; stroke-linejoin: round !important; } .cluster-label .nodeLabel, .cluster .nodeLabel, .cluster-label span, .cluster-label div { font-size: 50px !important; font-weight: 800 !important; color: #ffffff !important; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.9) !important; } .edgeLabel, .labelBkg, rect.relationshipLabelBox, .relationshipLabelBox rect, g.relationshipLabelBox rect { background: transparent !important; background-color: transparent !important; fill: transparent !important; fill-opacity: 0 !important; stroke: none !important; border: none !important; box-shadow: none !important; } .edgeLabel, .edgeLabel p, .edgeLabel span, .relationshipLabel, text.relationshipLabel, .er.relationshipLabel { color: #f8fafc !important; fill: #f8fafc !important; font-size: 13px !important; font-weight: 700 !important; opacity: 1 !important; visibility: visible !important; text-shadow: 0 0 3px #0f172a, 0 0 5px #0f172a, 0 1px 2px #000000 !important; paint-order: stroke fill !important; stroke: #0f172a !important; stroke-width: 3px !important; stroke-linejoin: round !important; }"
+  }
+}%%
+erDiagram
+    subgraph GlobalNode ["Global Node & Community Edits"]
+        Resource {
+            UUID uuid PK
+            String id "unique"
+            ResourceType resourceType "COMPONENT | BUILD | COMPANY | VTX_ECOSYSTEM | ..."
+            DateTime createdAt
+        }
+        ChangeRequest {
+            String id PK
+            String userId FK
+            String componentId FK "nullable if new component"
+            String resourceId FK "nullable if CREATE"
+            ResourceType targetType
+            ComponentType componentType "nullable"
+            EditAction action "CREATE | UPDATE | DELETE"
+            Json proposedData "Protobuf JSON payload"
+            String updateMask "FieldMask paths array"
+            String rationale
+            String status "PENDING | APPROVED | REJECTED | MERGED"
+            String mergedIntoId FK "nullable"
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        ChangeRequestVote {
+            String id PK
+            String requestId FK
+            String userId FK
+            Boolean isUpvote
+            DateTime createdAt
+        }
+    end
+
+    subgraph UserAuth ["User & Authentication"]
+        User {
+            UUID uuid PK
+            String id "unique"
+            String email "unique, lowercase"
+            String username "unique, public handle e.g. @roramu"
+            UserRole role "USER | ADMIN"
+            DateTime emailVerifiedAt "null = unverified"
+            DateTime lastRenamedAt "enforces 30-day rename limit"
+            DateTime deletedAt "soft-delete; cleared on resurrection"
+            DateTime bannedAt "set by mod/admin; blocks resurrection"
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        UserProfile {
+            UUID userUuid PK,FK
+            String displayName "pre-populated from OAuth"
+            String avatarUrl "pre-populated from OAuth"
+            DateTime updatedAt
+        }
+        UsernameHistory {
+            UUID uuid PK
+            UUID userUuid FK
+            String oldUsername "vacated name; hold expires 30d after renamedAt"
+            DateTime renamedAt
+        }
+        OAuthAccount {
+            UUID uuid PK
+            UUID userUuid FK
+            OAuthProvider provider "GOOGLE | GITHUB | DISCORD | MICROSOFT | META"
+            String providerAccountId "user ID at the provider"
+            String accessToken "encrypted at rest"
+            String refreshToken "encrypted at rest"
+            DateTime tokenExpiresAt
+            DateTime createdAt
+        }
+        EmailOtp {
+            UUID uuid PK
+            String email "address code was sent to"
+            String codeHash "argon2 hash of 6-digit code"
+            DateTime expiresAt "3 minutes from creation"
+            DateTime usedAt "set on successful verification"
+            Int failedAttempts "code exhausted when >= 3"
+            DateTime createdAt
+        }
+        RefreshToken {
+            UUID uuid PK
+            UUID userUuid FK
+            String tokenHash "hash of 256-bit opaque token"
+            DateTime expiresAt "30 days from issuance"
+            DateTime lastUsedAt
+            String deviceHint "e.g. Chrome on macOS"
+            DateTime createdAt
+        }
+        UserReputation {
+            UUID userUuid PK,FK
+            Int score "cached reputation points"
+        }
+    end
+
+    subgraph BaseInfrastructure ["Base Infrastructure & Lookups"]
+        VtxEcosystem {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+        }
+        RfFrequency {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+        }
+        RfProtocol {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+        }
+        AntennaPolarization {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+        }
+        AntennaConnector {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+        }
+        BatteryConnector {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+            Decimal maxCurrentA
+            Decimal maxVoltageV
+        }
+        Tag {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+            String description
+        }
+        MotorMountPattern {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+        }
+        BoardMountPattern {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+        }
+        BatteryChemistry {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+            Decimal nominalVoltagePerCellV
+            Decimal maxVoltagePerCellV
+            Decimal minVoltagePerCellV
+        }
+    end
+
+    subgraph ComponentIdentity ["Component Identity & Protobuf Storage"]
+        Company {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique"
+            String websiteUrl
+        }
+        Component {
+            UUID uuid PK,FK "Inherits Resource"
+            ComponentType type "FRAME | MOTOR | FC | ESC | VTX | ..."
+            String name
+            Int releaseYear
+            Int releaseMonth
+            Int releaseDay
+            Decimal weightG "Physical weight in grams"
+            Json data "Protobuf Hardware/Software Specifications"
+        }
+        ComponentCompany {
+            UUID uuid PK
+            UUID componentUuid FK
+            UUID companyUuid FK
+        }
+        ReferenceLink {
+            UUID uuid PK
+            UUID componentUuid FK
+            UUID companyUuid FK "optional"
+            String url
+            String linkType "Enum"
+            String title
+            String description
+        }
+        Software {
+            UUID uuid PK,FK "Inherits Resource"
+            String name "unique e.g. Betaflight"
+        }
+    end
+
+    subgraph Incompatibilities ["Exceptions & Incompatibilities"]
+        IncompatibilityIssue {
+            UUID uuid PK,FK "Inherits Resource"
+            String incompatibilityReason "Physical | Electrical | Protocol | Firmware"
+            String description
+            String suggestedFix
+            Int fixDifficulty "1 to 10"
+        }
+        IncompatibilityComponent {
+            UUID issueUuid PK,FK
+            UUID componentUuid PK,FK
+        }
+    end
+
+    subgraph SubAssemblies ["Sub-Assemblies / Loadouts"]
+        FlightStack {
+            UUID uuid PK
+            String id "unique"
+            UUID flightControllerUuid FK
+            UUID escUuid FK
+            String loadoutName
+        }
+        VtxConfiguration {
+            UUID uuid PK
+            String id "unique"
+            UUID vtxUuid FK
+            String loadoutName
+        }
+        ReceiverConfiguration {
+            UUID uuid PK
+            String id "unique"
+            UUID receiverUuid FK
+            String loadoutName
+        }
+    end
+
+    subgraph Aircraft ["The Aircraft (Build)"]
+        Build {
+            UUID uuid PK,FK "Inherits Resource"
+            UUID userUuid FK
+            UUID frameUuid FK "nullable"
+            UUID motorUuid FK "nullable"
+            UUID propellerUuid FK "nullable"
+            UUID cameraUuid FK "nullable"
+            UUID gpsUuid FK "nullable"
+            UUID flightStackUuid FK "nullable"
+            UUID vtxConfigUuid FK "nullable"
+            UUID receiverConfigUuid FK "nullable"
+            Json data "Protobuf Build Specifications"
+        }
+    end
+
+    subgraph SocialInteractions ["Social Interactions & Collections"]
+        Review {
+            String id PK
+            String userId FK
+            String resourceId FK "Universal Resource target"
+            Boolean isRecommended
+            String body
+            Boolean isEdited
+            DateTime deletedAt
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        ReviewVote {
+            String id PK
+            String reviewId FK
+            String userId FK
+            Boolean isHelpful
+            DateTime createdAt
+        }
+        ReviewComment {
+            String id PK
+            String reviewId FK
+            String userId FK
+            String body
+            DateTime deletedAt
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        Question {
+            String id PK
+            String userId FK
+            String resourceId FK "Universal Resource target"
+            String title
+            String body
+            Int netScore
+            Boolean isEdited
+            DateTime deletedAt
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        Answer {
+            String id PK
+            String questionId FK
+            String userId FK
+            String body
+            Int netScore
+            Boolean isAcceptedByAsker
+            Boolean isAuthorEndorsed
+            Boolean isEdited
+            DateTime deletedAt
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        QuestionVote {
+            String id PK
+            String questionId FK
+            String userId FK
+            Boolean isUpvote
+            DateTime createdAt
+        }
+        AnswerVote {
+            String id PK
+            String answerId FK
+            String userId FK
+            Boolean isUpvote
+            DateTime createdAt
+        }
+        QuestionComment {
+            String id PK
+            String questionId FK
+            String userId FK
+            String body
+            DateTime deletedAt
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        AnswerComment {
+            String id PK
+            String answerId FK
+            String userId FK
+            String body
+            DateTime deletedAt
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        Collection {
+            String id PK
+            String userId FK
+            String name
+            String description
+            Boolean isPublic
+            DateTime createdAt
+            DateTime updatedAt
+        }
+        CollectionItem {
+            String id PK
+            String collectionId FK
+            String resourceId FK "Universal Resource target"
+            DateTime addedAt
+        }
+    end
+
+    %% Global Node Polymorphic Inheritance (1-to-0..1)
+    Resource ||--o| Component : "inherits"
+    Resource ||--o| Build : "inherits"
+    Resource ||--o| Software : "inherits"
+    Resource ||--o| Company : "inherits"
+    Resource ||--o| IncompatibilityIssue : "inherits"
+    Resource ||--o| VtxEcosystem : "inherits"
+    Resource ||--o| RfFrequency : "inherits"
+    Resource ||--o| RfProtocol : "inherits"
+    Resource ||--o| AntennaPolarization : "inherits"
+    Resource ||--o| AntennaConnector : "inherits"
+    Resource ||--o| BatteryConnector : "inherits"
+    Resource ||--o| Tag : "inherits"
+    Resource ||--o| MotorMountPattern : "inherits"
+    Resource ||--o| BoardMountPattern : "inherits"
+    Resource ||--o| BatteryChemistry : "inherits"
+
+    %% User Relations
+    User ||--o| UserProfile : "has"
+    User ||--o{ UsernameHistory : "renamed"
+    User ||--o{ OAuthAccount : "links"
+    User ||--o{ RefreshToken : "owns"
+    User ||--o| UserReputation : "earns"
+    User ||--o{ Build : "authors"
+    User ||--o{ ChangeRequest : "proposes"
+    User ||--o{ ChangeRequestVote : "votes"
+
+    %% Component & Company Relations
+    Component ||--o{ ComponentCompany : "associated"
+    Company ||--o{ ComponentCompany : "participates"
+    Component ||--o{ ReferenceLink : "referenced_by"
+    Company ||--o{ ReferenceLink : "brands"
+
+    %% Incompatibilities Relations
+    IncompatibilityIssue ||--|{ IncompatibilityComponent : "flags"
+    Component ||--o{ IncompatibilityComponent : "involved_in"
+
+    %% Sub-Assemblies to Components
+    FlightStack }|--|| Component : "flightController"
+    FlightStack }|--|| Component : "esc"
+    VtxConfiguration }|--|| Component : "vtx"
+    VtxConfiguration ||--o{ Component : "antennas"
+    ReceiverConfiguration }|--|| Component : "receiver"
+    ReceiverConfiguration ||--o{ Component : "antennas"
+
+    %% Build to Components & Sub-Assemblies
+    Build }|--o| Component : "frame"
+    Build }|--o| Component : "motor"
+    Build }|--o| Component : "propeller"
+    Build }|--o| Component : "camera"
+    Build }|--o| Component : "gps"
+    Build }|--o| FlightStack : "electronics"
+    Build }|--o| VtxConfiguration : "vtxLoadout"
+    Build }|--o| ReceiverConfiguration : "rxLoadout"
+    Build }o--o{ Tag : "tagged"
+
+    %% Change Request Hierarchy
+    Resource ||--o{ ChangeRequest : "targeted_by"
+    Component ||--o{ ChangeRequest : "suggested_edits"
+    ChangeRequest ||--o{ ChangeRequestVote : "receives"
+    ChangeRequest ||--o| ChangeRequest : "merged_into"
+
+    %% Social Interactions (Targeting Global Resource Node)
+    Resource ||--o{ Review : "reviewed"
+    Resource ||--o{ Question : "asked_about"
+    Resource ||--o{ CollectionItem : "collected_in"
+
+    User ||--o{ Review : "writes"
+    Review ||--o{ ReviewVote : "voted"
+    Review ||--o{ ReviewComment : "commented"
+    User ||--o{ ReviewVote : "casts"
+    User ||--o{ ReviewComment : "authors"
+
+    User ||--o{ Question : "asks"
+    Question ||--o{ Answer : "answered"
+    Question ||--o{ QuestionVote : "voted"
+    Question ||--o{ QuestionComment : "commented"
+    User ||--o{ QuestionVote : "casts"
+    User ||--o{ QuestionComment : "authors"
+
+    User ||--o{ Answer : "provides"
+    Answer ||--o{ AnswerVote : "voted"
+    Answer ||--o{ AnswerComment : "commented"
+    User ||--o{ AnswerVote : "casts"
+    User ||--o{ AnswerComment : "authors"
+
+    User ||--o{ Collection : "curates"
+    Collection ||--o{ CollectionItem : "contains"

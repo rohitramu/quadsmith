@@ -1,0 +1,38 @@
+edition = "2023";
+
+import "google/protobuf/go_features.proto";
+import "quadsmith/common.proto";
+option features.(pb.go).api_level = API_OPAQUE;
+
+
+package quadsmith;
+option go_package = "quadsmith/api/gen/quadsmith;quadsmith";
+
+message Build {
+  option (quadsmith.plural_name) = "builds";
+  option (quadsmith.default_columns) = "name";
+  option (quadsmith.default_columns) = "id";
+  option (quadsmith.default_columns) = "crash_resistance_rating";
+  option (quadsmith.default_columns) = "is_verified";
+  string id = 1;
+  string user_id = 2;
+  string name = 3;
+  string description = 4;
+  int32 crash_resistance_rating = 5;
+  bool is_verified = 6;
+  double misc_weight_g = 7;
+  
+  string frame_id = 8;
+  string motor_id = 9;
+  string propeller_id = 10;
+  string camera_id = 11;
+  string gps_id = 12;
+  
+  string flight_stack_id = 13;
+  string vtx_config_id = 14;
+  string receiver_config_id = 15;
+}
+
+message BuildSeedList {
+  repeated Build builds = 1;
+}

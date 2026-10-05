@@ -1,0 +1,38 @@
+builds {
+  id: "builds/bando-basher-5-inch"
+  name: "Bando Basher 5 inch"
+  description: "A durable 5 inch quad designed for hitting concrete bandos."
+  crash_resistance_rating: 9
+  is_verified: true
+  misc_weight_g: 45.5
+  
+  frame_id: "components/hardware/frames/tbs-source-one-v5"
+  motor_id: "components/hardware/motors/sub250-1404-4500kv"
+  propeller_id: "components/hardware/propellers/hqprop-5x4-3x3-v1s"
+  camera_id: "components/hardware/cameras/runcam-phoenix-2"
+}
+
+builds {
+  id: "builds/long-range-explorer"
+  name: "Long Range Explorer"
+  description: "7 inch long range cruiser for mountain surfing."
+  crash_resistance_rating: 6
+  is_verified: true
+  misc_weight_g: 80.0
+  
+  frame_id: "components/hardware/frames/tbs-source-one-v5"
+  motor_id: "components/hardware/motors/sub250-1404-4500kv"
+  gps_id: "components/hardware/gps/matek-m8q-5883"
+}
+
+builds {
+  id: "builds/ultralight-toothpick"
+  name: "Ultralight Toothpick"
+  description: "Sub-250g 3-inch toothpick for park flying."
+  crash_resistance_rating: 4
+  is_verified: false
+  misc_weight_g: 10.2
+  
+  motor_id: "components/hardware/motors/sub250-1404-4500kv"
+  propeller_id: "components/hardware/propellers/hqprop-5x4-3x3-v1s"
+}

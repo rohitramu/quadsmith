@@ -1,0 +1,265 @@
+edition = "2023";
+
+import "google/protobuf/go_features.proto";
+option features.(pb.go).api_level = API_OPAQUE;
+
+
+package quadsmith;
+option go_package = "quadsmith/api/gen/quadsmith;quadsmith";
+
+import "quadsmith/common.proto";
+
+message Frame {
+  option (quadsmith.plural_name) = "frames";
+
+
+  option (quadsmith.default_columns) = "wheelbase_mm";
+  option (quadsmith.default_columns) = "is_pusher";
+  int32 wheelbase_mm = 1;
+  double max_prop_size_mm = 2;
+  repeated string fc_stack_mount_ids = 3;
+  repeated string vtx_mount_ids = 4;
+  repeated string motor_mount_pattern_ids = 5;
+  double camera_mount_width_mm = 6;
+  double max_battery_length_mm = 7;
+  double max_battery_width_mm = 8;
+  double max_battery_height_mm = 9;
+  
+  // Aerodynamics & handling
+  bool is_ducted = 10;
+  bool is_pusher = 11;
+  double available_stack_height_mm = 12;
+  double frontal_area_cm2 = 13;
+}
+
+message Motor {
+  option (quadsmith.plural_name) = "motors";
+
+
+  option (quadsmith.default_columns) = "kv_rating";
+  double stator_diameter_mm = 1;
+  double stator_height_mm = 2;
+  int32 kv_rating = 3;
+  double input_voltage_min_v = 4;
+  double input_voltage_max_v = 5;
+  repeated string mount_pattern_ids = 6;
+  ScrewSize mount_bolt_size = 7;
+  PropellerMount shaft_type = 8;
+  double max_current_a = 9;
+}
+
+message Propeller {
+  option (quadsmith.plural_name) = "propellers";
+
+
+  option (quadsmith.default_columns) = "diameter_mm";
+  option (quadsmith.default_columns) = "pitch_mm";
+  double diameter_mm = 1;
+  double pitch_mm = 2;
+  int32 blade_count = 3;
+  PropellerMount mount_type = 4;
+  repeated string recommended_stators = 5;
+}
+
+message BecOutput {
+  double voltage_v = 1;
+  double continuous_current_a = 2;
+  double burst_current_a = 3;
+}
+
+message UartPort {
+  string id = 1; // e.g. "UART1"
+  bool supports_rx = 2;
+  bool supports_tx = 3;
+  bool has_inverter = 4;
+}
+
+message FlightController {
+  option (quadsmith.plural_name) = "flight-controllers";
+
+
+  option (quadsmith.default_columns) = "mcu_processor";
+  repeated string mount_pattern_ids = 1;
+  double board_height_mm = 2;
+  string mcu_processor = 3;
+  string gyro_sensor = 4;
+  double input_voltage_min_v = 5;
+  double input_voltage_max_v = 6;
+  enum EscInterface {
+    ESC_INTERFACE_UNSPECIFIED = 0;
+    ESC_INTERFACE_DSHOT150 = 1;
+    ESC_INTERFACE_DSHOT300 = 2;
+    ESC_INTERFACE_DSHOT600 = 3;
+    ESC_INTERFACE_PWM = 4;
+  }
+  EscInterface esc_interface = 7;
+  repeated string supported_firmware_ids = 8;
+  repeated BecOutput bec_outputs = 9;
+  repeated UartPort uart_connections = 10;
+}
+
+message Esc {
+  option (quadsmith.plural_name) = "escs";
+
+
+  option (quadsmith.default_columns) = "continuous_current_a";
+  enum FormFactor {
+    UNSPECIFIED = 0;
+    FOUR_IN_ONE = 1;
+    INDIVIDUAL = 2;
+    INTEGRATED_IN_FC = 3;
+  }
+  FormFactor form_factor = 1;
+  repeated string mount_pattern_ids = 2;
+  double board_height_mm = 3;
+  double continuous_current_a = 4;
+  double burst_current_a = 5;
+  double input_voltage_min_v = 6;
+  double input_voltage_max_v = 7;
+  repeated string supported_firmware_ids = 8;
+}
+
+message Battery {
+  option (quadsmith.plural_name) = "batteries";
+
+
+  option (quadsmith.default_columns) = "capacity_mah";
+  option (quadsmith.default_columns) = "cell_count_s";
+  enum Chemistry {
+    CHEMISTRY_UNSPECIFIED = 0;
+    CHEMISTRY_LIPO = 1;
+    CHEMISTRY_LIHV = 2;
+    CHEMISTRY_LI_ION = 3;
+  }
+  Chemistry chemistry = 1;
+  int32 cell_count_s = 2;
+  int32 cell_count_p = 3;
+  int32 capacity_mah = 4;
+  int32 continuous_c_rating = 5;
+  enum PowerConnector {
+    POWER_CONNECTOR_UNSPECIFIED = 0;
+    POWER_CONNECTOR_XT60 = 1;
+    POWER_CONNECTOR_XT30 = 2;
+    POWER_CONNECTOR_BT2_0 = 3;
+    POWER_CONNECTOR_PH2_0 = 4;
+  }
+  PowerConnector connector_type = 6;
+  double length_mm = 7;
+  double width_mm = 8;
+  double height_mm = 9;
+}
+
+message Vtx {
+  option (quadsmith.plural_name) = "vtxs";
+
+
+  option (quadsmith.default_columns) = "supported_ecosystem";
+  repeated string supported_frequency_ids = 1;
+  Ecosystem ecosystem = 2;
+  VideoStandard video_connection_standard = 3;
+  repeated string mount_pattern_ids = 4;
+  double board_height_mm = 5;
+  double input_voltage_min_v = 6;
+  double input_voltage_max_v = 7;
+  int32 max_power_mw = 8;
+  int32 antenna_count = 9;
+  AntennaConnector antenna_connector = 10;
+  AntennaPolarization included_antenna_polarization = 11;
+  repeated string supported_firmware_ids = 12;
+}
+
+message Camera {
+  option (quadsmith.plural_name) = "cameras";
+
+
+  option (quadsmith.default_columns) = "supported_ecosystem";
+  option (quadsmith.default_columns) = "sensor_size";
+  Ecosystem ecosystem = 1;
+  VideoStandard video_connection_standard = 2;
+  double width_mm = 3;
+  double height_mm = 4;
+  double depth_mm = 5;
+  double input_voltage_min_v = 6;
+  double input_voltage_max_v = 7;
+  ScrewSize mounting_screw_size = 8;
+  enum AspectRatio {
+    ASPECT_RATIO_UNSPECIFIED = 0;
+    ASPECT_RATIO_16_9 = 1;
+    ASPECT_RATIO_4_3 = 2;
+    ASPECT_RATIO_SWITCHABLE = 3;
+  }
+  AspectRatio aspect_ratio = 9;
+  repeated string supported_adapters = 10; // e.g. ["micro-to-nano"]
+}
+
+message Receiver {
+  option (quadsmith.plural_name) = "receivers";
+
+
+  option (quadsmith.default_columns) = "rf_protocol";
+  repeated string supported_frequency_ids = 1;
+  repeated string rf_protocol_ids = 2;
+  enum WireProtocol {
+    WIRE_PROTOCOL_UNSPECIFIED = 0;
+    WIRE_PROTOCOL_CRSF = 1;
+    WIRE_PROTOCOL_SBUS = 2;
+    WIRE_PROTOCOL_IBUS = 3;
+  }
+  WireProtocol wire_protocol = 3;
+  double input_voltage_min_v = 4;
+  double input_voltage_max_v = 5;
+  int32 antenna_count = 6;
+  AntennaConnector antenna_connector = 7;
+  AntennaPolarization included_antenna_polarization = 8;
+}
+
+message Gps {
+  option (quadsmith.plural_name) = "gps";
+
+
+  option (quadsmith.default_columns) = "supports_galileo";
+  string chipset = 1;
+  bool has_compass = 2;
+  double input_voltage_min_v = 3;
+  double input_voltage_max_v = 4;
+  double length_mm = 5;
+  double width_mm = 6;
+  double height_mm = 7;
+}
+
+message Antenna {
+  option (quadsmith.plural_name) = "antennas";
+
+
+  option (quadsmith.default_columns) = "connector";
+  option (quadsmith.default_columns) = "polarization";
+  string supported_frequency_id = 1;
+  AntennaPolarization polarization = 2;
+  AntennaConnector connector = 3;
+  AntennaStyle antenna_style = 4;
+  double gain_dbi = 5;
+  double cable_length_mm = 6;
+}
+
+
+
+message Transmitter {
+  option (quadsmith.plural_name) = "transmitters";
+
+
+  option (quadsmith.default_columns) = "form_factor";
+  option (quadsmith.default_columns) = "max_power_mw";
+  enum FormFactor {
+    FORM_FACTOR_UNSPECIFIED = 0;
+    FORM_FACTOR_MICRO_JR = 1;
+    FORM_FACTOR_NANO_LITE = 2;
+    FORM_FACTOR_INTERNAL = 3;
+  }
+  FormFactor form_factor = 1;
+  repeated string supported_frequency_ids = 2;
+  repeated string rf_protocol_ids = 3;
+  int32 max_power_mw = 4;
+  int32 antenna_count = 5;
+  AntennaConnector antenna_connector = 6;
+  repeated string supported_firmware_ids = 7;
+}

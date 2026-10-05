@@ -1,8 +1,8 @@
 version: v1
 plugins:
-  - plugin: buf.build/protocolbuffers/go
-    out: db/gen
+  - plugin: go
+    out: ../backend/api/gen
     opt: paths=source_relative
-  - plugin: buf.build/connectrpc/go
-    out: db/gen
+  - plugin: connect-go
+    out: ../backend/api/gen
     opt: paths=source_relative

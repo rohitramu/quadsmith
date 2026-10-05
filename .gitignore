@@ -1,2 +1,36 @@
 node_modules/
 .env
+/.tmp/
+
+# Generated Protobuf / ConnectRPC code
+backend/api/gen/
+
+# Standard Go ignores
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Editor & OS Files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Database / Local Storage Volumes
+pgdata/
+postgres-data/
+
+# Logs & Temp files
+*.log
+scratch/
+tmp/
+vendor/
+
+# Root bin directory
+/bin/

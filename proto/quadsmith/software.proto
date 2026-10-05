@@ -1,0 +1,65 @@
+edition = "2023";
+
+import "google/protobuf/go_features.proto";
+option features.(pb.go).api_level = API_OPAQUE;
+
+
+package quadsmith;
+option go_package = "quadsmith/api/gen/quadsmith;quadsmith";
+
+import "quadsmith/common.proto";
+
+message FcFirmware {
+  option (quadsmith.plural_name) = "fc-firmwares";
+
+  option (quadsmith.default_columns) = "version";
+  option (quadsmith.default_columns) = "flavor_target";
+  string software_id = 1;
+  string version = 2;
+  string flavor_target = 3;
+  repeated string compatible_hardware_ids = 4;
+}
+
+message EscFirmware {
+  option (quadsmith.plural_name) = "esc-firmwares";
+
+  option (quadsmith.default_columns) = "version";
+  option (quadsmith.default_columns) = "flavor_target";
+  string software_id = 1;
+  string version = 2;
+  string flavor_target = 3;
+  repeated string compatible_hardware_ids = 4;
+}
+
+message VtxFirmware {
+  option (quadsmith.plural_name) = "vtx-firmwares";
+
+  option (quadsmith.default_columns) = "version";
+  option (quadsmith.default_columns) = "flavor_target";
+  string software_id = 1;
+  string version = 2;
+  string flavor_target = 3;
+  repeated string compatible_hardware_ids = 4;
+}
+
+message RadioOs {
+  option (quadsmith.plural_name) = "radio-os";
+
+  option (quadsmith.default_columns) = "version";
+  option (quadsmith.default_columns) = "flavor_target";
+  string software_id = 1;
+  string version = 2;
+  string flavor_target = 3;
+  repeated string compatible_hardware_ids = 4;
+}
+
+message TransmitterFirmware {
+  option (quadsmith.plural_name) = "transmitter-firmwares";
+
+  option (quadsmith.default_columns) = "version";
+  option (quadsmith.default_columns) = "flavor_target";
+  string software_id = 1;
+  string version = 2;
+  string flavor_target = 3;
+  repeated string compatible_hardware_ids = 4;
+}

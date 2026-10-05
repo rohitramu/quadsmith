@@ -1,0 +1,15 @@
+edition = "2023";
+
+import "google/protobuf/go_features.proto";
+option features.(pb.go).api_level = API_OPAQUE;
+
+
+package quadsmith;
+
+import "quadsmith/component.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith;quadsmith";
+
+message ComponentSeedList {
+  repeated Component components = 1;
+}

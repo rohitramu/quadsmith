@@ -1,0 +1,49 @@
+edition = "2023";
+
+import "google/protobuf/go_features.proto";
+option features.(pb.go).api_level = API_OPAQUE;
+
+
+package quadsmith;
+option go_package = "quadsmith/api/gen/quadsmith;quadsmith";
+
+import "quadsmith/common.proto";
+import "quadsmith/hardware.proto";
+import "quadsmith/software.proto";
+import "quadsmith/gear.proto";
+
+message Component {
+  option (quadsmith.default_columns) = "id";
+  option (quadsmith.default_columns) = "name";
+  option (quadsmith.default_columns) = "weight_g";
+  string id = 1;
+  string name = 2;
+  // field 3 was type enum
+  ReleaseDate release_date = 4;
+  repeated string company_ids = 7;
+  repeated ReferenceLink reference_links = 8;
+  double weight_g = 9;
+
+  oneof type {
+    Frame frame = 10;
+    Motor motor = 11;
+    Propeller propeller = 12;
+    FlightController flight_controller = 13;
+    Esc esc = 14;
+    Battery battery = 15;
+    Vtx vtx = 16;
+    Camera camera = 17;
+    Receiver receiver = 18;
+    Gps gps = 19;
+    Antenna antenna = 20;
+    Radio radio = 21;
+    Transmitter transmitter = 27;
+    TransmitterFirmware transmitter_firmware = 28;
+    Goggles goggles = 22;
+    RadioModule radio_module = 29;
+    FcFirmware fc_firmware = 23;
+    EscFirmware esc_firmware = 24;
+    VtxFirmware vtx_firmware = 25;
+    RadioOs radio_os = 26;
+  }
+}

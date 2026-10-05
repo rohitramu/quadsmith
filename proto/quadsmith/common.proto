@@ -1,0 +1,88 @@
+edition = "2023";
+
+import "google/protobuf/go_features.proto";
+option features.(pb.go).api_level = API_OPAQUE;
+
+package quadsmith;
+option go_package = "quadsmith/api/gen/quadsmith;quadsmith";
+
+import "google/protobuf/descriptor.proto";
+
+extend google.protobuf.MessageOptions {
+  string plural_name = 50000;
+  repeated string default_columns = 50001;
+}
+
+message ReferenceLink {
+  enum Type {
+    UNSPECIFIED = 0;
+    PURCHASE = 1;
+    MANUAL = 2;
+    FIRMWARE = 3;
+    DATASHEET = 4;
+  }
+  string id = 1;
+  string url = 2;
+  Type link_type = 3;
+  string title = 4;
+  string description = 5;
+  string company_id = 6;
+}
+
+message ReleaseDate {
+  int32 year = 1;
+  int32 month = 2 [features.field_presence = EXPLICIT];
+  int32 day = 3 [features.field_presence = EXPLICIT];
+}
+
+enum Ecosystem {
+  ECOSYSTEM_UNSPECIFIED = 0;
+  ECOSYSTEM_ANALOG = 1;
+  ECOSYSTEM_DJI = 2;
+  ECOSYSTEM_HDZERO = 3;
+  ECOSYSTEM_WALKSNAIL = 4;
+  ECOSYSTEM_AVATAR = 5;
+}
+
+enum AntennaConnector {
+  ANTENNA_CONNECTOR_UNSPECIFIED = 0;
+  ANTENNA_CONNECTOR_SMA = 1;
+  ANTENNA_CONNECTOR_RP_SMA = 2;
+  ANTENNA_CONNECTOR_UFL = 3;
+  ANTENNA_CONNECTOR_MMCX = 4;
+}
+
+enum AntennaPolarization {
+  ANTENNA_POLARIZATION_UNSPECIFIED = 0;
+  ANTENNA_POLARIZATION_RHCP = 1;
+  ANTENNA_POLARIZATION_LHCP = 2;
+  ANTENNA_POLARIZATION_LINEAR = 3;
+}
+
+enum ScrewSize {
+  SCREW_SIZE_UNSPECIFIED = 0;
+  SCREW_SIZE_M2 = 1;
+  SCREW_SIZE_M2_5 = 2;
+  SCREW_SIZE_M3 = 3;
+}
+
+enum PropellerMount {
+  PROPELLER_MOUNT_UNSPECIFIED = 0;
+  PROPELLER_MOUNT_5MM = 1;
+  PROPELLER_MOUNT_T_MOUNT_1_5MM = 2;
+  PROPELLER_MOUNT_T_MOUNT_2MM = 3;
+}
+
+enum VideoStandard {
+  VIDEO_STANDARD_UNSPECIFIED = 0;
+  VIDEO_STANDARD_NTSC = 1;
+  VIDEO_STANDARD_PAL = 2;
+  VIDEO_STANDARD_MIPI = 3;
+}
+
+enum AntennaStyle {
+  ANTENNA_STYLE_UNSPECIFIED = 0;
+  ANTENNA_STYLE_OMNI = 1;
+  ANTENNA_STYLE_DIRECTIONAL = 2;
+  ANTENNA_STYLE_PATCH = 3;
+}
