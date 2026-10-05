@@ -35,13 +35,14 @@ RUN apt-get update && apt-get install -y wget && \
     wget -qO- https://github.com/sqldef/sqldef/releases/download/v0.17.15/psqldef_linux_amd64.tar.gz | tar xvz -C /usr/local/bin && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy binaries from builder
-COPY --from=builder /app/bin/server /app/server
-COPY --from=builder /app/bin/seed /app/seed
+# Environment Setup
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=quadsmith
+ENV DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+ENV PORT=8080
 
-# Copy database schema and seeds
-COPY backend/db/schema.sql /app/backend/db/schema.sql
-COPY backend/db/seeds /app/backend/db/seeds
+EXPOSE 5432 8080
 
 # Inline the sandbox entrypoint script securely using printf (legacy builder compatible)
 RUN printf '#!/usr/bin/env bash\n\
@@ -58,13 +59,12 @@ exec ./server\n' > /app/sandbox-entrypoint.sh
 
 RUN chmod +x /app/sandbox-entrypoint.sh
 
-# Environment Setup
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=postgres
-ENV POSTGRES_DB=quadsmith
-ENV DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
-ENV PORT=8080
+# Copy binaries from builder
+COPY --from=builder /app/bin/server /app/server
+COPY --from=builder /app/bin/seed /app/seed
 
-EXPOSE 5432 8080
+# Copy database schema and seeds at the very end
+COPY backend/db/schema.sql /app/backend/db/schema.sql
+COPY backend/db/seeds /app/backend/db/seeds
 
 ENTRYPOINT ["/app/sandbox-entrypoint.sh"]
