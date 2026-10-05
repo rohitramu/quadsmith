@@ -27,6 +27,13 @@ This document outlines the conceptual domain model for Quadsmith's hardware cata
 
 ---
 
+### 2.5 API Unification: Component Wrapper vs. Resource Wrapper
+**Decision:** We use a unified `Component` wrapper (via Protobuf `oneof`) to serve all hardware and gear types from a single API (`ListComponent`, `GetComponent`), but we *keep* top-level domain entities like `Build`, `Component`, and `Manufacturer` separated into their own APIs rather than wrapping them all in a global `Resource` API.
+
+**Rationale:** 
+1. **API Scalability:** With 20+ distinct component types (Motors, Frames, VTXs), fragmenting the API into `ListMotors`, `GetMotor`, etc., would create 80+ RPCs. Unifying them inside a single `Component` wrapper keeps the API surface manageable and allows compatibility engines to iterate over mixed arrays (`[]*Component`) seamlessly.
+2. **Isomorphic vs. Heteromorphic Lifecycles:** Motors, frames, and antennas are isomorphic—they are read-only, physical items produced by manufacturers. A unified wrapper makes perfect sense. In contrast, `Builds` and `Users` are heteromorphic. A `Build` is a mutable user assembly, while a `User` handles authentication. If we had wrapped everything into an uber-`Resource` object, the API would become too abstract, forcing clients to navigate nested `oneof`s (e.g. `res.GetComponent().GetMotor()`) and mixing vastly different database relations and permission models in a single network call.
+
 ## 3. Domain Architecture Breakdown
 
 ### 3.1 Base Identity (`Component` & `Company`)
