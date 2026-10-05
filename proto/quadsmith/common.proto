@@ -35,56 +35,70 @@ message ReleaseDate {
   int32 day = 3 [features.field_presence = EXPLICIT];
 }
 
-enum Ecosystem {
-  ECOSYSTEM_UNSPECIFIED = 0;
-  ECOSYSTEM_ANALOG = 1;
-  ECOSYSTEM_DJI = 2;
-  ECOSYSTEM_HDZERO = 3;
-  ECOSYSTEM_WALKSNAIL = 4;
-  ECOSYSTEM_AVATAR = 5;
+message Ecosystem {
+  enum Value {
+    UNSPECIFIED = 0;
+    ANALOG = 1;
+    DJI = 2;
+    HDZERO = 3;
+    WALKSNAIL = 4;
+    AVATAR = 5;
+  }
 }
 
-enum AntennaConnector {
-  ANTENNA_CONNECTOR_UNSPECIFIED = 0;
-  ANTENNA_CONNECTOR_SMA = 1;
-  ANTENNA_CONNECTOR_RP_SMA = 2;
-  ANTENNA_CONNECTOR_UFL = 3;
-  ANTENNA_CONNECTOR_MMCX = 4;
+message AntennaConnector {
+  enum Value {
+    UNSPECIFIED = 0;
+    SMA = 1;
+    RP_SMA = 2;
+    UFL = 3;
+    MMCX = 4;
+  }
 }
 
-enum AntennaPolarization {
-  ANTENNA_POLARIZATION_UNSPECIFIED = 0;
-  ANTENNA_POLARIZATION_RHCP = 1;
-  ANTENNA_POLARIZATION_LHCP = 2;
-  ANTENNA_POLARIZATION_LINEAR = 3;
+message AntennaPolarization {
+  enum Value {
+    UNSPECIFIED = 0;
+    RHCP = 1;
+    LHCP = 2;
+    LINEAR = 3;
+  }
 }
 
-enum ScrewSize {
-  SCREW_SIZE_UNSPECIFIED = 0;
-  SCREW_SIZE_M2 = 1;
-  SCREW_SIZE_M2_5 = 2;
-  SCREW_SIZE_M3 = 3;
+message ScrewSize {
+  enum Value {
+    UNSPECIFIED = 0;
+    M2 = 1;
+    M2_5 = 2;
+    M3 = 3;
+  }
 }
 
-enum PropellerMount {
-  PROPELLER_MOUNT_UNSPECIFIED = 0;
-  PROPELLER_MOUNT_5MM = 1;
-  PROPELLER_MOUNT_T_MOUNT_1_5MM = 2;
-  PROPELLER_MOUNT_T_MOUNT_2MM = 3;
+message PropellerMount {
+  enum Value {
+    UNSPECIFIED = 0;
+    M5_SHAFT = 1;
+    T_MOUNT_1_5MM = 2;
+    T_MOUNT_2MM = 3;
+  }
 }
 
-enum VideoStandard {
-  VIDEO_STANDARD_UNSPECIFIED = 0;
-  VIDEO_STANDARD_NTSC = 1;
-  VIDEO_STANDARD_PAL = 2;
-  VIDEO_STANDARD_MIPI = 3;
+message VideoStandard {
+  enum Value {
+    UNSPECIFIED = 0;
+    NTSC = 1;
+    PAL = 2;
+    MIPI = 3;
+  }
 }
 
-enum AntennaStyle {
-  ANTENNA_STYLE_UNSPECIFIED = 0;
-  ANTENNA_STYLE_OMNI = 1;
-  ANTENNA_STYLE_DIRECTIONAL = 2;
-  ANTENNA_STYLE_PATCH = 3;
+message AntennaStyle {
+  enum Value {
+    UNSPECIFIED = 0;
+    OMNI = 1;
+    DIRECTIONAL = 2;
+    PATCH = 3;
+  }
 }
 
 message ResourceMetadata {

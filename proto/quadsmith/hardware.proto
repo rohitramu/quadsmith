@@ -43,8 +43,8 @@ message Motor {
   double input_voltage_min_v = 4;
   double input_voltage_max_v = 5;
   repeated string mount_pattern_ids = 6;
-  ScrewSize mount_bolt_size = 7;
-  PropellerMount shaft_type = 8;
+  ScrewSize.Value mount_bolt_size = 7;
+  PropellerMount.Value shaft_type = 8;
   double max_current_a = 9;
 }
 
@@ -57,7 +57,7 @@ message Propeller {
   double diameter_mm = 1;
   double pitch_mm = 2;
   int32 blade_count = 3;
-  PropellerMount mount_type = 4;
+  PropellerMount.Value mount_type = 4;
   repeated string recommended_stators = 5;
 }
 
@@ -155,16 +155,16 @@ message Vtx {
 
   option (quadsmith.default_columns) = "supported_ecosystem";
   repeated string supported_frequency_ids = 1;
-  Ecosystem ecosystem = 2;
-  VideoStandard video_connection_standard = 3;
+  Ecosystem.Value ecosystem = 2;
+  VideoStandard.Value video_connection_standard = 3;
   repeated string mount_pattern_ids = 4;
   double board_height_mm = 5;
   double input_voltage_min_v = 6;
   double input_voltage_max_v = 7;
   int32 max_power_mw = 8;
   int32 antenna_count = 9;
-  AntennaConnector antenna_connector = 10;
-  AntennaPolarization included_antenna_polarization = 11;
+  AntennaConnector.Value antenna_connector = 10;
+  AntennaPolarization.Value included_antenna_polarization = 11;
   repeated string supported_firmware_ids = 12;
 }
 
@@ -174,14 +174,14 @@ message Camera {
 
   option (quadsmith.default_columns) = "supported_ecosystem";
   option (quadsmith.default_columns) = "sensor_size";
-  Ecosystem ecosystem = 1;
-  VideoStandard video_connection_standard = 2;
+  Ecosystem.Value ecosystem = 1;
+  VideoStandard.Value video_connection_standard = 2;
   double width_mm = 3;
   double height_mm = 4;
   double depth_mm = 5;
   double input_voltage_min_v = 6;
   double input_voltage_max_v = 7;
-  ScrewSize mounting_screw_size = 8;
+  ScrewSize.Value mounting_screw_size = 8;
   enum AspectRatio {
     ASPECT_RATIO_UNSPECIFIED = 0;
     ASPECT_RATIO_16_9 = 1;
@@ -209,8 +209,8 @@ message Receiver {
   double input_voltage_min_v = 4;
   double input_voltage_max_v = 5;
   int32 antenna_count = 6;
-  AntennaConnector antenna_connector = 7;
-  AntennaPolarization included_antenna_polarization = 8;
+  AntennaConnector.Value antenna_connector = 7;
+  AntennaPolarization.Value included_antenna_polarization = 8;
 }
 
 message Gps {
@@ -234,9 +234,9 @@ message Antenna {
   option (quadsmith.default_columns) = "connector";
   option (quadsmith.default_columns) = "polarization";
   string supported_frequency_id = 1;
-  AntennaPolarization polarization = 2;
-  AntennaConnector connector = 3;
-  AntennaStyle antenna_style = 4;
+  AntennaPolarization.Value polarization = 2;
+  AntennaConnector.Value connector = 3;
+  AntennaStyle.Value antenna_style = 4;
   double gain_dbi = 5;
   double cable_length_mm = 6;
 }
@@ -260,6 +260,6 @@ message Transmitter {
   repeated string rf_protocol_ids = 3;
   int32 max_power_mw = 4;
   int32 antenna_count = 5;
-  AntennaConnector antenna_connector = 6;
+  AntennaConnector.Value antenna_connector = 6;
   repeated string supported_firmware_ids = 7;
 }

@@ -24,8 +24,8 @@ message Radio {
   repeated string rf_protocol_ids = 2;
   ExternalBayType external_bay_type = 3;
   int32 antenna_count = 4;
-  AntennaConnector antenna_connector = 5;
-  AntennaPolarization included_antenna_polarization = 6;
+  AntennaConnector.Value antenna_connector = 5;
+  AntennaPolarization.Value included_antenna_polarization = 6;
   repeated string supported_os_ids = 7;
   string internal_transmitter_id = 8;
 }
@@ -36,10 +36,10 @@ message Goggles {
 
   option (quadsmith.default_columns) = "supported_ecosystems";
   repeated string supported_frequency_ids = 1;
-  Ecosystem ecosystem = 2;
+  Ecosystem.Value ecosystem = 2;
   int32 antenna_count = 3;
-  AntennaConnector antenna_connector = 4;
-  AntennaPolarization included_antenna_polarization = 5;
+  AntennaConnector.Value antenna_connector = 4;
+  AntennaPolarization.Value included_antenna_polarization = 5;
 }
 
 message RadioModule {

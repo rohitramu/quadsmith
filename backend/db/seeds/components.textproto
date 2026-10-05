@@ -8,7 +8,7 @@ components {
   }
   weight_g: 36.4
   vtx {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
     input_voltage_min_v: 7.4
     input_voltage_max_v: 26.4
     max_power_mw: 1995
@@ -97,7 +97,7 @@ components {
   }
   weight_g: 9
   camera {
-    ecosystem: ECOSYSTEM_ANALOG
+    ecosystem: ANALOG
   }
 }
 
@@ -139,8 +139,8 @@ components {
   }
   weight_g: 4.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -191,7 +191,7 @@ components {
   }
   weight_g: 19
   vtx {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
     input_voltage_min_v: 7.4
     input_voltage_max_v: 26.4
     max_power_mw: 1000
@@ -209,7 +209,7 @@ components {
   }
   weight_g: 9.5
   camera {
-    ecosystem: ECOSYSTEM_WALKSNAIL
+    ecosystem: WALKSNAIL
   }
 }
 
@@ -223,7 +223,7 @@ components {
   }
   weight_g: 15.4
   vtx {
-    ecosystem: ECOSYSTEM_WALKSNAIL
+    ecosystem: WALKSNAIL
     input_voltage_min_v: 6
     input_voltage_max_v: 25.2
     max_power_mw: 1200
@@ -322,7 +322,7 @@ components {
   }
   weight_g: 6
   camera {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
   }
 }
 
@@ -408,7 +408,7 @@ components {
   }
   weight_g: 8.9
   camera {
-    ecosystem: ECOSYSTEM_WALKSNAIL
+    ecosystem: WALKSNAIL
   }
 }
 
@@ -422,7 +422,7 @@ components {
   }
   weight_g: 38.5
   vtx {
-    ecosystem: ECOSYSTEM_WALKSNAIL
+    ecosystem: WALKSNAIL
     input_voltage_min_v: 7.4
     input_voltage_max_v: 25.2
     max_power_mw: 1000
@@ -567,7 +567,7 @@ components {
   }
   weight_g: 1
   vtx {
-    ecosystem: ECOSYSTEM_ANALOG
+    ecosystem: ANALOG
     input_voltage_min_v: 3
     input_voltage_max_v: 13
     max_power_mw: 500
@@ -585,7 +585,7 @@ components {
   }
   weight_g: 8.7
   vtx {
-    ecosystem: ECOSYSTEM_WALKSNAIL
+    ecosystem: WALKSNAIL
     input_voltage_min_v: 3.1
     input_voltage_max_v: 5
     max_power_mw: 350
@@ -603,7 +603,7 @@ components {
   }
   weight_g: 3
   camera {
-    ecosystem: ECOSYSTEM_WALKSNAIL
+    ecosystem: WALKSNAIL
   }
 }
 
@@ -617,7 +617,7 @@ components {
   }
   weight_g: 22.3
   vtx {
-    ecosystem: ECOSYSTEM_HDZERO
+    ecosystem: HDZERO
     input_voltage_min_v: 7
     input_voltage_max_v: 25
     max_power_mw: 1000
@@ -635,7 +635,7 @@ components {
   }
   weight_g: 4.5
   vtx {
-    ecosystem: ECOSYSTEM_HDZERO
+    ecosystem: HDZERO
     input_voltage_min_v: 2.8
     input_voltage_max_v: 13
     max_power_mw: 200
@@ -653,7 +653,7 @@ components {
   }
   weight_g: 5.2
   camera {
-    ecosystem: ECOSYSTEM_HDZERO
+    ecosystem: HDZERO
   }
 }
 
@@ -691,7 +691,7 @@ components {
   }
   weight_g: 5
   vtx {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
     input_voltage_min_v: 6
     input_voltage_max_v: 26.4
     max_power_mw: 1000
@@ -709,7 +709,7 @@ components {
   }
   weight_g: 3.2
   camera {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
   }
 }
 
@@ -723,7 +723,7 @@ components {
   }
   weight_g: 5.1
   vtx {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
     input_voltage_min_v: 3.7
     input_voltage_max_v: 13.2
     max_power_mw: 2000
@@ -741,7 +741,7 @@ components {
   }
   weight_g: 8.3
   camera {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
   }
 }
 
@@ -755,7 +755,7 @@ components {
   }
   weight_g: 15.6
   vtx {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
     input_voltage_min_v: 6
     input_voltage_max_v: 26.4
     max_power_mw: 2000
@@ -773,7 +773,7 @@ components {
   }
   weight_g: 16.4
   camera {
-    ecosystem: ECOSYSTEM_DJI
+    ecosystem: DJI
   }
 }
 
@@ -2028,7 +2028,7 @@ components {
   }
   weight_g: 4.8
   vtx {
-    ecosystem: ECOSYSTEM_ANALOG
+    ecosystem: ANALOG
     input_voltage_min_v: 6
     input_voltage_max_v: 26
     max_power_mw: 800
@@ -2203,7 +2203,7 @@ components {
   }
   weight_g: 2.4
   vtx {
-    ecosystem: ECOSYSTEM_ANALOG
+    ecosystem: ANALOG
     input_voltage_min_v: 5
     input_voltage_max_v: 5
     max_power_mw: 350
@@ -2416,8 +2416,8 @@ components {
   }
   weight_g: 7.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2431,8 +2431,8 @@ components {
   }
   weight_g: 1.5
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2446,8 +2446,8 @@ components {
   }
   weight_g: 7.3
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2461,8 +2461,8 @@ components {
   }
   weight_g: 1.6
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2476,8 +2476,8 @@ components {
   }
   weight_g: 11.5
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2491,8 +2491,8 @@ components {
   }
   weight_g: 7.5
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2506,8 +2506,8 @@ components {
   }
   weight_g: 3.4
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2521,8 +2521,8 @@ components {
   }
   weight_g: 20.6
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2536,8 +2536,8 @@ components {
   }
   weight_g: 12
   antenna {
-    antenna_style: ANTENNA_STYLE_DIRECTIONAL
-    connector: ANTENNA_CONNECTOR_RP_SMA
+    antenna_style: DIRECTIONAL
+    connector: RP_SMA
   }
 }
 
@@ -2551,8 +2551,8 @@ components {
   }
   weight_g: 12
   antenna {
-    antenna_style: ANTENNA_STYLE_DIRECTIONAL
-    connector: ANTENNA_CONNECTOR_RP_SMA
+    antenna_style: DIRECTIONAL
+    connector: RP_SMA
   }
 }
 
@@ -2566,8 +2566,8 @@ components {
   }
   weight_g: 12
   antenna {
-    antenna_style: ANTENNA_STYLE_PATCH
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: PATCH
+    connector: SMA
   }
 }
 
@@ -2581,8 +2581,8 @@ components {
   }
   weight_g: 10.5
   antenna {
-    antenna_style: ANTENNA_STYLE_PATCH
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: PATCH
+    connector: SMA
   }
 }
 
@@ -2596,8 +2596,8 @@ components {
   }
   weight_g: 7.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2611,8 +2611,8 @@ components {
   }
   weight_g: 7.5
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2626,8 +2626,8 @@ components {
   }
   weight_g: 15
   antenna {
-    antenna_style: ANTENNA_STYLE_DIRECTIONAL
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: DIRECTIONAL
+    connector: SMA
   }
 }
 
@@ -2641,8 +2641,8 @@ components {
   }
   weight_g: 1.4
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2656,8 +2656,8 @@ components {
   }
   weight_g: 12
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2671,8 +2671,8 @@ components {
   }
   weight_g: 18
   antenna {
-    antenna_style: ANTENNA_STYLE_PATCH
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: PATCH
+    connector: SMA
   }
 }
 
@@ -2686,8 +2686,8 @@ components {
   }
   weight_g: 1.2
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2701,8 +2701,8 @@ components {
   }
   weight_g: 3.1
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2716,8 +2716,8 @@ components {
   }
   weight_g: 0.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2731,8 +2731,8 @@ components {
   }
   weight_g: 4.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2746,8 +2746,8 @@ components {
   }
   weight_g: 11.5
   antenna {
-    antenna_style: ANTENNA_STYLE_PATCH
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: PATCH
+    connector: SMA
   }
 }
 
@@ -2761,8 +2761,8 @@ components {
   }
   weight_g: 11
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2776,8 +2776,8 @@ components {
   }
   weight_g: 4.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2791,8 +2791,8 @@ components {
   }
   weight_g: 7.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2806,8 +2806,8 @@ components {
   }
   weight_g: 1.5
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2821,8 +2821,8 @@ components {
   }
   weight_g: 7.3
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2836,8 +2836,8 @@ components {
   }
   weight_g: 1.6
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2851,8 +2851,8 @@ components {
   }
   weight_g: 11.5
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2866,8 +2866,8 @@ components {
   }
   weight_g: 7.5
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2881,8 +2881,8 @@ components {
   }
   weight_g: 12
   antenna {
-    antenna_style: ANTENNA_STYLE_PATCH
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: PATCH
+    connector: SMA
   }
 }
 
@@ -2896,8 +2896,8 @@ components {
   }
   weight_g: 10.5
   antenna {
-    antenna_style: ANTENNA_STYLE_PATCH
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: PATCH
+    connector: SMA
   }
 }
 
@@ -2911,8 +2911,8 @@ components {
   }
   weight_g: 7.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2926,8 +2926,8 @@ components {
   }
   weight_g: 7.5
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2941,8 +2941,8 @@ components {
   }
   weight_g: 15
   antenna {
-    antenna_style: ANTENNA_STYLE_DIRECTIONAL
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: DIRECTIONAL
+    connector: SMA
   }
 }
 
@@ -2956,8 +2956,8 @@ components {
   }
   weight_g: 1.4
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -2971,8 +2971,8 @@ components {
   }
   weight_g: 12
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -2986,8 +2986,8 @@ components {
   }
   weight_g: 18
   antenna {
-    antenna_style: ANTENNA_STYLE_PATCH
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: PATCH
+    connector: SMA
   }
 }
 
@@ -3001,8 +3001,8 @@ components {
   }
   weight_g: 4.8
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -3016,8 +3016,8 @@ components {
   }
   weight_g: 11.5
   antenna {
-    antenna_style: ANTENNA_STYLE_PATCH
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: PATCH
+    connector: SMA
   }
 }
 
@@ -3031,8 +3031,8 @@ components {
   }
   weight_g: 11
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -3046,7 +3046,7 @@ components {
   }
   weight_g: 5.9
   camera {
-    ecosystem: ECOSYSTEM_ANALOG
+    ecosystem: ANALOG
   }
 }
 
@@ -3091,8 +3091,8 @@ components {
   }
   weight_g: 0.84
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3106,8 +3106,8 @@ components {
   }
   weight_g: 0.33
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3121,8 +3121,8 @@ components {
   }
   weight_g: 9.45
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -3136,8 +3136,8 @@ components {
   }
   weight_g: 9.45
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -3151,8 +3151,8 @@ components {
   }
   weight_g: 2
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3166,8 +3166,8 @@ components {
   }
   weight_g: 1.3
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3181,8 +3181,8 @@ components {
   }
   weight_g: 1.2
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3196,8 +3196,8 @@ components {
   }
   weight_g: 4
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3211,8 +3211,8 @@ components {
   }
   weight_g: 9
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -3226,8 +3226,8 @@ components {
   }
   weight_g: 47.44
   antenna {
-    antenna_style: ANTENNA_STYLE_DIRECTIONAL
-    connector: ANTENNA_CONNECTOR_RP_SMA
+    antenna_style: DIRECTIONAL
+    connector: RP_SMA
   }
 }
 
@@ -3241,8 +3241,8 @@ components {
   }
   weight_g: 14
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_RP_SMA
+    antenna_style: OMNI
+    connector: RP_SMA
   }
 }
 
@@ -3256,8 +3256,8 @@ components {
   }
   weight_g: 2.02
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3271,8 +3271,8 @@ components {
   }
   weight_g: 18
   antenna {
-    antenna_style: ANTENNA_STYLE_DIRECTIONAL
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: DIRECTIONAL
+    connector: SMA
   }
 }
 
@@ -3286,8 +3286,8 @@ components {
   }
   weight_g: 0.94
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3301,8 +3301,8 @@ components {
   }
   weight_g: 1
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3316,8 +3316,8 @@ components {
   }
   weight_g: 24
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
@@ -3331,8 +3331,8 @@ components {
   }
   weight_g: 22
   antenna {
-    antenna_style: ANTENNA_STYLE_DIRECTIONAL
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: DIRECTIONAL
+    connector: SMA
   }
 }
 
@@ -3346,8 +3346,8 @@ components {
   }
   weight_g: 6.3
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3361,8 +3361,8 @@ components {
   }
   weight_g: 0.9
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_UFL
+    antenna_style: OMNI
+    connector: UFL
   }
 }
 
@@ -3376,8 +3376,8 @@ components {
   }
   weight_g: 12
   antenna {
-    antenna_style: ANTENNA_STYLE_OMNI
-    connector: ANTENNA_CONNECTOR_SMA
+    antenna_style: OMNI
+    connector: SMA
   }
 }
 
