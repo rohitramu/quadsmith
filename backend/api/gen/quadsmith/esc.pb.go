@@ -35,8 +35,8 @@ type Esc struct {
 	// E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
 	MaxMotors int32 `protobuf:"varint,6,opt,name=max_motors,json=maxMotors,proto3" json:"max_motors,omitempty"`
 	// Continuous and Burst amperage ratings
-	MaxMotorCurrentA int32 `protobuf:"varint,7,opt,name=max_motor_current_a,json=maxMotorCurrentA,proto3" json:"max_motor_current_a,omitempty"`
-	BurstAmps        int32 `protobuf:"varint,8,opt,name=burst_amps,json=burstAmps,proto3" json:"burst_amps,omitempty"`
+	MaxMotorCurrentA float32 `protobuf:"fixed32,7,opt,name=max_motor_current_a,json=maxMotorCurrentA,proto3" json:"max_motor_current_a,omitempty"`
+	BurstAmps        float32 `protobuf:"fixed32,8,opt,name=burst_amps,json=burstAmps,proto3" json:"burst_amps,omitempty"`
 	// E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
 	Firmware      string `protobuf:"bytes,9,opt,name=firmware,proto3" json:"firmware,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -122,14 +122,14 @@ func (x *Esc) GetMaxMotors() int32 {
 	return 0
 }
 
-func (x *Esc) GetMaxMotorCurrentA() int32 {
+func (x *Esc) GetMaxMotorCurrentA() float32 {
 	if x != nil {
 		return x.MaxMotorCurrentA
 	}
 	return 0
 }
 
-func (x *Esc) GetBurstAmps() int32 {
+func (x *Esc) GetBurstAmps() float32 {
 	if x != nil {
 		return x.BurstAmps
 	}
@@ -340,9 +340,9 @@ const file_quadsmith_esc_proto_rawDesc = "" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1d\n" +
 	"\n" +
 	"max_motors\x18\x06 \x01(\x05R\tmaxMotors\x12-\n" +
-	"\x13max_motor_current_a\x18\a \x01(\x05R\x10maxMotorCurrentA\x12\x1d\n" +
+	"\x13max_motor_current_a\x18\a \x01(\x02R\x10maxMotorCurrentA\x12\x1d\n" +
 	"\n" +
-	"burst_amps\x18\b \x01(\x05R\tburstAmps\x12\x1a\n" +
+	"burst_amps\x18\b \x01(\x02R\tburstAmps\x12\x1a\n" +
 	"\bfirmware\x18\t \x01(\tR\bfirmware:\b\xc2\xf3\x18\x04escs\"9\n" +
 	"\rGetEscRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
