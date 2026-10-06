@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS escs (
   is_internal_only BOOLEAN,
   weight_g DECIMAL,
   max_motors INTEGER,
-  continuous_amps INTEGER,
+  max_motor_current_a INTEGER,
   burst_amps INTEGER,
   firmware TEXT
 );
