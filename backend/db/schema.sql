@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS escs (
   weight_g DECIMAL,
   max_motors INTEGER,
   max_motor_current_a DECIMAL,
-  burst_current_a DECIMAL,
+  burst_motor_current_a DECIMAL,
   firmware TEXT
 );
 

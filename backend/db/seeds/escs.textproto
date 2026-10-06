@@ -6,7 +6,7 @@ escs: {
   weight_g: 8.7
   max_motors: 4
   max_motor_current_a: 45
-  burst_current_a: 55
+  burst_motor_current_a: 55
   firmware: "BLHeli_32"
 }
 escs: {
@@ -17,7 +17,7 @@ escs: {
   weight_g: 5.3
   max_motors: 4
   max_motor_current_a: 20
-  burst_current_a: 25
+  burst_motor_current_a: 25
   firmware: "BLHeli_32"
 }
 escs: {
@@ -28,7 +28,7 @@ escs: {
   weight_g: 5.1
   max_motors: 4
   max_motor_current_a: 12
-  burst_current_a: 15
+  burst_motor_current_a: 15
   firmware: "BLHeli_32"
 }
 escs: {
@@ -39,7 +39,7 @@ escs: {
   weight_g: 2.96
   max_motors: 4
   max_motor_current_a: 5
-  burst_current_a: 6
+  burst_motor_current_a: 6
   firmware: "BLHeli_32"
 }
 escs: {
@@ -50,7 +50,7 @@ escs: {
   weight_g: 18.3
   max_motors: 4
   max_motor_current_a: 48
-  burst_current_a: 55
+  burst_motor_current_a: 55
   firmware: "BLHeli_32"
 }
 escs: {
@@ -61,7 +61,7 @@ escs: {
   weight_g: 19.5
   max_motors: 4
   max_motor_current_a: 60
-  burst_current_a: 65
+  burst_motor_current_a: 65
   firmware: "BLHeli_32"
 }
 escs { uuid: "dcc61f92-5b46-4bbb-89c9-d5975c9c4c16" id: "matrix-1s-brushless-flight-controller-3in1-4in1" manufacturer: "BETAFPV" name: "Matrix 1S Brushless Flight Controller (3IN1/4IN1)" weight_g: 3.8 max_motor_current_a: 18 }

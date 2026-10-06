@@ -68,7 +68,7 @@ erDiagram
         DECIMAL weight_g
         INTEGER max_motors
         DECIMAL max_motor_current_a
-        DECIMAL burst_current_a
+        DECIMAL burst_motor_current_a
         TEXT firmware
     }
 
@@ -80,7 +80,7 @@ erDiagram
         BOOLEAN is_internal_only
         DECIMAL weight_g
         TEXT protocol
-        TEXT frequency_band
+        INTEGER frequency_band
         BOOLEAN has_telemetry
     }
 
@@ -106,7 +106,7 @@ erDiagram
         DECIMAL weight_g
         TEXT connector
         TEXT polarization
-        TEXT frequency_band
+        INTEGER frequency_band
         DECIMAL length_mm
         DECIMAL gain_dbi
     }

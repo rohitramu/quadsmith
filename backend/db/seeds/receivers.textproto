@@ -5,7 +5,7 @@ receivers: {
   name: "TBS Crossfire Nano RX"
   weight_g: 0.5
   protocol: "TBS Crossfire (CRSF)"
-  frequency_band: "2.4 GHz"
+  frequency_band: FREQUENCY_BAND_2_4_GHZ
 }
 receivers: {
   uuid: "8e3b3fae-9076-400d-89c3-f93faf3aa37d"
@@ -14,7 +14,7 @@ receivers: {
   name: "Walksnail Avatar VRX"
   weight_g: 83
   protocol: "HDMI"
-  frequency_band: "2.4 GHz"
+  frequency_band: FREQUENCY_BAND_2_4_GHZ
 }
 receivers: {
   uuid: "632437ac-1938-4574-85eb-b9b2aeb000ff"
@@ -23,7 +23,7 @@ receivers: {
   name: "TBS Tracer Nano RX"
   weight_g: 0.5
   protocol: "TBS Crossfire (CRSF)"
-  frequency_band: "2.4 GHz"
+  frequency_band: FREQUENCY_BAND_2_4_GHZ
 }
 receivers: {
   uuid: "42e4ac1f-d5e8-4863-9eeb-f0d8ad8eeffd"
@@ -32,7 +32,7 @@ receivers: {
   name: "HGLRC Hermes ExpressLRS 2.4GHz"
   weight_g: 0.8
   protocol: "ExpressLRS (ELRS)"
-  frequency_band: "2.4 GHz"
+  frequency_band: FREQUENCY_BAND_2_4_GHZ
 }
 receivers: {
   uuid: "d1a50985-ef0b-4357-b944-7367b21e24f5"
@@ -41,7 +41,7 @@ receivers: {
   name: "HGLRC Hermes ExpressLRS 900MHz"
   weight_g: 0.8
   protocol: "ExpressLRS (ELRS)"
-  frequency_band: "2.4 GHz"
+  frequency_band: FREQUENCY_BAND_2_4_GHZ
 }
 receivers { uuid: "34c212ef-d9b5-4bdc-8b55-be9a0836305c" id: "literadio-4-radio-transmitter" manufacturer: "BETAFPV" name: "LiteRadio 4 Radio Transmitter" weight_g: 0.0 }
 receivers { uuid: "e181ef41-1ef6-4ae0-8b4f-cb3976f0dffa" id: "superx-elrs-gemini-xross-receiver" manufacturer: "BETAFPV" name: "SuperX ELRS Gemini Xross Receiver" weight_g: 0.82 }

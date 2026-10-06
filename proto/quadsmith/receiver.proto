@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package quadsmith;
 
+import "quadsmith/frequency_band.proto";
 import "quadsmith/sql.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
@@ -26,7 +27,7 @@ message Receiver {
   string protocol = 6 [(quadsmith.sql.create_index) = true];
 
   // E.g., 2.4, 0.9 (for 900MHz)
-  string frequency_band = 7;
+  FrequencyBand frequency_band = 7;
 
   bool has_telemetry = 8;
 

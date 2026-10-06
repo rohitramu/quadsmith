@@ -37,7 +37,7 @@ type Antenna struct {
 	// E.g., "RHCP", "LHCP", "Linear"
 	Polarization string `protobuf:"bytes,7,opt,name=polarization,proto3" json:"polarization,omitempty"`
 	// Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
-	FrequencyBand string `protobuf:"bytes,8,opt,name=frequency_band,json=frequencyBand,proto3" json:"frequency_band,omitempty"`
+	FrequencyBand FrequencyBand `protobuf:"varint,8,opt,name=frequency_band,json=frequencyBand,proto3,enum=quadsmith.FrequencyBand" json:"frequency_band,omitempty"`
 	// Length in millimeters (e.g., 60, 100, 150)
 	LengthMm float32 `protobuf:"fixed32,9,opt,name=length_mm,json=lengthMm,proto3" json:"length_mm,omitempty"`
 	// Gain in dBi (e.g., 2.5, 3.0)
@@ -132,11 +132,11 @@ func (x *Antenna) GetPolarization() string {
 	return ""
 }
 
-func (x *Antenna) GetFrequencyBand() string {
+func (x *Antenna) GetFrequencyBand() FrequencyBand {
 	if x != nil {
 		return x.FrequencyBand
 	}
-	return ""
+	return FrequencyBand_FREQUENCY_BAND_UNSPECIFIED
 }
 
 func (x *Antenna) GetLengthMm() float32 {
@@ -340,7 +340,7 @@ var File_quadsmith_antenna_proto protoreflect.FileDescriptor
 
 const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xeb\x02\n" +
+	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/frequency_band.proto\"\x85\x03\n" +
 	"\aAntenna\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -349,8 +349,8 @@ const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1c\n" +
 	"\tconnector\x18\x06 \x01(\tR\tconnector\x12\"\n" +
-	"\fpolarization\x18\a \x01(\tR\fpolarization\x12%\n" +
-	"\x0efrequency_band\x18\b \x01(\tR\rfrequencyBand\x12\x1b\n" +
+	"\fpolarization\x18\a \x01(\tR\fpolarization\x12?\n" +
+	"\x0efrequency_band\x18\b \x01(\x0e2\x18.quadsmith.FrequencyBandR\rfrequencyBand\x12\x1b\n" +
 	"\tlength_mm\x18\t \x01(\x02R\blengthMm\x12\x19\n" +
 	"\bgain_dbi\x18\n" +
 	" \x01(\x02R\againDbi:\f\xc2\xf3\x18\bantennas\"=\n" +
@@ -390,18 +390,20 @@ var file_quadsmith_antenna_proto_goTypes = []any{
 	(*GetAntennaRequest)(nil),    // 1: quadsmith.GetAntennaRequest
 	(*ListAntennasRequest)(nil),  // 2: quadsmith.ListAntennasRequest
 	(*ListAntennasResponse)(nil), // 3: quadsmith.ListAntennasResponse
+	(FrequencyBand)(0),           // 4: quadsmith.FrequencyBand
 }
 var file_quadsmith_antenna_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListAntennasResponse.antennas:type_name -> quadsmith.Antenna
-	1, // 1: quadsmith.AntennaService.GetAntenna:input_type -> quadsmith.GetAntennaRequest
-	2, // 2: quadsmith.AntennaService.ListAntennas:input_type -> quadsmith.ListAntennasRequest
-	0, // 3: quadsmith.AntennaService.GetAntenna:output_type -> quadsmith.Antenna
-	3, // 4: quadsmith.AntennaService.ListAntennas:output_type -> quadsmith.ListAntennasResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Antenna.frequency_band:type_name -> quadsmith.FrequencyBand
+	0, // 1: quadsmith.ListAntennasResponse.antennas:type_name -> quadsmith.Antenna
+	1, // 2: quadsmith.AntennaService.GetAntenna:input_type -> quadsmith.GetAntennaRequest
+	2, // 3: quadsmith.AntennaService.ListAntennas:input_type -> quadsmith.ListAntennasRequest
+	0, // 4: quadsmith.AntennaService.GetAntenna:output_type -> quadsmith.Antenna
+	3, // 5: quadsmith.AntennaService.ListAntennas:output_type -> quadsmith.ListAntennasResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_antenna_proto_init() }
@@ -410,6 +412,7 @@ func file_quadsmith_antenna_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_frequency_band_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

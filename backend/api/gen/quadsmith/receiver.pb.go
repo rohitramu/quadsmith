@@ -35,8 +35,8 @@ type Receiver struct {
 	// E.g., "ExpressLRS", "Crossfire", "FrSky"
 	Protocol string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// E.g., 2.4, 0.9 (for 900MHz)
-	FrequencyBand string `protobuf:"bytes,7,opt,name=frequency_band,json=frequencyBand,proto3" json:"frequency_band,omitempty"`
-	HasTelemetry  bool   `protobuf:"varint,8,opt,name=has_telemetry,json=hasTelemetry,proto3" json:"has_telemetry,omitempty"`
+	FrequencyBand FrequencyBand `protobuf:"varint,7,opt,name=frequency_band,json=frequencyBand,proto3,enum=quadsmith.FrequencyBand" json:"frequency_band,omitempty"`
+	HasTelemetry  bool          `protobuf:"varint,8,opt,name=has_telemetry,json=hasTelemetry,proto3" json:"has_telemetry,omitempty"`
 	// Array of antenna UUIDs included with or required by this receiver
 	AntennaUuids  []string `protobuf:"bytes,9,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -122,11 +122,11 @@ func (x *Receiver) GetProtocol() string {
 	return ""
 }
 
-func (x *Receiver) GetFrequencyBand() string {
+func (x *Receiver) GetFrequencyBand() FrequencyBand {
 	if x != nil {
 		return x.FrequencyBand
 	}
-	return ""
+	return FrequencyBand_FREQUENCY_BAND_UNSPECIFIED
 }
 
 func (x *Receiver) GetHasTelemetry() bool {
@@ -330,7 +330,7 @@ var File_quadsmith_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xdf\x02\n" +
+	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/frequency_band.proto\"\xf9\x02\n" +
 	"\bReceiver\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -338,8 +338,8 @@ const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12 \n" +
-	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12%\n" +
-	"\x0efrequency_band\x18\a \x01(\tR\rfrequencyBand\x12#\n" +
+	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12?\n" +
+	"\x0efrequency_band\x18\a \x01(\x0e2\x18.quadsmith.FrequencyBandR\rfrequencyBand\x12#\n" +
 	"\rhas_telemetry\x18\b \x01(\bR\fhasTelemetry\x12#\n" +
 	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids:\r\xc2\xf3\x18\treceivers\">\n" +
 	"\x12GetReceiverRequest\x12\x0e\n" +
@@ -377,18 +377,20 @@ var file_quadsmith_receiver_proto_goTypes = []any{
 	(*GetReceiverRequest)(nil),    // 1: quadsmith.GetReceiverRequest
 	(*ListReceiversRequest)(nil),  // 2: quadsmith.ListReceiversRequest
 	(*ListReceiversResponse)(nil), // 3: quadsmith.ListReceiversResponse
+	(FrequencyBand)(0),            // 4: quadsmith.FrequencyBand
 }
 var file_quadsmith_receiver_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListReceiversResponse.receivers:type_name -> quadsmith.Receiver
-	1, // 1: quadsmith.ReceiverService.GetReceiver:input_type -> quadsmith.GetReceiverRequest
-	2, // 2: quadsmith.ReceiverService.ListReceivers:input_type -> quadsmith.ListReceiversRequest
-	0, // 3: quadsmith.ReceiverService.GetReceiver:output_type -> quadsmith.Receiver
-	3, // 4: quadsmith.ReceiverService.ListReceivers:output_type -> quadsmith.ListReceiversResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Receiver.frequency_band:type_name -> quadsmith.FrequencyBand
+	0, // 1: quadsmith.ListReceiversResponse.receivers:type_name -> quadsmith.Receiver
+	1, // 2: quadsmith.ReceiverService.GetReceiver:input_type -> quadsmith.GetReceiverRequest
+	2, // 3: quadsmith.ReceiverService.ListReceivers:input_type -> quadsmith.ListReceiversRequest
+	0, // 4: quadsmith.ReceiverService.GetReceiver:output_type -> quadsmith.Receiver
+	3, // 5: quadsmith.ReceiverService.ListReceivers:output_type -> quadsmith.ListReceiversResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_receiver_proto_init() }
@@ -397,6 +399,7 @@ func file_quadsmith_receiver_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_frequency_band_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
