@@ -199,7 +199,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		g.P("		for _, s := range sorts {")
 		g.P("			col := s")
 		g.P("			dir := \"ASC\"")
-		g.P("			if strings.HasPrefix(s, \"!\") {")
+		g.P("			if strings.HasPrefix(s, \"^\") {")
 		g.P("				col = s[1:]")
 		g.P("				dir = \"DESC\"")
 		g.P("			}")

@@ -9,13 +9,13 @@ import (
 )
 
 func CreateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter) error {
-	query := `INSERT INTO video_transmitters (uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+	query := `INSERT INTO video_transmitters (uuid, id, manufacturer, name, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
@@ -25,11 +25,11 @@ func CreateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter)
 }
 
 func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*VideoTransmitter, error) {
-	colsStr := "uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids"
+	colsStr := "uuid, id, manufacturer, name, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids"}
 	}
 	query := `SELECT ` + colsStr + ` FROM video_transmitters WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -42,8 +42,8 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 			scanArgs[i] = &m.Id
 		case "manufacturer":
 			scanArgs[i] = &m.Manufacturer
-		case "model":
-			scanArgs[i] = &m.Model
+		case "name":
+			scanArgs[i] = &m.Name
 		case "weight_g":
 			scanArgs[i] = &m.WeightG
 		case "protocol":
@@ -69,8 +69,8 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 }
 
 func UpdateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter) error {
-	query := `UPDATE video_transmitters SET manufacturer = $2, model = $3, weight_g = $4, protocol = $5, max_power_mw = $6, input_voltage_min_v = $7, input_voltage_max_v = $8, antenna_uuids = $9 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
+	query := `UPDATE video_transmitters SET manufacturer = $2, name = $3, weight_g = $4, protocol = $5, max_power_mw = $6, input_voltage_min_v = $7, input_voltage_max_v = $8, antenna_uuids = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
@@ -86,11 +86,11 @@ func DeleteVideoTransmitter(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 }
 
 func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*VideoTransmitter, error) {
-	colsStr := "uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids"
+	colsStr := "uuid, id, manufacturer, name, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids"}
 	}
 	query := `SELECT ` + colsStr + ` FROM video_transmitters`
 	if whereClause != "" {
@@ -101,7 +101,7 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 		for _, s := range sorts {
 			col := s
 			dir := "ASC"
-			if strings.HasPrefix(s, "!") {
+			if strings.HasPrefix(s, "^") {
 				col = s[1:]
 				dir = "DESC"
 			}
@@ -126,8 +126,8 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 				scanArgs[i] = &m.Id
 			case "manufacturer":
 				scanArgs[i] = &m.Manufacturer
-			case "model":
-				scanArgs[i] = &m.Model
+			case "name":
+				scanArgs[i] = &m.Name
 			case "weight_g":
 				scanArgs[i] = &m.WeightG
 			case "protocol":

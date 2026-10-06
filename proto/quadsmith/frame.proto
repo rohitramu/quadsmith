@@ -17,7 +17,7 @@ message Frame {
   string id = 2 [(quadsmith.sql.is_unique) = true];
 
   string manufacturer = 3 [(quadsmith.sql.create_index) = true];
-  string model = 4;
+  string name = 4;
   
   float weight_g = 5;
   

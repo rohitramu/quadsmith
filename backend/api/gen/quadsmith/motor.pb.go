@@ -30,7 +30,7 @@ type Motor struct {
 	// A unique, human-readable slug (e.g., "tmotor-f80-pro-1900kv")
 	Id               string  `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer     string  `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
-	Model            string  `protobuf:"bytes,4,opt,name=model,proto3" json:"model,omitempty"`
+	Name             string  `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	WeightG          float32 `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	StatorDiameterMm float32 `protobuf:"fixed32,6,opt,name=stator_diameter_mm,json=statorDiameterMm,proto3" json:"stator_diameter_mm,omitempty"`
 	StatorHeightMm   float32 `protobuf:"fixed32,7,opt,name=stator_height_mm,json=statorHeightMm,proto3" json:"stator_height_mm,omitempty"`
@@ -90,9 +90,9 @@ func (x *Motor) GetManufacturer() string {
 	return ""
 }
 
-func (x *Motor) GetModel() string {
+func (x *Motor) GetName() string {
 	if x != nil {
-		return x.Model
+		return x.Name
 	}
 	return ""
 }
@@ -314,12 +314,12 @@ var File_quadsmith_motor_proto protoreflect.FileDescriptor
 
 const file_quadsmith_motor_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x8c\x02\n" +
+	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x8a\x02\n" +
 	"\x05Motor\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x14\n" +
-	"\x05model\x18\x04 \x01(\tR\x05model\x12\x19\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12,\n" +
 	"\x12stator_diameter_mm\x18\x06 \x01(\x02R\x10statorDiameterMm\x12(\n" +
 	"\x10stator_height_mm\x18\a \x01(\x02R\x0estatorHeightMm\x12\x14\n" +

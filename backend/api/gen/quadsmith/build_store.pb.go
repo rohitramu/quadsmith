@@ -187,7 +187,7 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 		for _, s := range sorts {
 			col := s
 			dir := "ASC"
-			if strings.HasPrefix(s, "!") {
+			if strings.HasPrefix(s, "^") {
 				col = s[1:]
 				dir = "DESC"
 			}

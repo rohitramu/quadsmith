@@ -9,22 +9,22 @@ import (
 )
 
 func CreateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
-	query := `INSERT INTO batteries (uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+	query := `INSERT INTO batteries (uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector)
 	return err
 }
 
 func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Battery, error) {
-	colsStr := "uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector"
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector"}
 	}
 	query := `SELECT ` + colsStr + ` FROM batteries WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -37,8 +37,8 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.Id
 		case "manufacturer":
 			scanArgs[i] = &m.Manufacturer
-		case "model":
-			scanArgs[i] = &m.Model
+		case "name":
+			scanArgs[i] = &m.Name
 		case "weight_g":
 			scanArgs[i] = &m.WeightG
 		case "capacity_mah":
@@ -62,8 +62,8 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 }
 
 func UpdateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
-	query := `UPDATE batteries SET manufacturer = $2, model = $3, weight_g = $4, capacity_mah = $5, cell_count_s = $6, chemistry = $7, connector = $8 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector)
+	query := `UPDATE batteries SET manufacturer = $2, name = $3, weight_g = $4, capacity_mah = $5, cell_count_s = $6, chemistry = $7, connector = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector)
 	return err
 }
 
@@ -74,11 +74,11 @@ func DeleteBattery(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Battery, error) {
-	colsStr := "uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector"
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector"}
 	}
 	query := `SELECT ` + colsStr + ` FROM batteries`
 	if whereClause != "" {
@@ -89,7 +89,7 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 		for _, s := range sorts {
 			col := s
 			dir := "ASC"
-			if strings.HasPrefix(s, "!") {
+			if strings.HasPrefix(s, "^") {
 				col = s[1:]
 				dir = "DESC"
 			}
@@ -114,8 +114,8 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.Id
 			case "manufacturer":
 				scanArgs[i] = &m.Manufacturer
-			case "model":
-				scanArgs[i] = &m.Model
+			case "name":
+				scanArgs[i] = &m.Name
 			case "weight_g":
 				scanArgs[i] = &m.WeightG
 			case "capacity_mah":

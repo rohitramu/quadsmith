@@ -81,30 +81,26 @@ func main() {
 		fmt.Fprintf(f, "\t\tUse: \"list\",\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
 		fmt.Fprintf(f, "\t\t\tfilter, _ := cmd.Flags().GetString(\"filter\")\n")
-		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"columns\")\n")
+		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\t\tsortOpts, _ := cmd.Flags().GetStringSlice(\"sort\")\n")
 			fmt.Fprintf(f, "\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts}\n", d.Plural)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Plural)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
-		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg.%s)\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg.%s, columns)\n", d.Plural)
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
 		fmt.Fprintf(f, "\t%sListCmd.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"columns\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
-			fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"sort\", \"s\", nil, \"Columns to sort by (e.g. -kv)\")\n", lowerPlural)
-			fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"columns\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
+			fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"sort\", \"s\", nil, \"Columns to sort by (e.g. ^kv)\")\n", lowerPlural)
+			fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
-		fmt.Fprintf(f, "\t\tparts := strings.Split(toComplete, \",\")\n")
-		fmt.Fprintf(f, "\t\tprefix := parts[len(parts)-1]\n")
+		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"column\")\n")
+		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
+		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[s] = true }\n")
 		fmt.Fprintf(f, "\t\tvar filtered []string\n")
 		fmt.Fprintf(f, "\t\tfor _, c := range cols {\n")
-		fmt.Fprintf(f, "\t\t\tif strings.HasPrefix(c, prefix) {\n")
-		fmt.Fprintf(f, "\t\t\t\tif len(parts) > 1 {\n")
-		fmt.Fprintf(f, "\t\t\t\t\tbase := strings.Join(parts[:len(parts)-1], \",\") + \",\"\n")
-		fmt.Fprintf(f, "\t\t\t\t\tfiltered = append(filtered, base+c)\n")
-		fmt.Fprintf(f, "\t\t\t\t} else {\n")
-		fmt.Fprintf(f, "\t\t\t\t\tfiltered = append(filtered, c)\n")
-		fmt.Fprintf(f, "\t\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\tif !selectedMap[c] && strings.HasPrefix(c, toComplete) {\n")
+		fmt.Fprintf(f, "\t\t\t\tfiltered = append(filtered, c)\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t}\n")
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
@@ -112,22 +108,19 @@ func main() {
 
 	fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"sort\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
-		fmt.Fprintf(f, "\t\tparts := strings.Split(toComplete, \",\")\n")
-		fmt.Fprintf(f, "\t\tprefix := parts[len(parts)-1]\n")
-		fmt.Fprintf(f, "\t\tisDesc := strings.HasPrefix(prefix, \"-\")\n")
-		fmt.Fprintf(f, "\t\tcleanPrefix := strings.TrimPrefix(prefix, \"-\")\n")
+		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"sort\")\n")
+		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
+		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[strings.TrimPrefix(s, \"^\")] = true }\n")
+		fmt.Fprintf(f, "\t\tisDesc := strings.HasPrefix(toComplete, \"^\")\n")
+		fmt.Fprintf(f, "\t\tcleanPrefix := strings.TrimPrefix(toComplete, \"^\")\n")
 		fmt.Fprintf(f, "\t\tvar filtered []string\n")
 		fmt.Fprintf(f, "\t\tfor _, c := range cols {\n")
-		fmt.Fprintf(f, "\t\t\tif strings.HasPrefix(c, cleanPrefix) {\n")
-		fmt.Fprintf(f, "\t\t\t\tmatches := []string{c}\n")
-		fmt.Fprintf(f, "\t\t\t\tif isDesc { matches = []string{\"-\" + c} } else { matches = append(matches, \"-\" + c) }\n")
-		fmt.Fprintf(f, "\t\t\t\tfor _, match := range matches {\n")
-		fmt.Fprintf(f, "\t\t\t\t\tif len(parts) > 1 {\n")
-		fmt.Fprintf(f, "\t\t\t\t\t\tbase := strings.Join(parts[:len(parts)-1], \",\") + \",\"\n")
-		fmt.Fprintf(f, "\t\t\t\t\t\tfiltered = append(filtered, base+match)\n")
-		fmt.Fprintf(f, "\t\t\t\t\t} else {\n")
-		fmt.Fprintf(f, "\t\t\t\t\t\tfiltered = append(filtered, match)\n")
-		fmt.Fprintf(f, "\t\t\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\tif !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {\n")
+		fmt.Fprintf(f, "\t\t\t\tif isDesc {\n")
+		fmt.Fprintf(f, "\t\t\t\t\tfiltered = append(filtered, \"^\" + c)\n")
+		fmt.Fprintf(f, "\t\t\t\t} else {\n")
+		fmt.Fprintf(f, "\t\t\t\t\tfiltered = append(filtered, c)\n")
+		fmt.Fprintf(f, "\t\t\t\t\tfiltered = append(filtered, \"^\" + c)\n")
 		fmt.Fprintf(f, "\t\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t}\n")
@@ -149,27 +142,23 @@ fmt.Fprintf(f, "\t%sCmd.AddCommand(%sListCmd)\n\n", lowerPlural, lowerPlural)
 		fmt.Fprintf(f, "\t\t\treturn comps, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
-		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"columns\")\n")
+		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0], Columns: columns}\n", d.Name)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.Get%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Name)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
-		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg)\n")
+		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg, columns)\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
-		fmt.Fprintf(f, "\t%sGetCmd.Flags().StringSliceP(\"columns\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sGetCmd.RegisterFlagCompletionFunc(\"columns\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sGetCmd.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sGetCmd.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
-		fmt.Fprintf(f, "\t\tparts := strings.Split(toComplete, \",\")\n")
-		fmt.Fprintf(f, "\t\tprefix := parts[len(parts)-1]\n")
+		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"column\")\n")
+		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
+		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[s] = true }\n")
 		fmt.Fprintf(f, "\t\tvar filtered []string\n")
 		fmt.Fprintf(f, "\t\tfor _, c := range cols {\n")
-		fmt.Fprintf(f, "\t\t\tif strings.HasPrefix(c, prefix) {\n")
-		fmt.Fprintf(f, "\t\t\t\tif len(parts) > 1 {\n")
-		fmt.Fprintf(f, "\t\t\t\t\tbase := strings.Join(parts[:len(parts)-1], \",\") + \",\"\n")
-		fmt.Fprintf(f, "\t\t\t\t\tfiltered = append(filtered, base+c)\n")
-		fmt.Fprintf(f, "\t\t\t\t} else {\n")
-		fmt.Fprintf(f, "\t\t\t\t\tfiltered = append(filtered, c)\n")
-		fmt.Fprintf(f, "\t\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\tif !selectedMap[c] && strings.HasPrefix(c, toComplete) {\n")
+		fmt.Fprintf(f, "\t\t\t\tfiltered = append(filtered, c)\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t}\n")
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
@@ -209,7 +198,7 @@ fmt.Fprintf(f, "\t%sCmd.AddCommand(%sListCmd)\n\n", lowerPlural, lowerPlural)
 			eRes, err := evalClient.EvaluateBuild(context.Background(), connect.NewRequest(eReq))
 			if err != nil { return fmt.Errorf("evaluation failed: %w", err) }
 			
-			return printOutput(eRes.Msg)
+			return printOutput(eRes.Msg, nil)
 		},
 	}
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
@@ -273,7 +262,7 @@ func GetColumns(m interface{}) []string {
 	}
 	return cols
 }
-func printOutput(data interface{}) error {
+func printOutput(data interface{}, cols []string) error {
 	var isNilSlice bool
 	if data != nil {
 		v := reflect.ValueOf(data)
@@ -311,11 +300,11 @@ func printOutput(data interface{}) error {
 		return nil
 	}
 
-	printTable(data)
+	printTable(data, cols)
 	return nil
 }
 
-func printTable(data interface{}) {
+func printTable(data interface{}, cols []string) {
 	b, _ := json.Marshal(data)
 	var v interface{}
 	json.Unmarshal(b, &v)
@@ -329,29 +318,33 @@ func printTable(data interface{}) {
 			return
 		}
 		
-		keyMap := make(map[string]bool)
-		for _, item := range val {
-			if m, ok := item.(map[string]interface{}); ok {
-				for k := range m {
-					keyMap[k] = true
+		var orderedKeys []string
+		if len(cols) > 0 {
+			orderedKeys = cols
+		} else {
+			keyMap := make(map[string]bool)
+			for _, item := range val {
+				if m, ok := item.(map[string]interface{}); ok {
+					for k := range m {
+						keyMap[k] = true
+					}
 				}
 			}
-		}
-		var keys []string
-		for k := range keyMap {
-			keys = append(keys, k)
-		}
-		sort.Strings(keys)
-		
-		var orderedKeys []string
-		for _, priority := range []string{"id", "name"} {
-			if keyMap[priority] {
-				orderedKeys = append(orderedKeys, priority)
+			var keys []string
+			for k := range keyMap {
+				keys = append(keys, k)
 			}
-		}
-		for _, k := range keys {
-			if k != "id" && k != "name" {
-				orderedKeys = append(orderedKeys, k)
+			sort.Strings(keys)
+			
+			for _, priority := range []string{"id", "name"} {
+				if keyMap[priority] {
+					orderedKeys = append(orderedKeys, priority)
+				}
+			}
+			for _, k := range keys {
+				if k != "id" && k != "name" {
+					orderedKeys = append(orderedKeys, k)
+				}
 			}
 		}
 
@@ -378,12 +371,20 @@ func printTable(data interface{}) {
 		}
 	case map[string]interface{}:
 		var keys []string
-		for k := range val {
-			keys = append(keys, k)
+		if len(cols) > 0 {
+			keys = cols
+		} else {
+			for k := range val {
+				keys = append(keys, k)
+			}
+			sort.Strings(keys)
 		}
-		sort.Strings(keys)
 		for _, k := range keys {
-			fmt.Fprintf(w, "%s\t%v\n", k, val[k])
+			if val[k] != nil {
+				fmt.Fprintf(w, "%s\t%v\n", k, val[k])
+			} else {
+				fmt.Fprintf(w, "%s\t-\n", k)
+			}
 		}
 	default:
 		fmt.Printf("%v\n", v)

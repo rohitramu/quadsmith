@@ -9,22 +9,22 @@ import (
 )
 
 func CreateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
-	query := `INSERT INTO motors (uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
+	query := `INSERT INTO motors (uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv)
 	return err
 }
 
 func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Motor, error) {
-	colsStr := "uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv"
+	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv"}
 	}
 	query := `SELECT ` + colsStr + ` FROM motors WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -37,8 +37,8 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 			scanArgs[i] = &m.Id
 		case "manufacturer":
 			scanArgs[i] = &m.Manufacturer
-		case "model":
-			scanArgs[i] = &m.Model
+		case "name":
+			scanArgs[i] = &m.Name
 		case "weight_g":
 			scanArgs[i] = &m.WeightG
 		case "stator_diameter_mm":
@@ -60,8 +60,8 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 }
 
 func UpdateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
-	query := `UPDATE motors SET manufacturer = $2, model = $3, weight_g = $4, stator_diameter_mm = $5, stator_height_mm = $6, kv = $7 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv)
+	query := `UPDATE motors SET manufacturer = $2, name = $3, weight_g = $4, stator_diameter_mm = $5, stator_height_mm = $6, kv = $7 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv)
 	return err
 }
 
@@ -72,11 +72,11 @@ func DeleteMotor(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Motor, error) {
-	colsStr := "uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv"
+	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv"}
 	}
 	query := `SELECT ` + colsStr + ` FROM motors`
 	if whereClause != "" {
@@ -87,7 +87,7 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 		for _, s := range sorts {
 			col := s
 			dir := "ASC"
-			if strings.HasPrefix(s, "!") {
+			if strings.HasPrefix(s, "^") {
 				col = s[1:]
 				dir = "DESC"
 			}
@@ -112,8 +112,8 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 				scanArgs[i] = &m.Id
 			case "manufacturer":
 				scanArgs[i] = &m.Manufacturer
-			case "model":
-				scanArgs[i] = &m.Model
+			case "name":
+				scanArgs[i] = &m.Name
 			case "weight_g":
 				scanArgs[i] = &m.WeightG
 			case "stator_diameter_mm":
