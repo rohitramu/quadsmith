@@ -38,6 +38,8 @@ import (
 	"net/http"
 	"os"
 		"reflect"
+		"sort"
+		"text/tabwriter"
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
@@ -49,7 +51,8 @@ import (
 
 var (
 	apiURL = "http://localhost:8080"
-	output = "yaml"
+	jsonOut bool
+	yamlOut bool
 )
 
 func main() {
@@ -61,7 +64,8 @@ func main() {
 		Use:   "qs",
 		Short: "Quadsmith CLI",
 	}
-	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "yaml", "Output format (yaml|json)")
+	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
+	rootCmd.PersistentFlags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 `)
 
 	for _, d := range domains {
@@ -182,27 +186,121 @@ func main() {
 }
 
 func printOutput(data interface{}) error {
-	var v reflect.Value
+	var isNilSlice bool
 	if data != nil {
-		v = reflect.ValueOf(data)
+		v := reflect.ValueOf(data)
 		if v.Kind() == reflect.Slice && v.IsNil() {
-			fmt.Println("[]")
-			return nil
+			isNilSlice = true
 		}
 	}
 
-	var b []byte
-	var err error
-	if output == "json" {
-		b, err = json.MarshalIndent(data, "", "  ")
-	} else {
-		b, err = yaml.Marshal(data)
+	if jsonOut {
+		if isNilSlice {
+			fmt.Println("[]")
+			return nil
+		}
+		b, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(b))
+		return nil
+	} else if yamlOut {
+		if isNilSlice {
+			fmt.Println("[]")
+			return nil
+		}
+		b, err := yaml.Marshal(data)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(b))
+		return nil
 	}
-	if err != nil {
-		return err
+
+	if data == nil || isNilSlice {
+		fmt.Println("No records found.")
+		return nil
 	}
-	fmt.Println(string(b))
+
+	printTable(data)
 	return nil
+}
+
+func printTable(data interface{}) {
+	b, _ := json.Marshal(data)
+	var v interface{}
+	json.Unmarshal(b, &v)
+
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+	
+	switch val := v.(type) {
+	case []interface{}:
+		if len(val) == 0 {
+			fmt.Println("No records found.")
+			return
+		}
+		
+		keyMap := make(map[string]bool)
+		for _, item := range val {
+			if m, ok := item.(map[string]interface{}); ok {
+				for k := range m {
+					keyMap[k] = true
+				}
+			}
+		}
+		var keys []string
+		for k := range keyMap {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		
+		var orderedKeys []string
+		for _, priority := range []string{"id", "name"} {
+			if keyMap[priority] {
+				orderedKeys = append(orderedKeys, priority)
+			}
+		}
+		for _, k := range keys {
+			if k != "id" && k != "name" {
+				orderedKeys = append(orderedKeys, k)
+			}
+		}
+
+		for i, k := range orderedKeys {
+			fmt.Fprintf(w, "%s", k)
+			if i < len(orderedKeys)-1 {
+				fmt.Fprintf(w, "\t")
+			}
+		}
+		fmt.Fprintln(w)
+		for _, item := range val {
+			m := item.(map[string]interface{})
+			for i, k := range orderedKeys {
+				if m[k] == nil {
+					fmt.Fprintf(w, "-")
+				} else {
+					fmt.Fprintf(w, "%v", m[k])
+				}
+				if i < len(orderedKeys)-1 {
+					fmt.Fprintf(w, "\t")
+				}
+			}
+			fmt.Fprintln(w)
+		}
+	case map[string]interface{}:
+		var keys []string
+		for k := range val {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		for _, k := range keys {
+			fmt.Fprintf(w, "%s\t%v\n", k, val[k])
+		}
+	default:
+		fmt.Printf("%v\n", v)
+	}
+	w.Flush()
 }
 `)
 }
