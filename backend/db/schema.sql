@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS antennas (
   weight_g DECIMAL,
   connector TEXT,
   polarization TEXT,
-  frequency_band_hz BIGINT,
+  frequency_band_mhz INTEGER,
   length_mm DECIMAL,
   gain_dbi DECIMAL
 );
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS receivers (
   is_internal_only BOOLEAN,
   weight_g DECIMAL,
   protocol TEXT,
-  frequency_band_hz BIGINT,
+  frequency_band_mhz INTEGER,
   has_telemetry BOOLEAN,
   antenna_uuids UUID[]
 );

@@ -35,8 +35,8 @@ type Receiver struct {
 	// E.g., "ExpressLRS", "Crossfire", "FrSky"
 	Protocol string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// E.g., 2.4, 0.9 (for 900MHz)
-	FrequencyBandHz uint64 `protobuf:"varint,7,opt,name=frequency_band_hz,json=frequencyBandHz,proto3" json:"frequency_band_hz,omitempty"`
-	HasTelemetry    bool   `protobuf:"varint,8,opt,name=has_telemetry,json=hasTelemetry,proto3" json:"has_telemetry,omitempty"`
+	FrequencyBandMhz uint32 `protobuf:"varint,7,opt,name=frequency_band_mhz,json=frequencyBandMhz,proto3" json:"frequency_band_mhz,omitempty"`
+	HasTelemetry     bool   `protobuf:"varint,8,opt,name=has_telemetry,json=hasTelemetry,proto3" json:"has_telemetry,omitempty"`
 	// Array of antenna UUIDs included with or required by this receiver
 	AntennaUuids  []string `protobuf:"bytes,9,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -122,9 +122,9 @@ func (x *Receiver) GetProtocol() string {
 	return ""
 }
 
-func (x *Receiver) GetFrequencyBandHz() uint64 {
+func (x *Receiver) GetFrequencyBandMhz() uint32 {
 	if x != nil {
-		return x.FrequencyBandHz
+		return x.FrequencyBandMhz
 	}
 	return 0
 }
@@ -330,7 +330,7 @@ var File_quadsmith_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xe4\x02\n" +
+	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xe6\x02\n" +
 	"\bReceiver\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -338,8 +338,8 @@ const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12 \n" +
-	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12*\n" +
-	"\x11frequency_band_hz\x18\a \x01(\x04R\x0ffrequencyBandHz\x12#\n" +
+	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12,\n" +
+	"\x12frequency_band_mhz\x18\a \x01(\rR\x10frequencyBandMhz\x12#\n" +
 	"\rhas_telemetry\x18\b \x01(\bR\fhasTelemetry\x12#\n" +
 	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids:\r\xc2\xf3\x18\treceivers\">\n" +
 	"\x12GetReceiverRequest\x12\x0e\n" +
