@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS antennas (
   polarization TEXT,
   frequency_band_mhz INTEGER,
   length_mm DECIMAL,
-  gain_dbi DECIMAL
+  gain_dbi DECIMAL,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_antennas_manufacturer ON antennas (manufacturer);
@@ -26,7 +27,8 @@ CREATE TABLE IF NOT EXISTS batteries (
   capacity_mah INTEGER,
   cell_count_s INTEGER,
   chemistry TEXT,
-  connector TEXT
+  connector TEXT,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_batteries_manufacturer ON batteries (manufacturer);
@@ -61,7 +63,8 @@ CREATE TABLE IF NOT EXISTS cameras (
   protocol TEXT,
   sensor_size TEXT,
   width_mm INTEGER,
-  lens_size_mm DECIMAL
+  lens_size_mm DECIMAL,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_cameras_manufacturer ON cameras (manufacturer);
@@ -77,7 +80,8 @@ CREATE TABLE IF NOT EXISTS escs (
   max_motors INTEGER,
   motor_current_max_a DECIMAL,
   motor_current_burst_a DECIMAL,
-  firmware TEXT
+  firmware TEXT,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_escs_manufacturer ON escs (manufacturer);
@@ -94,7 +98,8 @@ CREATE TABLE IF NOT EXISTS flight_controllers (
   gyro TEXT,
   internal_esc_uuid UUID,
   internal_receiver_uuid UUID,
-  internal_vtx_uuid UUID
+  internal_vtx_uuid UUID,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_flight_controllers_manufacturer ON flight_controllers (manufacturer);
@@ -108,7 +113,8 @@ CREATE TABLE IF NOT EXISTS frames (
   weight_g DECIMAL,
   wheelbase_mm DECIMAL,
   max_prop_size_mm DECIMAL,
-  geometry TEXT
+  geometry TEXT,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_frames_manufacturer ON frames (manufacturer);
@@ -122,7 +128,8 @@ CREATE TABLE IF NOT EXISTS motors (
   weight_g DECIMAL,
   stator_diameter_mm DECIMAL,
   stator_height_mm DECIMAL,
-  kv INTEGER
+  kv INTEGER,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_motors_manufacturer ON motors (manufacturer);
@@ -139,7 +146,8 @@ CREATE TABLE IF NOT EXISTS propellers (
   diameter_mm DECIMAL,
   pitch_mm DECIMAL,
   blades INTEGER,
-  material TEXT
+  material TEXT,
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_propellers_manufacturer ON propellers (manufacturer);
@@ -155,7 +163,8 @@ CREATE TABLE IF NOT EXISTS receivers (
   protocol TEXT,
   frequency_band_mhz INTEGER,
   has_telemetry BOOLEAN,
-  antenna_uuids UUID[]
+  antenna_uuids UUID[],
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_receivers_manufacturer ON receivers (manufacturer);
@@ -174,7 +183,8 @@ CREATE TABLE IF NOT EXISTS video_transmitters (
   max_power_mw INTEGER,
   input_voltage_min_v DECIMAL,
   input_voltage_max_v DECIMAL,
-  antenna_uuids UUID[]
+  antenna_uuids UUID[],
+  description TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_manufacturer ON video_transmitters (manufacturer);

@@ -31,6 +31,7 @@ message Esc {
 
   // E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
   string firmware = 9;
+  string description = 21;
 }
 
 // ---------------------------------------------------------

@@ -32,6 +32,7 @@ message Battery {
 
   // E.g., "XT60", "XT30", "BT2.0"
   string connector = 9;
+  string description = 10;
 }
 
 // ---------------------------------------------------------

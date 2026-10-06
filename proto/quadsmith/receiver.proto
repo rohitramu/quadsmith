@@ -32,6 +32,7 @@ message Receiver {
 
   // Array of antenna UUIDs included with or required by this receiver
   repeated string antenna_uuids = 9;
+  string description = 21;
 }
 
 // ---------------------------------------------------------

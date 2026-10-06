@@ -40,6 +40,7 @@ type Camera struct {
 	WidthMm uint32 `protobuf:"varint,8,opt,name=width_mm,json=widthMm,proto3" json:"width_mm,omitempty"`
 	// Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
 	LensSizeMm    float32 `protobuf:"fixed32,9,opt,name=lens_size_mm,json=lensSizeMm,proto3" json:"lens_size_mm,omitempty"`
+	Description   string  `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -142,6 +143,13 @@ func (x *Camera) GetLensSizeMm() float32 {
 		return x.LensSizeMm
 	}
 	return 0
+}
+
+func (x *Camera) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
 }
 
 // ---------------------------------------------------------
@@ -331,7 +339,7 @@ var File_quadsmith_camera_proto protoreflect.FileDescriptor
 
 const file_quadsmith_camera_proto_rawDesc = "" +
 	"\n" +
-	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xc2\x02\n" +
+	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xe4\x02\n" +
 	"\x06Camera\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -344,7 +352,8 @@ const file_quadsmith_camera_proto_rawDesc = "" +
 	"sensorSize\x12\x19\n" +
 	"\bwidth_mm\x18\b \x01(\rR\awidthMm\x12 \n" +
 	"\flens_size_mm\x18\t \x01(\x02R\n" +
-	"lensSizeMm:\v\xc2\xf3\x18\acameras\"<\n" +
+	"lensSizeMm\x12 \n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription:\v\xc2\xf3\x18\acameras\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x96\x01\n" +

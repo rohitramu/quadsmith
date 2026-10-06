@@ -42,6 +42,7 @@ type Antenna struct {
 	LengthMm float32 `protobuf:"fixed32,9,opt,name=length_mm,json=lengthMm,proto3" json:"length_mm,omitempty"`
 	// Gain in dBi (e.g., 2.5, 3.0)
 	GainDbi       float32 `protobuf:"fixed32,10,opt,name=gain_dbi,json=gainDbi,proto3" json:"gain_dbi,omitempty"`
+	Description   string  `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -151,6 +152,13 @@ func (x *Antenna) GetGainDbi() float32 {
 		return x.GainDbi
 	}
 	return 0
+}
+
+func (x *Antenna) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
 }
 
 // ---------------------------------------------------------
@@ -340,7 +348,7 @@ var File_quadsmith_antenna_proto protoreflect.FileDescriptor
 
 const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xf2\x02\n" +
+	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x94\x03\n" +
 	"\aAntenna\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -353,7 +361,8 @@ const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\x12frequency_band_mhz\x18\b \x01(\rR\x10frequencyBandMhz\x12\x1b\n" +
 	"\tlength_mm\x18\t \x01(\x02R\blengthMm\x12\x19\n" +
 	"\bgain_dbi\x18\n" +
-	" \x01(\x02R\againDbi:\f\xc2\xf3\x18\bantennas\"=\n" +
+	" \x01(\x02R\againDbi\x12 \n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription:\f\xc2\xf3\x18\bantennas\"=\n" +
 	"\x11GetAntennaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x97\x01\n" +

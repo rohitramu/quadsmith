@@ -41,6 +41,7 @@ type VideoTransmitter struct {
 	InputVoltageMaxV float32 `protobuf:"fixed32,9,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
 	// Array of antenna UUIDs included with or required by this VTX
 	AntennaUuids  []string `protobuf:"bytes,10,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
+	Description   string   `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -150,6 +151,13 @@ func (x *VideoTransmitter) GetAntennaUuids() []string {
 		return x.AntennaUuids
 	}
 	return nil
+}
+
+func (x *VideoTransmitter) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
 }
 
 // ---------------------------------------------------------
@@ -339,7 +347,7 @@ var File_quadsmith_vtx_proto protoreflect.FileDescriptor
 
 const file_quadsmith_vtx_proto_rawDesc = "" +
 	"\n" +
-	"\x13quadsmith/vtx.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xa4\x03\n" +
+	"\x13quadsmith/vtx.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xc6\x03\n" +
 	"\x10VideoTransmitter\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -353,7 +361,8 @@ const file_quadsmith_vtx_proto_rawDesc = "" +
 	"\x13input_voltage_min_v\x18\b \x01(\x02R\x10inputVoltageMinV\x12-\n" +
 	"\x13input_voltage_max_v\x18\t \x01(\x02R\x10inputVoltageMaxV\x12#\n" +
 	"\rantenna_uuids\x18\n" +
-	" \x03(\tR\fantennaUuids:\x16\xc2\xf3\x18\x12video_transmitters\"F\n" +
+	" \x03(\tR\fantennaUuids\x12 \n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription:\x16\xc2\xf3\x18\x12video_transmitters\"F\n" +
 	"\x1aGetVideoTransmitterRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +

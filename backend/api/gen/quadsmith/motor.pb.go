@@ -35,6 +35,7 @@ type Motor struct {
 	StatorDiameterMm float32 `protobuf:"fixed32,6,opt,name=stator_diameter_mm,json=statorDiameterMm,proto3" json:"stator_diameter_mm,omitempty"`
 	StatorHeightMm   float32 `protobuf:"fixed32,7,opt,name=stator_height_mm,json=statorHeightMm,proto3" json:"stator_height_mm,omitempty"`
 	Kv               uint32  `protobuf:"varint,8,opt,name=kv,proto3" json:"kv,omitempty"`
+	Description      string  `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -123,6 +124,13 @@ func (x *Motor) GetKv() uint32 {
 		return x.Kv
 	}
 	return 0
+}
+
+func (x *Motor) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
 }
 
 // ---------------------------------------------------------
@@ -314,7 +322,7 @@ var File_quadsmith_motor_proto protoreflect.FileDescriptor
 
 const file_quadsmith_motor_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x8a\x02\n" +
+	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xac\x02\n" +
 	"\x05Motor\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -323,7 +331,8 @@ const file_quadsmith_motor_proto_rawDesc = "" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12,\n" +
 	"\x12stator_diameter_mm\x18\x06 \x01(\x02R\x10statorDiameterMm\x12(\n" +
 	"\x10stator_height_mm\x18\a \x01(\x02R\x0estatorHeightMm\x12\x14\n" +
-	"\x02kv\x18\b \x01(\rB\x04\xe0\xf3\x18\x01R\x02kv:\n" +
+	"\x02kv\x18\b \x01(\rB\x04\xe0\xf3\x18\x01R\x02kv\x12 \n" +
+	"\vdescription\x18\t \x01(\tR\vdescription:\n" +
 	"\xc2\xf3\x18\x06motors\";\n" +
 	"\x0fGetMotorRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +

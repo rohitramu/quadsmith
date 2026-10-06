@@ -37,6 +37,7 @@ type Frame struct {
 	MaxPropSizeMm float32 `protobuf:"fixed32,7,opt,name=max_prop_size_mm,json=maxPropSizeMm,proto3" json:"max_prop_size_mm,omitempty"`
 	// E.g., "True X", "Squashed X", "Deadcat"
 	Geometry      string `protobuf:"bytes,8,opt,name=geometry,proto3" json:"geometry,omitempty"`
+	Description   string `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -123,6 +124,13 @@ func (x *Frame) GetMaxPropSizeMm() float32 {
 func (x *Frame) GetGeometry() string {
 	if x != nil {
 		return x.Geometry
+	}
+	return ""
+}
+
+func (x *Frame) GetDescription() string {
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -314,7 +322,7 @@ var File_quadsmith_frame_proto protoreflect.FileDescriptor
 
 const file_quadsmith_frame_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x84\x02\n" +
+	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xa6\x02\n" +
 	"\x05Frame\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -323,7 +331,8 @@ const file_quadsmith_frame_proto_rawDesc = "" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12!\n" +
 	"\fwheelbase_mm\x18\x06 \x01(\x02R\vwheelbaseMm\x12'\n" +
 	"\x10max_prop_size_mm\x18\a \x01(\x02R\rmaxPropSizeMm\x12\x1a\n" +
-	"\bgeometry\x18\b \x01(\tR\bgeometry:\n" +
+	"\bgeometry\x18\b \x01(\tR\bgeometry\x12 \n" +
+	"\vdescription\x18\t \x01(\tR\vdescription:\n" +
 	"\xc2\xf3\x18\x06frames\";\n" +
 	"\x0fGetFrameRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +

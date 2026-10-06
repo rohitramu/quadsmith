@@ -33,6 +33,7 @@ message Camera {
 
   // Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
   float lens_size_mm = 9;
+  string description = 21;
 }
 
 // ---------------------------------------------------------

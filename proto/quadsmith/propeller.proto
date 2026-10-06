@@ -32,6 +32,7 @@ message Propeller {
 
   // E.g., "Polycarbonate", "Carbon Fiber"
   string material = 9;
+  string description = 10;
 }
 
 // ---------------------------------------------------------

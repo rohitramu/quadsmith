@@ -1,1657 +1,1804 @@
-receivers:  {
-  uuid:  "b0cf2152-68ff-41ac-9bc5-c7b6d34f2543"
-  id:  "tbs-crossfire-nano-rx"
-  manufacturer:  "TBS"
-  name:  "TBS Crossfire Nano RX"
-  weight_g:  0.5
-  protocol:  "TBS Crossfire (CRSF)"
-  frequency_band_mhz:  2400
-}
-receivers:  {
-  uuid:  "8e3b3fae-9076-400d-89c3-f93faf3aa37d"
-  id:  "walksnail-avatar-vrx"
-  manufacturer:  "Walksnail"
-  name:  "Walksnail Avatar VRX"
-  weight_g:  83
-  protocol:  "HDMI"
-  frequency_band_mhz:  2400
-}
-receivers:  {
-  uuid:  "632437ac-1938-4574-85eb-b9b2aeb000ff"
-  id:  "tbs-tracer-nano-rx"
-  manufacturer:  "TBS"
-  name:  "TBS Tracer Nano RX"
-  weight_g:  0.5
-  protocol:  "TBS Crossfire (CRSF)"
-  frequency_band_mhz:  2400
-}
-receivers:  {
-  uuid:  "42e4ac1f-d5e8-4863-9eeb-f0d8ad8eeffd"
-  id:  "hglrc-hermes-expresslrs-2.4ghz"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Hermes ExpressLRS 2.4GHz"
-  weight_g:  0.8
-  protocol:  "ExpressLRS (ELRS)"
-  frequency_band_mhz:  2400
-}
-receivers:  {
-  uuid:  "d1a50985-ef0b-4357-b944-7367b21e24f5"
-  id:  "hglrc-hermes-expresslrs-900mhz"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Hermes ExpressLRS 900MHz"
-  weight_g:  0.8
-  protocol:  "ExpressLRS (ELRS)"
-  frequency_band_mhz:  900
-}
-receivers:  {
-  uuid:  "34c212ef-d9b5-4bdc-8b55-be9a0836305c"
-  id:  "literadio-4-radio-transmitter"
-  manufacturer:  "BETAFPV"
-  name:  "LiteRadio 4 Radio Transmitter"
-}
-receivers:  {
-  uuid:  "e181ef41-1ef6-4ae0-8b4f-cb3976f0dffa"
-  id:  "superx-elrs-gemini-xross-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "SuperX ELRS Gemini Xross Receiver"
-  weight_g:  0.82
-}
-receivers:  {
-  uuid:  "d850dcfd-c847-4f66-bf3a-146d2e40a48c"
-  id:  "micro-tx-v2-module"
-  manufacturer:  "BETAFPV"
-  name:  "Micro TX V2 Module"
-  weight_g:  54.8
-}
-receivers:  {
-  uuid:  "42c78e9d-738d-427a-903c-67d36569f68e"
-  id:  "nano-tx-v2-module"
-  manufacturer:  "BETAFPV"
-  name:  "Nano TX V2 Module"
-  weight_g:  28
-}
-receivers:  {
-  uuid:  "d23d5af1-0ded-4636-a349-83983cd909f3"
-  id:  "superg-nano-transmitter"
-  manufacturer:  "BETAFPV"
-  name:  "SuperG Nano Transmitter"
-  weight_g:  44.8
-}
-receivers:  {
-  uuid:  "d015fe96-1726-419a-b54d-d808f93aa8bc"
-  id:  "superp-14ch-diversity-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "SuperP 14CH Diversity Receiver"
-  weight_g:  15.5
-}
-receivers:  {
-  uuid:  "b64baa12-789b-467f-a52a-f2d42cefa06c"
-  id:  "superd-elrs-diversity-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "SuperD ELRS Diversity Receiver"
-  weight_g:  1.1
-}
-receivers:  {
-  uuid:  "65acf466-8b6d-4657-836d-5b9b12c5394d"
-  id:  "expresslrs-recovery-dongle"
-  manufacturer:  "BETAFPV"
-  name:  "ExpressLRS Recovery Dongle"
-}
-receivers:  {
-  uuid:  "a01023d0-16b2-47c5-aafc-cb61c282b0c2"
-  id:  "literadio-3-pro-radio-transmitter"
-  manufacturer:  "BETAFPV"
-  name:  "LiteRadio 3 Pro Radio Transmitter"
-}
-receivers:  {
-  uuid:  "4c6df08a-008d-46bb-b474-42517b276c5c"
-  id:  "elrs-micro-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Micro Receiver"
-  weight_g:  1.1
-}
-receivers:  {
-  uuid:  "ecd4c1b0-4f96-4199-b99e-5e30c0454471"
-  id:  "elrs-micro-tx-module-case-and-cooling-fan"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Micro TX Module Case and Cooling Fan"
-  weight_g:  20
-}
-receivers:  {
-  uuid:  "41688378-336e-4eb2-8830-755e850e0832"
-  id:  "micro-nano-module-adapter"
-  manufacturer:  "BETAFPV"
-  name:  "Micro-Nano Module Adapter"
-  weight_g:  25
-}
-receivers:  {
-  uuid:  "7c44ba69-5c4f-4880-be5a-3f7a48faf6ae"
-  id:  "elrs-nano-tx-module"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Nano TX Module"
-}
-receivers:  {
-  uuid:  "24458a4e-b564-47b9-8fa8-8941748a9b99"
-  id:  "literadio-2-se-radio-transmitter"
-  manufacturer:  "BETAFPV"
-  name:  "LiteRadio 2 SE Radio Transmitter"
-}
-receivers:  {
-  uuid:  "86f33d78-dd7a-4eca-ad18-9e7fdf5280b6"
-  id:  "x-knight-360-fpv-quadcopter"
-  manufacturer:  "BETAFPV"
-  name:  "X-Knight 360 FPV Quadcopter"
-  weight_g:  194.4
-}
-receivers:  {
-  uuid:  "35dcf16e-18aa-4975-a1e3-aee4acf4fa14"
-  id:  "literadio-2-radio-transmitter"
-  manufacturer:  "BETAFPV"
-  name:  "LiteRadio 2 Radio Transmitter"
-  weight_g:  227.4
-}
-receivers:  {
-  uuid:  "7f09236d-da94-4b1f-b67e-8402c532e69f"
-  id:  "pagoda-2-5-8g-fpv-antenna-2pcs"
-  manufacturer:  "BETAFPV"
-  name:  "Pagoda 2 5.8G  FPV Antenna (2PCS)"
-  weight_g:  9
-}
-receivers:  {
-  uuid:  "3a485ce2-9a9c-4848-babb-99cd2251471a"
-  id:  "ac900-dual-mode-receiver-frsky-futaba"
-  manufacturer:  "BETAFPV"
-  name:  "AC900 Dual Mode Receiver (FrSky & FUTABA)"
-  weight_g:  0.9
-}
-receivers:  {
-  uuid:  "6a220766-0b18-414c-98b3-430901bd3a8e"
-  id:  "frsky-xm-sbus-mini-receiver-repair-component"
-  manufacturer:  "BETAFPV"
-  name:  "FrSky XM+ SBUS Mini Receiver (Repair Component)"
-  weight_g:  1.6
-}
-receivers:  {
-  uuid:  "03bc95ca-2c8c-4a8f-a08a-dd7dfe820aec"
-  id:  "flysky-rx2a-pro-receiver-for-micro-drone-upgraded"
-  manufacturer:  "BETAFPV"
-  name:  "Flysky RX2A Pro Receiver for Micro Drone(Upgraded)"
-  weight_g:  0.88
-}
-receivers:  {
-  uuid:  "5963378e-db01-4d3c-ab2f-2622fc54b3cb"
-  id:  "dsmx-receiver-for-micro-drone"
-  manufacturer:  "BETAFPV"
-  name:  "DSMX Receiver for Micro Drone"
-  weight_g:  0.6
-}
-receivers:  {
-  uuid:  "64ee4342-223f-4d9c-80a2-f9782d99833c"
-  id:  "betacube-for-whoop-quads"
-  manufacturer:  "BETAFPV"
-  name:  "BetaCube for Whoop Quads"
-}
-receivers:  {
-  uuid:  "04993f61-3ffd-4180-bab2-568b9abfa53d"
-  id:  "fpv-whoop-racing-advanced-kit"
-  manufacturer:  "BETAFPV"
-  name:  "FPV Whoop Racing Advanced Kit"
-}
-receivers:  {
-  uuid:  "219c260a-2f70-453f-9756-44862b765111"
-  id:  "caddxfpv-alink-controller"
-  manufacturer:  "CADDX FPV"
-  name:  "CaddxFPV Alink Controller"
-  weight_g:  180
-}
-receivers:  {
-  uuid:  "24a84c85-1183-45ce-9f6d-ec79835e657d"
-  id:  "darwinfpv-elrs-2-4g-nano-receiver"
-  manufacturer:  "DarwinFPV - Official Store"
-  name:  "DarwinFPV  ELRS 2.4G Nano Receiver"
-}
-receivers:  {
-  uuid:  "36432bcf-ed71-4e75-b425-b42a292ec2db"
-  id:  "darwinfpv-hulk-iii-mini-waterproof-rtf"
-  manufacturer:  "DarwinFPV - Official Store"
-  name:  "DarwinFPV HULK III Mini Waterproof RTF"
-}
-receivers:  {
-  uuid:  "55a59bcc-4922-4f65-a8c6-ab19b63fff67"
-  id:  "darwinfpv-tx8-elrs-radio-fpv-transmitter"
-  manufacturer:  "DarwinFPV - Official Store"
-  name:  "DarwinFPV TX8 ELRS Radio FPV Transmitter"
-}
-receivers:  {
-  uuid:  "e44bac9d-dea6-4080-92c2-b23cde78dbc6"
-  id:  "darwinfpv-x10-large-load-and-long-range-10-fpv-drone"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV X10 Large Load and Long Range 10  FPV Drone"
-}
-receivers:  {
-  uuid:  "2bfab705-3ba5-4669-96bc-fb26813a9f54"
-  id:  "darwinfpv-foldape4-4-inch-folding-long-range-rtf-kit"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV FoldApe4 4 Inch Folding Long Range  RTF Kit"
-}
-receivers:  {
-  uuid:  "269973e9-93a1-439b-b6f7-ab01a08c9f23"
-  id:  "darwinfpv-cineape35-fpv-drone-rtf"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV CineApe35 FPV Drone RTF"
-}
-receivers:  {
-  uuid:  "10b536a5-3800-41c2-818d-7523699b725a"
-  id:  "darwinfpv-x9-9-long-range-fpv-drone"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV X9 9 Long Range FPV Drone"
-}
-receivers:  {
-  uuid:  "599a0c6f-ae15-4917-b1e2-dbe3f2611e42"
-  id:  "tx12-mark-ii-elrs-radio-controller"
-  manufacturer:  "DarwinFPV"
-  name:  "TX12 Mark II  ELRS Radio Controller"
-  weight_g:  363
-}
-receivers:  {
-  uuid:  "6b7aa64c-15ed-46b8-b805-088910bbc230"
-  id:  "babyape-fpv-drone-rtf"
-  manufacturer:  "DarwinFPV"
-  name:  "BabyApe Ⅱ FPV Drone RTF"
-  weight_g:  363
-}
-receivers:  {
-  uuid:  "baf358b4-9e68-40d2-8be9-68f1aef2eb50"
-  id:  "darwinfpv-cineape-25-fpv-kit-rtf"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV CineApe 25 FPV Kit RTF"
-}
-receivers:  {
-  uuid:  "437be0a9-91a9-4759-b4a5-888d855e7d6f"
-  id:  "darwinfpv-tx-lite-transmitter-rx-lite-receiver"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV TX-Lite Transmitter+ RX-Lite Receiver"
-  weight_g:  9
-}
-receivers:  {
-  uuid:  "2d9f870d-0090-4952-90da-44f3ac1fe771"
-  id:  "radiomaster-zorro-elrs-radio-controller"
-  manufacturer:  "DarwinFPV"
-  name:  "Radiomaster Zorro ELRS Radio Controller"
-}
-receivers:  {
-  uuid:  "d48defd1-3337-4219-9312-714094110990"
-  id:  "bayckrc-elrs-2-4g-nano-receiver"
-  manufacturer:  "DarwinFPV"
-  name:  "BAYCKRC ELRS 2.4G Nano Receiver"
-  weight_g:  0.4
-}
-receivers:  {
-  uuid:  "24508332-1e8f-4961-8343-988df4a1e4ba"
-  id:  "darwinfpv-baby-ape-v4-pro-fpv-rtf"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Baby Ape V4 Pro FPV RTF"
-}
-receivers:  {
-  uuid:  "c8c6c7c6-d9da-43df-b119-b3e8e79c9a23"
-  id:  "darwinfpv-radiomaster-r81-receiver"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Radiomaster R81 Receiver"
-  weight_g:  2
-}
-receivers:  {
-  uuid:  "d9d4a061-bc17-4667-9a51-737ccd55dd65"
-  id:  "darwin-vantac-elrs-2-4g-lite-tx-module"
-  manufacturer:  "DarwinFPV"
-  name:  "Darwin Vantac ELRS 2.4G Lite TX Module"
-}
-receivers:  {
-  uuid:  "57561fe9-073a-48d6-8c19-ac9f48c80f6b"
-  id:  "darwin-240-johnny-5-quadcopters"
-  manufacturer:  "DarwinFPV"
-  name:  "Darwin 240 Johnny 5 Quadcopters"
-}
-receivers:  {
-  uuid:  "b2b5b4ce-1edd-4be7-8c45-513616e93c3d"
-  id:  "hummingbird-v4-1-complete-fly-repair-bundle"
-  manufacturer:  "NewBeeDrone"
-  name:  "Hummingbird V4.1 Complete Fly & Repair Bundle"
-}
-receivers:  {
-  uuid:  "8d377609-f1ce-4a68-8f93-fa1aa205277c"
-  id:  "newbeedrone-beet-antenna-60mm-75mm-90mm-for-elrs-2-4ghz-receiver-u-fl-connector"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeT-Antenna 60mm/75mm/90mm for ELRS 2.4GHz Receiver - U.FL Connector"
-}
-receivers:  {
-  uuid:  "a4cdf676-e378-40b0-a24f-64d45e1b0b16"
-  id:  "newbeedrone-x-hummingbird-v3-1-brushless-rtf-bundle-kit"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone x Hummingbird V3.1 Brushless RTF Bundle Kit"
-}
-receivers:  {
-  uuid:  "31ec4b14-a76c-4cad-adfb-34d0f3910bdd"
-  id:  "newbeedrone-beet-antenna-for-expresslrs-elrs-2-4ghz-receiver-mhf3-connector"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeT-Antenna for  ExpressLRS(ELRS) 2.4GHz receiver MHF3 Connector"
-}
-receivers:  {
-  uuid:  "2451cb66-17dd-43cc-92ad-e3367e366a74"
-  id:  "newbeedrone-acrobee75-blv5-bnf-elrs2-4g-2s-the-ultimate-outdoor-whoop"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone AcroBee75 BLV5 BNF ELRS2.4G 2S - The Ultimate Outdoor Whoop"
-  weight_g:  36.4
-}
-receivers:  {
-  uuid:  "4debc895-b56c-4150-b203-3d1adb3704a6"
-  id:  "newbeedrone-beeceiver-elrs-2-4ghz-diversity-with-tcxo-oscillator-micro-receiver"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeCeiver ELRS 2.4Ghz Diversity with TCXO Oscillator Micro Receiver"
-  weight_g:  1.6
-}
-receivers:  {
-  uuid:  "10fd1f19-79b1-4f83-9188-8f09d2c8b142"
-  id:  "newbeedrone-beebrainbl-hummingbird-receiver-connector-type-mhf3-pack-of-4"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrainBL/Hummingbird Receiver Connector Type:MHF3 (pack of 4)"
-}
-receivers:  {
-  uuid:  "6cdc90b8-8250-4c04-bf78-2d503af75025"
-  id:  "newbeedrone-beet-antenna-for-expresslrs-elrs-2-4ghz-receiver-mhf3-connector-blv4"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeT-Antenna for  ExpressLRS(ELRS) 2.4GHz receiver MHF3 Connector /BLV4"
-}
-receivers:  {
-  uuid:  "43d5cead-0382-4209-9085-68d1a44e334a"
-  id:  "newbeedrone-2-4g-replacement-receiver-antennas-60mm-for-beebrain-blv3-blv4-hmb-f4-v2"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone 2.4G Replacement Receiver Antennas 60mm for BeeBrain BLV3/BLV4/HMB F4 V2"
-}
-receivers:  {
-  uuid:  "99dcbfc7-949f-4c42-993d-73057dfbca62"
-  id:  "newbeedrone-vim-v2-replacement-parts"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone VIM V2 Replacement Parts"
-}
-receivers:  {
-  uuid:  "dd71c2d6-a10b-4711-8cd3-ebfcce8303a1"
-  id:  "hdo-analog-fpv-goggles-ndaa"
-  manufacturer:  "Fat Shark"
-  name:  "HDO+ Analog FPV Goggles - NDAA"
-  weight_g:  235.8
-}
-receivers:  {
-  uuid:  "7aa5b5d3-1e7a-42af-8337-17848b6a50a1"
-  id:  "cinemini-2-5-3d-prints-bundle-dji-o4"
-  manufacturer:  "Rotor Riot"
-  name:  "CineMini 2.5 3D Prints Bundle - DJI O4"
-}
-receivers:  {
-  uuid:  "054a71f6-2837-4ac8-a22c-2213938973ea"
-  id:  "futaba-r7208sb-fasstest-bi-directional-communication-system-s-bus-s-bus2-port-and-8-channels-receiver"
-  manufacturer:  "Futaba"
-  name:  "Futaba R7208SB – FASSTest Bi-Directional Communication System S.Bus/S.Bus2 Port and 8 Channels Receiver"
-  weight_g:  12
-}
-receivers:  {
-  uuid:  "6d10de28-6421-4908-9080-54db599b6ba4"
-  id:  "tanq-2-6s-5-pro-spec-by-let-sflyrc-built-tuned-drone-dji-o4-pro-elrs"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "Tanq 2 6S 5 Pro-Spec by Let'sFlyRC Built & Tuned Drone - DJI O4 Pro / ELRS"
-}
-receivers:  {
-  uuid:  "8daa9d8b-15fb-4ec8-bc6f-cf9e597181b9"
-  id:  "fat-shark-recon-hd-goggle-bundle"
-  manufacturer:  "Rotor Riot Store"
-  name:  "Fat Shark Recon HD Goggle Bundle"
-  weight_g:  46.22
-}
-receivers:  {
-  uuid:  "7930c6bf-7fc9-432a-af07-45fb44e589b7"
-  id:  "pocket-radio-controller-fat-shark-edition-elrs"
-  manufacturer:  "RadioMaster"
-  name:  "Pocket Radio Controller (Fat Shark Edition) - ELRS"
-  weight_g:  288
-}
-receivers:  {
-  uuid:  "d209428a-8e76-4c36-b5b8-dea0871d0e6e"
-  id:  "vision40-2s-40mm-built-tuned-drone-dji-o4-dji"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "Vision40 2S 40mm Built & Tuned Drone - DJI O4 / DJI"
-}
-receivers:  {
-  uuid:  "3738bbfc-2d5f-428b-9d00-b815818ec63b"
-  id:  "tx15-radio-controller-expresslrs"
-  manufacturer:  "RadioMaster"
-  name:  "TX15 Radio Controller ExpressLRS"
-  weight_g:  605
-}
-receivers:  {
-  uuid:  "59f29e5f-e708-4098-8784-c1bf5ee6ca63"
-  id:  "tx15-max-radio-controller-expresslrs"
-  manufacturer:  "RadioMaster"
-  name:  "TX15 Max Radio Controller ExpressLRS"
-  weight_g:  672
-}
-receivers:  {
-  uuid:  "6eb07a7d-feb2-4b4a-9dd6-d606dc610384"
-  id:  "tbs-tango-2-pro-radio-controller-crossfire-ndaa"
-  manufacturer:  "Team Black Sheep"
-  name:  "TBS Tango 2 Pro Radio Controller - Crossfire - NDAA"
-}
-receivers:  {
-  uuid:  "748394d6-69a6-4f32-88c8-b31d4782548d"
-  id:  "tbs-crossfire-tx-lite-transmitter-module-ndaa"
-  manufacturer:  "Team Black Sheep"
-  name:  "TBS Crossfire TX LITE Transmitter Module - NDAA"
-  weight_g:  76
-}
-receivers:  {
-  uuid:  "7ca03770-6392-4cd4-88ec-6844c9a125ed"
-  id:  "nano-diversity-915mhz-receiver-for-crossfire-protocol-ndaa"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano Diversity 915MHz Receiver For Crossfire Protocol - NDAA"
-  weight_g:  1.8
-}
-receivers:  {
-  uuid:  "44eccfa6-25af-4aad-ba28-73752a75f75d"
-  id:  "nano-pro-915mhz-receiver-for-crossfire-protocol-ndaa"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano PRO 915MHz Receiver For Crossfire Protocol - NDAA"
-  weight_g:  0.5
-}
-receivers:  {
-  uuid:  "a5fec8b4-17ce-4d9c-92fe-9680f922ebd4"
-  id:  "nano-se-915mhz-receiver-for-crossfire-protocol-ndaa"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano SE 915MHz Receiver For Crossfire Protocol - NDAA"
-  weight_g:  0.5
-}
-receivers:  {
-  uuid:  "ef9737e4-2196-4ccf-a35e-5cbb1b6b5e2d"
-  id:  "cinemini-immortal-t-elrs-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "CineMini Immortal T / ELRS Antenna Mount"
-}
-receivers:  {
-  uuid:  "5357171b-b056-4473-be8b-d54ca5ce7b61"
-  id:  "cl2-immortal-t-elrs-dual-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "CL2 Immortal T / ELRS Dual Antenna Mount"
-}
-receivers:  {
-  uuid:  "53fa1822-3ca5-4006-b2b3-4b07973a69fd"
-  id:  "xr4-gemini-xrossband-dual-band-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "XR4 Gemini Xrossband Dual-Band  Receiver for ELRS Protocol"
-  weight_g:  1.7
-}
-receivers:  {
-  uuid:  "0d067b99-53dc-4ad5-8e56-46ccc4925cc3"
-  id:  "xr3-nano-multi-frequency-antenna-diversity-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "XR3 Nano Multi-Frequency Antenna Diversity Receiver for ELRS Protocol"
-  weight_g:  1.3
-}
-receivers:  {
-  uuid:  "56894c2c-7520-4763-890c-27bdabf56067"
-  id:  "xr2-nano-2-4ghz-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "XR2 Nano 2.4GHz Receiver for ELRS Protocol"
-  weight_g:  0.8
-}
-receivers:  {
-  uuid:  "e38b1e37-fc81-4dff-ae2f-6be90e007537"
-  id:  "xr1-nano-multi-frequency-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "XR1 Nano Multi-Frequency Receiver for ELRS Protocol"
-  weight_g:  1
-}
-receivers:  {
-  uuid:  "b7a85ea6-11d9-4bee-879e-d921996613ac"
-  id:  "gx12-dual-band-radio-controller-elrs"
-  manufacturer:  "RadioMaster"
-  name:  "GX12 Dual-Band Radio Controller - ELRS"
-  weight_g:  573
-}
-receivers:  {
-  uuid:  "fea7e270-f977-4b37-bb73-bf6990294b92"
-  id:  "shorty-pro-spec-rx-mount"
-  manufacturer:  "Noozle3D"
-  name:  "Shorty Pro-Spec RX Mount"
-}
-receivers:  {
-  uuid:  "4022d740-2f86-441d-8c50-5dab00e718df"
-  id:  "punch-pro-spec-rx-cap-buzzer-mount"
-  manufacturer:  "Noozle3D"
-  name:  "Punch Pro-Spec RX / Cap / Buzzer Mount"
-}
-receivers:  {
-  uuid:  "7fb9a982-bf1d-4072-acfe-fdad58381b61"
-  id:  "dbr4-dual-band-xross-gemini-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "DBR4 Dual Band Xross Gemini Receiver for ELRS Protocol"
-}
-receivers:  {
-  uuid:  "3b039892-a62f-45aa-aaac-ad83f2f0cda7"
-  id:  "nomad-elrs-dual-1w-gemini-xrossband-tx-module"
-  manufacturer:  "RadioMaster"
-  name:  "Nomad ELRS Dual 1W Gemini Xrossband TX Module"
-  weight_g:  87.2
-}
-receivers:  {
-  uuid:  "2fd6662f-bf65-4e83-85ce-f8ed0591842f"
-  id:  "skylite-skyliner-mk3-immortal-t-elrs-antenna-mount-mjf-tpu"
-  manufacturer:  "Rotor Riot"
-  name:  "Skylite / Skyliner MK3 Immortal T / ELRS Antenna Mount - MJF TPU"
-}
-receivers:  {
-  uuid:  "ed6a6fab-8a52-4815-aab4-5d77245166f4"
-  id:  "moongoat-sma-immortal-t-elrs-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "Moongoat SMA & Immortal T / ELRS Antenna Mount"
-}
-receivers:  {
-  uuid:  "3625cea5-f920-495a-bf1a-8d43e0008ee7"
-  id:  "bandit-elrs-1w-915mhz-micro-tx-module"
-  manufacturer:  "RadioMaster"
-  name:  "Bandit ELRS 1W 915MHz Micro TX Module"
-  weight_g:  78
-}
-receivers:  {
-  uuid:  "d2297fb0-839b-4257-8d56-8c494aaf80ab"
-  id:  "bandit-elrs-1w-915mhz-tx-module"
-  manufacturer:  "RadioMaster"
-  name:  "Bandit ELRS 1W 915MHz TX Module"
-  weight_g:  155
-}
-receivers:  {
-  uuid:  "97e33d9c-ce15-4785-b5e1-6082fd48cf2e"
-  id:  "bandit-915-868mhz-receiver-antenna-choose-version"
-  manufacturer:  "RadioMaster"
-  name:  "Bandit 915/868MHz Receiver Antenna - Choose Version"
-  weight_g:  2.02
-}
-receivers:  {
-  uuid:  "d2aac87f-4f75-4cf7-b804-a11c597d7ac6"
-  id:  "diversity-915-868mhz-receiver-for-elrs-protocol"
-  manufacturer:  "Foxeer"
-  name:  "Diversity 915/868MHz Receiver For ELRS Protocol"
-}
-receivers:  {
-  uuid:  "ad476e95-6719-495d-bee9-da1b90516e54"
-  id:  "rp4td-2-4ghz-true-diversity-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "RP4TD 2.4GHz True Diversity Receiver For ELRS Protocol"
-  weight_g:  1.4
-}
-receivers:  {
-  uuid:  "3fd83924-5351-4a82-a07c-bad5f66421c8"
-  id:  "rp3-2-4ghz-diversity-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "RP3 2.4GHz Diversity Receiver For ELRS Protocol"
-  weight_g:  4.6
-}
-receivers:  {
-  uuid:  "395d6c69-9cad-4dda-99cf-eaf20a257e3f"
-  id:  "bandit-br1-915mhz-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "Bandit BR1 915MHz Receiver For ELRS Protocol"
-  weight_g:  1.7
-}
-receivers:  {
-  uuid:  "b083b39a-8e92-4833-aea4-87df3b29fa46"
-  id:  "bandit-elrs-1w-915mhz-nano-tx-module"
-  manufacturer:  "RadioMaster"
-  name:  "Bandit ELRS 1W 915MHz Nano TX Module"
-  weight_g:  62.5
-}
-receivers:  {
-  uuid:  "ea87c4e7-f813-4a2c-8a4d-a017980f7844"
-  id:  "tx16s-mkii-radio-controller-elrs"
-  manufacturer:  "RadioMaster"
-  name:  "TX16S MKII Radio Controller - ELRS"
-  weight_g:  750
-}
-receivers:  {
-  uuid:  "422ad350-5b9d-40d0-8680-39fe2c58f4f2"
-  id:  "skylite-skyliner-mk3-gps-immortal-t-elrs-antenna-mount-choose-color"
-  manufacturer:  "Noozle3D"
-  name:  "Skylite / Skyliner MK3 GPS & Immortal T / ELRS Antenna Mount - Choose Color"
-}
-receivers:  {
-  uuid:  "90a25142-eef1-449a-823e-6595f843c3c5"
-  id:  "tanq-2-immortal-t-elrs-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "TANQ 2 Immortal T / ELRS Antenna Mount"
-}
-receivers:  {
-  uuid:  "0251c09c-e436-4384-8884-c2b875eced5d"
-  id:  "tanq-gps-immortal-t-elrs-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "TANQ GPS & Immortal T / ELRS Antenna Mount"
-}
-receivers:  {
-  uuid:  "61b16423-ff10-4f70-a44b-7d483146beb4"
-  id:  "boxer-edgetx-rotor-riot-edition-radio-controller-elrs"
-  manufacturer:  "RadioMaster"
-  name:  "Boxer EdgeTX Rotor Riot Edition Radio Controller - ELRS"
-  weight_g:  532.5
-}
-receivers:  {
-  uuid:  "5a178a81-e1cf-41b7-b9fe-436983abd273"
-  id:  "er6gv-2-4ghz-pwm-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "ER6GV 2.4GHz PWM Receiver For ELRS Protocol"
-  weight_g:  5
-}
-receivers:  {
-  uuid:  "e918a555-55d6-4653-91ff-18899b0a22e0"
-  id:  "er4-2-4ghz-pwm-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "ER4 2.4GHz PWM Receiver For ELRS Protocol"
-}
-receivers:  {
-  uuid:  "b5d88445-9985-458d-9248-77632954138c"
-  id:  "ranger-elrs-1w-2-4ghz-nano-tx-module"
-  manufacturer:  "RadioMaster"
-  name:  "Ranger ELRS 1W 2.4GHz Nano TX Module"
-  weight_g:  48
-}
-receivers:  {
-  uuid:  "ec8973d7-2d6e-44c9-b092-f920d1159c6c"
-  id:  "nano-915mhz-receiver-for-crossfire-protocol"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano 915MHz Receiver For Crossfire Protocol"
-  weight_g:  0.5
-}
-receivers:  {
-  uuid:  "bf243dc5-ca6c-4cdf-b3f0-884b8b1dd343"
-  id:  "ranger-elrs-1w-2-4ghz-micro-tx-module"
-  manufacturer:  "RadioMaster"
-  name:  "Ranger ELRS 1W 2.4GHz Micro TX Module"
-  weight_g:  48
-}
-receivers:  {
-  uuid:  "dde85e91-cfe4-43b6-9807-40a0000bf970"
-  id:  "t-antenna-915-868mhz-receiver-for-elrs-protocol"
-  manufacturer:  "Foxeer"
-  name:  "T Antenna 915/868MHz Receiver For ELRS Protocol"
-  weight_g:  1
-}
-receivers:  {
-  uuid:  "11c9d78a-2419-4a18-b1b6-e903b2b26f4f"
-  id:  "915-868mhz-elrs-t-antenna-choose-version"
-  manufacturer:  "Foxeer"
-  name:  "915/868MHz ELRS T Antenna - Choose Version"
-  weight_g:  7.5
-}
-receivers:  {
-  uuid:  "d7c4b600-bb1e-4f60-ba97-ae68efb0b3c7"
-  id:  "2-4ghz-elrs-t-antenna-choose-version"
-  manufacturer:  "Foxeer"
-  name:  "2.4GHz ELRS T Antenna - Choose Version"
-  weight_g:  1.5
-}
-receivers:  {
-  uuid:  "ea65339a-f3de-437a-9538-49e9ef527339"
-  id:  "t-antenna-2-4ghz-receiver-with-lna-pa-for-elrs-protocol"
-  manufacturer:  "Foxeer"
-  name:  "T Antenna 2.4GHz Receiver with LNA & PA For ELRS Protocol"
-  weight_g:  0.7
-}
-receivers:  {
-  uuid:  "eb16f065-7880-46b4-9218-c6a5ffa6ee87"
-  id:  "lite-2-4ghz-receiver-for-elrs-protocol"
-  manufacturer:  "Foxeer"
-  name:  "Lite 2.4GHz Receiver For ELRS Protocol"
-  weight_g:  0.5
-}
-receivers:  {
-  uuid:  "8b71cd1c-b46a-49e8-b899-9afe47a50a90"
-  id:  "d-pole-mkii-2-4ghz-receiver-antenna"
-  manufacturer:  "TrueRC"
-  name:  "D-Pole MKII 2.4GHz Receiver Antenna"
-  weight_g:  2
-}
-receivers:  {
-  uuid:  "b7680398-fb32-4e74-8174-a239999fd5d5"
-  id:  "crossfire-micro-dipole-915mhz-rc-receiver-antenna"
-  manufacturer:  "Team Black Sheep"
-  name:  "Crossfire Micro Dipole 915MHz RC Receiver Antenna"
-}
-receivers:  {
-  uuid:  "70d85ebd-eeac-43ef-8369-0e8f0f6d2c05"
-  id:  "tto-2-4ghz-receiver-for-ghost-protocol-ndaa"
-  manufacturer:  "ImmersionRC"
-  name:  "Átto 2.4Ghz Receiver For Ghost Protocol - NDAA"
-}
-receivers:  {
-  uuid:  "e2742695-c606-4ef9-bfec-d28be9f0786b"
-  id:  "tanq-immortal-t-elrs-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "TANQ Immortal T / ELRS Antenna Mount"
-}
-receivers:  {
-  uuid:  "6cf4008b-288c-43c2-a0a1-83b4f45bcd13"
-  id:  "2-4ghz-t-antenna-for-rp1-and-ep1-choose-version"
-  manufacturer:  "RadioMaster"
-  name:  "2.4GHz T Antenna for RP1 and EP1 - Choose Version"
-  weight_g:  1.76
-}
-receivers:  {
-  uuid:  "56beb8de-c0aa-4d33-97d7-961e940b2720"
-  id:  "ranger-elrs-1w-2-4ghz-tx-module"
-  manufacturer:  "RadioMaster"
-  name:  "Ranger ELRS 1W 2.4GHz TX Module"
-  weight_g:  138
-}
-receivers:  {
-  uuid:  "75e69b1c-dbf7-45b9-8ec6-d5db6c663caa"
-  id:  "rp2-2-4ghz-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "RP2 2.4GHz Receiver For ELRS Protocol"
-  weight_g:  0.55
-}
-receivers:  {
-  uuid:  "6ad98ca6-f42c-42f4-a62f-0a5f65d14ec1"
-  id:  "qt-2-4ghz-receiver-antenna-for-ghost-tto"
-  manufacturer:  "ImmersionRC"
-  name:  "qT 2.4GHz Receiver Antenna for Ghost Átto"
-}
-receivers:  {
-  uuid:  "c7792c9a-e30f-42a0-89ee-94a9da1bde84"
-  id:  "hook-v2-immortal-t-elrs-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "Hook V2 Immortal T / ELRS Antenna Mount"
-}
-receivers:  {
-  uuid:  "2a2f9212-6e0e-4f05-a1d1-c859b41e8eeb"
-  id:  "tanq-1-2-rx-mounting-plate"
-  manufacturer:  "Rotor Riot"
-  name:  "TANQ 1 & 2 RX Mounting Plate"
-}
-receivers:  {
-  uuid:  "b6dd4da0-cc0c-4f88-812c-7268e217760a"
-  id:  "rp1-2-4ghz-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "RP1 2.4GHz Receiver For ELRS Protocol"
-  weight_g:  2.2
-}
-receivers:  {
-  uuid:  "8fd5d1ff-da23-4790-b42d-445d277fe5c3"
-  id:  "skylite-skyliner-mk3-immortal-t-elrs-antenna-mount-choose-color"
-  manufacturer:  "Noozle3D"
-  name:  "Skylite / Skyliner MK3 Immortal T / ELRS Antenna Mount - Choose Color"
-}
-receivers:  {
-  uuid:  "40b503eb-51d7-4e5b-97ba-1debc58f02e0"
-  id:  "cl2-immortal-t-elrs-antenna-mount-choose-color"
-  manufacturer:  "Noozle3D"
-  name:  "CL2 Immortal T / ELRS Antenna Mount - Choose Color"
-}
-receivers:  {
-  uuid:  "540bc026-17f8-448b-9a5f-8c9b1e822334"
-  id:  "moxy-immortal-t-elrs-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "Moxy Immortal T / ELRS Antenna Mount"
-}
-receivers:  {
-  uuid:  "769c9fd3-6924-43cd-8fdf-8b14bcedd156"
-  id:  "tx16s-mkii-max-joshua-bardwell-edition-radio-controller-elrs"
-  manufacturer:  "RadioMaster"
-  name:  "TX16S MKII MAX Joshua Bardwell Edition Radio Controller - ELRS"
-  weight_g:  750
-}
-receivers:  {
-  uuid:  "a34feda7-2a95-4717-9385-6511ecdeff31"
-  id:  "tx16s-mk2-max-rotor-riot-edition-radio-controller-elrs"
-  manufacturer:  "RadioMaster"
-  name:  "TX16S MK2 Max Rotor Riot Edition Radio Controller - ELRS"
-  weight_g:  750
-}
-receivers:  {
-  uuid:  "50ae859f-2295-477a-8c3a-1a9966b79ba0"
-  id:  "minimortal-t-915mhz-rc-receiver-antenna"
-  manufacturer:  "FPV Cycle"
-  name:  "Minimortal T 915MHz RC Receiver Antenna"
-  weight_g:  0.7
-}
-receivers:  {
-  uuid:  "07bcb3af-4283-47e6-af2a-4f957348c061"
-  id:  "tracer-100mw-2-4ghz-micro-tx-module"
-  manufacturer:  "Team Black Sheep"
-  name:  "Tracer 100mW 2.4GHz Micro TX Module"
-}
-receivers:  {
-  uuid:  "cc104547-83c4-4f30-a072-75b11d9e82e6"
-  id:  "tracer-100mw-2-4ghz-nano-tx-module"
-  manufacturer:  "Team Black Sheep"
-  name:  "Tracer 100mW 2.4GHz Nano TX Module"
-}
-receivers:  {
-  uuid:  "a37ca8e9-6176-4529-8c9f-db52b5c9d8cf"
-  id:  "nano-2-4ghz-receiver-for-tracer-protocol"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano 2.4GHz Receiver for Tracer Protocol"
-  weight_g:  0.5
-}
-receivers:  {
-  uuid:  "3eb1eebb-df55-4358-9999-e19b20281c62"
-  id:  "tx12-mkii-radio-controller-elrs"
-  manufacturer:  "RadioMaster"
-  name:  "TX12 MKII Radio Controller - ELRS"
-  weight_g:  363
-}
-receivers:  {
-  uuid:  "424c83a5-a37c-4b03-8659-46a89d3e1c91"
-  id:  "r81-2-4ghz-receiver-for-frsky-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "R81 2.4GHz Receiver For FrSky Protocol"
-  weight_g:  2
-}
-receivers:  {
-  uuid:  "85326068-7f8f-474c-93d6-e45aa4ec5f6b"
-  id:  "immersionrc-ghost-rx-mounting-board-3-pack-ndaa-choose-version"
-  manufacturer:  "ImmersionRC"
-  name:  "ImmersionRC Ghost RX Mounting Board 3-Pack - NDAA - Choose Version"
-}
-receivers:  {
-  uuid:  "f5893f01-1530-49ff-af57-0364fc45fcff"
-  id:  "cl1-hd1-immortal-t-elrs-antenna-mount-choose-color"
-  manufacturer:  "Noozle3D"
-  name:  "CL1 & HD1 Immortal T / ELRS Antenna Mount - Choose Color"
-}
-receivers:  {
-  uuid:  "515dd422-2230-4a19-8447-c530b270653b"
-  id:  "rekon-5-inch-rocket-8s-2-5w-elrs-2-4-915-dual-band"
-  manufacturer:  "HGLRC"
-  name:  "Rekon 5-inch Rocket 8S 2.5W Elrs 2.4/915 dual-band"
-}
-receivers:  {
-  uuid:  "6d081d63-fb8a-4517-b2ff-6585fc62bac6"
-  id:  "hglrc-gemini-elrs-915mhz-2-4ghz-dual-band-single-dual-antenna-receiver"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Gemini ELRS 915MHz & 2.4GHz Dual-Band Single/Dual Antenna Receiver"
-}
-receivers:  {
-  uuid:  "77eb2616-829b-4220-8165-44acd991621b"
-  id:  "hglrc-d200-soccer-drone-rtf-kit-crash-resistant-training-quadcopter"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC D200 Soccer Drone RTF Kit - Crash-Resistant Training Quadcopter"
-}
-receivers:  {
-  uuid:  "bf625697-9254-48b3-baba-6b3fbf6c2a03"
-  id:  "hglrc-talon-2-inch-entry-level-rtf-set"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Talon 2-inch entry-level RTF Set"
-}
-receivers:  {
-  uuid:  "677f3561-5f8d-46f6-a298-2bbf2477de1a"
-  id:  "hglrc-petrel-75whoop-1s-entry-level-rtf-set"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Petrel 75Whoop 1S Entry-level RTF Set"
-}
-receivers:  {
-  uuid:  "9e867034-9e97-428f-9293-346a7314cc5a"
-  id:  "hglrc-elrs-t-one-tx-module"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC ELRS T ONE TX Module"
-  weight_g:  76
-}
-receivers:  {
-  uuid:  "8e10399e-49b7-497d-a585-f79dc1eabf61"
-  id:  "hglrc-elrs-gemini-rx-dual-receiver-2-4g-915mhz"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC ELRS GEMINI RX dual receiver 2.4G/915Mhz"
-}
-receivers:  {
-  uuid:  "6c32ff51-2c05-47da-8627-c2a76f918f47"
-  id:  "hglrc-elrs-2-4g-receiver"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC ELRS 2.4G Receiver"
-}
-receivers:  {
-  uuid:  "090e27cd-9d42-490d-b8ac-af524f833435"
-  id:  "diatone-roma-f7-6s-pnp-bnf-drone-msr-tbs-receiver"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "DIATONE Roma F7 6S PNP/BNF Drone MSR/TBS Receiver"
-}
-receivers:  {
-  uuid:  "b8305249-a23c-4258-a718-cb9378ecf0ca"
-  id:  "diatone-roma-f4-dji-4-6s-drone-msr-tbs-receiver"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "DIATONE Roma F4 DJI 4/6S Drone MSR/TBS Receiver"
-}
-receivers:  {
-  uuid:  "08e1a7d7-58c6-48aa-87d6-e177fc9dc395"
-  id:  "fifty5-flash-2306-hq-5-5x3-5x3-bundle-kit"
-  manufacturer:  "FlyFishRC"
-  name:  "FIFTY5 Flash 2306 HQ 5.5x3.5x3 Bundle Kit"
-  weight_g:  127.7
-}
-receivers:  {
-  uuid:  "9d847c71-31d8-4697-baa2-70174d806dbf"
-  id:  "fifty5-sword-2207-bundle-kit"
-  manufacturer:  "FlyFish RC"
-  name:  "FIFTY5 Sword 2207 Bundle Kit"
-  weight_g:  127.7
-}
-receivers:  {
-  uuid:  "4b4f95b2-da12-4c22-b54f-2563ec4dc7ca"
-  id:  "clearance-sale-sub250-microradio-elrs-2-4g-transmitter"
-  manufacturer:  "Sub250"
-  name:  "(Clearance Sale) Sub250 MicroRadio Elrs 2.4g Transmitter"
-}
-receivers:  {
-  uuid:  "d8497c69-c03d-4430-ab4d-b35c0a068b71"
-  id:  "sub250-nimble65-rtf-combo"
-  manufacturer:  "sub250"
-  name:  "Sub250 Nimble65 RTF Combo"
-  weight_g:  21
-}
-receivers:  {
-  uuid:  "12ff7e0d-0e05-4065-aa44-4b0b88c19733"
-  id:  "sub250-elrs-lite-2-4g-receiver"
-  manufacturer:  "Sub250"
-  name:  "Sub250 ELRS Lite 2.4G Receiver"
-  weight_g:  0.7
-}
-receivers:  {
-  uuid:  "d676a9f6-b295-4212-9758-ce819ebbfcc6"
-  id:  "sub250-elrs-nano-pro-2-4g-receiver"
-  manufacturer:  "Sub250"
-  name:  "Sub250 ELRS Nano Pro 2.4G Receiver"
-  weight_g:  0.7
-}
-receivers:  {
-  uuid:  "3f1f6603-164a-476e-a05f-d90c701f42d8"
-  id:  "sub250-elrs-nano-2-4g-receiver"
-  manufacturer:  "Sub250"
-  name:  "Sub250 ELRS Nano 2.4G Receiver"
-  weight_g:  0.6
-}
-receivers:  {
-  uuid:  "2c79cc2d-a773-4305-b0a9-ae06f15b8fff"
-  id:  "sub250-1s-nanofly16-1-6-inch-freestyle-quadcopter"
-  manufacturer:  "Sub250"
-  name:  "Sub250 1s Nanofly16  1.6 inch Freestyle Quadcopter"
-}
-receivers:  {
-  uuid:  "57277db0-6c37-4b84-80e4-825997ba1299"
-  id:  "heat-shrink-20mm-x-1m"
-  manufacturer:  "FPVCycle"
-  name:  "Heat Shrink - 20mm x 1M"
-}
-receivers:  {
-  uuid:  "0c64c313-b34c-456e-895e-77388a3fe454"
-  id:  "internal-rx-cdcd2312-b900-41ea-aaad-d807737e9855"
-  manufacturer:  "BETAFPV"
-  name:  "P1 HD VRX (Standard) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "1c6df32e-9585-452f-ae29-55b6b295a598"
-  id:  "internal-rx-b8e2d90f-08a2-4493-b02c-e28fc3df8f34"
-  manufacturer:  "BETAFPV"
-  name:  "[BETA TEST] P1 HD VRX (Nano) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "b5de936f-25cb-4012-81a6-a842d7ba6707"
-  id:  "internal-rx-1af14652-bd6f-453d-8a84-db99438de688"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Lite Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "19e0176d-d0a9-4f26-b19a-6bd76fb7f170"
-  id:  "internal-rx-26163ee5-41cd-4160-bc0e-4a161f468a3b"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S 5A AIO Brushless Flight Controller (ELRS 2.4G) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "c302c0e5-00ed-4909-b981-757c38e13d5f"
-  id:  "internal-rx-cb515f72-04b0-44d3-b756-39f375527de0"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Nano Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "c9037e17-7240-4bc5-b02b-a9e92cf24b88"
-  id:  "internal-rx-f55610c5-306f-4b2c-a6a1-b7ab5eb33f7c"
-  manufacturer:  "BETAFPV"
-  name:  "SPI Frsky Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "110c286f-682d-4348-8fb0-55a00fe7dc4d"
-  id:  "internal-rx-ac9512d9-fee9-4141-b709-d095be8de59d"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S Brushless Flight Controller ( Frsky RX ) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "9cf6ec1a-a1e0-4ba1-9f46-8fe06b65034d"
-  id:  "internal-rx-6e71f7c2-df9a-4a10-bb76-94e2611f5326"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S Brushless Flight Controller (No RX+OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "4a1c93f9-0c52-42b1-9b44-9d25606743c7"
-  id:  "internal-rx-489610a4-120b-4e19-919d-8c28000f0336"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (SPI FUTABA RX + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "25a176c7-c8df-467d-9fd6-e360d69fd9df"
-  id:  "internal-rx-1146e5cf-e052-4d7a-ba4e-40a26bbbeae1"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "3f36bd87-b362-48c7-827c-91b2e96bff2a"
-  id:  "internal-rx-3458b1e3-36ae-48de-b3c9-71b27a80bfd0"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Frsky Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "5766f915-3ff9-449a-a7b3-8495032c6a20"
-  id:  "internal-rx-db5c21dc-47a4-4076-a7c0-c574551d70c8"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (No Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "874e1927-1057-426a-b355-9cd318ded288"
-  id:  "internal-rx-47874c8f-f3c9-4b96-9618-9685c3f1132d"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Flysky Rx + OSD V1) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "7ae68f92-b368-47eb-b918-b3000fcab698"
-  id:  "internal-rx-7f3a281e-6e8d-4d23-8df1-6f3c86da96fe"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (Frsky Rx / No RX) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "09ea2d9c-2377-4eb3-97c1-f6ac38077697"
-  id:  "internal-rx-c8f5ad20-a895-4709-8a55-58fc79042f39"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Frsky Rx + OSD V2) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "e77f7c1e-6635-465f-a48e-21cd111f361b"
-  id:  "internal-rx-2ec8a069-08c9-488e-8cbf-e98370029826"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "7ea9315a-3f40-421c-8f76-774a0455d9e6"
-  id:  "internal-rx-cd952a0c-8506-4139-93d0-a7c9f6dee795"
-  manufacturer:  "BETAFPV"
-  name:  "F3 EVO Brushed Flight Controller (Frsky Rx) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "74d7a534-ce02-404a-b488-b93449e52795"
-  id:  "internal-rx-1f92f03d-d89c-4abe-93ca-6a11e64dda6a"
-  manufacturer:  "CADDXFPV"
-  name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "c2de593a-f739-4f6e-93c5-ad7e03de6e4f"
-  id:  "internal-rx-d31410e7-6e24-455f-8d0e-0e5e8b93af24"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "a598eedb-5383-4f63-9f9f-64d0e99106e9"
-  id:  "internal-rx-62c174a3-aac0-49c6-a9f8-9a54cebde10a"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "5ff7f57c-3e4f-4840-b0c0-71d8894982d6"
-  id:  "internal-rx-217ffd4b-3953-4483-bc87-8e935782c097"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "e8e4c3aa-e4d1-4bbe-b3c3-f05a66532330"
-  id:  "internal-rx-d71009a5-89ad-4fff-8164-537e151b2730"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "25a33ace-8a95-4e9e-8db9-d7e3c8057f2c"
-  id:  "internal-rx-915c4319-db76-4d07-b783-08163b9289a6"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "3c4a122e-3621-4bed-b418-80de5ffb3298"
-  id:  "internal-rx-09037858-15da-4afb-8e3a-45427c587874"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "4672b90a-a3ef-40ec-9a2c-1a558b5c3dbf"
-  id:  "internal-rx-b147339d-c406-40c0-a4df-4203ffc4386d"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "4b7cfebb-c916-4fa9-a861-bb31c78c382e"
-  id:  "internal-rx-aa435626-acfa-4f15-82a1-4d232a95db47"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain HD G4 Flight Controller ExpressLRS (ELRS) 2.4G (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "64cf50bc-5a26-49ed-a2d1-95e14eeaeff6"
-  id:  "internal-rx-2a0b1715-e92f-48f2-a153-b0e0fc2ce0bc"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "9ad9ce97-eb5e-4fd0-873b-8c1c6c244c2f"
-  id:  "internal-rx-f9246598-e43b-4e35-a553-555539a9ea4a"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "CL2-XR 6S 7 Built & Tuned Drone - Avatar / ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "8e61981b-cba8-4126-8011-699e531319e6"
-  id:  "internal-rx-3be376c6-7d6b-472d-ab73-163c7854e57d"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "Skylite Ducted 4S 3 Solder-Free Built & Tuned Drone - Avatar / ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "f940d3a2-cbbc-4eb2-88f5-142426359504"
-  id:  "internal-rx-7110a8ec-9919-42ac-8adf-6106e7840713"
-  manufacturer:  "Flywoo"
-  name:  "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "173b0158-de47-4bb3-a989-8ea70592ebf9"
-  id:  "internal-rx-408a9fbd-f732-4e26-96e6-c62bd2cce351"
-  manufacturer:  "Walksnail"
-  name:  "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "3449eade-b63b-4d8a-a5e2-bdba08c9bad2"
-  id:  "internal-rx-daec1a67-37ad-455f-97b0-64d397e1807a"
-  manufacturer:  "BETAFPV"
-  name:  "P1 HD VRX (Standard) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "7dab5cda-2f55-4cf5-ac28-50bf7e5beda8"
-  id:  "internal-rx-00826ca2-b74d-42ca-bfe7-24a2c4261a71"
-  manufacturer:  "BETAFPV"
-  name:  "[BETA TEST] P1 HD VRX (Nano) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "1a14933e-b728-4eab-b30e-a26c0b0a9eca"
-  id:  "internal-rx-0f285819-4640-44e9-8f1d-254fb487052a"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Lite Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "7079047b-a3d1-4f82-b739-6a04a24bfc97"
-  id:  "internal-rx-b041cfe4-58ce-4ad1-8fc6-8571b40bdead"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S 5A AIO Brushless Flight Controller (ELRS 2.4G) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "b2c720d3-0353-4838-af8f-13a97dc9dd25"
-  id:  "internal-rx-9ce1c839-3fae-477e-a26d-d8b760934cf6"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Nano Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "2d5b2f8d-fe16-4587-a506-974578c096d5"
-  id:  "internal-rx-53aad8e6-9293-4165-8856-d0bea8d8e4ba"
-  manufacturer:  "BETAFPV"
-  name:  "SPI Frsky Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "152975c8-2262-4c17-9fd8-5473471bfa01"
-  id:  "internal-rx-b4b69004-7e94-48f1-a8e7-a9437000bed1"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S Brushless Flight Controller ( Frsky RX ) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "ed84607f-3139-4f70-bc52-00467a103b02"
-  id:  "internal-rx-eec8519f-96ea-4c61-bb7d-4b12523737fe"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S Brushless Flight Controller (No RX+OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "a7fc11f9-082b-4685-873f-77965ac1bce7"
-  id:  "internal-rx-8939e4e6-81f6-4045-9575-26874ce2e053"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (SPI FUTABA RX + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "abf1a43e-b18f-4c83-90ef-d9aa56517ba8"
-  id:  "internal-rx-1394ec7a-73ad-4f9e-aa55-0e3cd241b4eb"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "dd111eb3-0967-46d7-8c0b-2e6b023b0cbd"
-  id:  "internal-rx-b09c5cb3-3220-45f3-ab5a-2cea9bb7820c"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Frsky Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "32e958a8-825e-4c5c-84b1-a4ae0bfedeb5"
-  id:  "internal-rx-c95fd9df-1b79-4229-8f15-40a009a9b3dc"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (No Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "0c0dffab-ddb5-42bf-ab6e-46179fdc8b59"
-  id:  "internal-rx-e4c549f5-ccec-44f0-9a6b-0fa2d2fbe825"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Flysky Rx + OSD V1) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "f6519d8a-4664-4777-8693-529060079b58"
-  id:  "internal-rx-37a2d644-859d-41f2-80d9-a0c4b1ee05a2"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (Frsky Rx / No RX) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "166770a8-1e27-427d-82e7-7429e5e31357"
-  id:  "internal-rx-90ecfc7b-1b51-43c0-a81c-3ade4c818a67"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Frsky Rx + OSD V2) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "6825ef2e-8a4f-44bb-ba5d-991fa520a452"
-  id:  "internal-rx-a20e5c0e-7f7c-4571-8540-b89d9e44e8a5"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "fbacfe2f-18f1-4c62-bae5-ee97ad5678f5"
-  id:  "internal-rx-da09a0b4-f1a8-4101-89be-4dbaf4003942"
-  manufacturer:  "BETAFPV"
-  name:  "F3 EVO Brushed Flight Controller (Frsky Rx) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "35ea2c93-05ab-458c-91a6-d16b7a9b7dea"
-  id:  "internal-rx-2f75a325-5e33-452e-93a2-93f94d71b54d"
-  manufacturer:  "CADDXFPV"
-  name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "b7c8d86f-ef46-4fb8-88b5-65683c3750f4"
-  id:  "internal-rx-9c9ab47c-224f-478c-8c6a-4ee1b4b5e3f4"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "eed31c09-c456-4684-a08e-5c856f97e4c4"
-  id:  "internal-rx-ff925b0b-0b85-46eb-8408-ce76e20c700e"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "561e97ea-717b-43e6-8864-8e62fac6727e"
-  id:  "internal-rx-25f4ca61-dedd-4eb3-ba5b-b83758a2191f"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "43b5e716-b012-4b69-ba93-87ad6cc1e369"
-  id:  "internal-rx-3753379c-38d5-4b1b-92d6-7eeb656d0336"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "d645ce4e-fa7c-468b-9435-83742d32ef19"
-  id:  "internal-rx-eaf6369f-1eb9-4d95-ac33-f1d68490b264"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "83ce9e72-ab40-44eb-85a1-2329514559d8"
-  id:  "internal-rx-6460d355-6526-40fc-9fa4-c8b2d0fa499e"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "41f5d5c4-7253-48b8-b59d-71809e9c2308"
-  id:  "internal-rx-a9327c0b-1f9a-44d2-969e-2e9ad57f6d4f"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "6b251977-aae1-4f83-913a-e7050a2f6093"
-  id:  "internal-rx-42ebc916-c868-4658-82ac-aceaf017ac37"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain HD G4 Flight Controller ExpressLRS (ELRS) 2.4G (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "7b5bec93-ef6f-4eb5-9a7d-0deefa998ebd"
-  id:  "internal-rx-9e3ae24c-4ee9-414a-b57a-a645ccbffe4b"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "753d5275-003a-490e-b5de-0327cda7a06a"
-  id:  "internal-rx-83a33742-60a8-4441-b9cb-ca16180a3914"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "CL2-XR 6S 7 Built & Tuned Drone - Avatar / ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "3fc2111f-1a98-4a5e-99f0-4146b7c9f44e"
-  id:  "internal-rx-3b9441ac-9dd2-4553-ab2f-5e99e4e47199"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "Skylite Ducted 4S 3 Solder-Free Built & Tuned Drone - Avatar / ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "9051993c-35b3-461a-80b1-a94834896d2e"
-  id:  "internal-rx-4d10c9d6-459d-4731-852e-e01daa10f38a"
-  manufacturer:  "Flywoo"
-  name:  "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "3c1cdfb0-3738-4429-befb-e80d3b3ab8a9"
-  id:  "internal-rx-a6e8023c-e016-4ee2-bc26-e012ffa7f2a3"
-  manufacturer:  "Walksnail"
-  name:  "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "29a2640e-8961-400f-b73c-244911de3144"
-  id:  "internal-rx-2c239ba9-5d1e-4917-818a-4ca1c6d6ac9c"
-  manufacturer:  "BETAFPV"
-  name:  "P1 HD VRX (Standard) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "fe02897b-f71a-490a-a018-643435357288"
-  id:  "internal-rx-a31cdc8d-aebe-4851-a58c-b7c200804a97"
-  manufacturer:  "BETAFPV"
-  name:  "[BETA TEST] P1 HD VRX (Nano) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "9c54fe07-b85c-409a-9378-dfb5fe229050"
-  id:  "internal-rx-47fe97d1-e70b-4bfc-9d1d-2712eb507c56"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Lite Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "fa20242a-4c99-4bcd-99fb-770f815a2e6b"
-  id:  "internal-rx-b20c209e-2e17-4a04-ba18-be11a075723f"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S 5A AIO Brushless Flight Controller (ELRS 2.4G) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "bd69a9d0-8548-40dd-ba68-90f3d95a7009"
-  id:  "internal-rx-fc0f9301-cf37-4417-aaee-1d30ba87b04f"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Nano Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "29b74c6e-23e3-40c6-87dd-a9f0ac2a6d91"
-  id:  "internal-rx-0ecc0517-4eca-415e-b005-95963d5bd478"
-  manufacturer:  "BETAFPV"
-  name:  "SPI Frsky Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "2c281b92-c490-442b-aa61-369bf8768948"
-  id:  "internal-rx-b04c5637-f1d1-4980-9dcf-b6002cda7813"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S Brushless Flight Controller ( Frsky RX ) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "3e7ba9b9-8eb5-472f-8e90-054d0e093a40"
-  id:  "internal-rx-93417a1f-28ce-4e67-a486-2b6e6f519939"
-  manufacturer:  "BETAFPV"
-  name:  "F4 1S Brushless Flight Controller (No RX+OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "028dc538-a8ed-4889-b2d7-30744fb4eb61"
-  id:  "internal-rx-f4ac012b-cf96-4250-b41d-5c8bb5c26503"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (SPI FUTABA RX + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "7479689f-402a-4cc6-98ee-8270867b3f06"
-  id:  "internal-rx-b7283957-350b-4308-91b4-4380a090291c"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "61216af7-f6ad-4d79-8501-315276bbd300"
-  id:  "internal-rx-1c658f4a-0093-44f3-9010-4e30f1a61abd"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Frsky Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "08d0a105-8801-4c95-bfee-15ed3e6cca8f"
-  id:  "internal-rx-f2782086-86f2-43c4-bdbf-450f54bc03a4"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (No Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "0c0c49df-2dc2-460b-b338-75c9a7f545ff"
-  id:  "internal-rx-5b467eb4-80f6-4616-ba5a-b2582ef33b81"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Flysky Rx + OSD V1) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "ec3a94ec-bc44-4b6c-b725-3f46a1d5a3fc"
-  id:  "internal-rx-7f8b6a89-d829-46f7-8709-41165457495c"
-  manufacturer:  "BETAFPV"
-  name:  "F4 Brushed Flight Controller (Frsky Rx / No RX) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "cde0618d-4381-4239-932e-a759f19cfdf7"
-  id:  "internal-rx-013a863f-9e9a-43f4-8afb-3d96fe8aba84"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (Frsky Rx + OSD V2) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "e250a6d7-a9a8-4211-a256-d21a1961878e"
-  id:  "internal-rx-b3ce39be-2865-4b37-a23e-b64e23619426"
-  manufacturer:  "BETAFPV"
-  name:  "F3 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "64341daf-3600-47cf-b48c-c20acb77da6a"
-  id:  "internal-rx-6f561769-0fec-4762-8aff-2fc08ae777c2"
-  manufacturer:  "BETAFPV"
-  name:  "F3 EVO Brushed Flight Controller (Frsky Rx) (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "6654d8ad-eb22-4ed8-917d-0850437e4da4"
-  id:  "internal-rx-f0e44073-9567-4702-a556-5cd1883e8296"
-  manufacturer:  "CADDXFPV"
-  name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "87638d17-be2b-4d31-99d3-6d882a10306f"
-  id:  "internal-rx-b652c974-d7ec-4d03-b349-b4b690cff86d"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "9fc3577e-8769-4e86-81e4-dd6f1b2e5b83"
-  id:  "internal-rx-ea7d22e2-a381-44c4-a359-cccb37268b74"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "eb82b94d-1932-4841-8427-29c4cc124048"
-  id:  "internal-rx-3af588b6-5d12-43dc-b459-8cbc3fb09078"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "d72a2149-daca-4deb-8635-5b2fcdba562d"
-  id:  "internal-rx-a1431e81-0f24-4f25-a125-f2d5cd444aa9"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "ebd3aea7-8ed6-42f6-b9ae-cc5e3547db2b"
-  id:  "internal-rx-0acfbc3a-b951-46cf-b3b3-6acfe3d127e3"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "a4a2440b-20a8-426b-a992-9ceb0ad12dae"
-  id:  "internal-rx-24010656-b6df-4740-9df9-9a445813e678"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "98ed7beb-7019-477d-a2e1-d850e286e75b"
-  id:  "internal-rx-9c35510b-a4aa-4824-b865-f43f9c183859"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "d17abb0c-e0f6-4560-bcc3-e6e27a923c4d"
-  id:  "internal-rx-fe0c793c-b9e4-424c-8ede-dbac0b8dd8d0"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain HD G4 Flight Controller ExpressLRS (ELRS) 2.4G (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "5fc364c3-f008-409c-9551-5289ee802bb1"
-  id:  "internal-rx-b4ab6bc4-fcef-4693-a403-c903c655cbe3"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "a144bbc8-afaf-47a5-a922-4ffdfe529842"
-  id:  "internal-rx-1206e89d-cad0-407f-95b8-29ee661b3c20"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "CL2-XR 6S 7 Built & Tuned Drone - Avatar / ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "eee89d75-fab8-4ef6-a836-24557c9c228e"
-  id:  "internal-rx-45e1efb4-8b56-4116-b365-384c8708c8b2"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "Skylite Ducted 4S 3 Solder-Free Built & Tuned Drone - Avatar / ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "ad54842e-f701-4858-b169-1f2fc5f6286d"
-  id:  "internal-rx-85921f3a-7243-4abe-809e-bc1e6301fdf4"
-  manufacturer:  "Flywoo"
-  name:  "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "a94aee3c-2d0d-49ca-bfda-387b7442c2a9"
-  id:  "internal-rx-df6360c9-318a-4e1e-9185-48ce572848c6"
-  manufacturer:  "Walksnail"
-  name:  "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "4da8a069-d611-4376-b6d9-667996a4aa76"
-  id:  "internal-rx-a4c74a7d-651a-4f82-84e4-80f9a6771544"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC SPECTER F722 Lite ICM42688 gyro integrated ELRS 2.4G receiver flight controller (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "1ee26f9f-4c6f-4301-b43b-cbc1dfa2dfa3"
-  id:  "internal-rx-0e39a9cf-60ff-4a08-8714-32f0b13c5a78"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Wind5 Lite V2 Racing Drone Elrs2.4G version (Internal RX)"
-  is_internal_only:  true
-}
-receivers:  {
-  uuid:  "ab61a221-d90d-4de9-917a-28a33599e037"
-  id:  "internal-rx-c319e263-096a-4173-8f7b-855617ed5d6d"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone (Internal RX)"
-  is_internal_only:  true
+receivers: {
+  uuid: "b0cf2152-68ff-41ac-9bc5-c7b6d34f2543"
+  id: "tbs-crossfire-nano-rx"
+  manufacturer: "TBS"
+  name: "TBS Crossfire Nano RX"
+  weight_g: 0.5
+  protocol: "TBS Crossfire (CRSF)"
+  frequency_band_mhz: 2400
+}
+receivers: {
+  uuid: "8e3b3fae-9076-400d-89c3-f93faf3aa37d"
+  id: "walksnail-avatar-vrx"
+  manufacturer: "Walksnail"
+  name: "Walksnail Avatar VRX"
+  weight_g: 83
+  protocol: "HDMI"
+  frequency_band_mhz: 2400
+}
+receivers: {
+  uuid: "632437ac-1938-4574-85eb-b9b2aeb000ff"
+  id: "tbs-tracer-nano-rx"
+  manufacturer: "TBS"
+  name: "TBS Tracer Nano RX"
+  weight_g: 0.5
+  protocol: "TBS Crossfire (CRSF)"
+  frequency_band_mhz: 2400
+}
+receivers: {
+  uuid: "42e4ac1f-d5e8-4863-9eeb-f0d8ad8eeffd"
+  id: "hglrc-hermes-expresslrs-2.4ghz"
+  manufacturer: "HGLRC"
+  name: "HGLRC Hermes ExpressLRS 2.4GHz"
+  weight_g: 0.8
+  protocol: "ExpressLRS (ELRS)"
+  frequency_band_mhz: 2400
+}
+receivers: {
+  uuid: "d1a50985-ef0b-4357-b944-7367b21e24f5"
+  id: "hglrc-hermes-expresslrs-900mhz"
+  manufacturer: "HGLRC"
+  name: "HGLRC Hermes ExpressLRS 900MHz"
+  weight_g: 0.8
+  protocol: "ExpressLRS (ELRS)"
+  frequency_band_mhz: 900
+}
+receivers: {
+  uuid: "34c212ef-d9b5-4bdc-8b55-be9a0836305c"
+  id: "literadio-4-radio-transmitter"
+  manufacturer: "BETAFPV"
+  name: "LiteRadio 4 Radio Transmitter"
+}
+receivers: {
+  uuid: "e181ef41-1ef6-4ae0-8b4f-cb3976f0dffa"
+  id: "superx-elrs-gemini-xross-receiver"
+  manufacturer: "BETAFPV"
+  name: "SuperX ELRS Gemini Xross Receiver"
+  weight_g: 0.82
+}
+receivers: {
+  uuid: "d850dcfd-c847-4f66-bf3a-146d2e40a48c"
+  id: "micro-tx-v2-module"
+  manufacturer: "BETAFPV"
+  name: "Micro TX V2 Module"
+  weight_g: 54.8
+}
+receivers: {
+  uuid: "42c78e9d-738d-427a-903c-67d36569f68e"
+  id: "nano-tx-v2-module"
+  manufacturer: "BETAFPV"
+  name: "Nano TX V2 Module"
+  weight_g: 28
+}
+receivers: {
+  uuid: "d23d5af1-0ded-4636-a349-83983cd909f3"
+  id: "superg-nano-transmitter"
+  manufacturer: "BETAFPV"
+  name: "SuperG Nano Transmitter"
+  weight_g: 44.8
+}
+receivers: {
+  uuid: "d015fe96-1726-419a-b54d-d808f93aa8bc"
+  id: "superp-14ch-diversity-receiver"
+  manufacturer: "BETAFPV"
+  name: "SuperP 14CH Diversity Receiver"
+  weight_g: 15.5
+}
+receivers: {
+  uuid: "b64baa12-789b-467f-a52a-f2d42cefa06c"
+  id: "superd-elrs-diversity-receiver"
+  manufacturer: "BETAFPV"
+  name: "SuperD ELRS Diversity Receiver"
+  weight_g: 1.1
+}
+receivers: {
+  uuid: "65acf466-8b6d-4657-836d-5b9b12c5394d"
+  id: "expresslrs-recovery-dongle"
+  manufacturer: "BETAFPV"
+  name: "ExpressLRS Recovery Dongle"
+}
+receivers: {
+  uuid: "a01023d0-16b2-47c5-aafc-cb61c282b0c2"
+  id: "literadio-3-pro-radio-transmitter"
+  manufacturer: "BETAFPV"
+  name: "LiteRadio 3 Pro Radio Transmitter"
+}
+receivers: {
+  uuid: "4c6df08a-008d-46bb-b474-42517b276c5c"
+  id: "elrs-micro-receiver"
+  manufacturer: "BETAFPV"
+  name: "ELRS Micro Receiver"
+  weight_g: 1.1
+}
+receivers: {
+  uuid: "ecd4c1b0-4f96-4199-b99e-5e30c0454471"
+  id: "elrs-micro-tx-module-case-and"
+  manufacturer: "BETAFPV"
+  name: "ELRS Micro TX Module Case and"
+  weight_g: 20
+  description: "ELRS Micro TX Module Case and Cooling Fan"
+}
+receivers: {
+  uuid: "41688378-336e-4eb2-8830-755e850e0832"
+  id: "micro-nano-module-adapter"
+  manufacturer: "BETAFPV"
+  name: "Micro-Nano Module Adapter"
+  weight_g: 25
+}
+receivers: {
+  uuid: "7c44ba69-5c4f-4880-be5a-3f7a48faf6ae"
+  id: "elrs-nano-tx-module"
+  manufacturer: "BETAFPV"
+  name: "ELRS Nano TX Module"
+}
+receivers: {
+  uuid: "24458a4e-b564-47b9-8fa8-8941748a9b99"
+  id: "literadio-2-se-radio-transmitter"
+  manufacturer: "BETAFPV"
+  name: "LiteRadio 2 SE Radio Transmitter"
+}
+receivers: {
+  uuid: "86f33d78-dd7a-4eca-ad18-9e7fdf5280b6"
+  id: "x-knight-360-fpv-quadcopter"
+  manufacturer: "BETAFPV"
+  name: "X-Knight 360 FPV Quadcopter"
+  weight_g: 194.4
+}
+receivers: {
+  uuid: "35dcf16e-18aa-4975-a1e3-aee4acf4fa14"
+  id: "literadio-2-radio-transmitter"
+  manufacturer: "BETAFPV"
+  name: "LiteRadio 2 Radio Transmitter"
+  weight_g: 227.4
+}
+receivers: {
+  uuid: "7f09236d-da94-4b1f-b67e-8402c532e69f"
+  id: "pagoda-2-5-8g-fpv-antenna-2pcs"
+  manufacturer: "BETAFPV"
+  name: "Pagoda 2 5.8G  FPV Antenna (2PCS)"
+  weight_g: 9
+}
+receivers: {
+  uuid: "3a485ce2-9a9c-4848-babb-99cd2251471a"
+  id: "ac900-dual-mode-receiver"
+  manufacturer: "BETAFPV"
+  name: "AC900 Dual Mode Receiver"
+  weight_g: 0.9
+  description: "AC900 Dual Mode Receiver (FrSky & FUTABA)"
+}
+receivers: {
+  uuid: "6a220766-0b18-414c-98b3-430901bd3a8e"
+  id: "frsky-xm-sbus-mini-receiver"
+  manufacturer: "BETAFPV"
+  name: "FrSky XM+ SBUS Mini Receiver"
+  weight_g: 1.6
+  description: "FrSky XM+ SBUS Mini Receiver (Repair Component)"
+}
+receivers: {
+  uuid: "03bc95ca-2c8c-4a8f-a08a-dd7dfe820aec"
+  id: "flysky-rx2a-pro-receiver"
+  manufacturer: "BETAFPV"
+  name: "Flysky RX2A Pro Receiver"
+  weight_g: 0.88
+  description: "Flysky RX2A Pro Receiver for Micro Drone(Upgraded)"
+}
+receivers: {
+  uuid: "5963378e-db01-4d3c-ab2f-2622fc54b3cb"
+  id: "dsmx-receiver-for-micro-drone"
+  manufacturer: "BETAFPV"
+  name: "DSMX Receiver for Micro Drone"
+  weight_g: 0.6
+}
+receivers: {
+  uuid: "64ee4342-223f-4d9c-80a2-f9782d99833c"
+  id: "betacube-for-whoop-quads"
+  manufacturer: "BETAFPV"
+  name: "BetaCube for Whoop Quads"
+}
+receivers: {
+  uuid: "04993f61-3ffd-4180-bab2-568b9abfa53d"
+  id: "fpv-whoop-racing-advanced-kit"
+  manufacturer: "BETAFPV"
+  name: "FPV Whoop Racing Advanced Kit"
+}
+receivers: {
+  uuid: "219c260a-2f70-453f-9756-44862b765111"
+  id: "caddxfpv-alink-controller"
+  manufacturer: "CADDX FPV"
+  name: "CaddxFPV Alink Controller"
+  weight_g: 180
+}
+receivers: {
+  uuid: "24a84c85-1183-45ce-9f6d-ec79835e657d"
+  id: "darwinfpv-elrs-2-4g-nano-receiver"
+  manufacturer: "DarwinFPV - Official Store"
+  name: "DarwinFPV  ELRS 2.4G Nano Receiver"
+}
+receivers: {
+  uuid: "36432bcf-ed71-4e75-b425-b42a292ec2db"
+  id: "darwinfpv-hulk-iii-mini-waterproof-rtf"
+  manufacturer: "DarwinFPV - Official Store"
+  name: "DarwinFPV HULK III Mini Waterproof RTF"
+}
+receivers: {
+  uuid: "55a59bcc-4922-4f65-a8c6-ab19b63fff67"
+  id: "darwinfpv-tx8-elrs-radio-fpv-transmitter"
+  manufacturer: "DarwinFPV - Official Store"
+  name: "DarwinFPV TX8 ELRS Radio FPV Transmitter"
+}
+receivers: {
+  uuid: "e44bac9d-dea6-4080-92c2-b23cde78dbc6"
+  id: "darwinfpv-x10-large-load-and-long"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV X10 Large Load and Long"
+  description: "DarwinFPV X10 Large Load and Long Range 10  FPV Drone"
+}
+receivers: {
+  uuid: "2bfab705-3ba5-4669-96bc-fb26813a9f54"
+  id: "darwinfpv-foldape4-4-inch-folding-long-2"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV FoldApe4 4 Inch Folding Long"
+  description: "DarwinFPV FoldApe4 4 Inch Folding Long Range  RTF Kit"
+}
+receivers: {
+  uuid: "269973e9-93a1-439b-b6f7-ab01a08c9f23"
+  id: "darwinfpv-cineape35-fpv-drone-rtf"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV CineApe35 FPV Drone RTF"
+}
+receivers: {
+  uuid: "10b536a5-3800-41c2-818d-7523699b725a"
+  id: "darwinfpv-x9-9-long-range-fpv-drone"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV X9 9 Long Range FPV Drone"
+}
+receivers: {
+  uuid: "599a0c6f-ae15-4917-b1e2-dbe3f2611e42"
+  id: "tx12-mark-ii-elrs-radio-controller"
+  manufacturer: "DarwinFPV"
+  name: "TX12 Mark II  ELRS Radio Controller"
+  weight_g: 363
+}
+receivers: {
+  uuid: "6b7aa64c-15ed-46b8-b805-088910bbc230"
+  id: "babyape-fpv-drone-rtf"
+  manufacturer: "DarwinFPV"
+  name: "BabyApe Ⅱ FPV Drone RTF"
+  weight_g: 363
+}
+receivers: {
+  uuid: "baf358b4-9e68-40d2-8be9-68f1aef2eb50"
+  id: "darwinfpv-cineape-25-fpv-kit-rtf"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV CineApe 25 FPV Kit RTF"
+}
+receivers: {
+  uuid: "437be0a9-91a9-4759-b4a5-888d855e7d6f"
+  id: "darwinfpv-tx-lite-transmitter-rx-lite-receiver"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV TX-Lite Transmitter+ RX-Lite Receiver"
+  weight_g: 9
+}
+receivers: {
+  uuid: "2d9f870d-0090-4952-90da-44f3ac1fe771"
+  id: "radiomaster-zorro-elrs-radio-controller"
+  manufacturer: "DarwinFPV"
+  name: "Radiomaster Zorro ELRS Radio Controller"
+}
+receivers: {
+  uuid: "d48defd1-3337-4219-9312-714094110990"
+  id: "bayckrc-elrs-2-4g-nano-receiver"
+  manufacturer: "DarwinFPV"
+  name: "BAYCKRC ELRS 2.4G Nano Receiver"
+  weight_g: 0.4
+}
+receivers: {
+  uuid: "24508332-1e8f-4961-8343-988df4a1e4ba"
+  id: "darwinfpv-baby-ape-v4-pro-fpv-rtf"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Baby Ape V4 Pro FPV RTF"
+}
+receivers: {
+  uuid: "c8c6c7c6-d9da-43df-b119-b3e8e79c9a23"
+  id: "darwinfpv-radiomaster-r81-receiver"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Radiomaster R81 Receiver"
+  weight_g: 2
+}
+receivers: {
+  uuid: "d9d4a061-bc17-4667-9a51-737ccd55dd65"
+  id: "darwin-vantac-elrs-2-4g-lite-tx-module"
+  manufacturer: "DarwinFPV"
+  name: "Darwin Vantac ELRS 2.4G Lite TX Module"
+}
+receivers: {
+  uuid: "57561fe9-073a-48d6-8c19-ac9f48c80f6b"
+  id: "darwin-240-johnny-5-quadcopters"
+  manufacturer: "DarwinFPV"
+  name: "Darwin 240 Johnny 5 Quadcopters"
+}
+receivers: {
+  uuid: "b2b5b4ce-1edd-4be7-8c45-513616e93c3d"
+  id: "hummingbird-v4-1-complete-fly-repair"
+  manufacturer: "NewBeeDrone"
+  name: "Hummingbird V4.1 Complete Fly & Repair"
+  description: "Hummingbird V4.1 Complete Fly & Repair Bundle"
+}
+receivers: {
+  uuid: "8d377609-f1ce-4a68-8f93-fa1aa205277c"
+  id: "newbeedrone-beet-antenna-60mm-75mm-90mm"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeT-Antenna 60mm/75mm/90mm"
+  description: "NewBeeDrone BeeT-Antenna 60mm/75mm/90mm for ELRS 2.4GHz Receiver - U.FL Connector"
+}
+receivers: {
+  uuid: "a4cdf676-e378-40b0-a24f-64d45e1b0b16"
+  id: "newbeedrone-x-hummingbird-v3-1-brushless-rtf"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone x Hummingbird V3.1 Brushless RTF"
+  description: "NewBeeDrone x Hummingbird V3.1 Brushless RTF Bundle Kit"
+}
+receivers: {
+  uuid: "31ec4b14-a76c-4cad-adfb-34d0f3910bdd"
+  id: "newbeedrone-beet-antenna"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeT-Antenna"
+  description: "NewBeeDrone BeeT-Antenna for  ExpressLRS(ELRS) 2.4GHz receiver MHF3 Connector"
+}
+receivers: {
+  uuid: "2451cb66-17dd-43cc-92ad-e3367e366a74"
+  id: "newbeedrone-acrobee75-blv5-bnf-elrs2-4g-2s"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone AcroBee75 BLV5 BNF ELRS2.4G 2S"
+  weight_g: 36.4
+  description: "NewBeeDrone AcroBee75 BLV5 BNF ELRS2.4G 2S - The Ultimate Outdoor Whoop"
+}
+receivers: {
+  uuid: "4debc895-b56c-4150-b203-3d1adb3704a6"
+  id: "newbeedrone-beeceiver-elrs-2-4ghz-diversity"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeCeiver ELRS 2.4Ghz Diversity"
+  weight_g: 1.6
+  description: "NewBeeDrone BeeCeiver ELRS 2.4Ghz Diversity with TCXO Oscillator Micro Receiver"
+}
+receivers: {
+  uuid: "10fd1f19-79b1-4f83-9188-8f09d2c8b142"
+  id: "newbeedrone-beebrainbl-hummingbird-receiver-connector-type-mhf3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrainBL/Hummingbird Receiver Connector Type:MHF3"
+  description: "NewBeeDrone BeeBrainBL/Hummingbird Receiver Connector Type:MHF3 (pack of 4)"
+}
+receivers: {
+  uuid: "6cdc90b8-8250-4c04-bf78-2d503af75025"
+  id: "newbeedrone-beet-antenna-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeT-Antenna"
+  description: "NewBeeDrone BeeT-Antenna for  ExpressLRS(ELRS) 2.4GHz receiver MHF3 Connector /BLV4"
+}
+receivers: {
+  uuid: "43d5cead-0382-4209-9085-68d1a44e334a"
+  id: "newbeedrone-2-4g-replacement-receiver-antennas-60mm"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone 2.4G Replacement Receiver Antennas 60mm"
+  description: "NewBeeDrone 2.4G Replacement Receiver Antennas 60mm for BeeBrain BLV3/BLV4/HMB F4 V2"
+}
+receivers: {
+  uuid: "99dcbfc7-949f-4c42-993d-73057dfbca62"
+  id: "newbeedrone-vim-v2-replacement-parts"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone VIM V2 Replacement Parts"
+}
+receivers: {
+  uuid: "dd71c2d6-a10b-4711-8cd3-ebfcce8303a1"
+  id: "hdo-analog-fpv-goggles-ndaa"
+  manufacturer: "Fat Shark"
+  name: "HDO+ Analog FPV Goggles - NDAA"
+  weight_g: 235.8
+}
+receivers: {
+  uuid: "7aa5b5d3-1e7a-42af-8337-17848b6a50a1"
+  id: "cinemini-2-5-3d-prints-bundle-dji-o4"
+  manufacturer: "Rotor Riot"
+  name: "CineMini 2.5 3D Prints Bundle - DJI O4"
+}
+receivers: {
+  uuid: "054a71f6-2837-4ac8-a22c-2213938973ea"
+  id: "futaba-r7208sb"
+  manufacturer: "Futaba"
+  name: "Futaba R7208SB"
+  weight_g: 12
+  description: "Futaba R7208SB – FASSTest Bi-Directional Communication System S.Bus/S.Bus2 Port and 8 Channels Receiver"
+}
+receivers: {
+  uuid: "6d10de28-6421-4908-9080-54db599b6ba4"
+  id: "tanq-2-6s-5-pro-spec-by"
+  manufacturer: "Rotor Riot Builds"
+  name: "Tanq 2 6S 5 Pro-Spec by"
+  description: "Tanq 2 6S 5 Pro-Spec by Let'sFlyRC Built & Tuned Drone - DJI O4 Pro / ELRS"
+}
+receivers: {
+  uuid: "8daa9d8b-15fb-4ec8-bc6f-cf9e597181b9"
+  id: "fat-shark-recon-hd-goggle-bundle"
+  manufacturer: "Rotor Riot Store"
+  name: "Fat Shark Recon HD Goggle Bundle"
+  weight_g: 46.22
+}
+receivers: {
+  uuid: "7930c6bf-7fc9-432a-af07-45fb44e589b7"
+  id: "pocket-radio-controller"
+  manufacturer: "RadioMaster"
+  name: "Pocket Radio Controller"
+  weight_g: 288
+  description: "Pocket Radio Controller (Fat Shark Edition) - ELRS"
+}
+receivers: {
+  uuid: "d209428a-8e76-4c36-b5b8-dea0871d0e6e"
+  id: "vision40-2s-40mm-built-tuned"
+  manufacturer: "Rotor Riot Builds"
+  name: "Vision40 2S 40mm Built & Tuned"
+  description: "Vision40 2S 40mm Built & Tuned Drone - DJI O4 / DJI"
+}
+receivers: {
+  uuid: "3738bbfc-2d5f-428b-9d00-b815818ec63b"
+  id: "tx15-radio-controller-expresslrs"
+  manufacturer: "RadioMaster"
+  name: "TX15 Radio Controller ExpressLRS"
+  weight_g: 605
+}
+receivers: {
+  uuid: "59f29e5f-e708-4098-8784-c1bf5ee6ca63"
+  id: "tx15-max-radio-controller-expresslrs"
+  manufacturer: "RadioMaster"
+  name: "TX15 Max Radio Controller ExpressLRS"
+  weight_g: 672
+}
+receivers: {
+  uuid: "6eb07a7d-feb2-4b4a-9dd6-d606dc610384"
+  id: "tbs-tango-2-pro-radio-controller"
+  manufacturer: "Team Black Sheep"
+  name: "TBS Tango 2 Pro Radio Controller"
+  description: "TBS Tango 2 Pro Radio Controller - Crossfire - NDAA"
+}
+receivers: {
+  uuid: "748394d6-69a6-4f32-88c8-b31d4782548d"
+  id: "tbs-crossfire-tx-lite-transmitter-module"
+  manufacturer: "Team Black Sheep"
+  name: "TBS Crossfire TX LITE Transmitter Module"
+  weight_g: 76
+  description: "TBS Crossfire TX LITE Transmitter Module - NDAA"
+}
+receivers: {
+  uuid: "7ca03770-6392-4cd4-88ec-6844c9a125ed"
+  id: "nano-diversity-915mhz-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Nano Diversity 915MHz Receiver"
+  weight_g: 1.8
+  description: "Nano Diversity 915MHz Receiver For Crossfire Protocol - NDAA"
+}
+receivers: {
+  uuid: "44eccfa6-25af-4aad-ba28-73752a75f75d"
+  id: "nano-pro-915mhz-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Nano PRO 915MHz Receiver"
+  weight_g: 0.5
+  description: "Nano PRO 915MHz Receiver For Crossfire Protocol - NDAA"
+}
+receivers: {
+  uuid: "a5fec8b4-17ce-4d9c-92fe-9680f922ebd4"
+  id: "nano-se-915mhz-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Nano SE 915MHz Receiver"
+  weight_g: 0.5
+  description: "Nano SE 915MHz Receiver For Crossfire Protocol - NDAA"
+}
+receivers: {
+  uuid: "ef9737e4-2196-4ccf-a35e-5cbb1b6b5e2d"
+  id: "cinemini-immortal-t-elrs-antenna-mount"
+  manufacturer: "Noozle3D"
+  name: "CineMini Immortal T / ELRS Antenna Mount"
+}
+receivers: {
+  uuid: "5357171b-b056-4473-be8b-d54ca5ce7b61"
+  id: "cl2-immortal-t-elrs-dual-antenna-mount"
+  manufacturer: "Noozle3D"
+  name: "CL2 Immortal T / ELRS Dual Antenna Mount"
+}
+receivers: {
+  uuid: "53fa1822-3ca5-4006-b2b3-4b07973a69fd"
+  id: "xr4-gemini-xrossband-dual-band-receiver"
+  manufacturer: "RadioMaster"
+  name: "XR4 Gemini Xrossband Dual-Band  Receiver"
+  weight_g: 1.7
+  description: "XR4 Gemini Xrossband Dual-Band  Receiver for ELRS Protocol"
+}
+receivers: {
+  uuid: "0d067b99-53dc-4ad5-8e56-46ccc4925cc3"
+  id: "xr3-nano-multi-frequency-antenna-diversity-receiver"
+  manufacturer: "RadioMaster"
+  name: "XR3 Nano Multi-Frequency Antenna Diversity Receiver"
+  weight_g: 1.3
+  description: "XR3 Nano Multi-Frequency Antenna Diversity Receiver for ELRS Protocol"
+}
+receivers: {
+  uuid: "56894c2c-7520-4763-890c-27bdabf56067"
+  id: "xr2-nano-2-4ghz-receiver"
+  manufacturer: "RadioMaster"
+  name: "XR2 Nano 2.4GHz Receiver"
+  weight_g: 0.8
+  description: "XR2 Nano 2.4GHz Receiver for ELRS Protocol"
+}
+receivers: {
+  uuid: "e38b1e37-fc81-4dff-ae2f-6be90e007537"
+  id: "xr1-nano-multi-frequency-receiver"
+  manufacturer: "RadioMaster"
+  name: "XR1 Nano Multi-Frequency Receiver"
+  weight_g: 1
+  description: "XR1 Nano Multi-Frequency Receiver for ELRS Protocol"
+}
+receivers: {
+  uuid: "b7a85ea6-11d9-4bee-879e-d921996613ac"
+  id: "gx12-dual-band-radio-controller-elrs"
+  manufacturer: "RadioMaster"
+  name: "GX12 Dual-Band Radio Controller - ELRS"
+  weight_g: 573
+}
+receivers: {
+  uuid: "fea7e270-f977-4b37-bb73-bf6990294b92"
+  id: "shorty-pro-spec-rx-mount"
+  manufacturer: "Noozle3D"
+  name: "Shorty Pro-Spec RX Mount"
+}
+receivers: {
+  uuid: "4022d740-2f86-441d-8c50-5dab00e718df"
+  id: "punch-pro-spec-rx-cap-buzzer-mount"
+  manufacturer: "Noozle3D"
+  name: "Punch Pro-Spec RX / Cap / Buzzer Mount"
+}
+receivers: {
+  uuid: "7fb9a982-bf1d-4072-acfe-fdad58381b61"
+  id: "dbr4-dual-band-xross-gemini-receiver"
+  manufacturer: "RadioMaster"
+  name: "DBR4 Dual Band Xross Gemini Receiver"
+  description: "DBR4 Dual Band Xross Gemini Receiver for ELRS Protocol"
+}
+receivers: {
+  uuid: "3b039892-a62f-45aa-aaac-ad83f2f0cda7"
+  id: "nomad-elrs-dual-1w-gemini-xrossband"
+  manufacturer: "RadioMaster"
+  name: "Nomad ELRS Dual 1W Gemini Xrossband"
+  weight_g: 87.2
+  description: "Nomad ELRS Dual 1W Gemini Xrossband TX Module"
+}
+receivers: {
+  uuid: "2fd6662f-bf65-4e83-85ce-f8ed0591842f"
+  id: "skylite-skyliner-mk3-immortal-t"
+  manufacturer: "Rotor Riot"
+  name: "Skylite / Skyliner MK3 Immortal T"
+  description: "Skylite / Skyliner MK3 Immortal T / ELRS Antenna Mount - MJF TPU"
+}
+receivers: {
+  uuid: "ed6a6fab-8a52-4815-aab4-5d77245166f4"
+  id: "moongoat-sma-immortal-t"
+  manufacturer: "Noozle3D"
+  name: "Moongoat SMA & Immortal T /"
+  description: "Moongoat SMA & Immortal T / ELRS Antenna Mount"
+}
+receivers: {
+  uuid: "3625cea5-f920-495a-bf1a-8d43e0008ee7"
+  id: "bandit-elrs-1w-915mhz-micro-tx-module"
+  manufacturer: "RadioMaster"
+  name: "Bandit ELRS 1W 915MHz Micro TX Module"
+  weight_g: 78
+}
+receivers: {
+  uuid: "d2297fb0-839b-4257-8d56-8c494aaf80ab"
+  id: "bandit-elrs-1w-915mhz-tx-module"
+  manufacturer: "RadioMaster"
+  name: "Bandit ELRS 1W 915MHz TX Module"
+  weight_g: 155
+}
+receivers: {
+  uuid: "97e33d9c-ce15-4785-b5e1-6082fd48cf2e"
+  id: "bandit-915-868mhz-receiver-antenna"
+  manufacturer: "RadioMaster"
+  name: "Bandit 915/868MHz Receiver Antenna"
+  weight_g: 2.02
+  description: "Bandit 915/868MHz Receiver Antenna - Choose Version"
+}
+receivers: {
+  uuid: "d2aac87f-4f75-4cf7-b804-a11c597d7ac6"
+  id: "diversity-915-868mhz-receiver"
+  manufacturer: "Foxeer"
+  name: "Diversity 915/868MHz Receiver"
+  description: "Diversity 915/868MHz Receiver For ELRS Protocol"
+}
+receivers: {
+  uuid: "ad476e95-6719-495d-bee9-da1b90516e54"
+  id: "rp4td-2-4ghz-true-diversity-receiver"
+  manufacturer: "RadioMaster"
+  name: "RP4TD 2.4GHz True Diversity Receiver"
+  weight_g: 1.4
+  description: "RP4TD 2.4GHz True Diversity Receiver For ELRS Protocol"
+}
+receivers: {
+  uuid: "3fd83924-5351-4a82-a07c-bad5f66421c8"
+  id: "rp3-2-4ghz-diversity-receiver"
+  manufacturer: "RadioMaster"
+  name: "RP3 2.4GHz Diversity Receiver"
+  weight_g: 4.6
+  description: "RP3 2.4GHz Diversity Receiver For ELRS Protocol"
+}
+receivers: {
+  uuid: "395d6c69-9cad-4dda-99cf-eaf20a257e3f"
+  id: "bandit-br1-915mhz-receiver"
+  manufacturer: "RadioMaster"
+  name: "Bandit BR1 915MHz Receiver"
+  weight_g: 1.7
+  description: "Bandit BR1 915MHz Receiver For ELRS Protocol"
+}
+receivers: {
+  uuid: "b083b39a-8e92-4833-aea4-87df3b29fa46"
+  id: "bandit-elrs-1w-915mhz-nano-tx-module"
+  manufacturer: "RadioMaster"
+  name: "Bandit ELRS 1W 915MHz Nano TX Module"
+  weight_g: 62.5
+}
+receivers: {
+  uuid: "ea87c4e7-f813-4a2c-8a4d-a017980f7844"
+  id: "tx16s-mkii-radio-controller-elrs"
+  manufacturer: "RadioMaster"
+  name: "TX16S MKII Radio Controller - ELRS"
+  weight_g: 750
+}
+receivers: {
+  uuid: "422ad350-5b9d-40d0-8680-39fe2c58f4f2"
+  id: "skylite-skyliner-mk3-gps"
+  manufacturer: "Noozle3D"
+  name: "Skylite / Skyliner MK3 GPS &"
+  description: "Skylite / Skyliner MK3 GPS & Immortal T / ELRS Antenna Mount - Choose Color"
+}
+receivers: {
+  uuid: "90a25142-eef1-449a-823e-6595f843c3c5"
+  id: "tanq-2-immortal-t-elrs-antenna-mount"
+  manufacturer: "Noozle3D"
+  name: "TANQ 2 Immortal T / ELRS Antenna Mount"
+}
+receivers: {
+  uuid: "0251c09c-e436-4384-8884-c2b875eced5d"
+  id: "tanq-gps-immortal-t"
+  manufacturer: "Noozle3D"
+  name: "TANQ GPS & Immortal T /"
+  description: "TANQ GPS & Immortal T / ELRS Antenna Mount"
+}
+receivers: {
+  uuid: "61b16423-ff10-4f70-a44b-7d483146beb4"
+  id: "boxer-edgetx-rotor-riot-edition-radio"
+  manufacturer: "RadioMaster"
+  name: "Boxer EdgeTX Rotor Riot Edition Radio"
+  weight_g: 532.5
+  description: "Boxer EdgeTX Rotor Riot Edition Radio Controller - ELRS"
+}
+receivers: {
+  uuid: "5a178a81-e1cf-41b7-b9fe-436983abd273"
+  id: "er6gv-2-4ghz-pwm-receiver"
+  manufacturer: "RadioMaster"
+  name: "ER6GV 2.4GHz PWM Receiver"
+  weight_g: 5
+  description: "ER6GV 2.4GHz PWM Receiver For ELRS Protocol"
+}
+receivers: {
+  uuid: "e918a555-55d6-4653-91ff-18899b0a22e0"
+  id: "er4-2-4ghz-pwm-receiver"
+  manufacturer: "RadioMaster"
+  name: "ER4 2.4GHz PWM Receiver"
+  description: "ER4 2.4GHz PWM Receiver For ELRS Protocol"
+}
+receivers: {
+  uuid: "b5d88445-9985-458d-9248-77632954138c"
+  id: "ranger-elrs-1w-2-4ghz-nano-tx-module"
+  manufacturer: "RadioMaster"
+  name: "Ranger ELRS 1W 2.4GHz Nano TX Module"
+  weight_g: 48
+}
+receivers: {
+  uuid: "ec8973d7-2d6e-44c9-b092-f920d1159c6c"
+  id: "nano-915mhz-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Nano 915MHz Receiver"
+  weight_g: 0.5
+  description: "Nano 915MHz Receiver For Crossfire Protocol"
+}
+receivers: {
+  uuid: "bf243dc5-ca6c-4cdf-b3f0-884b8b1dd343"
+  id: "ranger-elrs-1w-2-4ghz-micro-tx-module"
+  manufacturer: "RadioMaster"
+  name: "Ranger ELRS 1W 2.4GHz Micro TX Module"
+  weight_g: 48
+}
+receivers: {
+  uuid: "dde85e91-cfe4-43b6-9807-40a0000bf970"
+  id: "t-antenna-915-868mhz-receiver"
+  manufacturer: "Foxeer"
+  name: "T Antenna 915/868MHz Receiver"
+  weight_g: 1
+  description: "T Antenna 915/868MHz Receiver For ELRS Protocol"
+}
+receivers: {
+  uuid: "11c9d78a-2419-4a18-b1b6-e903b2b26f4f"
+  id: "915-868mhz-elrs-t-antenna"
+  manufacturer: "Foxeer"
+  name: "915/868MHz ELRS T Antenna"
+  weight_g: 7.5
+  description: "915/868MHz ELRS T Antenna - Choose Version"
+}
+receivers: {
+  uuid: "d7c4b600-bb1e-4f60-ba97-ae68efb0b3c7"
+  id: "2-4ghz-elrs-t-antenna-choose-version"
+  manufacturer: "Foxeer"
+  name: "2.4GHz ELRS T Antenna - Choose Version"
+  weight_g: 1.5
+}
+receivers: {
+  uuid: "ea65339a-f3de-437a-9538-49e9ef527339"
+  id: "t-antenna-2-4ghz-receiver"
+  manufacturer: "Foxeer"
+  name: "T Antenna 2.4GHz Receiver"
+  weight_g: 0.7
+  description: "T Antenna 2.4GHz Receiver with LNA & PA For ELRS Protocol"
+}
+receivers: {
+  uuid: "eb16f065-7880-46b4-9218-c6a5ffa6ee87"
+  id: "lite-2-4ghz-receiver-for-elrs-protocol"
+  manufacturer: "Foxeer"
+  name: "Lite 2.4GHz Receiver For ELRS Protocol"
+  weight_g: 0.5
+}
+receivers: {
+  uuid: "8b71cd1c-b46a-49e8-b899-9afe47a50a90"
+  id: "d-pole-mkii-2-4ghz-receiver-antenna"
+  manufacturer: "TrueRC"
+  name: "D-Pole MKII 2.4GHz Receiver Antenna"
+  weight_g: 2
+}
+receivers: {
+  uuid: "b7680398-fb32-4e74-8174-a239999fd5d5"
+  id: "crossfire-micro-dipole-915mhz-rc-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Crossfire Micro Dipole 915MHz RC Receiver"
+  description: "Crossfire Micro Dipole 915MHz RC Receiver Antenna"
+}
+receivers: {
+  uuid: "70d85ebd-eeac-43ef-8369-0e8f0f6d2c05"
+  id: "tto-2-4ghz-receiver"
+  manufacturer: "ImmersionRC"
+  name: "Átto 2.4Ghz Receiver"
+  description: "Átto 2.4Ghz Receiver For Ghost Protocol - NDAA"
+}
+receivers: {
+  uuid: "e2742695-c606-4ef9-bfec-d28be9f0786b"
+  id: "tanq-immortal-t-elrs-antenna-mount"
+  manufacturer: "Noozle3D"
+  name: "TANQ Immortal T / ELRS Antenna Mount"
+}
+receivers: {
+  uuid: "6cf4008b-288c-43c2-a0a1-83b4f45bcd13"
+  id: "2-4ghz-t-antenna"
+  manufacturer: "RadioMaster"
+  name: "2.4GHz T Antenna"
+  weight_g: 1.76
+  description: "2.4GHz T Antenna for RP1 and EP1 - Choose Version"
+}
+receivers: {
+  uuid: "56beb8de-c0aa-4d33-97d7-961e940b2720"
+  id: "ranger-elrs-1w-2-4ghz-tx-module"
+  manufacturer: "RadioMaster"
+  name: "Ranger ELRS 1W 2.4GHz TX Module"
+  weight_g: 138
+}
+receivers: {
+  uuid: "75e69b1c-dbf7-45b9-8ec6-d5db6c663caa"
+  id: "rp2-2-4ghz-receiver-for-elrs-protocol"
+  manufacturer: "RadioMaster"
+  name: "RP2 2.4GHz Receiver For ELRS Protocol"
+  weight_g: 0.55
+}
+receivers: {
+  uuid: "6ad98ca6-f42c-42f4-a62f-0a5f65d14ec1"
+  id: "qt-2-4ghz-receiver-antenna"
+  manufacturer: "ImmersionRC"
+  name: "qT 2.4GHz Receiver Antenna"
+  description: "qT 2.4GHz Receiver Antenna for Ghost Átto"
+}
+receivers: {
+  uuid: "c7792c9a-e30f-42a0-89ee-94a9da1bde84"
+  id: "hook-v2-immortal-t-elrs-antenna-mount"
+  manufacturer: "Noozle3D"
+  name: "Hook V2 Immortal T / ELRS Antenna Mount"
+}
+receivers: {
+  uuid: "2a2f9212-6e0e-4f05-a1d1-c859b41e8eeb"
+  id: "tanq-1-2-rx-mounting-plate"
+  manufacturer: "Rotor Riot"
+  name: "TANQ 1 & 2 RX Mounting Plate"
+}
+receivers: {
+  uuid: "b6dd4da0-cc0c-4f88-812c-7268e217760a"
+  id: "rp1-2-4ghz-receiver-for-elrs-protocol"
+  manufacturer: "RadioMaster"
+  name: "RP1 2.4GHz Receiver For ELRS Protocol"
+  weight_g: 2.2
+}
+receivers: {
+  uuid: "8fd5d1ff-da23-4790-b42d-445d277fe5c3"
+  id: "skylite-skyliner-mk3-immortal-t-2"
+  manufacturer: "Noozle3D"
+  name: "Skylite / Skyliner MK3 Immortal T"
+  description: "Skylite / Skyliner MK3 Immortal T / ELRS Antenna Mount - Choose Color"
+}
+receivers: {
+  uuid: "40b503eb-51d7-4e5b-97ba-1debc58f02e0"
+  id: "cl2-immortal-t-elrs-antenna"
+  manufacturer: "Noozle3D"
+  name: "CL2 Immortal T / ELRS Antenna"
+  description: "CL2 Immortal T / ELRS Antenna Mount - Choose Color"
+}
+receivers: {
+  uuid: "540bc026-17f8-448b-9a5f-8c9b1e822334"
+  id: "moxy-immortal-t-elrs-antenna-mount"
+  manufacturer: "Noozle3D"
+  name: "Moxy Immortal T / ELRS Antenna Mount"
+}
+receivers: {
+  uuid: "769c9fd3-6924-43cd-8fdf-8b14bcedd156"
+  id: "tx16s-mkii-max-joshua-bardwell-edition"
+  manufacturer: "RadioMaster"
+  name: "TX16S MKII MAX Joshua Bardwell Edition"
+  weight_g: 750
+  description: "TX16S MKII MAX Joshua Bardwell Edition Radio Controller - ELRS"
+}
+receivers: {
+  uuid: "a34feda7-2a95-4717-9385-6511ecdeff31"
+  id: "tx16s-mk2-max-rotor-riot-edition"
+  manufacturer: "RadioMaster"
+  name: "TX16S MK2 Max Rotor Riot Edition"
+  weight_g: 750
+  description: "TX16S MK2 Max Rotor Riot Edition Radio Controller - ELRS"
+}
+receivers: {
+  uuid: "50ae859f-2295-477a-8c3a-1a9966b79ba0"
+  id: "minimortal-t-915mhz-rc-receiver-antenna"
+  manufacturer: "FPV Cycle"
+  name: "Minimortal T 915MHz RC Receiver Antenna"
+  weight_g: 0.7
+}
+receivers: {
+  uuid: "07bcb3af-4283-47e6-af2a-4f957348c061"
+  id: "tracer-100mw-2-4ghz-micro-tx-module"
+  manufacturer: "Team Black Sheep"
+  name: "Tracer 100mW 2.4GHz Micro TX Module"
+}
+receivers: {
+  uuid: "cc104547-83c4-4f30-a072-75b11d9e82e6"
+  id: "tracer-100mw-2-4ghz-nano-tx-module"
+  manufacturer: "Team Black Sheep"
+  name: "Tracer 100mW 2.4GHz Nano TX Module"
+}
+receivers: {
+  uuid: "a37ca8e9-6176-4529-8c9f-db52b5c9d8cf"
+  id: "nano-2-4ghz-receiver-for-tracer-protocol"
+  manufacturer: "Team Black Sheep"
+  name: "Nano 2.4GHz Receiver for Tracer Protocol"
+  weight_g: 0.5
+}
+receivers: {
+  uuid: "3eb1eebb-df55-4358-9999-e19b20281c62"
+  id: "tx12-mkii-radio-controller-elrs"
+  manufacturer: "RadioMaster"
+  name: "TX12 MKII Radio Controller - ELRS"
+  weight_g: 363
+}
+receivers: {
+  uuid: "424c83a5-a37c-4b03-8659-46a89d3e1c91"
+  id: "r81-2-4ghz-receiver-for-frsky-protocol"
+  manufacturer: "RadioMaster"
+  name: "R81 2.4GHz Receiver For FrSky Protocol"
+  weight_g: 2
+}
+receivers: {
+  uuid: "85326068-7f8f-474c-93d6-e45aa4ec5f6b"
+  id: "immersionrc-ghost-rx-mounting-board-3-pack"
+  manufacturer: "ImmersionRC"
+  name: "ImmersionRC Ghost RX Mounting Board 3-Pack"
+  description: "ImmersionRC Ghost RX Mounting Board 3-Pack - NDAA - Choose Version"
+}
+receivers: {
+  uuid: "f5893f01-1530-49ff-af57-0364fc45fcff"
+  id: "cl1-hd1-immortal-t"
+  manufacturer: "Noozle3D"
+  name: "CL1 & HD1 Immortal T /"
+  description: "CL1 & HD1 Immortal T / ELRS Antenna Mount - Choose Color"
+}
+receivers: {
+  uuid: "515dd422-2230-4a19-8447-c530b270653b"
+  id: "rekon-5-inch-rocket-8s-2-5w-elrs"
+  manufacturer: "HGLRC"
+  name: "Rekon 5-inch Rocket 8S 2.5W Elrs"
+  description: "Rekon 5-inch Rocket 8S 2.5W Elrs 2.4/915 dual-band"
+}
+receivers: {
+  uuid: "6d081d63-fb8a-4517-b2ff-6585fc62bac6"
+  id: "hglrc-gemini-elrs-915mhz-2-4ghz"
+  manufacturer: "HGLRC"
+  name: "HGLRC Gemini ELRS 915MHz & 2.4GHz"
+  description: "HGLRC Gemini ELRS 915MHz & 2.4GHz Dual-Band Single/Dual Antenna Receiver"
+}
+receivers: {
+  uuid: "77eb2616-829b-4220-8165-44acd991621b"
+  id: "hglrc-d200-soccer-drone-rtf-kit"
+  manufacturer: "HGLRC"
+  name: "HGLRC D200 Soccer Drone RTF Kit"
+  description: "HGLRC D200 Soccer Drone RTF Kit - Crash-Resistant Training Quadcopter"
+}
+receivers: {
+  uuid: "bf625697-9254-48b3-baba-6b3fbf6c2a03"
+  id: "hglrc-talon-2-inch-entry-level-rtf-set"
+  manufacturer: "HGLRC"
+  name: "HGLRC Talon 2-inch entry-level RTF Set"
+}
+receivers: {
+  uuid: "677f3561-5f8d-46f6-a298-2bbf2477de1a"
+  id: "hglrc-petrel-75whoop-1s-entry-level-rtf"
+  manufacturer: "HGLRC"
+  name: "HGLRC Petrel 75Whoop 1S Entry-level RTF"
+  description: "HGLRC Petrel 75Whoop 1S Entry-level RTF Set"
+}
+receivers: {
+  uuid: "9e867034-9e97-428f-9293-346a7314cc5a"
+  id: "hglrc-elrs-t-one-tx-module"
+  manufacturer: "HGLRC"
+  name: "HGLRC ELRS T ONE TX Module"
+  weight_g: 76
+}
+receivers: {
+  uuid: "8e10399e-49b7-497d-a585-f79dc1eabf61"
+  id: "hglrc-elrs-gemini-rx-dual-receiver"
+  manufacturer: "HGLRC"
+  name: "HGLRC ELRS GEMINI RX dual receiver"
+  description: "HGLRC ELRS GEMINI RX dual receiver 2.4G/915Mhz"
+}
+receivers: {
+  uuid: "6c32ff51-2c05-47da-8627-c2a76f918f47"
+  id: "hglrc-elrs-2-4g-receiver"
+  manufacturer: "HGLRC"
+  name: "HGLRC ELRS 2.4G Receiver"
+}
+receivers: {
+  uuid: "090e27cd-9d42-490d-b8ac-af524f833435"
+  id: "diatone-roma-f7-6s-pnp-bnf-drone"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "DIATONE Roma F7 6S PNP/BNF Drone"
+  description: "DIATONE Roma F7 6S PNP/BNF Drone MSR/TBS Receiver"
+}
+receivers: {
+  uuid: "b8305249-a23c-4258-a718-cb9378ecf0ca"
+  id: "diatone-roma-f4-dji-4-6s-drone"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "DIATONE Roma F4 DJI 4/6S Drone"
+  description: "DIATONE Roma F4 DJI 4/6S Drone MSR/TBS Receiver"
+}
+receivers: {
+  uuid: "08e1a7d7-58c6-48aa-87d6-e177fc9dc395"
+  id: "fifty5-flash-2306-hq-5-5x3-5x3-bundle"
+  manufacturer: "FlyFishRC"
+  name: "FIFTY5 Flash 2306 HQ 5.5x3.5x3 Bundle"
+  weight_g: 127.7
+  description: "FIFTY5 Flash 2306 HQ 5.5x3.5x3 Bundle Kit"
+}
+receivers: {
+  uuid: "9d847c71-31d8-4697-baa2-70174d806dbf"
+  id: "fifty5-sword-2207-bundle-kit"
+  manufacturer: "FlyFish RC"
+  name: "FIFTY5 Sword 2207 Bundle Kit"
+  weight_g: 127.7
+}
+receivers: {
+  uuid: "4b4f95b2-da12-4c22-b54f-2563ec4dc7ca"
+  id: "sub250-microradio-elrs-2-4g-transmitter"
+  manufacturer: "Sub250"
+  name: "Sub250 MicroRadio Elrs 2.4g Transmitter"
+  description: "(Clearance Sale) Sub250 MicroRadio Elrs 2.4g Transmitter"
+}
+receivers: {
+  uuid: "d8497c69-c03d-4430-ab4d-b35c0a068b71"
+  id: "sub250-nimble65-rtf-combo"
+  manufacturer: "sub250"
+  name: "Sub250 Nimble65 RTF Combo"
+  weight_g: 21
+}
+receivers: {
+  uuid: "12ff7e0d-0e05-4065-aa44-4b0b88c19733"
+  id: "sub250-elrs-lite-2-4g-receiver"
+  manufacturer: "Sub250"
+  name: "Sub250 ELRS Lite 2.4G Receiver"
+  weight_g: 0.7
+}
+receivers: {
+  uuid: "d676a9f6-b295-4212-9758-ce819ebbfcc6"
+  id: "sub250-elrs-nano-pro-2-4g-receiver"
+  manufacturer: "Sub250"
+  name: "Sub250 ELRS Nano Pro 2.4G Receiver"
+  weight_g: 0.7
+}
+receivers: {
+  uuid: "3f1f6603-164a-476e-a05f-d90c701f42d8"
+  id: "sub250-elrs-nano-2-4g-receiver"
+  manufacturer: "Sub250"
+  name: "Sub250 ELRS Nano 2.4G Receiver"
+  weight_g: 0.6
+}
+receivers: {
+  uuid: "2c79cc2d-a773-4305-b0a9-ae06f15b8fff"
+  id: "sub250-1s-nanofly16-1-6-inch-freestyle"
+  manufacturer: "Sub250"
+  name: "Sub250 1s Nanofly16 1.6 inch Freestyle"
+  description: "Sub250 1s Nanofly16  1.6 inch Freestyle Quadcopter"
+}
+receivers: {
+  uuid: "57277db0-6c37-4b84-80e4-825997ba1299"
+  id: "heat-shrink-20mm-x-1m"
+  manufacturer: "FPVCycle"
+  name: "Heat Shrink - 20mm x 1M"
+}
+receivers: {
+  uuid: "0c64c313-b34c-456e-895e-77388a3fe454"
+  id: "internal-rx-cdcd2312-b900-41ea-aaad-d807737e9855"
+  manufacturer: "BETAFPV"
+  name: "P1 HD VRX (Standard) (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "1c6df32e-9585-452f-ae29-55b6b295a598"
+  id: "beta-test-p1-hd-vrx"
+  manufacturer: "BETAFPV"
+  name: "[BETA TEST] P1 HD VRX"
+  is_internal_only: true
+  description: "[BETA TEST] P1 HD VRX (Nano) (Internal RX)"
+}
+receivers: {
+  uuid: "b5de936f-25cb-4012-81a6-a842d7ba6707"
+  id: "internal-rx-1af14652-bd6f-453d-8a84-db99438de688"
+  manufacturer: "BETAFPV"
+  name: "ELRS Lite Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "19e0176d-d0a9-4f26-b19a-6bd76fb7f170"
+  id: "f4-1s-5a-aio-brushless-flight-2"
+  manufacturer: "BETAFPV"
+  name: "F4 1S 5A AIO Brushless Flight"
+  is_internal_only: true
+  description: "F4 1S 5A AIO Brushless Flight Controller (ELRS 2.4G) (Internal RX)"
+}
+receivers: {
+  uuid: "c302c0e5-00ed-4909-b981-757c38e13d5f"
+  id: "internal-rx-cb515f72-04b0-44d3-b756-39f375527de0"
+  manufacturer: "BETAFPV"
+  name: "ELRS Nano Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "c9037e17-7240-4bc5-b02b-a9e92cf24b88"
+  id: "internal-rx-f55610c5-306f-4b2c-a6a1-b7ab5eb33f7c"
+  manufacturer: "BETAFPV"
+  name: "SPI Frsky Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "110c286f-682d-4348-8fb0-55a00fe7dc4d"
+  id: "f4-1s-brushless-flight-controller-3"
+  manufacturer: "BETAFPV"
+  name: "F4 1S Brushless Flight Controller"
+  is_internal_only: true
+  description: "F4 1S Brushless Flight Controller ( Frsky RX ) (Internal RX)"
+}
+receivers: {
+  uuid: "9cf6ec1a-a1e0-4ba1-9f46-8fe06b65034d"
+  id: "f4-1s-brushless-flight-controller-4"
+  manufacturer: "BETAFPV"
+  name: "F4 1S Brushless Flight Controller"
+  is_internal_only: true
+  description: "F4 1S Brushless Flight Controller (No RX+OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "4a1c93f9-0c52-42b1-9b44-9d25606743c7"
+  id: "f4-brushed-flight-controller-6"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (SPI FUTABA RX + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "25a176c7-c8df-467d-9fd6-e360d69fd9df"
+  id: "f4-brushed-flight-controller-7"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "3f36bd87-b362-48c7-827c-91b2e96bff2a"
+  id: "f3-brushed-flight-controller-6"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Frsky Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "5766f915-3ff9-449a-a7b3-8495032c6a20"
+  id: "f4-brushed-flight-controller-8"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (No Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "874e1927-1057-426a-b355-9cd318ded288"
+  id: "f3-brushed-flight-controller-7"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Flysky Rx + OSD V1) (Internal RX)"
+}
+receivers: {
+  uuid: "7ae68f92-b368-47eb-b918-b3000fcab698"
+  id: "f4-brushed-flight-controller-9"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (Frsky Rx / No RX) (Internal RX)"
+}
+receivers: {
+  uuid: "09ea2d9c-2377-4eb3-97c1-f6ac38077697"
+  id: "f3-brushed-flight-controller-8"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Frsky Rx + OSD V2) (Internal RX)"
+}
+receivers: {
+  uuid: "e77f7c1e-6635-465f-a48e-21cd111f361b"
+  id: "f3-brushed-flight-controller-9"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "7ea9315a-3f40-421c-8f76-774a0455d9e6"
+  id: "f3-evo-brushed-flight-controller-2"
+  manufacturer: "BETAFPV"
+  name: "F3 EVO Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 EVO Brushed Flight Controller (Frsky Rx) (Internal RX)"
+}
+receivers: {
+  uuid: "74d7a534-ce02-404a-b488-b93449e52795"
+  id: "internal-rx-1f92f03d-d89c-4abe-93ca-6a11e64dda6a"
+  manufacturer: "CADDXFPV"
+  name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "c2de593a-f739-4f6e-93c5-ad7e03de6e4f"
+  id: "darwinfpv-f411-45a-elrs-aio-cineape35-5"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only: true
+  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
+}
+receivers: {
+  uuid: "a598eedb-5383-4f63-9f9f-64d0e99106e9"
+  id: "darwinfpv-cement-ultra-durable-elrs-2-4g-2"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
+  is_internal_only: true
+  description: "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
+}
+receivers: {
+  uuid: "5ff7f57c-3e4f-4840-b0c0-71d8894982d6"
+  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio-4"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only: true
+  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
+}
+receivers: {
+  uuid: "e8e4c3aa-e4d1-4bbe-b3c3-f05a66532330"
+  id: "newbeedrone-lionbee-long-range-elrs2-4-aio-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
+  is_internal_only: true
+  description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
+}
+receivers: {
+  uuid: "25a33ace-8a95-4e9e-8db9-d7e3c8057f2c"
+  id: "newbeedrone-lionbee-3inch-long-range-elrs2-4-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
+  is_internal_only: true
+  description: "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
+}
+receivers: {
+  uuid: "3c4a122e-3621-4bed-b418-80de5ffb3298"
+  id: "newbeedrone-beebrain-blv5-aio-flight-controller-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G (Internal RX)"
+}
+receivers: {
+  uuid: "4672b90a-a3ef-40ec-9a2c-1a558b5c3dbf"
+  id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
+}
+receivers: {
+  uuid: "4b7cfebb-c916-4fa9-a861-bb31c78c382e"
+  id: "newbeedrone-beebrain-hd-g4-flight-controller-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain HD G4 Flight Controller"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain HD G4 Flight Controller ExpressLRS (ELRS) 2.4G (Internal RX)"
+}
+receivers: {
+  uuid: "64cf50bc-5a26-49ed-a2d1-95e14eeaeff6"
+  id: "newbeedrone-beeceiver-frsky-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeCeiver Frsky"
+  is_internal_only: true
+  description: "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
+}
+receivers: {
+  uuid: "9ad9ce97-eb5e-4fd0-873b-8c1c6c244c2f"
+  id: "cl2-xr-6s-7-built-tuned-3"
+  manufacturer: "Rotor Riot Builds"
+  name: "CL2-XR 6S 7 Built & Tuned"
+  is_internal_only: true
+  description: "CL2-XR 6S 7 Built & Tuned Drone - Avatar / ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "8e61981b-cba8-4126-8011-699e531319e6"
+  id: "skylite-ducted-4s-3-solder-free-built-2"
+  manufacturer: "Rotor Riot Builds"
+  name: "Skylite Ducted 4S 3 Solder-Free Built"
+  is_internal_only: true
+  description: "Skylite Ducted 4S 3 Solder-Free Built & Tuned Drone - Avatar / ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "f940d3a2-cbbc-4eb2-88f5-142426359504"
+  id: "goku-f405-ervt-1s-5a-5-in-1-2"
+  manufacturer: "Flywoo"
+  name: "GOKU F405 ERVT 1S 5A 5-in-1"
+  is_internal_only: true
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "173b0158-de47-4bb3-a989-8ea70592ebf9"
+  id: "avatar-hd-vrx-kit-2"
+  manufacturer: "Walksnail"
+  name: "Avatar HD VRX Kit"
+  is_internal_only: true
+  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal RX)"
+}
+receivers: {
+  uuid: "3449eade-b63b-4d8a-a5e2-bdba08c9bad2"
+  id: "internal-rx-daec1a67-37ad-455f-97b0-64d397e1807a"
+  manufacturer: "BETAFPV"
+  name: "P1 HD VRX (Standard) (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "7dab5cda-2f55-4cf5-ac28-50bf7e5beda8"
+  id: "beta-test-p1-hd-vrx-2"
+  manufacturer: "BETAFPV"
+  name: "[BETA TEST] P1 HD VRX"
+  is_internal_only: true
+  description: "[BETA TEST] P1 HD VRX (Nano) (Internal RX)"
+}
+receivers: {
+  uuid: "1a14933e-b728-4eab-b30e-a26c0b0a9eca"
+  id: "internal-rx-0f285819-4640-44e9-8f1d-254fb487052a"
+  manufacturer: "BETAFPV"
+  name: "ELRS Lite Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "7079047b-a3d1-4f82-b739-6a04a24bfc97"
+  id: "f4-1s-5a-aio-brushless-flight-3"
+  manufacturer: "BETAFPV"
+  name: "F4 1S 5A AIO Brushless Flight"
+  is_internal_only: true
+  description: "F4 1S 5A AIO Brushless Flight Controller (ELRS 2.4G) (Internal RX)"
+}
+receivers: {
+  uuid: "b2c720d3-0353-4838-af8f-13a97dc9dd25"
+  id: "internal-rx-9ce1c839-3fae-477e-a26d-d8b760934cf6"
+  manufacturer: "BETAFPV"
+  name: "ELRS Nano Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "2d5b2f8d-fe16-4587-a506-974578c096d5"
+  id: "internal-rx-53aad8e6-9293-4165-8856-d0bea8d8e4ba"
+  manufacturer: "BETAFPV"
+  name: "SPI Frsky Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "152975c8-2262-4c17-9fd8-5473471bfa01"
+  id: "f4-1s-brushless-flight-controller-5"
+  manufacturer: "BETAFPV"
+  name: "F4 1S Brushless Flight Controller"
+  is_internal_only: true
+  description: "F4 1S Brushless Flight Controller ( Frsky RX ) (Internal RX)"
+}
+receivers: {
+  uuid: "ed84607f-3139-4f70-bc52-00467a103b02"
+  id: "f4-1s-brushless-flight-controller-6"
+  manufacturer: "BETAFPV"
+  name: "F4 1S Brushless Flight Controller"
+  is_internal_only: true
+  description: "F4 1S Brushless Flight Controller (No RX+OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "a7fc11f9-082b-4685-873f-77965ac1bce7"
+  id: "f4-brushed-flight-controller-10"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (SPI FUTABA RX + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "abf1a43e-b18f-4c83-90ef-d9aa56517ba8"
+  id: "f4-brushed-flight-controller-11"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "dd111eb3-0967-46d7-8c0b-2e6b023b0cbd"
+  id: "f3-brushed-flight-controller-10"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Frsky Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "32e958a8-825e-4c5c-84b1-a4ae0bfedeb5"
+  id: "f4-brushed-flight-controller-12"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (No Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "0c0dffab-ddb5-42bf-ab6e-46179fdc8b59"
+  id: "f3-brushed-flight-controller-11"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Flysky Rx + OSD V1) (Internal RX)"
+}
+receivers: {
+  uuid: "f6519d8a-4664-4777-8693-529060079b58"
+  id: "f4-brushed-flight-controller-13"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (Frsky Rx / No RX) (Internal RX)"
+}
+receivers: {
+  uuid: "166770a8-1e27-427d-82e7-7429e5e31357"
+  id: "f3-brushed-flight-controller-12"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Frsky Rx + OSD V2) (Internal RX)"
+}
+receivers: {
+  uuid: "6825ef2e-8a4f-44bb-ba5d-991fa520a452"
+  id: "f3-brushed-flight-controller-13"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "fbacfe2f-18f1-4c62-bae5-ee97ad5678f5"
+  id: "f3-evo-brushed-flight-controller-3"
+  manufacturer: "BETAFPV"
+  name: "F3 EVO Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 EVO Brushed Flight Controller (Frsky Rx) (Internal RX)"
+}
+receivers: {
+  uuid: "35ea2c93-05ab-458c-91a6-d16b7a9b7dea"
+  id: "internal-rx-2f75a325-5e33-452e-93a2-93f94d71b54d"
+  manufacturer: "CADDXFPV"
+  name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "b7c8d86f-ef46-4fb8-88b5-65683c3750f4"
+  id: "darwinfpv-f411-45a-elrs-aio-cineape35-6"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only: true
+  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
+}
+receivers: {
+  uuid: "eed31c09-c456-4684-a08e-5c856f97e4c4"
+  id: "darwinfpv-cement-ultra-durable-elrs-2-4g-3"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
+  is_internal_only: true
+  description: "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
+}
+receivers: {
+  uuid: "561e97ea-717b-43e6-8864-8e62fac6727e"
+  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio-5"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only: true
+  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
+}
+receivers: {
+  uuid: "43b5e716-b012-4b69-ba93-87ad6cc1e369"
+  id: "newbeedrone-lionbee-long-range-elrs2-4-aio-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
+  is_internal_only: true
+  description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
+}
+receivers: {
+  uuid: "d645ce4e-fa7c-468b-9435-83742d32ef19"
+  id: "newbeedrone-lionbee-3inch-long-range-elrs2-4-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
+  is_internal_only: true
+  description: "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
+}
+receivers: {
+  uuid: "83ce9e72-ab40-44eb-85a1-2329514559d8"
+  id: "newbeedrone-beebrain-blv5-aio-flight-controller-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G (Internal RX)"
+}
+receivers: {
+  uuid: "41f5d5c4-7253-48b8-b59d-71809e9c2308"
+  id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
+}
+receivers: {
+  uuid: "6b251977-aae1-4f83-913a-e7050a2f6093"
+  id: "newbeedrone-beebrain-hd-g4-flight-controller-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain HD G4 Flight Controller"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain HD G4 Flight Controller ExpressLRS (ELRS) 2.4G (Internal RX)"
+}
+receivers: {
+  uuid: "7b5bec93-ef6f-4eb5-9a7d-0deefa998ebd"
+  id: "newbeedrone-beeceiver-frsky-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeCeiver Frsky"
+  is_internal_only: true
+  description: "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
+}
+receivers: {
+  uuid: "753d5275-003a-490e-b5de-0327cda7a06a"
+  id: "cl2-xr-6s-7-built-tuned-4"
+  manufacturer: "Rotor Riot Builds"
+  name: "CL2-XR 6S 7 Built & Tuned"
+  is_internal_only: true
+  description: "CL2-XR 6S 7 Built & Tuned Drone - Avatar / ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "3fc2111f-1a98-4a5e-99f0-4146b7c9f44e"
+  id: "skylite-ducted-4s-3-solder-free-built-3"
+  manufacturer: "Rotor Riot Builds"
+  name: "Skylite Ducted 4S 3 Solder-Free Built"
+  is_internal_only: true
+  description: "Skylite Ducted 4S 3 Solder-Free Built & Tuned Drone - Avatar / ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "9051993c-35b3-461a-80b1-a94834896d2e"
+  id: "goku-f405-ervt-1s-5a-5-in-1-3"
+  manufacturer: "Flywoo"
+  name: "GOKU F405 ERVT 1S 5A 5-in-1"
+  is_internal_only: true
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "3c1cdfb0-3738-4429-befb-e80d3b3ab8a9"
+  id: "avatar-hd-vrx-kit-3"
+  manufacturer: "Walksnail"
+  name: "Avatar HD VRX Kit"
+  is_internal_only: true
+  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal RX)"
+}
+receivers: {
+  uuid: "29a2640e-8961-400f-b73c-244911de3144"
+  id: "internal-rx-2c239ba9-5d1e-4917-818a-4ca1c6d6ac9c"
+  manufacturer: "BETAFPV"
+  name: "P1 HD VRX (Standard) (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "fe02897b-f71a-490a-a018-643435357288"
+  id: "beta-test-p1-hd-vrx-3"
+  manufacturer: "BETAFPV"
+  name: "[BETA TEST] P1 HD VRX"
+  is_internal_only: true
+  description: "[BETA TEST] P1 HD VRX (Nano) (Internal RX)"
+}
+receivers: {
+  uuid: "9c54fe07-b85c-409a-9378-dfb5fe229050"
+  id: "internal-rx-47fe97d1-e70b-4bfc-9d1d-2712eb507c56"
+  manufacturer: "BETAFPV"
+  name: "ELRS Lite Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "fa20242a-4c99-4bcd-99fb-770f815a2e6b"
+  id: "f4-1s-5a-aio-brushless-flight-4"
+  manufacturer: "BETAFPV"
+  name: "F4 1S 5A AIO Brushless Flight"
+  is_internal_only: true
+  description: "F4 1S 5A AIO Brushless Flight Controller (ELRS 2.4G) (Internal RX)"
+}
+receivers: {
+  uuid: "bd69a9d0-8548-40dd-ba68-90f3d95a7009"
+  id: "internal-rx-fc0f9301-cf37-4417-aaee-1d30ba87b04f"
+  manufacturer: "BETAFPV"
+  name: "ELRS Nano Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "29b74c6e-23e3-40c6-87dd-a9f0ac2a6d91"
+  id: "internal-rx-0ecc0517-4eca-415e-b005-95963d5bd478"
+  manufacturer: "BETAFPV"
+  name: "SPI Frsky Receiver (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "2c281b92-c490-442b-aa61-369bf8768948"
+  id: "f4-1s-brushless-flight-controller-7"
+  manufacturer: "BETAFPV"
+  name: "F4 1S Brushless Flight Controller"
+  is_internal_only: true
+  description: "F4 1S Brushless Flight Controller ( Frsky RX ) (Internal RX)"
+}
+receivers: {
+  uuid: "3e7ba9b9-8eb5-472f-8e90-054d0e093a40"
+  id: "f4-1s-brushless-flight-controller-8"
+  manufacturer: "BETAFPV"
+  name: "F4 1S Brushless Flight Controller"
+  is_internal_only: true
+  description: "F4 1S Brushless Flight Controller (No RX+OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "028dc538-a8ed-4889-b2d7-30744fb4eb61"
+  id: "f4-brushed-flight-controller-14"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (SPI FUTABA RX + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "7479689f-402a-4cc6-98ee-8270867b3f06"
+  id: "f4-brushed-flight-controller-15"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "61216af7-f6ad-4d79-8501-315276bbd300"
+  id: "f3-brushed-flight-controller-14"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Frsky Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "08d0a105-8801-4c95-bfee-15ed3e6cca8f"
+  id: "f4-brushed-flight-controller-16"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (No Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "0c0c49df-2dc2-460b-b338-75c9a7f545ff"
+  id: "f3-brushed-flight-controller-15"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Flysky Rx + OSD V1) (Internal RX)"
+}
+receivers: {
+  uuid: "ec3a94ec-bc44-4b6c-b725-3f46a1d5a3fc"
+  id: "f4-brushed-flight-controller-17"
+  manufacturer: "BETAFPV"
+  name: "F4 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F4 Brushed Flight Controller (Frsky Rx / No RX) (Internal RX)"
+}
+receivers: {
+  uuid: "cde0618d-4381-4239-932e-a759f19cfdf7"
+  id: "f3-brushed-flight-controller-16"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (Frsky Rx + OSD V2) (Internal RX)"
+}
+receivers: {
+  uuid: "e250a6d7-a9a8-4211-a256-d21a1961878e"
+  id: "f3-brushed-flight-controller-17"
+  manufacturer: "BETAFPV"
+  name: "F3 Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 Brushed Flight Controller (DSMX Rx + OSD) (Internal RX)"
+}
+receivers: {
+  uuid: "64341daf-3600-47cf-b48c-c20acb77da6a"
+  id: "f3-evo-brushed-flight-controller-4"
+  manufacturer: "BETAFPV"
+  name: "F3 EVO Brushed Flight Controller"
+  is_internal_only: true
+  description: "F3 EVO Brushed Flight Controller (Frsky Rx) (Internal RX)"
+}
+receivers: {
+  uuid: "6654d8ad-eb22-4ed8-917d-0850437e4da4"
+  id: "internal-rx-f0e44073-9567-4702-a556-5cd1883e8296"
+  manufacturer: "CADDXFPV"
+  name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
+  is_internal_only: true
+}
+receivers: {
+  uuid: "87638d17-be2b-4d31-99d3-6d882a10306f"
+  id: "darwinfpv-f411-45a-elrs-aio-cineape35-7"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only: true
+  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
+}
+receivers: {
+  uuid: "9fc3577e-8769-4e86-81e4-dd6f1b2e5b83"
+  id: "darwinfpv-cement-ultra-durable-elrs-2-4g-4"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
+  is_internal_only: true
+  description: "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
+}
+receivers: {
+  uuid: "eb82b94d-1932-4841-8427-29c4cc124048"
+  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio-6"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only: true
+  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
+}
+receivers: {
+  uuid: "d72a2149-daca-4deb-8635-5b2fcdba562d"
+  id: "newbeedrone-lionbee-long-range-elrs2-4-aio-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
+  is_internal_only: true
+  description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
+}
+receivers: {
+  uuid: "ebd3aea7-8ed6-42f6-b9ae-cc5e3547db2b"
+  id: "newbeedrone-lionbee-3inch-long-range-elrs2-4-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
+  is_internal_only: true
+  description: "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
+}
+receivers: {
+  uuid: "a4a2440b-20a8-426b-a992-9ceb0ad12dae"
+  id: "newbeedrone-beebrain-blv5-aio-flight-controller-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G (Internal RX)"
+}
+receivers: {
+  uuid: "98ed7beb-7019-477d-a2e1-d850e286e75b"
+  id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
+}
+receivers: {
+  uuid: "d17abb0c-e0f6-4560-bcc3-e6e27a923c4d"
+  id: "newbeedrone-beebrain-hd-g4-flight-controller-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain HD G4 Flight Controller"
+  is_internal_only: true
+  description: "NewBeeDrone BeeBrain HD G4 Flight Controller ExpressLRS (ELRS) 2.4G (Internal RX)"
+}
+receivers: {
+  uuid: "5fc364c3-f008-409c-9551-5289ee802bb1"
+  id: "newbeedrone-beeceiver-frsky-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeCeiver Frsky"
+  is_internal_only: true
+  description: "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
+}
+receivers: {
+  uuid: "a144bbc8-afaf-47a5-a922-4ffdfe529842"
+  id: "cl2-xr-6s-7-built-tuned-5"
+  manufacturer: "Rotor Riot Builds"
+  name: "CL2-XR 6S 7 Built & Tuned"
+  is_internal_only: true
+  description: "CL2-XR 6S 7 Built & Tuned Drone - Avatar / ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "eee89d75-fab8-4ef6-a836-24557c9c228e"
+  id: "skylite-ducted-4s-3-solder-free-built-4"
+  manufacturer: "Rotor Riot Builds"
+  name: "Skylite Ducted 4S 3 Solder-Free Built"
+  is_internal_only: true
+  description: "Skylite Ducted 4S 3 Solder-Free Built & Tuned Drone - Avatar / ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "ad54842e-f701-4858-b169-1f2fc5f6286d"
+  id: "goku-f405-ervt-1s-5a-5-in-1-4"
+  manufacturer: "Flywoo"
+  name: "GOKU F405 ERVT 1S 5A 5-in-1"
+  is_internal_only: true
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
+}
+receivers: {
+  uuid: "a94aee3c-2d0d-49ca-bfda-387b7442c2a9"
+  id: "avatar-hd-vrx-kit-4"
+  manufacturer: "Walksnail"
+  name: "Avatar HD VRX Kit"
+  is_internal_only: true
+  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal RX)"
+}
+receivers: {
+  uuid: "4da8a069-d611-4376-b6d9-667996a4aa76"
+  id: "hglrc-specter-f722-lite-icm42688-gyro-2"
+  manufacturer: "HGLRC"
+  name: "HGLRC SPECTER F722 Lite ICM42688 gyro"
+  is_internal_only: true
+  description: "HGLRC SPECTER F722 Lite ICM42688 gyro integrated ELRS 2.4G receiver flight controller (Internal RX)"
+}
+receivers: {
+  uuid: "1ee26f9f-4c6f-4301-b43b-cbc1dfa2dfa3"
+  id: "hglrc-wind5-lite-v2-racing-drone-2"
+  manufacturer: "HGLRC"
+  name: "HGLRC Wind5 Lite V2 Racing Drone"
+  is_internal_only: true
+  description: "HGLRC Wind5 Lite V2 Racing Drone Elrs2.4G version (Internal RX)"
+}
+receivers: {
+  uuid: "ab61a221-d90d-4de9-917a-28a33599e037"
+  id: "hglrc-specter-15a-elrs-aio-2-4s-3"
+  manufacturer: "HGLRC"
+  name: "HGLRC SPECTER 15A ELRS AIO 2-4S"
+  is_internal_only: true
+  description: "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone (Internal RX)"
 }

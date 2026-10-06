@@ -39,6 +39,7 @@ type Propeller struct {
 	Blades uint32 `protobuf:"varint,8,opt,name=blades,proto3" json:"blades,omitempty"`
 	// E.g., "Polycarbonate", "Carbon Fiber"
 	Material      string `protobuf:"bytes,9,opt,name=material,proto3" json:"material,omitempty"`
+	Description   string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -132,6 +133,13 @@ func (x *Propeller) GetBlades() uint32 {
 func (x *Propeller) GetMaterial() string {
 	if x != nil {
 		return x.Material
+	}
+	return ""
+}
+
+func (x *Propeller) GetDescription() string {
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -323,7 +331,7 @@ var File_quadsmith_propeller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x94\x02\n" +
+	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xb6\x02\n" +
 	"\tPropeller\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -334,7 +342,9 @@ const file_quadsmith_propeller_proto_rawDesc = "" +
 	"diameterMm\x12\x19\n" +
 	"\bpitch_mm\x18\a \x01(\x02R\apitchMm\x12\x16\n" +
 	"\x06blades\x18\b \x01(\rR\x06blades\x12\x1a\n" +
-	"\bmaterial\x18\t \x01(\tR\bmaterial:\x0e\xc2\xf3\x18\n" +
+	"\bmaterial\x18\t \x01(\tR\bmaterial\x12 \n" +
+	"\vdescription\x18\n" +
+	" \x01(\tR\vdescription:\x0e\xc2\xf3\x18\n" +
 	"propellers\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +

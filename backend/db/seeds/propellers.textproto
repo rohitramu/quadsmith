@@ -1,2110 +1,2284 @@
-propellers:  {
-  uuid:  "5bb5b8ae-fc45-45c0-a388-11e0d0ab6124"
-  id:  "hqprop-5x4.3x3-v1s"
-  manufacturer:  "HQProp"
-  name:  "HQProp 5x4.3x3 V1S"
-  weight_g:  3.81
-  diameter_mm:  127
-  pitch_mm:  109.22
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "85e4b6d3-aeed-45c2-b51b-c55359528c7c"
-  id:  "hqprop-t2x2x3"
-  manufacturer:  "HQProp"
-  name:  "HQProp T2x2x3"
-  weight_g:  1.5
-  diameter_mm:  50.8
-  pitch_mm:  50.8
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "bac19aec-99fc-43d4-b96d-d1feb30e6b6e"
-  id:  "gemfan-hurricane-51466-v2"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan Hurricane 51466 V2"
-  weight_g:  4.2
-  diameter_mm:  131.83
-  pitch_mm:  91.44
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "0801832b-b458-4ad5-a311-0e4f1efcc8da"
-  id:  "gemfan-floppy-proppy-f5135"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan Floppy Proppy F5135"
-  weight_g:  4.7
-  diameter_mm:  129.54
-  pitch_mm:  88.9
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "85fd29c1-857d-48e0-a5f7-f454ad4c52b6"
-  id:  "hqprop-ethix-s5-light-grey"
-  manufacturer:  "HQProp"
-  name:  "HQProp Ethix S5 Light Grey"
-  weight_g:  3.7
-  diameter_mm:  127
-  pitch_mm:  101.6
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "cd0d879e-7b30-4d22-b4cd-475f103b8b70"
-  id:  "hqprop-7x4x3"
-  manufacturer:  "HQProp"
-  name:  "HQProp 7X4X3"
-  weight_g:  9.1
-  diameter_mm:  177.8
-  pitch_mm:  101.6
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "a609a8fc-e509-4f5e-a3b5-2ee4847192cf"
-  id:  "gemfan-1219-3-blade"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan 1219 3-Blade"
-  weight_g:  0.28
-  diameter_mm:  30.99
-  pitch_mm:  48.01
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "1d421d54-2b93-4bfe-a626-b1f3918f3426"
-  id:  "gemfan-1636-4-blade"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan 1636 4-Blade"
-  weight_g:  0.5
-  diameter_mm:  39.88
-  pitch_mm:  91.44
-  blades:  4
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "db4c27cd-dbf6-4fb8-83d1-5d00ee86562a"
-  id:  "gemfan-2023-3-blade"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan 2023 3-Blade"
-  weight_g:  0.88
-  diameter_mm:  50.8
-  pitch_mm:  58.42
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "9b6afc05-af45-45c1-9171-6c08de3d8c8d"
-  id:  "gemfan-3016-3-blade"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan 3016 3-Blade"
-  weight_g:  1.18
-  diameter_mm:  76.2
-  pitch_mm:  40.64
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "f438ea4d-29f6-4730-b5d6-105105d04294"
-  id:  "gemfan-4023-3-blade"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan 4023 3-Blade"
-  weight_g:  1.9
-  diameter_mm:  101.6
-  pitch_mm:  58.42
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "c6ccaf42-c038-463b-b311-1e53a75c2fa0"
-  id:  "gemfan-hurricane-51433"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan Hurricane 51433"
-  weight_g:  3.8
-  diameter_mm:  130.81
-  pitch_mm:  109.98
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "81ff33d3-02da-4d1f-a258-0974cd1aaf38"
-  id:  "gemfan-hurricane-51499"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan Hurricane 51499"
-  weight_g:  5.1
-  diameter_mm:  130.81
-  pitch_mm:  126.75
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "a84c2809-0a8d-4eff-b7f3-ac4e36586e3b"
-  id:  "gemfan-7040-3-blade"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan 7040 3-Blade"
-  weight_g:  8.7
-  diameter_mm:  177.8
-  pitch_mm:  101.6
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "8a9d1fa6-3a22-4bed-86e8-2352ec189f35"
-  id:  "hqprop-micro-whoop-31x3"
-  manufacturer:  "HQProp"
-  name:  "HQProp Micro Whoop 31x3"
-  weight_g:  0.27
-  diameter_mm:  30.99
-  pitch_mm:  29.97
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "9c6cb944-f7cd-4459-a3c9-b288309e88fa"
-  id:  "hqprop-micro-whoop-40x4"
-  manufacturer:  "HQProp"
-  name:  "HQProp Micro Whoop 40x4"
-  weight_g:  0.5
-  diameter_mm:  39.88
-  pitch_mm:  39.88
-  blades:  4
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "d00fa7e1-7efc-4057-ba75-e0d6d9b84b3b"
-  id:  "hqprop-t65mm-2.5-inch"
-  manufacturer:  "HQProp"
-  name:  "HQProp T65MM 2.5 Inch"
-  weight_g:  1.2
-  diameter_mm:  65.02
-  pitch_mm:  39.88
-  blades:  2
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "50f7726c-df27-4037-8bcb-c1779dac76f9"
-  id:  "hqprop-t3x3x3"
-  manufacturer:  "HQProp"
-  name:  "HQProp T3x3x3"
-  weight_g:  1.5
-  diameter_mm:  76.2
-  pitch_mm:  76.2
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "89594ace-b5b9-4494-91c3-de6d839e77b7"
-  id:  "hqprop-t4x2.5x2"
-  manufacturer:  "HQProp"
-  name:  "HQProp T4x2.5x2"
-  weight_g:  1.4
-  diameter_mm:  101.6
-  pitch_mm:  63.5
-  blades:  2
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "d1ce02e4-961c-499d-8424-3b84424edfde"
-  id:  "hqprop-ethix-p3-peanut-butter"
-  manufacturer:  "HQProp"
-  name:  "HQProp Ethix P3 Peanut Butter"
-  weight_g:  3.8
-  diameter_mm:  129.54
-  pitch_mm:  76.2
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "6d5540a7-7f07-40a5-840d-185c39f77038"
-  id:  "hqprop-ethix-s3-watermelon"
-  manufacturer:  "HQProp"
-  name:  "HQProp Ethix S3 Watermelon"
-  weight_g:  3.6
-  diameter_mm:  127
-  pitch_mm:  78.74
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "180c5d56-8970-405b-9308-254d1bde06de"
-  id:  "hqprop-5.1x4.1x3"
-  manufacturer:  "HQProp"
-  name:  "HQProp 5.1x4.1x3"
-  weight_g:  4.7
-  diameter_mm:  129.54
-  pitch_mm:  104.14
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "194a58be-4a4c-48b3-bc42-85a97d25074a"
-  id:  "hqprop-7x3.5x3"
-  manufacturer:  "HQProp"
-  name:  "HQProp 7x3.5x3"
-  weight_g:  8.8
-  diameter_mm:  177.8
-  pitch_mm:  88.9
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "84d6959a-80c2-4e81-828e-71fee9065947"
-  id:  "hqprop-2.5x2.5x3"
-  manufacturer:  "HQProp"
-  name:  "HQProp 2.5x2.5x3"
-  weight_g:  1.5
-  diameter_mm:  63.5
-  pitch_mm:  63.5
-  blades:  3
-  material:  "Polycarbonate"
-}
-propellers:  {
-  uuid:  "a55f6a33-8a46-4f95-b534-f4960a48294e"
-  id:  "gemfan-d2-2-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan D2.2 3-Blade Propellers (1.5mm Shaft)"
-  weight_g:  0.95
-}
-propellers:  {
-  uuid:  "c9e747f7-f870-4773-87e2-1f83a77c13f1"
-  id:  "gemfan-1811-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 1811 3-Blade Propellers (1.5mm Shaft)"
-  weight_g:  0.32
-}
-propellers:  {
-  uuid:  "93fb946c-74d7-4b72-a89f-360f243d337b"
-  id:  "gemfan-1409-3-blade-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 1409 3-Blade Propellers (1.0mm Shaft)"
-  weight_g:  0.2
-}
-propellers:  {
-  uuid:  "e66cf388-64bc-493f-afce-690b9ee2c802"
-  id:  "aquila20-brushless-whoop-quadcopter"
-  manufacturer:  "BETAFPV"
-  name:  "Aquila20 Brushless Whoop Quadcopter"
-}
-propellers:  {
-  uuid:  "37023d68-1cff-415f-948e-a064826b1eac"
-  id:  "gemfan-1614-3-blade-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 1614 3-Blade Propellers (1.0mm Shaft)"
-  weight_g:  0.24
-}
-propellers:  {
-  uuid:  "79109cc6-1b79-49bb-b475-2b199dad2008"
-  id:  "gemfan-1207-3-blade-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 1207 3-Blade Propellers (1.0mm Shaft)"
-  weight_g:  0.15
-}
-propellers:  {
-  uuid:  "505afa4c-9baa-47ac-bc99-0b05705ece7e"
-  id:  "aquila20-hd-fpv-kit"
-  manufacturer:  "BETAFPV"
-  name:  "Aquila20 HD FPV Kit"
-}
-propellers:  {
-  uuid:  "3f0008ef-2fc4-41d3-82c0-854f742147ab"
-  id:  "aquila20-fpv-kit"
-  manufacturer:  "BETAFPV"
-  name:  "Aquila20 FPV Kit"
-}
-propellers:  {
-  uuid:  "7fe56d45-ad2f-45fc-9f5e-7f6ceecc4566"
-  id:  "hq-4025-2-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "HQ 4025 2-Blade Propellers 1.5mm Shaft"
-  weight_g:  1.4
-}
-propellers:  {
-  uuid:  "f0fff850-48c2-402a-8856-9ee963f3f76c"
-  id:  "gemfan-5125-3-blade-propellers-5mm-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 5125 3-Blade Propellers 5mm/1.5mm Shaft"
-  weight_g:  2.8
-}
-propellers:  {
-  uuid:  "453f79fb-4f75-4e48-9535-ec56864f319b"
-  id:  "gemfan-1611-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 1611 3-Blade Propellers (1.5mm Shaft)"
-  weight_g:  0.34
-}
-propellers:  {
-  uuid:  "277fc2d5-475d-4e24-815b-9e6518fcdf44"
-  id:  "1735-4-blades-pc-propellers-4-pcs"
-  manufacturer:  "BETAFPV"
-  name:  "1735 4-Blades PC Propellers  (4 PCS)"
-  weight_g:  0.8
-}
-propellers:  {
-  uuid:  "b1e1d0ee-4b09-497f-adc8-99ea80db530a"
-  id:  "31mm-4-blade-micro-whoop-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "31mm 4-blade Micro Whoop Propellers (1.0mm Shaft)"
-}
-propellers:  {
-  uuid:  "9ae7ce92-a83a-48c6-87c2-fb8007f147af"
-  id:  "40mm-3-blade-micro-whoop-propellers-1-0mm-shaft-4-sets"
-  manufacturer:  "BETAFPV"
-  name:  "40mm 3-blade Micro Whoop Propellers (1.0mm shaft 4 Sets)"
-}
-propellers:  {
-  uuid:  "cb6882e5-83c5-4565-88d4-3f7df5c6fcf2"
-  id:  "gemfan-2218-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 2218 3-Blade Propellers (1.5mm Shaft)"
-  weight_g:  2.32
-}
-propellers:  {
-  uuid:  "613756ba-ae8e-4032-b131-854c8b6967ee"
-  id:  "hq-31mm-ultralight-3-blade-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "HQ 31mm Ultralight 3-Blade Propellers (1.0mm Shaft)"
-  weight_g:  0.67
-}
-propellers:  {
-  uuid:  "8dedb8e0-8b9d-41a1-8af8-73e6800565d2"
-  id:  "gemfan-1219s-3-blade-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 1219S 3-Blade Propellers (1.0mm Shaft)"
-  weight_g:  0.74
-}
-propellers:  {
-  uuid:  "48053723-9d2a-4042-8f48-2a4011b445ab"
-  id:  "gemfan-2023-3-blade-propellers-1-5mm-shaft-4pcs"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 2023 3-blade Propellers (1.5mm Shaft 4PCS)"
-  weight_g:  3.54
-}
-propellers:  {
-  uuid:  "2bdfc5f8-9a06-4e6b-bff9-b7d18e9c748c"
-  id:  "beta-45mm-3-blade-propellers-1-5mm-shaft-4pcs"
-  manufacturer:  "BETAFPV"
-  name:  "Beta-45mm 3-Blade Propellers (1.5mm Shaft 4PCS)"
-  weight_g:  1.63
-}
-propellers:  {
-  uuid:  "e7c0cb87-0c45-42ba-ba8f-076b6db3aef7"
-  id:  "gemfan-1210-2-blade-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 1210 2-blade Propellers (1.0mm Shaft)"
-  weight_g:  0.73
-}
-propellers:  {
-  uuid:  "b0593285-e5f2-4722-a162-25174d204f67"
-  id:  "gemfan-1208-3-blade-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 1208 3-blade Propellers(1.0mm Shaft)"
-  weight_g:  0.81
-}
-propellers:  {
-  uuid:  "9623e7eb-9769-4eea-880d-709797148362"
-  id:  "hq-31mm-3-blade-propellers-0-8mm-shaft-4pcs"
-  manufacturer:  "BETAFPV"
-  name:  "HQ 31mm 3-Blade Propellers (0.8mm Shaft 4PCS)"
-  weight_g:  1.16
-}
-propellers:  {
-  uuid:  "b3719bbd-e8a8-40b1-bf8f-f6d7d1859563"
-  id:  "gemfan-45mm-2-blade-3-blade-propellers-1-5mm-shaft-4pcs"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 45mm 2-Blade & 3-Blade Propellers (1.5mm Shaft 4PCS)"
-  weight_g:  1.69
-}
-propellers:  {
-  uuid:  "a872651b-74e4-473e-9631-0b1c3280e217"
-  id:  "gemfan-2015-2-blade-propellers-4pcs-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 2015 2-Blade Propellers 4PCS (1.5mm Shaft)"
-  weight_g:  0.5
-}
-propellers:  {
-  uuid:  "d38d99db-1982-4035-abe4-fabd3795e0a0"
-  id:  "gemfan-51466-mck-v2-3-blade-propellers-5-0mm-shaft-4pcs"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 51466 MCK V2 3-Blade Propellers (5.0mm Shaft 4PCS)"
-  weight_g:  4.2
-}
-propellers:  {
-  uuid:  "de8e1b9e-01de-41bd-b400-e2c87dc9ec8e"
-  id:  "gemfan-hurricane-51433-3-blade-propellers-5-0mm-shaft-4pcs"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan Hurricane 51433 3-Blade Propellers (5.0mm Shaft 4PCS)"
-  weight_g:  3.8
-}
-propellers:  {
-  uuid:  "c960c0b4-c018-4f56-90fe-d17b3d999e83"
-  id:  "hq-65mm-2-blade-1-5mm-shaft-propellers"
-  manufacturer:  "BETAFPV"
-  name:  "HQ 65mm 2-Blade 1.5mm Shaft Propellers"
-}
-propellers:  {
-  uuid:  "070e17c3-9431-4467-8734-f689d8eeccf9"
-  id:  "gemfan-35mm-3-blade-propellers-1-0mm-shaft-4pcs"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 35mm 3-Blade Propellers (1.0mm Shaft 4PCS)"
-  weight_g:  1.23
-}
-propellers:  {
-  uuid:  "f760a2e9-f65b-46f1-b221-7cbc2fba93d3"
-  id:  "gemfan-40mm-2-blade-propellers-1-0mm-shaft-4pcs"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 40mm 2-Blade Propellers (1.0mm Shaft 4PCS)"
-  weight_g:  1.02
-}
-propellers:  {
-  uuid:  "fabd7c65-1435-4f30-ac2e-5b6da6c95995"
-  id:  "gemfan-3520-3-blade-propellers-1-5-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 3520 3-Blade Propellers (1.5-5mm Shaft)"
-  weight_g:  1.92
-}
-propellers:  {
-  uuid:  "68d643be-9b23-4f64-8703-813cb6519a18"
-  id:  "hq-3520-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "HQ 3520 3-Blade Propellers (1.5mm Shaft)"
-  weight_g:  1.5
-}
-propellers:  {
-  uuid:  "c48baf28-814c-4611-b70f-6117488cd14f"
-  id:  "gemfan-d63-5-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan D63 5-Blade Propellers 1.5mm Shaft"
-  weight_g:  1.76
-}
-propellers:  {
-  uuid:  "36c0b1d6-f78a-4afe-a5d1-053671fcc9e6"
-  id:  "hq-5025-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "HQ 5025 3-Blade Propellers 1.5mm Shaft"
-  weight_g:  3.4
-}
-propellers:  {
-  uuid:  "aa287113-66c0-4849-8cd9-4d446dc1996e"
-  id:  "gemfan-2020-4-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 2020 4-Blade Propellers 1.5mm Shaft"
-  weight_g:  0.93
-}
-propellers:  {
-  uuid:  "f80977ee-ea8a-4bc4-849b-3adc981bcf93"
-  id:  "gemfan-d63-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan D63 3-Blade Propellers 1.5mm Shaft"
-  weight_g:  1.4
-}
-propellers:  {
-  uuid:  "0ec44d2f-2f19-4541-b7dc-069fa7eac2d8"
-  id:  "gemfan-4032-3-blade-propellers-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 4032 3-Blade Propellers 5mm Shaft"
-  weight_g:  3.12
-}
-propellers:  {
-  uuid:  "8f78c503-3039-4fe3-a6cb-fee94f345c87"
-  id:  "31mm-3-blade-micro-whoop-propellers-0-8mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "31mm 3-blade Micro Whoop Propellers (0.8mm Shaft)"
-}
-propellers:  {
-  uuid:  "c2912508-11cc-4ced-9233-40df0f64ae77"
-  id:  "48mm-4-blade-micro-whoop-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "48mm 4-blade Micro Whoop Propellers (1.0mm shaft)"
-}
-propellers:  {
-  uuid:  "1d89f4df-4a34-41cc-83f6-8bf6ee6ad408"
-  id:  "gemfan-31mm-4-blade-micro-whoop-propellers"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 31mm 4-blade Micro Whoop Propellers"
-  weight_g:  0.31
-}
-propellers:  {
-  uuid:  "2c4c8b38-6f5d-465b-ae59-7801af90f832"
-  id:  "gemfan-3016-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 3016 3-Blade Propellers (1.5mm Shaft)"
-  weight_g:  1.24
-}
-propellers:  {
-  uuid:  "c22cad45-99e3-428b-bd69-a77c44f714c2"
-  id:  "gemfan-2540-3-blade-propellers"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 2540 3-Blade Propellers"
-  weight_g:  3.7
-}
-propellers:  {
-  uuid:  "84284e00-160b-4a14-9bcc-f78210e0dbd6"
-  id:  "gemfan-31mm-3-blade-micro-whoop-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 31mm 3-blade Micro Whoop Propellers (1.0mm Shaft)"
-}
-propellers:  {
-  uuid:  "5ef6e8ad-93a7-4684-b5f0-ae37f5da48f9"
-  id:  "48mm-4-blade-propellers-for-hx100-fpv-quad-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "48mm 4-Blade Propellers for HX100 FPV Quad (1.5mm shaft )"
-  weight_g:  3
-}
-propellers:  {
-  uuid:  "3c6bf964-3a80-4bad-a2c9-f867a081e68b"
-  id:  "65mm-2-blade-propellers-for-hx100-fpv-quad-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "65mm 2-Blade Propellers for HX100 FPV Quad (1.5mm Shaft)"
-}
-propellers:  {
-  uuid:  "57d893b9-bca9-45e6-9379-6d18632ce6b1"
-  id:  "beta75x-2s-whoop-quadcopter-pink-white-orange-yellow"
-  manufacturer:  "BETAFPV"
-  name:  "Beta75X 2S Whoop Quadcopter (Pink/White/Orange/Yellow)"
-}
-propellers:  {
-  uuid:  "951b0a38-0de1-48e7-a0b1-092ec2b6d6c3"
-  id:  "emax-avan-2-4-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "EMAX Avan 2'' 4-Blade Propellers (1.5mm Shaft)"
-  weight_g:  3.7
-}
-propellers:  {
-  uuid:  "0b3752db-ce75-4d21-ac88-4ec677a0b811"
-  id:  "gemfan-40mm-3-blade-propellers-1-0mm-shaft-4-sets"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 40mm 3-Blade Propellers (1.0mm Shaft 4 Sets)"
-}
-propellers:  {
-  uuid:  "7b9dca5c-d8dd-42af-8bd4-80516f5329a5"
-  id:  "gemfan-40mm-3-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 40mm 3-Blade Propellers (1.5mm Shaft)"
-}
-propellers:  {
-  uuid:  "f5f36dc3-9953-4899-aef2-35af8c5f4718"
-  id:  "gemfan-40mm-4-blade-propellers-1-5mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 40mm 4-Blade Propellers (1.5mm Shaft)"
-}
-propellers:  {
-  uuid:  "c7f68599-c900-4d42-8c05-48f89cd2e833"
-  id:  "gemfan-40mm-4-blade-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Gemfan 40mm 4-Blade Propellers (1.0mm Shaft)"
-}
-propellers:  {
-  uuid:  "cf8df091-60b4-4016-9f39-3015e1651734"
-  id:  "40mm-4-blade-2s-whoop-propellers-1-5mm-shaft-hole"
-  manufacturer:  "BETAFPV"
-  name:  "40mm 4-blade 2S Whoop Propellers (1.5mm Shaft Hole)"
-}
-propellers:  {
-  uuid:  "f1d82d49-1fe0-4f40-92f2-af5a24927085"
-  id:  "40mm-3-blade-chameleon-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "40mm 3-blade Chameleon Propellers (1.0mm shaft)"
-}
-propellers:  {
-  uuid:  "75b1d642-2060-4569-9186-edf82afa44f1"
-  id:  "transparent-31mm-3-blade-micro-whoop-propellers-0-8mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "Transparent 31mm 3-blade Micro Whoop Propellers (0.8mm shaft)"
-}
-propellers:  {
-  uuid:  "34c3acbd-6530-4a67-929c-8165a6ca52cd"
-  id:  "31mm-4-blade-micro-whoop-propellers-0-8mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "31mm 4-blade Micro Whoop Propellers (0.8mm shaft)"
-}
-propellers:  {
-  uuid:  "cc8e8b76-c6f0-4f1f-b0e3-8400d5caf2a8"
-  id:  "48mm-3-blade-micro-whoop-propellers-1-0mm-shaft"
-  manufacturer:  "BETAFPV"
-  name:  "48mm 3-blade Micro Whoop Propellers (1.0mm shaft)"
-}
-propellers:  {
-  uuid:  "1a51da49-7078-441f-9efa-5548ba95fdbd"
-  id:  "31mm-3-blade-micro-whoop-propellers-0-8mm-shaft-4-sets"
-  manufacturer:  "BETAFPV"
-  name:  "31mm 3-blade Micro Whoop Propellers (0.8mm shaft 4 Sets)"
-}
-propellers:  {
-  uuid:  "103ddf7e-8fd9-4eea-a47f-5dcad1e0ca98"
-  id:  "caddxfpv-curve-micro-16-replacement-propeller-set"
-  manufacturer:  "CADDXFPV"
-  name:  "CaddxFPV Curve Micro 16 Replacement Propeller Set"
-}
-propellers:  {
-  uuid:  "8e1e1aff-2da1-40f7-baa8-88a4946e5709"
-  id:  "caddxfpv-hq-3-blade-propeller-set-2cw-2ccw"
-  manufacturer:  "CADDX FPV"
-  name:  "CaddxFPV HQ 3-Blade Propeller Set (2CW + 2CCW)"
-}
-propellers:  {
-  uuid:  "af0e1d98-06b0-4a2b-81bf-c5868d442c7c"
-  id:  "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount-propeller-set-2x-cw-2x-ccw"
-  manufacturer:  "CADDXFPV"
-  name:  "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount Propeller Set (2x CW / 2x CCW)"
-}
-propellers:  {
-  uuid:  "4583de63-ed4e-42c8-bee6-5831f1bfef68"
-  id:  "darwinfpv-d63-3-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV D63-3 Propeller"
-  weight_g:  1.6
-}
-propellers:  {
-  uuid:  "c5bab505-8f36-4f1d-837d-18bcbf6b2f78"
-  id:  "darwinfpv-cineape-25-ii-cinematic-whoop-fpv-drone"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV CineApe 25 II  Cinematic Whoop FPV Drone"
-}
-propellers:  {
-  uuid:  "365e3550-feae-4fdd-9d41-b42e53ff7a35"
-  id:  "darwinfpv-babyape-iii-pro-hqprop-t3-5x2-5x3-3-5-inch-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV BabyApe III Pro  HQProp T3.5X2.5X3 3.5 Inch Propeller"
-  weight_g:  1.5
-}
-propellers:  {
-  uuid:  "db62119b-e290-4e78-8986-fe20d00e14e6"
-  id:  "darwinfpv-6032-x6-d6-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV 6032 X6/D6 Propeller"
-  weight_g:  5.8
-}
-propellers:  {
-  uuid:  "0cdc020d-3574-4183-8b13-2962f226e38d"
-  id:  "darwinfpv-51499-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV 51499 Propeller"
-  weight_g:  4.96
-}
-propellers:  {
-  uuid:  "d49d625c-c4ac-4f66-9f2c-988300b60638"
-  id:  "darwinfpv-cineape20-2023-3-2-inch-propellers"
-  manufacturer:  "DarwinFPV - Official Store"
-  name:  "DarwinFPV CineApe20 2023-3 2 Inch Propellers"
-  weight_g:  0.88
-}
-propellers:  {
-  uuid:  "1aaee669-fd22-4485-b45b-cc0e83d0151c"
-  id:  "darwinfpv-cineape35-d90-3-3-5-inch-fpv-drone-propeller"
-  manufacturer:  "DarwinFPV - Official Store"
-  name:  "DarwinFPV CineApe35 D90-3  3.5 inch FPV Drone Propeller"
-  weight_g:  2.3
-}
-propellers:  {
-  uuid:  "88adfc08-0ed0-4134-801e-06c4dc43e2c8"
-  id:  "darwinfpv-gemfan-x-class-1308-13x8x3-13inch-propeller"
-  manufacturer:  "DarwinFPV - Official Store"
-  name:  "DarwinFPV Gemfan X-CLASS 1308 13X8X3 13inch Propeller"
-  weight_g:  39
-}
-propellers:  {
-  uuid:  "69dbc8c8-90c9-4fbd-824f-7e78989f5ac9"
-  id:  "darwinfpv-babyape-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV BabyApe Ⅱ Propeller"
-  weight_g:  1.5
-}
-propellers:  {
-  uuid:  "f3a98c5a-3a05-4b75-a4e3-f96cd3f53f22"
-  id:  "darwinfpv-f4019-2-folding-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV F4019-2 Folding Propeller"
-  weight_g:  1.42
-}
-propellers:  {
-  uuid:  "f0e5961b-56b5-4568-b1e8-bd286b7eec52"
-  id:  "darwinfpv-gemfan-8060-3-glass-fiber-nylon"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Gemfan 8060-3 Glass Fiber Nylon"
-}
-propellers:  {
-  uuid:  "fcedb465-3503-48f4-83b6-e8874a80a8e1"
-  id:  "darwinfpv-hurricane7050-3-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Hurricane7050-3 Propeller"
-  weight_g:  8.9
-}
-propellers:  {
-  uuid:  "450d8654-1d08-47e5-816f-f58d218b2545"
-  id:  "darwinfpv-8040-3-glass-fiber-nylon-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV 8040-3 Glass Fiber Nylon Propeller"
-}
-propellers:  {
-  uuid:  "d9a0e89a-b807-4f5a-bb98-af4a118b10ff"
-  id:  "darwinfpv-9045-3-glass-fiber-nylon-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV 9045-3 Glass Fiber Nylon Propeller"
-}
-propellers:  {
-  uuid:  "666b272f-040f-4671-a088-e6f14fd49472"
-  id:  "darwinfpv-1050-3-fpv-drone-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV  1050-3 FPV Drone Propeller"
-}
-propellers:  {
-  uuid:  "48366e05-c898-4112-96ba-82a66d799330"
-  id:  "darwinfpv-hqprop-t3-5x2x3grey-propeller-babyape-ii"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV HQProp T3.5X2X3Grey Propeller / Babyape II"
-  weight_g:  1.5
-}
-propellers:  {
-  uuid:  "fd2f4e90-c9a9-41d6-87ac-aa4b7bd555fe"
-  id:  "darwinfpv-cineape-25-hqprop-t63mmx6-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV CineApe 25 HQProp T63MMX6 Propeller"
-  weight_g:  1.85
-}
-propellers:  {
-  uuid:  "a37257cd-dbd1-4143-b3b6-79d6b81ed968"
-  id:  "gemfan-4934-5-inch-3-blade-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "Gemfan 4934 5 inch 3-Blade Propeller"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "5e2fbac6-a81c-425c-8ee5-8f6a1c9056f1"
-  id:  "darwinfpv-5-inch-51466-3-blades-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "Darwinfpv 5 inch 51466-3 blades propeller"
-  weight_g:  4.2
-}
-propellers:  {
-  uuid:  "13882035-614f-4b21-a8fc-ab915993a5ee"
-  id:  "darwinfpv-2512-2-5inch-3-blade-fpv-propellers"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV 2512 2.5inch 3-blade FPV Propellers"
-  weight_g:  0.8
-}
-propellers:  {
-  uuid:  "adfe6b0e-4dbc-456b-a687-bcadc2b8c03a"
-  id:  "darwin-gemfan-3018-3-inch-2-blade-propeller"
-  manufacturer:  "DarwinFPV"
-  name:  "Darwin Gemfan 3018 3 inch 2-Blade Propeller"
-  weight_g:  1.66
-}
-propellers:  {
-  uuid:  "ca254750-f1bc-42a5-973f-278d6526ccab"
-  id:  "gemfan-flash-7040-3-blade-propeller-for-7-inch-fpv-drone"
-  manufacturer:  "DarwinFPV"
-  name:  "Gemfan Flash 7040 3-Blade Propeller for 7 inch FPV Drone"
-  weight_g:  7.9
-}
-propellers:  {
-  uuid:  "ea44351d-267d-4f0a-9867-7a24a38d2656"
-  id:  "gemfan-3016-3-inch-propeller-for-fpv-drones"
-  manufacturer:  "DarwinFPV"
-  name:  "Gemfan 3016 3 inch Propeller for FPV Drones"
-  weight_g:  1.18
-}
-propellers:  {
-  uuid:  "4b8f93a1-f041-44ea-905c-4a9675aedc7f"
-  id:  "newbeedrone-tool-kit-v1-7"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Tool Kit V1.7"
-  weight_g:  28
-}
-propellers:  {
-  uuid:  "bb9f3699-e424-429c-b881-b5f64eecc370"
-  id:  "newbeedrone-whoop-propypop-tool-for-easy-propeller-removal"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Whoop PropyPop Tool for Easy Propeller Removal"
-}
-propellers:  {
-  uuid:  "58c25632-6bab-4bae-9328-59481fa00ea5"
-  id:  "newbeedrone-azi-tri-blade-micro-propellers-31mm-1-0mm-shaft-4ccw-4cw"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Azi (Tri Blade) Micro Propellers 31mm - 1.0mm Shaft (4CCW+4CW)"
-}
-propellers:  {
-  uuid:  "5008d969-7efe-4e53-b8ec-8efc141db50e"
-  id:  "ultimate-propeller-combo"
-  manufacturer:  "NewBeeDrone"
-  name:  "Ultimate Propeller Combo"
-}
-propellers:  {
-  uuid:  "b3b60ce1-09f7-4da9-b92d-36073a6c193f"
-  id:  "newbeedrone-azi-tri-blade-micro-propellers-40mm-1-5mm-shaft-4ccw-4cw"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Azi (Tri-Blade) Micro Propellers 40mm - 1.5mm Shaft (4CCW+4CW)"
-}
-propellers:  {
-  uuid:  "c13b9e97-d1b9-4a12-87df-016eadab1128"
-  id:  "newbeedrone-venom-v2-super-durable-propellers-31mm-1-0mm-shaft-4ccw-4cw"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Venom V2 Super Durable Propellers 31mm -1.0mm Shaft (4CCW+4CW)"
-  weight_g:  0.19
-}
-propellers:  {
-  uuid:  "70651900-66d5-4728-88f1-2a11a5ce9863"
-  id:  "newbeedrone-azi-quad-blade-micro-propellers-31mm-1-0mm-shaft-4ccw-4cw"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Azi (Quad Blade) Micro Propellers 31mm -1.0mm Shaft (4CCW+4CW)"
-}
-propellers:  {
-  uuid:  "9f1b41ec-cd8d-4766-8d7e-d0cfb589c503"
-  id:  "newbeedrone-azi-tri-blade-micro-propellers-40mm-1-0mm-shaft-4ccw-4cw"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Azi (Tri-Blade) Micro Propellers 40mm - 1.0mm Shaft (4CCW+4CW)"
-}
-propellers:  {
-  uuid:  "f52aa586-aecb-4be0-abb7-0fd9bbc7251f"
-  id:  "newbeedrone-azi-quad-blade-micro-propellers-31mm-0-8mm-shaft-4ccw-4cw"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Azi (Quad Blade) Micro Propellers 31mm -0.8mm Shaft (4CCW+4CW)"
-}
-propellers:  {
-  uuid:  "5c9f9fd4-7fe5-4b38-b7a2-3eb603136b1f"
-  id:  "newbeedrone-azi-tri-blade-micro-propellers-31mm-0-8mm-shaft-4ccw-4cw"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Azi (Tri Blade) Micro Propellers 31mm - 0.8mm Shaft (4CCW+4CW)"
-}
-propellers:  {
-  uuid:  "1c0031d4-1cbe-4106-b9fe-fbaead1fc026"
-  id:  "newbeedrone-acrobee-prop-removal-tool"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone AcroBee Prop Removal Tool"
-}
-propellers:  {
-  uuid:  "e283fce0-832d-4ac5-a335-fbd1fc9b54af"
-  id:  "newbeedrone-beewire-lite-5-pack"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeWire Lite (5-Pack)"
-  weight_g:  1.2
-}
-propellers:  {
-  uuid:  "90755b7e-0829-45b6-9dae-e03da6681efc"
-  id:  "newbeedrone-venom-v2-super-durable-propellers-31mm-0-8mm-shaft-4ccw-4cw"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone Venom V2 Super Durable Propellers 31mm -0.8mm Shaft (4CCW+4CW)"
-  weight_g:  0.19
-}
-propellers:  {
-  uuid:  "ba544f55-9b6b-43f1-bad4-518ebede22ec"
-  id:  "tiny-cockroach"
-  manufacturer:  "NewBeeDrone"
-  name:  "Tiny Cockroach"
-}
-propellers:  {
-  uuid:  "60b503c9-c3c7-4026-b9f5-161a26f16974"
-  id:  "rotor-riot-ultimate-tool-kit-choose-version"
-  manufacturer:  "Rotor Riot"
-  name:  "Rotor Riot Ultimate Tool Kit - Choose Version"
-}
-propellers:  {
-  uuid:  "ab5998cd-405c-47dd-b356-0a792fb4f05e"
-  id:  "40mm-1635-pc-3-blade-1-5mm-clear-blue"
-  manufacturer:  "Gemfan"
-  name:  "40mm 1635 PC 3 Blade 1.5mm - Clear Blue"
-}
-propellers:  {
-  uuid:  "0c3faa52-d034-46af-bc9e-3e6aeb2c76b3"
-  id:  "cinelifter-glass-fiber-nylon-10-1x5-5x3-prop-2-pack"
-  manufacturer:  "Gemfan"
-  name:  "Cinelifter Glass Fiber Nylon 10.1X5.5x3 Prop 2-Pack"
-}
-propellers:  {
-  uuid:  "5ebbcb3a-bb06-42c1-bb93-baea45d6dc86"
-  id:  "hq-10x4-5x3-macroquad-prop"
-  manufacturer:  "HQ Prop"
-  name:  "HQ 10X4.5X3 MacroQuad Prop"
-}
-propellers:  {
-  uuid:  "d02b5b3f-0d90-4872-9a3a-e512f3270d7c"
-  id:  "cl2-xr-7-deadcat-conversion-kit"
-  manufacturer:  "Rotor Riot"
-  name:  "CL2 XR 7 Deadcat Conversion Kit"
-}
-propellers:  {
-  uuid:  "77685bd7-b9a3-4abb-8a29-35695d0ce66b"
-  id:  "cl2-air-6s-5-solder-free-built-tuned-drone-dji-o4-pro-dji"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "CL2-AIR 6S 5 Solder-Free Built & Tuned Drone - DJI O4 Pro / DJI"
-}
-propellers:  {
-  uuid:  "42aad687-136c-408c-b9bb-4b89039413d6"
-  id:  "cinemini-4s-2-5-pro-spec-built-tuned-drone-dji-04-pro-dji"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "Cinemini 4S 2.5 Pro-Spec Built & Tuned Drone - DJI 04 Pro / DJI"
-}
-propellers:  {
-  uuid:  "d80a3777-b0ab-438d-ac77-ff75ae511ec8"
-  id:  "tanq-2-6s-5-solder-free-built-tuned-drone-dji-o4-pro-dji"
-  manufacturer:  "Rotor Riot Builds"
-  name:  "Tanq 2 6S 5 Solder-Free Built & Tuned Drone - DJI O4 Pro / DJI"
-}
-propellers:  {
-  uuid:  "b310061f-0b3a-4f0e-b5e0-c188a1530cec"
-  id:  "rotor-riot-prop-puller"
-  manufacturer:  "Rotor Riot"
-  name:  "Rotor Riot Prop Puller"
-}
-propellers:  {
-  uuid:  "700e1845-1b88-43ab-94a1-fee3e3da67ff"
-  id:  "ethix-mini-chesty-versatile-fpv-everyday-carry-bag"
-  manufacturer:  "Ethix"
-  name:  "Ethix Mini Chesty – Versatile FPV & Everyday Carry Bag"
-}
-propellers:  {
-  uuid:  "d12c6f43-3285-4905-ac69-5fe259928082"
-  id:  "ethix-chesty-tundra-edition"
-  manufacturer:  "Ethix"
-  name:  "ETHIX Chesty Tundra Edition"
-}
-propellers:  {
-  uuid:  "8cea3ffe-d6fb-45cf-b880-5fdea66da7e3"
-  id:  "p2-tri-blade-5-props-4-pack-pickle"
-  manufacturer:  "Ethix"
-  name:  "P2 Tri-Blade 5 Props 4 Pack - Pickle"
-  weight_g:  3.8
-}
-propellers:  {
-  uuid:  "8bd7d2d0-6952-402a-830c-088e0437763d"
-  id:  "hurricane-2015-props-grey"
-  manufacturer:  "Gemfan"
-  name:  "Hurricane 2015 Props - Grey"
-  weight_g:  0.5
-}
-propellers:  {
-  uuid:  "1f5208c4-c249-4a7d-b7e7-b4ea7413dc34"
-  id:  "t4x2-5-props-grey"
-  manufacturer:  "HQ Prop"
-  name:  "T4X2.5 Props - Grey"
-  weight_g:  1.45
-}
-propellers:  {
-  uuid:  "3deb5921-de24-498f-9f43-3b29139ae960"
-  id:  "hq-juicy-j33-4-9x3-3x3-props-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "HQ Juicy J33 4.9x3.3x3 Props - Choose Color"
-  weight_g:  3.8
-}
-propellers:  {
-  uuid:  "af1b751e-7d29-4428-b745-896ff149f66e"
-  id:  "chesty-tactical-chest-rig"
-  manufacturer:  "Ethix"
-  name:  "Chesty Tactical Chest Rig"
-}
-propellers:  {
-  uuid:  "7fd20f7b-f0a3-4422-959e-2184ecddf5a1"
-  id:  "p3-3-tri-blade-5-props-4-pack-mango-lassi"
-  manufacturer:  "Ethix"
-  name:  "P3.3 Tri-Blade 5 Props 4 Pack - Mango Lassi"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "600b214b-b348-4eaa-828e-ca383fcfc80f"
-  id:  "t2-5x2-5x3-tri-blade-2-5-prop-4-pack-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "T2.5x2.5x3 Tri-Blade 2.5 Prop 4 Pack - Choose Color"
-  weight_g:  1.2
-}
-propellers:  {
-  uuid:  "40a2390d-9964-4419-9e9a-9e184f069899"
-  id:  "lr-4024-pc-2-blade-props"
-  manufacturer:  "Gemfan"
-  name:  "LR 4024 PC 2 Blade Props"
-  weight_g:  3.16
-}
-propellers:  {
-  uuid:  "b0442584-f053-47bf-b8e2-c0b46ae1ea99"
-  id:  "dji-neo-propeller-guard"
-  manufacturer:  "DJI"
-  name:  "DJI Neo Propeller Guard"
-}
-propellers:  {
-  uuid:  "ffb4c360-f459-4c62-b9aa-1bccb2ea3ada"
-  id:  "proxy-5127-5-pdevx-and-pablo-flor-edition-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "Proxy 5127.5 PDEVX and Pablo Flor Edition Props - Choose Color"
-  weight_g:  4.2
-}
-propellers:  {
-  uuid:  "77bb22bf-f186-48ad-830f-c52242908183"
-  id:  "t3-5x2-5x3-tri-blade-3-5-prop-with-2mm-shaft-4-pack-let-s-fly-rc-edition"
-  manufacturer:  "HQ Prop"
-  name:  "T3.5x2.5x3 Tri-Blade 3.5 Prop with 2mm Shaft 4 Pack - Let's Fly RC Edition"
-  weight_g:  1.55
-}
-propellers:  {
-  uuid:  "0dea81a4-72c8-4fed-97a4-837e7faf3814"
-  id:  "hurricane-51433-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "Hurricane 51433 Props - Choose Color"
-  weight_g:  3.8
-}
-propellers:  {
-  uuid:  "b1cb8741-a6a0-4a8c-a692-62e659e3f2a5"
-  id:  "hurricane-4937-props-black"
-  manufacturer:  "Gemfan"
-  name:  "Hurricane 4937 Props - Black"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "64a980f6-16a2-4619-ae0b-81cc991a055b"
-  id:  "hurricane-5127-props-clear-grey"
-  manufacturer:  "Gemfan"
-  name:  "Hurricane 5127 Props - Clear Grey"
-  weight_g:  4.4
-}
-propellers:  {
-  uuid:  "013ad3c5-1ebd-45c1-a86c-912d2df50e52"
-  id:  "hurricane-51366-mck-rev3-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "Hurricane 51366 MCK Rev3 Props - Choose Color"
-  weight_g:  4.2
-}
-propellers:  {
-  uuid:  "02e2881a-d987-4491-944f-a4d4abce31e3"
-  id:  "duct-d63-3-props-clear-grey"
-  manufacturer:  "Gemfan"
-  name:  "Duct D63-3 Props - Clear Grey"
-  weight_g:  1.4
-}
-propellers:  {
-  uuid:  "19b57a6c-894e-4bbd-9a95-ed9d94e1ed81"
-  id:  "rotor-riot-aluminum-tool-holder"
-  manufacturer:  "Rotor Riot"
-  name:  "Rotor Riot Aluminum Tool Holder"
-}
-propellers:  {
-  uuid:  "c9fc61f4-d87a-476c-8392-5355555e06f9"
-  id:  "tanq-1-2-5-racing-arm-set"
-  manufacturer:  "Rotor Riot"
-  name:  "TANQ 1 & 2 5 Racing Arm Set"
-}
-propellers:  {
-  uuid:  "87c09bd9-ace6-478d-9f46-56610e883df8"
-  id:  "hq-r42-5-1x4-2x3-props-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "HQ R42 5.1x4.2x3 Props - Choose Color"
-  weight_g:  4.9
-}
-propellers:  {
-  uuid:  "8baeb507-379c-4c35-a6ad-a3b5520600ac"
-  id:  "tanq-1-2-5-deadcat-front-arms-2-pack"
-  manufacturer:  "Rotor Riot"
-  name:  "TANQ 1 & 2 5 Deadcat Front Arms - 2 Pack"
-}
-propellers:  {
-  uuid:  "a1b7459e-862b-4275-af91-156ab3f0f395"
-  id:  "tanq-1-2-5-deadcat-arm-set"
-  manufacturer:  "Rotor Riot"
-  name:  "TANQ 1 & 2 5 Deadcat Arm Set"
-}
-propellers:  {
-  uuid:  "a74f75bb-7121-4966-a281-238cd6640b8b"
-  id:  "donut-5145-toroidal-5-props-choose-color"
-  manufacturer:  "Foxeer"
-  name:  "Donut 5145 Toroidal 5 Props - Choose Color"
-  weight_g:  4.3
-}
-propellers:  {
-  uuid:  "838cbf47-4441-4d1f-9a02-6a926f10ef0b"
-  id:  "513d-5-3d-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "513D 5 3D Props - Choose Color"
-  weight_g:  4.4
-}
-propellers:  {
-  uuid:  "c1483539-909a-4af8-9c19-b35a9933179e"
-  id:  "3-5x2-2-bi-blade-3-5-prop-4-pack"
-  manufacturer:  "HQ Prop"
-  name:  "3.5x2.2 Bi-Blade 3.5 Prop 4 Pack"
-  weight_g:  1.1
-}
-propellers:  {
-  uuid:  "534bbd26-2f01-4854-9c20-48be28ae4eb7"
-  id:  "t3-5x2-5x3-tri-blade-3-5-prop-4-pack-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack - Choose Color"
-  weight_g:  1.55
-}
-propellers:  {
-  uuid:  "c7a760c2-b94d-4e88-bdcf-b9261083225c"
-  id:  "p3-5-tri-blade-5-props-4-pack-rad-berry"
-  manufacturer:  "Ethix"
-  name:  "P3.5 Tri-Blade 5 Props 4 Pack - Rad Berry"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "86cb3c5a-c119-4423-be9e-99fc2c202350"
-  id:  "p3-tri-blade-5-props-4-pack-peanut-butter-jelly"
-  manufacturer:  "Ethix"
-  name:  "P3 Tri-Blade 5 Props 4 Pack - Peanut Butter & Jelly"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "acb63349-ead5-4fe4-80c8-391952049037"
-  id:  "s3-tri-blade-5-props-4-pack-watermelon"
-  manufacturer:  "Ethix"
-  name:  "S3 Tri-Blade 5 Props 4 Pack - Watermelon"
-  weight_g:  3.6
-}
-propellers:  {
-  uuid:  "bfcd7e5b-288b-4ce9-950c-1d6ee16c0cca"
-  id:  "dt-2-9x2-5x5-5-blade-3-props-for-dji-avata-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "DT 2.9X2.5X5 5-Blade 3 Props for DJI Avata - Choose Color"
-}
-propellers:  {
-  uuid:  "dd65f909-897e-4fce-a015-2dc321fa3b25"
-  id:  "1610-bi-blade-40mm-prop-8-pack-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "1610 Bi-Blade 40mm Prop 8 Pack - Choose Color"
-  weight_g:  0.25
-}
-propellers:  {
-  uuid:  "ac5c2a35-e701-4110-9b09-e3b523a51b75"
-  id:  "hq-juicy-j37-4-9x3-7x3-props-rotor-riot-edition"
-  manufacturer:  "HQ Prop"
-  name:  "HQ Juicy J37 4.9x3.7x3 Props - Rotor Riot Edition"
-  weight_g:  3.4
-}
-propellers:  {
-  uuid:  "f9a0d8ec-fb5c-4031-aebe-1893b7f72b19"
-  id:  "40mmx2-bi-blade-40mm-prop-4-pack"
-  manufacturer:  "HQ Prop"
-  name:  "40MMX2 Bi-Blade 40mm Prop 4 Pack"
-  weight_g:  0.26
-}
-propellers:  {
-  uuid:  "b43952db-d2d5-432a-a963-3f2d49c92da8"
-  id:  "35mm-racewire-rotor-riot-edition-4-pack"
-  manufacturer:  "Rotor Riot"
-  name:  "35mm Racewire Rotor Riot Edition - 4 Pack"
-}
-propellers:  {
-  uuid:  "2e1eea5e-0de3-428a-ba84-65765ea5fd6c"
-  id:  "s4-tri-blade-5-props-4-pack-lemon-lime"
-  manufacturer:  "Ethix"
-  name:  "S4 Tri-Blade 5 Props 4 Pack - Lemon Lime"
-  weight_g:  3.7
-}
-propellers:  {
-  uuid:  "6c95c69f-a618-43c2-b45d-49e7a077b33d"
-  id:  "j75-tri-blade-7-prop-4-pack"
-  manufacturer:  "HQ Prop"
-  name:  "J75 Tri-Blade 7 Prop 4 Pack"
-  weight_g:  8.8
-}
-propellers:  {
-  uuid:  "97074d8a-7a7e-4300-a847-c477ee888b34"
-  id:  "hq-r35-tri-blade-5-prop-4-pack-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "HQ R35 Tri-Blade 5 Prop 4 Pack - Choose Color"
-  weight_g:  4.18
-}
-propellers:  {
-  uuid:  "3a3ddce6-1bbd-4630-b33d-758fa382fd72"
-  id:  "multi-purpose-driver-ratcheting-prop-tool-choose-version"
-  manufacturer:  "STP"
-  name:  "Multi-Purpose Driver & Ratcheting Prop Tool - Choose Version"
-}
-propellers:  {
-  uuid:  "c0a8d13e-db9b-4c61-963c-2f4de0fe6d01"
-  id:  "s5-tri-blade-5-props-4-pack-black"
-  manufacturer:  "Ethix"
-  name:  "S5 Tri-Blade 5 Props 4 Pack - Black"
-  weight_g:  3.7
-}
-propellers:  {
-  uuid:  "21b863ee-c697-4793-a089-f51b584de408"
-  id:  "dji-avata-propellers"
-  manufacturer:  "DJI"
-  name:  "DJI Avata Propellers"
-}
-propellers:  {
-  uuid:  "1f63a481-1e1a-4759-ad0b-351f623ed510"
-  id:  "juicy-prop-j40-5-1-tri-blade-props-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "Juicy Prop J40 5.1 Tri-Blade Props - Choose Color"
-  weight_g:  3.4
-}
-propellers:  {
-  uuid:  "dd325177-56c3-4369-aadd-4a4eaaf08b4f"
-  id:  "hq-35mmx3-tri-blade-35mm-1mm-shaft-props-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "HQ 35MMX3 Tri-Blade 35mm 1mm Shaft Props - Choose Color"
-  weight_g:  0.31
-}
-propellers:  {
-  uuid:  "dbbfe9b5-7136-47cc-a379-84adc1a59331"
-  id:  "hurricane-3520-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "Hurricane 3520 Props - Choose Color"
-  weight_g:  1.7
-}
-propellers:  {
-  uuid:  "1b5172e2-a51f-459f-a099-8f2af4e01e31"
-  id:  "sbang-prop-4934-props-choose-color-and-rotation"
-  manufacturer:  "Gemfan"
-  name:  "SBANG Prop 4934 Props - Choose Color and Rotation"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "c427fdb5-dd5c-4f5a-b44b-ac4b03e6373f"
-  id:  "5136-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "5136 Props - Choose Color"
-  weight_g:  4.3
-}
-propellers:  {
-  uuid:  "73ba2485-7c29-4d41-be99-e03a8cbe82f9"
-  id:  "hq-dp-t65mmx3-props"
-  manufacturer:  "HQ Prop"
-  name:  "HQ DP T65MMX3 Props"
-  weight_g:  0.8
-}
-propellers:  {
-  uuid:  "626bc1ba-4b53-482d-ab23-c19745a8b082"
-  id:  "hq-juicy-j37-4-9x3-7x3-props-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "HQ Juicy J37 4.9x3.7x3 Props - Choose Color"
-}
-propellers:  {
-  uuid:  "2ba08ed3-13fe-4080-9ae9-bbc7e06849cf"
-  id:  "hq-duct-4x4x6-props-for-ducted-hd1-vs"
-  manufacturer:  "HQ Prop"
-  name:  "HQ Duct 4X4X6 Props for Ducted HD1 VS"
-  weight_g:  5.3
-}
-propellers:  {
-  uuid:  "cdb9412c-464c-4a35-983f-7ec25349be61"
-  id:  "freestyle4s-durable-3-blade-5-1x3-6x3-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "Freestyle4S Durable 3 Blade (5.1x3.6x3) Props - Choose Color"
-  weight_g:  3.6
-}
-propellers:  {
-  uuid:  "a4f66742-60c2-4a16-8338-aea8d44924fa"
-  id:  "freestyle3s-durable-3-blade-5-1x3x3-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "Freestyle3S Durable 3 Blade (5.1x3x3) Props - Choose Color"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "d1f1fb21-a5d6-44b6-b082-e5a0e271bb91"
-  id:  "hq-2-9x2-9x4-quad-blade-3-props"
-  manufacturer:  "HQ Prop"
-  name:  "HQ 2.9x2.9x4 Quad-Blade 3 Props"
-  weight_g:  1.77
-}
-propellers:  {
-  uuid:  "06cfa949-6923-40d1-84f4-905b13c91fad"
-  id:  "rotor-riot-prop-tool"
-  manufacturer:  "Rotor Riot"
-  name:  "Rotor Riot Prop Tool"
-}
-propellers:  {
-  uuid:  "810d929f-009e-412b-b92b-2b81cdf0991f"
-  id:  "cinewhoop-slim-ducts"
-  manufacturer:  "Noozle3D"
-  name:  "Cinewhoop Slim Ducts"
-}
-propellers:  {
-  uuid:  "b9221dd7-69c0-457a-b8a2-6c711ec37a31"
-  id:  "hq-dp-t2x2x4-props"
-  manufacturer:  "HQ Prop"
-  name:  "HQ DP T2X2X4 Props"
-  weight_g:  0.75
-}
-propellers:  {
-  uuid:  "0825f73b-738e-429c-ac2e-c35ff0f57d97"
-  id:  "hq-dp-t2x2-5x3-props-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "HQ DP T2X2.5X3 Props - Choose Color"
-  weight_g:  0.75
-}
-propellers:  {
-  uuid:  "ac3c45d3-80e6-40b6-8b79-f932026a5193"
-  id:  "lr-5126-2-blade-props-choose-color"
-  manufacturer:  "Gemfan"
-  name:  "LR 5126 2 Blade Props - Choose Color"
-  weight_g:  2.6
-}
-propellers:  {
-  uuid:  "6354d1eb-1557-4a73-8585-687c0b0d81a8"
-  id:  "hq-dp-t2x2x3-props"
-  manufacturer:  "HQ Prop"
-  name:  "HQ DP T2X2X3 Props"
-  weight_g:  0.75
-}
-propellers:  {
-  uuid:  "3c5cc0c2-94c7-48f6-8888-5fd4a38a74f7"
-  id:  "m5-nylock-prop-nut"
-  manufacturer:  "Rotor Riot Store"
-  name:  "M5 Nylock Prop Nut"
-}
-propellers:  {
-  uuid:  "2326f665-1d50-438e-ac23-19eb381928df"
-  id:  "hq-4-8x3-4x4-props"
-  manufacturer:  "HQ Prop"
-  name:  "HQ 4.8x3.4x4 Props"
-}
-propellers:  {
-  uuid:  "171e167a-0329-41e6-8076-389cf40bf231"
-  id:  "hq-r38-headsupfpv-5-1x3-8x3-props-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "HQ R38 HeadsUPFPV 5.1x3.8x3 Props - Choose Color"
-  weight_g:  4.4
-}
-propellers:  {
-  uuid:  "e2faf47a-2a34-4c0c-a27f-a2510364a068"
-  id:  "hq-7x4-5-bi-blade-props"
-  manufacturer:  "HQ Prop"
-  name:  "HQ 7x4.5 Bi Blade Props"
-  weight_g:  6.6
-}
-propellers:  {
-  uuid:  "c1a1f06a-eeb3-40b1-9f43-2bb7388e3d40"
-  id:  "hq-7x4x3-props"
-  manufacturer:  "HQ Prop"
-  name:  "HQ 7X4X3 Props"
-}
-propellers:  {
-  uuid:  "a1cbfc06-d8d7-40d1-aecf-9ae71649f11c"
-  id:  "cinewhoop-ducts-kapper-edition"
-  manufacturer:  "Noozle3D"
-  name:  "Cinewhoop Ducts Kapper Edition"
-}
-propellers:  {
-  uuid:  "70a41d77-1191-41a4-8bbe-3ec831f0b5b2"
-  id:  "hq-3-cinewhoop-props-choose-color"
-  manufacturer:  "HQ Prop"
-  name:  "HQ 3 Cinewhoop Props - Choose Color"
-  weight_g:  1.9
-}
-propellers:  {
-  uuid:  "b22965b8-1a2c-46e5-be38-0b0fce6e8abf"
-  id:  "darwinfpv-babyape-pro-rtf"
-  manufacturer:  "DarwinFPV - Official Store"
-  name:  "DarwinFPV BabyApe Ⅲ PRO RTF"
-}
-propellers:  {
-  uuid:  "2a18df34-1bf5-49ec-adde-5a4e4c70f772"
-  id:  "darwinfpv-babyape-pro-3-5-inch-freestyle-fpv-drone"
-  manufacturer:  "DarwinFPV - Official Store"
-  name:  "DarwinFPV BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone"
-}
-propellers:  {
-  uuid:  "ec000089-005c-4b9e-90a0-da0b3f615c6f"
-  id:  "darwinfpv-gemfan-8046-3-glass-fiber-nylon"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Gemfan 8046-3 Glass Fiber Nylon"
-  weight_g:  13.5
-}
-propellers:  {
-  uuid:  "0591a75a-c8aa-4a99-bb2f-9a703a7d526b"
-  id:  "darwinfpv-babyape-freestyle-fpv-drone"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV BabyApe Ⅱ Freestyle FPV Drone"
-}
-propellers:  {
-  uuid:  "4ab2d71e-54c1-4b31-ba32-5e6a15f604f0"
-  id:  "darwinfpv-cineape-25-cinematic-whoop-fpv-drone"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV CineApe 25 Cinematic Whoop FPV Drone"
-}
-propellers:  {
-  uuid:  "65baa62c-f1ca-4d4f-8d7b-27810ba0e2a8"
-  id:  "explorer-lr-4-hd-dji-o4-pro-micro-long-range-drone-choose-version"
-  manufacturer:  "Flywoo"
-  name:  "Explorer LR 4 HD DJI O4 Pro Micro Long Range Drone - Choose Version"
-  weight_g:  177.8
-}
-propellers:  {
-  uuid:  "32d3324d-ee55-4d4b-9b0e-799a9bf3192c"
-  id:  "dalprop-fold-series-f7-7-inch-folding-propeller-smooth-diy-props-long-range-compatible-popo-for-fpv-racing-rc-drone-5-pairs"
-  manufacturer:  "HGLRC"
-  name:  "Dalprop Fold Series F7 7 Inch Folding Propeller Smooth DIY Props Long Range Compatible POPO for FPV Racing RC Drone（5 pairs）"
-  weight_g:  7
-}
-propellers:  {
-  uuid:  "608ce5c0-68a3-4e2e-aa35-e3fba8c9d6b7"
-  id:  "hqprop-dp7x4x3-light-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HGLRC"
-  name:  "HQProp DP7X4X3 Light Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  9.1
-}
-propellers:  {
-  uuid:  "9f98c0c6-bbfb-4d4d-b68d-2ef131672d8d"
-  id:  "hqprop-t63-1-5mm-6-blade-propeller"
-  manufacturer:  "HGLRC"
-  name:  "HQprop T63 1.5mm 6-Blade Propeller"
-  weight_g:  1.85
-}
-propellers:  {
-  uuid:  "b5c8364c-0b63-4c01-83ea-9c0cf56ba3c3"
-  id:  "gemfan-3016-3-toothpick-props"
-  manufacturer:  "HGLRC"
-  name:  "Gemfan 3016-3 Toothpick Props"
-  weight_g:  1.18
-}
-propellers:  {
-  uuid:  "908f77f0-3326-4165-b2ea-49630f6496cf"
-  id:  "gemfan-d63-2-5-inch-5-blade-propeller"
-  manufacturer:  "HGLRC"
-  name:  "Gemfan D63 2.5 Inch 5-Blade Propeller"
-}
-propellers:  {
-  uuid:  "bb16d259-4899-4211-b42a-7c4d794f84cf"
-  id:  "gemfan-5125-hurricane-durable-3-blade-1-5mm-clear-gray"
-  manufacturer:  "N/A"
-  name:  "Gemfan 5125 Hurricane Durable 3 Blade 1.5mm - Clear Gray"
-}
-propellers:  {
-  uuid:  "e4b99cd5-d0f2-4aa6-bda1-e6117972e6f5"
-  id:  "gemfan-hurricane-51466-propeller-set-of-4"
-  manufacturer:  "Gemfan"
-  name:  "Gemfan Hurricane 51466 Propeller (Set of 4)"
-  weight_g:  4.13
-}
-propellers:  {
-  uuid:  "7f028a36-af37-42c1-879d-c4cda0fb208d"
-  id:  "gemfan-51499-3-blade-propeller-for-5-fpv-racing-drone-5-pairs"
-  manufacturer:  "HGLRC"
-  name:  "Gemfan 51499 3-Blade Propeller for 5 FPV racing drone（5 pairs）"
-}
-propellers:  {
-  uuid:  "65c1d18c-45c4-4788-bba1-479b9a092bb8"
-  id:  "3-pairs-gemfan-5042-3-blade-propeller-for-5-fpv-racing-drone"
-  manufacturer:  "HGLRC"
-  name:  "3 Pairs Gemfan 5042 3-Blade Propeller for 5 FPV racing drone"
-  weight_g:  4.1
-}
-propellers:  {
-  uuid:  "f9a9d357-2f5b-4399-bfc1-7f2faf9c7d1a"
-  id:  "3-pairs-gemfan-flash-2540-2-5-3-blade-propeller"
-  manufacturer:  "HGLRC"
-  name:  "3 Pairs Gemfan flash 2540 2.5'' 3-Blade Propeller"
-}
-propellers:  {
-  uuid:  "9ec0a0ec-5fcb-4bc9-8ba2-dc85448c6166"
-  id:  "gemfan-7037-3-for-cinelifter-macro-quad-2cw-2ccw-1-pcs"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "Gemfan 7037-3 for Cinelifter & Macro Quad (2CW+2CCW)1/pcs"
-  weight_g:  8.5
-}
-propellers:  {
-  uuid:  "f1ac74ec-fa45-4948-8e86-8f059bca330d"
-  id:  "hqprop-6x3x3v1sblack-2cw-2ccw-poly-carbonate-for-roma-f6"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "HQProp 6X3X3V1SBlack(2CW+2CCW)-Poly Carbonate for Roma F6"
-  weight_g:  5.87
-}
-propellers:  {
-  uuid:  "2252cd7d-56bf-4978-b959-a6090161868c"
-  id:  "gemfan-flash-7042-2-2cw-2ccw-propellers-for-roma-f7"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "Gemfan  Flash 7042-2 (2CW+2CCW) Propellers For Roma F7"
-  weight_g:  5.52
-}
-propellers:  {
-  uuid:  "76c861f1-d09c-4f7a-9f16-d38fa4880ccf"
-  id:  "gemfan-hrricane-3520-for-toothpick-ultralight-2cw-2ccw-for-roma-f35"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "GEMFAN Hrricane 3520 for Toothpick&Ultralight (2CW+2CCW) For Roma F35"
-  weight_g:  1.77
-}
-propellers:  {
-  uuid:  "b39dde8d-f373-4264-bc0a-4f33e2e6af08"
-  id:  "roma-f35-f4-accessories"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "Roma F35/F4 Accessories"
-  weight_g:  39
-}
-propellers:  {
-  uuid:  "ffe70033-7611-410a-8445-c1f411d32035"
-  id:  "gemfan-sl5125-3-toothpick-ultralight-props-2cw-2ccw-1-pcs"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "Gemfan SL5125-3 Toothpick&Ultralight Props (2CW+2CCW) 1/pcs"
-  weight_g:  2.8
-}
-propellers:  {
-  uuid:  "2cfff5cc-7dc3-4bc0-9235-b714d9b879f7"
-  id:  "gemfan-hrricane-51433-for-freestyle-xmas-2cw-2ccw"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "GEMFAN Hrricane 51433 for Freestyle  Xmas (2CW+2CCW)"
-  weight_g:  3.9
-}
-propellers:  {
-  uuid:  "2d88effe-6f47-4f9b-b8bb-c0d36b7c03a4"
-  id:  "hq-durable-prop-t3x1-8-yellow-2cw-2ccw-3blades-polycarbonate"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "HQ Durable Prop T3x1.8 Yellow ( 2CW+2CCW) 3Blades-PolyCarbonate"
-  weight_g:  1.2
-}
-propellers:  {
-  uuid:  "836df8d8-0a38-40d1-ab73-e60ce29372f9"
-  id:  "gemfan-4024-2-toothpick-props-1-5mm-4cw-4ccw"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "GEMFAN 4024-2 Toothpick Props(1.5mm) (4CW+4CCW)"
-  weight_g:  1.61
-}
-propellers:  {
-  uuid:  "2e049491-a89f-40f0-bb63-2cbe9ab1e182"
-  id:  "hq-durable-prop-t4x2-5grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "HQ Durable Prop T4X2.5Grey （2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.45
-}
-propellers:  {
-  uuid:  "4b17282e-8228-4554-9386-77a602bfd53a"
-  id:  "gemfan-3-blades-squirt-props-63mm-propellers"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "GEMFAN 3 Blades Squirt Props 63mm Propellers"
-}
-propellers:  {
-  uuid:  "f7f2825c-6835-4971-9dd2-bfbc97eb95d1"
-  id:  "gemfan-3-blades-hurricane-mck-51466-3-2cw-2ccw-propellers"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "GEMFAN 3-Blades Hurricane MCK 51466-3 (2CW+2CCW) Propellers"
-  weight_g:  4.11
-}
-propellers:  {
-  uuid:  "04111eb5-6cca-49fb-8fee-089052664416"
-  id:  "gemfan-hurricane-51455-4-2cw-2ccw"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "GEMFAN Hurricane 51455-4 (2CW+2CCW)"
-}
-propellers:  {
-  uuid:  "76187c52-6ba0-4307-9785-b950f4bf1789"
-  id:  "gemfan-hrricane-51433-for-freestyle-2cw-2ccw"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "GEMFAN Hrricane 51433 for FREESTYLE (2CW+2CCW)"
-  weight_g:  3.8
-}
-propellers:  {
-  uuid:  "6292c0a6-d66b-45b1-bc89-d886fc46af82"
-  id:  "gemfan-hurricane-3016-3-for-toothpick-2-1-5mm-2cw-2ccw"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "GEMFAN Hurricane 3016-3 for toothpick(2/1.5mm) (2CW+2CCW)"
-  weight_g:  1.18
-}
-propellers:  {
-  uuid:  "92660781-687d-429b-bfcf-1980d0d55612"
-  id:  "gemfan-3-blades-windancer-3028-3-2cw-2ccw-for-gtr-349-racing-drone"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "GEMFAN 3-Blades Windancer 3028-3 (2CW+2CCW) For GTR 349 Racing Drone"
-  weight_g:  1.49
-}
-propellers:  {
-  uuid:  "4aa6f9d1-ed7b-4cc2-b348-de56d72e82f5"
-  id:  "gemfan-4-blades-40mm-1636-4-2cw-2ccw-for-tina-whoop"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "GEMFAN 4-Blades 40MM 1636-4(2CW+2CCW) For Tina Whoop"
-  weight_g:  0.61
-}
-propellers:  {
-  uuid:  "717b15cc-788f-440e-880c-203ab2416049"
-  id:  "gemfan-3-blades-squirt-props-75mm-2cw-2ccw-propellers-for-mxc-3-taycan"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "GEMFAN 3-Blades Squirt Props 75mm (2CW+2CCW) Propellers For MXC 3 TAYCAN"
-  weight_g:  1.9
-}
-propellers:  {
-  uuid:  "b77e3315-7b86-41d9-b732-01c24075545c"
-  id:  "hq-ethix-s5-light-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "HQ Ethix S5 Light Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  3.7
-}
-propellers:  {
-  uuid:  "4b7e0fa3-b00d-448a-9187-1dd07ad24595"
-  id:  "hq-ethix-s4-lemon-lime-2cw-2ccw-poly-carbonate-propellers"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "HQ Ethix S4 Lemon Lime (2CW+2CCW)-Poly Carbonate Propellers"
-  weight_g:  3.7
-}
-propellers:  {
-  uuid:  "8b3f6a6b-99a8-4220-8b4a-7d1dce53c3c7"
-  id:  "hq-ethix-s3-prop-watermelon-2cw-2ccw-poly-carbonate"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "HQ Ethix S3 Prop Watermelon  (2CW+2CCW)-Poly Carbonate"
-  weight_g:  3.6
-}
-propellers:  {
-  uuid:  "bdedb7a4-d285-430d-80fc-adeac1d18e35"
-  id:  "hqprop-3-blades-durable-prop-t2-5x2-5x3-black-2cw-2ccw-poly-carbonate"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "HQProp 3-Blades Durable Prop T2.5X2.5X3 Black (2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.3
-}
-propellers:  {
-  uuid:  "8d134ef3-987e-44df-848d-f27aba9c6031"
-  id:  "hqprop-2-blades-durable-propellers-t3x2-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "DIATONE INNOVATIONS"
-  name:  "HQprop 2-Blades Durable Propellers T3X2 Grey （2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.2
-}
-propellers:  {
-  uuid:  "ae94d095-3889-47c8-86fc-36a3778b1222"
-  id:  "hqprop-2-blade-micro-propellers-65mm-grey-2cw-2ccw-poly-carbonate-1-5mm-shaft"
-  manufacturer:  "DIATONE OFFICIAL"
-  name:  "HQProp 2-Blade Micro Propellers 65MM Grey  (2CW+2CCW)-Poly Carbonate-1.5MM Shaft"
-  weight_g:  0.46
-}
-propellers:  {
-  uuid:  "88f3f6ee-5d1a-4a6f-8507-98b774b2e4b1"
-  id:  "hqprop-dt76mmx3-v2-for-cinewhoop-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp DT76MMX3 V2 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.65
-}
-propellers:  {
-  uuid:  "83919dc8-a6e4-47c9-b2ee-6e8411a879d0"
-  id:  "hqprop-t4x2x3-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp T4X2X3 Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  2
-}
-propellers:  {
-  uuid:  "bc948896-e8c3-4e90-aa06-a34ab352a34e"
-  id:  "hqprop-t3-5x2x3-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp T3.5X2X3 Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.5
-}
-propellers:  {
-  uuid:  "e2c1d698-0fb5-47fe-aaa6-4c06697dca23"
-  id:  "hq-durable-prop-t3x1-5x3-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQ Durable Prop T3X1.5X3 Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.13
-}
-propellers:  {
-  uuid:  "9d924e5c-f46b-4f2c-a914-92db13499692"
-  id:  "hqprop-5135-r35-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp 5135 (R35) (2CW+2CCW)-Poly Carbonate"
-  weight_g:  4
-}
-propellers:  {
-  uuid:  "ca91302c-f304-434b-b784-b55eab1db24f"
-  id:  "hqprop-t5x3-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp T5X3 Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  2.35
-}
-propellers:  {
-  uuid:  "a885c643-4555-4949-b83d-711148c5d3ce"
-  id:  "hqprop-5-5x3-5x3-v2-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp 5.5X3.5X3 V2 Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  4.6
-}
-propellers:  {
-  uuid:  "ae11349f-580d-4e9a-b122-fc57f0ef7954"
-  id:  "hqprop-4x3x3v2-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp 4X3X3V2 (2CW+2CCW)-Poly Carbonate"
-  weight_g:  2.2
-}
-propellers:  {
-  uuid:  "a9b7be19-2eb5-493b-9d38-09e92ae92340"
-  id:  "hqprop-5136-r36-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp 5136 (R36) (2CW+2CCW)-Poly Carbonate"
-  weight_g:  4.1
-}
-propellers:  {
-  uuid:  "1111fee3-f91c-412a-8ae9-a11383897f17"
-  id:  "hq-macroquad-prop-8x4-5x3-ccw-black-glass-fiber-reinforced-nylon"
-  manufacturer:  "HQProp"
-  name:  "HQ MacroQuad Prop 8X4.5X3(CCW) Black-Glass Fiber Reinforced Nylon"
-  weight_g:  15.5
-}
-propellers:  {
-  uuid:  "307c5ad2-cee8-49e3-9f48-297dbc0d83ef"
-  id:  "hq-macroquad-prop-8x4-5x3r-cw-black-glass-fiber-reinforced-nylon"
-  manufacturer:  "HQProp"
-  name:  "HQ MacroQuad Prop 8X4.5X3R(CW) Black-Glass Fiber Reinforced Nylon"
-  weight_g:  15.5
-}
-propellers:  {
-  uuid:  "9f1909a8-0398-46ca-983d-6d36bbb75188"
-  id:  "hq-macroquad-prop-8x4x3r-cw-black-glass-fiber-nylon"
-  manufacturer:  "HQProp"
-  name:  "HQ MacroQuad Prop 8X4X3R(CW) Black-Glass Fiber Nylon"
-  weight_g:  12.8
-}
-propellers:  {
-  uuid:  "c26521ce-e4eb-4dd6-b442-bd20cc90830c"
-  id:  "hq-macroquad-prop-8x4x3-ccw-black-glass-fiber-nylon"
-  manufacturer:  "HQProp"
-  name:  "HQ MacroQuad Prop 8X4X3(CCW) Black-Glass Fiber Nylon"
-  weight_g:  12.8
-}
-propellers:  {
-  uuid:  "249dfd51-9276-43d7-bac8-afab89270211"
-  id:  "hqprop-t4x2-5-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp T4X2.5 Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.45
-}
-propellers:  {
-  uuid:  "12d28309-01cb-4724-86ec-330f8ef1b0df"
-  id:  "flyfishrc-tool-kit-9pcs"
-  manufacturer:  "FlyFishRC"
-  name:  "FlyFishRC Tool Kit - 9PCS"
-  weight_g:  432.8
-}
-propellers:  {
-  uuid:  "57e7454d-73ac-4de2-8431-3cf804269520"
-  id:  "hqprop-dt2-9x2-5x4-for-dji-avata-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp DT2.9X2.5X4 for DJI Avata (2CW+2CCW)-Poly Carbonate"
-}
-propellers:  {
-  uuid:  "51de94ba-9e25-4e25-9042-46a7fd55dcc9"
-  id:  "hq-durable-prop-t3x2x3-2cw-2ccw-poly-carbonate"
-  manufacturer:  "FlyFish RC"
-  name:  "HQ Durable Prop T3X2X3 (2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.2
-}
-propellers:  {
-  uuid:  "444ed7e5-471d-4206-90da-e65fce5d7c3f"
-  id:  "hqprop-d6x4-5x3-grey-for-cinewhoop-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp D6X4.5X3 Grey for Cinewhoop (2CW+2CCW)-Poly Carbonate"
-  weight_g:  7.5
-}
-propellers:  {
-  uuid:  "9ae86d8a-8129-41db-aa15-69d01ae84a6f"
-  id:  "hqprop-ethix-k2-bubble-gum-6x4x2-propeller-set-of-4"
-  manufacturer:  "HQProp"
-  name:  "HQProp Ethix K2 Bubble Gum 6x4x2 Propeller (set of 4)"
-  weight_g:  5.1
-}
-propellers:  {
-  uuid:  "331028de-8e66-4ab5-8577-9d0cec6a4fe8"
-  id:  "72-teeth-mini-ratchet-socket-prop-tool"
-  manufacturer:  "FlyFishRC"
-  name:  "72 Teeth Mini Ratchet Socket Prop Tool"
-  weight_g:  63.46
-}
-propellers:  {
-  uuid:  "077c4f5a-ba6a-419b-8bcd-16c3d355ec95"
-  id:  "hqprop-r38-headsup-racing-5-1x3-8x3-propeller-set-of-4-yellow"
-  manufacturer:  "HQProp"
-  name:  "HQProp R38 HeadsUp Racing 5.1x3.8x3 Propeller (Set of 4 - Yellow)"
-  weight_g:  4.4
-}
-propellers:  {
-  uuid:  "2e115bf1-ba4e-4bde-afe6-b36fb84db2d0"
-  id:  "ethix-p3-5-polycarbonate-5-1-propeller-set-of-4-rad-berry"
-  manufacturer:  "HQProp"
-  name:  "Ethix P3.5 Polycarbonate 5.1 Propeller (Set of 4) - RAD Berry"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "35a0e0f2-89a3-4ef7-a36e-c5747cdbc41b"
-  id:  "hqprop-ethix-s4-lemon-lime-props-set-of-4"
-  manufacturer:  "HQProp"
-  name:  "HQProp Ethix S4 Lemon Lime Props (Set of 4)"
-  weight_g:  3.7
-}
-propellers:  {
-  uuid:  "8a9df725-2b70-48b1-a469-b30b4c9f5b9e"
-  id:  "hqprop-ethix-s5-light-grey-props-set-of-4"
-  manufacturer:  "HQProp"
-  name:  "HQProp Ethix S5 Light Grey Props (Set of 4)"
-  weight_g:  3.7
-}
-propellers:  {
-  uuid:  "e168768e-68ac-4a66-be86-850e2d523b54"
-  id:  "hq-macroquad-prop-10x4-5x3-black-glass-fiber-reinforced-nylon"
-  manufacturer:  "HQProp"
-  name:  "HQ MacroQuad Prop 10X4.5X3 Black-Glass Fiber Reinforced Nylon"
-  weight_g:  23.8
-}
-propellers:  {
-  uuid:  "28c48e82-de65-47d3-80d9-374f556cd77c"
-  id:  "hq-macroquad-prop-9x5x3-black-glass-fiber-reinforced-nylon"
-  manufacturer:  "HQProp"
-  name:  "HQ MacroQuad Prop 9X5X3 Black-Glass Fiber Reinforced Nylon"
-  weight_g:  17.4
-}
-propellers:  {
-  uuid:  "acae2a4b-bb2c-493b-9883-f22a98f91456"
-  id:  "hqprop-j75-7x5x3-light-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp J75 7X5X3 Light Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  8.8
-}
-propellers:  {
-  uuid:  "996a3517-1178-4c1a-ac98-25f37d777f15"
-  id:  "hqprop-7-5x3-7x3-light-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp 7.5X3.7X3 Light Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  9.4
-}
-propellers:  {
-  uuid:  "32ebaddf-dd19-4599-a2fe-f4763afd9294"
-  id:  "hqprop-duct-t90mmx3-for-cinewhoop-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp Duct-T90MMX3 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  2.35
-}
-propellers:  {
-  uuid:  "b4323d28-59cf-4f60-b00f-0863b576970a"
-  id:  "hqprop-6x2-5x3-light-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp 6X2.5X3 Light Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  5.3
-}
-propellers:  {
-  uuid:  "3ab7a022-f18e-4c75-b665-0272c9588bc8"
-  id:  "hq-racing-prop-r35-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQ Racing Prop R35 (2CW+2CCW)-Poly Carbonate"
-  weight_g:  4
-}
-propellers:  {
-  uuid:  "e16e7792-5cd1-455d-96a2-87a0740c744f"
-  id:  "hq-juicy-prop-j37-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQ Juicy Prop J37 (2CW+2CCW)-Poly Carbonate"
-  weight_g:  3.4
-}
-propellers:  {
-  uuid:  "5f9c17c4-866e-48dd-bde8-55168ee34e1f"
-  id:  "hqprop-t3-5x2-5x3-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp T3.5X2.5X3 Grey（2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.55
-}
-propellers:  {
-  uuid:  "8de61774-4ea4-417c-a7d0-acb7a98d4a65"
-  id:  "hqprop-t76mmx3-for-cinewhoop-grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp T76MMX3 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
-  weight_g:  2
-}
-propellers:  {
-  uuid:  "0130deb0-2260-4ff7-a6a8-430cc376591b"
-  id:  "hqprop-t2-5x2x3v2s-2cw-2ccw-poly-carbonate"
-  manufacturer:  "HQProp"
-  name:  "HQProp T2.5X2X3V2S (2CW+2CCW)-Poly Carbonate"
-  weight_g:  1.2
-}
-propellers:  {
-  uuid:  "c2ce7afd-bdfb-4200-a8e3-74a217070fed"
-  id:  "hq-juicy-prop-j40-5-1x4x3-poly-carbonate-2cw-2ccw"
-  manufacturer:  "HQProp"
-  name:  "HQ Juicy Prop J40 5.1X4X3-Poly Carbonate(2CW+2CCW)"
-  weight_g:  3.4
-}
-propellers:  {
-  uuid:  "15e93b5d-73e7-41d5-b633-442916fd8f85"
-  id:  "hq-t3-5-3-5-3-propeller-blades-2cw-2ccw-for-oasisfly35"
-  manufacturer:  "Sub250"
-  name:  "HQ T3.5*3.5*3 Propeller blades (2CW+2CCW)  for Oasisfly35"
-  weight_g:  2.12
-}
-propellers:  {
-  uuid:  "4b146788-366a-42f1-bbce-65117ee54c20"
-  id:  "4-pairs-gemfan-40mm-1-6-inch-1636-propeller-1-5mm-4-blade-for-dollyfly16-o4"
-  manufacturer:  "Sub250"
-  name:  "4 Pairs Gemfan 40mm 1.6-inch 1636 Propeller 1.5mm 4-Blade for Dollyfly16 O4"
-}
-propellers:  {
-  uuid:  "fa69ffb5-1880-4e1c-9e16-a991f80d5b19"
-  id:  "hq-prop-t3-3-3-black-propeller-for-oasisfly30"
-  manufacturer:  "HQ"
-  name:  "HQ Prop T3*3*3 Black Propeller For Oasisfly30"
-  weight_g:  1.48
-}
-propellers:  {
-  uuid:  "3c5e91d4-3e9d-41d3-8e0c-0c1e7ce5f1ea"
-  id:  "hq-it31mmx3-pc-for-nimble65"
-  manufacturer:  "Sub250"
-  name:  "HQ IT31MMX3-PC for Nimble65"
-  weight_g:  0.7
-}
-propellers:  {
-  uuid:  "bf4bacc9-7a28-41db-aa95-0b6e3bbaa362"
-  id:  "hqprop-2-2-2-4-props-2cw-2ccw-for-huma20"
-  manufacturer:  "Sub250"
-  name:  "HQProp 2*2.2*4 Props (2CW+2CCW) for Huma20"
-}
-propellers:  {
-  uuid:  "5ad81b1b-dbbb-4ad8-b5c2-3a9e88909fba"
-  id:  "hqprop-tr-2-5-2-5-3-2cw-2ccw-grey-props-for-oasisfly25"
-  manufacturer:  "Sub250"
-  name:  "HQProp TR 2.5*2.5*3 (2CW+2CCW) Grey Props for Oasisfly25"
-}
-propellers:  {
-  uuid:  "be57593f-e460-4d87-86c0-f0a0d12b22a5"
-  id:  "hqprop-dt63mmx3-v2-grey-2cw-2ccw-poly-carbonate-for-dollyfly25"
-  manufacturer:  "sub250"
-  name:  "HQProp DT63MMX3 V2 Grey (2CW+2CCW)-Poly Carbonate for DollyFly25"
-  weight_g:  1.13
-}
-propellers:  {
-  uuid:  "cbe23acc-9f84-4e9d-a55b-4f13ecc0229c"
-  id:  "4-pairs-gemfan-1608-3-1-5mm-shaft-40mm-3-blade-propellers-for-whoopfly16-nanofly16"
-  manufacturer:  "Gemfan"
-  name:  "4 Pairs Gemfan 1608-3 1.5MM Shaft 40mm 3-Blade Propellers for Whoopfly16/ Nanofly16"
-  weight_g:  0.3
-}
-propellers:  {
-  uuid:  "e6e8fc4e-984b-43bb-8cf4-0850bd3a3ce8"
-  id:  "hq-1-5mm-shaft-51mm-3-propellers-for-sub250-nanofly20"
-  manufacturer:  "Sub250"
-  name:  "HQ 1.5MM Shaft 51mm - 3 Propellers for Sub250 Nanofly20"
-  weight_g:  1.8
-}
-propellers:  {
-  uuid:  "d8f4eb12-c59f-467b-a051-d6fa524ba1c0"
-  id:  "1-5-mm-shaft-hq-40mm-2-propellers-for-sub250-nanofly16"
-  manufacturer:  "sub250"
-  name:  "1.5 mm Shaft HQ 40mm-2 Propellers  for Sub250 Nanofly16"
-  weight_g:  0.24
-}
-propellers:  {
-  uuid:  "1f7dfd50-a54a-4bec-8725-64711cfbf00c"
-  id:  "1-0-mm-shaft-hq-40mm-2-toothpick-propellers-for-nanofly16"
-  manufacturer:  "HQ"
-  name:  "1.0 mm Shaft HQ 40mm-2 Toothpick Propellers for Nanofly16"
-  weight_g:  0.24
-}
-propellers:  {
-  uuid:  "7011695e-ab14-4896-8f0c-9ac1c7e89bd0"
-  id:  "prop-wrench-m5-and-m3-our-favorite-prop-tool"
-  manufacturer:  "FPVCycle"
-  name:  "Prop wrench (M5 and M3) - Our Favorite Prop Tool"
-}
-propellers:  {
-  uuid:  "b8aba45e-fd16-4cb8-872f-0c46a7e26ab8"
-  id:  "gemfan-5236-dark-grey-only-5-21-prop"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan 5236 (dark grey only) (5.21 Prop)"
-  weight_g:  4.1
-}
-propellers:  {
-  uuid:  "878f5f27-fbc0-49b5-9c55-c4b814ca0ba9"
-  id:  "gemfan-freestyle4-5-1x3-6x3-durable-f4-propellers"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan Freestyle4 5.1x3.6x3 Durable F4 Propellers"
-  weight_g:  3.6
-}
-propellers:  {
-  uuid:  "838dda04-2bd6-4556-846d-37198b391e7f"
-  id:  "gemfan-freestyle3-5-1x3x3-durable-f3-propellers"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan Freestyle3 5.1x3x3 Durable F3 Propellers"
-  weight_g:  3.5
-}
-propellers:  {
-  uuid:  "e619a272-5154-45a2-a44c-8ded766dbc77"
-  id:  "gemfan-lr5130-3-tri-blade-props-4-pack-choose-color"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan LR5130-3 Tri-Blade Props 4 Pack (Choose Color)"
-  weight_g:  3.1
-}
-propellers:  {
-  uuid:  "bb657606-5e85-4993-a7f0-898175158bd6"
-  id:  "gemfan-long-range-7035-bi-blade-props-4-pack-choose-color"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan Long-Range 7035 Bi-Blade Props 4 Pack - (Choose Color)"
-  weight_g:  4.2
-}
-propellers:  {
-  uuid:  "a5988909-4507-44e1-ad17-9a33c66c5667"
-  id:  "gemfan-cinelifter-7035-7x3-5x3-tri-blade-7-prop-4-pack-choose-color"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan CineLifter 7035 7x3.5x3 Tri-Blade 7 Prop 4 Pack - (Choose Color)"
-  weight_g:  6.5
-}
-propellers:  {
-  uuid:  "094120fa-7f1f-4501-8d14-9d5716e37501"
-  id:  "geprc-2-prop-guard-ring-4-pack"
-  manufacturer:  "FPVCycle"
-  name:  "GepRC 2 Prop Guard Ring (4 pack)"
-}
-propellers:  {
-  uuid:  "f407ec4d-c252-413f-9071-224bb6644cd2"
-  id:  "gemfan-5-led-props-moonlight-51466-3-blade-led-propellers-set-of-4"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan 5 LED Props - Moonlight 51466 3-Blade LED Propellers (Set of 4)"
-  weight_g:  3.79
-}
-propellers:  {
-  uuid:  "5b2ed3c6-f6c6-4b11-9051-a3cca82df489"
-  id:  "cinesplore-toothfairy-v4-duct-set-of-4"
-  manufacturer:  "FPVCycle"
-  name:  "CineSplore/ToothFairy V4 Duct - set of 4"
-}
-propellers:  {
-  uuid:  "3822be8b-1bc2-44f3-9454-d28c6e97674f"
-  id:  "2mm-prop-hole-drill-bit-kit"
-  manufacturer:  "FPVCycle"
-  name:  "2mm Prop Hole Drill Bit Kit"
-}
-propellers:  {
-  uuid:  "fbf8aef7-6c94-4622-a35c-6072d102d9c8"
-  id:  "gemfan-floppy-proppies-foldable-props-2cw-2ccw"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan Floppy Proppies (Foldable Props) 2CW + 2CCW"
-  weight_g:  4.76
-}
-propellers:  {
-  uuid:  "e2134e65-90c2-46dd-a41b-8552e680b168"
-  id:  "gemfan-hurricane-4024-props-4cw-4ccw"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan Hurricane 4024 Props - (4CW +4CCW)"
-}
-propellers:  {
-  uuid:  "54643ab9-e28f-4855-802a-434d38710aa6"
-  id:  "toothpick-4-arms-pack-of-4"
-  manufacturer:  "FPVCycle"
-  name:  "ToothPick 4 Arms (Pack of 4)"
-}
-propellers:  {
-  uuid:  "5c647652-68b7-471e-8445-54a64b3da7d1"
-  id:  "gemfan-hurricane-durable-tri-blade-sl-5125-propellers-2cw-2ccw"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan Hurricane Durable Tri Blade SL 5125 Propellers (2CW + 2CCW)"
-}
-propellers:  {
-  uuid:  "fce4a5cd-b7fd-459f-bf79-25de7191743f"
-  id:  "gemfan-3018-props-4cw-4ccw-2mm"
-  manufacturer:  "FPV Cycle"
-  name:  "Gemfan 3018 Props (4CW + 4CCW) - 2mm"
-}
-propellers:  {
-  uuid:  "0ce2c9c6-88ea-43c9-a015-ae64b7ff3937"
-  id:  "gemfan-4023-4-triblade-prop-2cw-2ccw-clear-grey"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan 4023 - 4 TriBlade Prop (2CW + 2CCW) - Clear Grey"
-}
-propellers:  {
-  uuid:  "ee1b33d3-fadc-4a22-b947-e5c65423a67b"
-  id:  "gemfan-51433-tri-blade-5-props-2cw-2-ccw"
-  manufacturer:  "FPVCycle"
-  name:  "Gemfan 51433 Tri-Blade 5 Props (2CW + 2 CCW)"
-}
-propellers:  {
-  uuid:  "98944b82-7b78-411f-adcd-1e7b4b38bc7e"
-  id:  "glide-5-dead-cat-arms-2pc"
-  manufacturer:  "FPVCycle"
-  name:  "Glide 5” Dead Cat Arms (2pc)"
-}
-propellers:  {
-  uuid:  "8e638bd8-25d7-4e79-acda-61deedb83f43"
-  id:  "gemfan-hurricane-tri-blade-51466-5-1-propeller-2cw-2ccw"
-  manufacturer:  "FPV Cycle"
-  name:  "Gemfan Hurricane Tri-blade 51466 5.1 Propeller - (2CW + 2CCW)"
+propellers: {
+  uuid: "5bb5b8ae-fc45-45c0-a388-11e0d0ab6124"
+  id: "hqprop-5x4.3x3-v1s"
+  manufacturer: "HQProp"
+  name: "HQProp 5x4.3x3 V1S"
+  weight_g: 3.81
+  diameter_mm: 127
+  pitch_mm: 109.22
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "85e4b6d3-aeed-45c2-b51b-c55359528c7c"
+  id: "hqprop-t2x2x3"
+  manufacturer: "HQProp"
+  name: "HQProp T2x2x3"
+  weight_g: 1.5
+  diameter_mm: 50.8
+  pitch_mm: 50.8
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "bac19aec-99fc-43d4-b96d-d1feb30e6b6e"
+  id: "gemfan-hurricane-51466-v2"
+  manufacturer: "Gemfan"
+  name: "Gemfan Hurricane 51466 V2"
+  weight_g: 4.2
+  diameter_mm: 131.83
+  pitch_mm: 91.44
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "0801832b-b458-4ad5-a311-0e4f1efcc8da"
+  id: "gemfan-floppy-proppy-f5135"
+  manufacturer: "Gemfan"
+  name: "Gemfan Floppy Proppy F5135"
+  weight_g: 4.7
+  diameter_mm: 129.54
+  pitch_mm: 88.9
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "85fd29c1-857d-48e0-a5f7-f454ad4c52b6"
+  id: "hqprop-ethix-s5-light-grey"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix S5 Light Grey"
+  weight_g: 3.7
+  diameter_mm: 127
+  pitch_mm: 101.6
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "cd0d879e-7b30-4d22-b4cd-475f103b8b70"
+  id: "hqprop-7x4x3"
+  manufacturer: "HQProp"
+  name: "HQProp 7X4X3"
+  weight_g: 9.1
+  diameter_mm: 177.8
+  pitch_mm: 101.6
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "a609a8fc-e509-4f5e-a3b5-2ee4847192cf"
+  id: "gemfan-1219-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 1219 3-Blade"
+  weight_g: 0.28
+  diameter_mm: 30.99
+  pitch_mm: 48.01
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "1d421d54-2b93-4bfe-a626-b1f3918f3426"
+  id: "gemfan-1636-4-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 1636 4-Blade"
+  weight_g: 0.5
+  diameter_mm: 39.88
+  pitch_mm: 91.44
+  blades: 4
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "db4c27cd-dbf6-4fb8-83d1-5d00ee86562a"
+  id: "gemfan-2023-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 2023 3-Blade"
+  weight_g: 0.88
+  diameter_mm: 50.8
+  pitch_mm: 58.42
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "9b6afc05-af45-45c1-9171-6c08de3d8c8d"
+  id: "gemfan-3016-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 3016 3-Blade"
+  weight_g: 1.18
+  diameter_mm: 76.2
+  pitch_mm: 40.64
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "f438ea4d-29f6-4730-b5d6-105105d04294"
+  id: "gemfan-4023-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 4023 3-Blade"
+  weight_g: 1.9
+  diameter_mm: 101.6
+  pitch_mm: 58.42
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "c6ccaf42-c038-463b-b311-1e53a75c2fa0"
+  id: "gemfan-hurricane-51433"
+  manufacturer: "Gemfan"
+  name: "Gemfan Hurricane 51433"
+  weight_g: 3.8
+  diameter_mm: 130.81
+  pitch_mm: 109.98
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "81ff33d3-02da-4d1f-a258-0974cd1aaf38"
+  id: "gemfan-hurricane-51499"
+  manufacturer: "Gemfan"
+  name: "Gemfan Hurricane 51499"
+  weight_g: 5.1
+  diameter_mm: 130.81
+  pitch_mm: 126.75
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "a84c2809-0a8d-4eff-b7f3-ac4e36586e3b"
+  id: "gemfan-7040-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 7040 3-Blade"
+  weight_g: 8.7
+  diameter_mm: 177.8
+  pitch_mm: 101.6
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "8a9d1fa6-3a22-4bed-86e8-2352ec189f35"
+  id: "hqprop-micro-whoop-31x3"
+  manufacturer: "HQProp"
+  name: "HQProp Micro Whoop 31x3"
+  weight_g: 0.27
+  diameter_mm: 30.99
+  pitch_mm: 29.97
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "9c6cb944-f7cd-4459-a3c9-b288309e88fa"
+  id: "hqprop-micro-whoop-40x4"
+  manufacturer: "HQProp"
+  name: "HQProp Micro Whoop 40x4"
+  weight_g: 0.5
+  diameter_mm: 39.88
+  pitch_mm: 39.88
+  blades: 4
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "d00fa7e1-7efc-4057-ba75-e0d6d9b84b3b"
+  id: "hqprop-t65mm-2.5-inch"
+  manufacturer: "HQProp"
+  name: "HQProp T65MM 2.5 Inch"
+  weight_g: 1.2
+  diameter_mm: 65.02
+  pitch_mm: 39.88
+  blades: 2
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "50f7726c-df27-4037-8bcb-c1779dac76f9"
+  id: "hqprop-t3x3x3"
+  manufacturer: "HQProp"
+  name: "HQProp T3x3x3"
+  weight_g: 1.5
+  diameter_mm: 76.2
+  pitch_mm: 76.2
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "89594ace-b5b9-4494-91c3-de6d839e77b7"
+  id: "hqprop-t4x2.5x2"
+  manufacturer: "HQProp"
+  name: "HQProp T4x2.5x2"
+  weight_g: 1.4
+  diameter_mm: 101.6
+  pitch_mm: 63.5
+  blades: 2
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "d1ce02e4-961c-499d-8424-3b84424edfde"
+  id: "hqprop-ethix-p3-peanut-butter"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix P3 Peanut Butter"
+  weight_g: 3.8
+  diameter_mm: 129.54
+  pitch_mm: 76.2
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "6d5540a7-7f07-40a5-840d-185c39f77038"
+  id: "hqprop-ethix-s3-watermelon"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix S3 Watermelon"
+  weight_g: 3.6
+  diameter_mm: 127
+  pitch_mm: 78.74
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "180c5d56-8970-405b-9308-254d1bde06de"
+  id: "hqprop-5.1x4.1x3"
+  manufacturer: "HQProp"
+  name: "HQProp 5.1x4.1x3"
+  weight_g: 4.7
+  diameter_mm: 129.54
+  pitch_mm: 104.14
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "194a58be-4a4c-48b3-bc42-85a97d25074a"
+  id: "hqprop-7x3.5x3"
+  manufacturer: "HQProp"
+  name: "HQProp 7x3.5x3"
+  weight_g: 8.8
+  diameter_mm: 177.8
+  pitch_mm: 88.9
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "84d6959a-80c2-4e81-828e-71fee9065947"
+  id: "hqprop-2.5x2.5x3"
+  manufacturer: "HQProp"
+  name: "HQProp 2.5x2.5x3"
+  weight_g: 1.5
+  diameter_mm: 63.5
+  pitch_mm: 63.5
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "a55f6a33-8a46-4f95-b534-f4960a48294e"
+  id: "gemfan-d2-2-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan D2.2 3-Blade Propellers"
+  weight_g: 0.95
+  description: "Gemfan D2.2 3-Blade Propellers (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "c9e747f7-f870-4773-87e2-1f83a77c13f1"
+  id: "gemfan-1811-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 1811 3-Blade Propellers"
+  weight_g: 0.32
+  description: "Gemfan 1811 3-Blade Propellers (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "93fb946c-74d7-4b72-a89f-360f243d337b"
+  id: "gemfan-1409-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 1409 3-Blade Propellers"
+  weight_g: 0.2
+  description: "Gemfan 1409 3-Blade Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "e66cf388-64bc-493f-afce-690b9ee2c802"
+  id: "aquila20-brushless-whoop-quadcopter"
+  manufacturer: "BETAFPV"
+  name: "Aquila20 Brushless Whoop Quadcopter"
+}
+propellers: {
+  uuid: "37023d68-1cff-415f-948e-a064826b1eac"
+  id: "gemfan-1614-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 1614 3-Blade Propellers"
+  weight_g: 0.24
+  description: "Gemfan 1614 3-Blade Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "79109cc6-1b79-49bb-b475-2b199dad2008"
+  id: "gemfan-1207-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 1207 3-Blade Propellers"
+  weight_g: 0.15
+  description: "Gemfan 1207 3-Blade Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "505afa4c-9baa-47ac-bc99-0b05705ece7e"
+  id: "aquila20-hd-fpv-kit"
+  manufacturer: "BETAFPV"
+  name: "Aquila20 HD FPV Kit"
+}
+propellers: {
+  uuid: "3f0008ef-2fc4-41d3-82c0-854f742147ab"
+  id: "aquila20-fpv-kit"
+  manufacturer: "BETAFPV"
+  name: "Aquila20 FPV Kit"
+}
+propellers: {
+  uuid: "7fe56d45-ad2f-45fc-9f5e-7f6ceecc4566"
+  id: "hq-4025-2-blade-propellers-1-5mm-shaft"
+  manufacturer: "BETAFPV"
+  name: "HQ 4025 2-Blade Propellers 1.5mm Shaft"
+  weight_g: 1.4
+}
+propellers: {
+  uuid: "f0fff850-48c2-402a-8856-9ee963f3f76c"
+  id: "gemfan-5125-3-blade-propellers-5mm-1-5mm-shaft"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 5125 3-Blade Propellers 5mm/1.5mm Shaft"
+  weight_g: 2.8
+}
+propellers: {
+  uuid: "453f79fb-4f75-4e48-9535-ec56864f319b"
+  id: "gemfan-1611-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 1611 3-Blade Propellers"
+  weight_g: 0.34
+  description: "Gemfan 1611 3-Blade Propellers (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "277fc2d5-475d-4e24-815b-9e6518fcdf44"
+  id: "1735-4-blades-pc-propellers-4-pcs"
+  manufacturer: "BETAFPV"
+  name: "1735 4-Blades PC Propellers  (4 PCS)"
+  weight_g: 0.8
+}
+propellers: {
+  uuid: "b1e1d0ee-4b09-497f-adc8-99ea80db530a"
+  id: "31mm-4-blade-micro-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "31mm 4-blade Micro Whoop Propellers"
+  description: "31mm 4-blade Micro Whoop Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "9ae7ce92-a83a-48c6-87c2-fb8007f147af"
+  id: "40mm-3-blade-micro-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "40mm 3-blade Micro Whoop Propellers"
+  description: "40mm 3-blade Micro Whoop Propellers (1.0mm shaft 4 Sets)"
+}
+propellers: {
+  uuid: "cb6882e5-83c5-4565-88d4-3f7df5c6fcf2"
+  id: "gemfan-2218-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 2218 3-Blade Propellers"
+  weight_g: 2.32
+  description: "Gemfan 2218 3-Blade Propellers (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "613756ba-ae8e-4032-b131-854c8b6967ee"
+  id: "hq-31mm-ultralight-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "HQ 31mm Ultralight 3-Blade Propellers"
+  weight_g: 0.67
+  description: "HQ 31mm Ultralight 3-Blade Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "8dedb8e0-8b9d-41a1-8af8-73e6800565d2"
+  id: "gemfan-1219s-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 1219S 3-Blade Propellers"
+  weight_g: 0.74
+  description: "Gemfan 1219S 3-Blade Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "48053723-9d2a-4042-8f48-2a4011b445ab"
+  id: "gemfan-2023-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 2023 3-blade Propellers"
+  weight_g: 3.54
+  description: "Gemfan 2023 3-blade Propellers (1.5mm Shaft 4PCS)"
+}
+propellers: {
+  uuid: "2bdfc5f8-9a06-4e6b-bff9-b7d18e9c748c"
+  id: "beta-45mm-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Beta-45mm 3-Blade Propellers"
+  weight_g: 1.63
+  description: "Beta-45mm 3-Blade Propellers (1.5mm Shaft 4PCS)"
+}
+propellers: {
+  uuid: "e7c0cb87-0c45-42ba-ba8f-076b6db3aef7"
+  id: "gemfan-1210-2-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 1210 2-blade Propellers"
+  weight_g: 0.73
+  description: "Gemfan 1210 2-blade Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "b0593285-e5f2-4722-a162-25174d204f67"
+  id: "gemfan-1208-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 1208 3-blade Propellers"
+  weight_g: 0.81
+  description: "Gemfan 1208 3-blade Propellers(1.0mm Shaft)"
+}
+propellers: {
+  uuid: "9623e7eb-9769-4eea-880d-709797148362"
+  id: "hq-31mm-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "HQ 31mm 3-Blade Propellers"
+  weight_g: 1.16
+  description: "HQ 31mm 3-Blade Propellers (0.8mm Shaft 4PCS)"
+}
+propellers: {
+  uuid: "b3719bbd-e8a8-40b1-bf8f-f6d7d1859563"
+  id: "gemfan-45mm-2-blade-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 45mm 2-Blade & 3-Blade Propellers"
+  weight_g: 1.69
+  description: "Gemfan 45mm 2-Blade & 3-Blade Propellers (1.5mm Shaft 4PCS)"
+}
+propellers: {
+  uuid: "a872651b-74e4-473e-9631-0b1c3280e217"
+  id: "gemfan-2015-2-blade-propellers-4pcs"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 2015 2-Blade Propellers 4PCS"
+  weight_g: 0.5
+  description: "Gemfan 2015 2-Blade Propellers 4PCS (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "d38d99db-1982-4035-abe4-fabd3795e0a0"
+  id: "gemfan-51466-mck-v2-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 51466 MCK V2 3-Blade Propellers"
+  weight_g: 4.2
+  description: "Gemfan 51466 MCK V2 3-Blade Propellers (5.0mm Shaft 4PCS)"
+}
+propellers: {
+  uuid: "de8e1b9e-01de-41bd-b400-e2c87dc9ec8e"
+  id: "gemfan-hurricane-51433-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan Hurricane 51433 3-Blade Propellers"
+  weight_g: 3.8
+  description: "Gemfan Hurricane 51433 3-Blade Propellers (5.0mm Shaft 4PCS)"
+}
+propellers: {
+  uuid: "c960c0b4-c018-4f56-90fe-d17b3d999e83"
+  id: "hq-65mm-2-blade-1-5mm-shaft-propellers"
+  manufacturer: "BETAFPV"
+  name: "HQ 65mm 2-Blade 1.5mm Shaft Propellers"
+}
+propellers: {
+  uuid: "070e17c3-9431-4467-8734-f689d8eeccf9"
+  id: "gemfan-35mm-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 35mm 3-Blade Propellers"
+  weight_g: 1.23
+  description: "Gemfan 35mm 3-Blade Propellers (1.0mm Shaft 4PCS)"
+}
+propellers: {
+  uuid: "f760a2e9-f65b-46f1-b221-7cbc2fba93d3"
+  id: "gemfan-40mm-2-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 40mm 2-Blade Propellers"
+  weight_g: 1.02
+  description: "Gemfan 40mm 2-Blade Propellers (1.0mm Shaft 4PCS)"
+}
+propellers: {
+  uuid: "fabd7c65-1435-4f30-ac2e-5b6da6c95995"
+  id: "gemfan-3520-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 3520 3-Blade Propellers"
+  weight_g: 1.92
+  description: "Gemfan 3520 3-Blade Propellers (1.5-5mm Shaft)"
+}
+propellers: {
+  uuid: "68d643be-9b23-4f64-8703-813cb6519a18"
+  id: "hq-3520-3-blade-propellers-1-5mm-shaft"
+  manufacturer: "BETAFPV"
+  name: "HQ 3520 3-Blade Propellers (1.5mm Shaft)"
+  weight_g: 1.5
+}
+propellers: {
+  uuid: "c48baf28-814c-4611-b70f-6117488cd14f"
+  id: "gemfan-d63-5-blade-propellers-1-5mm-shaft"
+  manufacturer: "BETAFPV"
+  name: "Gemfan D63 5-Blade Propellers 1.5mm Shaft"
+  weight_g: 1.76
+}
+propellers: {
+  uuid: "36c0b1d6-f78a-4afe-a5d1-053671fcc9e6"
+  id: "hq-5025-3-blade-propellers-1-5mm-shaft"
+  manufacturer: "BETAFPV"
+  name: "HQ 5025 3-Blade Propellers 1.5mm Shaft"
+  weight_g: 3.4
+}
+propellers: {
+  uuid: "aa287113-66c0-4849-8cd9-4d446dc1996e"
+  id: "gemfan-2020-4-blade-propellers-1-5mm-shaft"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 2020 4-Blade Propellers 1.5mm Shaft"
+  weight_g: 0.93
+}
+propellers: {
+  uuid: "f80977ee-ea8a-4bc4-849b-3adc981bcf93"
+  id: "gemfan-d63-3-blade-propellers-1-5mm-shaft"
+  manufacturer: "BETAFPV"
+  name: "Gemfan D63 3-Blade Propellers 1.5mm Shaft"
+  weight_g: 1.4
+}
+propellers: {
+  uuid: "0ec44d2f-2f19-4541-b7dc-069fa7eac2d8"
+  id: "gemfan-4032-3-blade-propellers-5mm-shaft"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 4032 3-Blade Propellers 5mm Shaft"
+  weight_g: 3.12
+}
+propellers: {
+  uuid: "8f78c503-3039-4fe3-a6cb-fee94f345c87"
+  id: "31mm-3-blade-micro-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "31mm 3-blade Micro Whoop Propellers"
+  description: "31mm 3-blade Micro Whoop Propellers (0.8mm Shaft)"
+}
+propellers: {
+  uuid: "c2912508-11cc-4ced-9233-40df0f64ae77"
+  id: "48mm-4-blade-micro-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "48mm 4-blade Micro Whoop Propellers"
+  description: "48mm 4-blade Micro Whoop Propellers (1.0mm shaft)"
+}
+propellers: {
+  uuid: "1d89f4df-4a34-41cc-83f6-8bf6ee6ad408"
+  id: "gemfan-31mm-4-blade-micro-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 31mm 4-blade Micro Whoop Propellers"
+  weight_g: 0.31
+}
+propellers: {
+  uuid: "2c4c8b38-6f5d-465b-ae59-7801af90f832"
+  id: "gemfan-3016-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 3016 3-Blade Propellers"
+  weight_g: 1.24
+  description: "Gemfan 3016 3-Blade Propellers (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "c22cad45-99e3-428b-bd69-a77c44f714c2"
+  id: "gemfan-2540-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 2540 3-Blade Propellers"
+  weight_g: 3.7
+}
+propellers: {
+  uuid: "84284e00-160b-4a14-9bcc-f78210e0dbd6"
+  id: "gemfan-31mm-3-blade-micro-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 31mm 3-blade Micro Whoop Propellers"
+  description: "Gemfan 31mm 3-blade Micro Whoop Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "5ef6e8ad-93a7-4684-b5f0-ae37f5da48f9"
+  id: "48mm-4-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "48mm 4-Blade Propellers"
+  weight_g: 3
+  description: "48mm 4-Blade Propellers for HX100 FPV Quad (1.5mm shaft )"
+}
+propellers: {
+  uuid: "3c6bf964-3a80-4bad-a2c9-f867a081e68b"
+  id: "65mm-2-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "65mm 2-Blade Propellers"
+  description: "65mm 2-Blade Propellers for HX100 FPV Quad (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "57d893b9-bca9-45e6-9379-6d18632ce6b1"
+  id: "beta75x-2s-whoop-quadcopter"
+  manufacturer: "BETAFPV"
+  name: "Beta75X 2S Whoop Quadcopter"
+  description: "Beta75X 2S Whoop Quadcopter (Pink/White/Orange/Yellow)"
+}
+propellers: {
+  uuid: "951b0a38-0de1-48e7-a0b1-092ec2b6d6c3"
+  id: "emax-avan-2-4-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "EMAX Avan 2'' 4-Blade Propellers"
+  weight_g: 3.7
+  description: "EMAX Avan 2'' 4-Blade Propellers (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "0b3752db-ce75-4d21-ac88-4ec677a0b811"
+  id: "gemfan-40mm-3-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 40mm 3-Blade Propellers"
+  description: "Gemfan 40mm 3-Blade Propellers (1.0mm Shaft 4 Sets)"
+}
+propellers: {
+  uuid: "7b9dca5c-d8dd-42af-8bd4-80516f5329a5"
+  id: "gemfan-40mm-3-blade-propellers-2"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 40mm 3-Blade Propellers"
+  description: "Gemfan 40mm 3-Blade Propellers (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "f5f36dc3-9953-4899-aef2-35af8c5f4718"
+  id: "gemfan-40mm-4-blade-propellers"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 40mm 4-Blade Propellers"
+  description: "Gemfan 40mm 4-Blade Propellers (1.5mm Shaft)"
+}
+propellers: {
+  uuid: "c7f68599-c900-4d42-8c05-48f89cd2e833"
+  id: "gemfan-40mm-4-blade-propellers-2"
+  manufacturer: "BETAFPV"
+  name: "Gemfan 40mm 4-Blade Propellers"
+  description: "Gemfan 40mm 4-Blade Propellers (1.0mm Shaft)"
+}
+propellers: {
+  uuid: "cf8df091-60b4-4016-9f39-3015e1651734"
+  id: "40mm-4-blade-2s-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "40mm 4-blade 2S Whoop Propellers"
+  description: "40mm 4-blade 2S Whoop Propellers (1.5mm Shaft Hole)"
+}
+propellers: {
+  uuid: "f1d82d49-1fe0-4f40-92f2-af5a24927085"
+  id: "40mm-3-blade-chameleon-propellers"
+  manufacturer: "BETAFPV"
+  name: "40mm 3-blade Chameleon Propellers"
+  description: "40mm 3-blade Chameleon Propellers (1.0mm shaft)"
+}
+propellers: {
+  uuid: "75b1d642-2060-4569-9186-edf82afa44f1"
+  id: "transparent-31mm-3-blade-micro-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "Transparent 31mm 3-blade Micro Whoop Propellers"
+  description: "Transparent 31mm 3-blade Micro Whoop Propellers (0.8mm shaft)"
+}
+propellers: {
+  uuid: "34c3acbd-6530-4a67-929c-8165a6ca52cd"
+  id: "31mm-4-blade-micro-whoop-propellers-2"
+  manufacturer: "BETAFPV"
+  name: "31mm 4-blade Micro Whoop Propellers"
+  description: "31mm 4-blade Micro Whoop Propellers (0.8mm shaft)"
+}
+propellers: {
+  uuid: "cc8e8b76-c6f0-4f1f-b0e3-8400d5caf2a8"
+  id: "48mm-3-blade-micro-whoop-propellers"
+  manufacturer: "BETAFPV"
+  name: "48mm 3-blade Micro Whoop Propellers"
+  description: "48mm 3-blade Micro Whoop Propellers (1.0mm shaft)"
+}
+propellers: {
+  uuid: "1a51da49-7078-441f-9efa-5548ba95fdbd"
+  id: "31mm-3-blade-micro-whoop-propellers-2"
+  manufacturer: "BETAFPV"
+  name: "31mm 3-blade Micro Whoop Propellers"
+  description: "31mm 3-blade Micro Whoop Propellers (0.8mm shaft 4 Sets)"
+}
+propellers: {
+  uuid: "103ddf7e-8fd9-4eea-a47f-5dcad1e0ca98"
+  id: "caddxfpv-curve-micro-16-replacement-propeller-2"
+  manufacturer: "CADDXFPV"
+  name: "CaddxFPV Curve Micro 16 Replacement Propeller"
+  description: "CaddxFPV Curve Micro 16 Replacement Propeller Set"
+}
+propellers: {
+  uuid: "8e1e1aff-2da1-40f7-baa8-88a4946e5709"
+  id: "caddxfpv-hq-3-blade-propeller-set-2"
+  manufacturer: "CADDX FPV"
+  name: "CaddxFPV HQ 3-Blade Propeller Set"
+  description: "CaddxFPV HQ 3-Blade Propeller Set (2CW + 2CCW)"
+}
+propellers: {
+  uuid: "af0e1d98-06b0-4a2b-81bf-c5868d442c7c"
+  id: "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount-2"
+  manufacturer: "CADDXFPV"
+  name: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount"
+  description: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount Propeller Set (2x CW / 2x CCW)"
+}
+propellers: {
+  uuid: "4583de63-ed4e-42c8-bee6-5831f1bfef68"
+  id: "darwinfpv-d63-3-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV D63-3 Propeller"
+  weight_g: 1.6
+}
+propellers: {
+  uuid: "c5bab505-8f36-4f1d-837d-18bcbf6b2f78"
+  id: "darwinfpv-cineape-25-ii-cinematic-whoop"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV CineApe 25 II Cinematic Whoop"
+  description: "DarwinFPV CineApe 25 II  Cinematic Whoop FPV Drone"
+}
+propellers: {
+  uuid: "365e3550-feae-4fdd-9d41-b42e53ff7a35"
+  id: "darwinfpv-babyape-iii-pro-hqprop-t3-5x2-5x3"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV BabyApe III Pro HQProp T3.5X2.5X3"
+  weight_g: 1.5
+  description: "DarwinFPV BabyApe III Pro  HQProp T3.5X2.5X3 3.5 Inch Propeller"
+}
+propellers: {
+  uuid: "db62119b-e290-4e78-8986-fe20d00e14e6"
+  id: "darwinfpv-6032-x6-d6-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV 6032 X6/D6 Propeller"
+  weight_g: 5.8
+}
+propellers: {
+  uuid: "0cdc020d-3574-4183-8b13-2962f226e38d"
+  id: "darwinfpv-51499-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV 51499 Propeller"
+  weight_g: 4.96
+}
+propellers: {
+  uuid: "d49d625c-c4ac-4f66-9f2c-988300b60638"
+  id: "darwinfpv-cineape20-2023-3-2-inch-propellers"
+  manufacturer: "DarwinFPV - Official Store"
+  name: "DarwinFPV CineApe20 2023-3 2 Inch Propellers"
+  weight_g: 0.88
+}
+propellers: {
+  uuid: "1aaee669-fd22-4485-b45b-cc0e83d0151c"
+  id: "darwinfpv-cineape35-d90-3-3-5-inch-fpv"
+  manufacturer: "DarwinFPV - Official Store"
+  name: "DarwinFPV CineApe35 D90-3 3.5 inch FPV"
+  weight_g: 2.3
+  description: "DarwinFPV CineApe35 D90-3  3.5 inch FPV Drone Propeller"
+}
+propellers: {
+  uuid: "88adfc08-0ed0-4134-801e-06c4dc43e2c8"
+  id: "darwinfpv-gemfan-x-class-1308-13x8x3-13inch"
+  manufacturer: "DarwinFPV - Official Store"
+  name: "DarwinFPV Gemfan X-CLASS 1308 13X8X3 13inch"
+  weight_g: 39
+  description: "DarwinFPV Gemfan X-CLASS 1308 13X8X3 13inch Propeller"
+}
+propellers: {
+  uuid: "69dbc8c8-90c9-4fbd-824f-7e78989f5ac9"
+  id: "darwinfpv-babyape-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV BabyApe Ⅱ Propeller"
+  weight_g: 1.5
+}
+propellers: {
+  uuid: "f3a98c5a-3a05-4b75-a4e3-f96cd3f53f22"
+  id: "darwinfpv-f4019-2-folding-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV F4019-2 Folding Propeller"
+  weight_g: 1.42
+}
+propellers: {
+  uuid: "f0e5961b-56b5-4568-b1e8-bd286b7eec52"
+  id: "darwinfpv-gemfan-8060-3-glass-fiber-nylon"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Gemfan 8060-3 Glass Fiber Nylon"
+}
+propellers: {
+  uuid: "fcedb465-3503-48f4-83b6-e8874a80a8e1"
+  id: "darwinfpv-hurricane7050-3-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Hurricane7050-3 Propeller"
+  weight_g: 8.9
+}
+propellers: {
+  uuid: "450d8654-1d08-47e5-816f-f58d218b2545"
+  id: "darwinfpv-8040-3-glass-fiber-nylon-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV 8040-3 Glass Fiber Nylon Propeller"
+}
+propellers: {
+  uuid: "d9a0e89a-b807-4f5a-bb98-af4a118b10ff"
+  id: "darwinfpv-9045-3-glass-fiber-nylon-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV 9045-3 Glass Fiber Nylon Propeller"
+}
+propellers: {
+  uuid: "666b272f-040f-4671-a088-e6f14fd49472"
+  id: "darwinfpv-1050-3-fpv-drone-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV  1050-3 FPV Drone Propeller"
+}
+propellers: {
+  uuid: "48366e05-c898-4112-96ba-82a66d799330"
+  id: "darwinfpv-hqprop-t3-5x2x3grey-propeller-babyape"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV HQProp T3.5X2X3Grey Propeller / Babyape"
+  weight_g: 1.5
+  description: "DarwinFPV HQProp T3.5X2X3Grey Propeller / Babyape II"
+}
+propellers: {
+  uuid: "fd2f4e90-c9a9-41d6-87ac-aa4b7bd555fe"
+  id: "darwinfpv-cineape-25-hqprop-t63mmx6-propeller"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV CineApe 25 HQProp T63MMX6 Propeller"
+  weight_g: 1.85
+}
+propellers: {
+  uuid: "a37257cd-dbd1-4143-b3b6-79d6b81ed968"
+  id: "gemfan-4934-5-inch-3-blade-propeller"
+  manufacturer: "DarwinFPV"
+  name: "Gemfan 4934 5 inch 3-Blade Propeller"
+  weight_g: 3.5
+}
+propellers: {
+  uuid: "5e2fbac6-a81c-425c-8ee5-8f6a1c9056f1"
+  id: "darwinfpv-5-inch-51466-3-blades-propeller"
+  manufacturer: "DarwinFPV"
+  name: "Darwinfpv 5 inch 51466-3 blades propeller"
+  weight_g: 4.2
+}
+propellers: {
+  uuid: "13882035-614f-4b21-a8fc-ab915993a5ee"
+  id: "darwinfpv-2512-2-5inch-3-blade-fpv-propellers"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV 2512 2.5inch 3-blade FPV Propellers"
+  weight_g: 0.8
+}
+propellers: {
+  uuid: "adfe6b0e-4dbc-456b-a687-bcadc2b8c03a"
+  id: "darwin-gemfan-3018-3-inch-2-blade"
+  manufacturer: "DarwinFPV"
+  name: "Darwin Gemfan 3018 3 inch 2-Blade"
+  weight_g: 1.66
+  description: "Darwin Gemfan 3018 3 inch 2-Blade Propeller"
+}
+propellers: {
+  uuid: "ca254750-f1bc-42a5-973f-278d6526ccab"
+  id: "gemfan-flash-7040-3-blade-propeller"
+  manufacturer: "DarwinFPV"
+  name: "Gemfan Flash 7040 3-Blade Propeller"
+  weight_g: 7.9
+  description: "Gemfan Flash 7040 3-Blade Propeller for 7 inch FPV Drone"
+}
+propellers: {
+  uuid: "ea44351d-267d-4f0a-9867-7a24a38d2656"
+  id: "gemfan-3016-3-inch-propeller"
+  manufacturer: "DarwinFPV"
+  name: "Gemfan 3016 3 inch Propeller"
+  weight_g: 1.18
+  description: "Gemfan 3016 3 inch Propeller for FPV Drones"
+}
+propellers: {
+  uuid: "4b8f93a1-f041-44ea-905c-4a9675aedc7f"
+  id: "newbeedrone-tool-kit-v1-7"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Tool Kit V1.7"
+  weight_g: 28
+}
+propellers: {
+  uuid: "bb9f3699-e424-429c-b881-b5f64eecc370"
+  id: "newbeedrone-whoop-propypop-tool"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Whoop PropyPop Tool"
+  description: "NewBeeDrone Whoop PropyPop Tool for Easy Propeller Removal"
+}
+propellers: {
+  uuid: "58c25632-6bab-4bae-9328-59481fa00ea5"
+  id: "newbeedrone-azi-micro-propellers-31mm"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Azi  Micro Propellers 31mm"
+  description: "NewBeeDrone Azi (Tri Blade) Micro Propellers 31mm - 1.0mm Shaft (4CCW+4CW)"
+}
+propellers: {
+  uuid: "5008d969-7efe-4e53-b8ec-8efc141db50e"
+  id: "ultimate-propeller-combo"
+  manufacturer: "NewBeeDrone"
+  name: "Ultimate Propeller Combo"
+}
+propellers: {
+  uuid: "b3b60ce1-09f7-4da9-b92d-36073a6c193f"
+  id: "newbeedrone-azi-micro-propellers-40mm"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Azi  Micro Propellers 40mm"
+  description: "NewBeeDrone Azi (Tri-Blade) Micro Propellers 40mm - 1.5mm Shaft (4CCW+4CW)"
+}
+propellers: {
+  uuid: "c13b9e97-d1b9-4a12-87df-016eadab1128"
+  id: "newbeedrone-venom-v2-super-durable-propellers"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Venom V2 Super Durable Propellers"
+  weight_g: 0.19
+  description: "NewBeeDrone Venom V2 Super Durable Propellers 31mm -1.0mm Shaft (4CCW+4CW)"
+}
+propellers: {
+  uuid: "70651900-66d5-4728-88f1-2a11a5ce9863"
+  id: "newbeedrone-azi-micro-propellers-31mm-1-0mm"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Azi Micro Propellers 31mm -1.0mm"
+  description: "NewBeeDrone Azi (Quad Blade) Micro Propellers 31mm -1.0mm Shaft (4CCW+4CW)"
+}
+propellers: {
+  uuid: "9f1b41ec-cd8d-4766-8d7e-d0cfb589c503"
+  id: "newbeedrone-azi-micro-propellers-40mm-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Azi  Micro Propellers 40mm"
+  description: "NewBeeDrone Azi (Tri-Blade) Micro Propellers 40mm - 1.0mm Shaft (4CCW+4CW)"
+}
+propellers: {
+  uuid: "f52aa586-aecb-4be0-abb7-0fd9bbc7251f"
+  id: "newbeedrone-azi-micro-propellers-31mm-0-8mm"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Azi Micro Propellers 31mm -0.8mm"
+  description: "NewBeeDrone Azi (Quad Blade) Micro Propellers 31mm -0.8mm Shaft (4CCW+4CW)"
+}
+propellers: {
+  uuid: "5c9f9fd4-7fe5-4b38-b7a2-3eb603136b1f"
+  id: "newbeedrone-azi-micro-propellers-31mm-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Azi  Micro Propellers 31mm"
+  description: "NewBeeDrone Azi (Tri Blade) Micro Propellers 31mm - 0.8mm Shaft (4CCW+4CW)"
+}
+propellers: {
+  uuid: "1c0031d4-1cbe-4106-b9fe-fbaead1fc026"
+  id: "newbeedrone-acrobee-prop-removal-tool"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone AcroBee Prop Removal Tool"
+}
+propellers: {
+  uuid: "e283fce0-832d-4ac5-a335-fbd1fc9b54af"
+  id: "newbeedrone-beewire-lite-5-pack"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeWire Lite (5-Pack)"
+  weight_g: 1.2
+}
+propellers: {
+  uuid: "90755b7e-0829-45b6-9dae-e03da6681efc"
+  id: "newbeedrone-venom-v2-super-durable-propellers-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Venom V2 Super Durable Propellers"
+  weight_g: 0.19
+  description: "NewBeeDrone Venom V2 Super Durable Propellers 31mm -0.8mm Shaft (4CCW+4CW)"
+}
+propellers: {
+  uuid: "ba544f55-9b6b-43f1-bad4-518ebede22ec"
+  id: "tiny-cockroach"
+  manufacturer: "NewBeeDrone"
+  name: "Tiny Cockroach"
+}
+propellers: {
+  uuid: "60b503c9-c3c7-4026-b9f5-161a26f16974"
+  id: "rotor-riot-ultimate-tool-kit"
+  manufacturer: "Rotor Riot"
+  name: "Rotor Riot Ultimate Tool Kit"
+  description: "Rotor Riot Ultimate Tool Kit - Choose Version"
+}
+propellers: {
+  uuid: "ab5998cd-405c-47dd-b356-0a792fb4f05e"
+  id: "40mm-1635-pc-3-blade-1-5mm-clear-blue"
+  manufacturer: "Gemfan"
+  name: "40mm 1635 PC 3 Blade 1.5mm - Clear Blue"
+}
+propellers: {
+  uuid: "0c3faa52-d034-46af-bc9e-3e6aeb2c76b3"
+  id: "cinelifter-glass-fiber-nylon-10-1x5-5x3-prop"
+  manufacturer: "Gemfan"
+  name: "Cinelifter Glass Fiber Nylon 10.1X5.5x3 Prop"
+  description: "Cinelifter Glass Fiber Nylon 10.1X5.5x3 Prop 2-Pack"
+}
+propellers: {
+  uuid: "5ebbcb3a-bb06-42c1-bb93-baea45d6dc86"
+  id: "hq-10x4-5x3-macroquad-prop"
+  manufacturer: "HQ Prop"
+  name: "HQ 10X4.5X3 MacroQuad Prop"
+}
+propellers: {
+  uuid: "d02b5b3f-0d90-4872-9a3a-e512f3270d7c"
+  id: "cl2-xr-7-deadcat-conversion-kit"
+  manufacturer: "Rotor Riot"
+  name: "CL2 XR 7 Deadcat Conversion Kit"
+}
+propellers: {
+  uuid: "77685bd7-b9a3-4abb-8a29-35695d0ce66b"
+  id: "cl2-air-6s-5-solder-free-built"
+  manufacturer: "Rotor Riot Builds"
+  name: "CL2-AIR 6S 5 Solder-Free Built &"
+  description: "CL2-AIR 6S 5 Solder-Free Built & Tuned Drone - DJI O4 Pro / DJI"
+}
+propellers: {
+  uuid: "42aad687-136c-408c-b9bb-4b89039413d6"
+  id: "cinemini-4s-2-5-pro-spec-built-2"
+  manufacturer: "Rotor Riot Builds"
+  name: "Cinemini 4S 2.5 Pro-Spec Built &"
+  description: "Cinemini 4S 2.5 Pro-Spec Built & Tuned Drone - DJI 04 Pro / DJI"
+}
+propellers: {
+  uuid: "d80a3777-b0ab-438d-ac77-ff75ae511ec8"
+  id: "tanq-2-6s-5-solder-free-built-2"
+  manufacturer: "Rotor Riot Builds"
+  name: "Tanq 2 6S 5 Solder-Free Built"
+  description: "Tanq 2 6S 5 Solder-Free Built & Tuned Drone - DJI O4 Pro / DJI"
+}
+propellers: {
+  uuid: "b310061f-0b3a-4f0e-b5e0-c188a1530cec"
+  id: "rotor-riot-prop-puller"
+  manufacturer: "Rotor Riot"
+  name: "Rotor Riot Prop Puller"
+}
+propellers: {
+  uuid: "700e1845-1b88-43ab-94a1-fee3e3da67ff"
+  id: "ethix-mini-chesty"
+  manufacturer: "Ethix"
+  name: "Ethix Mini Chesty"
+  description: "Ethix Mini Chesty – Versatile FPV & Everyday Carry Bag"
+}
+propellers: {
+  uuid: "d12c6f43-3285-4905-ac69-5fe259928082"
+  id: "ethix-chesty-tundra-edition"
+  manufacturer: "Ethix"
+  name: "ETHIX Chesty Tundra Edition"
+}
+propellers: {
+  uuid: "8cea3ffe-d6fb-45cf-b880-5fdea66da7e3"
+  id: "p2-tri-blade-5-props-4-pack-pickle"
+  manufacturer: "Ethix"
+  name: "P2 Tri-Blade 5 Props 4 Pack - Pickle"
+  weight_g: 3.8
+}
+propellers: {
+  uuid: "8bd7d2d0-6952-402a-830c-088e0437763d"
+  id: "hurricane-2015-props-grey"
+  manufacturer: "Gemfan"
+  name: "Hurricane 2015 Props - Grey"
+  weight_g: 0.5
+}
+propellers: {
+  uuid: "1f5208c4-c249-4a7d-b7e7-b4ea7413dc34"
+  id: "t4x2-5-props-grey"
+  manufacturer: "HQ Prop"
+  name: "T4X2.5 Props - Grey"
+  weight_g: 1.45
+}
+propellers: {
+  uuid: "3deb5921-de24-498f-9f43-3b29139ae960"
+  id: "hq-juicy-j33-4-9x3-3x3-props"
+  manufacturer: "HQ Prop"
+  name: "HQ Juicy J33 4.9x3.3x3 Props"
+  weight_g: 3.8
+  description: "HQ Juicy J33 4.9x3.3x3 Props - Choose Color"
+}
+propellers: {
+  uuid: "af1b751e-7d29-4428-b745-896ff149f66e"
+  id: "chesty-tactical-chest-rig"
+  manufacturer: "Ethix"
+  name: "Chesty Tactical Chest Rig"
+}
+propellers: {
+  uuid: "7fd20f7b-f0a3-4422-959e-2184ecddf5a1"
+  id: "p3-3-tri-blade-5-props-4-pack"
+  manufacturer: "Ethix"
+  name: "P3.3 Tri-Blade 5 Props 4 Pack"
+  weight_g: 3.5
+  description: "P3.3 Tri-Blade 5 Props 4 Pack - Mango Lassi"
+}
+propellers: {
+  uuid: "600b214b-b348-4eaa-828e-ca383fcfc80f"
+  id: "t2-5x2-5x3-tri-blade-2-5-prop-4-pack"
+  manufacturer: "HQ Prop"
+  name: "T2.5x2.5x3 Tri-Blade 2.5 Prop 4 Pack"
+  weight_g: 1.2
+  description: "T2.5x2.5x3 Tri-Blade 2.5 Prop 4 Pack - Choose Color"
+}
+propellers: {
+  uuid: "40a2390d-9964-4419-9e9a-9e184f069899"
+  id: "lr-4024-pc-2-blade-props"
+  manufacturer: "Gemfan"
+  name: "LR 4024 PC 2 Blade Props"
+  weight_g: 3.16
+}
+propellers: {
+  uuid: "b0442584-f053-47bf-b8e2-c0b46ae1ea99"
+  id: "dji-neo-propeller-guard"
+  manufacturer: "DJI"
+  name: "DJI Neo Propeller Guard"
+}
+propellers: {
+  uuid: "ffb4c360-f459-4c62-b9aa-1bccb2ea3ada"
+  id: "proxy-5127-5-pdevx-and-pablo-flor"
+  manufacturer: "Gemfan"
+  name: "Proxy 5127.5 PDEVX and Pablo Flor"
+  weight_g: 4.2
+  description: "Proxy 5127.5 PDEVX and Pablo Flor Edition Props - Choose Color"
+}
+propellers: {
+  uuid: "77bb22bf-f186-48ad-830f-c52242908183"
+  id: "t3-5x2-5x3-tri-blade-3-5-prop"
+  manufacturer: "HQ Prop"
+  name: "T3.5x2.5x3 Tri-Blade 3.5 Prop"
+  weight_g: 1.55
+  description: "T3.5x2.5x3 Tri-Blade 3.5 Prop with 2mm Shaft 4 Pack - Let's Fly RC Edition"
+}
+propellers: {
+  uuid: "0dea81a4-72c8-4fed-97a4-837e7faf3814"
+  id: "hurricane-51433-props-choose-color"
+  manufacturer: "Gemfan"
+  name: "Hurricane 51433 Props - Choose Color"
+  weight_g: 3.8
+}
+propellers: {
+  uuid: "b1cb8741-a6a0-4a8c-a692-62e659e3f2a5"
+  id: "hurricane-4937-props-black"
+  manufacturer: "Gemfan"
+  name: "Hurricane 4937 Props - Black"
+  weight_g: 3.5
+}
+propellers: {
+  uuid: "64a980f6-16a2-4619-ae0b-81cc991a055b"
+  id: "hurricane-5127-props-clear-grey"
+  manufacturer: "Gemfan"
+  name: "Hurricane 5127 Props - Clear Grey"
+  weight_g: 4.4
+}
+propellers: {
+  uuid: "013ad3c5-1ebd-45c1-a86c-912d2df50e52"
+  id: "hurricane-51366-mck-rev3-props"
+  manufacturer: "Gemfan"
+  name: "Hurricane 51366 MCK Rev3 Props"
+  weight_g: 4.2
+  description: "Hurricane 51366 MCK Rev3 Props - Choose Color"
+}
+propellers: {
+  uuid: "02e2881a-d987-4491-944f-a4d4abce31e3"
+  id: "duct-d63-3-props-clear-grey"
+  manufacturer: "Gemfan"
+  name: "Duct D63-3 Props - Clear Grey"
+  weight_g: 1.4
+}
+propellers: {
+  uuid: "19b57a6c-894e-4bbd-9a95-ed9d94e1ed81"
+  id: "rotor-riot-aluminum-tool-holder"
+  manufacturer: "Rotor Riot"
+  name: "Rotor Riot Aluminum Tool Holder"
+}
+propellers: {
+  uuid: "c9fc61f4-d87a-476c-8392-5355555e06f9"
+  id: "tanq-1-2-5-racing-arm-set"
+  manufacturer: "Rotor Riot"
+  name: "TANQ 1 & 2 5 Racing Arm Set"
+}
+propellers: {
+  uuid: "87c09bd9-ace6-478d-9f46-56610e883df8"
+  id: "hq-r42-5-1x4-2x3-props-choose-color"
+  manufacturer: "HQ Prop"
+  name: "HQ R42 5.1x4.2x3 Props - Choose Color"
+  weight_g: 4.9
+}
+propellers: {
+  uuid: "8baeb507-379c-4c35-a6ad-a3b5520600ac"
+  id: "tanq-1-2-5-deadcat-front-arms-2-pack"
+  manufacturer: "Rotor Riot"
+  name: "TANQ 1 & 2 5 Deadcat Front Arms - 2 Pack"
+}
+propellers: {
+  uuid: "a1b7459e-862b-4275-af91-156ab3f0f395"
+  id: "tanq-1-2-5-deadcat-arm-set"
+  manufacturer: "Rotor Riot"
+  name: "TANQ 1 & 2 5 Deadcat Arm Set"
+}
+propellers: {
+  uuid: "a74f75bb-7121-4966-a281-238cd6640b8b"
+  id: "donut-5145-toroidal-5-props-2"
+  manufacturer: "Foxeer"
+  name: "Donut 5145 Toroidal 5 Props"
+  weight_g: 4.3
+  description: "Donut 5145 Toroidal 5 Props - Choose Color"
+}
+propellers: {
+  uuid: "838cbf47-4441-4d1f-9a02-6a926f10ef0b"
+  id: "513d-5-3d-props-choose-color"
+  manufacturer: "Gemfan"
+  name: "513D 5 3D Props - Choose Color"
+  weight_g: 4.4
+}
+propellers: {
+  uuid: "c1483539-909a-4af8-9c19-b35a9933179e"
+  id: "3-5x2-2-bi-blade-3-5-prop-4-pack"
+  manufacturer: "HQ Prop"
+  name: "3.5x2.2 Bi-Blade 3.5 Prop 4 Pack"
+  weight_g: 1.1
+}
+propellers: {
+  uuid: "534bbd26-2f01-4854-9c20-48be28ae4eb7"
+  id: "t3-5x2-5x3-tri-blade-3-5-prop-4-pack"
+  manufacturer: "HQ Prop"
+  name: "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack"
+  weight_g: 1.55
+  description: "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack - Choose Color"
+}
+propellers: {
+  uuid: "c7a760c2-b94d-4e88-bdcf-b9261083225c"
+  id: "p3-5-tri-blade-5-props-4-pack"
+  manufacturer: "Ethix"
+  name: "P3.5 Tri-Blade 5 Props 4 Pack"
+  weight_g: 3.5
+  description: "P3.5 Tri-Blade 5 Props 4 Pack - Rad Berry"
+}
+propellers: {
+  uuid: "86cb3c5a-c119-4423-be9e-99fc2c202350"
+  id: "p3-tri-blade-5-props-4-pack"
+  manufacturer: "Ethix"
+  name: "P3 Tri-Blade 5 Props 4 Pack"
+  weight_g: 3.5
+  description: "P3 Tri-Blade 5 Props 4 Pack - Peanut Butter & Jelly"
+}
+propellers: {
+  uuid: "acb63349-ead5-4fe4-80c8-391952049037"
+  id: "s3-tri-blade-5-props-4-pack-watermelon"
+  manufacturer: "Ethix"
+  name: "S3 Tri-Blade 5 Props 4 Pack - Watermelon"
+  weight_g: 3.6
+}
+propellers: {
+  uuid: "bfcd7e5b-288b-4ce9-950c-1d6ee16c0cca"
+  id: "dt-2-9x2-5x5-5-blade-3-props"
+  manufacturer: "HQ Prop"
+  name: "DT 2.9X2.5X5 5-Blade 3 Props"
+  description: "DT 2.9X2.5X5 5-Blade 3 Props for DJI Avata - Choose Color"
+}
+propellers: {
+  uuid: "dd65f909-897e-4fce-a015-2dc321fa3b25"
+  id: "1610-bi-blade-40mm-prop-8-pack"
+  manufacturer: "Gemfan"
+  name: "1610 Bi-Blade 40mm Prop 8 Pack"
+  weight_g: 0.25
+  description: "1610 Bi-Blade 40mm Prop 8 Pack - Choose Color"
+}
+propellers: {
+  uuid: "ac5c2a35-e701-4110-9b09-e3b523a51b75"
+  id: "hq-juicy-j37-4-9x3-7x3-props"
+  manufacturer: "HQ Prop"
+  name: "HQ Juicy J37 4.9x3.7x3 Props"
+  weight_g: 3.4
+  description: "HQ Juicy J37 4.9x3.7x3 Props - Rotor Riot Edition"
+}
+propellers: {
+  uuid: "f9a0d8ec-fb5c-4031-aebe-1893b7f72b19"
+  id: "40mmx2-bi-blade-40mm-prop-4-pack"
+  manufacturer: "HQ Prop"
+  name: "40MMX2 Bi-Blade 40mm Prop 4 Pack"
+  weight_g: 0.26
+}
+propellers: {
+  uuid: "b43952db-d2d5-432a-a963-3f2d49c92da8"
+  id: "35mm-racewire-rotor-riot-edition"
+  manufacturer: "Rotor Riot"
+  name: "35mm Racewire Rotor Riot Edition"
+  description: "35mm Racewire Rotor Riot Edition - 4 Pack"
+}
+propellers: {
+  uuid: "2e1eea5e-0de3-428a-ba84-65765ea5fd6c"
+  id: "s4-tri-blade-5-props-4-pack-lemon-lime"
+  manufacturer: "Ethix"
+  name: "S4 Tri-Blade 5 Props 4 Pack - Lemon Lime"
+  weight_g: 3.7
+}
+propellers: {
+  uuid: "6c95c69f-a618-43c2-b45d-49e7a077b33d"
+  id: "j75-tri-blade-7-prop-4-pack"
+  manufacturer: "HQ Prop"
+  name: "J75 Tri-Blade 7 Prop 4 Pack"
+  weight_g: 8.8
+}
+propellers: {
+  uuid: "97074d8a-7a7e-4300-a847-c477ee888b34"
+  id: "hq-r35-tri-blade-5-prop-4"
+  manufacturer: "HQ Prop"
+  name: "HQ R35 Tri-Blade 5 Prop 4"
+  weight_g: 4.18
+  description: "HQ R35 Tri-Blade 5 Prop 4 Pack - Choose Color"
+}
+propellers: {
+  uuid: "3a3ddce6-1bbd-4630-b33d-758fa382fd72"
+  id: "multi-purpose-driver-ratcheting-prop-tool"
+  manufacturer: "STP"
+  name: "Multi-Purpose Driver & Ratcheting Prop Tool"
+  description: "Multi-Purpose Driver & Ratcheting Prop Tool - Choose Version"
+}
+propellers: {
+  uuid: "c0a8d13e-db9b-4c61-963c-2f4de0fe6d01"
+  id: "s5-tri-blade-5-props-4-pack-black"
+  manufacturer: "Ethix"
+  name: "S5 Tri-Blade 5 Props 4 Pack - Black"
+  weight_g: 3.7
+}
+propellers: {
+  uuid: "21b863ee-c697-4793-a089-f51b584de408"
+  id: "dji-avata-propellers"
+  manufacturer: "DJI"
+  name: "DJI Avata Propellers"
+}
+propellers: {
+  uuid: "1f63a481-1e1a-4759-ad0b-351f623ed510"
+  id: "juicy-prop-j40-5-1-tri-blade-props"
+  manufacturer: "HQ Prop"
+  name: "Juicy Prop J40 5.1 Tri-Blade Props"
+  weight_g: 3.4
+  description: "Juicy Prop J40 5.1 Tri-Blade Props - Choose Color"
+}
+propellers: {
+  uuid: "dd325177-56c3-4369-aadd-4a4eaaf08b4f"
+  id: "hq-35mmx3-tri-blade-35mm-1mm-shaft"
+  manufacturer: "HQ Prop"
+  name: "HQ 35MMX3 Tri-Blade 35mm 1mm Shaft"
+  weight_g: 0.31
+  description: "HQ 35MMX3 Tri-Blade 35mm 1mm Shaft Props - Choose Color"
+}
+propellers: {
+  uuid: "dbbfe9b5-7136-47cc-a379-84adc1a59331"
+  id: "hurricane-3520-props-choose-color"
+  manufacturer: "Gemfan"
+  name: "Hurricane 3520 Props - Choose Color"
+  weight_g: 1.7
+}
+propellers: {
+  uuid: "1b5172e2-a51f-459f-a099-8f2af4e01e31"
+  id: "sbang-prop-4934-props"
+  manufacturer: "Gemfan"
+  name: "SBANG Prop 4934 Props"
+  weight_g: 3.5
+  description: "SBANG Prop 4934 Props - Choose Color and Rotation"
+}
+propellers: {
+  uuid: "c427fdb5-dd5c-4f5a-b44b-ac4b03e6373f"
+  id: "5136-props-choose-color"
+  manufacturer: "Gemfan"
+  name: "5136 Props - Choose Color"
+  weight_g: 4.3
+}
+propellers: {
+  uuid: "73ba2485-7c29-4d41-be99-e03a8cbe82f9"
+  id: "hq-dp-t65mmx3-props"
+  manufacturer: "HQ Prop"
+  name: "HQ DP T65MMX3 Props"
+  weight_g: 0.8
+}
+propellers: {
+  uuid: "626bc1ba-4b53-482d-ab23-c19745a8b082"
+  id: "hq-juicy-j37-4-9x3-7x3-props-2"
+  manufacturer: "HQ Prop"
+  name: "HQ Juicy J37 4.9x3.7x3 Props"
+  description: "HQ Juicy J37 4.9x3.7x3 Props - Choose Color"
+}
+propellers: {
+  uuid: "2ba08ed3-13fe-4080-9ae9-bbc7e06849cf"
+  id: "hq-duct-4x4x6-props-for-ducted-hd1-vs"
+  manufacturer: "HQ Prop"
+  name: "HQ Duct 4X4X6 Props for Ducted HD1 VS"
+  weight_g: 5.3
+}
+propellers: {
+  uuid: "cdb9412c-464c-4a35-983f-7ec25349be61"
+  id: "freestyle4s-durable-3-blade-props"
+  manufacturer: "Gemfan"
+  name: "Freestyle4S Durable 3 Blade  Props"
+  weight_g: 3.6
+  description: "Freestyle4S Durable 3 Blade (5.1x3.6x3) Props - Choose Color"
+}
+propellers: {
+  uuid: "a4f66742-60c2-4a16-8338-aea8d44924fa"
+  id: "freestyle3s-durable-3-blade-props"
+  manufacturer: "Gemfan"
+  name: "Freestyle3S Durable 3 Blade  Props"
+  weight_g: 3.5
+  description: "Freestyle3S Durable 3 Blade (5.1x3x3) Props - Choose Color"
+}
+propellers: {
+  uuid: "d1f1fb21-a5d6-44b6-b082-e5a0e271bb91"
+  id: "hq-2-9x2-9x4-quad-blade-3-props"
+  manufacturer: "HQ Prop"
+  name: "HQ 2.9x2.9x4 Quad-Blade 3 Props"
+  weight_g: 1.77
+}
+propellers: {
+  uuid: "06cfa949-6923-40d1-84f4-905b13c91fad"
+  id: "rotor-riot-prop-tool"
+  manufacturer: "Rotor Riot"
+  name: "Rotor Riot Prop Tool"
+}
+propellers: {
+  uuid: "810d929f-009e-412b-b92b-2b81cdf0991f"
+  id: "cinewhoop-slim-ducts"
+  manufacturer: "Noozle3D"
+  name: "Cinewhoop Slim Ducts"
+}
+propellers: {
+  uuid: "b9221dd7-69c0-457a-b8a2-6c711ec37a31"
+  id: "hq-dp-t2x2x4-props"
+  manufacturer: "HQ Prop"
+  name: "HQ DP T2X2X4 Props"
+  weight_g: 0.75
+}
+propellers: {
+  uuid: "0825f73b-738e-429c-ac2e-c35ff0f57d97"
+  id: "hq-dp-t2x2-5x3-props-choose-color"
+  manufacturer: "HQ Prop"
+  name: "HQ DP T2X2.5X3 Props - Choose Color"
+  weight_g: 0.75
+}
+propellers: {
+  uuid: "ac3c45d3-80e6-40b6-8b79-f932026a5193"
+  id: "lr-5126-2-blade-props-choose-color"
+  manufacturer: "Gemfan"
+  name: "LR 5126 2 Blade Props - Choose Color"
+  weight_g: 2.6
+}
+propellers: {
+  uuid: "6354d1eb-1557-4a73-8585-687c0b0d81a8"
+  id: "hq-dp-t2x2x3-props"
+  manufacturer: "HQ Prop"
+  name: "HQ DP T2X2X3 Props"
+  weight_g: 0.75
+}
+propellers: {
+  uuid: "3c5cc0c2-94c7-48f6-8888-5fd4a38a74f7"
+  id: "m5-nylock-prop-nut"
+  manufacturer: "Rotor Riot Store"
+  name: "M5 Nylock Prop Nut"
+}
+propellers: {
+  uuid: "2326f665-1d50-438e-ac23-19eb381928df"
+  id: "hq-4-8x3-4x4-props"
+  manufacturer: "HQ Prop"
+  name: "HQ 4.8x3.4x4 Props"
+}
+propellers: {
+  uuid: "171e167a-0329-41e6-8076-389cf40bf231"
+  id: "hq-r38-headsupfpv-5-1x3-8x3-props"
+  manufacturer: "HQ Prop"
+  name: "HQ R38 HeadsUPFPV 5.1x3.8x3 Props"
+  weight_g: 4.4
+  description: "HQ R38 HeadsUPFPV 5.1x3.8x3 Props - Choose Color"
+}
+propellers: {
+  uuid: "e2faf47a-2a34-4c0c-a27f-a2510364a068"
+  id: "hq-7x4-5-bi-blade-props"
+  manufacturer: "HQ Prop"
+  name: "HQ 7x4.5 Bi Blade Props"
+  weight_g: 6.6
+}
+propellers: {
+  uuid: "c1a1f06a-eeb3-40b1-9f43-2bb7388e3d40"
+  id: "hq-7x4x3-props"
+  manufacturer: "HQ Prop"
+  name: "HQ 7X4X3 Props"
+}
+propellers: {
+  uuid: "a1cbfc06-d8d7-40d1-aecf-9ae71649f11c"
+  id: "cinewhoop-ducts-kapper-edition"
+  manufacturer: "Noozle3D"
+  name: "Cinewhoop Ducts Kapper Edition"
+}
+propellers: {
+  uuid: "70a41d77-1191-41a4-8bbe-3ec831f0b5b2"
+  id: "hq-3-cinewhoop-props-choose-color"
+  manufacturer: "HQ Prop"
+  name: "HQ 3 Cinewhoop Props - Choose Color"
+  weight_g: 1.9
+}
+propellers: {
+  uuid: "b22965b8-1a2c-46e5-be38-0b0fce6e8abf"
+  id: "darwinfpv-babyape-pro-rtf"
+  manufacturer: "DarwinFPV - Official Store"
+  name: "DarwinFPV BabyApe Ⅲ PRO RTF"
+}
+propellers: {
+  uuid: "2a18df34-1bf5-49ec-adde-5a4e4c70f772"
+  id: "darwinfpv-babyape-pro-3-5-inch"
+  manufacturer: "DarwinFPV - Official Store"
+  name: "DarwinFPV BabyApe Ⅲ Pro 3.5 Inch"
+  description: "DarwinFPV BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone"
+}
+propellers: {
+  uuid: "ec000089-005c-4b9e-90a0-da0b3f615c6f"
+  id: "darwinfpv-gemfan-8046-3-glass-fiber-nylon"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Gemfan 8046-3 Glass Fiber Nylon"
+  weight_g: 13.5
+}
+propellers: {
+  uuid: "0591a75a-c8aa-4a99-bb2f-9a703a7d526b"
+  id: "darwinfpv-babyape-freestyle-fpv-drone"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV BabyApe Ⅱ Freestyle FPV Drone"
+}
+propellers: {
+  uuid: "4ab2d71e-54c1-4b31-ba32-5e6a15f604f0"
+  id: "darwinfpv-cineape-25-cinematic-whoop-fpv"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV CineApe 25 Cinematic Whoop FPV"
+  description: "DarwinFPV CineApe 25 Cinematic Whoop FPV Drone"
+}
+propellers: {
+  uuid: "65baa62c-f1ca-4d4f-8d7b-27810ba0e2a8"
+  id: "explorer-lr-4-hd-dji-o4"
+  manufacturer: "Flywoo"
+  name: "Explorer LR 4 HD DJI O4"
+  weight_g: 177.8
+  description: "Explorer LR 4 HD DJI O4 Pro Micro Long Range Drone - Choose Version"
+}
+propellers: {
+  uuid: "32d3324d-ee55-4d4b-9b0e-799a9bf3192c"
+  id: "dalprop-fold-series-f7-7-inch"
+  manufacturer: "HGLRC"
+  name: "Dalprop Fold Series F7 7 Inch"
+  weight_g: 7
+  description: "Dalprop Fold Series F7 7 Inch Folding Propeller Smooth DIY Props Long Range Compatible POPO for FPV Racing RC Drone（5 pairs）"
+}
+propellers: {
+  uuid: "608ce5c0-68a3-4e2e-aa35-e3fba8c9d6b7"
+  id: "hqprop-dp7x4x3-light-grey-poly-carbonate"
+  manufacturer: "HGLRC"
+  name: "HQProp DP7X4X3 Light Grey -Poly Carbonate"
+  weight_g: 9.1
+  description: "HQProp DP7X4X3 Light Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "9f98c0c6-bbfb-4d4d-b68d-2ef131672d8d"
+  id: "hqprop-t63-1-5mm-6-blade-propeller"
+  manufacturer: "HGLRC"
+  name: "HQprop T63 1.5mm 6-Blade Propeller"
+  weight_g: 1.85
+}
+propellers: {
+  uuid: "b5c8364c-0b63-4c01-83ea-9c0cf56ba3c3"
+  id: "gemfan-3016-3-toothpick-props"
+  manufacturer: "HGLRC"
+  name: "Gemfan 3016-3 Toothpick Props"
+  weight_g: 1.18
+}
+propellers: {
+  uuid: "908f77f0-3326-4165-b2ea-49630f6496cf"
+  id: "gemfan-d63-2-5-inch-5-blade-propeller"
+  manufacturer: "HGLRC"
+  name: "Gemfan D63 2.5 Inch 5-Blade Propeller"
+}
+propellers: {
+  uuid: "bb16d259-4899-4211-b42a-7c4d794f84cf"
+  id: "gemfan-5125-hurricane-durable-3-blade"
+  manufacturer: "N/A"
+  name: "Gemfan 5125 Hurricane Durable 3 Blade"
+  description: "Gemfan 5125 Hurricane Durable 3 Blade 1.5mm - Clear Gray"
+}
+propellers: {
+  uuid: "e4b99cd5-d0f2-4aa6-bda1-e6117972e6f5"
+  id: "gemfan-hurricane-51466-propeller"
+  manufacturer: "Gemfan"
+  name: "Gemfan Hurricane 51466 Propeller"
+  weight_g: 4.13
+  description: "Gemfan Hurricane 51466 Propeller (Set of 4)"
+}
+propellers: {
+  uuid: "7f028a36-af37-42c1-879d-c4cda0fb208d"
+  id: "gemfan-51499-3-blade-propeller"
+  manufacturer: "HGLRC"
+  name: "Gemfan 51499 3-Blade Propeller"
+  description: "Gemfan 51499 3-Blade Propeller for 5 FPV racing drone（5 pairs）"
+}
+propellers: {
+  uuid: "65c1d18c-45c4-4788-bba1-479b9a092bb8"
+  id: "3-pairs-gemfan-5042-3-blade-propeller"
+  manufacturer: "HGLRC"
+  name: "3 Pairs Gemfan 5042 3-Blade Propeller"
+  weight_g: 4.1
+  description: "3 Pairs Gemfan 5042 3-Blade Propeller for 5 FPV racing drone"
+}
+propellers: {
+  uuid: "f9a9d357-2f5b-4399-bfc1-7f2faf9c7d1a"
+  id: "3-pairs-gemfan-flash-2540-2-5"
+  manufacturer: "HGLRC"
+  name: "3 Pairs Gemfan flash 2540 2.5''"
+  description: "3 Pairs Gemfan flash 2540 2.5'' 3-Blade Propeller"
+}
+propellers: {
+  uuid: "9ec0a0ec-5fcb-4bc9-8ba2-dc85448c6166"
+  id: "gemfan-7037-3"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "Gemfan 7037-3"
+  weight_g: 8.5
+  description: "Gemfan 7037-3 for Cinelifter & Macro Quad (2CW+2CCW)1/pcs"
+}
+propellers: {
+  uuid: "f1ac74ec-fa45-4948-8e86-8f059bca330d"
+  id: "hqprop-6x3x3v1sblack-poly-carbonate"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "HQProp 6X3X3V1SBlack-Poly Carbonate"
+  weight_g: 5.87
+  description: "HQProp 6X3X3V1SBlack(2CW+2CCW)-Poly Carbonate for Roma F6"
+}
+propellers: {
+  uuid: "2252cd7d-56bf-4978-b959-a6090161868c"
+  id: "gemfan-flash-7042-2-propellers"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "Gemfan  Flash 7042-2  Propellers"
+  weight_g: 5.52
+  description: "Gemfan  Flash 7042-2 (2CW+2CCW) Propellers For Roma F7"
+}
+propellers: {
+  uuid: "76c861f1-d09c-4f7a-9f16-d38fa4880ccf"
+  id: "gemfan-hrricane-3520"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "GEMFAN Hrricane 3520"
+  weight_g: 1.77
+  description: "GEMFAN Hrricane 3520 for Toothpick&Ultralight (2CW+2CCW) For Roma F35"
+}
+propellers: {
+  uuid: "b39dde8d-f373-4264-bc0a-4f33e2e6af08"
+  id: "roma-f35-f4-accessories"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "Roma F35/F4 Accessories"
+  weight_g: 39
+}
+propellers: {
+  uuid: "ffe70033-7611-410a-8445-c1f411d32035"
+  id: "gemfan-sl5125-3-toothpick-ultralight-props-1-pcs"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "Gemfan SL5125-3 Toothpick&Ultralight Props  1/pcs"
+  weight_g: 2.8
+  description: "Gemfan SL5125-3 Toothpick&Ultralight Props (2CW+2CCW) 1/pcs"
+}
+propellers: {
+  uuid: "2cfff5cc-7dc3-4bc0-9235-b714d9b879f7"
+  id: "gemfan-hrricane-51433"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "GEMFAN Hrricane 51433"
+  weight_g: 3.9
+  description: "GEMFAN Hrricane 51433 for Freestyle  Xmas (2CW+2CCW)"
+}
+propellers: {
+  uuid: "2d88effe-6f47-4f9b-b8bb-c0d36b7c03a4"
+  id: "hq-durable-prop-t3x1-8-yellow-3blades-polycarbonate"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "HQ Durable Prop T3x1.8 Yellow  3Blades-PolyCarbonate"
+  weight_g: 1.2
+  description: "HQ Durable Prop T3x1.8 Yellow ( 2CW+2CCW) 3Blades-PolyCarbonate"
+}
+propellers: {
+  uuid: "836df8d8-0a38-40d1-ab73-e60ce29372f9"
+  id: "gemfan-4024-2-toothpick-props"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "GEMFAN 4024-2 Toothpick Props"
+  weight_g: 1.61
+  description: "GEMFAN 4024-2 Toothpick Props(1.5mm) (4CW+4CCW)"
+}
+propellers: {
+  uuid: "2e049491-a89f-40f0-bb63-2cbe9ab1e182"
+  id: "hq-durable-prop-t4x2-5grey-2cw-2ccw-poly-carbonate"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "HQ Durable Prop T4X2.5Grey （2CW+2CCW)-Poly Carbonate"
+  weight_g: 1.45
+}
+propellers: {
+  uuid: "4b17282e-8228-4554-9386-77a602bfd53a"
+  id: "gemfan-3-blades-squirt-props-63mm"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "GEMFAN 3 Blades Squirt Props 63mm"
+  description: "GEMFAN 3 Blades Squirt Props 63mm Propellers"
+}
+propellers: {
+  uuid: "f7f2825c-6835-4971-9dd2-bfbc97eb95d1"
+  id: "gemfan-3-blades-hurricane-mck-51466-3-propellers"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "GEMFAN 3-Blades Hurricane MCK 51466-3  Propellers"
+  weight_g: 4.11
+  description: "GEMFAN 3-Blades Hurricane MCK 51466-3 (2CW+2CCW) Propellers"
+}
+propellers: {
+  uuid: "04111eb5-6cca-49fb-8fee-089052664416"
+  id: "gemfan-hurricane-51455-4-2cw-2ccw"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "GEMFAN Hurricane 51455-4 (2CW+2CCW)"
+}
+propellers: {
+  uuid: "76187c52-6ba0-4307-9785-b950f4bf1789"
+  id: "gemfan-hrricane-51433-2"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "GEMFAN Hrricane 51433"
+  weight_g: 3.8
+  description: "GEMFAN Hrricane 51433 for FREESTYLE (2CW+2CCW)"
+}
+propellers: {
+  uuid: "6292c0a6-d66b-45b1-bc89-d886fc46af82"
+  id: "gemfan-hurricane-3016-3"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "GEMFAN Hurricane 3016-3"
+  weight_g: 1.18
+  description: "GEMFAN Hurricane 3016-3 for toothpick(2/1.5mm) (2CW+2CCW)"
+}
+propellers: {
+  uuid: "92660781-687d-429b-bfcf-1980d0d55612"
+  id: "gemfan-3-blades-windancer-3028-3"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "GEMFAN 3-Blades Windancer 3028-3"
+  weight_g: 1.49
+  description: "GEMFAN 3-Blades Windancer 3028-3 (2CW+2CCW) For GTR 349 Racing Drone"
+}
+propellers: {
+  uuid: "4aa6f9d1-ed7b-4cc2-b348-de56d72e82f5"
+  id: "gemfan-4-blades-40mm-1636-4"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "GEMFAN 4-Blades 40MM 1636-4"
+  weight_g: 0.61
+  description: "GEMFAN 4-Blades 40MM 1636-4(2CW+2CCW) For Tina Whoop"
+}
+propellers: {
+  uuid: "717b15cc-788f-440e-880c-203ab2416049"
+  id: "gemfan-3-blades-squirt-props-75mm-propellers"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "GEMFAN 3-Blades Squirt Props 75mm  Propellers"
+  weight_g: 1.9
+  description: "GEMFAN 3-Blades Squirt Props 75mm (2CW+2CCW) Propellers For MXC 3 TAYCAN"
+}
+propellers: {
+  uuid: "b77e3315-7b86-41d9-b732-01c24075545c"
+  id: "hq-ethix-s5-light-grey-poly"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "HQ Ethix S5 Light Grey -Poly"
+  weight_g: 3.7
+  description: "HQ Ethix S5 Light Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "4b7e0fa3-b00d-448a-9187-1dd07ad24595"
+  id: "hq-ethix-s4-lemon-lime-poly"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "HQ Ethix S4 Lemon Lime -Poly"
+  weight_g: 3.7
+  description: "HQ Ethix S4 Lemon Lime (2CW+2CCW)-Poly Carbonate Propellers"
+}
+propellers: {
+  uuid: "8b3f6a6b-99a8-4220-8b4a-7d1dce53c3c7"
+  id: "hq-ethix-s3-prop-watermelon-poly"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "HQ Ethix S3 Prop Watermelon -Poly"
+  weight_g: 3.6
+  description: "HQ Ethix S3 Prop Watermelon  (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "bdedb7a4-d285-430d-80fc-adeac1d18e35"
+  id: "hqprop-3-blades-durable-prop-t2-5x2-5x3-black"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "HQProp 3-Blades Durable Prop T2.5X2.5X3 Black"
+  weight_g: 1.3
+  description: "HQProp 3-Blades Durable Prop T2.5X2.5X3 Black (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "8d134ef3-987e-44df-848d-f27aba9c6031"
+  id: "hqprop-2-blades-durable-propellers-t3x2-grey"
+  manufacturer: "DIATONE INNOVATIONS"
+  name: "HQprop 2-Blades Durable Propellers T3X2 Grey"
+  weight_g: 1.2
+  description: "HQprop 2-Blades Durable Propellers T3X2 Grey （2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "ae94d095-3889-47c8-86fc-36a3778b1222"
+  id: "hqprop-2-blade-micro-propellers-65mm-grey"
+  manufacturer: "DIATONE OFFICIAL"
+  name: "HQProp 2-Blade Micro Propellers 65MM Grey"
+  weight_g: 0.46
+  description: "HQProp 2-Blade Micro Propellers 65MM Grey  (2CW+2CCW)-Poly Carbonate-1.5MM Shaft"
+}
+propellers: {
+  uuid: "88f3f6ee-5d1a-4a6f-8507-98b774b2e4b1"
+  id: "hqprop-dt76mmx3-v2"
+  manufacturer: "HQProp"
+  name: "HQProp DT76MMX3 V2"
+  weight_g: 1.65
+  description: "HQProp DT76MMX3 V2 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "83919dc8-a6e4-47c9-b2ee-6e8411a879d0"
+  id: "hqprop-t4x2x3-grey-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp T4X2X3 Grey -Poly Carbonate"
+  weight_g: 2
+  description: "HQProp T4X2X3 Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "bc948896-e8c3-4e90-aa06-a34ab352a34e"
+  id: "hqprop-t3-5x2x3-grey-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp T3.5X2X3 Grey -Poly Carbonate"
+  weight_g: 1.5
+  description: "HQProp T3.5X2X3 Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "e2c1d698-0fb5-47fe-aaa6-4c06697dca23"
+  id: "hq-durable-prop-t3x1-5x3-grey-poly"
+  manufacturer: "HQProp"
+  name: "HQ Durable Prop T3X1.5X3 Grey -Poly"
+  weight_g: 1.13
+  description: "HQ Durable Prop T3X1.5X3 Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "9d924e5c-f46b-4f2c-a914-92db13499692"
+  id: "hqprop-5135-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp 5135  -Poly Carbonate"
+  weight_g: 4
+  description: "HQProp 5135 (R35) (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "ca91302c-f304-434b-b784-b55eab1db24f"
+  id: "hqprop-t5x3-grey-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp T5X3 Grey -Poly Carbonate"
+  weight_g: 2.35
+  description: "HQProp T5X3 Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "a885c643-4555-4949-b83d-711148c5d3ce"
+  id: "hqprop-5-5x3-5x3-v2-grey-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp 5.5X3.5X3 V2 Grey -Poly Carbonate"
+  weight_g: 4.6
+  description: "HQProp 5.5X3.5X3 V2 Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "ae11349f-580d-4e9a-b122-fc57f0ef7954"
+  id: "hqprop-4x3x3v2-2cw-2ccw-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp 4X3X3V2 (2CW+2CCW)-Poly Carbonate"
+  weight_g: 2.2
+}
+propellers: {
+  uuid: "a9b7be19-2eb5-493b-9d38-09e92ae92340"
+  id: "hqprop-5136-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp 5136  -Poly Carbonate"
+  weight_g: 4.1
+  description: "HQProp 5136 (R36) (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "1111fee3-f91c-412a-8ae9-a11383897f17"
+  id: "hq-macroquad-prop-8x4-5x3-black-glass-fiber"
+  manufacturer: "HQProp"
+  name: "HQ MacroQuad Prop 8X4.5X3 Black-Glass Fiber"
+  weight_g: 15.5
+  description: "HQ MacroQuad Prop 8X4.5X3(CCW) Black-Glass Fiber Reinforced Nylon"
+}
+propellers: {
+  uuid: "307c5ad2-cee8-49e3-9f48-297dbc0d83ef"
+  id: "hq-macroquad-prop-8x4-5x3r-black-glass-fiber"
+  manufacturer: "HQProp"
+  name: "HQ MacroQuad Prop 8X4.5X3R Black-Glass Fiber"
+  weight_g: 15.5
+  description: "HQ MacroQuad Prop 8X4.5X3R(CW) Black-Glass Fiber Reinforced Nylon"
+}
+propellers: {
+  uuid: "9f1909a8-0398-46ca-983d-6d36bbb75188"
+  id: "hq-macroquad-prop-8x4x3r-black-glass-fiber"
+  manufacturer: "HQProp"
+  name: "HQ MacroQuad Prop 8X4X3R Black-Glass Fiber"
+  weight_g: 12.8
+  description: "HQ MacroQuad Prop 8X4X3R(CW) Black-Glass Fiber Nylon"
+}
+propellers: {
+  uuid: "c26521ce-e4eb-4dd6-b442-bd20cc90830c"
+  id: "hq-macroquad-prop-8x4x3-black-glass-fiber"
+  manufacturer: "HQProp"
+  name: "HQ MacroQuad Prop 8X4X3 Black-Glass Fiber"
+  weight_g: 12.8
+  description: "HQ MacroQuad Prop 8X4X3(CCW) Black-Glass Fiber Nylon"
+}
+propellers: {
+  uuid: "249dfd51-9276-43d7-bac8-afab89270211"
+  id: "hqprop-t4x2-5-grey-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp T4X2.5 Grey -Poly Carbonate"
+  weight_g: 1.45
+  description: "HQProp T4X2.5 Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "12d28309-01cb-4724-86ec-330f8ef1b0df"
+  id: "flyfishrc-tool-kit-9pcs"
+  manufacturer: "FlyFishRC"
+  name: "FlyFishRC Tool Kit - 9PCS"
+  weight_g: 432.8
+}
+propellers: {
+  uuid: "57e7454d-73ac-4de2-8431-3cf804269520"
+  id: "hqprop-dt2-9x2-5x4"
+  manufacturer: "HQProp"
+  name: "HQProp DT2.9X2.5X4"
+  description: "HQProp DT2.9X2.5X4 for DJI Avata (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "51de94ba-9e25-4e25-9042-46a7fd55dcc9"
+  id: "hq-durable-prop-t3x2x3-poly-carbonate"
+  manufacturer: "FlyFish RC"
+  name: "HQ Durable Prop T3X2X3 -Poly Carbonate"
+  weight_g: 1.2
+  description: "HQ Durable Prop T3X2X3 (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "444ed7e5-471d-4206-90da-e65fce5d7c3f"
+  id: "hqprop-d6x4-5x3-grey"
+  manufacturer: "HQProp"
+  name: "HQProp D6X4.5X3 Grey"
+  weight_g: 7.5
+  description: "HQProp D6X4.5X3 Grey for Cinewhoop (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "9ae86d8a-8129-41db-aa15-69d01ae84a6f"
+  id: "hqprop-ethix-k2-bubble-gum-6x4x2"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix K2 Bubble Gum 6x4x2"
+  weight_g: 5.1
+  description: "HQProp Ethix K2 Bubble Gum 6x4x2 Propeller (set of 4)"
+}
+propellers: {
+  uuid: "331028de-8e66-4ab5-8577-9d0cec6a4fe8"
+  id: "72-teeth-mini-ratchet-socket-prop-tool"
+  manufacturer: "FlyFishRC"
+  name: "72 Teeth Mini Ratchet Socket Prop Tool"
+  weight_g: 63.46
+}
+propellers: {
+  uuid: "077c4f5a-ba6a-419b-8bcd-16c3d355ec95"
+  id: "hqprop-r38-headsup-racing-5-1x3-8x3-propeller"
+  manufacturer: "HQProp"
+  name: "HQProp R38 HeadsUp Racing 5.1x3.8x3 Propeller"
+  weight_g: 4.4
+  description: "HQProp R38 HeadsUp Racing 5.1x3.8x3 Propeller (Set of 4 - Yellow)"
+}
+propellers: {
+  uuid: "2e115bf1-ba4e-4bde-afe6-b36fb84db2d0"
+  id: "ethix-p3-5-polycarbonate-5-1-propeller"
+  manufacturer: "HQProp"
+  name: "Ethix P3.5 Polycarbonate 5.1 Propeller"
+  weight_g: 3.5
+  description: "Ethix P3.5 Polycarbonate 5.1 Propeller (Set of 4) - RAD Berry"
+}
+propellers: {
+  uuid: "35a0e0f2-89a3-4ef7-a36e-c5747cdbc41b"
+  id: "hqprop-ethix-s4-lemon-lime-props"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix S4 Lemon Lime Props"
+  weight_g: 3.7
+  description: "HQProp Ethix S4 Lemon Lime Props (Set of 4)"
+}
+propellers: {
+  uuid: "8a9df725-2b70-48b1-a469-b30b4c9f5b9e"
+  id: "hqprop-ethix-s5-light-grey-props"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix S5 Light Grey Props"
+  weight_g: 3.7
+  description: "HQProp Ethix S5 Light Grey Props (Set of 4)"
+}
+propellers: {
+  uuid: "e168768e-68ac-4a66-be86-850e2d523b54"
+  id: "hq-macroquad-prop-10x4-5x3-black-glass-fiber"
+  manufacturer: "HQProp"
+  name: "HQ MacroQuad Prop 10X4.5X3 Black-Glass Fiber"
+  weight_g: 23.8
+  description: "HQ MacroQuad Prop 10X4.5X3 Black-Glass Fiber Reinforced Nylon"
+}
+propellers: {
+  uuid: "28c48e82-de65-47d3-80d9-374f556cd77c"
+  id: "hq-macroquad-prop-9x5x3-black-glass-fiber"
+  manufacturer: "HQProp"
+  name: "HQ MacroQuad Prop 9X5X3 Black-Glass Fiber"
+  weight_g: 17.4
+  description: "HQ MacroQuad Prop 9X5X3 Black-Glass Fiber Reinforced Nylon"
+}
+propellers: {
+  uuid: "acae2a4b-bb2c-493b-9883-f22a98f91456"
+  id: "hqprop-j75-7x5x3-light-grey-poly"
+  manufacturer: "HQProp"
+  name: "HQProp J75 7X5X3 Light Grey -Poly"
+  weight_g: 8.8
+  description: "HQProp J75 7X5X3 Light Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "996a3517-1178-4c1a-ac98-25f37d777f15"
+  id: "hqprop-7-5x3-7x3-light-grey-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp 7.5X3.7X3 Light Grey -Poly Carbonate"
+  weight_g: 9.4
+  description: "HQProp 7.5X3.7X3 Light Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "32ebaddf-dd19-4599-a2fe-f4763afd9294"
+  id: "hqprop-duct-t90mmx3"
+  manufacturer: "HQProp"
+  name: "HQProp Duct-T90MMX3"
+  weight_g: 2.35
+  description: "HQProp Duct-T90MMX3 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "b4323d28-59cf-4f60-b00f-0863b576970a"
+  id: "hqprop-6x2-5x3-light-grey-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp 6X2.5X3 Light Grey -Poly Carbonate"
+  weight_g: 5.3
+  description: "HQProp 6X2.5X3 Light Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "3ab7a022-f18e-4c75-b665-0272c9588bc8"
+  id: "hq-racing-prop-r35-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQ Racing Prop R35 -Poly Carbonate"
+  weight_g: 4
+  description: "HQ Racing Prop R35 (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "e16e7792-5cd1-455d-96a2-87a0740c744f"
+  id: "hq-juicy-prop-j37-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQ Juicy Prop J37 -Poly Carbonate"
+  weight_g: 3.4
+  description: "HQ Juicy Prop J37 (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "5f9c17c4-866e-48dd-bde8-55168ee34e1f"
+  id: "hqprop-t3-5x2-5x3-grey-2cw-2ccw-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp T3.5X2.5X3 Grey（2CW+2CCW)-Poly Carbonate"
+  weight_g: 1.55
+}
+propellers: {
+  uuid: "8de61774-4ea4-417c-a7d0-acb7a98d4a65"
+  id: "hqprop-t76mmx3"
+  manufacturer: "HQProp"
+  name: "HQProp T76MMX3"
+  weight_g: 2
+  description: "HQProp T76MMX3 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "0130deb0-2260-4ff7-a6a8-430cc376591b"
+  id: "hqprop-t2-5x2x3v2s-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQProp T2.5X2X3V2S -Poly Carbonate"
+  weight_g: 1.2
+  description: "HQProp T2.5X2X3V2S (2CW+2CCW)-Poly Carbonate"
+}
+propellers: {
+  uuid: "c2ce7afd-bdfb-4200-a8e3-74a217070fed"
+  id: "hq-juicy-prop-j40-5-1x4x3-poly-carbonate"
+  manufacturer: "HQProp"
+  name: "HQ Juicy Prop J40 5.1X4X3-Poly Carbonate"
+  weight_g: 3.4
+  description: "HQ Juicy Prop J40 5.1X4X3-Poly Carbonate(2CW+2CCW)"
+}
+propellers: {
+  uuid: "15e93b5d-73e7-41d5-b633-442916fd8f85"
+  id: "hq-t3-5-3-5-3-propeller-blades"
+  manufacturer: "Sub250"
+  name: "HQ T3.5*3.5*3 Propeller blades"
+  weight_g: 2.12
+  description: "HQ T3.5*3.5*3 Propeller blades (2CW+2CCW)  for Oasisfly35"
+}
+propellers: {
+  uuid: "4b146788-366a-42f1-bbce-65117ee54c20"
+  id: "4-pairs-gemfan-40mm-1-6-inch-1636"
+  manufacturer: "Sub250"
+  name: "4 Pairs Gemfan 40mm 1.6-inch 1636"
+  description: "4 Pairs Gemfan 40mm 1.6-inch 1636 Propeller 1.5mm 4-Blade for Dollyfly16 O4"
+}
+propellers: {
+  uuid: "fa69ffb5-1880-4e1c-9e16-a991f80d5b19"
+  id: "hq-prop-t3-3-3-black-propeller"
+  manufacturer: "HQ"
+  name: "HQ Prop T3*3*3 Black Propeller"
+  weight_g: 1.48
+  description: "HQ Prop T3*3*3 Black Propeller For Oasisfly30"
+}
+propellers: {
+  uuid: "3c5e91d4-3e9d-41d3-8e0c-0c1e7ce5f1ea"
+  id: "hq-it31mmx3-pc-for-nimble65"
+  manufacturer: "Sub250"
+  name: "HQ IT31MMX3-PC for Nimble65"
+  weight_g: 0.7
+}
+propellers: {
+  uuid: "bf4bacc9-7a28-41db-aa95-0b6e3bbaa362"
+  id: "hqprop-2-2-2-4-props"
+  manufacturer: "Sub250"
+  name: "HQProp 2*2.2*4 Props"
+  description: "HQProp 2*2.2*4 Props (2CW+2CCW) for Huma20"
+}
+propellers: {
+  uuid: "5ad81b1b-dbbb-4ad8-b5c2-3a9e88909fba"
+  id: "hqprop-tr-2-5-2-5-3-grey-props"
+  manufacturer: "Sub250"
+  name: "HQProp TR 2.5*2.5*3  Grey Props"
+  description: "HQProp TR 2.5*2.5*3 (2CW+2CCW) Grey Props for Oasisfly25"
+}
+propellers: {
+  uuid: "be57593f-e460-4d87-86c0-f0a0d12b22a5"
+  id: "hqprop-dt63mmx3-v2-grey-poly-carbonate"
+  manufacturer: "sub250"
+  name: "HQProp DT63MMX3 V2 Grey -Poly Carbonate"
+  weight_g: 1.13
+  description: "HQProp DT63MMX3 V2 Grey (2CW+2CCW)-Poly Carbonate for DollyFly25"
+}
+propellers: {
+  uuid: "cbe23acc-9f84-4e9d-a55b-4f13ecc0229c"
+  id: "4-pairs-gemfan-1608-3-1-5mm-shaft"
+  manufacturer: "Gemfan"
+  name: "4 Pairs Gemfan 1608-3 1.5MM Shaft"
+  weight_g: 0.3
+  description: "4 Pairs Gemfan 1608-3 1.5MM Shaft 40mm 3-Blade Propellers for Whoopfly16/ Nanofly16"
+}
+propellers: {
+  uuid: "e6e8fc4e-984b-43bb-8cf4-0850bd3a3ce8"
+  id: "hq-1-5mm-shaft-51mm"
+  manufacturer: "Sub250"
+  name: "HQ 1.5MM Shaft 51mm"
+  weight_g: 1.8
+  description: "HQ 1.5MM Shaft 51mm - 3 Propellers for Sub250 Nanofly20"
+}
+propellers: {
+  uuid: "d8f4eb12-c59f-467b-a051-d6fa524ba1c0"
+  id: "1-5-mm-shaft-hq-40mm-2-propellers"
+  manufacturer: "sub250"
+  name: "1.5 mm Shaft HQ 40mm-2 Propellers"
+  weight_g: 0.24
+  description: "1.5 mm Shaft HQ 40mm-2 Propellers  for Sub250 Nanofly16"
+}
+propellers: {
+  uuid: "1f7dfd50-a54a-4bec-8725-64711cfbf00c"
+  id: "1-0-mm-shaft-hq-40mm-2-toothpick"
+  manufacturer: "HQ"
+  name: "1.0 mm Shaft HQ 40mm-2 Toothpick"
+  weight_g: 0.24
+  description: "1.0 mm Shaft HQ 40mm-2 Toothpick Propellers for Nanofly16"
+}
+propellers: {
+  uuid: "7011695e-ab14-4896-8f0c-9ac1c7e89bd0"
+  id: "prop-wrench"
+  manufacturer: "FPVCycle"
+  name: "Prop wrench"
+  description: "Prop wrench (M5 and M3) - Our Favorite Prop Tool"
+}
+propellers: {
+  uuid: "b8aba45e-fd16-4cb8-872f-0c46a7e26ab8"
+  id: "gemfan-5236-dark-grey-only-5-21-prop"
+  manufacturer: "FPVCycle"
+  name: "Gemfan 5236 (dark grey only) (5.21 Prop)"
+  weight_g: 4.1
+}
+propellers: {
+  uuid: "878f5f27-fbc0-49b5-9c55-c4b814ca0ba9"
+  id: "gemfan-freestyle4-5-1x3-6x3-durable-f4-propellers"
+  manufacturer: "FPVCycle"
+  name: "Gemfan Freestyle4 5.1x3.6x3 Durable F4 Propellers"
+  weight_g: 3.6
+}
+propellers: {
+  uuid: "838dda04-2bd6-4556-846d-37198b391e7f"
+  id: "gemfan-freestyle3-5-1x3x3-durable-f3-propellers"
+  manufacturer: "FPVCycle"
+  name: "Gemfan Freestyle3 5.1x3x3 Durable F3 Propellers"
+  weight_g: 3.5
+}
+propellers: {
+  uuid: "e619a272-5154-45a2-a44c-8ded766dbc77"
+  id: "gemfan-lr5130-3-tri-blade-props-4-pack"
+  manufacturer: "FPVCycle"
+  name: "Gemfan LR5130-3 Tri-Blade Props 4 Pack"
+  weight_g: 3.1
+  description: "Gemfan LR5130-3 Tri-Blade Props 4 Pack (Choose Color)"
+}
+propellers: {
+  uuid: "bb657606-5e85-4993-a7f0-898175158bd6"
+  id: "gemfan-long-range-7035-bi-blade-props-4"
+  manufacturer: "FPVCycle"
+  name: "Gemfan Long-Range 7035 Bi-Blade Props 4"
+  weight_g: 4.2
+  description: "Gemfan Long-Range 7035 Bi-Blade Props 4 Pack - (Choose Color)"
+}
+propellers: {
+  uuid: "a5988909-4507-44e1-ad17-9a33c66c5667"
+  id: "gemfan-cinelifter-7035-7x3-5x3-tri-blade-7"
+  manufacturer: "FPVCycle"
+  name: "Gemfan CineLifter 7035 7x3.5x3 Tri-Blade 7"
+  weight_g: 6.5
+  description: "Gemfan CineLifter 7035 7x3.5x3 Tri-Blade 7 Prop 4 Pack - (Choose Color)"
+}
+propellers: {
+  uuid: "094120fa-7f1f-4501-8d14-9d5716e37501"
+  id: "geprc-2-prop-guard-ring-4-pack"
+  manufacturer: "FPVCycle"
+  name: "GepRC 2 Prop Guard Ring (4 pack)"
+}
+propellers: {
+  uuid: "f407ec4d-c252-413f-9071-224bb6644cd2"
+  id: "gemfan-5-led-props"
+  manufacturer: "FPVCycle"
+  name: "Gemfan 5 LED Props"
+  weight_g: 3.79
+  description: "Gemfan 5 LED Props - Moonlight 51466 3-Blade LED Propellers (Set of 4)"
+}
+propellers: {
+  uuid: "5b2ed3c6-f6c6-4b11-9051-a3cca82df489"
+  id: "cinesplore-toothfairy-v4-duct-set-of-4"
+  manufacturer: "FPVCycle"
+  name: "CineSplore/ToothFairy V4 Duct - set of 4"
+}
+propellers: {
+  uuid: "3822be8b-1bc2-44f3-9454-d28c6e97674f"
+  id: "2mm-prop-hole-drill-bit-kit"
+  manufacturer: "FPVCycle"
+  name: "2mm Prop Hole Drill Bit Kit"
+}
+propellers: {
+  uuid: "fbf8aef7-6c94-4622-a35c-6072d102d9c8"
+  id: "gemfan-floppy-proppies-2cw-2ccw"
+  manufacturer: "FPVCycle"
+  name: "Gemfan Floppy Proppies  2CW + 2CCW"
+  weight_g: 4.76
+  description: "Gemfan Floppy Proppies (Foldable Props) 2CW + 2CCW"
+}
+propellers: {
+  uuid: "e2134e65-90c2-46dd-a41b-8552e680b168"
+  id: "gemfan-hurricane-4024-props"
+  manufacturer: "FPVCycle"
+  name: "Gemfan Hurricane 4024 Props"
+  description: "Gemfan Hurricane 4024 Props - (4CW +4CCW)"
+}
+propellers: {
+  uuid: "54643ab9-e28f-4855-802a-434d38710aa6"
+  id: "toothpick-4-arms-pack-of-4"
+  manufacturer: "FPVCycle"
+  name: "ToothPick 4 Arms (Pack of 4)"
+}
+propellers: {
+  uuid: "5c647652-68b7-471e-8445-54a64b3da7d1"
+  id: "gemfan-hurricane-durable-tri-blade-sl"
+  manufacturer: "FPVCycle"
+  name: "Gemfan Hurricane Durable Tri Blade SL"
+  description: "Gemfan Hurricane Durable Tri Blade SL 5125 Propellers (2CW + 2CCW)"
+}
+propellers: {
+  uuid: "fce4a5cd-b7fd-459f-bf79-25de7191743f"
+  id: "gemfan-3018-props-4cw-4ccw-2mm"
+  manufacturer: "FPV Cycle"
+  name: "Gemfan 3018 Props (4CW + 4CCW) - 2mm"
+}
+propellers: {
+  uuid: "0ce2c9c6-88ea-43c9-a015-ae64b7ff3937"
+  id: "gemfan-4023"
+  manufacturer: "FPVCycle"
+  name: "Gemfan 4023"
+  description: "Gemfan 4023 - 4 TriBlade Prop (2CW + 2CCW) - Clear Grey"
+}
+propellers: {
+  uuid: "ee1b33d3-fadc-4a22-b947-e5c65423a67b"
+  id: "gemfan-51433-tri-blade-5-props"
+  manufacturer: "FPVCycle"
+  name: "Gemfan 51433 Tri-Blade 5 Props"
+  description: "Gemfan 51433 Tri-Blade 5 Props (2CW + 2 CCW)"
+}
+propellers: {
+  uuid: "98944b82-7b78-411f-adcd-1e7b4b38bc7e"
+  id: "glide-5-dead-cat-arms-2pc"
+  manufacturer: "FPVCycle"
+  name: "Glide 5” Dead Cat Arms (2pc)"
+}
+propellers: {
+  uuid: "8e638bd8-25d7-4e79-acda-61deedb83f43"
+  id: "gemfan-hurricane-tri-blade-51466-5-1-propeller"
+  manufacturer: "FPV Cycle"
+  name: "Gemfan Hurricane Tri-blade 51466 5.1 Propeller"
+  description: "Gemfan Hurricane Tri-blade 51466 5.1 Propeller - (2CW + 2CCW)"
 }

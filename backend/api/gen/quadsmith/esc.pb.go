@@ -39,6 +39,7 @@ type Esc struct {
 	MotorCurrentBurstA float32 `protobuf:"fixed32,8,opt,name=motor_current_burst_a,json=motorCurrentBurstA,proto3" json:"motor_current_burst_a,omitempty"`
 	// E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
 	Firmware      string `protobuf:"bytes,9,opt,name=firmware,proto3" json:"firmware,omitempty"`
+	Description   string `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -139,6 +140,13 @@ func (x *Esc) GetMotorCurrentBurstA() float32 {
 func (x *Esc) GetFirmware() string {
 	if x != nil {
 		return x.Firmware
+	}
+	return ""
+}
+
+func (x *Esc) GetDescription() string {
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -330,7 +338,7 @@ var File_quadsmith_esc_proto protoreflect.FileDescriptor
 
 const file_quadsmith_esc_proto_rawDesc = "" +
 	"\n" +
-	"\x13quadsmith/esc.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xdf\x02\n" +
+	"\x13quadsmith/esc.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x81\x03\n" +
 	"\x03Esc\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -342,7 +350,8 @@ const file_quadsmith_esc_proto_rawDesc = "" +
 	"max_motors\x18\x06 \x01(\rR\tmaxMotors\x12-\n" +
 	"\x13motor_current_max_a\x18\a \x01(\x02R\x10motorCurrentMaxA\x121\n" +
 	"\x15motor_current_burst_a\x18\b \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
-	"\bfirmware\x18\t \x01(\tR\bfirmware:\b\xc2\xf3\x18\x04escs\"9\n" +
+	"\bfirmware\x18\t \x01(\tR\bfirmware\x12 \n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription:\b\xc2\xf3\x18\x04escs\"9\n" +
 	"\rGetEscRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x93\x01\n" +

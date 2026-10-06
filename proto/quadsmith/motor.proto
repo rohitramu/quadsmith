@@ -25,6 +25,7 @@ message Motor {
   float stator_diameter_mm = 6;
   float stator_height_mm = 7;
   uint32 kv = 8 [(quadsmith.sql.create_index) = true];
+  string description = 9;
 }
 
 // ---------------------------------------------------------

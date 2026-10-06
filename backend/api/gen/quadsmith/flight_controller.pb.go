@@ -42,6 +42,7 @@ type FlightController struct {
 	InternalReceiverUuid string `protobuf:"bytes,9,opt,name=internal_receiver_uuid,json=internalReceiverUuid,proto3" json:"internal_receiver_uuid,omitempty"`
 	// If this board has an integrated Video Transmitter
 	InternalVtxUuid string `protobuf:"bytes,10,opt,name=internal_vtx_uuid,json=internalVtxUuid,proto3" json:"internal_vtx_uuid,omitempty"`
+	Description     string `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -149,6 +150,13 @@ func (x *FlightController) GetInternalReceiverUuid() string {
 func (x *FlightController) GetInternalVtxUuid() string {
 	if x != nil {
 		return x.InternalVtxUuid
+	}
+	return ""
+}
+
+func (x *FlightController) GetDescription() string {
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -340,7 +348,7 @@ var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xe0\x03\n" +
+	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x82\x04\n" +
 	"\x10FlightController\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -354,7 +362,8 @@ const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"escs(uuid)R\x0finternalEscUuid\x12I\n" +
 	"\x16internal_receiver_uuid\x18\t \x01(\tB\x13\xd2\xf3\x18\x0freceivers(uuid)R\x14internalReceiverUuid\x12H\n" +
 	"\x11internal_vtx_uuid\x18\n" +
-	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x0finternalVtxUuid:\x16\xc2\xf3\x18\x12flight_controllers\"F\n" +
+	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x0finternalVtxUuid\x12 \n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription:\x16\xc2\xf3\x18\x12flight_controllers\"F\n" +
 	"\x1aGetFlightControllerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +

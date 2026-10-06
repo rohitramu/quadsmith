@@ -29,6 +29,7 @@ message Frame {
 
   // E.g., "True X", "Squashed X", "Deadcat"
   string geometry = 8;
+  string description = 9;
 }
 
 // ---------------------------------------------------------

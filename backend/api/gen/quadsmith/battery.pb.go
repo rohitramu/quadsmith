@@ -39,6 +39,7 @@ type Battery struct {
 	Chemistry string `protobuf:"bytes,8,opt,name=chemistry,proto3" json:"chemistry,omitempty"`
 	// E.g., "XT60", "XT30", "BT2.0"
 	Connector     string `protobuf:"bytes,9,opt,name=connector,proto3" json:"connector,omitempty"`
+	Description   string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -132,6 +133,13 @@ func (x *Battery) GetChemistry() string {
 func (x *Battery) GetConnector() string {
 	if x != nil {
 		return x.Connector
+	}
+	return ""
+}
+
+func (x *Battery) GetDescription() string {
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -323,7 +331,7 @@ var File_quadsmith_battery_proto protoreflect.FileDescriptor
 
 const file_quadsmith_battery_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/battery.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xa8\x02\n" +
+	"\x17quadsmith/battery.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xca\x02\n" +
 	"\aBattery\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -334,7 +342,9 @@ const file_quadsmith_battery_proto_rawDesc = "" +
 	"\fcell_count_s\x18\a \x01(\rB\x04\xe0\xf3\x18\x01R\n" +
 	"cellCountS\x12\x1c\n" +
 	"\tchemistry\x18\b \x01(\tR\tchemistry\x12\x1c\n" +
-	"\tconnector\x18\t \x01(\tR\tconnector:\r\xc2\xf3\x18\tbatteries\"=\n" +
+	"\tconnector\x18\t \x01(\tR\tconnector\x12 \n" +
+	"\vdescription\x18\n" +
+	" \x01(\tR\vdescription:\r\xc2\xf3\x18\tbatteries\"=\n" +
 	"\x11GetBatteryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x98\x01\n" +

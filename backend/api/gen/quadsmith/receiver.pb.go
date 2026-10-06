@@ -39,6 +39,7 @@ type Receiver struct {
 	HasTelemetry     bool   `protobuf:"varint,8,opt,name=has_telemetry,json=hasTelemetry,proto3" json:"has_telemetry,omitempty"`
 	// Array of antenna UUIDs included with or required by this receiver
 	AntennaUuids  []string `protobuf:"bytes,9,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
+	Description   string   `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -141,6 +142,13 @@ func (x *Receiver) GetAntennaUuids() []string {
 		return x.AntennaUuids
 	}
 	return nil
+}
+
+func (x *Receiver) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
 }
 
 // ---------------------------------------------------------
@@ -330,7 +338,7 @@ var File_quadsmith_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xe6\x02\n" +
+	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x88\x03\n" +
 	"\bReceiver\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -341,7 +349,8 @@ const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12,\n" +
 	"\x12frequency_band_mhz\x18\a \x01(\rR\x10frequencyBandMhz\x12#\n" +
 	"\rhas_telemetry\x18\b \x01(\bR\fhasTelemetry\x12#\n" +
-	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids:\r\xc2\xf3\x18\treceivers\">\n" +
+	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids\x12 \n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription:\r\xc2\xf3\x18\treceivers\">\n" +
 	"\x12GetReceiverRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x98\x01\n" +

@@ -40,6 +40,7 @@ message FlightController {
 
   // If this board has an integrated Video Transmitter
   string internal_vtx_uuid = 10 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
+  string description = 21;
 }
 
 // ---------------------------------------------------------
