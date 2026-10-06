@@ -25,12 +25,13 @@ const (
 // Domain Model
 // ---------------------------------------------------------
 type FlightController struct {
-	state        protoimpl.MessageState `protogen:"open.v1"`
-	Uuid         string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id           string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Manufacturer string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
-	Name         string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	WeightG      float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
+	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// The MCU processor (e.g., "F411", "F405", "H743")
 	Processor string `protobuf:"bytes,6,opt,name=processor,proto3" json:"processor,omitempty"`
 	// The gyro chip (e.g., "MPU6000", "BMI270")
@@ -101,6 +102,13 @@ func (x *FlightController) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *FlightController) GetIsInternalOnly() bool {
+	if x != nil {
+		return x.IsInternalOnly
+	}
+	return false
 }
 
 func (x *FlightController) GetWeightG() float32 {
@@ -332,12 +340,13 @@ var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xb6\x03\n" +
+	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xe0\x03\n" +
 	"\x10FlightController\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
+	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1c\n" +
 	"\tprocessor\x18\x06 \x01(\tR\tprocessor\x12\x12\n" +
 	"\x04gyro\x18\a \x01(\tR\x04gyro\x12:\n" +

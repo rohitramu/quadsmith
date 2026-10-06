@@ -18,6 +18,7 @@ message Receiver {
 
   string manufacturer = 3 [(quadsmith.sql.create_index) = true];
   string name = 4;
+  bool is_internal_only = 20;
 
   float weight_g = 5;
 

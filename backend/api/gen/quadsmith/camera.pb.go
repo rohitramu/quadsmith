@@ -25,12 +25,13 @@ const (
 // Domain Model
 // ---------------------------------------------------------
 type Camera struct {
-	state        protoimpl.MessageState `protogen:"open.v1"`
-	Uuid         string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id           string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Manufacturer string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
-	Name         string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	WeightG      float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
+	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// Protocol / signal type (e.g., "Analog", "MIPI", "DJI Coaxial")
 	Protocol string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
@@ -99,6 +100,13 @@ func (x *Camera) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *Camera) GetIsInternalOnly() bool {
+	if x != nil {
+		return x.IsInternalOnly
+	}
+	return false
 }
 
 func (x *Camera) GetWeightG() float32 {
@@ -323,12 +331,13 @@ var File_quadsmith_camera_proto protoreflect.FileDescriptor
 
 const file_quadsmith_camera_proto_rawDesc = "" +
 	"\n" +
-	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x98\x02\n" +
+	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xc2\x02\n" +
 	"\x06Camera\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
+	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1a\n" +
 	"\bprotocol\x18\x06 \x01(\tR\bprotocol\x12\x1f\n" +
 	"\vsensor_size\x18\a \x01(\tR\n" +

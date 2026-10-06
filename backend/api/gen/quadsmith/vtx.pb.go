@@ -25,12 +25,13 @@ const (
 // Domain Model
 // ---------------------------------------------------------
 type VideoTransmitter struct {
-	state        protoimpl.MessageState `protogen:"open.v1"`
-	Uuid         string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id           string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Manufacturer string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
-	Name         string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	WeightG      float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
+	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
 	Protocol string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Max output power in milliwatts (e.g., 800, 1000, 1200)
@@ -100,6 +101,13 @@ func (x *VideoTransmitter) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *VideoTransmitter) GetIsInternalOnly() bool {
+	if x != nil {
+		return x.IsInternalOnly
+	}
+	return false
 }
 
 func (x *VideoTransmitter) GetWeightG() float32 {
@@ -331,12 +339,13 @@ var File_quadsmith_vtx_proto protoreflect.FileDescriptor
 
 const file_quadsmith_vtx_proto_rawDesc = "" +
 	"\n" +
-	"\x13quadsmith/vtx.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xfa\x02\n" +
+	"\x13quadsmith/vtx.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xa4\x03\n" +
 	"\x10VideoTransmitter\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
+	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12 \n" +
 	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12 \n" +
 	"\fmax_power_mw\x18\a \x01(\x05R\n" +
