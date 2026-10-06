@@ -13,7 +13,7 @@ COPY vendor/ ./vendor/
 COPY . .
 
 # Build Server and Seeder
-RUN cd backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go
+RUN cd backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder/main.go
 
 
 # Stage 2: The Sandbox (Postgres + Go API)
@@ -43,12 +43,15 @@ echo "Waiting for PostgreSQL to be ready..."\n\
 until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 1; done\n\
 echo "Applying Schema..."\n\
 psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/backend/db/schema.sql\n\
+echo "Seeding Database..."\n\
+./seeder\n\
 exec ./server\n' > /app/sandbox-entrypoint.sh
 
 RUN chmod +x /app/sandbox-entrypoint.sh
 
 # Copy binaries from builder
 COPY --from=builder /app/bin/server /app/server
+COPY --from=builder /app/bin/seeder /app/seeder
 
 # Copy database schema and seeds at the very end
 COPY backend/db/schema.sql /app/backend/db/schema.sql
