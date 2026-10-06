@@ -11,9 +11,10 @@ import (
 	"golang.org/x/net/http2/h2c"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	
+
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	"quadsmith/api/internal/engines/evaluator"
 )
 
 func main() {
@@ -53,13 +54,16 @@ func main() {
 	path_NewBuildServiceHandler, h_NewBuildServiceHandler := quadsmithconnect.NewBuildServiceHandler(pb.NewBuildServiceHandler(pool))
 	mux.Handle(path_NewBuildServiceHandler, h_NewBuildServiceHandler)
 
+	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool))
+	mux.Handle(path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
 	fmt.Printf("Starting Quadsmith API Server on port %s...\n", port)
-	
+
 	err = http.ListenAndServe(
 		":"+port,
 		h2c.NewHandler(mux, &http2.Server{}),
