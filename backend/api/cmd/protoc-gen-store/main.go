@@ -122,11 +122,75 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("}")
 	g.P()
 
+	// --- UPDATE ---
+	var updateSets []string
+	var updateArgs []string
+	// Arg 1 is idOrUuid. The rest are fields.
+	updateArgs = append(updateArgs, "m.Id") // Using Id for matching as well? Wait, we should probably match on Uuid or Id.
+	// Actually, matching on UUID is safer for updates: `WHERE uuid = $1`
+	// Let's assume m.Uuid is populated.
+	updateArgs[0] = "m.Uuid"
+	
+	argIdx := 2
+	for i, colName := range colNames {
+		if colName == "uuid" || colName == "id" {
+			continue // Don't update primary keys or slugs generally, or we can update id.
+		}
+		updateSets = append(updateSets, fmt.Sprintf("%s = $%d", colName, argIdx))
+		updateArgs = append(updateArgs, mFields[i])
+		argIdx++
+	}
+	
+	updateSetsStr := strings.Join(updateSets, ", ")
+	updateArgsStr := strings.Join(updateArgs, ", ")
+
+	g.P("func Update", msgName, "(ctx context.Context, tx pgx.Tx, m *", msgName, ") error {")
+	g.P("	query := `UPDATE ", tableName, " SET ", updateSetsStr, " WHERE uuid = $1`")
+	g.P("	_, err := tx.Exec(ctx, query, ", updateArgsStr, ")")
+	g.P("	return err")
+	g.P("}")
+	g.P()
+
 	// --- DELETE ---
 	g.P("func Delete", msgName, "(ctx context.Context, tx pgx.Tx, idOrUuid string) error {")
 	g.P("	query := `DELETE FROM ", tableName, " WHERE id = $1 OR uuid::text = $1`")
 	g.P("	_, err := tx.Exec(ctx, query, idOrUuid)")
 	g.P("	return err")
+	g.P("}")
+	g.P()
+
+	// --- LIST ---
+	pluralName := msgName + "s"
+	if strings.HasSuffix(msgName, "y") {
+		pluralName = strings.TrimSuffix(msgName, "y") + "ies"
+	}
+	
+	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*", msgName, ", error) {")
+	g.P("	query := `SELECT ", colsStr, " FROM ", tableName, "`")
+	g.P("	if whereClause != \"\" {")
+	g.P("		query += \" WHERE \" + whereClause")
+	g.P("	}")
+	g.P("	rows, err := db.Query(ctx, query, args...)")
+	g.P("	if err != nil {")
+	g.P("		return nil, err")
+	g.P("	}")
+	g.P("	defer rows.Close()")
+	g.P("	var results []*", msgName)
+	g.P("	for rows.Next() {")
+	for _, v := range scanVars {
+		g.P("		", v)
+	}
+	g.P("		err := rows.Scan(", scanAddrsStr, ")")
+	g.P("		if err != nil {")
+	g.P("			return nil, err")
+	g.P("		}")
+	g.P("		m := &", msgName, "{}")
+	for _, a := range assignments {
+		g.P("		", a)
+	}
+	g.P("		results = append(results, m)")
+	g.P("	}")
+	g.P("	return results, nil")
 	g.P("}")
 	g.P()
 }

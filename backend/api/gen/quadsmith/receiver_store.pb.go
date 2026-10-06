@@ -57,8 +57,70 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Recei
 	return m, nil
 }
 
+func UpdateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
+	query := `UPDATE receivers SET manufacturer = $2, model = $3, weight_g = $4, protocol = $5, frequency_band_ghz = $6, has_telemetry = $7, antenna_uuids = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.FrequencyBandGhz, m.HasTelemetry, m.AntennaUuids)
+	return err
+}
+
 func DeleteReceiver(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM receivers WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListReceivers(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Receiver, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, protocol, frequency_band_ghz, has_telemetry, antenna_uuids FROM receivers`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Receiver
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_protocol *string
+		var v_frequency_band_ghz *float32
+		var v_has_telemetry *bool
+		var v_antenna_uuids []string
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_protocol, &v_frequency_band_ghz, &v_has_telemetry, &v_antenna_uuids)
+		if err != nil {
+			return nil, err
+		}
+		m := &Receiver{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_protocol != nil {
+			m.Protocol = *v_protocol
+		}
+		if v_frequency_band_ghz != nil {
+			m.FrequencyBandGhz = *v_frequency_band_ghz
+		}
+		if v_has_telemetry != nil {
+			m.HasTelemetry = *v_has_telemetry
+		}
+		m.AntennaUuids = v_antenna_uuids
+		results = append(results, m)
+	}
+	return results, nil
 }

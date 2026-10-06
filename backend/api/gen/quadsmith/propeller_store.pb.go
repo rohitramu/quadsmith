@@ -59,8 +59,72 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Prop
 	return m, nil
 }
 
+func UpdatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
+	query := `UPDATE propellers SET manufacturer = $2, model = $3, weight_g = $4, diameter_inches = $5, pitch_inches = $6, blades = $7, material = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.DiameterInches, m.PitchInches, m.Blades, m.Material)
+	return err
+}
+
 func DeletePropeller(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM propellers WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListPropellers(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Propeller, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, diameter_inches, pitch_inches, blades, material FROM propellers`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Propeller
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_diameter_inches *float32
+		var v_pitch_inches *float32
+		var v_blades *int32
+		var v_material *string
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_diameter_inches, &v_pitch_inches, &v_blades, &v_material)
+		if err != nil {
+			return nil, err
+		}
+		m := &Propeller{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_diameter_inches != nil {
+			m.DiameterInches = *v_diameter_inches
+		}
+		if v_pitch_inches != nil {
+			m.PitchInches = *v_pitch_inches
+		}
+		if v_blades != nil {
+			m.Blades = *v_blades
+		}
+		if v_material != nil {
+			m.Material = *v_material
+		}
+		results = append(results, m)
+	}
+	return results, nil
 }

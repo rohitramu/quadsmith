@@ -55,8 +55,68 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Motor, e
 	return m, nil
 }
 
+func UpdateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
+	query := `UPDATE motors SET manufacturer = $2, model = $3, weight_g = $4, stator_diameter_mm = $5, stator_height_mm = $6, kv = $7 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv)
+	return err
+}
+
 func DeleteMotor(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM motors WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListMotors(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Motor, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv FROM motors`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Motor
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_stator_diameter_mm *float32
+		var v_stator_height_mm *float32
+		var v_kv *int32
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_stator_diameter_mm, &v_stator_height_mm, &v_kv)
+		if err != nil {
+			return nil, err
+		}
+		m := &Motor{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_stator_diameter_mm != nil {
+			m.StatorDiameterMm = *v_stator_diameter_mm
+		}
+		if v_stator_height_mm != nil {
+			m.StatorHeightMm = *v_stator_height_mm
+		}
+		if v_kv != nil {
+			m.Kv = *v_kv
+		}
+		results = append(results, m)
+	}
+	return results, nil
 }

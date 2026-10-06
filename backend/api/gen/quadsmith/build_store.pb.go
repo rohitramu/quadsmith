@@ -67,8 +67,80 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Build, e
 	return m, nil
 }
 
+func UpdateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
+	query := `UPDATE builds SET name = $2, description = $3, frame_uuid = $4, motor_uuid = $5, battery_uuid = $6, flight_controller_uuid = $7, esc_uuids = $8, receiver_uuids = $9, antenna_uuids = $10, propeller_uuid = $11, camera_uuids = $12 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Name, m.Description, m.FrameUuid, m.MotorUuid, m.BatteryUuid, m.FlightControllerUuid, m.EscUuids, m.ReceiverUuids, m.AntennaUuids, m.PropellerUuid, m.CameraUuids)
+	return err
+}
+
 func DeleteBuild(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM builds WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListBuilds(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Build, error) {
+	query := `SELECT uuid, id, name, description, frame_uuid, motor_uuid, battery_uuid, flight_controller_uuid, esc_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids FROM builds`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Build
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_name *string
+		var v_description *string
+		var v_frame_uuid *string
+		var v_motor_uuid *string
+		var v_battery_uuid *string
+		var v_flight_controller_uuid *string
+		var v_esc_uuids []string
+		var v_receiver_uuids []string
+		var v_antenna_uuids []string
+		var v_propeller_uuid *string
+		var v_camera_uuids []string
+		err := rows.Scan(&v_uuid, &v_id, &v_name, &v_description, &v_frame_uuid, &v_motor_uuid, &v_battery_uuid, &v_flight_controller_uuid, &v_esc_uuids, &v_receiver_uuids, &v_antenna_uuids, &v_propeller_uuid, &v_camera_uuids)
+		if err != nil {
+			return nil, err
+		}
+		m := &Build{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_name != nil {
+			m.Name = *v_name
+		}
+		if v_description != nil {
+			m.Description = *v_description
+		}
+		if v_frame_uuid != nil {
+			m.FrameUuid = *v_frame_uuid
+		}
+		if v_motor_uuid != nil {
+			m.MotorUuid = *v_motor_uuid
+		}
+		if v_battery_uuid != nil {
+			m.BatteryUuid = *v_battery_uuid
+		}
+		if v_flight_controller_uuid != nil {
+			m.FlightControllerUuid = *v_flight_controller_uuid
+		}
+		m.EscUuids = v_esc_uuids
+		m.ReceiverUuids = v_receiver_uuids
+		m.AntennaUuids = v_antenna_uuids
+		if v_propeller_uuid != nil {
+			m.PropellerUuid = *v_propeller_uuid
+		}
+		m.CameraUuids = v_camera_uuids
+		results = append(results, m)
+	}
+	return results, nil
 }

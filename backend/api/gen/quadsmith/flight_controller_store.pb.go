@@ -63,8 +63,76 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string)
 	return m, nil
 }
 
+func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
+	query := `UPDATE flight_controllers SET manufacturer = $2, model = $3, weight_g = $4, processor = $5, gyro = $6, internal_esc_uuid = $7, internal_receiver_uuid = $8, internal_vtx_uuid = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Processor, m.Gyro, m.InternalEscUuid, m.InternalReceiverUuid, m.InternalVtxUuid)
+	return err
+}
+
 func DeleteFlightController(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM flight_controllers WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*FlightController, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid FROM flight_controllers`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*FlightController
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_processor *string
+		var v_gyro *string
+		var v_internal_esc_uuid *string
+		var v_internal_receiver_uuid *string
+		var v_internal_vtx_uuid *string
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_processor, &v_gyro, &v_internal_esc_uuid, &v_internal_receiver_uuid, &v_internal_vtx_uuid)
+		if err != nil {
+			return nil, err
+		}
+		m := &FlightController{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_processor != nil {
+			m.Processor = *v_processor
+		}
+		if v_gyro != nil {
+			m.Gyro = *v_gyro
+		}
+		if v_internal_esc_uuid != nil {
+			m.InternalEscUuid = *v_internal_esc_uuid
+		}
+		if v_internal_receiver_uuid != nil {
+			m.InternalReceiverUuid = *v_internal_receiver_uuid
+		}
+		if v_internal_vtx_uuid != nil {
+			m.InternalVtxUuid = *v_internal_vtx_uuid
+		}
+		results = append(results, m)
+	}
+	return results, nil
 }

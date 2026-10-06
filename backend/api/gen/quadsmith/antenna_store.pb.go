@@ -63,8 +63,76 @@ func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Antenn
 	return m, nil
 }
 
+func UpdateAntenna(ctx context.Context, tx pgx.Tx, m *Antenna) error {
+	query := `UPDATE antennas SET manufacturer = $2, model = $3, weight_g = $4, connector = $5, polarization = $6, frequency_band_ghz = $7, length_mm = $8, gain_dbi = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandGhz, m.LengthMm, m.GainDbi)
+	return err
+}
+
 func DeleteAntenna(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM antennas WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListAntennas(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Antenna, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, connector, polarization, frequency_band_ghz, length_mm, gain_dbi FROM antennas`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Antenna
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_connector *string
+		var v_polarization *string
+		var v_frequency_band_ghz *float32
+		var v_length_mm *float32
+		var v_gain_dbi *float32
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_connector, &v_polarization, &v_frequency_band_ghz, &v_length_mm, &v_gain_dbi)
+		if err != nil {
+			return nil, err
+		}
+		m := &Antenna{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_connector != nil {
+			m.Connector = *v_connector
+		}
+		if v_polarization != nil {
+			m.Polarization = *v_polarization
+		}
+		if v_frequency_band_ghz != nil {
+			m.FrequencyBandGhz = *v_frequency_band_ghz
+		}
+		if v_length_mm != nil {
+			m.LengthMm = *v_length_mm
+		}
+		if v_gain_dbi != nil {
+			m.GainDbi = *v_gain_dbi
+		}
+		results = append(results, m)
+	}
+	return results, nil
 }

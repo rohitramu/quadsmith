@@ -13,3 +13,7 @@ plugins:
     out: ../backend/api/gen
     path: ../bin/protoc-gen-store
     opt: paths=source_relative
+  - plugin: server
+    out: ../backend/api/gen
+    path: ../bin/protoc-gen-server
+    opt: paths=source_relative

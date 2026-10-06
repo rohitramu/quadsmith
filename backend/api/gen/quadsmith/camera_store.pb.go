@@ -59,8 +59,72 @@ func GetCamera(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Camera,
 	return m, nil
 }
 
+func UpdateCamera(ctx context.Context, tx pgx.Tx, m *Camera) error {
+	query := `UPDATE cameras SET manufacturer = $2, model = $3, weight_g = $4, protocol = $5, sensor_size = $6, width_mm = $7, lens_size_mm = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.SensorSize, m.WidthMm, m.LensSizeMm)
+	return err
+}
+
 func DeleteCamera(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM cameras WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListCameras(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Camera, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, protocol, sensor_size, width_mm, lens_size_mm FROM cameras`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Camera
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_protocol *string
+		var v_sensor_size *string
+		var v_width_mm *int32
+		var v_lens_size_mm *float32
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_protocol, &v_sensor_size, &v_width_mm, &v_lens_size_mm)
+		if err != nil {
+			return nil, err
+		}
+		m := &Camera{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_protocol != nil {
+			m.Protocol = *v_protocol
+		}
+		if v_sensor_size != nil {
+			m.SensorSize = *v_sensor_size
+		}
+		if v_width_mm != nil {
+			m.WidthMm = *v_width_mm
+		}
+		if v_lens_size_mm != nil {
+			m.LensSizeMm = *v_lens_size_mm
+		}
+		results = append(results, m)
+	}
+	return results, nil
 }

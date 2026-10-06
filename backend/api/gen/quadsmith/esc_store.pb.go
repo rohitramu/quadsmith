@@ -59,8 +59,72 @@ func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Esc, error
 	return m, nil
 }
 
+func UpdateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
+	query := `UPDATE escs SET manufacturer = $2, model = $3, weight_g = $4, max_motors = $5, continuous_amps = $6, burst_amps = $7, firmware = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.MaxMotors, m.ContinuousAmps, m.BurstAmps, m.Firmware)
+	return err
+}
+
 func DeleteEsc(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM escs WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListEscs(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Esc, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, max_motors, continuous_amps, burst_amps, firmware FROM escs`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Esc
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_max_motors *int32
+		var v_continuous_amps *int32
+		var v_burst_amps *int32
+		var v_firmware *string
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_max_motors, &v_continuous_amps, &v_burst_amps, &v_firmware)
+		if err != nil {
+			return nil, err
+		}
+		m := &Esc{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_max_motors != nil {
+			m.MaxMotors = *v_max_motors
+		}
+		if v_continuous_amps != nil {
+			m.ContinuousAmps = *v_continuous_amps
+		}
+		if v_burst_amps != nil {
+			m.BurstAmps = *v_burst_amps
+		}
+		if v_firmware != nil {
+			m.Firmware = *v_firmware
+		}
+		results = append(results, m)
+	}
+	return results, nil
 }

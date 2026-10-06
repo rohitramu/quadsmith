@@ -12,14 +12,11 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	
+	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
-	"quadsmith/api/internal/server"
-	"quadsmith/api/internal/store"
 )
 
 func main() {
-	// 1. Connect to PostgreSQL
-	// In MVP, fallback to a local default if DATABASE_URL is missing
 	dbUrl := os.Getenv("DATABASE_URL")
 	if dbUrl == "" {
 		dbUrl = "postgres://postgres:postgres@localhost:5432/quadsmith"
@@ -31,21 +28,31 @@ func main() {
 	}
 	defer pool.Close()
 
-	// 2. Initialize Store (with CEL Engine)
-	compStore, err := store.NewComponentStore(pool)
-	if err != nil {
-		log.Fatalf("Failed to initialize component store: %v\n", err)
-	}
-	buildStore := store.NewBuildStore(pool)
-
-	// 3. Initialize ConnectRPC Service Handler
-	qsServer := server.NewQuadsmithServer(compStore, buildStore)
-
 	mux := http.NewServeMux()
-	path, handler := quadsmithconnect.NewQuadsmithAPIHandler(qsServer)
-	mux.Handle(path, handler)
 
-	// 4. Start HTTP/2 Server
+	path_NewMotorServiceHandler, h_NewMotorServiceHandler := quadsmithconnect.NewMotorServiceHandler(pb.NewMotorServiceHandler(pool))
+	mux.Handle(path_NewMotorServiceHandler, h_NewMotorServiceHandler)
+	path_NewFrameServiceHandler, h_NewFrameServiceHandler := quadsmithconnect.NewFrameServiceHandler(pb.NewFrameServiceHandler(pool))
+	mux.Handle(path_NewFrameServiceHandler, h_NewFrameServiceHandler)
+	path_NewBatteryServiceHandler, h_NewBatteryServiceHandler := quadsmithconnect.NewBatteryServiceHandler(pb.NewBatteryServiceHandler(pool))
+	mux.Handle(path_NewBatteryServiceHandler, h_NewBatteryServiceHandler)
+	path_NewEscServiceHandler, h_NewEscServiceHandler := quadsmithconnect.NewEscServiceHandler(pb.NewEscServiceHandler(pool))
+	mux.Handle(path_NewEscServiceHandler, h_NewEscServiceHandler)
+	path_NewFlightControllerServiceHandler, h_NewFlightControllerServiceHandler := quadsmithconnect.NewFlightControllerServiceHandler(pb.NewFlightControllerServiceHandler(pool))
+	mux.Handle(path_NewFlightControllerServiceHandler, h_NewFlightControllerServiceHandler)
+	path_NewReceiverServiceHandler, h_NewReceiverServiceHandler := quadsmithconnect.NewReceiverServiceHandler(pb.NewReceiverServiceHandler(pool))
+	mux.Handle(path_NewReceiverServiceHandler, h_NewReceiverServiceHandler)
+	path_NewVideoTransmitterServiceHandler, h_NewVideoTransmitterServiceHandler := quadsmithconnect.NewVideoTransmitterServiceHandler(pb.NewVideoTransmitterServiceHandler(pool))
+	mux.Handle(path_NewVideoTransmitterServiceHandler, h_NewVideoTransmitterServiceHandler)
+	path_NewAntennaServiceHandler, h_NewAntennaServiceHandler := quadsmithconnect.NewAntennaServiceHandler(pb.NewAntennaServiceHandler(pool))
+	mux.Handle(path_NewAntennaServiceHandler, h_NewAntennaServiceHandler)
+	path_NewCameraServiceHandler, h_NewCameraServiceHandler := quadsmithconnect.NewCameraServiceHandler(pb.NewCameraServiceHandler(pool))
+	mux.Handle(path_NewCameraServiceHandler, h_NewCameraServiceHandler)
+	path_NewPropellerServiceHandler, h_NewPropellerServiceHandler := quadsmithconnect.NewPropellerServiceHandler(pb.NewPropellerServiceHandler(pool))
+	mux.Handle(path_NewPropellerServiceHandler, h_NewPropellerServiceHandler)
+	path_NewBuildServiceHandler, h_NewBuildServiceHandler := quadsmithconnect.NewBuildServiceHandler(pb.NewBuildServiceHandler(pool))
+	mux.Handle(path_NewBuildServiceHandler, h_NewBuildServiceHandler)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -53,7 +60,6 @@ func main() {
 
 	fmt.Printf("Starting Quadsmith API Server on port %s...\n", port)
 	
-	// Use h2c so we can support HTTP/2 without TLS for local development
 	err = http.ListenAndServe(
 		":"+port,
 		h2c.NewHandler(mux, &http2.Server{}),

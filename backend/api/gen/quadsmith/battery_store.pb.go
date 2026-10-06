@@ -59,8 +59,72 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Batter
 	return m, nil
 }
 
+func UpdateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
+	query := `UPDATE batteries SET manufacturer = $2, model = $3, weight_g = $4, capacity_mah = $5, cell_count_s = $6, chemistry = $7, connector = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector)
+	return err
+}
+
 func DeleteBattery(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM batteries WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListBatteries(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Battery, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector FROM batteries`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Battery
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_capacity_mah *int32
+		var v_cell_count_s *int32
+		var v_chemistry *string
+		var v_connector *string
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_capacity_mah, &v_cell_count_s, &v_chemistry, &v_connector)
+		if err != nil {
+			return nil, err
+		}
+		m := &Battery{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_capacity_mah != nil {
+			m.CapacityMah = *v_capacity_mah
+		}
+		if v_cell_count_s != nil {
+			m.CellCountS = *v_cell_count_s
+		}
+		if v_chemistry != nil {
+			m.Chemistry = *v_chemistry
+		}
+		if v_connector != nil {
+			m.Connector = *v_connector
+		}
+		results = append(results, m)
+	}
+	return results, nil
 }

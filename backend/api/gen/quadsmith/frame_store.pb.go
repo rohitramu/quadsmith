@@ -55,8 +55,68 @@ func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Frame, e
 	return m, nil
 }
 
+func UpdateFrame(ctx context.Context, tx pgx.Tx, m *Frame) error {
+	query := `UPDATE frames SET manufacturer = $2, model = $3, weight_g = $4, wheelbase_mm = $5, max_prop_size_inches = $6, geometry = $7 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.WheelbaseMm, m.MaxPropSizeInches, m.Geometry)
+	return err
+}
+
 func DeleteFrame(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	query := `DELETE FROM frames WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
+}
+
+func ListFrames(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Frame, error) {
+	query := `SELECT uuid, id, manufacturer, model, weight_g, wheelbase_mm, max_prop_size_inches, geometry FROM frames`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var results []*Frame
+	for rows.Next() {
+		var v_uuid *string
+		var v_id *string
+		var v_manufacturer *string
+		var v_model *string
+		var v_weight_g *float32
+		var v_wheelbase_mm *float32
+		var v_max_prop_size_inches *float32
+		var v_geometry *string
+		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_wheelbase_mm, &v_max_prop_size_inches, &v_geometry)
+		if err != nil {
+			return nil, err
+		}
+		m := &Frame{}
+		if v_uuid != nil {
+			m.Uuid = *v_uuid
+		}
+		if v_id != nil {
+			m.Id = *v_id
+		}
+		if v_manufacturer != nil {
+			m.Manufacturer = *v_manufacturer
+		}
+		if v_model != nil {
+			m.Model = *v_model
+		}
+		if v_weight_g != nil {
+			m.WeightG = *v_weight_g
+		}
+		if v_wheelbase_mm != nil {
+			m.WheelbaseMm = *v_wheelbase_mm
+		}
+		if v_max_prop_size_inches != nil {
+			m.MaxPropSizeInches = *v_max_prop_size_inches
+		}
+		if v_geometry != nil {
+			m.Geometry = *v_geometry
+		}
+		results = append(results, m)
+	}
+	return results, nil
 }
