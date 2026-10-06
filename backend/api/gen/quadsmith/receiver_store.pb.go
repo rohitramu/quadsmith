@@ -9,13 +9,13 @@ import (
 )
 
 func CreateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
-	query := `INSERT INTO receivers (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band, has_telemetry, antenna_uuids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+	query := `INSERT INTO receivers (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_hz, has_telemetry, antenna_uuids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBand, m.HasTelemetry, func(s []string) interface{} {
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBandHz, m.HasTelemetry, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
@@ -25,11 +25,11 @@ func CreateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
 }
 
 func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Receiver, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band, has_telemetry, antenna_uuids"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_hz, has_telemetry, antenna_uuids"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band", "has_telemetry", "antenna_uuids"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_hz", "has_telemetry", "antenna_uuids"}
 	}
 	query := `SELECT ` + colsStr + ` FROM receivers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -50,8 +50,8 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 			scanArgs[i] = &m.WeightG
 		case "protocol":
 			scanArgs[i] = &m.Protocol
-		case "frequency_band":
-			scanArgs[i] = &m.FrequencyBand
+		case "frequency_band_hz":
+			scanArgs[i] = &m.FrequencyBandHz
 		case "has_telemetry":
 			scanArgs[i] = &m.HasTelemetry
 		case "antenna_uuids":
@@ -69,8 +69,8 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 }
 
 func UpdateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
-	query := `UPDATE receivers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, frequency_band = $7, has_telemetry = $8, antenna_uuids = $9 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBand, m.HasTelemetry, func(s []string) interface{} {
+	query := `UPDATE receivers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, frequency_band_hz = $7, has_telemetry = $8, antenna_uuids = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBandHz, m.HasTelemetry, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
@@ -86,11 +86,11 @@ func DeleteReceiver(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Receiver, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band, has_telemetry, antenna_uuids"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_hz, has_telemetry, antenna_uuids"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band", "has_telemetry", "antenna_uuids"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_hz", "has_telemetry", "antenna_uuids"}
 	}
 	query := `SELECT ` + colsStr + ` FROM receivers`
 	if whereClause != "" {
@@ -134,8 +134,8 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.WeightG
 			case "protocol":
 				scanArgs[i] = &m.Protocol
-			case "frequency_band":
-				scanArgs[i] = &m.FrequencyBand
+			case "frequency_band_hz":
+				scanArgs[i] = &m.FrequencyBandHz
 			case "has_telemetry":
 				scanArgs[i] = &m.HasTelemetry
 			case "antenna_uuids":

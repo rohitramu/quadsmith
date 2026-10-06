@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package quadsmith;
 
-import "quadsmith/frequency_band.proto";
 import "quadsmith/sql.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
@@ -30,7 +29,7 @@ message Antenna {
   string polarization = 7;
 
   // Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
-  FrequencyBand frequency_band = 8;
+  uint64 frequency_band_hz = 8;
 
   // Length in millimeters (e.g., 60, 100, 150)
   float length_mm = 9;

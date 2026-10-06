@@ -116,8 +116,10 @@ func sqlDataType(desc protoreflect.FieldDescriptor) string {
 	switch kind {
 	case protoreflect.StringKind:
 		return "TEXT"
-	case protoreflect.Int32Kind, protoreflect.Int64Kind, protoreflect.Uint32Kind, protoreflect.Uint64Kind:
+	case protoreflect.Int32Kind, protoreflect.Uint32Kind, protoreflect.EnumKind:
 		return "INTEGER"
+	case protoreflect.Int64Kind, protoreflect.Uint64Kind:
+		return "BIGINT"
 	case protoreflect.FloatKind, protoreflect.DoubleKind:
 		return "DECIMAL"
 	case protoreflect.BoolKind:
