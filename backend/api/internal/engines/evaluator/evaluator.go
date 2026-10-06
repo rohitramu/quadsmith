@@ -77,15 +77,15 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	// 5. Fetch ESCs
-	var totalEscs int32 = 0
-	var maxAmps int32 = 0
+	var totalEscs uint32 = 0
+	var maxAmps float32 = 0
 	for _, id := range b.EscUuids {
 		esc, err := pb.GetEsc(ctx, s.db, id, nil)
 		if err == nil {
 			totalWeight += esc.WeightG
 			totalEscs += esc.MaxMotors
-			if esc.ContinuousAmps > maxAmps {
-				maxAmps = esc.ContinuousAmps
+			if esc.MotorCurrentMaxA > maxAmps {
+				maxAmps = esc.MotorCurrentMaxA
 			}
 		}
 	}
@@ -99,8 +99,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 				esc, err := pb.GetEsc(ctx, s.db, fc.InternalEscUuid, nil)
 				if err == nil {
 					totalEscs += esc.MaxMotors
-					if esc.ContinuousAmps > maxAmps {
-						maxAmps = esc.ContinuousAmps
+					if esc.MotorCurrentMaxA > maxAmps {
+						maxAmps = esc.MotorCurrentMaxA
 					}
 				}
 			}
@@ -127,7 +127,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 
 		// Naive thrust formula
 		statorVol := motor.StatorDiameterMm * motor.StatorHeightMm
-		thrustPerMotor := (statorVol * float32(motor.Kv) * voltage * prop.DiameterInches * prop.PitchInches) / 1500.0
+		thrustPerMotor := (statorVol * float32(motor.Kv) * voltage * (prop.DiameterMm / 25.4) * (prop.PitchMm / 25.4)) / 1500.0
 		totalThrust := thrustPerMotor * 4
 
 		if totalWeight > 0 {
