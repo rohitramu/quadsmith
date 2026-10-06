@@ -234,6 +234,7 @@ type ListBuildsRequest struct {
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -292,6 +293,13 @@ func (x *ListBuildsRequest) GetPageToken() string {
 func (x *ListBuildsRequest) GetColumns() []string {
 	if x != nil {
 		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListBuildsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
 	}
 	return nil
 }
@@ -373,13 +381,14 @@ const file_quadsmith_build_proto_rawDesc = "" +
 	"\xc2\xf3\x18\x06builds\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x81\x01\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
 	"\x11ListBuildsRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\"f\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"f\n" +
 	"\x12ListBuildsResponse\x12(\n" +
 	"\x06builds\x18\x01 \x03(\v2\x10.quadsmith.BuildR\x06builds\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x93\x01\n" +

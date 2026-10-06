@@ -105,7 +105,7 @@ func DeleteFlightController(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 	return err
 }
 
-func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*FlightController, error) {
+func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*FlightController, error) {
 	colsStr := "uuid, id, manufacturer, model, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -115,6 +115,19 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 	query := `SELECT ` + colsStr + ` FROM flight_controllers`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
+	}
+	if len(sorts) > 0 {
+		var orderClauses []string
+		for _, s := range sorts {
+			col := s
+			dir := "ASC"
+			if strings.HasPrefix(s, "!") {
+				col = s[1:]
+				dir = "DESC"
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+		query += " ORDER BY " + strings.Join(orderClauses, ", ")
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

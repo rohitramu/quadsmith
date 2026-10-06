@@ -182,7 +182,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		pluralName = strings.TrimSuffix(msgName, "y") + "ies"
 	}
 	
-	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*", msgName, ", error) {")
+	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*", msgName, ", error) {")
 	g.P("	colsStr := \"", colsStr, "\"")
 	g.P("	if len(cols) > 0 {")
 	g.P("		colsStr = strings.Join(cols, \", \")")
@@ -193,7 +193,21 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	if whereClause != \"\" {")
 	g.P("		query += \" WHERE \" + whereClause")
 	g.P("	}")
-	g.P("	rows, err := db.Query(ctx, query, args...)")
+	
+		g.P("	if len(sorts) > 0 {")
+		g.P("		var orderClauses []string")
+		g.P("		for _, s := range sorts {")
+		g.P("			col := s")
+		g.P("			dir := \"ASC\"")
+		g.P("			if strings.HasPrefix(s, \"!\") {")
+		g.P("				col = s[1:]")
+		g.P("				dir = \"DESC\"")
+		g.P("			}")
+		g.P("			orderClauses = append(orderClauses, col + \" \" + dir)")
+		g.P("		}")
+		g.P("		query += \" ORDER BY \" + strings.Join(orderClauses, \", \")")
+		g.P("	}")
+g.P("	rows, err := db.Query(ctx, query, args...)")
 	g.P("	if err != nil {")
 	g.P("		return nil, err")
 	g.P("	}")

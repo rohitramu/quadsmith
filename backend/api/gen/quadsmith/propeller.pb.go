@@ -197,6 +197,7 @@ type ListPropellersRequest struct {
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -255,6 +256,13 @@ func (x *ListPropellersRequest) GetPageToken() string {
 func (x *ListPropellersRequest) GetColumns() []string {
 	if x != nil {
 		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListPropellersRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
 	}
 	return nil
 }
@@ -329,13 +337,14 @@ const file_quadsmith_propeller_proto_rawDesc = "" +
 	"propellers\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x85\x01\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x99\x01\n" +
 	"\x15ListPropellersRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\"v\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"v\n" +
 	"\x16ListPropellersResponse\x124\n" +
 	"\n" +
 	"propellers\x18\x01 \x03(\v2\x14.quadsmith.PropellerR\n" +

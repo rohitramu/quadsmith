@@ -73,7 +73,7 @@ func DeleteEsc(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Esc, error) {
+func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Esc, error) {
 	colsStr := "uuid, id, manufacturer, model, weight_g, max_motors, continuous_amps, burst_amps, firmware"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -83,6 +83,19 @@ func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause 
 	query := `SELECT ` + colsStr + ` FROM escs`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
+	}
+	if len(sorts) > 0 {
+		var orderClauses []string
+		for _, s := range sorts {
+			col := s
+			dir := "ASC"
+			if strings.HasPrefix(s, "!") {
+				col = s[1:]
+				dir = "DESC"
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+		query += " ORDER BY " + strings.Join(orderClauses, ", ")
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

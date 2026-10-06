@@ -29,7 +29,7 @@ func (s *BatteryServiceHandler) ListBatteries(ctx context.Context, req *connect.
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListBatteries(ctx, s.db, req.Msg.GetColumns(), where, args...)
+	items, err := ListBatteries(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

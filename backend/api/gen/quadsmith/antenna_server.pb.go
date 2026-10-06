@@ -29,7 +29,7 @@ func (s *AntennaServiceHandler) ListAntennas(ctx context.Context, req *connect.R
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListAntennas(ctx, s.db, req.Msg.GetColumns(), where, args...)
+	items, err := ListAntennas(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

@@ -85,7 +85,7 @@ func DeleteVideoTransmitter(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 	return err
 }
 
-func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*VideoTransmitter, error) {
+func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*VideoTransmitter, error) {
 	colsStr := "uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -95,6 +95,19 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 	query := `SELECT ` + colsStr + ` FROM video_transmitters`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
+	}
+	if len(sorts) > 0 {
+		var orderClauses []string
+		for _, s := range sorts {
+			col := s
+			dir := "ASC"
+			if strings.HasPrefix(s, "!") {
+				col = s[1:]
+				dir = "DESC"
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+		query += " ORDER BY " + strings.Join(orderClauses, ", ")
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

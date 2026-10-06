@@ -90,7 +90,7 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 		g.P("	if err != nil {")
 		g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, err)")
 		g.P("	}")
-		g.P("	items, err := List", pluralName, "(ctx, s.db, req.Msg.GetColumns(), where, args...)")
+		g.P("	items, err := List", pluralName, "(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)")
 		g.P("	if err != nil {")
 		g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
 		g.P("	}")

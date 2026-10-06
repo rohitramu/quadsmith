@@ -71,7 +71,7 @@ func DeleteMotor(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Motor, error) {
+func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Motor, error) {
 	colsStr := "uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -81,6 +81,19 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, whereClaus
 	query := `SELECT ` + colsStr + ` FROM motors`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
+	}
+	if len(sorts) > 0 {
+		var orderClauses []string
+		for _, s := range sorts {
+			col := s
+			dir := "ASC"
+			if strings.HasPrefix(s, "!") {
+				col = s[1:]
+				dir = "DESC"
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+		query += " ORDER BY " + strings.Join(orderClauses, ", ")
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

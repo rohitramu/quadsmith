@@ -73,7 +73,7 @@ func DeleteBattery(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Battery, error) {
+func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Battery, error) {
 	colsStr := "uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -83,6 +83,19 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, whereCl
 	query := `SELECT ` + colsStr + ` FROM batteries`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
+	}
+	if len(sorts) > 0 {
+		var orderClauses []string
+		for _, s := range sorts {
+			col := s
+			dir := "ASC"
+			if strings.HasPrefix(s, "!") {
+				col = s[1:]
+				dir = "DESC"
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+		query += " ORDER BY " + strings.Join(orderClauses, ", ")
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

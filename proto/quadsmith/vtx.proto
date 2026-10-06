@@ -48,6 +48,7 @@ message ListVideoTransmittersRequest {
   int32 page_size = 2;
   string page_token = 3;
   repeated string columns = 4;
+  repeated string sort = 5;
 }
 
 message ListVideoTransmittersResponse {

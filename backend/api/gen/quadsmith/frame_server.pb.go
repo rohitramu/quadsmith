@@ -29,7 +29,7 @@ func (s *FrameServiceHandler) ListFrames(ctx context.Context, req *connect.Reque
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListFrames(ctx, s.db, req.Msg.GetColumns(), where, args...)
+	items, err := ListFrames(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

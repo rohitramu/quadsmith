@@ -29,7 +29,7 @@ func (s *ReceiverServiceHandler) ListReceivers(ctx context.Context, req *connect
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListReceivers(ctx, s.db, req.Msg.GetColumns(), where, args...)
+	items, err := ListReceivers(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

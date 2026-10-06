@@ -75,7 +75,7 @@ func DeleteAntenna(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Antenna, error) {
+func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Antenna, error) {
 	colsStr := "uuid, id, manufacturer, model, weight_g, connector, polarization, frequency_band_ghz, length_mm, gain_dbi"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -85,6 +85,19 @@ func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, whereCla
 	query := `SELECT ` + colsStr + ` FROM antennas`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
+	}
+	if len(sorts) > 0 {
+		var orderClauses []string
+		for _, s := range sorts {
+			col := s
+			dir := "ASC"
+			if strings.HasPrefix(s, "!") {
+				col = s[1:]
+				dir = "DESC"
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+		query += " ORDER BY " + strings.Join(orderClauses, ", ")
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

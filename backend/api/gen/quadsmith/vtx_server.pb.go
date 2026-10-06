@@ -29,7 +29,7 @@ func (s *VideoTransmitterServiceHandler) ListVideoTransmitters(ctx context.Conte
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListVideoTransmitters(ctx, s.db, req.Msg.GetColumns(), where, args...)
+	items, err := ListVideoTransmitters(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

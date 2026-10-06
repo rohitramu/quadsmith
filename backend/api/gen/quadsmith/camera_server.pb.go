@@ -29,7 +29,7 @@ func (s *CameraServiceHandler) ListCameras(ctx context.Context, req *connect.Req
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListCameras(ctx, s.db, req.Msg.GetColumns(), where, args...)
+	items, err := ListCameras(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

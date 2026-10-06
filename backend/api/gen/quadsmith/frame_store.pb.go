@@ -71,7 +71,7 @@ func DeleteFrame(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Frame, error) {
+func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Frame, error) {
 	colsStr := "uuid, id, manufacturer, model, weight_g, wheelbase_mm, max_prop_size_inches, geometry"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -81,6 +81,19 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, whereClaus
 	query := `SELECT ` + colsStr + ` FROM frames`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
+	}
+	if len(sorts) > 0 {
+		var orderClauses []string
+		for _, s := range sorts {
+			col := s
+			dir := "ASC"
+			if strings.HasPrefix(s, "!") {
+				col = s[1:]
+				dir = "DESC"
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+		query += " ORDER BY " + strings.Join(orderClauses, ", ")
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

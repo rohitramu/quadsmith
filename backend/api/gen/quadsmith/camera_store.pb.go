@@ -73,7 +73,7 @@ func DeleteCamera(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Camera, error) {
+func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Camera, error) {
 	colsStr := "uuid, id, manufacturer, model, weight_g, protocol, sensor_size, width_mm, lens_size_mm"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -83,6 +83,19 @@ func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, whereClau
 	query := `SELECT ` + colsStr + ` FROM cameras`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
+	}
+	if len(sorts) > 0 {
+		var orderClauses []string
+		for _, s := range sorts {
+			col := s
+			dir := "ASC"
+			if strings.HasPrefix(s, "!") {
+				col = s[1:]
+				dir = "DESC"
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+		query += " ORDER BY " + strings.Join(orderClauses, ", ")
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

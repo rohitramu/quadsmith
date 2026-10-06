@@ -29,7 +29,7 @@ func (s *EscServiceHandler) ListEscs(ctx context.Context, req *connect.Request[L
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListEscs(ctx, s.db, req.Msg.GetColumns(), where, args...)
+	items, err := ListEscs(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

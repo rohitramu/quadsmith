@@ -29,7 +29,7 @@ func (s *FlightControllerServiceHandler) ListFlightControllers(ctx context.Conte
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListFlightControllers(ctx, s.db, req.Msg.GetColumns(), where, args...)
+	items, err := ListFlightControllers(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
