@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 		"reflect"
+	"regexp"
 		"sort"
 		"strings"
 		"text/tabwriter"
@@ -54,6 +55,24 @@ func main() {
 		},
 	}
 	motorsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	motorsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Motor{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	motorsListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	motorsListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	motorsListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -146,6 +165,24 @@ func main() {
 		},
 	}
 	framesListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	framesListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Frame{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	framesListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	framesListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	framesListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -238,6 +275,24 @@ func main() {
 		},
 	}
 	batteriesListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	batteriesListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Battery{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	batteriesListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	batteriesListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	batteriesListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -330,6 +385,24 @@ func main() {
 		},
 	}
 	escsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	escsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Esc{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	escsListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	escsListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	escsListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -422,6 +495,24 @@ func main() {
 		},
 	}
 	flightcontrollersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	flightcontrollersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.FlightController{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	flightcontrollersListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	flightcontrollersListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	flightcontrollersListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -514,6 +605,24 @@ func main() {
 		},
 	}
 	receiversListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	receiversListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Receiver{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	receiversListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	receiversListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	receiversListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -606,6 +715,24 @@ func main() {
 		},
 	}
 	videotransmittersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	videotransmittersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.VideoTransmitter{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	videotransmittersListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	videotransmittersListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	videotransmittersListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -698,6 +825,24 @@ func main() {
 		},
 	}
 	antennasListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	antennasListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Antenna{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	antennasListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	antennasListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	antennasListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -790,6 +935,24 @@ func main() {
 		},
 	}
 	camerasListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	camerasListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Camera{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	camerasListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	camerasListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	camerasListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -882,6 +1045,24 @@ func main() {
 		},
 	}
 	propellersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	propellersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Propeller{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	propellersListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	propellersListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	propellersListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -974,6 +1155,24 @@ func main() {
 		},
 	}
 	buildsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	buildsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.Build{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base + c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 	buildsListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	buildsListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
 	buildsListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {

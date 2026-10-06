@@ -38,6 +38,7 @@ import (
 	"net/http"
 	"os"
 		"reflect"
+	"regexp"
 		"sort"
 		"strings"
 		"text/tabwriter"
@@ -90,6 +91,24 @@ func main() {
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
 		fmt.Fprintf(f, "\t%sListCmd.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"filter\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
+		fmt.Fprintf(f, "\t\tre := regexp.MustCompile(`([a-zA-Z_]+)$`)\n")
+		fmt.Fprintf(f, "\t\tmatch := re.FindStringSubmatch(toComplete)\n")
+		fmt.Fprintf(f, "\t\tprefix := \"\"\n")
+		fmt.Fprintf(f, "\t\tbase := toComplete\n")
+		fmt.Fprintf(f, "\t\tif len(match) > 0 {\n")
+		fmt.Fprintf(f, "\t\t\tprefix = match[1]\n")
+		fmt.Fprintf(f, "\t\t\tbase = toComplete[:len(toComplete)-len(prefix)]\n")
+		fmt.Fprintf(f, "\t\t}\n")
+		fmt.Fprintf(f, "\t\tvar filtered []string\n")
+		fmt.Fprintf(f, "\t\tfor _, c := range cols {\n")
+		fmt.Fprintf(f, "\t\t\tif len(prefix) == 0 || strings.HasPrefix(c, prefix) {\n")
+		fmt.Fprintf(f, "\t\t\t\tfiltered = append(filtered, base + c)\n")
+		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t}\n")
+		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
+		fmt.Fprintf(f, "\t})\n")
 		fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
 			fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"sort\", \"s\", nil, \"Columns to sort by (e.g. ^kv)\")\n", lowerPlural)
 			fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
