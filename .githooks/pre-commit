@@ -4,5 +4,23 @@ set -e
 # Automatically run code generation to ensure schema and proto files are in sync
 make generate
 
-# If schema.sql or any generated file was modified, stage it
-git add backend/db/schema.sql backend/api/gen/ frontend/cli/main.go
+# Format all staged Go files (and any we just generated)
+GO_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$' || true)
+
+# Add the specific generated files we know about to ensure they get formatted
+GO_FILES="$GO_FILES frontend/cli/main.go"
+if [ -d "backend/api/gen" ]; then
+    GENERATED_GO=$(find backend/api/gen -name "*.go")
+    GO_FILES="$GO_FILES $GENERATED_GO"
+fi
+
+# Run gofmt if there are any Go files
+if [ -n "$GO_FILES" ]; then
+    # Use sort -u to remove duplicates in case generated files were already staged
+    UNIQUE_FILES=$(echo "$GO_FILES" | tr ' ' '\n' | sort -u)
+    gofmt -w $UNIQUE_FILES
+    git add $UNIQUE_FILES
+fi
+
+# Stage the generated schema as well
+git add backend/db/schema.sql

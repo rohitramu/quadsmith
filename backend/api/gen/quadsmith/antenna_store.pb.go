@@ -3,9 +3,9 @@ package quadsmith
 
 import (
 	"context"
-	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"strings"
 )
 
 func CreateAntenna(ctx context.Context, tx pgx.Tx, m *Antenna) error {

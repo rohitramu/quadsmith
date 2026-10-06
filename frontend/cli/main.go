@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-		"reflect"
+	"reflect"
 	"regexp"
-		"sort"
-		"strings"
-		"text/tabwriter"
+	"sort"
+	"strings"
+	"text/tabwriter"
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	apiURL = "http://localhost:8080"
+	apiURL  = "http://localhost:8080"
 	jsonOut bool
 	yamlOut bool
 )
@@ -38,7 +38,6 @@ func main() {
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
 	rootCmd.PersistentFlags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 
-
 	// --- Motors ---
 	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, apiURL)
 	motorsCmd := &cobra.Command{Use: "motors"}
@@ -50,7 +49,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListMotorsRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Motors, columns)
 		},
 	}
@@ -68,7 +69,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -79,7 +80,9 @@ func main() {
 		cols := GetColumns(&pb.Motor{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -92,17 +95,19 @@ func main() {
 		cols := GetColumns(&pb.Motor{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -111,12 +116,16 @@ func main() {
 	motorsCmd.AddCommand(motorsListCmd)
 
 	motorsGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(&pb.ListMotorsRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Motors {
 				comps = append(comps, item.Id)
@@ -127,7 +136,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetMotorRequest{Id: args[0], Columns: columns}
 			res, err := motorClient.GetMotor(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -136,7 +147,9 @@ func main() {
 		cols := GetColumns(&pb.Motor{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -160,7 +173,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListFramesRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Frames, columns)
 		},
 	}
@@ -178,7 +193,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -189,7 +204,9 @@ func main() {
 		cols := GetColumns(&pb.Frame{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -202,17 +219,19 @@ func main() {
 		cols := GetColumns(&pb.Frame{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -221,12 +240,16 @@ func main() {
 	framesCmd.AddCommand(framesListCmd)
 
 	framesGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(&pb.ListFramesRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Frames {
 				comps = append(comps, item.Id)
@@ -237,7 +260,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetFrameRequest{Id: args[0], Columns: columns}
 			res, err := frameClient.GetFrame(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -246,7 +271,9 @@ func main() {
 		cols := GetColumns(&pb.Frame{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -270,7 +297,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListBatteriesRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Batteries, columns)
 		},
 	}
@@ -288,7 +317,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -299,7 +328,9 @@ func main() {
 		cols := GetColumns(&pb.Battery{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -312,17 +343,19 @@ func main() {
 		cols := GetColumns(&pb.Battery{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -331,12 +364,16 @@ func main() {
 	batteriesCmd.AddCommand(batteriesListCmd)
 
 	batteriesGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Batteries {
 				comps = append(comps, item.Id)
@@ -347,7 +384,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetBatteryRequest{Id: args[0], Columns: columns}
 			res, err := batteryClient.GetBattery(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -356,7 +395,9 @@ func main() {
 		cols := GetColumns(&pb.Battery{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -380,7 +421,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListEscsRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := escClient.ListEscs(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Escs, columns)
 		},
 	}
@@ -398,7 +441,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -409,7 +452,9 @@ func main() {
 		cols := GetColumns(&pb.Esc{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -422,17 +467,19 @@ func main() {
 		cols := GetColumns(&pb.Esc{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -441,12 +488,16 @@ func main() {
 	escsCmd.AddCommand(escsListCmd)
 
 	escsGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := escClient.ListEscs(context.Background(), connect.NewRequest(&pb.ListEscsRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Escs {
 				comps = append(comps, item.Id)
@@ -457,7 +508,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetEscRequest{Id: args[0], Columns: columns}
 			res, err := escClient.GetEsc(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -466,7 +519,9 @@ func main() {
 		cols := GetColumns(&pb.Esc{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -490,7 +545,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListFlightControllersRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.FlightControllers, columns)
 		},
 	}
@@ -508,7 +565,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -519,7 +576,9 @@ func main() {
 		cols := GetColumns(&pb.FlightController{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -532,17 +591,19 @@ func main() {
 		cols := GetColumns(&pb.FlightController{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -551,12 +612,16 @@ func main() {
 	flightcontrollersCmd.AddCommand(flightcontrollersListCmd)
 
 	flightcontrollersGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(&pb.ListFlightControllersRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.FlightControllers {
 				comps = append(comps, item.Id)
@@ -567,7 +632,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetFlightControllerRequest{Id: args[0], Columns: columns}
 			res, err := flightcontrollerClient.GetFlightController(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -576,7 +643,9 @@ func main() {
 		cols := GetColumns(&pb.FlightController{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -600,7 +669,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListReceiversRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Receivers, columns)
 		},
 	}
@@ -618,7 +689,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -629,7 +700,9 @@ func main() {
 		cols := GetColumns(&pb.Receiver{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -642,17 +715,19 @@ func main() {
 		cols := GetColumns(&pb.Receiver{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -661,12 +736,16 @@ func main() {
 	receiversCmd.AddCommand(receiversListCmd)
 
 	receiversGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(&pb.ListReceiversRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Receivers {
 				comps = append(comps, item.Id)
@@ -677,7 +756,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetReceiverRequest{Id: args[0], Columns: columns}
 			res, err := receiverClient.GetReceiver(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -686,7 +767,9 @@ func main() {
 		cols := GetColumns(&pb.Receiver{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -710,7 +793,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListVideoTransmittersRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.VideoTransmitters, columns)
 		},
 	}
@@ -728,7 +813,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -739,7 +824,9 @@ func main() {
 		cols := GetColumns(&pb.VideoTransmitter{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -752,17 +839,19 @@ func main() {
 		cols := GetColumns(&pb.VideoTransmitter{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -771,12 +860,16 @@ func main() {
 	videotransmittersCmd.AddCommand(videotransmittersListCmd)
 
 	videotransmittersGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(&pb.ListVideoTransmittersRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.VideoTransmitters {
 				comps = append(comps, item.Id)
@@ -787,7 +880,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetVideoTransmitterRequest{Id: args[0], Columns: columns}
 			res, err := videotransmitterClient.GetVideoTransmitter(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -796,7 +891,9 @@ func main() {
 		cols := GetColumns(&pb.VideoTransmitter{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -820,7 +917,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListAntennasRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Antennas, columns)
 		},
 	}
@@ -838,7 +937,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -849,7 +948,9 @@ func main() {
 		cols := GetColumns(&pb.Antenna{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -862,17 +963,19 @@ func main() {
 		cols := GetColumns(&pb.Antenna{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -881,12 +984,16 @@ func main() {
 	antennasCmd.AddCommand(antennasListCmd)
 
 	antennasGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(&pb.ListAntennasRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Antennas {
 				comps = append(comps, item.Id)
@@ -897,7 +1004,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetAntennaRequest{Id: args[0], Columns: columns}
 			res, err := antennaClient.GetAntenna(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -906,7 +1015,9 @@ func main() {
 		cols := GetColumns(&pb.Antenna{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -930,7 +1041,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListCamerasRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Cameras, columns)
 		},
 	}
@@ -948,7 +1061,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -959,7 +1072,9 @@ func main() {
 		cols := GetColumns(&pb.Camera{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -972,17 +1087,19 @@ func main() {
 		cols := GetColumns(&pb.Camera{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -991,12 +1108,16 @@ func main() {
 	camerasCmd.AddCommand(camerasListCmd)
 
 	camerasGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(&pb.ListCamerasRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Cameras {
 				comps = append(comps, item.Id)
@@ -1007,7 +1128,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetCameraRequest{Id: args[0], Columns: columns}
 			res, err := cameraClient.GetCamera(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -1016,7 +1139,9 @@ func main() {
 		cols := GetColumns(&pb.Camera{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -1040,7 +1165,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListPropellersRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Propellers, columns)
 		},
 	}
@@ -1058,7 +1185,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -1069,7 +1196,9 @@ func main() {
 		cols := GetColumns(&pb.Propeller{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -1082,17 +1211,19 @@ func main() {
 		cols := GetColumns(&pb.Propeller{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -1101,12 +1232,16 @@ func main() {
 	propellersCmd.AddCommand(propellersListCmd)
 
 	propellersGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(&pb.ListPropellersRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Propellers {
 				comps = append(comps, item.Id)
@@ -1117,7 +1252,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetPropellerRequest{Id: args[0], Columns: columns}
 			res, err := propellerClient.GetPropeller(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -1126,7 +1263,9 @@ func main() {
 		cols := GetColumns(&pb.Propeller{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -1150,7 +1289,9 @@ func main() {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			req := &pb.ListBuildsRequest{Filter: filter, Columns: columns, Sort: sortOpts}
 			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg.Builds, columns)
 		},
 	}
@@ -1168,7 +1309,7 @@ func main() {
 		var filtered []string
 		for _, c := range cols {
 			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
-				filtered = append(filtered, base + c)
+				filtered = append(filtered, base+c)
 			}
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
@@ -1179,7 +1320,9 @@ func main() {
 		cols := GetColumns(&pb.Build{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -1192,17 +1335,19 @@ func main() {
 		cols := GetColumns(&pb.Build{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[strings.TrimPrefix(s, "^")] = true }
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
 		isDesc := strings.HasPrefix(toComplete, "^")
 		cleanPrefix := strings.TrimPrefix(toComplete, "^")
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
 				if isDesc {
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				} else {
 					filtered = append(filtered, c)
-					filtered = append(filtered, "^" + c)
+					filtered = append(filtered, "^"+c)
 				}
 			}
 		}
@@ -1211,12 +1356,16 @@ func main() {
 	buildsCmd.AddCommand(buildsListCmd)
 
 	buildsGetCmd := &cobra.Command{
-		Use: "get [id]",
+		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Builds {
 				comps = append(comps, item.Id)
@@ -1227,7 +1376,9 @@ func main() {
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			req := &pb.GetBuildRequest{Id: args[0], Columns: columns}
 			res, err := buildClient.GetBuild(context.Background(), connect.NewRequest(req))
-			if err != nil { return err }
+			if err != nil {
+				return err
+			}
 			return printOutput(res.Msg, columns)
 		},
 	}
@@ -1236,7 +1387,9 @@ func main() {
 		cols := GetColumns(&pb.Build{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
-		for _, s := range selected { selectedMap[s] = true }
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
 		var filtered []string
 		for _, c := range cols {
 			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
@@ -1252,13 +1405,17 @@ func main() {
 	// --- EVALUATOR ---
 	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, apiURL)
 	evalCmd := &cobra.Command{
-		Use: "evaluate [build-id]",
+		Use:   "evaluate [build-id]",
 		Short: "Run physics estimation and compatibility checks on a build",
-		Args: cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
 			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{}))
-			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
 			var comps []string
 			for _, item := range res.Msg.Builds {
 				comps = append(comps, item.Id)
@@ -1268,16 +1425,20 @@ func main() {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			bReq := &pb.GetBuildRequest{Id: args[0]}
 			bRes, err := buildClient.GetBuild(context.Background(), connect.NewRequest(bReq))
-			if err != nil { return fmt.Errorf("failed to fetch build: %w", err) }
-			
+			if err != nil {
+				return fmt.Errorf("failed to fetch build: %w", err)
+			}
+
 			payload, _ := cmd.Flags().GetFloat32("payload")
 			eReq := &pb.EvaluateBuildRequest{
-				Build: bRes.Msg,
+				Build:          bRes.Msg,
 				PayloadWeightG: payload,
 			}
 			eRes, err := evalClient.EvaluateBuild(context.Background(), connect.NewRequest(eReq))
-			if err != nil { return fmt.Errorf("evaluation failed: %w", err) }
-			
+			if err != nil {
+				return fmt.Errorf("evaluation failed: %w", err)
+			}
+
 			return printOutput(eRes.Msg, nil)
 		},
 	}
@@ -1286,10 +1447,10 @@ func main() {
 
 	// --- CUSTOM COMPLETION ---
 	completionCmd := &cobra.Command{
-		Use:   "completion [bash|zsh|fish|powershell]",
-		Short: "Generate the autocompletion script for the specified shell",
+		Use:       "completion [bash|zsh|fish|powershell]",
+		Short:     "Generate the autocompletion script for the specified shell",
 		ValidArgs: []string{"bash", "zsh", "fish", "powershell"},
-		Args: cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
+		Args:      cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			switch args[0] {
 			case "bash":
@@ -1320,7 +1481,6 @@ func main() {
 		os.Exit(1)
 	}
 }
-
 
 func GetColumns(m interface{}) []string {
 	var cols []string
@@ -1390,14 +1550,14 @@ func printTable(data interface{}, cols []string) {
 	json.Unmarshal(b, &v)
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-	
+
 	switch val := v.(type) {
 	case []interface{}:
 		if len(val) == 0 {
 			fmt.Println("No records found.")
 			return
 		}
-		
+
 		var orderedKeys []string
 		if len(cols) > 0 {
 			orderedKeys = cols
@@ -1415,7 +1575,7 @@ func printTable(data interface{}, cols []string) {
 				keys = append(keys, k)
 			}
 			sort.Strings(keys)
-			
+
 			for _, priority := range []string{"id", "name"} {
 				if keyMap[priority] {
 					orderedKeys = append(orderedKeys, priority)
@@ -1471,4 +1631,3 @@ func printTable(data interface{}, cols []string) {
 	}
 	w.Flush()
 }
-

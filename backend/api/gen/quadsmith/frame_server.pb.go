@@ -2,8 +2,8 @@
 package quadsmith
 
 import (
-	"context"
 	"connectrpc.com/connect"
+	"context"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"quadsmith/api/internal/cel2sql"
 )

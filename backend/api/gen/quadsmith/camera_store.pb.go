@@ -3,9 +3,9 @@ package quadsmith
 
 import (
 	"context"
-	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"strings"
 )
 
 func CreateCamera(ctx context.Context, tx pgx.Tx, m *Camera) error {
