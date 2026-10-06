@@ -13,23 +13,23 @@ message Battery {
   option (quadsmith.sql.table_name) = "batteries";
 
   string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
-  
+
   string id = 2 [(quadsmith.sql.is_unique) = true];
 
   string manufacturer = 3 [(quadsmith.sql.create_index) = true];
   string name = 4;
-  
+
   float weight_g = 5;
-  
+
   // Total capacity in milliampere-hours (e.g., 1100, 1300)
   int32 capacity_mah = 6;
-  
+
   // Number of cells in series (e.g., 4 for 4S, 6 for 6S)
   int32 cell_count_s = 7 [(quadsmith.sql.create_index) = true];
-  
+
   // E.g., "LiPo", "LiHV", "Li-ion"
   string chemistry = 8;
-  
+
   // E.g., "XT60", "XT30", "BT2.0"
   string connector = 9;
 }

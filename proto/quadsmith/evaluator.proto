@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package quadsmith;
 
-option go_package = "quadsmith/api/gen/quadsmith";
-
 import "quadsmith/build.proto";
 
+option go_package = "quadsmith/api/gen/quadsmith";
+
 message EvaluateBuildRequest {
-  // A complete or partial Build object. The backend will look up the referenced 
+  // A complete or partial Build object. The backend will look up the referenced
   // UUIDs/IDs to fetch the actual components for evaluation.
   Build build = 1;
   float payload_weight_g = 2;
@@ -18,10 +18,10 @@ message EvaluateBuildResponse {
   float hover_throttle_percent = 2;
   float thrust_to_weight_ratio = 3;
   float estimated_flight_time_min = 4;
-  
+
   // Non-blocking issues (e.g. "Motors might overheat on 6S")
   repeated string warnings = 5;
-  
+
   // Blocking compatibility issues (e.g. "ESC is 4S max but Battery is 6S")
   repeated string errors = 6;
 }

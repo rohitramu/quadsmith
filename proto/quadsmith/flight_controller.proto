@@ -13,30 +13,30 @@ message FlightController {
   option (quadsmith.sql.table_name) = "flight_controllers";
 
   string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
-  
+
   string id = 2 [(quadsmith.sql.is_unique) = true];
 
   string manufacturer = 3 [(quadsmith.sql.create_index) = true];
   string name = 4;
-  
+
   float weight_g = 5;
-  
+
   // The MCU processor (e.g., "F411", "F405", "H743")
   string processor = 6;
-  
+
   // The gyro chip (e.g., "MPU6000", "BMI270")
   string gyro = 7;
-  
+
   // -------------------------------------------------------
   // Integrated Components (AIO Support)
   // -------------------------------------------------------
-  
+
   // If this board has an integrated ESC, reference it here
   string internal_esc_uuid = 8 [(quadsmith.sql.references) = "escs(uuid)"];
-  
+
   // If this board has an integrated SPI or Serial Receiver
   string internal_receiver_uuid = 9 [(quadsmith.sql.references) = "receivers(uuid)"];
-  
+
   // If this board has an integrated Video Transmitter
   string internal_vtx_uuid = 10 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
 }

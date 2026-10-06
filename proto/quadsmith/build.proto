@@ -13,44 +13,44 @@ message Build {
   option (quadsmith.sql.table_name) = "builds";
 
   string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
-  
+
   string id = 2 [(quadsmith.sql.is_unique) = true];
 
   string name = 3;
   string description = 4;
-  
+
   // -------------------------------------------------------
   // Bill of Materials (Foreign Keys to Hardware tables)
   // -------------------------------------------------------
-  
+
   // The frame used for this build
   string frame_uuid = 5 [(quadsmith.sql.references) = "frames(uuid)"];
-  
+
   // The motor SKU used for this build (assumes 4x for a standard quad)
   string motor_uuid = 6 [(quadsmith.sql.references) = "motors(uuid)"];
-  
+
   // The primary battery recommended/used
   string battery_uuid = 7 [(quadsmith.sql.references) = "batteries(uuid)"];
-  
+
   // -------------------------------------------------------
   // Electronics & Subsystems
   // -------------------------------------------------------
-  
+
   // The central Flight Controller (which may be an AIO board)
   string flight_controller_uuid = 8 [(quadsmith.sql.references) = "flight_controllers(uuid)"];
-  
+
   // Array of ESC boards (e.g. one 4-in-1, or four individual ESCs)
   repeated string esc_uuids = 9;
-  
+
   // Array of receivers (e.g. primary ELRS, backup crossfire)
   repeated string receiver_uuids = 10;
-  
+
   // Array of antennas
   repeated string antenna_uuids = 11;
-  
+
   // The propeller SKU used (assumes 4x or 8x depending on motors)
   string propeller_uuid = 12 [(quadsmith.sql.references) = "propellers(uuid)"];
-  
+
   // Array of cameras (e.g. primary FPV cam, secondary action cam)
   repeated string camera_uuids = 13;
 }
