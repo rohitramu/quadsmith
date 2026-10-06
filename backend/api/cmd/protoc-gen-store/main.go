@@ -175,7 +175,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("		return nil, err")
 	g.P("	}")
 	g.P("	defer rows.Close()")
-	g.P("	var results []*", msgName)
+	g.P("	results := make([]*", msgName, ", 0)")
 	g.P("	for rows.Next() {")
 	for _, v := range scanVars {
 		g.P("		", v)

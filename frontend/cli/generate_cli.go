@@ -37,6 +37,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+		"reflect"
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
@@ -143,12 +144,53 @@ func main() {
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
 	rootCmd.AddCommand(evalCmd)
 
+	// --- CUSTOM COMPLETION ---
+	completionCmd := &cobra.Command{
+		Use:   "completion [bash|zsh|fish|powershell]",
+		Short: "Generate the autocompletion script for the specified shell",
+		ValidArgs: []string{"bash", "zsh", "fish", "powershell"},
+		Args: cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			switch args[0] {
+			case "bash":
+				err := rootCmd.GenBashCompletionV2(os.Stdout, true)
+				if err == nil {
+					// Dynamically bind to the exact path used to invoke the binary
+					if os.Args[0] != "qs" {
+						fmt.Printf("\ncomplete -o default -o nospace -F __start_qs %q\n", os.Args[0])
+					}
+					// Also support dynamic loading via bash-completion
+					fmt.Println("if [[ -n \"$1\" && \"$1\" != \"qs\" && \"$1\" != \"\" ]]; then complete -o default -o nospace -F __start_qs \"$1\"; fi")
+				}
+				return err
+			case "zsh":
+				return rootCmd.GenZshCompletion(os.Stdout)
+			case "fish":
+				return rootCmd.GenFishCompletion(os.Stdout, true)
+			case "powershell":
+				return rootCmd.GenPowerShellCompletionWithDesc(os.Stdout)
+			default:
+				return nil
+			}
+		},
+	}
+	rootCmd.AddCommand(completionCmd)
+
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }
 
 func printOutput(data interface{}) error {
+	var v reflect.Value
+	if data != nil {
+		v = reflect.ValueOf(data)
+		if v.Kind() == reflect.Slice && v.IsNil() {
+			fmt.Println("[]")
+			return nil
+		}
+	}
+
 	var b []byte
 	var err error
 	if output == "json" {
