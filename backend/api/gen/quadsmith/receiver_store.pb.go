@@ -9,7 +9,7 @@ import (
 )
 
 func CreateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
-	query := `INSERT INTO receivers (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
+	query := `INSERT INTO receivers (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -20,16 +20,16 @@ func CreateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
 			return nil
 		}
 		return s
-	}(m.AntennaUuids), m.Description)
+	}(m.AntennaUuids), m.Description, m.ReferenceLinks)
 	return err
 }
 
 func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Receiver, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM receivers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -58,6 +58,8 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 			scanArgs[i] = &m.AntennaUuids
 		case "description":
 			scanArgs[i] = &m.Description
+		case "reference_links":
+			scanArgs[i] = &m.ReferenceLinks
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -71,13 +73,13 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 }
 
 func UpdateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
-	query := `UPDATE receivers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, frequency_band_mhz = $7, has_telemetry = $8, antenna_uuids = $9, description = $10 WHERE uuid = $1`
+	query := `UPDATE receivers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, frequency_band_mhz = $7, has_telemetry = $8, antenna_uuids = $9, description = $10, reference_links = $11 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBandMhz, m.HasTelemetry, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
 		return s
-	}(m.AntennaUuids), m.Description)
+	}(m.AntennaUuids), m.Description, m.ReferenceLinks)
 	return err
 }
 
@@ -88,11 +90,11 @@ func DeleteReceiver(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Receiver, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM receivers`
 	if whereClause != "" {
@@ -144,6 +146,8 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.AntennaUuids
 			case "description":
 				scanArgs[i] = &m.Description
+			case "reference_links":
+				scanArgs[i] = &m.ReferenceLinks
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

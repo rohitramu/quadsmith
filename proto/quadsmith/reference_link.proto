@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package quadsmith;
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+enum ReferenceLinkType {
+  REFERENCE_LINK_TYPE_UNSPECIFIED = 0;
+  REFERENCE_LINK_TYPE_PURCHASE = 1;
+  REFERENCE_LINK_TYPE_PRODUCT_PAGE = 2;
+  REFERENCE_LINK_TYPE_DOCUMENTATION = 3;
+  REFERENCE_LINK_TYPE_FORUM_POST = 4;
+  REFERENCE_LINK_TYPE_REVIEW = 5;
+  REFERENCE_LINK_TYPE_OTHER = 6;
+}
+
+message ReferenceLink {
+  ReferenceLinkType type = 1;
+  string url = 2;
+}

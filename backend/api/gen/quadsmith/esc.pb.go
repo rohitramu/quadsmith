@@ -38,10 +38,11 @@ type Esc struct {
 	MotorCurrentMaxA   float32 `protobuf:"fixed32,7,opt,name=motor_current_max_a,json=motorCurrentMaxA,proto3" json:"motor_current_max_a,omitempty"`
 	MotorCurrentBurstA float32 `protobuf:"fixed32,8,opt,name=motor_current_burst_a,json=motorCurrentBurstA,proto3" json:"motor_current_burst_a,omitempty"`
 	// E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
-	Firmware      string `protobuf:"bytes,9,opt,name=firmware,proto3" json:"firmware,omitempty"`
-	Description   string `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Firmware       string           `protobuf:"bytes,9,opt,name=firmware,proto3" json:"firmware,omitempty"`
+	Description    string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Esc) Reset() {
@@ -149,6 +150,13 @@ func (x *Esc) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *Esc) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
 }
 
 // ---------------------------------------------------------
@@ -338,7 +346,7 @@ var File_quadsmith_esc_proto protoreflect.FileDescriptor
 
 const file_quadsmith_esc_proto_rawDesc = "" +
 	"\n" +
-	"\x13quadsmith/esc.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x81\x03\n" +
+	"\x13quadsmith/esc.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc4\x03\n" +
 	"\x03Esc\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -351,7 +359,8 @@ const file_quadsmith_esc_proto_rawDesc = "" +
 	"\x13motor_current_max_a\x18\a \x01(\x02R\x10motorCurrentMaxA\x121\n" +
 	"\x15motor_current_burst_a\x18\b \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
 	"\bfirmware\x18\t \x01(\tR\bfirmware\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription:\b\xc2\xf3\x18\x04escs\"9\n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\b\xc2\xf3\x18\x04escs\"9\n" +
 	"\rGetEscRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x93\x01\n" +
@@ -388,18 +397,20 @@ var file_quadsmith_esc_proto_goTypes = []any{
 	(*GetEscRequest)(nil),    // 1: quadsmith.GetEscRequest
 	(*ListEscsRequest)(nil),  // 2: quadsmith.ListEscsRequest
 	(*ListEscsResponse)(nil), // 3: quadsmith.ListEscsResponse
+	(*ReferenceLink)(nil),    // 4: quadsmith.ReferenceLink
 }
 var file_quadsmith_esc_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListEscsResponse.escs:type_name -> quadsmith.Esc
-	1, // 1: quadsmith.EscService.GetEsc:input_type -> quadsmith.GetEscRequest
-	2, // 2: quadsmith.EscService.ListEscs:input_type -> quadsmith.ListEscsRequest
-	0, // 3: quadsmith.EscService.GetEsc:output_type -> quadsmith.Esc
-	3, // 4: quadsmith.EscService.ListEscs:output_type -> quadsmith.ListEscsResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Esc.reference_links:type_name -> quadsmith.ReferenceLink
+	0, // 1: quadsmith.ListEscsResponse.escs:type_name -> quadsmith.Esc
+	1, // 2: quadsmith.EscService.GetEsc:input_type -> quadsmith.GetEscRequest
+	2, // 3: quadsmith.EscService.ListEscs:input_type -> quadsmith.ListEscsRequest
+	0, // 4: quadsmith.EscService.GetEsc:output_type -> quadsmith.Esc
+	3, // 5: quadsmith.EscService.ListEscs:output_type -> quadsmith.ListEscsResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_esc_proto_init() }
@@ -408,6 +419,7 @@ func file_quadsmith_esc_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

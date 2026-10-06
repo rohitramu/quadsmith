@@ -38,10 +38,11 @@ type Propeller struct {
 	// Number of blades (e.g., 2, 3, 4)
 	Blades uint32 `protobuf:"varint,8,opt,name=blades,proto3" json:"blades,omitempty"`
 	// E.g., "Polycarbonate", "Carbon Fiber"
-	Material      string `protobuf:"bytes,9,opt,name=material,proto3" json:"material,omitempty"`
-	Description   string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Material       string           `protobuf:"bytes,9,opt,name=material,proto3" json:"material,omitempty"`
+	Description    string           `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,11,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Propeller) Reset() {
@@ -142,6 +143,13 @@ func (x *Propeller) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *Propeller) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
 }
 
 // ---------------------------------------------------------
@@ -331,7 +339,7 @@ var File_quadsmith_propeller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xb6\x02\n" +
+	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/reference_link.proto\"\xf9\x02\n" +
 	"\tPropeller\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -344,7 +352,8 @@ const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\x06blades\x18\b \x01(\rR\x06blades\x12\x1a\n" +
 	"\bmaterial\x18\t \x01(\tR\bmaterial\x12 \n" +
 	"\vdescription\x18\n" +
-	" \x01(\tR\vdescription:\x0e\xc2\xf3\x18\n" +
+	" \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x0e\xc2\xf3\x18\n" +
 	"propellers\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
@@ -383,18 +392,20 @@ var file_quadsmith_propeller_proto_goTypes = []any{
 	(*GetPropellerRequest)(nil),    // 1: quadsmith.GetPropellerRequest
 	(*ListPropellersRequest)(nil),  // 2: quadsmith.ListPropellersRequest
 	(*ListPropellersResponse)(nil), // 3: quadsmith.ListPropellersResponse
+	(*ReferenceLink)(nil),          // 4: quadsmith.ReferenceLink
 }
 var file_quadsmith_propeller_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListPropellersResponse.propellers:type_name -> quadsmith.Propeller
-	1, // 1: quadsmith.PropellerService.GetPropeller:input_type -> quadsmith.GetPropellerRequest
-	2, // 2: quadsmith.PropellerService.ListPropellers:input_type -> quadsmith.ListPropellersRequest
-	0, // 3: quadsmith.PropellerService.GetPropeller:output_type -> quadsmith.Propeller
-	3, // 4: quadsmith.PropellerService.ListPropellers:output_type -> quadsmith.ListPropellersResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Propeller.reference_links:type_name -> quadsmith.ReferenceLink
+	0, // 1: quadsmith.ListPropellersResponse.propellers:type_name -> quadsmith.Propeller
+	1, // 2: quadsmith.PropellerService.GetPropeller:input_type -> quadsmith.GetPropellerRequest
+	2, // 3: quadsmith.PropellerService.ListPropellers:input_type -> quadsmith.ListPropellersRequest
+	0, // 4: quadsmith.PropellerService.GetPropeller:output_type -> quadsmith.Propeller
+	3, // 5: quadsmith.PropellerService.ListPropellers:output_type -> quadsmith.ListPropellersResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_propeller_proto_init() }
@@ -403,6 +414,7 @@ func file_quadsmith_propeller_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

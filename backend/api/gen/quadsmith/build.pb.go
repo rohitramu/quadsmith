@@ -47,9 +47,10 @@ type Build struct {
 	// The propeller SKU used (assumes 4x or 8x depending on motors)
 	PropellerUuid string `protobuf:"bytes,12,opt,name=propeller_uuid,json=propellerUuid,proto3" json:"propeller_uuid,omitempty"`
 	// Array of cameras (e.g. primary FPV cam, secondary action cam)
-	CameraUuids   []string `protobuf:"bytes,13,rep,name=camera_uuids,json=cameraUuids,proto3" json:"camera_uuids,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	CameraUuids    []string         `protobuf:"bytes,13,rep,name=camera_uuids,json=cameraUuids,proto3" json:"camera_uuids,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,14,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Build) Reset() {
@@ -169,6 +170,13 @@ func (x *Build) GetPropellerUuid() string {
 func (x *Build) GetCameraUuids() []string {
 	if x != nil {
 		return x.CameraUuids
+	}
+	return nil
+}
+
+func (x *Build) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
 	}
 	return nil
 }
@@ -360,7 +368,7 @@ var File_quadsmith_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_build_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xb0\x04\n" +
+	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/reference_link.proto\"\xf3\x04\n" +
 	"\x05Build\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12\x12\n" +
@@ -377,7 +385,8 @@ const file_quadsmith_build_proto_rawDesc = "" +
 	" \x03(\tR\rreceiverUuids\x12#\n" +
 	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12;\n" +
 	"\x0epropeller_uuid\x18\f \x01(\tB\x14\xd2\xf3\x18\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
-	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids:\n" +
+	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12A\n" +
+	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\n" +
 	"\xc2\xf3\x18\x06builds\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
@@ -415,18 +424,20 @@ var file_quadsmith_build_proto_goTypes = []any{
 	(*GetBuildRequest)(nil),    // 1: quadsmith.GetBuildRequest
 	(*ListBuildsRequest)(nil),  // 2: quadsmith.ListBuildsRequest
 	(*ListBuildsResponse)(nil), // 3: quadsmith.ListBuildsResponse
+	(*ReferenceLink)(nil),      // 4: quadsmith.ReferenceLink
 }
 var file_quadsmith_build_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
-	1, // 1: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
-	2, // 2: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
-	0, // 3: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
-	3, // 4: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
+	0, // 1: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
+	1, // 2: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
+	2, // 3: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
+	0, // 4: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
+	3, // 5: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_build_proto_init() }
@@ -435,6 +446,7 @@ func file_quadsmith_build_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -9,7 +9,7 @@ import (
 )
 
 func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
-	query := `INSERT INTO flight_controllers (uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
+	query := `INSERT INTO flight_controllers (uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -30,16 +30,16 @@ func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 			return nil
 		}
 		return s
-	}(m.InternalVtxUuid), m.Description)
+	}(m.InternalVtxUuid), m.Description, m.ReferenceLinks)
 	return err
 }
 
 func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*FlightController, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_vtx_uuid", "description"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_vtx_uuid", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM flight_controllers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -70,6 +70,8 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 			scanArgs[i] = &m.InternalVtxUuid
 		case "description":
 			scanArgs[i] = &m.Description
+		case "reference_links":
+			scanArgs[i] = &m.ReferenceLinks
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -83,7 +85,7 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 }
 
 func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
-	query := `UPDATE flight_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, processor = $6, gyro = $7, internal_esc_uuid = $8, internal_receiver_uuid = $9, internal_vtx_uuid = $10, description = $11 WHERE uuid = $1`
+	query := `UPDATE flight_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, processor = $6, gyro = $7, internal_esc_uuid = $8, internal_receiver_uuid = $9, internal_vtx_uuid = $10, description = $11, reference_links = $12 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -99,7 +101,7 @@ func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 			return nil
 		}
 		return s
-	}(m.InternalVtxUuid), m.Description)
+	}(m.InternalVtxUuid), m.Description, m.ReferenceLinks)
 	return err
 }
 
@@ -110,11 +112,11 @@ func DeleteFlightController(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 }
 
 func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*FlightController, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_vtx_uuid", "description"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_vtx_uuid", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM flight_controllers`
 	if whereClause != "" {
@@ -168,6 +170,8 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 				scanArgs[i] = &m.InternalVtxUuid
 			case "description":
 				scanArgs[i] = &m.Description
+			case "reference_links":
+				scanArgs[i] = &m.ReferenceLinks
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

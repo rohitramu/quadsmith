@@ -39,10 +39,11 @@ type Camera struct {
 	// Width of the camera body in mm (e.g., 14 for nano, 19 for micro, 22 for standard)
 	WidthMm uint32 `protobuf:"varint,8,opt,name=width_mm,json=widthMm,proto3" json:"width_mm,omitempty"`
 	// Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
-	LensSizeMm    float32 `protobuf:"fixed32,9,opt,name=lens_size_mm,json=lensSizeMm,proto3" json:"lens_size_mm,omitempty"`
-	Description   string  `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	LensSizeMm     float32          `protobuf:"fixed32,9,opt,name=lens_size_mm,json=lensSizeMm,proto3" json:"lens_size_mm,omitempty"`
+	Description    string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Camera) Reset() {
@@ -150,6 +151,13 @@ func (x *Camera) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *Camera) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
 }
 
 // ---------------------------------------------------------
@@ -339,7 +347,7 @@ var File_quadsmith_camera_proto protoreflect.FileDescriptor
 
 const file_quadsmith_camera_proto_rawDesc = "" +
 	"\n" +
-	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xe4\x02\n" +
+	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/reference_link.proto\"\xa7\x03\n" +
 	"\x06Camera\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -353,7 +361,8 @@ const file_quadsmith_camera_proto_rawDesc = "" +
 	"\bwidth_mm\x18\b \x01(\rR\awidthMm\x12 \n" +
 	"\flens_size_mm\x18\t \x01(\x02R\n" +
 	"lensSizeMm\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription:\v\xc2\xf3\x18\acameras\"<\n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\v\xc2\xf3\x18\acameras\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x96\x01\n" +
@@ -389,18 +398,20 @@ var file_quadsmith_camera_proto_goTypes = []any{
 	(*GetCameraRequest)(nil),    // 1: quadsmith.GetCameraRequest
 	(*ListCamerasRequest)(nil),  // 2: quadsmith.ListCamerasRequest
 	(*ListCamerasResponse)(nil), // 3: quadsmith.ListCamerasResponse
+	(*ReferenceLink)(nil),       // 4: quadsmith.ReferenceLink
 }
 var file_quadsmith_camera_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListCamerasResponse.cameras:type_name -> quadsmith.Camera
-	1, // 1: quadsmith.CameraService.GetCamera:input_type -> quadsmith.GetCameraRequest
-	2, // 2: quadsmith.CameraService.ListCameras:input_type -> quadsmith.ListCamerasRequest
-	0, // 3: quadsmith.CameraService.GetCamera:output_type -> quadsmith.Camera
-	3, // 4: quadsmith.CameraService.ListCameras:output_type -> quadsmith.ListCamerasResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Camera.reference_links:type_name -> quadsmith.ReferenceLink
+	0, // 1: quadsmith.ListCamerasResponse.cameras:type_name -> quadsmith.Camera
+	1, // 2: quadsmith.CameraService.GetCamera:input_type -> quadsmith.GetCameraRequest
+	2, // 3: quadsmith.CameraService.ListCameras:input_type -> quadsmith.ListCamerasRequest
+	0, // 4: quadsmith.CameraService.GetCamera:output_type -> quadsmith.Camera
+	3, // 5: quadsmith.CameraService.ListCameras:output_type -> quadsmith.ListCamerasResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_camera_proto_init() }
@@ -409,6 +420,7 @@ func file_quadsmith_camera_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -11,7 +11,7 @@ func TestMotorEscCompatibility(t *testing.T) {
 			StatorDiameterMm: 22,
 		},
 		Escs: []*pb.Esc{
-			{ContinuousAmps: 15},
+			{MotorCurrentMaxA: 15},
 		},
 	}
 
@@ -29,10 +29,10 @@ func TestMotorEscCompatibility(t *testing.T) {
 func TestPropellerFrameCompatibility(t *testing.T) {
 	comp := &Components{
 		Frame: &pb.Frame{
-			MaxPropSizeInches: 5.0,
+			MaxPropSizeMm: 5.0,
 		},
 		Propeller: &pb.Propeller{
-			DiameterInches: 5.1,
+			DiameterMm: 5.1,
 		},
 	}
 
@@ -50,16 +50,16 @@ func TestPropellerFrameCompatibility(t *testing.T) {
 func TestCompatibleBuild(t *testing.T) {
 	comp := &Components{
 		Frame: &pb.Frame{
-			MaxPropSizeInches: 5.1,
+			MaxPropSizeMm: 5.1,
 		},
 		Propeller: &pb.Propeller{
-			DiameterInches: 5.1,
+			DiameterMm: 5.1,
 		},
 		Motor: &pb.Motor{
 			StatorDiameterMm: 22,
 		},
 		Escs: []*pb.Esc{
-			{ContinuousAmps: 45},
+			{MotorCurrentMaxA: 45},
 		},
 	}
 

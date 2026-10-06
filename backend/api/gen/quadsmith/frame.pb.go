@@ -36,10 +36,11 @@ type Frame struct {
 	// Maximum propeller size supported
 	MaxPropSizeMm float32 `protobuf:"fixed32,7,opt,name=max_prop_size_mm,json=maxPropSizeMm,proto3" json:"max_prop_size_mm,omitempty"`
 	// E.g., "True X", "Squashed X", "Deadcat"
-	Geometry      string `protobuf:"bytes,8,opt,name=geometry,proto3" json:"geometry,omitempty"`
-	Description   string `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Geometry       string           `protobuf:"bytes,8,opt,name=geometry,proto3" json:"geometry,omitempty"`
+	Description    string           `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,10,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Frame) Reset() {
@@ -133,6 +134,13 @@ func (x *Frame) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *Frame) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
 }
 
 // ---------------------------------------------------------
@@ -322,7 +330,7 @@ var File_quadsmith_frame_proto protoreflect.FileDescriptor
 
 const file_quadsmith_frame_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xa6\x02\n" +
+	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe9\x02\n" +
 	"\x05Frame\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -332,7 +340,9 @@ const file_quadsmith_frame_proto_rawDesc = "" +
 	"\fwheelbase_mm\x18\x06 \x01(\x02R\vwheelbaseMm\x12'\n" +
 	"\x10max_prop_size_mm\x18\a \x01(\x02R\rmaxPropSizeMm\x12\x1a\n" +
 	"\bgeometry\x18\b \x01(\tR\bgeometry\x12 \n" +
-	"\vdescription\x18\t \x01(\tR\vdescription:\n" +
+	"\vdescription\x18\t \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\n" +
+	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\n" +
 	"\xc2\xf3\x18\x06frames\";\n" +
 	"\x0fGetFrameRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
@@ -370,18 +380,20 @@ var file_quadsmith_frame_proto_goTypes = []any{
 	(*GetFrameRequest)(nil),    // 1: quadsmith.GetFrameRequest
 	(*ListFramesRequest)(nil),  // 2: quadsmith.ListFramesRequest
 	(*ListFramesResponse)(nil), // 3: quadsmith.ListFramesResponse
+	(*ReferenceLink)(nil),      // 4: quadsmith.ReferenceLink
 }
 var file_quadsmith_frame_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListFramesResponse.frames:type_name -> quadsmith.Frame
-	1, // 1: quadsmith.FrameService.GetFrame:input_type -> quadsmith.GetFrameRequest
-	2, // 2: quadsmith.FrameService.ListFrames:input_type -> quadsmith.ListFramesRequest
-	0, // 3: quadsmith.FrameService.GetFrame:output_type -> quadsmith.Frame
-	3, // 4: quadsmith.FrameService.ListFrames:output_type -> quadsmith.ListFramesResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Frame.reference_links:type_name -> quadsmith.ReferenceLink
+	0, // 1: quadsmith.ListFramesResponse.frames:type_name -> quadsmith.Frame
+	1, // 2: quadsmith.FrameService.GetFrame:input_type -> quadsmith.GetFrameRequest
+	2, // 3: quadsmith.FrameService.ListFrames:input_type -> quadsmith.ListFramesRequest
+	0, // 4: quadsmith.FrameService.GetFrame:output_type -> quadsmith.Frame
+	3, // 5: quadsmith.FrameService.ListFrames:output_type -> quadsmith.ListFramesResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_frame_proto_init() }
@@ -390,6 +402,7 @@ func file_quadsmith_frame_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

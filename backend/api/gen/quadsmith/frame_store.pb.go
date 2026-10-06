@@ -9,22 +9,22 @@ import (
 )
 
 func CreateFrame(ctx context.Context, tx pgx.Tx, m *Frame) error {
-	query := `INSERT INTO frames (uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+	query := `INSERT INTO frames (uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.WheelbaseMm, m.MaxPropSizeMm, m.Geometry, m.Description)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.WheelbaseMm, m.MaxPropSizeMm, m.Geometry, m.Description, m.ReferenceLinks)
 	return err
 }
 
 func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Frame, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description"
+	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM frames WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -49,6 +49,8 @@ func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 			scanArgs[i] = &m.Geometry
 		case "description":
 			scanArgs[i] = &m.Description
+		case "reference_links":
+			scanArgs[i] = &m.ReferenceLinks
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -62,8 +64,8 @@ func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 }
 
 func UpdateFrame(ctx context.Context, tx pgx.Tx, m *Frame) error {
-	query := `UPDATE frames SET manufacturer = $2, name = $3, weight_g = $4, wheelbase_mm = $5, max_prop_size_mm = $6, geometry = $7, description = $8 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.WheelbaseMm, m.MaxPropSizeMm, m.Geometry, m.Description)
+	query := `UPDATE frames SET manufacturer = $2, name = $3, weight_g = $4, wheelbase_mm = $5, max_prop_size_mm = $6, geometry = $7, description = $8, reference_links = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.WheelbaseMm, m.MaxPropSizeMm, m.Geometry, m.Description, m.ReferenceLinks)
 	return err
 }
 
@@ -74,11 +76,11 @@ func DeleteFrame(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Frame, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description"
+	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM frames`
 	if whereClause != "" {
@@ -126,6 +128,8 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 				scanArgs[i] = &m.Geometry
 			case "description":
 				scanArgs[i] = &m.Description
+			case "reference_links":
+				scanArgs[i] = &m.ReferenceLinks
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

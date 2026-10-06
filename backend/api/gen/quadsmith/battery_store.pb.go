@@ -9,22 +9,22 @@ import (
 )
 
 func CreateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
-	query := `INSERT INTO batteries (uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+	query := `INSERT INTO batteries (uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description, m.ReferenceLinks)
 	return err
 }
 
 func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Battery, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description"
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM batteries WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -51,6 +51,8 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.Connector
 		case "description":
 			scanArgs[i] = &m.Description
+		case "reference_links":
+			scanArgs[i] = &m.ReferenceLinks
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -64,8 +66,8 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 }
 
 func UpdateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
-	query := `UPDATE batteries SET manufacturer = $2, name = $3, weight_g = $4, capacity_mah = $5, cell_count_s = $6, chemistry = $7, connector = $8, description = $9 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description)
+	query := `UPDATE batteries SET manufacturer = $2, name = $3, weight_g = $4, capacity_mah = $5, cell_count_s = $6, chemistry = $7, connector = $8, description = $9, reference_links = $10 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description, m.ReferenceLinks)
 	return err
 }
 
@@ -76,11 +78,11 @@ func DeleteBattery(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Battery, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description"
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM batteries`
 	if whereClause != "" {
@@ -130,6 +132,8 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.Connector
 			case "description":
 				scanArgs[i] = &m.Description
+			case "reference_links":
+				scanArgs[i] = &m.ReferenceLinks
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

@@ -107,13 +107,24 @@ func sqlDataType(desc protoreflect.FieldDescriptor) string {
 	name := string(desc.Name())
 	kind := desc.Kind()
 
-	if strings.HasSuffix(name, "uuids") && desc.IsList() && kind == protoreflect.StringKind {
-		return "UUID[]"
+	if desc.IsList() {
+		if kind == protoreflect.StringKind {
+			if strings.HasSuffix(name, "uuids") {
+				return "UUID[]"
+			}
+			return "TEXT[]"
+		}
+		if kind == protoreflect.MessageKind {
+			return "JSONB"
+		}
 	}
+
 	if strings.HasSuffix(name, "uuid") && kind == protoreflect.StringKind {
 		return "UUID"
 	}
 	switch kind {
+	case protoreflect.MessageKind:
+		return "JSONB"
 	case protoreflect.StringKind:
 		return "TEXT"
 	case protoreflect.Int32Kind, protoreflect.Uint32Kind, protoreflect.EnumKind:

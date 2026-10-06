@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package quadsmith;
 
+import "quadsmith/reference_link.proto";
 import "quadsmith/sql.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
@@ -34,6 +35,7 @@ message Camera {
   // Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
   float lens_size_mm = 9;
   string description = 21;
+  repeated ReferenceLink reference_links = 22;
 }
 
 // ---------------------------------------------------------

@@ -41,8 +41,9 @@ type FlightController struct {
 	// If this board has an integrated SPI or Serial Receiver
 	InternalReceiverUuid string `protobuf:"bytes,9,opt,name=internal_receiver_uuid,json=internalReceiverUuid,proto3" json:"internal_receiver_uuid,omitempty"`
 	// If this board has an integrated Video Transmitter
-	InternalVtxUuid string `protobuf:"bytes,10,opt,name=internal_vtx_uuid,json=internalVtxUuid,proto3" json:"internal_vtx_uuid,omitempty"`
-	Description     string `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
+	InternalVtxUuid string           `protobuf:"bytes,10,opt,name=internal_vtx_uuid,json=internalVtxUuid,proto3" json:"internal_vtx_uuid,omitempty"`
+	Description     string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks  []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -159,6 +160,13 @@ func (x *FlightController) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *FlightController) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
 }
 
 // ---------------------------------------------------------
@@ -348,7 +356,7 @@ var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x82\x04\n" +
+	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc5\x04\n" +
 	"\x10FlightController\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -363,7 +371,8 @@ const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\x16internal_receiver_uuid\x18\t \x01(\tB\x13\xd2\xf3\x18\x0freceivers(uuid)R\x14internalReceiverUuid\x12H\n" +
 	"\x11internal_vtx_uuid\x18\n" +
 	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x0finternalVtxUuid\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription:\x16\xc2\xf3\x18\x12flight_controllers\"F\n" +
+	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x16\xc2\xf3\x18\x12flight_controllers\"F\n" +
 	"\x1aGetFlightControllerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +
@@ -399,18 +408,20 @@ var file_quadsmith_flight_controller_proto_goTypes = []any{
 	(*GetFlightControllerRequest)(nil),    // 1: quadsmith.GetFlightControllerRequest
 	(*ListFlightControllersRequest)(nil),  // 2: quadsmith.ListFlightControllersRequest
 	(*ListFlightControllersResponse)(nil), // 3: quadsmith.ListFlightControllersResponse
+	(*ReferenceLink)(nil),                 // 4: quadsmith.ReferenceLink
 }
 var file_quadsmith_flight_controller_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListFlightControllersResponse.flight_controllers:type_name -> quadsmith.FlightController
-	1, // 1: quadsmith.FlightControllerService.GetFlightController:input_type -> quadsmith.GetFlightControllerRequest
-	2, // 2: quadsmith.FlightControllerService.ListFlightControllers:input_type -> quadsmith.ListFlightControllersRequest
-	0, // 3: quadsmith.FlightControllerService.GetFlightController:output_type -> quadsmith.FlightController
-	3, // 4: quadsmith.FlightControllerService.ListFlightControllers:output_type -> quadsmith.ListFlightControllersResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.FlightController.reference_links:type_name -> quadsmith.ReferenceLink
+	0, // 1: quadsmith.ListFlightControllersResponse.flight_controllers:type_name -> quadsmith.FlightController
+	1, // 2: quadsmith.FlightControllerService.GetFlightController:input_type -> quadsmith.GetFlightControllerRequest
+	2, // 3: quadsmith.FlightControllerService.ListFlightControllers:input_type -> quadsmith.ListFlightControllersRequest
+	0, // 4: quadsmith.FlightControllerService.GetFlightController:output_type -> quadsmith.FlightController
+	3, // 5: quadsmith.FlightControllerService.ListFlightControllers:output_type -> quadsmith.ListFlightControllersResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_flight_controller_proto_init() }
@@ -419,6 +430,7 @@ func file_quadsmith_flight_controller_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

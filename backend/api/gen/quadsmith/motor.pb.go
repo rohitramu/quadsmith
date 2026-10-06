@@ -28,14 +28,15 @@ type Motor struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Uuid  string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	// A unique, human-readable slug (e.g., "tmotor-f80-pro-1900kv")
-	Id               string  `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Manufacturer     string  `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
-	Name             string  `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	WeightG          float32 `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
-	StatorDiameterMm float32 `protobuf:"fixed32,6,opt,name=stator_diameter_mm,json=statorDiameterMm,proto3" json:"stator_diameter_mm,omitempty"`
-	StatorHeightMm   float32 `protobuf:"fixed32,7,opt,name=stator_height_mm,json=statorHeightMm,proto3" json:"stator_height_mm,omitempty"`
-	Kv               uint32  `protobuf:"varint,8,opt,name=kv,proto3" json:"kv,omitempty"`
-	Description      string  `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
+	Id               string           `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Manufacturer     string           `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
+	Name             string           `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	WeightG          float32          `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	StatorDiameterMm float32          `protobuf:"fixed32,6,opt,name=stator_diameter_mm,json=statorDiameterMm,proto3" json:"stator_diameter_mm,omitempty"`
+	StatorHeightMm   float32          `protobuf:"fixed32,7,opt,name=stator_height_mm,json=statorHeightMm,proto3" json:"stator_height_mm,omitempty"`
+	Kv               uint32           `protobuf:"varint,8,opt,name=kv,proto3" json:"kv,omitempty"`
+	Description      string           `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks   []*ReferenceLink `protobuf:"bytes,10,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -131,6 +132,13 @@ func (x *Motor) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *Motor) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
 }
 
 // ---------------------------------------------------------
@@ -322,7 +330,7 @@ var File_quadsmith_motor_proto protoreflect.FileDescriptor
 
 const file_quadsmith_motor_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xac\x02\n" +
+	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/reference_link.proto\"\xef\x02\n" +
 	"\x05Motor\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -332,7 +340,9 @@ const file_quadsmith_motor_proto_rawDesc = "" +
 	"\x12stator_diameter_mm\x18\x06 \x01(\x02R\x10statorDiameterMm\x12(\n" +
 	"\x10stator_height_mm\x18\a \x01(\x02R\x0estatorHeightMm\x12\x14\n" +
 	"\x02kv\x18\b \x01(\rB\x04\xe0\xf3\x18\x01R\x02kv\x12 \n" +
-	"\vdescription\x18\t \x01(\tR\vdescription:\n" +
+	"\vdescription\x18\t \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\n" +
+	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\n" +
 	"\xc2\xf3\x18\x06motors\";\n" +
 	"\x0fGetMotorRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
@@ -370,18 +380,20 @@ var file_quadsmith_motor_proto_goTypes = []any{
 	(*GetMotorRequest)(nil),    // 1: quadsmith.GetMotorRequest
 	(*ListMotorsRequest)(nil),  // 2: quadsmith.ListMotorsRequest
 	(*ListMotorsResponse)(nil), // 3: quadsmith.ListMotorsResponse
+	(*ReferenceLink)(nil),      // 4: quadsmith.ReferenceLink
 }
 var file_quadsmith_motor_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListMotorsResponse.motors:type_name -> quadsmith.Motor
-	1, // 1: quadsmith.MotorService.GetMotor:input_type -> quadsmith.GetMotorRequest
-	2, // 2: quadsmith.MotorService.ListMotors:input_type -> quadsmith.ListMotorsRequest
-	0, // 3: quadsmith.MotorService.GetMotor:output_type -> quadsmith.Motor
-	3, // 4: quadsmith.MotorService.ListMotors:output_type -> quadsmith.ListMotorsResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Motor.reference_links:type_name -> quadsmith.ReferenceLink
+	0, // 1: quadsmith.ListMotorsResponse.motors:type_name -> quadsmith.Motor
+	1, // 2: quadsmith.MotorService.GetMotor:input_type -> quadsmith.GetMotorRequest
+	2, // 3: quadsmith.MotorService.ListMotors:input_type -> quadsmith.ListMotorsRequest
+	0, // 4: quadsmith.MotorService.GetMotor:output_type -> quadsmith.Motor
+	3, // 5: quadsmith.MotorService.ListMotors:output_type -> quadsmith.ListMotorsResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_motor_proto_init() }
@@ -390,6 +402,7 @@ func file_quadsmith_motor_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

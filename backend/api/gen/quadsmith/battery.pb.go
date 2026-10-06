@@ -38,10 +38,11 @@ type Battery struct {
 	// E.g., "LiPo", "LiHV", "Li-ion"
 	Chemistry string `protobuf:"bytes,8,opt,name=chemistry,proto3" json:"chemistry,omitempty"`
 	// E.g., "XT60", "XT30", "BT2.0"
-	Connector     string `protobuf:"bytes,9,opt,name=connector,proto3" json:"connector,omitempty"`
-	Description   string `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Connector      string           `protobuf:"bytes,9,opt,name=connector,proto3" json:"connector,omitempty"`
+	Description    string           `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,11,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Battery) Reset() {
@@ -142,6 +143,13 @@ func (x *Battery) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *Battery) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
 }
 
 // ---------------------------------------------------------
@@ -331,7 +339,7 @@ var File_quadsmith_battery_proto protoreflect.FileDescriptor
 
 const file_quadsmith_battery_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/battery.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xca\x02\n" +
+	"\x17quadsmith/battery.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/reference_link.proto\"\x8d\x03\n" +
 	"\aBattery\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -344,7 +352,8 @@ const file_quadsmith_battery_proto_rawDesc = "" +
 	"\tchemistry\x18\b \x01(\tR\tchemistry\x12\x1c\n" +
 	"\tconnector\x18\t \x01(\tR\tconnector\x12 \n" +
 	"\vdescription\x18\n" +
-	" \x01(\tR\vdescription:\r\xc2\xf3\x18\tbatteries\"=\n" +
+	" \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\r\xc2\xf3\x18\tbatteries\"=\n" +
 	"\x11GetBatteryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x98\x01\n" +
@@ -381,18 +390,20 @@ var file_quadsmith_battery_proto_goTypes = []any{
 	(*GetBatteryRequest)(nil),     // 1: quadsmith.GetBatteryRequest
 	(*ListBatteriesRequest)(nil),  // 2: quadsmith.ListBatteriesRequest
 	(*ListBatteriesResponse)(nil), // 3: quadsmith.ListBatteriesResponse
+	(*ReferenceLink)(nil),         // 4: quadsmith.ReferenceLink
 }
 var file_quadsmith_battery_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ListBatteriesResponse.batteries:type_name -> quadsmith.Battery
-	1, // 1: quadsmith.BatteryService.GetBattery:input_type -> quadsmith.GetBatteryRequest
-	2, // 2: quadsmith.BatteryService.ListBatteries:input_type -> quadsmith.ListBatteriesRequest
-	0, // 3: quadsmith.BatteryService.GetBattery:output_type -> quadsmith.Battery
-	3, // 4: quadsmith.BatteryService.ListBatteries:output_type -> quadsmith.ListBatteriesResponse
-	3, // [3:5] is the sub-list for method output_type
-	1, // [1:3] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 0: quadsmith.Battery.reference_links:type_name -> quadsmith.ReferenceLink
+	0, // 1: quadsmith.ListBatteriesResponse.batteries:type_name -> quadsmith.Battery
+	1, // 2: quadsmith.BatteryService.GetBattery:input_type -> quadsmith.GetBatteryRequest
+	2, // 3: quadsmith.BatteryService.ListBatteries:input_type -> quadsmith.ListBatteriesRequest
+	0, // 4: quadsmith.BatteryService.GetBattery:output_type -> quadsmith.Battery
+	3, // 5: quadsmith.BatteryService.ListBatteries:output_type -> quadsmith.ListBatteriesResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_battery_proto_init() }
@@ -401,6 +412,7 @@ func file_quadsmith_battery_proto_init() {
 		return
 	}
 	file_quadsmith_sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

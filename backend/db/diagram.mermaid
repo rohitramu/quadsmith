@@ -9,6 +9,7 @@ erDiagram
         UUID battery_uuid FK
         UUID flight_controller_uuid FK
         UUID propeller_uuid FK
+        JSONB reference_links
     }
 
     motors {
@@ -20,6 +21,8 @@ erDiagram
         DECIMAL stator_diameter_mm
         DECIMAL stator_height_mm
         INTEGER kv
+        TEXT description
+        JSONB reference_links
     }
 
     frames {
@@ -31,6 +34,8 @@ erDiagram
         DECIMAL wheelbase_mm
         DECIMAL max_prop_size_mm
         TEXT geometry
+        TEXT description
+        JSONB reference_links
     }
 
     batteries {
@@ -43,6 +48,8 @@ erDiagram
         INTEGER cell_count_s
         TEXT chemistry
         TEXT connector
+        TEXT description
+        JSONB reference_links
     }
 
     flight_controllers {
@@ -57,6 +64,8 @@ erDiagram
         UUID internal_esc_uuid FK
         UUID internal_receiver_uuid FK
         UUID internal_vtx_uuid FK
+        TEXT description
+        JSONB reference_links
     }
 
     escs {
@@ -70,6 +79,8 @@ erDiagram
         DECIMAL motor_current_max_a
         DECIMAL motor_current_burst_a
         TEXT firmware
+        TEXT description
+        JSONB reference_links
     }
 
     receivers {
@@ -82,6 +93,8 @@ erDiagram
         TEXT protocol
         INTEGER frequency_band_mhz
         BOOLEAN has_telemetry
+        TEXT description
+        JSONB reference_links
     }
 
     video_transmitters {
@@ -95,6 +108,8 @@ erDiagram
         INTEGER max_power_mw
         DECIMAL input_voltage_min_v
         DECIMAL input_voltage_max_v
+        TEXT description
+        JSONB reference_links
     }
 
     antennas {
@@ -109,6 +124,8 @@ erDiagram
         INTEGER frequency_band_mhz
         DECIMAL length_mm
         DECIMAL gain_dbi
+        TEXT description
+        JSONB reference_links
     }
 
     propellers {
@@ -121,6 +138,8 @@ erDiagram
         DECIMAL pitch_mm
         INTEGER blades
         TEXT material
+        TEXT description
+        JSONB reference_links
     }
 
     cameras {
@@ -134,6 +153,8 @@ erDiagram
         TEXT sensor_size
         INTEGER width_mm
         DECIMAL lens_size_mm
+        TEXT description
+        JSONB reference_links
     }
 
     builds ||--o| frames : has

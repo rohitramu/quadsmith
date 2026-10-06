@@ -25,7 +25,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	// Rule 1: Motor vs ESC
 	if comp.Motor != nil && len(comp.Escs) > 0 {
 		for _, esc := range comp.Escs {
-			if esc.ContinuousAmps < 20 && comp.Motor.StatorDiameterMm > 20 {
+			if esc.MotorCurrentMaxA < 20 && comp.Motor.StatorDiameterMm > 20 {
 				messages = append(messages, &pb.CompatibilityMessage{
 					CheckerName:   "MotorEscElectricalChecker",
 					Components:    "Motor and ESC",
@@ -40,7 +40,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 
 	// Rule 2: Propeller vs Frame
 	if comp.Propeller != nil && comp.Frame != nil {
-		if float32(comp.Propeller.DiameterInches) > float32(comp.Frame.MaxPropSizeInches) {
+		if float32(comp.Propeller.DiameterMm) > float32(comp.Frame.MaxPropSizeMm) {
 			messages = append(messages, &pb.CompatibilityMessage{
 				CheckerName:   "PropellerFrameChecker",
 				Components:    "Propeller and Frame",
