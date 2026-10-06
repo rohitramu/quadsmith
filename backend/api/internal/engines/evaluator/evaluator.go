@@ -108,11 +108,16 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	// System Validation
+	// TODO: Implement mechanical compatibility checks (e.g. Flight Controller mounting hole spacing vs Frame mounts).
+	// TODO: Implement electrical compatibility checks (e.g. Battery Voltage vs FC max voltage, Receiver protocol vs FC UARTs).
 	if totalEscs < 4 && totalEscs > 0 {
 		errors = append(errors, fmt.Sprintf("Not enough ESCs: need 4, have %d", totalEscs))
 	}
 	
 	// Physics Estimation (Placeholder for MVP)
+	// TODO: Replace this naive linear estimation with a proper aerodynamic simulation.
+	// We need thrust curve interpolation based on propeller pitch/diameter and stator volume.
+	// Also factor in battery voltage sag under load, motor efficiency (g/W), and air density.
 	var thrustToWeight float32 = 0
 	var hoverThrottle float32 = 0
 	var flightTime float32 = 0

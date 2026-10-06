@@ -57,6 +57,9 @@ func main() {
 	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool))
 	mux.Handle(path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler)
 
+	// TODO: Add HTTP middleware for CORS to allow frontend applications to call this API.
+	// TODO: Add Authentication/Authorization interceptors to secure write operations (Create/Update/Delete).
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
