@@ -3,7 +3,6 @@ node_modules/
 /.tmp/
 
 # Generated Protobuf / ConnectRPC code
-backend/api/gen/
 
 # Standard Go ignores
 *.exe

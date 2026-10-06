@@ -9,3 +9,7 @@ plugins:
   - plugin: sql
     out: ../backend/db
     path: ../bin/protoc-gen-sql
+  - plugin: store
+    out: ../backend/api/gen
+    path: ../bin/protoc-gen-store
+    opt: paths=source_relative
