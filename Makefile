@@ -7,10 +7,10 @@ all: build
 
 build: generate
 	@echo "--- Building all Go binaries to bin/ ---"
-	@GOBIN=$(shell pwd)/bin go install -mod=vendor quadsmith/api/cmd/... quadsmith/cli
-	@echo "--- Generating shell completions to bin/ ---"
-	@./bin/cli completion bash > bin/completion.bash || true
-	@./bin/cli completion zsh > bin/completion.zsh || true
+	@go build -mod=vendor -o bin/server ./backend/api/cmd/server/main.go
+	
+	@echo "--- Generating and building CLI to bin/qs ---"
+	@cd frontend/cli && go run generate_cli.go && go build -mod=vendor -o ../../bin/qs main.go
 
 sandbox: build
 	@echo "--- Starting Quadsmith Sandbox (Docker) ---"
@@ -21,13 +21,16 @@ generate:
 	@go build -mod=vendor -o bin/protoc-gen-go google.golang.org/protobuf/cmd/protoc-gen-go
 	@go build -mod=vendor -o bin/protoc-gen-connect-go connectrpc.com/connect/cmd/protoc-gen-connect-go
 	@go build -mod=vendor -o bin/buf github.com/bufbuild/buf/cmd/buf
+	@echo "--- Building custom protoc plugins ---"
+	@go build -mod=vendor -o bin/protoc-gen-sql ./backend/api/cmd/protoc-gen-sql
+	@go build -mod=vendor -o bin/protoc-gen-store ./backend/api/cmd/protoc-gen-store
+	@go build -mod=vendor -o bin/protoc-gen-server ./backend/api/cmd/protoc-gen-server
 	@echo "--- Generating Protobuf & ConnectRPC Code ---"
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 
 test: generate
 	@echo "--- Running Go Tests ---"
 	@cd backend/api && go test -mod=vendor ./...
-	@cd backend/engines && go test -mod=vendor ./...
 	@cd frontend/cli && go test -mod=vendor ./...
 
 clean:
@@ -36,7 +39,7 @@ clean:
 
 vendor:
 	@echo "--- Updating and vendoring dependencies ---"
-	@for mod in backend/api backend/engines frontend/cli; do \
+	@for mod in backend/api frontend/cli; do \
 		echo "Updating $$mod..."; \
 		(cd $$mod && go get -u ./... && go mod tidy) || exit 1; \
 	done
