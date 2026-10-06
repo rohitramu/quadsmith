@@ -10,7 +10,12 @@ import (
 
 func CreateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
 	query := `INSERT INTO batteries (uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector)
 	return err
 }
 

@@ -10,7 +10,12 @@ import (
 
 func CreateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
 	query := `INSERT INTO motors (uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv)
 	return err
 }
 

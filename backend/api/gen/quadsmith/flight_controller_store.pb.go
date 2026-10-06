@@ -10,7 +10,27 @@ import (
 
 func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
 	query := `INSERT INTO flight_controllers (uuid, id, manufacturer, model, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.Processor, m.Gyro, m.InternalEscUuid, m.InternalReceiverUuid, m.InternalVtxUuid)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.Processor, m.Gyro, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.InternalEscUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.InternalReceiverUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.InternalVtxUuid))
 	return err
 }
 
@@ -60,7 +80,22 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 
 func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
 	query := `UPDATE flight_controllers SET manufacturer = $2, model = $3, weight_g = $4, processor = $5, gyro = $6, internal_esc_uuid = $7, internal_receiver_uuid = $8, internal_vtx_uuid = $9 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Processor, m.Gyro, m.InternalEscUuid, m.InternalReceiverUuid, m.InternalVtxUuid)
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Processor, m.Gyro, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.InternalEscUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.InternalReceiverUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.InternalVtxUuid))
 	return err
 }
 

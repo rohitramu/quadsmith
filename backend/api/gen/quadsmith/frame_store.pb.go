@@ -10,7 +10,12 @@ import (
 
 func CreateFrame(ctx context.Context, tx pgx.Tx, m *Frame) error {
 	query := `INSERT INTO frames (uuid, id, manufacturer, model, weight_g, wheelbase_mm, max_prop_size_inches, geometry) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.WheelbaseMm, m.MaxPropSizeInches, m.Geometry)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.WheelbaseMm, m.MaxPropSizeInches, m.Geometry)
 	return err
 }
 

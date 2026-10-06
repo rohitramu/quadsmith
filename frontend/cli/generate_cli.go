@@ -330,7 +330,7 @@ func printTable(data interface{}) {
 		}
 
 		for i, k := range orderedKeys {
-			fmt.Fprintf(w, "%s", k)
+			fmt.Fprintf(w, "%s", strings.ToUpper(k))
 			if i < len(orderedKeys)-1 {
 				fmt.Fprintf(w, "\t")
 			}

@@ -76,7 +76,13 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		placeHolders = append(placeHolders, fmt.Sprintf("$%d", i+1))
 		
 		goName := field.GoName
-		mFields = append(mFields, "m."+goName)
+		if strings.HasSuffix(colName, "uuid") {
+				mFields = append(mFields, "func(s string) interface{} { if s == \"\" { return nil }; return s }(m."+goName+")")
+			} else if strings.HasSuffix(colName, "uuids") {
+				mFields = append(mFields, "func(s []string) interface{} { if len(s) == 0 { return nil }; return s }(m."+goName+")")
+			} else {
+				mFields = append(mFields, "m."+goName)
+			}
 
 		varType := goDataType(field.Desc)
 		scanVarName := "v_" + colName

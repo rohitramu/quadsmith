@@ -10,7 +10,12 @@ import (
 
 func CreateCamera(ctx context.Context, tx pgx.Tx, m *Camera) error {
 	query := `INSERT INTO cameras (uuid, id, manufacturer, model, weight_g, protocol, sensor_size, width_mm, lens_size_mm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.SensorSize, m.WidthMm, m.LensSizeMm)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.SensorSize, m.WidthMm, m.LensSizeMm)
 	return err
 }
 

@@ -10,7 +10,17 @@ import (
 
 func CreateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
 	query := `INSERT INTO receivers (uuid, id, manufacturer, model, weight_g, protocol, frequency_band_ghz, has_telemetry, antenna_uuids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.FrequencyBandGhz, m.HasTelemetry, m.AntennaUuids)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.FrequencyBandGhz, m.HasTelemetry, func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.AntennaUuids))
 	return err
 }
 
@@ -58,7 +68,12 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 
 func UpdateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
 	query := `UPDATE receivers SET manufacturer = $2, model = $3, weight_g = $4, protocol = $5, frequency_band_ghz = $6, has_telemetry = $7, antenna_uuids = $8 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.FrequencyBandGhz, m.HasTelemetry, m.AntennaUuids)
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.FrequencyBandGhz, m.HasTelemetry, func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.AntennaUuids))
 	return err
 }
 

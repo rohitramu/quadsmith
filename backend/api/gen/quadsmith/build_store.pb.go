@@ -10,7 +10,57 @@ import (
 
 func CreateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 	query := `INSERT INTO builds (uuid, id, name, description, frame_uuid, motor_uuid, battery_uuid, flight_controller_uuid, esc_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Name, m.Description, m.FrameUuid, m.MotorUuid, m.BatteryUuid, m.FlightControllerUuid, m.EscUuids, m.ReceiverUuids, m.AntennaUuids, m.PropellerUuid, m.CameraUuids)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Name, m.Description, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.FrameUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.MotorUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.BatteryUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.FlightControllerUuid), func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.EscUuids), func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.ReceiverUuids), func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.AntennaUuids), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.PropellerUuid), func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.CameraUuids))
 	return err
 }
 
@@ -66,7 +116,52 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 
 func UpdateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 	query := `UPDATE builds SET name = $2, description = $3, frame_uuid = $4, motor_uuid = $5, battery_uuid = $6, flight_controller_uuid = $7, esc_uuids = $8, receiver_uuids = $9, antenna_uuids = $10, propeller_uuid = $11, camera_uuids = $12 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Name, m.Description, m.FrameUuid, m.MotorUuid, m.BatteryUuid, m.FlightControllerUuid, m.EscUuids, m.ReceiverUuids, m.AntennaUuids, m.PropellerUuid, m.CameraUuids)
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Name, m.Description, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.FrameUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.MotorUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.BatteryUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.FlightControllerUuid), func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.EscUuids), func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.ReceiverUuids), func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.AntennaUuids), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.PropellerUuid), func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.CameraUuids))
 	return err
 }
 

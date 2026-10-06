@@ -10,7 +10,17 @@ import (
 
 func CreateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter) error {
 	query := `INSERT INTO video_transmitters (uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, m.AntennaUuids)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.AntennaUuids))
 	return err
 }
 
@@ -60,7 +70,12 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 
 func UpdateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter) error {
 	query := `UPDATE video_transmitters SET manufacturer = $2, model = $3, weight_g = $4, protocol = $5, max_power_mw = $6, input_voltage_min_v = $7, input_voltage_max_v = $8, antenna_uuids = $9 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, m.AntennaUuids)
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Model, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
+		if len(s) == 0 {
+			return nil
+		}
+		return s
+	}(m.AntennaUuids))
 	return err
 }
 

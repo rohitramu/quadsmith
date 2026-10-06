@@ -10,7 +10,12 @@ import (
 
 func CreatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
 	query := `INSERT INTO propellers (uuid, id, manufacturer, model, weight_g, diameter_inches, pitch_inches, blades, material) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.DiameterInches, m.PitchInches, m.Blades, m.Material)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.DiameterInches, m.PitchInches, m.Blades, m.Material)
 	return err
 }
 

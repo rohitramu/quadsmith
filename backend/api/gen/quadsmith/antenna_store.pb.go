@@ -10,7 +10,12 @@ import (
 
 func CreateAntenna(ctx context.Context, tx pgx.Tx, m *Antenna) error {
 	query := `INSERT INTO antennas (uuid, id, manufacturer, model, weight_g, connector, polarization, frequency_band_ghz, length_mm, gain_dbi) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandGhz, m.LengthMm, m.GainDbi)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandGhz, m.LengthMm, m.GainDbi)
 	return err
 }
 

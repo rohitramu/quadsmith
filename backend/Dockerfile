@@ -13,7 +13,7 @@ COPY vendor/ ./vendor/
 COPY . .
 
 # Build Server and Seeder
-RUN cd backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder/main.go
+RUN cd backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder
 
 
 # Stage 2: The Sandbox (Postgres + Go API)

@@ -10,7 +10,12 @@ import (
 
 func CreateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
 	query := `INSERT INTO escs (uuid, id, manufacturer, model, weight_g, max_motors, continuous_amps, burst_amps, firmware) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Id, m.Manufacturer, m.Model, m.WeightG, m.MaxMotors, m.ContinuousAmps, m.BurstAmps, m.Firmware)
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), m.Id, m.Manufacturer, m.Model, m.WeightG, m.MaxMotors, m.ContinuousAmps, m.BurstAmps, m.Firmware)
 	return err
 }
 
