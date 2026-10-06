@@ -142,6 +142,7 @@ func (x *Camera) GetLensSizeMm() float32 {
 type GetCameraRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -183,11 +184,19 @@ func (x *GetCameraRequest) GetId() string {
 	return ""
 }
 
+func (x *GetCameraRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
 type ListCamerasRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -241,6 +250,13 @@ func (x *ListCamerasRequest) GetPageToken() string {
 		return x.PageToken
 	}
 	return ""
+}
+
+func (x *ListCamerasRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
 }
 
 type ListCamerasResponse struct {
@@ -311,14 +327,16 @@ const file_quadsmith_camera_proto_rawDesc = "" +
 	"sensorSize\x12\x19\n" +
 	"\bwidth_mm\x18\b \x01(\x05R\awidthMm\x12 \n" +
 	"\flens_size_mm\x18\t \x01(\x02R\n" +
-	"lensSizeMm:\v\xc2\xf3\x18\acameras\"\"\n" +
+	"lensSizeMm:\v\xc2\xf3\x18\acameras\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"h\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x82\x01\n" +
 	"\x12ListCamerasRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"j\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\"j\n" +
 	"\x13ListCamerasResponse\x12+\n" +
 	"\acameras\x18\x01 \x03(\v2\x11.quadsmith.CameraR\acameras\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x9a\x01\n" +

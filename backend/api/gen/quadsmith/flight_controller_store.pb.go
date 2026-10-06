@@ -3,6 +3,7 @@ package quadsmith
 
 import (
 	"context"
+	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -13,52 +14,46 @@ func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 	return err
 }
 
-func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*FlightController, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid FROM flight_controllers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
-	var v_uuid *string
-	var v_id *string
-	var v_manufacturer *string
-	var v_model *string
-	var v_weight_g *float32
-	var v_processor *string
-	var v_gyro *string
-	var v_internal_esc_uuid *string
-	var v_internal_receiver_uuid *string
-	var v_internal_vtx_uuid *string
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_processor, &v_gyro, &v_internal_esc_uuid, &v_internal_receiver_uuid, &v_internal_vtx_uuid)
+func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*FlightController, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_vtx_uuid"}
+	}
+	query := `SELECT ` + colsStr + ` FROM flight_controllers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	m := &FlightController{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "id":
+			scanArgs[i] = &m.Id
+		case "manufacturer":
+			scanArgs[i] = &m.Manufacturer
+		case "model":
+			scanArgs[i] = &m.Model
+		case "weight_g":
+			scanArgs[i] = &m.WeightG
+		case "processor":
+			scanArgs[i] = &m.Processor
+		case "gyro":
+			scanArgs[i] = &m.Gyro
+		case "internal_esc_uuid":
+			scanArgs[i] = &m.InternalEscUuid
+		case "internal_receiver_uuid":
+			scanArgs[i] = &m.InternalReceiverUuid
+		case "internal_vtx_uuid":
+			scanArgs[i] = &m.InternalVtxUuid
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
-	}
-	m := &FlightController{}
-	if v_uuid != nil {
-		m.Uuid = *v_uuid
-	}
-	if v_id != nil {
-		m.Id = *v_id
-	}
-	if v_manufacturer != nil {
-		m.Manufacturer = *v_manufacturer
-	}
-	if v_model != nil {
-		m.Model = *v_model
-	}
-	if v_weight_g != nil {
-		m.WeightG = *v_weight_g
-	}
-	if v_processor != nil {
-		m.Processor = *v_processor
-	}
-	if v_gyro != nil {
-		m.Gyro = *v_gyro
-	}
-	if v_internal_esc_uuid != nil {
-		m.InternalEscUuid = *v_internal_esc_uuid
-	}
-	if v_internal_receiver_uuid != nil {
-		m.InternalReceiverUuid = *v_internal_receiver_uuid
-	}
-	if v_internal_vtx_uuid != nil {
-		m.InternalVtxUuid = *v_internal_vtx_uuid
 	}
 	return m, nil
 }
@@ -75,8 +70,14 @@ func DeleteFlightController(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 	return err
 }
 
-func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*FlightController, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid FROM flight_controllers`
+func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*FlightController, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_vtx_uuid"}
+	}
+	query := `SELECT ` + colsStr + ` FROM flight_controllers`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -85,52 +86,40 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, whereClause st
 		return nil, err
 	}
 	defer rows.Close()
-	var results []*FlightController
+	results := make([]*FlightController, 0)
 	for rows.Next() {
-		var v_uuid *string
-		var v_id *string
-		var v_manufacturer *string
-		var v_model *string
-		var v_weight_g *float32
-		var v_processor *string
-		var v_gyro *string
-		var v_internal_esc_uuid *string
-		var v_internal_receiver_uuid *string
-		var v_internal_vtx_uuid *string
-		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_processor, &v_gyro, &v_internal_esc_uuid, &v_internal_receiver_uuid, &v_internal_vtx_uuid)
+		scanArgs := make([]interface{}, len(cols))
+		m := &FlightController{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "id":
+				scanArgs[i] = &m.Id
+			case "manufacturer":
+				scanArgs[i] = &m.Manufacturer
+			case "model":
+				scanArgs[i] = &m.Model
+			case "weight_g":
+				scanArgs[i] = &m.WeightG
+			case "processor":
+				scanArgs[i] = &m.Processor
+			case "gyro":
+				scanArgs[i] = &m.Gyro
+			case "internal_esc_uuid":
+				scanArgs[i] = &m.InternalEscUuid
+			case "internal_receiver_uuid":
+				scanArgs[i] = &m.InternalReceiverUuid
+			case "internal_vtx_uuid":
+				scanArgs[i] = &m.InternalVtxUuid
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
-		}
-		m := &FlightController{}
-		if v_uuid != nil {
-			m.Uuid = *v_uuid
-		}
-		if v_id != nil {
-			m.Id = *v_id
-		}
-		if v_manufacturer != nil {
-			m.Manufacturer = *v_manufacturer
-		}
-		if v_model != nil {
-			m.Model = *v_model
-		}
-		if v_weight_g != nil {
-			m.WeightG = *v_weight_g
-		}
-		if v_processor != nil {
-			m.Processor = *v_processor
-		}
-		if v_gyro != nil {
-			m.Gyro = *v_gyro
-		}
-		if v_internal_esc_uuid != nil {
-			m.InternalEscUuid = *v_internal_esc_uuid
-		}
-		if v_internal_receiver_uuid != nil {
-			m.InternalReceiverUuid = *v_internal_receiver_uuid
-		}
-		if v_internal_vtx_uuid != nil {
-			m.InternalVtxUuid = *v_internal_vtx_uuid
 		}
 		results = append(results, m)
 	}

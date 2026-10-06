@@ -17,7 +17,7 @@ func NewBatteryServiceHandler(db *pgxpool.Pool) *BatteryServiceHandler {
 }
 
 func (s *BatteryServiceHandler) GetBattery(ctx context.Context, req *connect.Request[GetBatteryRequest]) (*connect.Response[Battery], error) {
-	m, err := GetBattery(ctx, s.db, req.Msg.GetId())
+	m, err := GetBattery(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *BatteryServiceHandler) ListBatteries(ctx context.Context, req *connect.
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListBatteries(ctx, s.db, where, args...)
+	items, err := ListBatteries(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

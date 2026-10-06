@@ -17,7 +17,7 @@ func NewVideoTransmitterServiceHandler(db *pgxpool.Pool) *VideoTransmitterServic
 }
 
 func (s *VideoTransmitterServiceHandler) GetVideoTransmitter(ctx context.Context, req *connect.Request[GetVideoTransmitterRequest]) (*connect.Response[VideoTransmitter], error) {
-	m, err := GetVideoTransmitter(ctx, s.db, req.Msg.GetId())
+	m, err := GetVideoTransmitter(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *VideoTransmitterServiceHandler) ListVideoTransmitters(ctx context.Conte
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListVideoTransmitters(ctx, s.db, where, args...)
+	items, err := ListVideoTransmitters(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

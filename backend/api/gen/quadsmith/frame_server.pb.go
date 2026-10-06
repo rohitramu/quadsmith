@@ -17,7 +17,7 @@ func NewFrameServiceHandler(db *pgxpool.Pool) *FrameServiceHandler {
 }
 
 func (s *FrameServiceHandler) GetFrame(ctx context.Context, req *connect.Request[GetFrameRequest]) (*connect.Response[Frame], error) {
-	m, err := GetFrame(ctx, s.db, req.Msg.GetId())
+	m, err := GetFrame(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *FrameServiceHandler) ListFrames(ctx context.Context, req *connect.Reque
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListFrames(ctx, s.db, where, args...)
+	items, err := ListFrames(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

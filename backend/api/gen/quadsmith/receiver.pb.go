@@ -141,6 +141,7 @@ func (x *Receiver) GetAntennaUuids() []string {
 type GetReceiverRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -182,11 +183,19 @@ func (x *GetReceiverRequest) GetId() string {
 	return ""
 }
 
+func (x *GetReceiverRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
 type ListReceiversRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -240,6 +249,13 @@ func (x *ListReceiversRequest) GetPageToken() string {
 		return x.PageToken
 	}
 	return ""
+}
+
+func (x *ListReceiversRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
 }
 
 type ListReceiversResponse struct {
@@ -308,14 +324,16 @@ const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12,\n" +
 	"\x12frequency_band_ghz\x18\a \x01(\x02R\x10frequencyBandGhz\x12#\n" +
 	"\rhas_telemetry\x18\b \x01(\bR\fhasTelemetry\x12#\n" +
-	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids:\r\xc2\xf3\x18\treceivers\"$\n" +
+	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids:\r\xc2\xf3\x18\treceivers\">\n" +
 	"\x12GetReceiverRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"j\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x84\x01\n" +
 	"\x14ListReceiversRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"r\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\"r\n" +
 	"\x15ListReceiversResponse\x121\n" +
 	"\treceivers\x18\x01 \x03(\v2\x13.quadsmith.ReceiverR\treceivers\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa8\x01\n" +

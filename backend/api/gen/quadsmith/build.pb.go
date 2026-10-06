@@ -179,6 +179,7 @@ func (x *Build) GetCameraUuids() []string {
 type GetBuildRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -220,11 +221,19 @@ func (x *GetBuildRequest) GetId() string {
 	return ""
 }
 
+func (x *GetBuildRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
 type ListBuildsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -278,6 +287,13 @@ func (x *ListBuildsRequest) GetPageToken() string {
 		return x.PageToken
 	}
 	return ""
+}
+
+func (x *ListBuildsRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
 }
 
 type ListBuildsResponse struct {
@@ -354,14 +370,16 @@ const file_quadsmith_build_proto_rawDesc = "" +
 	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12;\n" +
 	"\x0epropeller_uuid\x18\f \x01(\tB\x14\xd2\xf3\x18\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
 	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids:\n" +
-	"\xc2\xf3\x18\x06builds\"!\n" +
+	"\xc2\xf3\x18\x06builds\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"g\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x81\x01\n" +
 	"\x11ListBuildsRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"f\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\"f\n" +
 	"\x12ListBuildsResponse\x12(\n" +
 	"\x06builds\x18\x01 \x03(\v2\x10.quadsmith.BuildR\x06builds\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x93\x01\n" +

@@ -142,6 +142,7 @@ func (x *Battery) GetConnector() string {
 type GetBatteryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -183,11 +184,19 @@ func (x *GetBatteryRequest) GetId() string {
 	return ""
 }
 
+func (x *GetBatteryRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
 type ListBatteriesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -241,6 +250,13 @@ func (x *ListBatteriesRequest) GetPageToken() string {
 		return x.PageToken
 	}
 	return ""
+}
+
+func (x *ListBatteriesRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
 }
 
 type ListBatteriesResponse struct {
@@ -310,14 +326,16 @@ const file_quadsmith_battery_proto_rawDesc = "" +
 	"\fcell_count_s\x18\a \x01(\x05B\x04\xe0\xf3\x18\x01R\n" +
 	"cellCountS\x12\x1c\n" +
 	"\tchemistry\x18\b \x01(\tR\tchemistry\x12\x1c\n" +
-	"\tconnector\x18\t \x01(\tR\tconnector:\r\xc2\xf3\x18\tbatteries\"#\n" +
+	"\tconnector\x18\t \x01(\tR\tconnector:\r\xc2\xf3\x18\tbatteries\"=\n" +
 	"\x11GetBatteryRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"j\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x84\x01\n" +
 	"\x14ListBatteriesRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"q\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\"q\n" +
 	"\x15ListBatteriesResponse\x120\n" +
 	"\tbatteries\x18\x01 \x03(\v2\x12.quadsmith.BatteryR\tbatteries\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa4\x01\n" +

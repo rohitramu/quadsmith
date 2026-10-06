@@ -17,7 +17,7 @@ func NewEscServiceHandler(db *pgxpool.Pool) *EscServiceHandler {
 }
 
 func (s *EscServiceHandler) GetEsc(ctx context.Context, req *connect.Request[GetEscRequest]) (*connect.Response[Esc], error) {
-	m, err := GetEsc(ctx, s.db, req.Msg.GetId())
+	m, err := GetEsc(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *EscServiceHandler) ListEscs(ctx context.Context, req *connect.Request[L
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListEscs(ctx, s.db, where, args...)
+	items, err := ListEscs(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

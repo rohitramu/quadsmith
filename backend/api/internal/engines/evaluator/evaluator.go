@@ -31,7 +31,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	// 1. Fetch Frame
 	var frame *pb.Frame
 	if b.FrameUuid != "" {
-		f, err := pb.GetFrame(ctx, s.db, b.FrameUuid)
+		f, err := pb.GetFrame(ctx, s.db, b.FrameUuid, nil)
 		if err != nil {
 			errors = append(errors, fmt.Sprintf("Frame not found: %s", b.FrameUuid))
 		} else {
@@ -43,7 +43,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	// 2. Fetch Motor
 	var motor *pb.Motor
 	if b.MotorUuid != "" {
-		m, err := pb.GetMotor(ctx, s.db, b.MotorUuid)
+		m, err := pb.GetMotor(ctx, s.db, b.MotorUuid, nil)
 		if err != nil {
 			errors = append(errors, fmt.Sprintf("Motor not found: %s", b.MotorUuid))
 		} else {
@@ -55,7 +55,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	// 3. Fetch Battery
 	var battery *pb.Battery
 	if b.BatteryUuid != "" {
-		bat, err := pb.GetBattery(ctx, s.db, b.BatteryUuid)
+		bat, err := pb.GetBattery(ctx, s.db, b.BatteryUuid, nil)
 		if err != nil {
 			errors = append(errors, fmt.Sprintf("Battery not found: %s", b.BatteryUuid))
 		} else {
@@ -67,7 +67,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	// 4. Fetch Propeller
 	var prop *pb.Propeller
 	if b.PropellerUuid != "" {
-		p, err := pb.GetPropeller(ctx, s.db, b.PropellerUuid)
+		p, err := pb.GetPropeller(ctx, s.db, b.PropellerUuid, nil)
 		if err != nil {
 			errors = append(errors, fmt.Sprintf("Propeller not found: %s", b.PropellerUuid))
 		} else {
@@ -80,7 +80,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	var totalEscs int32 = 0
 	var maxAmps int32 = 0
 	for _, id := range b.EscUuids {
-		esc, err := pb.GetEsc(ctx, s.db, id)
+		esc, err := pb.GetEsc(ctx, s.db, id, nil)
 		if err == nil {
 			totalWeight += esc.WeightG
 			totalEscs += esc.MaxMotors
@@ -92,11 +92,11 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 
 	// 6. Fetch Flight Controller (and Internal ESC)
 	if b.FlightControllerUuid != "" {
-		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid)
+		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
 		if err == nil {
 			totalWeight += fc.WeightG
 			if fc.InternalEscUuid != "" {
-				esc, err := pb.GetEsc(ctx, s.db, fc.InternalEscUuid)
+				esc, err := pb.GetEsc(ctx, s.db, fc.InternalEscUuid, nil)
 				if err == nil {
 					totalEscs += esc.MaxMotors
 					if esc.ContinuousAmps > maxAmps {

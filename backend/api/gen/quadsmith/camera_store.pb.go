@@ -3,6 +3,7 @@ package quadsmith
 
 import (
 	"context"
+	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -13,48 +14,44 @@ func CreateCamera(ctx context.Context, tx pgx.Tx, m *Camera) error {
 	return err
 }
 
-func GetCamera(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Camera, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, protocol, sensor_size, width_mm, lens_size_mm FROM cameras WHERE id = $1 OR uuid::text = $1 LIMIT 1`
-	var v_uuid *string
-	var v_id *string
-	var v_manufacturer *string
-	var v_model *string
-	var v_weight_g *float32
-	var v_protocol *string
-	var v_sensor_size *string
-	var v_width_mm *int32
-	var v_lens_size_mm *float32
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_protocol, &v_sensor_size, &v_width_mm, &v_lens_size_mm)
+func GetCamera(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Camera, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, protocol, sensor_size, width_mm, lens_size_mm"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "protocol", "sensor_size", "width_mm", "lens_size_mm"}
+	}
+	query := `SELECT ` + colsStr + ` FROM cameras WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	m := &Camera{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "id":
+			scanArgs[i] = &m.Id
+		case "manufacturer":
+			scanArgs[i] = &m.Manufacturer
+		case "model":
+			scanArgs[i] = &m.Model
+		case "weight_g":
+			scanArgs[i] = &m.WeightG
+		case "protocol":
+			scanArgs[i] = &m.Protocol
+		case "sensor_size":
+			scanArgs[i] = &m.SensorSize
+		case "width_mm":
+			scanArgs[i] = &m.WidthMm
+		case "lens_size_mm":
+			scanArgs[i] = &m.LensSizeMm
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
-	}
-	m := &Camera{}
-	if v_uuid != nil {
-		m.Uuid = *v_uuid
-	}
-	if v_id != nil {
-		m.Id = *v_id
-	}
-	if v_manufacturer != nil {
-		m.Manufacturer = *v_manufacturer
-	}
-	if v_model != nil {
-		m.Model = *v_model
-	}
-	if v_weight_g != nil {
-		m.WeightG = *v_weight_g
-	}
-	if v_protocol != nil {
-		m.Protocol = *v_protocol
-	}
-	if v_sensor_size != nil {
-		m.SensorSize = *v_sensor_size
-	}
-	if v_width_mm != nil {
-		m.WidthMm = *v_width_mm
-	}
-	if v_lens_size_mm != nil {
-		m.LensSizeMm = *v_lens_size_mm
 	}
 	return m, nil
 }
@@ -71,8 +68,14 @@ func DeleteCamera(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListCameras(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Camera, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, protocol, sensor_size, width_mm, lens_size_mm FROM cameras`
+func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Camera, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, protocol, sensor_size, width_mm, lens_size_mm"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "protocol", "sensor_size", "width_mm", "lens_size_mm"}
+	}
+	query := `SELECT ` + colsStr + ` FROM cameras`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -81,48 +84,38 @@ func ListCameras(ctx context.Context, db *pgxpool.Pool, whereClause string, args
 		return nil, err
 	}
 	defer rows.Close()
-	var results []*Camera
+	results := make([]*Camera, 0)
 	for rows.Next() {
-		var v_uuid *string
-		var v_id *string
-		var v_manufacturer *string
-		var v_model *string
-		var v_weight_g *float32
-		var v_protocol *string
-		var v_sensor_size *string
-		var v_width_mm *int32
-		var v_lens_size_mm *float32
-		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_protocol, &v_sensor_size, &v_width_mm, &v_lens_size_mm)
+		scanArgs := make([]interface{}, len(cols))
+		m := &Camera{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "id":
+				scanArgs[i] = &m.Id
+			case "manufacturer":
+				scanArgs[i] = &m.Manufacturer
+			case "model":
+				scanArgs[i] = &m.Model
+			case "weight_g":
+				scanArgs[i] = &m.WeightG
+			case "protocol":
+				scanArgs[i] = &m.Protocol
+			case "sensor_size":
+				scanArgs[i] = &m.SensorSize
+			case "width_mm":
+				scanArgs[i] = &m.WidthMm
+			case "lens_size_mm":
+				scanArgs[i] = &m.LensSizeMm
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
-		}
-		m := &Camera{}
-		if v_uuid != nil {
-			m.Uuid = *v_uuid
-		}
-		if v_id != nil {
-			m.Id = *v_id
-		}
-		if v_manufacturer != nil {
-			m.Manufacturer = *v_manufacturer
-		}
-		if v_model != nil {
-			m.Model = *v_model
-		}
-		if v_weight_g != nil {
-			m.WeightG = *v_weight_g
-		}
-		if v_protocol != nil {
-			m.Protocol = *v_protocol
-		}
-		if v_sensor_size != nil {
-			m.SensorSize = *v_sensor_size
-		}
-		if v_width_mm != nil {
-			m.WidthMm = *v_width_mm
-		}
-		if v_lens_size_mm != nil {
-			m.LensSizeMm = *v_lens_size_mm
 		}
 		results = append(results, m)
 	}

@@ -3,6 +3,7 @@ package quadsmith
 
 import (
 	"context"
+	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -13,52 +14,46 @@ func CreateAntenna(ctx context.Context, tx pgx.Tx, m *Antenna) error {
 	return err
 }
 
-func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Antenna, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, connector, polarization, frequency_band_ghz, length_mm, gain_dbi FROM antennas WHERE id = $1 OR uuid::text = $1 LIMIT 1`
-	var v_uuid *string
-	var v_id *string
-	var v_manufacturer *string
-	var v_model *string
-	var v_weight_g *float32
-	var v_connector *string
-	var v_polarization *string
-	var v_frequency_band_ghz *float32
-	var v_length_mm *float32
-	var v_gain_dbi *float32
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_connector, &v_polarization, &v_frequency_band_ghz, &v_length_mm, &v_gain_dbi)
+func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Antenna, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, connector, polarization, frequency_band_ghz, length_mm, gain_dbi"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "connector", "polarization", "frequency_band_ghz", "length_mm", "gain_dbi"}
+	}
+	query := `SELECT ` + colsStr + ` FROM antennas WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	m := &Antenna{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "id":
+			scanArgs[i] = &m.Id
+		case "manufacturer":
+			scanArgs[i] = &m.Manufacturer
+		case "model":
+			scanArgs[i] = &m.Model
+		case "weight_g":
+			scanArgs[i] = &m.WeightG
+		case "connector":
+			scanArgs[i] = &m.Connector
+		case "polarization":
+			scanArgs[i] = &m.Polarization
+		case "frequency_band_ghz":
+			scanArgs[i] = &m.FrequencyBandGhz
+		case "length_mm":
+			scanArgs[i] = &m.LengthMm
+		case "gain_dbi":
+			scanArgs[i] = &m.GainDbi
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
-	}
-	m := &Antenna{}
-	if v_uuid != nil {
-		m.Uuid = *v_uuid
-	}
-	if v_id != nil {
-		m.Id = *v_id
-	}
-	if v_manufacturer != nil {
-		m.Manufacturer = *v_manufacturer
-	}
-	if v_model != nil {
-		m.Model = *v_model
-	}
-	if v_weight_g != nil {
-		m.WeightG = *v_weight_g
-	}
-	if v_connector != nil {
-		m.Connector = *v_connector
-	}
-	if v_polarization != nil {
-		m.Polarization = *v_polarization
-	}
-	if v_frequency_band_ghz != nil {
-		m.FrequencyBandGhz = *v_frequency_band_ghz
-	}
-	if v_length_mm != nil {
-		m.LengthMm = *v_length_mm
-	}
-	if v_gain_dbi != nil {
-		m.GainDbi = *v_gain_dbi
 	}
 	return m, nil
 }
@@ -75,8 +70,14 @@ func DeleteAntenna(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListAntennas(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Antenna, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, connector, polarization, frequency_band_ghz, length_mm, gain_dbi FROM antennas`
+func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Antenna, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, connector, polarization, frequency_band_ghz, length_mm, gain_dbi"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "connector", "polarization", "frequency_band_ghz", "length_mm", "gain_dbi"}
+	}
+	query := `SELECT ` + colsStr + ` FROM antennas`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -85,52 +86,40 @@ func ListAntennas(ctx context.Context, db *pgxpool.Pool, whereClause string, arg
 		return nil, err
 	}
 	defer rows.Close()
-	var results []*Antenna
+	results := make([]*Antenna, 0)
 	for rows.Next() {
-		var v_uuid *string
-		var v_id *string
-		var v_manufacturer *string
-		var v_model *string
-		var v_weight_g *float32
-		var v_connector *string
-		var v_polarization *string
-		var v_frequency_band_ghz *float32
-		var v_length_mm *float32
-		var v_gain_dbi *float32
-		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_connector, &v_polarization, &v_frequency_band_ghz, &v_length_mm, &v_gain_dbi)
+		scanArgs := make([]interface{}, len(cols))
+		m := &Antenna{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "id":
+				scanArgs[i] = &m.Id
+			case "manufacturer":
+				scanArgs[i] = &m.Manufacturer
+			case "model":
+				scanArgs[i] = &m.Model
+			case "weight_g":
+				scanArgs[i] = &m.WeightG
+			case "connector":
+				scanArgs[i] = &m.Connector
+			case "polarization":
+				scanArgs[i] = &m.Polarization
+			case "frequency_band_ghz":
+				scanArgs[i] = &m.FrequencyBandGhz
+			case "length_mm":
+				scanArgs[i] = &m.LengthMm
+			case "gain_dbi":
+				scanArgs[i] = &m.GainDbi
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
-		}
-		m := &Antenna{}
-		if v_uuid != nil {
-			m.Uuid = *v_uuid
-		}
-		if v_id != nil {
-			m.Id = *v_id
-		}
-		if v_manufacturer != nil {
-			m.Manufacturer = *v_manufacturer
-		}
-		if v_model != nil {
-			m.Model = *v_model
-		}
-		if v_weight_g != nil {
-			m.WeightG = *v_weight_g
-		}
-		if v_connector != nil {
-			m.Connector = *v_connector
-		}
-		if v_polarization != nil {
-			m.Polarization = *v_polarization
-		}
-		if v_frequency_band_ghz != nil {
-			m.FrequencyBandGhz = *v_frequency_band_ghz
-		}
-		if v_length_mm != nil {
-			m.LengthMm = *v_length_mm
-		}
-		if v_gain_dbi != nil {
-			m.GainDbi = *v_gain_dbi
 		}
 		results = append(results, m)
 	}

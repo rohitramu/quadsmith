@@ -17,7 +17,7 @@ func NewMotorServiceHandler(db *pgxpool.Pool) *MotorServiceHandler {
 }
 
 func (s *MotorServiceHandler) GetMotor(ctx context.Context, req *connect.Request[GetMotorRequest]) (*connect.Response[Motor], error) {
-	m, err := GetMotor(ctx, s.db, req.Msg.GetId())
+	m, err := GetMotor(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *MotorServiceHandler) ListMotors(ctx context.Context, req *connect.Reque
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListMotors(ctx, s.db, where, args...)
+	items, err := ListMotors(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

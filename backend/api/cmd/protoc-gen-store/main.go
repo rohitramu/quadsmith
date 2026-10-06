@@ -42,7 +42,8 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 	g.P("package ", file.GoPackageName)
 	g.P()
 	g.P(`import (`)
-	g.P(`	"context"`)
+	g.P(`	"context"
+	"strings"`)
 	g.P(`	"github.com/jackc/pgx/v5"`)
 	g.P(`	"github.com/jackc/pgx/v5/pgxpool"`)
 	g.P(`)`)
@@ -94,7 +95,6 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	colsStr := strings.Join(colNames, ", ")
 	valsStr := strings.Join(placeHolders, ", ")
 	mFieldsStr := strings.Join(mFields, ", ")
-	scanAddrsStr := strings.Join(scanAddrs, ", ")
 
 	// --- CREATE ---
 	g.P("func Create", msgName, "(ctx context.Context, tx pgx.Tx, m *", msgName, ") error {")
@@ -104,20 +104,35 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("}")
 	g.P()
 
+	
 	// --- GET ---
-	g.P("func Get", msgName, "(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*", msgName, ", error) {")
-	g.P("	query := `SELECT ", colsStr, " FROM ", tableName, " WHERE id = $1 OR uuid::text = $1 LIMIT 1`")
-	for _, v := range scanVars {
-		g.P("	", v)
+	g.P("func Get", msgName, "(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*", msgName, ", error) {")
+	g.P("	colsStr := \"", colsStr, "\"")
+	g.P("	if len(cols) > 0 {")
+	g.P("		colsStr = strings.Join(cols, \", \")")
+	g.P("	} else {")
+	g.P("       cols = []string{\"" + strings.ReplaceAll(colsStr, ", ", "\", \"") + "\"}")
+	g.P("   }")
+	g.P("	query := `SELECT ` + colsStr + ` FROM ", tableName, " WHERE id = $1 OR uuid::text = $1 LIMIT 1`")
+	
+	g.P("	scanArgs := make([]interface{}, len(cols))")
+	g.P("	m := &", msgName, "{}")
+	g.P("	for i, col := range cols {")
+	g.P("		switch col {")
+	for j, colName := range colNames {
+		g.P("		case \"", colName, "\":")
+		g.P("			scanArgs[i] = &m.", msg.Fields[j].GoName)
 	}
-	g.P("	err := db.QueryRow(ctx, query, idOrUuid).Scan(", scanAddrsStr, ")")
+	g.P("		default:")
+	g.P("			var dummy interface{}")
+	g.P("			scanArgs[i] = &dummy")
+	g.P("		}")
+	g.P("	}")
+
+	g.P("	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)")
 	g.P("	if err != nil {")
 	g.P("		return nil, err")
 	g.P("	}")
-	g.P("	m := &", msgName, "{}")
-	for _, a := range assignments {
-		g.P("	", a)
-	}
 	g.P("	return m, nil")
 	g.P("}")
 	g.P()
@@ -125,16 +140,12 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	// --- UPDATE ---
 	var updateSets []string
 	var updateArgs []string
-	// Arg 1 is idOrUuid. The rest are fields.
-	updateArgs = append(updateArgs, "m.Id") // Using Id for matching as well? Wait, we should probably match on Uuid or Id.
-	// Actually, matching on UUID is safer for updates: `WHERE uuid = $1`
-	// Let's assume m.Uuid is populated.
-	updateArgs[0] = "m.Uuid"
+	updateArgs = append(updateArgs, "m.Uuid")
 	
 	argIdx := 2
 	for i, colName := range colNames {
 		if colName == "uuid" || colName == "id" {
-			continue // Don't update primary keys or slugs generally, or we can update id.
+			continue
 		}
 		updateSets = append(updateSets, fmt.Sprintf("%s = $%d", colName, argIdx))
 		updateArgs = append(updateArgs, mFields[i])
@@ -165,8 +176,14 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		pluralName = strings.TrimSuffix(msgName, "y") + "ies"
 	}
 	
-	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*", msgName, ", error) {")
-	g.P("	query := `SELECT ", colsStr, " FROM ", tableName, "`")
+	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*", msgName, ", error) {")
+	g.P("	colsStr := \"", colsStr, "\"")
+	g.P("	if len(cols) > 0 {")
+	g.P("		colsStr = strings.Join(cols, \", \")")
+	g.P("	} else {")
+	g.P("       cols = []string{\"" + strings.ReplaceAll(colsStr, ", ", "\", \"") + "\"}")
+	g.P("   }")
+	g.P("	query := `SELECT ` + colsStr + ` FROM ", tableName, "`")
 	g.P("	if whereClause != \"\" {")
 	g.P("		query += \" WHERE \" + whereClause")
 	g.P("	}")
@@ -177,22 +194,30 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	defer rows.Close()")
 	g.P("	results := make([]*", msgName, ", 0)")
 	g.P("	for rows.Next() {")
-	for _, v := range scanVars {
-		g.P("		", v)
+	
+	g.P("		scanArgs := make([]interface{}, len(cols))")
+	g.P("		m := &", msgName, "{}")
+	g.P("		for i, col := range cols {")
+	g.P("			switch col {")
+	for j, colName := range colNames {
+		g.P("			case \"", colName, "\":")
+		g.P("				scanArgs[i] = &m.", msg.Fields[j].GoName)
 	}
-	g.P("		err := rows.Scan(", scanAddrsStr, ")")
+	g.P("			default:")
+	g.P("				var dummy interface{}")
+	g.P("				scanArgs[i] = &dummy")
+	g.P("			}")
+	g.P("		}")
+	g.P("		err := rows.Scan(scanArgs...)")
 	g.P("		if err != nil {")
 	g.P("			return nil, err")
 	g.P("		}")
-	g.P("		m := &", msgName, "{}")
-	for _, a := range assignments {
-		g.P("		", a)
-	}
 	g.P("		results = append(results, m)")
 	g.P("	}")
 	g.P("	return results, nil")
 	g.P("}")
 	g.P()
+
 }
 
 func goDataType(desc protoreflect.FieldDescriptor) string {

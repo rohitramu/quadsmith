@@ -3,6 +3,7 @@ package quadsmith
 
 import (
 	"context"
+	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -13,48 +14,44 @@ func CreateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
 	return err
 }
 
-func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Esc, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, max_motors, continuous_amps, burst_amps, firmware FROM escs WHERE id = $1 OR uuid::text = $1 LIMIT 1`
-	var v_uuid *string
-	var v_id *string
-	var v_manufacturer *string
-	var v_model *string
-	var v_weight_g *float32
-	var v_max_motors *int32
-	var v_continuous_amps *int32
-	var v_burst_amps *int32
-	var v_firmware *string
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_max_motors, &v_continuous_amps, &v_burst_amps, &v_firmware)
+func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Esc, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, max_motors, continuous_amps, burst_amps, firmware"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "max_motors", "continuous_amps", "burst_amps", "firmware"}
+	}
+	query := `SELECT ` + colsStr + ` FROM escs WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	m := &Esc{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "id":
+			scanArgs[i] = &m.Id
+		case "manufacturer":
+			scanArgs[i] = &m.Manufacturer
+		case "model":
+			scanArgs[i] = &m.Model
+		case "weight_g":
+			scanArgs[i] = &m.WeightG
+		case "max_motors":
+			scanArgs[i] = &m.MaxMotors
+		case "continuous_amps":
+			scanArgs[i] = &m.ContinuousAmps
+		case "burst_amps":
+			scanArgs[i] = &m.BurstAmps
+		case "firmware":
+			scanArgs[i] = &m.Firmware
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
-	}
-	m := &Esc{}
-	if v_uuid != nil {
-		m.Uuid = *v_uuid
-	}
-	if v_id != nil {
-		m.Id = *v_id
-	}
-	if v_manufacturer != nil {
-		m.Manufacturer = *v_manufacturer
-	}
-	if v_model != nil {
-		m.Model = *v_model
-	}
-	if v_weight_g != nil {
-		m.WeightG = *v_weight_g
-	}
-	if v_max_motors != nil {
-		m.MaxMotors = *v_max_motors
-	}
-	if v_continuous_amps != nil {
-		m.ContinuousAmps = *v_continuous_amps
-	}
-	if v_burst_amps != nil {
-		m.BurstAmps = *v_burst_amps
-	}
-	if v_firmware != nil {
-		m.Firmware = *v_firmware
 	}
 	return m, nil
 }
@@ -71,8 +68,14 @@ func DeleteEsc(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListEscs(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Esc, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, max_motors, continuous_amps, burst_amps, firmware FROM escs`
+func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Esc, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, max_motors, continuous_amps, burst_amps, firmware"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "max_motors", "continuous_amps", "burst_amps", "firmware"}
+	}
+	query := `SELECT ` + colsStr + ` FROM escs`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -81,48 +84,38 @@ func ListEscs(ctx context.Context, db *pgxpool.Pool, whereClause string, args ..
 		return nil, err
 	}
 	defer rows.Close()
-	var results []*Esc
+	results := make([]*Esc, 0)
 	for rows.Next() {
-		var v_uuid *string
-		var v_id *string
-		var v_manufacturer *string
-		var v_model *string
-		var v_weight_g *float32
-		var v_max_motors *int32
-		var v_continuous_amps *int32
-		var v_burst_amps *int32
-		var v_firmware *string
-		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_max_motors, &v_continuous_amps, &v_burst_amps, &v_firmware)
+		scanArgs := make([]interface{}, len(cols))
+		m := &Esc{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "id":
+				scanArgs[i] = &m.Id
+			case "manufacturer":
+				scanArgs[i] = &m.Manufacturer
+			case "model":
+				scanArgs[i] = &m.Model
+			case "weight_g":
+				scanArgs[i] = &m.WeightG
+			case "max_motors":
+				scanArgs[i] = &m.MaxMotors
+			case "continuous_amps":
+				scanArgs[i] = &m.ContinuousAmps
+			case "burst_amps":
+				scanArgs[i] = &m.BurstAmps
+			case "firmware":
+				scanArgs[i] = &m.Firmware
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
-		}
-		m := &Esc{}
-		if v_uuid != nil {
-			m.Uuid = *v_uuid
-		}
-		if v_id != nil {
-			m.Id = *v_id
-		}
-		if v_manufacturer != nil {
-			m.Manufacturer = *v_manufacturer
-		}
-		if v_model != nil {
-			m.Model = *v_model
-		}
-		if v_weight_g != nil {
-			m.WeightG = *v_weight_g
-		}
-		if v_max_motors != nil {
-			m.MaxMotors = *v_max_motors
-		}
-		if v_continuous_amps != nil {
-			m.ContinuousAmps = *v_continuous_amps
-		}
-		if v_burst_amps != nil {
-			m.BurstAmps = *v_burst_amps
-		}
-		if v_firmware != nil {
-			m.Firmware = *v_firmware
 		}
 		results = append(results, m)
 	}

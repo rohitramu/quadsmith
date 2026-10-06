@@ -3,6 +3,7 @@ package quadsmith
 
 import (
 	"context"
+	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -13,48 +14,44 @@ func CreatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
 	return err
 }
 
-func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Propeller, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, diameter_inches, pitch_inches, blades, material FROM propellers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
-	var v_uuid *string
-	var v_id *string
-	var v_manufacturer *string
-	var v_model *string
-	var v_weight_g *float32
-	var v_diameter_inches *float32
-	var v_pitch_inches *float32
-	var v_blades *int32
-	var v_material *string
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_diameter_inches, &v_pitch_inches, &v_blades, &v_material)
+func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Propeller, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, diameter_inches, pitch_inches, blades, material"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "diameter_inches", "pitch_inches", "blades", "material"}
+	}
+	query := `SELECT ` + colsStr + ` FROM propellers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	m := &Propeller{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "id":
+			scanArgs[i] = &m.Id
+		case "manufacturer":
+			scanArgs[i] = &m.Manufacturer
+		case "model":
+			scanArgs[i] = &m.Model
+		case "weight_g":
+			scanArgs[i] = &m.WeightG
+		case "diameter_inches":
+			scanArgs[i] = &m.DiameterInches
+		case "pitch_inches":
+			scanArgs[i] = &m.PitchInches
+		case "blades":
+			scanArgs[i] = &m.Blades
+		case "material":
+			scanArgs[i] = &m.Material
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
-	}
-	m := &Propeller{}
-	if v_uuid != nil {
-		m.Uuid = *v_uuid
-	}
-	if v_id != nil {
-		m.Id = *v_id
-	}
-	if v_manufacturer != nil {
-		m.Manufacturer = *v_manufacturer
-	}
-	if v_model != nil {
-		m.Model = *v_model
-	}
-	if v_weight_g != nil {
-		m.WeightG = *v_weight_g
-	}
-	if v_diameter_inches != nil {
-		m.DiameterInches = *v_diameter_inches
-	}
-	if v_pitch_inches != nil {
-		m.PitchInches = *v_pitch_inches
-	}
-	if v_blades != nil {
-		m.Blades = *v_blades
-	}
-	if v_material != nil {
-		m.Material = *v_material
 	}
 	return m, nil
 }
@@ -71,8 +68,14 @@ func DeletePropeller(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListPropellers(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Propeller, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, diameter_inches, pitch_inches, blades, material FROM propellers`
+func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Propeller, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, diameter_inches, pitch_inches, blades, material"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "diameter_inches", "pitch_inches", "blades", "material"}
+	}
+	query := `SELECT ` + colsStr + ` FROM propellers`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -81,48 +84,38 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, whereClause string, a
 		return nil, err
 	}
 	defer rows.Close()
-	var results []*Propeller
+	results := make([]*Propeller, 0)
 	for rows.Next() {
-		var v_uuid *string
-		var v_id *string
-		var v_manufacturer *string
-		var v_model *string
-		var v_weight_g *float32
-		var v_diameter_inches *float32
-		var v_pitch_inches *float32
-		var v_blades *int32
-		var v_material *string
-		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_diameter_inches, &v_pitch_inches, &v_blades, &v_material)
+		scanArgs := make([]interface{}, len(cols))
+		m := &Propeller{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "id":
+				scanArgs[i] = &m.Id
+			case "manufacturer":
+				scanArgs[i] = &m.Manufacturer
+			case "model":
+				scanArgs[i] = &m.Model
+			case "weight_g":
+				scanArgs[i] = &m.WeightG
+			case "diameter_inches":
+				scanArgs[i] = &m.DiameterInches
+			case "pitch_inches":
+				scanArgs[i] = &m.PitchInches
+			case "blades":
+				scanArgs[i] = &m.Blades
+			case "material":
+				scanArgs[i] = &m.Material
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
-		}
-		m := &Propeller{}
-		if v_uuid != nil {
-			m.Uuid = *v_uuid
-		}
-		if v_id != nil {
-			m.Id = *v_id
-		}
-		if v_manufacturer != nil {
-			m.Manufacturer = *v_manufacturer
-		}
-		if v_model != nil {
-			m.Model = *v_model
-		}
-		if v_weight_g != nil {
-			m.WeightG = *v_weight_g
-		}
-		if v_diameter_inches != nil {
-			m.DiameterInches = *v_diameter_inches
-		}
-		if v_pitch_inches != nil {
-			m.PitchInches = *v_pitch_inches
-		}
-		if v_blades != nil {
-			m.Blades = *v_blades
-		}
-		if v_material != nil {
-			m.Material = *v_material
 		}
 		results = append(results, m)
 	}

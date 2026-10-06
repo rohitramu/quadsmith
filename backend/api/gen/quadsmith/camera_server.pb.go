@@ -17,7 +17,7 @@ func NewCameraServiceHandler(db *pgxpool.Pool) *CameraServiceHandler {
 }
 
 func (s *CameraServiceHandler) GetCamera(ctx context.Context, req *connect.Request[GetCameraRequest]) (*connect.Response[Camera], error) {
-	m, err := GetCamera(ctx, s.db, req.Msg.GetId())
+	m, err := GetCamera(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *CameraServiceHandler) ListCameras(ctx context.Context, req *connect.Req
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListCameras(ctx, s.db, where, args...)
+	items, err := ListCameras(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

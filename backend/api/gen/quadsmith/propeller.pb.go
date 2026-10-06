@@ -142,6 +142,7 @@ func (x *Propeller) GetMaterial() string {
 type GetPropellerRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -183,11 +184,19 @@ func (x *GetPropellerRequest) GetId() string {
 	return ""
 }
 
+func (x *GetPropellerRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
 type ListPropellersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -241,6 +250,13 @@ func (x *ListPropellersRequest) GetPageToken() string {
 		return x.PageToken
 	}
 	return ""
+}
+
+func (x *ListPropellersRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
 }
 
 type ListPropellersResponse struct {
@@ -310,14 +326,16 @@ const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\fpitch_inches\x18\a \x01(\x02R\vpitchInches\x12\x16\n" +
 	"\x06blades\x18\b \x01(\x05R\x06blades\x12\x1a\n" +
 	"\bmaterial\x18\t \x01(\tR\bmaterial:\x0e\xc2\xf3\x18\n" +
-	"propellers\"%\n" +
+	"propellers\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"k\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x85\x01\n" +
 	"\x15ListPropellersRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"v\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\"v\n" +
 	"\x16ListPropellersResponse\x124\n" +
 	"\n" +
 	"propellers\x18\x01 \x03(\v2\x14.quadsmith.PropellerR\n" +

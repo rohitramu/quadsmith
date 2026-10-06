@@ -73,9 +73,10 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 		g.P("}")
 		g.P()
 
+		
 		// Get
 		g.P("func (s *", serviceName, "Handler) Get", msgName, "(ctx context.Context, req *connect.Request[Get", msgName, "Request]) (*connect.Response[", msgName, "], error) {")
-		g.P("	m, err := Get", msgName, "(ctx, s.db, req.Msg.GetId())")
+		g.P("	m, err := Get", msgName, "(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())")
 		g.P("	if err != nil {")
 		g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
 		g.P("	}")
@@ -89,13 +90,13 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 		g.P("	if err != nil {")
 		g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, err)")
 		g.P("	}")
-		g.P("	items, err := List", pluralName, "(ctx, s.db, where, args...)")
+		g.P("	items, err := List", pluralName, "(ctx, s.db, req.Msg.GetColumns(), where, args...)")
 		g.P("	if err != nil {")
 		g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
 		g.P("	}")
 		g.P("	res := &List", pluralName, "Response{", pluralName, ": items}")
 		g.P("	return connect.NewResponse(res), nil")
 		g.P("}")
-		g.P()
+
 	}
 }

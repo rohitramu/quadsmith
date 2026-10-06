@@ -151,6 +151,7 @@ func (x *Antenna) GetGainDbi() float32 {
 type GetAntennaRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -192,11 +193,19 @@ func (x *GetAntennaRequest) GetId() string {
 	return ""
 }
 
+func (x *GetAntennaRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
 type ListAntennasRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -250,6 +259,13 @@ func (x *ListAntennasRequest) GetPageToken() string {
 		return x.PageToken
 	}
 	return ""
+}
+
+func (x *ListAntennasRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
 }
 
 type ListAntennasResponse struct {
@@ -320,14 +336,16 @@ const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\x12frequency_band_ghz\x18\b \x01(\x02R\x10frequencyBandGhz\x12\x1b\n" +
 	"\tlength_mm\x18\t \x01(\x02R\blengthMm\x12\x19\n" +
 	"\bgain_dbi\x18\n" +
-	" \x01(\x02R\againDbi:\f\xc2\xf3\x18\bantennas\"#\n" +
+	" \x01(\x02R\againDbi:\f\xc2\xf3\x18\bantennas\"=\n" +
 	"\x11GetAntennaRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"i\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x83\x01\n" +
 	"\x13ListAntennasRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"n\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\"n\n" +
 	"\x14ListAntennasResponse\x12.\n" +
 	"\bantennas\x18\x01 \x03(\v2\x12.quadsmith.AntennaR\bantennas\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa1\x01\n" +

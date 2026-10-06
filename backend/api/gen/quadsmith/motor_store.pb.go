@@ -3,6 +3,7 @@ package quadsmith
 
 import (
 	"context"
+	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -13,44 +14,42 @@ func CreateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
 	return err
 }
 
-func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Motor, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv FROM motors WHERE id = $1 OR uuid::text = $1 LIMIT 1`
-	var v_uuid *string
-	var v_id *string
-	var v_manufacturer *string
-	var v_model *string
-	var v_weight_g *float32
-	var v_stator_diameter_mm *float32
-	var v_stator_height_mm *float32
-	var v_kv *int32
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_stator_diameter_mm, &v_stator_height_mm, &v_kv)
+func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Motor, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv"}
+	}
+	query := `SELECT ` + colsStr + ` FROM motors WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	m := &Motor{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "id":
+			scanArgs[i] = &m.Id
+		case "manufacturer":
+			scanArgs[i] = &m.Manufacturer
+		case "model":
+			scanArgs[i] = &m.Model
+		case "weight_g":
+			scanArgs[i] = &m.WeightG
+		case "stator_diameter_mm":
+			scanArgs[i] = &m.StatorDiameterMm
+		case "stator_height_mm":
+			scanArgs[i] = &m.StatorHeightMm
+		case "kv":
+			scanArgs[i] = &m.Kv
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
-	}
-	m := &Motor{}
-	if v_uuid != nil {
-		m.Uuid = *v_uuid
-	}
-	if v_id != nil {
-		m.Id = *v_id
-	}
-	if v_manufacturer != nil {
-		m.Manufacturer = *v_manufacturer
-	}
-	if v_model != nil {
-		m.Model = *v_model
-	}
-	if v_weight_g != nil {
-		m.WeightG = *v_weight_g
-	}
-	if v_stator_diameter_mm != nil {
-		m.StatorDiameterMm = *v_stator_diameter_mm
-	}
-	if v_stator_height_mm != nil {
-		m.StatorHeightMm = *v_stator_height_mm
-	}
-	if v_kv != nil {
-		m.Kv = *v_kv
 	}
 	return m, nil
 }
@@ -67,8 +66,14 @@ func DeleteMotor(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListMotors(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Motor, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv FROM motors`
+func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Motor, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, stator_diameter_mm, stator_height_mm, kv"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv"}
+	}
+	query := `SELECT ` + colsStr + ` FROM motors`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -77,44 +82,36 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, whereClause string, args 
 		return nil, err
 	}
 	defer rows.Close()
-	var results []*Motor
+	results := make([]*Motor, 0)
 	for rows.Next() {
-		var v_uuid *string
-		var v_id *string
-		var v_manufacturer *string
-		var v_model *string
-		var v_weight_g *float32
-		var v_stator_diameter_mm *float32
-		var v_stator_height_mm *float32
-		var v_kv *int32
-		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_stator_diameter_mm, &v_stator_height_mm, &v_kv)
+		scanArgs := make([]interface{}, len(cols))
+		m := &Motor{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "id":
+				scanArgs[i] = &m.Id
+			case "manufacturer":
+				scanArgs[i] = &m.Manufacturer
+			case "model":
+				scanArgs[i] = &m.Model
+			case "weight_g":
+				scanArgs[i] = &m.WeightG
+			case "stator_diameter_mm":
+				scanArgs[i] = &m.StatorDiameterMm
+			case "stator_height_mm":
+				scanArgs[i] = &m.StatorHeightMm
+			case "kv":
+				scanArgs[i] = &m.Kv
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
-		}
-		m := &Motor{}
-		if v_uuid != nil {
-			m.Uuid = *v_uuid
-		}
-		if v_id != nil {
-			m.Id = *v_id
-		}
-		if v_manufacturer != nil {
-			m.Manufacturer = *v_manufacturer
-		}
-		if v_model != nil {
-			m.Model = *v_model
-		}
-		if v_weight_g != nil {
-			m.WeightG = *v_weight_g
-		}
-		if v_stator_diameter_mm != nil {
-			m.StatorDiameterMm = *v_stator_diameter_mm
-		}
-		if v_stator_height_mm != nil {
-			m.StatorHeightMm = *v_stator_height_mm
-		}
-		if v_kv != nil {
-			m.Kv = *v_kv
 		}
 		results = append(results, m)
 	}

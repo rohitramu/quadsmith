@@ -17,7 +17,7 @@ func NewReceiverServiceHandler(db *pgxpool.Pool) *ReceiverServiceHandler {
 }
 
 func (s *ReceiverServiceHandler) GetReceiver(ctx context.Context, req *connect.Request[GetReceiverRequest]) (*connect.Response[Receiver], error) {
-	m, err := GetReceiver(ctx, s.db, req.Msg.GetId())
+	m, err := GetReceiver(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *ReceiverServiceHandler) ListReceivers(ctx context.Context, req *connect
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListReceivers(ctx, s.db, where, args...)
+	items, err := ListReceivers(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

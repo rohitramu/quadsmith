@@ -17,7 +17,7 @@ func NewAntennaServiceHandler(db *pgxpool.Pool) *AntennaServiceHandler {
 }
 
 func (s *AntennaServiceHandler) GetAntenna(ctx context.Context, req *connect.Request[GetAntennaRequest]) (*connect.Response[Antenna], error) {
-	m, err := GetAntenna(ctx, s.db, req.Msg.GetId())
+	m, err := GetAntenna(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *AntennaServiceHandler) ListAntennas(ctx context.Context, req *connect.R
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListAntennas(ctx, s.db, where, args...)
+	items, err := ListAntennas(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

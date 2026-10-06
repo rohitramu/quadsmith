@@ -37,12 +37,14 @@ message Esc {
 // ---------------------------------------------------------
 message GetEscRequest {
   string id = 1;
+  repeated string columns = 2;
 }
 
 message ListEscsRequest {
   string filter = 1;
   int32 page_size = 2;
   string page_token = 3;
+  repeated string columns = 4;
 }
 
 message ListEscsResponse {

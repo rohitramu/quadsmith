@@ -6,6 +6,10 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+		"reflect"
+		"sort"
+		"strings"
+		"text/tabwriter"
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
@@ -17,7 +21,8 @@ import (
 
 var (
 	apiURL = "http://localhost:8080"
-	output = "yaml"
+	jsonOut bool
+	yamlOut bool
 )
 
 func main() {
@@ -29,25 +34,32 @@ func main() {
 		Use:   "qs",
 		Short: "Quadsmith CLI",
 	}
-	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "yaml", "Output format (yaml|json)")
+	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
+	rootCmd.PersistentFlags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 
 
 	// --- Motors ---
 	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, apiURL)
 	motorsCmd := &cobra.Command{Use: "motors"}
-	motorsCmd.AddCommand(&cobra.Command{
+	motorsListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListMotorsRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListMotorsRequest{Filter: filter, Columns: columns}
 			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Motors)
 		},
+	}
+	motorsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	motorsListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	motorsListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Motor{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	motorsCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	motorsCmd.AddCommand(motorsListCmd)
 
-	motorsCmd.AddCommand(&cobra.Command{
+	motorsGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -61,30 +73,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetMotorRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetMotorRequest{Id: args[0], Columns: columns}
 			res, err := motorClient.GetMotor(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	motorsGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	motorsGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Motor{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	motorsCmd.AddCommand(motorsGetCmd)
+
 	rootCmd.AddCommand(motorsCmd)
 
 	// --- Frames ---
 	frameClient := quadsmithconnect.NewFrameServiceClient(http.DefaultClient, apiURL)
 	framesCmd := &cobra.Command{Use: "frames"}
-	framesCmd.AddCommand(&cobra.Command{
+	framesListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListFramesRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListFramesRequest{Filter: filter, Columns: columns}
 			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Frames)
 		},
+	}
+	framesListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	framesListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	framesListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Frame{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	framesCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	framesCmd.AddCommand(framesListCmd)
 
-	framesCmd.AddCommand(&cobra.Command{
+	framesGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -98,30 +123,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetFrameRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetFrameRequest{Id: args[0], Columns: columns}
 			res, err := frameClient.GetFrame(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	framesGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	framesGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Frame{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	framesCmd.AddCommand(framesGetCmd)
+
 	rootCmd.AddCommand(framesCmd)
 
 	// --- Batteries ---
 	batteryClient := quadsmithconnect.NewBatteryServiceClient(http.DefaultClient, apiURL)
 	batteriesCmd := &cobra.Command{Use: "batteries"}
-	batteriesCmd.AddCommand(&cobra.Command{
+	batteriesListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListBatteriesRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListBatteriesRequest{Filter: filter, Columns: columns}
 			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Batteries)
 		},
+	}
+	batteriesListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	batteriesListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	batteriesListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Battery{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	batteriesCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	batteriesCmd.AddCommand(batteriesListCmd)
 
-	batteriesCmd.AddCommand(&cobra.Command{
+	batteriesGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -135,30 +173,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetBatteryRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetBatteryRequest{Id: args[0], Columns: columns}
 			res, err := batteryClient.GetBattery(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	batteriesGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	batteriesGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Battery{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	batteriesCmd.AddCommand(batteriesGetCmd)
+
 	rootCmd.AddCommand(batteriesCmd)
 
 	// --- Escs ---
 	escClient := quadsmithconnect.NewEscServiceClient(http.DefaultClient, apiURL)
 	escsCmd := &cobra.Command{Use: "escs"}
-	escsCmd.AddCommand(&cobra.Command{
+	escsListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListEscsRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListEscsRequest{Filter: filter, Columns: columns}
 			res, err := escClient.ListEscs(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Escs)
 		},
+	}
+	escsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	escsListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	escsListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Esc{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	escsCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	escsCmd.AddCommand(escsListCmd)
 
-	escsCmd.AddCommand(&cobra.Command{
+	escsGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -172,30 +223,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetEscRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetEscRequest{Id: args[0], Columns: columns}
 			res, err := escClient.GetEsc(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	escsGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	escsGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Esc{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	escsCmd.AddCommand(escsGetCmd)
+
 	rootCmd.AddCommand(escsCmd)
 
 	// --- FlightControllers ---
 	flightcontrollerClient := quadsmithconnect.NewFlightControllerServiceClient(http.DefaultClient, apiURL)
 	flightcontrollersCmd := &cobra.Command{Use: "flightcontrollers"}
-	flightcontrollersCmd.AddCommand(&cobra.Command{
+	flightcontrollersListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListFlightControllersRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListFlightControllersRequest{Filter: filter, Columns: columns}
 			res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.FlightControllers)
 		},
+	}
+	flightcontrollersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	flightcontrollersListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	flightcontrollersListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.FlightController{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	flightcontrollersCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	flightcontrollersCmd.AddCommand(flightcontrollersListCmd)
 
-	flightcontrollersCmd.AddCommand(&cobra.Command{
+	flightcontrollersGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -209,30 +273,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetFlightControllerRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetFlightControllerRequest{Id: args[0], Columns: columns}
 			res, err := flightcontrollerClient.GetFlightController(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	flightcontrollersGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	flightcontrollersGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.FlightController{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	flightcontrollersCmd.AddCommand(flightcontrollersGetCmd)
+
 	rootCmd.AddCommand(flightcontrollersCmd)
 
 	// --- Receivers ---
 	receiverClient := quadsmithconnect.NewReceiverServiceClient(http.DefaultClient, apiURL)
 	receiversCmd := &cobra.Command{Use: "receivers"}
-	receiversCmd.AddCommand(&cobra.Command{
+	receiversListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListReceiversRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListReceiversRequest{Filter: filter, Columns: columns}
 			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Receivers)
 		},
+	}
+	receiversListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	receiversListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	receiversListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Receiver{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	receiversCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	receiversCmd.AddCommand(receiversListCmd)
 
-	receiversCmd.AddCommand(&cobra.Command{
+	receiversGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -246,30 +323,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetReceiverRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetReceiverRequest{Id: args[0], Columns: columns}
 			res, err := receiverClient.GetReceiver(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	receiversGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	receiversGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Receiver{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	receiversCmd.AddCommand(receiversGetCmd)
+
 	rootCmd.AddCommand(receiversCmd)
 
 	// --- VideoTransmitters ---
 	videotransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(http.DefaultClient, apiURL)
 	videotransmittersCmd := &cobra.Command{Use: "videotransmitters"}
-	videotransmittersCmd.AddCommand(&cobra.Command{
+	videotransmittersListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListVideoTransmittersRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListVideoTransmittersRequest{Filter: filter, Columns: columns}
 			res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.VideoTransmitters)
 		},
+	}
+	videotransmittersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	videotransmittersListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	videotransmittersListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.VideoTransmitter{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	videotransmittersCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	videotransmittersCmd.AddCommand(videotransmittersListCmd)
 
-	videotransmittersCmd.AddCommand(&cobra.Command{
+	videotransmittersGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -283,30 +373,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetVideoTransmitterRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetVideoTransmitterRequest{Id: args[0], Columns: columns}
 			res, err := videotransmitterClient.GetVideoTransmitter(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	videotransmittersGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	videotransmittersGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.VideoTransmitter{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	videotransmittersCmd.AddCommand(videotransmittersGetCmd)
+
 	rootCmd.AddCommand(videotransmittersCmd)
 
 	// --- Antennas ---
 	antennaClient := quadsmithconnect.NewAntennaServiceClient(http.DefaultClient, apiURL)
 	antennasCmd := &cobra.Command{Use: "antennas"}
-	antennasCmd.AddCommand(&cobra.Command{
+	antennasListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListAntennasRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListAntennasRequest{Filter: filter, Columns: columns}
 			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Antennas)
 		},
+	}
+	antennasListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	antennasListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	antennasListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Antenna{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	antennasCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	antennasCmd.AddCommand(antennasListCmd)
 
-	antennasCmd.AddCommand(&cobra.Command{
+	antennasGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -320,30 +423,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetAntennaRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetAntennaRequest{Id: args[0], Columns: columns}
 			res, err := antennaClient.GetAntenna(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	antennasGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	antennasGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Antenna{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	antennasCmd.AddCommand(antennasGetCmd)
+
 	rootCmd.AddCommand(antennasCmd)
 
 	// --- Cameras ---
 	cameraClient := quadsmithconnect.NewCameraServiceClient(http.DefaultClient, apiURL)
 	camerasCmd := &cobra.Command{Use: "cameras"}
-	camerasCmd.AddCommand(&cobra.Command{
+	camerasListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListCamerasRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListCamerasRequest{Filter: filter, Columns: columns}
 			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Cameras)
 		},
+	}
+	camerasListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	camerasListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	camerasListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Camera{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	camerasCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	camerasCmd.AddCommand(camerasListCmd)
 
-	camerasCmd.AddCommand(&cobra.Command{
+	camerasGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -357,30 +473,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetCameraRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetCameraRequest{Id: args[0], Columns: columns}
 			res, err := cameraClient.GetCamera(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	camerasGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	camerasGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Camera{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	camerasCmd.AddCommand(camerasGetCmd)
+
 	rootCmd.AddCommand(camerasCmd)
 
 	// --- Propellers ---
 	propellerClient := quadsmithconnect.NewPropellerServiceClient(http.DefaultClient, apiURL)
 	propellersCmd := &cobra.Command{Use: "propellers"}
-	propellersCmd.AddCommand(&cobra.Command{
+	propellersListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListPropellersRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListPropellersRequest{Filter: filter, Columns: columns}
 			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Propellers)
 		},
+	}
+	propellersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	propellersListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	propellersListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Propeller{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	propellersCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	propellersCmd.AddCommand(propellersListCmd)
 
-	propellersCmd.AddCommand(&cobra.Command{
+	propellersGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -394,30 +523,43 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetPropellerRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetPropellerRequest{Id: args[0], Columns: columns}
 			res, err := propellerClient.GetPropeller(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	propellersGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	propellersGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Propeller{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	propellersCmd.AddCommand(propellersGetCmd)
+
 	rootCmd.AddCommand(propellersCmd)
 
 	// --- Builds ---
 	buildClient := quadsmithconnect.NewBuildServiceClient(http.DefaultClient, apiURL)
 	buildsCmd := &cobra.Command{Use: "builds"}
-	buildsCmd.AddCommand(&cobra.Command{
+	buildsListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
-			req := &pb.ListBuildsRequest{Filter: filter}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.ListBuildsRequest{Filter: filter, Columns: columns}
 			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg.Builds)
 		},
+	}
+	buildsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	buildsListCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	buildsListCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Build{}), cobra.ShellCompDirectiveNoFileComp
 	})
-	buildsCmd.Commands()[0].Flags().StringP("filter", "f", "", "CEL filter string")
+	buildsCmd.AddCommand(buildsListCmd)
 
-	buildsCmd.AddCommand(&cobra.Command{
+	buildsGetCmd := &cobra.Command{
 		Use: "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -431,12 +573,19 @@ func main() {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			req := &pb.GetBuildRequest{Id: args[0]}
+			columns, _ := cmd.Flags().GetStringSlice("columns")
+			req := &pb.GetBuildRequest{Id: args[0], Columns: columns}
 			res, err := buildClient.GetBuild(context.Background(), connect.NewRequest(req))
 			if err != nil { return err }
 			return printOutput(res.Msg)
 		},
+	}
+	buildsGetCmd.Flags().StringSliceP("columns", "c", nil, "Columns to select")
+	buildsGetCmd.RegisterFlagCompletionFunc("columns", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return GetColumns(&pb.Build{}), cobra.ShellCompDirectiveNoFileComp
 	})
+	buildsCmd.AddCommand(buildsGetCmd)
+
 	rootCmd.AddCommand(buildsCmd)
 
 	// --- EVALUATOR ---
@@ -474,23 +623,179 @@ func main() {
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
 	rootCmd.AddCommand(evalCmd)
 
+	// --- CUSTOM COMPLETION ---
+	completionCmd := &cobra.Command{
+		Use:   "completion [bash|zsh|fish|powershell]",
+		Short: "Generate the autocompletion script for the specified shell",
+		ValidArgs: []string{"bash", "zsh", "fish", "powershell"},
+		Args: cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			switch args[0] {
+			case "bash":
+				err := rootCmd.GenBashCompletionV2(os.Stdout, true)
+				if err == nil {
+					// Dynamically bind to the exact path used to invoke the binary
+					if os.Args[0] != "qs" {
+						fmt.Printf("\ncomplete -o default -o nospace -F __start_qs %q\n", os.Args[0])
+					}
+					// Also support dynamic loading via bash-completion
+					fmt.Println("if [[ -n \"$1\" && \"$1\" != \"qs\" && \"$1\" != \"\" ]]; then complete -o default -o nospace -F __start_qs \"$1\"; fi")
+				}
+				return err
+			case "zsh":
+				return rootCmd.GenZshCompletion(os.Stdout)
+			case "fish":
+				return rootCmd.GenFishCompletion(os.Stdout, true)
+			case "powershell":
+				return rootCmd.GenPowerShellCompletionWithDesc(os.Stdout)
+			default:
+				return nil
+			}
+		},
+	}
+	rootCmd.AddCommand(completionCmd)
+
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }
 
+
+func GetColumns(m interface{}) []string {
+	var cols []string
+	t := reflect.TypeOf(m)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	for i := 0; i < t.NumField(); i++ {
+		f := t.Field(i)
+		if !f.IsExported() || strings.HasPrefix(f.Name, "XXX_") {
+			continue
+		}
+		jsonTag := f.Tag.Get("json")
+		if jsonTag == "-" || jsonTag == "" {
+			continue
+		}
+		name := strings.Split(jsonTag, ",")[0]
+		cols = append(cols, name)
+	}
+	return cols
+}
 func printOutput(data interface{}) error {
-	var b []byte
-	var err error
-	if output == "json" {
-		b, err = json.MarshalIndent(data, "", "  ")
-	} else {
-		b, err = yaml.Marshal(data)
+	var isNilSlice bool
+	if data != nil {
+		v := reflect.ValueOf(data)
+		if v.Kind() == reflect.Slice && v.IsNil() {
+			isNilSlice = true
+		}
 	}
-	if err != nil {
-		return err
+
+	if jsonOut {
+		if isNilSlice {
+			fmt.Println("[]")
+			return nil
+		}
+		b, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(b))
+		return nil
+	} else if yamlOut {
+		if isNilSlice {
+			fmt.Println("[]")
+			return nil
+		}
+		b, err := yaml.Marshal(data)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(b))
+		return nil
 	}
-	fmt.Println(string(b))
+
+	if data == nil || isNilSlice {
+		fmt.Println("No records found.")
+		return nil
+	}
+
+	printTable(data)
 	return nil
+}
+
+func printTable(data interface{}) {
+	b, _ := json.Marshal(data)
+	var v interface{}
+	json.Unmarshal(b, &v)
+
+	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+	
+	switch val := v.(type) {
+	case []interface{}:
+		if len(val) == 0 {
+			fmt.Println("No records found.")
+			return
+		}
+		
+		keyMap := make(map[string]bool)
+		for _, item := range val {
+			if m, ok := item.(map[string]interface{}); ok {
+				for k := range m {
+					keyMap[k] = true
+				}
+			}
+		}
+		var keys []string
+		for k := range keyMap {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		
+		var orderedKeys []string
+		for _, priority := range []string{"id", "name"} {
+			if keyMap[priority] {
+				orderedKeys = append(orderedKeys, priority)
+			}
+		}
+		for _, k := range keys {
+			if k != "id" && k != "name" {
+				orderedKeys = append(orderedKeys, k)
+			}
+		}
+
+		for i, k := range orderedKeys {
+			fmt.Fprintf(w, "%s", k)
+			if i < len(orderedKeys)-1 {
+				fmt.Fprintf(w, "\t")
+			}
+		}
+		fmt.Fprintln(w)
+		for _, item := range val {
+			m := item.(map[string]interface{})
+			for i, k := range orderedKeys {
+				if m[k] == nil {
+					fmt.Fprintf(w, "-")
+				} else {
+					fmt.Fprintf(w, "%v", m[k])
+				}
+				if i < len(orderedKeys)-1 {
+					fmt.Fprintf(w, "\t")
+				}
+			}
+			fmt.Fprintln(w)
+		}
+	case map[string]interface{}:
+		var keys []string
+		for k := range val {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		for _, k := range keys {
+			fmt.Fprintf(w, "%s\t%v\n", k, val[k])
+		}
+	default:
+		fmt.Printf("%v\n", v)
+	}
+	w.Flush()
 }
 

@@ -17,7 +17,7 @@ func NewFlightControllerServiceHandler(db *pgxpool.Pool) *FlightControllerServic
 }
 
 func (s *FlightControllerServiceHandler) GetFlightController(ctx context.Context, req *connect.Request[GetFlightControllerRequest]) (*connect.Response[FlightController], error) {
-	m, err := GetFlightController(ctx, s.db, req.Msg.GetId())
+	m, err := GetFlightController(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *FlightControllerServiceHandler) ListFlightControllers(ctx context.Conte
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListFlightControllers(ctx, s.db, where, args...)
+	items, err := ListFlightControllers(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

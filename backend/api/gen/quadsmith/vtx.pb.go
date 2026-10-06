@@ -150,6 +150,7 @@ func (x *VideoTransmitter) GetAntennaUuids() []string {
 type GetVideoTransmitterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -191,11 +192,19 @@ func (x *GetVideoTransmitterRequest) GetId() string {
 	return ""
 }
 
+func (x *GetVideoTransmitterRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
 type ListVideoTransmittersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -249,6 +258,13 @@ func (x *ListVideoTransmittersRequest) GetPageToken() string {
 		return x.PageToken
 	}
 	return ""
+}
+
+func (x *ListVideoTransmittersRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
 }
 
 type ListVideoTransmittersResponse struct {
@@ -320,14 +336,16 @@ const file_quadsmith_vtx_proto_rawDesc = "" +
 	"\x13input_voltage_min_v\x18\b \x01(\x02R\x10inputVoltageMinV\x12-\n" +
 	"\x13input_voltage_max_v\x18\t \x01(\x02R\x10inputVoltageMaxV\x12#\n" +
 	"\rantenna_uuids\x18\n" +
-	" \x03(\tR\fantennaUuids:\x16\xc2\xf3\x18\x12video_transmitters\",\n" +
+	" \x03(\tR\fantennaUuids:\x16\xc2\xf3\x18\x12video_transmitters\"F\n" +
 	"\x1aGetVideoTransmitterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"r\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x8c\x01\n" +
 	"\x1cListVideoTransmittersRequest\x12\x16\n" +
 	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\"\x93\x01\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\"\x93\x01\n" +
 	"\x1dListVideoTransmittersResponse\x12J\n" +
 	"\x12video_transmitters\x18\x01 \x03(\v2\x1b.quadsmith.VideoTransmitterR\x11videoTransmitters\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xe0\x01\n" +

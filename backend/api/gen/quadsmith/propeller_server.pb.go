@@ -17,7 +17,7 @@ func NewPropellerServiceHandler(db *pgxpool.Pool) *PropellerServiceHandler {
 }
 
 func (s *PropellerServiceHandler) GetPropeller(ctx context.Context, req *connect.Request[GetPropellerRequest]) (*connect.Response[Propeller], error) {
-	m, err := GetPropeller(ctx, s.db, req.Msg.GetId())
+	m, err := GetPropeller(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *PropellerServiceHandler) ListPropellers(ctx context.Context, req *conne
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListPropellers(ctx, s.db, where, args...)
+	items, err := ListPropellers(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

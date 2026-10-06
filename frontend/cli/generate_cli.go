@@ -39,6 +39,7 @@ import (
 	"os"
 		"reflect"
 		"sort"
+		"strings"
 		"text/tabwriter"
 
 	"connectrpc.com/connect"
@@ -76,19 +77,25 @@ func main() {
 		fmt.Fprintf(f, "\t%sClient := quadsmithconnect.New%sServiceClient(http.DefaultClient, apiURL)\n", lowerName, d.Name)
 		fmt.Fprintf(f, "\t%sCmd := &cobra.Command{Use: \"%s\"}\n", lowerPlural, lowerPlural)
 		
-		fmt.Fprintf(f, "\t%sCmd.AddCommand(&cobra.Command{\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd := &cobra.Command{\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tUse: \"list\",\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
 		fmt.Fprintf(f, "\t\t\tfilter, _ := cmd.Flags().GetString(\"filter\")\n")
-		fmt.Fprintf(f, "\t\t\treq := &pb.List%sRequest{Filter: filter}\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"columns\")\n")
+		fmt.Fprintf(f, "\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns}\n", d.Plural)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Plural)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg.%s)\n", d.Plural)
 		fmt.Fprintf(f, "\t\t},\n")
+		fmt.Fprintf(f, "\t}\n")
+		fmt.Fprintf(f, "\t%sListCmd.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"columns\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"columns\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
+		fmt.Fprintf(f, "\t\treturn GetColumns(&pb.%s{}), cobra.ShellCompDirectiveNoFileComp\n", d.Name)
 		fmt.Fprintf(f, "\t})\n")
-		fmt.Fprintf(f, "\t%sCmd.Commands()[0].Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n\n", lowerPlural)
-
-		fmt.Fprintf(f, "\t%sCmd.AddCommand(&cobra.Command{\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sCmd.AddCommand(%sListCmd)\n\n", lowerPlural, lowerPlural)
+	// removed
+		fmt.Fprintf(f, "\t%sGetCmd := &cobra.Command{\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tUse: \"get [id]\",\n")
 		fmt.Fprintf(f, "\t\tArgs: cobra.ExactArgs(1),\n")
 		fmt.Fprintf(f, "\t\tValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n")
@@ -102,12 +109,18 @@ func main() {
 		fmt.Fprintf(f, "\t\t\treturn comps, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
-		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0]}\n", d.Name)
+		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"columns\")\n")
+		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0], Columns: columns}\n", d.Name)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.Get%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Name)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg)\n")
 		fmt.Fprintf(f, "\t\t},\n")
+		fmt.Fprintf(f, "\t}\n")
+		fmt.Fprintf(f, "\t%sGetCmd.Flags().StringSliceP(\"columns\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sGetCmd.RegisterFlagCompletionFunc(\"columns\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
+		fmt.Fprintf(f, "\t\treturn GetColumns(&pb.%s{}), cobra.ShellCompDirectiveNoFileComp\n", d.Name)
 		fmt.Fprintf(f, "\t})\n")
+		fmt.Fprintf(f, "\t%sCmd.AddCommand(%sGetCmd)\n\n", lowerPlural, lowerPlural)
 
 		fmt.Fprintf(f, "\trootCmd.AddCommand(%sCmd)\n", lowerPlural)
 	}
@@ -185,6 +198,27 @@ func main() {
 	}
 }
 
+
+func GetColumns(m interface{}) []string {
+	var cols []string
+	t := reflect.TypeOf(m)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	for i := 0; i < t.NumField(); i++ {
+		f := t.Field(i)
+		if !f.IsExported() || strings.HasPrefix(f.Name, "XXX_") {
+			continue
+		}
+		jsonTag := f.Tag.Get("json")
+		if jsonTag == "-" || jsonTag == "" {
+			continue
+		}
+		name := strings.Split(jsonTag, ",")[0]
+		cols = append(cols, name)
+	}
+	return cols
+}
 func printOutput(data interface{}) error {
 	var isNilSlice bool
 	if data != nil {

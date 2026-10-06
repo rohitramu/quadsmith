@@ -3,6 +3,7 @@ package quadsmith
 
 import (
 	"context"
+	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -13,51 +14,47 @@ func CreateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter)
 	return err
 }
 
-func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*VideoTransmitter, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids FROM video_transmitters WHERE id = $1 OR uuid::text = $1 LIMIT 1`
-	var v_uuid *string
-	var v_id *string
-	var v_manufacturer *string
-	var v_model *string
-	var v_weight_g *float32
-	var v_protocol *string
-	var v_max_power_mw *int32
-	var v_input_voltage_min_v *float32
-	var v_input_voltage_max_v *float32
-	var v_antenna_uuids []string
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_protocol, &v_max_power_mw, &v_input_voltage_min_v, &v_input_voltage_max_v, &v_antenna_uuids)
+func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*VideoTransmitter, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids"}
+	}
+	query := `SELECT ` + colsStr + ` FROM video_transmitters WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	m := &VideoTransmitter{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "id":
+			scanArgs[i] = &m.Id
+		case "manufacturer":
+			scanArgs[i] = &m.Manufacturer
+		case "model":
+			scanArgs[i] = &m.Model
+		case "weight_g":
+			scanArgs[i] = &m.WeightG
+		case "protocol":
+			scanArgs[i] = &m.Protocol
+		case "max_power_mw":
+			scanArgs[i] = &m.MaxPowerMw
+		case "input_voltage_min_v":
+			scanArgs[i] = &m.InputVoltageMinV
+		case "input_voltage_max_v":
+			scanArgs[i] = &m.InputVoltageMaxV
+		case "antenna_uuids":
+			scanArgs[i] = &m.AntennaUuids
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
 	}
-	m := &VideoTransmitter{}
-	if v_uuid != nil {
-		m.Uuid = *v_uuid
-	}
-	if v_id != nil {
-		m.Id = *v_id
-	}
-	if v_manufacturer != nil {
-		m.Manufacturer = *v_manufacturer
-	}
-	if v_model != nil {
-		m.Model = *v_model
-	}
-	if v_weight_g != nil {
-		m.WeightG = *v_weight_g
-	}
-	if v_protocol != nil {
-		m.Protocol = *v_protocol
-	}
-	if v_max_power_mw != nil {
-		m.MaxPowerMw = *v_max_power_mw
-	}
-	if v_input_voltage_min_v != nil {
-		m.InputVoltageMinV = *v_input_voltage_min_v
-	}
-	if v_input_voltage_max_v != nil {
-		m.InputVoltageMaxV = *v_input_voltage_max_v
-	}
-	m.AntennaUuids = v_antenna_uuids
 	return m, nil
 }
 
@@ -73,8 +70,14 @@ func DeleteVideoTransmitter(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 	return err
 }
 
-func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*VideoTransmitter, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids FROM video_transmitters`
+func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*VideoTransmitter, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids"}
+	}
+	query := `SELECT ` + colsStr + ` FROM video_transmitters`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -83,51 +86,41 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, whereClause st
 		return nil, err
 	}
 	defer rows.Close()
-	var results []*VideoTransmitter
+	results := make([]*VideoTransmitter, 0)
 	for rows.Next() {
-		var v_uuid *string
-		var v_id *string
-		var v_manufacturer *string
-		var v_model *string
-		var v_weight_g *float32
-		var v_protocol *string
-		var v_max_power_mw *int32
-		var v_input_voltage_min_v *float32
-		var v_input_voltage_max_v *float32
-		var v_antenna_uuids []string
-		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_protocol, &v_max_power_mw, &v_input_voltage_min_v, &v_input_voltage_max_v, &v_antenna_uuids)
+		scanArgs := make([]interface{}, len(cols))
+		m := &VideoTransmitter{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "id":
+				scanArgs[i] = &m.Id
+			case "manufacturer":
+				scanArgs[i] = &m.Manufacturer
+			case "model":
+				scanArgs[i] = &m.Model
+			case "weight_g":
+				scanArgs[i] = &m.WeightG
+			case "protocol":
+				scanArgs[i] = &m.Protocol
+			case "max_power_mw":
+				scanArgs[i] = &m.MaxPowerMw
+			case "input_voltage_min_v":
+				scanArgs[i] = &m.InputVoltageMinV
+			case "input_voltage_max_v":
+				scanArgs[i] = &m.InputVoltageMaxV
+			case "antenna_uuids":
+				scanArgs[i] = &m.AntennaUuids
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
 		}
-		m := &VideoTransmitter{}
-		if v_uuid != nil {
-			m.Uuid = *v_uuid
-		}
-		if v_id != nil {
-			m.Id = *v_id
-		}
-		if v_manufacturer != nil {
-			m.Manufacturer = *v_manufacturer
-		}
-		if v_model != nil {
-			m.Model = *v_model
-		}
-		if v_weight_g != nil {
-			m.WeightG = *v_weight_g
-		}
-		if v_protocol != nil {
-			m.Protocol = *v_protocol
-		}
-		if v_max_power_mw != nil {
-			m.MaxPowerMw = *v_max_power_mw
-		}
-		if v_input_voltage_min_v != nil {
-			m.InputVoltageMinV = *v_input_voltage_min_v
-		}
-		if v_input_voltage_max_v != nil {
-			m.InputVoltageMaxV = *v_input_voltage_max_v
-		}
-		m.AntennaUuids = v_antenna_uuids
 		results = append(results, m)
 	}
 	return results, nil

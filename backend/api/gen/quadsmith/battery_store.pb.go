@@ -3,6 +3,7 @@ package quadsmith
 
 import (
 	"context"
+	"strings"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -13,48 +14,44 @@ func CreateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
 	return err
 }
 
-func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string) (*Battery, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector FROM batteries WHERE id = $1 OR uuid::text = $1 LIMIT 1`
-	var v_uuid *string
-	var v_id *string
-	var v_manufacturer *string
-	var v_model *string
-	var v_weight_g *float32
-	var v_capacity_mah *int32
-	var v_cell_count_s *int32
-	var v_chemistry *string
-	var v_connector *string
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_capacity_mah, &v_cell_count_s, &v_chemistry, &v_connector)
+func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Battery, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector"}
+	}
+	query := `SELECT ` + colsStr + ` FROM batteries WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	m := &Battery{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "id":
+			scanArgs[i] = &m.Id
+		case "manufacturer":
+			scanArgs[i] = &m.Manufacturer
+		case "model":
+			scanArgs[i] = &m.Model
+		case "weight_g":
+			scanArgs[i] = &m.WeightG
+		case "capacity_mah":
+			scanArgs[i] = &m.CapacityMah
+		case "cell_count_s":
+			scanArgs[i] = &m.CellCountS
+		case "chemistry":
+			scanArgs[i] = &m.Chemistry
+		case "connector":
+			scanArgs[i] = &m.Connector
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
-	}
-	m := &Battery{}
-	if v_uuid != nil {
-		m.Uuid = *v_uuid
-	}
-	if v_id != nil {
-		m.Id = *v_id
-	}
-	if v_manufacturer != nil {
-		m.Manufacturer = *v_manufacturer
-	}
-	if v_model != nil {
-		m.Model = *v_model
-	}
-	if v_weight_g != nil {
-		m.WeightG = *v_weight_g
-	}
-	if v_capacity_mah != nil {
-		m.CapacityMah = *v_capacity_mah
-	}
-	if v_cell_count_s != nil {
-		m.CellCountS = *v_cell_count_s
-	}
-	if v_chemistry != nil {
-		m.Chemistry = *v_chemistry
-	}
-	if v_connector != nil {
-		m.Connector = *v_connector
 	}
 	return m, nil
 }
@@ -71,8 +68,14 @@ func DeleteBattery(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListBatteries(ctx context.Context, db *pgxpool.Pool, whereClause string, args ...any) ([]*Battery, error) {
-	query := `SELECT uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector FROM batteries`
+func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, whereClause string, args ...any) ([]*Battery, error) {
+	colsStr := "uuid, id, manufacturer, model, weight_g, capacity_mah, cell_count_s, chemistry, connector"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "id", "manufacturer", "model", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector"}
+	}
+	query := `SELECT ` + colsStr + ` FROM batteries`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -81,48 +84,38 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, whereClause string, ar
 		return nil, err
 	}
 	defer rows.Close()
-	var results []*Battery
+	results := make([]*Battery, 0)
 	for rows.Next() {
-		var v_uuid *string
-		var v_id *string
-		var v_manufacturer *string
-		var v_model *string
-		var v_weight_g *float32
-		var v_capacity_mah *int32
-		var v_cell_count_s *int32
-		var v_chemistry *string
-		var v_connector *string
-		err := rows.Scan(&v_uuid, &v_id, &v_manufacturer, &v_model, &v_weight_g, &v_capacity_mah, &v_cell_count_s, &v_chemistry, &v_connector)
+		scanArgs := make([]interface{}, len(cols))
+		m := &Battery{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "id":
+				scanArgs[i] = &m.Id
+			case "manufacturer":
+				scanArgs[i] = &m.Manufacturer
+			case "model":
+				scanArgs[i] = &m.Model
+			case "weight_g":
+				scanArgs[i] = &m.WeightG
+			case "capacity_mah":
+				scanArgs[i] = &m.CapacityMah
+			case "cell_count_s":
+				scanArgs[i] = &m.CellCountS
+			case "chemistry":
+				scanArgs[i] = &m.Chemistry
+			case "connector":
+				scanArgs[i] = &m.Connector
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
-		}
-		m := &Battery{}
-		if v_uuid != nil {
-			m.Uuid = *v_uuid
-		}
-		if v_id != nil {
-			m.Id = *v_id
-		}
-		if v_manufacturer != nil {
-			m.Manufacturer = *v_manufacturer
-		}
-		if v_model != nil {
-			m.Model = *v_model
-		}
-		if v_weight_g != nil {
-			m.WeightG = *v_weight_g
-		}
-		if v_capacity_mah != nil {
-			m.CapacityMah = *v_capacity_mah
-		}
-		if v_cell_count_s != nil {
-			m.CellCountS = *v_cell_count_s
-		}
-		if v_chemistry != nil {
-			m.Chemistry = *v_chemistry
-		}
-		if v_connector != nil {
-			m.Connector = *v_connector
 		}
 		results = append(results, m)
 	}

@@ -17,7 +17,7 @@ func NewBuildServiceHandler(db *pgxpool.Pool) *BuildServiceHandler {
 }
 
 func (s *BuildServiceHandler) GetBuild(ctx context.Context, req *connect.Request[GetBuildRequest]) (*connect.Response[Build], error) {
-	m, err := GetBuild(ctx, s.db, req.Msg.GetId())
+	m, err := GetBuild(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -29,7 +29,7 @@ func (s *BuildServiceHandler) ListBuilds(ctx context.Context, req *connect.Reque
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListBuilds(ctx, s.db, where, args...)
+	items, err := ListBuilds(ctx, s.db, req.Msg.GetColumns(), where, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
