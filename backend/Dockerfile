@@ -38,7 +38,7 @@ EXPOSE 5432 8080
 RUN printf '#!/usr/bin/env bash\n\
 set -e\n\
 echo "Starting PostgreSQL..."\n\
-docker-entrypoint.sh postgres &\n\
+docker-entrypoint.sh postgres > /var/log/postgres.log 2>&1 &\n\
 echo "Waiting for PostgreSQL to be ready..."\n\
 until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 1; done\n\
 echo "Applying Schema..."\n\

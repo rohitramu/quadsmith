@@ -67,6 +67,8 @@ func main() {
 		Use:   "qs",
 		Short: "Quadsmith CLI",
 	}
+	rootCmd.CompletionOptions.DisableDescriptions = true
+
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
 	rootCmd.PersistentFlags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 `)
