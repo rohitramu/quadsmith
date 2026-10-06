@@ -41,7 +41,7 @@ receivers: {
   name: "HGLRC Hermes ExpressLRS 900MHz"
   weight_g: 0.8
   protocol: "ExpressLRS (ELRS)"
-  frequency_band_mhz: 2400
+  frequency_band_mhz: 900
 }
 receivers { uuid: "34c212ef-d9b5-4bdc-8b55-be9a0836305c" id: "literadio-4-radio-transmitter" manufacturer: "BETAFPV" name: "LiteRadio 4 Radio Transmitter" weight_g: 0.0 }
 receivers { uuid: "e181ef41-1ef6-4ae0-8b4f-cb3976f0dffa" id: "superx-elrs-gemini-xross-receiver" manufacturer: "BETAFPV" name: "SuperX ELRS Gemini Xross Receiver" weight_g: 0.82 }

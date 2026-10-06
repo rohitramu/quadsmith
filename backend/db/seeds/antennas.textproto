@@ -96,7 +96,7 @@ antennas: {
   weight_g: 12
   connector: "RP-SMA"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 2400
 }
 antennas: {
   uuid: "46712ce9-e929-4dcc-a7ea-2827e5d61888"
@@ -196,7 +196,7 @@ antennas: {
   weight_g: 1.2
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 2400
 }
 antennas: {
   uuid: "3ad9ee47-38c0-4b71-8ca4-e690ea672870"
@@ -206,7 +206,7 @@ antennas: {
   weight_g: 3.1
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "bdde4eed-7035-4a41-aa83-c0913393fe88"
@@ -456,7 +456,7 @@ antennas: {
   weight_g: 9.45
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 2400
 }
 antennas: {
   uuid: "4f52365d-f235-4198-8401-e13ef9aa2774"
@@ -466,7 +466,7 @@ antennas: {
   weight_g: 9.45
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 2400
 }
 antennas: {
   uuid: "9aee436e-77fc-4376-9fcc-ba69f8478330"
@@ -476,7 +476,7 @@ antennas: {
   weight_g: 2
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 2400
 }
 antennas: {
   uuid: "4ee842aa-e740-4288-846c-a8d4242ae326"
@@ -486,7 +486,7 @@ antennas: {
   weight_g: 1.3
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 2400
 }
 antennas: {
   uuid: "c4055518-1a21-4445-a760-becb19088b53"
@@ -496,7 +496,7 @@ antennas: {
   weight_g: 1.2
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 2400
 }
 antennas: {
   uuid: "e2d8da94-616c-499a-bbe5-f152f1a54b9d"
@@ -546,7 +546,7 @@ antennas: {
   weight_g: 2.02
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "2d2fac07-7a87-498c-a12b-e61da5332631"
@@ -556,7 +556,7 @@ antennas: {
   weight_g: 18
   connector: "SMA"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "536e9a77-e3d8-4743-93d3-449a473716ee"
@@ -566,7 +566,7 @@ antennas: {
   weight_g: 0.94
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "206c4d0e-50cf-4bd3-8536-771a3f26aa0c"
@@ -576,7 +576,7 @@ antennas: {
   weight_g: 1
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "32893f6b-73e0-4caa-9268-11a087924a0a"
@@ -586,7 +586,7 @@ antennas: {
   weight_g: 24
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "d2d64a3e-f109-4eca-838b-d8b27e2631f7"
@@ -596,7 +596,7 @@ antennas: {
   weight_g: 22
   connector: "SMA"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "57381978-90fc-4994-b4a9-af06429fc70d"
@@ -606,7 +606,7 @@ antennas: {
   weight_g: 6.3
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "7d905b95-a4cb-4e03-aba4-f488f4ecf871"
@@ -616,7 +616,7 @@ antennas: {
   weight_g: 0.9
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas: {
   uuid: "d1add965-ee8e-4623-a4d6-b7ae925694a4"
@@ -626,7 +626,7 @@ antennas: {
   weight_g: 12
   connector: "SMA"
   polarization: "Linear"
-  frequency_band_mhz: 5800
+  frequency_band_mhz: 900
 }
 antennas { uuid: "699976d2-f4ca-4c4a-9a9a-8b82ea93c1a1" id: "betafpv-loop-antenna" manufacturer: "BETAFPV" name: "BETAFPV Loop Antenna" weight_g: 0.0 }
 antennas { uuid: "05a0d8e6-9e15-42e6-91a2-05f9e0869629" id: "betafpv-moxon-antenna" manufacturer: "BETAFPV" name: "BETAFPV Moxon Antenna" weight_g: 0.0 }
