@@ -39,18 +39,13 @@ CREATE TABLE IF NOT EXISTS builds (
     name TEXT,
     description TEXT,
     frame_uuid UUID,
-    FOREIGN KEY (frame_uuid) REFERENCES frames(uuid),
     motor_uuid UUID,
-    FOREIGN KEY (motor_uuid) REFERENCES motors(uuid),
     battery_uuid UUID,
-    FOREIGN KEY (battery_uuid) REFERENCES batteries(uuid),
     flight_controller_uuid UUID,
-    FOREIGN KEY (flight_controller_uuid) REFERENCES flight_controllers(uuid),
     esc_uuids UUID[],
     receiver_uuids UUID[],
     antenna_uuids UUID[],
     propeller_uuid UUID,
-    FOREIGN KEY (propeller_uuid) REFERENCES propellers(uuid),
     camera_uuids UUID[]
 );
 
@@ -95,11 +90,8 @@ CREATE TABLE IF NOT EXISTS flight_controllers (
     processor TEXT,
     gyro TEXT,
     internal_esc_uuid UUID,
-    FOREIGN KEY (internal_esc_uuid) REFERENCES escs(uuid),
     internal_receiver_uuid UUID,
-    FOREIGN KEY (internal_receiver_uuid) REFERENCES receivers(uuid),
-    internal_vtx_uuid UUID,
-    FOREIGN KEY (internal_vtx_uuid) REFERENCES video_transmitters(uuid)
+    internal_vtx_uuid UUID
 );
 
 CREATE INDEX IF NOT EXISTS idx_flight_controllers_manufacturer ON flight_controllers (manufacturer);
@@ -181,3 +173,12 @@ CREATE TABLE IF NOT EXISTS video_transmitters (
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_manufacturer ON video_transmitters (manufacturer);
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_protocol ON video_transmitters (protocol);
 
+-- Foreign Keys
+ALTER TABLE builds ADD CONSTRAINT fk_builds_frame_uuid FOREIGN KEY (frame_uuid) REFERENCES frames(uuid);
+ALTER TABLE builds ADD CONSTRAINT fk_builds_motor_uuid FOREIGN KEY (motor_uuid) REFERENCES motors(uuid);
+ALTER TABLE builds ADD CONSTRAINT fk_builds_battery_uuid FOREIGN KEY (battery_uuid) REFERENCES batteries(uuid);
+ALTER TABLE builds ADD CONSTRAINT fk_builds_flight_controller_uuid FOREIGN KEY (flight_controller_uuid) REFERENCES flight_controllers(uuid);
+ALTER TABLE builds ADD CONSTRAINT fk_builds_propeller_uuid FOREIGN KEY (propeller_uuid) REFERENCES propellers(uuid);
+ALTER TABLE flight_controllers ADD CONSTRAINT fk_flight_controllers_internal_esc_uuid FOREIGN KEY (internal_esc_uuid) REFERENCES escs(uuid);
+ALTER TABLE flight_controllers ADD CONSTRAINT fk_flight_controllers_internal_receiver_uuid FOREIGN KEY (internal_receiver_uuid) REFERENCES receivers(uuid);
+ALTER TABLE flight_controllers ADD CONSTRAINT fk_flight_controllers_internal_vtx_uuid FOREIGN KEY (internal_vtx_uuid) REFERENCES video_transmitters(uuid);

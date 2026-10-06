@@ -11,6 +11,9 @@ build: generate
 	
 	@echo "--- Generating and building CLI to bin/qs ---"
 	@cd frontend/cli && go run generate_cli.go && go build -mod=vendor -o ../../bin/qs main.go
+	@echo "--- Generating shell completions to bin/ ---"
+	@./bin/qs completion bash > bin/completion.bash || true
+	@./bin/qs completion zsh > bin/completion.zsh || true
 
 sandbox: build
 	@echo "--- Starting Quadsmith Sandbox (Docker) ---"
