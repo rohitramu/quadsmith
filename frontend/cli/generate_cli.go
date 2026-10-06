@@ -87,6 +87,16 @@ func main() {
 		fmt.Fprintf(f, "\t%sCmd.AddCommand(&cobra.Command{\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tUse: \"get [id]\",\n")
 		fmt.Fprintf(f, "\t\tArgs: cobra.ExactArgs(1),\n")
+		fmt.Fprintf(f, "\t\tValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n")
+		fmt.Fprintf(f, "\t\t\tif len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }\n")
+		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{}))\n", lowerName, d.Plural, d.Plural)
+		fmt.Fprintf(f, "\t\t\tif err != nil { return nil, cobra.ShellCompDirectiveError }\n")
+		fmt.Fprintf(f, "\t\t\tvar comps []string\n")
+		fmt.Fprintf(f, "\t\t\tfor _, item := range res.Msg.%s {\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\t\tcomps = append(comps, item.Id)\n") // Assuming every domain has an 'Id' field
+		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\treturn comps, cobra.ShellCompDirectiveNoFileComp\n")
+		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
 		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0]}\n", d.Name)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.Get%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Name)
@@ -105,6 +115,16 @@ func main() {
 		Use: "evaluate [build-id]",
 		Short: "Run physics estimation and compatibility checks on a build",
 		Args: cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
+			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{}))
+			if err != nil { return nil, cobra.ShellCompDirectiveError }
+			var comps []string
+			for _, item := range res.Msg.Builds {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			bReq := &pb.GetBuildRequest{Id: args[0]}
 			bRes, err := buildClient.GetBuild(context.Background(), connect.NewRequest(bReq))
