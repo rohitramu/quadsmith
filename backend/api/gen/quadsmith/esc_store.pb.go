@@ -9,22 +9,22 @@ import (
 )
 
 func CreateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
-	query := `INSERT INTO escs (uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, max_motor_current_a, burst_motor_current_a, firmware) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+	query := `INSERT INTO escs (uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MaxMotorCurrentA, m.BurstMotorCurrentA, m.Firmware)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MotorCurrentMaxA, m.MotorCurrentBurstA, m.Firmware)
 	return err
 }
 
 func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Esc, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, max_motor_current_a, burst_motor_current_a, firmware"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "max_motor_current_a", "burst_motor_current_a", "firmware"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware"}
 	}
 	query := `SELECT ` + colsStr + ` FROM escs WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -45,10 +45,10 @@ func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []strin
 			scanArgs[i] = &m.WeightG
 		case "max_motors":
 			scanArgs[i] = &m.MaxMotors
-		case "max_motor_current_a":
-			scanArgs[i] = &m.MaxMotorCurrentA
-		case "burst_motor_current_a":
-			scanArgs[i] = &m.BurstMotorCurrentA
+		case "motor_current_max_a":
+			scanArgs[i] = &m.MotorCurrentMaxA
+		case "motor_current_burst_a":
+			scanArgs[i] = &m.MotorCurrentBurstA
 		case "firmware":
 			scanArgs[i] = &m.Firmware
 		default:
@@ -64,8 +64,8 @@ func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []strin
 }
 
 func UpdateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
-	query := `UPDATE escs SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, max_motors = $6, max_motor_current_a = $7, burst_motor_current_a = $8, firmware = $9 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MaxMotorCurrentA, m.BurstMotorCurrentA, m.Firmware)
+	query := `UPDATE escs SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, max_motors = $6, motor_current_max_a = $7, motor_current_burst_a = $8, firmware = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MotorCurrentMaxA, m.MotorCurrentBurstA, m.Firmware)
 	return err
 }
 
@@ -76,11 +76,11 @@ func DeleteEsc(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Esc, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, max_motor_current_a, burst_motor_current_a, firmware"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "max_motor_current_a", "burst_motor_current_a", "firmware"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware"}
 	}
 	query := `SELECT ` + colsStr + ` FROM escs`
 	if whereClause != "" {
@@ -124,10 +124,10 @@ func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []stri
 				scanArgs[i] = &m.WeightG
 			case "max_motors":
 				scanArgs[i] = &m.MaxMotors
-			case "max_motor_current_a":
-				scanArgs[i] = &m.MaxMotorCurrentA
-			case "burst_motor_current_a":
-				scanArgs[i] = &m.BurstMotorCurrentA
+			case "motor_current_max_a":
+				scanArgs[i] = &m.MotorCurrentMaxA
+			case "motor_current_burst_a":
+				scanArgs[i] = &m.MotorCurrentBurstA
 			case "firmware":
 				scanArgs[i] = &m.Firmware
 			default:

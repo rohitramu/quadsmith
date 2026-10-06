@@ -340,7 +340,7 @@ var File_quadsmith_antenna_proto protoreflect.FileDescriptor
 
 const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\x1a\x1equadsmith/frequency_band.proto\"\x85\x03\n" +
+	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x1equadsmith/frequency_band.proto\x1a\x13quadsmith/sql.proto\"\x85\x03\n" +
 	"\aAntenna\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -411,8 +411,8 @@ func file_quadsmith_antenna_proto_init() {
 	if File_quadsmith_antenna_proto != nil {
 		return
 	}
-	file_quadsmith_sql_proto_init()
 	file_quadsmith_frequency_band_proto_init()
+	file_quadsmith_sql_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

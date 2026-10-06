@@ -35,8 +35,8 @@ type Esc struct {
 	// E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
 	MaxMotors uint32 `protobuf:"varint,6,opt,name=max_motors,json=maxMotors,proto3" json:"max_motors,omitempty"`
 	// Continuous and Burst amperage ratings
-	MaxMotorCurrentA   float32 `protobuf:"fixed32,7,opt,name=max_motor_current_a,json=maxMotorCurrentA,proto3" json:"max_motor_current_a,omitempty"`
-	BurstMotorCurrentA float32 `protobuf:"fixed32,8,opt,name=burst_motor_current_a,json=burstMotorCurrentA,proto3" json:"burst_motor_current_a,omitempty"`
+	MotorCurrentMaxA   float32 `protobuf:"fixed32,7,opt,name=motor_current_max_a,json=motorCurrentMaxA,proto3" json:"motor_current_max_a,omitempty"`
+	MotorCurrentBurstA float32 `protobuf:"fixed32,8,opt,name=motor_current_burst_a,json=motorCurrentBurstA,proto3" json:"motor_current_burst_a,omitempty"`
 	// E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
 	Firmware      string `protobuf:"bytes,9,opt,name=firmware,proto3" json:"firmware,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -122,16 +122,16 @@ func (x *Esc) GetMaxMotors() uint32 {
 	return 0
 }
 
-func (x *Esc) GetMaxMotorCurrentA() float32 {
+func (x *Esc) GetMotorCurrentMaxA() float32 {
 	if x != nil {
-		return x.MaxMotorCurrentA
+		return x.MotorCurrentMaxA
 	}
 	return 0
 }
 
-func (x *Esc) GetBurstMotorCurrentA() float32 {
+func (x *Esc) GetMotorCurrentBurstA() float32 {
 	if x != nil {
-		return x.BurstMotorCurrentA
+		return x.MotorCurrentBurstA
 	}
 	return 0
 }
@@ -340,8 +340,8 @@ const file_quadsmith_esc_proto_rawDesc = "" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1d\n" +
 	"\n" +
 	"max_motors\x18\x06 \x01(\rR\tmaxMotors\x12-\n" +
-	"\x13max_motor_current_a\x18\a \x01(\x02R\x10maxMotorCurrentA\x121\n" +
-	"\x15burst_motor_current_a\x18\b \x01(\x02R\x12burstMotorCurrentA\x12\x1a\n" +
+	"\x13motor_current_max_a\x18\a \x01(\x02R\x10motorCurrentMaxA\x121\n" +
+	"\x15motor_current_burst_a\x18\b \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
 	"\bfirmware\x18\t \x01(\tR\bfirmware:\b\xc2\xf3\x18\x04escs\"9\n" +
 	"\rGetEscRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
