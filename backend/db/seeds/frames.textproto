@@ -1,666 +1,1747 @@
-frames: {
-  uuid: "4315b6cb-1157-46ff-afd5-d16c06e30e45"
-  id: "tbs-source-one-v5"
-  manufacturer: "TBS"
-  name: "TBS Source One V5"
-  weight_g: 123.5
-  wheelbase_mm: 226
-  max_prop_size_mm: 129.54
-  geometry: "True-X"
+frames:  {
+  uuid:  "4315b6cb-1157-46ff-afd5-d16c06e30e45"
+  id:  "tbs-source-one-v5"
+  manufacturer:  "TBS"
+  name:  "TBS Source One V5"
+  weight_g:  123.5
+  wheelbase_mm:  226
+  max_prop_size_mm:  129.54
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "73382232-1424-4e72-aed7-6a663a5608ec"
-  id: "impulserc-apex-evo-5\""
-  manufacturer: "ImpulseRC"
-  name: "ImpulseRC Apex EVO 5\""
-  weight_g: 132
-  wheelbase_mm: 225
-  max_prop_size_mm: 129.54
-  geometry: "True-X"
+frames:  {
+  uuid:  "73382232-1424-4e72-aed7-6a663a5608ec"
+  id:  "impulserc-apex-evo-5\""
+  manufacturer:  "ImpulseRC"
+  name:  "ImpulseRC Apex EVO 5\""
+  weight_g:  132
+  wheelbase_mm:  225
+  max_prop_size_mm:  129.54
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "295b1a5b-c9c9-49bd-9eb3-93422d525bf8"
-  id: "iflight-aos-5-v5"
-  manufacturer: "iFlight"
-  name: "iFlight AOS 5 V5"
-  weight_g: 129
-  wheelbase_mm: 228
-  max_prop_size_mm: 132.08
-  geometry: "True-X"
+frames:  {
+  uuid:  "295b1a5b-c9c9-49bd-9eb3-93422d525bf8"
+  id:  "iflight-aos-5-v5"
+  manufacturer:  "iFlight"
+  name:  "iFlight AOS 5 V5"
+  weight_g:  129
+  wheelbase_mm:  228
+  max_prop_size_mm:  132.08
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "498c4fd2-cf55-4022-ac48-cc400e490313"
-  id: "flyfishrc-volador-ii-vx5"
-  manufacturer: "FlyFishRC"
-  name: "FlyFishRC Volador II VX5"
-  weight_g: 177
-  wheelbase_mm: 225
-  max_prop_size_mm: 129.54
-  geometry: "True-X"
+frames:  {
+  uuid:  "498c4fd2-cf55-4022-ac48-cc400e490313"
+  id:  "flyfishrc-volador-ii-vx5"
+  manufacturer:  "FlyFishRC"
+  name:  "FlyFishRC Volador II VX5"
+  weight_g:  177
+  wheelbase_mm:  225
+  max_prop_size_mm:  129.54
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "8fd51fba-8f88-4178-9797-f73ad4e1b45b"
-  id: "caddx-gofilm-20-frame"
-  manufacturer: "Caddx"
-  name: "Caddx Gofilm 20 Frame"
-  weight_g: 30.5
-  wheelbase_mm: 94
-  max_prop_size_mm: 51.05
-  geometry: "True-X"
+frames:  {
+  uuid:  "8fd51fba-8f88-4178-9797-f73ad4e1b45b"
+  id:  "caddx-gofilm-20-frame"
+  manufacturer:  "Caddx"
+  name:  "Caddx Gofilm 20 Frame"
+  weight_g:  30.5
+  wheelbase_mm:  94
+  max_prop_size_mm:  51.05
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "923b27f5-5b9f-47d4-9920-98c5477bc577"
-  id: "happymodel-mobula8-frame"
-  manufacturer: "Happymodel"
-  name: "Happymodel Mobula8 Frame"
-  weight_g: 11.5
-  wheelbase_mm: 85
-  max_prop_size_mm: 51.05
-  geometry: "True-X"
+frames:  {
+  uuid:  "923b27f5-5b9f-47d4-9920-98c5477bc577"
+  id:  "happymodel-mobula8-frame"
+  manufacturer:  "Happymodel"
+  name:  "Happymodel Mobula8 Frame"
+  weight_g:  11.5
+  wheelbase_mm:  85
+  max_prop_size_mm:  51.05
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "0e06afa6-20af-4e2e-952c-d60df3d21846"
-  id: "flywoo-explorer-lr-4-frame"
-  manufacturer: "Flywoo"
-  name: "Flywoo Explorer LR 4 Frame"
-  weight_g: 41
-  wheelbase_mm: 168
-  max_prop_size_mm: 101.6
-  geometry: "True-X"
+frames:  {
+  uuid:  "0e06afa6-20af-4e2e-952c-d60df3d21846"
+  id:  "flywoo-explorer-lr-4-frame"
+  manufacturer:  "Flywoo"
+  name:  "Flywoo Explorer LR 4 Frame"
+  weight_g:  41
+  wheelbase_mm:  168
+  max_prop_size_mm:  101.6
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "322f0ecd-c122-4eb8-b709-5325247be75c"
-  id: "betafpv-meteor75-pro-frame"
-  manufacturer: "BetaFPV"
-  name: "BetaFPV Meteor75 Pro Frame"
-  weight_g: 5.8
-  wheelbase_mm: 80.8
-  max_prop_size_mm: 44.96
-  geometry: "True-X"
+frames:  {
+  uuid:  "322f0ecd-c122-4eb8-b709-5325247be75c"
+  id:  "betafpv-meteor75-pro-frame"
+  manufacturer:  "BetaFPV"
+  name:  "BetaFPV Meteor75 Pro Frame"
+  weight_g:  5.8
+  wheelbase_mm:  80.8
+  max_prop_size_mm:  44.96
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "1050cda5-594c-4737-bafd-965b75e2f3e3"
-  id: "hglrc-sector-d5-frame"
-  manufacturer: "HGLRC"
-  name: "HGLRC Sector D5 Frame"
-  weight_g: 121.7
-  wheelbase_mm: 225
-  max_prop_size_mm: 127.0
-  geometry: "True-X"
+frames:  {
+  uuid:  "1050cda5-594c-4737-bafd-965b75e2f3e3"
+  id:  "hglrc-sector-d5-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Sector D5 Frame"
+  weight_g:  121.7
+  wheelbase_mm:  225
+  max_prop_size_mm:  127
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "ce4e0a71-8430-4fa4-871e-18447e2f882a"
-  id: "hglrc-rekon3-frame"
-  manufacturer: "HGLRC"
-  name: "HGLRC Rekon3 Frame"
-  weight_g: 23
-  wheelbase_mm: 140
-  max_prop_size_mm: 76.2
-  geometry: "True-X"
+frames:  {
+  uuid:  "ce4e0a71-8430-4fa4-871e-18447e2f882a"
+  id:  "hglrc-rekon3-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Rekon3 Frame"
+  weight_g:  23
+  wheelbase_mm:  140
+  max_prop_size_mm:  76.2
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "f19553c3-6e78-4752-a957-9abe978c09f6"
-  id: "hglrc-rekon5-frame"
-  manufacturer: "HGLRC"
-  name: "HGLRC Rekon5 Frame"
-  weight_g: 72
-  wheelbase_mm: 210
-  max_prop_size_mm: 127.0
-  geometry: "True-X"
+frames:  {
+  uuid:  "f19553c3-6e78-4752-a957-9abe978c09f6"
+  id:  "hglrc-rekon5-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Rekon5 Frame"
+  weight_g:  72
+  wheelbase_mm:  210
+  max_prop_size_mm:  127
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "0c25c3b7-ab22-4b13-b8fe-708a83898c3b"
-  id: "hglrc-sector-x5-frame"
-  manufacturer: "HGLRC"
-  name: "HGLRC Sector X5 Frame"
-  weight_g: 120
-  wheelbase_mm: 210
-  max_prop_size_mm: 127.0
-  geometry: "True-X"
+frames:  {
+  uuid:  "0c25c3b7-ab22-4b13-b8fe-708a83898c3b"
+  id:  "hglrc-sector-x5-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Sector X5 Frame"
+  weight_g:  120
+  wheelbase_mm:  210
+  max_prop_size_mm:  127
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "48abe2b3-1bf4-4380-8f26-75afc7f53089"
-  id: "sub250-oasis-frame"
-  manufacturer: "SUB250-Oasis"
-  name: "SUB250-Oasis Frame"
-  weight_g: 53
-  wheelbase_mm: 135
-  max_prop_size_mm: 63.5
-  geometry: "True-X"
+frames:  {
+  uuid:  "48abe2b3-1bf4-4380-8f26-75afc7f53089"
+  id:  "sub250-oasis-frame"
+  manufacturer:  "SUB250-Oasis"
+  name:  "SUB250-Oasis Frame"
+  weight_g:  53
+  wheelbase_mm:  135
+  max_prop_size_mm:  63.5
+  geometry:  "True-X"
 }
-frames: {
-  uuid: "01a11091-1f13-7669-9fc3-1a04513f663e"
-  id: "betafpv-pavo35"
-  manufacturer: "BetaFPV"
-  name: "BetaFPV Pavo35 Brushless Whoop Frame"
-  weight_g: 58.5
-  wheelbase_mm: 151
+frames:  {
+  uuid:  "01a11091-1f13-7669-9fc3-1a04513f663e"
+  id:  "betafpv-pavo35"
+  manufacturer:  "BetaFPV"
+  name:  "BetaFPV Pavo35 Brushless Whoop Frame"
+  weight_g:  58.5
+  wheelbase_mm:  151
 }
-frames: {
-  uuid: "01a11091-1f13-7669-9fc3-1a06898895bd"
-  id: "lumenier-qav-s-2-johnnyfpv"
-  manufacturer: "Lumenier"
-  name: "Lumenier QAV-S 2 JohnnyFPV Special Edition 5\""
-  weight_g: 129
-  wheelbase_mm: 225
+frames:  {
+  uuid:  "01a11091-1f13-7669-9fc3-1a06898895bd"
+  id:  "lumenier-qav-s-2-johnnyfpv"
+  manufacturer:  "Lumenier"
+  name:  "Lumenier QAV-S 2 JohnnyFPV Special Edition 5\""
+  weight_g:  129
+  wheelbase_mm:  225
 }
-frames: {
-  uuid: "01a11091-1f13-7669-9fc3-1a0d219885cb"
-  id: "sub250-nanofly20"
-  manufacturer: "Sub250"
-  name: "Sub250 Nanofly20 Frame"
-  weight_g: 8.5
-  wheelbase_mm: 88
+frames:  {
+  uuid:  "01a11091-1f13-7669-9fc3-1a0d219885cb"
+  id:  "sub250-nanofly20"
+  manufacturer:  "Sub250"
+  name:  "Sub250 Nanofly20 Frame"
+  weight_g:  8.5
+  wheelbase_mm:  88
 }
-frames: {
-  uuid: "01a11091-1f13-7669-9fc3-1a0eded8ae5f"
-  id: "five33-switchback-pro"
-  manufacturer: "Five33"
-  name: "Five33 Switchback PRO"
-  weight_g: 55
-  wheelbase_mm: 208
+frames:  {
+  uuid:  "01a11091-1f13-7669-9fc3-1a0eded8ae5f"
+  id:  "five33-switchback-pro"
+  manufacturer:  "Five33"
+  name:  "Five33 Switchback PRO"
+  weight_g:  55
+  wheelbase_mm:  208
 }
-frames: {
-  uuid: "01a11091-1f13-7669-9fc3-1a0f09b08af6"
-  id: "darwinfpv-babyape-pro-v2"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV BabyApe Pro V2 Frame"
-  weight_g: 22.5
-  wheelbase_mm: 142
+frames:  {
+  uuid:  "01a11091-1f13-7669-9fc3-1a0f09b08af6"
+  id:  "darwinfpv-babyape-pro-v2"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV BabyApe Pro V2 Frame"
+  weight_g:  22.5
+  wheelbase_mm:  142
 }
-frames { uuid: "9f7e3250-b461-473d-9337-5f8b6de97b98" id: "meteor75-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Pro II Brushless Whoop Frame" weight_g: 5.8 wheelbase_mm: 80.0 }
-frames { uuid: "4b3bb0c4-d86e-49f7-8bd9-cabeeaac8cba" id: "meteor65-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Pro II Brushless Whoop Frame" weight_g: 4.6 wheelbase_mm: 70.0 }
-frames { uuid: "897c310c-aa29-4044-b690-4df80f4841d7" id: "aquila20-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Aquila20 Brushless Whoop Frame" weight_g: 37.5 wheelbase_mm: 100.0 }
-frames { uuid: "e3b85283-67b5-4f38-a425-6bff050bbc8c" id: "air65-champion-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 Champion Brushless Whoop Frame" weight_g: 2.2 wheelbase_mm: 65.0 }
-frames { uuid: "fc7fc867-9fd5-47cb-8e03-bfb1d447cd03" id: "pavo20-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Pro II Brushless Whoop Frame" weight_g: 35.7 wheelbase_mm: 93.9 }
-frames { uuid: "c87dc2c1-732b-43a5-8044-bd193132af88" id: "pavo-pico-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Pico II Brushless Whoop Frame" weight_g: 19.0 wheelbase_mm: 80.0 }
-frames { uuid: "a1c01820-381d-4764-a3df-455151d1f247" id: "air75-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air75 II Brushless Whoop Frame" weight_g: 4.0 wheelbase_mm: 75.0 }
-frames { uuid: "259ca8f0-14d4-4525-a944-05803452268b" id: "air65-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 II Brushless Whoop Frame" weight_g: 2.65 wheelbase_mm: 65.0 }
-frames { uuid: "10a092c4-55c8-43af-b125-998aa30b7d60" id: "pavo20-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Pro Brushless Whoop Frame" weight_g: 33.3 wheelbase_mm: 93.7 }
-frames { uuid: "b7927287-7978-45ad-81d5-35a268872d7b" id: "pavo-femto-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Femto Brushless Whoop Frame" weight_g: 8.64 wheelbase_mm: 75.0 }
-frames { uuid: "15418cec-962b-4aef-a6a6-d37dc357aabc" id: "x-knight-carbon-fiber-frame-kit" manufacturer: "BETAFPV" name: "X-Knight Carbon Fiber Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "daea0f68-49fa-4e1e-b885-5b22e60cee60" id: "pavo25-frame-kit" manufacturer: "BETAFPV" name: "Pavo25 Frame Kit" weight_g: 68.0 wheelbase_mm: 108.0 }
-frames { uuid: "5a6f0c7d-2686-4f2f-9642-d62e85af098f" id: "air75-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air75 Brushless Whoop Frame" weight_g: 4.45 wheelbase_mm: 75.0 }
-frames { uuid: "399e90a0-055c-4157-ab29-0cd39589aef3" id: "pavo35-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo35 Brushless Whoop Frame" weight_g: 113.9 wheelbase_mm: 148.0 }
-frames { uuid: "5453fbc1-e672-4256-81f2-d783d76ec0f8" id: "pavo25-v2-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo25 V2 Brushless Whoop Frame" weight_g: 70.0 wheelbase_mm: 112.0 }
-frames { uuid: "ba6fa85c-98cc-4396-ae29-2e2284bf2c53" id: "pavo20-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Brushless Whoop Frame" weight_g: 26.7 wheelbase_mm: 90.0 }
-frames { uuid: "52efdcae-96a8-4666-b46e-fc8197de5cad" id: "pavo-pico-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Pico Brushless Whoop Frame" weight_g: 13.8 wheelbase_mm: 80.8 }
-frames { uuid: "1e2fc8e0-1ff7-4bc9-8338-eb3be9dbc16d" id: "air65-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 Brushless Whoop Frame" weight_g: 2.67 wheelbase_mm: 65.0 }
-frames { uuid: "87131dff-79ff-49be-b529-22d576675743" id: "meteor75-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Pro Brushless Whoop Frame" weight_g: 7.73 wheelbase_mm: 80.8 }
-frames { uuid: "d13a0487-0f69-40f3-97ea-4a6400ec50a8" id: "meteor85-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor85 Brushless Whoop Frame" weight_g: 11.32 wheelbase_mm: 87.7 }
-frames { uuid: "68f9ece3-bf8e-4eeb-b8b9-2599ea9a4937" id: "cetus-x-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Cetus X Brushless Whoop Frame" weight_g: 24.22 wheelbase_mm: 0.0 }
-frames { uuid: "a2d038cd-36e0-4e41-bbb2-74341a81dab5" id: "cetus-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Cetus Pro Brushless Whoop Frame" weight_g: 9.39 wheelbase_mm: 0.0 }
-frames { uuid: "afa961c7-0906-4da4-82e2-ae879f22ca81" id: "pavo360-frame-kit" manufacturer: "BETAFPV" name: "Pavo360 Frame Kit" weight_g: 187.22 wheelbase_mm: 168.0 }
-frames { uuid: "aead85a2-635c-4d7e-b4a1-e38edc71c4bb" id: "pavo30-pro-frame-kit" manufacturer: "BETAFPV" name: "Pavo30 Pro Frame Kit" weight_g: 146.0 wheelbase_mm: 157.0 }
-frames { uuid: "2998d238-4574-4a4c-9d33-0c0f77704b64" id: "meteor65-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Pro Brushless Whoop Frame" weight_g: 3.2 wheelbase_mm: 0.0 }
-frames { uuid: "a3d2f778-4fb3-4db5-8720-a322907d5ef4" id: "x-knight-35-frame-kit" manufacturer: "BETAFPV" name: "X-Knight 35 Frame Kit" weight_g: 43.22 wheelbase_mm: 155.0 }
-frames { uuid: "4bde3b7f-8be2-4a5a-9816-93b2f0b13ce5" id: "hx115-lr-frame-kit" manufacturer: "BETAFPV" name: "HX115 LR Frame Kit" weight_g: 14.0 wheelbase_mm: 126.0 }
-frames { uuid: "baa3310c-71c0-48f4-ac7a-1ff289be009e" id: "pavo30-frame-kit" manufacturer: "BETAFPV" name: "Pavo30 Frame Kit" weight_g: 55.53 wheelbase_mm: 120.0 }
-frames { uuid: "dcdeaaa3-585a-4ccf-bd50-31abcdfa5b58" id: "beta95x-v3-frame-kit" manufacturer: "BETAFPV" name: "Beta95X V3 Frame Kit" weight_g: 39.09 wheelbase_mm: 100.0 }
-frames { uuid: "1b9034cb-2b5e-417a-a2f4-6ce10b46a991" id: "meteor75-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6f1641f0-97f4-45a5-bab7-b5af78adac2a" id: "beta75x-v2-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta75X V2 Micro Brushless Whoop Frame" weight_g: 5.6 wheelbase_mm: 0.0 }
-frames { uuid: "1cf1b9d6-7086-451f-a1f1-feb20259a6a9" id: "x-knight-carbon-fiber-5-frame-v2-kit" manufacturer: "BETAFPV" name: "X-Knight Carbon Fiber 5'' Frame V2 Kit" weight_g: 26.44 wheelbase_mm: 200.0 }
-frames { uuid: "f4e690da-d8dc-464c-b2c5-09638858bece" id: "twig-et5-5-toothpick-frame" manufacturer: "BETAFPV" name: "TWIG ET5 5 Toothpick Frame" weight_g: 33.6 wheelbase_mm: 200.0 }
-frames { uuid: "9ac32330-6d03-40e1-9608-a1cd16caabee" id: "twiglet-2-5-frame-kit" manufacturer: "BETAFPV" name: "TWIGLET 2.5'' Frame Kit" weight_g: 5.3 wheelbase_mm: 0.0 }
-frames { uuid: "0681bd40-b3c6-46c3-9dca-6b17595bf7a8" id: "twig-xl-3-frame-kit" manufacturer: "BETAFPV" name: "TWIG XL 3 Frame Kit" weight_g: 0.0 wheelbase_mm: 140.0 }
-frames { uuid: "a509ac9e-2a22-429d-8321-b40de8394a76" id: "twig-mutant-4-4-frame-kit-true-x" manufacturer: "BETAFPV" name: "TWIG Mutant 4 4'' Frame Kit (True-X)" weight_g: 0.0 wheelbase_mm: 160.0 }
-frames { uuid: "02f18100-0738-45fa-a5c9-78b62a90134a" id: "beta95x-frame-kit" manufacturer: "BETAFPV" name: "Beta95X Frame Kit" weight_g: 13.5 wheelbase_mm: 100.0 }
-frames { uuid: "bfe08cf8-baec-4eb3-b592-2648358fde5f" id: "beta75-pro-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta75 Pro Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "1d671356-7900-44ca-88df-2dc5113edc53" id: "hx100-se-t300-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX100 SE T300 Carbon Fiber Frame" weight_g: 4.0 wheelbase_mm: 0.0 }
-frames { uuid: "08b2bee0-776a-474b-9395-4905c912bd04" id: "meteor65-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b4e9b5e0-5dab-4445-a5f5-15727633844d" id: "hx115-t700-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX115 T700 Carbon Fiber Frame" weight_g: 9.4 wheelbase_mm: 0.0 }
-frames { uuid: "3352901c-ed21-4f34-832c-f28ff76d4f82" id: "hx100-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX100 Carbon Fiber Frame" weight_g: 5.1 wheelbase_mm: 0.0 }
-frames { uuid: "e68f8302-e73f-47ad-8dee-61c6702f90de" id: "stiffener-brace-of-carbon-fiber-for-beta85x-frame-2-pcs" manufacturer: "BETAFPV" name: "Stiffener Brace of Carbon Fiber for Beta85X Frame (2 PCS)" weight_g: 1.3 wheelbase_mm: 85.0 }
-frames { uuid: "77b37507-376d-4e43-967d-1441dcea5d45" id: "beta85x-4s-4k-frame-kit-upgrade" manufacturer: "BETAFPV" name: "Beta85X 4S 4K Frame Kit (Upgrade)" weight_g: 10.3 wheelbase_mm: 85.0 }
-frames { uuid: "8688e221-32da-47e8-9bb9-5c20c7fdc232" id: "beta75-pro-2-whoop-frame" manufacturer: "BETAFPV" name: "Beta75 Pro 2 Whoop Frame" weight_g: 5.5 wheelbase_mm: 0.0 }
-frames { uuid: "989196e6-e646-4a0e-8197-54bf1babcdd5" id: "beta65x-beta65-pro-2-micro-whoop-frame" manufacturer: "BETAFPV" name: "Beta65X / Beta65 Pro 2 Micro Whoop Frame" weight_g: 3.6 wheelbase_mm: 0.0 }
-frames { uuid: "61c2d2b1-8874-48cb-ae57-3fa93a2b2a1d" id: "beta75x-whoop-frame" manufacturer: "BETAFPV" name: "Beta75X Whoop Frame" weight_g: 7.3 wheelbase_mm: 0.0 }
-frames { uuid: "dba721f6-fb16-407e-9ffa-f14fcf662a92" id: "beta220-fpv-racing-carbon-fiber-quadcopter-frame-kit" manufacturer: "BETAFPV" name: "Beta220 FPV Racing Carbon Fiber Quadcopter Frame Kit" weight_g: 85.0 wheelbase_mm: 220.0 }
-frames { uuid: "3a3323c4-8a4a-4237-82e6-a2355b4f9ee3" id: "combo-of-beta75s-chameleon-frame-canopy-props" manufacturer: "BETAFPV" name: "Combo of Beta75S Chameleon (Frame+Canopy+Props)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "276e22ec-3dd0-492a-b5b2-0f871f2d0a17" id: "beta65-pro-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta65 Pro Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "86760477-4ea5-463d-8b49-981e7c03c346" id: "caddxfpv-curve-micro-16-replacement-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 Replacement Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ecd3d399-bc3d-4f31-bc3b-094ee1b368b7" id: "protos-drone-frame" manufacturer: "CADDX FPV" name: "Protos Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "c702c522-2a8d-45e6-bd52-0a4f99eeae01" id: "caddxfpv-goggles-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Goggles Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "cc8136cf-731d-4d6f-b9eb-36f157c9c137" id: "caddxfpv-customized-lenses-includes-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Customized Lenses (includes frame)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b3a04e3d-b47e-48d2-9af7-71d6835067db" id: "caddxfpv-gofilm-20-frame" manufacturer: "CADDXFPV" name: "CADDXFPV Gofilm 20 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e6344b0e-3a10-4e25-84b8-baccf795505c" id: "walksnail-lens-frame-for-avatar-hd-goggles-x" manufacturer: "CADDXFPV" name: "Walksnail Lens Frame for Avatar HD Goggles X" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b3bdea49-e3b0-439e-b8f5-b979d169514f" id: "baby-babyape-v4-frame" manufacturer: "DarwinFPV" name: "Baby BabyApe V4 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "901f9884-4c4f-4c55-9c0f-f25fbf263b31" id: "darwinfpv-apestyle-x6-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle X6 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e4561bb2-ee70-4ff4-91c7-e9bbb02fa512" id: "darwinfpv-apestyle-x5-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle X5 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "be56e140-5306-4754-9df3-5d0930e96fb6" id: "darwinfpv-apestyle-d6-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle D6 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d9e7cf6f-9332-45c1-98a4-e4613e5623f9" id: "darwinfpv-apestyle-d5-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle D5 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d363ccbd-887a-4ef2-8025-ca0b0ee86571" id: "darwinfpv-toruk15-long-range-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV Toruk15  Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "960ee197-cf5a-4659-ad32-c6b178195e62" id: "babyape-pro-3-5-inch-freestyle-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "fef91f43-ad50-4acf-8e6c-1629f31b62a9" id: "babyape-3-inch-freestyle-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ 3 Inch Freestyle FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "4f43a983-553f-4c1b-89e5-705628932743" id: "babyape-mini-2-inch-freestyle-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ Mini 2 Inch Freestyle Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "4409042c-9fb0-4fc7-b2ba-0b9bdfafa674" id: "darwinfpv-hulk-iii-mini-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV HULK III Mini Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "77957a2d-e21d-430a-b743-882bad549462" id: "darwinfpv-cineape20-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV CineApe20 FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "1aeced1f-73de-4598-a536-516b1342dc02" id: "darwinfpv-toruk13-13-inch-long-range-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV Toruk13 13-Inch Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "803f997e-b14d-49e3-9c8c-1b1bff479514" id: "darwinfpv-x10-long-range-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DarwinFPV X10 Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "1f5b7c61-58b5-431d-98b8-a6b4e09bb6aa" id: "darwinfpv-foldape4-analog-frame" manufacturer: "DarwinFPV" name: "DarwinFPV FoldApe4 Analog Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "bae2f0f0-b963-4f29-9550-1a813ee85543" id: "darwinfpv-cineape35-frame" manufacturer: "DarwinFPV" name: "DarwinFPV CineApe35  Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "f926d440-2090-4f93-96f3-4662663667f3" id: "darwin-x9-quadcopter-frame" manufacturer: "DarwinFPV" name: "DARWIN X9 Quadcopter Frame" weight_g: 287.8 wheelbase_mm: 363.0 }
-frames { uuid: "681cafac-3af5-4418-a8a6-888d1a87d448" id: "darwin-hulk-waterproof-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DARWIN HULK Ⅱ Waterproof  FPV Drone Frame" weight_g: 195.7 wheelbase_mm: 227.0 }
-frames { uuid: "6b74a4b7-7faf-4579-bce8-c99639fb784a" id: "darwinfpv-babyape-3-5-inch-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DarwinFPV BabyApe Ⅱ 3.5 inch FPV Drone Frame" weight_g: 46.7 wheelbase_mm: 156.0 }
-frames { uuid: "ebd5e092-cb6e-49ef-8802-ce21a2aa7496" id: "darwin-cineape-25-whoop-frame" manufacturer: "DarwinFPV" name: "Darwin CineApe 25 Whoop Frame" weight_g: 66.7 wheelbase_mm: 112.0 }
-frames { uuid: "0326536d-0119-4609-85c7-73a7505b593c" id: "baby-babyape-v2-frame" manufacturer: "DarwinFPV" name: "Baby BabyApe V2 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "a2f84c6e-c5a9-40cf-a597-f4deae9023c6" id: "darwinfpv-hulk-waterproof-frame" manufacturer: "DarwinFPV" name: "DarwinFPV HULK Waterproof Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5e8b3988-4104-48a5-b1cb-88eeb9237609" id: "darwin-240-5inch-long-distance-fpv-drone-frame" manufacturer: "DarwinFPV" name: "Darwin 240 5inch Long Distance FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 240.0 }
-frames { uuid: "dc11d671-201b-4a8c-ae14-285905076000" id: "darwin-tinyape-freestyle-frame" manufacturer: "DarwinFPV" name: "Darwin TinyApe Freestyle Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "1982a5f0-80de-491e-ae4a-840a56c1ee06" id: "darwin-baby-ape-3-quadcopter-frame" manufacturer: "DarwinFPV" name: "Darwin Baby Ape 3'' Quadcopter Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "40b80f1f-4c65-4790-aa9d-951afb7f45c6" id: "darwin-129-fpv-quadcopter-frame" manufacturer: "DarwinFPV" name: "Darwin 129 FPV Quadcopter Frame" weight_g: 0.0 wheelbase_mm: 280.0 }
-frames { uuid: "147159aa-2860-43ce-9cdc-644ac91baa45" id: "darwin-18650-frame" manufacturer: "DarwinFPV" name: "Darwin 18650 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "f4e44a92-6907-4177-af99-763e7ddf9a57" id: "newbeedrone-cockroach-65mm-brushed-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Brushed LiteAF Racing Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "8df9bbb1-0f79-4531-a3a5-d0d3d931ae16" id: "newbeedrone-cockroach-75mm-brushless-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 75mm Brushless LiteAF Racing Frame" weight_g: 3.3 wheelbase_mm: 75.0 }
-frames { uuid: "32ce4984-f380-4bd4-9b23-90d0317b7b92" id: "newbeedrone-lionbee-3inch-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone LionBee 3inch Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b5d06b41-8215-4ba0-b4ee-c3bf2061b390" id: "newbeedrone-savagebee-3-frame-v1-7" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee 3 Frame V1.7" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "18e04626-53ad-4d9e-b695-e2db5141ba07" id: "newbeedrone-x-webleedfpv-cockroach-65mm-liteaf-red-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone X weBLEEDfpv Cockroach 65mm LiteAF RED Frame" weight_g: 2.4 wheelbase_mm: 0.0 }
-frames { uuid: "77b2b3c0-e777-4571-a73a-05d35822369b" id: "newbeedrone-inertia-5-fpv-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone INERTIA 5 FPV Frame" weight_g: 130.0 wheelbase_mm: 0.0 }
-frames { uuid: "6c7a6c48-5a8d-43ed-b34f-9029766b285b" id: "newbeedrone-stingerbee-hd-o4-pro-3-frame-kit" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD O4 Pro 3” Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "af7ea028-bb34-4ce4-90f2-49019d5218b7" id: "newbeedrone-vrdrone-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone VRDrone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "4f66ce21-de6a-4a53-a059-a357aa5c123a" id: "newbeedrone-savagebee-pusher-frame-kit" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee Pusher Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6cdef9bd-c262-48f3-aaff-5abdd51ede9a" id: "newbeedrone-vivid-frame-spare-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid Frame Spare Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "62d60f2f-96f8-4c06-9344-e9dc19f139de" id: "newbeedrone-cockroach-65mm-brushless-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Brushless LiteAF Racing Frame" weight_g: 2.4 wheelbase_mm: 0.0 }
-frames { uuid: "e394e0bd-dc1c-4ecc-8553-c8aa21bad934" id: "newbeedrone-cockroach-65mm-frame-3d-printed-battery-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Frame 3D Printed Battery Mount" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "02a84d77-ae24-4e2f-8859-7192bf12a1f0" id: "newbeedrone-stingerbee-hd-3-frame-body-kit-only" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD 3 Frame Body Kit Only" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "396e9efd-4737-4f8a-ab3e-788382789b12" id: "newbeedrone-stingerbee-hd-3-full-frame-body-kit-3-arms-vtx-plate" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD 3 Full Frame (Body Kit + 3 Arms + VTX Plate)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5f7b117b-cb5e-41fd-b7f0-ac1f2a315213" id: "newbeedrone-cockroach-82-brushless-super-durable-frame-plastic-part-and-carbon-fiber-accessory" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame (Plastic Part and Carbon Fiber & Accessory)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b717ba35-c2ce-45ae-9081-23ed82f1bec3" id: "newbeedrone-cockroach-82-brushless-super-durable-frame-82mm-plastic-part-only" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame 82mm Plastic Part Only" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d190b2a8-e79a-471f-a479-4fc360ad4b00" id: "newbeedrone-75mm-cockroach75-brushless-extreme-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone 75mm Cockroach75 Brushless Extreme-Durable Frame" weight_g: 6.98 wheelbase_mm: 0.0 }
-frames { uuid: "b55829cc-b0b3-4fa0-a4cf-367fd8ad9360" id: "newbeedrone-cockroach-v3-65mm-brushless-ultra-light-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach V3 65mm Brushless Ultra Light Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "9f2c712e-a3ae-41bb-8521-7b35f3ea8353" id: "newbeedrone-project-t-7-tactical-7inch-true-x-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Project T-7 Tactical 7inch True-X Frame" weight_g: 330.0 wheelbase_mm: 0.0 }
-frames { uuid: "1958ca5a-439e-4d90-8360-97228c1f5849" id: "newbeedrone-inertia-5-dc-dead-cat-style-fpv-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Inertia 5 DC (Dead Cat Style) FPV Frame" weight_g: 130.0 wheelbase_mm: 0.0 }
-frames { uuid: "0bc3635e-4dc5-43e8-a5a8-e35a94c7cb50" id: "newbeedrone-inertia-5-fpv-frame-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone INERTIA 5 FPV Frame Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b0acf192-558c-4f62-8e7b-fb1b206257f0" id: "newbeedrone-vivid-frame-3d-printed-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid Frame 3D Printed Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "0925b0ae-5ccb-45f8-adc7-805bd5d8b3d0" id: "warranty-replacement-for-newbeedrone-cockroach-frame" manufacturer: "NewBeeDrone" name: "Warranty Replacement for NewBeeDrone Cockroach Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "71631598-7a04-4330-9007-202ec8d9f9de" id: "newbeedrone-invisi360-frame-replacement-parts-bottom-plate-top-plate-hardware-etc" manufacturer: "NewBeeDrone" name: "NewBeeDrone Invisi360 Frame Replacement Parts  - Bottom Plate, Top Plate, Hardware, Etc." weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "86b9dc1a-5835-4a7f-b5c6-7be981903df9" id: "newbeedrone-mosquito-xl-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Mosquito XL Frame" weight_g: 7.5 wheelbase_mm: 0.0 }
-frames { uuid: "4744b26e-992c-42ec-b022-bfb53ce811d9" id: "newbeedrone-v2-65mm-cockroach-brushless-super-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone V2 65mm Cockroach Brushless Super-Durable Frame" weight_g: 5.1 wheelbase_mm: 0.0 }
-frames { uuid: "0c480cb5-8f02-4a08-956f-4d5db6f261ba" id: "newbeedrone-mosquito-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Mosquito Frame" weight_g: 5.93 wheelbase_mm: 0.0 }
-frames { uuid: "efae79df-6c7a-4101-8d5d-a68e8cc02e46" id: "newbeedrone-savagebee-v1-8-frame-65mm-3inch" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee V1.8 Frame 65mm/3inch" weight_g: 8.0 wheelbase_mm: 0.0 }
-frames { uuid: "b644f558-ded3-48af-83b3-6149896d4474" id: "newbeedrone-replacement-m3-pressnuts-for-vivid-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement M3 Pressnuts for Vivid Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "f546eaa7-8954-451d-a984-5d13d2482b06" id: "newbeedrone-65mm-cockroach-brushless-super-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone 65mm Cockroach Brushless Super-Durable Frame" weight_g: 3.71 wheelbase_mm: 0.0 }
-frames { uuid: "02a5f77e-d8f1-4b36-9fa0-8b252d665d51" id: "newbeedrone-cockroach-brushed-super-durable-frame-65mm" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach Brushed Super-Durable Frame 65mm" weight_g: 3.44 wheelbase_mm: 0.0 }
-frames { uuid: "db8d9317-d436-40d3-bc21-512ad3952ed1" id: "lil-matey2-3-5-frame" manufacturer: "Pirat" name: "Lil Matey2 3.5 Frame" weight_g: 58.0 wheelbase_mm: 0.0 }
-frames { uuid: "2e38e004-b0c8-420b-bcee-6647fae1be4c" id: "echo-5-frame" manufacturer: "ImpulseRC" name: "Echo 5 Frame" weight_g: 121.0 wheelbase_mm: 0.0 }
-frames { uuid: "40030d29-653d-4876-ac21-51b243b9e60d" id: "cinemini-2-5-frame" manufacturer: "Rotor Riot" name: "CineMini 2.5 Frame" weight_g: 40.3 wheelbase_mm: 117.257 }
-frames { uuid: "6b84c865-fb16-4f53-a0df-79ff75ca07d2" id: "apex-evo-5-frame" manufacturer: "ImpulseRC" name: "Apex EVO 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "484ec143-cc53-419c-95ed-989d50b6ccec" id: "tanq-s-3-5-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ S 3.5 Frame - By LetsFlyRC" weight_g: 84.0 wheelbase_mm: 168.0 }
-frames { uuid: "1bcf7db6-6808-4b57-922a-040717dad78e" id: "tanq-2-5-racing-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Racing Frame - By LetsFlyRC" weight_g: 195.0 wheelbase_mm: 0.0 }
-frames { uuid: "d6d004d6-f9bb-453f-8829-2c01aabe2acf" id: "tanq-2-5-deadcat-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Deadcat Frame - By LetsFlyRC" weight_g: 182.0 wheelbase_mm: 220.0 }
-frames { uuid: "d08d999d-779e-4272-a3c3-f8d125544c62" id: "shorty-5-frame" manufacturer: "Pirat" name: "Shorty 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "22af4d8c-9e2b-4681-a0d9-34e9b2150b1d" id: "punch-5-frame" manufacturer: "Pirat" name: "Punch 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "8345a861-a9f6-49c7-99c8-98abdc8ac00a" id: "tanq-2-8-deadcat-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 8 Deadcat Frame - By LetsFlyRC" weight_g: 215.0 wheelbase_mm: 309.0 }
-frames { uuid: "cc64a5af-6deb-4e50-92da-c60d49470dc4" id: "tanq-2-5-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Frame - By LetsFlyRC" weight_g: 175.0 wheelbase_mm: 220.0 }
-frames { uuid: "665415e7-251a-4bf4-acd2-643ea5eca28f" id: "cl2-xr-7-deadcat-frame" manufacturer: "Rotor Riot" name: "CL2-XR 7 Deadcat Frame" weight_g: 210.0 wheelbase_mm: 288.0 }
-frames { uuid: "c0a33d05-6d42-490f-82cb-2bd58eadbb3e" id: "cl2-air-5-frame" manufacturer: "Rotor Riot" name: "CL2-AIR 5 Frame" weight_g: 166.0 wheelbase_mm: 220.0 }
-frames { uuid: "d394f545-9fb3-436d-972f-a7929f8fabf5" id: "mobula7-v4-75mm-frame-1s-choose-color" manufacturer: "Happymodel" name: "Mobula7 V4 75mm Frame - 1S - Choose Color" weight_g: 5.4 wheelbase_mm: 75.0 }
-frames { uuid: "b3833e50-8ff1-42f0-809d-760237a1bb56" id: "mobula7-v3-75mm-frame-2s-choose-color" manufacturer: "Happymodel" name: "Mobula7 V3 75mm Frame - 2S - Choose Color" weight_g: 5.5 wheelbase_mm: 75.0 }
-frames { uuid: "88e7f950-c19b-41d3-b1c9-04ac9898780b" id: "skyliner-mk3-5-frame" manufacturer: "Rotor Riot" name: "Skyliner MK3 5 Frame" weight_g: 144.0 wheelbase_mm: 213.0 }
-frames { uuid: "316ae38a-87e9-45a2-b137-fd9b61346123" id: "skylite-3-3-5-frame-by-le-drib" manufacturer: "Rotor Riot" name: "SkyLite 3-3.5 Frame by Le Drib" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "252a8b18-c1a7-4604-a3dc-400abc5c9ff7" id: "cl2-5-frame" manufacturer: "Rotor Riot" name: "CL2 5 Frame" weight_g: 166.0 wheelbase_mm: 233.0 }
-frames { uuid: "1c41153b-2620-4e92-8f34-82fd0da5b581" id: "bubito-35mm-frame" manufacturer: "Rotor Riot" name: "Bubito 35mm Frame" weight_g: 5.5 wheelbase_mm: 62.0 }
-frames { uuid: "448791ec-687c-4fb6-9284-3a04f9c96a40" id: "moxy-5-frame" manufacturer: "Rotor Riot" name: "Moxy 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d6c08381-6a58-4502-aadc-568d82ca4536" id: "meteor75-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Pro II Brushless Whoop Frame" weight_g: 5.8 wheelbase_mm: 80.0 }
-frames { uuid: "7783c437-782d-4e24-add8-dba1303d15f6" id: "meteor65-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Pro II Brushless Whoop Frame" weight_g: 4.6 wheelbase_mm: 70.0 }
-frames { uuid: "9c5adc23-fd80-48e5-b015-4519ce5f4be7" id: "aquila20-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Aquila20 Brushless Whoop Frame" weight_g: 37.5 wheelbase_mm: 100.0 }
-frames { uuid: "41fae5c4-48f0-42bf-a577-00412e9beb09" id: "air65-champion-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 Champion Brushless Whoop Frame" weight_g: 2.2 wheelbase_mm: 65.0 }
-frames { uuid: "41f65df1-ed2c-4c18-ba41-c4bdb2bd0566" id: "pavo20-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Pro II Brushless Whoop Frame" weight_g: 35.7 wheelbase_mm: 93.9 }
-frames { uuid: "a58d9c97-aac0-4488-8c6d-c3b718847d69" id: "pavo-pico-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Pico II Brushless Whoop Frame" weight_g: 19.0 wheelbase_mm: 80.0 }
-frames { uuid: "067f09e8-c2a9-40ce-bd57-5232383deeda" id: "air75-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air75 II Brushless Whoop Frame" weight_g: 4.0 wheelbase_mm: 75.0 }
-frames { uuid: "584a7a34-344c-4168-b295-aac5d218a9a0" id: "air65-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 II Brushless Whoop Frame" weight_g: 2.65 wheelbase_mm: 65.0 }
-frames { uuid: "4ccd43bf-9d77-4061-a4a7-2dde3ab8d453" id: "pavo20-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Pro Brushless Whoop Frame" weight_g: 33.3 wheelbase_mm: 93.7 }
-frames { uuid: "f5679fc7-121e-4cdd-9ebb-b718e96e222c" id: "pavo-femto-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Femto Brushless Whoop Frame" weight_g: 8.64 wheelbase_mm: 75.0 }
-frames { uuid: "db0e8d0e-2197-4041-bc3f-7717d0d3a22c" id: "x-knight-carbon-fiber-frame-kit" manufacturer: "BETAFPV" name: "X-Knight Carbon Fiber Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "357a874c-5b21-45cf-bb86-0a94168b613e" id: "pavo25-frame-kit" manufacturer: "BETAFPV" name: "Pavo25 Frame Kit" weight_g: 68.0 wheelbase_mm: 108.0 }
-frames { uuid: "0ecb60ea-c2e2-419e-8a81-79c89233a81f" id: "air75-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air75 Brushless Whoop Frame" weight_g: 4.45 wheelbase_mm: 75.0 }
-frames { uuid: "770f1f0c-595f-4d3d-bc5f-c731b3f116de" id: "pavo35-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo35 Brushless Whoop Frame" weight_g: 113.9 wheelbase_mm: 148.0 }
-frames { uuid: "3982304e-8efe-4c04-a609-efba3ea263f8" id: "pavo25-v2-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo25 V2 Brushless Whoop Frame" weight_g: 70.0 wheelbase_mm: 112.0 }
-frames { uuid: "51ba1aad-4938-4dd5-b843-4a88d77f7fc8" id: "pavo20-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Brushless Whoop Frame" weight_g: 26.7 wheelbase_mm: 90.0 }
-frames { uuid: "c93300ec-02f9-4091-be3c-cbc9adef0820" id: "pavo-pico-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Pico Brushless Whoop Frame" weight_g: 13.8 wheelbase_mm: 80.8 }
-frames { uuid: "78557e1f-3015-4df5-b16b-8f4cc6947142" id: "air65-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 Brushless Whoop Frame" weight_g: 2.67 wheelbase_mm: 65.0 }
-frames { uuid: "8d25bad4-8747-4c4a-adb9-7fca5f2a0d80" id: "meteor75-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Pro Brushless Whoop Frame" weight_g: 7.73 wheelbase_mm: 80.8 }
-frames { uuid: "df020812-ecf0-44d5-9e52-adc2d840f161" id: "meteor85-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor85 Brushless Whoop Frame" weight_g: 11.32 wheelbase_mm: 87.7 }
-frames { uuid: "13247f0a-96f4-4751-b544-9883fb0d6f9a" id: "cetus-x-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Cetus X Brushless Whoop Frame" weight_g: 24.22 wheelbase_mm: 0.0 }
-frames { uuid: "eb81a21b-4909-4392-a399-41f0cec8f1af" id: "cetus-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Cetus Pro Brushless Whoop Frame" weight_g: 9.39 wheelbase_mm: 0.0 }
-frames { uuid: "e7e2b29d-e836-4981-9546-ce85bb10a26e" id: "pavo360-frame-kit" manufacturer: "BETAFPV" name: "Pavo360 Frame Kit" weight_g: 187.22 wheelbase_mm: 168.0 }
-frames { uuid: "af9d2c17-89d8-438e-91bf-b53f0276c3b2" id: "pavo30-pro-frame-kit" manufacturer: "BETAFPV" name: "Pavo30 Pro Frame Kit" weight_g: 146.0 wheelbase_mm: 157.0 }
-frames { uuid: "707c7819-8d09-4751-918f-93f415c7c029" id: "meteor65-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Pro Brushless Whoop Frame" weight_g: 3.2 wheelbase_mm: 0.0 }
-frames { uuid: "61de3b9a-f4ab-4f01-b1bb-46efb2abede5" id: "x-knight-35-frame-kit" manufacturer: "BETAFPV" name: "X-Knight 35 Frame Kit" weight_g: 43.22 wheelbase_mm: 155.0 }
-frames { uuid: "bd728223-d0f2-4285-b93b-5868a85f0b1d" id: "hx115-lr-frame-kit" manufacturer: "BETAFPV" name: "HX115 LR Frame Kit" weight_g: 14.0 wheelbase_mm: 126.0 }
-frames { uuid: "9f5e1ab5-d78a-406f-b708-4c5858e590a2" id: "pavo30-frame-kit" manufacturer: "BETAFPV" name: "Pavo30 Frame Kit" weight_g: 55.53 wheelbase_mm: 120.0 }
-frames { uuid: "12f7eb64-8b15-4e98-9d00-ebdccc3e45a3" id: "beta95x-v3-frame-kit" manufacturer: "BETAFPV" name: "Beta95X V3 Frame Kit" weight_g: 39.09 wheelbase_mm: 100.0 }
-frames { uuid: "e24b5b3a-1206-41fd-9ebe-688fef709309" id: "meteor75-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "98cace52-5c34-4a33-b840-7389adb903dc" id: "beta75x-v2-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta75X V2 Micro Brushless Whoop Frame" weight_g: 5.6 wheelbase_mm: 0.0 }
-frames { uuid: "11b4fe87-1320-4d58-8afb-1a8035dd7fe0" id: "x-knight-carbon-fiber-5-frame-v2-kit" manufacturer: "BETAFPV" name: "X-Knight Carbon Fiber 5'' Frame V2 Kit" weight_g: 26.44 wheelbase_mm: 200.0 }
-frames { uuid: "ca81f359-56fd-474d-989c-7964d9bb3b06" id: "twig-et5-5-toothpick-frame" manufacturer: "BETAFPV" name: "TWIG ET5 5 Toothpick Frame" weight_g: 33.6 wheelbase_mm: 200.0 }
-frames { uuid: "075e9bf8-aab8-4085-a1d9-d28404e627f4" id: "twiglet-2-5-frame-kit" manufacturer: "BETAFPV" name: "TWIGLET 2.5'' Frame Kit" weight_g: 5.3 wheelbase_mm: 0.0 }
-frames { uuid: "705d9f60-7863-46fa-8865-01d479e15794" id: "twig-xl-3-frame-kit" manufacturer: "BETAFPV" name: "TWIG XL 3 Frame Kit" weight_g: 0.0 wheelbase_mm: 140.0 }
-frames { uuid: "3dd357bd-af9c-4dad-8336-408cd004c668" id: "twig-mutant-4-4-frame-kit-true-x" manufacturer: "BETAFPV" name: "TWIG Mutant 4 4'' Frame Kit (True-X)" weight_g: 0.0 wheelbase_mm: 160.0 }
-frames { uuid: "6da12c45-7830-4e9f-a2d7-535f80f69989" id: "beta95x-frame-kit" manufacturer: "BETAFPV" name: "Beta95X Frame Kit" weight_g: 13.5 wheelbase_mm: 100.0 }
-frames { uuid: "83c8046c-04c3-4249-ae28-356d21ba9f94" id: "beta75-pro-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta75 Pro Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6624893f-d6b4-4d81-ad4c-f45f94a0b5f8" id: "hx100-se-t300-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX100 SE T300 Carbon Fiber Frame" weight_g: 4.0 wheelbase_mm: 0.0 }
-frames { uuid: "fd3a387d-a0c8-412a-bc45-b6cab19ff6da" id: "meteor65-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ab7638f4-e42d-4c63-b0e1-1b072dfa6a32" id: "hx115-t700-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX115 T700 Carbon Fiber Frame" weight_g: 9.4 wheelbase_mm: 0.0 }
-frames { uuid: "ce9e8b3e-76f9-46ec-95c0-024355ce7359" id: "hx100-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX100 Carbon Fiber Frame" weight_g: 5.1 wheelbase_mm: 0.0 }
-frames { uuid: "1f693a23-1ae9-4a94-aee1-b6388b946907" id: "stiffener-brace-of-carbon-fiber-for-beta85x-frame-2-pcs" manufacturer: "BETAFPV" name: "Stiffener Brace of Carbon Fiber for Beta85X Frame (2 PCS)" weight_g: 1.3 wheelbase_mm: 85.0 }
-frames { uuid: "7d97201d-1db8-4773-b92d-c25c43b10789" id: "beta85x-4s-4k-frame-kit-upgrade" manufacturer: "BETAFPV" name: "Beta85X 4S 4K Frame Kit (Upgrade)" weight_g: 10.3 wheelbase_mm: 85.0 }
-frames { uuid: "ae6f808c-f205-45cb-a61e-de38df4fcc0d" id: "beta75-pro-2-whoop-frame" manufacturer: "BETAFPV" name: "Beta75 Pro 2 Whoop Frame" weight_g: 5.5 wheelbase_mm: 0.0 }
-frames { uuid: "66837707-6049-4ac7-ab95-abead0f2ccc4" id: "beta65x-beta65-pro-2-micro-whoop-frame" manufacturer: "BETAFPV" name: "Beta65X / Beta65 Pro 2 Micro Whoop Frame" weight_g: 3.6 wheelbase_mm: 0.0 }
-frames { uuid: "6105ca53-b6c1-4ae8-9c10-ccdbde5a19e8" id: "beta75x-whoop-frame" manufacturer: "BETAFPV" name: "Beta75X Whoop Frame" weight_g: 7.3 wheelbase_mm: 0.0 }
-frames { uuid: "b3b75e70-ec0c-485c-b3ec-b0676f48d3eb" id: "beta220-fpv-racing-carbon-fiber-quadcopter-frame-kit" manufacturer: "BETAFPV" name: "Beta220 FPV Racing Carbon Fiber Quadcopter Frame Kit" weight_g: 85.0 wheelbase_mm: 220.0 }
-frames { uuid: "947b1b0b-ed9f-45a8-9e51-5620b3bf9200" id: "combo-of-beta75s-chameleon-frame-canopy-props" manufacturer: "BETAFPV" name: "Combo of Beta75S Chameleon (Frame+Canopy+Props)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "248a6463-546a-4cde-b9fa-40490e7eed56" id: "beta65-pro-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta65 Pro Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "3160d31d-e85e-4e99-8336-4958b45e29bf" id: "caddxfpv-curve-micro-16-replacement-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 Replacement Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "23d93332-1f51-4767-a2a3-167fadd51563" id: "protos-drone-frame" manufacturer: "CADDX FPV" name: "Protos Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6d70d53b-1db6-4ac1-8327-0f4110c955cb" id: "caddxfpv-goggles-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Goggles Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "56702a20-4d0c-4234-937e-e16115ea3290" id: "caddxfpv-customized-lenses-includes-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Customized Lenses (includes frame)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5fa98ff8-efdb-4488-b71e-2d47c890f49d" id: "caddxfpv-gofilm-20-frame" manufacturer: "CADDXFPV" name: "CADDXFPV Gofilm 20 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "08b080b2-9349-4ad7-a4ca-dae9e93bad52" id: "walksnail-lens-frame-for-avatar-hd-goggles-x" manufacturer: "CADDXFPV" name: "Walksnail Lens Frame for Avatar HD Goggles X" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e56d3c4b-0c10-4758-9292-d5f788c63337" id: "baby-babyape-v4-frame" manufacturer: "DarwinFPV" name: "Baby BabyApe V4 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "75f5df1b-69c3-4f55-ab03-85501030cab7" id: "darwinfpv-apestyle-x6-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle X6 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "8ffdb0ea-01b7-4eca-acba-1a4506fcbd9a" id: "darwinfpv-apestyle-x5-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle X5 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "af268fbd-b987-43fc-a6fa-5d736cd234b2" id: "darwinfpv-apestyle-d6-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle D6 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "59d8b704-f2fe-477b-8297-e4f5fdcda33f" id: "darwinfpv-apestyle-d5-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle D5 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b8679b7b-1b63-4252-a933-2c76a590ffd5" id: "darwinfpv-toruk15-long-range-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV Toruk15  Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "86e1d135-cc96-433f-9fc9-dd2475ad2ef1" id: "babyape-pro-3-5-inch-freestyle-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "525349c9-0dac-45c4-a93c-b6b8583a54fc" id: "babyape-3-inch-freestyle-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ 3 Inch Freestyle FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5ee9809b-560c-4d7d-8694-00e14e64c573" id: "babyape-mini-2-inch-freestyle-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ Mini 2 Inch Freestyle Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "57ead387-af8c-4c8b-b059-2e8d135445e5" id: "darwinfpv-hulk-iii-mini-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV HULK III Mini Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "15d367de-6c24-42ab-8077-73c7a7fc6477" id: "darwinfpv-cineape20-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV CineApe20 FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "656ab5fa-a789-4934-afba-327dbe9f5d46" id: "darwinfpv-toruk13-13-inch-long-range-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV Toruk13 13-Inch Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "0d453e01-dff5-4932-806c-839ce5626563" id: "darwinfpv-x10-long-range-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DarwinFPV X10 Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "f540ec75-5449-4b37-8137-bddcc114558b" id: "darwinfpv-foldape4-analog-frame" manufacturer: "DarwinFPV" name: "DarwinFPV FoldApe4 Analog Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "74bcb75c-81c1-42c0-b5e0-fb5c2bdf4b15" id: "darwinfpv-cineape35-frame" manufacturer: "DarwinFPV" name: "DarwinFPV CineApe35  Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "38de4b39-d4f9-4fd2-af26-d35171596840" id: "darwin-x9-quadcopter-frame" manufacturer: "DarwinFPV" name: "DARWIN X9 Quadcopter Frame" weight_g: 287.8 wheelbase_mm: 363.0 }
-frames { uuid: "ac28f7a5-ef9f-4a52-adee-46d6b14170cb" id: "darwin-hulk-waterproof-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DARWIN HULK Ⅱ Waterproof  FPV Drone Frame" weight_g: 195.7 wheelbase_mm: 227.0 }
-frames { uuid: "815fc89c-57af-4a72-aaf9-4bc9fb0827a6" id: "darwinfpv-babyape-3-5-inch-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DarwinFPV BabyApe Ⅱ 3.5 inch FPV Drone Frame" weight_g: 46.7 wheelbase_mm: 156.0 }
-frames { uuid: "59390b86-4283-480e-bf9e-5cc23dbdecd6" id: "darwin-cineape-25-whoop-frame" manufacturer: "DarwinFPV" name: "Darwin CineApe 25 Whoop Frame" weight_g: 66.7 wheelbase_mm: 112.0 }
-frames { uuid: "43f6f924-a5d6-455f-9ea9-c6f0d033a3d8" id: "baby-babyape-v2-frame" manufacturer: "DarwinFPV" name: "Baby BabyApe V2 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b2f0980f-9956-422e-8a5c-339f8a28ea2c" id: "darwinfpv-hulk-waterproof-frame" manufacturer: "DarwinFPV" name: "DarwinFPV HULK Waterproof Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "799859f8-96b6-4974-942a-c19b6422105f" id: "darwin-240-5inch-long-distance-fpv-drone-frame" manufacturer: "DarwinFPV" name: "Darwin 240 5inch Long Distance FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 240.0 }
-frames { uuid: "dd1e9236-c8e2-4fd6-a962-14d8d1de1f62" id: "darwin-tinyape-freestyle-frame" manufacturer: "DarwinFPV" name: "Darwin TinyApe Freestyle Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6b8dd4f0-6fa5-4151-8339-0df16ec7f840" id: "darwin-baby-ape-3-quadcopter-frame" manufacturer: "DarwinFPV" name: "Darwin Baby Ape 3'' Quadcopter Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "28b636cf-d211-4aa3-aa9a-0faed822ea9f" id: "darwin-129-fpv-quadcopter-frame" manufacturer: "DarwinFPV" name: "Darwin 129 FPV Quadcopter Frame" weight_g: 0.0 wheelbase_mm: 280.0 }
-frames { uuid: "26adbc7c-dbe0-41d7-8beb-08bd154c12b2" id: "darwin-18650-frame" manufacturer: "DarwinFPV" name: "Darwin 18650 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "932dc87f-4488-475e-87a2-7c1547f4bbf8" id: "newbeedrone-cockroach-65mm-brushed-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Brushed LiteAF Racing Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ed1c3192-5b6a-49fb-9847-942289877585" id: "newbeedrone-cockroach-75mm-brushless-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 75mm Brushless LiteAF Racing Frame" weight_g: 3.3 wheelbase_mm: 75.0 }
-frames { uuid: "e557c4bb-0bb2-4e9b-a996-c7e5bd252b5c" id: "newbeedrone-lionbee-3inch-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone LionBee 3inch Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "4a7337c0-26c9-4b93-97df-4225dafb9d99" id: "newbeedrone-savagebee-3-frame-v1-7" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee 3 Frame V1.7" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "bc2ebd09-8f59-4d81-9200-321264b6a03f" id: "newbeedrone-x-webleedfpv-cockroach-65mm-liteaf-red-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone X weBLEEDfpv Cockroach 65mm LiteAF RED Frame" weight_g: 2.4 wheelbase_mm: 0.0 }
-frames { uuid: "709f1652-ac7f-4412-bdef-d6189690ecc3" id: "newbeedrone-inertia-5-fpv-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone INERTIA 5 FPV Frame" weight_g: 130.0 wheelbase_mm: 0.0 }
-frames { uuid: "b51aa278-771d-4879-808f-158b6a5b352d" id: "newbeedrone-stingerbee-hd-o4-pro-3-frame-kit" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD O4 Pro 3” Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e080ea70-8c88-400a-8d17-1f55128faa18" id: "newbeedrone-vrdrone-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone VRDrone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "79037e6f-5f6a-4e10-bff6-90085fd37946" id: "newbeedrone-savagebee-pusher-frame-kit" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee Pusher Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "16743c3b-fac3-41c4-973a-5843f1399b51" id: "newbeedrone-vivid-frame-spare-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid Frame Spare Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "23af3538-4a38-478c-92a1-4707794f9abc" id: "newbeedrone-cockroach-65mm-brushless-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Brushless LiteAF Racing Frame" weight_g: 2.4 wheelbase_mm: 0.0 }
-frames { uuid: "d5c749d2-f0e0-43fb-a6cb-ecb4bf689041" id: "newbeedrone-cockroach-65mm-frame-3d-printed-battery-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Frame 3D Printed Battery Mount" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6ea58124-0d8c-4c98-9651-c98ca11e7b32" id: "newbeedrone-stingerbee-hd-3-frame-body-kit-only" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD 3 Frame Body Kit Only" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ca956640-6822-424a-ba5e-5073fa4eff5a" id: "newbeedrone-stingerbee-hd-3-full-frame-body-kit-3-arms-vtx-plate" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD 3 Full Frame (Body Kit + 3 Arms + VTX Plate)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "bae7a700-f9a2-41c1-a11f-c24de731d319" id: "newbeedrone-cockroach-82-brushless-super-durable-frame-plastic-part-and-carbon-fiber-accessory" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame (Plastic Part and Carbon Fiber & Accessory)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "c7bc90a1-b9c8-43d4-9227-fe25c4001743" id: "newbeedrone-cockroach-82-brushless-super-durable-frame-82mm-plastic-part-only" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame 82mm Plastic Part Only" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "773caef8-36f2-4c33-b98c-18db82b8895f" id: "newbeedrone-75mm-cockroach75-brushless-extreme-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone 75mm Cockroach75 Brushless Extreme-Durable Frame" weight_g: 6.98 wheelbase_mm: 0.0 }
-frames { uuid: "5810a24b-9abf-4435-9a88-09306d718365" id: "newbeedrone-cockroach-v3-65mm-brushless-ultra-light-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach V3 65mm Brushless Ultra Light Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "3ff2e65c-6b1d-4971-bb6e-4891b419b985" id: "newbeedrone-project-t-7-tactical-7inch-true-x-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Project T-7 Tactical 7inch True-X Frame" weight_g: 330.0 wheelbase_mm: 0.0 }
-frames { uuid: "1f881a1f-80c4-4901-99eb-57d9a4a6e556" id: "newbeedrone-inertia-5-dc-dead-cat-style-fpv-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Inertia 5 DC (Dead Cat Style) FPV Frame" weight_g: 130.0 wheelbase_mm: 0.0 }
-frames { uuid: "b880611b-5512-435a-a41c-6bde38b695d3" id: "newbeedrone-inertia-5-fpv-frame-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone INERTIA 5 FPV Frame Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e159cc24-b3fe-4076-8325-3a76649e7040" id: "newbeedrone-vivid-frame-3d-printed-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid Frame 3D Printed Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "a26697ae-4541-4abf-a62f-e7bab40cf0b4" id: "warranty-replacement-for-newbeedrone-cockroach-frame" manufacturer: "NewBeeDrone" name: "Warranty Replacement for NewBeeDrone Cockroach Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "28d43aa1-4d72-4c6a-853f-c2134febddd7" id: "newbeedrone-invisi360-frame-replacement-parts-bottom-plate-top-plate-hardware-etc" manufacturer: "NewBeeDrone" name: "NewBeeDrone Invisi360 Frame Replacement Parts  - Bottom Plate, Top Plate, Hardware, Etc." weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "01555878-97bd-4c5c-9925-433de627532b" id: "newbeedrone-mosquito-xl-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Mosquito XL Frame" weight_g: 7.5 wheelbase_mm: 0.0 }
-frames { uuid: "af80228d-62ae-490c-8ee0-648df535c656" id: "newbeedrone-v2-65mm-cockroach-brushless-super-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone V2 65mm Cockroach Brushless Super-Durable Frame" weight_g: 5.1 wheelbase_mm: 0.0 }
-frames { uuid: "8e59a934-f1a3-433f-815a-2b062de8aca0" id: "newbeedrone-mosquito-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Mosquito Frame" weight_g: 5.93 wheelbase_mm: 0.0 }
-frames { uuid: "e59aad33-b8ee-47d0-b493-34a7f6327302" id: "newbeedrone-savagebee-v1-8-frame-65mm-3inch" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee V1.8 Frame 65mm/3inch" weight_g: 8.0 wheelbase_mm: 0.0 }
-frames { uuid: "b7361e45-2328-4890-a8e1-86c8d3bf3858" id: "newbeedrone-replacement-m3-pressnuts-for-vivid-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement M3 Pressnuts for Vivid Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "bf632436-8745-4164-8513-9b0bc66cc85e" id: "newbeedrone-65mm-cockroach-brushless-super-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone 65mm Cockroach Brushless Super-Durable Frame" weight_g: 3.71 wheelbase_mm: 0.0 }
-frames { uuid: "d294eeb3-058a-4efd-b4ff-2099199ba205" id: "newbeedrone-cockroach-brushed-super-durable-frame-65mm" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach Brushed Super-Durable Frame 65mm" weight_g: 3.44 wheelbase_mm: 0.0 }
-frames { uuid: "dca631b9-2827-452b-91be-e3fd182e60f3" id: "lil-matey2-3-5-frame" manufacturer: "Pirat" name: "Lil Matey2 3.5 Frame" weight_g: 58.0 wheelbase_mm: 0.0 }
-frames { uuid: "513e37d0-8f55-460a-a798-b82720edcc5f" id: "echo-5-frame" manufacturer: "ImpulseRC" name: "Echo 5 Frame" weight_g: 121.0 wheelbase_mm: 0.0 }
-frames { uuid: "ffcbf321-6a25-420e-bd78-5c93c801e4c2" id: "cinemini-2-5-frame" manufacturer: "Rotor Riot" name: "CineMini 2.5 Frame" weight_g: 40.3 wheelbase_mm: 117.257 }
-frames { uuid: "d34fde23-ffdd-4956-bc67-0d973d090255" id: "apex-evo-5-frame" manufacturer: "ImpulseRC" name: "Apex EVO 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "abc719bc-d82c-42d5-b747-8bc7f3ed8215" id: "tanq-s-3-5-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ S 3.5 Frame - By LetsFlyRC" weight_g: 84.0 wheelbase_mm: 168.0 }
-frames { uuid: "8d2db159-fe30-4b1b-9d0b-2974299c8aa8" id: "tanq-2-5-racing-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Racing Frame - By LetsFlyRC" weight_g: 195.0 wheelbase_mm: 0.0 }
-frames { uuid: "32de6aed-a4de-4906-bed0-224c87072616" id: "tanq-2-5-deadcat-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Deadcat Frame - By LetsFlyRC" weight_g: 182.0 wheelbase_mm: 220.0 }
-frames { uuid: "944937e9-566d-4573-aa72-6f849eacc394" id: "shorty-5-frame" manufacturer: "Pirat" name: "Shorty 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "46886093-e626-4b96-950c-09c565883232" id: "punch-5-frame" manufacturer: "Pirat" name: "Punch 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "4289fc6e-a67d-4ac7-9ad0-26cce10a443a" id: "tanq-2-8-deadcat-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 8 Deadcat Frame - By LetsFlyRC" weight_g: 215.0 wheelbase_mm: 309.0 }
-frames { uuid: "940fc7a1-0258-4b1f-b2b6-620a4193e3b4" id: "tanq-2-5-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Frame - By LetsFlyRC" weight_g: 175.0 wheelbase_mm: 220.0 }
-frames { uuid: "ef9e742c-8d67-4cb8-b7fe-631bf4a61324" id: "cl2-xr-7-deadcat-frame" manufacturer: "Rotor Riot" name: "CL2-XR 7 Deadcat Frame" weight_g: 210.0 wheelbase_mm: 288.0 }
-frames { uuid: "c3e166b1-7966-4b2a-9ffa-33db89600f78" id: "cl2-air-5-frame" manufacturer: "Rotor Riot" name: "CL2-AIR 5 Frame" weight_g: 166.0 wheelbase_mm: 220.0 }
-frames { uuid: "86aa8ada-06e7-4a4d-9986-e38a5685de31" id: "mobula7-v4-75mm-frame-1s-choose-color" manufacturer: "Happymodel" name: "Mobula7 V4 75mm Frame - 1S - Choose Color" weight_g: 5.4 wheelbase_mm: 75.0 }
-frames { uuid: "4610fa6e-e694-4cce-a4a8-b52f64293c51" id: "mobula7-v3-75mm-frame-2s-choose-color" manufacturer: "Happymodel" name: "Mobula7 V3 75mm Frame - 2S - Choose Color" weight_g: 5.5 wheelbase_mm: 75.0 }
-frames { uuid: "cd30b3cb-2a64-4ff3-96b3-5374ada3f52d" id: "skyliner-mk3-5-frame" manufacturer: "Rotor Riot" name: "Skyliner MK3 5 Frame" weight_g: 144.0 wheelbase_mm: 213.0 }
-frames { uuid: "ff5f4bd8-6b88-4efe-a59b-f0864c216817" id: "skylite-3-3-5-frame-by-le-drib" manufacturer: "Rotor Riot" name: "SkyLite 3-3.5 Frame by Le Drib" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "db230240-4128-4a0a-9035-43924f184bb7" id: "cl2-5-frame" manufacturer: "Rotor Riot" name: "CL2 5 Frame" weight_g: 166.0 wheelbase_mm: 233.0 }
-frames { uuid: "f2f1c91f-0de4-439c-9b01-f4b6b7462b87" id: "bubito-35mm-frame" manufacturer: "Rotor Riot" name: "Bubito 35mm Frame" weight_g: 5.5 wheelbase_mm: 62.0 }
-frames { uuid: "d5540876-42c3-459b-bd26-8e52b758df54" id: "moxy-5-frame" manufacturer: "Rotor Riot" name: "Moxy 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "241ac697-9a3d-4c8c-bf79-4023f9cdb2c8" id: "meteor75-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Pro II Brushless Whoop Frame" weight_g: 5.8 wheelbase_mm: 80.0 }
-frames { uuid: "23b6f94e-cd31-476e-84cf-61f3a437d5c4" id: "meteor65-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Pro II Brushless Whoop Frame" weight_g: 4.6 wheelbase_mm: 70.0 }
-frames { uuid: "85fec321-fef0-4f46-916c-de4b55215302" id: "aquila20-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Aquila20 Brushless Whoop Frame" weight_g: 37.5 wheelbase_mm: 100.0 }
-frames { uuid: "8f116ede-71e1-4d3b-8e1c-86bb7210617c" id: "air65-champion-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 Champion Brushless Whoop Frame" weight_g: 2.2 wheelbase_mm: 65.0 }
-frames { uuid: "22dce2bc-5069-4dea-b515-10b4c2c07548" id: "pavo20-pro-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Pro II Brushless Whoop Frame" weight_g: 35.7 wheelbase_mm: 93.9 }
-frames { uuid: "9aee4592-98c4-4d42-9a31-10d80de33851" id: "pavo-pico-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Pico II Brushless Whoop Frame" weight_g: 19.0 wheelbase_mm: 80.0 }
-frames { uuid: "da8b429d-5eee-4e0f-a9bf-d45d07469a4e" id: "air75-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air75 II Brushless Whoop Frame" weight_g: 4.0 wheelbase_mm: 75.0 }
-frames { uuid: "fb198ba8-57fb-4a80-b542-6068d264bf25" id: "air65-ii-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 II Brushless Whoop Frame" weight_g: 2.65 wheelbase_mm: 65.0 }
-frames { uuid: "0d848a53-916c-458b-aacb-9d6fab7035d3" id: "pavo20-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Pro Brushless Whoop Frame" weight_g: 33.3 wheelbase_mm: 93.7 }
-frames { uuid: "6ae42f65-3e9b-435b-a3ad-16934fd0fb0d" id: "pavo-femto-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Femto Brushless Whoop Frame" weight_g: 8.64 wheelbase_mm: 75.0 }
-frames { uuid: "80accc8a-740b-443f-8fc0-ccc2a84fb564" id: "x-knight-carbon-fiber-frame-kit" manufacturer: "BETAFPV" name: "X-Knight Carbon Fiber Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "379d98b9-32ea-4ae2-a40c-002a5b9b13c1" id: "pavo25-frame-kit" manufacturer: "BETAFPV" name: "Pavo25 Frame Kit" weight_g: 68.0 wheelbase_mm: 108.0 }
-frames { uuid: "76bded0b-4774-4a48-b088-8a8d923b62bb" id: "air75-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air75 Brushless Whoop Frame" weight_g: 4.45 wheelbase_mm: 75.0 }
-frames { uuid: "3c8fc8da-5c96-469e-8ca6-9b79e3f1267d" id: "pavo35-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo35 Brushless Whoop Frame" weight_g: 113.9 wheelbase_mm: 148.0 }
-frames { uuid: "1f2e8dca-c0e5-46d8-9ebd-9ab46ad352a7" id: "pavo25-v2-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo25 V2 Brushless Whoop Frame" weight_g: 70.0 wheelbase_mm: 112.0 }
-frames { uuid: "05ce76fc-9b2d-4fc2-8073-47e7a636a24f" id: "pavo20-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo20 Brushless Whoop Frame" weight_g: 26.7 wheelbase_mm: 90.0 }
-frames { uuid: "66786425-43de-42d8-a0f3-6b7e343ce8e2" id: "pavo-pico-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Pavo Pico Brushless Whoop Frame" weight_g: 13.8 wheelbase_mm: 80.8 }
-frames { uuid: "f42ade7f-adc5-40e1-a570-99da549fde82" id: "air65-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Air65 Brushless Whoop Frame" weight_g: 2.67 wheelbase_mm: 65.0 }
-frames { uuid: "70264181-3465-4ac7-8f7e-4eb6170f64f3" id: "meteor75-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Pro Brushless Whoop Frame" weight_g: 7.73 wheelbase_mm: 80.8 }
-frames { uuid: "36ecd82c-986d-4764-96e1-713abf90195c" id: "meteor85-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor85 Brushless Whoop Frame" weight_g: 11.32 wheelbase_mm: 87.7 }
-frames { uuid: "4cddba37-29fc-4da8-a480-310936954bfa" id: "cetus-x-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Cetus X Brushless Whoop Frame" weight_g: 24.22 wheelbase_mm: 0.0 }
-frames { uuid: "78a74ecb-6bfe-41a6-a46b-b1f11cb6a834" id: "cetus-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Cetus Pro Brushless Whoop Frame" weight_g: 9.39 wheelbase_mm: 0.0 }
-frames { uuid: "b22f9c2e-6e9e-430b-9431-2e24d3ea8654" id: "pavo360-frame-kit" manufacturer: "BETAFPV" name: "Pavo360 Frame Kit" weight_g: 187.22 wheelbase_mm: 168.0 }
-frames { uuid: "3456612e-0903-4191-8580-ee8776305ea8" id: "pavo30-pro-frame-kit" manufacturer: "BETAFPV" name: "Pavo30 Pro Frame Kit" weight_g: 146.0 wheelbase_mm: 157.0 }
-frames { uuid: "64c32799-f4ab-4731-985a-0093a914619d" id: "meteor65-pro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Pro Brushless Whoop Frame" weight_g: 3.2 wheelbase_mm: 0.0 }
-frames { uuid: "79e1522c-cc26-4630-b6ac-eb18ca65b780" id: "x-knight-35-frame-kit" manufacturer: "BETAFPV" name: "X-Knight 35 Frame Kit" weight_g: 43.22 wheelbase_mm: 155.0 }
-frames { uuid: "bccc6a48-cf74-44f7-82dc-15e6410fc585" id: "hx115-lr-frame-kit" manufacturer: "BETAFPV" name: "HX115 LR Frame Kit" weight_g: 14.0 wheelbase_mm: 126.0 }
-frames { uuid: "32bb1c32-99d6-445b-9e45-a94343eb1631" id: "pavo30-frame-kit" manufacturer: "BETAFPV" name: "Pavo30 Frame Kit" weight_g: 55.53 wheelbase_mm: 120.0 }
-frames { uuid: "970afb11-f7d0-441e-85af-b76f2db747a8" id: "beta95x-v3-frame-kit" manufacturer: "BETAFPV" name: "Beta95X V3 Frame Kit" weight_g: 39.09 wheelbase_mm: 100.0 }
-frames { uuid: "1a08b5d3-2f68-4cb3-b197-96cbcc71ab57" id: "meteor75-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor75 Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "3c704f29-bcb0-493e-8a41-d184853201af" id: "beta75x-v2-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta75X V2 Micro Brushless Whoop Frame" weight_g: 5.6 wheelbase_mm: 0.0 }
-frames { uuid: "424bfa5f-0f23-46a9-807f-41ad6dd815b8" id: "x-knight-carbon-fiber-5-frame-v2-kit" manufacturer: "BETAFPV" name: "X-Knight Carbon Fiber 5'' Frame V2 Kit" weight_g: 26.44 wheelbase_mm: 200.0 }
-frames { uuid: "50327912-89ca-4742-9942-cda212395ff2" id: "twig-et5-5-toothpick-frame" manufacturer: "BETAFPV" name: "TWIG ET5 5 Toothpick Frame" weight_g: 33.6 wheelbase_mm: 200.0 }
-frames { uuid: "99de2e9e-c8bb-46c6-8303-52e7fd57294d" id: "twiglet-2-5-frame-kit" manufacturer: "BETAFPV" name: "TWIGLET 2.5'' Frame Kit" weight_g: 5.3 wheelbase_mm: 0.0 }
-frames { uuid: "23d681e1-67af-47c4-a7df-046d0bc52c97" id: "twig-xl-3-frame-kit" manufacturer: "BETAFPV" name: "TWIG XL 3 Frame Kit" weight_g: 0.0 wheelbase_mm: 140.0 }
-frames { uuid: "d5ba6651-23a2-4451-84bb-49cd766fceae" id: "twig-mutant-4-4-frame-kit-true-x" manufacturer: "BETAFPV" name: "TWIG Mutant 4 4'' Frame Kit (True-X)" weight_g: 0.0 wheelbase_mm: 160.0 }
-frames { uuid: "600d582f-e6f0-49c4-aea1-87cde7011a37" id: "beta95x-frame-kit" manufacturer: "BETAFPV" name: "Beta95X Frame Kit" weight_g: 13.5 wheelbase_mm: 100.0 }
-frames { uuid: "5edc3352-62a4-43af-a08f-3e02b38f61fc" id: "beta75-pro-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta75 Pro Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "78455dd9-11f2-42c4-a31c-ed0e692d3084" id: "hx100-se-t300-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX100 SE T300 Carbon Fiber Frame" weight_g: 4.0 wheelbase_mm: 0.0 }
-frames { uuid: "7cc386a1-081b-4f91-8cee-f4f44c8ff6e9" id: "meteor65-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Meteor65 Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "2edf1e46-368c-42f4-8ec6-c5d2e0e2bc65" id: "hx115-t700-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX115 T700 Carbon Fiber Frame" weight_g: 9.4 wheelbase_mm: 0.0 }
-frames { uuid: "e0db9e23-cd4d-4194-a48e-deb3f6ff0346" id: "hx100-carbon-fiber-frame" manufacturer: "BETAFPV" name: "HX100 Carbon Fiber Frame" weight_g: 5.1 wheelbase_mm: 0.0 }
-frames { uuid: "ee85df50-1d61-4f4d-84fb-51f063871a04" id: "stiffener-brace-of-carbon-fiber-for-beta85x-frame-2-pcs" manufacturer: "BETAFPV" name: "Stiffener Brace of Carbon Fiber for Beta85X Frame (2 PCS)" weight_g: 1.3 wheelbase_mm: 85.0 }
-frames { uuid: "59b92ea9-b531-4aeb-a007-28642c91d728" id: "beta85x-4s-4k-frame-kit-upgrade" manufacturer: "BETAFPV" name: "Beta85X 4S 4K Frame Kit (Upgrade)" weight_g: 10.3 wheelbase_mm: 85.0 }
-frames { uuid: "2436acb1-9e07-4164-8726-5fa6f5b4a41e" id: "beta75-pro-2-whoop-frame" manufacturer: "BETAFPV" name: "Beta75 Pro 2 Whoop Frame" weight_g: 5.5 wheelbase_mm: 0.0 }
-frames { uuid: "c607d8ac-6897-45b6-b14b-14298e61d185" id: "beta65x-beta65-pro-2-micro-whoop-frame" manufacturer: "BETAFPV" name: "Beta65X / Beta65 Pro 2 Micro Whoop Frame" weight_g: 3.6 wheelbase_mm: 0.0 }
-frames { uuid: "2d2b64b2-b0c7-4943-b6ae-0d7457cdc0e5" id: "beta75x-whoop-frame" manufacturer: "BETAFPV" name: "Beta75X Whoop Frame" weight_g: 7.3 wheelbase_mm: 0.0 }
-frames { uuid: "8b3d1585-c994-416d-b5d9-1c835a55b966" id: "beta220-fpv-racing-carbon-fiber-quadcopter-frame-kit" manufacturer: "BETAFPV" name: "Beta220 FPV Racing Carbon Fiber Quadcopter Frame Kit" weight_g: 85.0 wheelbase_mm: 220.0 }
-frames { uuid: "782144e5-9143-46e3-ba46-3dbc59f7f9aa" id: "combo-of-beta75s-chameleon-frame-canopy-props" manufacturer: "BETAFPV" name: "Combo of Beta75S Chameleon (Frame+Canopy+Props)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5dc3f772-8677-4db8-b6cf-ed23c6bb259d" id: "beta65-pro-micro-brushless-whoop-frame" manufacturer: "BETAFPV" name: "Beta65 Pro Micro Brushless Whoop Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "72dce266-7db8-4b6e-9a09-a6fa9b7cf209" id: "caddxfpv-curve-micro-16-replacement-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 Replacement Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d4c35bc8-3438-465a-b2f6-03f5dd575954" id: "protos-drone-frame" manufacturer: "CADDX FPV" name: "Protos Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "2cb5460f-1bd7-4b1d-98b5-b858178601b3" id: "caddxfpv-goggles-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Goggles Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "4e3a1365-c983-419f-81ca-55eea65913ea" id: "caddxfpv-customized-lenses-includes-frame" manufacturer: "CADDXFPV" name: "CaddxFPV Customized Lenses (includes frame)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "9ad28988-519e-495b-8873-aa8085551433" id: "caddxfpv-gofilm-20-frame" manufacturer: "CADDXFPV" name: "CADDXFPV Gofilm 20 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "398bd2df-3c73-4aa4-b300-9aa5f50c3534" id: "walksnail-lens-frame-for-avatar-hd-goggles-x" manufacturer: "CADDXFPV" name: "Walksnail Lens Frame for Avatar HD Goggles X" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ed89b516-c2fc-496f-b35c-672922cb30a6" id: "baby-babyape-v4-frame" manufacturer: "DarwinFPV" name: "Baby BabyApe V4 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b13ab97c-94cb-4d1a-815b-2eec53d16050" id: "darwinfpv-apestyle-x6-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle X6 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "72ee81e1-16ec-4112-9f49-26cdd29ed494" id: "darwinfpv-apestyle-x5-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle X5 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "a5524ef5-967d-4499-99c9-5a780ef3ea78" id: "darwinfpv-apestyle-d6-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle D6 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e147fbf5-8afb-4b3c-9e77-667eaa0cae07" id: "darwinfpv-apestyle-d5-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV ApeStyle D5 Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5f01bdd3-88e2-4ca0-a6c0-df0e71981c20" id: "darwinfpv-toruk15-long-range-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV Toruk15  Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "572f399e-6d25-4410-864a-5af7630541ad" id: "babyape-pro-3-5-inch-freestyle-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "94c9b0a1-ce45-463e-aabc-cc05e6a0aae6" id: "babyape-3-inch-freestyle-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ 3 Inch Freestyle FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "14eaaaa1-7e3d-48ed-b2c1-5795ac1e3ab1" id: "babyape-mini-2-inch-freestyle-frame" manufacturer: "DarwinFPV - Official Store" name: "BabyApe Ⅲ Mini 2 Inch Freestyle Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "19ddccd2-1e94-42ef-b4b3-1dfb82626376" id: "darwinfpv-hulk-iii-mini-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV HULK III Mini Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "80b75736-6c7c-4e53-9e0a-bb2afc28aa37" id: "darwinfpv-cineape20-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV CineApe20 FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "c472dccb-0d4e-4647-b9f2-7333cffeb296" id: "darwinfpv-toruk13-13-inch-long-range-fpv-drone-frame" manufacturer: "DarwinFPV - Official Store" name: "DarwinFPV Toruk13 13-Inch Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d1c96250-ec62-433b-b2ee-fc159572ce43" id: "darwinfpv-x10-long-range-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DarwinFPV X10 Long Range FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6f1ed362-e2eb-4888-9047-487d656212e6" id: "darwinfpv-foldape4-analog-frame" manufacturer: "DarwinFPV" name: "DarwinFPV FoldApe4 Analog Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ccdd6d6d-0afd-4e51-91b4-1afa523e5dc5" id: "darwinfpv-cineape35-frame" manufacturer: "DarwinFPV" name: "DarwinFPV CineApe35  Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b0e5c6fb-ba8e-456a-9743-a0ba13fc6cab" id: "darwin-x9-quadcopter-frame" manufacturer: "DarwinFPV" name: "DARWIN X9 Quadcopter Frame" weight_g: 287.8 wheelbase_mm: 363.0 }
-frames { uuid: "a0584a90-9afd-43a5-8460-42dc65428745" id: "darwin-hulk-waterproof-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DARWIN HULK Ⅱ Waterproof  FPV Drone Frame" weight_g: 195.7 wheelbase_mm: 227.0 }
-frames { uuid: "fb0fb675-b4c4-4e27-b915-3262ef4d9846" id: "darwinfpv-babyape-3-5-inch-fpv-drone-frame" manufacturer: "DarwinFPV" name: "DarwinFPV BabyApe Ⅱ 3.5 inch FPV Drone Frame" weight_g: 46.7 wheelbase_mm: 156.0 }
-frames { uuid: "ca04dac0-f42e-4724-8dff-f1959f1274de" id: "darwin-cineape-25-whoop-frame" manufacturer: "DarwinFPV" name: "Darwin CineApe 25 Whoop Frame" weight_g: 66.7 wheelbase_mm: 112.0 }
-frames { uuid: "ddbac26b-6147-4e9a-b9a2-2b359766a7d7" id: "baby-babyape-v2-frame" manufacturer: "DarwinFPV" name: "Baby BabyApe V2 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "052917a4-e330-4c46-a3f2-055a8b50bed9" id: "darwinfpv-hulk-waterproof-frame" manufacturer: "DarwinFPV" name: "DarwinFPV HULK Waterproof Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "98e6c979-0a99-4faf-bb21-9ef561e16805" id: "darwin-240-5inch-long-distance-fpv-drone-frame" manufacturer: "DarwinFPV" name: "Darwin 240 5inch Long Distance FPV Drone Frame" weight_g: 0.0 wheelbase_mm: 240.0 }
-frames { uuid: "0d820b8b-287b-42f1-8a7e-d1c77505a929" id: "darwin-tinyape-freestyle-frame" manufacturer: "DarwinFPV" name: "Darwin TinyApe Freestyle Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "8a92cabf-b666-41a3-bc0c-1b4b2c6693a5" id: "darwin-baby-ape-3-quadcopter-frame" manufacturer: "DarwinFPV" name: "Darwin Baby Ape 3'' Quadcopter Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5bfe7f40-6437-4bf8-9155-8ef2e4aaceb3" id: "darwin-129-fpv-quadcopter-frame" manufacturer: "DarwinFPV" name: "Darwin 129 FPV Quadcopter Frame" weight_g: 0.0 wheelbase_mm: 280.0 }
-frames { uuid: "dc456aab-6efc-4a95-a0cb-76a0a0abb9bd" id: "darwin-18650-frame" manufacturer: "DarwinFPV" name: "Darwin 18650 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "013f7345-e496-44b7-a250-3914351ba9b2" id: "newbeedrone-cockroach-65mm-brushed-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Brushed LiteAF Racing Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "8f2c7e9e-3180-4ebe-9f69-14a52912b9f8" id: "newbeedrone-cockroach-75mm-brushless-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 75mm Brushless LiteAF Racing Frame" weight_g: 3.3 wheelbase_mm: 75.0 }
-frames { uuid: "3fc1b491-f223-42fd-83be-a4d8abdd5927" id: "newbeedrone-lionbee-3inch-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone LionBee 3inch Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "209d5492-ab37-4317-9d56-b29b7fd16c40" id: "newbeedrone-savagebee-3-frame-v1-7" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee 3 Frame V1.7" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "a99da465-35df-40d1-811c-14db2447d3db" id: "newbeedrone-x-webleedfpv-cockroach-65mm-liteaf-red-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone X weBLEEDfpv Cockroach 65mm LiteAF RED Frame" weight_g: 2.4 wheelbase_mm: 0.0 }
-frames { uuid: "89dbb86c-0ced-4f20-a285-e3b9b3ebefcd" id: "newbeedrone-inertia-5-fpv-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone INERTIA 5 FPV Frame" weight_g: 130.0 wheelbase_mm: 0.0 }
-frames { uuid: "cca2ccf1-45c0-4924-8af8-f9d8a2e6d544" id: "newbeedrone-stingerbee-hd-o4-pro-3-frame-kit" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD O4 Pro 3” Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "a68a57c1-b8da-4eb7-bf88-2d842e2df486" id: "newbeedrone-vrdrone-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone VRDrone Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "2d564c85-84ba-4495-b974-90be02a14dda" id: "newbeedrone-savagebee-pusher-frame-kit" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee Pusher Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "317719da-a44d-4816-aeb2-ebc43337415e" id: "newbeedrone-vivid-frame-spare-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid Frame Spare Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5cfe1d49-99d6-4d13-8c79-590bc76e6092" id: "newbeedrone-cockroach-65mm-brushless-liteaf-racing-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Brushless LiteAF Racing Frame" weight_g: 2.4 wheelbase_mm: 0.0 }
-frames { uuid: "a2cfae69-6461-4005-998d-426e71277f5a" id: "newbeedrone-cockroach-65mm-frame-3d-printed-battery-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 65mm Frame 3D Printed Battery Mount" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d6f832d9-9a48-4f7c-b6b6-12df720b4a02" id: "newbeedrone-stingerbee-hd-3-frame-body-kit-only" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD 3 Frame Body Kit Only" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "5af56d50-0b97-4792-9cad-66dfce5ebdea" id: "newbeedrone-stingerbee-hd-3-full-frame-body-kit-3-arms-vtx-plate" manufacturer: "NewBeeDrone" name: "NewBeeDrone StingerBee HD 3 Full Frame (Body Kit + 3 Arms + VTX Plate)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "da9758d0-60f7-470e-a541-ded63c9f0f18" id: "newbeedrone-cockroach-82-brushless-super-durable-frame-plastic-part-and-carbon-fiber-accessory" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame (Plastic Part and Carbon Fiber & Accessory)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "2923d1cf-87e5-4277-967a-7572329379d1" id: "newbeedrone-cockroach-82-brushless-super-durable-frame-82mm-plastic-part-only" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame 82mm Plastic Part Only" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b796919f-45e0-408c-8ca0-ab6dffe6f8ad" id: "newbeedrone-75mm-cockroach75-brushless-extreme-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone 75mm Cockroach75 Brushless Extreme-Durable Frame" weight_g: 6.98 wheelbase_mm: 0.0 }
-frames { uuid: "21764706-bd11-4eae-baf4-b5177f1df026" id: "newbeedrone-cockroach-v3-65mm-brushless-ultra-light-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach V3 65mm Brushless Ultra Light Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b4748f59-0604-4c72-be45-508fcc1b3415" id: "newbeedrone-project-t-7-tactical-7inch-true-x-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Project T-7 Tactical 7inch True-X Frame" weight_g: 330.0 wheelbase_mm: 0.0 }
-frames { uuid: "4f36429e-88df-4ea5-bfb9-2a72122df35f" id: "newbeedrone-inertia-5-dc-dead-cat-style-fpv-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Inertia 5 DC (Dead Cat Style) FPV Frame" weight_g: 130.0 wheelbase_mm: 0.0 }
-frames { uuid: "e986a62d-f6b6-4484-8031-af88c0c2e449" id: "newbeedrone-inertia-5-fpv-frame-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone INERTIA 5 FPV Frame Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "006037f3-fc7d-4b05-8c97-5f44f965319f" id: "newbeedrone-vivid-frame-3d-printed-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid Frame 3D Printed Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "3be6494c-943f-4ad5-a0bd-d89569cea686" id: "warranty-replacement-for-newbeedrone-cockroach-frame" manufacturer: "NewBeeDrone" name: "Warranty Replacement for NewBeeDrone Cockroach Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e00f472d-e65c-4c6a-bf64-ba8049edd6a8" id: "newbeedrone-invisi360-frame-replacement-parts-bottom-plate-top-plate-hardware-etc" manufacturer: "NewBeeDrone" name: "NewBeeDrone Invisi360 Frame Replacement Parts  - Bottom Plate, Top Plate, Hardware, Etc." weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "c2cb1cb3-e6ba-4f39-88ed-eedc56c21c7d" id: "newbeedrone-mosquito-xl-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Mosquito XL Frame" weight_g: 7.5 wheelbase_mm: 0.0 }
-frames { uuid: "21b0bbd8-9a6b-440d-93c5-4492e7c1f96f" id: "newbeedrone-v2-65mm-cockroach-brushless-super-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone V2 65mm Cockroach Brushless Super-Durable Frame" weight_g: 5.1 wheelbase_mm: 0.0 }
-frames { uuid: "2aa3e2b3-4d0a-4c04-9bb5-95036fd12715" id: "newbeedrone-mosquito-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Mosquito Frame" weight_g: 5.93 wheelbase_mm: 0.0 }
-frames { uuid: "e05232b4-1008-45b1-b8d3-fdd13599ec57" id: "newbeedrone-savagebee-v1-8-frame-65mm-3inch" manufacturer: "NewBeeDrone" name: "NewBeeDrone SavageBee V1.8 Frame 65mm/3inch" weight_g: 8.0 wheelbase_mm: 0.0 }
-frames { uuid: "570f39d0-fb20-4678-8c5c-6025b1d0e044" id: "newbeedrone-replacement-m3-pressnuts-for-vivid-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement M3 Pressnuts for Vivid Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "1dc87aff-fc09-43f3-a73c-f4885eae554f" id: "newbeedrone-65mm-cockroach-brushless-super-durable-frame" manufacturer: "NewBeeDrone" name: "NewBeeDrone 65mm Cockroach Brushless Super-Durable Frame" weight_g: 3.71 wheelbase_mm: 0.0 }
-frames { uuid: "dfce1e60-84a1-435b-8c33-55f1379b6d1d" id: "newbeedrone-cockroach-brushed-super-durable-frame-65mm" manufacturer: "NewBeeDrone" name: "NewBeeDrone Cockroach Brushed Super-Durable Frame 65mm" weight_g: 3.44 wheelbase_mm: 0.0 }
-frames { uuid: "39770380-3a19-4427-9248-150a89491a11" id: "lil-matey2-3-5-frame" manufacturer: "Pirat" name: "Lil Matey2 3.5 Frame" weight_g: 58.0 wheelbase_mm: 0.0 }
-frames { uuid: "34bca288-2bf6-4093-95bb-28e633473a15" id: "echo-5-frame" manufacturer: "ImpulseRC" name: "Echo 5 Frame" weight_g: 121.0 wheelbase_mm: 0.0 }
-frames { uuid: "b4ba150e-7b41-4dd4-aad9-3f22c3e67b15" id: "cinemini-2-5-frame" manufacturer: "Rotor Riot" name: "CineMini 2.5 Frame" weight_g: 40.3 wheelbase_mm: 117.257 }
-frames { uuid: "0602e793-90bb-40d0-a63c-1bd79bdfc18e" id: "apex-evo-5-frame" manufacturer: "ImpulseRC" name: "Apex EVO 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b0e2f06b-a8c4-46fc-8dc8-5352c00c4a6a" id: "tanq-s-3-5-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ S 3.5 Frame - By LetsFlyRC" weight_g: 84.0 wheelbase_mm: 168.0 }
-frames { uuid: "2c2a0f77-a31f-4606-bbc5-8d211a086263" id: "tanq-2-5-racing-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Racing Frame - By LetsFlyRC" weight_g: 195.0 wheelbase_mm: 0.0 }
-frames { uuid: "3ae42207-7433-484e-92fd-bf917bb4a61d" id: "tanq-2-5-deadcat-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Deadcat Frame - By LetsFlyRC" weight_g: 182.0 wheelbase_mm: 220.0 }
-frames { uuid: "030ff92e-fee4-4831-87a5-9e1f7034b337" id: "shorty-5-frame" manufacturer: "Pirat" name: "Shorty 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "c69481ff-2ce7-4612-8a83-7e3097f15e65" id: "punch-5-frame" manufacturer: "Pirat" name: "Punch 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "62c6016a-bd10-4060-ad89-a24a691d8600" id: "tanq-2-8-deadcat-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 8 Deadcat Frame - By LetsFlyRC" weight_g: 215.0 wheelbase_mm: 309.0 }
-frames { uuid: "e056e93c-4105-45ac-b5a9-88cfcdc7a7b6" id: "tanq-2-5-frame-by-letsflyrc" manufacturer: "Rotor Riot" name: "TANQ 2 5 Frame - By LetsFlyRC" weight_g: 175.0 wheelbase_mm: 220.0 }
-frames { uuid: "121cfcbc-f8e2-4c8b-b097-b8439fcef4bb" id: "cl2-xr-7-deadcat-frame" manufacturer: "Rotor Riot" name: "CL2-XR 7 Deadcat Frame" weight_g: 210.0 wheelbase_mm: 288.0 }
-frames { uuid: "db0f98e3-8b6d-42aa-9c89-140fb2ced6b1" id: "cl2-air-5-frame" manufacturer: "Rotor Riot" name: "CL2-AIR 5 Frame" weight_g: 166.0 wheelbase_mm: 220.0 }
-frames { uuid: "8e3caf2f-2611-4fc6-a491-a5c3611e5715" id: "mobula7-v4-75mm-frame-1s-choose-color" manufacturer: "Happymodel" name: "Mobula7 V4 75mm Frame - 1S - Choose Color" weight_g: 5.4 wheelbase_mm: 75.0 }
-frames { uuid: "ba1a2234-1de5-48fb-86da-a1443f4843c3" id: "mobula7-v3-75mm-frame-2s-choose-color" manufacturer: "Happymodel" name: "Mobula7 V3 75mm Frame - 2S - Choose Color" weight_g: 5.5 wheelbase_mm: 75.0 }
-frames { uuid: "a6bd81f4-922d-4133-8f10-ab5f04034282" id: "skyliner-mk3-5-frame" manufacturer: "Rotor Riot" name: "Skyliner MK3 5 Frame" weight_g: 144.0 wheelbase_mm: 213.0 }
-frames { uuid: "365fe4f4-6fdc-4ffa-94ca-a48ae0144d18" id: "skylite-3-3-5-frame-by-le-drib" manufacturer: "Rotor Riot" name: "SkyLite 3-3.5 Frame by Le Drib" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "33adebd2-68c5-4a92-bb2e-dc0fcb510b82" id: "cl2-5-frame" manufacturer: "Rotor Riot" name: "CL2 5 Frame" weight_g: 166.0 wheelbase_mm: 233.0 }
-frames { uuid: "adad50d6-12ac-4af4-a9c3-53bba2e453dc" id: "bubito-35mm-frame" manufacturer: "Rotor Riot" name: "Bubito 35mm Frame" weight_g: 5.5 wheelbase_mm: 62.0 }
-frames { uuid: "96983a65-7767-4753-be64-c7f33ce74901" id: "moxy-5-frame" manufacturer: "Rotor Riot" name: "Moxy 5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "78a2e2c2-70ea-421c-86c6-c58d069d3a5f" id: "hglrc-my10-10-inch-long-range-training-frame" manufacturer: "HGLRC" name: "HGLRC MY10 10-inch Long Range / Training Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "c83649e8-c723-4605-a3fa-4a116ff595e1" id: "hglrc-my5-5-inch-freestyle-training-frame" manufacturer: "HGLRC" name: "HGLRC MY5 5-inch Freestyle /Training Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "c8d7a555-f4a2-4ad5-b505-724b20d3e1ae" id: "hglrc-rekon10-pro-v2-10-inch-long-range-frame-compatible-with-o4" manufacturer: "HGLRC" name: "HGLRC Rekon10 PRO V2 10-inch long-range Frame Compatible With O4" weight_g: 0.0 wheelbase_mm: 474.0 }
-frames { uuid: "f13fc97e-cdf2-4888-9d69-5551cbba953c" id: "hglrc-rekon8-pro-8-inch-long-range-frame-compatible-with-o4" manufacturer: "HGLRC" name: "HGLRC Rekon8 PRO 8-inch long-range Frame Compatible With O4" weight_g: 421.0 wheelbase_mm: 368.0 }
-frames { uuid: "e2eadc09-5825-48de-a459-2abcdc0485f1" id: "hglrc-rekon7-pro-v2-7-inch-long-range-frame-compatible-with-o4" manufacturer: "HGLRC" name: "HGLRC Rekon7 PRO V2 7-inch long-range Frame Compatible With O4" weight_g: 0.0 wheelbase_mm: 324.0 }
-frames { uuid: "6753add4-071f-409d-b6ab-33c6c65bad56" id: "hglrc-nblade-pro-7-inch-freestyle-cinematic-fpv-frame" manufacturer: "HGLRC" name: "HGLRC Nblade Pro 7 inch Freestyle Cinematic FPV Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "a89372ca-c6d9-4920-9929-61bc82071ba7" id: "hglrc-nblade-max-5-inch-true-x-dc-freestyle-cinematic-fpv-frame" manufacturer: "HGLRC" name: "HGLRC Nblade MAX 5 inch True X / DC Freestyle Cinematic FPV Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "185b536b-cffe-4cda-b3fa-917584b7ab67" id: "hglrc-my15-15-inch-long-battery-life-fpv-frame" manufacturer: "HGLRC" name: "HGLRC MY15 15-inch Long battery life FPV Frame" weight_g: 784.3 wheelbase_mm: 635.0 }
-frames { uuid: "6b1eb3e4-e670-4b4e-8c93-c7e4ad09f60e" id: "hglrc-my10-10-inch-long-range-payload-fpv-frame" manufacturer: "HGLRC" name: "HGLRC MY10 10-inch Long-range & Payload FPV Frame" weight_g: 217.0 wheelbase_mm: 0.0 }
-frames { uuid: "2c1aaad6-b502-4fab-ba12-1b38dc4822fb" id: "hglrc-my7-7-inch-long-range-train-ing-fpv-frame" manufacturer: "HGLRC" name: "HGLRC MY7 7-inch Long-range & Train ing FPV Frame" weight_g: 217.0 wheelbase_mm: 0.0 }
-frames { uuid: "2b0a57d5-a30f-4edd-bcde-3bb9c550e5c5" id: "hglrc-my5-5-inch-freestyle-training-fpv-frame" manufacturer: "HGLRC" name: "HGLRC MY5 5-inch Freestyle & Training FPV Frame" weight_g: 140.0 wheelbase_mm: 225.0 }
-frames { uuid: "e1447c25-fce9-456c-90f7-14e7842ced7b" id: "hglrc-rekon35-v2-frame" manufacturer: "HGLRC" name: "HGLRC Rekon35 V2 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "902bae4e-7a79-4469-ab1a-a0e95860c095" id: "hglrc-wind5-lite-v2-racing-frame-camouflage" manufacturer: "HGLRC" name: "HGLRC Wind5 Lite V2 Racing Frame (camouflage)" weight_g: 69.5 wheelbase_mm: 195.0 }
-frames { uuid: "33178d8d-ebd1-403f-95e0-dd6936caeb32" id: "hglrc-rekon-5-lite-frame" manufacturer: "HGLRC" name: "HGLRC Rekon 5 Lite Frame" weight_g: 52.0 wheelbase_mm: 206.0 }
-frames { uuid: "1447f677-56a4-4743-a6c7-d0db6ee71ca5" id: "hglrc-wind5-lite-v2-frame-kit-for-racing" manufacturer: "HGLRC" name: "HGLRC Wind5 Lite V2 Frame Kit for racing" weight_g: 69.5 wheelbase_mm: 195.0 }
-frames { uuid: "4b61b186-dcb5-4a3d-96c4-30ddc491a5f2" id: "hglrc-2-inch-talon-frame-for-cinewhoop" manufacturer: "HGLRC" name: "HGLRC 2-inch Talon frame for cinewhoop" weight_g: 46.0 wheelbase_mm: 106.0 }
-frames { uuid: "b6a161e5-183a-44ed-a08b-f16f660130d0" id: "rekon-y6-5-inch-frame-compatible-analog-o3-o4-moonlight-kit-vtx-long-range-fpv-frame-5mm-arm-kit" manufacturer: "HGLRC" name: "Rekon Y6 5-inch frame compatible Analog/O3/O4/Moonlight Kit VTX long-range FPV frame/5MM arm kit" weight_g: 119.0 wheelbase_mm: 0.0 }
-frames { uuid: "248e9bfb-45a5-422d-bd1d-e166eb20518c" id: "hglrc-petrel-85whoop-ultra-light-indoor-frame-for-fpv-racing-drone" manufacturer: "HGLRC" name: "HGLRC Petrel 85Whoop Ultra-light Indoor Frame for FPV Racing Drone" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d4a3008c-6f32-4e45-8d8b-2e07c6498921" id: "hglrc-petrel-75whoop-v2-1s-ultra-light-indoor-frame-for-fpv-racing-drone" manufacturer: "HGLRC" name: "HGLRC Petrel 75Whoop V2 1S Ultra-light Indoor Frame for FPV Racing Drone" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "56b62171-3d3d-486b-94b4-3d8fb693db9c" id: "hglrc-draknight-2-inch-o4-analog-frame-ultralight-toothpicks-freestyle" manufacturer: "HGLRC" name: "HGLRC Draknight 2-inch O4/Analog Frame Ultralight toothpicks/freestyle" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "7c65e686-aa2f-406a-abef-c653eb2037a9" id: "diatone-taycan-c25-mk2-cinewhoop-framekit" manufacturer: "DIATONE INNOVATIONS" name: "DIATONE Taycan C25 MK2 Cinewhoop FrameKit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6e7bd3c0-2d44-4d57-8552-581912167795" id: "diatone-roma-f7-7inch-frame-kit" manufacturer: "DIATONE OFFICIAL" name: "DIATONE Roma F7 7inch Frame Kit" weight_g: 200.0 wheelbase_mm: 290.0 }
-frames { uuid: "5c6ef31e-96c3-440a-9d8b-2658f8c9e8ce" id: "diatone-roma-f4-frame-kit" manufacturer: "DIATONE INNOVATIONS" name: "Diatone Roma F4 Frame kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "1db66dbe-9939-43fc-b6ac-e1bffcfdb032" id: "diatone-roma-f5-v2-v1-pro-frame-kit" manufacturer: "DIATONE INNOVATIONS" name: "DIATONE Roma F5 V2 （V1 PRO） Frame kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "93bb4cdd-fd0d-4987-bbfa-9941ea5a5855" id: "fm-x8-frame-accessories" manufacturer: "DIATONE OFFICIAL" name: "FM X8 Frame Accessories" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "8beb4c54-0506-4307-93df-4915f97c888d" id: "roma-l5-frame-accessories" manufacturer: "DIATONE INNOVATIONS" name: "Roma L5 Frame Accessories" weight_g: 2.0 wheelbase_mm: 0.0 }
-frames { uuid: "4a581a92-fe04-46e7-9020-73d0ba1b62ed" id: "diatone-roma-l5-frame-kit" manufacturer: "DIATONE INNOVATIONS" name: "DIATONE Roma L5  Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ab17cef5-dbda-4d25-bde9-cd5fa38fec8d" id: "hunter-5-fpv-racing-t700-frame-kit" manufacturer: "FlyFish RC" name: "Hunter 5 FPV Racing T700 Frame Kit" weight_g: 51.0 wheelbase_mm: 190.0 }
-frames { uuid: "97400e2b-466a-404f-a058-1d1db054a236" id: "volador-vd4-o4-pro-deadcat-fpv-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador VD4 O4 Pro Deadcat FPV T700 Frame Kit" weight_g: 0.0 wheelbase_mm: 183.0 }
-frames { uuid: "cd02a300-b798-42bc-95d1-ed65b074f7fb" id: "tony-5-o4-pro-sub250-fpv-freestyle-frame" manufacturer: "FlyFishRC" name: "Tony 5 O4 Pro Sub250 FPV Freestyle Frame" weight_g: 57.0 wheelbase_mm: 215.0 }
-frames { uuid: "9008cfee-fee8-46f5-9460-7155e909e5ee" id: "atlas-4-o4-pro-lr-fpv-frame" manufacturer: "FlyFishRC" name: "Atlas 4 O4 Pro LR FPV Frame" weight_g: 55.6 wheelbase_mm: 173.0 }
-frames { uuid: "1ec4152a-ac7a-4d0a-909d-277cf21c3bb9" id: "cnc-camera-plate-for-volador-vx3-vx3-5-o4-pro-frame" manufacturer: "FlyFish RC" name: "CNC Camera Plate For Volador VX3/VX3.5 O4 Pro Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ec6dde3a-14b7-4b91-98c3-017a593b5333" id: "cnc-aluminum-camera-side-plate-for-volador-v2-5-6inch-o4-pro-frame" manufacturer: "FlyFish RC" name: "CNC Aluminum Camera Side Plate For Volador V2 5-6inch O4 Pro Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "8d2f0fda-ca75-48f1-8c9c-d79a06ae937b" id: "fifty5-frame-o4-pro-upgrade-part-kits" manufacturer: "FlyFishRC" name: "FIFTY5 Frame O4 Pro Upgrade Part Kits" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "afdd2c12-eefb-4f0a-a430-1cd63a6620d0" id: "volador-vx3-5-frame-o4-pro-upgrade-part-kits" manufacturer: "FlyFishRC" name: "Volador VX3.5 Frame O4 Pro Upgrade Part Kits" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "b35cdb1d-a8c6-44bb-96b6-2c965e30144a" id: "volador-vx3-frame-o4-pro-upgrade-part-kits" manufacturer: "FlyFishRC" name: "Volador VX3 Frame O4 Pro Upgrade Part Kits" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "217f2dc4-1268-4384-8814-2aa079c769d0" id: "volador-vx3-vx3-5-frame-o4-pro-tpu-part-set" manufacturer: "FlyFishRC" name: "Volador VX3/VX3.5 Frame O4 Pro TPU Part Set" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "0f26794c-4384-4f1d-b10e-9a4b37b82a1f" id: "volador-ii-5-6inch-frame-o4-pro-tpu-part-set" manufacturer: "FlyFishRC" name: "Volador II 5-6inch Frame O4 Pro TPU Part Set" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "eed7c0bb-aff8-44c9-b8a1-db3a323e9742" id: "volador-vx3-vx3-5-o4-pro-freestyle-frame-kit" manufacturer: "FlyFish RC" name: "Volador VX3 VX3.5 O4 Pro Freestyle Frame Kit" weight_g: 68.3 wheelbase_mm: 144.0 }
-frames { uuid: "79e840d1-97a7-42ec-8274-7ddc4957ead6" id: "volador-ii-vx5-o4-pro-fpv-freestyle-t700-frame-kit" manufacturer: "FlyFish RC" name: "Volador II VX5 O4 Pro FPV Freestyle T700 Frame Kit" weight_g: 177.4 wheelbase_mm: 225.0 }
-frames { uuid: "638793db-cfbe-4977-a0d6-15ce1fe96881" id: "volador-ii-vd5-o4-pro-deadcat-fpv-t700-frame-kit" manufacturer: "FlyFish RC" name: "Volador II VD5 O4 Pro Deadcat FPV T700 Frame Kit" weight_g: 186.4 wheelbase_mm: 225.0 }
-frames { uuid: "33276e28-74e0-4213-ba0f-c1e5b9bd8117" id: "volador-ii-vx6-o4-pro-fpv-freestyle-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador II VX6 O4 Pro FPV Freestyle T700 Frame Kit" weight_g: 188.2 wheelbase_mm: 268.0 }
-frames { uuid: "50993d46-8b6f-4dc6-ab03-7ca318274725" id: "volador-ii-vd6-o4-pro-deadcat-fpv-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador II VD6 O4 Pro Deadcat FPV T700 Frame Kit" weight_g: 200.0 wheelbase_mm: 260.0 }
-frames { uuid: "c1021079-2ecb-4501-b3d9-5f3ec3b87a44" id: "fifty5-o4-pro-freestyle-fpv-frame-kit" manufacturer: "FlyFishRC" name: "FIFTY5 O4 Pro Freestyle FPV Frame Kit" weight_g: 127.7 wheelbase_mm: 255.0 }
-frames { uuid: "bac31f73-dd36-4256-a79d-2896bebd7a68" id: "atlas-4-lr-fpv-frame" manufacturer: "FlyFishRC" name: "Atlas 4 LR FPV Frame" weight_g: 55.6 wheelbase_mm: 173.0 }
-frames { uuid: "29c1e8f9-1b14-4c55-bcaf-92b7874abdff" id: "tony-5-sub250-fpv-freestyle-frame" manufacturer: "FlyFishRC" name: "Tony 5 Sub250 FPV Freestyle Frame" weight_g: 57.0 wheelbase_mm: 215.0 }
-frames { uuid: "bd54f8ec-2f6f-434d-b964-8ef2e76753e7" id: "fifty5-frame-parts" manufacturer: "FlyFishRC" name: "FIFTY5 Frame Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "2d21b0a3-006c-407b-b1bd-c3856fc95b5d" id: "fifty5-o3-freestyle-fpv-frame-kit" manufacturer: "FlyFishRC" name: "FIFTY5 O3 Freestyle FPV Frame Kit" weight_g: 127.7 wheelbase_mm: 255.0 }
-frames { uuid: "4a985e31-adf5-490e-a308-f7f65332fcf2" id: "spare-arms-for-volador-vx3-vx3-5-frame-2-of-pack" manufacturer: "FlyFishRC" name: "Spare Arms For Volador VX3/VX3.5 Frame - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "c5ce19cf-f105-45fc-a58a-9dd26a44a241" id: "volador-vx3-vx3-5-o3-freestyle-frame-kit" manufacturer: "FlyFishRC" name: "Volador VX3 VX3.5 O3 Freestyle Frame Kit" weight_g: 68.3 wheelbase_mm: 144.0 }
-frames { uuid: "795de6b4-cd23-4c0f-aee3-1362443ea392" id: "volador-ii-vx6-frame-replacement-arm-2-of-pack" manufacturer: "FlyFish RC" name: "Volador II VX6 Frame Replacement Arm - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "8adb9180-b79f-46e6-84fb-8e087c6c6aba" id: "volador-ii-frame-spare-parts" manufacturer: "FlyFishRC" name: "Volador II Frame Spare Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "525fb993-7349-437a-9639-001034bdaf8e" id: "cnc-aluminum-camera-side-plate-for-volador-v2-5-6inch-o3-frame" manufacturer: "FlyFish RC" name: "CNC Aluminum Camera Side Plate For Volador V2 5-6inch O3 frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "ffd17947-cc93-489b-a4a6-cc24cbbefa49" id: "volador-ii-vx5-frame-replacement-arm-2-of-pack" manufacturer: "FlyFish RC" name: "Volador II VX5 Frame Replacement Arm - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6acb48a4-b1dc-4c90-b820-663ad6bb54b4" id: "volador-ii-vd6-frame-replacement-arm-2-of-pack" manufacturer: "FlyFish RC" name: "Volador II VD6 Frame Replacement Arm - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "0cba92f8-d65a-4ef6-84d3-f623a8927265" id: "volador-ii-vd5-frame-replacement-arm-2-of-pack" manufacturer: "FlyFish RC" name: "Volador II VD5 Frame Replacement Arm - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "1b0e8e7e-67bf-46fe-962f-2f66ef7ccd98" id: "volador-ii-5-6inch-frame-tpu-part-set" manufacturer: "FlyFishRC" name: "Volador II 5-6inch Frame TPU Part Set" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "bab776d7-ab18-4ed7-a54a-c49546e5ef6e" id: "volador-ii-vx5-o3-fpv-freestyle-t700-frame-kit" manufacturer: "FlyFish RC" name: "Volador II VX5 O3 FPV Freestyle T700 Frame Kit" weight_g: 177.4 wheelbase_mm: 225.0 }
-frames { uuid: "c20093d0-6e4f-4141-ba8d-449270ac3dac" id: "volador-ii-vd5-o3-deadcat-fpv-t700-frame-kit" manufacturer: "FlyFish RC" name: "Volador II VD5 O3 Deadcat FPV T700 Frame Kit" weight_g: 186.4 wheelbase_mm: 225.0 }
-frames { uuid: "3c44683b-2b79-41ec-ac6e-500c747f050c" id: "volador-ii-vx6-o3-fpv-freestyle-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador II VX6 O3 FPV Freestyle T700 Frame Kit" weight_g: 188.2 wheelbase_mm: 268.0 }
-frames { uuid: "fef245b6-4ab2-402e-851d-25d26ce49e99" id: "volador-ii-vd6-o3-deadcat-fpv-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador II VD6 O3 Deadcat FPV T700 Frame Kit" weight_g: 200.0 wheelbase_mm: 260.0 }
-frames { uuid: "181a2763-89ab-4f03-ac91-c0e8b8f13135" id: "volador-frame-tpu-parts-set" manufacturer: "FlyFish RC" name: "Volador Frame TPU Parts Set" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "d4bf81b4-c96b-40da-b012-ab7a2e5054c4" id: "spare-parts-for-volador-vx5-vd5-vx6-vd6-frame" manufacturer: "FlyFishRC" name: "Spare Parts for Volador VX5/VD5/VX6/VD6 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6622dc40-9798-4c1f-a7fc-8f3a22d9fda1" id: "volador-vd6-frame-replacement-arm-2-of-pack" manufacturer: "FlyFish RC" name: "Volador VD6 Frame Replacement Arm - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e506ef44-6872-450e-a847-adbdc4bf1ac4" id: "volador-vd5-frame-replacement-arm-2-of-pack" manufacturer: "FlyFish RC" name: "Volador VD5 Frame Replacement Arm - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "baee6379-75b7-4008-8c1a-85aa0d25f97d" id: "volador-vx6-frame-replacement-arm-2-of-pack" manufacturer: "FlyFish RC" name: "Volador VX6 Frame Replacement Arm - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "f3ccfc81-c912-4cd8-8045-25494b0776cc" id: "volador-vx5-frame-replacement-arm-2-of-pack" manufacturer: "FlyFish RC" name: "Volador VX5 Frame Replacement Arm - 2 of Pack" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "3e8ac709-2f7f-454f-aec5-69577b171bfa" id: "volador-vd5-deadcat-fpv-lr-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador VD5 Deadcat FPV LR T700 Frame Kit" weight_g: 205.3 wheelbase_mm: 225.0 }
-frames { uuid: "ad444354-b0c6-4e9c-8b8b-b28c5b861e14" id: "volador-vd6-deadcat-fpv-lr-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador VD6 Deadcat FPV LR T700 Frame Kit" weight_g: 216.1 wheelbase_mm: 260.0 }
-frames { uuid: "d7d3ebfb-bea9-4879-ad79-6b9b4d57af7a" id: "volador-vx5-fpv-freestyle-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador VX5 FPV Freestyle T700 Frame Kit" weight_g: 199.5 wheelbase_mm: 225.0 }
-frames { uuid: "0e4dfbe7-be55-49d0-8c0c-9a868d3d1f23" id: "volador-vx6-fpv-freestyle-t700-frame-kit" manufacturer: "FlyFishRC" name: "Volador VX6 FPV Freestyle T700 Frame Kit" weight_g: 211.1 wheelbase_mm: 268.0 }
-frames { uuid: "2bf82dd5-d5ab-4695-aa4a-a28669a68c69" id: "sub250-oasisfly35-dc-frame-and-parts" manufacturer: "sub250" name: "Sub250 OasisFly35 DC Frame and Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6f7e8b3b-53bd-4a67-a5c2-7dbdc65fbc09" id: "dollyfly25-v2-o4-pro-frame-and-parts" manufacturer: "sub250" name: "DollyFly25 V2 O4 Pro Frame and Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "dfa4533f-65c8-4a41-a1e9-517f10079c34" id: "sub250-dollyfly16-hd-o4-pro-frame-parts" manufacturer: "Sub250" name: "Sub250 DollyFly16 HD O4 Pro Frame Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "76fcc46e-d1ea-4adb-ba25-e41a9d32246d" id: "sub250-oasisfly25-oasisfly30-o4-pro-frame-parts" manufacturer: "sub250" name: "Sub250 OasisFly25 / OasisFly30 O4 Pro Frame Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "2c3cceb0-1456-49d6-97c1-2b2a6877d0fc" id: "nimble65-o4-frame-parts" manufacturer: "sub250" name: "Nimble65 | O4 Frame  Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "08bf1451-f675-4ec7-a755-3809b0cfd5c7" id: "sub250-huma20-o3-o4-frame-and-other-parts" manufacturer: "Sub250" name: "Sub250 Huma20 O3 /O4  Frame and other Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e880a3de-9fa8-4e39-8b8e-e93706385536" id: "sub250-oasisfly30-o3-frames-with-side-panels-other-parts" manufacturer: "sub250" name: "Sub250 Oasisfly30 O3 Frames with Side panels & Other Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "f30a6658-c0f3-4371-a203-4734c570efa7" id: "sub250-oasisfly25-o3-frame-with-other-parts" manufacturer: "sub250" name: "Sub250 Oasisfly25  O3 Frame with other Parts" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "edf467e6-4773-40ef-a799-d9a7d9be1344" id: "sub250-nanofly20-2s-frame-and-battery-holder" manufacturer: "Sub250" name: "Sub250 Nanofly20 2S Frame and Battery Holder" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "4361774c-dc01-439a-9603-1021a90f7112" id: "sub250-dollyfly25-o3-frame-kit-and-frame-part" manufacturer: "Sub250" name: "Sub250 DollyFly25 O3 Frame Kit and Frame Part" weight_g: 80.0 wheelbase_mm: 120.0 }
-frames { uuid: "91b4862f-d57d-430f-bd47-b9aa131fe057" id: "sub250-whoopfly16-frame-and-parts" manufacturer: "Sub250" name: "Sub250 Whoopfly16 Frame and parts" weight_g: 11.4 wheelbase_mm: 0.0 }
-frames { uuid: "1d82c480-5be6-4df3-b86f-14ef5b490ad0" id: "sub250-nanofly20-frame" manufacturer: "Sub250" name: "Sub250 Nanofly20 Frame" weight_g: 8.4 wheelbase_mm: 88.0 }
-frames { uuid: "3069b245-6a3c-4fa9-a682-a44ed458b7b0" id: "sub250-nf16-1-6-inch-frame-for-nanofly16" manufacturer: "Sub250" name: "Sub250 NF16 1.6 inch Frame for Nanofly16" weight_g: 8.3 wheelbase_mm: 0.0 }
-frames { uuid: "54b419f4-b2c9-43be-a539-145af24e9718" id: "fpvcycle-cinesplore-2-frame-kit" manufacturer: "FPVCycle" name: "FPVCycle Cinesplore 2 Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "108fd52a-5e3a-46e3-aab8-f033829bccd8" id: "fpvcycle-8mm-glide-frame-kit" manufacturer: "FPVCycle" name: "FPVCycle 8mm Glide Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "e55cd74d-1aef-46ba-a628-11ddba8638ff" id: "sonicare-x4-5-frame-kit" manufacturer: "FPVCycle" name: "Sonicare (X4) 5 Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "9122a86f-d3ff-4d1f-ac85-9b927c68d05f" id: "fpvcycle-cineglide-7-frame" manufacturer: "FPVCycle" name: "FPVCycle CineGlide 7 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "57b4e943-45f4-40a5-9dca-21a8270f2e84" id: "fpvcycle-toothfairy-2-frame" manufacturer: "FPVCycle" name: "FPVCycle ToothFairy 2 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "84da1eab-eafe-49b9-a917-19f09ab5b8a6" id: "fpvcycle-incisor-prototype-5-frame-kit" manufacturer: "FPVCycle" name: "FPVCycle INCISOR (Prototype 5) Frame Kit" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "7d3bbd0a-ad5e-4bc5-a98e-dd0049b19a74" id: "fpvcycle-fouride-frame-vista-compatible-choose-size" manufacturer: "FPVCycle" name: "FPVCycle Fouride Frame- Vista Compatible (Choose Size)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "2ca30025-3196-4b01-bf1e-47addf247345" id: "fpvcycle-cinesplore-frame" manufacturer: "FPVCycle" name: "FPVCycle CineSplore Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "6b3f0b89-f602-4a44-8ee6-4e02d61be726" id: "fpvcycle-powerpick-frame-choose-4-or-5" manufacturer: "FPVCycle" name: "FPVCycle PowerPick Frame  (Choose 4” or 5”)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "f970a835-fa6c-4400-b18b-3d9aa0d51c32" id: "fpvcycle-molar-5-race-frame" manufacturer: "FPVCycle" name: "FPVCycle MOLAR - 5 Race Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "0e04d336-1756-4612-88a9-a617635b59d4" id: "toothpick-3-frame-tp3" manufacturer: "FPVCycle" name: "ToothPick 3 Frame - TP3" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "48dc2f08-7703-4d5a-9557-d1d2cbacc31f" id: "fpvcycle-babytooth-frame-choose-thickness" manufacturer: "FPVCycle" name: "FPVCycle BabyTooth Frame (CHOOSE THICKNESS)" weight_g: 0.0 wheelbase_mm: 0.0 }
-frames { uuid: "592a05ee-d015-4dae-b8db-fecaac899484" id: "fpvcycle-glide-5-frame" manufacturer: "FPVCycle" name: "FPVCycle Glide -  5 Frame" weight_g: 0.0 wheelbase_mm: 0.0 }
+frames:  {
+  uuid:  "9f7e3250-b461-473d-9337-5f8b6de97b98"
+  id:  "meteor75-pro-ii-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Meteor75 Pro II Brushless Whoop Frame"
+  weight_g:  5.8
+  wheelbase_mm:  80
+}
+frames:  {
+  uuid:  "4b3bb0c4-d86e-49f7-8bd9-cabeeaac8cba"
+  id:  "meteor65-pro-ii-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Meteor65 Pro II Brushless Whoop Frame"
+  weight_g:  4.6
+  wheelbase_mm:  70
+}
+frames:  {
+  uuid:  "897c310c-aa29-4044-b690-4df80f4841d7"
+  id:  "aquila20-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Aquila20 Brushless Whoop Frame"
+  weight_g:  37.5
+  wheelbase_mm:  100
+}
+frames:  {
+  uuid:  "e3b85283-67b5-4f38-a425-6bff050bbc8c"
+  id:  "air65-champion-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Air65 Champion Brushless Whoop Frame"
+  weight_g:  2.2
+  wheelbase_mm:  65
+}
+frames:  {
+  uuid:  "fc7fc867-9fd5-47cb-8e03-bfb1d447cd03"
+  id:  "pavo20-pro-ii-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo20 Pro II Brushless Whoop Frame"
+  weight_g:  35.7
+  wheelbase_mm:  93.9
+}
+frames:  {
+  uuid:  "c87dc2c1-732b-43a5-8044-bd193132af88"
+  id:  "pavo-pico-ii-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo Pico II Brushless Whoop Frame"
+  weight_g:  19
+  wheelbase_mm:  80
+}
+frames:  {
+  uuid:  "a1c01820-381d-4764-a3df-455151d1f247"
+  id:  "air75-ii-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Air75 II Brushless Whoop Frame"
+  weight_g:  4
+  wheelbase_mm:  75
+}
+frames:  {
+  uuid:  "259ca8f0-14d4-4525-a944-05803452268b"
+  id:  "air65-ii-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Air65 II Brushless Whoop Frame"
+  weight_g:  2.65
+  wheelbase_mm:  65
+}
+frames:  {
+  uuid:  "10a092c4-55c8-43af-b125-998aa30b7d60"
+  id:  "pavo20-pro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo20 Pro Brushless Whoop Frame"
+  weight_g:  33.3
+  wheelbase_mm:  93.7
+}
+frames:  {
+  uuid:  "b7927287-7978-45ad-81d5-35a268872d7b"
+  id:  "pavo-femto-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo Femto Brushless Whoop Frame"
+  weight_g:  8.64
+  wheelbase_mm:  75
+}
+frames:  {
+  uuid:  "15418cec-962b-4aef-a6a6-d37dc357aabc"
+  id:  "x-knight-carbon-fiber-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "X-Knight Carbon Fiber Frame Kit"
+}
+frames:  {
+  uuid:  "daea0f68-49fa-4e1e-b885-5b22e60cee60"
+  id:  "pavo25-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo25 Frame Kit"
+  weight_g:  68
+  wheelbase_mm:  108
+}
+frames:  {
+  uuid:  "5a6f0c7d-2686-4f2f-9642-d62e85af098f"
+  id:  "air75-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Air75 Brushless Whoop Frame"
+  weight_g:  4.45
+  wheelbase_mm:  75
+}
+frames:  {
+  uuid:  "399e90a0-055c-4157-ab29-0cd39589aef3"
+  id:  "pavo35-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo35 Brushless Whoop Frame"
+  weight_g:  113.9
+  wheelbase_mm:  148
+}
+frames:  {
+  uuid:  "5453fbc1-e672-4256-81f2-d783d76ec0f8"
+  id:  "pavo25-v2-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo25 V2 Brushless Whoop Frame"
+  weight_g:  70
+  wheelbase_mm:  112
+}
+frames:  {
+  uuid:  "ba6fa85c-98cc-4396-ae29-2e2284bf2c53"
+  id:  "pavo20-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo20 Brushless Whoop Frame"
+  weight_g:  26.7
+  wheelbase_mm:  90
+}
+frames:  {
+  uuid:  "52efdcae-96a8-4666-b46e-fc8197de5cad"
+  id:  "pavo-pico-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo Pico Brushless Whoop Frame"
+  weight_g:  13.8
+  wheelbase_mm:  80.8
+}
+frames:  {
+  uuid:  "1e2fc8e0-1ff7-4bc9-8338-eb3be9dbc16d"
+  id:  "air65-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Air65 Brushless Whoop Frame"
+  weight_g:  2.67
+  wheelbase_mm:  65
+}
+frames:  {
+  uuid:  "87131dff-79ff-49be-b529-22d576675743"
+  id:  "meteor75-pro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Meteor75 Pro Brushless Whoop Frame"
+  weight_g:  7.73
+  wheelbase_mm:  80.8
+}
+frames:  {
+  uuid:  "d13a0487-0f69-40f3-97ea-4a6400ec50a8"
+  id:  "meteor85-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Meteor85 Brushless Whoop Frame"
+  weight_g:  11.32
+  wheelbase_mm:  87.7
+}
+frames:  {
+  uuid:  "68f9ece3-bf8e-4eeb-b8b9-2599ea9a4937"
+  id:  "cetus-x-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Cetus X Brushless Whoop Frame"
+  weight_g:  24.22
+}
+frames:  {
+  uuid:  "a2d038cd-36e0-4e41-bbb2-74341a81dab5"
+  id:  "cetus-pro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Cetus Pro Brushless Whoop Frame"
+  weight_g:  9.39
+}
+frames:  {
+  uuid:  "afa961c7-0906-4da4-82e2-ae879f22ca81"
+  id:  "pavo360-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo360 Frame Kit"
+  weight_g:  187.22
+  wheelbase_mm:  168
+}
+frames:  {
+  uuid:  "aead85a2-635c-4d7e-b4a1-e38edc71c4bb"
+  id:  "pavo30-pro-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo30 Pro Frame Kit"
+  weight_g:  146
+  wheelbase_mm:  157
+}
+frames:  {
+  uuid:  "2998d238-4574-4a4c-9d33-0c0f77704b64"
+  id:  "meteor65-pro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Meteor65 Pro Brushless Whoop Frame"
+  weight_g:  3.2
+}
+frames:  {
+  uuid:  "a3d2f778-4fb3-4db5-8720-a322907d5ef4"
+  id:  "x-knight-35-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "X-Knight 35 Frame Kit"
+  weight_g:  43.22
+  wheelbase_mm:  155
+}
+frames:  {
+  uuid:  "4bde3b7f-8be2-4a5a-9816-93b2f0b13ce5"
+  id:  "hx115-lr-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "HX115 LR Frame Kit"
+  weight_g:  14
+  wheelbase_mm:  126
+}
+frames:  {
+  uuid:  "baa3310c-71c0-48f4-ac7a-1ff289be009e"
+  id:  "pavo30-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "Pavo30 Frame Kit"
+  weight_g:  55.53
+  wheelbase_mm:  120
+}
+frames:  {
+  uuid:  "dcdeaaa3-585a-4ccf-bd50-31abcdfa5b58"
+  id:  "beta95x-v3-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "Beta95X V3 Frame Kit"
+  weight_g:  39.09
+  wheelbase_mm:  100
+}
+frames:  {
+  uuid:  "1b9034cb-2b5e-417a-a2f4-6ce10b46a991"
+  id:  "meteor75-micro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Meteor75 Micro Brushless Whoop Frame"
+}
+frames:  {
+  uuid:  "6f1641f0-97f4-45a5-bab7-b5af78adac2a"
+  id:  "beta75x-v2-micro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Beta75X V2 Micro Brushless Whoop Frame"
+  weight_g:  5.6
+}
+frames:  {
+  uuid:  "1cf1b9d6-7086-451f-a1f1-feb20259a6a9"
+  id:  "x-knight-carbon-fiber-5-frame-v2-kit"
+  manufacturer:  "BETAFPV"
+  name:  "X-Knight Carbon Fiber 5'' Frame V2 Kit"
+  weight_g:  26.44
+  wheelbase_mm:  200
+}
+frames:  {
+  uuid:  "f4e690da-d8dc-464c-b2c5-09638858bece"
+  id:  "twig-et5-5-toothpick-frame"
+  manufacturer:  "BETAFPV"
+  name:  "TWIG ET5 5 Toothpick Frame"
+  weight_g:  33.6
+  wheelbase_mm:  200
+}
+frames:  {
+  uuid:  "9ac32330-6d03-40e1-9608-a1cd16caabee"
+  id:  "twiglet-2-5-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "TWIGLET 2.5'' Frame Kit"
+  weight_g:  5.3
+}
+frames:  {
+  uuid:  "0681bd40-b3c6-46c3-9dca-6b17595bf7a8"
+  id:  "twig-xl-3-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "TWIG XL 3 Frame Kit"
+  wheelbase_mm:  140
+}
+frames:  {
+  uuid:  "a509ac9e-2a22-429d-8321-b40de8394a76"
+  id:  "twig-mutant-4-4-frame-kit-true-x"
+  manufacturer:  "BETAFPV"
+  name:  "TWIG Mutant 4 4'' Frame Kit (True-X)"
+  wheelbase_mm:  160
+}
+frames:  {
+  uuid:  "02f18100-0738-45fa-a5c9-78b62a90134a"
+  id:  "beta95x-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "Beta95X Frame Kit"
+  weight_g:  13.5
+  wheelbase_mm:  100
+}
+frames:  {
+  uuid:  "bfe08cf8-baec-4eb3-b592-2648358fde5f"
+  id:  "beta75-pro-micro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Beta75 Pro Micro Brushless Whoop Frame"
+}
+frames:  {
+  uuid:  "1d671356-7900-44ca-88df-2dc5113edc53"
+  id:  "hx100-se-t300-carbon-fiber-frame"
+  manufacturer:  "BETAFPV"
+  name:  "HX100 SE T300 Carbon Fiber Frame"
+  weight_g:  4
+}
+frames:  {
+  uuid:  "08b2bee0-776a-474b-9395-4905c912bd04"
+  id:  "meteor65-micro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Meteor65 Micro Brushless Whoop Frame"
+}
+frames:  {
+  uuid:  "b4e9b5e0-5dab-4445-a5f5-15727633844d"
+  id:  "hx115-t700-carbon-fiber-frame"
+  manufacturer:  "BETAFPV"
+  name:  "HX115 T700 Carbon Fiber Frame"
+  weight_g:  9.4
+}
+frames:  {
+  uuid:  "3352901c-ed21-4f34-832c-f28ff76d4f82"
+  id:  "hx100-carbon-fiber-frame"
+  manufacturer:  "BETAFPV"
+  name:  "HX100 Carbon Fiber Frame"
+  weight_g:  5.1
+}
+frames:  {
+  uuid:  "e68f8302-e73f-47ad-8dee-61c6702f90de"
+  id:  "stiffener-brace-of-carbon-fiber-for-beta85x-frame-2-pcs"
+  manufacturer:  "BETAFPV"
+  name:  "Stiffener Brace of Carbon Fiber for Beta85X Frame (2 PCS)"
+  weight_g:  1.3
+  wheelbase_mm:  85
+}
+frames:  {
+  uuid:  "77b37507-376d-4e43-967d-1441dcea5d45"
+  id:  "beta85x-4s-4k-frame-kit-upgrade"
+  manufacturer:  "BETAFPV"
+  name:  "Beta85X 4S 4K Frame Kit (Upgrade)"
+  weight_g:  10.3
+  wheelbase_mm:  85
+}
+frames:  {
+  uuid:  "8688e221-32da-47e8-9bb9-5c20c7fdc232"
+  id:  "beta75-pro-2-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Beta75 Pro 2 Whoop Frame"
+  weight_g:  5.5
+}
+frames:  {
+  uuid:  "989196e6-e646-4a0e-8197-54bf1babcdd5"
+  id:  "beta65x-beta65-pro-2-micro-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Beta65X / Beta65 Pro 2 Micro Whoop Frame"
+  weight_g:  3.6
+}
+frames:  {
+  uuid:  "61c2d2b1-8874-48cb-ae57-3fa93a2b2a1d"
+  id:  "beta75x-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Beta75X Whoop Frame"
+  weight_g:  7.3
+}
+frames:  {
+  uuid:  "dba721f6-fb16-407e-9ffa-f14fcf662a92"
+  id:  "beta220-fpv-racing-carbon-fiber-quadcopter-frame-kit"
+  manufacturer:  "BETAFPV"
+  name:  "Beta220 FPV Racing Carbon Fiber Quadcopter Frame Kit"
+  weight_g:  85
+  wheelbase_mm:  220
+}
+frames:  {
+  uuid:  "3a3323c4-8a4a-4237-82e6-a2355b4f9ee3"
+  id:  "combo-of-beta75s-chameleon-frame-canopy-props"
+  manufacturer:  "BETAFPV"
+  name:  "Combo of Beta75S Chameleon (Frame+Canopy+Props)"
+}
+frames:  {
+  uuid:  "276e22ec-3dd0-492a-b5b2-0f871f2d0a17"
+  id:  "beta65-pro-micro-brushless-whoop-frame"
+  manufacturer:  "BETAFPV"
+  name:  "Beta65 Pro Micro Brushless Whoop Frame"
+}
+frames:  {
+  uuid:  "86760477-4ea5-463d-8b49-981e7c03c346"
+  id:  "caddxfpv-curve-micro-16-replacement-frame"
+  manufacturer:  "CADDXFPV"
+  name:  "CaddxFPV Curve Micro 16 Replacement Frame"
+}
+frames:  {
+  uuid:  "ecd3d399-bc3d-4f31-bc3b-094ee1b368b7"
+  id:  "protos-drone-frame"
+  manufacturer:  "CADDX FPV"
+  name:  "Protos Drone Frame"
+}
+frames:  {
+  uuid:  "c702c522-2a8d-45e6-bd52-0a4f99eeae01"
+  id:  "caddxfpv-goggles-frame"
+  manufacturer:  "CADDXFPV"
+  name:  "CaddxFPV Goggles Frame"
+}
+frames:  {
+  uuid:  "cc8136cf-731d-4d6f-b9eb-36f157c9c137"
+  id:  "caddxfpv-customized-lenses-includes-frame"
+  manufacturer:  "CADDXFPV"
+  name:  "CaddxFPV Customized Lenses (includes frame)"
+}
+frames:  {
+  uuid:  "b3a04e3d-b47e-48d2-9af7-71d6835067db"
+  id:  "caddxfpv-gofilm-20-frame"
+  manufacturer:  "CADDXFPV"
+  name:  "CADDXFPV Gofilm 20 Frame"
+}
+frames:  {
+  uuid:  "e6344b0e-3a10-4e25-84b8-baccf795505c"
+  id:  "walksnail-lens-frame-for-avatar-hd-goggles-x"
+  manufacturer:  "CADDXFPV"
+  name:  "Walksnail Lens Frame for Avatar HD Goggles X"
+}
+frames:  {
+  uuid:  "b3bdea49-e3b0-439e-b8f5-b979d169514f"
+  id:  "baby-babyape-v4-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "Baby BabyApe V4 Frame"
+}
+frames:  {
+  uuid:  "901f9884-4c4f-4c55-9c0f-f25fbf263b31"
+  id:  "darwinfpv-apestyle-x6-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "DarwinFPV ApeStyle X6 Drone Frame"
+}
+frames:  {
+  uuid:  "e4561bb2-ee70-4ff4-91c7-e9bbb02fa512"
+  id:  "darwinfpv-apestyle-x5-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "DarwinFPV ApeStyle X5 Drone Frame"
+}
+frames:  {
+  uuid:  "be56e140-5306-4754-9df3-5d0930e96fb6"
+  id:  "darwinfpv-apestyle-d6-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "DarwinFPV ApeStyle D6 Drone Frame"
+}
+frames:  {
+  uuid:  "d9e7cf6f-9332-45c1-98a4-e4613e5623f9"
+  id:  "darwinfpv-apestyle-d5-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "DarwinFPV ApeStyle D5 Drone Frame"
+}
+frames:  {
+  uuid:  "d363ccbd-887a-4ef2-8025-ca0b0ee86571"
+  id:  "darwinfpv-toruk15-long-range-fpv-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "DarwinFPV Toruk15  Long Range FPV Drone Frame"
+}
+frames:  {
+  uuid:  "960ee197-cf5a-4659-ad32-c6b178195e62"
+  id:  "babyape-pro-3-5-inch-freestyle-fpv-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone Frame"
+}
+frames:  {
+  uuid:  "fef91f43-ad50-4acf-8e6c-1629f31b62a9"
+  id:  "babyape-3-inch-freestyle-fpv-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "BabyApe Ⅲ 3 Inch Freestyle FPV Drone Frame"
+}
+frames:  {
+  uuid:  "4f43a983-553f-4c1b-89e5-705628932743"
+  id:  "babyape-mini-2-inch-freestyle-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "BabyApe Ⅲ Mini 2 Inch Freestyle Frame"
+}
+frames:  {
+  uuid:  "4409042c-9fb0-4fc7-b2ba-0b9bdfafa674"
+  id:  "darwinfpv-hulk-iii-mini-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "DarwinFPV HULK III Mini Frame"
+}
+frames:  {
+  uuid:  "77957a2d-e21d-430a-b743-882bad549462"
+  id:  "darwinfpv-cineape20-fpv-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "DarwinFPV CineApe20 FPV Drone Frame"
+}
+frames:  {
+  uuid:  "1aeced1f-73de-4598-a536-516b1342dc02"
+  id:  "darwinfpv-toruk13-13-inch-long-range-fpv-drone-frame"
+  manufacturer:  "DarwinFPV - Official Store"
+  name:  "DarwinFPV Toruk13 13-Inch Long Range FPV Drone Frame"
+}
+frames:  {
+  uuid:  "803f997e-b14d-49e3-9c8c-1b1bff479514"
+  id:  "darwinfpv-x10-long-range-fpv-drone-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV X10 Long Range FPV Drone Frame"
+}
+frames:  {
+  uuid:  "1f5b7c61-58b5-431d-98b8-a6b4e09bb6aa"
+  id:  "darwinfpv-foldape4-analog-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV FoldApe4 Analog Frame"
+}
+frames:  {
+  uuid:  "bae2f0f0-b963-4f29-9550-1a813ee85543"
+  id:  "darwinfpv-cineape35-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV CineApe35  Frame"
+}
+frames:  {
+  uuid:  "f926d440-2090-4f93-96f3-4662663667f3"
+  id:  "darwin-x9-quadcopter-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "DARWIN X9 Quadcopter Frame"
+  weight_g:  287.8
+  wheelbase_mm:  363
+}
+frames:  {
+  uuid:  "681cafac-3af5-4418-a8a6-888d1a87d448"
+  id:  "darwin-hulk-waterproof-fpv-drone-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "DARWIN HULK Ⅱ Waterproof  FPV Drone Frame"
+  weight_g:  195.7
+  wheelbase_mm:  227
+}
+frames:  {
+  uuid:  "6b74a4b7-7faf-4579-bce8-c99639fb784a"
+  id:  "darwinfpv-babyape-3-5-inch-fpv-drone-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV BabyApe Ⅱ 3.5 inch FPV Drone Frame"
+  weight_g:  46.7
+  wheelbase_mm:  156
+}
+frames:  {
+  uuid:  "ebd5e092-cb6e-49ef-8802-ce21a2aa7496"
+  id:  "darwin-cineape-25-whoop-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "Darwin CineApe 25 Whoop Frame"
+  weight_g:  66.7
+  wheelbase_mm:  112
+}
+frames:  {
+  uuid:  "0326536d-0119-4609-85c7-73a7505b593c"
+  id:  "baby-babyape-v2-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "Baby BabyApe V2 Frame"
+}
+frames:  {
+  uuid:  "a2f84c6e-c5a9-40cf-a597-f4deae9023c6"
+  id:  "darwinfpv-hulk-waterproof-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV HULK Waterproof Frame"
+}
+frames:  {
+  uuid:  "5e8b3988-4104-48a5-b1cb-88eeb9237609"
+  id:  "darwin-240-5inch-long-distance-fpv-drone-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "Darwin 240 5inch Long Distance FPV Drone Frame"
+  wheelbase_mm:  240
+}
+frames:  {
+  uuid:  "dc11d671-201b-4a8c-ae14-285905076000"
+  id:  "darwin-tinyape-freestyle-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "Darwin TinyApe Freestyle Frame"
+}
+frames:  {
+  uuid:  "1982a5f0-80de-491e-ae4a-840a56c1ee06"
+  id:  "darwin-baby-ape-3-quadcopter-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "Darwin Baby Ape 3'' Quadcopter Frame"
+}
+frames:  {
+  uuid:  "40b80f1f-4c65-4790-aa9d-951afb7f45c6"
+  id:  "darwin-129-fpv-quadcopter-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "Darwin 129 FPV Quadcopter Frame"
+  wheelbase_mm:  280
+}
+frames:  {
+  uuid:  "147159aa-2860-43ce-9cdc-644ac91baa45"
+  id:  "darwin-18650-frame"
+  manufacturer:  "DarwinFPV"
+  name:  "Darwin 18650 Frame"
+}
+frames:  {
+  uuid:  "f4e44a92-6907-4177-af99-763e7ddf9a57"
+  id:  "newbeedrone-cockroach-65mm-brushed-liteaf-racing-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Cockroach 65mm Brushed LiteAF Racing Frame"
+}
+frames:  {
+  uuid:  "8df9bbb1-0f79-4531-a3a5-d0d3d931ae16"
+  id:  "newbeedrone-cockroach-75mm-brushless-liteaf-racing-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Cockroach 75mm Brushless LiteAF Racing Frame"
+  weight_g:  3.3
+  wheelbase_mm:  75
+}
+frames:  {
+  uuid:  "32ce4984-f380-4bd4-9b23-90d0317b7b92"
+  id:  "newbeedrone-lionbee-3inch-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone LionBee 3inch Frame"
+}
+frames:  {
+  uuid:  "b5d06b41-8215-4ba0-b4ee-c3bf2061b390"
+  id:  "newbeedrone-savagebee-3-frame-v1-7"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone SavageBee 3 Frame V1.7"
+}
+frames:  {
+  uuid:  "18e04626-53ad-4d9e-b695-e2db5141ba07"
+  id:  "newbeedrone-x-webleedfpv-cockroach-65mm-liteaf-red-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone X weBLEEDfpv Cockroach 65mm LiteAF RED Frame"
+  weight_g:  2.4
+}
+frames:  {
+  uuid:  "77b2b3c0-e777-4571-a73a-05d35822369b"
+  id:  "newbeedrone-inertia-5-fpv-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone INERTIA 5 FPV Frame"
+  weight_g:  130
+}
+frames:  {
+  uuid:  "6c7a6c48-5a8d-43ed-b34f-9029766b285b"
+  id:  "newbeedrone-stingerbee-hd-o4-pro-3-frame-kit"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone StingerBee HD O4 Pro 3” Frame Kit"
+}
+frames:  {
+  uuid:  "af7ea028-bb34-4ce4-90f2-49019d5218b7"
+  id:  "newbeedrone-vrdrone-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone VRDrone Frame"
+}
+frames:  {
+  uuid:  "4f66ce21-de6a-4a53-a059-a357aa5c123a"
+  id:  "newbeedrone-savagebee-pusher-frame-kit"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone SavageBee Pusher Frame Kit"
+}
+frames:  {
+  uuid:  "6cdef9bd-c262-48f3-aaff-5abdd51ede9a"
+  id:  "newbeedrone-vivid-frame-spare-parts"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Vivid Frame Spare Parts"
+}
+frames:  {
+  uuid:  "62d60f2f-96f8-4c06-9344-e9dc19f139de"
+  id:  "newbeedrone-cockroach-65mm-brushless-liteaf-racing-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Cockroach 65mm Brushless LiteAF Racing Frame"
+  weight_g:  2.4
+}
+frames:  {
+  uuid:  "e394e0bd-dc1c-4ecc-8553-c8aa21bad934"
+  id:  "newbeedrone-cockroach-65mm-frame-3d-printed-battery-mount"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Cockroach 65mm Frame 3D Printed Battery Mount"
+}
+frames:  {
+  uuid:  "02a84d77-ae24-4e2f-8859-7192bf12a1f0"
+  id:  "newbeedrone-stingerbee-hd-3-frame-body-kit-only"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone StingerBee HD 3 Frame Body Kit Only"
+}
+frames:  {
+  uuid:  "396e9efd-4737-4f8a-ab3e-788382789b12"
+  id:  "newbeedrone-stingerbee-hd-3-full-frame-body-kit-3-arms-vtx-plate"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone StingerBee HD 3 Full Frame (Body Kit + 3 Arms + VTX Plate)"
+}
+frames:  {
+  uuid:  "5f7b117b-cb5e-41fd-b7f0-ac1f2a315213"
+  id:  "newbeedrone-cockroach-82-brushless-super-durable-frame-plastic-part-and-carbon-fiber-accessory"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame (Plastic Part and Carbon Fiber & Accessory)"
+}
+frames:  {
+  uuid:  "b717ba35-c2ce-45ae-9081-23ed82f1bec3"
+  id:  "newbeedrone-cockroach-82-brushless-super-durable-frame-82mm-plastic-part-only"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame 82mm Plastic Part Only"
+}
+frames:  {
+  uuid:  "d190b2a8-e79a-471f-a479-4fc360ad4b00"
+  id:  "newbeedrone-75mm-cockroach75-brushless-extreme-durable-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone 75mm Cockroach75 Brushless Extreme-Durable Frame"
+  weight_g:  6.98
+}
+frames:  {
+  uuid:  "b55829cc-b0b3-4fa0-a4cf-367fd8ad9360"
+  id:  "newbeedrone-cockroach-v3-65mm-brushless-ultra-light-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Cockroach V3 65mm Brushless Ultra Light Frame"
+}
+frames:  {
+  uuid:  "9f2c712e-a3ae-41bb-8521-7b35f3ea8353"
+  id:  "newbeedrone-project-t-7-tactical-7inch-true-x-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Project T-7 Tactical 7inch True-X Frame"
+  weight_g:  330
+}
+frames:  {
+  uuid:  "1958ca5a-439e-4d90-8360-97228c1f5849"
+  id:  "newbeedrone-inertia-5-dc-dead-cat-style-fpv-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Inertia 5 DC (Dead Cat Style) FPV Frame"
+  weight_g:  130
+}
+frames:  {
+  uuid:  "0bc3635e-4dc5-43e8-a5a8-e35a94c7cb50"
+  id:  "newbeedrone-inertia-5-fpv-frame-parts"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone INERTIA 5 FPV Frame Parts"
+}
+frames:  {
+  uuid:  "b0acf192-558c-4f62-8e7b-fb1b206257f0"
+  id:  "newbeedrone-vivid-frame-3d-printed-parts"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Vivid Frame 3D Printed Parts"
+}
+frames:  {
+  uuid:  "0925b0ae-5ccb-45f8-adc7-805bd5d8b3d0"
+  id:  "warranty-replacement-for-newbeedrone-cockroach-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "Warranty Replacement for NewBeeDrone Cockroach Frame"
+}
+frames:  {
+  uuid:  "71631598-7a04-4330-9007-202ec8d9f9de"
+  id:  "newbeedrone-invisi360-frame-replacement-parts-bottom-plate-top-plate-hardware-etc"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Invisi360 Frame Replacement Parts  - Bottom Plate, Top Plate, Hardware, Etc."
+}
+frames:  {
+  uuid:  "86b9dc1a-5835-4a7f-b5c6-7be981903df9"
+  id:  "newbeedrone-mosquito-xl-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Mosquito XL Frame"
+  weight_g:  7.5
+}
+frames:  {
+  uuid:  "4744b26e-992c-42ec-b022-bfb53ce811d9"
+  id:  "newbeedrone-v2-65mm-cockroach-brushless-super-durable-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone V2 65mm Cockroach Brushless Super-Durable Frame"
+  weight_g:  5.1
+}
+frames:  {
+  uuid:  "0c480cb5-8f02-4a08-956f-4d5db6f261ba"
+  id:  "newbeedrone-mosquito-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Mosquito Frame"
+  weight_g:  5.93
+}
+frames:  {
+  uuid:  "efae79df-6c7a-4101-8d5d-a68e8cc02e46"
+  id:  "newbeedrone-savagebee-v1-8-frame-65mm-3inch"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone SavageBee V1.8 Frame 65mm/3inch"
+  weight_g:  8
+}
+frames:  {
+  uuid:  "b644f558-ded3-48af-83b3-6149896d4474"
+  id:  "newbeedrone-replacement-m3-pressnuts-for-vivid-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Replacement M3 Pressnuts for Vivid Frame"
+}
+frames:  {
+  uuid:  "f546eaa7-8954-451d-a984-5d13d2482b06"
+  id:  "newbeedrone-65mm-cockroach-brushless-super-durable-frame"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone 65mm Cockroach Brushless Super-Durable Frame"
+  weight_g:  3.71
+}
+frames:  {
+  uuid:  "02a5f77e-d8f1-4b36-9fa0-8b252d665d51"
+  id:  "newbeedrone-cockroach-brushed-super-durable-frame-65mm"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Cockroach Brushed Super-Durable Frame 65mm"
+  weight_g:  3.44
+}
+frames:  {
+  uuid:  "db8d9317-d436-40d3-bc21-512ad3952ed1"
+  id:  "lil-matey2-3-5-frame"
+  manufacturer:  "Pirat"
+  name:  "Lil Matey2 3.5 Frame"
+  weight_g:  58
+}
+frames:  {
+  uuid:  "2e38e004-b0c8-420b-bcee-6647fae1be4c"
+  id:  "echo-5-frame"
+  manufacturer:  "ImpulseRC"
+  name:  "Echo 5 Frame"
+  weight_g:  121
+}
+frames:  {
+  uuid:  "40030d29-653d-4876-ac21-51b243b9e60d"
+  id:  "cinemini-2-5-frame"
+  manufacturer:  "Rotor Riot"
+  name:  "CineMini 2.5 Frame"
+  weight_g:  40.3
+  wheelbase_mm:  117.257
+}
+frames:  {
+  uuid:  "6b84c865-fb16-4f53-a0df-79ff75ca07d2"
+  id:  "apex-evo-5-frame"
+  manufacturer:  "ImpulseRC"
+  name:  "Apex EVO 5 Frame"
+}
+frames:  {
+  uuid:  "484ec143-cc53-419c-95ed-989d50b6ccec"
+  id:  "tanq-s-3-5-frame-by-letsflyrc"
+  manufacturer:  "Rotor Riot"
+  name:  "TANQ S 3.5 Frame - By LetsFlyRC"
+  weight_g:  84
+  wheelbase_mm:  168
+}
+frames:  {
+  uuid:  "1bcf7db6-6808-4b57-922a-040717dad78e"
+  id:  "tanq-2-5-racing-frame-by-letsflyrc"
+  manufacturer:  "Rotor Riot"
+  name:  "TANQ 2 5 Racing Frame - By LetsFlyRC"
+  weight_g:  195
+}
+frames:  {
+  uuid:  "d6d004d6-f9bb-453f-8829-2c01aabe2acf"
+  id:  "tanq-2-5-deadcat-frame-by-letsflyrc"
+  manufacturer:  "Rotor Riot"
+  name:  "TANQ 2 5 Deadcat Frame - By LetsFlyRC"
+  weight_g:  182
+  wheelbase_mm:  220
+}
+frames:  {
+  uuid:  "d08d999d-779e-4272-a3c3-f8d125544c62"
+  id:  "shorty-5-frame"
+  manufacturer:  "Pirat"
+  name:  "Shorty 5 Frame"
+}
+frames:  {
+  uuid:  "22af4d8c-9e2b-4681-a0d9-34e9b2150b1d"
+  id:  "punch-5-frame"
+  manufacturer:  "Pirat"
+  name:  "Punch 5 Frame"
+}
+frames:  {
+  uuid:  "8345a861-a9f6-49c7-99c8-98abdc8ac00a"
+  id:  "tanq-2-8-deadcat-frame-by-letsflyrc"
+  manufacturer:  "Rotor Riot"
+  name:  "TANQ 2 8 Deadcat Frame - By LetsFlyRC"
+  weight_g:  215
+  wheelbase_mm:  309
+}
+frames:  {
+  uuid:  "cc64a5af-6deb-4e50-92da-c60d49470dc4"
+  id:  "tanq-2-5-frame-by-letsflyrc"
+  manufacturer:  "Rotor Riot"
+  name:  "TANQ 2 5 Frame - By LetsFlyRC"
+  weight_g:  175
+  wheelbase_mm:  220
+}
+frames:  {
+  uuid:  "665415e7-251a-4bf4-acd2-643ea5eca28f"
+  id:  "cl2-xr-7-deadcat-frame"
+  manufacturer:  "Rotor Riot"
+  name:  "CL2-XR 7 Deadcat Frame"
+  weight_g:  210
+  wheelbase_mm:  288
+}
+frames:  {
+  uuid:  "c0a33d05-6d42-490f-82cb-2bd58eadbb3e"
+  id:  "cl2-air-5-frame"
+  manufacturer:  "Rotor Riot"
+  name:  "CL2-AIR 5 Frame"
+  weight_g:  166
+  wheelbase_mm:  220
+}
+frames:  {
+  uuid:  "d394f545-9fb3-436d-972f-a7929f8fabf5"
+  id:  "mobula7-v4-75mm-frame-1s-choose-color"
+  manufacturer:  "Happymodel"
+  name:  "Mobula7 V4 75mm Frame - 1S - Choose Color"
+  weight_g:  5.4
+  wheelbase_mm:  75
+}
+frames:  {
+  uuid:  "b3833e50-8ff1-42f0-809d-760237a1bb56"
+  id:  "mobula7-v3-75mm-frame-2s-choose-color"
+  manufacturer:  "Happymodel"
+  name:  "Mobula7 V3 75mm Frame - 2S - Choose Color"
+  weight_g:  5.5
+  wheelbase_mm:  75
+}
+frames:  {
+  uuid:  "88e7f950-c19b-41d3-b1c9-04ac9898780b"
+  id:  "skyliner-mk3-5-frame"
+  manufacturer:  "Rotor Riot"
+  name:  "Skyliner MK3 5 Frame"
+  weight_g:  144
+  wheelbase_mm:  213
+}
+frames:  {
+  uuid:  "316ae38a-87e9-45a2-b137-fd9b61346123"
+  id:  "skylite-3-3-5-frame-by-le-drib"
+  manufacturer:  "Rotor Riot"
+  name:  "SkyLite 3-3.5 Frame by Le Drib"
+}
+frames:  {
+  uuid:  "252a8b18-c1a7-4604-a3dc-400abc5c9ff7"
+  id:  "cl2-5-frame"
+  manufacturer:  "Rotor Riot"
+  name:  "CL2 5 Frame"
+  weight_g:  166
+  wheelbase_mm:  233
+}
+frames:  {
+  uuid:  "1c41153b-2620-4e92-8f34-82fd0da5b581"
+  id:  "bubito-35mm-frame"
+  manufacturer:  "Rotor Riot"
+  name:  "Bubito 35mm Frame"
+  weight_g:  5.5
+  wheelbase_mm:  62
+}
+frames:  {
+  uuid:  "448791ec-687c-4fb6-9284-3a04f9c96a40"
+  id:  "moxy-5-frame"
+  manufacturer:  "Rotor Riot"
+  name:  "Moxy 5 Frame"
+}
+frames:  {
+  uuid:  "78a2e2c2-70ea-421c-86c6-c58d069d3a5f"
+  id:  "hglrc-my10-10-inch-long-range-training-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC MY10 10-inch Long Range / Training Frame"
+}
+frames:  {
+  uuid:  "c83649e8-c723-4605-a3fa-4a116ff595e1"
+  id:  "hglrc-my5-5-inch-freestyle-training-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC MY5 5-inch Freestyle /Training Frame"
+}
+frames:  {
+  uuid:  "c8d7a555-f4a2-4ad5-b505-724b20d3e1ae"
+  id:  "hglrc-rekon10-pro-v2-10-inch-long-range-frame-compatible-with-o4"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Rekon10 PRO V2 10-inch long-range Frame Compatible With O4"
+  wheelbase_mm:  474
+}
+frames:  {
+  uuid:  "f13fc97e-cdf2-4888-9d69-5551cbba953c"
+  id:  "hglrc-rekon8-pro-8-inch-long-range-frame-compatible-with-o4"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Rekon8 PRO 8-inch long-range Frame Compatible With O4"
+  weight_g:  421
+  wheelbase_mm:  368
+}
+frames:  {
+  uuid:  "e2eadc09-5825-48de-a459-2abcdc0485f1"
+  id:  "hglrc-rekon7-pro-v2-7-inch-long-range-frame-compatible-with-o4"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Rekon7 PRO V2 7-inch long-range Frame Compatible With O4"
+  wheelbase_mm:  324
+}
+frames:  {
+  uuid:  "6753add4-071f-409d-b6ab-33c6c65bad56"
+  id:  "hglrc-nblade-pro-7-inch-freestyle-cinematic-fpv-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Nblade Pro 7 inch Freestyle Cinematic FPV Frame"
+}
+frames:  {
+  uuid:  "a89372ca-c6d9-4920-9929-61bc82071ba7"
+  id:  "hglrc-nblade-max-5-inch-true-x-dc-freestyle-cinematic-fpv-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Nblade MAX 5 inch True X / DC Freestyle Cinematic FPV Frame"
+}
+frames:  {
+  uuid:  "185b536b-cffe-4cda-b3fa-917584b7ab67"
+  id:  "hglrc-my15-15-inch-long-battery-life-fpv-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC MY15 15-inch Long battery life FPV Frame"
+  weight_g:  784.3
+  wheelbase_mm:  635
+}
+frames:  {
+  uuid:  "6b1eb3e4-e670-4b4e-8c93-c7e4ad09f60e"
+  id:  "hglrc-my10-10-inch-long-range-payload-fpv-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC MY10 10-inch Long-range & Payload FPV Frame"
+  weight_g:  217
+}
+frames:  {
+  uuid:  "2c1aaad6-b502-4fab-ba12-1b38dc4822fb"
+  id:  "hglrc-my7-7-inch-long-range-train-ing-fpv-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC MY7 7-inch Long-range & Train ing FPV Frame"
+  weight_g:  217
+}
+frames:  {
+  uuid:  "2b0a57d5-a30f-4edd-bcde-3bb9c550e5c5"
+  id:  "hglrc-my5-5-inch-freestyle-training-fpv-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC MY5 5-inch Freestyle & Training FPV Frame"
+  weight_g:  140
+  wheelbase_mm:  225
+}
+frames:  {
+  uuid:  "e1447c25-fce9-456c-90f7-14e7842ced7b"
+  id:  "hglrc-rekon35-v2-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Rekon35 V2 Frame"
+}
+frames:  {
+  uuid:  "902bae4e-7a79-4469-ab1a-a0e95860c095"
+  id:  "hglrc-wind5-lite-v2-racing-frame-camouflage"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Wind5 Lite V2 Racing Frame (camouflage)"
+  weight_g:  69.5
+  wheelbase_mm:  195
+}
+frames:  {
+  uuid:  "33178d8d-ebd1-403f-95e0-dd6936caeb32"
+  id:  "hglrc-rekon-5-lite-frame"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Rekon 5 Lite Frame"
+  weight_g:  52
+  wheelbase_mm:  206
+}
+frames:  {
+  uuid:  "1447f677-56a4-4743-a6c7-d0db6ee71ca5"
+  id:  "hglrc-wind5-lite-v2-frame-kit-for-racing"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Wind5 Lite V2 Frame Kit for racing"
+  weight_g:  69.5
+  wheelbase_mm:  195
+}
+frames:  {
+  uuid:  "4b61b186-dcb5-4a3d-96c4-30ddc491a5f2"
+  id:  "hglrc-2-inch-talon-frame-for-cinewhoop"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC 2-inch Talon frame for cinewhoop"
+  weight_g:  46
+  wheelbase_mm:  106
+}
+frames:  {
+  uuid:  "b6a161e5-183a-44ed-a08b-f16f660130d0"
+  id:  "rekon-y6-5-inch-frame-compatible-analog-o3-o4-moonlight-kit-vtx-long-range-fpv-frame-5mm-arm-kit"
+  manufacturer:  "HGLRC"
+  name:  "Rekon Y6 5-inch frame compatible Analog/O3/O4/Moonlight Kit VTX long-range FPV frame/5MM arm kit"
+  weight_g:  119
+}
+frames:  {
+  uuid:  "248e9bfb-45a5-422d-bd1d-e166eb20518c"
+  id:  "hglrc-petrel-85whoop-ultra-light-indoor-frame-for-fpv-racing-drone"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Petrel 85Whoop Ultra-light Indoor Frame for FPV Racing Drone"
+}
+frames:  {
+  uuid:  "d4a3008c-6f32-4e45-8d8b-2e07c6498921"
+  id:  "hglrc-petrel-75whoop-v2-1s-ultra-light-indoor-frame-for-fpv-racing-drone"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Petrel 75Whoop V2 1S Ultra-light Indoor Frame for FPV Racing Drone"
+}
+frames:  {
+  uuid:  "56b62171-3d3d-486b-94b4-3d8fb693db9c"
+  id:  "hglrc-draknight-2-inch-o4-analog-frame-ultralight-toothpicks-freestyle"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Draknight 2-inch O4/Analog Frame Ultralight toothpicks/freestyle"
+}
+frames:  {
+  uuid:  "7c65e686-aa2f-406a-abef-c653eb2037a9"
+  id:  "diatone-taycan-c25-mk2-cinewhoop-framekit"
+  manufacturer:  "DIATONE INNOVATIONS"
+  name:  "DIATONE Taycan C25 MK2 Cinewhoop FrameKit"
+}
+frames:  {
+  uuid:  "6e7bd3c0-2d44-4d57-8552-581912167795"
+  id:  "diatone-roma-f7-7inch-frame-kit"
+  manufacturer:  "DIATONE OFFICIAL"
+  name:  "DIATONE Roma F7 7inch Frame Kit"
+  weight_g:  200
+  wheelbase_mm:  290
+}
+frames:  {
+  uuid:  "5c6ef31e-96c3-440a-9d8b-2658f8c9e8ce"
+  id:  "diatone-roma-f4-frame-kit"
+  manufacturer:  "DIATONE INNOVATIONS"
+  name:  "Diatone Roma F4 Frame kit"
+}
+frames:  {
+  uuid:  "1db66dbe-9939-43fc-b6ac-e1bffcfdb032"
+  id:  "diatone-roma-f5-v2-v1-pro-frame-kit"
+  manufacturer:  "DIATONE INNOVATIONS"
+  name:  "DIATONE Roma F5 V2 （V1 PRO） Frame kit"
+}
+frames:  {
+  uuid:  "93bb4cdd-fd0d-4987-bbfa-9941ea5a5855"
+  id:  "fm-x8-frame-accessories"
+  manufacturer:  "DIATONE OFFICIAL"
+  name:  "FM X8 Frame Accessories"
+}
+frames:  {
+  uuid:  "8beb4c54-0506-4307-93df-4915f97c888d"
+  id:  "roma-l5-frame-accessories"
+  manufacturer:  "DIATONE INNOVATIONS"
+  name:  "Roma L5 Frame Accessories"
+  weight_g:  2
+}
+frames:  {
+  uuid:  "4a581a92-fe04-46e7-9020-73d0ba1b62ed"
+  id:  "diatone-roma-l5-frame-kit"
+  manufacturer:  "DIATONE INNOVATIONS"
+  name:  "DIATONE Roma L5  Frame Kit"
+}
+frames:  {
+  uuid:  "ab17cef5-dbda-4d25-bde9-cd5fa38fec8d"
+  id:  "hunter-5-fpv-racing-t700-frame-kit"
+  manufacturer:  "FlyFish RC"
+  name:  "Hunter 5 FPV Racing T700 Frame Kit"
+  weight_g:  51
+  wheelbase_mm:  190
+}
+frames:  {
+  uuid:  "97400e2b-466a-404f-a058-1d1db054a236"
+  id:  "volador-vd4-o4-pro-deadcat-fpv-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VD4 O4 Pro Deadcat FPV T700 Frame Kit"
+  wheelbase_mm:  183
+}
+frames:  {
+  uuid:  "cd02a300-b798-42bc-95d1-ed65b074f7fb"
+  id:  "tony-5-o4-pro-sub250-fpv-freestyle-frame"
+  manufacturer:  "FlyFishRC"
+  name:  "Tony 5 O4 Pro Sub250 FPV Freestyle Frame"
+  weight_g:  57
+  wheelbase_mm:  215
+}
+frames:  {
+  uuid:  "9008cfee-fee8-46f5-9460-7155e909e5ee"
+  id:  "atlas-4-o4-pro-lr-fpv-frame"
+  manufacturer:  "FlyFishRC"
+  name:  "Atlas 4 O4 Pro LR FPV Frame"
+  weight_g:  55.6
+  wheelbase_mm:  173
+}
+frames:  {
+  uuid:  "1ec4152a-ac7a-4d0a-909d-277cf21c3bb9"
+  id:  "cnc-camera-plate-for-volador-vx3-vx3-5-o4-pro-frame"
+  manufacturer:  "FlyFish RC"
+  name:  "CNC Camera Plate For Volador VX3/VX3.5 O4 Pro Frame"
+}
+frames:  {
+  uuid:  "ec6dde3a-14b7-4b91-98c3-017a593b5333"
+  id:  "cnc-aluminum-camera-side-plate-for-volador-v2-5-6inch-o4-pro-frame"
+  manufacturer:  "FlyFish RC"
+  name:  "CNC Aluminum Camera Side Plate For Volador V2 5-6inch O4 Pro Frame"
+}
+frames:  {
+  uuid:  "8d2f0fda-ca75-48f1-8c9c-d79a06ae937b"
+  id:  "fifty5-frame-o4-pro-upgrade-part-kits"
+  manufacturer:  "FlyFishRC"
+  name:  "FIFTY5 Frame O4 Pro Upgrade Part Kits"
+}
+frames:  {
+  uuid:  "afdd2c12-eefb-4f0a-a430-1cd63a6620d0"
+  id:  "volador-vx3-5-frame-o4-pro-upgrade-part-kits"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VX3.5 Frame O4 Pro Upgrade Part Kits"
+}
+frames:  {
+  uuid:  "b35cdb1d-a8c6-44bb-96b6-2c965e30144a"
+  id:  "volador-vx3-frame-o4-pro-upgrade-part-kits"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VX3 Frame O4 Pro Upgrade Part Kits"
+}
+frames:  {
+  uuid:  "217f2dc4-1268-4384-8814-2aa079c769d0"
+  id:  "volador-vx3-vx3-5-frame-o4-pro-tpu-part-set"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VX3/VX3.5 Frame O4 Pro TPU Part Set"
+}
+frames:  {
+  uuid:  "0f26794c-4384-4f1d-b10e-9a4b37b82a1f"
+  id:  "volador-ii-5-6inch-frame-o4-pro-tpu-part-set"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador II 5-6inch Frame O4 Pro TPU Part Set"
+}
+frames:  {
+  uuid:  "eed7c0bb-aff8-44c9-b8a1-db3a323e9742"
+  id:  "volador-vx3-vx3-5-o4-pro-freestyle-frame-kit"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador VX3 VX3.5 O4 Pro Freestyle Frame Kit"
+  weight_g:  68.3
+  wheelbase_mm:  144
+}
+frames:  {
+  uuid:  "79e840d1-97a7-42ec-8274-7ddc4957ead6"
+  id:  "volador-ii-vx5-o4-pro-fpv-freestyle-t700-frame-kit"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador II VX5 O4 Pro FPV Freestyle T700 Frame Kit"
+  weight_g:  177.4
+  wheelbase_mm:  225
+}
+frames:  {
+  uuid:  "638793db-cfbe-4977-a0d6-15ce1fe96881"
+  id:  "volador-ii-vd5-o4-pro-deadcat-fpv-t700-frame-kit"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador II VD5 O4 Pro Deadcat FPV T700 Frame Kit"
+  weight_g:  186.4
+  wheelbase_mm:  225
+}
+frames:  {
+  uuid:  "33276e28-74e0-4213-ba0f-c1e5b9bd8117"
+  id:  "volador-ii-vx6-o4-pro-fpv-freestyle-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador II VX6 O4 Pro FPV Freestyle T700 Frame Kit"
+  weight_g:  188.2
+  wheelbase_mm:  268
+}
+frames:  {
+  uuid:  "50993d46-8b6f-4dc6-ab03-7ca318274725"
+  id:  "volador-ii-vd6-o4-pro-deadcat-fpv-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador II VD6 O4 Pro Deadcat FPV T700 Frame Kit"
+  weight_g:  200
+  wheelbase_mm:  260
+}
+frames:  {
+  uuid:  "c1021079-2ecb-4501-b3d9-5f3ec3b87a44"
+  id:  "fifty5-o4-pro-freestyle-fpv-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "FIFTY5 O4 Pro Freestyle FPV Frame Kit"
+  weight_g:  127.7
+  wheelbase_mm:  255
+}
+frames:  {
+  uuid:  "bac31f73-dd36-4256-a79d-2896bebd7a68"
+  id:  "atlas-4-lr-fpv-frame"
+  manufacturer:  "FlyFishRC"
+  name:  "Atlas 4 LR FPV Frame"
+  weight_g:  55.6
+  wheelbase_mm:  173
+}
+frames:  {
+  uuid:  "29c1e8f9-1b14-4c55-bcaf-92b7874abdff"
+  id:  "tony-5-sub250-fpv-freestyle-frame"
+  manufacturer:  "FlyFishRC"
+  name:  "Tony 5 Sub250 FPV Freestyle Frame"
+  weight_g:  57
+  wheelbase_mm:  215
+}
+frames:  {
+  uuid:  "bd54f8ec-2f6f-434d-b964-8ef2e76753e7"
+  id:  "fifty5-frame-parts"
+  manufacturer:  "FlyFishRC"
+  name:  "FIFTY5 Frame Parts"
+}
+frames:  {
+  uuid:  "2d21b0a3-006c-407b-b1bd-c3856fc95b5d"
+  id:  "fifty5-o3-freestyle-fpv-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "FIFTY5 O3 Freestyle FPV Frame Kit"
+  weight_g:  127.7
+  wheelbase_mm:  255
+}
+frames:  {
+  uuid:  "4a985e31-adf5-490e-a308-f7f65332fcf2"
+  id:  "spare-arms-for-volador-vx3-vx3-5-frame-2-of-pack"
+  manufacturer:  "FlyFishRC"
+  name:  "Spare Arms For Volador VX3/VX3.5 Frame - 2 of Pack"
+}
+frames:  {
+  uuid:  "c5ce19cf-f105-45fc-a58a-9dd26a44a241"
+  id:  "volador-vx3-vx3-5-o3-freestyle-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VX3 VX3.5 O3 Freestyle Frame Kit"
+  weight_g:  68.3
+  wheelbase_mm:  144
+}
+frames:  {
+  uuid:  "795de6b4-cd23-4c0f-aee3-1362443ea392"
+  id:  "volador-ii-vx6-frame-replacement-arm-2-of-pack"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador II VX6 Frame Replacement Arm - 2 of Pack"
+}
+frames:  {
+  uuid:  "8adb9180-b79f-46e6-84fb-8e087c6c6aba"
+  id:  "volador-ii-frame-spare-parts"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador II Frame Spare Parts"
+}
+frames:  {
+  uuid:  "525fb993-7349-437a-9639-001034bdaf8e"
+  id:  "cnc-aluminum-camera-side-plate-for-volador-v2-5-6inch-o3-frame"
+  manufacturer:  "FlyFish RC"
+  name:  "CNC Aluminum Camera Side Plate For Volador V2 5-6inch O3 frame"
+}
+frames:  {
+  uuid:  "ffd17947-cc93-489b-a4a6-cc24cbbefa49"
+  id:  "volador-ii-vx5-frame-replacement-arm-2-of-pack"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador II VX5 Frame Replacement Arm - 2 of Pack"
+}
+frames:  {
+  uuid:  "6acb48a4-b1dc-4c90-b820-663ad6bb54b4"
+  id:  "volador-ii-vd6-frame-replacement-arm-2-of-pack"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador II VD6 Frame Replacement Arm - 2 of Pack"
+}
+frames:  {
+  uuid:  "0cba92f8-d65a-4ef6-84d3-f623a8927265"
+  id:  "volador-ii-vd5-frame-replacement-arm-2-of-pack"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador II VD5 Frame Replacement Arm - 2 of Pack"
+}
+frames:  {
+  uuid:  "1b0e8e7e-67bf-46fe-962f-2f66ef7ccd98"
+  id:  "volador-ii-5-6inch-frame-tpu-part-set"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador II 5-6inch Frame TPU Part Set"
+}
+frames:  {
+  uuid:  "bab776d7-ab18-4ed7-a54a-c49546e5ef6e"
+  id:  "volador-ii-vx5-o3-fpv-freestyle-t700-frame-kit"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador II VX5 O3 FPV Freestyle T700 Frame Kit"
+  weight_g:  177.4
+  wheelbase_mm:  225
+}
+frames:  {
+  uuid:  "c20093d0-6e4f-4141-ba8d-449270ac3dac"
+  id:  "volador-ii-vd5-o3-deadcat-fpv-t700-frame-kit"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador II VD5 O3 Deadcat FPV T700 Frame Kit"
+  weight_g:  186.4
+  wheelbase_mm:  225
+}
+frames:  {
+  uuid:  "3c44683b-2b79-41ec-ac6e-500c747f050c"
+  id:  "volador-ii-vx6-o3-fpv-freestyle-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador II VX6 O3 FPV Freestyle T700 Frame Kit"
+  weight_g:  188.2
+  wheelbase_mm:  268
+}
+frames:  {
+  uuid:  "fef245b6-4ab2-402e-851d-25d26ce49e99"
+  id:  "volador-ii-vd6-o3-deadcat-fpv-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador II VD6 O3 Deadcat FPV T700 Frame Kit"
+  weight_g:  200
+  wheelbase_mm:  260
+}
+frames:  {
+  uuid:  "181a2763-89ab-4f03-ac91-c0e8b8f13135"
+  id:  "volador-frame-tpu-parts-set"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador Frame TPU Parts Set"
+}
+frames:  {
+  uuid:  "d4bf81b4-c96b-40da-b012-ab7a2e5054c4"
+  id:  "spare-parts-for-volador-vx5-vd5-vx6-vd6-frame"
+  manufacturer:  "FlyFishRC"
+  name:  "Spare Parts for Volador VX5/VD5/VX6/VD6 Frame"
+}
+frames:  {
+  uuid:  "6622dc40-9798-4c1f-a7fc-8f3a22d9fda1"
+  id:  "volador-vd6-frame-replacement-arm-2-of-pack"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador VD6 Frame Replacement Arm - 2 of Pack"
+}
+frames:  {
+  uuid:  "e506ef44-6872-450e-a847-adbdc4bf1ac4"
+  id:  "volador-vd5-frame-replacement-arm-2-of-pack"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador VD5 Frame Replacement Arm - 2 of Pack"
+}
+frames:  {
+  uuid:  "baee6379-75b7-4008-8c1a-85aa0d25f97d"
+  id:  "volador-vx6-frame-replacement-arm-2-of-pack"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador VX6 Frame Replacement Arm - 2 of Pack"
+}
+frames:  {
+  uuid:  "f3ccfc81-c912-4cd8-8045-25494b0776cc"
+  id:  "volador-vx5-frame-replacement-arm-2-of-pack"
+  manufacturer:  "FlyFish RC"
+  name:  "Volador VX5 Frame Replacement Arm - 2 of Pack"
+}
+frames:  {
+  uuid:  "3e8ac709-2f7f-454f-aec5-69577b171bfa"
+  id:  "volador-vd5-deadcat-fpv-lr-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VD5 Deadcat FPV LR T700 Frame Kit"
+  weight_g:  205.3
+  wheelbase_mm:  225
+}
+frames:  {
+  uuid:  "ad444354-b0c6-4e9c-8b8b-b28c5b861e14"
+  id:  "volador-vd6-deadcat-fpv-lr-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VD6 Deadcat FPV LR T700 Frame Kit"
+  weight_g:  216.1
+  wheelbase_mm:  260
+}
+frames:  {
+  uuid:  "d7d3ebfb-bea9-4879-ad79-6b9b4d57af7a"
+  id:  "volador-vx5-fpv-freestyle-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VX5 FPV Freestyle T700 Frame Kit"
+  weight_g:  199.5
+  wheelbase_mm:  225
+}
+frames:  {
+  uuid:  "0e4dfbe7-be55-49d0-8c0c-9a868d3d1f23"
+  id:  "volador-vx6-fpv-freestyle-t700-frame-kit"
+  manufacturer:  "FlyFishRC"
+  name:  "Volador VX6 FPV Freestyle T700 Frame Kit"
+  weight_g:  211.1
+  wheelbase_mm:  268
+}
+frames:  {
+  uuid:  "2bf82dd5-d5ab-4695-aa4a-a28669a68c69"
+  id:  "sub250-oasisfly35-dc-frame-and-parts"
+  manufacturer:  "sub250"
+  name:  "Sub250 OasisFly35 DC Frame and Parts"
+}
+frames:  {
+  uuid:  "6f7e8b3b-53bd-4a67-a5c2-7dbdc65fbc09"
+  id:  "dollyfly25-v2-o4-pro-frame-and-parts"
+  manufacturer:  "sub250"
+  name:  "DollyFly25 V2 O4 Pro Frame and Parts"
+}
+frames:  {
+  uuid:  "dfa4533f-65c8-4a41-a1e9-517f10079c34"
+  id:  "sub250-dollyfly16-hd-o4-pro-frame-parts"
+  manufacturer:  "Sub250"
+  name:  "Sub250 DollyFly16 HD O4 Pro Frame Parts"
+}
+frames:  {
+  uuid:  "76fcc46e-d1ea-4adb-ba25-e41a9d32246d"
+  id:  "sub250-oasisfly25-oasisfly30-o4-pro-frame-parts"
+  manufacturer:  "sub250"
+  name:  "Sub250 OasisFly25 / OasisFly30 O4 Pro Frame Parts"
+}
+frames:  {
+  uuid:  "2c3cceb0-1456-49d6-97c1-2b2a6877d0fc"
+  id:  "nimble65-o4-frame-parts"
+  manufacturer:  "sub250"
+  name:  "Nimble65 | O4 Frame  Parts"
+}
+frames:  {
+  uuid:  "08bf1451-f675-4ec7-a755-3809b0cfd5c7"
+  id:  "sub250-huma20-o3-o4-frame-and-other-parts"
+  manufacturer:  "Sub250"
+  name:  "Sub250 Huma20 O3 /O4  Frame and other Parts"
+}
+frames:  {
+  uuid:  "e880a3de-9fa8-4e39-8b8e-e93706385536"
+  id:  "sub250-oasisfly30-o3-frames-with-side-panels-other-parts"
+  manufacturer:  "sub250"
+  name:  "Sub250 Oasisfly30 O3 Frames with Side panels & Other Parts"
+}
+frames:  {
+  uuid:  "f30a6658-c0f3-4371-a203-4734c570efa7"
+  id:  "sub250-oasisfly25-o3-frame-with-other-parts"
+  manufacturer:  "sub250"
+  name:  "Sub250 Oasisfly25  O3 Frame with other Parts"
+}
+frames:  {
+  uuid:  "edf467e6-4773-40ef-a799-d9a7d9be1344"
+  id:  "sub250-nanofly20-2s-frame-and-battery-holder"
+  manufacturer:  "Sub250"
+  name:  "Sub250 Nanofly20 2S Frame and Battery Holder"
+}
+frames:  {
+  uuid:  "4361774c-dc01-439a-9603-1021a90f7112"
+  id:  "sub250-dollyfly25-o3-frame-kit-and-frame-part"
+  manufacturer:  "Sub250"
+  name:  "Sub250 DollyFly25 O3 Frame Kit and Frame Part"
+  weight_g:  80
+  wheelbase_mm:  120
+}
+frames:  {
+  uuid:  "91b4862f-d57d-430f-bd47-b9aa131fe057"
+  id:  "sub250-whoopfly16-frame-and-parts"
+  manufacturer:  "Sub250"
+  name:  "Sub250 Whoopfly16 Frame and parts"
+  weight_g:  11.4
+}
+frames:  {
+  uuid:  "1d82c480-5be6-4df3-b86f-14ef5b490ad0"
+  id:  "sub250-nanofly20-frame"
+  manufacturer:  "Sub250"
+  name:  "Sub250 Nanofly20 Frame"
+  weight_g:  8.4
+  wheelbase_mm:  88
+}
+frames:  {
+  uuid:  "3069b245-6a3c-4fa9-a682-a44ed458b7b0"
+  id:  "sub250-nf16-1-6-inch-frame-for-nanofly16"
+  manufacturer:  "Sub250"
+  name:  "Sub250 NF16 1.6 inch Frame for Nanofly16"
+  weight_g:  8.3
+}
+frames:  {
+  uuid:  "54b419f4-b2c9-43be-a539-145af24e9718"
+  id:  "fpvcycle-cinesplore-2-frame-kit"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle Cinesplore 2 Frame Kit"
+}
+frames:  {
+  uuid:  "108fd52a-5e3a-46e3-aab8-f033829bccd8"
+  id:  "fpvcycle-8mm-glide-frame-kit"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle 8mm Glide Frame Kit"
+}
+frames:  {
+  uuid:  "e55cd74d-1aef-46ba-a628-11ddba8638ff"
+  id:  "sonicare-x4-5-frame-kit"
+  manufacturer:  "FPVCycle"
+  name:  "Sonicare (X4) 5 Frame Kit"
+}
+frames:  {
+  uuid:  "9122a86f-d3ff-4d1f-ac85-9b927c68d05f"
+  id:  "fpvcycle-cineglide-7-frame"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle CineGlide 7 Frame"
+}
+frames:  {
+  uuid:  "57b4e943-45f4-40a5-9dca-21a8270f2e84"
+  id:  "fpvcycle-toothfairy-2-frame"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle ToothFairy 2 Frame"
+}
+frames:  {
+  uuid:  "84da1eab-eafe-49b9-a917-19f09ab5b8a6"
+  id:  "fpvcycle-incisor-prototype-5-frame-kit"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle INCISOR (Prototype 5) Frame Kit"
+}
+frames:  {
+  uuid:  "7d3bbd0a-ad5e-4bc5-a98e-dd0049b19a74"
+  id:  "fpvcycle-fouride-frame-vista-compatible-choose-size"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle Fouride Frame- Vista Compatible (Choose Size)"
+}
+frames:  {
+  uuid:  "2ca30025-3196-4b01-bf1e-47addf247345"
+  id:  "fpvcycle-cinesplore-frame"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle CineSplore Frame"
+}
+frames:  {
+  uuid:  "6b3f0b89-f602-4a44-8ee6-4e02d61be726"
+  id:  "fpvcycle-powerpick-frame-choose-4-or-5"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle PowerPick Frame  (Choose 4” or 5”)"
+}
+frames:  {
+  uuid:  "f970a835-fa6c-4400-b18b-3d9aa0d51c32"
+  id:  "fpvcycle-molar-5-race-frame"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle MOLAR - 5 Race Frame"
+}
+frames:  {
+  uuid:  "0e04d336-1756-4612-88a9-a617635b59d4"
+  id:  "toothpick-3-frame-tp3"
+  manufacturer:  "FPVCycle"
+  name:  "ToothPick 3 Frame - TP3"
+}
+frames:  {
+  uuid:  "48dc2f08-7703-4d5a-9557-d1d2cbacc31f"
+  id:  "fpvcycle-babytooth-frame-choose-thickness"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle BabyTooth Frame (CHOOSE THICKNESS)"
+}
+frames:  {
+  uuid:  "592a05ee-d015-4dae-b8db-fecaac899484"
+  id:  "fpvcycle-glide-5-frame"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle Glide -  5 Frame"
+}

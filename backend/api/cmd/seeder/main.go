@@ -50,9 +50,12 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Motors {
-			pb.CreateMotor(ctx, tx, v)
+			if err := pb.CreateMotor(ctx, tx, v); err != nil {
+				panic(err)
+			}
 		}
 	}
+
 	// Frames
 	if b, err := os.ReadFile(dir + "frames.textproto"); err == nil {
 		m := &pb.ListFramesResponse{}
@@ -60,9 +63,12 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Frames {
-			pb.CreateFrame(ctx, tx, v)
+			if err := pb.CreateFrame(ctx, tx, v); err != nil {
+				panic(err)
+			}
 		}
 	}
+
 	// Batteries
 	if b, err := os.ReadFile(dir + "batteries.textproto"); err == nil {
 		m := &pb.ListBatteriesResponse{}
@@ -70,9 +76,12 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Batteries {
-			pb.CreateBattery(ctx, tx, v)
+			if err := pb.CreateBattery(ctx, tx, v); err != nil {
+				panic(err)
+			}
 		}
 	}
+
 	// ESCs
 	if b, err := os.ReadFile(dir + "escs.textproto"); err == nil {
 		m := &pb.ListEscsResponse{}
@@ -80,39 +89,12 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Escs {
-			pb.CreateEsc(ctx, tx, v)
+			if err := pb.CreateEsc(ctx, tx, v); err != nil {
+				panic(err)
+			}
 		}
 	}
-	// Flight Controllers
-	if b, err := os.ReadFile(dir + "flight_controllers.textproto"); err == nil {
-		m := &pb.ListFlightControllersResponse{}
-		if err := prototext.Unmarshal(b, m); err != nil {
-			panic(err)
-		}
-		for _, v := range m.FlightControllers {
-			pb.CreateFlightController(ctx, tx, v)
-		}
-	}
-	// Receivers
-	if b, err := os.ReadFile(dir + "receivers.textproto"); err == nil {
-		m := &pb.ListReceiversResponse{}
-		if err := prototext.Unmarshal(b, m); err != nil {
-			panic(err)
-		}
-		for _, v := range m.Receivers {
-			pb.CreateReceiver(ctx, tx, v)
-		}
-	}
-	// Video Transmitters
-	if b, err := os.ReadFile(dir + "video_transmitters.textproto"); err == nil {
-		m := &pb.ListVideoTransmittersResponse{}
-		if err := prototext.Unmarshal(b, m); err != nil {
-			panic(err)
-		}
-		for _, v := range m.VideoTransmitters {
-			pb.CreateVideoTransmitter(ctx, tx, v)
-		}
-	}
+
 	// Antennas
 	if b, err := os.ReadFile(dir + "antennas.textproto"); err == nil {
 		m := &pb.ListAntennasResponse{}
@@ -120,9 +102,12 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Antennas {
-			pb.CreateAntenna(ctx, tx, v)
+			if err := pb.CreateAntenna(ctx, tx, v); err != nil {
+				panic(err)
+			}
 		}
 	}
+
 	// Cameras
 	if b, err := os.ReadFile(dir + "cameras.textproto"); err == nil {
 		m := &pb.ListCamerasResponse{}
@@ -130,9 +115,12 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Cameras {
-			pb.CreateCamera(ctx, tx, v)
+			if err := pb.CreateCamera(ctx, tx, v); err != nil {
+				panic(err)
+			}
 		}
 	}
+
 	// Propellers
 	if b, err := os.ReadFile(dir + "propellers.textproto"); err == nil {
 		m := &pb.ListPropellersResponse{}
@@ -140,11 +128,50 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Propellers {
-			pb.CreatePropeller(ctx, tx, v)
+			if err := pb.CreatePropeller(ctx, tx, v); err != nil {
+				panic(err)
+			}
 		}
 	}
-	// Builds (There is no pb.CreateBuild? Wait, we'll see)
-	// We can leave builds alone or check if pb.CreateBuild exists.
+
+	// Receivers
+	if b, err := os.ReadFile(dir + "receivers.textproto"); err == nil {
+		m := &pb.ListReceiversResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.Receivers {
+			if err := pb.CreateReceiver(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Video Transmitters
+	if b, err := os.ReadFile(dir + "video_transmitters.textproto"); err == nil {
+		m := &pb.ListVideoTransmittersResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.VideoTransmitters {
+			if err := pb.CreateVideoTransmitter(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Flight Controllers
+	if b, err := os.ReadFile(dir + "flight_controllers.textproto"); err == nil {
+		m := &pb.ListFlightControllersResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.FlightControllers {
+			if err := pb.CreateFlightController(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
 
 	if err := tx.Commit(ctx); err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to commit tx: %v\n", err)
