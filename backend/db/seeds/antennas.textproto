@@ -628,3 +628,294 @@ antennas: {
   polarization: "Linear"
   frequency_band_ghz: 5.8
 }
+antennas { uuid: "699976d2-f4ca-4c4a-9a9a-8b82ea93c1a1" id: "betafpv-loop-antenna" manufacturer: "BETAFPV" name: "BETAFPV Loop Antenna" weight_g: 0.0 }
+antennas { uuid: "05a0d8e6-9e15-42e6-91a2-05f9e0869629" id: "betafpv-moxon-antenna" manufacturer: "BETAFPV" name: "BETAFPV Moxon Antenna" weight_g: 0.0 }
+antennas { uuid: "1e5708ab-f862-4d9c-b864-c9630484d495" id: "betafpv-dipole-t-antenna" manufacturer: "BETAFPV" name: "BETAFPV Dipole T Antenna" weight_g: 0.94 }
+antennas { uuid: "2006358a-ee5a-4e77-9102-00e6fb83e6ed" id: "walksnail-ascent-hd-lite-antenna" manufacturer: "CADDXFPV" name: "Walksnail Ascent HD Lite+ Antenna" weight_g: 0.0 }
+antennas { uuid: "5d9f959b-93f7-494e-b835-a1193ef35738" id: "polar-antenna-for-vista" manufacturer: "CADDXFPV" name: "Polar Antenna for Vista" weight_g: 0.0 }
+antennas { uuid: "8a8a623e-ca96-45ee-b250-f3131790542e" id: "newbeedrone-beebrain-clover-5-8ghz-antenna-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (LHCP)" weight_g: 0.0 }
+antennas { uuid: "3e31bc68-59b9-4bfe-a6f0-9ade9aea3837" id: "newbeedrone-beebrain-clover-5-8ghz-antenna-rhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (RHCP)" weight_g: 0.0 }
+antennas { uuid: "930cd3a7-da5b-4efd-a996-45cabdb3e038" id: "newbeedrone-honey-patch-antenna-5-8ghz-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - LHCP" weight_g: 0.0 }
+antennas { uuid: "9e28303d-9bf1-4938-b650-9d29b553ce55" id: "newbeedrone-honey-patch-antenna-5-8ghz-linear" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - Linear" weight_g: 0.0 }
+antennas { uuid: "fe6be189-1096-4830-9910-379d8d9ef4d3" id: "newbeedrone-honey-dipper-5-8g-ufl-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Dipper 5.8G UFL Antenna" weight_g: 2.5 }
+antennas { uuid: "cc0ff6b7-0b67-4f5d-96d7-fc7b67f503a1" id: "newbeedrone-sma-antenna-port-90-degree-with-cable-10cm-diy-package" manufacturer: "NewBeeDrone" name: "NewBeeDrone SMA antenna port 90 Degree with cable 10cm DIY package" weight_g: 0.0 }
+antennas { uuid: "3eabadf2-5ea3-4462-a0f2-1ebeb80d6490" id: "newbeedrone-sma-antenna-port-straight-with-cable-10cm-diy-package" manufacturer: "NewBeeDrone" name: "NewBeeDrone SMA antenna port straight with cable 10cm DIY package" weight_g: 0.0 }
+antennas { uuid: "862ecb6b-0fc8-4021-b41d-28c2925b77d9" id: "newbeedrone-replacement-antennas-2-4-ghz-for-beeceiver-v2" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement Antennas (2.4 Ghz) for Beeceiver V2" weight_g: 0.0 }
+antennas { uuid: "e9c83905-bc94-4892-812a-d4935f3efc38" id: "newbeedrone-whip-antenna-for-dji-mmcx-connector-2-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone Whip Antenna for DJI MMCX Connector (2-Pack)" weight_g: 0.0 }
+antennas { uuid: "d21db31d-76c4-4ee4-86d5-223f493f4228" id: "newbeedrone-replacement-rtf-bundle-kit-sma-5-8g-dipole-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement RTF Bundle Kit SMA 5.8G Dipole Antenna" weight_g: 0.0 }
+antennas { uuid: "a6aad3c8-0c74-4cf0-af8b-771901c8d71b" id: "newbeedrone-pagoda-antenna-diy-kit-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Pagoda Antenna DIY Kit LHCP" weight_g: 0.0 }
+antennas { uuid: "0b82610e-7983-4c95-9d4d-d15b2bcdc081" id: "newbeedrone-honey-patch-antenna-5-8ghz-rhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - RHCP" weight_g: 0.0 }
+antennas { uuid: "5ab49ff3-7272-47ce-a3d3-06c8322e8d99" id: "newbeedrone-beetx-5-8ghz-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeTX 5.8Ghz Antenna" weight_g: 0.0 }
+antennas { uuid: "909cfb48-7a13-4016-a6fe-615efc571bd8" id: "newbeedrone-2-4ghz-whip-antenna-120-mm-mhf4" manufacturer: "NewBeeDrone" name: "NewBeeDrone 2.4Ghz Whip Antenna 120 mm MHF4" weight_g: 0.0 }
+antennas { uuid: "80703eb7-83cb-4228-837a-83224b383add" id: "newbeedrone-2-4-ghz-u-fl-mhf4-l-replacement-antennas-5-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone 2.4 GHz u.fl MHF4-L Replacement Antennas  (5 Pack)" weight_g: 0.0 }
+antennas { uuid: "b20a5f4b-adfe-4368-8fbe-392eae8c9168" id: "newbeedrone-replacement-antennas-2-4ghz-2-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement Antennas (2.4Ghz) 2 Pack" weight_g: 0.0 }
+antennas { uuid: "9e0ad198-bc42-49f8-8ab5-570970a7e390" id: "core-5-8-rhcp-160mm-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Core 5.8 RHCP 160mm Antenna with SMA Connector" weight_g: 0.0 }
+antennas { uuid: "8a84966c-a011-4565-91d6-a9e9f21ce5d3" id: "core-5-8-rhcp-80mm-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Core 5.8 RHCP 80mm Antenna with SMA Connector" weight_g: 0.0 }
+antennas { uuid: "31a4011e-6bb5-4157-af7c-ed5bbaadb754" id: "core-5-8-rhcp-155mm-antenna-with-sma-90-connector" manufacturer: "TrueRC" name: "CORE 5.8 RHCP 155mm Antenna with SMA 90 Connector" weight_g: 0.0 }
+antennas { uuid: "5214c7d9-3419-4494-8fd9-513791592f54" id: "punch-shorty-dji-o4-pro-antenna-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI O4 Pro Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "b8fccdc9-9c0c-4fba-9e4c-e74a54ce5089" id: "cinemini-dji-o4-antenna-mount" manufacturer: "Noozle3D" name: "CineMini DJI O4 Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "e9c4edb6-c089-4f3b-a86a-8c68424250e8" id: "cl2-dji-o4-pro-antenna-mount" manufacturer: "Noozle3D" name: "CL2 DJI O4 Pro Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "48595146-62c1-4066-83de-18ac36cf65be" id: "bandit-915-868mhz-t-antenna-rp-sma" manufacturer: "RadioMaster" name: "Bandit 915/868MHz T Antenna - RP-SMA" weight_g: 14.0 }
+antennas { uuid: "2da5efc8-b5e3-4eef-b896-1eda0f2ad09e" id: "skylite-skyliner-mk3-sma-antenna-mount-mjf-tpu" manufacturer: "Rotor Riot" name: "Skylite / Skyliner MK3 SMA Antenna Mount - MJF TPU" weight_g: 0.0 }
+antennas { uuid: "38125d04-b277-4081-9ac7-e5c0c819e0f8" id: "tanq-2-s-dji-o4-pro-dual-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S DJI O4 Pro Dual Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "c0b6e0ee-6a4c-44cd-92d3-5abf2342d0e6" id: "dji-o4-air-unit-pro-antenna" manufacturer: "DJI" name: "DJI O4 Air Unit Pro Antenna" weight_g: 0.0 }
+antennas { uuid: "980641db-8d44-4a32-b382-b1b807b8b826" id: "dual-band-2-4ghz-sub-g-900mhz-antenna-rp-sma" manufacturer: "RadioMaster" name: "Dual Band 2.4GHz / SUB-G 900MHz Antenna - RP-SMA" weight_g: 15.78 }
+antennas { uuid: "c541eebc-9534-4822-8dd0-911f542e88b3" id: "shorty-pro-spec-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Shorty Pro-Spec DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "33a262f7-6aff-40cf-a426-2adf02e72da1" id: "punch-pro-spec-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Punch Pro-Spec DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "77c173c0-8c46-4bab-adfc-0c1cdea7b291" id: "punch-shorty-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "299f0ac5-d259-42bd-a4c9-80905be375be" id: "goggle-pack-rhcp-antenna-combo-with-sma-connectors" manufacturer: "Menace RC" name: "Goggle Pack RHCP Antenna Combo with SMA Connectors" weight_g: 10.0 }
+antennas { uuid: "107a9d6d-95f3-49f8-9d5c-01977b59cffe" id: "invader-rhcp-patch-antenna-with-sma-connector" manufacturer: "Menace RC" name: "Invader RHCP Patch Antenna with SMA Connector" weight_g: 11.0 }
+antennas { uuid: "0a9cd018-6703-46eb-916d-8e381fc1b8bd" id: "echo-2-rhcp-sma-patch-antenna" manufacturer: "Foxeer" name: "Echo 2 RHCP SMA Patch Antenna" weight_g: 10.4 }
+antennas { uuid: "4cef26e4-13dd-4830-9c0c-9d0e6bebac9b" id: "5-8ghz-u-fl-light-dipole-antenna" manufacturer: "Rotor Riot Store" name: "5.8Ghz U.FL Light Dipole Antenna" weight_g: 0.3 }
+antennas { uuid: "dac0dd57-b55a-4150-ba96-7fe59e4e8c65" id: "bandit-915mhz-moxon-antenna-rp-sma" manufacturer: "RadioMaster" name: "Bandit 915MHz Moxon Antenna 	- RP-SMA" weight_g: 47.44 }
+antennas { uuid: "b9136c95-e706-49fb-94b2-123aaec219bf" id: "tanq-2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "0b0eb98d-9c85-4307-9e0c-a7d0e5d9cbcc" id: "tanq-2-ghost-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "173b2ec7-7888-4c35-9526-d7953df6c0ba" id: "core-5-8-lhcp-antenna-with-u-fl-connector" manufacturer: "TrueRC" name: "Core 5.8 LHCP Antenna with U.FL Connector" weight_g: 2.5 }
+antennas { uuid: "687972aa-6d50-48ad-831c-e967bbdc657b" id: "matchstick-5-8ghz-rhcp-carbon-antenna-choose-version" manufacturer: "TrueRC" name: "Matchstick 5.8GHz RHCP Carbon Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "bfa1ea0e-b61f-490f-9d63-93e445e7d5f9" id: "singularity-rhcp-long-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Singularity RHCP Long Antenna with SMA Connector" weight_g: 1.03 }
+antennas { uuid: "bb9583d2-c17f-45a1-81ff-7bbbaab875da" id: "x-air-5-8-mkii-antenna-set-for-goggles-2" manufacturer: "TrueRC" name: "X-Air 5.8 MKII Antenna Set for Goggles 2" weight_g: 0.0 }
+antennas { uuid: "87065828-7c18-4cae-849f-9b79150a419a" id: "tanq-ghost-antenna-mount" manufacturer: "Noozle3D" name: "TANQ Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "cf35ac75-d230-49c2-8b47-34c729c49cee" id: "hook-v2-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "ae370eeb-01e2-4de8-afd3-f1d48c1a9f87" id: "hook-v2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "bd646802-35e5-4ad6-80c7-ae3a9bfaebdc" id: "hook-v2-sma-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "4ae25632-5108-4b56-9289-e7899c48e2c3" id: "cl2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "CL2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "4d7bd388-3020-4e68-b6d5-026bd88a4ea5" id: "5-8ghz-u-fl-dipole-whip-antenna-linear" manufacturer: "Rotor Riot Store" name: "5.8GHz U.FL Dipole Whip Antenna - Linear" weight_g: 0.0 }
+antennas { uuid: "e14a8586-4bcb-49f0-b30a-a7ac2b76ebfc" id: "hook-v2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "aafb2a0a-8735-4797-8f18-271fb1a941d1" id: "2-4ghz-moxon-antenna-rp-sma" manufacturer: "RadioMaster" name: "2.4GHz Moxon Antenna - RP-SMA" weight_g: 12.0 }
+antennas { uuid: "1027ff5d-74a9-4847-ba15-e43b50350d93" id: "2-4ghz-t-antenna-rp-sma" manufacturer: "RadioMaster" name: "2.4GHz T Antenna - RP-SMA" weight_g: 9.5 }
+antennas { uuid: "a6e036bf-f257-4e19-85a2-521e5988e14a" id: "hook-v2-tracer-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Tracer Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "89a29700-eccb-4a5b-9c1b-11332b7006ed" id: "x-air-mkii-antenna-for-dji" manufacturer: "TrueRC" name: "X-Air MKII Antenna for DJI" weight_g: 0.0 }
+antennas { uuid: "a29504d0-eab2-4e28-82cd-a7320d388217" id: "x-air-5-8-mkii-lhcp-antenna-choose-version" manufacturer: "TrueRC" name: "X-Air 5.8 MKII LHCP Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "c7396788-6032-4e4f-b3e8-33fca719b137" id: "tanq-1-2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 1 & 2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "b0009648-7234-4a53-a4c1-d40669ed0907" id: "tanq-sma-antenna-mount" manufacturer: "Noozle3D" name: "TANQ SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "e00f0620-8257-4fb0-aafd-199087294358" id: "tanq-frsky-antenna-mount" manufacturer: "Noozle3D" name: "TANQ FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "cb469ccf-b366-403d-a7b0-3684f47eb27f" id: "d-pole-5-8ghz-u-fl-antenna-linear" manufacturer: "TrueRC" name: "D-Pole 5.8GHz U.FL Antenna - Linear" weight_g: 0.0 }
+antennas { uuid: "c71582f4-5968-4154-bc0a-c8acb42c1d1a" id: "skyeliner-hd-sma-antenna-mount" manufacturer: "Noozle3D" name: "Skyeliner HD SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "61709272-f7a9-46d9-8751-0b3ea6522534" id: "skylite-skyliner-mk3-sma-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 SMA Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "02fe3794-99cd-4ecf-934d-2588f2fc0198" id: "skylite-skyliner-mk3-frsky-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 FrSky Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "c77a7b5f-7c2b-4d31-a29d-246889948f6a" id: "moxy-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "Moxy Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "50d3b31a-acc4-4856-ba64-e3778c17e5c0" id: "x-air-5-8-mk-ii-antenna-combo-with-stubbies-for-dji-fpv-goggles" manufacturer: "TrueRC" name: "X²-Air 5.8 MK II Antenna Combo with Stubbies for DJI FPV Goggles" weight_g: 20.0 }
+antennas { uuid: "94bbd208-14e5-4030-bfb7-4174dc8d3264" id: "cl2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "CL2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "83a905ed-9604-4ae9-807b-ae75fd8ad7bc" id: "cl2-ghost-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "CL2 Ghost Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "3c5201f8-12ad-4ad0-b10c-92e84ec12545" id: "moxy-sma-antenna-mount" manufacturer: "Noozle3D" name: "Moxy SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "6505b7c5-c9d5-481b-b028-6bbc2fe594b9" id: "moxy-frsky-antenna-mount" manufacturer: "Noozle3D" name: "Moxy FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "d0a3e6e6-7d41-47ed-adb2-556731593798" id: "moxy-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Moxy Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "a5702ba3-e3b7-4114-848e-395773575eff" id: "ocp-rhcp-antenna-with-u-fl-connector" manufacturer: "TrueRC" name: "OCP RHCP Antenna with U.FL Connector" weight_g: 2.0 }
+antennas { uuid: "3e13d5f4-955a-4a27-a731-efc6215cf79c" id: "skylite-skyliner-mk3-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "27d68f9e-3ce5-49e5-9cc4-99cfac87a066" id: "cl2-sma-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "CL2 SMA Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "12ba9b02-73d4-497c-9847-f610cb15fc45" id: "vista-link-antenna-mount-v2-choose-color" manufacturer: "Noozle3D" name: "Vista / Link Antenna Mount V2 - Choose Color" weight_g: 0.0 }
+antennas { uuid: "22bc7fc8-0795-421e-ae24-3ec4622f96d4" id: "moxy-dji-air-unit-antenna-mount" manufacturer: "Noozle3D" name: "Moxy DJI Air Unit Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "f6cd9927-b8d6-4249-837a-2efbe9b4f940" id: "singularity-5-8-stubby-lhcp-antenna-for-dominator-hd-and-dji-fpv-goggles-choose-version" manufacturer: "TrueRC" name: "Singularity 5.8 Stubby LHCP Antenna for Dominator HD and DJI FPV Goggles - Choose Version" weight_g: 3.7 }
+antennas { uuid: "c2c93292-57ab-4fae-a680-b70791ff3228" id: "redbird-antenna-2-pack-for-dominator-hd-walksnail-goggles" manufacturer: "Walksnail" name: "Redbird Antenna 2 Pack for Dominator HD & Walksnail Goggles" weight_g: 0.0 }
+antennas { uuid: "f3e51fbf-ba17-4cb8-889a-a8c907b4c82e" id: "polar-antenna-10-5cm" manufacturer: "Caddx" name: "Polar Antenna 10.5cm" weight_g: 0.0 }
+antennas { uuid: "8f389840-68c9-4eaa-b4c0-19f19b63e0ae" id: "skylite-skyliner-mk3-vista-link-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "SkyLite / Skyliner MK3 Vista / Link Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "fc08e48d-f384-461c-8bc6-86fc5fe588f7" id: "matchstick-5-8ghz-lhcp-carbon-antenna-choose-version" manufacturer: "TrueRC" name: "Matchstick 5.8GHz LHCP Carbon Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "411e15c9-6776-443e-adc0-3c72399c1d47" id: "vista-antenna-mount-v1-choose-color" manufacturer: "Noozle3D" name: "Vista Antenna Mount V1 - Choose Color" weight_g: 0.0 }
+antennas { uuid: "9eb36986-3be9-45a9-ade4-9a2518398390" id: "skyeliner-hd-dji-air-unit-antenna-mount" manufacturer: "Noozle3D" name: "Skyeliner HD DJI Air Unit Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "162b67cc-910d-40c2-9783-3a90cae609dc" id: "hd1-dji-antenna-mount" manufacturer: "Noozle3D" name: "HD1 DJI Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "d265a4e3-2cfe-43d3-9881-3d8a5f484962" id: "cl1-sma-antenna-mounts" manufacturer: "Noozle3D" name: "CL1 SMA Antenna Mounts" weight_g: 0.0 }
+antennas { uuid: "e755860f-0676-4df6-a33c-0b5ca208e6bb" id: "betafpv-loop-antenna" manufacturer: "BETAFPV" name: "BETAFPV Loop Antenna" weight_g: 0.0 }
+antennas { uuid: "8638bea8-064c-47b2-9bf3-5e115b6c1ec5" id: "betafpv-moxon-antenna" manufacturer: "BETAFPV" name: "BETAFPV Moxon Antenna" weight_g: 0.0 }
+antennas { uuid: "d2c62c9e-56a3-468e-9189-8feb3ca47507" id: "betafpv-dipole-t-antenna" manufacturer: "BETAFPV" name: "BETAFPV Dipole T Antenna" weight_g: 0.94 }
+antennas { uuid: "dacd36ec-905f-4c94-be68-b1da4667f5bb" id: "walksnail-ascent-hd-lite-antenna" manufacturer: "CADDXFPV" name: "Walksnail Ascent HD Lite+ Antenna" weight_g: 0.0 }
+antennas { uuid: "c8a8a373-6344-449a-aa94-96f492718f8d" id: "polar-antenna-for-vista" manufacturer: "CADDXFPV" name: "Polar Antenna for Vista" weight_g: 0.0 }
+antennas { uuid: "b7f87b48-eea2-4d20-bf74-90913cb9121f" id: "newbeedrone-beebrain-clover-5-8ghz-antenna-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (LHCP)" weight_g: 0.0 }
+antennas { uuid: "68bfa84a-2f60-468c-ad2d-3d6989adf852" id: "newbeedrone-beebrain-clover-5-8ghz-antenna-rhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (RHCP)" weight_g: 0.0 }
+antennas { uuid: "e05af5da-4d5c-4fd7-a73d-373c17043eeb" id: "newbeedrone-honey-patch-antenna-5-8ghz-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - LHCP" weight_g: 0.0 }
+antennas { uuid: "b9fc3fe3-6a11-448e-8f69-7144f1388d10" id: "newbeedrone-honey-patch-antenna-5-8ghz-linear" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - Linear" weight_g: 0.0 }
+antennas { uuid: "26fafd65-4737-4882-ad1f-a262caec7102" id: "newbeedrone-honey-dipper-5-8g-ufl-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Dipper 5.8G UFL Antenna" weight_g: 2.5 }
+antennas { uuid: "728318d3-4da3-4a82-9ec3-4d4cbf8a56c1" id: "newbeedrone-sma-antenna-port-90-degree-with-cable-10cm-diy-package" manufacturer: "NewBeeDrone" name: "NewBeeDrone SMA antenna port 90 Degree with cable 10cm DIY package" weight_g: 0.0 }
+antennas { uuid: "3eeb97ea-d6cf-4aa1-a1aa-dc65056b5f9f" id: "newbeedrone-sma-antenna-port-straight-with-cable-10cm-diy-package" manufacturer: "NewBeeDrone" name: "NewBeeDrone SMA antenna port straight with cable 10cm DIY package" weight_g: 0.0 }
+antennas { uuid: "5b3f1103-95fb-4959-add7-f836ad548e66" id: "newbeedrone-replacement-antennas-2-4-ghz-for-beeceiver-v2" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement Antennas (2.4 Ghz) for Beeceiver V2" weight_g: 0.0 }
+antennas { uuid: "30cac5fd-411e-4e6c-823c-62733608115d" id: "newbeedrone-whip-antenna-for-dji-mmcx-connector-2-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone Whip Antenna for DJI MMCX Connector (2-Pack)" weight_g: 0.0 }
+antennas { uuid: "f00f973d-279f-4471-be1e-1e8606372da7" id: "newbeedrone-replacement-rtf-bundle-kit-sma-5-8g-dipole-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement RTF Bundle Kit SMA 5.8G Dipole Antenna" weight_g: 0.0 }
+antennas { uuid: "f5339f48-90d6-4f7d-a9f5-9c643e13f7e8" id: "newbeedrone-pagoda-antenna-diy-kit-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Pagoda Antenna DIY Kit LHCP" weight_g: 0.0 }
+antennas { uuid: "c2225de7-53c1-4472-b7c2-32a2221d5b0f" id: "newbeedrone-honey-patch-antenna-5-8ghz-rhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - RHCP" weight_g: 0.0 }
+antennas { uuid: "74356430-e52d-45b0-bf91-ade3db7ca6df" id: "newbeedrone-beetx-5-8ghz-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeTX 5.8Ghz Antenna" weight_g: 0.0 }
+antennas { uuid: "dcbf0bf4-04e0-4eb3-8d8e-e49904de7f07" id: "newbeedrone-2-4ghz-whip-antenna-120-mm-mhf4" manufacturer: "NewBeeDrone" name: "NewBeeDrone 2.4Ghz Whip Antenna 120 mm MHF4" weight_g: 0.0 }
+antennas { uuid: "5f0369f8-f117-4894-b611-2faff38ce468" id: "newbeedrone-2-4-ghz-u-fl-mhf4-l-replacement-antennas-5-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone 2.4 GHz u.fl MHF4-L Replacement Antennas  (5 Pack)" weight_g: 0.0 }
+antennas { uuid: "f4b6dbee-533d-4b04-9f99-92e245c74ed6" id: "newbeedrone-replacement-antennas-2-4ghz-2-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement Antennas (2.4Ghz) 2 Pack" weight_g: 0.0 }
+antennas { uuid: "ef1b75f3-1232-41e6-b8fe-faddbb3c20c9" id: "core-5-8-rhcp-160mm-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Core 5.8 RHCP 160mm Antenna with SMA Connector" weight_g: 0.0 }
+antennas { uuid: "583606a7-0795-4d06-83ca-af884625bfe2" id: "core-5-8-rhcp-80mm-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Core 5.8 RHCP 80mm Antenna with SMA Connector" weight_g: 0.0 }
+antennas { uuid: "95033d52-9eb7-4f09-92bd-6ab94f38f1f4" id: "core-5-8-rhcp-155mm-antenna-with-sma-90-connector" manufacturer: "TrueRC" name: "CORE 5.8 RHCP 155mm Antenna with SMA 90 Connector" weight_g: 0.0 }
+antennas { uuid: "f71b6c9a-c03a-44ed-aa40-94640b30d5a1" id: "punch-shorty-dji-o4-pro-antenna-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI O4 Pro Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "94a99259-4276-4956-a171-52d6fbfdf550" id: "cinemini-dji-o4-antenna-mount" manufacturer: "Noozle3D" name: "CineMini DJI O4 Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "d721f7f8-28ba-48fd-965f-56f1888450f9" id: "cl2-dji-o4-pro-antenna-mount" manufacturer: "Noozle3D" name: "CL2 DJI O4 Pro Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "7eaf8d1e-5772-4bad-bf86-75a01109c0bf" id: "bandit-915-868mhz-t-antenna-rp-sma" manufacturer: "RadioMaster" name: "Bandit 915/868MHz T Antenna - RP-SMA" weight_g: 14.0 }
+antennas { uuid: "0eff3bbf-0d3a-41e2-abee-2a29375e8501" id: "skylite-skyliner-mk3-sma-antenna-mount-mjf-tpu" manufacturer: "Rotor Riot" name: "Skylite / Skyliner MK3 SMA Antenna Mount - MJF TPU" weight_g: 0.0 }
+antennas { uuid: "b9add692-812d-4681-9289-d2038cf8ec86" id: "tanq-2-s-dji-o4-pro-dual-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S DJI O4 Pro Dual Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "ab5f2bef-4ff1-4875-a452-a10ce4d1d903" id: "dji-o4-air-unit-pro-antenna" manufacturer: "DJI" name: "DJI O4 Air Unit Pro Antenna" weight_g: 0.0 }
+antennas { uuid: "bc039a04-90d7-49ce-9766-c00ba638ad5a" id: "dual-band-2-4ghz-sub-g-900mhz-antenna-rp-sma" manufacturer: "RadioMaster" name: "Dual Band 2.4GHz / SUB-G 900MHz Antenna - RP-SMA" weight_g: 15.78 }
+antennas { uuid: "c0bd2a2d-2d2f-4d6b-8e0a-1f7456cfab41" id: "shorty-pro-spec-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Shorty Pro-Spec DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "704abadd-366d-427e-81f0-1d220e902861" id: "punch-pro-spec-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Punch Pro-Spec DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "3ae5e641-23e3-4b57-b23c-cc26cbae73a3" id: "punch-shorty-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "fff9e53e-16d8-4c94-a540-54a5bafb7cff" id: "goggle-pack-rhcp-antenna-combo-with-sma-connectors" manufacturer: "Menace RC" name: "Goggle Pack RHCP Antenna Combo with SMA Connectors" weight_g: 10.0 }
+antennas { uuid: "c437c84b-f2bd-441b-8935-6068f3ae59e3" id: "invader-rhcp-patch-antenna-with-sma-connector" manufacturer: "Menace RC" name: "Invader RHCP Patch Antenna with SMA Connector" weight_g: 11.0 }
+antennas { uuid: "2b482bfa-80a7-497c-ba5b-81abfab5842a" id: "echo-2-rhcp-sma-patch-antenna" manufacturer: "Foxeer" name: "Echo 2 RHCP SMA Patch Antenna" weight_g: 10.4 }
+antennas { uuid: "63adfbf4-bce5-4208-b10a-061a7db228ad" id: "5-8ghz-u-fl-light-dipole-antenna" manufacturer: "Rotor Riot Store" name: "5.8Ghz U.FL Light Dipole Antenna" weight_g: 0.3 }
+antennas { uuid: "6c1fb265-168f-4306-ad91-d07285db0ed7" id: "bandit-915mhz-moxon-antenna-rp-sma" manufacturer: "RadioMaster" name: "Bandit 915MHz Moxon Antenna 	- RP-SMA" weight_g: 47.44 }
+antennas { uuid: "7134363a-20f9-4662-8fa2-6e60452e9c9b" id: "tanq-2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "c9a01302-8b21-4069-9179-1b04f1c7c55b" id: "tanq-2-ghost-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "a1c5f574-e6b3-41c4-8475-fd59b2dd2c5a" id: "core-5-8-lhcp-antenna-with-u-fl-connector" manufacturer: "TrueRC" name: "Core 5.8 LHCP Antenna with U.FL Connector" weight_g: 2.5 }
+antennas { uuid: "f71dac43-d7c1-40fc-9c06-44d19833db11" id: "matchstick-5-8ghz-rhcp-carbon-antenna-choose-version" manufacturer: "TrueRC" name: "Matchstick 5.8GHz RHCP Carbon Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "fad322cb-c106-4367-9aee-945136b95701" id: "singularity-rhcp-long-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Singularity RHCP Long Antenna with SMA Connector" weight_g: 1.03 }
+antennas { uuid: "846efe55-1e3e-4aed-a2cd-a0ca53e5a6e3" id: "x-air-5-8-mkii-antenna-set-for-goggles-2" manufacturer: "TrueRC" name: "X-Air 5.8 MKII Antenna Set for Goggles 2" weight_g: 0.0 }
+antennas { uuid: "a9434ed4-e858-489a-853d-482a2e045ee5" id: "tanq-ghost-antenna-mount" manufacturer: "Noozle3D" name: "TANQ Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "c2caad11-3b2c-4345-96b5-36861bcbcd8f" id: "hook-v2-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "996349fa-4bac-4501-bea2-8db99a765a32" id: "hook-v2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "9b8f5618-5222-4b09-8586-9d84e530ddb2" id: "hook-v2-sma-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "71c2b260-e305-48c6-841b-a311e94296d2" id: "cl2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "CL2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "9a63af55-7a10-4e45-b8af-e7a26649f7ce" id: "5-8ghz-u-fl-dipole-whip-antenna-linear" manufacturer: "Rotor Riot Store" name: "5.8GHz U.FL Dipole Whip Antenna - Linear" weight_g: 0.0 }
+antennas { uuid: "e4a9d7e0-9b20-4357-9733-711f16dadc4e" id: "hook-v2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "7e99887c-c955-44a5-a1db-7fee7907f918" id: "2-4ghz-moxon-antenna-rp-sma" manufacturer: "RadioMaster" name: "2.4GHz Moxon Antenna - RP-SMA" weight_g: 12.0 }
+antennas { uuid: "ea0b138b-2fe8-4e4c-812b-d717d217dcf0" id: "2-4ghz-t-antenna-rp-sma" manufacturer: "RadioMaster" name: "2.4GHz T Antenna - RP-SMA" weight_g: 9.5 }
+antennas { uuid: "296bbb0b-e73f-4ef6-a3b5-1f267f255923" id: "hook-v2-tracer-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Tracer Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "e4415a48-e56b-48b4-aa6d-ac5c2c1fca72" id: "x-air-mkii-antenna-for-dji" manufacturer: "TrueRC" name: "X-Air MKII Antenna for DJI" weight_g: 0.0 }
+antennas { uuid: "1f09a9ff-d68f-4bd9-a469-65b49d46471d" id: "x-air-5-8-mkii-lhcp-antenna-choose-version" manufacturer: "TrueRC" name: "X-Air 5.8 MKII LHCP Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "d0ccf8ba-505e-4173-b8e5-088db8189c1b" id: "tanq-1-2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 1 & 2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "c809a838-983d-425b-a0fb-2614d2fd88c6" id: "tanq-sma-antenna-mount" manufacturer: "Noozle3D" name: "TANQ SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "b2c17bbd-6bce-40bb-a23e-0305f5c74bf9" id: "tanq-frsky-antenna-mount" manufacturer: "Noozle3D" name: "TANQ FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "1d9c9a79-38df-464c-b76d-acedd39a1906" id: "d-pole-5-8ghz-u-fl-antenna-linear" manufacturer: "TrueRC" name: "D-Pole 5.8GHz U.FL Antenna - Linear" weight_g: 0.0 }
+antennas { uuid: "bf8aa582-956e-4447-9918-3693545ec6c9" id: "skyeliner-hd-sma-antenna-mount" manufacturer: "Noozle3D" name: "Skyeliner HD SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "3c82ec1c-1c28-409c-aa49-7786cd0ba39b" id: "skylite-skyliner-mk3-sma-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 SMA Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "19b851d2-a047-4998-bb91-4148e147262d" id: "skylite-skyliner-mk3-frsky-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 FrSky Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "04719edc-6c73-482e-aa55-c276369b7832" id: "moxy-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "Moxy Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "d0b2e693-95ab-491a-991d-347ec28c3f0e" id: "x-air-5-8-mk-ii-antenna-combo-with-stubbies-for-dji-fpv-goggles" manufacturer: "TrueRC" name: "X²-Air 5.8 MK II Antenna Combo with Stubbies for DJI FPV Goggles" weight_g: 20.0 }
+antennas { uuid: "42d47e02-c930-4e24-bd9e-a966b03eda14" id: "cl2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "CL2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "3b64fd8e-fea6-4e58-9bc6-a3f08e0389e7" id: "cl2-ghost-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "CL2 Ghost Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "6b03b61f-963f-4afa-9d96-3699d4b56170" id: "moxy-sma-antenna-mount" manufacturer: "Noozle3D" name: "Moxy SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "46b952de-6c9b-45f9-8f71-0b3c03eb7b8c" id: "moxy-frsky-antenna-mount" manufacturer: "Noozle3D" name: "Moxy FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "805cccff-f593-4f00-b259-c51574e35664" id: "moxy-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Moxy Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "c3941a4d-44df-4283-b26c-4f83d53fbd01" id: "ocp-rhcp-antenna-with-u-fl-connector" manufacturer: "TrueRC" name: "OCP RHCP Antenna with U.FL Connector" weight_g: 2.0 }
+antennas { uuid: "c997a814-dbd3-427b-8bbd-25db04725e60" id: "skylite-skyliner-mk3-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "3da53dad-5507-438a-9041-1b0412ae9098" id: "cl2-sma-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "CL2 SMA Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "2875058b-4584-49db-a917-23583452e1ea" id: "vista-link-antenna-mount-v2-choose-color" manufacturer: "Noozle3D" name: "Vista / Link Antenna Mount V2 - Choose Color" weight_g: 0.0 }
+antennas { uuid: "e4c9a5dd-8edf-4ca9-80a5-f7dd5bd25d22" id: "moxy-dji-air-unit-antenna-mount" manufacturer: "Noozle3D" name: "Moxy DJI Air Unit Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "8209b29b-fd34-4d8a-b2eb-934acc0c74dd" id: "singularity-5-8-stubby-lhcp-antenna-for-dominator-hd-and-dji-fpv-goggles-choose-version" manufacturer: "TrueRC" name: "Singularity 5.8 Stubby LHCP Antenna for Dominator HD and DJI FPV Goggles - Choose Version" weight_g: 3.7 }
+antennas { uuid: "bc8509a0-ac44-488d-9fb6-963d19b0be56" id: "redbird-antenna-2-pack-for-dominator-hd-walksnail-goggles" manufacturer: "Walksnail" name: "Redbird Antenna 2 Pack for Dominator HD & Walksnail Goggles" weight_g: 0.0 }
+antennas { uuid: "c96bfb75-ce2d-4f41-b2c5-f09d0c098d33" id: "polar-antenna-10-5cm" manufacturer: "Caddx" name: "Polar Antenna 10.5cm" weight_g: 0.0 }
+antennas { uuid: "a25471a1-c847-4d73-8db2-49f6d1791195" id: "skylite-skyliner-mk3-vista-link-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "SkyLite / Skyliner MK3 Vista / Link Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "e04e6495-8c43-4ced-af43-ac6795ac2db8" id: "matchstick-5-8ghz-lhcp-carbon-antenna-choose-version" manufacturer: "TrueRC" name: "Matchstick 5.8GHz LHCP Carbon Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "dbbc0826-9e59-4c2f-991c-07de4b6ad1f1" id: "vista-antenna-mount-v1-choose-color" manufacturer: "Noozle3D" name: "Vista Antenna Mount V1 - Choose Color" weight_g: 0.0 }
+antennas { uuid: "748904e7-c6f8-47a3-9f67-81f5962bf90d" id: "skyeliner-hd-dji-air-unit-antenna-mount" manufacturer: "Noozle3D" name: "Skyeliner HD DJI Air Unit Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "ff39b305-dcd7-44d6-bded-642f5bf43bca" id: "hd1-dji-antenna-mount" manufacturer: "Noozle3D" name: "HD1 DJI Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "4851cb40-a832-4d66-a43b-a3635affeb66" id: "cl1-sma-antenna-mounts" manufacturer: "Noozle3D" name: "CL1 SMA Antenna Mounts" weight_g: 0.0 }
+antennas { uuid: "28ee5c46-064f-460e-b0fb-a86bc19cb51d" id: "betafpv-loop-antenna" manufacturer: "BETAFPV" name: "BETAFPV Loop Antenna" weight_g: 0.0 }
+antennas { uuid: "9be7600d-6b79-4f9c-b33d-0d3560437433" id: "betafpv-moxon-antenna" manufacturer: "BETAFPV" name: "BETAFPV Moxon Antenna" weight_g: 0.0 }
+antennas { uuid: "317127fa-1477-4b0b-a51c-f68e6a584d5f" id: "betafpv-dipole-t-antenna" manufacturer: "BETAFPV" name: "BETAFPV Dipole T Antenna" weight_g: 0.94 }
+antennas { uuid: "ad29a5a6-2e34-49e7-a251-bc0198b28524" id: "walksnail-ascent-hd-lite-antenna" manufacturer: "CADDXFPV" name: "Walksnail Ascent HD Lite+ Antenna" weight_g: 0.0 }
+antennas { uuid: "cada3f44-a8b1-46c1-b95a-eee77ee27a2d" id: "polar-antenna-for-vista" manufacturer: "CADDXFPV" name: "Polar Antenna for Vista" weight_g: 0.0 }
+antennas { uuid: "30e21156-2560-4038-b9eb-811342d25480" id: "newbeedrone-beebrain-clover-5-8ghz-antenna-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (LHCP)" weight_g: 0.0 }
+antennas { uuid: "71230a9a-c56b-4d9d-aae4-e58eeb007ada" id: "newbeedrone-beebrain-clover-5-8ghz-antenna-rhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (RHCP)" weight_g: 0.0 }
+antennas { uuid: "0a93dc42-1b9e-43b5-bb05-2278016fdfe2" id: "newbeedrone-honey-patch-antenna-5-8ghz-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - LHCP" weight_g: 0.0 }
+antennas { uuid: "379de769-98d3-4929-84a6-19b119fab434" id: "newbeedrone-honey-patch-antenna-5-8ghz-linear" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - Linear" weight_g: 0.0 }
+antennas { uuid: "27042153-d3de-4752-b029-4b3b6faedd08" id: "newbeedrone-honey-dipper-5-8g-ufl-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Dipper 5.8G UFL Antenna" weight_g: 2.5 }
+antennas { uuid: "e2246c4c-962b-413d-bf29-892953383aec" id: "newbeedrone-sma-antenna-port-90-degree-with-cable-10cm-diy-package" manufacturer: "NewBeeDrone" name: "NewBeeDrone SMA antenna port 90 Degree with cable 10cm DIY package" weight_g: 0.0 }
+antennas { uuid: "698a4d37-d834-4ec6-8ba5-36b343a9a0ae" id: "newbeedrone-sma-antenna-port-straight-with-cable-10cm-diy-package" manufacturer: "NewBeeDrone" name: "NewBeeDrone SMA antenna port straight with cable 10cm DIY package" weight_g: 0.0 }
+antennas { uuid: "fbc58e71-d2a4-4ed4-a5cb-2924fd0ec65d" id: "newbeedrone-replacement-antennas-2-4-ghz-for-beeceiver-v2" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement Antennas (2.4 Ghz) for Beeceiver V2" weight_g: 0.0 }
+antennas { uuid: "39079472-c958-4253-b1ea-3c0d3cb7b1d9" id: "newbeedrone-whip-antenna-for-dji-mmcx-connector-2-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone Whip Antenna for DJI MMCX Connector (2-Pack)" weight_g: 0.0 }
+antennas { uuid: "258f03a3-26fa-48cf-a054-400f18fb1dd4" id: "newbeedrone-replacement-rtf-bundle-kit-sma-5-8g-dipole-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement RTF Bundle Kit SMA 5.8G Dipole Antenna" weight_g: 0.0 }
+antennas { uuid: "af31d5c2-835b-4879-ae3d-7079015bde54" id: "newbeedrone-pagoda-antenna-diy-kit-lhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Pagoda Antenna DIY Kit LHCP" weight_g: 0.0 }
+antennas { uuid: "3516e767-2d56-40fc-b73f-3a75716fbb12" id: "newbeedrone-honey-patch-antenna-5-8ghz-rhcp" manufacturer: "NewBeeDrone" name: "NewBeeDrone Honey Patch Antenna 5.8Ghz - RHCP" weight_g: 0.0 }
+antennas { uuid: "9dcb493d-e80b-49f8-98f3-509d035633ad" id: "newbeedrone-beetx-5-8ghz-antenna" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeTX 5.8Ghz Antenna" weight_g: 0.0 }
+antennas { uuid: "d853d75a-868e-4b5e-9b67-0e2e531ceb99" id: "newbeedrone-2-4ghz-whip-antenna-120-mm-mhf4" manufacturer: "NewBeeDrone" name: "NewBeeDrone 2.4Ghz Whip Antenna 120 mm MHF4" weight_g: 0.0 }
+antennas { uuid: "cf044fab-c76e-4029-a706-3e7adf0ef16e" id: "newbeedrone-2-4-ghz-u-fl-mhf4-l-replacement-antennas-5-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone 2.4 GHz u.fl MHF4-L Replacement Antennas  (5 Pack)" weight_g: 0.0 }
+antennas { uuid: "bc687e8c-d581-45c5-a8ee-23da76490ae2" id: "newbeedrone-replacement-antennas-2-4ghz-2-pack" manufacturer: "NewBeeDrone" name: "NewBeeDrone Replacement Antennas (2.4Ghz) 2 Pack" weight_g: 0.0 }
+antennas { uuid: "93d49c70-cdae-461c-aba8-b1e0b7129bfe" id: "core-5-8-rhcp-160mm-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Core 5.8 RHCP 160mm Antenna with SMA Connector" weight_g: 0.0 }
+antennas { uuid: "f4d53c1c-4a5e-4bfe-b13d-251ba8d96f63" id: "core-5-8-rhcp-80mm-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Core 5.8 RHCP 80mm Antenna with SMA Connector" weight_g: 0.0 }
+antennas { uuid: "32871c51-52c3-4513-b533-e5bff4311b9b" id: "core-5-8-rhcp-155mm-antenna-with-sma-90-connector" manufacturer: "TrueRC" name: "CORE 5.8 RHCP 155mm Antenna with SMA 90 Connector" weight_g: 0.0 }
+antennas { uuid: "32aad8e8-d754-4e34-b603-a8aedebc992d" id: "punch-shorty-dji-o4-pro-antenna-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI O4 Pro Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "d0557be2-bdf0-456b-990a-3afe5dabaebd" id: "cinemini-dji-o4-antenna-mount" manufacturer: "Noozle3D" name: "CineMini DJI O4 Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "b9a474b2-04d8-4a79-9819-b4a2d583f549" id: "cl2-dji-o4-pro-antenna-mount" manufacturer: "Noozle3D" name: "CL2 DJI O4 Pro Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "3a698ef3-12c0-4da3-aefa-42acd391cbe0" id: "bandit-915-868mhz-t-antenna-rp-sma" manufacturer: "RadioMaster" name: "Bandit 915/868MHz T Antenna - RP-SMA" weight_g: 14.0 }
+antennas { uuid: "ee02e5a4-78da-42d3-b022-8c2680549682" id: "skylite-skyliner-mk3-sma-antenna-mount-mjf-tpu" manufacturer: "Rotor Riot" name: "Skylite / Skyliner MK3 SMA Antenna Mount - MJF TPU" weight_g: 0.0 }
+antennas { uuid: "272c9be8-aa2a-4681-9a10-389c7109aa89" id: "tanq-2-s-dji-o4-pro-dual-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S DJI O4 Pro Dual Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "4ae8efe1-0026-4fca-add4-14abeffab5ad" id: "dji-o4-air-unit-pro-antenna" manufacturer: "DJI" name: "DJI O4 Air Unit Pro Antenna" weight_g: 0.0 }
+antennas { uuid: "7fb6e585-0a9d-4d90-af7d-fadf2f85b33e" id: "dual-band-2-4ghz-sub-g-900mhz-antenna-rp-sma" manufacturer: "RadioMaster" name: "Dual Band 2.4GHz / SUB-G 900MHz Antenna - RP-SMA" weight_g: 15.78 }
+antennas { uuid: "30bc696e-fc15-417b-bbbc-3b541ff8ae4b" id: "shorty-pro-spec-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Shorty Pro-Spec DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "c403fb13-fa91-4d17-96e9-461963c40032" id: "punch-pro-spec-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Punch Pro-Spec DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "75f35d11-2211-4e97-a155-a91d84c58122" id: "punch-shorty-dji-vista-antenna-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI Vista Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "220138dd-37d4-4fe0-ad91-ae4e0da24be9" id: "goggle-pack-rhcp-antenna-combo-with-sma-connectors" manufacturer: "Menace RC" name: "Goggle Pack RHCP Antenna Combo with SMA Connectors" weight_g: 10.0 }
+antennas { uuid: "70a2d344-45d6-43e3-b5a6-706d22f2e206" id: "invader-rhcp-patch-antenna-with-sma-connector" manufacturer: "Menace RC" name: "Invader RHCP Patch Antenna with SMA Connector" weight_g: 11.0 }
+antennas { uuid: "886234dd-39c9-4507-9cca-d72d3898ec1c" id: "echo-2-rhcp-sma-patch-antenna" manufacturer: "Foxeer" name: "Echo 2 RHCP SMA Patch Antenna" weight_g: 10.4 }
+antennas { uuid: "ac4bb952-2f66-4d17-9abe-e61fd6ea0b58" id: "5-8ghz-u-fl-light-dipole-antenna" manufacturer: "Rotor Riot Store" name: "5.8Ghz U.FL Light Dipole Antenna" weight_g: 0.3 }
+antennas { uuid: "ae805e12-3069-44bd-93cf-6bff04d8f79f" id: "bandit-915mhz-moxon-antenna-rp-sma" manufacturer: "RadioMaster" name: "Bandit 915MHz Moxon Antenna 	- RP-SMA" weight_g: 47.44 }
+antennas { uuid: "64a49ec1-e216-4d54-979b-1d7968b54486" id: "tanq-2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "96f5ea10-33c2-4816-9af5-dd08055fec78" id: "tanq-2-ghost-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 2 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "7b0e5115-5474-4dd4-8295-1ffec9c76fd4" id: "core-5-8-lhcp-antenna-with-u-fl-connector" manufacturer: "TrueRC" name: "Core 5.8 LHCP Antenna with U.FL Connector" weight_g: 2.5 }
+antennas { uuid: "a4f75c98-6723-4222-bbb6-b2c3597d665b" id: "matchstick-5-8ghz-rhcp-carbon-antenna-choose-version" manufacturer: "TrueRC" name: "Matchstick 5.8GHz RHCP Carbon Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "b4328a93-cee7-4ba8-8184-342a5b3afdfb" id: "singularity-rhcp-long-antenna-with-sma-connector" manufacturer: "TrueRC" name: "Singularity RHCP Long Antenna with SMA Connector" weight_g: 1.03 }
+antennas { uuid: "905566e6-3191-4e0d-9770-6df813413f9e" id: "x-air-5-8-mkii-antenna-set-for-goggles-2" manufacturer: "TrueRC" name: "X-Air 5.8 MKII Antenna Set for Goggles 2" weight_g: 0.0 }
+antennas { uuid: "26fb71b2-be78-4536-b9be-5eb7bc1f6b8c" id: "tanq-ghost-antenna-mount" manufacturer: "Noozle3D" name: "TANQ Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "fe5a39e0-66a6-4883-9171-5eb806d3d879" id: "hook-v2-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "b72e782d-389e-4ce2-91db-0ca10fca2dc0" id: "hook-v2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "2b84a6eb-6548-4af2-a905-8f16aa2ab25c" id: "hook-v2-sma-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "48e00f76-0e76-49f6-9022-1f30362929cf" id: "cl2-frsky-antenna-mount" manufacturer: "Noozle3D" name: "CL2 FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "83daef95-e74d-4157-89af-e3e0ba4b953f" id: "5-8ghz-u-fl-dipole-whip-antenna-linear" manufacturer: "Rotor Riot Store" name: "5.8GHz U.FL Dipole Whip Antenna - Linear" weight_g: 0.0 }
+antennas { uuid: "548adc5a-9956-4c61-a679-017dbad94996" id: "hook-v2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "7b256e18-ef05-46a6-a6ee-7f6498e49a9e" id: "2-4ghz-moxon-antenna-rp-sma" manufacturer: "RadioMaster" name: "2.4GHz Moxon Antenna - RP-SMA" weight_g: 12.0 }
+antennas { uuid: "9a714638-677a-414e-95c8-a430b32fa371" id: "2-4ghz-t-antenna-rp-sma" manufacturer: "RadioMaster" name: "2.4GHz T Antenna - RP-SMA" weight_g: 9.5 }
+antennas { uuid: "825e5994-acba-414d-8323-3bf4e683134b" id: "hook-v2-tracer-antenna-mount" manufacturer: "Noozle3D" name: "Hook V2 Tracer Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "f5d91506-1e45-4b33-bfb1-4594c275a721" id: "x-air-mkii-antenna-for-dji" manufacturer: "TrueRC" name: "X-Air MKII Antenna for DJI" weight_g: 0.0 }
+antennas { uuid: "f0158316-68d9-484c-b874-19622d7f2219" id: "x-air-5-8-mkii-lhcp-antenna-choose-version" manufacturer: "TrueRC" name: "X-Air 5.8 MKII LHCP Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "32e1657f-1b5f-4251-95c4-c603c2f7da97" id: "tanq-1-2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "TANQ 1 & 2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "9113bce7-fdf7-4349-a18c-b70c577eae1d" id: "tanq-sma-antenna-mount" manufacturer: "Noozle3D" name: "TANQ SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "e4d18517-6c77-4fe8-b44c-30ec965f38e7" id: "tanq-frsky-antenna-mount" manufacturer: "Noozle3D" name: "TANQ FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "6e2f8df3-1d62-4bd6-ba9d-46e25801aecc" id: "d-pole-5-8ghz-u-fl-antenna-linear" manufacturer: "TrueRC" name: "D-Pole 5.8GHz U.FL Antenna - Linear" weight_g: 0.0 }
+antennas { uuid: "3f744831-09bb-43cc-aa4e-49e8be186c89" id: "skyeliner-hd-sma-antenna-mount" manufacturer: "Noozle3D" name: "Skyeliner HD SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "52afe36e-d224-4317-bef7-078e631b9a3a" id: "skylite-skyliner-mk3-sma-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 SMA Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "210385b9-75df-4e79-a6b4-be07f601222a" id: "skylite-skyliner-mk3-frsky-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 FrSky Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "8af16675-d6fe-4107-ac04-59091f526127" id: "moxy-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "Moxy Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "c3911363-a5a3-4aa9-a13d-8f26ba677bb4" id: "x-air-5-8-mk-ii-antenna-combo-with-stubbies-for-dji-fpv-goggles" manufacturer: "TrueRC" name: "X²-Air 5.8 MK II Antenna Combo with Stubbies for DJI FPV Goggles" weight_g: 20.0 }
+antennas { uuid: "49aabe1e-bbf2-48ae-a753-e06a6fb9cc29" id: "cl2-vista-link-antenna-mount" manufacturer: "Noozle3D" name: "CL2 Vista / Link Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "c3186f12-3cdf-4eb4-92ae-5b2343aea19a" id: "cl2-ghost-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "CL2 Ghost Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "2f320143-91d2-4a0a-bc57-d3cbdff90e95" id: "moxy-sma-antenna-mount" manufacturer: "Noozle3D" name: "Moxy SMA Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "9605c22e-1bdb-4ea5-8074-9c489c5b5ddf" id: "moxy-frsky-antenna-mount" manufacturer: "Noozle3D" name: "Moxy FrSky Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "225746ed-6b68-4d26-adfb-8a232c710ed3" id: "moxy-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Moxy Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "dc25e9d3-0dba-4b06-8fb9-7180bdb45534" id: "ocp-rhcp-antenna-with-u-fl-connector" manufacturer: "TrueRC" name: "OCP RHCP Antenna with U.FL Connector" weight_g: 2.0 }
+antennas { uuid: "bcb51cd0-1c05-47b0-b60d-fc7a106dbb1c" id: "skylite-skyliner-mk3-ghost-antenna-mount" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 Ghost Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "d7d4f5fb-fb28-462b-8ed6-31acfe614ff2" id: "cl2-sma-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "CL2 SMA Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "f3dc700a-ed73-41ec-9340-112107a75de7" id: "vista-link-antenna-mount-v2-choose-color" manufacturer: "Noozle3D" name: "Vista / Link Antenna Mount V2 - Choose Color" weight_g: 0.0 }
+antennas { uuid: "857b6a54-3ced-4c15-af87-feea98f8a4d5" id: "moxy-dji-air-unit-antenna-mount" manufacturer: "Noozle3D" name: "Moxy DJI Air Unit Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "0d374c9c-cac9-4a3f-b2bd-71ec0ec3d46f" id: "singularity-5-8-stubby-lhcp-antenna-for-dominator-hd-and-dji-fpv-goggles-choose-version" manufacturer: "TrueRC" name: "Singularity 5.8 Stubby LHCP Antenna for Dominator HD and DJI FPV Goggles - Choose Version" weight_g: 3.7 }
+antennas { uuid: "3e40fb7a-7de4-4a84-8002-8c70411fab5e" id: "redbird-antenna-2-pack-for-dominator-hd-walksnail-goggles" manufacturer: "Walksnail" name: "Redbird Antenna 2 Pack for Dominator HD & Walksnail Goggles" weight_g: 0.0 }
+antennas { uuid: "f6176515-08d0-4dfa-b479-8174d4551371" id: "polar-antenna-10-5cm" manufacturer: "Caddx" name: "Polar Antenna 10.5cm" weight_g: 0.0 }
+antennas { uuid: "d670cf9a-cffb-4cb9-ac3d-e68838687f00" id: "skylite-skyliner-mk3-vista-link-antenna-mount-choose-color" manufacturer: "Noozle3D" name: "SkyLite / Skyliner MK3 Vista / Link Antenna Mount - Choose Color" weight_g: 0.0 }
+antennas { uuid: "f6f555a4-a524-4021-87c6-64e78cab084b" id: "matchstick-5-8ghz-lhcp-carbon-antenna-choose-version" manufacturer: "TrueRC" name: "Matchstick 5.8GHz LHCP Carbon Antenna - Choose Version" weight_g: 0.0 }
+antennas { uuid: "564a7470-d545-494f-a4fb-8e618160e769" id: "vista-antenna-mount-v1-choose-color" manufacturer: "Noozle3D" name: "Vista Antenna Mount V1 - Choose Color" weight_g: 0.0 }
+antennas { uuid: "3b290f7d-c7b8-430d-90d8-c0f729cca3f8" id: "skyeliner-hd-dji-air-unit-antenna-mount" manufacturer: "Noozle3D" name: "Skyeliner HD DJI Air Unit Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "cd8fe7b9-13cd-4090-b730-f937663b3376" id: "hd1-dji-antenna-mount" manufacturer: "Noozle3D" name: "HD1 DJI Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "9bf4c8b3-7aff-4826-abe3-f47aba07f50d" id: "cl1-sma-antenna-mounts" manufacturer: "Noozle3D" name: "CL1 SMA Antenna Mounts" weight_g: 0.0 }
+antennas { uuid: "fe10635a-d1ec-49cd-97ff-098e8e5e2b86" id: "hglrc-5-8ghz-omnidirectional-fpv-antenna-high-gain-long-range-for-fpv-drones-compatible-with-sma-ipex-mmcx-connectors" manufacturer: "HGLRC" name: "HGLRC 5.8GHz Omnidirectional FPV Antenna – High Gain Long Range for FPV Drones, Compatible with SMA / IPEX / MMCX Connectors" weight_g: 0.0 }
+antennas { uuid: "c85618b9-d29d-455f-81ed-3e9955a816e8" id: "hglrc-patch-antenna-v1-lhcp-5-8g-directional-antenna" manufacturer: "HGLRC" name: "HGLRC Patch Antenna V1 LHCP 5.8G Directional Antenna" weight_g: 0.0 }
+antennas { uuid: "3db87c5b-93a3-4390-9c25-f30ab2ea6913" id: "hglrc-mini-hammer-antenna-v2" manufacturer: "HGLRC" name: "HGLRC mini Hammer Antenna V2" weight_g: 0.0 }
+antennas { uuid: "70ef69f8-652b-4db1-a6ce-9f4c719d2c3c" id: "hglrc-5-8g-hammer-dual-antenna" manufacturer: "HGLRC" name: "‌HGLRC 5.8G Hammer Dual Antenna‌" weight_g: 13.8 }
+antennas { uuid: "3693c5b7-1626-4d24-9939-652327ac4052" id: "hglrc-long-range-hammer-mini-rhcp-lhcp-2-5dbi-super-mini-5-8g-antenna-for-rc-drone" manufacturer: "HGLRC" name: "HGLRC Long Range Hammer Mini  RHCP/LHCP 2.5dBi Super Mini 5.8G Antenna For RC Drone" weight_g: 0.0 }
+antennas { uuid: "1822e2ae-88f2-42bc-ab16-fb4ae040c3da" id: "hglrc-mini-hammer-antenna-rhcp-lhcp-sma-rp-sma-mmcx-ipex-2-5dbi-super-mini-5-8g-for-rc-fpv-drone" manufacturer: "HGLRC" name: "HGLRC mini Hammer Antenna  RHCP/LHCP SMA/RP-SMA/MMCX/IPEX 2.5dBi Super Mini 5.8G For RC FPV Drone" weight_g: 0.0 }
+antennas { uuid: "b2b7d9e4-c5c1-4f2e-8750-fbdbcc6f7535" id: "hglrc-5-8g-angle-mmcx-linear-2dbi-omni-directional-antenna-for-rc-drone" manufacturer: "HGLRC" name: "HGLRC 5.8G ANGLE MMCX Linear 2dBi Omni Directional Antenna For RC Drone" weight_g: 2.1 }
+antennas { uuid: "e043d4c5-df3f-4a79-9f39-bac39d2f1465" id: "mmcx-to-sma-antenna-pigtail-cable-10cm" manufacturer: "HGLRC" name: "MMCX to SMA Antenna Pigtail Cable 10cm" weight_g: 3.0 }
+antennas { uuid: "91215a1e-7a5c-4de4-b487-eebe31d47839" id: "80mm-5-8g-mmcx-linear-2dbi-omni-directional-antenna-for-rc-drone" manufacturer: "HGLRC" name: "80mm 5.8G MMCX Linear 2dBi Omni Directional Antenna For RC Drone" weight_g: 1.4 }
+antennas { uuid: "2e72b6b9-48ed-4f89-9cdf-10ce0cbcffe1" id: "70mm-5-8g-2dbi-ipex-ipx-omni-directional-linear-brass-fpv-antenna" manufacturer: "HGLRC" name: "70mm 5.8G 2dBi IPEX IPX Omni Directional Linear Brass FPV Antenna" weight_g: 0.9 }
+antennas { uuid: "abe77204-2c98-464d-8df0-caa85e5df1bd" id: "mamba-ultra-antenna-5-8g-mmcx-bla-lhcp-130mm-1-pcs" manufacturer: "DIATONE OFFICIAL" name: "Mamba Ultra Antenna  5.8G MMCX Bla LHCP 130mm(1/PCS)" weight_g: 0.0 }
+antennas { uuid: "1ab87ba3-3dd0-4720-afcb-af03f7c897ea" id: "roma-f5-gps-antenna-mount-1-pcs" manufacturer: "DIATONE INNOVATIONS" name: "Roma F5 GPS Antenna Mount (1/Pcs)" weight_g: 0.0 }
+antennas { uuid: "ff48747a-ebe5-4d90-a95b-ecffcd215c53" id: "mamba-ultras-5-8g-antenna" manufacturer: "DIATONE OFFICIAL" name: "Mamba Ultras 5.8G Antenna" weight_g: 0.0 }
+antennas { uuid: "4bc4681a-ae3c-45d1-b840-5e45564af6bf" id: "osprey-5-8ghz-140mm-ipex-ufl-fpv-antenna-rhcp" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 140mm ipex/UFL FPV Antenna - RHCP" weight_g: 3.56 }
+antennas { uuid: "81de0899-6024-4c9f-9e4c-fc41cda1edb1" id: "osprey-flip-g2-dual-band-antenna-for-dji-goggles-2" manufacturer: "FlyFish RC" name: "Osprey FLIP G2 Dual band Antenna For DJI Goggles 2" weight_g: 8.0 }
+antennas { uuid: "1abab7b0-302c-4243-9ec0-366c303e441f" id: "volador-vx3-vx3-5-stubby-antenna-mount" manufacturer: "FlyFish RC" name: "Volador VX3/VX3.5 Stubby Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "72ae3764-bce7-4229-89dc-e1dc5f2cf986" id: "volador-ii-5-6inch-osprey-stubby-antenna-mount" manufacturer: "FlyFishRC" name: "Volador II 5-6inch Osprey Stubby Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "9213ef8d-1b56-491a-9632-0c53c5bfd06f" id: "osprey-5-8ghz-40mm-ipex-ufl-lhcp-stubby-antenna" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 40mm ipex/UFL LHCP Stubby Antenna" weight_g: 2.1 }
+antennas { uuid: "581000b1-3ac7-416f-a794-324f7e072fc7" id: "osprey-5-8ghz-40mm-ipex-ufl-rhcp-stubby-antenna" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 40mm ipex/UFL RHCP Stubby Antenna" weight_g: 2.1 }
+antennas { uuid: "e582ab6d-7892-4c0d-bc40-69240b068d47" id: "osprey-5-8ghz-130mm-sma-antenna-lhcp" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 130mm SMA Antenna - LHCP" weight_g: 11.29 }
+antennas { uuid: "54c46713-7c92-4ede-9889-8387ef044150" id: "osprey-5-8ghz-90mm-mmcx-antenna-rhcp" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 90mm MMCX Antenna - RHCP" weight_g: 3.77 }
+antennas { uuid: "df73695a-0c1b-416c-991b-f51c63be19bf" id: "osprey-5-8ghz-140mm-ipex-ufl-fpv-antenna-lhcp" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 140mm ipex/UFL FPV Antenna - LHCP" weight_g: 3.56 }
+antennas { uuid: "cf0477c8-c12a-44fd-add1-b989b587bb09" id: "osprey-5-8ghz-150mm-rp-sma-antenna-lhcp" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 150mm RP-SMA Antenna - LHCP" weight_g: 11.29 }
+antennas { uuid: "16a2f1be-d573-4d55-8e4d-576696e51b19" id: "osprey-5-8ghz-150mm-sma-antenna-rhcp" manufacturer: "FlyFish-RC" name: "Osprey 5.8Ghz 150mm SMA Antenna - RHCP" weight_g: 11.29 }
+antennas { uuid: "281ca261-fc68-4d2b-9d30-a4b6ac26fb15" id: "osprey-5-8ghz-60mm-rp-sma-antenna-lhcp" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 60mm RP-SMA Antenna - LHCP" weight_g: 6.9 }
+antennas { uuid: "389cea69-b2ce-4791-bc49-f1658c7d3f35" id: "osprey-5-8ghz-60mm-sma-antenna-rhcp" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 60mm SMA Antenna - RHCP" weight_g: 6.9 }
+antennas { uuid: "1ed215ee-29b1-4fe0-b7eb-29f1d7ad36d8" id: "osprey-5-8ghz-90mm-ipex-ufl-fpv-antenna-lhcp" manufacturer: "FlyFishRC" name: "Osprey 5.8Ghz 90mm ipex/UFL FPV Antenna - LHCP" weight_g: 2.8 }
+antennas { uuid: "7f72222b-65ce-43e7-94f1-c2501314e795" id: "osprey-hd-5-8g-lhcp-stubby-antennas" manufacturer: "FlyFishRC" name: "Osprey HD 5.8G LHCP Stubby Antennas" weight_g: 4.2 }
+antennas { uuid: "77d2c83d-da05-47f6-85c2-3a2642c7d3a6" id: "osprey-hd-lhcp-patch-antenna" manufacturer: "FlyFishRC" name: "OSPREY HD LHCP Patch Antenna" weight_g: 38.0 }
+antennas { uuid: "67bbcb77-c65e-4650-a0ea-a0fa38213e86" id: "tooth-fairy-2-antenna-mount-and-gopro-mount" manufacturer: "FPVCycle" name: "Tooth Fairy 2 Antenna Mount and GoPro Mount" weight_g: 0.0 }
+antennas { uuid: "ee3d7cf2-659e-4392-bfa0-0665c1a88feb" id: "dji-caddx-vista-short-antenna-80mm" manufacturer: "FPVCycle" name: "DJI Caddx Vista Short Antenna (80mm)" weight_g: 0.0 }
+antennas { uuid: "dbcfb7e7-1776-4b21-befd-240b0cd7c4c3" id: "cinesplore-and-fouride-side-antenna-mount" manufacturer: "FPVCycle" name: "CineSplore and Fouride Side Antenna Mount" weight_g: 0.0 }
+antennas { uuid: "6427030f-493c-42d1-a51a-868f612fb4a5" id: "fouride-rear-antenna-mount" manufacturer: "FPVCycle" name: "Fouride Rear Antenna Mount" weight_g: 0.0 }

@@ -88,3 +88,358 @@ cameras: {
   protocol: "CVBS"
   width_mm: 19
 }
+cameras { uuid: "c2172e23-8726-415e-9a77-cd2e19041365" id: "c04-fpv-camera" manufacturer: "BETAFPV" name: "C04 FPV Camera" weight_g: 2.74 }
+cameras { uuid: "aed30e9b-8a77-42dc-ba98-99b55fe484f2" id: "air-camera" manufacturer: "BETAFPV" name: "Air Camera" weight_g: 1.48 }
+cameras { uuid: "03fb5a8c-95d3-4fdd-9964-0d8a6c11d58c" id: "nd-filter-for-dji-o4-pro-camera" manufacturer: "BETAFPV" name: "ND Filter for DJI O4 Pro Camera" weight_g: 1.0 }
+cameras { uuid: "33905170-8ac8-4f90-bbad-b9778fc8d938" id: "canopy-for-micro-camera" manufacturer: "BETAFPV" name: "Canopy for Micro Camera" weight_g: 1.31 }
+cameras { uuid: "6871ff57-c355-4f1e-b06c-53b3292e8d5d" id: "canopy-for-nano-hd-camera" manufacturer: "BETAFPV" name: "Canopy for Nano HD Camera" weight_g: 1.95 }
+cameras { uuid: "5dc05a7e-b864-422a-9006-eee7f3574d9a" id: "caddx-baby-ratel-14mm-nano-1200tvl-1-8mm-fpv-camera" manufacturer: "BETAFPV" name: "Caddx Baby Ratel 14mm Nano 1200TVL 1.8mm FPV Camera" weight_g: 0.0 }
+cameras { uuid: "379652f5-5b9c-46fb-a88e-fb5f1b54d225" id: "caddx-ratel-19mm-micro-starlight-1200tvl-hdr-low-light-fpv-camera" manufacturer: "BETAFPV" name: "Caddx Ratel 19mm Micro Starlight 1200TVL HDR Low-Light FPV Camera" weight_g: 8.0 }
+cameras { uuid: "a66aeb92-28cd-4dd9-a4e1-41d11c7336fd" id: "caddx-baby-turtle-camera" manufacturer: "BETAFPV" name: "Caddx Baby Turtle Camera" weight_g: 0.0 }
+cameras { uuid: "ff12204d-afe9-42ff-af3b-406da5a843d3" id: "smo-4k-camera-adapter-cable" manufacturer: "BETAFPV" name: "SMO 4K Camera Adapter Cable" weight_g: 0.7 }
+cameras { uuid: "32181b6a-9cf3-4e82-9f26-2c0db9a24a71" id: "case-v2-for-naked-camera" manufacturer: "BETAFPV" name: "Case V2 for Naked Camera" weight_g: 6.57 }
+cameras { uuid: "6309c971-466b-4510-8958-9ffff453f89f" id: "customized-runcam-split-3-nano-camera" manufacturer: "BETAFPV" name: "Customized Runcam Split 3 Nano Camera" weight_g: 10.0 }
+cameras { uuid: "652352a1-f2e3-469b-ae56-fc765d5d8af7" id: "customized-caddx-kangaroo-camera" manufacturer: "BETAFPV" name: "Customized Caddx Kangaroo Camera" weight_g: 3.5 }
+cameras { uuid: "c6a586f1-f79a-4e92-950a-cb58ada98da8" id: "nd-filter-nd8-nd16-for-turtle-v2-runcam-split-mini-2" manufacturer: "BETAFPV" name: "ND Filter ND8 ND16 for Turtle V2 / RunCam Split Mini 2" weight_g: 0.0 }
+cameras { uuid: "3928718d-a42a-4a4d-a833-312bcc8b2cc0" id: "canopy-for-mini-camera" manufacturer: "BETAFPV" name: "Canopy for Mini Camera" weight_g: 3.8 }
+cameras { uuid: "08f9d1a8-0d93-4c45-b401-473ba59cc77b" id: "betapfv-customized-eosv2-fpv-camera-ntsc" manufacturer: "BETAFPV" name: "BETAPFV Customized EOSV2 FPV Camera NTSC" weight_g: 3.5 }
+cameras { uuid: "4af6f0c8-516a-416f-a304-429073764ab5" id: "caddxfpv-ratel-ultra-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ratel Ultra Analog Camera" weight_g: 0.0 }
+cameras { uuid: "c94a080f-509a-4b91-abed-acee83146f26" id: "gazer-analog-camera-filters" manufacturer: "CADDXFPV" name: "Gazer Analog Camera Filters" weight_g: 0.0 }
+cameras { uuid: "04d974ec-d7f8-4852-9bc7-ece6c13ff9bd" id: "caddxfpv-infra-v2-camera" manufacturer: "CADDXFPV" name: "CaddxFPV Infra V2 Camera" weight_g: 0.0 }
+cameras { uuid: "837c47ae-045f-4f87-be78-f7c6d6e6bd91" id: "caddxfpv-farsight-analog-camera" manufacturer: "CADDX FPV" name: "CaddxFPV Farsight Analog Camera" weight_g: 0.0 }
+cameras { uuid: "5e8de9d4-1838-4547-a474-ca3a22fc8525" id: "caddxfpv-gazer-analog-camera" manufacturer: "CADDX FPV" name: "CaddxFPV Gazer Analog Camera" weight_g: 0.0 }
+cameras { uuid: "249b83ba-8791-47c1-9bbe-7c753d0b47f3" id: "caddxfpv-ratel-pro-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ratel Pro Analog Camera" weight_g: 9.5 }
+cameras { uuid: "e30a1ae0-8489-494e-a606-7352d7b09ed0" id: "caddxfpv-walnut-action-camera-magnetic-charging-part" manufacturer: "CADDXFPV" name: "CADDXFPV Walnut Action Camera Magnetic Charging Part" weight_g: 0.0 }
+cameras { uuid: "7f021404-af68-45e0-851f-be186d589168" id: "caddxfpv-camera-accessories-osd-menu-board" manufacturer: "CADDXFPV" name: "CADDXFPV Camera Accessories OSD Menu Board" weight_g: 0.0 }
+cameras { uuid: "9311b18b-0dd3-41bb-9ff8-60b1f0484598" id: "caddxfpv-baby-ratel2-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Baby Ratel2 Analog Camera" weight_g: 0.0 }
+cameras { uuid: "52e1fa4a-97e2-417a-9e7e-630ef1e0a6a7" id: "caddxfpv-ratel2-analog-camera" manufacturer: "CADDXFPV" name: "CaddxFPV Ratel2 Analog Camera" weight_g: 0.0 }
+cameras { uuid: "e2cfeb86-f048-4a2c-aac9-2dd2971f4832" id: "caddxfpv-ant-lite-analog-camera-fpv-cycle-edition" manufacturer: "CADDXFPV" name: "CADDXFPV Ant Lite Analog Camera  (FPV Cycle Edition)" weight_g: 0.0 }
+cameras { uuid: "766ada33-b048-44cb-a154-991102b73014" id: "caddxfpv-ant-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ant Analog Camera" weight_g: 0.0 }
+cameras { uuid: "c8189d00-6037-4298-b5b8-b0c05e75a9a1" id: "caddxfpv-camera-lens-family" manufacturer: "CADDXFPV" name: "CaddxFPV Camera Lens Family" weight_g: 0.0 }
+cameras { uuid: "08d40cf6-f781-4753-b305-e7cd9d98c382" id: "darwinfpv-caddx-ant-micro-fpv-camera" manufacturer: "DarwinFPV" name: "DarwinFPV Caddx Ant  Micro FPV Camera" weight_g: 2.0 }
+cameras { uuid: "98ea4e86-e810-43c6-8e78-f1dddf36f626" id: "runcam-thumb" manufacturer: "DarwinFPV" name: "RunCam Thumb" weight_g: 9.8 }
+cameras { uuid: "d3df2154-1c3e-4bc6-aff7-9258bff0bb33" id: "darwinfpv-cement-ultra-durable-fpv-drone-camera" manufacturer: "DarwinFPV" name: "DarwinFPV Cement Ultra Durable FPV Drone Camera" weight_g: 0.0 }
+cameras { uuid: "960ea027-3926-4d5c-8910-0c0df8c09e90" id: "nano-1-mini-action-fpv-camera" manufacturer: "DarwinFPV" name: "NANO 1 Mini Action FPV Camera" weight_g: 0.0 }
+cameras { uuid: "a9136de0-a6cf-4560-8ce1-2553509c636b" id: "darwin-129-professional-customized-camera" manufacturer: "DarwinFPV" name: "Darwin 129 Professional Customized Camera" weight_g: 5.0 }
+cameras { uuid: "0ce4d839-208d-4dbb-8c02-1702fad02412" id: "newbeedrone-racespec-camera-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone RaceSpec Camera Mount" weight_g: 0.0 }
+cameras { uuid: "f704e308-6016-47be-b3a2-40315defb4d6" id: "newbeedrone-whoop-training-camera-x3" manufacturer: "NewBeeDrone" name: "NewBeeDrone Whoop Training Camera x3" weight_g: 0.0 }
+cameras { uuid: "5d65add1-6cf2-4ece-b92f-48ed7f63a515" id: "newbeedrone-beeeye-v2-fpv-camera-10-10-ultra-light-800-tvl" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeEye V2 FPV Camera 10×10 – Ultra-Light 800 TVL" weight_g: 0.0 }
+cameras { uuid: "31209497-fc85-4d38-b573-a3b18415c131" id: "newbeedrone-dji-o4-coaxial-mipi-camera-cable" manufacturer: "NewBeeDrone" name: "NewBeeDrone DJI O4 Coaxial MIPI Camera Cable" weight_g: 0.0 }
+cameras { uuid: "ca07f0c5-8c5b-4b59-9ad1-90dd31e4ab25" id: "newbeedrone-dji-o4-pro-camera-naked-kit-lightweight-fpv-mod-for-drones" manufacturer: "NewBeeDrone" name: "NewBeeDrone DJI O4 Pro Camera Naked Kit – Lightweight FPV Mod for Drones" weight_g: 0.0 }
+cameras { uuid: "d89eee64-f7a9-49d1-b848-4eb018adbd45" id: "newbeedrone-m2-screws-4mm-x5-for-dji-camera-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone M2 Screws 4mm x5 for DJI Camera Mount" weight_g: 0.0 }
+cameras { uuid: "fc343577-630e-481f-be66-39adbafd4453" id: "newbeedrone-caddx-nano-ant-camera-for-blv5-plug-and-play-replacement" manufacturer: "Caddx+NewBeeDrone" name: "NewBeeDrone × CADDX Nano ANT Camera for BLV5 - Plug-and-Play Replacement" weight_g: 2.0 }
+cameras { uuid: "81f115ff-69c3-4b1d-bf1a-c443e37263fb" id: "newbeedrone-vivid-3d-printed-action-cam-mount-with-m5-hardware" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid 3D Printed Action Cam Mount with M5 Hardware" weight_g: 0.0 }
+cameras { uuid: "1ab3e82f-8995-47c0-9b7d-fc0d8fceee38" id: "newbeedrone-racespec-whoop-racing-camera-mount-0-71g-30-or-40" manufacturer: "NewBeeDrone" name: "NewBeeDrone RaceSpec Whoop Racing Camera Mount 0.71g (30° or 40°)" weight_g: 0.71 }
+cameras { uuid: "b75f19ad-03e6-4423-aa1a-86b37bd5ea1e" id: "newbeedrone-jst0-8-3pin-connector-for-beeeye-replacement-camera-connector" manufacturer: "NewBeeDrone" name: "NewBeeDrone JST0.8 3Pin Connector for BeeEye Replacement Camera Connector" weight_g: 0.0 }
+cameras { uuid: "6af27f66-7583-47d6-8e2d-9d0a8bc03944" id: "newbeedrone-goober-canopy-camera-mount-v2" manufacturer: "NewBeeDrone" name: "NewBeeDrone Goober Canopy Camera Mount V2" weight_g: 1.47 }
+cameras { uuid: "8cdf6eca-77b9-47ab-94f6-063b0a670650" id: "newbeedrone-beebrain-camera-connector-type-jst0-8mm-3pin-pack-of-2" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Camera Connector Type: JST0.8mm 3Pin pack of 2" weight_g: 0.0 }
+cameras { uuid: "618304ab-021d-4e6e-8c89-cb2f16fb3dbb" id: "newbeedrone-jst0-8-4pin-connector-for-mark2-camera-or-beebrain-blv3-blv4-uart" manufacturer: "NewBeeDrone" name: "NewBeeDrone JST0.8 4Pin Connector for Mark2 Camera or BeeBrain BLv3/BLv4 UART" weight_g: 0.0 }
+cameras { uuid: "6808473e-f92f-4651-90f5-c71d482726fc" id: "newbeedrone-beeeye-fpv-camera" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeEye FPV Camera" weight_g: 0.0 }
+cameras { uuid: "9dd13ab2-1f68-4917-bda9-d7f460346d7e" id: "newbeedrone-beebrain-v2-camera-color-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain V2 Camera Color Mount" weight_g: 0.0 }
+cameras { uuid: "15655b79-be1b-46d9-acce-5cfd8d3e2f53" id: "aura-analog-fpv-camera" manufacturer: "Fat Shark" name: "Aura Analog FPV Camera" weight_g: 0.0 }
+cameras { uuid: "d050c125-a311-4d8d-a08e-5739432c2124" id: "dual-fpv-camera-switcher" manufacturer: "ViFly" name: "Dual FPV Camera Switcher" weight_g: 0.5 }
+cameras { uuid: "c4ae7e47-9f5f-4e68-8cad-5a87980d2369" id: "naked-gopro-13-pro-action-camera-v2-1" manufacturer: "Flywoo" name: "Naked Gopro 13 Pro Action Camera V2.1" weight_g: 47.5 }
+cameras { uuid: "685aa192-a58a-4675-850c-fab8652a358f" id: "punch-shorty-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "11bfbdc7-0409-4595-952d-d3e4a7a4457f" id: "cinemini-dji-o4-pro-camera-mount-for-naked-gopro-mount" manufacturer: "Noozle3D" name: "CineMini DJI O4 Pro Camera Mount for Naked GoPro Mount" weight_g: 0.0 }
+cameras { uuid: "5069afda-f6e9-42c0-b3b9-f2080c56012b" id: "cl2-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "CL2 DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "dbbc56cc-7107-46c1-ae67-13a11cf91a46" id: "tanq-2-s-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "de46be52-cfbf-425e-aedd-a1457d502e9a" id: "dji-o4-air-unit-pro-camera-module" manufacturer: "DJI" name: "DJI O4 Air Unit Pro Camera Module" weight_g: 0.0 }
+cameras { uuid: "43957fcf-36b6-4cad-a47d-4f1e835c8557" id: "punch-shorty-dji-vista-camera-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI Vista Camera Mount" weight_g: 0.0 }
+cameras { uuid: "90bc0ebe-cb41-4536-9674-0c6aad999c3e" id: "thumb-2-action-camera-with-nd-filters" manufacturer: "Runcam" name: "Thumb 2 Action Camera with ND Filters" weight_g: 27.0 }
+cameras { uuid: "50212de2-1255-4a50-a0cd-2c2341413093" id: "skylite-skyliner-mk3-camera-mount-mjf-tpu" manufacturer: "Rotor Riot" name: "Skylite / Skyliner MK3 Camera Mount - MJF TPU" weight_g: 0.0 }
+cameras { uuid: "3114717a-67c5-4e2b-8fc3-3d58080ea1e1" id: "vannystyle-pro-camera-plate-set" manufacturer: "Alex Vannover" name: "Vannystyle Pro Camera Plate Set" weight_g: 0.0 }
+cameras { uuid: "a930d1e1-7b1e-4511-adef-c011aaba9dab" id: "baby-ratel-2-camera-black" manufacturer: "Caddx" name: "Baby Ratel 2 Camera - Black" weight_g: 3.0 }
+cameras { uuid: "5cb2de3d-93ad-4c31-967e-d08832a2f7c2" id: "tanq-2-s-protected-camera-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S Protected Camera Mount" weight_g: 0.0 }
+cameras { uuid: "e1e9e804-f8e8-4a08-a059-9888a8000fd2" id: "tanq-s-camera-cage-2-pack" manufacturer: "Rotor Riot" name: "TANQ S Camera Cage 2-Pack" weight_g: 0.0 }
+cameras { uuid: "fdd65c94-61af-4111-86cb-dd41616220d5" id: "toothless-2-micro-camera-black" manufacturer: "Foxeer" name: "Toothless 2 Micro Camera - Black" weight_g: 8.5 }
+cameras { uuid: "e645c235-4a6d-4bb4-9bed-5a85dfbf64ba" id: "action-camera-nd-filter-set-for-naked-gopro-12-pro" manufacturer: "Flywoo" name: "Action Camera ND Filter Set For Naked Gopro 12 Pro" weight_g: 1.2 }
+cameras { uuid: "de3aa174-ccd0-4867-95aa-e359c2bd33ac" id: "naked-gopro-12-pro-action-camera-v2-1" manufacturer: "Flywoo" name: "Naked Gopro 12 Pro Action Camera V2.1" weight_g: 47.5 }
+cameras { uuid: "2d12e296-c54a-400c-a0ec-26e214f63d83" id: "micro-cat-3-camera-black" manufacturer: "Foxeer" name: "Micro Cat 3 Camera - Black" weight_g: 10.7 }
+cameras { uuid: "07d2a027-da70-4013-b021-2c45dad9f38f" id: "micro-night-cat-3-camera-black" manufacturer: "Foxeer" name: "Micro Night Cat 3 Camera - Black" weight_g: 10.7 }
+cameras { uuid: "e8c881fa-68da-4f8a-bb46-d7a0ac0431e3" id: "tanq-2-camera-cage-set" manufacturer: "Rotor Riot" name: "TANQ 2 Camera Cage Set" weight_g: 0.0 }
+cameras { uuid: "131ac58b-5357-4cb2-8783-67777c07585e" id: "tanq-2-s-camera-mounts" manufacturer: "Noozle3D" name: "TANQ 2 & S Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "b15ee331-7b89-456b-ba9a-caff53748083" id: "moongoat-camera-plate-2-pack" manufacturer: "Ummagawd" name: "Moongoat Camera Plate 2-Pack" weight_g: 0.0 }
+cameras { uuid: "3becfd81-6373-440f-b260-daffa12f9b20" id: "cl2-air-camera-mount-choose-color" manufacturer: "Noozle3D" name: "CL2-AIR Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "66bcdd74-c085-4955-a562-685f00311365" id: "moxy-camera-plate-protector" manufacturer: "Noozle3D" name: "Moxy Camera Plate Protector" weight_g: 0.0 }
+cameras { uuid: "56ba3d44-3349-40ee-ac03-6bcec073fd28" id: "tanq-camera-mounts" manufacturer: "Noozle3D" name: "TANQ Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "fca46585-6f47-4d32-ad16-65cbbcfef03b" id: "tanq-camera-cage-set-choose-color" manufacturer: "Rotor Riot" name: "TANQ Camera Cage Set - Choose Color" weight_g: 0.0 }
+cameras { uuid: "cba53930-8bab-48d4-a217-30098f828009" id: "skyliner-mk3-camera-plate" manufacturer: "Rotor Riot" name: "Skyliner MK3 Camera Plate" weight_g: 0.0 }
+cameras { uuid: "b96a80f6-a535-44f0-bdfa-f27818194dad" id: "moxy-camera-plate-choose-version" manufacturer: "Rotor Riot" name: "Moxy Camera Plate - Choose Version" weight_g: 0.0 }
+cameras { uuid: "bb63e9ca-9311-4b3a-be55-55f4c64958f0" id: "link-with-falcon-nano-camera-for-dji-hd-video-system" manufacturer: "Runcam" name: "Link with Falcon Nano Camera For DJI HD Video System" weight_g: 19.5 }
+cameras { uuid: "a0a11741-103a-433a-991b-ecdd3a80a6f9" id: "vannystyle-replacement-cam-plates-set-of-2" manufacturer: "Alex Vannover" name: "Vannystyle Replacement Cam Plates - Set of 2" weight_g: 0.0 }
+cameras { uuid: "6f3a7b2f-b16a-44c3-acd2-808a8024a5f0" id: "skylite-skyliner-mk3-camera-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "74dddc48-d4d9-4c06-9a86-4bc0f8253b54" id: "moxy-camera-mount-choose-version" manufacturer: "Noozle3D" name: "Moxy Camera Mount - Choose Version" weight_g: 0.0 }
+cameras { uuid: "f2ea0d79-9402-4ab0-b05c-619ba572c89f" id: "cl2-camera-mounts-choose-color" manufacturer: "Noozle3D" name: "CL2 Camera Mounts - Choose Color" weight_g: 0.0 }
+cameras { uuid: "5caf807e-d322-492f-8a25-31ddae1159b4" id: "rc18g-1-8mm-lens-for-dji-and-phoenix-cameras" manufacturer: "Runcam" name: "RC18G 1.8mm Lens for DJI and Phoenix Cameras" weight_g: 4.5 }
+cameras { uuid: "62b0d311-2943-4e29-9d18-5c7e933598ad" id: "skylite-camera-plate-choose-version" manufacturer: "Rotor Riot" name: "Skylite Camera Plate - Choose Version" weight_g: 0.0 }
+cameras { uuid: "2701e9b6-c2a4-49d5-9403-cc5a58a3454e" id: "5-injected-udp-propeller-guard-4-pack" manufacturer: "Stan FPV" name: "5 Injected UDP Propeller Guard 4-Pack" weight_g: 0.0 }
+cameras { uuid: "17cb49fb-25d4-4f01-8995-683046b32cd1" id: "cinewhoop-camera-mount-3-hole" manufacturer: "Noozle3D" name: "Cinewhoop Camera Mount - 3 Hole" weight_g: 0.0 }
+cameras { uuid: "bc9bc593-cae9-4281-b640-8d9d1f9bab53" id: "hd1-fpv-camera-mount-choose-color" manufacturer: "Noozle3D" name: "HD1 FPV Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "d1de500e-af8a-4faa-bc40-b20516b65867" id: "cl1-camera-mounts" manufacturer: "Noozle3D" name: "CL1 Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "c824c102-d5fe-4d49-ab70-5039f85c58eb" id: "c04-fpv-camera" manufacturer: "BETAFPV" name: "C04 FPV Camera" weight_g: 2.74 }
+cameras { uuid: "d3ae6fe0-2fa8-4f60-a242-17a1af1bf199" id: "air-camera" manufacturer: "BETAFPV" name: "Air Camera" weight_g: 1.48 }
+cameras { uuid: "e242a371-c30c-4416-a2ce-5a3ad0ee9097" id: "hq-4025-2-blade-propellers-1-5mm-shaft" manufacturer: "BETAFPV" name: "HQ 4025 2-Blade Propellers 1.5mm Shaft" weight_g: 1.4 }
+cameras { uuid: "6033995a-0b0c-4938-9db9-a4bb15318ffd" id: "nd-filter-for-dji-o4-pro-camera" manufacturer: "BETAFPV" name: "ND Filter for DJI O4 Pro Camera" weight_g: 1.0 }
+cameras { uuid: "b65c998a-3346-4622-9f09-eedca950e770" id: "canopy-for-micro-camera" manufacturer: "BETAFPV" name: "Canopy for Micro Camera" weight_g: 1.31 }
+cameras { uuid: "679c3062-32fd-4cf6-8f59-5e99d820b279" id: "canopy-for-nano-hd-camera" manufacturer: "BETAFPV" name: "Canopy for Nano HD Camera" weight_g: 1.95 }
+cameras { uuid: "cce0aeb0-0931-430b-bb06-562edace708d" id: "caddx-baby-ratel-14mm-nano-1200tvl-1-8mm-fpv-camera" manufacturer: "BETAFPV" name: "Caddx Baby Ratel 14mm Nano 1200TVL 1.8mm FPV Camera" weight_g: 0.0 }
+cameras { uuid: "8f1209dc-10cf-4e73-8f28-9ee98abc416c" id: "caddx-ratel-19mm-micro-starlight-1200tvl-hdr-low-light-fpv-camera" manufacturer: "BETAFPV" name: "Caddx Ratel 19mm Micro Starlight 1200TVL HDR Low-Light FPV Camera" weight_g: 8.0 }
+cameras { uuid: "a07344dc-914d-44ab-ac90-5617b6ffe972" id: "caddx-baby-turtle-camera" manufacturer: "BETAFPV" name: "Caddx Baby Turtle Camera" weight_g: 0.0 }
+cameras { uuid: "64cfe3e5-cc63-43c0-a50c-884878e97ee6" id: "smo-4k-camera-adapter-cable" manufacturer: "BETAFPV" name: "SMO 4K Camera Adapter Cable" weight_g: 0.7 }
+cameras { uuid: "71466628-d07a-440c-b36b-a4517de2cbd2" id: "x-knight-canopy" manufacturer: "BETAFPV" name: "X-Knight Canopy" weight_g: 3.87 }
+cameras { uuid: "b9e4c126-672f-4d0a-96a8-6820ee0cedf0" id: "case-v2-for-naked-camera" manufacturer: "BETAFPV" name: "Case V2 for Naked Camera" weight_g: 6.57 }
+cameras { uuid: "15e79617-7cb9-4553-829e-ce87176fd560" id: "caddx-vista-digital-hd-system-for-dji-hd-fpv" manufacturer: "BETAFPV" name: "Caddx Vista Digital HD System for DJI HD FPV" weight_g: 0.0 }
+cameras { uuid: "5ab43b84-d1d0-46fa-ae78-8b17a21294dd" id: "customized-runcam-split-3-nano-camera" manufacturer: "BETAFPV" name: "Customized Runcam Split 3 Nano Camera" weight_g: 10.0 }
+cameras { uuid: "4833245c-4374-49ab-a274-8f5007c5bc15" id: "customized-caddx-kangaroo-camera" manufacturer: "BETAFPV" name: "Customized Caddx Kangaroo Camera" weight_g: 3.5 }
+cameras { uuid: "0c72281b-d782-4ef1-b157-3c726da547a2" id: "nd-filter-nd8-nd16-for-turtle-v2-runcam-split-mini-2" manufacturer: "BETAFPV" name: "ND Filter ND8 ND16 for Turtle V2 / RunCam Split Mini 2" weight_g: 0.0 }
+cameras { uuid: "49e021d5-11cd-4cd2-8bed-95e534650f2a" id: "canopy-for-mini-camera" manufacturer: "BETAFPV" name: "Canopy for Mini Camera" weight_g: 3.8 }
+cameras { uuid: "614753eb-e3c8-47c9-b0c2-f1cf0541bd91" id: "betapfv-customized-eosv2-fpv-camera-ntsc" manufacturer: "BETAFPV" name: "BETAPFV Customized EOSV2 FPV Camera NTSC" weight_g: 3.5 }
+cameras { uuid: "3a6716a7-4634-48f3-a5a3-7d77938955e5" id: "caddxfpv-mini-fpv-drone-storage-case-for-curve-micro-16-and-tiny-whoops" manufacturer: "CADDXFPV" name: "CaddxFPV Mini FPV Drone Storage Case for Curve Micro 16 and Tiny Whoops" weight_g: 0.0 }
+cameras { uuid: "f106cc28-1bdf-4bb0-8f02-05774f69ba84" id: "caddxfpv-curve-micro-16-replacement-canopy" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 Replacement Canopy" weight_g: 0.0 }
+cameras { uuid: "c16ab1c6-b0ba-42c9-9f47-b2758cabb2d3" id: "caddxfpv-curve-micro-16-replacement-propeller-set" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 Replacement Propeller Set" weight_g: 0.0 }
+cameras { uuid: "d6521213-2a42-4ed9-be1d-91db1f1d7e9a" id: "caddxfpv-ratel-ultra-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ratel Ultra Analog Camera" weight_g: 0.0 }
+cameras { uuid: "03db595b-a912-4a87-a284-8417be1dbae5" id: "caddxfpv-curve-micro-16-hd-tiny-whoop" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 HD Tiny Whoop" weight_g: 0.0 }
+cameras { uuid: "d5b69557-aaad-4ad4-a527-f6567d753004" id: "caddxfpv-custom-sticker-free-gift" manufacturer: "CADDX FPV" name: "CaddxFPV Custom Sticker - Free Gift" weight_g: 0.0 }
+cameras { uuid: "165f5240-8b21-4c9d-8fcb-eb07a0d4ef40" id: "caddxfpv-sticker" manufacturer: "CADDX FPV" name: "CaddxFPV Sticker" weight_g: 0.0 }
+cameras { uuid: "0c466031-28e4-4343-be01-0acb80c2b466" id: "caddxfpv-hq-3-blade-propeller-set-2cw-2ccw" manufacturer: "CADDX FPV" name: "CaddxFPV HQ 3-Blade Propeller Set (2CW + 2CCW)" weight_g: 0.0 }
+cameras { uuid: "3e11fa48-ea35-413e-a79e-07b695febb41" id: "caddxfpv-logo-keychain" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Keychain" weight_g: 0.0 }
+cameras { uuid: "8ee6bae1-b46d-4a63-8144-c94d80abfbf8" id: "caddxfpv-logo-neck-strap" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Neck Strap" weight_g: 0.0 }
+cameras { uuid: "b34abce8-2792-4f77-8637-afa714ed0fa0" id: "caddxfpv-protos-sticker" manufacturer: "CADDX FPV" name: "CaddxFPV Protos Sticker" weight_g: 0.0 }
+cameras { uuid: "bc304eb6-1ae9-4096-8d2b-27bcdcacf6b5" id: "caddxfpv-logo-pullover-hoodie" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Pullover Hoodie" weight_g: 0.0 }
+cameras { uuid: "071d8dea-bd00-418b-a006-efd3cdfee6b8" id: "caddxfpv-logo-half-zip-sweatshirt" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Half-Zip Sweatshirt" weight_g: 0.0 }
+cameras { uuid: "9deab3b5-cb71-4336-9805-b51ea6b54d96" id: "caddxfpv-logo-tee" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Tee" weight_g: 0.0 }
+cameras { uuid: "bcf91dbe-67b4-40dd-ad04-c068d93a8303" id: "caddxfpv-logo-cap" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Cap" weight_g: 0.0 }
+cameras { uuid: "fcb3f49b-0491-41b1-90ee-16d2bacc9da2" id: "gazer-analog-camera-filters" manufacturer: "CADDXFPV" name: "Gazer Analog Camera Filters" weight_g: 0.0 }
+cameras { uuid: "037683e7-68f8-470d-ace6-75f3dd2e4207" id: "caddxfpv-protos-1-6-fpv-drone" manufacturer: "CADDX FPV" name: "CaddxFPV Protos 1.6 FPV Drone" weight_g: 0.0 }
+cameras { uuid: "96efb3cf-9129-4d77-a044-925dc3a2aa51" id: "caddxfpv-protos-2s-charger" manufacturer: "CADDXFPV" name: "CaddxFPV Protos 2S Charger" weight_g: 0.0 }
+cameras { uuid: "23ae7728-8ebb-4ccf-87bf-6cc02d24badd" id: "caddxfpv-infra-v2-camera" manufacturer: "CADDXFPV" name: "CaddxFPV Infra V2 Camera" weight_g: 0.0 }
+cameras { uuid: "1b85f87b-5517-47c5-a778-40d475b2d24b" id: "caddxfpv-farsight-analog-camera" manufacturer: "CADDX FPV" name: "CaddxFPV Farsight Analog Camera" weight_g: 0.0 }
+cameras { uuid: "6a223a9b-2fbd-4f95-a0ac-cbcd1b409e50" id: "caddxfpv-gazer-analog-camera" manufacturer: "CADDX FPV" name: "CaddxFPV Gazer Analog Camera" weight_g: 0.0 }
+cameras { uuid: "aa9df92b-661f-4480-a762-dddcd78a0012" id: "caddxfpv-gofilm-20-power-cord-xt30" manufacturer: "CADDXFPV" name: "CADDXFPV Gofilm 20 Power Cord XT30" weight_g: 0.0 }
+cameras { uuid: "591cec5a-7e3a-4593-b3fb-ea55447e8a24" id: "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount-propeller-set-2x-cw-2x-ccw" manufacturer: "CADDXFPV" name: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount Propeller Set (2x CW / 2x CCW)" weight_g: 0.0 }
+cameras { uuid: "fd331f29-7744-439b-a28c-5d15b52e610d" id: "caddxfpv-ratel-pro-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ratel Pro Analog Camera" weight_g: 9.5 }
+cameras { uuid: "a320ffc5-2ebc-4b21-b600-07a41271cc7a" id: "caddxfpv-canvas-tote-bag" manufacturer: "CADDXFPV" name: "CADDXFPV Canvas Tote Bag" weight_g: 0.0 }
+cameras { uuid: "9b0c01d0-8fe8-4a57-94d6-c714fc746a5e" id: "caddxfpv-banner" manufacturer: "CADDXFPV" name: "CADDXFPV Banner" weight_g: 0.0 }
+cameras { uuid: "37e24bae-086a-4c98-9b7f-750cd182f2a1" id: "caddxfpv-circle" manufacturer: "CADDXFPV" name: "CADDXFPV Circle" weight_g: 0.0 }
+cameras { uuid: "15d527ba-42f6-43f7-8b2a-47a07701b5a3" id: "caddxfpv-arches" manufacturer: "CADDXFPV" name: "CADDXFPV Arches" weight_g: 0.0 }
+cameras { uuid: "2176d8a1-b421-4203-a825-224e986f9dad" id: "caddxfpv-t-shirt" manufacturer: "CADDXFPV" name: "CADDXFPV T-Shirt" weight_g: 0.0 }
+cameras { uuid: "a18e43b3-4672-42b3-9ac6-00f2e8351467" id: "caddxfpv-walnut-mounting-case" manufacturer: "CADDXFPV" name: "CADDXFPV Walnut Mounting Case" weight_g: 0.0 }
+cameras { uuid: "893e24fe-7099-445c-96a8-1ff741141e44" id: "pcba-caddx-walnut-external-charging-board" manufacturer: "CADDXFPV" name: "PCBA Caddx Walnut External Charging Board" weight_g: 0.0 }
+cameras { uuid: "7f7fbae0-df22-4ea6-a291-137bbc7b2337" id: "caddxfpv-walnut-action-camera-magnetic-charging-part" manufacturer: "CADDXFPV" name: "CADDXFPV Walnut Action Camera Magnetic Charging Part" weight_g: 0.0 }
+cameras { uuid: "6518f2e5-9cfb-464b-9d83-72c22592ed83" id: "caddxfpv-silicon-cable" manufacturer: "CADDXFPV" name: "CADDXFPV Silicon Cable" weight_g: 0.0 }
+cameras { uuid: "3f2b6c98-9a7c-47ff-905f-88ec6423c2f0" id: "caddxfpv-camera-accessories-osd-menu-board" manufacturer: "CADDXFPV" name: "CADDXFPV Camera Accessories OSD Menu Board" weight_g: 0.0 }
+cameras { uuid: "f6a72124-502b-462f-bece-53a92d9eb2a2" id: "caddxfpv-baby-ratel2-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Baby Ratel2 Analog Camera" weight_g: 0.0 }
+cameras { uuid: "b0b43611-1a91-4219-9a7a-eb4e0f1da325" id: "caddxfpv-ratel2-analog-camera" manufacturer: "CADDXFPV" name: "CaddxFPV Ratel2 Analog Camera" weight_g: 0.0 }
+cameras { uuid: "52820ddb-ec94-45f4-977e-5301f7e946c2" id: "caddxfpv-ant-lite-analog-camera-fpv-cycle-edition" manufacturer: "CADDXFPV" name: "CADDXFPV Ant Lite Analog Camera  (FPV Cycle Edition)" weight_g: 0.0 }
+cameras { uuid: "1a2de312-20ca-40af-9077-c884f50c1d52" id: "caddxfpv-cap" manufacturer: "CADDXFPV" name: "CADDXFPV Cap" weight_g: 0.0 }
+cameras { uuid: "1fa1ed2b-c6e0-451d-8e67-1cc07050309e" id: "caddxfpv-ant-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ant Analog Camera" weight_g: 0.0 }
+cameras { uuid: "3ab53756-c030-4945-8d7c-6c080325170d" id: "caddxfpv-coaxial-cable-for-vista" manufacturer: "CADDXFPV" name: "CADDXFPV Coaxial Cable For Vista" weight_g: 0.0 }
+cameras { uuid: "b8745a99-7919-43fb-9c04-a34e5f8d8310" id: "caddxfpv-camera-lens-family" manufacturer: "CADDXFPV" name: "CaddxFPV Camera Lens Family" weight_g: 0.0 }
+cameras { uuid: "8683c642-c10d-449f-9a58-072fa9a6c093" id: "darwinfpv-caddx-ant-micro-fpv-camera" manufacturer: "DarwinFPV" name: "DarwinFPV Caddx Ant  Micro FPV Camera" weight_g: 2.0 }
+cameras { uuid: "22596b45-7c9f-4f47-86fc-f991d971373f" id: "runcam-thumb" manufacturer: "DarwinFPV" name: "RunCam Thumb" weight_g: 9.8 }
+cameras { uuid: "e4f3aba0-c6fc-4402-ae11-ebdb2193447b" id: "darwinfpv-cement-ultra-durable-fpv-drone-camera" manufacturer: "DarwinFPV" name: "DarwinFPV Cement Ultra Durable FPV Drone Camera" weight_g: 0.0 }
+cameras { uuid: "d7b0fa5f-a926-4335-9ad3-88ce4bcad5b9" id: "nano-1-mini-action-fpv-camera" manufacturer: "DarwinFPV" name: "NANO 1 Mini Action FPV Camera" weight_g: 0.0 }
+cameras { uuid: "79c78326-bcb4-4ac1-86b9-b32ddc7d1f0b" id: "darwin-129-professional-customized-camera" manufacturer: "DarwinFPV" name: "Darwin 129 Professional Customized Camera" weight_g: 5.0 }
+cameras { uuid: "5793a4bd-94c6-408d-9839-a36e2824e88a" id: "newbeedrone-racespec-camera-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone RaceSpec Camera Mount" weight_g: 0.0 }
+cameras { uuid: "a711103a-82c0-4354-8c13-9a4f1d426532" id: "newbeedrone-whoop-training-camera-x3" manufacturer: "NewBeeDrone" name: "NewBeeDrone Whoop Training Camera x3" weight_g: 0.0 }
+cameras { uuid: "cce6e38e-1b19-4694-90bb-eb58f5b07ede" id: "newbeedrone-beeeye-v2-fpv-camera-10-10-ultra-light-800-tvl" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeEye V2 FPV Camera 10×10 – Ultra-Light 800 TVL" weight_g: 0.0 }
+cameras { uuid: "45cc91e1-b5f7-4cb5-9ae1-188873d535ec" id: "newbeedrone-dji-o4-coaxial-mipi-camera-cable" manufacturer: "NewBeeDrone" name: "NewBeeDrone DJI O4 Coaxial MIPI Camera Cable" weight_g: 0.0 }
+cameras { uuid: "85ef87f8-dfea-4bb3-b93d-8ee9b320d976" id: "newbeedrone-dji-o4-pro-camera-naked-kit-lightweight-fpv-mod-for-drones" manufacturer: "NewBeeDrone" name: "NewBeeDrone DJI O4 Pro Camera Naked Kit – Lightweight FPV Mod for Drones" weight_g: 0.0 }
+cameras { uuid: "19769d12-4b48-4d3d-987c-79afcb01c88b" id: "newbeedrone-m2-screws-4mm-x5-for-dji-camera-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone M2 Screws 4mm x5 for DJI Camera Mount" weight_g: 0.0 }
+cameras { uuid: "2bddb8ae-945a-40a2-b0d0-1350fe088e48" id: "newbeedrone-caddx-nano-ant-camera-for-blv5-plug-and-play-replacement" manufacturer: "Caddx+NewBeeDrone" name: "NewBeeDrone × CADDX Nano ANT Camera for BLV5 - Plug-and-Play Replacement" weight_g: 2.0 }
+cameras { uuid: "221444dc-d73f-4ab2-9009-f3d33c1c3acc" id: "newbeedrone-vivid-3d-printed-action-cam-mount-with-m5-hardware" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid 3D Printed Action Cam Mount with M5 Hardware" weight_g: 0.0 }
+cameras { uuid: "836fe58a-3524-4df8-b226-eed29b6004ad" id: "newbeedrone-racespec-whoop-racing-camera-mount-0-71g-30-or-40" manufacturer: "NewBeeDrone" name: "NewBeeDrone RaceSpec Whoop Racing Camera Mount 0.71g (30° or 40°)" weight_g: 0.71 }
+cameras { uuid: "1b104041-d7e9-4dd9-b425-3b7f77b39888" id: "newbeedrone-jst0-8-3pin-connector-for-beeeye-replacement-camera-connector" manufacturer: "NewBeeDrone" name: "NewBeeDrone JST0.8 3Pin Connector for BeeEye Replacement Camera Connector" weight_g: 0.0 }
+cameras { uuid: "fbbf686b-88d1-4516-903c-91cbef738ceb" id: "newbeedrone-goober-canopy-camera-mount-v2" manufacturer: "NewBeeDrone" name: "NewBeeDrone Goober Canopy Camera Mount V2" weight_g: 1.47 }
+cameras { uuid: "5a1c6e2f-2882-4380-96c7-6ab1a3b3034e" id: "newbeedrone-beebrain-camera-connector-type-jst0-8mm-3pin-pack-of-2" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Camera Connector Type: JST0.8mm 3Pin pack of 2" weight_g: 0.0 }
+cameras { uuid: "bc218fad-5f08-4497-b84a-e487a2aa56d6" id: "newbeedrone-whirligig-v2-replacement-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone Whirligig V2 Replacement Parts" weight_g: 0.0 }
+cameras { uuid: "ceeb3f86-d7b5-4184-9e33-423a3f979e28" id: "newbeedrone-jst0-8-4pin-connector-for-mark2-camera-or-beebrain-blv3-blv4-uart" manufacturer: "NewBeeDrone" name: "NewBeeDrone JST0.8 4Pin Connector for Mark2 Camera or BeeBrain BLv3/BLv4 UART" weight_g: 0.0 }
+cameras { uuid: "bebb3acb-3879-4e91-9d4f-3e8b840cd521" id: "newbeedrone-beeeye-fpv-camera" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeEye FPV Camera" weight_g: 0.0 }
+cameras { uuid: "7c0bee72-cbfb-472a-b05b-4cf2e8eb6a39" id: "newbeedrone-beebrain-v2-camera-color-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain V2 Camera Color Mount" weight_g: 0.0 }
+cameras { uuid: "259a0ca6-4766-4af7-a035-d09939a6345b" id: "aura-analog-fpv-camera" manufacturer: "Fat Shark" name: "Aura Analog FPV Camera" weight_g: 0.0 }
+cameras { uuid: "0f052197-f420-4062-bda6-e25656616ec8" id: "dual-fpv-camera-switcher" manufacturer: "ViFly" name: "Dual FPV Camera Switcher" weight_g: 0.5 }
+cameras { uuid: "922b1e77-3868-4c2f-a5c8-e99ef0e74bb5" id: "naked-gopro-13-pro-action-camera-v2-1" manufacturer: "Flywoo" name: "Naked Gopro 13 Pro Action Camera V2.1" weight_g: 47.5 }
+cameras { uuid: "3edae2e4-2ba1-4198-851a-acd67dfe03f8" id: "punch-shorty-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "a57749a8-56e4-4280-b00b-56e49f4a5e87" id: "cinemini-dji-o4-pro-camera-mount-for-naked-gopro-mount" manufacturer: "Noozle3D" name: "CineMini DJI O4 Pro Camera Mount for Naked GoPro Mount" weight_g: 0.0 }
+cameras { uuid: "e673d013-0c1f-499f-b938-0907483b1911" id: "cl2-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "CL2 DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "e5cd5b4b-f3fa-4726-9580-d948fb3700b3" id: "tanq-2-s-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "80e80ac5-3b6f-400c-8c2b-dd689b86f48c" id: "dji-o4-air-unit-pro-camera-module" manufacturer: "DJI" name: "DJI O4 Air Unit Pro Camera Module" weight_g: 0.0 }
+cameras { uuid: "90411dbb-5f86-4469-bf48-2e5434446b05" id: "punch-shorty-dji-vista-camera-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI Vista Camera Mount" weight_g: 0.0 }
+cameras { uuid: "dd58be41-7405-466c-8274-db83194cb19f" id: "thumb-2-action-camera-with-nd-filters" manufacturer: "Runcam" name: "Thumb 2 Action Camera with ND Filters" weight_g: 27.0 }
+cameras { uuid: "72ec7201-04cd-4689-b029-384e2b9b34a1" id: "skylite-skyliner-mk3-camera-mount-mjf-tpu" manufacturer: "Rotor Riot" name: "Skylite / Skyliner MK3 Camera Mount - MJF TPU" weight_g: 0.0 }
+cameras { uuid: "30ee6045-9086-4a33-8c8c-6a89fffab121" id: "vannystyle-pro-camera-plate-set" manufacturer: "Alex Vannover" name: "Vannystyle Pro Camera Plate Set" weight_g: 0.0 }
+cameras { uuid: "87ddc516-bddc-4939-9ae1-fb3aaf152e3c" id: "baby-ratel-2-camera-black" manufacturer: "Caddx" name: "Baby Ratel 2 Camera - Black" weight_g: 3.0 }
+cameras { uuid: "5ecf88ea-75ac-4f2d-ba9f-bd2f6cb605b2" id: "tanq-2-s-protected-camera-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S Protected Camera Mount" weight_g: 0.0 }
+cameras { uuid: "20f8d996-f154-4595-8ce4-0f7b48a70b82" id: "tanq-s-camera-cage-2-pack" manufacturer: "Rotor Riot" name: "TANQ S Camera Cage 2-Pack" weight_g: 0.0 }
+cameras { uuid: "51b5a0dd-b8b8-46db-9d7c-88460616d276" id: "toothless-2-micro-camera-black" manufacturer: "Foxeer" name: "Toothless 2 Micro Camera - Black" weight_g: 8.5 }
+cameras { uuid: "84899a38-fa86-4d81-ace7-25d26a42be7c" id: "action-camera-nd-filter-set-for-naked-gopro-12-pro" manufacturer: "Flywoo" name: "Action Camera ND Filter Set For Naked Gopro 12 Pro" weight_g: 1.2 }
+cameras { uuid: "d253ab4b-c0d6-4516-a2fb-712dadf13f3c" id: "naked-gopro-12-pro-action-camera-v2-1" manufacturer: "Flywoo" name: "Naked Gopro 12 Pro Action Camera V2.1" weight_g: 47.5 }
+cameras { uuid: "2c8f0b77-cd76-4592-b822-70969b96d41d" id: "micro-cat-3-camera-black" manufacturer: "Foxeer" name: "Micro Cat 3 Camera - Black" weight_g: 10.7 }
+cameras { uuid: "bfd48e1a-26b0-4cef-bfb8-4ad25b01ed03" id: "micro-night-cat-3-camera-black" manufacturer: "Foxeer" name: "Micro Night Cat 3 Camera - Black" weight_g: 10.7 }
+cameras { uuid: "271b1190-3649-4d8d-8985-8fe9124c79bc" id: "kwad-crew-gift-card" manufacturer: "Rotor Riot Gift Card" name: "Kwad Crew Gift Card" weight_g: 0.0 }
+cameras { uuid: "281bfc99-26a3-45d6-8701-26cce32f96f4" id: "tanq-2-camera-cage-set" manufacturer: "Rotor Riot" name: "TANQ 2 Camera Cage Set" weight_g: 0.0 }
+cameras { uuid: "47c9fea5-05ba-438c-8a42-6a5404148408" id: "tanq-2-s-camera-mounts" manufacturer: "Noozle3D" name: "TANQ 2 & S Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "ca5ff19c-f538-4b74-b752-535e1e3535bb" id: "moongoat-camera-plate-2-pack" manufacturer: "Ummagawd" name: "Moongoat Camera Plate 2-Pack" weight_g: 0.0 }
+cameras { uuid: "a56cc1ef-2ff3-4aa0-8a66-d7eebe1182ec" id: "donut-5145-toroidal-5-props-choose-color" manufacturer: "Foxeer" name: "Donut 5145 Toroidal 5 Props - Choose Color" weight_g: 4.3 }
+cameras { uuid: "7d793fe3-ee78-41b6-8f51-40d29d2dd21a" id: "cl2-air-camera-mount-choose-color" manufacturer: "Noozle3D" name: "CL2-AIR Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "f1aba025-cffe-436e-9137-a91eb83be4f7" id: "moxy-camera-plate-protector" manufacturer: "Noozle3D" name: "Moxy Camera Plate Protector" weight_g: 0.0 }
+cameras { uuid: "9f5351b9-21ba-4997-ab38-e7693e76e8d6" id: "rotor-riot-kwad-crew-annual-membership" manufacturer: "Rotor Riot" name: "Rotor Riot Kwad Crew Annual Membership" weight_g: 0.0 }
+cameras { uuid: "ee469c1a-2d68-4555-a9fe-7c8bc99356da" id: "tanq-camera-mounts" manufacturer: "Noozle3D" name: "TANQ Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "85ab066a-f811-4a87-bba0-7ebf383ea0e9" id: "tanq-camera-cage-set-choose-color" manufacturer: "Rotor Riot" name: "TANQ Camera Cage Set - Choose Color" weight_g: 0.0 }
+cameras { uuid: "b4bcdb20-07a9-42ac-a1b9-de09334bfcb2" id: "skyliner-mk3-camera-plate" manufacturer: "Rotor Riot" name: "Skyliner MK3 Camera Plate" weight_g: 0.0 }
+cameras { uuid: "48fe436d-b910-492f-93f1-b76ce8af3545" id: "moxy-camera-plate-choose-version" manufacturer: "Rotor Riot" name: "Moxy Camera Plate - Choose Version" weight_g: 0.0 }
+cameras { uuid: "24cebb27-28a5-4cae-b471-5749a1172b7a" id: "link-with-falcon-nano-camera-for-dji-hd-video-system" manufacturer: "Runcam" name: "Link with Falcon Nano Camera For DJI HD Video System" weight_g: 19.5 }
+cameras { uuid: "a669930c-e10a-46a7-ba43-645e253d3da3" id: "vannystyle-replacement-cam-plates-set-of-2" manufacturer: "Alex Vannover" name: "Vannystyle Replacement Cam Plates - Set of 2" weight_g: 0.0 }
+cameras { uuid: "c539f86c-2662-4365-b88a-d0d8a7e01a57" id: "skylite-skyliner-mk3-camera-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "f510e4ae-de53-473c-ac3d-90eab5aae1fd" id: "moxy-camera-mount-choose-version" manufacturer: "Noozle3D" name: "Moxy Camera Mount - Choose Version" weight_g: 0.0 }
+cameras { uuid: "5463bd1e-57d5-4672-928c-f7bce433dc5f" id: "cl2-camera-mounts-choose-color" manufacturer: "Noozle3D" name: "CL2 Camera Mounts - Choose Color" weight_g: 0.0 }
+cameras { uuid: "3f5555d7-6ed9-4ab0-b23f-2e2a44054b41" id: "rc18g-1-8mm-lens-for-dji-and-phoenix-cameras" manufacturer: "Runcam" name: "RC18G 1.8mm Lens for DJI and Phoenix Cameras" weight_g: 4.5 }
+cameras { uuid: "7ba44226-8b46-4a39-bea2-cba2940a97bf" id: "caddx-coaxial-mipi-cable-for-air-unit-micro-15cm" manufacturer: "Caddx" name: "Caddx Coaxial MIPI Cable for Air Unit Micro (15cm)" weight_g: 0.0 }
+cameras { uuid: "76b58ea7-3a54-4752-8934-5d8837016acc" id: "caddx-coaxial-mipi-cable-for-vista-choose-version" manufacturer: "Caddx" name: "Caddx Coaxial MIPI Cable for Vista - Choose Version" weight_g: 0.0 }
+cameras { uuid: "788257ed-75bd-458e-bcb7-8cb2ae2d139a" id: "skylite-camera-plate-choose-version" manufacturer: "Rotor Riot" name: "Skylite Camera Plate - Choose Version" weight_g: 0.0 }
+cameras { uuid: "5d7c2c2a-f67f-4dd8-a708-d13b1d6f1365" id: "5-injected-udp-propeller-guard-4-pack" manufacturer: "Stan FPV" name: "5 Injected UDP Propeller Guard 4-Pack" weight_g: 0.0 }
+cameras { uuid: "333488e3-ff3e-40c6-8752-0e99ce5e4e65" id: "cinewhoop-camera-mount-3-hole" manufacturer: "Noozle3D" name: "Cinewhoop Camera Mount - 3 Hole" weight_g: 0.0 }
+cameras { uuid: "910fd643-9c5e-426c-a27e-d7f281f5ab33" id: "hd1-fpv-camera-mount-choose-color" manufacturer: "Noozle3D" name: "HD1 FPV Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "bd82a05e-af5a-4f82-9a74-da51489aa561" id: "cl1-camera-mounts" manufacturer: "Noozle3D" name: "CL1 Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "432198ac-a532-4727-97b5-ebb41c8ec415" id: "c04-fpv-camera" manufacturer: "BETAFPV" name: "C04 FPV Camera" weight_g: 2.74 }
+cameras { uuid: "20719d6d-9f43-459e-8677-4135d0d144eb" id: "air-camera" manufacturer: "BETAFPV" name: "Air Camera" weight_g: 1.48 }
+cameras { uuid: "2ca5b32f-5c55-4622-81aa-2bb67f320374" id: "hq-4025-2-blade-propellers-1-5mm-shaft" manufacturer: "BETAFPV" name: "HQ 4025 2-Blade Propellers 1.5mm Shaft" weight_g: 1.4 }
+cameras { uuid: "654baf6f-c219-4c44-99a3-abf12f700682" id: "nd-filter-for-dji-o4-pro-camera" manufacturer: "BETAFPV" name: "ND Filter for DJI O4 Pro Camera" weight_g: 1.0 }
+cameras { uuid: "13e01bb5-03b5-4e16-99fa-5f3b1b061afd" id: "canopy-for-micro-camera" manufacturer: "BETAFPV" name: "Canopy for Micro Camera" weight_g: 1.31 }
+cameras { uuid: "00080cdc-c6f9-494a-b5b1-a7c491d57cc1" id: "canopy-for-nano-hd-camera" manufacturer: "BETAFPV" name: "Canopy for Nano HD Camera" weight_g: 1.95 }
+cameras { uuid: "9c615801-b2c4-49fd-85e1-595b97cae4df" id: "caddx-baby-ratel-14mm-nano-1200tvl-1-8mm-fpv-camera" manufacturer: "BETAFPV" name: "Caddx Baby Ratel 14mm Nano 1200TVL 1.8mm FPV Camera" weight_g: 0.0 }
+cameras { uuid: "7ec80158-c503-4aff-9cfc-cdd2031afe89" id: "caddx-ratel-19mm-micro-starlight-1200tvl-hdr-low-light-fpv-camera" manufacturer: "BETAFPV" name: "Caddx Ratel 19mm Micro Starlight 1200TVL HDR Low-Light FPV Camera" weight_g: 8.0 }
+cameras { uuid: "079cfadd-b36c-4db3-a64f-07283db36e3a" id: "caddx-baby-turtle-camera" manufacturer: "BETAFPV" name: "Caddx Baby Turtle Camera" weight_g: 0.0 }
+cameras { uuid: "84de0d06-c5d6-4148-af04-2ac10e470dcc" id: "smo-4k-camera-adapter-cable" manufacturer: "BETAFPV" name: "SMO 4K Camera Adapter Cable" weight_g: 0.7 }
+cameras { uuid: "c107f16b-9b0e-454c-96db-b086aaf855aa" id: "x-knight-canopy" manufacturer: "BETAFPV" name: "X-Knight Canopy" weight_g: 3.87 }
+cameras { uuid: "edd55e00-865b-49a3-84e4-a24535b508bc" id: "case-v2-for-naked-camera" manufacturer: "BETAFPV" name: "Case V2 for Naked Camera" weight_g: 6.57 }
+cameras { uuid: "88f91c40-1aca-4046-b68f-931c80ac8d07" id: "caddx-vista-digital-hd-system-for-dji-hd-fpv" manufacturer: "BETAFPV" name: "Caddx Vista Digital HD System for DJI HD FPV" weight_g: 0.0 }
+cameras { uuid: "66d8f2af-16a2-4233-8f0f-150f4a6c5ebc" id: "customized-runcam-split-3-nano-camera" manufacturer: "BETAFPV" name: "Customized Runcam Split 3 Nano Camera" weight_g: 10.0 }
+cameras { uuid: "bb0cc195-dbdd-499e-852b-72bf393f05f4" id: "customized-caddx-kangaroo-camera" manufacturer: "BETAFPV" name: "Customized Caddx Kangaroo Camera" weight_g: 3.5 }
+cameras { uuid: "689d79f8-2226-4f78-b007-98a21aeb0770" id: "nd-filter-nd8-nd16-for-turtle-v2-runcam-split-mini-2" manufacturer: "BETAFPV" name: "ND Filter ND8 ND16 for Turtle V2 / RunCam Split Mini 2" weight_g: 0.0 }
+cameras { uuid: "13680044-0faf-4c50-93ac-87955f8fc770" id: "canopy-for-mini-camera" manufacturer: "BETAFPV" name: "Canopy for Mini Camera" weight_g: 3.8 }
+cameras { uuid: "9f6288c3-cddf-48e7-bec6-375cd212cde3" id: "betapfv-customized-eosv2-fpv-camera-ntsc" manufacturer: "BETAFPV" name: "BETAPFV Customized EOSV2 FPV Camera NTSC" weight_g: 3.5 }
+cameras { uuid: "862a78b0-66b3-4d53-94b9-468edec2e46c" id: "caddxfpv-mini-fpv-drone-storage-case-for-curve-micro-16-and-tiny-whoops" manufacturer: "CADDXFPV" name: "CaddxFPV Mini FPV Drone Storage Case for Curve Micro 16 and Tiny Whoops" weight_g: 0.0 }
+cameras { uuid: "5c6e3006-a5df-408f-a498-ea1fa5ac9ffd" id: "caddxfpv-curve-micro-16-replacement-canopy" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 Replacement Canopy" weight_g: 0.0 }
+cameras { uuid: "9c819651-5740-4d14-adc2-c020ef8dc7c4" id: "caddxfpv-curve-micro-16-replacement-propeller-set" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 Replacement Propeller Set" weight_g: 0.0 }
+cameras { uuid: "33662db7-ceb8-4214-9f44-6f981df8ba75" id: "caddxfpv-ratel-ultra-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ratel Ultra Analog Camera" weight_g: 0.0 }
+cameras { uuid: "0ae9c6cc-3666-4c12-b437-f6a806f352cc" id: "caddxfpv-curve-micro-16-hd-tiny-whoop" manufacturer: "CADDXFPV" name: "CaddxFPV Curve Micro 16 HD Tiny Whoop" weight_g: 0.0 }
+cameras { uuid: "45eb47ff-367b-442a-9a51-4117b599f3a8" id: "caddxfpv-custom-sticker-free-gift" manufacturer: "CADDX FPV" name: "CaddxFPV Custom Sticker - Free Gift" weight_g: 0.0 }
+cameras { uuid: "067fb925-dd4f-4dd0-837c-c6e187cb79a8" id: "caddxfpv-sticker" manufacturer: "CADDX FPV" name: "CaddxFPV Sticker" weight_g: 0.0 }
+cameras { uuid: "7bfd256e-7258-4cc8-bf11-28e4fbb68435" id: "caddxfpv-hq-3-blade-propeller-set-2cw-2ccw" manufacturer: "CADDX FPV" name: "CaddxFPV HQ 3-Blade Propeller Set (2CW + 2CCW)" weight_g: 0.0 }
+cameras { uuid: "f32429fe-b814-4fc2-baf9-20c8236e6909" id: "caddxfpv-logo-keychain" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Keychain" weight_g: 0.0 }
+cameras { uuid: "5dd0dca9-c14d-4e0c-bfa7-558852b4a43e" id: "caddxfpv-logo-neck-strap" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Neck Strap" weight_g: 0.0 }
+cameras { uuid: "e0818dcd-7349-4247-8a8c-9e2d7fe40c45" id: "caddxfpv-protos-sticker" manufacturer: "CADDX FPV" name: "CaddxFPV Protos Sticker" weight_g: 0.0 }
+cameras { uuid: "ad7510d7-ce80-4e41-b4fc-fb836ed90482" id: "caddxfpv-logo-pullover-hoodie" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Pullover Hoodie" weight_g: 0.0 }
+cameras { uuid: "61c3258c-95b3-4d6f-ba43-0f8c4b8d0d65" id: "caddxfpv-logo-half-zip-sweatshirt" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Half-Zip Sweatshirt" weight_g: 0.0 }
+cameras { uuid: "45e4cbd8-b8bd-4a2a-a8fb-0af66e602ab0" id: "caddxfpv-logo-tee" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Tee" weight_g: 0.0 }
+cameras { uuid: "5e47460e-eb76-493a-91aa-cb61ea019bfa" id: "caddxfpv-logo-cap" manufacturer: "CADDX FPV" name: "CaddxFPV Logo Cap" weight_g: 0.0 }
+cameras { uuid: "cb99f622-f13b-4fe4-889c-3709632bc790" id: "gazer-analog-camera-filters" manufacturer: "CADDXFPV" name: "Gazer Analog Camera Filters" weight_g: 0.0 }
+cameras { uuid: "c2ae39af-5078-4cc5-9afd-e532ce571375" id: "caddxfpv-protos-1-6-fpv-drone" manufacturer: "CADDX FPV" name: "CaddxFPV Protos 1.6 FPV Drone" weight_g: 0.0 }
+cameras { uuid: "b37de820-1bba-4f7e-bbce-35f3849d7e2c" id: "caddxfpv-protos-2s-charger" manufacturer: "CADDXFPV" name: "CaddxFPV Protos 2S Charger" weight_g: 0.0 }
+cameras { uuid: "ce601493-c918-4091-bc64-50b991a8b928" id: "caddxfpv-infra-v2-camera" manufacturer: "CADDXFPV" name: "CaddxFPV Infra V2 Camera" weight_g: 0.0 }
+cameras { uuid: "9c6275ed-126e-49d5-959b-ce3664050393" id: "caddxfpv-farsight-analog-camera" manufacturer: "CADDX FPV" name: "CaddxFPV Farsight Analog Camera" weight_g: 0.0 }
+cameras { uuid: "237481e9-1388-44d1-a3c6-f01af9f944b9" id: "caddxfpv-gazer-analog-camera" manufacturer: "CADDX FPV" name: "CaddxFPV Gazer Analog Camera" weight_g: 0.0 }
+cameras { uuid: "4a9093ad-f71f-4578-898a-90b830567e80" id: "caddxfpv-gofilm-20-power-cord-xt30" manufacturer: "CADDXFPV" name: "CADDXFPV Gofilm 20 Power Cord XT30" weight_g: 0.0 }
+cameras { uuid: "ca43a7b3-8a77-4a2f-a3cc-17200e8c553c" id: "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount-propeller-set-2x-cw-2x-ccw" manufacturer: "CADDXFPV" name: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount Propeller Set (2x CW / 2x CCW)" weight_g: 0.0 }
+cameras { uuid: "fbf303bf-001d-499d-8038-524627151727" id: "caddxfpv-ratel-pro-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ratel Pro Analog Camera" weight_g: 9.5 }
+cameras { uuid: "e261f039-962c-45af-a652-9d7b53e4a6fe" id: "caddxfpv-canvas-tote-bag" manufacturer: "CADDXFPV" name: "CADDXFPV Canvas Tote Bag" weight_g: 0.0 }
+cameras { uuid: "1a478ce3-9a35-4f90-8a59-11b3804a9c8d" id: "caddxfpv-banner" manufacturer: "CADDXFPV" name: "CADDXFPV Banner" weight_g: 0.0 }
+cameras { uuid: "0b1b85ae-fb57-47ff-acb6-52c474e3156d" id: "caddxfpv-circle" manufacturer: "CADDXFPV" name: "CADDXFPV Circle" weight_g: 0.0 }
+cameras { uuid: "3042cc0f-c1fb-4e19-b9b2-1cc4bedded7d" id: "caddxfpv-arches" manufacturer: "CADDXFPV" name: "CADDXFPV Arches" weight_g: 0.0 }
+cameras { uuid: "fcf4138f-57c8-4ede-8685-2cb27cd3a359" id: "caddxfpv-t-shirt" manufacturer: "CADDXFPV" name: "CADDXFPV T-Shirt" weight_g: 0.0 }
+cameras { uuid: "430b2a4c-d605-4302-854e-d0e8cec6e56b" id: "caddxfpv-walnut-mounting-case" manufacturer: "CADDXFPV" name: "CADDXFPV Walnut Mounting Case" weight_g: 0.0 }
+cameras { uuid: "957e4114-3fb6-490f-8938-d549f124a6aa" id: "pcba-caddx-walnut-external-charging-board" manufacturer: "CADDXFPV" name: "PCBA Caddx Walnut External Charging Board" weight_g: 0.0 }
+cameras { uuid: "9f2953df-04a3-40c1-b5c0-e988a5db5f72" id: "caddxfpv-walnut-action-camera-magnetic-charging-part" manufacturer: "CADDXFPV" name: "CADDXFPV Walnut Action Camera Magnetic Charging Part" weight_g: 0.0 }
+cameras { uuid: "ea9ba268-8c7f-4437-a3d4-747ede66bea3" id: "caddxfpv-silicon-cable" manufacturer: "CADDXFPV" name: "CADDXFPV Silicon Cable" weight_g: 0.0 }
+cameras { uuid: "1ae01dd3-84c6-4be1-83fe-515e723a8f27" id: "caddxfpv-camera-accessories-osd-menu-board" manufacturer: "CADDXFPV" name: "CADDXFPV Camera Accessories OSD Menu Board" weight_g: 0.0 }
+cameras { uuid: "e28f6729-24eb-45cd-ad35-1e66078566b3" id: "caddxfpv-baby-ratel2-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Baby Ratel2 Analog Camera" weight_g: 0.0 }
+cameras { uuid: "7397be7e-0f4d-4c6a-83b8-7d32a55be458" id: "caddxfpv-ratel2-analog-camera" manufacturer: "CADDXFPV" name: "CaddxFPV Ratel2 Analog Camera" weight_g: 0.0 }
+cameras { uuid: "5e30009a-8220-4c62-893e-bccc7ebb7465" id: "caddxfpv-ant-lite-analog-camera-fpv-cycle-edition" manufacturer: "CADDXFPV" name: "CADDXFPV Ant Lite Analog Camera  (FPV Cycle Edition)" weight_g: 0.0 }
+cameras { uuid: "5a364804-365f-4740-8396-a4129ac07c4e" id: "caddxfpv-cap" manufacturer: "CADDXFPV" name: "CADDXFPV Cap" weight_g: 0.0 }
+cameras { uuid: "62b892dc-0102-4491-b3a9-c7e598108c31" id: "caddxfpv-ant-analog-camera" manufacturer: "CADDXFPV" name: "CADDXFPV Ant Analog Camera" weight_g: 0.0 }
+cameras { uuid: "ac43c683-c77f-4340-9337-e1b81bb8c371" id: "caddxfpv-coaxial-cable-for-vista" manufacturer: "CADDXFPV" name: "CADDXFPV Coaxial Cable For Vista" weight_g: 0.0 }
+cameras { uuid: "35a7cd02-7101-4277-9ac1-24ee51ffe660" id: "caddxfpv-camera-lens-family" manufacturer: "CADDXFPV" name: "CaddxFPV Camera Lens Family" weight_g: 0.0 }
+cameras { uuid: "94ffab08-4bfd-47ad-86a8-e9527387dbbb" id: "darwinfpv-caddx-ant-micro-fpv-camera" manufacturer: "DarwinFPV" name: "DarwinFPV Caddx Ant  Micro FPV Camera" weight_g: 2.0 }
+cameras { uuid: "5e82fadd-fdfb-4732-b0b6-c09c170aaed5" id: "runcam-thumb" manufacturer: "DarwinFPV" name: "RunCam Thumb" weight_g: 9.8 }
+cameras { uuid: "46027527-42dd-480f-b4ef-04e01f49db21" id: "darwinfpv-cement-ultra-durable-fpv-drone-camera" manufacturer: "DarwinFPV" name: "DarwinFPV Cement Ultra Durable FPV Drone Camera" weight_g: 0.0 }
+cameras { uuid: "e1e80050-b07a-4cd4-85aa-5ad46691c8db" id: "nano-1-mini-action-fpv-camera" manufacturer: "DarwinFPV" name: "NANO 1 Mini Action FPV Camera" weight_g: 0.0 }
+cameras { uuid: "dfab65e8-2cb9-4cdb-a094-bb10827e7c66" id: "darwin-129-professional-customized-camera" manufacturer: "DarwinFPV" name: "Darwin 129 Professional Customized Camera" weight_g: 5.0 }
+cameras { uuid: "29de3a29-9ba1-4931-9299-9c724f62f7c1" id: "newbeedrone-racespec-camera-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone RaceSpec Camera Mount" weight_g: 0.0 }
+cameras { uuid: "0a4459b1-2a7d-4b77-9645-dd342e83d81c" id: "newbeedrone-whoop-training-camera-x3" manufacturer: "NewBeeDrone" name: "NewBeeDrone Whoop Training Camera x3" weight_g: 0.0 }
+cameras { uuid: "18b87934-0841-49f0-8acf-878725f94a86" id: "newbeedrone-beeeye-v2-fpv-camera-10-10-ultra-light-800-tvl" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeEye V2 FPV Camera 10×10 – Ultra-Light 800 TVL" weight_g: 0.0 }
+cameras { uuid: "4a6c6e46-b77f-4afd-92e0-97ebda2374f3" id: "newbeedrone-dji-o4-coaxial-mipi-camera-cable" manufacturer: "NewBeeDrone" name: "NewBeeDrone DJI O4 Coaxial MIPI Camera Cable" weight_g: 0.0 }
+cameras { uuid: "0881ccb0-f684-4889-89a7-260877b6c12d" id: "newbeedrone-dji-o4-pro-camera-naked-kit-lightweight-fpv-mod-for-drones" manufacturer: "NewBeeDrone" name: "NewBeeDrone DJI O4 Pro Camera Naked Kit – Lightweight FPV Mod for Drones" weight_g: 0.0 }
+cameras { uuid: "dd351646-cccb-46e2-866b-57e4937ca67e" id: "newbeedrone-m2-screws-4mm-x5-for-dji-camera-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone M2 Screws 4mm x5 for DJI Camera Mount" weight_g: 0.0 }
+cameras { uuid: "c364c5ea-06aa-4700-a670-257c3785f270" id: "newbeedrone-caddx-nano-ant-camera-for-blv5-plug-and-play-replacement" manufacturer: "Caddx+NewBeeDrone" name: "NewBeeDrone × CADDX Nano ANT Camera for BLV5 - Plug-and-Play Replacement" weight_g: 2.0 }
+cameras { uuid: "1f18f918-5d49-448d-9c52-ade0a7969ddb" id: "newbeedrone-vivid-3d-printed-action-cam-mount-with-m5-hardware" manufacturer: "NewBeeDrone" name: "NewBeeDrone Vivid 3D Printed Action Cam Mount with M5 Hardware" weight_g: 0.0 }
+cameras { uuid: "2013eaa0-f572-4439-87c9-7e46abc57447" id: "newbeedrone-racespec-whoop-racing-camera-mount-0-71g-30-or-40" manufacturer: "NewBeeDrone" name: "NewBeeDrone RaceSpec Whoop Racing Camera Mount 0.71g (30° or 40°)" weight_g: 0.71 }
+cameras { uuid: "cbccd5ff-a1ec-452a-9d99-0971ed9444e3" id: "newbeedrone-jst0-8-3pin-connector-for-beeeye-replacement-camera-connector" manufacturer: "NewBeeDrone" name: "NewBeeDrone JST0.8 3Pin Connector for BeeEye Replacement Camera Connector" weight_g: 0.0 }
+cameras { uuid: "e85d9ce7-9e60-4593-8f99-928688bac035" id: "newbeedrone-goober-canopy-camera-mount-v2" manufacturer: "NewBeeDrone" name: "NewBeeDrone Goober Canopy Camera Mount V2" weight_g: 1.47 }
+cameras { uuid: "9824bcbb-aaae-4be1-ab7e-3cc2763f1d10" id: "newbeedrone-beebrain-camera-connector-type-jst0-8mm-3pin-pack-of-2" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain Camera Connector Type: JST0.8mm 3Pin pack of 2" weight_g: 0.0 }
+cameras { uuid: "c3364e9c-d745-42b3-875a-8fdef94e767e" id: "newbeedrone-whirligig-v2-replacement-parts" manufacturer: "NewBeeDrone" name: "NewBeeDrone Whirligig V2 Replacement Parts" weight_g: 0.0 }
+cameras { uuid: "753705fe-ea28-4138-80f5-dbf8c518d268" id: "newbeedrone-jst0-8-4pin-connector-for-mark2-camera-or-beebrain-blv3-blv4-uart" manufacturer: "NewBeeDrone" name: "NewBeeDrone JST0.8 4Pin Connector for Mark2 Camera or BeeBrain BLv3/BLv4 UART" weight_g: 0.0 }
+cameras { uuid: "6a1f37a4-2cbd-4731-a6ca-00ee99d06d75" id: "newbeedrone-beeeye-fpv-camera" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeEye FPV Camera" weight_g: 0.0 }
+cameras { uuid: "094c2dcf-a7ac-4f37-a41d-52d8422758b8" id: "newbeedrone-beebrain-v2-camera-color-mount" manufacturer: "NewBeeDrone" name: "NewBeeDrone BeeBrain V2 Camera Color Mount" weight_g: 0.0 }
+cameras { uuid: "d524248d-7bdf-49c6-940f-893dda6b9b1b" id: "aura-analog-fpv-camera" manufacturer: "Fat Shark" name: "Aura Analog FPV Camera" weight_g: 0.0 }
+cameras { uuid: "175dff73-d95f-4b9b-8c9e-b2b24c7576f2" id: "dual-fpv-camera-switcher" manufacturer: "ViFly" name: "Dual FPV Camera Switcher" weight_g: 0.5 }
+cameras { uuid: "a91e5fdf-b03a-4a42-8921-f69b2515ffb6" id: "naked-gopro-13-pro-action-camera-v2-1" manufacturer: "Flywoo" name: "Naked Gopro 13 Pro Action Camera V2.1" weight_g: 47.5 }
+cameras { uuid: "865e1b00-d788-46c5-837f-08cd181820b6" id: "punch-shorty-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "5835c711-11eb-402a-adf0-6b08b2f11641" id: "cinemini-dji-o4-pro-camera-mount-for-naked-gopro-mount" manufacturer: "Noozle3D" name: "CineMini DJI O4 Pro Camera Mount for Naked GoPro Mount" weight_g: 0.0 }
+cameras { uuid: "fbbcb4b6-3f94-49e4-ac40-cec52412ea9c" id: "cl2-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "CL2 DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "6eb05f35-a81c-4fdf-8d61-8dd664892ea1" id: "tanq-2-s-dji-o4-pro-camera-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S DJI O4 Pro Camera Mount" weight_g: 0.0 }
+cameras { uuid: "d71a61e1-04bf-4d5a-932a-4f4da597be07" id: "dji-o4-air-unit-pro-camera-module" manufacturer: "DJI" name: "DJI O4 Air Unit Pro Camera Module" weight_g: 0.0 }
+cameras { uuid: "ad821f86-4e1e-4a53-9690-2a13ba73c3c6" id: "punch-shorty-dji-vista-camera-mount" manufacturer: "Noozle3D" name: "Punch & Shorty DJI Vista Camera Mount" weight_g: 0.0 }
+cameras { uuid: "1580ccf0-43e2-4a80-b854-69d51a36ad67" id: "thumb-2-action-camera-with-nd-filters" manufacturer: "Runcam" name: "Thumb 2 Action Camera with ND Filters" weight_g: 27.0 }
+cameras { uuid: "68ee1bdc-a92c-4ef7-92bd-5d6098a55590" id: "skylite-skyliner-mk3-camera-mount-mjf-tpu" manufacturer: "Rotor Riot" name: "Skylite / Skyliner MK3 Camera Mount - MJF TPU" weight_g: 0.0 }
+cameras { uuid: "e67f4208-b5ad-4e6c-8896-bab319271c46" id: "vannystyle-pro-camera-plate-set" manufacturer: "Alex Vannover" name: "Vannystyle Pro Camera Plate Set" weight_g: 0.0 }
+cameras { uuid: "c288840c-2efb-44cd-9c4a-f1d2e32ca0dc" id: "baby-ratel-2-camera-black" manufacturer: "Caddx" name: "Baby Ratel 2 Camera - Black" weight_g: 3.0 }
+cameras { uuid: "ffefdd32-c8ff-474b-9862-c948bf85e876" id: "tanq-2-s-protected-camera-mount" manufacturer: "Noozle3D" name: "TANQ 2 & S Protected Camera Mount" weight_g: 0.0 }
+cameras { uuid: "2fdd2220-1979-4ce3-86c2-de3a4a273889" id: "tanq-s-camera-cage-2-pack" manufacturer: "Rotor Riot" name: "TANQ S Camera Cage 2-Pack" weight_g: 0.0 }
+cameras { uuid: "ceec6459-0051-45e0-8b06-d08621971808" id: "toothless-2-micro-camera-black" manufacturer: "Foxeer" name: "Toothless 2 Micro Camera - Black" weight_g: 8.5 }
+cameras { uuid: "0d430395-070c-40ac-ab7a-a478893ee26a" id: "action-camera-nd-filter-set-for-naked-gopro-12-pro" manufacturer: "Flywoo" name: "Action Camera ND Filter Set For Naked Gopro 12 Pro" weight_g: 1.2 }
+cameras { uuid: "7b5f2967-2c65-49f7-be46-b1a7c05341e6" id: "naked-gopro-12-pro-action-camera-v2-1" manufacturer: "Flywoo" name: "Naked Gopro 12 Pro Action Camera V2.1" weight_g: 47.5 }
+cameras { uuid: "b76c8d63-7bf5-4962-b14f-b228bff329d4" id: "micro-cat-3-camera-black" manufacturer: "Foxeer" name: "Micro Cat 3 Camera - Black" weight_g: 10.7 }
+cameras { uuid: "e803c7be-ca0f-4e88-aba2-4d64bf601a24" id: "micro-night-cat-3-camera-black" manufacturer: "Foxeer" name: "Micro Night Cat 3 Camera - Black" weight_g: 10.7 }
+cameras { uuid: "f4d68d76-59f2-41a3-81d7-8e1827a550e0" id: "kwad-crew-gift-card" manufacturer: "Rotor Riot Gift Card" name: "Kwad Crew Gift Card" weight_g: 0.0 }
+cameras { uuid: "0ce84f00-2aea-43cd-a165-3ea180fd94c5" id: "tanq-2-camera-cage-set" manufacturer: "Rotor Riot" name: "TANQ 2 Camera Cage Set" weight_g: 0.0 }
+cameras { uuid: "a5fa1338-710f-4318-a6e2-e451366026a0" id: "tanq-2-s-camera-mounts" manufacturer: "Noozle3D" name: "TANQ 2 & S Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "f98f2df0-605e-4861-85d5-d3d66625a1c1" id: "moongoat-camera-plate-2-pack" manufacturer: "Ummagawd" name: "Moongoat Camera Plate 2-Pack" weight_g: 0.0 }
+cameras { uuid: "d830b413-b0e8-4b3c-83ea-3a5b9be65168" id: "donut-5145-toroidal-5-props-choose-color" manufacturer: "Foxeer" name: "Donut 5145 Toroidal 5 Props - Choose Color" weight_g: 4.3 }
+cameras { uuid: "e168dcda-6831-4ce5-b61f-4b9f24e7f46c" id: "cl2-air-camera-mount-choose-color" manufacturer: "Noozle3D" name: "CL2-AIR Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "b38f0f59-42cd-4e44-8e2d-1a1870385bfd" id: "moxy-camera-plate-protector" manufacturer: "Noozle3D" name: "Moxy Camera Plate Protector" weight_g: 0.0 }
+cameras { uuid: "8d4e4293-4711-404d-81bd-d9480d7f3a1d" id: "rotor-riot-kwad-crew-annual-membership" manufacturer: "Rotor Riot" name: "Rotor Riot Kwad Crew Annual Membership" weight_g: 0.0 }
+cameras { uuid: "bb752c3a-23ee-4f03-9a19-adfcda3778c2" id: "tanq-camera-mounts" manufacturer: "Noozle3D" name: "TANQ Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "653ca460-d8a9-4189-86ff-3a5a624bad8e" id: "tanq-camera-cage-set-choose-color" manufacturer: "Rotor Riot" name: "TANQ Camera Cage Set - Choose Color" weight_g: 0.0 }
+cameras { uuid: "7abf6e84-f8eb-4a54-bbb1-c838c4ca4b43" id: "skyliner-mk3-camera-plate" manufacturer: "Rotor Riot" name: "Skyliner MK3 Camera Plate" weight_g: 0.0 }
+cameras { uuid: "25075817-61c4-412e-b6c6-d280d8c32ba6" id: "moxy-camera-plate-choose-version" manufacturer: "Rotor Riot" name: "Moxy Camera Plate - Choose Version" weight_g: 0.0 }
+cameras { uuid: "13fd2d41-7ae7-496a-94bc-d1facd513d88" id: "link-with-falcon-nano-camera-for-dji-hd-video-system" manufacturer: "Runcam" name: "Link with Falcon Nano Camera For DJI HD Video System" weight_g: 19.5 }
+cameras { uuid: "2b050572-4bd8-415c-bec4-2d3fd38e22e6" id: "vannystyle-replacement-cam-plates-set-of-2" manufacturer: "Alex Vannover" name: "Vannystyle Replacement Cam Plates - Set of 2" weight_g: 0.0 }
+cameras { uuid: "f1ae6730-ebe0-4bfb-95a2-01867b41978d" id: "skylite-skyliner-mk3-camera-mount-choose-color" manufacturer: "Noozle3D" name: "Skylite / Skyliner MK3 Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "3492aebd-5fe9-4caf-9e8e-9f7e64f26e66" id: "moxy-camera-mount-choose-version" manufacturer: "Noozle3D" name: "Moxy Camera Mount - Choose Version" weight_g: 0.0 }
+cameras { uuid: "5da6d9ca-72ec-4bfa-8dcb-118a3b99731b" id: "cl2-camera-mounts-choose-color" manufacturer: "Noozle3D" name: "CL2 Camera Mounts - Choose Color" weight_g: 0.0 }
+cameras { uuid: "97d46271-851d-4e91-8e17-71a01df62bd8" id: "rc18g-1-8mm-lens-for-dji-and-phoenix-cameras" manufacturer: "Runcam" name: "RC18G 1.8mm Lens for DJI and Phoenix Cameras" weight_g: 4.5 }
+cameras { uuid: "8495608c-df1b-404c-895c-28cbabc39113" id: "caddx-coaxial-mipi-cable-for-air-unit-micro-15cm" manufacturer: "Caddx" name: "Caddx Coaxial MIPI Cable for Air Unit Micro (15cm)" weight_g: 0.0 }
+cameras { uuid: "d3a19127-cc6a-4760-b9b2-e573b762d281" id: "caddx-coaxial-mipi-cable-for-vista-choose-version" manufacturer: "Caddx" name: "Caddx Coaxial MIPI Cable for Vista - Choose Version" weight_g: 0.0 }
+cameras { uuid: "46a36306-f12e-4eed-b422-f485830ed9e9" id: "skylite-camera-plate-choose-version" manufacturer: "Rotor Riot" name: "Skylite Camera Plate - Choose Version" weight_g: 0.0 }
+cameras { uuid: "4c562b48-5312-44d7-922b-0ce3b198994b" id: "5-injected-udp-propeller-guard-4-pack" manufacturer: "Stan FPV" name: "5 Injected UDP Propeller Guard 4-Pack" weight_g: 0.0 }
+cameras { uuid: "e707cfc1-56b5-4282-b00e-57438a251ccf" id: "cinewhoop-camera-mount-3-hole" manufacturer: "Noozle3D" name: "Cinewhoop Camera Mount - 3 Hole" weight_g: 0.0 }
+cameras { uuid: "f384dddb-1852-4718-be3a-f69a38826b56" id: "hd1-fpv-camera-mount-choose-color" manufacturer: "Noozle3D" name: "HD1 FPV Camera Mount - Choose Color" weight_g: 0.0 }
+cameras { uuid: "e96448eb-e3db-4ee8-bd93-0754a5c0966f" id: "cl1-camera-mounts" manufacturer: "Noozle3D" name: "CL1 Camera Mounts" weight_g: 0.0 }
+cameras { uuid: "e5427a2c-26e9-49a1-972e-61882c2378a6" id: "hglrc-l-series-cameras-low-latency-night-vision-for-fpv-drone" manufacturer: "HGLRC" name: "HGLRC L-series cameras low latency night vision for FPV Drone" weight_g: 0.0 }
+cameras { uuid: "011cab03-9529-43d0-b2ca-bddd5e2566c9" id: "hglrc-silicone-shock-absorber-for-fpv-drone-action-camera-mount" manufacturer: "HGLRC" name: "HGLRC Silicone Shock Absorber for FPV Drone Action Camera Mount" weight_g: 1.5 }
+cameras { uuid: "e8d86684-4922-40f1-ab8d-c23ff3651fdd" id: "dji-o4-pro-coaxial-camera-cable" manufacturer: "DJI" name: "DJI O4 Pro Coaxial Camera Cable" weight_g: 0.0 }
+cameras { uuid: "d5471307-7d9c-4561-bbd9-96974f7454e1" id: "atlas-4-flash-1804-hq-t4x2x3-bundle-kit" manufacturer: "FlyFishRC" name: "Atlas 4 Flash 1804 HQ T4x2x3 Bundle Kit" weight_g: 55.6 }
+cameras { uuid: "65ead124-fe05-4570-bbe2-4b5cec5e8589" id: "tony5-flash-2004-hq-t5x3-bundle-kit" manufacturer: "FlyFishRC" name: "TONY5 Flash 2004 HQ T5x3 Bundle Kit" weight_g: 57.0 }
+cameras { uuid: "a6fdb2e3-b95f-4383-833f-9d849df28234" id: "runcam-air-unit-wasp-digital-hd-fpv-camera-system" manufacturer: "FlyFish-RC" name: "RUNCAM Air Unit Wasp Digital HD FPV Camera System" weight_g: 33.0 }
+cameras { uuid: "e44638fc-3761-4c25-9339-090918b520b1" id: "runcam-link-wasp-digital-hd-fpv-camera-system" manufacturer: "FlyFish-RC" name: "RunCam Link Wasp Digital HD FPV Camera System" weight_g: 19.5 }
+cameras { uuid: "bfcf6004-d456-414d-a557-6248c309610e" id: "dji-fpv-goggles-v2" manufacturer: "DJI" name: "DJI FPV Goggles V2" weight_g: 420.0 }
+cameras { uuid: "3de0cd41-8385-44c2-958e-ecddf4dc1fbe" id: "nimble65-65mm-analog-1s-mini-whoop-quadcopter" manufacturer: "sub250" name: "Nimble65 65mm Analog 1S Mini Whoop Quadcopter" weight_g: 21.0 }
+cameras { uuid: "5dfb793c-e1ba-4e5c-b372-d3f7e828d848" id: "caddx-camera-for-whoopfly16-nimble65" manufacturer: "Sub250" name: "Caddx  Camera for Whoopfly16 Nimble65" weight_g: 0.0 }
+cameras { uuid: "e83a5635-68e6-4708-9e8c-154750033395" id: "caddx-walnut-fpv-action-camera" manufacturer: "Caddx" name: "Caddx Walnut FPV Action Camera" weight_g: 62.8 }
+cameras { uuid: "275a68ac-a872-4fed-860b-4535d696b527" id: "caddx-ant-analog-camera-for-nanofly16" manufacturer: "sub250" name: "Caddx Ant Analog Camera for Nanofly16" weight_g: 0.0 }
+cameras { uuid: "8334ca23-ce9f-42ac-baa1-1a862ccd11ff" id: "caddx-ant-lite-4-3-fpv-camera-fpvcycle-edition" manufacturer: "FPVCycle" name: "Caddx Ant Lite 4:3 FPV Camera - FPVCycle Edition" weight_g: 0.0 }
+cameras { uuid: "2663139f-1c39-4d6c-9bfd-c9d17fd49140" id: "cineglide-camera-pod-lower-brace" manufacturer: "FPVCycle" name: "CineGlide - Camera Pod Lower Brace" weight_g: 0.0 }
+cameras { uuid: "9ea9df99-9f44-47b7-8f55-7b16a09cd050" id: "fpvcycle-nd-filter-for-gopro-and-other-cameras-nd16-2-pack" manufacturer: "FPVCycle" name: "FPVCycle ND Filter for GoPro and other Cameras - ND16 - 2 Pack" weight_g: 0.0 }
+cameras { uuid: "94f39759-be4f-41fd-8e2e-dfc310d84109" id: "cineglide-5" manufacturer: "FPVCycle" name: "CineGlide - 5" weight_g: 0.0 }
+cameras { uuid: "f49bc7c3-45f7-4799-b0cb-1f3bcbeebc23" id: "beebrain-v2-camera-mount-and-canopy" manufacturer: "FPVCycle" name: "BeeBrain V2 Camera Mount and Canopy" weight_g: 1.3 }
