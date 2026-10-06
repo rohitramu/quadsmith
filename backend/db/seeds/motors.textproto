@@ -266,7 +266,7 @@ motors: {
   weight_g: 34.8
   stator_diameter_mm: 22
   stator_height_mm: 7
-  kv: 1950
+  kv: 0
 }
 motors: {
   uuid: "01a11091-1f13-7669-9fc3-1a100bb5de4d"
@@ -274,10 +274,10 @@ motors: {
   manufacturer: "Flywoo"
   name: "Flywoo NIN 1404 V2 2750KV Ultralight"
   weight_g: 9.5
+  description: "Flywoo NIN 1404 V2 2750KV Ultralight Motor"
   stator_diameter_mm: 14
   stator_height_mm: 4
   kv: 2750
-  description: "Flywoo NIN 1404 V2 2750KV Ultralight Motor"
 }
 motors: {
   uuid: "e5a31a56-3379-4ca0-8c92-fa2ba3e13169"
@@ -418,13 +418,6 @@ motors: {
   kv: 4600
 }
 motors: {
-  uuid: "921700cf-9515-4604-acbc-72aa65115bc9"
-  id: "meteor-air-series-motor-fixing-screws-pack"
-  manufacturer: "BETAFPV"
-  name: "Meteor/Air Series Motor Fixing Screws Pack"
-  kv: 0
-}
-motors: {
   uuid: "d2d0a489-4718-4011-832e-c3eeb93d22e4"
   id: "snow-2306-brushless-motors"
   manufacturer: "BETAFPV"
@@ -535,16 +528,6 @@ motors: {
   kv: 5000
 }
 motors: {
-  uuid: "fa83551b-1fdc-455a-8abc-1d770954087e"
-  id: "sleek-beta65s-frames"
-  manufacturer: "BETAFPV"
-  name: "Sleek Beta65S Frames"
-  stator_diameter_mm: 7
-  stator_height_mm: 16
-  kv: 0
-  description: "Sleek Beta65S Frames for 7x16 Motors (Grinding Version)"
-}
-motors: {
   uuid: "3dcb53a4-65a4-4fac-a824-1525d4617c2c"
   id: "08028-12000kv-brushless-motors"
   manufacturer: "BETAFPV"
@@ -575,17 +558,6 @@ motors: {
   kv: 0
 }
 motors: {
-  uuid: "03f6f614-8229-45e7-9726-3396a6a4f008"
-  id: "65mm-micro-whoop-frame"
-  manufacturer: "BETAFPV"
-  name: "65mm Micro Whoop Frame"
-  weight_g: 3.7
-  stator_diameter_mm: 7
-  stator_height_mm: 16
-  kv: 0
-  description: "65mm Micro Whoop Frame for 7x16mm Motors Version 4"
-}
-motors: {
   uuid: "6ab50d62-9915-4596-981d-b98f15b9d24b"
   id: "0703-1s-brushless-motors"
   manufacturer: "BETAFPV"
@@ -596,43 +568,14 @@ motors: {
   kv: 0
 }
 motors: {
-  uuid: "caa0db25-31e2-441c-a5d2-9ebad5660c6f"
-  id: "65mm-micro-whoop-frame-2"
-  manufacturer: "BETAFPV"
-  name: "65mm Micro Whoop Frame"
-  stator_diameter_mm: 6
-  stator_height_mm: 15
-  kv: 0
-  description: "65mm Micro Whoop Frame for 6x15mm Motors (Eachine E010 Version)"
-}
-motors: {
-  uuid: "c51d7468-f06b-4c20-91e4-b188b61e7f08"
-  id: "85mm-micro-whoop-frame"
-  manufacturer: "BETAFPV"
-  name: "85mm Micro Whoop Frame"
-  stator_diameter_mm: 8.5
-  stator_height_mm: 20
-  kv: 0
-  description: "85mm Micro Whoop Frame for 8.5x20mm Motors"
-}
-motors: {
-  uuid: "d440c072-f710-4f77-ae49-9916904c993a"
-  id: "75mm-micro-whoop-frame-for-8x20mm-motors"
-  manufacturer: "BETAFPV"
-  name: "75mm Micro Whoop Frame for 8x20mm Motors"
-  stator_diameter_mm: 8
-  stator_height_mm: 20
-  kv: 0
-}
-motors: {
   uuid: "05cee930-63d3-4636-9791-12e339a32faf"
   id: "8-5x20mm-16000kv-brushed-motors"
   manufacturer: "BETAFPV"
   name: "8.5x20mm 16000KV Brushed Motors"
+  description: "8.5x20mm 16000KV Brushed Motors (2CW+2CCW)"
   stator_diameter_mm: 8.5
   stator_height_mm: 20
   kv: 16000
-  description: "8.5x20mm 16000KV Brushed Motors (2CW+2CCW)"
 }
 motors: {
   uuid: "e88215a6-898e-455c-9fa6-96bcb3b2f010"
@@ -657,10 +600,10 @@ motors: {
   id: "caddxfpv-curve-micro-16-1102-24000kv"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Curve Micro 16 1102 24000KV"
+  description: "CADDXFPV Curve Micro 16 1102 24000KV Brushless Motor"
   stator_diameter_mm: 11
   stator_height_mm: 2
   kv: 24000
-  description: "CADDXFPV Curve Micro 16 1102 24000KV Brushless Motor"
 }
 motors: {
   uuid: "bac780fe-4135-4b77-b80d-62d49bc6944f"
@@ -674,10 +617,10 @@ motors: {
   id: "caddxfpv-1303-6000kv-brushless-motors"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV 1303 6000KV Brushless Motors"
+  description: "CADDXFPV 1303 6000KV Brushless Motors (1pc)"
   stator_diameter_mm: 13
   stator_height_mm: 3
   kv: 6000
-  description: "CADDXFPV 1303 6000KV Brushless Motors (1pc)"
 }
 motors: {
   uuid: "a673fc93-5abd-4ee3-b151-cbcc8ac1d08c"
@@ -721,20 +664,20 @@ motors: {
   id: "darwinfpv-bling-series-bling-1504-4000kv"
   manufacturer: "DarwinFPV - Official Store"
   name: "DarwinFPV Bling Series Bling 1504 4000KV"
+  description: "DarwinFPV Bling Series Bling 1504 4000KV Brushless FPV Drone Motor"
   stator_diameter_mm: 15
   stator_height_mm: 4
   kv: 4000
-  description: "DarwinFPV Bling Series Bling 1504 4000KV Brushless FPV Drone Motor"
 }
 motors: {
   uuid: "16cfcf3f-737d-479e-9de9-386d1bd57048"
   id: "darwinfpv-bling-series-bling-1104-5000kv"
   manufacturer: "DarwinFPV - Official Store"
   name: "DarwinFPV Bling Series Bling 1104 5000KV"
+  description: "DarwinFPV Bling Series Bling 1104 5000KV Brushless FPV Drone Motor"
   stator_diameter_mm: 11
   stator_height_mm: 4
   kv: 5000
-  description: "DarwinFPV Bling Series Bling 1104 5000KV Brushless FPV Drone Motor"
 }
 motors: {
   uuid: "6135f03a-c9c2-4aa9-9e17-13384411090b"
@@ -759,10 +702,10 @@ motors: {
   id: "darwinfpv-bling-series-bling-1103-fpv"
   manufacturer: "DarwinFPV - Official Store"
   name: "DarwinFPV Bling Series Bling 1103 FPV"
+  description: "DarwinFPV Bling Series Bling 1103 FPV Drone Brushless Motor"
   stator_diameter_mm: 11
   stator_height_mm: 3
   kv: 0
-  description: "DarwinFPV Bling Series Bling 1103 FPV Drone Brushless Motor"
 }
 motors: {
   uuid: "0f4a937e-ab0e-4e73-a3d0-132fe265a3b3"
@@ -823,10 +766,10 @@ motors: {
   id: "darwinfpv-1504-2300kv-3600kv-3800kv-blushless"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 1504 2300KV 3600KV 3800KV Blushless"
+  description: "DarwinFPV 1504 2300KV 3600KV 3800KV Blushless Motor"
   stator_diameter_mm: 15
   stator_height_mm: 4
   kv: 2300
-  description: "DarwinFPV 1504 2300KV 3600KV 3800KV Blushless Motor"
 }
 motors: {
   uuid: "6c9ef18b-cfb7-41e8-8879-2e0a0ae0888f"
@@ -860,108 +803,90 @@ motors: {
   id: "newbeedrone-flow-1204-racing-and-freestyle"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 1204 Racing and Freestyle"
+  description: "NewBeeDrone FLOW 1204 Racing and Freestyle FPV Micro Motor (Set of 4) 15000KV"
   stator_diameter_mm: 12
   stator_height_mm: 4
   kv: 15000
-  description: "NewBeeDrone FLOW 1204 Racing and Freestyle FPV Micro Motor (Set of 4) 15000KV"
 }
 motors: {
   uuid: "df3aedbd-309e-4620-8fee-ae0175241f28"
   id: "newbeedrone-flow-2306-5-v2-freestyle-fpv"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 2306.5 V2 Freestyle FPV"
+  description: "NewBeeDrone FLOW 2306.5 V2 Freestyle FPV Motor - 2450KV"
   stator_diameter_mm: 23
   stator_height_mm: 6.5
   kv: 2450
-  description: "NewBeeDrone FLOW 2306.5 V2 Freestyle FPV Motor - 2450KV"
 }
 motors: {
   uuid: "0ecfd114-64ba-4828-8418-cdaceff97186"
   id: "newbeedrone-flow-0702-dual-ball-bearing"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Flow 0702 Dual Ball Bearing"
+  description: "NewBeeDrone Flow 0702 Dual Ball Bearing Whoop Motor 30000KV (4-Pack)"
   stator_diameter_mm: 7
   stator_height_mm: 2
   kv: 30000
-  description: "NewBeeDrone Flow 0702 Dual Ball Bearing Whoop Motor 30000KV (4-Pack)"
 }
 motors: {
   uuid: "c3a04c5c-0081-47c3-b925-f2b5375d7b4a"
   id: "newbeedrone-2306-5-smoov-v2-ring-magnet"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone 2306.5 Smoov V2 Ring Magnet"
+  description: "NewBeeDrone 2306.5 Smoov V2 Ring Magnet Cinematic FPV Motor 1750KV"
   stator_diameter_mm: 23
   stator_height_mm: 6.5
   kv: 1750
-  description: "NewBeeDrone 2306.5 Smoov V2 Ring Magnet Cinematic FPV Motor 1750KV"
 }
 motors: {
   uuid: "12504b47-0386-492d-a07b-590d59a3be79"
   id: "newbeedrone-0802-dual-ball-bearing-whoop"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone 0802 Dual Ball Bearing Whoop"
+  description: "NewBeeDrone 0802 Dual Ball Bearing Whoop Motor 30000KV (Set of 4)"
   stator_diameter_mm: 8
   stator_height_mm: 2
   kv: 30000
-  description: "NewBeeDrone 0802 Dual Ball Bearing Whoop Motor 30000KV (Set of 4)"
 }
 motors: {
   uuid: "352e00f2-ff60-4f5f-87a2-ee4021ead03b"
   id: "newbeedrone-flow-0802-dual-ball-bearing"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Flow 0802 Dual Ball Bearing"
+  description: "NewBeeDrone Flow 0802 Dual Ball Bearing Whoop Motor 13000KV (Set of 4)"
   stator_diameter_mm: 8
   stator_height_mm: 2
   kv: 13000
-  description: "NewBeeDrone Flow 0802 Dual Ball Bearing Whoop Motor 13000KV (Set of 4)"
 }
 motors: {
   uuid: "ada6aac1-2e67-4930-bcbe-990b825494b3"
   id: "newbeedrone-flow-2204-2100kv-motor-t-mount"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Flow 2204 2100kv Motor T-Mount"
+  description: "NewBeeDrone Flow 2204 2100kv Motor T-Mount 4Pack"
   stator_diameter_mm: 22
   stator_height_mm: 4
   kv: 2100
-  description: "NewBeeDrone Flow 2204 2100kv Motor T-Mount 4Pack"
 }
 motors: {
   uuid: "011cf10e-780e-4a7f-835d-9e03844cc16d"
   id: "newbeedrone-2306-5-smoov-v2-ring-magnet-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone 2306.5 Smoov V2 Ring Magnet"
+  description: "NewBeeDrone 2306.5 Smoov V2 Ring Magnet Cinematic FPV Motor 2450KV"
   stator_diameter_mm: 23
   stator_height_mm: 6.5
   kv: 2450
-  description: "NewBeeDrone 2306.5 Smoov V2 Ring Magnet Cinematic FPV Motor 2450KV"
-}
-motors: {
-  uuid: "96c97f53-2073-444f-a3fe-6f9f56170737"
-  id: "newbeedrone-cinemah-carbon-fiber-frame-replacement"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone CinemAh Carbon Fiber Frame Replacement"
-  kv: 0
-  description: "NewBeeDrone CinemAh Carbon Fiber Frame Replacement Parts  - Main Plate, Side Plates, Motor Mounts, Etc."
 }
 motors: {
   uuid: "1e8c1492-ce5e-4cde-a549-81a25377af0f"
   id: "hummingbird-0702-true-30000kv-brushless-motors"
   manufacturer: "NewBeeDrone"
   name: "Hummingbird 0702 True 30000kv Brushless Motors"
+  description: "Hummingbird 0702 True 30000kv Brushless Motors -Standard Version"
   stator_diameter_mm: 7
   stator_height_mm: 2
   kv: 30000
-  description: "Hummingbird 0702 True 30000kv Brushless Motors -Standard Version"
-}
-motors: {
-  uuid: "a2c87082-0faf-4a83-b8f1-db61edbe1e52"
-  id: "newbeedrone-motor-screws-m1-4-2mm"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Motor Screws M1.4*2mm"
-  stator_diameter_mm: 1.4
-  stator_height_mm: 2
-  kv: 0
-  description: "NewBeeDrone Motor Screws M1.4*2mm - Set of 15"
 }
 motors: {
   uuid: "55b04f9c-d16c-4556-be00-445f1496ebcc"
@@ -986,10 +911,10 @@ motors: {
   id: "newbeedrone-flow-0802-dual-ball-bearing-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Flow 0802 Dual Ball Bearing"
+  description: "NewBeeDrone Flow 0802 Dual Ball Bearing Whoop motor 19000kv (Set of 4)"
   stator_diameter_mm: 8
   stator_height_mm: 2
   kv: 19000
-  description: "NewBeeDrone Flow 0802 Dual Ball Bearing Whoop motor 19000kv (Set of 4)"
 }
 motors: {
   uuid: "e7209511-4bbe-4f4b-9eb5-052e53d4cb03"
@@ -997,97 +922,78 @@ motors: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Cockroach V3 Carbon Fiber Motor"
   weight_g: 1
-  kv: 0
   description: "NewBeeDrone Cockroach V3 Carbon Fiber Motor Base"
-}
-motors: {
-  uuid: "3b195f9a-c3cf-44b0-a8a1-e8d5a2cbf905"
-  id: "newbeedrone-motor-screws-m2-4mm"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Motor Screws M2*4mm"
-  stator_diameter_mm: 2
-  stator_height_mm: 4
   kv: 0
-  description: "NewBeeDrone Motor Screws M2*4mm - Set of 15"
 }
 motors: {
   uuid: "435410f3-31e6-4f09-b87d-e9fcdae27f85"
   id: "newbeedrone-flow-motor-1404-4000kv"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW Motor 1404 4000KV"
+  description: "NewBeeDrone FLOW Motor 1404 4000KV - T Mount (Set of 4)"
   stator_diameter_mm: 14
   stator_height_mm: 4
   kv: 4000
-  description: "NewBeeDrone FLOW Motor 1404 4000KV - T Mount (Set of 4)"
-}
-motors: {
-  uuid: "9e5e1ad2-ca4a-45f3-812d-819d4e030a48"
-  id: "newbeedrone-motor-extension-cable-24awg-50mm-12"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Motor Extension Cable 24AWG 50mm*12"
-  stator_diameter_mm: 50
-  stator_height_mm: 0
-  kv: 0
 }
 motors: {
   uuid: "53d02428-cb19-4e30-b92a-3c273de4a63e"
   id: "newbeedrone-flow-2004-motor-t-mount-2450kv"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 2004 Motor T-Mount 2450KV"
+  description: "NewBeeDrone FLOW 2004 Motor T-Mount 2450KV Crazy Deal (2 Packs/8 Motors)"
   stator_diameter_mm: 20
   stator_height_mm: 4
   kv: 2450
-  description: "NewBeeDrone FLOW 2004 Motor T-Mount 2450KV Crazy Deal (2 Packs/8 Motors)"
 }
 motors: {
   uuid: "01449db5-1393-424a-a842-9c016d2e044d"
   id: "newbeedrone-flow-0702-dual-ball-bearing-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Flow 0702 Dual Ball Bearing"
+  description: "NewBeeDrone Flow 0702 Dual Ball Bearing Whoop motor 29000kv (4pack)"
   stator_diameter_mm: 7
   stator_height_mm: 2
   kv: 29000
-  description: "NewBeeDrone Flow 0702 Dual Ball Bearing Whoop motor 29000kv (4pack)"
 }
 motors: {
   uuid: "502513e4-babc-46e5-b07f-e982fcb0dfd8"
   id: "newbeedrone-flow-0802-dual-ball-bearing-3"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Flow 0802 Dual Ball Bearing"
+  description: "NewBeeDrone Flow 0802 Dual Ball Bearing Whoop motor 27000kv (Set of 4)"
   stator_diameter_mm: 8
   stator_height_mm: 2
   kv: 27000
-  description: "NewBeeDrone Flow 0802 Dual Ball Bearing Whoop motor 27000kv (Set of 4)"
 }
 motors: {
   uuid: "268f1511-1180-40ff-b2b1-4a57b6c469c2"
   id: "newbeedrone-flow-2004-motor-t-mount-1750kv"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 2004 Motor T-Mount 1750KV"
+  description: "NewBeeDrone FLOW 2004 Motor T-Mount 1750KV Crazy Deal (2 Packs/8 Motors)"
   stator_diameter_mm: 20
   stator_height_mm: 4
   kv: 1750
-  description: "NewBeeDrone FLOW 2004 Motor T-Mount 1750KV Crazy Deal (2 Packs/8 Motors)"
 }
 motors: {
   uuid: "ea966507-e86a-4d78-8785-0c26faced896"
   id: "newbeedrone-flow-2207-race-motor"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Flow 2207 Race Motor"
+  description: "NewBeeDrone Flow 2207 Race Motor - 2050KV (4 Pack)"
   stator_diameter_mm: 22
   stator_height_mm: 7
   kv: 2050
-  description: "NewBeeDrone Flow 2207 Race Motor - 2050KV (4 Pack)"
 }
 motors: {
   uuid: "b75a1812-64a2-40ea-b1d5-00a2f497af5a"
   id: "newbeedrone-flow-0804-dual-ball-bearing-whoop"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Flow 0804 Dual Ball-Bearing Whoop"
+  description: "NewBeeDrone Flow 0804 Dual Ball-Bearing Whoop Motor 14000KV&19000KV&25000KV (4PACK)"
   stator_diameter_mm: 8
   stator_height_mm: 4
   kv: 14000
-  description: "NewBeeDrone Flow 0804 Dual Ball-Bearing Whoop Motor 14000KV&19000KV&25000KV (4PACK)"
 }
 motors: {
   uuid: "73354a2b-40f7-423c-9b7e-99097c24bf3c"
@@ -1101,40 +1007,40 @@ motors: {
   id: "newbeedrone-flow-1102-motor"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 1102 Motor"
+  description: "NewBeeDrone FLOW 1102 Motor - 19000KV (4 Pack)"
   stator_diameter_mm: 11
   stator_height_mm: 2
   kv: 19000
-  description: "NewBeeDrone FLOW 1102 Motor - 19000KV (4 Pack)"
 }
 motors: {
   uuid: "0db737f1-3c57-47a8-8342-56d899df7040"
   id: "newbeedrone-flow-1102-motor-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 1102 Motor"
+  description: "NewBeeDrone FLOW 1102 Motor - 10000KV (4 Pack)"
   stator_diameter_mm: 11
   stator_height_mm: 2
   kv: 10000
-  description: "NewBeeDrone FLOW 1102 Motor - 10000KV (4 Pack)"
 }
 motors: {
   uuid: "c8546d72-245d-46b2-87ab-ce63f0f7e652"
   id: "newbeedrone-flow-2004-motor-t-mount-2000kv"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 2004 Motor T-Mount 2000KV"
+  description: "NewBeeDrone FLOW 2004 Motor T-Mount 2000KV Crazy Deal (2 Packs/8 Motors)"
   stator_diameter_mm: 20
   stator_height_mm: 4
   kv: 2000
-  description: "NewBeeDrone FLOW 2004 Motor T-Mount 2000KV Crazy Deal (2 Packs/8 Motors)"
 }
 motors: {
   uuid: "8f141501-fc65-41dc-b70b-b0bb787b7d2e"
   id: "newbeedrone-flow-2004-motor-t-mount-3100kv-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 2004 Motor T-Mount 3100KV"
+  description: "NewBeeDrone FLOW 2004 Motor T-Mount 3100KV Crazy Deal (2 Packs/8 Motors)"
   stator_diameter_mm: 20
   stator_height_mm: 4
   kv: 3100
-  description: "NewBeeDrone FLOW 2004 Motor T-Mount 3100KV Crazy Deal (2 Packs/8 Motors)"
 }
 motors: {
   uuid: "78a68648-1c3f-4636-8148-0e127aef1515"
@@ -1148,128 +1054,78 @@ motors: {
   id: "newbeedrone-flow-2004-motor-t-mount-3100kv-3"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 2004 Motor T-Mount 3100KV"
+  description: "NewBeeDrone FLOW 2004 Motor T-Mount 3100KV Kinda Crazy Deal (1 Pack/4 Motors)"
   stator_diameter_mm: 20
   stator_height_mm: 4
   kv: 3100
-  description: "NewBeeDrone FLOW 2004 Motor T-Mount 3100KV Kinda Crazy Deal (1 Pack/4 Motors)"
 }
 motors: {
   uuid: "d6c7a520-9eb0-4e43-871f-681305063f0d"
   id: "newbeedrone-flow-2004-motor-t-mount-2000kv-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 2004 Motor T-Mount 2000KV"
+  description: "NewBeeDrone FLOW 2004 Motor T-Mount 2000KV Kinda Crazy Deal (1 Pack/4 Motors)"
   stator_diameter_mm: 20
   stator_height_mm: 4
   kv: 2000
-  description: "NewBeeDrone FLOW 2004 Motor T-Mount 2000KV Kinda Crazy Deal (1 Pack/4 Motors)"
-}
-motors: {
-  uuid: "751e5c0d-20e6-4c33-b967-8fa4356659a7"
-  id: "newbeedrone-smoov-lube-motor-bearing-oil"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Smoov Lube Motor Bearing Oil"
-  kv: 0
-}
-motors: {
-  uuid: "95cb0f20-602c-4dd0-a878-082f216e850a"
-  id: "newbeedrone-m2-flanged-motor-lock-nut"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone M2 Flanged Motor Lock Nut"
-  kv: 0
-  description: "NewBeeDrone M2 Flanged Motor Lock Nut Various Colors"
-}
-motors: {
-  uuid: "01ced3de-f66e-422f-9ce2-5841472fabd8"
-  id: "newbeedrone-m5-flanged-motor-lock-nut"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone M5 Flanged Motor Lock Nut"
-  kv: 0
-  description: "NewBeeDrone M5 Flanged Motor Lock Nut Various Colors/Propnut"
-}
-motors: {
-  uuid: "e57d44b0-30d3-429d-83da-d36e5a810e14"
-  id: "newbeedrone-motor-wire-protector"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Motor Wire Protector"
-  kv: 0
-}
-motors: {
-  uuid: "32da51e5-3484-4f72-aa33-f2d04704b393"
-  id: "newbeedrone-0802-14000kv-brushless-motors"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone 0802 14000KV Brushless Motors"
-  stator_diameter_mm: 8
-  stator_height_mm: 2
-  kv: 14000
-  description: "NewBeeDrone 0802 14000KV Brushless Motors - Unibell Espresso Edition (Set of 4)"
 }
 motors: {
   uuid: "57650b1b-89b2-4420-b0dc-d498084d1bea"
   id: "newbeedrone-jst1-0-jst1-25-whoop-motor"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone JST1.0 & JST1.25 Whoop Motor"
-  kv: 0
   description: "NewBeeDrone JST1.0 & JST1.25 Whoop Motor Plug Replacement Set"
+  kv: 0
 }
 motors: {
   uuid: "06cca0a5-4574-4610-bcf7-1dcc298e516a"
   id: "newbeedrone-flow-1202-racing-and-freestyle"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 1202 Racing and Freestyle"
+  description: "NewBeeDrone FLOW 1202 Racing and Freestyle FPV Micro Motor (Set of 4) 8420KV/11420KV"
   stator_diameter_mm: 12
   stator_height_mm: 2
   kv: 8420
-  description: "NewBeeDrone FLOW 1202 Racing and Freestyle FPV Micro Motor (Set of 4) 8420KV/11420KV"
 }
 motors: {
   uuid: "8822ec44-3980-44ff-933d-e339bff069d7"
   id: "newbeedrone-flow-1408-racing-and-freestyle"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 1408 Racing and Freestyle"
+  description: "NewBeeDrone FLOW 1408 Racing and Freestyle FPV Micro Motor 2350KV - T Mount"
   stator_diameter_mm: 14
   stator_height_mm: 8
   kv: 2350
-  description: "NewBeeDrone FLOW 1408 Racing and Freestyle FPV Micro Motor 2350KV - T Mount"
 }
 motors: {
   uuid: "37d16a54-3b5b-4c20-b642-112d8827ae26"
   id: "newbeedrone-flow-1408-racing-and-freestyle-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 1408 Racing and Freestyle"
+  description: "NewBeeDrone FLOW 1408 Racing and Freestyle FPV Micro Motor 4150KV - T Mount"
   stator_diameter_mm: 14
   stator_height_mm: 8
   kv: 4150
-  description: "NewBeeDrone FLOW 1408 Racing and Freestyle FPV Micro Motor 4150KV - T Mount"
 }
 motors: {
   uuid: "10740587-4fd6-48a3-8798-bd1168ce687f"
   id: "newbeedrone-0703-16420kv-brushless-motors"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone 0703 16420kv Brushless Motors"
+  description: "NewBeeDrone 0703 16420kv Brushless Motors - Silver Edition (Set of 4)"
   stator_diameter_mm: 7
   stator_height_mm: 3
   kv: 16420
-  description: "NewBeeDrone 0703 16420kv Brushless Motors - Silver Edition (Set of 4)"
-}
-motors: {
-  uuid: "853a3fc2-1fd4-4be7-a3fd-86c818d4f782"
-  id: "newbeedrone-motor-screws"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Motor Screws"
-  stator_diameter_mm: 1.4
-  stator_height_mm: 3
-  kv: 0
-  description: "NewBeeDrone Motor Screws for Cockroach75 M1.4*3mm - Set of 15"
 }
 motors: {
   uuid: "bb3a0a01-fc9e-4800-8b9f-7b044816282c"
   id: "newbeedrone-flow-2306-5-v2-freestyle-fpv-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone FLOW 2306.5 V2 Freestyle FPV"
+  description: "NewBeeDrone FLOW 2306.5 V2 Freestyle FPV Motor - 1850KV"
   stator_diameter_mm: 23
   stator_height_mm: 6.5
   kv: 1850
-  description: "NewBeeDrone FLOW 2306.5 V2 Freestyle FPV Motor - 1850KV"
 }
 motors: {
   uuid: "810c53e5-7d7d-4e09-b95b-9c90bd5f8521"
@@ -1284,10 +1140,10 @@ motors: {
   id: "newbeedrone-plaid-brushed-motor-venom"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Plaid Brushed Motor / Venom"
+  description: "NewBeeDrone Plaid Brushed Motor / Venom V2 0.8mm Prop Combo"
   stator_diameter_mm: 0.8
   stator_height_mm: 0
   kv: 0
-  description: "NewBeeDrone Plaid Brushed Motor / Venom V2 0.8mm Prop Combo"
 }
 motors: {
   uuid: "61e3c339-dc6e-4b4c-b7be-1d43a0aa783b"
@@ -1295,10 +1151,10 @@ motors: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BDR PLAID Edition"
   weight_g: 1.93
+  description: "NewBeeDrone BDR PLAID Edition - 6mm Brushed Motor"
   stator_diameter_mm: 6
   stator_height_mm: 0
   kv: 0
-  description: "NewBeeDrone BDR PLAID Edition - 6mm Brushed Motor"
 }
 motors: {
   uuid: "7baf079c-a223-4107-aa3f-872e2ccf1910"
@@ -1306,10 +1162,10 @@ motors: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BDR SILVER Edition"
   weight_g: 1.85
+  description: "NewBeeDrone BDR SILVER Edition - 6mm Brushed Motor"
   stator_diameter_mm: 6
   stator_height_mm: 0
   kv: 0
-  description: "NewBeeDrone BDR SILVER Edition - 6mm Brushed Motor"
 }
 motors: {
   uuid: "6082d22a-afd3-4e68-8df6-e3bcefc235df"
@@ -1317,10 +1173,10 @@ motors: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BDR GOLD Edition"
   weight_g: 1.85
+  description: "NewBeeDrone BDR GOLD Edition - 6mm Brushed Motor"
   stator_diameter_mm: 6
   stator_height_mm: 0
   kv: 0
-  description: "NewBeeDrone BDR GOLD Edition - 6mm Brushed Motor"
 }
 motors: {
   uuid: "8392cbbd-2c96-4e75-8dbc-0ec405a23b51"
@@ -1328,10 +1184,10 @@ motors: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BDR Unicorn Edition Motors"
   weight_g: 2
+  description: "NewBeeDrone BDR Unicorn Edition Motors - 6mm Brushed Motors"
   stator_diameter_mm: 6
   stator_height_mm: 0
   kv: 0
-  description: "NewBeeDrone BDR Unicorn Edition Motors - 6mm Brushed Motors"
 }
 motors: {
   uuid: "a50af04c-0836-411c-8897-86aa4acaf2e2"
@@ -1339,10 +1195,10 @@ motors: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BDR BLACK Edition"
   weight_g: 1.85
+  description: "NewBeeDrone BDR BLACK Edition - 6mm Brushed Motor"
   stator_diameter_mm: 6
   stator_height_mm: 0
   kv: 0
-  description: "NewBeeDrone BDR BLACK Edition - 6mm Brushed Motor"
 }
 motors: {
   uuid: "d752a96e-943d-48ed-b458-9925299b361f"
@@ -1352,27 +1208,6 @@ motors: {
   stator_diameter_mm: 12
   stator_height_mm: 2.5
   kv: 11500
-}
-motors: {
-  uuid: "d52a211e-4c72-4308-b6d0-eadf725897e6"
-  id: "hypetrain-let-s-fly-rc-v2-1604"
-  manufacturer: "Hypetrain"
-  name: "Hypetrain Let's Fly RC V2 1604"
-  stator_diameter_mm: 16
-  stator_height_mm: 4
-  kv: 4050
-  description: "Hypetrain Let's Fly RC V2 1604 4050kv Motor Replacement Bell"
-}
-motors: {
-  uuid: "ca5e0422-694b-4ca2-a367-7294d39e4d35"
-  id: "hypetrain-let-s-fly-rc-v2-2306"
-  manufacturer: "Hypetrain"
-  name: "Hypetrain Let's Fly RC V2 2306"
-  weight_g: 30
-  stator_diameter_mm: 23
-  stator_height_mm: 6
-  kv: 1870
-  description: "Hypetrain Let's Fly RC V2 2306 1870kv Motor Replacement Bell"
 }
 motors: {
   uuid: "8971a31a-f9e0-4301-9348-34dd3004b809"
@@ -1385,34 +1220,14 @@ motors: {
   kv: 700
 }
 motors: {
-  uuid: "9d48d2eb-0818-4d55-857b-11e906ae5d93"
-  id: "hypetrain-cricket-v3-2307-1850kv-motor"
-  manufacturer: "Hypetrain"
-  name: "Hypetrain Cricket V3 2307 1850KV Motor"
-  stator_diameter_mm: 23
-  stator_height_mm: 7
-  kv: 1850
-  description: "Hypetrain Cricket V3 2307 1850KV Motor Bell - Platinum"
-}
-motors: {
-  uuid: "ff7be717-2042-4185-86ce-4444c0d412cd"
-  id: "hypetrain-cricket-v3-2307-1850kv-motor-2"
-  manufacturer: "Hypetrain"
-  name: "Hypetrain Cricket V3 2307 1850KV Motor"
-  stator_diameter_mm: 23
-  stator_height_mm: 7
-  kv: 1850
-  description: "Hypetrain Cricket V3 2307 1850KV Motor Bell - Gold"
-}
-motors: {
   uuid: "00897ee7-7366-4aeb-a528-b7c4c370a0ed"
   id: "hypetrain-cricket-v3-2307-1850kv-motor-3"
   manufacturer: "Hypetrain"
   name: "Hypetrain Cricket V3 2307 1850KV Motor"
+  description: "Hypetrain Cricket V3 2307 1850KV Motor - Solder-Free"
   stator_diameter_mm: 23
   stator_height_mm: 7
   kv: 1850
-  description: "Hypetrain Cricket V3 2307 1850KV Motor - Solder-Free"
 }
 motors: {
   uuid: "43154872-63fd-4504-88f7-4f5bbb8bcedc"
@@ -1430,20 +1245,20 @@ motors: {
   manufacturer: "Hypetrain"
   name: "Hypetrain REVO 5 2207 2450KV Motor"
   weight_g: 34
+  description: "Hypetrain REVO 5 2207 2450KV Motor - Solder-Free"
   stator_diameter_mm: 22
   stator_height_mm: 7
   kv: 2450
-  description: "Hypetrain REVO 5 2207 2450KV Motor - Solder-Free"
 }
 motors: {
   uuid: "9eab447c-53d9-4301-9636-90e7bee11690"
   id: "hypetrain-revo-5-2207-1860kv-motor"
   manufacturer: "Hypetrain"
   name: "Hypetrain REVO 5 2207 1860KV Motor"
+  description: "Hypetrain REVO 5 2207 1860KV Motor - Solder-Free"
   stator_diameter_mm: 22
   stator_height_mm: 7
   kv: 1860
-  description: "Hypetrain REVO 5 2207 1860KV Motor - Solder-Free"
 }
 motors: {
   uuid: "8c66bfbb-8d65-40ab-9e29-c7ce9b977369"
@@ -1451,10 +1266,10 @@ motors: {
   manufacturer: "Hypetrain"
   name: "Hypetrain Drib V3 2306 1990KV Motor"
   weight_g: 36
+  description: "Hypetrain Drib V3 2306 1990KV Motor - Solder-Free"
   stator_diameter_mm: 23
   stator_height_mm: 6
   kv: 1990
-  description: "Hypetrain Drib V3 2306 1990KV Motor - Solder-Free"
 }
 motors: {
   uuid: "ec28e6d1-d4ee-4445-854f-42c560055c9b"
@@ -1472,10 +1287,10 @@ motors: {
   manufacturer: "Hypetrain"
   name: "Hypetrain Bubby 2205 2004KV Motor"
   weight_g: 28
+  description: "Hypetrain Bubby 2205 2004KV Motor - Solder Free"
   stator_diameter_mm: 22
   stator_height_mm: 5
   kv: 2004
-  description: "Hypetrain Bubby 2205 2004KV Motor - Solder Free"
 }
 motors: {
   uuid: "7d4f8508-a7e4-47ba-a1d6-4424eee256fe"
@@ -1483,10 +1298,10 @@ motors: {
   manufacturer: "Hypetrain"
   name: "Hypetrain Let's Fly RC 2306 2700kv"
   weight_g: 30
+  description: "Hypetrain Let's Fly RC 2306 2700kv Motor Solder-Free"
   stator_diameter_mm: 23
   stator_height_mm: 6
   kv: 2700
-  description: "Hypetrain Let's Fly RC 2306 2700kv Motor Solder-Free"
 }
 motors: {
   uuid: "a65bb996-b2bd-4701-8010-03d1d9fdb2e3"
@@ -1494,10 +1309,10 @@ motors: {
   manufacturer: "Hypetrain"
   name: "Hypetrain PDEVX 2306.5 1985KV Motor"
   weight_g: 34
+  description: "Hypetrain PDEVX 2306.5 1985KV Motor - Solder-Free"
   stator_diameter_mm: 23
   stator_height_mm: 6.5
   kv: 1985
-  description: "Hypetrain PDEVX 2306.5 1985KV Motor - Solder-Free"
 }
 motors: {
   uuid: "f641d837-d788-4214-85e7-a45346be8317"
@@ -1510,22 +1325,15 @@ motors: {
   kv: 22000
 }
 motors: {
-  uuid: "00c0a8de-bead-454d-b826-932b9689b394"
-  id: "motor-spacer-4-pack"
-  manufacturer: "Noozle3D"
-  name: "Motor Spacer 4-Pack"
-  kv: 0
-}
-motors: {
   uuid: "d5a55e5e-ddae-457a-bdd4-8a6b0c5ebad0"
   id: "hypetrain-drib-v3-2306-2650kv-motor"
   manufacturer: "Hypetrain"
   name: "Hypetrain Drib V3 2306 2650KV Motor"
   weight_g: 36
+  description: "Hypetrain Drib V3 2306 2650KV Motor - Solder-Free"
   stator_diameter_mm: 23
   stator_height_mm: 6
   kv: 2650
-  description: "Hypetrain Drib V3 2306 2650KV Motor - Solder-Free"
 }
 motors: {
   uuid: "80739ed1-acb9-461d-a41d-15570bfe13d3"
@@ -1533,10 +1341,10 @@ motors: {
   manufacturer: "Hypetrain"
   name: "Hypetrain Let's Fly RC 2306 1850kv"
   weight_g: 30
+  description: "Hypetrain Let's Fly RC 2306 1850kv Motor Solder-Free"
   stator_diameter_mm: 23
   stator_height_mm: 6
   kv: 1850
-  description: "Hypetrain Let's Fly RC 2306 1850kv Motor Solder-Free"
 }
 motors: {
   uuid: "f4d0ccc9-0b09-482b-8fc3-f8749420c5f1"
@@ -1564,34 +1372,10 @@ motors: {
   manufacturer: "Hypetrain"
   name: "Hypetrain BB's 0802 29700KV Motor 4-Pack"
   weight_g: 2
+  description: "Hypetrain BB's 0802 29700KV Motor 4-Pack Candy Box"
   stator_diameter_mm: 8
   stator_height_mm: 2
   kv: 29700
-  description: "Hypetrain BB's 0802 29700KV Motor 4-Pack Candy Box"
-}
-motors: {
-  uuid: "15612b3e-dd37-4c6d-b39a-0ac95e9f2822"
-  id: "bubito-35mm-frame-motor-bundle-1s"
-  manufacturer: "Rotor Riot"
-  name: "Bubito 35mm Frame & Motor Bundle - 1S"
-  stator_diameter_mm: 35
-  stator_height_mm: 0
-  kv: 0
-}
-motors: {
-  uuid: "2a66d65e-7fcb-4c5a-a209-8c7d6736dd68"
-  id: "skyliner-mk3-5-frame-motor-bundle-4s"
-  manufacturer: "Rotor Riot"
-  name: "Skyliner MK3 5 Frame & Motor Bundle - 4S"
-  kv: 0
-}
-motors: {
-  uuid: "cc693e58-bca6-4a51-a3db-9c9ca229fb21"
-  id: "wire-protectors"
-  manufacturer: "FT Ninja"
-  name: "Wire Protectors"
-  kv: 0
-  description: "Wire Protectors For Motors - 1pc - Choose Version"
 }
 motors: {
   uuid: "95fb25cb-149f-4ac7-b84f-d8cb5ad2ed41"
@@ -1608,30 +1392,30 @@ motors: {
   id: "hglrc-my-3115-900kv-motor-brushless"
   manufacturer: "HGLRC"
   name: "HGLRC MY 3115 900KV Motor Brushless"
+  description: "HGLRC MY 3115 900KV Motor Brushless motor high load 6S 10-inch"
   stator_diameter_mm: 31
   stator_height_mm: 15
   kv: 900
-  description: "HGLRC MY 3115 900KV Motor Brushless motor high load 6S 10-inch"
 }
 motors: {
   uuid: "5c21de56-e879-4b84-805f-a15ca18ddba9"
   id: "hglrc-my15-4215-400kv-motor-2-5w"
   manufacturer: "HGLRC"
   name: "HGLRC MY15 4215 400KV Motor 2.5W"
+  description: "HGLRC MY15 4215 400KV Motor 2.5W VTX ELRS 915MHz Long-Range FPV Drone"
   stator_diameter_mm: 42
   stator_height_mm: 15
   kv: 400
-  description: "HGLRC MY15 4215 400KV Motor 2.5W VTX ELRS 915MHz Long-Range FPV Drone"
 }
 motors: {
   uuid: "c0144400-c791-46f6-b3ed-4eec1e6c9c2e"
   id: "hglrc-my-3215-900kv-brushless-motor"
   manufacturer: "HGLRC"
   name: "HGLRC MY 3215 900kV brushless motor"
+  description: "HGLRC MY 3215 900kV brushless motor high load 6S 10-inch FPV Motor"
   stator_diameter_mm: 32
   stator_height_mm: 15
   kv: 900
-  description: "HGLRC MY 3215 900kV brushless motor high load 6S 10-inch FPV Motor"
 }
 motors: {
   uuid: "ed5e9604-6366-4e84-96e1-15d63f73103e"
@@ -1639,10 +1423,10 @@ motors: {
   manufacturer: "HGLRC"
   name: "HGLRC MY 2810 1350kv brushless motor"
   weight_g: 70
+  description: "HGLRC MY 2810 1350kv brushless motor high load 6S  7-8 inch"
   stator_diameter_mm: 28
   stator_height_mm: 10
   kv: 1350
-  description: "HGLRC MY 2810 1350kv brushless motor high load 6S  7-8 inch"
 }
 motors: {
   uuid: "c9a7c04c-6b22-4b35-9563-9371ba80ebf2"
@@ -1650,40 +1434,40 @@ motors: {
   manufacturer: "HGLRC"
   name: "HGLRC MY 4215 400KV 6-8S Brushless"
   weight_g: 200
+  description: "HGLRC MY 4215 400KV 6-8S Brushless Motor, High Load, 16-inch"
   stator_diameter_mm: 42
   stator_height_mm: 15
   kv: 400
-  description: "HGLRC MY 4215 400KV 6-8S Brushless Motor, High Load, 16-inch"
 }
 motors: {
   uuid: "02febc2c-c2b8-43c9-bf71-ab738488b276"
   id: "hglrc-my10-3215-900kv-motor-2-5w"
   manufacturer: "HGLRC"
   name: "HGLRC MY10 3215 900KV Motor 2.5W"
+  description: "HGLRC MY10 3215 900KV Motor 2.5W VTX FPV Drone"
   stator_diameter_mm: 32
   stator_height_mm: 15
   kv: 900
-  description: "HGLRC MY10 3215 900KV Motor 2.5W VTX FPV Drone"
 }
 motors: {
   uuid: "9077b2c7-2fda-4189-bf15-1a3c7b8e05d2"
   id: "hglrc-my7-2810-1350kv-motor-2-5w"
   manufacturer: "HGLRC"
   name: "HGLRC MY7 2810 1350KV Motor 2.5W"
+  description: "HGLRC MY7 2810 1350KV Motor 2.5W VTX FPV Drone"
   stator_diameter_mm: 28
   stator_height_mm: 10
   kv: 1350
-  description: "HGLRC MY7 2810 1350KV Motor 2.5W VTX FPV Drone"
 }
 motors: {
   uuid: "f4efb131-9b38-4986-9794-6d1308c9465b"
   id: "hglrc-my5-freestyle-2306-5-motor-1-6w"
   manufacturer: "HGLRC"
   name: "HGLRC MY5 freestyle 2306.5 motor 1.6w"
+  description: "HGLRC MY5 freestyle 2306.5 motor 1.6w VTX FPV Drone"
   stator_diameter_mm: 23
   stator_height_mm: 6.5
   kv: 0
-  description: "HGLRC MY5 freestyle 2306.5 motor 1.6w VTX FPV Drone"
 }
 motors: {
   uuid: "e9bc70d2-c046-494a-8372-89ea73c9405a"
@@ -1700,8 +1484,8 @@ motors: {
   id: "hglrc-petrel-85whoop-brushless-motor-indoor"
   manufacturer: "HGLRC"
   name: "HGLRC Petrel 85Whoop Brushless Motor Indoor"
-  kv: 0
   description: "HGLRC Petrel 85Whoop Brushless Motor Indoor FPV Drone Tinywhoop Quadcopter"
+  kv: 0
 }
 motors: {
   uuid: "d8345433-5a77-411d-b113-2d45daf587d1"
@@ -1718,8 +1502,8 @@ motors: {
   id: "hglrc-petrel-75whoop-v2-1s-brushless"
   manufacturer: "HGLRC"
   name: "HGLRC Petrel 75Whoop V2 1S Brushless"
-  kv: 0
   description: "HGLRC Petrel 75Whoop V2 1S Brushless Motor Indoor FPV Drone Tinywhoop Quadcopter"
+  kv: 0
 }
 motors: {
   uuid: "cb598aa2-90b1-455e-bad0-3daebd3708b2"
@@ -1786,10 +1570,10 @@ motors: {
   manufacturer: "HGLRC"
   name: "HGLRC SPECTER 1404 2750KV/4800KV/5500KV 4-6S Brushless"
   weight_g: 10
+  description: "HGLRC SPECTER 1404 2750KV/4800KV/5500KV 4-6S Brushless Motor for FPV Freestyle 2inch Cinewhoop 4inch Toothpick Drones"
   stator_diameter_mm: 14
   stator_height_mm: 4
   kv: 2750
-  description: "HGLRC SPECTER 1404 2750KV/4800KV/5500KV 4-6S Brushless Motor for FPV Freestyle 2inch Cinewhoop 4inch Toothpick Drones"
 }
 motors: {
   uuid: "f07a45d9-ce57-44d8-bcc9-36d09a38e8a8"
@@ -1817,41 +1601,20 @@ motors: {
   manufacturer: "DIATONE OFFICIAL"
   name: "MAMBA  2808 1100KV Racing Motor"
   weight_g: 63.5
+  description: "MAMBA  2808 1100KV Racing Motor For Roma F7"
   stator_diameter_mm: 28
   stator_height_mm: 8
   kv: 1100
-  description: "MAMBA  2808 1100KV Racing Motor For Roma F7"
 }
 motors: {
   uuid: "67550d35-19d0-4980-a0bb-9fadb98e3c73"
   id: "mamba-toka-2203-5-1650kv-2200kv-2650kv-3300kv-4200kv-racing-motor"
   manufacturer: "DIATONE INNOVATIONS"
   name: "MAMBA TOKA 2203.5 1650KV/2200KV/2650KV/3300KV/4200KV Racing Motor"
+  description: "MAMBA TOKA 2203.5 1650KV/2200KV/2650KV/3300KV/4200KV Racing Motor Green"
   stator_diameter_mm: 22
   stator_height_mm: 3.5
   kv: 1650
-  description: "MAMBA TOKA 2203.5 1650KV/2200KV/2650KV/3300KV/4200KV Racing Motor Green"
-}
-motors: {
-  uuid: "1f8243ea-1bca-488c-af38-ebc3e9233354"
-  id: "diatone-5pcs-motor-wire-protection-tube"
-  manufacturer: "DIATONE OFFICIAL"
-  name: "Diatone 5pcs Motor Wire Protection Tube"
-  stator_diameter_mm: 38
-  stator_height_mm: 0
-  kv: 0
-  description: "Diatone 5pcs Motor Wire Protection Tube 38mm/42mm For Roma F5"
-}
-motors: {
-  uuid: "846e0821-9e87-435c-b7e8-9bbccc132f90"
-  id: "atlas-4-o4-pro-frame-flash"
-  manufacturer: "FlyFishRC"
-  name: "Atlas 4 O4 Pro Frame Flash"
-  weight_g: 55.6
-  stator_diameter_mm: 18
-  stator_height_mm: 4
-  kv: 0
-  description: "Atlas 4 O4 Pro Frame Flash 1804 Motor HQ T4x2x3 Propeller Bundle Kit"
 }
 motors: {
   uuid: "5e2c9898-453d-45b7-b0b5-7caf3df1e4e8"
@@ -1913,34 +1676,6 @@ motors: {
   kv: 5500
 }
 motors: {
-  uuid: "428d5236-6318-41bb-abee-fe34b4bf42b8"
-  id: "replacement-motor-bell-for-flash-2406"
-  manufacturer: "FlyFishRC"
-  name: "Replacement Motor Bell For Flash 2406"
-  stator_diameter_mm: 24
-  stator_height_mm: 6
-  kv: 0
-}
-motors: {
-  uuid: "b93e4c72-43c0-44f1-9b26-b3f325730ab4"
-  id: "replacement-motor-bell-for-flash-2506"
-  manufacturer: "FlyFishRC"
-  name: "Replacement Motor Bell For Flash 2506"
-  stator_diameter_mm: 25
-  stator_height_mm: 6
-  kv: 0
-}
-motors: {
-  uuid: "b1323368-5085-4a09-8790-7d13ba122d9b"
-  id: "flyfishrc-motor-wire-protection-tube-10mm"
-  manufacturer: "FlyFish RC"
-  name: "FlyFishRC Motor Wire Protection Tube 10mm"
-  stator_diameter_mm: 10
-  stator_height_mm: 0
-  kv: 0
-  description: "FlyFishRC Motor Wire Protection Tube 10mm -20Pcs"
-}
-motors: {
   uuid: "fc630c52-d792-4573-922a-0297d1e3c157"
   id: "flash-2506-fpv-motor"
   manufacturer: "FlyFishRC"
@@ -1959,44 +1694,6 @@ motors: {
   stator_diameter_mm: 24
   stator_height_mm: 6
   kv: 0
-}
-motors: {
-  uuid: "6ae4ed58-5bf7-4b4a-880d-bdbd894fd797"
-  id: "flash-2306-replacement-motor-bell"
-  manufacturer: "FlyFishRC"
-  name: "Flash 2306 Replacement Motor Bell"
-  stator_diameter_mm: 23
-  stator_height_mm: 6
-  kv: 0
-}
-motors: {
-  uuid: "c52ba28c-8000-4290-9f95-4d5a498e2c80"
-  id: "flash-2306-replacement-motor-bell-2"
-  manufacturer: "FlyFishRC"
-  name: "Flash 2306 Replacement Motor Bell"
-  stator_diameter_mm: 23
-  stator_height_mm: 6
-  kv: 0
-  description: "Flash 2306 Replacement Motor Bell - Black"
-}
-motors: {
-  uuid: "3657ed74-dd48-434b-8eb0-4b8067843fc2"
-  id: "flash-2207-replacement-motor-bell"
-  manufacturer: "FlyFishRC"
-  name: "Flash 2207 Replacement Motor Bell"
-  stator_diameter_mm: 22
-  stator_height_mm: 7
-  kv: 0
-}
-motors: {
-  uuid: "f2335d3e-d75d-46e9-8ed1-79b2ca38e392"
-  id: "flash-2207-replacement-motor-bell-2"
-  manufacturer: "FlyFishRC"
-  name: "Flash 2207 Replacement Motor Bell"
-  stator_diameter_mm: 22
-  stator_height_mm: 7
-  kv: 0
-  description: "Flash 2207 Replacement Motor Bell - Black"
 }
 motors: {
   uuid: "ef611bc2-5a1e-41df-9cc3-4e09f47b481b"
@@ -2053,30 +1750,30 @@ motors: {
   id: "sub250-1103-14000kv-motor-compatible"
   manufacturer: "Sub250"
   name: "Sub250 1103 14000KV Motor Compatible"
+  description: "Sub250 1103 14000KV Motor Compatible with 1.6/2-inch FPV Drones"
   stator_diameter_mm: 11
   stator_height_mm: 3
   kv: 14000
-  description: "Sub250 1103 14000KV Motor Compatible with 1.6/2-inch FPV Drones"
 }
 motors: {
   uuid: "2d98aaa3-a6ee-41f2-b595-23c338a65ef1"
   id: "sub250-0702-27000kv-motor-compatible"
   manufacturer: "sub250"
   name: "SUB250 0702 27000kv  Motor Compatible"
+  description: "SUB250 0702 27000kv  Motor Compatible with 1.2  / 1.4 / 1.6 Drone"
   stator_diameter_mm: 7
   stator_height_mm: 2
   kv: 27000
-  description: "SUB250 0702 27000kv  Motor Compatible with 1.2  / 1.4 / 1.6 Drone"
 }
 motors: {
   uuid: "359d031c-10cb-4793-88af-aa07b9d03fdf"
   id: "sub250-1304-6000kv-motor-compatible"
   manufacturer: "Sub250"
   name: "Sub250 1304 6000KV Motor Compatible"
+  description: "Sub250 1304 6000KV Motor Compatible with 2  / 2.5 / 3 Drones"
   stator_diameter_mm: 13
   stator_height_mm: 4
   kv: 6000
-  description: "Sub250 1304 6000KV Motor Compatible with 2  / 2.5 / 3 Drones"
 }
 motors: {
   uuid: "cd324411-3d30-49f0-a65b-ed277c7bf0ef"
@@ -2094,10 +1791,10 @@ motors: {
   manufacturer: "Sub250"
   name: "Sub250 1404 4500KV Motor"
   weight_g: 10.3
+  description: "Sub250 1404 4500KV Motor for 2.5 / 3 inches Mini Whoops and 3 inches  Freestyle FPV Drone"
   stator_diameter_mm: 14
   stator_height_mm: 4
   kv: 4500
-  description: "Sub250 1404 4500KV Motor for 2.5 / 3 inches Mini Whoops and 3 inches  Freestyle FPV Drone"
 }
 motors: {
   uuid: "45f32d53-ca89-456c-8f6b-362860999a05"
@@ -2105,30 +1802,30 @@ motors: {
   manufacturer: "Sub250"
   name: "Sub250 1003 Motor 1.5mm Shaft"
   weight_g: 3.5
+  description: "Sub250 1003 Motor 1.5mm Shaft  for 1.6 -2 inches Mini FPV drones"
   stator_diameter_mm: 10
   stator_height_mm: 3
   kv: 0
-  description: "Sub250 1003 Motor 1.5mm Shaft  for 1.6 -2 inches Mini FPV drones"
 }
 motors: {
   uuid: "5ea52586-1418-4143-9579-b386d8b4f25d"
   id: "sub250-m1-0803-16500kv-1-0mm-motor"
   manufacturer: "sub250"
   name: "Sub250 M1 0803 16500KV 1.0MM Motor"
+  description: "Sub250 M1 0803 16500KV 1.0MM Motor for  1S 2S Drone"
   stator_diameter_mm: 8
   stator_height_mm: 3
   kv: 16500
-  description: "Sub250 M1 0803 16500KV 1.0MM Motor for  1S 2S Drone"
 }
 motors: {
   uuid: "508cf17b-5904-4bbf-ae78-e221b8f0531d"
   id: "sub250-m1-0803-19000kv-1-5-mm"
   manufacturer: "sub250"
   name: "Sub250 M1 0803 19000KV 1.5 mm"
+  description: "Sub250 M1 0803 19000KV 1.5 mm Shaft Brushless Motor for Nanofly16 (Pack of 1/4)"
   stator_diameter_mm: 8
   stator_height_mm: 3
   kv: 19000
-  description: "Sub250 M1 0803 19000KV 1.5 mm Shaft Brushless Motor for Nanofly16 (Pack of 1/4)"
 }
 motors: {
   uuid: "edfea5e2-27c2-4c16-856e-af4ca6fb2a1c"
@@ -2136,30 +1833,30 @@ motors: {
   manufacturer: "Sub250"
   name: "Sub250 M2 1002 Brushless Motor 1.5mm"
   weight_g: 2.6
+  description: "Sub250 M2 1002 Brushless Motor 1.5mm shaft Specially Designed for 1.6-2 inch FPV Drones"
   stator_diameter_mm: 10
   stator_height_mm: 2
   kv: 0
-  description: "Sub250 M2 1002 Brushless Motor 1.5mm shaft Specially Designed for 1.6-2 inch FPV Drones"
 }
 motors: {
   uuid: "0a9b8799-c731-4d86-af71-e76cc483bb5f"
   id: "sub250-m1-0803-19000kv-1-0mm-shaft"
   manufacturer: "Sub250"
   name: "Sub250 M1 0803 19000KV 1.0mm Shaft"
+  description: "Sub250 M1 0803 19000KV 1.0mm Shaft Brushless Motor for Nanofly16 (Pack of 1/4)"
   stator_diameter_mm: 8
   stator_height_mm: 3
   kv: 19000
-  description: "Sub250 M1 0803 19000KV 1.0mm Shaft Brushless Motor for Nanofly16 (Pack of 1/4)"
 }
 motors: {
   uuid: "9d00ff95-d837-43c1-8011-b319938c2eff"
   id: "fpvcycle-cavity-series-motor-4012"
   manufacturer: "FPVCycle"
   name: "FPVCycle Cavity Series Motor 4012"
+  description: "FPVCycle Cavity Series Motor 4012 - 1020kV - AI optimized design"
   stator_diameter_mm: 40
   stator_height_mm: 12
   kv: 1020
-  description: "FPVCycle Cavity Series Motor 4012 - 1020kV - AI optimized design"
 }
 motors: {
   uuid: "74c5686b-bc7e-472d-89f5-64d5d2c3a726"
@@ -2171,19 +1868,11 @@ motors: {
   kv: 0
 }
 motors: {
-  uuid: "e34629ce-5a1c-43ed-aaab-3dc323843759"
-  id: "cap-diode-system"
-  manufacturer: "FPVCycle"
-  name: "Cap/Diode System"
-  kv: 0
-  description: "Cap/Diode System For Motor Noise Suppression"
-}
-motors: {
   uuid: "29b110bc-392a-479e-bff5-42625edd3238"
   id: "fpvcycle-16mm-motor-4100kv"
   manufacturer: "FPVCycle"
   name: "FPVCycle 16mm Motor - 4100Kv"
-  stator_diameter_mm: 41
+  stator_diameter_mm: 16
   stator_height_mm: 0
   kv: 4100
 }
@@ -2201,27 +1890,27 @@ motors: {
   id: "fpvcycle-23mm-tall-motor"
   manufacturer: "FPVCycle"
   name: "FPVCycle 23mm Tall Motor"
+  description: "FPVCycle 23mm Tall Motor - 12x12 M2 Mount with M5 Prop Shaft"
   stator_diameter_mm: 12
   stator_height_mm: 12
   kv: 0
-  description: "FPVCycle 23mm Tall Motor - 12x12 M2 Mount with M5 Prop Shaft"
 }
 motors: {
   uuid: "1a28250d-1c0d-411d-9d45-3ce6019af07b"
   id: "fpvcycle-25mm-motor"
   manufacturer: "FPVCycle"
   name: "FPVCycle 25mm Motor"
+  description: "FPVCycle 25mm Motor - The Extra Smooth One"
   stator_diameter_mm: 25
   stator_height_mm: 0
   kv: 0
-  description: "FPVCycle 25mm Motor - The Extra Smooth One"
 }
 motors: {
   uuid: "e82df2cb-428c-4f11-866b-5b09861c1a0c"
   id: "fpvcycle-28mm-1300kv-7-8-motor"
   manufacturer: "FPVCycle"
   name: "FPVCycle 28mm 1300Kv - 7-8 Motor"
-  stator_diameter_mm: 13
+  stator_diameter_mm: 28
   stator_height_mm: 0
   kv: 1300
 }
@@ -2230,28 +1919,28 @@ motors: {
   id: "fpvcycle-23mm-short-motor"
   manufacturer: "FPVCycle"
   name: "FPVCycle 23mm Short Motor"
+  description: "FPVCycle 23mm Short Motor - THE Cinewhoop motor"
   stator_diameter_mm: 23
   stator_height_mm: 0
   kv: 0
-  description: "FPVCycle 23mm Short Motor - THE Cinewhoop motor"
 }
 motors: {
   uuid: "670a90ce-3be0-40c5-be15-96c22939c485"
   id: "fpvcycle-13mm-5000kv-6350kv-motor"
   manufacturer: "FPVCycle"
   name: "FPVCycle 13mm 5000kv, 6350kv Motor"
+  description: "FPVCycle 13mm 5000kv, 6350kv Motor - 2mm prop shaft"
   stator_diameter_mm: 13
   stator_height_mm: 0
   kv: 5000
-  description: "FPVCycle 13mm 5000kv, 6350kv Motor - 2mm prop shaft"
 }
 motors: {
   uuid: "aa726016-bb9f-4a42-9b66-6b72046e80e6"
   id: "fpvcycle-light-13mm-1s-motor-2mm"
   manufacturer: "FPVCycle"
   name: "FPVCycle Light 13mm 1S Motor- 2mm"
+  description: "FPVCycle Light 13mm 1S Motor- 2mm prop shaft"
   stator_diameter_mm: 13
   stator_height_mm: 0
   kv: 0
-  description: "FPVCycle Light 13mm 1S Motor- 2mm prop shaft"
 }
