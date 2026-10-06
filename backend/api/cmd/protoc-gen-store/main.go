@@ -73,7 +73,19 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	for i, field := range msg.Fields {
 		colName := string(field.Desc.Name())
 		colNames = append(colNames, colName)
-		placeHolders = append(placeHolders, fmt.Sprintf("$%d", i+1))
+
+		colType := ""
+		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_ColumnType) {
+			if ct, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_ColumnType).(string); ok && ct != "" {
+				colType = ct
+			}
+		}
+
+		if colType != "" {
+			placeHolders = append(placeHolders, fmt.Sprintf("$%d::%s", i+1, colType))
+		} else {
+			placeHolders = append(placeHolders, fmt.Sprintf("$%d", i+1))
+		}
 
 		goName := field.GoName
 		if strings.HasSuffix(colName, "uuid") {
@@ -148,11 +160,25 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	updateArgs = append(updateArgs, "m.Uuid")
 
 	argIdx := 2
-	for i, colName := range colNames {
+	for i, field := range msg.Fields {
+		colName := string(field.Desc.Name())
 		if colName == "uuid" || colName == "id" {
 			continue
 		}
-		updateSets = append(updateSets, fmt.Sprintf("%s = $%d", colName, argIdx))
+
+		colType := ""
+		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_ColumnType) {
+			if ct, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_ColumnType).(string); ok && ct != "" {
+				colType = ct
+			}
+		}
+
+		if colType != "" {
+			updateSets = append(updateSets, fmt.Sprintf("%s = $%d::%s", colName, argIdx, colType))
+		} else {
+			updateSets = append(updateSets, fmt.Sprintf("%s = $%d", colName, argIdx))
+		}
+
 		updateArgs = append(updateArgs, mFields[i])
 		argIdx++
 	}

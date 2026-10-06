@@ -9,7 +9,7 @@ import (
 )
 
 func CreateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
-	query := `INSERT INTO escs (uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, max_motor_current_a, burst_amps, firmware) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+	query := `INSERT INTO escs (uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, max_motor_current_a, burst_amps, firmware) VALUES ($1, $2, $3, $4, $5, $6, $7, $8::DECIMAL, $9::DECIMAL, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -64,7 +64,7 @@ func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []strin
 }
 
 func UpdateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
-	query := `UPDATE escs SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, max_motors = $6, max_motor_current_a = $7, burst_amps = $8, firmware = $9 WHERE uuid = $1`
+	query := `UPDATE escs SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, max_motors = $6, max_motor_current_a = $7::DECIMAL, burst_amps = $8::DECIMAL, firmware = $9 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MaxMotorCurrentA, m.BurstAmps, m.Firmware)
 	return err
 }

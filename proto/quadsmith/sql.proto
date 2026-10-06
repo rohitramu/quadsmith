@@ -33,4 +33,5 @@ extend google.protobuf.FieldOptions {
 
   // Generates a standard B-Tree index for this column to speed up CEL queries.
   bool create_index = 51004;
+  string column_type = 51005;
 }

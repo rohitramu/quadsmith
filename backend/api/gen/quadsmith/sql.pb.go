@@ -62,6 +62,14 @@ var file_quadsmith_sql_proto_extTypes = []protoimpl.ExtensionInfo{
 		Tag:           "varint,51004,opt,name=create_index",
 		Filename:      "quadsmith/sql.proto",
 	},
+	{
+		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
+		ExtensionType: (*string)(nil),
+		Field:         51005,
+		Name:          "quadsmith.sql.column_type",
+		Tag:           "bytes,51005,opt,name=column_type",
+		Filename:      "quadsmith/sql.proto",
+	},
 }
 
 // Extension fields to descriptorpb.MessageOptions.
@@ -94,6 +102,8 @@ var (
 	//
 	// optional bool create_index = 51004;
 	E_CreateIndex = &file_quadsmith_sql_proto_extTypes[4]
+	// optional string column_type = 51005;
+	E_ColumnType = &file_quadsmith_sql_proto_extTypes[5]
 )
 
 var File_quadsmith_sql_proto protoreflect.FileDescriptor
@@ -108,7 +118,9 @@ const file_quadsmith_sql_proto_rawDesc = "" +
 	"references\x12\x1d.google.protobuf.FieldOptions\x18\xba\x8e\x03 \x01(\tR\n" +
 	"references:<\n" +
 	"\tis_unique\x12\x1d.google.protobuf.FieldOptions\x18\xbb\x8e\x03 \x01(\bR\bisUnique:B\n" +
-	"\fcreate_index\x12\x1d.google.protobuf.FieldOptions\x18\xbc\x8e\x03 \x01(\bR\vcreateIndexB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\fcreate_index\x12\x1d.google.protobuf.FieldOptions\x18\xbc\x8e\x03 \x01(\bR\vcreateIndex:@\n" +
+	"\vcolumn_type\x12\x1d.google.protobuf.FieldOptions\x18\xbd\x8e\x03 \x01(\tR\n" +
+	"columnTypeB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var file_quadsmith_sql_proto_goTypes = []any{
 	(*descriptorpb.MessageOptions)(nil), // 0: google.protobuf.MessageOptions
@@ -120,10 +132,11 @@ var file_quadsmith_sql_proto_depIdxs = []int32{
 	1, // 2: quadsmith.sql.references:extendee -> google.protobuf.FieldOptions
 	1, // 3: quadsmith.sql.is_unique:extendee -> google.protobuf.FieldOptions
 	1, // 4: quadsmith.sql.create_index:extendee -> google.protobuf.FieldOptions
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	0, // [0:5] is the sub-list for extension extendee
+	1, // 5: quadsmith.sql.column_type:extendee -> google.protobuf.FieldOptions
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	0, // [0:6] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -139,7 +152,7 @@ func file_quadsmith_sql_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_sql_proto_rawDesc), len(file_quadsmith_sql_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
-			NumExtensions: 5,
+			NumExtensions: 6,
 			NumServices:   0,
 		},
 		GoTypes:           file_quadsmith_sql_proto_goTypes,
