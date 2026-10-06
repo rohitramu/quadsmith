@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package quadsmith.v1;
+
+import "quadsmith/build.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+message CheckCompatibilityRequest {
+    Build build = 1;
+}
+
+message CheckCompatibilityResponse {
+    repeated CompatibilityMessage messages = 1;
+}
+
+message CompatibilityMessage {
+    string checker_name = 1;
+    string components = 2; // e.g. "Motor and ESC"
+    int32 severity_level = 3;
+    string severity_name = 4;
+    string message = 5;
+    string resolution = 6;
+}
+
+service CompatibilityService {
+    rpc CheckCompatibility(CheckCompatibilityRequest) returns (CheckCompatibilityResponse) {}
+}

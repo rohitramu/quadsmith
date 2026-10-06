@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+# Automatically run code generation to ensure schema and proto files are in sync
+make generate
+
+# If schema.sql or any generated file was modified, stage it
+git add backend/db/schema.sql backend/api/gen/ frontend/cli/main.go

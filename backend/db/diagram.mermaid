@@ -1,0 +1,141 @@
+erDiagram
+    builds {
+        UUID uuid PK
+        TEXT id UK
+        TEXT name
+        TEXT description
+        UUID frame_uuid FK
+        UUID motor_uuid FK
+        UUID battery_uuid FK
+        UUID flight_controller_uuid FK
+        UUID propeller_uuid FK
+    }
+
+    motors {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        DECIMAL stator_diameter_mm
+        DECIMAL stator_height_mm
+        INTEGER kv
+    }
+
+    frames {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        DECIMAL wheelbase_mm
+        DECIMAL max_prop_size_inches
+        TEXT geometry
+    }
+
+    batteries {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        INTEGER capacity_mah
+        INTEGER cell_count_s
+        TEXT chemistry
+        TEXT connector
+    }
+
+    flight_controllers {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        TEXT processor
+        TEXT gyro
+        UUID internal_esc_uuid FK
+        UUID internal_receiver_uuid FK
+        UUID internal_vtx_uuid FK
+    }
+
+    escs {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        INTEGER max_motors
+        INTEGER continuous_amps
+        INTEGER burst_amps
+        TEXT firmware
+    }
+
+    receivers {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        TEXT protocol
+        DECIMAL frequency_band_ghz
+        BOOLEAN has_telemetry
+    }
+
+    video_transmitters {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        TEXT protocol
+        INTEGER max_power_mw
+        DECIMAL input_voltage_min_v
+        DECIMAL input_voltage_max_v
+    }
+
+    antennas {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        TEXT connector
+        TEXT polarization
+        DECIMAL frequency_band_ghz
+        DECIMAL length_mm
+        DECIMAL gain_dbi
+    }
+
+    propellers {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        DECIMAL diameter_inches
+        DECIMAL pitch_inches
+        INTEGER blades
+        TEXT material
+    }
+
+    cameras {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        TEXT protocol
+        TEXT sensor_size
+        INTEGER width_mm
+        DECIMAL lens_size_mm
+    }
+
+    builds ||--o| frames : has
+    builds ||--o| motors : has
+    builds ||--o| batteries : has
+    builds ||--o| flight_controllers : has
+    builds ||--o| propellers : has
+
+    flight_controllers ||--o| escs : internal_esc
+    flight_controllers ||--o| receivers : internal_receiver
+    flight_controllers ||--o| video_transmitters : internal_vtx
