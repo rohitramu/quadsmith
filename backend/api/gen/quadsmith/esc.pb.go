@@ -33,7 +33,7 @@ type Esc struct {
 	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
 	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
-	MaxMotors int32 `protobuf:"varint,6,opt,name=max_motors,json=maxMotors,proto3" json:"max_motors,omitempty"`
+	MaxMotors uint32 `protobuf:"varint,6,opt,name=max_motors,json=maxMotors,proto3" json:"max_motors,omitempty"`
 	// Continuous and Burst amperage ratings
 	MaxMotorCurrentA float32 `protobuf:"fixed32,7,opt,name=max_motor_current_a,json=maxMotorCurrentA,proto3" json:"max_motor_current_a,omitempty"`
 	BurstCurrentA    float32 `protobuf:"fixed32,8,opt,name=burst_current_a,json=burstCurrentA,proto3" json:"burst_current_a,omitempty"`
@@ -115,7 +115,7 @@ func (x *Esc) GetWeightG() float32 {
 	return 0
 }
 
-func (x *Esc) GetMaxMotors() int32 {
+func (x *Esc) GetMaxMotors() uint32 {
 	if x != nil {
 		return x.MaxMotors
 	}
@@ -339,7 +339,7 @@ const file_quadsmith_esc_proto_rawDesc = "" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1d\n" +
 	"\n" +
-	"max_motors\x18\x06 \x01(\x05R\tmaxMotors\x12-\n" +
+	"max_motors\x18\x06 \x01(\rR\tmaxMotors\x12-\n" +
 	"\x13max_motor_current_a\x18\a \x01(\x02R\x10maxMotorCurrentA\x12&\n" +
 	"\x0fburst_current_a\x18\b \x01(\x02R\rburstCurrentA\x12\x1a\n" +
 	"\bfirmware\x18\t \x01(\tR\bfirmware:\b\xc2\xf3\x18\x04escs\"9\n" +

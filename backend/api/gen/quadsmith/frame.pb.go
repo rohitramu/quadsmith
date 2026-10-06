@@ -34,7 +34,7 @@ type Frame struct {
 	// The diagonal distance between motors in millimeters
 	WheelbaseMm float32 `protobuf:"fixed32,6,opt,name=wheelbase_mm,json=wheelbaseMm,proto3" json:"wheelbase_mm,omitempty"`
 	// Maximum propeller size supported
-	MaxPropSizeInches float32 `protobuf:"fixed32,7,opt,name=max_prop_size_inches,json=maxPropSizeInches,proto3" json:"max_prop_size_inches,omitempty"`
+	MaxPropSizeMm float32 `protobuf:"fixed32,7,opt,name=max_prop_size_mm,json=maxPropSizeMm,proto3" json:"max_prop_size_mm,omitempty"`
 	// E.g., "True X", "Squashed X", "Deadcat"
 	Geometry      string `protobuf:"bytes,8,opt,name=geometry,proto3" json:"geometry,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -113,9 +113,9 @@ func (x *Frame) GetWheelbaseMm() float32 {
 	return 0
 }
 
-func (x *Frame) GetMaxPropSizeInches() float32 {
+func (x *Frame) GetMaxPropSizeMm() float32 {
 	if x != nil {
-		return x.MaxPropSizeInches
+		return x.MaxPropSizeMm
 	}
 	return 0
 }
@@ -314,15 +314,15 @@ var File_quadsmith_frame_proto protoreflect.FileDescriptor
 
 const file_quadsmith_frame_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x8c\x02\n" +
+	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x84\x02\n" +
 	"\x05Frame\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12!\n" +
-	"\fwheelbase_mm\x18\x06 \x01(\x02R\vwheelbaseMm\x12/\n" +
-	"\x14max_prop_size_inches\x18\a \x01(\x02R\x11maxPropSizeInches\x12\x1a\n" +
+	"\fwheelbase_mm\x18\x06 \x01(\x02R\vwheelbaseMm\x12'\n" +
+	"\x10max_prop_size_mm\x18\a \x01(\x02R\rmaxPropSizeMm\x12\x1a\n" +
 	"\bgeometry\x18\b \x01(\tR\bgeometry:\n" +
 	"\xc2\xf3\x18\x06frames\";\n" +
 	"\x0fGetFrameRequest\x12\x0e\n" +

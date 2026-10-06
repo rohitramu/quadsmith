@@ -32,11 +32,11 @@ type Propeller struct {
 	Name         string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	WeightG      float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// E.g., 5.1, 7.0, 3.0
-	DiameterInches float32 `protobuf:"fixed32,6,opt,name=diameter_inches,json=diameterInches,proto3" json:"diameter_inches,omitempty"`
+	DiameterMm float32 `protobuf:"fixed32,6,opt,name=diameter_mm,json=diameterMm,proto3" json:"diameter_mm,omitempty"`
 	// E.g., 4.3, 3.1
-	PitchInches float32 `protobuf:"fixed32,7,opt,name=pitch_inches,json=pitchInches,proto3" json:"pitch_inches,omitempty"`
+	PitchMm float32 `protobuf:"fixed32,7,opt,name=pitch_mm,json=pitchMm,proto3" json:"pitch_mm,omitempty"`
 	// Number of blades (e.g., 2, 3, 4)
-	Blades int32 `protobuf:"varint,8,opt,name=blades,proto3" json:"blades,omitempty"`
+	Blades uint32 `protobuf:"varint,8,opt,name=blades,proto3" json:"blades,omitempty"`
 	// E.g., "Polycarbonate", "Carbon Fiber"
 	Material      string `protobuf:"bytes,9,opt,name=material,proto3" json:"material,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -108,21 +108,21 @@ func (x *Propeller) GetWeightG() float32 {
 	return 0
 }
 
-func (x *Propeller) GetDiameterInches() float32 {
+func (x *Propeller) GetDiameterMm() float32 {
 	if x != nil {
-		return x.DiameterInches
+		return x.DiameterMm
 	}
 	return 0
 }
 
-func (x *Propeller) GetPitchInches() float32 {
+func (x *Propeller) GetPitchMm() float32 {
 	if x != nil {
-		return x.PitchInches
+		return x.PitchMm
 	}
 	return 0
 }
 
-func (x *Propeller) GetBlades() int32 {
+func (x *Propeller) GetBlades() uint32 {
 	if x != nil {
 		return x.Blades
 	}
@@ -323,16 +323,17 @@ var File_quadsmith_propeller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\xa4\x02\n" +
+	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x13quadsmith/sql.proto\"\x94\x02\n" +
 	"\tPropeller\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12'\n" +
-	"\x0fdiameter_inches\x18\x06 \x01(\x02R\x0ediameterInches\x12!\n" +
-	"\fpitch_inches\x18\a \x01(\x02R\vpitchInches\x12\x16\n" +
-	"\x06blades\x18\b \x01(\x05R\x06blades\x12\x1a\n" +
+	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1f\n" +
+	"\vdiameter_mm\x18\x06 \x01(\x02R\n" +
+	"diameterMm\x12\x19\n" +
+	"\bpitch_mm\x18\a \x01(\x02R\apitchMm\x12\x16\n" +
+	"\x06blades\x18\b \x01(\rR\x06blades\x12\x1a\n" +
 	"\bmaterial\x18\t \x01(\tR\bmaterial:\x0e\xc2\xf3\x18\n" +
 	"propellers\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +

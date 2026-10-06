@@ -22,13 +22,13 @@ message Propeller {
   float weight_g = 5;
 
   // E.g., 5.1, 7.0, 3.0
-  float diameter_inches = 6;
+  float diameter_mm = 6;
 
   // E.g., 4.3, 3.1
-  float pitch_inches = 7;
+  float pitch_mm = 7;
 
   // Number of blades (e.g., 2, 3, 4)
-  int32 blades = 8;
+  uint32 blades = 8;
 
   // E.g., "Polycarbonate", "Carbon Fiber"
   string material = 9;

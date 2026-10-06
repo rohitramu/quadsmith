@@ -6,7 +6,7 @@ antennas: {
   weight_g: 4.8
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "770f0c7f-51ef-475a-9835-92ac9361d5d4"
@@ -16,7 +16,7 @@ antennas: {
   weight_g: 7.8
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "50f633cc-971a-4271-a515-71ed79a30c3e"
@@ -26,7 +26,7 @@ antennas: {
   weight_g: 1.5
   connector: "U.FL"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "0020d8de-1de7-4fec-ae85-e0d84e9d14d4"
@@ -36,7 +36,7 @@ antennas: {
   weight_g: 7.3
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "2b441604-7264-4c23-aa43-fa12915cf226"
@@ -46,7 +46,7 @@ antennas: {
   weight_g: 1.6
   connector: "U.FL"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "a27e48be-0c3c-4884-86a5-88ca80f447bc"
@@ -56,7 +56,7 @@ antennas: {
   weight_g: 11.5
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "772d1284-43de-4a48-9607-93bd735368cc"
@@ -66,7 +66,7 @@ antennas: {
   weight_g: 7.5
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "75f229f4-b202-48ea-82d0-d17cb0e16df3"
@@ -76,7 +76,7 @@ antennas: {
   weight_g: 3.4
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "c74eb058-4a03-4c01-9b94-0cf434369dc2"
@@ -86,7 +86,7 @@ antennas: {
   weight_g: 20.6
   connector: "SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "ab2ee340-028d-4bcc-9bdf-0663d625a3e7"
@@ -96,7 +96,7 @@ antennas: {
   weight_g: 12
   connector: "RP-SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "46712ce9-e929-4dcc-a7ea-2827e5d61888"
@@ -106,7 +106,7 @@ antennas: {
   weight_g: 12
   connector: "RP-SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "5f13d7e0-3eec-419d-8d68-76d798604338"
@@ -116,7 +116,7 @@ antennas: {
   weight_g: 12
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "bc138765-61b1-4e21-b306-ef6133e2f893"
@@ -126,7 +126,7 @@ antennas: {
   weight_g: 10.5
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "8b2b12fc-b49d-46ae-88c0-31ee130a08e2"
@@ -136,7 +136,7 @@ antennas: {
   weight_g: 7.8
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "e8b0b1f9-0963-46b5-bd0d-683a8a75af5f"
@@ -146,7 +146,7 @@ antennas: {
   weight_g: 7.5
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "8f707fa6-d8ab-40f5-8824-ea6971e62914"
@@ -156,7 +156,7 @@ antennas: {
   weight_g: 15
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "767b0b8b-18c3-4480-843b-653b2c87a569"
@@ -166,7 +166,7 @@ antennas: {
   weight_g: 1.4
   connector: "U.FL"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "5dc67fa6-82e8-43dd-8e00-38a096971d32"
@@ -176,7 +176,7 @@ antennas: {
   weight_g: 12
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "c5135ef0-244a-4984-b471-82d20f5b3439"
@@ -186,7 +186,7 @@ antennas: {
   weight_g: 18
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "b9747852-5b42-4351-9a9d-dfb2cc559afb"
@@ -196,7 +196,7 @@ antennas: {
   weight_g: 1.2
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "3ad9ee47-38c0-4b71-8ca4-e690ea672870"
@@ -206,7 +206,7 @@ antennas: {
   weight_g: 3.1
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "bdde4eed-7035-4a41-aa83-c0913393fe88"
@@ -216,7 +216,7 @@ antennas: {
   weight_g: 0.8
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "5a823788-05aa-4471-887b-2068abe8e0ce"
@@ -226,7 +226,7 @@ antennas: {
   weight_g: 4.8
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "93dd1e46-71a6-48b9-ae51-677a377743f5"
@@ -236,7 +236,7 @@ antennas: {
   weight_g: 11.5
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "ed557d7e-a614-4aca-ae6b-72c9b2d08d19"
@@ -246,7 +246,7 @@ antennas: {
   weight_g: 11
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "d4106767-bca1-4f2c-b83a-30149eadae34"
@@ -256,7 +256,7 @@ antennas: {
   weight_g: 4.8
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "b5404551-1455-4f7c-808a-fe99224c3883"
@@ -266,7 +266,7 @@ antennas: {
   weight_g: 7.8
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "7d43a899-9302-4c06-8cdf-10f1e4cdec37"
@@ -276,7 +276,7 @@ antennas: {
   weight_g: 1.5
   connector: "U.FL"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "2b56b985-df7c-4fb2-b857-c2bf9d20b42f"
@@ -286,7 +286,7 @@ antennas: {
   weight_g: 7.3
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "4bdf8de0-368e-4dcf-ac1b-a87cc263ba85"
@@ -296,7 +296,7 @@ antennas: {
   weight_g: 1.6
   connector: "U.FL"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "de2555ad-3aca-474f-9304-1e73a3d0a100"
@@ -306,7 +306,7 @@ antennas: {
   weight_g: 11.5
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "2e2552ce-7f9d-4b4e-a29d-f8deebbc5244"
@@ -316,7 +316,7 @@ antennas: {
   weight_g: 7.5
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "3ac9b7de-e8a1-4f95-9035-251ef3eafbf9"
@@ -326,7 +326,7 @@ antennas: {
   weight_g: 12
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "62dbbe5f-ff0a-414c-b88d-915a38d14a05"
@@ -336,7 +336,7 @@ antennas: {
   weight_g: 10.5
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "fbfde865-961b-4057-90bd-a9a9c721e128"
@@ -346,7 +346,7 @@ antennas: {
   weight_g: 7.8
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "387a8b39-8bc4-44a3-980b-535af4309aeb"
@@ -356,7 +356,7 @@ antennas: {
   weight_g: 7.5
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "ca3080c1-64f2-487b-8fe0-29c7e6367660"
@@ -366,7 +366,7 @@ antennas: {
   weight_g: 15
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "c445e6bc-9018-4c18-a81e-1f3dbaca2630"
@@ -376,7 +376,7 @@ antennas: {
   weight_g: 1.4
   connector: "U.FL"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "6867dd7c-2e2c-4357-a020-e3b9cb4fcb58"
@@ -386,7 +386,7 @@ antennas: {
   weight_g: 12
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "1e5e35d0-8097-476c-acd0-2a05ef88d9b3"
@@ -396,7 +396,7 @@ antennas: {
   weight_g: 18
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "e3e23aea-e5a9-40bb-818e-3abe0ba3ceb1"
@@ -406,7 +406,7 @@ antennas: {
   weight_g: 4.8
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "af64bd15-c82d-4174-99c8-341bce6cfcf8"
@@ -416,7 +416,7 @@ antennas: {
   weight_g: 11.5
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "c0ce31d0-b000-4b36-bc6d-cca8daf29f0e"
@@ -426,7 +426,7 @@ antennas: {
   weight_g: 11
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "61f73529-a335-42e4-a7ee-4cf6f0306f48"
@@ -436,7 +436,7 @@ antennas: {
   weight_g: 0.84
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "65c6a869-60f1-48cf-a75f-2cccbd971a0a"
@@ -446,7 +446,7 @@ antennas: {
   weight_g: 0.33
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "d584739c-dc84-4769-9d23-76666fb6bc41"
@@ -456,7 +456,7 @@ antennas: {
   weight_g: 9.45
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "4f52365d-f235-4198-8401-e13ef9aa2774"
@@ -466,7 +466,7 @@ antennas: {
   weight_g: 9.45
   connector: "SMA"
   polarization: "LHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "9aee436e-77fc-4376-9fcc-ba69f8478330"
@@ -476,7 +476,7 @@ antennas: {
   weight_g: 2
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "4ee842aa-e740-4288-846c-a8d4242ae326"
@@ -486,7 +486,7 @@ antennas: {
   weight_g: 1.3
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "c4055518-1a21-4445-a760-becb19088b53"
@@ -496,7 +496,7 @@ antennas: {
   weight_g: 1.2
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "e2d8da94-616c-499a-bbe5-f152f1a54b9d"
@@ -506,7 +506,7 @@ antennas: {
   weight_g: 4
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "ee1b24de-21b5-4e69-b033-ac24e9b787e0"
@@ -516,7 +516,7 @@ antennas: {
   weight_g: 9
   connector: "SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "6597d1ab-b031-4e3e-a764-8726543a6699"
@@ -526,7 +526,7 @@ antennas: {
   weight_g: 47.44
   connector: "RP-SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "9eb07880-8f1b-4b7a-ae37-8456acf2dbfa"
@@ -536,7 +536,7 @@ antennas: {
   weight_g: 14
   connector: "RP-SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "9a17cb17-0275-4202-8811-74ee48aba608"
@@ -546,7 +546,7 @@ antennas: {
   weight_g: 2.02
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "2d2fac07-7a87-498c-a12b-e61da5332631"
@@ -556,7 +556,7 @@ antennas: {
   weight_g: 18
   connector: "SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "536e9a77-e3d8-4743-93d3-449a473716ee"
@@ -566,7 +566,7 @@ antennas: {
   weight_g: 0.94
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "206c4d0e-50cf-4bd3-8536-771a3f26aa0c"
@@ -576,7 +576,7 @@ antennas: {
   weight_g: 1
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "32893f6b-73e0-4caa-9268-11a087924a0a"
@@ -586,7 +586,7 @@ antennas: {
   weight_g: 24
   connector: "SMA"
   polarization: "RHCP"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "d2d64a3e-f109-4eca-838b-d8b27e2631f7"
@@ -596,7 +596,7 @@ antennas: {
   weight_g: 22
   connector: "SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "57381978-90fc-4994-b4a9-af06429fc70d"
@@ -606,7 +606,7 @@ antennas: {
   weight_g: 6.3
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "7d905b95-a4cb-4e03-aba4-f488f4ecf871"
@@ -616,7 +616,7 @@ antennas: {
   weight_g: 0.9
   connector: "U.FL"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas: {
   uuid: "d1add965-ee8e-4623-a4d6-b7ae925694a4"
@@ -626,7 +626,7 @@ antennas: {
   weight_g: 12
   connector: "SMA"
   polarization: "Linear"
-  frequency_band_ghz: 5.8
+  frequency_band: "5.8 GHz"
 }
 antennas { uuid: "699976d2-f4ca-4c4a-9a9a-8b82ea93c1a1" id: "betafpv-loop-antenna" manufacturer: "BETAFPV" name: "BETAFPV Loop Antenna" weight_g: 0.0 }
 antennas { uuid: "05a0d8e6-9e15-42e6-91a2-05f9e0869629" id: "betafpv-moxon-antenna" manufacturer: "BETAFPV" name: "BETAFPV Moxon Antenna" weight_g: 0.0 }

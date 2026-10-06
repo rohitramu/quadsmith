@@ -32,9 +32,9 @@ type Battery struct {
 	Name         string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	WeightG      float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// Total capacity in milliampere-hours (e.g., 1100, 1300)
-	CapacityMah float32 `protobuf:"fixed32,6,opt,name=capacity_mah,json=capacityMah,proto3" json:"capacity_mah,omitempty"`
+	CapacityMah uint32 `protobuf:"varint,6,opt,name=capacity_mah,json=capacityMah,proto3" json:"capacity_mah,omitempty"`
 	// Number of cells in series (e.g., 4 for 4S, 6 for 6S)
-	CellCountS int32 `protobuf:"varint,7,opt,name=cell_count_s,json=cellCountS,proto3" json:"cell_count_s,omitempty"`
+	CellCountS uint32 `protobuf:"varint,7,opt,name=cell_count_s,json=cellCountS,proto3" json:"cell_count_s,omitempty"`
 	// E.g., "LiPo", "LiHV", "Li-ion"
 	Chemistry string `protobuf:"bytes,8,opt,name=chemistry,proto3" json:"chemistry,omitempty"`
 	// E.g., "XT60", "XT30", "BT2.0"
@@ -108,14 +108,14 @@ func (x *Battery) GetWeightG() float32 {
 	return 0
 }
 
-func (x *Battery) GetCapacityMah() float32 {
+func (x *Battery) GetCapacityMah() uint32 {
 	if x != nil {
 		return x.CapacityMah
 	}
 	return 0
 }
 
-func (x *Battery) GetCellCountS() int32 {
+func (x *Battery) GetCellCountS() uint32 {
 	if x != nil {
 		return x.CellCountS
 	}
@@ -330,8 +330,8 @@ const file_quadsmith_battery_proto_rawDesc = "" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12!\n" +
-	"\fcapacity_mah\x18\x06 \x01(\x02R\vcapacityMah\x12&\n" +
-	"\fcell_count_s\x18\a \x01(\x05B\x04\xe0\xf3\x18\x01R\n" +
+	"\fcapacity_mah\x18\x06 \x01(\rR\vcapacityMah\x12&\n" +
+	"\fcell_count_s\x18\a \x01(\rB\x04\xe0\xf3\x18\x01R\n" +
 	"cellCountS\x12\x1c\n" +
 	"\tchemistry\x18\b \x01(\tR\tchemistry\x12\x1c\n" +
 	"\tconnector\x18\t \x01(\tR\tconnector:\r\xc2\xf3\x18\tbatteries\"=\n" +

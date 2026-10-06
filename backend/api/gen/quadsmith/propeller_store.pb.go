@@ -9,22 +9,22 @@ import (
 )
 
 func CreatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
-	query := `INSERT INTO propellers (uuid, id, manufacturer, name, weight_g, diameter_inches, pitch_inches, blades, material) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+	query := `INSERT INTO propellers (uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.DiameterInches, m.PitchInches, m.Blades, m.Material)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material)
 	return err
 }
 
 func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Propeller, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_inches, pitch_inches, blades, material"
+	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_inches", "pitch_inches", "blades", "material"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material"}
 	}
 	query := `SELECT ` + colsStr + ` FROM propellers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -41,10 +41,10 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 			scanArgs[i] = &m.Name
 		case "weight_g":
 			scanArgs[i] = &m.WeightG
-		case "diameter_inches":
-			scanArgs[i] = &m.DiameterInches
-		case "pitch_inches":
-			scanArgs[i] = &m.PitchInches
+		case "diameter_mm":
+			scanArgs[i] = &m.DiameterMm
+		case "pitch_mm":
+			scanArgs[i] = &m.PitchMm
 		case "blades":
 			scanArgs[i] = &m.Blades
 		case "material":
@@ -62,8 +62,8 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 }
 
 func UpdatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
-	query := `UPDATE propellers SET manufacturer = $2, name = $3, weight_g = $4, diameter_inches = $5, pitch_inches = $6, blades = $7, material = $8 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.DiameterInches, m.PitchInches, m.Blades, m.Material)
+	query := `UPDATE propellers SET manufacturer = $2, name = $3, weight_g = $4, diameter_mm = $5, pitch_mm = $6, blades = $7, material = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material)
 	return err
 }
 
@@ -74,11 +74,11 @@ func DeletePropeller(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Propeller, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_inches, pitch_inches, blades, material"
+	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_inches", "pitch_inches", "blades", "material"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material"}
 	}
 	query := `SELECT ` + colsStr + ` FROM propellers`
 	if whereClause != "" {
@@ -118,10 +118,10 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 				scanArgs[i] = &m.Name
 			case "weight_g":
 				scanArgs[i] = &m.WeightG
-			case "diameter_inches":
-				scanArgs[i] = &m.DiameterInches
-			case "pitch_inches":
-				scanArgs[i] = &m.PitchInches
+			case "diameter_mm":
+				scanArgs[i] = &m.DiameterMm
+			case "pitch_mm":
+				scanArgs[i] = &m.PitchMm
 			case "blades":
 				scanArgs[i] = &m.Blades
 			case "material":

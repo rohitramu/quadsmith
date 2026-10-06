@@ -5,7 +5,7 @@ frames: {
   name: "TBS Source One V5"
   weight_g: 123.5
   wheelbase_mm: 226
-  max_prop_size_inches: 5.1
+  max_prop_size_mm: 129.54
   geometry: "True-X"
 }
 frames: {
@@ -15,7 +15,7 @@ frames: {
   name: "ImpulseRC Apex EVO 5\""
   weight_g: 132
   wheelbase_mm: 225
-  max_prop_size_inches: 5.1
+  max_prop_size_mm: 129.54
   geometry: "True-X"
 }
 frames: {
@@ -25,7 +25,7 @@ frames: {
   name: "iFlight AOS 5 V5"
   weight_g: 129
   wheelbase_mm: 228
-  max_prop_size_inches: 5.2
+  max_prop_size_mm: 132.08
   geometry: "True-X"
 }
 frames: {
@@ -35,7 +35,7 @@ frames: {
   name: "FlyFishRC Volador II VX5"
   weight_g: 177
   wheelbase_mm: 225
-  max_prop_size_inches: 5.1
+  max_prop_size_mm: 129.54
   geometry: "True-X"
 }
 frames: {
@@ -45,7 +45,7 @@ frames: {
   name: "Caddx Gofilm 20 Frame"
   weight_g: 30.5
   wheelbase_mm: 94
-  max_prop_size_inches: 2.01
+  max_prop_size_mm: 51.05
   geometry: "True-X"
 }
 frames: {
@@ -55,7 +55,7 @@ frames: {
   name: "Happymodel Mobula8 Frame"
   weight_g: 11.5
   wheelbase_mm: 85
-  max_prop_size_inches: 2.01
+  max_prop_size_mm: 51.05
   geometry: "True-X"
 }
 frames: {
@@ -65,7 +65,7 @@ frames: {
   name: "Flywoo Explorer LR 4 Frame"
   weight_g: 41
   wheelbase_mm: 168
-  max_prop_size_inches: 4
+  max_prop_size_mm: 101.6
   geometry: "True-X"
 }
 frames: {
@@ -75,7 +75,7 @@ frames: {
   name: "BetaFPV Meteor75 Pro Frame"
   weight_g: 5.8
   wheelbase_mm: 80.8
-  max_prop_size_inches: 1.77
+  max_prop_size_mm: 44.96
   geometry: "True-X"
 }
 frames: {
@@ -85,7 +85,7 @@ frames: {
   name: "HGLRC Sector D5 Frame"
   weight_g: 121.7
   wheelbase_mm: 225
-  max_prop_size_inches: 5
+  max_prop_size_mm: 127.0
   geometry: "True-X"
 }
 frames: {
@@ -95,7 +95,7 @@ frames: {
   name: "HGLRC Rekon3 Frame"
   weight_g: 23
   wheelbase_mm: 140
-  max_prop_size_inches: 3
+  max_prop_size_mm: 76.2
   geometry: "True-X"
 }
 frames: {
@@ -105,7 +105,7 @@ frames: {
   name: "HGLRC Rekon5 Frame"
   weight_g: 72
   wheelbase_mm: 210
-  max_prop_size_inches: 5
+  max_prop_size_mm: 127.0
   geometry: "True-X"
 }
 frames: {
@@ -115,7 +115,7 @@ frames: {
   name: "HGLRC Sector X5 Frame"
   weight_g: 120
   wheelbase_mm: 210
-  max_prop_size_inches: 5
+  max_prop_size_mm: 127.0
   geometry: "True-X"
 }
 frames: {
@@ -125,7 +125,7 @@ frames: {
   name: "SUB250-Oasis Frame"
   weight_g: 53
   wheelbase_mm: 135
-  max_prop_size_inches: 2.5
+  max_prop_size_mm: 63.5
   geometry: "True-X"
 }
 frames: {

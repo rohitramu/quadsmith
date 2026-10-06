@@ -26,7 +26,7 @@ message Receiver {
   string protocol = 6 [(quadsmith.sql.create_index) = true];
 
   // E.g., 2.4, 0.9 (for 900MHz)
-  float frequency_band_ghz = 7;
+  string frequency_band = 7;
 
   bool has_telemetry = 8;
 

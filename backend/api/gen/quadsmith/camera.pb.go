@@ -37,7 +37,7 @@ type Camera struct {
 	// Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
 	SensorSize string `protobuf:"bytes,7,opt,name=sensor_size,json=sensorSize,proto3" json:"sensor_size,omitempty"`
 	// Width of the camera body in mm (e.g., 14 for nano, 19 for micro, 22 for standard)
-	WidthMm float32 `protobuf:"fixed32,8,opt,name=width_mm,json=widthMm,proto3" json:"width_mm,omitempty"`
+	WidthMm uint32 `protobuf:"varint,8,opt,name=width_mm,json=widthMm,proto3" json:"width_mm,omitempty"`
 	// Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
 	LensSizeMm    float32 `protobuf:"fixed32,9,opt,name=lens_size_mm,json=lensSizeMm,proto3" json:"lens_size_mm,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -130,7 +130,7 @@ func (x *Camera) GetSensorSize() string {
 	return ""
 }
 
-func (x *Camera) GetWidthMm() float32 {
+func (x *Camera) GetWidthMm() uint32 {
 	if x != nil {
 		return x.WidthMm
 	}
@@ -342,7 +342,7 @@ const file_quadsmith_camera_proto_rawDesc = "" +
 	"\bprotocol\x18\x06 \x01(\tR\bprotocol\x12\x1f\n" +
 	"\vsensor_size\x18\a \x01(\tR\n" +
 	"sensorSize\x12\x19\n" +
-	"\bwidth_mm\x18\b \x01(\x02R\awidthMm\x12 \n" +
+	"\bwidth_mm\x18\b \x01(\rR\awidthMm\x12 \n" +
 	"\flens_size_mm\x18\t \x01(\x02R\n" +
 	"lensSizeMm:\v\xc2\xf3\x18\acameras\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +

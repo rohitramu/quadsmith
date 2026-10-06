@@ -26,7 +26,7 @@ message VideoTransmitter {
   string protocol = 6 [(quadsmith.sql.create_index) = true];
 
   // Max output power in milliwatts (e.g., 800, 1000, 1200)
-  float max_power_mw = 7;
+  uint32 max_power_mw = 7;
 
   // Input voltage range
   float input_voltage_min_v = 8;

@@ -24,7 +24,7 @@ message Motor {
   float weight_g = 5;
   float stator_diameter_mm = 6;
   float stator_height_mm = 7;
-  float kv = 8 [(quadsmith.sql.create_index) = true];
+  uint32 kv = 8 [(quadsmith.sql.create_index) = true];
 }
 
 // ---------------------------------------------------------

@@ -25,7 +25,7 @@ message Frame {
   float wheelbase_mm = 6;
 
   // Maximum propeller size supported
-  float max_prop_size_inches = 7;
+  float max_prop_size_mm = 7;
 
   // E.g., "True X", "Squashed X", "Deadcat"
   string geometry = 8;

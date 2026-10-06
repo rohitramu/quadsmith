@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS antennas (
   weight_g DECIMAL,
   connector TEXT,
   polarization TEXT,
-  frequency_band_ghz DECIMAL,
+  frequency_band TEXT,
   length_mm DECIMAL,
   gain_dbi DECIMAL
 );
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS batteries (
   manufacturer TEXT,
   name TEXT,
   weight_g DECIMAL,
-  capacity_mah DECIMAL,
+  capacity_mah INTEGER,
   cell_count_s INTEGER,
   chemistry TEXT,
   connector TEXT
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS cameras (
   weight_g DECIMAL,
   protocol TEXT,
   sensor_size TEXT,
-  width_mm DECIMAL,
+  width_mm INTEGER,
   lens_size_mm DECIMAL
 );
 
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS frames (
   name TEXT,
   weight_g DECIMAL,
   wheelbase_mm DECIMAL,
-  max_prop_size_inches DECIMAL,
+  max_prop_size_mm DECIMAL,
   geometry TEXT
 );
 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS motors (
   weight_g DECIMAL,
   stator_diameter_mm DECIMAL,
   stator_height_mm DECIMAL,
-  kv DECIMAL
+  kv INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS idx_motors_manufacturer ON motors (manufacturer);
@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS propellers (
   manufacturer TEXT,
   name TEXT,
   weight_g DECIMAL,
-  diameter_inches DECIMAL,
-  pitch_inches DECIMAL,
+  diameter_mm DECIMAL,
+  pitch_mm DECIMAL,
   blades INTEGER,
   material TEXT
 );
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS receivers (
   is_internal_only BOOLEAN,
   weight_g DECIMAL,
   protocol TEXT,
-  frequency_band_ghz DECIMAL,
+  frequency_band TEXT,
   has_telemetry BOOLEAN,
   antenna_uuids UUID[]
 );
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS video_transmitters (
   is_internal_only BOOLEAN,
   weight_g DECIMAL,
   protocol TEXT,
-  max_power_mw DECIMAL,
+  max_power_mw INTEGER,
   input_voltage_min_v DECIMAL,
   input_voltage_max_v DECIMAL,
   antenna_uuids UUID[]

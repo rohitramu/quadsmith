@@ -29,7 +29,7 @@ message Camera {
   string sensor_size = 7;
 
   // Width of the camera body in mm (e.g., 14 for nano, 19 for micro, 22 for standard)
-  float width_mm = 8;
+  uint32 width_mm = 8;
 
   // Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
   float lens_size_mm = 9;

@@ -19,7 +19,7 @@ erDiagram
         DECIMAL weight_g
         DECIMAL stator_diameter_mm
         DECIMAL stator_height_mm
-        DECIMAL kv
+        INTEGER kv
     }
 
     frames {
@@ -29,7 +29,7 @@ erDiagram
         TEXT name
         DECIMAL weight_g
         DECIMAL wheelbase_mm
-        DECIMAL max_prop_size_inches
+        DECIMAL max_prop_size_mm
         TEXT geometry
     }
 
@@ -39,7 +39,7 @@ erDiagram
         TEXT manufacturer
         TEXT name
         DECIMAL weight_g
-        DECIMAL capacity_mah
+        INTEGER capacity_mah
         INTEGER cell_count_s
         TEXT chemistry
         TEXT connector
@@ -80,7 +80,7 @@ erDiagram
         BOOLEAN is_internal_only
         DECIMAL weight_g
         TEXT protocol
-        DECIMAL frequency_band_ghz
+        TEXT frequency_band
         BOOLEAN has_telemetry
     }
 
@@ -92,7 +92,7 @@ erDiagram
         BOOLEAN is_internal_only
         DECIMAL weight_g
         TEXT protocol
-        DECIMAL max_power_mw
+        INTEGER max_power_mw
         DECIMAL input_voltage_min_v
         DECIMAL input_voltage_max_v
     }
@@ -106,7 +106,7 @@ erDiagram
         DECIMAL weight_g
         TEXT connector
         TEXT polarization
-        DECIMAL frequency_band_ghz
+        TEXT frequency_band
         DECIMAL length_mm
         DECIMAL gain_dbi
     }
@@ -117,8 +117,8 @@ erDiagram
         TEXT manufacturer
         TEXT name
         DECIMAL weight_g
-        DECIMAL diameter_inches
-        DECIMAL pitch_inches
+        DECIMAL diameter_mm
+        DECIMAL pitch_mm
         INTEGER blades
         TEXT material
     }
@@ -132,7 +132,7 @@ erDiagram
         DECIMAL weight_g
         TEXT protocol
         TEXT sensor_size
-        DECIMAL width_mm
+        INTEGER width_mm
         DECIMAL lens_size_mm
     }
 

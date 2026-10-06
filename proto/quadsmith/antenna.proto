@@ -29,7 +29,7 @@ message Antenna {
   string polarization = 7;
 
   // Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
-  float frequency_band_ghz = 8;
+  string frequency_band = 8;
 
   // Length in millimeters (e.g., 60, 100, 150)
   float length_mm = 9;

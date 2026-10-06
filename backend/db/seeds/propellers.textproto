@@ -4,8 +4,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp 5x4.3x3 V1S"
   weight_g: 3.81
-  diameter_inches: 5
-  pitch_inches: 4.3
+  diameter_mm: 127.0
+  pitch_mm: 109.22
   blades: 3
   material: "Polycarbonate"
 }
@@ -15,8 +15,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp T2x2x3"
   weight_g: 1.5
-  diameter_inches: 2
-  pitch_inches: 2
+  diameter_mm: 50.8
+  pitch_mm: 50.8
   blades: 3
   material: "Polycarbonate"
 }
@@ -26,8 +26,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan Hurricane 51466 V2"
   weight_g: 4.2
-  diameter_inches: 5.19
-  pitch_inches: 3.6
+  diameter_mm: 131.83
+  pitch_mm: 91.44
   blades: 3
   material: "Polycarbonate"
 }
@@ -37,8 +37,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan Floppy Proppy F5135"
   weight_g: 4.7
-  diameter_inches: 5.1
-  pitch_inches: 3.5
+  diameter_mm: 129.54
+  pitch_mm: 88.9
   blades: 3
   material: "Polycarbonate"
 }
@@ -48,8 +48,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp Ethix S5 Light Grey"
   weight_g: 3.7
-  diameter_inches: 5
-  pitch_inches: 4
+  diameter_mm: 127.0
+  pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
 }
@@ -59,8 +59,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp 7X4X3"
   weight_g: 9.1
-  diameter_inches: 7
-  pitch_inches: 4
+  diameter_mm: 177.8
+  pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
 }
@@ -70,8 +70,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan 1219 3-Blade"
   weight_g: 0.28
-  diameter_inches: 1.22
-  pitch_inches: 1.89
+  diameter_mm: 30.99
+  pitch_mm: 48.01
   blades: 3
   material: "Polycarbonate"
 }
@@ -81,8 +81,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan 1636 4-Blade"
   weight_g: 0.5
-  diameter_inches: 1.57
-  pitch_inches: 3.6
+  diameter_mm: 39.88
+  pitch_mm: 91.44
   blades: 4
   material: "Polycarbonate"
 }
@@ -92,8 +92,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan 2023 3-Blade"
   weight_g: 0.88
-  diameter_inches: 2
-  pitch_inches: 2.3
+  diameter_mm: 50.8
+  pitch_mm: 58.42
   blades: 3
   material: "Polycarbonate"
 }
@@ -103,8 +103,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan 3016 3-Blade"
   weight_g: 1.18
-  diameter_inches: 3
-  pitch_inches: 1.6
+  diameter_mm: 76.2
+  pitch_mm: 40.64
   blades: 3
   material: "Polycarbonate"
 }
@@ -114,8 +114,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan 4023 3-Blade"
   weight_g: 1.9
-  diameter_inches: 4
-  pitch_inches: 2.3
+  diameter_mm: 101.6
+  pitch_mm: 58.42
   blades: 3
   material: "Polycarbonate"
 }
@@ -125,8 +125,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan Hurricane 51433"
   weight_g: 3.8
-  diameter_inches: 5.15
-  pitch_inches: 4.33
+  diameter_mm: 130.81
+  pitch_mm: 109.98
   blades: 3
   material: "Polycarbonate"
 }
@@ -136,8 +136,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan Hurricane 51499"
   weight_g: 5.1
-  diameter_inches: 5.15
-  pitch_inches: 4.99
+  diameter_mm: 130.81
+  pitch_mm: 126.75
   blades: 3
   material: "Polycarbonate"
 }
@@ -147,8 +147,8 @@ propellers: {
   manufacturer: "Gemfan"
   name: "Gemfan 7040 3-Blade"
   weight_g: 8.7
-  diameter_inches: 7
-  pitch_inches: 4
+  diameter_mm: 177.8
+  pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
 }
@@ -158,8 +158,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp Micro Whoop 31x3"
   weight_g: 0.27
-  diameter_inches: 1.22
-  pitch_inches: 1.18
+  diameter_mm: 30.99
+  pitch_mm: 29.97
   blades: 3
   material: "Polycarbonate"
 }
@@ -169,8 +169,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp Micro Whoop 40x4"
   weight_g: 0.5
-  diameter_inches: 1.57
-  pitch_inches: 1.57
+  diameter_mm: 39.88
+  pitch_mm: 39.88
   blades: 4
   material: "Polycarbonate"
 }
@@ -180,8 +180,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp T65MM 2.5 Inch"
   weight_g: 1.2
-  diameter_inches: 2.56
-  pitch_inches: 1.57
+  diameter_mm: 65.02
+  pitch_mm: 39.88
   blades: 2
   material: "Polycarbonate"
 }
@@ -191,8 +191,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp T3x3x3"
   weight_g: 1.5
-  diameter_inches: 3
-  pitch_inches: 3
+  diameter_mm: 76.2
+  pitch_mm: 76.2
   blades: 3
   material: "Polycarbonate"
 }
@@ -202,8 +202,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp T4x2.5x2"
   weight_g: 1.4
-  diameter_inches: 4
-  pitch_inches: 2.5
+  diameter_mm: 101.6
+  pitch_mm: 63.5
   blades: 2
   material: "Polycarbonate"
 }
@@ -213,8 +213,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp Ethix P3 Peanut Butter"
   weight_g: 3.8
-  diameter_inches: 5.1
-  pitch_inches: 3
+  diameter_mm: 129.54
+  pitch_mm: 76.2
   blades: 3
   material: "Polycarbonate"
 }
@@ -224,8 +224,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp Ethix S3 Watermelon"
   weight_g: 3.6
-  diameter_inches: 5
-  pitch_inches: 3.1
+  diameter_mm: 127.0
+  pitch_mm: 78.74
   blades: 3
   material: "Polycarbonate"
 }
@@ -235,8 +235,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp 5.1x4.1x3"
   weight_g: 4.7
-  diameter_inches: 5.1
-  pitch_inches: 4.1
+  diameter_mm: 129.54
+  pitch_mm: 104.14
   blades: 3
   material: "Polycarbonate"
 }
@@ -246,8 +246,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp 7x3.5x3"
   weight_g: 8.8
-  diameter_inches: 7
-  pitch_inches: 3.5
+  diameter_mm: 177.8
+  pitch_mm: 88.9
   blades: 3
   material: "Polycarbonate"
 }
@@ -257,8 +257,8 @@ propellers: {
   manufacturer: "HQProp"
   name: "HQProp 2.5x2.5x3"
   weight_g: 1.5
-  diameter_inches: 2.5
-  pitch_inches: 2.5
+  diameter_mm: 63.5
+  pitch_mm: 63.5
   blades: 3
   material: "Polycarbonate"
 }
