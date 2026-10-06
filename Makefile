@@ -10,7 +10,7 @@ build: generate
 	@go build -mod=vendor -o bin/server ./backend/api/cmd/server/main.go
 	
 	@echo "--- Generating and building CLI to bin/qs ---"
-	@cd frontend/cli && go run generate_cli.go && go build -mod=vendor -o ../../bin/qs main.go
+	@cd frontend/cli && go run generate_cli.go && gofmt -w main.go && go build -mod=vendor -o ../../bin/qs main.go
 	@echo "--- Generating shell completions to bin/ ---"
 	@./bin/qs completion bash > bin/completion.bash || true
 	@./bin/qs completion zsh > bin/completion.zsh || true
@@ -30,6 +30,8 @@ generate:
 	@go build -mod=vendor -o bin/protoc-gen-server ./backend/api/cmd/protoc-gen-server
 	@echo "--- Generating Protobuf & ConnectRPC Code ---"
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
+	@gofmt -w backend/api/gen/
+	@npx -y sql-formatter -l postgresql --fix backend/db/schema.sql
 
 test: generate
 	@echo "--- Running Go Tests ---"
