@@ -26,8 +26,8 @@ message Esc {
   int32 max_motors = 6;
 
   // Continuous and Burst amperage ratings
-  int32 max_motor_current_a = 7;
-  int32 burst_amps = 8;
+  float max_motor_current_a = 7;
+  float burst_amps = 8;
 
   // E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
   string firmware = 9;
