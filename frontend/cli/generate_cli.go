@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 package main
@@ -73,18 +74,18 @@ func main() {
 	for _, d := range domains {
 		lowerName := strings.ToLower(d.Name)
 		lowerPlural := strings.ToLower(d.Plural)
-		
+
 		fmt.Fprintf(f, "\n\t// --- %s ---\n", d.Plural)
 		fmt.Fprintf(f, "\t%sClient := quadsmithconnect.New%sServiceClient(http.DefaultClient, apiURL)\n", lowerName, d.Name)
 		fmt.Fprintf(f, "\t%sCmd := &cobra.Command{Use: \"%s\"}\n", lowerPlural, lowerPlural)
-		
+
 		fmt.Fprintf(f, "\t%sListCmd := &cobra.Command{\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tUse: \"list\",\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
 		fmt.Fprintf(f, "\t\t\tfilter, _ := cmd.Flags().GetString(\"filter\")\n")
 		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\t\tsortOpts, _ := cmd.Flags().GetStringSlice(\"sort\")\n")
-			fmt.Fprintf(f, "\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts}\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts}\n", d.Plural)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Plural)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg.%s, columns)\n", d.Plural)
@@ -110,8 +111,8 @@ func main() {
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
 		fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
-			fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"sort\", \"s\", nil, \"Columns to sort by (e.g. ^kv)\")\n", lowerPlural)
-			fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"sort\", \"s\", nil, \"Columns to sort by (e.g. ^kv)\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
 		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
@@ -125,7 +126,7 @@ func main() {
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
 
-	fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"sort\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"sort\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
 		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"sort\")\n")
 		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
@@ -145,8 +146,8 @@ func main() {
 		fmt.Fprintf(f, "\t\t}\n")
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
-fmt.Fprintf(f, "\t%sCmd.AddCommand(%sListCmd)\n\n", lowerPlural, lowerPlural)
-	// removed
+		fmt.Fprintf(f, "\t%sCmd.AddCommand(%sListCmd)\n\n", lowerPlural, lowerPlural)
+		// removed
 		fmt.Fprintf(f, "\t%sGetCmd := &cobra.Command{\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tUse: \"get [id]\",\n")
 		fmt.Fprintf(f, "\t\tArgs: cobra.ExactArgs(1),\n")

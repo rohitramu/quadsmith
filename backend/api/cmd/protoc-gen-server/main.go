@@ -53,8 +53,6 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 
 		msgName := msg.GoIdent.GoName
 
-
-
 		// Find the service name
 		serviceName := msgName + "Service"
 
@@ -73,7 +71,6 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 		g.P("}")
 		g.P()
 
-		
 		// Get
 		g.P("func (s *", serviceName, "Handler) Get", msgName, "(ctx context.Context, req *connect.Request[Get", msgName, "Request]) (*connect.Response[", msgName, "], error) {")
 		g.P("	m, err := Get", msgName, "(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())")

@@ -21,7 +21,7 @@ type Components struct {
 // CheckCompatibility runs all compatibility rules against a given set of hardware components.
 func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	var messages []*pb.CompatibilityMessage
-	
+
 	// Rule 1: Motor vs ESC
 	if comp.Motor != nil && len(comp.Escs) > 0 {
 		for _, esc := range comp.Escs {

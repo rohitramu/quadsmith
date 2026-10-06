@@ -19,7 +19,7 @@ func TestCompiler_Extensive(t *testing.T) {
 		cel.Variable("vtx.protocol", cel.StringType),
 		cel.Variable("mount_patterns", cel.ListType(cel.StringType)),
 		cel.Variable("error.trigger", cel.IntType),
-		cel.Function("unsupportedFunc", 
+		cel.Function("unsupportedFunc",
 			cel.MemberOverload("string_unsupportedFunc", []*cel.Type{cel.StringType, cel.StringType}, cel.BoolType),
 		),
 	)
@@ -50,8 +50,8 @@ func TestCompiler_Extensive(t *testing.T) {
 		{"Boolean True", `frame.is_ducted == true`, `(db_frame.is_ducted = $1)`, []any{true}, false},
 		{"Implicit Boolean", `frame.is_ducted`, `db_frame.is_ducted`, nil, false},
 		{"Negation", `!frame.is_ducted`, `NOT (db_frame.is_ducted)`, nil, false},
-		{"Complex Grouping", `(motor.kv_rating > 2000 && frame.is_ducted) || (frame.wheelbase_mm < 100)`, 
-			`(((db_motor.kv_rating > $1) AND db_frame.is_ducted) OR (db_frame.wheelbase_mm < $2))`, 
+		{"Complex Grouping", `(motor.kv_rating > 2000 && frame.is_ducted) || (frame.wheelbase_mm < 100)`,
+			`(((db_motor.kv_rating > $1) AND db_frame.is_ducted) OR (db_frame.wheelbase_mm < $2))`,
 			[]any{int64(2000), int64(100)}, false},
 		// CEL automatically optimizes double negation !!x to x during AST generation!
 		{"Double Negation", `!!frame.is_ducted`, `db_frame.is_ducted`, nil, false},

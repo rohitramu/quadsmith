@@ -1,8 +1,8 @@
 package compatibility
 
 import (
-	"testing"
 	pb "quadsmith/api/gen/quadsmith"
+	"testing"
 )
 
 func TestMotorEscCompatibility(t *testing.T) {
@@ -16,7 +16,7 @@ func TestMotorEscCompatibility(t *testing.T) {
 	}
 
 	messages := CheckCompatibility(comp)
-	
+
 	if len(messages) == 0 {
 		t.Fatalf("Expected incompatibility message, got none")
 	}
@@ -37,7 +37,7 @@ func TestPropellerFrameCompatibility(t *testing.T) {
 	}
 
 	messages := CheckCompatibility(comp)
-	
+
 	if len(messages) == 0 {
 		t.Fatalf("Expected incompatibility message, got none")
 	}
@@ -64,7 +64,7 @@ func TestCompatibleBuild(t *testing.T) {
 	}
 
 	messages := CheckCompatibility(comp)
-	
+
 	if len(messages) != 0 {
 		t.Fatalf("Expected 0 messages, got %d", len(messages))
 	}

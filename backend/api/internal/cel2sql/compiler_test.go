@@ -60,14 +60,14 @@ func TestCompile(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			gotSql, gotArgs, err := Compile(tt.filter)
-			
+
 			if tt.expectError && err == nil {
 				t.Errorf("expected error, got nil")
 			}
 			if !tt.expectError && err != nil {
 				t.Errorf("unexpected error: %v", err)
 			}
-			
+
 			if gotSql != tt.wantSql {
 				t.Errorf("Compile() gotSql = %v, want %v", gotSql, tt.wantSql)
 			}

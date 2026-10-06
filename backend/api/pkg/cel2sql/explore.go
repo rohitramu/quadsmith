@@ -1,8 +1,10 @@
 package cel2sql
+
 import (
-	"fmt"
 	"cel.dev/cel-go/cel"
+	"fmt"
 )
+
 func Explore() {
 	env, _ := cel.NewEnv(cel.Variable("motor.kv_rating", cel.IntType))
 	celAst, _ := env.Compile("-motor.kv_rating < -1000")

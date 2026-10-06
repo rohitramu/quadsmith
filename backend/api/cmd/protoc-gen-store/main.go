@@ -74,19 +74,19 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		colName := string(field.Desc.Name())
 		colNames = append(colNames, colName)
 		placeHolders = append(placeHolders, fmt.Sprintf("$%d", i+1))
-		
+
 		goName := field.GoName
 		if strings.HasSuffix(colName, "uuid") {
-				mFields = append(mFields, "func(s string) interface{} { if s == \"\" { return nil }; return s }(m."+goName+")")
-			} else if strings.HasSuffix(colName, "uuids") {
-				mFields = append(mFields, "func(s []string) interface{} { if len(s) == 0 { return nil }; return s }(m."+goName+")")
-			} else {
-				mFields = append(mFields, "m."+goName)
-			}
+			mFields = append(mFields, "func(s string) interface{} { if s == \"\" { return nil }; return s }(m."+goName+")")
+		} else if strings.HasSuffix(colName, "uuids") {
+			mFields = append(mFields, "func(s []string) interface{} { if len(s) == 0 { return nil }; return s }(m."+goName+")")
+		} else {
+			mFields = append(mFields, "m."+goName)
+		}
 
 		varType := goDataType(field.Desc)
 		scanVarName := "v_" + colName
-		
+
 		if field.Desc.IsList() {
 			scanVars = append(scanVars, fmt.Sprintf("var %s %s", scanVarName, varType))
 			scanAddrs = append(scanAddrs, "&"+scanVarName)
@@ -110,7 +110,6 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("}")
 	g.P()
 
-	
 	// --- GET ---
 	g.P("func Get", msgName, "(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*", msgName, ", error) {")
 	g.P("	colsStr := \"", colsStr, "\"")
@@ -120,7 +119,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("       cols = []string{\"" + strings.ReplaceAll(colsStr, ", ", "\", \"") + "\"}")
 	g.P("   }")
 	g.P("	query := `SELECT ` + colsStr + ` FROM ", tableName, " WHERE id = $1 OR uuid::text = $1 LIMIT 1`")
-	
+
 	g.P("	scanArgs := make([]interface{}, len(cols))")
 	g.P("	m := &", msgName, "{}")
 	g.P("	for i, col := range cols {")
@@ -147,7 +146,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	var updateSets []string
 	var updateArgs []string
 	updateArgs = append(updateArgs, "m.Uuid")
-	
+
 	argIdx := 2
 	for i, colName := range colNames {
 		if colName == "uuid" || colName == "id" {
@@ -157,7 +156,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		updateArgs = append(updateArgs, mFields[i])
 		argIdx++
 	}
-	
+
 	updateSetsStr := strings.Join(updateSets, ", ")
 	updateArgsStr := strings.Join(updateArgs, ", ")
 
@@ -181,7 +180,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	if strings.HasSuffix(msgName, "y") {
 		pluralName = strings.TrimSuffix(msgName, "y") + "ies"
 	}
-	
+
 	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*", msgName, ", error) {")
 	g.P("	colsStr := \"", colsStr, "\"")
 	g.P("	if len(cols) > 0 {")
@@ -193,28 +192,28 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	if whereClause != \"\" {")
 	g.P("		query += \" WHERE \" + whereClause")
 	g.P("	}")
-	
-		g.P("	if len(sorts) > 0 {")
-		g.P("		var orderClauses []string")
-		g.P("		for _, s := range sorts {")
-		g.P("			col := s")
-		g.P("			dir := \"ASC\"")
-		g.P("			if strings.HasPrefix(s, \"^\") {")
-		g.P("				col = s[1:]")
-		g.P("				dir = \"DESC\"")
-		g.P("			}")
-		g.P("			orderClauses = append(orderClauses, col + \" \" + dir)")
-		g.P("		}")
-		g.P("		query += \" ORDER BY \" + strings.Join(orderClauses, \", \")")
-		g.P("	}")
-g.P("	rows, err := db.Query(ctx, query, args...)")
+
+	g.P("	if len(sorts) > 0 {")
+	g.P("		var orderClauses []string")
+	g.P("		for _, s := range sorts {")
+	g.P("			col := s")
+	g.P("			dir := \"ASC\"")
+	g.P("			if strings.HasPrefix(s, \"^\") {")
+	g.P("				col = s[1:]")
+	g.P("				dir = \"DESC\"")
+	g.P("			}")
+	g.P("			orderClauses = append(orderClauses, col + \" \" + dir)")
+	g.P("		}")
+	g.P("		query += \" ORDER BY \" + strings.Join(orderClauses, \", \")")
+	g.P("	}")
+	g.P("	rows, err := db.Query(ctx, query, args...)")
 	g.P("	if err != nil {")
 	g.P("		return nil, err")
 	g.P("	}")
 	g.P("	defer rows.Close()")
 	g.P("	results := make([]*", msgName, ", 0)")
 	g.P("	for rows.Next() {")
-	
+
 	g.P("		scanArgs := make([]interface{}, len(cols))")
 	g.P("		m := &", msgName, "{}")
 	g.P("		for i, col := range cols {")

@@ -1,10 +1,10 @@
 package cel2sql
 
 import (
-	"fmt"
 	"cel.dev/cel-go/cel"
 	"cel.dev/cel-go/common/ast"
 	"cel.dev/cel-go/common/types/ref"
+	"fmt"
 )
 
 type ConvertOptions struct {
@@ -73,25 +73,38 @@ func (c *Compiler) visitIdent(ident string, args *[]any) (string, error) {
 func (c *Compiler) visitCall(call ast.CallExpr, args *[]any) (string, error) {
 	funcName := call.FunctionName()
 	switch funcName {
-	case "_&&_": return c.visitBinaryOp("AND", call, args)
-	case "_||_": return c.visitBinaryOp("OR", call, args)
-	case "_==_": return c.visitBinaryOp("=", call, args)
-	case "_!=_": return c.visitBinaryOp("!=", call, args)
-	case "_<_":  return c.visitBinaryOp("<", call, args)
-	case "_<=_": return c.visitBinaryOp("<=", call, args)
-	case "_>_":  return c.visitBinaryOp(">", call, args)
-	case "_>=_": return c.visitBinaryOp(">=", call, args)
-	case "_+_":  return c.visitBinaryOp("+", call, args)
-	case "_-_", "-_":  
+	case "_&&_":
+		return c.visitBinaryOp("AND", call, args)
+	case "_||_":
+		return c.visitBinaryOp("OR", call, args)
+	case "_==_":
+		return c.visitBinaryOp("=", call, args)
+	case "_!=_":
+		return c.visitBinaryOp("!=", call, args)
+	case "_<_":
+		return c.visitBinaryOp("<", call, args)
+	case "_<=_":
+		return c.visitBinaryOp("<=", call, args)
+	case "_>_":
+		return c.visitBinaryOp(">", call, args)
+	case "_>=_":
+		return c.visitBinaryOp(">=", call, args)
+	case "_+_":
+		return c.visitBinaryOp("+", call, args)
+	case "_-_", "-_":
 		// Overloaded: can be binary subtraction or unary negation
 		if len(call.Args()) == 1 {
 			op, err := c.visit(call.Args()[0], args)
-			if err != nil { return "", err }
+			if err != nil {
+				return "", err
+			}
 			return fmt.Sprintf("-(%s)", op), nil
 		}
 		return c.visitBinaryOp("-", call, args)
-	case "_*_":  return c.visitBinaryOp("*", call, args)
-	case "_/_":  return c.visitBinaryOp("/", call, args)
+	case "_*_":
+		return c.visitBinaryOp("*", call, args)
+	case "_/_":
+		return c.visitBinaryOp("/", call, args)
 	case "!_":
 		if len(call.Args()) != 1 {
 			return "", fmt.Errorf("!_ operator expects 1 argument")
@@ -106,36 +119,52 @@ func (c *Compiler) visitCall(call ast.CallExpr, args *[]any) (string, error) {
 			return "", fmt.Errorf("@in operator expects 2 arguments")
 		}
 		left, err := c.visit(call.Args()[0], args)
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		right, err := c.visit(call.Args()[1], args)
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		return fmt.Sprintf("%s = ANY(%s)", left, right), nil
 	case "endsWith":
 		if call.Target() == nil || len(call.Args()) != 1 {
 			return "", fmt.Errorf("endsWith requires a target and 1 argument")
 		}
 		tgt, err := c.visit(call.Target(), args)
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		arg, err := c.visit(call.Args()[0], args)
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		return fmt.Sprintf("%s LIKE '%%' || %s", tgt, arg), nil
 	case "startsWith":
 		if call.Target() == nil || len(call.Args()) != 1 {
 			return "", fmt.Errorf("startsWith requires a target and 1 argument")
 		}
 		tgt, err := c.visit(call.Target(), args)
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		arg, err := c.visit(call.Args()[0], args)
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		return fmt.Sprintf("%s LIKE %s || '%%'", tgt, arg), nil
 	case "contains":
 		if call.Target() == nil || len(call.Args()) != 1 {
 			return "", fmt.Errorf("contains requires a target and 1 argument")
 		}
 		tgt, err := c.visit(call.Target(), args)
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		arg, err := c.visit(call.Args()[0], args)
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		return fmt.Sprintf("%s LIKE '%%' || %s || '%%'", tgt, arg), nil
 	default:
 		return "", fmt.Errorf("unsupported CEL function: %s", funcName)
@@ -148,10 +177,14 @@ func (c *Compiler) visitBinaryOp(sqlOp string, call ast.CallExpr, args *[]any) (
 	}
 
 	left, err := c.visit(call.Args()[0], args)
-	if err != nil { return "", err }
-	
+	if err != nil {
+		return "", err
+	}
+
 	right, err := c.visit(call.Args()[1], args)
-	if err != nil { return "", err }
+	if err != nil {
+		return "", err
+	}
 
 	return fmt.Sprintf("(%s %s %s)", left, sqlOp, right), nil
 }
@@ -163,7 +196,9 @@ func extractPath(expr ast.Expr) (string, error) {
 	case ast.SelectKind:
 		sel := expr.AsSelect()
 		operand, err := extractPath(sel.Operand())
-		if err != nil { return "", err }
+		if err != nil {
+			return "", err
+		}
 		return fmt.Sprintf("%s.%s", operand, sel.FieldName()), nil
 	default:
 		return "", fmt.Errorf("cannot extract path from kind %v", expr.Kind())

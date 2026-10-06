@@ -23,7 +23,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	if b == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is required"))
 	}
-	
+
 	totalWeight := req.Msg.GetPayloadWeightG()
 	var errors []string
 	var warnings []string
@@ -113,7 +113,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	if totalEscs < 4 && totalEscs > 0 {
 		errors = append(errors, fmt.Sprintf("Not enough ESCs: need 4, have %d", totalEscs))
 	}
-	
+
 	// Physics Estimation (Placeholder for MVP)
 	// TODO: Replace this naive linear estimation with a proper aerodynamic simulation.
 	// We need thrust curve interpolation based on propeller pitch/diameter and stator volume.
@@ -124,29 +124,29 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 
 	if motor != nil && prop != nil && battery != nil {
 		voltage := float32(battery.CellCountS) * 3.7
-		
+
 		// Naive thrust formula
 		statorVol := motor.StatorDiameterMm * motor.StatorHeightMm
 		thrustPerMotor := (statorVol * float32(motor.Kv) * voltage * prop.DiameterInches * prop.PitchInches) / 1500.0
 		totalThrust := thrustPerMotor * 4
-		
+
 		if totalWeight > 0 {
 			thrustToWeight = totalThrust / totalWeight
 			hoverThrottle = (1.0 / thrustToWeight) * 100.0
 		}
-		
+
 		if hoverThrottle > 100 {
 			errors = append(errors, "Drone is too heavy to take off (Hover throttle > 100%)")
 		} else if hoverThrottle > 50 {
 			warnings = append(warnings, "Drone will be very sluggish (Hover throttle > 50%)")
 		}
-		
+
 		// Flight time estimation
 		// Assume hover takes (totalWeight / 4) grams of thrust per motor
 		// Amps = thrust / efficiency(g/W) / voltage
 		hoverAmpsPerMotor := (totalWeight / 4.0) / 3.0 / voltage
 		totalHoverAmps := hoverAmpsPerMotor * 4.0
-		
+
 		if totalHoverAmps > float32(maxAmps*4) && maxAmps > 0 {
 			warnings = append(warnings, "Hover amps exceeds ESC continuous rating")
 		}

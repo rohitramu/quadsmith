@@ -17,6 +17,11 @@ jobs:
       with:
         go-version: '1.22'
 
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
     - name: Install Protoc
       run: |
         sudo apt-get update
@@ -34,3 +39,17 @@ jobs:
         make generate
         # Ensure that no files were modified by make generate
         git diff --exit-code || (echo "Generated code is out of sync. Please run 'make generate' and commit the changes." && exit 1)
+
+    - name: Verify Code Formatting
+      run: |
+        # Format Go
+        find . -name "*.go" -not -path "*/vendor/*" -exec gofmt -w {} +
+        
+        # Format Protobuf
+        cd proto && ../bin/buf format -w && cd ..
+        
+        # Format SQL
+        npx -y sql-formatter -l postgresql --fix backend/db/schema.sql
+        
+        # Ensure that no files were modified by the formatters
+        git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running the pre-commit hook to format code automatically." && exit 1)
