@@ -1,0 +1,35 @@
+flight_controllers: {
+  uuid: "b2337734-fe18-42a2-a1fa-c190bc9488c1"
+  id: "hglrc-zeus-f722"
+  manufacturer: "HGLRC"
+  name: "HGLRC Zeus F722"
+  weight_g: 8.1
+  processor: "STM32F722RET6"
+  gyro: "MPU6000"
+}
+flight_controllers: {
+  uuid: "971706b1-9710-4c6a-86d3-26db8b70d0ba"
+  id: "hglrc-zeus-f722-mini"
+  manufacturer: "HGLRC"
+  name: "HGLRC Zeus F722 Mini"
+  weight_g: 4.6
+  processor: "STM32F722"
+  gyro: "MPU6000"
+}
+flight_controllers: {
+  uuid: "15a59535-5041-4378-a0a6-716dff27bf88"
+  id: "hglrc-specter-f405-v2"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter F405 V2"
+  weight_g: 7.2
+  processor: "STM32F405"
+  gyro: "MPU6000"
+}
+flight_controllers: {
+  uuid: "01a11091-1f13-7669-9fc3-1a0b25bdb420"
+  id: "speedybee-f405-v4"
+  manufacturer: "SpeedyBee"
+  name: "SpeedyBee F405 V4 Flight Controller"
+  weight_g: 10.5
+  processor: "STM32F405"
+}

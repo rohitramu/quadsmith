@@ -1,0 +1,66 @@
+escs: {
+  uuid: "59b0e835-da96-4143-9674-dc6a950ac7c7"
+  id: "redfox-a3-f722-45a-aio"
+  manufacturer: "Redfox"
+  name: "Redfox A3 F722 45A AIO"
+  weight_g: 8.7
+  max_motors: 4
+  continuous_amps: 45
+  burst_amps: 55
+  firmware: "BLHeli_32"
+}
+escs: {
+  uuid: "5a5be012-c0c3-4986-99dd-97a7317148ce"
+  id: "caddxf4-aio-20a"
+  manufacturer: "CaddxF4"
+  name: "CaddxF4 AIO 20A"
+  weight_g: 5.3
+  max_motors: 4
+  continuous_amps: 20
+  burst_amps: 25
+  firmware: "BLHeli_32"
+}
+escs: {
+  uuid: "043313ce-9ddb-47df-b915-56a28855f49e"
+  id: "happymodel-x12-5-in-1-aio"
+  manufacturer: "Happymodel"
+  name: "Happymodel X12 5-IN-1 AIO"
+  weight_g: 5.1
+  max_motors: 4
+  continuous_amps: 12
+  burst_amps: 15
+  firmware: "BLHeli_32"
+}
+escs: {
+  uuid: "41135f85-6b65-4ccd-a019-9d9bd1973294"
+  id: "betafpv-f4-1s-5a-aio"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV F4 1S 5A AIO"
+  weight_g: 2.96
+  max_motors: 4
+  continuous_amps: 5
+  burst_amps: 6
+  firmware: "BLHeli_32"
+}
+escs: {
+  uuid: "19578f9c-b43e-4323-b6ee-8af447a274f4"
+  id: "hglrc-zeus-48a"
+  manufacturer: "HGLRC"
+  name: "HGLRC Zeus 48A"
+  weight_g: 18.3
+  max_motors: 4
+  continuous_amps: 48
+  burst_amps: 55
+  firmware: "BLHeli_32"
+}
+escs: {
+  uuid: "0ceda915-f01c-4b27-bc8c-e01c22e58d2a"
+  id: "hglrc-specter-60a-4-in-1-esc"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 60A 4-in-1 ESC"
+  weight_g: 19.5
+  max_motors: 4
+  continuous_amps: 60
+  burst_amps: 65
+  firmware: "BLHeli_32"
+}

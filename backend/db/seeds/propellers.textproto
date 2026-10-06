@@ -1,0 +1,264 @@
+propellers: {
+  uuid: "5bb5b8ae-fc45-45c0-a388-11e0d0ab6124"
+  id: "hqprop-5x4.3x3-v1s"
+  manufacturer: "HQProp"
+  name: "HQProp 5x4.3x3 V1S"
+  weight_g: 3.81
+  diameter_inches: 5
+  pitch_inches: 4.3
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "85e4b6d3-aeed-45c2-b51b-c55359528c7c"
+  id: "hqprop-t2x2x3"
+  manufacturer: "HQProp"
+  name: "HQProp T2x2x3"
+  weight_g: 1.5
+  diameter_inches: 2
+  pitch_inches: 2
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "bac19aec-99fc-43d4-b96d-d1feb30e6b6e"
+  id: "gemfan-hurricane-51466-v2"
+  manufacturer: "Gemfan"
+  name: "Gemfan Hurricane 51466 V2"
+  weight_g: 4.2
+  diameter_inches: 5.19
+  pitch_inches: 3.6
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "0801832b-b458-4ad5-a311-0e4f1efcc8da"
+  id: "gemfan-floppy-proppy-f5135"
+  manufacturer: "Gemfan"
+  name: "Gemfan Floppy Proppy F5135"
+  weight_g: 4.7
+  diameter_inches: 5.1
+  pitch_inches: 3.5
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "85fd29c1-857d-48e0-a5f7-f454ad4c52b6"
+  id: "hqprop-ethix-s5-light-grey"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix S5 Light Grey"
+  weight_g: 3.7
+  diameter_inches: 5
+  pitch_inches: 4
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "cd0d879e-7b30-4d22-b4cd-475f103b8b70"
+  id: "hqprop-7x4x3"
+  manufacturer: "HQProp"
+  name: "HQProp 7X4X3"
+  weight_g: 9.1
+  diameter_inches: 7
+  pitch_inches: 4
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "a609a8fc-e509-4f5e-a3b5-2ee4847192cf"
+  id: "gemfan-1219-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 1219 3-Blade"
+  weight_g: 0.28
+  diameter_inches: 1.22
+  pitch_inches: 1.89
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "1d421d54-2b93-4bfe-a626-b1f3918f3426"
+  id: "gemfan-1636-4-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 1636 4-Blade"
+  weight_g: 0.5
+  diameter_inches: 1.57
+  pitch_inches: 3.6
+  blades: 4
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "db4c27cd-dbf6-4fb8-83d1-5d00ee86562a"
+  id: "gemfan-2023-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 2023 3-Blade"
+  weight_g: 0.88
+  diameter_inches: 2
+  pitch_inches: 2.3
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "9b6afc05-af45-45c1-9171-6c08de3d8c8d"
+  id: "gemfan-3016-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 3016 3-Blade"
+  weight_g: 1.18
+  diameter_inches: 3
+  pitch_inches: 1.6
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "f438ea4d-29f6-4730-b5d6-105105d04294"
+  id: "gemfan-4023-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 4023 3-Blade"
+  weight_g: 1.9
+  diameter_inches: 4
+  pitch_inches: 2.3
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "c6ccaf42-c038-463b-b311-1e53a75c2fa0"
+  id: "gemfan-hurricane-51433"
+  manufacturer: "Gemfan"
+  name: "Gemfan Hurricane 51433"
+  weight_g: 3.8
+  diameter_inches: 5.15
+  pitch_inches: 4.33
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "81ff33d3-02da-4d1f-a258-0974cd1aaf38"
+  id: "gemfan-hurricane-51499"
+  manufacturer: "Gemfan"
+  name: "Gemfan Hurricane 51499"
+  weight_g: 5.1
+  diameter_inches: 5.15
+  pitch_inches: 4.99
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "a84c2809-0a8d-4eff-b7f3-ac4e36586e3b"
+  id: "gemfan-7040-3-blade"
+  manufacturer: "Gemfan"
+  name: "Gemfan 7040 3-Blade"
+  weight_g: 8.7
+  diameter_inches: 7
+  pitch_inches: 4
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "8a9d1fa6-3a22-4bed-86e8-2352ec189f35"
+  id: "hqprop-micro-whoop-31x3"
+  manufacturer: "HQProp"
+  name: "HQProp Micro Whoop 31x3"
+  weight_g: 0.27
+  diameter_inches: 1.22
+  pitch_inches: 1.18
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "9c6cb944-f7cd-4459-a3c9-b288309e88fa"
+  id: "hqprop-micro-whoop-40x4"
+  manufacturer: "HQProp"
+  name: "HQProp Micro Whoop 40x4"
+  weight_g: 0.5
+  diameter_inches: 1.57
+  pitch_inches: 1.57
+  blades: 4
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "d00fa7e1-7efc-4057-ba75-e0d6d9b84b3b"
+  id: "hqprop-t65mm-2.5-inch"
+  manufacturer: "HQProp"
+  name: "HQProp T65MM 2.5 Inch"
+  weight_g: 1.2
+  diameter_inches: 2.56
+  pitch_inches: 1.57
+  blades: 2
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "50f7726c-df27-4037-8bcb-c1779dac76f9"
+  id: "hqprop-t3x3x3"
+  manufacturer: "HQProp"
+  name: "HQProp T3x3x3"
+  weight_g: 1.5
+  diameter_inches: 3
+  pitch_inches: 3
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "89594ace-b5b9-4494-91c3-de6d839e77b7"
+  id: "hqprop-t4x2.5x2"
+  manufacturer: "HQProp"
+  name: "HQProp T4x2.5x2"
+  weight_g: 1.4
+  diameter_inches: 4
+  pitch_inches: 2.5
+  blades: 2
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "d1ce02e4-961c-499d-8424-3b84424edfde"
+  id: "hqprop-ethix-p3-peanut-butter"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix P3 Peanut Butter"
+  weight_g: 3.8
+  diameter_inches: 5.1
+  pitch_inches: 3
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "6d5540a7-7f07-40a5-840d-185c39f77038"
+  id: "hqprop-ethix-s3-watermelon"
+  manufacturer: "HQProp"
+  name: "HQProp Ethix S3 Watermelon"
+  weight_g: 3.6
+  diameter_inches: 5
+  pitch_inches: 3.1
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "180c5d56-8970-405b-9308-254d1bde06de"
+  id: "hqprop-5.1x4.1x3"
+  manufacturer: "HQProp"
+  name: "HQProp 5.1x4.1x3"
+  weight_g: 4.7
+  diameter_inches: 5.1
+  pitch_inches: 4.1
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "194a58be-4a4c-48b3-bc42-85a97d25074a"
+  id: "hqprop-7x3.5x3"
+  manufacturer: "HQProp"
+  name: "HQProp 7x3.5x3"
+  weight_g: 8.8
+  diameter_inches: 7
+  pitch_inches: 3.5
+  blades: 3
+  material: "Polycarbonate"
+}
+propellers: {
+  uuid: "84d6959a-80c2-4e81-828e-71fee9065947"
+  id: "hqprop-2.5x2.5x3"
+  manufacturer: "HQProp"
+  name: "HQProp 2.5x2.5x3"
+  weight_g: 1.5
+  diameter_inches: 2.5
+  pitch_inches: 2.5
+  blades: 3
+  material: "Polycarbonate"
+}

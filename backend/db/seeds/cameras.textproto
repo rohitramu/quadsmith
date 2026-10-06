@@ -1,0 +1,90 @@
+cameras: {
+  uuid: "78744510-5235-4797-a8bd-dd85ee30d326"
+  id: "runcam-phoenix-2"
+  manufacturer: "RunCam"
+  name: "RunCam Phoenix 2"
+  weight_g: 9
+  protocol: "Analog"
+  width_mm: 19
+}
+cameras: {
+  uuid: "a4c24db1-9024-4e23-9953-3dc8b9613673"
+  id: "walksnail-avatar-hd-pro-camera"
+  manufacturer: "Walksnail"
+  name: "Walksnail Avatar HD Pro Camera"
+  weight_g: 9.5
+  protocol: "Digital"
+  width_mm: 19
+}
+cameras: {
+  uuid: "1555417e-ba1b-4eb5-ae46-810b0b7b7900"
+  id: "caddx-nebula-pro"
+  manufacturer: "Caddx"
+  name: "Caddx Nebula Pro"
+  weight_g: 6
+  protocol: "Digital"
+  width_mm: 19
+}
+cameras: {
+  uuid: "730c445e-fbf3-4738-910e-3a5aadfa9434"
+  id: "walksnail-moonlight-camera"
+  manufacturer: "Walksnail"
+  name: "Walksnail Moonlight Camera"
+  weight_g: 8.9
+  protocol: "Digital"
+  width_mm: 19
+}
+cameras: {
+  uuid: "a55cc596-b860-49a4-b08d-7c7d448d08ea"
+  id: "walksnail-avatar-hd-nano-camera-v3"
+  manufacturer: "Walksnail"
+  name: "Walksnail Avatar HD Nano Camera V3"
+  weight_g: 3
+  protocol: "Digital"
+  width_mm: 14
+}
+cameras: {
+  uuid: "956b292e-8f19-4434-9fc0-dccfdf7cec6e"
+  id: "hdzero-nano-90-camera"
+  manufacturer: "HDZero"
+  name: "HDZero Nano 90 Camera"
+  weight_g: 5.2
+  protocol: "Digital"
+  width_mm: 14
+}
+cameras: {
+  uuid: "37198b31-b5bd-4c9b-918a-ef9ae5e0f5f8"
+  id: "dji-o4-lite-camera"
+  manufacturer: "DJI"
+  name: "DJI O4 Lite Camera"
+  weight_g: 3.2
+  protocol: "Digital"
+  width_mm: 14
+}
+cameras: {
+  uuid: "cc25d9bf-5c8c-47d0-820f-59effadeb75a"
+  id: "dji-o4-wide-camera"
+  manufacturer: "DJI"
+  name: "DJI O4 Wide Camera"
+  weight_g: 8.3
+  protocol: "Digital"
+  width_mm: 20
+}
+cameras: {
+  uuid: "b09458dc-419a-4be7-9585-f1e40f8bfb7a"
+  id: "dji-o4-pro-camera"
+  manufacturer: "DJI"
+  name: "DJI O4 Pro Camera"
+  weight_g: 16.4
+  protocol: "Digital"
+  width_mm: 25
+}
+cameras: {
+  uuid: "c966b786-ef4b-4c7b-81c2-c911a8790df8"
+  id: "caddx-ratel-2"
+  manufacturer: "Caddx"
+  name: "Caddx Ratel 2"
+  weight_g: 5.9
+  protocol: "CVBS"
+  width_mm: 19
+}

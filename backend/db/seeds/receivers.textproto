@@ -1,0 +1,45 @@
+receivers: {
+  uuid: "b0cf2152-68ff-41ac-9bc5-c7b6d34f2543"
+  id: "tbs-crossfire-nano-rx"
+  manufacturer: "TBS"
+  name: "TBS Crossfire Nano RX"
+  weight_g: 0.5
+  protocol: "TBS Crossfire (CRSF)"
+  frequency_band_ghz: 2.4
+}
+receivers: {
+  uuid: "8e3b3fae-9076-400d-89c3-f93faf3aa37d"
+  id: "walksnail-avatar-vrx"
+  manufacturer: "Walksnail"
+  name: "Walksnail Avatar VRX"
+  weight_g: 83
+  protocol: "HDMI"
+  frequency_band_ghz: 2.4
+}
+receivers: {
+  uuid: "632437ac-1938-4574-85eb-b9b2aeb000ff"
+  id: "tbs-tracer-nano-rx"
+  manufacturer: "TBS"
+  name: "TBS Tracer Nano RX"
+  weight_g: 0.5
+  protocol: "TBS Crossfire (CRSF)"
+  frequency_band_ghz: 2.4
+}
+receivers: {
+  uuid: "42e4ac1f-d5e8-4863-9eeb-f0d8ad8eeffd"
+  id: "hglrc-hermes-expresslrs-2.4ghz"
+  manufacturer: "HGLRC"
+  name: "HGLRC Hermes ExpressLRS 2.4GHz"
+  weight_g: 0.8
+  protocol: "ExpressLRS (ELRS)"
+  frequency_band_ghz: 2.4
+}
+receivers: {
+  uuid: "d1a50985-ef0b-4357-b944-7367b21e24f5"
+  id: "hglrc-hermes-expresslrs-900mhz"
+  manufacturer: "HGLRC"
+  name: "HGLRC Hermes ExpressLRS 900MHz"
+  weight_g: 0.8
+  protocol: "ExpressLRS (ELRS)"
+  frequency_band_ghz: 2.4
+}

@@ -1,0 +1,614 @@
+batteries: {
+  uuid: "1f582787-4b5d-4b39-b923-962988c15a5a"
+  id: "tattu-r-line-version-5.0-1200mah-6s"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line Version 5.0 1200mAh 6S"
+  weight_g: 197
+  capacity_mah: 1200
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "b3149f97-87e5-434b-9bd8-82fcd7b86585"
+  id: "betafpv-lava-1s-300mah"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV Lava 1S 300mAh"
+  weight_g: 8.3
+  capacity_mah: 300
+  cell_count_s: 1
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "43541b0f-2247-40ae-ac02-63cd7354973a"
+  id: "betafpv-lava-2s-450mah"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV Lava 2S 450mAh"
+  weight_g: 26.1
+  capacity_mah: 450
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "d91e3ca4-051c-40a0-b0e1-1a3a9c4b9dfd"
+  id: "gnb-3s-650mah-80c"
+  manufacturer: "GNB"
+  name: "GNB 3S 650mAh 80C"
+  weight_g: 45.9
+  capacity_mah: 650
+  cell_count_s: 3
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "1fa0c6b7-496b-4cbe-817e-a5052ffc4e66"
+  id: "ovonic-4s-1300mah-100c"
+  manufacturer: "Ovonic"
+  name: "Ovonic 4S 1300mAh 100C"
+  weight_g: 156
+  capacity_mah: 1300
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "d427489a-683b-461c-82b7-081cbb4d8ba4"
+  id: "tattu-r-line-version-5.0-1400mah-6s"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line Version 5.0 1400mAh 6S"
+  weight_g: 222
+  capacity_mah: 1400
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "03d2ced4-8fb7-48f3-ac22-28a8b2af3245"
+  id: "gnb-8s-1100mah-130c"
+  manufacturer: "GNB"
+  name: "GNB 8S 1100mAh 130C"
+  weight_g: 256.7
+  capacity_mah: 1100
+  cell_count_s: 8
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "426b4655-788f-4642-a1b0-33adbed68dcc"
+  id: "betafpv-lava-1s-450mah"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV LAVA 1S 450mAh"
+  weight_g: 12.2
+  capacity_mah: 450
+  cell_count_s: 1
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "221677db-5f86-42ce-9c48-02525e7c5e0b"
+  id: "betafpv-lava-1s-550mah"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV LAVA 1S 550mAh"
+  weight_g: 14
+  capacity_mah: 550
+  cell_count_s: 1
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "b4095c95-d15e-49c9-9ed0-bbcc518a0787"
+  id: "betafpv-lava-3s-450mah"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV LAVA 3S 450mAh"
+  weight_g: 37.8
+  capacity_mah: 450
+  cell_count_s: 3
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "b64e9d40-519c-489c-9e48-60e57dfd70e8"
+  id: "betafpv-lava-4s-450mah"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV LAVA 4S 450mAh"
+  weight_g: 49.4
+  capacity_mah: 450
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "759b6c4a-b1c2-4684-b65b-8659b8fde102"
+  id: "betafpv-lava-4s-850mah"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV LAVA 4S 850mAh"
+  weight_g: 98
+  capacity_mah: 850
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "cb573ed3-63e0-45f5-8602-b7ceea8237ea"
+  id: "tattu-r-line-4s-650mah"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 4S 650mAh"
+  weight_g: 82
+  capacity_mah: 650
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "d33e58f9-7089-45c0-8141-d9ecd23ad039"
+  id: "tattu-r-line-4s-1300mah"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 4S 1300mAh"
+  weight_g: 150
+  capacity_mah: 1300
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "5bc7132a-e7b9-4814-8f62-4d935619c624"
+  id: "tattu-r-line-4s-1550mah"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 4S 1550mAh"
+  weight_g: 177
+  capacity_mah: 1550
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "2afad43f-68b3-4452-9078-26ace845eacb"
+  id: "tattu-r-line-6s-1050mah"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 6S 1050mAh"
+  weight_g: 180
+  capacity_mah: 1050
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "4b26b55e-2df5-43f9-93b1-637f5e40726c"
+  id: "tattu-r-line-6s-1300mah"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 6S 1300mAh"
+  weight_g: 208
+  capacity_mah: 1300
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "d76f893c-7fc8-4882-aaec-b8e3a27734fa"
+  id: "ovonic-3s-450mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 3S 450mAh"
+  weight_g: 33.6
+  capacity_mah: 450
+  cell_count_s: 3
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "cf84db8e-1d21-47a8-8172-9dcf8c3ca161"
+  id: "ovonic-3s-850mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 3S 850mAh"
+  weight_g: 76
+  capacity_mah: 850
+  cell_count_s: 3
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "762c48ce-f399-4060-8966-6d61621d94f0"
+  id: "ovonic-4s-850mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 4S 850mAh"
+  weight_g: 102
+  capacity_mah: 850
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "cb0574cd-8198-4751-9f8a-fe8f5aef6953"
+  id: "ovonic-4s-1550mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 4S 1550mAh"
+  weight_g: 184
+  capacity_mah: 1550
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "073795ac-70cb-4239-ad27-5e192718ca1f"
+  id: "ovonic-6s-1000mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 6S 1000mAh"
+  weight_g: 171
+  capacity_mah: 1000
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "f5ecf3a8-852e-42f4-aedb-6823fdbe143d"
+  id: "ovonic-6s-1200mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 6S 1200mAh"
+  weight_g: 195
+  capacity_mah: 1200
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "662fcdf9-8f1e-44e3-b2df-63a33fc3dd38"
+  id: "gnb-1s-380mah"
+  manufacturer: "GNB"
+  name: "GNB 1S 380mAh"
+  weight_g: 10
+  capacity_mah: 380
+  cell_count_s: 1
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "f4657c28-15c0-4ee2-b8d3-987f76bf14a3"
+  id: "gnb-1s-530mah"
+  manufacturer: "GNB"
+  name: "GNB 1S 530mAh"
+  weight_g: 12
+  capacity_mah: 530
+  cell_count_s: 1
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "d8e63146-9249-4006-9fc1-a6a315a2bb19"
+  id: "gnb-2s-530mah"
+  manufacturer: "GNB"
+  name: "GNB 2S 530mAh"
+  weight_g: 26.5
+  capacity_mah: 530
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "72ea4e93-4512-4c27-a6d0-24d8831f1a3f"
+  id: "gnb-4s-650mah"
+  manufacturer: "GNB"
+  name: "GNB 4S 650mAh"
+  weight_g: 70
+  capacity_mah: 650
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "6e7121a7-9b08-4b5c-9a6f-30f1cadfdb39"
+  id: "gnb-4s-1100mah"
+  manufacturer: "GNB"
+  name: "GNB 4S 1100mAh"
+  weight_g: 133
+  capacity_mah: 1100
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "839eff53-628c-4f37-8393-d146c61f289f"
+  id: "gnb-6s-1100mah"
+  manufacturer: "GNB"
+  name: "GNB 6S 1100mAh"
+  weight_g: 177
+  capacity_mah: 1100
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "888d263a-b08c-4c9e-b1f4-d96552ffd682"
+  id: "gnb-6s-1300mah"
+  manufacturer: "GNB"
+  name: "GNB 6S 1300mAh"
+  weight_g: 189
+  capacity_mah: 1300
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "88f6cc91-3388-42e4-bce1-3be144082a57"
+  id: "betafpv-2s-300mah-(unverified)"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV 2S 300mAh (Unverified)"
+  weight_g: 15
+  capacity_mah: 300
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "8155a9c6-38a4-45bb-90bd-0991f74a99d0"
+  id: "betafpv-lava-2s-550mah"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV LAVA 2S 550mAh"
+  weight_g: 29.5
+  capacity_mah: 550
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "b3bdf2b8-ea20-4073-8f98-63fe39fe5205"
+  id: "tattu-2s-450mah"
+  manufacturer: "Tattu"
+  name: "Tattu 2S 450mAh"
+  weight_g: 29
+  capacity_mah: 450
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "2c6dd4bc-9ab1-4062-b6d1-56adfab5a1b9"
+  id: "tattu-2s-850mah"
+  manufacturer: "Tattu"
+  name: "Tattu 2S 850mAh"
+  weight_g: 40
+  capacity_mah: 850
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "e6c4fde3-d201-4655-b901-6f7321de0518"
+  id: "ovonic-2s-450mah-(unverified)"
+  manufacturer: "Ovonic"
+  name: "Ovonic 2S 450mAh (Unverified)"
+  weight_g: 24
+  capacity_mah: 450
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "01724ebd-029f-447a-84dc-0e17bf421296"
+  id: "ovonic-2s-850mah-(unverified)"
+  manufacturer: "Ovonic"
+  name: "Ovonic 2S 850mAh (Unverified)"
+  weight_g: 45
+  capacity_mah: 850
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "1c8782e6-5a3c-45ee-b273-19c42bd94dfa"
+  id: "gnb-2s-380mah"
+  manufacturer: "GNB"
+  name: "GNB 2S 380mAh"
+  weight_g: 22
+  capacity_mah: 380
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "e28ab1f7-4eb6-44af-9154-01fa57e58ff2"
+  id: "gnb-2s-450mah"
+  manufacturer: "GNB"
+  name: "GNB 2S 450mAh"
+  weight_g: 27
+  capacity_mah: 450
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "3dff8464-4987-4fea-aa2d-0dedd8399bc4"
+  id: "betafpv-2s-850mah-(unverified)"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV 2S 850mAh (Unverified)"
+  weight_g: 45
+  capacity_mah: 850
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "43d224c1-c836-4080-8023-21bf320ecd9e"
+  id: "tattu-r-line-4s-1800mah"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 4S 1800mAh"
+  weight_g: 197
+  capacity_mah: 1800
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "70d12b53-9235-40f1-808f-1ae01315e6b3"
+  id: "tattu-r-line-5s-1300mah-(unverified)"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 5S 1300mAh (Unverified)"
+  weight_g: 185
+  capacity_mah: 1300
+  cell_count_s: 5
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "ce4f34ef-29fe-48ef-afba-22536c9c2e4b"
+  id: "tattu-r-line-5s-1550mah"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 5S 1550mAh"
+  weight_g: 214
+  capacity_mah: 1550
+  cell_count_s: 5
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "beb448f8-965d-4647-880c-a468f573be9c"
+  id: "tattu-r-line-6s-1250mah-(unverified)"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 6S 1250mAh (Unverified)"
+  weight_g: 200
+  capacity_mah: 1250
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "93e4fab4-ecde-4083-8d9f-85d4dddbf485"
+  id: "tattu-r-line-6s-1550mah"
+  manufacturer: "Tattu"
+  name: "Tattu R-Line 6S 1550mAh"
+  weight_g: 254
+  capacity_mah: 1550
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "eed490f2-be45-4aa8-a08a-34e0e0a809bb"
+  id: "ovonic-2s-650mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 2S 650mAh"
+  weight_g: 45
+  capacity_mah: 650
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "409f74fb-e67f-4826-b77a-2d37459715b2"
+  id: "ovonic-3s-1300mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 3S 1300mAh"
+  weight_g: 115
+  capacity_mah: 1300
+  cell_count_s: 3
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "7481d1ba-36ae-4400-9902-39dca13d5b54"
+  id: "ovonic-4s-1800mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 4S 1800mAh"
+  weight_g: 205
+  capacity_mah: 1800
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "4a032ce6-04fc-4637-b6d6-aec513a42f32"
+  id: "ovonic-6s-1550mah"
+  manufacturer: "Ovonic"
+  name: "Ovonic 6S 1550mAh"
+  weight_g: 245
+  capacity_mah: 1550
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "d954c8cd-9ff2-4367-8431-fbc12ead778e"
+  id: "gnb-1s-650mah"
+  manufacturer: "GNB"
+  name: "GNB 1S 650mAh"
+  weight_g: 17
+  capacity_mah: 650
+  cell_count_s: 1
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "f6d83de8-c91f-466f-8c78-71d03adb1871"
+  id: "gnb-1s-720mah"
+  manufacturer: "GNB"
+  name: "GNB 1S 720mAh"
+  weight_g: 16.5
+  capacity_mah: 720
+  cell_count_s: 1
+  chemistry: "LiPo"
+  connector: "BT2.0"
+}
+batteries: {
+  uuid: "b9de474f-0998-4a43-a6de-28fc775743b3"
+  id: "gnb-2s-650mah"
+  manufacturer: "GNB"
+  name: "GNB 2S 650mAh"
+  weight_g: 31.4
+  capacity_mah: 650
+  cell_count_s: 2
+  chemistry: "LiPo"
+  connector: "XT30"
+}
+batteries: {
+  uuid: "b26d4204-233c-4ed2-98ad-36370742dbbc"
+  id: "gnb-3s-1100mah"
+  manufacturer: "GNB"
+  name: "GNB 3S 1100mAh"
+  weight_g: 111
+  capacity_mah: 1100
+  cell_count_s: 3
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "01f45a03-4009-496e-9c70-d0697fe302fa"
+  id: "gnb-4s-1550mah"
+  manufacturer: "GNB"
+  name: "GNB 4S 1550mAh"
+  weight_g: 189
+  capacity_mah: 1550
+  cell_count_s: 4
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "519db6a0-f594-4759-a5bd-285f8bfd078a"
+  id: "gnb-6s-1550mah"
+  manufacturer: "GNB"
+  name: "GNB 6S 1550mAh"
+  weight_g: 273
+  capacity_mah: 1550
+  cell_count_s: 6
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "c6d88b3a-67a9-461d-aa1d-e6047bce5ec6"
+  id: "gnb-8s-1300mah"
+  manufacturer: "GNB"
+  name: "GNB 8S 1300mAh"
+  weight_g: 252
+  capacity_mah: 1300
+  cell_count_s: 8
+  chemistry: "LiPo"
+  connector: "XT60"
+}
+batteries: {
+  uuid: "01a11091-1f13-7669-9fc3-1a030e43657f"
+  id: "progressiverc-glacier-45c-1550mah-4s"
+  manufacturer: "Glacier"
+  name: "Glacier 45C 1550mAh 4S LiPo"
+  weight_g: 172
+  capacity_mah: 1550
+  cell_count_s: 4
+}

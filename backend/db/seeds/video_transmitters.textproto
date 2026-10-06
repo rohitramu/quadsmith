@@ -1,0 +1,130 @@
+video_transmitters: {
+  uuid: "91c711fe-590b-4aa5-b8c8-dd94787ee71f"
+  id: "dji-o3-air-unit"
+  manufacturer: "DJI"
+  name: "DJI O3 Air Unit"
+  weight_g: 36.4
+  protocol: "Digital"
+  max_power_mw: 1995
+}
+video_transmitters: {
+  uuid: "b02d6857-65a7-4f44-a0cf-03b3ad33d791"
+  id: "caddx-vista"
+  manufacturer: "Caddx"
+  name: "Caddx Vista"
+  weight_g: 19
+  protocol: "Digital"
+  max_power_mw: 1000
+}
+video_transmitters: {
+  uuid: "57dea1f1-ee90-4e3d-a286-f7e88727d5bc"
+  id: "walksnail-avatar-vtx-v2"
+  manufacturer: "Walksnail"
+  name: "Walksnail Avatar VTX V2"
+  weight_g: 15.4
+  protocol: "Digital"
+  max_power_mw: 1200
+}
+video_transmitters: {
+  uuid: "1c15772d-b52e-4871-aba6-12132995753f"
+  id: "walksnail-moonlight-vtx"
+  manufacturer: "Walksnail"
+  name: "Walksnail Moonlight VTX"
+  weight_g: 38.5
+  protocol: "Digital"
+  max_power_mw: 1000
+}
+video_transmitters: {
+  uuid: "ecc4d1d6-b8da-4f13-bd14-737c5eb17b08"
+  id: "tbs-unify-pro32-nano"
+  manufacturer: "TBS"
+  name: "TBS Unify Pro32 Nano"
+  weight_g: 1
+  max_power_mw: 500
+}
+video_transmitters: {
+  uuid: "6cc9ebbb-069f-4cef-bba7-cb93a3f98e09"
+  id: "walksnail-avatar-hd-mini-1s-vtx"
+  manufacturer: "Walksnail"
+  name: "Walksnail Avatar HD Mini 1S VTX"
+  weight_g: 8.7
+  protocol: "Digital"
+  max_power_mw: 350
+}
+video_transmitters: {
+  uuid: "77300a2a-bedb-41eb-9212-c01ce36fdff1"
+  id: "hdzero-freestyle-v2-vtx"
+  manufacturer: "HDZero"
+  name: "HDZero Freestyle V2 VTX"
+  weight_g: 22.3
+  protocol: "Digital"
+  max_power_mw: 1000
+}
+video_transmitters: {
+  uuid: "4d2cee14-b504-40b2-bfc7-92bb33c6d149"
+  id: "hdzero-whoop-lite-vtx"
+  manufacturer: "HDZero"
+  name: "HDZero Whoop Lite VTX"
+  weight_g: 4.5
+  protocol: "Digital"
+  max_power_mw: 200
+}
+video_transmitters: {
+  uuid: "59135644-10cc-4210-87b7-8c5a98970a8d"
+  id: "dji-o4-lite-vtx"
+  manufacturer: "DJI"
+  name: "DJI O4 Lite VTX"
+  weight_g: 5
+  protocol: "Digital"
+  max_power_mw: 1000
+}
+video_transmitters: {
+  uuid: "dc164c44-e652-40b9-aec9-000ff26cd26a"
+  id: "dji-o4-wide-vtx"
+  manufacturer: "DJI"
+  name: "DJI O4 Wide VTX"
+  weight_g: 5.1
+  protocol: "Digital"
+  max_power_mw: 2000
+}
+video_transmitters: {
+  uuid: "76d2c270-7162-4878-be8d-ad2296223ba0"
+  id: "dji-o4-pro-vtx"
+  manufacturer: "DJI"
+  name: "DJI O4 Pro VTX"
+  weight_g: 15.6
+  protocol: "Digital"
+  max_power_mw: 2000
+}
+video_transmitters: {
+  uuid: "73be0eb6-e9cf-4209-b809-7dad5c0e5ae9"
+  id: "hglrc-zeus-800mw-vtx"
+  manufacturer: "HGLRC"
+  name: "HGLRC Zeus 800mW VTX"
+  weight_g: 4.8
+  max_power_mw: 800
+}
+video_transmitters: {
+  uuid: "74eb2fce-87ca-4f64-bd62-dfa0fa02b96c"
+  id: "hglrc-zeus-nano-vtx-350mw"
+  manufacturer: "HGLRC"
+  name: "HGLRC Zeus Nano VTX 350mW"
+  weight_g: 2.4
+  max_power_mw: 350
+}
+video_transmitters: {
+  uuid: "01a11091-1f13-7669-9fc3-1a021e2d1a0d"
+  id: "readymaderc-cricket-pro-58g"
+  manufacturer: "ReadyMadeRC"
+  name: "RMRC Cricket Pro 5.8GHz VTX"
+  weight_g: 8.5
+  max_power_mw: 600
+}
+video_transmitters: {
+  uuid: "01a11091-1f13-7669-9fc3-1a0a8a31c17b"
+  id: "caddx-avatar-hd-nano-kit-v3"
+  manufacturer: "Caddx"
+  name: "Caddx Avatar HD Nano Kit V3"
+  weight_g: 11.5
+  max_power_mw: 500
+}

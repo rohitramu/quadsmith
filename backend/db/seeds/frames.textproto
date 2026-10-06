@@ -1,0 +1,170 @@
+frames: {
+  uuid: "4315b6cb-1157-46ff-afd5-d16c06e30e45"
+  id: "tbs-source-one-v5"
+  manufacturer: "TBS"
+  name: "TBS Source One V5"
+  weight_g: 123.5
+  wheelbase_mm: 226
+  max_prop_size_inches: 5.1
+  geometry: "True-X"
+}
+frames: {
+  uuid: "73382232-1424-4e72-aed7-6a663a5608ec"
+  id: "impulserc-apex-evo-5\""
+  manufacturer: "ImpulseRC"
+  name: "ImpulseRC Apex EVO 5\""
+  weight_g: 132
+  wheelbase_mm: 225
+  max_prop_size_inches: 5.1
+  geometry: "True-X"
+}
+frames: {
+  uuid: "295b1a5b-c9c9-49bd-9eb3-93422d525bf8"
+  id: "iflight-aos-5-v5"
+  manufacturer: "iFlight"
+  name: "iFlight AOS 5 V5"
+  weight_g: 129
+  wheelbase_mm: 228
+  max_prop_size_inches: 5.2
+  geometry: "True-X"
+}
+frames: {
+  uuid: "498c4fd2-cf55-4022-ac48-cc400e490313"
+  id: "flyfishrc-volador-ii-vx5"
+  manufacturer: "FlyFishRC"
+  name: "FlyFishRC Volador II VX5"
+  weight_g: 177
+  wheelbase_mm: 225
+  max_prop_size_inches: 5.1
+  geometry: "True-X"
+}
+frames: {
+  uuid: "8fd51fba-8f88-4178-9797-f73ad4e1b45b"
+  id: "caddx-gofilm-20-frame"
+  manufacturer: "Caddx"
+  name: "Caddx Gofilm 20 Frame"
+  weight_g: 30.5
+  wheelbase_mm: 94
+  max_prop_size_inches: 2.01
+  geometry: "True-X"
+}
+frames: {
+  uuid: "923b27f5-5b9f-47d4-9920-98c5477bc577"
+  id: "happymodel-mobula8-frame"
+  manufacturer: "Happymodel"
+  name: "Happymodel Mobula8 Frame"
+  weight_g: 11.5
+  wheelbase_mm: 85
+  max_prop_size_inches: 2.01
+  geometry: "True-X"
+}
+frames: {
+  uuid: "0e06afa6-20af-4e2e-952c-d60df3d21846"
+  id: "flywoo-explorer-lr-4-frame"
+  manufacturer: "Flywoo"
+  name: "Flywoo Explorer LR 4 Frame"
+  weight_g: 41
+  wheelbase_mm: 168
+  max_prop_size_inches: 4
+  geometry: "True-X"
+}
+frames: {
+  uuid: "322f0ecd-c122-4eb8-b709-5325247be75c"
+  id: "betafpv-meteor75-pro-frame"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV Meteor75 Pro Frame"
+  weight_g: 5.8
+  wheelbase_mm: 80.8
+  max_prop_size_inches: 1.77
+  geometry: "True-X"
+}
+frames: {
+  uuid: "1050cda5-594c-4737-bafd-965b75e2f3e3"
+  id: "hglrc-sector-d5-frame"
+  manufacturer: "HGLRC"
+  name: "HGLRC Sector D5 Frame"
+  weight_g: 121.7
+  wheelbase_mm: 225
+  max_prop_size_inches: 5
+  geometry: "True-X"
+}
+frames: {
+  uuid: "ce4e0a71-8430-4fa4-871e-18447e2f882a"
+  id: "hglrc-rekon3-frame"
+  manufacturer: "HGLRC"
+  name: "HGLRC Rekon3 Frame"
+  weight_g: 23
+  wheelbase_mm: 140
+  max_prop_size_inches: 3
+  geometry: "True-X"
+}
+frames: {
+  uuid: "f19553c3-6e78-4752-a957-9abe978c09f6"
+  id: "hglrc-rekon5-frame"
+  manufacturer: "HGLRC"
+  name: "HGLRC Rekon5 Frame"
+  weight_g: 72
+  wheelbase_mm: 210
+  max_prop_size_inches: 5
+  geometry: "True-X"
+}
+frames: {
+  uuid: "0c25c3b7-ab22-4b13-b8fe-708a83898c3b"
+  id: "hglrc-sector-x5-frame"
+  manufacturer: "HGLRC"
+  name: "HGLRC Sector X5 Frame"
+  weight_g: 120
+  wheelbase_mm: 210
+  max_prop_size_inches: 5
+  geometry: "True-X"
+}
+frames: {
+  uuid: "48abe2b3-1bf4-4380-8f26-75afc7f53089"
+  id: "sub250-oasis-frame"
+  manufacturer: "SUB250-Oasis"
+  name: "SUB250-Oasis Frame"
+  weight_g: 53
+  wheelbase_mm: 135
+  max_prop_size_inches: 2.5
+  geometry: "True-X"
+}
+frames: {
+  uuid: "01a11091-1f13-7669-9fc3-1a04513f663e"
+  id: "betafpv-pavo35"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV Pavo35 Brushless Whoop Frame"
+  weight_g: 58.5
+  wheelbase_mm: 151
+}
+frames: {
+  uuid: "01a11091-1f13-7669-9fc3-1a06898895bd"
+  id: "lumenier-qav-s-2-johnnyfpv"
+  manufacturer: "Lumenier"
+  name: "Lumenier QAV-S 2 JohnnyFPV Special Edition 5\""
+  weight_g: 129
+  wheelbase_mm: 225
+}
+frames: {
+  uuid: "01a11091-1f13-7669-9fc3-1a0d219885cb"
+  id: "sub250-nanofly20"
+  manufacturer: "Sub250"
+  name: "Sub250 Nanofly20 Frame"
+  weight_g: 8.5
+  wheelbase_mm: 88
+}
+frames: {
+  uuid: "01a11091-1f13-7669-9fc3-1a0eded8ae5f"
+  id: "five33-switchback-pro"
+  manufacturer: "Five33"
+  name: "Five33 Switchback PRO"
+  weight_g: 55
+  wheelbase_mm: 208
+}
+frames: {
+  uuid: "01a11091-1f13-7669-9fc3-1a0f09b08af6"
+  id: "darwinfpv-babyape-pro-v2"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV BabyApe Pro V2 Frame"
+  weight_g: 22.5
+  wheelbase_mm: 142
+}

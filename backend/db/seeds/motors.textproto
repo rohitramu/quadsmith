@@ -1,0 +1,250 @@
+motors: {
+  uuid: "717058a0-4631-4b7e-9648-21273ceefb73"
+  id: "sub250-1404-4500kv"
+  manufacturer: "Sub250"
+  name: "Sub250 1404 4500KV"
+  weight_g: 10.3
+  stator_diameter_mm: 14
+  stator_height_mm: 4
+  kv: 4500
+}
+motors: {
+  uuid: "db2dcc3e-efcc-42bb-89a6-9006d260729d"
+  id: "caddx-1303-6000kv"
+  manufacturer: "Caddx"
+  name: "Caddx 1303 6000KV"
+  weight_g: 5.6
+  stator_diameter_mm: 13
+  stator_height_mm: 3
+  kv: 6000
+}
+motors: {
+  uuid: "21f70134-462c-4933-b508-a14b9f84ac51"
+  id: "happymodel-ex1103-8000kv"
+  manufacturer: "Happymodel"
+  name: "Happymodel EX1103 8000KV"
+  weight_g: 3.8
+  stator_diameter_mm: 11
+  stator_height_mm: 3
+  kv: 8000
+}
+motors: {
+  uuid: "8918b789-fa95-4e40-8fb4-4d71fbd9c0ef"
+  id: "flywoo-robo-1002-15500kv"
+  manufacturer: "Flywoo"
+  name: "Flywoo ROBO 1002 15500KV"
+  weight_g: 2.5
+  stator_diameter_mm: 10
+  stator_height_mm: 2
+  kv: 15500
+}
+motors: {
+  uuid: "6f8cd304-aefd-4836-b82f-6a0c7b544662"
+  id: "betafpv-0802se-19500kv"
+  manufacturer: "BetaFPV"
+  name: "BetaFPV 0802SE 19500KV"
+  weight_g: 1.83
+  stator_diameter_mm: 8
+  stator_height_mm: 2
+  kv: 19500
+}
+motors: {
+  uuid: "0f7ca081-eec2-430b-9986-7295222c055c"
+  id: "hglrc-aeolus-2105.5-2800kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Aeolus 2105.5 2800KV"
+  weight_g: 22.3
+  kv: 2800
+}
+motors: {
+  uuid: "c049c56b-c320-4e33-98aa-bac2f85822e1"
+  id: "hglrc-specter-2306.5-1900kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 2306.5 1900KV"
+  weight_g: 34
+  kv: 1900
+}
+motors: {
+  uuid: "c1b1f0f5-881f-4370-b27f-c5f1e4825439"
+  id: "hglrc-aeolus-1102-18000kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Aeolus 1102 18000KV"
+  weight_g: 3.2
+  stator_diameter_mm: 11
+  stator_height_mm: 2
+  kv: 18000
+}
+motors: {
+  uuid: "59da674f-dbc5-4787-a7ee-6eb365b214f1"
+  id: "hglrc-aeolus-1404-2800kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Aeolus 1404 2800KV"
+  weight_g: 11
+  stator_diameter_mm: 14
+  stator_height_mm: 4
+  kv: 2800
+}
+motors: {
+  uuid: "a97c55b6-0ac7-4762-aa95-15b25c09a6a4"
+  id: "hglrc-aeolus-2004-3000kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Aeolus 2004 3000KV"
+  weight_g: 16.6
+  stator_diameter_mm: 20
+  stator_height_mm: 4
+  kv: 3000
+}
+motors: {
+  uuid: "149b635a-b27c-4f7b-a382-47df3b4dd9c0"
+  id: "hglrc-specter-1804-3450kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 1804 3450KV"
+  weight_g: 13
+  stator_diameter_mm: 18
+  stator_height_mm: 4
+  kv: 3500
+}
+motors: {
+  uuid: "a4ae9a61-9674-4622-8e3f-06f2f00c5976"
+  id: "hglrc-specter-1202.5-11000kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 1202.5 11000KV"
+  weight_g: 4.6
+  kv: 11000
+}
+motors: {
+  uuid: "92685b6e-38d0-4a20-96b5-3f8359f13016"
+  id: "hglrc-aeolus-1303.5-2500kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Aeolus 1303.5 2500KV"
+  weight_g: 6.5
+  kv: 2500
+}
+motors: {
+  uuid: "701c1649-c31e-48c6-aef4-4daeb76abd29"
+  id: "hglrc-aeolus-2207.5-2550kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Aeolus 2207.5 2550KV"
+  weight_g: 33
+  kv: 2550
+}
+motors: {
+  uuid: "dd3137e4-e8f9-40d3-92db-af552417897e"
+  id: "hglrc-aeolus-2306.5-2550kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Aeolus 2306.5 2550KV"
+  weight_g: 37
+  kv: 2550
+}
+motors: {
+  uuid: "6275a11b-96dd-4c39-a464-9efa476dcc75"
+  id: "hglrc-aeolus-2806.5-1250kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Aeolus 2806.5 1250KV"
+  weight_g: 47
+  kv: 1250
+}
+motors: {
+  uuid: "0f76a74f-ab6f-4f19-a96b-6e5cb0d192de"
+  id: "hglrc-specter-1003-10000kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 1003 10000KV"
+  weight_g: 3.35
+  stator_diameter_mm: 10
+  stator_height_mm: 3
+  kv: 10000
+}
+motors: {
+  uuid: "3f6ac5f9-924a-41b0-a205-bbd5dd9b85b0"
+  id: "t-motor-m1103-8000kv"
+  manufacturer: "T-Motor"
+  name: "T-Motor M1103 8000KV"
+  weight_g: 3.4
+  stator_diameter_mm: 11
+  stator_height_mm: 3
+  kv: 8000
+}
+motors: {
+  uuid: "3c7d91b3-b937-4111-af63-92001e6fc7dd"
+  id: "hglrc-specter-1404-2750kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 1404 2750KV"
+  weight_g: 10
+  stator_diameter_mm: 14
+  stator_height_mm: 4
+  kv: 2750
+}
+motors: {
+  uuid: "22eb1c59-a075-4b0e-9960-4bafc7871c01"
+  id: "hglrc-specter-2004-3000kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 2004 3000KV"
+  weight_g: 16.5
+  stator_diameter_mm: 20
+  stator_height_mm: 4
+  kv: 1800
+}
+motors: {
+  uuid: "4464d837-4c9b-4be7-801c-645256ce8469"
+  id: "hglrc-specter-2207.5-1900kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 2207.5 1900KV"
+  weight_g: 34
+  kv: 1900
+}
+motors: {
+  uuid: "6d1176e5-d9c4-46fc-a809-bd4e1e11c246"
+  id: "hglrc-specter-2806.5-1350kv"
+  manufacturer: "HGLRC"
+  name: "HGLRC Specter 2806.5 1350KV"
+  weight_g: 51.9
+  kv: 1350
+}
+motors: {
+  uuid: "01a11091-1f13-7669-9fc3-1a054e1150a8"
+  id: "wrekd-aeolus-2105-5-2650kv"
+  manufacturer: "WREKD"
+  name: "WREKD Aeolus 2105.5 2650KV"
+  weight_g: 22.8
+  kv: 2650
+}
+motors: {
+  uuid: "01a11091-1f13-7669-9fc3-1a07f198c4ed"
+  id: "rdq-badass-2205-2450kv"
+  manufacturer: "RaceDayQuads"
+  name: "RDQ Badass 2205 2450Kv Motor"
+  weight_g: 28
+  kv: 2450
+}
+motors: {
+  uuid: "01a11091-1f13-7669-9fc3-1a08e0d96ff7"
+  id: "hyperlite-2207-2522kv"
+  manufacturer: "Hyperlite"
+  name: "Hyperlite 2207 2522KV Motor"
+  weight_g: 30.5
+  kv: 2522
+}
+motors: {
+  uuid: "01a11091-1f13-7669-9fc3-1a099ac7c491"
+  id: "newbeedrone-flow-0802-18000kv"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone Flow 0802 18000KV Motor"
+  weight_g: 1.95
+  kv: 18000
+}
+motors: {
+  uuid: "01a11091-1f13-7669-9fc3-1a0c546a0671"
+  id: "meps-sz2207"
+  manufacturer: "MEPS"
+  name: "MEPS SZ2207 FPV Motor"
+  weight_g: 34.8
+  kv: 1950
+}
+motors: {
+  uuid: "01a11091-1f13-7669-9fc3-1a100bb5de4d"
+  id: "flywoo-nin-1404-v2-2750kv"
+  manufacturer: "Flywoo"
+  name: "Flywoo NIN 1404 V2 2750KV Ultralight Motor"
+  weight_g: 9.5
+  kv: 2750
+}
