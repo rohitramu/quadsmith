@@ -12,11 +12,11 @@ import (
 )
 
 func TestSandboxBuilds(t *testing.T) {
-	// Skip if we can't reach the sandbox
+	// Fail if we can't reach the sandbox
 	client := &http.Client{Timeout: 2 * time.Second}
 	_, err := client.Get("http://127.0.0.1:8080")
 	if err != nil {
-		t.Skip("Sandbox not running at 127.0.0.1:8080, skipping integration test.")
+		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
 	}
 
 	buildClient := quadsmithconnect.NewBuildServiceClient(
@@ -43,7 +43,7 @@ func TestSandboxFrames(t *testing.T) {
 	client := &http.Client{Timeout: 2 * time.Second}
 	_, err := client.Get("http://127.0.0.1:8080")
 	if err != nil {
-		t.Skip("Sandbox not running at 127.0.0.1:8080, skipping integration test.")
+		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
 	}
 
 	frameClient := quadsmithconnect.NewFrameServiceClient(
