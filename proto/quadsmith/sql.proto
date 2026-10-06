@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package quadsmith.sql;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Custom Message Options
+// ---------------------------------------------------------
+extend google.protobuf.MessageOptions {
+  // The name of the SQL table to generate for this message.
+  // If omitted, the Go generator will not generate a table for this message.
+  // Example: option (quadsmith.sql.table_name) = "motors";
+  string table_name = 51000;
+}
+
+// ---------------------------------------------------------
+// Custom Field Options
+// ---------------------------------------------------------
+extend google.protobuf.FieldOptions {
+  // Marks this field as the PRIMARY KEY of the generated table.
+  bool is_primary_key = 51001;
+  
+  // Defines a FOREIGN KEY constraint. 
+  // The value should be formatted as "target_table(target_column)".
+  // Example: [(quadsmith.sql.references) = "frames(id)"]
+  string references = 51002;
+  
+  // Adds a UNIQUE constraint to the generated column.
+  bool is_unique = 51003;
+  
+  // Generates a standard B-Tree index for this column to speed up CEL queries.
+  bool create_index = 51004;
+}

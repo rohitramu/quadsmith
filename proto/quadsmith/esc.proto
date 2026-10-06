@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "quadsmith/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Esc {
+  option (quadsmith.sql.table_name) = "escs";
+
+  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  
+  string id = 2 [(quadsmith.sql.is_unique) = true];
+
+  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string model = 4;
+  
+  float weight_g = 5;
+  
+  // E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
+  int32 max_motors = 6;
+  
+  // Continuous and Burst amperage ratings
+  int32 continuous_amps = 7;
+  int32 burst_amps = 8;
+  
+  // E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
+  string firmware = 9;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetEscRequest {
+  string id = 1;
+}
+
+message ListEscsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListEscsResponse {
+  repeated Esc escs = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service EscService {
+  rpc GetEsc(GetEscRequest) returns (Esc);
+  rpc ListEscs(ListEscsRequest) returns (ListEscsResponse);
+}

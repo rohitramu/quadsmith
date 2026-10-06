@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "quadsmith/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Antenna {
+  option (quadsmith.sql.table_name) = "antennas";
+
+  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  
+  string id = 2 [(quadsmith.sql.is_unique) = true];
+
+  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string model = 4;
+  
+  float weight_g = 5;
+  
+  // E.g., "U.FL", "MMCX", "SMA", "RP-SMA"
+  string connector = 6;
+  
+  // E.g., "RHCP", "LHCP", "Linear"
+  string polarization = 7;
+  
+  // Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
+  float frequency_band_ghz = 8;
+  
+  // Length in millimeters (e.g., 60, 100, 150)
+  float length_mm = 9;
+  
+  // Gain in dBi (e.g., 2.5, 3.0)
+  float gain_dbi = 10;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetAntennaRequest {
+  string id = 1;
+}
+
+message ListAntennasRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListAntennasResponse {
+  repeated Antenna antennas = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service AntennaService {
+  rpc GetAntenna(GetAntennaRequest) returns (Antenna);
+  rpc ListAntennas(ListAntennasRequest) returns (ListAntennasResponse);
+}

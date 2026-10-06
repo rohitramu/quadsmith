@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "quadsmith/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Frame {
+  option (quadsmith.sql.table_name) = "frames";
+
+  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  
+  string id = 2 [(quadsmith.sql.is_unique) = true];
+
+  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string model = 4;
+  
+  float weight_g = 5;
+  
+  // The diagonal distance between motors in millimeters
+  float wheelbase_mm = 6;
+  
+  // Maximum propeller size supported
+  float max_prop_size_inches = 7;
+  
+  // E.g., "True X", "Squashed X", "Deadcat"
+  string geometry = 8;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetFrameRequest {
+  string id = 1;
+}
+
+message ListFramesRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListFramesResponse {
+  repeated Frame frames = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service FrameService {
+  rpc GetFrame(GetFrameRequest) returns (Frame);
+  rpc ListFrames(ListFramesRequest) returns (ListFramesResponse);
+}

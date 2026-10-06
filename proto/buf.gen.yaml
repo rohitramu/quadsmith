@@ -6,3 +6,6 @@ plugins:
   - plugin: connect-go
     out: ../backend/api/gen
     opt: paths=source_relative
+  - plugin: sql
+    out: ../backend/db
+    path: ../bin/protoc-gen-sql

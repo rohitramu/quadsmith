@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "quadsmith/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Propeller {
+  option (quadsmith.sql.table_name) = "propellers";
+
+  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  
+  string id = 2 [(quadsmith.sql.is_unique) = true];
+
+  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string model = 4;
+  
+  float weight_g = 5;
+  
+  // E.g., 5.1, 7.0, 3.0
+  float diameter_inches = 6;
+  
+  // E.g., 4.3, 3.1
+  float pitch_inches = 7;
+  
+  // Number of blades (e.g., 2, 3, 4)
+  int32 blades = 8;
+  
+  // E.g., "Polycarbonate", "Carbon Fiber"
+  string material = 9;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetPropellerRequest {
+  string id = 1;
+}
+
+message ListPropellersRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListPropellersResponse {
+  repeated Propeller propellers = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service PropellerService {
+  rpc GetPropeller(GetPropellerRequest) returns (Propeller);
+  rpc ListPropellers(ListPropellersRequest) returns (ListPropellersResponse);
+}

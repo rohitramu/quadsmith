@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "quadsmith/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Camera {
+  option (quadsmith.sql.table_name) = "cameras";
+
+  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  
+  string id = 2 [(quadsmith.sql.is_unique) = true];
+
+  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string model = 4;
+  
+  float weight_g = 5;
+  
+  // Protocol / signal type (e.g., "Analog", "MIPI", "DJI Coaxial")
+  string protocol = 6;
+  
+  // Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
+  string sensor_size = 7;
+  
+  // Width of the camera body in mm (e.g., 14 for nano, 19 for micro, 22 for standard)
+  int32 width_mm = 8;
+  
+  // Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
+  float lens_size_mm = 9;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetCameraRequest {
+  string id = 1;
+}
+
+message ListCamerasRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListCamerasResponse {
+  repeated Camera cameras = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service CameraService {
+  rpc GetCamera(GetCameraRequest) returns (Camera);
+  rpc ListCameras(ListCamerasRequest) returns (ListCamerasResponse);
+}

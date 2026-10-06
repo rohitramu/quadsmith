@@ -1,35 +1,82 @@
-edition = "2023";
-
-import "google/protobuf/go_features.proto";
-import "quadsmith/common.proto";
-option features.(pb.go).api_level = API_OPAQUE;
-
+syntax = "proto3";
 
 package quadsmith;
-option go_package = "quadsmith/api/gen/quadsmith;quadsmith";
 
+import "quadsmith/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
 message Build {
-  option (quadsmith.plural_name) = "builds";
-  option (quadsmith.default_columns) = "crash_resistance_rating";
-  option (quadsmith.default_columns) = "is_verified";
-  ResourceMetadata resource = 1;
-  string user_id = 2;
+  option (quadsmith.sql.table_name) = "builds";
+
+  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  
+  string id = 2 [(quadsmith.sql.is_unique) = true];
+
+  string name = 3;
   string description = 4;
-  int32 crash_resistance_rating = 5;
-  bool is_verified = 6;
-  double misc_weight_g = 7;
   
-  string frame_id = 8;
-  string motor_id = 9;
-  string propeller_id = 10;
-  string camera_id = 11;
-  string gps_id = 12;
+  // -------------------------------------------------------
+  // Bill of Materials (Foreign Keys to Hardware tables)
+  // -------------------------------------------------------
   
-  string flight_stack_id = 13;
-  string vtx_config_id = 14;
-  string receiver_config_id = 15;
+  // The frame used for this build
+  string frame_uuid = 5 [(quadsmith.sql.references) = "frames(uuid)"];
+  
+  // The motor SKU used for this build (assumes 4x for a standard quad)
+  string motor_uuid = 6 [(quadsmith.sql.references) = "motors(uuid)"];
+  
+  // The primary battery recommended/used
+  string battery_uuid = 7 [(quadsmith.sql.references) = "batteries(uuid)"];
+  
+  // -------------------------------------------------------
+  // Electronics & Subsystems
+  // -------------------------------------------------------
+  
+  // The central Flight Controller (which may be an AIO board)
+  string flight_controller_uuid = 8 [(quadsmith.sql.references) = "flight_controllers(uuid)"];
+  
+  // Array of ESC boards (e.g. one 4-in-1, or four individual ESCs)
+  repeated string esc_uuids = 9;
+  
+  // Array of receivers (e.g. primary ELRS, backup crossfire)
+  repeated string receiver_uuids = 10;
+  
+  // Array of antennas
+  repeated string antenna_uuids = 11;
+  
+  // The propeller SKU used (assumes 4x or 8x depending on motors)
+  string propeller_uuid = 12 [(quadsmith.sql.references) = "propellers(uuid)"];
+  
+  // Array of cameras (e.g. primary FPV cam, secondary action cam)
+  repeated string camera_uuids = 13;
 }
 
-message BuildSeedList {
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetBuildRequest {
+  string id = 1;
+}
+
+message ListBuildsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListBuildsResponse {
   repeated Build builds = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service BuildService {
+  rpc GetBuild(GetBuildRequest) returns (Build);
+  rpc ListBuilds(ListBuildsRequest) returns (ListBuildsResponse);
 }

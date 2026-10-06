@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "quadsmith/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message VideoTransmitter {
+  option (quadsmith.sql.table_name) = "video_transmitters";
+
+  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  
+  string id = 2 [(quadsmith.sql.is_unique) = true];
+
+  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string model = 4;
+  
+  float weight_g = 5;
+  
+  // E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
+  string protocol = 6 [(quadsmith.sql.create_index) = true];
+  
+  // Max output power in milliwatts (e.g., 800, 1000, 1200)
+  int32 max_power_mw = 7;
+  
+  // Input voltage range
+  float input_voltage_min_v = 8;
+  float input_voltage_max_v = 9;
+  
+  // Array of antenna UUIDs included with or required by this VTX
+  repeated string antenna_uuids = 10;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetVideoTransmitterRequest {
+  string id = 1;
+}
+
+message ListVideoTransmittersRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListVideoTransmittersResponse {
+  repeated VideoTransmitter video_transmitters = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service VideoTransmitterService {
+  rpc GetVideoTransmitter(GetVideoTransmitterRequest) returns (VideoTransmitter);
+  rpc ListVideoTransmitters(ListVideoTransmittersRequest) returns (ListVideoTransmittersResponse);
+}
