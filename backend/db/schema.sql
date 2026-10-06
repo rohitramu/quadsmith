@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS batteries (
   manufacturer TEXT,
   name TEXT,
   weight_g DECIMAL,
-  capacity_mah INTEGER,
+  capacity_mah DECIMAL,
   cell_count_s INTEGER,
   chemistry TEXT,
   connector TEXT
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS cameras (
   weight_g DECIMAL,
   protocol TEXT,
   sensor_size TEXT,
-  width_mm INTEGER,
+  width_mm DECIMAL,
   lens_size_mm DECIMAL
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS escs (
   weight_g DECIMAL,
   max_motors INTEGER,
   max_motor_current_a DECIMAL,
-  burst_amps DECIMAL,
+  burst_current_a DECIMAL,
   firmware TEXT
 );
 
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS motors (
   weight_g DECIMAL,
   stator_diameter_mm DECIMAL,
   stator_height_mm DECIMAL,
-  kv INTEGER
+  kv DECIMAL
 );
 
 CREATE INDEX IF NOT EXISTS idx_motors_manufacturer ON motors (manufacturer);
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS video_transmitters (
   is_internal_only BOOLEAN,
   weight_g DECIMAL,
   protocol TEXT,
-  max_power_mw INTEGER,
+  max_power_mw DECIMAL,
   input_voltage_min_v DECIMAL,
   input_voltage_max_v DECIMAL,
   antenna_uuids UUID[]

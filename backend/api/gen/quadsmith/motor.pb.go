@@ -34,7 +34,7 @@ type Motor struct {
 	WeightG          float32 `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	StatorDiameterMm float32 `protobuf:"fixed32,6,opt,name=stator_diameter_mm,json=statorDiameterMm,proto3" json:"stator_diameter_mm,omitempty"`
 	StatorHeightMm   float32 `protobuf:"fixed32,7,opt,name=stator_height_mm,json=statorHeightMm,proto3" json:"stator_height_mm,omitempty"`
-	Kv               int32   `protobuf:"varint,8,opt,name=kv,proto3" json:"kv,omitempty"`
+	Kv               float32 `protobuf:"fixed32,8,opt,name=kv,proto3" json:"kv,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -118,7 +118,7 @@ func (x *Motor) GetStatorHeightMm() float32 {
 	return 0
 }
 
-func (x *Motor) GetKv() int32 {
+func (x *Motor) GetKv() float32 {
 	if x != nil {
 		return x.Kv
 	}
@@ -323,7 +323,7 @@ const file_quadsmith_motor_proto_rawDesc = "" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12,\n" +
 	"\x12stator_diameter_mm\x18\x06 \x01(\x02R\x10statorDiameterMm\x12(\n" +
 	"\x10stator_height_mm\x18\a \x01(\x02R\x0estatorHeightMm\x12\x14\n" +
-	"\x02kv\x18\b \x01(\x05B\x04\xe0\xf3\x18\x01R\x02kv:\n" +
+	"\x02kv\x18\b \x01(\x02B\x04\xe0\xf3\x18\x01R\x02kv:\n" +
 	"\xc2\xf3\x18\x06motors\";\n" +
 	"\x0fGetMotorRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +

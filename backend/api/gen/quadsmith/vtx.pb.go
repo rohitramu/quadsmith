@@ -35,7 +35,7 @@ type VideoTransmitter struct {
 	// E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
 	Protocol string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Max output power in milliwatts (e.g., 800, 1000, 1200)
-	MaxPowerMw int32 `protobuf:"varint,7,opt,name=max_power_mw,json=maxPowerMw,proto3" json:"max_power_mw,omitempty"`
+	MaxPowerMw float32 `protobuf:"fixed32,7,opt,name=max_power_mw,json=maxPowerMw,proto3" json:"max_power_mw,omitempty"`
 	// Input voltage range
 	InputVoltageMinV float32 `protobuf:"fixed32,8,opt,name=input_voltage_min_v,json=inputVoltageMinV,proto3" json:"input_voltage_min_v,omitempty"`
 	InputVoltageMaxV float32 `protobuf:"fixed32,9,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
@@ -124,7 +124,7 @@ func (x *VideoTransmitter) GetProtocol() string {
 	return ""
 }
 
-func (x *VideoTransmitter) GetMaxPowerMw() int32 {
+func (x *VideoTransmitter) GetMaxPowerMw() float32 {
 	if x != nil {
 		return x.MaxPowerMw
 	}
@@ -348,7 +348,7 @@ const file_quadsmith_vtx_proto_rawDesc = "" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12 \n" +
 	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12 \n" +
-	"\fmax_power_mw\x18\a \x01(\x05R\n" +
+	"\fmax_power_mw\x18\a \x01(\x02R\n" +
 	"maxPowerMw\x12-\n" +
 	"\x13input_voltage_min_v\x18\b \x01(\x02R\x10inputVoltageMinV\x12-\n" +
 	"\x13input_voltage_max_v\x18\t \x01(\x02R\x10inputVoltageMaxV\x12#\n" +

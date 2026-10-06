@@ -19,7 +19,7 @@ erDiagram
         DECIMAL weight_g
         DECIMAL stator_diameter_mm
         DECIMAL stator_height_mm
-        INTEGER kv
+        DECIMAL kv
     }
 
     frames {
@@ -39,7 +39,7 @@ erDiagram
         TEXT manufacturer
         TEXT name
         DECIMAL weight_g
-        INTEGER capacity_mah
+        DECIMAL capacity_mah
         INTEGER cell_count_s
         TEXT chemistry
         TEXT connector
@@ -68,7 +68,7 @@ erDiagram
         DECIMAL weight_g
         INTEGER max_motors
         DECIMAL max_motor_current_a
-        DECIMAL burst_amps
+        DECIMAL burst_current_a
         TEXT firmware
     }
 
@@ -92,7 +92,7 @@ erDiagram
         BOOLEAN is_internal_only
         DECIMAL weight_g
         TEXT protocol
-        INTEGER max_power_mw
+        DECIMAL max_power_mw
         DECIMAL input_voltage_min_v
         DECIMAL input_voltage_max_v
     }
@@ -132,7 +132,7 @@ erDiagram
         DECIMAL weight_g
         TEXT protocol
         TEXT sensor_size
-        INTEGER width_mm
+        DECIMAL width_mm
         DECIMAL lens_size_mm
     }
 
