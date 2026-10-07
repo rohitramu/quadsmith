@@ -18,7 +18,7 @@ func TestCLI_ListFrames(t *testing.T) {
 		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
 	}
 
-	qsPath, err := filepath.Abs("../../../bin/qs")
+	qsPath, err := filepath.Abs("../../../../bin/qs")
 	if err != nil {
 		t.Fatalf("Failed to resolve qs binary path: %v", err)
 	}
@@ -54,7 +54,7 @@ func TestCLI_ListBuilds(t *testing.T) {
 		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
 	}
 
-	qsPath, err := filepath.Abs("../../../bin/qs")
+	qsPath, err := filepath.Abs("../../../../bin/qs")
 	if err != nil {
 		t.Fatalf("Failed to resolve qs binary path: %v", err)
 	}

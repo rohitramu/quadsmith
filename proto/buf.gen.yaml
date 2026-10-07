@@ -1,19 +1,19 @@
 version: v1
 plugins:
   - plugin: go
-    out: ../backend/api/gen
+    out: ../src/backend/api/gen
     opt: paths=source_relative
   - plugin: connect-go
-    out: ../backend/api/gen
+    out: ../src/backend/api/gen
     opt: paths=source_relative
   - plugin: sql
-    out: ../backend/db
+    out: ../src/backend/db
     path: ../bin/protoc-gen-sql
   - plugin: store
-    out: ../backend/api/gen
+    out: ../src/backend/api/gen
     path: ../bin/protoc-gen-store
     opt: paths=source_relative
   - plugin: server
-    out: ../backend/api/gen
+    out: ../src/backend/api/gen
     path: ../bin/protoc-gen-server
     opt: paths=source_relative

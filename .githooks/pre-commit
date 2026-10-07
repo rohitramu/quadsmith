@@ -9,9 +9,9 @@ cd proto && ../bin/buf format -w && cd ..
 
 # Format all staged Go files (and any we just generated)
 GO_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$' || true)
-GO_FILES="$GO_FILES frontend/cli/main.go"
-if [ -d "backend/api/gen" ]; then
-    GENERATED_GO=$(find backend/api/gen -name "*.go")
+GO_FILES="$GO_FILES src/frontend/cli/main.go"
+if [ -d "src/backend/api/gen" ]; then
+    GENERATED_GO=$(find src/backend/api/gen -name "*.go")
     GO_FILES="$GO_FILES $GENERATED_GO"
 fi
 if [ -n "$GO_FILES" ]; then
@@ -22,7 +22,7 @@ fi
 
 # Format and stage SQL files
 SQL_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.sql$' || true)
-SQL_FILES="$SQL_FILES backend/db/schema.sql"
+SQL_FILES="$SQL_FILES src/backend/db/schema.sql"
 if [ -n "$SQL_FILES" ]; then
     UNIQUE_SQL=$(echo "$SQL_FILES" | tr ' ' '\n' | sort -u)
     # Use npx to run sql-formatter. It will download it if not present.
@@ -32,4 +32,3 @@ fi
 
 # Stage all proto files since we formatted them all
 git add proto/
-

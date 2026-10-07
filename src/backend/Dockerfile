@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Copy go.work, go.mod files and vendor directory
 COPY go.work go.work.sum ./
-COPY tools/go.mod tools/go.sum ./tools/
+COPY tools/build_deps/go.mod tools/build_deps/go.sum ./tools/build_deps/
 COPY backend/api/go.mod backend/api/go.sum ./backend/api/
 COPY frontend/cli/go.mod frontend/cli/go.sum* ./frontend/cli/
 COPY vendor/ ./vendor/
