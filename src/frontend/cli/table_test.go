@@ -143,3 +143,61 @@ func TestPrintTableTo_Map(t *testing.T) {
 		t.Errorf("map output missing fields: %s", output)
 	}
 }
+
+func TestSilenceUsage_OnConnectionError(t *testing.T) {
+	t.Setenv("QS_API_URL", "http://127.0.0.1:54321")
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected connection error, got nil")
+	}
+
+	combined := errBuf.String() + outBuf.String()
+	if strings.Contains(combined, "Usage:") {
+		t.Errorf("connection error should not show usage text, got:\n%s", combined)
+	}
+}
+
+func TestSilenceUsage_OnMissingArgs(t *testing.T) {
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "get"}) // requires 1 arg
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "Usage:") {
+		t.Errorf("missing argument error should show usage text, got:\n%s", combined)
+	}
+}
+
+func TestSilenceUsage_OnUnknownFlag(t *testing.T) {
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--nonexistent-flag"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "Usage:") {
+		t.Errorf("unknown flag error should show usage text, got:\n%s", combined)
+	}
+}

@@ -29,7 +29,7 @@ var (
 	yamlOut bool
 )
 
-func main() {
+func newRootCmd() *cobra.Command {
 	if url := os.Getenv("QS_API_URL"); url != "" {
 		apiURL = url
 	}
@@ -42,6 +42,9 @@ func main() {
 
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
 	rootCmd.PersistentFlags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
+	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
+		cmd.SilenceUsage = true
+	}
 
 	// --- Motors ---
 	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, apiURL)
@@ -1636,7 +1639,11 @@ func main() {
 	}
 	rootCmd.AddCommand(completionCmd)
 
-	if err := rootCmd.Execute(); err != nil {
+	return rootCmd
+}
+
+func main() {
+	if err := newRootCmd().Execute(); err != nil {
 		os.Exit(1)
 	}
 }
