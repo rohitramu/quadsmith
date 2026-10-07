@@ -6,10 +6,9 @@ Always check the manufacturer's official website and official spec sheets as the
 
 ## Git Workflow & Commit Messages
 
-- Do not run `git commit` yourself unless explicitly asked. Instead, leave changes in the working tree and suggest a commit message for the user to commit.
-- Do not use conventional commit prefixes (like "feat:", "fix:", "chore:") at the start of commit messages. Write plain, descriptive commit messages.
 - Never commit temporary or scratch scripts (e.g., `.cjs` helper scripts). Always store temporary or scratch scripts in the `.tmp/` directory at the root of the repository, and delete them immediately before finishing a task.
-- When suggesting a commit message, do not mention changes to AGENTS.md in the subject line (top line) unless it is the only changed file.
+- After creating a commit, always push to the remote. If you need to do a force push, ask the user first.
+- When writing a commit message, do not mention changes to AGENTS.md in the subject line (top line) unless it is the only changed file.
 
 ## Project Planning
 
