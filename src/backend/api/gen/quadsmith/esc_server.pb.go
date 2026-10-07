@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"quadsmith/api/internal/cel2sql"
+	"quadsmith/api/internal/pagination"
 )
 
 type EscServiceHandler struct {
@@ -25,14 +26,41 @@ func (s *EscServiceHandler) GetEsc(ctx context.Context, req *connect.Request[Get
 }
 
 func (s *EscServiceHandler) ListEscs(ctx context.Context, req *connect.Request[ListEscsRequest]) (*connect.Response[ListEscsResponse], error) {
-	where, args, err := cel2sql.Compile(req.Msg.GetFilter())
+	pageSize, err := pagination.ParsePageSize(req.Msg.GetPageSize())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListEscs(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
+
+	filter, sort, offset, err := pagination.ResolveParams(req.Msg.GetFilter(), req.Msg.GetSort(), req.Msg.GetPageToken())
 	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	where, args, err := cel2sql.Compile(filter)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	items, err := ListEscs(ctx, s.db, req.Msg.GetColumns(), sort, where, pageSize+1, offset, args...)
+	if err != nil {
+		if pagination.IsInvalidArgument(err) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	res := &ListEscsResponse{Escs: items}
+
+	nextPageToken := ""
+	if int32(len(items)) > pageSize {
+		items = items[:pageSize]
+		nextPageToken, err = pagination.EncodePageToken(offset+pageSize, filter, sort)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+	}
+
+	res := &ListEscsResponse{
+		Escs:          items,
+		NextPageToken: nextPageToken,
+	}
 	return connect.NewResponse(res), nil
 }

@@ -3,8 +3,10 @@ package quadsmith
 
 import (
 	"context"
+	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"quadsmith/api/internal/pagination"
 	"strings"
 )
 
@@ -75,7 +77,7 @@ func DeleteFrame(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 	return err
 }
 
-func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, args ...any) ([]*Frame, error) {
+func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Frame, error) {
 	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
@@ -86,18 +88,37 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "wheelbase_mm": true, "max_prop_size_mm": true, "geometry": true, "description": true, "reference_links": true}
+	var orderClauses []string
+	hasIdSort := false
 	if len(sorts) > 0 {
-		var orderClauses []string
 		for _, s := range sorts {
 			col := s
-			dir := "ASC"
+			dir := "ASC NULLS LAST"
 			if strings.HasPrefix(s, "^") {
 				col = s[1:]
-				dir = "DESC"
+				dir = "DESC NULLS LAST"
+			}
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidSortColumn(col)
+			}
+			if col == "id" || col == "uuid" {
+				hasIdSort = true
 			}
 			orderClauses = append(orderClauses, col+" "+dir)
 		}
-		query += " ORDER BY " + strings.Join(orderClauses, ", ")
+	}
+	if !hasIdSort {
+		orderClauses = append(orderClauses, "id ASC")
+	}
+	query += " ORDER BY " + strings.Join(orderClauses, ", ")
+	if limit > 0 {
+		query += fmt.Sprintf(" LIMIT $%d", len(args)+1)
+		args = append(args, limit)
+	}
+	if offset > 0 {
+		query += fmt.Sprintf(" OFFSET $%d", len(args)+1)
+		args = append(args, offset)
 	}
 	rows, err := db.Query(ctx, query, args...)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"quadsmith/api/internal/cel2sql"
+	"quadsmith/api/internal/pagination"
 )
 
 type BuildServiceHandler struct {
@@ -25,14 +26,41 @@ func (s *BuildServiceHandler) GetBuild(ctx context.Context, req *connect.Request
 }
 
 func (s *BuildServiceHandler) ListBuilds(ctx context.Context, req *connect.Request[ListBuildsRequest]) (*connect.Response[ListBuildsResponse], error) {
-	where, args, err := cel2sql.Compile(req.Msg.GetFilter())
+	pageSize, err := pagination.ParsePageSize(req.Msg.GetPageSize())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
-	items, err := ListBuilds(ctx, s.db, req.Msg.GetColumns(), req.Msg.GetSort(), where, args...)
+
+	filter, sort, offset, err := pagination.ResolveParams(req.Msg.GetFilter(), req.Msg.GetSort(), req.Msg.GetPageToken())
 	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	where, args, err := cel2sql.Compile(filter)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	items, err := ListBuilds(ctx, s.db, req.Msg.GetColumns(), sort, where, pageSize+1, offset, args...)
+	if err != nil {
+		if pagination.IsInvalidArgument(err) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	res := &ListBuildsResponse{Builds: items}
+
+	nextPageToken := ""
+	if int32(len(items)) > pageSize {
+		items = items[:pageSize]
+		nextPageToken, err = pagination.EncodePageToken(offset+pageSize, filter, sort)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+	}
+
+	res := &ListBuildsResponse{
+		Builds:        items,
+		NextPageToken: nextPageToken,
+	}
 	return connect.NewResponse(res), nil
 }

@@ -88,16 +88,25 @@ func main() {
 		fmt.Fprintf(f, "\t\t\tfilter, _ := cmd.Flags().GetString(\"filter\")\n")
 		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\t\tsortOpts, _ := cmd.Flags().GetStringSlice(\"sort\")\n")
-		fmt.Fprintf(f, "\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts}\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\tpageSize, _ := cmd.Flags().GetInt32(\"page-size\")\n")
+		fmt.Fprintf(f, "\t\t\tpageToken, _ := cmd.Flags().GetString(\"page-token\")\n")
+		fmt.Fprintf(f, "\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}\n", d.Plural)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Plural)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\tif len(columns) == 0 {\n")
 		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", d.Name)
 		fmt.Fprintf(f, "\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg.%s, columns)\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\terr = printOutput(res.Msg.%s, columns)\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
+		fmt.Fprintf(f, "\t\t\tif res.Msg.NextPageToken != \"\" && !jsonOut && !yamlOut {\n")
+		fmt.Fprintf(f, "\t\t\t\tfmt.Printf(\"\\nNext page token: %%s\\n\", res.Msg.NextPageToken)\n")
+		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\treturn nil\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
 		fmt.Fprintf(f, "\t%sListCmd.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.Flags().Int32P(\"page-size\", \"p\", 0, \"Maximum number of items to return\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.Flags().String(\"page-token\", \"\", \"Page token for next page of results\")\n", lowerPlural)
 		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"filter\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
 		fmt.Fprintf(f, "\t\tre := regexp.MustCompile(`([a-zA-Z_]+)$`)\n")
@@ -159,7 +168,7 @@ func main() {
 		fmt.Fprintf(f, "\t\tArgs: cobra.ExactArgs(1),\n")
 		fmt.Fprintf(f, "\t\tValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n")
 		fmt.Fprintf(f, "\t\t\tif len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }\n")
-		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{}))\n", lowerName, d.Plural, d.Plural)
+		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{PageSize: 100}))\n", lowerName, d.Plural, d.Plural)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return nil, cobra.ShellCompDirectiveError }\n")
 		fmt.Fprintf(f, "\t\t\tvar comps []string\n")
 		fmt.Fprintf(f, "\t\t\tfor _, item := range res.Msg.%s {\n", d.Plural)
@@ -203,7 +212,7 @@ func main() {
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			if len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }
-			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{}))
+			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{PageSize: 100}))
 			if err != nil { return nil, cobra.ShellCompDirectiveError }
 			var comps []string
 			for _, item := range res.Msg.Builds {

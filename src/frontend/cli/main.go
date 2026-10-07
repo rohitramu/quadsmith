@@ -50,7 +50,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListMotorsRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListMotorsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -58,10 +60,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Motor{})
 			}
-			return printOutput(res.Msg.Motors, columns)
+			err = printOutput(res.Msg.Motors, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	motorsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	motorsListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	motorsListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	motorsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Motor{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -128,7 +139,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(&pb.ListMotorsRequest{}))
+			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(&pb.ListMotorsRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -177,7 +188,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListFramesRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListFramesRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -185,10 +198,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Frame{})
 			}
-			return printOutput(res.Msg.Frames, columns)
+			err = printOutput(res.Msg.Frames, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	framesListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	framesListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	framesListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	framesListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Frame{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -255,7 +277,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(&pb.ListFramesRequest{}))
+			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(&pb.ListFramesRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -304,7 +326,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListBatteriesRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListBatteriesRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -312,10 +336,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Battery{})
 			}
-			return printOutput(res.Msg.Batteries, columns)
+			err = printOutput(res.Msg.Batteries, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	batteriesListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	batteriesListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	batteriesListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	batteriesListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Battery{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -382,7 +415,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{}))
+			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -431,7 +464,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListEscsRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListEscsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := escClient.ListEscs(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -439,10 +474,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Esc{})
 			}
-			return printOutput(res.Msg.Escs, columns)
+			err = printOutput(res.Msg.Escs, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	escsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	escsListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	escsListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	escsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Esc{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -509,7 +553,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := escClient.ListEscs(context.Background(), connect.NewRequest(&pb.ListEscsRequest{}))
+			res, err := escClient.ListEscs(context.Background(), connect.NewRequest(&pb.ListEscsRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -558,7 +602,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListFlightControllersRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListFlightControllersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -566,10 +612,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.FlightController{})
 			}
-			return printOutput(res.Msg.FlightControllers, columns)
+			err = printOutput(res.Msg.FlightControllers, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	flightcontrollersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	flightcontrollersListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	flightcontrollersListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	flightcontrollersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.FlightController{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -636,7 +691,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(&pb.ListFlightControllersRequest{}))
+			res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(&pb.ListFlightControllersRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -685,7 +740,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListReceiversRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListReceiversRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -693,10 +750,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Receiver{})
 			}
-			return printOutput(res.Msg.Receivers, columns)
+			err = printOutput(res.Msg.Receivers, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	receiversListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	receiversListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	receiversListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	receiversListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Receiver{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -763,7 +829,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(&pb.ListReceiversRequest{}))
+			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(&pb.ListReceiversRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -812,7 +878,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListVideoTransmittersRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListVideoTransmittersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -820,10 +888,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.VideoTransmitter{})
 			}
-			return printOutput(res.Msg.VideoTransmitters, columns)
+			err = printOutput(res.Msg.VideoTransmitters, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	videotransmittersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	videotransmittersListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	videotransmittersListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	videotransmittersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.VideoTransmitter{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -890,7 +967,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(&pb.ListVideoTransmittersRequest{}))
+			res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(&pb.ListVideoTransmittersRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -939,7 +1016,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListAntennasRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListAntennasRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -947,10 +1026,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Antenna{})
 			}
-			return printOutput(res.Msg.Antennas, columns)
+			err = printOutput(res.Msg.Antennas, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	antennasListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	antennasListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	antennasListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	antennasListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Antenna{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1017,7 +1105,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(&pb.ListAntennasRequest{}))
+			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(&pb.ListAntennasRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -1066,7 +1154,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListCamerasRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListCamerasRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -1074,10 +1164,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Camera{})
 			}
-			return printOutput(res.Msg.Cameras, columns)
+			err = printOutput(res.Msg.Cameras, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	camerasListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	camerasListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	camerasListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	camerasListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Camera{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1144,7 +1243,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(&pb.ListCamerasRequest{}))
+			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(&pb.ListCamerasRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -1193,7 +1292,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListPropellersRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListPropellersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -1201,10 +1302,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Propeller{})
 			}
-			return printOutput(res.Msg.Propellers, columns)
+			err = printOutput(res.Msg.Propellers, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	propellersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	propellersListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	propellersListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	propellersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Propeller{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1271,7 +1381,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(&pb.ListPropellersRequest{}))
+			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(&pb.ListPropellersRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -1320,7 +1430,9 @@ func main() {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			req := &pb.ListBuildsRequest{Filter: filter, Columns: columns, Sort: sortOpts}
+			pageSize, _ := cmd.Flags().GetInt32("page-size")
+			pageToken, _ := cmd.Flags().GetString("page-token")
+			req := &pb.ListBuildsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
 			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
@@ -1328,10 +1440,19 @@ func main() {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Build{})
 			}
-			return printOutput(res.Msg.Builds, columns)
+			err = printOutput(res.Msg.Builds, columns)
+			if err != nil {
+				return err
+			}
+			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			}
+			return nil
 		},
 	}
 	buildsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	buildsListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
+	buildsListCmd.Flags().String("page-token", "", "Page token for next page of results")
 	buildsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Build{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1398,7 +1519,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{}))
+			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
@@ -1448,7 +1569,7 @@ func main() {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{}))
+			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
