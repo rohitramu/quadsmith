@@ -121,7 +121,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\t\tall = append(all, res.Msg.%s...)\n", d.Plural)
 		fmt.Fprintf(f, "\t\t\t\tlastNextPageToken = res.Msg.NextPageToken\n")
-		fmt.Fprintf(f, "\t\t\t\tif !(jsonOut || yamlOut) || res.Msg.NextPageToken == \"\" {\n")
+		fmt.Fprintf(f, "\t\t\t\tif !(jsonOut || yamlOut) || cmd.Flags().Changed(\"page-size\") || res.Msg.NextPageToken == \"\" {\n")
 		fmt.Fprintf(f, "\t\t\t\t\tbreak\n")
 		fmt.Fprintf(f, "\t\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\t\tcurrentToken = res.Msg.NextPageToken\n")

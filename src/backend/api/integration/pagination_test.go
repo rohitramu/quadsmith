@@ -142,7 +142,7 @@ func TestPagination_FullIteration(t *testing.T) {
 	}
 
 	// Verify against total seeded motors
-	expectedMotors := 144
+	expectedMotors := 143
 	seedPath := filepath.Join("..", "..", "db", "seeds", "motors.textproto")
 	if b, err := os.ReadFile(seedPath); err == nil {
 		var seedResp pb.ListMotorsResponse

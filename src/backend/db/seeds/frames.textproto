@@ -7,6 +7,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "ImpulseRC ImpulseRC Apex EVO 5\" Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 138.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -21,6 +22,7 @@ frames:  {
   wheelbase_mm:  228
   max_prop_size_mm:  132.08
   geometry:  "True-X"
+  description:  "iFlight iFlight AOS 5 V5 True-X drone frame with 228.0mm wheelbase, supporting up to 132.1mm props, weighing 120.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -35,6 +37,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "FlyFishRC FlyFishRC Volador II VX5 Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -53,6 +56,7 @@ frames:  {
   wheelbase_mm:  94
   max_prop_size_mm:  51.05
   geometry:  "True-X"
+  description:  "Caddx Caddx Gofilm 20 Frame True-X drone frame with 94.0mm wheelbase, supporting up to 51.0mm props, weighing 38.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -67,6 +71,7 @@ frames:  {
   wheelbase_mm:  80
   max_prop_size_mm:  51.05
   geometry:  "True-X"
+  description:  "Happymodel Happymodel Mobula8 Frame True-X drone frame with 80.0mm wheelbase, supporting up to 51.0mm props, weighing 7.8g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -81,6 +86,7 @@ frames:  {
   wheelbase_mm:  80.8
   max_prop_size_mm:  44.96
   geometry:  "True-X"
+  description:  "BETAFPV BetaFPV Meteor75 Pro Frame True-X drone frame with 80.8mm wheelbase, supporting up to 45.0mm props, weighing 7.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -103,6 +109,7 @@ frames:  {
   wheelbase_mm:  148
   max_prop_size_mm:  88.9
   geometry:  "Whoop"
+  description:  "BETAFPV BetaFPV Pavo35 Brushless Whoop Frame Whoop drone frame with 148.0mm wheelbase, supporting up to 88.9mm props, weighing 113.9g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -125,6 +132,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "True X"
+  description:  "DarwinFPV DarwinFPV BabyApe Pro V2 Frame True X drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -143,6 +151,7 @@ frames:  {
   wheelbase_mm:  70
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Meteor75 Pro II Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -165,6 +174,7 @@ frames:  {
   wheelbase_mm:  70
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Meteor65 Pro II Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -187,6 +197,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Aquila20 Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -209,6 +220,7 @@ frames:  {
   wheelbase_mm:  65
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Air65 Champion Brushless Whoop Frame Whoop drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -231,6 +243,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo20 Pro II Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -253,6 +266,7 @@ frames:  {
   wheelbase_mm:  80
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo Pico II Brushless Whoop Frame Whoop drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -275,6 +289,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Air75 II Brushless Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -297,6 +312,7 @@ frames:  {
   wheelbase_mm:  65
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Air65 II Brushless Whoop Frame Whoop drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -319,6 +335,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo20 Pro Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -341,6 +358,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo Femto Brushless Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 8.6g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -363,6 +381,7 @@ frames:  {
   wheelbase_mm:  80
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "BETAFPV X-Knight Carbon Fiber Frame Kit True X drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -385,6 +404,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo25 Frame Kit Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -407,6 +427,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Air75 Brushless Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -429,6 +450,7 @@ frames:  {
   wheelbase_mm:  148
   max_prop_size_mm:  88.9
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo35 Brushless Whoop Frame Whoop drone frame with 148.0mm wheelbase, supporting up to 88.9mm props, weighing 113.9g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -451,6 +473,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo25 V2 Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -473,6 +496,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo20 Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -495,6 +519,7 @@ frames:  {
   wheelbase_mm:  80
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo Pico Brushless Whoop Frame Whoop drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -517,6 +542,7 @@ frames:  {
   wheelbase_mm:  65
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Air65 Brushless Whoop Frame Whoop drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -539,6 +565,7 @@ frames:  {
   wheelbase_mm:  80.8
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Meteor75 Pro Brushless Whoop Frame Whoop drone frame with 80.8mm wheelbase, supporting up to 40.0mm props, weighing 7.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -561,6 +588,7 @@ frames:  {
   wheelbase_mm:  70
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Meteor85 Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -583,6 +611,7 @@ frames:  {
   wheelbase_mm:  95
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Cetus X Brushless Whoop Frame Whoop drone frame with 95.0mm wheelbase, supporting up to 50.8mm props, weighing 55.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -605,6 +634,7 @@ frames:  {
   wheelbase_mm:  70
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Cetus Pro Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -627,6 +657,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo360 Frame Kit Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -649,6 +680,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo30 Pro Frame Kit Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -671,6 +703,7 @@ frames:  {
   wheelbase_mm:  65
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Meteor65 Pro Brushless Whoop Frame Whoop drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 3.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -693,6 +726,7 @@ frames:  {
   wheelbase_mm:  155
   max_prop_size_mm:  101.6
   geometry:  "True X"
+  description:  "BETAFPV X-Knight 35 Frame Kit True X drone frame with 155.0mm wheelbase, supporting up to 101.6mm props, weighing 142.9g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -715,6 +749,7 @@ frames:  {
   wheelbase_mm:  80
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Pavo30 Frame Kit Whoop drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -737,6 +772,7 @@ frames:  {
   wheelbase_mm:  80
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "BETAFPV Beta95X V3 Frame Kit True X drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -759,6 +795,7 @@ frames:  {
   wheelbase_mm:  80.8
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Meteor75 Micro Brushless Whoop Frame Whoop drone frame with 80.8mm wheelbase, supporting up to 40.0mm props, weighing 7.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -781,6 +818,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Beta75X V2 Micro Brushless Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -803,6 +841,7 @@ frames:  {
   wheelbase_mm:  200
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "BETAFPV X-Knight Carbon Fiber 5'' Frame V2 Kit True X drone frame with 200.0mm wheelbase, supporting up to 129.5mm props, weighing 142.9g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -825,6 +864,7 @@ frames:  {
   wheelbase_mm:  80
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "BETAFPV TWIGLET 2.5'' Frame Kit True X drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -847,6 +887,7 @@ frames:  {
   wheelbase_mm:  153
   max_prop_size_mm:  88.9
   geometry:  "True X"
+  description:  "BETAFPV TWIG XL 3 Frame Kit True X drone frame with 153.0mm wheelbase, supporting up to 88.9mm props, weighing 138.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -869,6 +910,7 @@ frames:  {
   wheelbase_mm:  80
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "BETAFPV Beta95X Frame Kit True X drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -891,6 +933,7 @@ frames:  {
   wheelbase_mm:  80.8
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Beta75 Pro Micro Brushless Whoop Frame Whoop drone frame with 80.8mm wheelbase, supporting up to 40.0mm props, weighing 7.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -913,6 +956,7 @@ frames:  {
   wheelbase_mm:  70
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Meteor65 Micro Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -935,6 +979,7 @@ frames:  {
   wheelbase_mm:  148
   max_prop_size_mm:  88.9
   geometry:  "True X"
+  description:  "BETAFPV HX115 T700 Carbon Fiber Frame True X drone frame with 148.0mm wheelbase, supporting up to 88.9mm props, weighing 113.9g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -957,6 +1002,7 @@ frames:  {
   wheelbase_mm:  367
   max_prop_size_mm:  177.8
   geometry:  "True X"
+  description:  "BETAFPV HX100 Carbon Fiber Frame True X drone frame with 367.0mm wheelbase, supporting up to 177.8mm props, weighing 200.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -1002,6 +1048,7 @@ frames:  {
   wheelbase_mm:  85
   max_prop_size_mm:  50.8
   geometry:  "True X"
+  description:  "BETAFPV Beta85X 4S 4K Frame Kit (Upgrade) True X drone frame with 85.0mm wheelbase, supporting up to 50.8mm props, weighing 10.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -1024,6 +1071,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Beta75 Pro 2 Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -1046,6 +1094,7 @@ frames:  {
   wheelbase_mm:  93.9
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "BETAFPV Beta65X / Beta65 Pro 2 Micro Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -1068,6 +1117,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "Whoop"
+  description:  "BETAFPV Beta75X Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -1090,6 +1140,7 @@ frames:  {
   wheelbase_mm:  70
   max_prop_size_mm:  31
   geometry:  "Whoop"
+  description:  "BETAFPV Beta65 Pro Micro Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/frames"
@@ -1112,6 +1163,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "CADDX FPV Protos Drone Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 104.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1126,6 +1178,7 @@ frames:  {
   wheelbase_mm:  94
   max_prop_size_mm:  50.8
   geometry:  "True X"
+  description:  "CADDXFPV CADDXFPV Gofilm 20 Frame True X drone frame with 94.0mm wheelbase, supporting up to 50.8mm props, weighing 38.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1140,6 +1193,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "DarwinFPV Baby BabyApe V4 Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1158,6 +1212,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "DarwinFPV DarwinFPV ApeStyle X5 Drone Frame Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1233,6 +1288,7 @@ frames:  {
   wheelbase_mm:  160
   max_prop_size_mm:  50
   geometry:  "Squashed-X"
+  description:  "DarwinFPV BabyApe Ⅲ Mini 2 Inch Freestyle Frame Squashed-X drone frame with 160.0mm wheelbase, supporting up to 50.0mm props, weighing 70.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1251,6 +1307,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "DarwinFPV DarwinFPV HULK III Mini Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1269,6 +1326,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "DarwinFPV DarwinFPV X10 Long Range FPV Drone Frame Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 186.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1287,6 +1345,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "DarwinFPV DarwinFPV FoldApe4 Analog Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1305,6 +1364,7 @@ frames:  {
   wheelbase_mm:  363
   max_prop_size_mm:  177.8
   geometry:  "True-X"
+  description:  "DarwinFPV DARWIN X9 Quadcopter Frame True-X drone frame with 363.0mm wheelbase, supporting up to 177.8mm props, weighing 287.8g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1361,6 +1421,7 @@ frames:  {
   wheelbase_mm:  112
   max_prop_size_mm:  76.2
   geometry:  "Whoop"
+  description:  "DarwinFPV Darwin CineApe 25 Whoop Frame Whoop drone frame with 112.0mm wheelbase, supporting up to 76.2mm props, weighing 47.8g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1379,6 +1440,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "DarwinFPV Baby BabyApe V2 Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1397,6 +1459,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "DarwinFPV DarwinFPV HULK Waterproof Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1415,6 +1478,7 @@ frames:  {
   wheelbase_mm:  160
   max_prop_size_mm:  101.6
   geometry:  "Squashed-X"
+  description:  "DarwinFPV Darwin TinyApe Freestyle Frame Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1433,6 +1497,7 @@ frames:  {
   wheelbase_mm:  143
   max_prop_size_mm:  88.9
   geometry:  "True-X"
+  description:  "DarwinFPV Darwin Baby Ape 3'' Quadcopter Frame True-X drone frame with 143.0mm wheelbase, supporting up to 88.9mm props, weighing 74.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/frame"
@@ -1481,6 +1546,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  76
   geometry:  "True X"
+  description:  "NewBeeDrone NewBeeDrone LionBee 3inch Frame True X drone frame with 75.0mm wheelbase, supporting up to 76.0mm props, weighing 3.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1525,6 +1591,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "NewBeeDrone NewBeeDrone SavageBee Pusher Frame Kit True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 3.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1599,6 +1666,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "NewBeeDrone NewBeeDrone 75mm Cockroach75 Brushless Extreme-Durable Frame True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 3.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1643,6 +1711,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "NewBeeDrone NewBeeDrone Mosquito XL Frame True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 3.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1672,6 +1741,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "NewBeeDrone NewBeeDrone Mosquito Frame True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 3.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1686,6 +1756,7 @@ frames:  {
   wheelbase_mm:  65
   max_prop_size_mm:  31
   geometry:  "True X"
+  description:  "NewBeeDrone NewBeeDrone 65mm Cockroach Brushless Super-Durable Frame True X drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.8g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1700,6 +1771,7 @@ frames:  {
   wheelbase_mm:  65
   max_prop_size_mm:  31
   geometry:  "True X"
+  description:  "NewBeeDrone NewBeeDrone Cockroach Brushed Super-Durable Frame 65mm True X drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.8g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1714,6 +1786,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True-X"
+  description:  "Pirat Lil Matey2 3.5 Frame True-X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 58.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1728,6 +1801,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "ImpulseRC Echo 5 Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 121.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1742,6 +1816,7 @@ frames:  {
   wheelbase_mm:  160
   max_prop_size_mm:  101.6
   geometry:  "Squashed-X"
+  description:  "Rotor Riot TANQ S 3.5 Frame - By LetsFlyRC Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1756,6 +1831,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "Rotor Riot TANQ 2 5 Racing Frame - By LetsFlyRC Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1770,6 +1846,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "Rotor Riot TANQ 2 5 Deadcat Frame - By LetsFlyRC Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 186.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1784,6 +1861,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "Rotor Riot TANQ 2 8 Deadcat Frame - By LetsFlyRC Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 186.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1798,6 +1876,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "Rotor Riot TANQ 2 5 Frame - By LetsFlyRC Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1812,6 +1891,7 @@ frames:  {
   wheelbase_mm:  288
   max_prop_size_mm:  177.8
   geometry:  "Deadcat"
+  description:  "Rotor Riot CL2-XR 7 Deadcat Frame Deadcat drone frame with 288.0mm wheelbase, supporting up to 177.8mm props, weighing 185.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1826,6 +1906,7 @@ frames:  {
   wheelbase_mm:  160
   max_prop_size_mm:  101.6
   geometry:  "Squashed-X"
+  description:  "Rotor Riot CL2-AIR 5 Frame Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1870,6 +1951,7 @@ frames:  {
   wheelbase_mm:  213
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "Rotor Riot Skyliner MK3 5 Frame True X drone frame with 213.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1884,6 +1966,7 @@ frames:  {
   wheelbase_mm:  75
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "Rotor Riot SkyLite 3-3.5 Frame by Le Drib True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1898,6 +1981,7 @@ frames:  {
   wheelbase_mm:  189
   max_prop_size_mm:  101.6
   geometry:  "True X"
+  description:  "Rotor Riot CL2 5 Frame True X drone frame with 189.0mm wheelbase, supporting up to 101.6mm props, weighing 52.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1912,6 +1996,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "Rotor Riot Moxy 5 Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -1945,6 +2030,7 @@ frames:  {
   wheelbase_mm:  210
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "HGLRC HGLRC MY5 5-inch Freestyle /Training Frame True X drone frame with 210.0mm wheelbase, supporting up to 129.5mm props, weighing 120.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hglrc.net/collections/frame"
@@ -2077,6 +2163,7 @@ frames:  {
   wheelbase_mm:  206
   max_prop_size_mm:  129.54
   geometry:  "True-X"
+  description:  "HGLRC HGLRC Rekon 5 Lite Frame True-X drone frame with 206.0mm wheelbase, supporting up to 129.5mm props, weighing 25.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hglrc.net/collections/frame"
@@ -2095,6 +2182,7 @@ frames:  {
   wheelbase_mm:  208
   max_prop_size_mm:  129.54
   geometry:  "True-X"
+  description:  "HGLRC HGLRC Wind5 Lite V2 Frame Kit for racing True-X drone frame with 208.0mm wheelbase, supporting up to 129.5mm props, weighing 80.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hglrc.net/collections/frame"
@@ -2113,6 +2201,7 @@ frames:  {
   wheelbase_mm:  100
   max_prop_size_mm:  50.8
   geometry:  "Whoop"
+  description:  "HGLRC HGLRC 2-inch Talon frame for cinewhoop Whoop drone frame with 100.0mm wheelbase, supporting up to 50.8mm props, weighing 53.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hglrc.net/collections/frame"
@@ -2188,6 +2277,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "FlyFish RC Hunter 5 FPV Racing T700 Frame Kit Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 186.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2221,6 +2311,7 @@ frames:  {
   wheelbase_mm:  215
   max_prop_size_mm:  129.54
   geometry:  "True-X"
+  description:  "FlyFishRC Tony 5 O4 Pro Sub250 FPV Freestyle Frame True-X drone frame with 215.0mm wheelbase, supporting up to 129.5mm props, weighing 248.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2239,6 +2330,7 @@ frames:  {
   wheelbase_mm:  183
   max_prop_size_mm:  101.6
   geometry:  "Deadcat"
+  description:  "FlyFishRC Atlas 4 O4 Pro LR FPV Frame Deadcat drone frame with 183.0mm wheelbase, supporting up to 101.6mm props, weighing 127.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2359,6 +2451,7 @@ frames:  {
   wheelbase_mm:  160
   max_prop_size_mm:  101.6
   geometry:  "Squashed-X"
+  description:  "FlyFishRC FIFTY5 O4 Pro Freestyle FPV Frame Kit Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2377,6 +2470,7 @@ frames:  {
   wheelbase_mm:  183
   max_prop_size_mm:  101.6
   geometry:  "Deadcat"
+  description:  "FlyFishRC Atlas 4 LR FPV Frame Deadcat drone frame with 183.0mm wheelbase, supporting up to 101.6mm props, weighing 127.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2395,6 +2489,7 @@ frames:  {
   wheelbase_mm:  215
   max_prop_size_mm:  129.54
   geometry:  "True-X"
+  description:  "FlyFishRC Tony 5 Sub250 FPV Freestyle Frame True-X drone frame with 215.0mm wheelbase, supporting up to 129.5mm props, weighing 248.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2413,6 +2508,7 @@ frames:  {
   wheelbase_mm:  255
   max_prop_size_mm:  152.4
   geometry:  "True-X"
+  description:  "FlyFishRC FIFTY5 O3 Freestyle FPV Frame Kit True-X drone frame with 255.0mm wheelbase, supporting up to 152.4mm props, weighing 127.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2431,6 +2527,7 @@ frames:  {
   wheelbase_mm:  160
   max_prop_size_mm:  101.6
   geometry:  "Squashed-X"
+  description:  "FlyFishRC Volador VX3 VX3.5 O3 Freestyle Frame Kit Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2555,6 +2652,7 @@ frames:  {
   wheelbase_mm:  225
   max_prop_size_mm:  129.54
   geometry:  "Deadcat"
+  description:  "FlyFishRC Volador VX5 FPV Freestyle T700 Frame Kit Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2573,6 +2671,7 @@ frames:  {
   wheelbase_mm:  268
   max_prop_size_mm:  152.4
   geometry:  "Deadcat"
+  description:  "FlyFishRC Volador VX6 FPV Freestyle T700 Frame Kit Deadcat drone frame with 268.0mm wheelbase, supporting up to 152.4mm props, weighing 188.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://flyfish-rc.com/collections/frames"
@@ -2591,6 +2690,7 @@ frames:  {
   wheelbase_mm:  215
   max_prop_size_mm:  129.54
   geometry:  "True-X"
+  description:  "sub250 DollyFly25 V2 O4 Pro Frame and Parts True-X drone frame with 215.0mm wheelbase, supporting up to 129.5mm props, weighing 248.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2605,6 +2705,7 @@ frames:  {
   wheelbase_mm:  85
   max_prop_size_mm:  50.8
   geometry:  "True X"
+  description:  "Sub250 Sub250 DollyFly16 HD O4 Pro Frame Parts True X drone frame with 85.0mm wheelbase, supporting up to 50.8mm props, weighing 88.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2634,6 +2735,7 @@ frames:  {
   wheelbase_mm:  77
   max_prop_size_mm:  40
   geometry:  "True X"
+  description:  "Sub250 Sub250 NF16 1.6 inch Frame for Nanofly16 True X drone frame with 77.0mm wheelbase, supporting up to 40.0mm props, weighing 8.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2648,6 +2750,7 @@ frames:  {
   wheelbase_mm:  100
   max_prop_size_mm:  50.8
   geometry:  "True X"
+  description:  "FPVCycle FPVCycle Cinesplore 2 Frame Kit True X drone frame with 100.0mm wheelbase, supporting up to 50.8mm props, weighing 53.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2662,6 +2765,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "FPVCycle Sonicare (X4) 5 Frame Kit True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 121.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2676,6 +2780,7 @@ frames:  {
   wheelbase_mm:  260
   max_prop_size_mm:  152.4
   geometry:  "True X"
+  description:  "FPVCycle FPVCycle CineGlide 7 Frame True X drone frame with 260.0mm wheelbase, supporting up to 152.4mm props, weighing 49.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2690,6 +2795,7 @@ frames:  {
   wheelbase_mm:  220
   max_prop_size_mm:  129.54
   geometry:  "True-X"
+  description:  "FPVCycle FPVCycle ToothFairy 2 Frame True-X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 58.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2704,6 +2810,7 @@ frames:  {
   wheelbase_mm:  167
   max_prop_size_mm:  101.6
   geometry:  "True X"
+  description:  "FPVCycle FPVCycle CineSplore Frame True X drone frame with 167.0mm wheelbase, supporting up to 101.6mm props, weighing 201.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2733,6 +2840,7 @@ frames:  {
   wheelbase_mm:  208
   max_prop_size_mm:  129.54
   geometry:  "True X"
+  description:  "FPVCycle FPVCycle MOLAR - 5 Race Frame True X drone frame with 208.0mm wheelbase, supporting up to 129.5mm props, weighing 78.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2747,6 +2855,7 @@ frames:  {
   wheelbase_mm:  160
   max_prop_size_mm:  101.6
   geometry:  "Squashed-X"
+  description:  "FPVCycle ToothPick 3 Frame - TP3 Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 17.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"
@@ -2776,6 +2885,7 @@ frames:  {
   wheelbase_mm:  160
   max_prop_size_mm:  101.6
   geometry:  "Squashed-X"
+  description:  "FPVCycle FPVCycle Glide -  5 Frame Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/fpv/frames.html"

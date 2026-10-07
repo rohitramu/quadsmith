@@ -8,6 +8,7 @@ propellers:  {
   pitch_mm:  109.22
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp 5x4.3x3 V1S 3-blade Polycarbonate propeller with 127.0mm diameter and 109.2mm pitch, weighing 3.75g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -27,6 +28,7 @@ propellers:  {
   pitch_mm:  50.8
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp T2x2x3 3-blade Polycarbonate propeller with 50.8mm diameter and 50.8mm pitch, weighing 0.75g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -46,6 +48,7 @@ propellers:  {
   pitch_mm:  91.44
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Gemfan Hurricane 51466 V2 3-blade Polycarbonate propeller with 131.8mm diameter and 91.4mm pitch, weighing 4.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -65,6 +68,7 @@ propellers:  {
   pitch_mm:  88.9
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Gemfan Floppy Proppy F5135 3-blade Polycarbonate propeller with 129.5mm diameter and 88.9mm pitch, weighing 4.70g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -84,6 +88,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp Ethix S5 Light Grey 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.70g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -103,6 +108,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp 7X4X3 3-blade Polycarbonate propeller with 177.8mm diameter and 101.6mm pitch, weighing 10.30g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -122,6 +128,7 @@ propellers:  {
   pitch_mm:  48.01
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Gemfan 1219 3-Blade 3-blade Polycarbonate propeller with 31.0mm diameter and 48.0mm pitch, weighing 0.18g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -141,6 +148,7 @@ propellers:  {
   pitch_mm:  91.44
   blades:  4
   material:  "Polycarbonate"
+  description:  "Gemfan Gemfan 1636 4-Blade 4-blade Polycarbonate propeller with 39.9mm diameter and 91.4mm pitch, weighing 0.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -160,6 +168,7 @@ propellers:  {
   pitch_mm:  58.42
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Gemfan 2023 3-Blade 3-blade Polycarbonate propeller with 50.8mm diameter and 58.4mm pitch, weighing 0.88g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -179,6 +188,7 @@ propellers:  {
   pitch_mm:  58.42
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Gemfan 4023 3-Blade 3-blade Polycarbonate propeller with 101.6mm diameter and 58.4mm pitch, weighing 1.98g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -198,6 +208,7 @@ propellers:  {
   pitch_mm:  109.98
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Gemfan Hurricane 51433 3-blade Polycarbonate propeller with 130.8mm diameter and 110.0mm pitch, weighing 3.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -217,6 +228,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Gemfan 7040 3-Blade 3-blade Polycarbonate propeller with 177.8mm diameter and 101.6mm pitch, weighing 4.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -236,6 +248,7 @@ propellers:  {
   pitch_mm:  29.97
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp Micro Whoop 31x3 3-blade Polycarbonate propeller with 31.0mm diameter and 30.0mm pitch, weighing 1.13g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -255,6 +268,7 @@ propellers:  {
   pitch_mm:  39.88
   blades:  4
   material:  "Polycarbonate"
+  description:  "HQProp HQProp Micro Whoop 40x4 4-blade Polycarbonate propeller with 39.9mm diameter and 39.9mm pitch, weighing 3.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -274,6 +288,7 @@ propellers:  {
   pitch_mm:  39.88
   blades:  2
   material:  "Polycarbonate"
+  description:  "HQProp HQProp T65MM 2.5 Inch 2-blade Polycarbonate propeller with 65.0mm diameter and 39.9mm pitch, weighing 0.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -293,6 +308,7 @@ propellers:  {
   pitch_mm:  76.2
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp T3x3x3 3-blade Polycarbonate propeller with 76.2mm diameter and 76.2mm pitch, weighing 1.13g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -312,6 +328,7 @@ propellers:  {
   pitch_mm:  76.2
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp Ethix P3 Peanut Butter 3-blade Polycarbonate propeller with 129.5mm diameter and 76.2mm pitch, weighing 3.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -331,6 +348,7 @@ propellers:  {
   pitch_mm:  78.74
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp Ethix S3 Watermelon 3-blade Polycarbonate propeller with 127.0mm diameter and 78.7mm pitch, weighing 3.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -350,6 +368,7 @@ propellers:  {
   pitch_mm:  104.14
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp 5.1x4.1x3 3-blade Polycarbonate propeller with 129.5mm diameter and 104.1mm pitch, weighing 4.75g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -369,6 +388,7 @@ propellers:  {
   pitch_mm:  88.9
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp 7x3.5x3 3-blade Polycarbonate propeller with 177.8mm diameter and 88.9mm pitch, weighing 8.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -388,6 +408,7 @@ propellers:  {
   pitch_mm:  63.5
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQProp 2.5x2.5x3 3-blade Polycarbonate propeller with 63.5mm diameter and 63.5mm pitch, weighing 5.30g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -507,6 +528,7 @@ propellers:  {
   pitch_mm:  63.5
   blades:  2
   material:  "Polycarbonate"
+  description:  "BETAFPV HQ 4025 2-Blade Propellers 1.5mm Shaft 2-blade Polycarbonate propeller with 101.6mm diameter and 63.5mm pitch, weighing 1.40g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -526,6 +548,7 @@ propellers:  {
   pitch_mm:  63.5
   blades:  3
   material:  "Polycarbonate"
+  description:  "BETAFPV Gemfan 5125 3-Blade Propellers 5mm/1.5mm Shaft 3-blade Polycarbonate propeller with 129.5mm diameter and 63.5mm pitch, weighing 2.78g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -565,6 +588,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  4
   material:  "Polycarbonate"
+  description:  "BETAFPV 1735 4-Blades PC Propellers  (4 PCS) 4-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 30.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -864,6 +888,7 @@ propellers:  {
   pitch_mm:  39
   blades:  2
   material:  "Polycarbonate"
+  description:  "BETAFPV HQ 65mm 2-Blade 1.5mm Shaft Propellers 2-blade Polycarbonate propeller with 65.0mm diameter and 39.0mm pitch, weighing 0.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -943,6 +968,7 @@ propellers:  {
   pitch_mm:  50.8
   blades:  3
   material:  "Polycarbonate"
+  description:  "BETAFPV HQ 3520 3-Blade Propellers (1.5mm Shaft) 3-blade Polycarbonate propeller with 88.9mm diameter and 50.8mm pitch, weighing 1.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -962,6 +988,7 @@ propellers:  {
   pitch_mm:  63
   blades:  5
   material:  "Polycarbonate"
+  description:  "BETAFPV Gemfan D63 5-Blade Propellers 1.5mm Shaft 5-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 0.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -981,6 +1008,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "BETAFPV HQ 5025 3-Blade Propellers 1.5mm Shaft 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -1000,6 +1028,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  4
   material:  "Polycarbonate"
+  description:  "BETAFPV Gemfan 2020 4-Blade Propellers 1.5mm Shaft 4-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 30.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -1019,6 +1048,7 @@ propellers:  {
   pitch_mm:  63
   blades:  3
   material:  "Polycarbonate"
+  description:  "BETAFPV Gemfan D63 3-Blade Propellers 1.5mm Shaft 3-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 0.43g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -1038,6 +1068,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "BETAFPV Gemfan 4032 3-Blade Propellers 5mm Shaft 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 30.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -1117,6 +1148,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "BETAFPV Gemfan 2540 3-Blade Propellers 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/props"
@@ -1428,6 +1460,7 @@ propellers:  {
   pitch_mm:  63
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV D63-3 Propeller 3-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 1.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1487,6 +1520,7 @@ propellers:  {
   pitch_mm:  152.4
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV 6032 X6/D6 Propeller 3-blade Polycarbonate propeller with 153212.8mm diameter and 152.4mm pitch, weighing 5.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1506,6 +1540,7 @@ propellers:  {
   pitch_mm:  58.42
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV - Official Store DarwinFPV CineApe20 2023-3 2 Inch Propellers 3-blade Polycarbonate propeller with 50.8mm diameter and 58.4mm pitch, weighing 5.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -1553,6 +1588,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV BabyApe Ⅱ Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1572,6 +1608,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV F4019-2 Folding Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.42g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1591,6 +1628,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV Gemfan 8060-3 Glass Fiber Nylon 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 12.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1610,6 +1648,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV Hurricane7050-3 Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 8.90g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1629,6 +1668,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV 8040-3 Glass Fiber Nylon Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 11.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1648,6 +1688,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV 9045-3 Glass Fiber Nylon Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 16.70g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1667,6 +1708,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV  1050-3 FPV Drone Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 16.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1706,6 +1748,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV CineApe 25 HQProp T63MMX6 Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 144.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1725,6 +1768,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV Gemfan 4934 5 inch 3-Blade Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1744,6 +1788,7 @@ propellers:  {
   pitch_mm:  118.36
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV Darwinfpv 5 inch 51466-3 blades propeller 3-blade Polycarbonate propeller with 129.5mm diameter and 118.4mm pitch, weighing 4.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1763,6 +1808,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV 2512 2.5inch 3-blade FPV Propellers 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -1782,6 +1828,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "NewBeeDrone NewBeeDrone Tool Kit V1.7 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 28.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -1861,6 +1908,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "NewBeeDrone NewBeeDrone BeeWire Lite (5-Pack) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -1892,6 +1940,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "NewBeeDrone Tiny Cockroach 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 2.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -1923,6 +1972,7 @@ propellers:  {
   pitch_mm:  24
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan 40mm 1635 PC 3 Blade 1.5mm - Clear Blue 3-blade Polycarbonate propeller with 40.0mm diameter and 24.0mm pitch, weighing 0.54g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -1962,6 +2012,7 @@ propellers:  {
   pitch_mm:  114.3
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQ 10X4.5X3 MacroQuad Prop 3-blade Polycarbonate propeller with 254.0mm diameter and 114.3mm pitch, weighing 9.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -1981,6 +2032,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "Ethix P2 Tri-Blade 5 Props 4 Pack - Pickle 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -1996,6 +2048,7 @@ propellers:  {
   pitch_mm:  38.1
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Hurricane 2015 Props - Grey 3-blade Polycarbonate propeller with 50.8mm diameter and 38.1mm pitch, weighing 0.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2015,6 +2068,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp T4X2.5 Props - Grey 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 9.40g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2090,6 +2144,7 @@ propellers:  {
   pitch_mm:  60.96
   blades:  2
   material:  "Polycarbonate"
+  description:  "Gemfan LR 4024 PC 2 Blade Props 2-blade Polycarbonate propeller with 101.6mm diameter and 61.0mm pitch, weighing 3.16g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2149,6 +2204,7 @@ propellers:  {
   pitch_mm:  110
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Hurricane 51433 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 110.0mm pitch, weighing 3.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2168,6 +2224,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Hurricane 4937 Props - Black 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2187,6 +2244,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Hurricane 5127 Props - Clear Grey 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 4.40g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2226,6 +2284,7 @@ propellers:  {
   pitch_mm:  63
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Duct D63-3 Props - Clear Grey 3-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 2.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2245,6 +2304,7 @@ propellers:  {
   pitch_mm:  106.67999
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQ R42 5.1x4.2x3 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 106.7mm pitch, weighing 4.10g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2332,6 +2392,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "Ethix S3 Tri-Blade 5 Props 4 Pack - Watermelon 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -2407,6 +2468,7 @@ propellers:  {
   pitch_mm:  24
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp 40MMX2 Bi-Blade 40mm Prop 4 Pack 3-blade Polycarbonate propeller with 40.0mm diameter and 24.0mm pitch, weighing 0.26g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2442,6 +2504,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "Ethix S4 Tri-Blade 5 Props 4 Pack - Lemon Lime 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -2457,6 +2520,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp J75 Tri-Blade 7 Prop 4 Pack 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 9.10g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2496,6 +2560,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "Ethix S5 Tri-Blade 5 Props 4 Pack - Black 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.70g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -2511,6 +2576,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DJI DJI Avata Propellers 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 2.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -2566,6 +2632,7 @@ propellers:  {
   pitch_mm:  50.8
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan Hurricane 3520 Props - Choose Color 3-blade Polycarbonate propeller with 88.9mm diameter and 50.8mm pitch, weighing 1.75g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2605,6 +2672,7 @@ propellers:  {
   pitch_mm:  91.44
   blades:  3
   material:  "Polycarbonate"
+  description:  "Gemfan 5136 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 91.4mm pitch, weighing 4.30g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2624,6 +2692,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQ DP T65MMX3 Props 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2663,6 +2732,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  6
   material:  "Polycarbonate"
+  description:  "HQProp HQ Duct 4X4X6 Props for Ducted HD1 VS 6-blade Polycarbonate propeller with 101.6mm diameter and 101.6mm pitch, weighing 3.10g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2722,6 +2792,7 @@ propellers:  {
   pitch_mm:  73.66
   blades:  4
   material:  "Polycarbonate"
+  description:  "HQProp HQ 2.9x2.9x4 Quad-Blade 3 Props 4-blade Polycarbonate propeller with 73.7mm diameter and 73.7mm pitch, weighing 9.10g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2741,6 +2812,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQ DP T2X2X4 Props 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2760,6 +2832,7 @@ propellers:  {
   pitch_mm:  76.2
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQ DP T2X2.5X3 Props - Choose Color 3-blade Polycarbonate propeller with 12.7mm diameter and 76.2mm pitch, weighing 1.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2779,6 +2852,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  2
   material:  "Polycarbonate"
+  description:  "Gemfan LR 5126 2 Blade Props - Choose Color 2-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 4.82g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.gemfanhobby.com/"
@@ -2798,6 +2872,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQ DP T2X2X3 Props 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.75g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2817,6 +2892,7 @@ propellers:  {
   pitch_mm:  86.36
   blades:  4
   material:  "Polycarbonate"
+  description:  "HQProp HQ 4.8x3.4x4 Props 4-blade Polycarbonate propeller with 121.9mm diameter and 86.4mm pitch, weighing 4.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2856,6 +2932,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQ 7X4X3 Props 3-blade Polycarbonate propeller with 177.8mm diameter and 101.6mm pitch, weighing 9.10g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2875,6 +2952,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HQProp HQ 3 Cinewhoop Props - Choose Color 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.16g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.hqprop.com/"
@@ -2894,6 +2972,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV - Official Store DarwinFPV BabyApe Ⅲ PRO RTF 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -2925,6 +3004,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV Gemfan 8046-3 Glass Fiber Nylon 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 13.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -2944,6 +3024,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DarwinFPV DarwinFPV BabyApe Ⅱ Freestyle FPV Drone 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://darwinfpv.com/collections/propeller"
@@ -3015,6 +3096,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "HGLRC HQprop T63 1.5mm 6-Blade Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.53g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3030,6 +3112,7 @@ propellers:  {
   pitch_mm:  63
   blades:  5
   material:  "Polycarbonate"
+  description:  "HGLRC Gemfan D63 2.5 Inch 5-Blade Propeller 5-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 0.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3038,7 +3121,7 @@ propellers:  {
 propellers:  {
   uuid:  "bb16d259-4899-4211-b42a-7c4d794f84cf"
   id:  "gemfan-5125-hurricane-durable-3-blade"
-  manufacturer:  "N/A"
+  manufacturer:  "Gemfan"
   name:  "Gemfan 5125 Hurricane Durable 3 Blade"
   weight_g:  2.78
   diameter_mm:  129.54
@@ -3161,6 +3244,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DIATONE INNOVATIONS HQ Durable Prop T4X2.5Grey （2CW+2CCW)-Poly Carbonate 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 5.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3208,6 +3292,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "DIATONE INNOVATIONS GEMFAN Hurricane 51455-4 (2CW+2CCW) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 5.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3467,6 +3552,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "FlyFishRC FlyFishRC Tool Kit - 9PCS 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 432.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3918,6 +4004,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "FPVCycle Gemfan 5236 (dark grey only) (5.21 Prop) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.90g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3933,6 +4020,7 @@ propellers:  {
   pitch_mm:  91.439995
   blades:  3
   material:  "Polycarbonate"
+  description:  "FPVCycle Gemfan Freestyle4 5.1x3.6x3 Durable F4 Propellers 3-blade Polycarbonate propeller with 129.5mm diameter and 91.4mm pitch, weighing 3.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3948,6 +4036,7 @@ propellers:  {
   pitch_mm:  76.2
   blades:  3
   material:  "Polycarbonate"
+  description:  "FPVCycle Gemfan Freestyle3 5.1x3x3 Durable F3 Propellers 3-blade Polycarbonate propeller with 129.5mm diameter and 76.2mm pitch, weighing 3.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -4011,6 +4100,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "FPVCycle GepRC 2 Prop Guard Ring (4 pack) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 7.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -4042,6 +4132,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "FPVCycle CineSplore/ToothFairy V4 Duct - set of 4 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 249.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -4073,6 +4164,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "FPVCycle ToothPick 4 Arms (Pack of 4) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 8.15g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -4120,6 +4212,7 @@ propellers:  {
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
+  description:  "FPVCycle Glide 5” Dead Cat Arms (2pc) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 11.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"

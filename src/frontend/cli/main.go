@@ -85,7 +85,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Motors...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -251,7 +251,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Frames...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -417,7 +417,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Batteries...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -583,7 +583,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Escs...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -749,7 +749,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.FlightControllers...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -915,7 +915,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Receivers...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1081,7 +1081,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.VideoTransmitters...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1247,7 +1247,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Antennas...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1413,7 +1413,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Cameras...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1579,7 +1579,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Propellers...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1745,7 +1745,7 @@ func newRootCmd() *cobra.Command {
 				}
 				all = append(all, res.Msg.Builds...)
 				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken

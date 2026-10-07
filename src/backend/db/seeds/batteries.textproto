@@ -8,6 +8,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line Version 5.0 1200mAh 6S 6S 1200mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -27,6 +28,7 @@ batteries:  {
   cell_count_s:  1
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "BETAFPV BetaFPV Lava 1S 300mAh 1S 300mAh LiPo battery with BT2.0 connector, weighing 8.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -50,6 +52,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "BETAFPV BetaFPV Lava 2S 450mAh 2S 450mAh LiPo battery with XT30 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -73,6 +76,7 @@ batteries:  {
   cell_count_s:  3
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "GNB GNB 3S 650mAh 80C 3S 650mAh LiPo battery with XT30 connector, weighing 62.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -88,6 +92,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Ovonic Ovonic 4S 1300mAh 100C 4S 1300mAh LiPo battery with XT60 connector, weighing 169.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -103,6 +108,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line Version 5.0 1400mAh 6S 6S 1400mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -122,6 +128,7 @@ batteries:  {
   cell_count_s:  8
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "GNB GNB 8S 1100mAh 130C 8S 1100mAh LiPo battery with XT60 connector, weighing 230.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -137,6 +144,7 @@ batteries:  {
   cell_count_s:  3
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "BETAFPV BetaFPV LAVA 3S 450mAh 3S 450mAh LiPo battery with XT30 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -160,6 +168,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "BETAFPV BetaFPV LAVA 4S 450mAh 4S 450mAh LiPo battery with XT30 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -183,6 +192,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Tattu Tattu R-Line 4S 650mAh 4S 650mAh LiPo battery with XT30 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -202,6 +212,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 4S 1300mAh 4S 1300mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -221,6 +232,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 4S 1550mAh 4S 1550mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -240,6 +252,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 6S 1050mAh 6S 1050mAh LiPo battery with XT60 connector, weighing 186.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -259,6 +272,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 6S 1300mAh 6S 1300mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -278,6 +292,7 @@ batteries:  {
   cell_count_s:  3
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Ovonic Ovonic 3S 450mAh 3S 450mAh LiPo battery with XT30 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -293,6 +308,7 @@ batteries:  {
   cell_count_s:  3
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Ovonic Ovonic 3S 850mAh 3S 850mAh LiPo battery with XT30 connector, weighing 80.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -308,6 +324,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Ovonic Ovonic 4S 850mAh 4S 850mAh LiPo battery with XT30 connector, weighing 112.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -323,6 +340,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Ovonic Ovonic 4S 1550mAh 4S 1550mAh LiPo battery with XT60 connector, weighing 160.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -338,6 +356,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Ovonic Ovonic 6S 1000mAh 6S 1000mAh LiPo battery with XT60 connector, weighing 185.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -353,6 +372,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Ovonic Ovonic 6S 1200mAh 6S 1200mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -368,6 +388,7 @@ batteries:  {
   cell_count_s:  1
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "GNB GNB 1S 380mAh 1S 380mAh LiPo battery with BT2.0 connector, weighing 10.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -383,6 +404,7 @@ batteries:  {
   cell_count_s:  1
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "GNB GNB 1S 530mAh 1S 530mAh LiPo battery with BT2.0 connector, weighing 13.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -398,6 +420,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "GNB GNB 2S 530mAh 2S 530mAh LiPo battery with XT30 connector, weighing 34.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -413,6 +436,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "GNB GNB 4S 650mAh 4S 650mAh LiPo battery with XT30 connector, weighing 143.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -428,6 +452,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "GNB GNB 4S 1100mAh 4S 1100mAh LiPo battery with XT60 connector, weighing 133.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -443,6 +468,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "GNB GNB 6S 1100mAh 6S 1100mAh LiPo battery with XT60 connector, weighing 190.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -458,6 +484,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "GNB GNB 6S 1300mAh 6S 1300mAh LiPo battery with XT60 connector, weighing 198.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -473,6 +500,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "BETAFPV BetaFPV 2S 300mAh (Unverified) 2S 300mAh LiPo battery with BT2.0 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -496,6 +524,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "BETAFPV BetaFPV LAVA 2S 550mAh 2S 550mAh LiPo battery with XT30 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -519,6 +548,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Tattu Tattu 2S 450mAh 2S 450mAh LiPo battery with XT30 connector, weighing 5.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -538,6 +568,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Tattu Tattu 2S 850mAh 2S 850mAh LiPo battery with XT30 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -557,6 +588,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Ovonic Ovonic 2S 450mAh (Unverified) 2S 450mAh LiPo battery with XT30 connector, weighing 27.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -572,6 +604,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Ovonic Ovonic 2S 850mAh (Unverified) 2S 850mAh LiPo battery with XT30 connector, weighing 49.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -587,6 +620,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "GNB GNB 2S 380mAh 2S 380mAh LiPo battery with BT2.0 connector, weighing 7.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -602,6 +636,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "GNB GNB 2S 450mAh 2S 450mAh LiPo battery with XT30 connector, weighing 28.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -617,6 +652,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "BETAFPV BetaFPV 2S 850mAh (Unverified) 2S 850mAh LiPo battery with XT30 connector, weighing 38.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -640,6 +676,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 4S 1800mAh 4S 1800mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -659,6 +696,7 @@ batteries:  {
   cell_count_s:  5
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 5S 1300mAh (Unverified) 5S 1300mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -678,6 +716,7 @@ batteries:  {
   cell_count_s:  5
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 5S 1550mAh 5S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -697,6 +736,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 6S 1250mAh (Unverified) 6S 1250mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -716,6 +756,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu Tattu R-Line 6S 1550mAh 6S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -735,6 +776,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "Ovonic Ovonic 2S 650mAh 2S 650mAh LiPo battery with XT30 connector, weighing 5.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -750,6 +792,7 @@ batteries:  {
   cell_count_s:  3
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Ovonic Ovonic 3S 1300mAh 3S 1300mAh LiPo battery with XT60 connector, weighing 100.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -765,6 +808,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Ovonic Ovonic 4S 1800mAh 4S 1800mAh LiPo battery with XT60 connector, weighing 209.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -780,6 +824,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Ovonic Ovonic 6S 1550mAh 6S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -795,6 +840,7 @@ batteries:  {
   cell_count_s:  1
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "GNB GNB 1S 650mAh 1S 650mAh LiPo battery with BT2.0 connector, weighing 62.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -810,6 +856,7 @@ batteries:  {
   cell_count_s:  1
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "GNB GNB 1S 720mAh 1S 720mAh LiPo battery with BT2.0 connector, weighing 12.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -825,6 +872,7 @@ batteries:  {
   cell_count_s:  2
   chemistry:  "LiPo"
   connector:  "XT30"
+  description:  "GNB GNB 2S 650mAh 2S 650mAh LiPo battery with XT30 connector, weighing 36.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -840,6 +888,7 @@ batteries:  {
   cell_count_s:  3
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "GNB GNB 3S 1100mAh 3S 1100mAh LiPo battery with XT60 connector, weighing 146.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -855,6 +904,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "GNB GNB 4S 1550mAh 4S 1550mAh LiPo battery with XT60 connector, weighing 160.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -870,6 +920,7 @@ batteries:  {
   cell_count_s:  6
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "GNB GNB 6S 1550mAh 6S 1550mAh LiPo battery with XT60 connector, weighing 259.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -885,6 +936,7 @@ batteries:  {
   cell_count_s:  8
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "GNB GNB 8S 1300mAh 8S 1300mAh LiPo battery with XT60 connector, weighing 252.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -900,6 +952,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Glacier Glacier 45C 1550mAh 4S LiPo 4S 1550mAh LiPo battery with XT60 connector, weighing 160.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -915,6 +968,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA II 4S Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -938,6 +992,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA II 3S Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 42.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -961,6 +1016,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA II 2S Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -984,6 +1040,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV Aquila20 Exclusive Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1007,6 +1064,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 600mAh 2S Lipo Battery  (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1030,6 +1088,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA 1S 260mAh 80C Battery (5PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 7.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1053,6 +1112,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV BT3.0 550mAh 2S Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1076,6 +1136,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA 2S/3S/4S 550mAh 75C Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1099,6 +1160,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA 2S/3S/4S 450mAh 75C Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1122,6 +1184,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA 1S 550mAh 75C Battery (4PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 12.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1145,6 +1208,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA 1S 450mAh 75C Battery (4PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 12.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1168,6 +1232,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA 1S 300mAh 75C Battery (5PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 8.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1191,6 +1256,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA 6S 1100mAh LiPo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 211.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1214,6 +1280,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV LAVA 4S 850mAh LiPo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 110.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1237,6 +1304,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV BT3.0 450mAh 2S Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1260,6 +1328,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 450mAh 2S 45C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1283,6 +1352,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 6 Ports 1S Battery Charger & Adapter 4S 1550mAh LiPo battery with XT60 connector, weighing 185.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1330,6 +1400,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 750mAh 4S 95C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1353,6 +1424,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 550mAh 1S Lipo HV Battery (4PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 69.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1376,6 +1448,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 1000mAh 4S 75C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1399,6 +1472,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 550mAh 6S 75C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 86.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1422,6 +1496,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 850mAh 3S/4S 75C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 80.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1445,6 +1520,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "BETAFPV BT2.0 260mAh 1S 30C Battery (8PCS) 4S 1550mAh LiPo battery with BT2.0 connector, weighing 7.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1468,6 +1544,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "PH2.0"
+  description:  "BETAFPV PH2.0 Battery Charger and Voltage Tester 4S 1550mAh LiPo battery with PH2.0 connector, weighing 12.4g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1491,6 +1568,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "BT2.0"
+  description:  "BETAFPV BT2.0 300mAh 1S 30C Battery (8PCS) 4S 1550mAh LiPo battery with BT2.0 connector, weighing 8.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1514,6 +1592,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV Lipo Battery Drone Safety Handbag 4S 1550mAh LiPo battery with XT60 connector, weighing 230.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1609,6 +1688,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 450mAh 4S 75C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1632,6 +1712,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 450mAh 3S 75C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1655,6 +1736,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 350mAh 2S 35C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1678,6 +1760,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "PH2.0"
+  description:  "BETAFPV PH2.0 300mAh 1S 30C Battery (8PCS) 4S 1550mAh LiPo battery with PH2.0 connector, weighing 8.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1725,6 +1808,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "BETAFPV 300mAh 2S 45C Lipo Battery (2PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/collections/batteries"
@@ -1748,6 +1832,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "CADDX FPV CaddxFPV Logo Battery Strap 4S 1550mAh LiPo battery with XT60 connector, weighing 2.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1763,6 +1848,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "CADDX FPV CaddxFPV Protos 2S Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 203.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1810,6 +1896,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "DarwinFPV - Official Store DarwinFPV OneLink 4S 850mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 100.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1825,6 +1912,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "DarwinFPV - Official Store DarwinFPV OneLink 2S 500mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1840,6 +1928,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "DarwinFPV - Official Store DarwinFPV OneLink 3S 500mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1919,6 +2008,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "DarwinFPV DarwinFPV 6S 1300mAh Waterproof Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 198.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1966,6 +2056,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "DarwinFPV DarwinFPV 6S 1300mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 198.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1981,6 +2072,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "DarwinFPV DarwinFPV 3S 500mAh 11.4V 100C  Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 146.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2124,6 +2216,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "NewBeeDrone NewBeeDrone Small Battery Strap 4S 1550mAh LiPo battery with XT60 connector, weighing 2.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2283,6 +2376,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Fat Shark Fat Shark Goggle Battery V2 4S 1550mAh LiPo battery with XT60 connector, weighing 235.8g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2298,6 +2392,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT90"
+  description:  "GNB GNB 4S 3500mAh Battery - XT90 4S 1550mAh LiPo battery with XT90 connector, weighing 63.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2313,6 +2408,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Tattu R-Line V5.0 6S 1550mAh Battery - XT60 4S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://genstattu.com/tattu-r-line/"
@@ -2332,6 +2428,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Ethix ETHIX Heated Deluxe Lipo Bag V2 4S 1550mAh LiPo battery with XT60 connector, weighing 440.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2451,6 +2548,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Rotor Riot CineMini Elastic Battery Strap 4S 1550mAh LiPo battery with XT60 connector, weighing 2.3g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2666,6 +2764,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Rotor Riot Let's Fly RC Micro Battery Strap - 155mm 4S 1550mAh LiPo battery with XT60 connector, weighing 7.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2697,6 +2796,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "Li-ion"
   connector:  "XT60"
+  description:  "Generic 3300mAh 18650 Li-Ion Battery 4S 1550mAh Li-ion battery with XT60 connector, weighing 46.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2732,6 +2832,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "Li-ion"
   connector:  "XT60"
+  description:  "Hibatt 1300mAh 18350 Li-Ion Battery 2-Pack 4S 1550mAh Li-ion battery with XT60 connector, weighing 25.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2747,6 +2848,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "Li-ion"
   connector:  "XT60"
+  description:  "RadioMaster 900mAh 18350 Li-Ion Battery 2-Pack 4S 1550mAh Li-ion battery with XT60 connector, weighing 25.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2914,6 +3016,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Rotor Riot Let's Fly RC Battery Strap - 240mm 4S 1550mAh LiPo battery with XT60 connector, weighing 7.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -2929,6 +3032,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Rotor Riot Rotor Riot Battery Strap - 250mm 4S 1550mAh LiPo battery with XT60 connector, weighing 7.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3140,6 +3244,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "Li-ion"
   connector:  "XT60"
+  description:  "RadioMaster 18650 Battery Tray for TX12 and TX16 4S 1550mAh Li-ion battery with XT60 connector, weighing 46.2g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3155,6 +3260,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Rotor Riot PDEVX Battery Strap - 240mm 4S 1550mAh LiPo battery with XT60 connector, weighing 4.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3210,6 +3316,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "DJI DJI Avata Battery Charging Hub 4S 1550mAh LiPo battery with XT60 connector, weighing 50.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3305,6 +3412,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Rotor Riot Rotor Riot Battery Strap 210mm 4S 1550mAh LiPo battery with XT60 connector, weighing 4.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3400,6 +3508,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Rotor Riot Rotor Riot Battery Strap - 155mm 4S 1550mAh LiPo battery with XT60 connector, weighing 7.5g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3575,6 +3684,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "FPV Elite Voltage Cell Meter Battery Capacity Tester 4S 1550mAh LiPo battery with XT60 connector, weighing 121.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3686,6 +3796,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Sub250 Sub250 1S 300mAh 75 C Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3701,6 +3812,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Sub250 Sub250 1S  720mAh 90C Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 13.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3732,6 +3844,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "Sub250 Sub250 2S 530mAh 90C Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 34.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3795,6 +3908,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "FPVCycle GNB 4S 1250mAh 120C/240C LiPo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 180.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3810,6 +3924,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "FPVCycle FPVCycle Basic Battery Strap 4S 1550mAh LiPo battery with XT60 connector, weighing 7.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -3825,6 +3940,7 @@ batteries:  {
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
+  description:  "FPVCycle XT60 Battery Connector - Prewired - Male 4S 1550mAh LiPo battery with XT60 connector, weighing 7.7g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"

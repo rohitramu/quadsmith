@@ -1,1224 +1,1236 @@
-escs: {
-  uuid: "59b0e835-da96-4143-9674-dc6a950ac7c7"
-  id: "redfox-a3-f722-45a-aio"
-  manufacturer: "Redfox"
-  name: "Redfox A3 F722 45A AIO"
-  weight_g: 8.7
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 55
-  firmware: "BLHeli_32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "59b0e835-da96-4143-9674-dc6a950ac7c7"
+  id:  "redfox-a3-f722-45a-aio"
+  manufacturer:  "Redfox"
+  name:  "Redfox A3 F722 45A AIO"
+  weight_g:  8.7
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  55
+  firmware:  "BLHeli_32"
+  description:  "Redfox Redfox A3 F722 45A AIO 4-in-1 ESC running BLHeli_32 firmware, rated for 45A continuous and 55A burst, weighing 8.7g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "5a5be012-c0c3-4986-99dd-97a7317148ce"
-  id: "caddxf4-aio-20a"
-  manufacturer: "Caddx"
-  name: "CaddxF4 AIO 20A"
-  weight_g: 5.3
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 25
-  firmware: "BLHeli_32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "5a5be012-c0c3-4986-99dd-97a7317148ce"
+  id:  "caddxf4-aio-20a"
+  manufacturer:  "Caddx"
+  name:  "CaddxF4 AIO 20A"
+  weight_g:  5.3
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  25
+  firmware:  "BLHeli_32"
+  description:  "Caddx CaddxF4 AIO 20A 4-in-1 ESC running BLHeli_32 firmware, rated for 20A continuous and 25A burst, weighing 5.3g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "043313ce-9ddb-47df-b915-56a28855f49e"
-  id: "happymodel-x12-5-in-1-aio"
-  manufacturer: "Happymodel"
-  name: "Happymodel X12 5-IN-1 AIO"
-  weight_g: 5.1
-  max_motors: 4
-  motor_current_max_a: 12
-  motor_current_burst_a: 15
-  firmware: "BLHeli_32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "043313ce-9ddb-47df-b915-56a28855f49e"
+  id:  "happymodel-x12-5-in-1-aio"
+  manufacturer:  "Happymodel"
+  name:  "Happymodel X12 5-IN-1 AIO"
+  weight_g:  5.1
+  max_motors:  4
+  motor_current_max_a:  12
+  motor_current_burst_a:  15
+  firmware:  "BLHeli_32"
+  description:  "Happymodel Happymodel X12 5-IN-1 AIO 4-in-1 ESC running BLHeli_32 firmware, rated for 12A continuous and 15A burst, weighing 5.1g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "19578f9c-b43e-4323-b6ee-8af447a274f4"
-  id: "hglrc-zeus-48a"
-  manufacturer: "HGLRC"
-  name: "HGLRC Zeus 48A"
-  weight_g: 18.3
-  max_motors: 4
-  motor_current_max_a: 48
-  motor_current_burst_a: 55
-  firmware: "BLHeli_32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/esc"
+escs:  {
+  uuid:  "19578f9c-b43e-4323-b6ee-8af447a274f4"
+  id:  "hglrc-zeus-48a"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Zeus 48A"
+  weight_g:  18.3
+  max_motors:  4
+  motor_current_max_a:  48
+  motor_current_burst_a:  55
+  firmware:  "BLHeli_32"
+  description:  "HGLRC HGLRC Zeus 48A 4-in-1 ESC running BLHeli_32 firmware, rated for 48A continuous and 55A burst, weighing 18.3g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.net/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/esc"
-  }
-}
-escs: {
-  uuid: "0ceda915-f01c-4b27-bc8c-e01c22e58d2a"
-  id: "hglrc-specter-60a-4-in-1-esc"
-  manufacturer: "HGLRC"
-  name: "HGLRC Specter 60A 4-in-1 ESC"
-  weight_g: 14.1
-  max_motors: 4
-  motor_current_max_a: 60
-  motor_current_burst_a: 65
-  firmware: "BLHeli_32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs: {
-  uuid: "e139857a-59f5-4df8-bee1-f6736c521d47"
-  id: "darwinfpv-cement-ultra-durable-blheli-32-am32-12s"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV 'Cement' Ultra-Durable BLHeli_32 AM32 12S"
-  weight_g: 7.9
-  max_motors: 4
-  motor_current_max_a: 32
-  motor_current_burst_a: 38.4
-  firmware: "BLHeli_32"
-  description: "DarwinFPV 'Cement' Ultra-Durable BLHeli_32 AM32 12S 8S 80A Waterproof  ESC"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
+escs:  {
+  uuid:  "0ceda915-f01c-4b27-bc8c-e01c22e58d2a"
+  id:  "hglrc-specter-60a-4-in-1-esc"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC Specter 60A 4-in-1 ESC"
+  weight_g:  14.1
+  max_motors:  4
+  motor_current_max_a:  60
+  motor_current_burst_a:  65
+  firmware:  "BLHeli_32"
+  description:  "HGLRC HGLRC Specter 60A 4-in-1 ESC 4-in-1 ESC running BLHeli_32 firmware, rated for 60A continuous and 65A burst, weighing 14.1g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.net/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "ad0b6f98-4c7b-48a4-861d-757afe7f1b93"
-  id: "darwinfpv-3-6s-f411-fc-4-in"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV 3-6S F411 FC 4 IN"
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 30
-  motor_current_burst_a: 36
-  firmware: "BLHeli_S"
-  description: "DarwinFPV 3-6S F411 FC 4 IN 1 30A ESC Stack"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs: {
-  uuid: "11c49b81-907d-49e0-b9ab-9f6285f405c0"
-  id: "darwinfpv-betaflight-f4-fc-50a-dshot600"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV Betaflight F4 FC 50A DSHOT600"
-  weight_g: 10.8
-  max_motors: 4
-  motor_current_max_a: 50
-  motor_current_burst_a: 60.000004
-  firmware: "BLHeli_32"
-  description: "DarwinFPV Betaflight F4 FC 50A  DSHOT600 ESC Stack"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
+escs:  {
+  uuid:  "e139857a-59f5-4df8-bee1-f6736c521d47"
+  id:  "darwinfpv-cement-ultra-durable-blheli-32-am32-12s"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV 'Cement' Ultra-Durable BLHeli_32 AM32 12S"
+  weight_g:  7.9
+  max_motors:  4
+  motor_current_max_a:  32
+  motor_current_burst_a:  38.4
+  firmware:  "BLHeli_32"
+  description:  "DarwinFPV 'Cement' Ultra-Durable BLHeli_32 AM32 12S 8S 80A Waterproof  ESC"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "71200654-3789-4592-934f-81336be485f8"
-  id: "darwinfpv-fpv-esc-flight-controller-betaflight"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV fpv ESC flight controller Betaflight"
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 30
-  motor_current_burst_a: 36
-  firmware: "BLHeli_S"
-  description: "DarwinFPV fpv ESC flight controller Betaflight F4 FC 30A 2-6S BLHeli_32 4in1 Dshot1200"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "2348ba8f-9576-44b0-9620-c28786da9a42"
-  id: "newbeedrone-infinity200-v2-4in1-esc-55a"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Infinity200 V2 4IN1 ESC 55A"
-  weight_g: 15
-  max_motors: 4
-  motor_current_max_a: 55
-  motor_current_burst_a: 66
-  firmware: "BLHeli_32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "ad0b6f98-4c7b-48a4-861d-757afe7f1b93"
+  id:  "darwinfpv-3-6s-f411-fc-4-in"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV 3-6S F411 FC 4 IN"
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  30
+  motor_current_burst_a:  36
+  firmware:  "BLHeli_S"
+  description:  "DarwinFPV 3-6S F411 FC 4 IN 1 30A ESC Stack"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "8b439f1d-ed5c-4cca-ae13-d20dcc372815"
-  id: "lucid-90a-12s-am32-esc-ndaa"
-  manufacturer: "Team Black Sheep"
-  name: "Lucid 90A 12S AM32 ESC - NDAA"
-  weight_g: 19
-  max_motors: 4
-  motor_current_max_a: 90
-  motor_current_burst_a: 108.00001
-  firmware: "AM32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "11c49b81-907d-49e0-b9ab-9f6285f405c0"
+  id:  "darwinfpv-betaflight-f4-fc-50a-dshot600"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV Betaflight F4 FC 50A DSHOT600"
+  weight_g:  10.8
+  max_motors:  4
+  motor_current_max_a:  50
+  motor_current_burst_a:  60.000004
+  firmware:  "BLHeli_32"
+  description:  "DarwinFPV Betaflight F4 FC 50A  DSHOT600 ESC Stack"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "a31cfe82-973b-4ee5-accf-752843308665"
-  id: "goku-gn745-v3-2-6s-25x25-aio"
-  manufacturer: "Flywoo"
-  name: "Goku GN745 V3 2-6S 25x25 AIO"
-  weight_g: 4.9
-  max_motors: 4
-  motor_current_max_a: 25
-  motor_current_burst_a: 30.000002
-  firmware: "BLHeli_S"
-  description: "Goku GN745 V3 2-6S 25x25 AIO Flight Controller with 45A 32bit ESC - AM32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "71200654-3789-4592-934f-81336be485f8"
+  id:  "darwinfpv-fpv-esc-flight-controller-betaflight"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV fpv ESC flight controller Betaflight"
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  30
+  motor_current_burst_a:  36
+  firmware:  "BLHeli_S"
+  description:  "DarwinFPV fpv ESC flight controller Betaflight F4 FC 30A 2-6S BLHeli_32 4in1 Dshot1200"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "ec186492-b783-4e46-82c3-71bc03893df1"
-  id: "fettec-sfoc-50a-2-8s-20x20-4in1-esc"
-  manufacturer: "FETtec"
-  name: "FETtec SFOC 50A 2-8S 20x20 4in1 ESC"
-  weight_g: 15.6
-  max_motors: 4
-  motor_current_max_a: 50
-  motor_current_burst_a: 60.000004
-  firmware: "BLHeli_32"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "2348ba8f-9576-44b0-9620-c28786da9a42"
+  id:  "newbeedrone-infinity200-v2-4in1-esc-55a"
+  manufacturer:  "NewBeeDrone"
+  name:  "NewBeeDrone Infinity200 V2 4IN1 ESC 55A"
+  weight_g:  15
+  max_motors:  4
+  motor_current_max_a:  55
+  motor_current_burst_a:  66
+  firmware:  "BLHeli_32"
+  description:  "NewBeeDrone NewBeeDrone Infinity200 V2 4IN1 ESC 55A 4-in-1 ESC running BLHeli_32 firmware, rated for 55A continuous and 66A burst, weighing 15.0g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "48761253-4708-4e98-b314-b0f4c48e711a"
-  id: "goku-f405-hd-v2-1-2s-25x25"
-  manufacturer: "Flywoo"
-  name: "Goku F405 HD V2 1-2S 25x25"
-  weight_g: 3
-  max_motors: 4
-  motor_current_max_a: 25
-  motor_current_burst_a: 30.000002
-  firmware: "BLHeli_S"
-  description: "Goku F405 HD V2 1-2S 25x25 AIO Flight Controller with 12A 8Bit ESC & ELRS"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "8b439f1d-ed5c-4cca-ae13-d20dcc372815"
+  id:  "lucid-90a-12s-am32-esc-ndaa"
+  manufacturer:  "Team Black Sheep"
+  name:  "Lucid 90A 12S AM32 ESC - NDAA"
+  weight_g:  19
+  max_motors:  4
+  motor_current_max_a:  90
+  motor_current_burst_a:  108.00001
+  firmware:  "AM32"
+  description:  "Team Black Sheep Lucid 90A 12S AM32 ESC - NDAA 4-in-1 ESC running AM32 firmware, rated for 90A continuous and 108A burst, weighing 19.0g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "af59dfa0-30ee-4489-9865-9c3a2b1aebab"
-  id: "kakute-g4-25x25-aio-flight-controller"
-  manufacturer: "Holybro"
-  name: "Kakute G4 25x25 AIO Flight Controller"
-  weight_g: 7.7
-  max_motors: 4
-  motor_current_max_a: 25
-  motor_current_burst_a: 30.000002
-  firmware: "BLHeli_S"
-  description: "Kakute G4 25x25 AIO Flight Controller with 35A 32Bit AM32 ESC"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "a31cfe82-973b-4ee5-accf-752843308665"
+  id:  "goku-gn745-v3-2-6s-25x25-aio"
+  manufacturer:  "Flywoo"
+  name:  "Goku GN745 V3 2-6S 25x25 AIO"
+  weight_g:  4.9
+  max_motors:  4
+  motor_current_max_a:  25
+  motor_current_burst_a:  30.000002
+  firmware:  "BLHeli_S"
+  description:  "Goku GN745 V3 2-6S 25x25 AIO Flight Controller with 45A 32bit ESC - AM32"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "a1c0e659-bff7-4508-8849-25120750e255"
-  id: "hglrc-specter-60a-4in1-esc-3-6s"
-  manufacturer: "HGLRC"
-  name: "HGLRC SPECTER 60A 4in1 ESC 3-6S"
-  weight_g: 6.5
-  max_motors: 4
-  motor_current_max_a: 60
-  motor_current_burst_a: 72
-  firmware: "BLHeli_32"
-  description: "HGLRC SPECTER 60A 4in1 ESC 3-6S BL32 128K with Heat Sink for FPV Racing Drone Freestyle"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/esc"
+escs:  {
+  uuid:  "ec186492-b783-4e46-82c3-71bc03893df1"
+  id:  "fettec-sfoc-50a-2-8s-20x20-4in1-esc"
+  manufacturer:  "FETtec"
+  name:  "FETtec SFOC 50A 2-8S 20x20 4in1 ESC"
+  weight_g:  15.6
+  max_motors:  4
+  motor_current_max_a:  50
+  motor_current_burst_a:  60.000004
+  firmware:  "BLHeli_32"
+  description:  "FETtec FETtec SFOC 50A 2-8S 20x20 4in1 ESC 4-in-1 ESC running BLHeli_32 firmware, rated for 50A continuous and 60A burst, weighing 15.6g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "2cc3c66a-d9d5-42ce-89ff-68c80560f139"
-  id: "hglrc-60a-4in1-6s-bl32-mini"
-  manufacturer: "HGLRC"
-  name: "HGLRC 60A 4IN1 6S BL32 MINI"
-  weight_g: 13.81
-  max_motors: 4
-  motor_current_max_a: 60
-  motor_current_burst_a: 72
-  firmware: "BLHeli_32"
-  description: "HGLRC 60A 4IN1 6S BL32 MINI V1 ESC FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/esc"
+escs:  {
+  uuid:  "48761253-4708-4e98-b314-b0f4c48e711a"
+  id:  "goku-f405-hd-v2-1-2s-25x25"
+  manufacturer:  "Flywoo"
+  name:  "Goku F405 HD V2 1-2S 25x25"
+  weight_g:  3
+  max_motors:  4
+  motor_current_max_a:  25
+  motor_current_burst_a:  30.000002
+  firmware:  "BLHeli_S"
+  description:  "Goku F405 HD V2 1-2S 25x25 AIO Flight Controller with 12A 8Bit ESC & ELRS"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "dd2e76bf-c831-484a-8267-b9cd65a33787"
-  id: "hglrc-60a-4in1-6s-8-bit-v2"
-  manufacturer: "HGLRC"
-  name: "HGLRC 60A 4IN1 6S 8-bit V2"
-  weight_g: 15.4
-  max_motors: 4
-  motor_current_max_a: 60
-  motor_current_burst_a: 72
-  firmware: "BLHeli_32"
-  description: "HGLRC 60A 4IN1 6S 8-bit V2 ESC For FPV Racing Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/esc"
+escs:  {
+  uuid:  "af59dfa0-30ee-4489-9865-9c3a2b1aebab"
+  id:  "kakute-g4-25x25-aio-flight-controller"
+  manufacturer:  "Holybro"
+  name:  "Kakute G4 25x25 AIO Flight Controller"
+  weight_g:  7.7
+  max_motors:  4
+  motor_current_max_a:  25
+  motor_current_burst_a:  30.000002
+  firmware:  "BLHeli_S"
+  description:  "Kakute G4 25x25 AIO Flight Controller with 35A 32Bit AM32 ESC"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "aafe496c-9d6a-4611-8919-8f4818a58db4"
-  id: "hglrc-60a-4in1-mini-8s-32-bit"
-  manufacturer: "HGLRC"
-  name: "HGLRC 60A 4IN1 MINI 8S 32-bit"
-  weight_g: 13
-  max_motors: 4
-  motor_current_max_a: 60
-  motor_current_burst_a: 72
-  firmware: "BLHeli_32"
-  description: "HGLRC 60A 4IN1 MINI 8S 32-bit V1 ESC for racing"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/esc"
+escs:  {
+  uuid:  "a1c0e659-bff7-4508-8849-25120750e255"
+  id:  "hglrc-specter-60a-4in1-esc-3-6s"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC SPECTER 60A 4in1 ESC 3-6S"
+  weight_g:  6.5
+  max_motors:  4
+  motor_current_max_a:  60
+  motor_current_burst_a:  72
+  firmware:  "BLHeli_32"
+  description:  "HGLRC SPECTER 60A 4in1 ESC 3-6S BL32 128K with Heat Sink for FPV Racing Drone Freestyle"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.net/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/esc"
-  }
-}
-escs: {
-  uuid: "c2c3e035-cd09-4a92-9698-dbf520caf0e1"
-  id: "hglrc-h743-8s-mini-v1-fc"
-  manufacturer: "HGLRC"
-  name: "HGLRC H743 8S MINI V1 FC"
-  weight_g: 7.5
-  max_motors: 4
-  motor_current_max_a: 60
-  motor_current_burst_a: 72
-  firmware: "BLHeli_32"
-  description: "HGLRC H743 8S MINI V1 FC 60A 4IN1 6S BLS MINI ESC"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs: {
-  uuid: "8b6a56c8-b3dd-4ad1-9827-fbf22ada7552"
-  id: "diatone-esc-power-distribution-board-3-6s"
-  manufacturer: "DIATONE INNOVATIONS"
-  name: "DIATONE ESC Power Distribution Board 3-6S"
-  weight_g: 13.81
-  max_motors: 4
-  motor_current_max_a: 40
-  motor_current_burst_a: 48
-  firmware: "BLHeli_S"
-  description: "DIATONE ESC Power Distribution Board 3-6S for RC Drone FPV Racing"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "2cc3c66a-d9d5-42ce-89ff-68c80560f139"
+  id:  "hglrc-60a-4in1-6s-bl32-mini"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC 60A 4IN1 6S BL32 MINI"
+  weight_g:  13.81
+  max_motors:  4
+  motor_current_max_a:  60
+  motor_current_burst_a:  72
+  firmware:  "BLHeli_32"
+  description:  "HGLRC 60A 4IN1 6S BL32 MINI V1 ESC FPV Drone"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.net/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs: {
-  uuid: "ba0ca663-78b6-4107-a2a8-b4b74a3a98c8"
-  id: "mamba-f40-bls-dshot600-4in1-esc-40a-6s"
-  manufacturer: "DIATONE INNOVATIONS"
-  name: "MAMBA F40_BLS Dshot600 4IN1 ESC 40A 6S"
-  weight_g: 6
-  max_motors: 4
-  motor_current_max_a: 40
-  motor_current_burst_a: 48
-  firmware: "BLHeli_S"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "dd2e76bf-c831-484a-8267-b9cd65a33787"
+  id:  "hglrc-60a-4in1-6s-8-bit-v2"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC 60A 4IN1 6S 8-bit V2"
+  weight_g:  15.4
+  max_motors:  4
+  motor_current_max_a:  60
+  motor_current_burst_a:  72
+  firmware:  "BLHeli_32"
+  description:  "HGLRC 60A 4IN1 6S 8-bit V2 ESC For FPV Racing Drone"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.net/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs: {
-  uuid: "16189d90-32b6-46ac-b36b-594e40f14645"
-  id: "fpvcycle-darwinfpv-whoop-stack-flight-controller"
-  manufacturer: "FPVCycle"
-  name: "FPVCycle DarwinFPV Whoop Stack Flight Controller"
-  weight_g: 10.1
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "BLHeli_S"
-  description: "FPVCycle DarwinFPV Whoop Stack Flight Controller + 6S 45A ESC"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+escs:  {
+  uuid:  "aafe496c-9d6a-4611-8919-8f4818a58db4"
+  id:  "hglrc-60a-4in1-mini-8s-32-bit"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC 60A 4IN1 MINI 8S 32-bit"
+  weight_g:  13
+  max_motors:  4
+  motor_current_max_a:  60
+  motor_current_burst_a:  72
+  firmware:  "BLHeli_32"
+  description:  "HGLRC 60A 4IN1 MINI 8S 32-bit V1 ESC for racing"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.net/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs: {
-  uuid: "e68df4b5-a836-4299-b873-f3764a47cf40"
-  id: "toothpick-f405-2-4s-aio-brushless-flight"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F405 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  description: "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4 (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "c2c3e035-cd09-4a92-9698-dbf520caf0e1"
+  id:  "hglrc-h743-8s-mini-v1-fc"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC H743 8S MINI V1 FC"
+  weight_g:  7.5
+  max_motors:  4
+  motor_current_max_a:  60
+  motor_current_burst_a:  72
+  firmware:  "BLHeli_32"
+  description:  "HGLRC H743 8S MINI V1 FC 60A 4IN1 6S BLS MINI ESC"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.net/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs: {
-  uuid: "b40f8cc2-b3b8-412b-8301-1e7cfc9274ad"
-  id: "internal-esc-57a0ab75-dd68-4a02-8bdd-47c46b24f764"
-  manufacturer: "BETAFPV"
-  name: "F4 2-3S 20A AIO FC V1 (Internal ESC)"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "8b6a56c8-b3dd-4ad1-9827-fbf22ada7552"
+  id:  "diatone-esc-power-distribution-board-3-6s"
+  manufacturer:  "DIATONE INNOVATIONS"
+  name:  "DIATONE ESC Power Distribution Board 3-6S"
+  weight_g:  13.81
+  max_motors:  4
+  motor_current_max_a:  40
+  motor_current_burst_a:  48
+  firmware:  "BLHeli_S"
+  description:  "DIATONE ESC Power Distribution Board 3-6S for RC Drone FPV Racing"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "e62a5429-2a6e-4359-a10e-962af0ce9c64"
-  id: "toothpick-f4-2-6s-aio-brushless-flight"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-6S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 35
-  motor_current_burst_a: 42
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "ba0ca663-78b6-4107-a2a8-b4b74a3a98c8"
+  id:  "mamba-f40-bls-dshot600-4in1-esc-40a-6s"
+  manufacturer:  "DIATONE INNOVATIONS"
+  name:  "MAMBA F40_BLS Dshot600 4IN1 ESC 40A 6S"
+  weight_g:  6
+  max_motors:  4
+  motor_current_max_a:  40
+  motor_current_burst_a:  48
+  firmware:  "BLHeli_S"
+  description:  "DIATONE INNOVATIONS MAMBA F40_BLS Dshot600 4IN1 ESC 40A 6S 4-in-1 ESC running BLHeli_S firmware, rated for 40A continuous and 48A burst, weighing 6.0g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "e202fb6c-8280-4c56-a3f9-331cad62556a"
-  id: "toothpick-f4-2-4s-aio-brushless-flight"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "16189d90-32b6-46ac-b36b-594e40f14645"
+  id:  "fpvcycle-darwinfpv-whoop-stack-flight-controller"
+  manufacturer:  "FPVCycle"
+  name:  "FPVCycle DarwinFPV Whoop Stack Flight Controller"
+  weight_g:  10.1
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "BLHeli_S"
+  description:  "FPVCycle DarwinFPV Whoop Stack Flight Controller + 6S 45A ESC"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs: {
-  uuid: "9f72506f-e6d5-48f4-bd04-a335dce59347"
-  id: "toothpick-f4-2-4s-aio-brushless-flight-2"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 12
-  motor_current_burst_a: 14.400001
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "e68df4b5-a836-4299-b873-f3764a47cf40"
+  id:  "toothpick-f405-2-4s-aio-brushless-flight"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F405 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4 (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "e191559a-e568-4b3b-91a1-ed8bd7b5ef76"
-  id: "f4-2-4s-aio-brushless-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "F4 2-4S AIO Brushless Flight Controller"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 12
-  motor_current_burst_a: 14.400001
-  firmware: "BLHeli_S"
-  description: "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "03bdc3b2-f363-447b-8922-9046a04f1474"
-  id: "darwinfpv-f435-45a-am32-aio"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV F435 45A AM32 AIO"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "AM32"
-  description: "DarwinFPV F435 45A AM32 AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
+escs:  {
+  uuid:  "b40f8cc2-b3b8-412b-8301-1e7cfc9274ad"
+  id:  "internal-esc-57a0ab75-dd68-4a02-8bdd-47c46b24f764"
+  manufacturer:  "BETAFPV"
+  name:  "F4 2-3S 20A AIO FC V1 (Internal ESC)"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "BETAFPV F4 2-3S 20A AIO FC V1 (Internal ESC) 4-in-1 ESC running BLHeli_S firmware, rated for 20A continuous and 24A burst, weighing 5.6g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-}
-escs: {
-  uuid: "fdc4f26c-aa47-4754-881e-9854b05b6c83"
-  id: "darwinfpv-f411-45a-elrs-aio-cineape35"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "BLHeli_S"
-  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "ee916b8e-e710-4d10-beae-5a80913b6047"
-  id: "darwinfpv-hulk-45a-3-6s-aio"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV HULK 45A 3-6S AIO"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "BLHeli_S"
-  description: "DarwinFPV HULK 45A 3-6S AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
+escs:  {
+  uuid:  "e62a5429-2a6e-4359-a10e-962af0ce9c64"
+  id:  "toothpick-f4-2-6s-aio-brushless-flight"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-6S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  35
+  motor_current_burst_a:  42
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-}
-escs: {
-  uuid: "f9b6e8cd-8f5b-48e1-931a-1faef1bd1a6b"
-  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
-  is_internal_only: true
-  weight_g: 5
-  max_motors: 4
-  motor_current_max_a: 15
-  motor_current_burst_a: 18
-  firmware: "Bluejay"
-  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "6ac97d86-7e36-4bc4-8ea5-20d9510dd28d"
-  id: "toothpick-f405-2-4s-aio-brushless-flight-2"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F405 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  description: "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4 (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "e202fb6c-8280-4c56-a3f9-331cad62556a"
+  id:  "toothpick-f4-2-4s-aio-brushless-flight"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "ad4c5c4d-9c15-4d86-871c-0e2370e97f46"
-  id: "internal-esc-33b0a15c-46f1-489c-b4c9-86d111e8f26f"
-  manufacturer: "BETAFPV"
-  name: "F4 2-3S 20A AIO FC V1 (Internal ESC)"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "6798e20d-7ab5-40c6-817a-24592f217166"
-  id: "toothpick-f4-2-6s-aio-brushless-flight-2"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-6S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 35
-  motor_current_burst_a: 42
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "9f72506f-e6d5-48f4-bd04-a335dce59347"
+  id:  "toothpick-f4-2-4s-aio-brushless-flight-2"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  12
+  motor_current_burst_a:  14.400001
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "87cdd545-3070-4847-a623-e67e8f5eca7a"
-  id: "toothpick-f4-2-4s-aio-brushless-flight-3"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "81c7bf54-f645-44cc-9210-14a0caf36f49"
-  id: "toothpick-f4-2-4s-aio-brushless-flight-4"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 12
-  motor_current_burst_a: 14.400001
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "e191559a-e568-4b3b-91a1-ed8bd7b5ef76"
+  id:  "f4-2-4s-aio-brushless-flight-controller"
+  manufacturer:  "BETAFPV"
+  name:  "F4 2-4S AIO Brushless Flight Controller"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  12
+  motor_current_burst_a:  14.400001
+  firmware:  "BLHeli_S"
+  description:  "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "72b797a8-dcbf-48a2-a3c6-3325fbf69dae"
-  id: "f4-2-4s-aio-brushless-flight-controller-2"
-  manufacturer: "BETAFPV"
-  name: "F4 2-4S AIO Brushless Flight Controller"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 12
-  motor_current_burst_a: 14.400001
-  firmware: "BLHeli_S"
-  description: "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "6077da29-741a-4483-b436-48615736e14a"
-  id: "darwinfpv-f435-45a-am32-aio-2"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV F435 45A AM32 AIO"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "AM32"
-  description: "DarwinFPV F435 45A AM32 AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
+escs:  {
+  uuid:  "03bdc3b2-f363-447b-8922-9046a04f1474"
+  id:  "darwinfpv-f435-45a-am32-aio"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV F435 45A AM32 AIO"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "AM32"
+  description:  "DarwinFPV F435 45A AM32 AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "3b899722-6708-4832-8de9-f61da8ee7e4a"
-  id: "darwinfpv-f411-45a-elrs-aio-cineape35-2"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "BLHeli_S"
-  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "5d396242-6db4-40e5-a0a4-04106a76921f"
-  id: "darwinfpv-hulk-45a-3-6s-aio-2"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV HULK 45A 3-6S AIO"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "BLHeli_S"
-  description: "DarwinFPV HULK 45A 3-6S AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
+escs:  {
+  uuid:  "fdc4f26c-aa47-4754-881e-9854b05b6c83"
+  id:  "darwinfpv-f411-45a-elrs-aio-cineape35"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "BLHeli_S"
+  description:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "0b8e2d61-9ded-4af7-8cfa-b2de2d29d2c8"
-  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio-2"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
-  is_internal_only: true
-  weight_g: 5
-  max_motors: 4
-  motor_current_max_a: 15
-  motor_current_burst_a: 18
-  firmware: "Bluejay"
-  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "797e8e9e-3f55-4893-889c-19d819a3d4b2"
-  id: "toothpick-f405-2-4s-aio-brushless-flight-3"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F405 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  description: "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4 (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "ee916b8e-e710-4d10-beae-5a80913b6047"
+  id:  "darwinfpv-hulk-45a-3-6s-aio"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV HULK 45A 3-6S AIO"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "BLHeli_S"
+  description:  "DarwinFPV HULK 45A 3-6S AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "dd593a0d-ea93-4e0b-ad3d-0ff8ae444027"
-  id: "internal-esc-26c9c5af-eeda-46f9-94e5-a92ff4b1a7dd"
-  manufacturer: "BETAFPV"
-  name: "F4 2-3S 20A AIO FC V1 (Internal ESC)"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "f9b6e8cd-8f5b-48e1-931a-1faef1bd1a6b"
+  id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only:  true
+  weight_g:  5
+  max_motors:  4
+  motor_current_max_a:  15
+  motor_current_burst_a:  18
+  firmware:  "Bluejay"
+  description:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "cf68eaec-beb1-4416-9a7c-b8b84644ff11"
-  id: "toothpick-f4-2-6s-aio-brushless-flight-3"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-6S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 35
-  motor_current_burst_a: 42
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "6ac97d86-7e36-4bc4-8ea5-20d9510dd28d"
+  id:  "toothpick-f405-2-4s-aio-brushless-flight-2"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F405 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4 (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "f5e73450-37d7-4984-9ffc-e3b1f19d6017"
-  id: "toothpick-f4-2-4s-aio-brushless-flight-5"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 24
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "13a7c00e-d00e-4683-b4f2-8352626b6b12"
-  id: "toothpick-f4-2-4s-aio-brushless-flight-6"
-  manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-4S AIO Brushless Flight"
-  is_internal_only: true
-  weight_g: 7
-  max_motors: 4
-  motor_current_max_a: 12
-  motor_current_burst_a: 14.400001
-  firmware: "BLHeli_S"
-  description: "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
+escs:  {
+  uuid:  "ad4c5c4d-9c15-4d86-871c-0e2370e97f46"
+  id:  "internal-esc-33b0a15c-46f1-489c-b4c9-86d111e8f26f"
+  manufacturer:  "BETAFPV"
+  name:  "F4 2-3S 20A AIO FC V1 (Internal ESC)"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "BETAFPV F4 2-3S 20A AIO FC V1 (Internal ESC) 4-in-1 ESC running BLHeli_S firmware, rated for 20A continuous and 24A burst, weighing 5.6g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
-  }
-}
-escs: {
-  uuid: "9adf8a69-834d-4fe4-8353-2d19a1dae49c"
-  id: "f4-2-4s-aio-brushless-flight-controller-3"
-  manufacturer: "BETAFPV"
-  name: "F4 2-4S AIO Brushless Flight Controller"
-  is_internal_only: true
-  weight_g: 5.58
-  max_motors: 4
-  motor_current_max_a: 12
-  motor_current_burst_a: 14.400001
-  firmware: "BLHeli_S"
-  description: "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S) (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "50ac0c86-4aef-4747-8c61-acee7c9434c8"
-  id: "darwinfpv-f435-45a-am32-aio-3"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV F435 45A AM32 AIO"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "AM32"
-  description: "DarwinFPV F435 45A AM32 AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
+escs:  {
+  uuid:  "6798e20d-7ab5-40c6-817a-24592f217166"
+  id:  "toothpick-f4-2-6s-aio-brushless-flight-2"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-6S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  35
+  motor_current_burst_a:  42
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-}
-escs: {
-  uuid: "0488ffb9-1cae-4838-bf63-b13847551706"
-  id: "darwinfpv-f411-45a-elrs-aio-cineape35-3"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "BLHeli_S"
-  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "6c5f533d-283a-453e-86a9-c0df09a36747"
-  id: "darwinfpv-hulk-45a-3-6s-aio-3"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV HULK 45A 3-6S AIO"
-  is_internal_only: true
-  weight_g: 41.5
-  max_motors: 4
-  motor_current_max_a: 45
-  motor_current_burst_a: 54.000004
-  firmware: "BLHeli_S"
-  description: "DarwinFPV HULK 45A 3-6S AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
+escs:  {
+  uuid:  "87cdd545-3070-4847-a623-e67e8f5eca7a"
+  id:  "toothpick-f4-2-4s-aio-brushless-flight-3"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-}
-escs: {
-  uuid: "338d6faf-57da-4425-922b-da7ba1394043"
-  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio-3"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
-  is_internal_only: true
-  weight_g: 5
-  max_motors: 4
-  motor_current_max_a: 15
-  motor_current_burst_a: 18
-  firmware: "Bluejay"
-  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/esc"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "1ed11eb3-9ab2-4c9e-950b-8f3a8ca6fcfb"
-  id: "hglrc-specter-15a-elrs-aio-2-4s"
-  manufacturer: "HGLRC"
-  name: "HGLRC SPECTER 15A ELRS AIO 2-4S"
-  is_internal_only: true
-  weight_g: 5.6
-  max_motors: 4
-  motor_current_max_a: 15
-  motor_current_burst_a: 18
-  firmware: "BLHeli_S"
-  description: "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/esc"
+escs:  {
+  uuid:  "81c7bf54-f645-44cc-9210-14a0caf36f49"
+  id:  "toothpick-f4-2-4s-aio-brushless-flight-4"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  12
+  motor_current_burst_a:  14.400001
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/esc"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-}
-escs: {
-  uuid: "b66c1ad5-ad66-4a63-a2e3-1e5a1a17e764"
-  id: "redfox-a3-f722-35a-45a-aio-flight"
-  manufacturer: "Sub250"
-  name: "Redfox A3 F722 35A/45A AIO Flight"
-  is_internal_only: true
-  weight_g: 8.7
-  max_motors: 4
-  motor_current_max_a: 35
-  motor_current_burst_a: 42
-  firmware: "BLHeli_S"
-  description: "Redfox A3 F722 35A/45A AIO Flight Controller for DollyFly25 (Internal ESC)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "01923019-3007-7001-8001-000000000001"
-  id: "speedybee-55a-4-in-1-esc"
-  manufacturer: "SpeedyBee"
-  name: "SpeedyBee 55A BLHeli_S 4-in-1 ESC"
-  weight_g: 23.5
-  max_motors: 4
-  motor_current_max_a: 55
-  motor_current_burst_a: 70
-  firmware: "BLHeli_S"
-  description: "Robust 55A 30x30 4-in-1 ESC with onboard CNC heat sink, Japanese Rubycon filter capacitors, and TVS transient voltage suppression."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.speedybee.com/speedybee-f405-v4-bls-55a-30x30-fc-esc-stack/"
+escs:  {
+  uuid:  "72b797a8-dcbf-48a2-a3c6-3325fbf69dae"
+  id:  "f4-2-4s-aio-brushless-flight-controller-2"
+  manufacturer:  "BETAFPV"
+  name:  "F4 2-4S AIO Brushless Flight Controller"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  12
+  motor_current_burst_a:  14.400001
+  firmware:  "BLHeli_S"
+  description:  "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.speedybee.com/f405-v4-55a-stack-download/"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/speedybee-55a-3-6s-blheli-s-4-in-1-esc-30x30.html"
-  }
-}
-escs: {
-  uuid: "01923019-3007-7001-8001-000000000002"
-  id: "tmotor-f55a-pro-ii-4-in-1-esc"
-  manufacturer: "T-Motor"
-  name: "T-Motor F55A PRO II 4-in-1 ESC"
-  weight_g: 17.5
-  max_motors: 4
-  motor_current_max_a: 55
-  motor_current_burst_a: 75
-  firmware: "BLHeli_32"
-  description: "Premium BLHeli_32 racing ESC with ultra-low resistance MOSFETs, 128K PWM support, ESC telemetry, and integrated current sensor."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://store.tmotor.com/product/f55a-pro-ii-esc.html"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/t-motor-f55a-pro-ii-32bit-4in1-esc-3-6s-dshot1200"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "01923019-3007-7001-8001-000000000003"
-  id: "foxeer-reaper-f4-65a-4-in-1-esc"
-  manufacturer: "Foxeer"
-  name: "Foxeer Reaper F4 65A 4-in-1 ESC"
-  weight_g: 14.8
-  max_motors: 4
-  motor_current_max_a: 65
-  motor_current_burst_a: 75
-  firmware: "BLHeli_32"
-  description: "High-performance 30x30 65A ESC featuring STM32F4 MCU, multi-layer high TG copper PCB, and smooth DShot2400 capability."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.foxeer.com/foxeer-reaper-f4-65a-128k-4in1-blheli-32-esc-g-354"
+escs:  {
+  uuid:  "6077da29-741a-4483-b436-48615736e14a"
+  id:  "darwinfpv-f435-45a-am32-aio-2"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV F435 45A AM32 AIO"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "AM32"
+  description:  "DarwinFPV F435 45A AM32 AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/foxeer-reaper-f4-65a-128k-4-in-1-blheli-32-esc.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs: {
-  uuid: "01923019-3007-7001-8001-000000000004"
-  id: "betafpv-20a-4-in-1-esc"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV 20A 2-4S 4-in-1 ESC"
-  weight_g: 6.7
-  max_motors: 4
-  motor_current_max_a: 20
-  motor_current_burst_a: 25
-  firmware: "BLHeli_S"
-  description: "Lightweight 20x20mm 4-in-1 ESC engineered for 2-4S micro quads, toothpicks, and lightweight 3-inch drones."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/20a-aio-brushless-flight-controller"
+escs:  {
+  uuid:  "3b899722-6708-4832-8de9-f61da8ee7e4a"
+  id:  "darwinfpv-f411-45a-elrs-aio-cineape35-2"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "BLHeli_S"
+  description:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/products/20a-aio-brushless-flight-controller"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "5d396242-6db4-40e5-a0a4-04106a76921f"
+  id:  "darwinfpv-hulk-45a-3-6s-aio-2"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV HULK 45A 3-6S AIO"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "BLHeli_S"
+  description:  "DarwinFPV HULK 45A 3-6S AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "0b8e2d61-9ded-4af7-8cfa-b2de2d29d2c8"
+  id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio-2"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only:  true
+  weight_g:  5
+  max_motors:  4
+  motor_current_max_a:  15
+  motor_current_burst_a:  18
+  firmware:  "Bluejay"
+  description:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "797e8e9e-3f55-4893-889c-19d819a3d4b2"
+  id:  "toothpick-f405-2-4s-aio-brushless-flight-3"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F405 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4 (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "dd593a0d-ea93-4e0b-ad3d-0ff8ae444027"
+  id:  "internal-esc-26c9c5af-eeda-46f9-94e5-a92ff4b1a7dd"
+  manufacturer:  "BETAFPV"
+  name:  "F4 2-3S 20A AIO FC V1 (Internal ESC)"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "BETAFPV F4 2-3S 20A AIO FC V1 (Internal ESC) 4-in-1 ESC running BLHeli_S firmware, rated for 20A continuous and 24A burst, weighing 5.6g."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "cf68eaec-beb1-4416-9a7c-b8b84644ff11"
+  id:  "toothpick-f4-2-6s-aio-brushless-flight-3"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-6S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  35
+  motor_current_burst_a:  42
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "f5e73450-37d7-4984-9ffc-e3b1f19d6017"
+  id:  "toothpick-f4-2-4s-aio-brushless-flight-5"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  24
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "13a7c00e-d00e-4683-b4f2-8352626b6b12"
+  id:  "toothpick-f4-2-4s-aio-brushless-flight-6"
+  manufacturer:  "BETAFPV"
+  name:  "Toothpick F4 2-4S AIO Brushless Flight"
+  is_internal_only:  true
+  weight_g:  7
+  max_motors:  4
+  motor_current_max_a:  12
+  motor_current_burst_a:  14.400001
+  firmware:  "BLHeli_S"
+  description:  "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "9adf8a69-834d-4fe4-8353-2d19a1dae49c"
+  id:  "f4-2-4s-aio-brushless-flight-controller-3"
+  manufacturer:  "BETAFPV"
+  name:  "F4 2-4S AIO Brushless Flight Controller"
+  is_internal_only:  true
+  weight_g:  5.58
+  max_motors:  4
+  motor_current_max_a:  12
+  motor_current_burst_a:  14.400001
+  firmware:  "BLHeli_S"
+  description:  "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S) (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "50ac0c86-4aef-4747-8c61-acee7c9434c8"
+  id:  "darwinfpv-f435-45a-am32-aio-3"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV F435 45A AM32 AIO"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "AM32"
+  description:  "DarwinFPV F435 45A AM32 AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "0488ffb9-1cae-4838-bf63-b13847551706"
+  id:  "darwinfpv-f411-45a-elrs-aio-cineape35-3"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "BLHeli_S"
+  description:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "6c5f533d-283a-453e-86a9-c0df09a36747"
+  id:  "darwinfpv-hulk-45a-3-6s-aio-3"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV HULK 45A 3-6S AIO"
+  is_internal_only:  true
+  weight_g:  41.5
+  max_motors:  4
+  motor_current_max_a:  45
+  motor_current_burst_a:  54.000004
+  firmware:  "BLHeli_S"
+  description:  "DarwinFPV HULK 45A 3-6S AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "338d6faf-57da-4425-922b-da7ba1394043"
+  id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio-3"
+  manufacturer:  "DarwinFPV"
+  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only:  true
+  weight_g:  5
+  max_motors:  4
+  motor_current_max_a:  15
+  motor_current_burst_a:  18
+  firmware:  "Bluejay"
+  description:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://darwinfpv.com/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "1ed11eb3-9ab2-4c9e-950b-8f3a8ca6fcfb"
+  id:  "hglrc-specter-15a-elrs-aio-2-4s"
+  manufacturer:  "HGLRC"
+  name:  "HGLRC SPECTER 15A ELRS AIO 2-4S"
+  is_internal_only:  true
+  weight_g:  5.6
+  max_motors:  4
+  motor_current_max_a:  15
+  motor_current_burst_a:  18
+  firmware:  "BLHeli_S"
+  description:  "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.net/collections/esc"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.hglrc.net/collections/esc"
+  }
+}
+escs:  {
+  uuid:  "b66c1ad5-ad66-4a63-a2e3-1e5a1a17e764"
+  id:  "redfox-a3-f722-35a-45a-aio-flight"
+  manufacturer:  "Sub250"
+  name:  "Redfox A3 F722 35A/45A AIO Flight"
+  is_internal_only:  true
+  weight_g:  8.7
+  max_motors:  4
+  motor_current_max_a:  35
+  motor_current_burst_a:  42
+  firmware:  "BLHeli_S"
+  description:  "Redfox A3 F722 35A/45A AIO Flight Controller for DollyFly25 (Internal ESC)"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
+  }
+}
+escs:  {
+  uuid:  "01923019-3007-7001-8001-000000000001"
+  id:  "speedybee-55a-4-in-1-esc"
+  manufacturer:  "SpeedyBee"
+  name:  "SpeedyBee 55A BLHeli_S 4-in-1 ESC"
+  weight_g:  23.5
+  max_motors:  4
+  motor_current_max_a:  55
+  motor_current_burst_a:  70
+  firmware:  "BLHeli_S"
+  description:  "Robust 55A 30x30 4-in-1 ESC with onboard CNC heat sink, Japanese Rubycon filter capacitors, and TVS transient voltage suppression."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.speedybee.com/speedybee-f405-v4-bls-55a-30x30-fc-esc-stack/"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://www.speedybee.com/f405-v4-55a-stack-download/"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/speedybee-55a-3-6s-blheli-s-4-in-1-esc-30x30.html"
+  }
+}
+escs:  {
+  uuid:  "01923019-3007-7001-8001-000000000002"
+  id:  "tmotor-f55a-pro-ii-4-in-1-esc"
+  manufacturer:  "T-Motor"
+  name:  "T-Motor F55A PRO II 4-in-1 ESC"
+  weight_g:  17.5
+  max_motors:  4
+  motor_current_max_a:  55
+  motor_current_burst_a:  75
+  firmware:  "BLHeli_32"
+  description:  "Premium BLHeli_32 racing ESC with ultra-low resistance MOSFETs, 128K PWM support, ESC telemetry, and integrated current sensor."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://store.tmotor.com/product/f55a-pro-ii-esc.html"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/t-motor-f55a-pro-ii-32bit-4in1-esc-3-6s-dshot1200"
+  }
+}
+escs:  {
+  uuid:  "01923019-3007-7001-8001-000000000003"
+  id:  "foxeer-reaper-f4-65a-4-in-1-esc"
+  manufacturer:  "Foxeer"
+  name:  "Foxeer Reaper F4 65A 4-in-1 ESC"
+  weight_g:  14.8
+  max_motors:  4
+  motor_current_max_a:  65
+  motor_current_burst_a:  75
+  firmware:  "BLHeli_32"
+  description:  "High-performance 30x30 65A ESC featuring STM32F4 MCU, multi-layer high TG copper PCB, and smooth DShot2400 capability."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.foxeer.com/foxeer-reaper-f4-65a-128k-4in1-blheli-32-esc-g-354"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/foxeer-reaper-f4-65a-128k-4-in-1-blheli-32-esc.html"
+  }
+}
+escs:  {
+  uuid:  "01923019-3007-7001-8001-000000000004"
+  id:  "betafpv-20a-4-in-1-esc"
+  manufacturer:  "BETAFPV"
+  name:  "BETAFPV 20A 2-4S 4-in-1 ESC"
+  weight_g:  6.7
+  max_motors:  4
+  motor_current_max_a:  20
+  motor_current_burst_a:  25
+  firmware:  "BLHeli_S"
+  description:  "Lightweight 20x20mm 4-in-1 ESC engineered for 2-4S micro quads, toothpicks, and lightweight 3-inch drones."
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/20a-aio-brushless-flight-controller"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/products/20a-aio-brushless-flight-controller"
   }
 }
