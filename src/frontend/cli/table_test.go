@@ -2,52 +2,10 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"strings"
 	"testing"
 )
-
-func TestParsePageOffset(t *testing.T) {
-	tests := []struct {
-		name     string
-		token    string
-		expected int
-	}{
-		{
-			name:     "empty token",
-			token:    "",
-			expected: 0,
-		},
-		{
-			name:     "invalid base64",
-			token:    "not-valid-base64!@#$",
-			expected: 0,
-		},
-		{
-			name:     "valid json with offset 20",
-			token:    "eyJvZmZzZXQiOjIwfQ", // base64 of {"offset":20}
-			expected: 20,
-		},
-		{
-			name:     "valid json with offset 40",
-			token:    "eyJvZmZzZXQiOjQwfQ", // base64 of {"offset":40}
-			expected: 40,
-		},
-		{
-			name:     "negative offset ignored",
-			token:    "eyJvZmZzZXQiOi01fQ", // base64 of {"offset":-5}
-			expected: 0,
-		},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			actual := parsePageOffset(tc.token)
-			if actual != tc.expected {
-				t.Errorf("parsePageOffset(%q) = %d, expected %d", tc.token, actual, tc.expected)
-			}
-		})
-	}
-}
 
 func TestPrintTableTo_SliceWithRowNumbers(t *testing.T) {
 	data := []map[string]interface{}{
@@ -202,13 +160,13 @@ func TestSilenceUsage_OnUnknownFlag(t *testing.T) {
 	}
 }
 
-func TestList_DisallowsFilterWithPageToken(t *testing.T) {
+func TestList_LimitNegative(t *testing.T) {
 	cmd := newRootCmd()
 	var errBuf bytes.Buffer
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "list", "--page-token", "token123", "-f", "kv > 1000"})
+	cmd.SetArgs([]string{"motors", "list", "--limit", "-1"})
 
 	err := cmd.Execute()
 	if err == nil {
@@ -216,54 +174,107 @@ func TestList_DisallowsFilterWithPageToken(t *testing.T) {
 	}
 
 	combined := errBuf.String() + outBuf.String()
-	if !strings.Contains(combined, "cannot specify --filter when --page-token is provided") {
-		t.Errorf("expected filter conflict error, got:\n%s", combined)
+	if !strings.Contains(combined, "limit cannot be negative") {
+		t.Errorf("expected negative limit error, got:\n%s", combined)
 	}
 	if !strings.Contains(combined, "Usage:") {
-		t.Errorf("flag conflict should show usage, got:\n%s", combined)
+		t.Errorf("flag error should show usage, got:\n%s", combined)
 	}
 }
 
-func TestList_DisallowsSortWithPageToken(t *testing.T) {
+func TestList_LimitApplied(t *testing.T) {
 	cmd := newRootCmd()
-	var errBuf bytes.Buffer
 	var outBuf bytes.Buffer
-	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "list", "--page-token", "token123", "-s", "kv"})
+	cmd.SetArgs([]string{"motors", "list", "-l", "3"})
 
 	err := cmd.Execute()
-	if err == nil {
-		t.Fatal("expected error, got nil")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
 	}
 
-	combined := errBuf.String() + outBuf.String()
-	if !strings.Contains(combined, "cannot specify --sort when --page-token is provided") {
-		t.Errorf("expected sort conflict error, got:\n%s", combined)
-	}
-	if !strings.Contains(combined, "Usage:") {
-		t.Errorf("flag conflict should show usage, got:\n%s", combined)
+	lines := strings.Split(strings.TrimSpace(outBuf.String()), "\n")
+	// Header + 3 records = 4 lines
+	if len(lines) != 4 {
+		t.Fatalf("expected 4 lines (header + 3 records), got %d:\n%s", len(lines), outBuf.String())
 	}
 }
 
-func TestList_DisallowsFilterAndSortWithPageToken(t *testing.T) {
+func TestList_LimitJSON(t *testing.T) {
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--json", "--limit", "2"})
+
+	err := cmd.Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var results []map[string]interface{}
+	if err := json.Unmarshal(outBuf.Bytes(), &results); err != nil {
+		t.Fatalf("failed to unmarshal JSON: %v\nOutput was:\n%s", err, outBuf.String())
+	}
+	if len(results) != 2 {
+		t.Fatalf("expected 2 items in JSON array, got %d", len(results))
+	}
+}
+
+func TestList_RemovedPageTokenFlag(t *testing.T) {
 	cmd := newRootCmd()
 	var errBuf bytes.Buffer
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "list", "--page-token", "token123", "-f", "kv > 1000", "-s", "kv"})
+	cmd.SetArgs([]string{"motors", "list", "--page-token", "some-token"})
 
 	err := cmd.Execute()
 	if err == nil {
-		t.Fatal("expected error, got nil")
+		t.Fatal("expected error with unknown flag --page-token, got nil")
 	}
 
 	combined := errBuf.String() + outBuf.String()
-	if !strings.Contains(combined, "cannot specify --filter or --sort when --page-token is provided") {
-		t.Errorf("expected filter or sort conflict error, got:\n%s", combined)
+	if !strings.Contains(combined, "unknown flag: --page-token") {
+		t.Errorf("expected unknown flag error, got:\n%s", combined)
 	}
-	if !strings.Contains(combined, "Usage:") {
-		t.Errorf("flag conflict should show usage, got:\n%s", combined)
+}
+
+func TestList_RemovedPageSizeFlag(t *testing.T) {
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--page-size", "10"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error with unknown flag --page-size, got nil")
+	}
+
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "unknown flag: --page-size") {
+		t.Errorf("expected unknown flag error, got:\n%s", combined)
+	}
+}
+
+func TestList_AutoPaging(t *testing.T) {
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--json"})
+
+	err := cmd.Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var results []map[string]interface{}
+	if err := json.Unmarshal(outBuf.Bytes(), &results); err != nil {
+		t.Fatalf("failed to unmarshal JSON: %v\nOutput was:\n%s", err, outBuf.String())
+	}
+	// Total motors in DB is > 100 (143), confirming it paged across 100-item page size
+	if len(results) <= 100 {
+		t.Fatalf("expected > 100 items from auto-paging, got %d", len(results))
 	}
 }

@@ -34,7 +34,6 @@ func main() {
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -62,8 +61,11 @@ var (
 )
 
 func newRootCmd() *cobra.Command {
+	jsonOut = false
+	yamlOut = false
+	targetURL := apiURL
 	if url := os.Getenv("QS_API_URL"); url != "" {
-		apiURL = url
+		targetURL = url
 	}
 
 	rootCmd := &cobra.Command{
@@ -84,7 +86,7 @@ func newRootCmd() *cobra.Command {
 		lowerPlural := strings.ToLower(d.Plural)
 
 		fmt.Fprintf(f, "\n\t// --- %s ---\n", d.Plural)
-		fmt.Fprintf(f, "\t%sClient := quadsmithconnect.New%sServiceClient(http.DefaultClient, apiURL)\n", lowerName, d.Name)
+		fmt.Fprintf(f, "\t%sClient := quadsmithconnect.New%sServiceClient(http.DefaultClient, targetURL)\n", lowerName, d.Name)
 		fmt.Fprintf(f, "\t%sCmd := &cobra.Command{Use: \"%s\"}\n", lowerPlural, lowerPlural)
 
 		fmt.Fprintf(f, "\t%sListCmd := &cobra.Command{\n", lowerPlural)
@@ -93,35 +95,33 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\tfilter, _ := cmd.Flags().GetString(\"filter\")\n")
 		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\t\tsortOpts, _ := cmd.Flags().GetStringSlice(\"sort\")\n")
-		fmt.Fprintf(f, "\t\t\tpageSize, _ := cmd.Flags().GetInt32(\"page-size\")\n")
-		fmt.Fprintf(f, "\t\t\tpageToken, _ := cmd.Flags().GetString(\"page-token\")\n")
-		fmt.Fprintf(f, "\t\t\tif pageToken != \"\" {\n")
-		fmt.Fprintf(f, "\t\t\t\tif cmd.Flags().Changed(\"filter\") && cmd.Flags().Changed(\"sort\") {\n")
-		fmt.Fprintf(f, "\t\t\t\t\tcmd.SilenceUsage = false\n")
-		fmt.Fprintf(f, "\t\t\t\t\treturn fmt.Errorf(\"cannot specify --filter or --sort when --page-token is provided\")\n")
-		fmt.Fprintf(f, "\t\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\t\tif cmd.Flags().Changed(\"filter\") {\n")
-		fmt.Fprintf(f, "\t\t\t\t\tcmd.SilenceUsage = false\n")
-		fmt.Fprintf(f, "\t\t\t\t\treturn fmt.Errorf(\"cannot specify --filter when --page-token is provided\")\n")
-		fmt.Fprintf(f, "\t\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\t\tif cmd.Flags().Changed(\"sort\") {\n")
-		fmt.Fprintf(f, "\t\t\t\t\tcmd.SilenceUsage = false\n")
-		fmt.Fprintf(f, "\t\t\t\t\treturn fmt.Errorf(\"cannot specify --sort when --page-token is provided\")\n")
-		fmt.Fprintf(f, "\t\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\tif (jsonOut || yamlOut) && pageSize == 0 {\n")
-		fmt.Fprintf(f, "\t\t\t\tpageSize = 100\n")
+		fmt.Fprintf(f, "\t\t\tlimit, _ := cmd.Flags().GetInt32(\"limit\")\n")
+		fmt.Fprintf(f, "\t\t\tif limit < 0 {\n")
+		fmt.Fprintf(f, "\t\t\t\tcmd.SilenceUsage = false\n")
+		fmt.Fprintf(f, "\t\t\t\treturn fmt.Errorf(\"limit cannot be negative\")\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\tvar all []*pb.%s\n", d.Name)
-		fmt.Fprintf(f, "\t\t\tcurrentToken := pageToken\n")
-		fmt.Fprintf(f, "\t\t\tvar lastNextPageToken string\n")
+		fmt.Fprintf(f, "\t\t\tvar currentToken string\n")
 		fmt.Fprintf(f, "\t\t\tfor {\n")
+		fmt.Fprintf(f, "\t\t\t\tpageSize := int32(100)\n")
+		fmt.Fprintf(f, "\t\t\t\tif limit > 0 {\n")
+		fmt.Fprintf(f, "\t\t\t\t\tremaining := limit - int32(len(all))\n")
+		fmt.Fprintf(f, "\t\t\t\t\tif remaining <= 0 {\n")
+		fmt.Fprintf(f, "\t\t\t\t\t\tbreak\n")
+		fmt.Fprintf(f, "\t\t\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\t\t\tif remaining < pageSize {\n")
+		fmt.Fprintf(f, "\t\t\t\t\t\tpageSize = remaining\n")
+		fmt.Fprintf(f, "\t\t\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}\n", d.Plural)
 		fmt.Fprintf(f, "\t\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Plural)
 		fmt.Fprintf(f, "\t\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\t\tall = append(all, res.Msg.%s...)\n", d.Plural)
-		fmt.Fprintf(f, "\t\t\t\tlastNextPageToken = res.Msg.NextPageToken\n")
-		fmt.Fprintf(f, "\t\t\t\tif !(jsonOut || yamlOut) || cmd.Flags().Changed(\"page-size\") || res.Msg.NextPageToken == \"\" {\n")
+		fmt.Fprintf(f, "\t\t\t\tif limit > 0 && int32(len(all)) >= limit {\n")
+		fmt.Fprintf(f, "\t\t\t\t\tall = all[:limit]\n")
+		fmt.Fprintf(f, "\t\t\t\t\tbreak\n")
+		fmt.Fprintf(f, "\t\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\t\tif res.Msg.NextPageToken == \"\" {\n")
 		fmt.Fprintf(f, "\t\t\t\t\tbreak\n")
 		fmt.Fprintf(f, "\t\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\t\tcurrentToken = res.Msg.NextPageToken\n")
@@ -129,17 +129,13 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\tif len(columns) == 0 {\n")
 		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", d.Name)
 		fmt.Fprintf(f, "\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\terr := printOutput(all, columns, parsePageOffset(pageToken))\n")
+		fmt.Fprintf(f, "\t\t\terr := printOutput(cmd.OutOrStdout(), all, columns)\n")
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
-		fmt.Fprintf(f, "\t\t\tif lastNextPageToken != \"\" && !jsonOut && !yamlOut {\n")
-		fmt.Fprintf(f, "\t\t\t\tfmt.Printf(\"\\nNext page token: %%s\\n\", lastNextPageToken)\n")
-		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\treturn nil\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
 		fmt.Fprintf(f, "\t%sListCmd.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sListCmd.Flags().Int32P(\"page-size\", \"p\", 0, \"Maximum number of items to return\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sListCmd.Flags().String(\"page-token\", \"\", \"Page token for next page of results\")\n", lowerPlural)
+		fmt.Fprintf(f, "\t%sListCmd.Flags().Int32P(\"limit\", \"l\", 0, \"Maximum number of items to return\")\n", lowerPlural)
 		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"filter\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
 		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
 		fmt.Fprintf(f, "\t\tre := regexp.MustCompile(`([a-zA-Z_]+)$`)\n")
@@ -214,7 +210,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0], Columns: columns}\n", d.Name)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.Get%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Name)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
-		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg, columns)\n")
+		fmt.Fprintf(f, "\t\t\treturn printOutput(cmd.OutOrStdout(), res.Msg, columns)\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
 		fmt.Fprintf(f, "\t%sGetCmd.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
@@ -238,7 +234,7 @@ func newRootCmd() *cobra.Command {
 
 	fmt.Fprintln(f, `
 	// --- EVALUATOR ---
-	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, apiURL)
+	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, targetURL)
 	evalCmd := &cobra.Command{
 		Use: "evaluate [build-id]",
 		Short: "Run physics estimation and compatibility checks on a build",
@@ -266,7 +262,7 @@ func newRootCmd() *cobra.Command {
 			eRes, err := evalClient.EvaluateBuild(context.Background(), connect.NewRequest(eReq))
 			if err != nil { return fmt.Errorf("evaluation failed: %w", err) }
 			
-			return printOutput(eRes.Msg, nil)
+			return printOutput(cmd.OutOrStdout(), eRes.Msg, nil)
 		},
 	}
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
@@ -344,30 +340,8 @@ func GetColumns(m interface{}) []string {
 	}
 	return cols
 }
-func parsePageOffset(tokenStr string) int {
-	if tokenStr == "" {
-		return 0
-	}
-	data, err := base64.RawURLEncoding.DecodeString(tokenStr)
-	if err != nil {
-		data, err = base64.URLEncoding.DecodeString(tokenStr)
-		if err != nil {
-			data, err = base64.StdEncoding.DecodeString(tokenStr)
-			if err != nil {
-				return 0
-			}
-		}
-	}
-	var t map[string]interface{}
-	if err := json.Unmarshal(data, &t); err == nil {
-		if off, ok := t["offset"].(float64); ok && off >= 0 {
-			return int(off)
-		}
-	}
-	return 0
-}
 
-func printOutput(data interface{}, cols []string, startOffset ...int) error {
+func printOutput(out io.Writer, data interface{}, cols []string, startOffset ...int) error {
 	var isNilSlice bool
 	if data != nil {
 		v := reflect.ValueOf(data)
@@ -378,34 +352,34 @@ func printOutput(data interface{}, cols []string, startOffset ...int) error {
 
 	if jsonOut {
 		if isNilSlice {
-			fmt.Println("[]")
+			fmt.Fprintln(out, "[]")
 			return nil
 		}
 		b, err := json.MarshalIndent(data, "", "  ")
 		if err != nil {
 			return err
 		}
-		fmt.Println(string(b))
+		fmt.Fprintln(out, string(b))
 		return nil
 	} else if yamlOut {
 		if isNilSlice {
-			fmt.Println("[]")
+			fmt.Fprintln(out, "[]")
 			return nil
 		}
 		b, err := yaml.Marshal(data)
 		if err != nil {
 			return err
 		}
-		fmt.Println(string(b))
+		fmt.Fprintln(out, string(b))
 		return nil
 	}
 
 	if data == nil || isNilSlice {
-		fmt.Println("No records found.")
+		fmt.Fprintln(out, "No records found.")
 		return nil
 	}
 
-	printTable(data, cols, startOffset...)
+	printTableTo(out, data, cols, startOffset...)
 	return nil
 }
 

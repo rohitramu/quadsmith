@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -30,8 +29,11 @@ var (
 )
 
 func newRootCmd() *cobra.Command {
+	jsonOut = false
+	yamlOut = false
+	targetURL := apiURL
 	if url := os.Getenv("QS_API_URL"); url != "" {
-		apiURL = url
+		targetURL = url
 	}
 
 	rootCmd := &cobra.Command{
@@ -47,7 +49,7 @@ func newRootCmd() *cobra.Command {
 	}
 
 	// --- Motors ---
-	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, apiURL)
+	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, targetURL)
 	motorsCmd := &cobra.Command{Use: "motors"}
 	motorsListCmd := &cobra.Command{
 		Use: "list",
@@ -55,37 +57,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Motor
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListMotorsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Motors...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -93,19 +93,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Motor{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	motorsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	motorsListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	motorsListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	motorsListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	motorsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Motor{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -189,7 +185,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	motorsGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -213,7 +209,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(motorsCmd)
 
 	// --- Frames ---
-	frameClient := quadsmithconnect.NewFrameServiceClient(http.DefaultClient, apiURL)
+	frameClient := quadsmithconnect.NewFrameServiceClient(http.DefaultClient, targetURL)
 	framesCmd := &cobra.Command{Use: "frames"}
 	framesListCmd := &cobra.Command{
 		Use: "list",
@@ -221,37 +217,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Frame
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListFramesRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Frames...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -259,19 +253,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Frame{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	framesListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	framesListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	framesListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	framesListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	framesListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Frame{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -355,7 +345,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	framesGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -379,7 +369,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(framesCmd)
 
 	// --- Batteries ---
-	batteryClient := quadsmithconnect.NewBatteryServiceClient(http.DefaultClient, apiURL)
+	batteryClient := quadsmithconnect.NewBatteryServiceClient(http.DefaultClient, targetURL)
 	batteriesCmd := &cobra.Command{Use: "batteries"}
 	batteriesListCmd := &cobra.Command{
 		Use: "list",
@@ -387,37 +377,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Battery
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListBatteriesRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Batteries...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -425,19 +413,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Battery{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	batteriesListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	batteriesListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	batteriesListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	batteriesListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	batteriesListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Battery{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -521,7 +505,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	batteriesGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -545,7 +529,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(batteriesCmd)
 
 	// --- Escs ---
-	escClient := quadsmithconnect.NewEscServiceClient(http.DefaultClient, apiURL)
+	escClient := quadsmithconnect.NewEscServiceClient(http.DefaultClient, targetURL)
 	escsCmd := &cobra.Command{Use: "escs"}
 	escsListCmd := &cobra.Command{
 		Use: "list",
@@ -553,37 +537,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Esc
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListEscsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := escClient.ListEscs(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Escs...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -591,19 +573,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Esc{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	escsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	escsListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	escsListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	escsListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	escsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Esc{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -687,7 +665,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	escsGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -711,7 +689,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(escsCmd)
 
 	// --- FlightControllers ---
-	flightcontrollerClient := quadsmithconnect.NewFlightControllerServiceClient(http.DefaultClient, apiURL)
+	flightcontrollerClient := quadsmithconnect.NewFlightControllerServiceClient(http.DefaultClient, targetURL)
 	flightcontrollersCmd := &cobra.Command{Use: "flightcontrollers"}
 	flightcontrollersListCmd := &cobra.Command{
 		Use: "list",
@@ -719,37 +697,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.FlightController
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListFlightControllersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.FlightControllers...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -757,19 +733,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.FlightController{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	flightcontrollersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	flightcontrollersListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	flightcontrollersListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	flightcontrollersListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	flightcontrollersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.FlightController{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -853,7 +825,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	flightcontrollersGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -877,7 +849,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(flightcontrollersCmd)
 
 	// --- Receivers ---
-	receiverClient := quadsmithconnect.NewReceiverServiceClient(http.DefaultClient, apiURL)
+	receiverClient := quadsmithconnect.NewReceiverServiceClient(http.DefaultClient, targetURL)
 	receiversCmd := &cobra.Command{Use: "receivers"}
 	receiversListCmd := &cobra.Command{
 		Use: "list",
@@ -885,37 +857,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Receiver
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListReceiversRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Receivers...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -923,19 +893,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Receiver{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	receiversListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	receiversListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	receiversListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	receiversListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	receiversListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Receiver{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1019,7 +985,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	receiversGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1043,7 +1009,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(receiversCmd)
 
 	// --- VideoTransmitters ---
-	videotransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(http.DefaultClient, apiURL)
+	videotransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(http.DefaultClient, targetURL)
 	videotransmittersCmd := &cobra.Command{Use: "videotransmitters"}
 	videotransmittersListCmd := &cobra.Command{
 		Use: "list",
@@ -1051,37 +1017,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.VideoTransmitter
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListVideoTransmittersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.VideoTransmitters...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1089,19 +1053,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.VideoTransmitter{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	videotransmittersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	videotransmittersListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	videotransmittersListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	videotransmittersListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	videotransmittersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.VideoTransmitter{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1185,7 +1145,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	videotransmittersGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1209,7 +1169,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(videotransmittersCmd)
 
 	// --- Antennas ---
-	antennaClient := quadsmithconnect.NewAntennaServiceClient(http.DefaultClient, apiURL)
+	antennaClient := quadsmithconnect.NewAntennaServiceClient(http.DefaultClient, targetURL)
 	antennasCmd := &cobra.Command{Use: "antennas"}
 	antennasListCmd := &cobra.Command{
 		Use: "list",
@@ -1217,37 +1177,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Antenna
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListAntennasRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Antennas...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1255,19 +1213,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Antenna{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	antennasListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	antennasListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	antennasListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	antennasListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	antennasListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Antenna{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1351,7 +1305,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	antennasGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1375,7 +1329,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(antennasCmd)
 
 	// --- Cameras ---
-	cameraClient := quadsmithconnect.NewCameraServiceClient(http.DefaultClient, apiURL)
+	cameraClient := quadsmithconnect.NewCameraServiceClient(http.DefaultClient, targetURL)
 	camerasCmd := &cobra.Command{Use: "cameras"}
 	camerasListCmd := &cobra.Command{
 		Use: "list",
@@ -1383,37 +1337,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Camera
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListCamerasRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Cameras...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1421,19 +1373,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Camera{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	camerasListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	camerasListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	camerasListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	camerasListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	camerasListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Camera{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1517,7 +1465,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	camerasGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1541,7 +1489,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(camerasCmd)
 
 	// --- Propellers ---
-	propellerClient := quadsmithconnect.NewPropellerServiceClient(http.DefaultClient, apiURL)
+	propellerClient := quadsmithconnect.NewPropellerServiceClient(http.DefaultClient, targetURL)
 	propellersCmd := &cobra.Command{Use: "propellers"}
 	propellersListCmd := &cobra.Command{
 		Use: "list",
@@ -1549,37 +1497,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Propeller
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListPropellersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Propellers...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1587,19 +1533,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Propeller{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	propellersListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	propellersListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	propellersListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	propellersListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	propellersListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Propeller{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1683,7 +1625,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	propellersGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1707,7 +1649,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(propellersCmd)
 
 	// --- Builds ---
-	buildClient := quadsmithconnect.NewBuildServiceClient(http.DefaultClient, apiURL)
+	buildClient := quadsmithconnect.NewBuildServiceClient(http.DefaultClient, targetURL)
 	buildsCmd := &cobra.Command{Use: "builds"}
 	buildsListCmd := &cobra.Command{
 		Use: "list",
@@ -1715,37 +1657,35 @@ func newRootCmd() *cobra.Command {
 			filter, _ := cmd.Flags().GetString("filter")
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
-			pageSize, _ := cmd.Flags().GetInt32("page-size")
-			pageToken, _ := cmd.Flags().GetString("page-token")
-			if pageToken != "" {
-				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
-				}
-				if cmd.Flags().Changed("filter") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --filter when --page-token is provided")
-				}
-				if cmd.Flags().Changed("sort") {
-					cmd.SilenceUsage = false
-					return fmt.Errorf("cannot specify --sort when --page-token is provided")
-				}
-			}
-			if (jsonOut || yamlOut) && pageSize == 0 {
-				pageSize = 100
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
 			}
 			var all []*pb.Build
-			currentToken := pageToken
-			var lastNextPageToken string
+			var currentToken string
 			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
 				req := &pb.ListBuildsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
 				res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
 				all = append(all, res.Msg.Builds...)
-				lastNextPageToken = res.Msg.NextPageToken
-				if !(jsonOut || yamlOut) || cmd.Flags().Changed("page-size") || res.Msg.NextPageToken == "" {
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
 					break
 				}
 				currentToken = res.Msg.NextPageToken
@@ -1753,19 +1693,15 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Build{})
 			}
-			err := printOutput(all, columns, parsePageOffset(pageToken))
+			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
-			}
-			if lastNextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
 	}
 	buildsListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	buildsListCmd.Flags().Int32P("page-size", "p", 0, "Maximum number of items to return")
-	buildsListCmd.Flags().String("page-token", "", "Page token for next page of results")
+	buildsListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	buildsListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		cols := GetColumns(&pb.Build{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
@@ -1849,7 +1785,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(res.Msg, columns)
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	buildsGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1873,7 +1809,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(buildsCmd)
 
 	// --- EVALUATOR ---
-	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, apiURL)
+	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, targetURL)
 	evalCmd := &cobra.Command{
 		Use:   "evaluate [build-id]",
 		Short: "Run physics estimation and compatibility checks on a build",
@@ -1909,7 +1845,7 @@ func newRootCmd() *cobra.Command {
 				return fmt.Errorf("evaluation failed: %w", err)
 			}
 
-			return printOutput(eRes.Msg, nil)
+			return printOutput(cmd.OutOrStdout(), eRes.Msg, nil)
 		},
 	}
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
@@ -1986,30 +1922,8 @@ func GetColumns(m interface{}) []string {
 	}
 	return cols
 }
-func parsePageOffset(tokenStr string) int {
-	if tokenStr == "" {
-		return 0
-	}
-	data, err := base64.RawURLEncoding.DecodeString(tokenStr)
-	if err != nil {
-		data, err = base64.URLEncoding.DecodeString(tokenStr)
-		if err != nil {
-			data, err = base64.StdEncoding.DecodeString(tokenStr)
-			if err != nil {
-				return 0
-			}
-		}
-	}
-	var t map[string]interface{}
-	if err := json.Unmarshal(data, &t); err == nil {
-		if off, ok := t["offset"].(float64); ok && off >= 0 {
-			return int(off)
-		}
-	}
-	return 0
-}
 
-func printOutput(data interface{}, cols []string, startOffset ...int) error {
+func printOutput(out io.Writer, data interface{}, cols []string, startOffset ...int) error {
 	var isNilSlice bool
 	if data != nil {
 		v := reflect.ValueOf(data)
@@ -2020,34 +1934,34 @@ func printOutput(data interface{}, cols []string, startOffset ...int) error {
 
 	if jsonOut {
 		if isNilSlice {
-			fmt.Println("[]")
+			fmt.Fprintln(out, "[]")
 			return nil
 		}
 		b, err := json.MarshalIndent(data, "", "  ")
 		if err != nil {
 			return err
 		}
-		fmt.Println(string(b))
+		fmt.Fprintln(out, string(b))
 		return nil
 	} else if yamlOut {
 		if isNilSlice {
-			fmt.Println("[]")
+			fmt.Fprintln(out, "[]")
 			return nil
 		}
 		b, err := yaml.Marshal(data)
 		if err != nil {
 			return err
 		}
-		fmt.Println(string(b))
+		fmt.Fprintln(out, string(b))
 		return nil
 	}
 
 	if data == nil || isNilSlice {
-		fmt.Println("No records found.")
+		fmt.Fprintln(out, "No records found.")
 		return nil
 	}
 
-	printTable(data, cols, startOffset...)
+	printTableTo(out, data, cols, startOffset...)
 	return nil
 }
 
