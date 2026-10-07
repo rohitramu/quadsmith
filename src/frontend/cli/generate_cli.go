@@ -34,8 +34,10 @@ func main() {
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 		"reflect"
@@ -96,7 +98,7 @@ func main() {
 		fmt.Fprintf(f, "\t\t\tif len(columns) == 0 {\n")
 		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", d.Name)
 		fmt.Fprintf(f, "\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\terr = printOutput(res.Msg.%s, columns)\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\terr = printOutput(res.Msg.%s, columns, parsePageOffset(pageToken))\n", d.Plural)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\tif res.Msg.NextPageToken != \"\" && !jsonOut && !yamlOut {\n")
 		fmt.Fprintf(f, "\t\t\t\tfmt.Printf(\"\\nNext page token: %%s\\n\", res.Msg.NextPageToken)\n")
@@ -307,7 +309,30 @@ func GetColumns(m interface{}) []string {
 	}
 	return cols
 }
-func printOutput(data interface{}, cols []string) error {
+func parsePageOffset(tokenStr string) int {
+	if tokenStr == "" {
+		return 0
+	}
+	data, err := base64.RawURLEncoding.DecodeString(tokenStr)
+	if err != nil {
+		data, err = base64.URLEncoding.DecodeString(tokenStr)
+		if err != nil {
+			data, err = base64.StdEncoding.DecodeString(tokenStr)
+			if err != nil {
+				return 0
+			}
+		}
+	}
+	var t map[string]interface{}
+	if err := json.Unmarshal(data, &t); err == nil {
+		if off, ok := t["offset"].(float64); ok && off >= 0 {
+			return int(off)
+		}
+	}
+	return 0
+}
+
+func printOutput(data interface{}, cols []string, startOffset ...int) error {
 	var isNilSlice bool
 	if data != nil {
 		v := reflect.ValueOf(data)
@@ -345,21 +370,35 @@ func printOutput(data interface{}, cols []string) error {
 		return nil
 	}
 
-	printTable(data, cols)
+	printTable(data, cols, startOffset...)
 	return nil
 }
 
-func printTable(data interface{}, cols []string) {
+func printTable(data interface{}, cols []string, startOffset ...int) {
+	printTableTo(os.Stdout, data, cols, startOffset...)
+}
+
+func printTableTo(out io.Writer, data interface{}, cols []string, startOffset ...int) {
+	offset := 0
+	if len(startOffset) > 0 {
+		offset = startOffset[0]
+	}
+
 	b, _ := json.Marshal(data)
 	var v interface{}
 	json.Unmarshal(b, &v)
 
-	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+	if v == nil {
+		fmt.Fprintln(out, "No records found.")
+		return
+	}
+
+	w := tabwriter.NewWriter(out, 0, 0, 2, ' ', 0)
 	
 	switch val := v.(type) {
 	case []interface{}:
 		if len(val) == 0 {
-			fmt.Println("No records found.")
+			fmt.Fprintln(out, "No records found.")
 			return
 		}
 		
@@ -393,6 +432,11 @@ func printTable(data interface{}, cols []string) {
 			}
 		}
 
+		startIdx := offset + 1
+		fmt.Fprintf(w, "#")
+		if len(orderedKeys) > 0 {
+			fmt.Fprintf(w, "\t")
+		}
 		for i, k := range orderedKeys {
 			fmt.Fprintf(w, "%s", strings.ToUpper(k))
 			if i < len(orderedKeys)-1 {
@@ -400,17 +444,24 @@ func printTable(data interface{}, cols []string) {
 			}
 		}
 		fmt.Fprintln(w)
-		for _, item := range val {
-			m := item.(map[string]interface{})
-			for i, k := range orderedKeys {
-				if m[k] == nil {
-					fmt.Fprintf(w, "-")
-				} else {
-					fmt.Fprintf(w, "%v", m[k])
+		for idx, item := range val {
+			fmt.Fprintf(w, "%d", startIdx+idx)
+			if len(orderedKeys) > 0 {
+				fmt.Fprintf(w, "\t")
+			}
+			if m, ok := item.(map[string]interface{}); ok {
+				for i, k := range orderedKeys {
+					if m[k] == nil {
+						fmt.Fprintf(w, "-")
+					} else {
+						fmt.Fprintf(w, "%v", m[k])
+					}
+					if i < len(orderedKeys)-1 {
+						fmt.Fprintf(w, "\t")
+					}
 				}
-				if i < len(orderedKeys)-1 {
-					fmt.Fprintf(w, "\t")
-				}
+			} else {
+				fmt.Fprintf(w, "%v", item)
 			}
 			fmt.Fprintln(w)
 		}
@@ -432,7 +483,7 @@ func printTable(data interface{}, cols []string) {
 			}
 		}
 	default:
-		fmt.Printf("%v\n", v)
+		fmt.Fprintf(out, "%v\n", v)
 	}
 	w.Flush()
 }
