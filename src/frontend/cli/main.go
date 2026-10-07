@@ -14,6 +14,7 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
 	pb "quadsmith/api/gen/quadsmith"
@@ -53,6 +54,9 @@ func main() {
 			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
+			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Motor{})
 			}
 			return printOutput(res.Msg.Motors, columns)
 		},
@@ -178,6 +182,9 @@ func main() {
 			if err != nil {
 				return err
 			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Frame{})
+			}
 			return printOutput(res.Msg.Frames, columns)
 		},
 	}
@@ -301,6 +308,9 @@ func main() {
 			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
+			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Battery{})
 			}
 			return printOutput(res.Msg.Batteries, columns)
 		},
@@ -426,6 +436,9 @@ func main() {
 			if err != nil {
 				return err
 			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Esc{})
+			}
 			return printOutput(res.Msg.Escs, columns)
 		},
 	}
@@ -549,6 +562,9 @@ func main() {
 			res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
+			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.FlightController{})
 			}
 			return printOutput(res.Msg.FlightControllers, columns)
 		},
@@ -674,6 +690,9 @@ func main() {
 			if err != nil {
 				return err
 			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Receiver{})
+			}
 			return printOutput(res.Msg.Receivers, columns)
 		},
 	}
@@ -797,6 +816,9 @@ func main() {
 			res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
+			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.VideoTransmitter{})
 			}
 			return printOutput(res.Msg.VideoTransmitters, columns)
 		},
@@ -922,6 +944,9 @@ func main() {
 			if err != nil {
 				return err
 			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Antenna{})
+			}
 			return printOutput(res.Msg.Antennas, columns)
 		},
 	}
@@ -1045,6 +1070,9 @@ func main() {
 			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
+			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Camera{})
 			}
 			return printOutput(res.Msg.Cameras, columns)
 		},
@@ -1170,6 +1198,9 @@ func main() {
 			if err != nil {
 				return err
 			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Propeller{})
+			}
 			return printOutput(res.Msg.Propellers, columns)
 		},
 	}
@@ -1293,6 +1324,9 @@ func main() {
 			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
+			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.Build{})
 			}
 			return printOutput(res.Msg.Builds, columns)
 		},
@@ -1482,6 +1516,16 @@ func main() {
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
+}
+
+func GetDefaultColumns(m proto.Message) []string {
+	opts := m.ProtoReflect().Descriptor().Options()
+	if proto.HasExtension(opts, pb.E_DefaultColumns) {
+		if cols, ok := proto.GetExtension(opts, pb.E_DefaultColumns).([]string); ok && len(cols) > 0 {
+			return cols
+		}
+	}
+	return nil
 }
 
 func GetColumns(m interface{}) []string {

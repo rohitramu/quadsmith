@@ -2,8 +2,9 @@ syntax = "proto3";
 
 package quadsmith;
 
+import "quadsmith/_common.proto";
+import "quadsmith/_sql.proto";
 import "quadsmith/reference_link.proto";
-import "quadsmith/sql.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 
@@ -12,6 +13,10 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // ---------------------------------------------------------
 message Battery {
   option (quadsmith.sql.table_name) = "batteries";
+  option (quadsmith.default_columns) = "manufacturer";
+  option (quadsmith.default_columns) = "name";
+  option (quadsmith.default_columns) = "cell_count_s";
+  option (quadsmith.default_columns) = "capacity_mah";
 
   string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
 

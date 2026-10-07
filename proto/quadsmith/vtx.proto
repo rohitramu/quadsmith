@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package quadsmith;
 
+import "quadsmith/_sql.proto";
 import "quadsmith/reference_link.proto";
-import "quadsmith/sql.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 

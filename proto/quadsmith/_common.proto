@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Custom Message Options
+// ---------------------------------------------------------
+extend google.protobuf.MessageOptions {
+  // The default columns to display in CLI tables and UI collection listings.
+  repeated string default_columns = 50001;
+}

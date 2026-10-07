@@ -339,7 +339,7 @@ var File_quadsmith_propeller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x1equadsmith/reference_link.proto\x1a\x13quadsmith/sql.proto\"\xf9\x02\n" +
+	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x1equadsmith/reference_link.proto\x1a\x14quadsmith/_sql.proto\"\xf9\x02\n" +
 	"\tPropeller\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -414,7 +414,7 @@ func file_quadsmith_propeller_proto_init() {
 		return
 	}
 	file_quadsmith_reference_link_proto_init()
-	file_quadsmith_sql_proto_init()
+	file_quadsmith__sql_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

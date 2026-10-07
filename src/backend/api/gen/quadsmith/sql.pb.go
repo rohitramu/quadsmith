@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/sql.proto
+// source: quadsmith/_sql.proto
 
 package quadsmith
 
@@ -21,14 +21,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-var file_quadsmith_sql_proto_extTypes = []protoimpl.ExtensionInfo{
+var file_quadsmith__sql_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
 		ExtensionType: (*string)(nil),
 		Field:         51000,
 		Name:          "quadsmith.sql.table_name",
 		Tag:           "bytes,51000,opt,name=table_name",
-		Filename:      "quadsmith/sql.proto",
+		Filename:      "quadsmith/_sql.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -36,7 +36,7 @@ var file_quadsmith_sql_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         51001,
 		Name:          "quadsmith.sql.is_primary_key",
 		Tag:           "varint,51001,opt,name=is_primary_key",
-		Filename:      "quadsmith/sql.proto",
+		Filename:      "quadsmith/_sql.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -44,7 +44,7 @@ var file_quadsmith_sql_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         51002,
 		Name:          "quadsmith.sql.references",
 		Tag:           "bytes,51002,opt,name=references",
-		Filename:      "quadsmith/sql.proto",
+		Filename:      "quadsmith/_sql.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -52,7 +52,7 @@ var file_quadsmith_sql_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         51003,
 		Name:          "quadsmith.sql.is_unique",
 		Tag:           "varint,51003,opt,name=is_unique",
-		Filename:      "quadsmith/sql.proto",
+		Filename:      "quadsmith/_sql.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -60,7 +60,7 @@ var file_quadsmith_sql_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         51004,
 		Name:          "quadsmith.sql.create_index",
 		Tag:           "varint,51004,opt,name=create_index",
-		Filename:      "quadsmith/sql.proto",
+		Filename:      "quadsmith/_sql.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -68,7 +68,7 @@ var file_quadsmith_sql_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         51005,
 		Name:          "quadsmith.sql.column_type",
 		Tag:           "bytes,51005,opt,name=column_type",
-		Filename:      "quadsmith/sql.proto",
+		Filename:      "quadsmith/_sql.proto",
 	},
 }
 
@@ -79,7 +79,7 @@ var (
 	// Example: option (quadsmith.sql.table_name) = "motors";
 	//
 	// optional string table_name = 51000;
-	E_TableName = &file_quadsmith_sql_proto_extTypes[0]
+	E_TableName = &file_quadsmith__sql_proto_extTypes[0]
 )
 
 // Extension fields to descriptorpb.FieldOptions.
@@ -87,30 +87,30 @@ var (
 	// Marks this field as the PRIMARY KEY of the generated table.
 	//
 	// optional bool is_primary_key = 51001;
-	E_IsPrimaryKey = &file_quadsmith_sql_proto_extTypes[1]
+	E_IsPrimaryKey = &file_quadsmith__sql_proto_extTypes[1]
 	// Defines a FOREIGN KEY constraint.
 	// The value should be formatted as "target_table(target_column)".
 	// Example: [(quadsmith.sql.references) = "frames(id)"]
 	//
 	// optional string references = 51002;
-	E_References = &file_quadsmith_sql_proto_extTypes[2]
+	E_References = &file_quadsmith__sql_proto_extTypes[2]
 	// Adds a UNIQUE constraint to the generated column.
 	//
 	// optional bool is_unique = 51003;
-	E_IsUnique = &file_quadsmith_sql_proto_extTypes[3]
+	E_IsUnique = &file_quadsmith__sql_proto_extTypes[3]
 	// Generates a standard B-Tree index for this column to speed up CEL queries.
 	//
 	// optional bool create_index = 51004;
-	E_CreateIndex = &file_quadsmith_sql_proto_extTypes[4]
+	E_CreateIndex = &file_quadsmith__sql_proto_extTypes[4]
 	// optional string column_type = 51005;
-	E_ColumnType = &file_quadsmith_sql_proto_extTypes[5]
+	E_ColumnType = &file_quadsmith__sql_proto_extTypes[5]
 )
 
-var File_quadsmith_sql_proto protoreflect.FileDescriptor
+var File_quadsmith__sql_proto protoreflect.FileDescriptor
 
-const file_quadsmith_sql_proto_rawDesc = "" +
+const file_quadsmith__sql_proto_rawDesc = "" +
 	"\n" +
-	"\x13quadsmith/sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto:@\n" +
+	"\x14quadsmith/_sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto:@\n" +
 	"\n" +
 	"table_name\x12\x1f.google.protobuf.MessageOptions\x18\xb8\x8e\x03 \x01(\tR\ttableName:E\n" +
 	"\x0eis_primary_key\x12\x1d.google.protobuf.FieldOptions\x18\xb9\x8e\x03 \x01(\bR\fisPrimaryKey:?\n" +
@@ -122,11 +122,11 @@ const file_quadsmith_sql_proto_rawDesc = "" +
 	"\vcolumn_type\x12\x1d.google.protobuf.FieldOptions\x18\xbd\x8e\x03 \x01(\tR\n" +
 	"columnTypeB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
-var file_quadsmith_sql_proto_goTypes = []any{
+var file_quadsmith__sql_proto_goTypes = []any{
 	(*descriptorpb.MessageOptions)(nil), // 0: google.protobuf.MessageOptions
 	(*descriptorpb.FieldOptions)(nil),   // 1: google.protobuf.FieldOptions
 }
-var file_quadsmith_sql_proto_depIdxs = []int32{
+var file_quadsmith__sql_proto_depIdxs = []int32{
 	0, // 0: quadsmith.sql.table_name:extendee -> google.protobuf.MessageOptions
 	1, // 1: quadsmith.sql.is_primary_key:extendee -> google.protobuf.FieldOptions
 	1, // 2: quadsmith.sql.references:extendee -> google.protobuf.FieldOptions
@@ -140,26 +140,26 @@ var file_quadsmith_sql_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_sql_proto_init() }
-func file_quadsmith_sql_proto_init() {
-	if File_quadsmith_sql_proto != nil {
+func init() { file_quadsmith__sql_proto_init() }
+func file_quadsmith__sql_proto_init() {
+	if File_quadsmith__sql_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_sql_proto_rawDesc), len(file_quadsmith_sql_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith__sql_proto_rawDesc), len(file_quadsmith__sql_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 6,
 			NumServices:   0,
 		},
-		GoTypes:           file_quadsmith_sql_proto_goTypes,
-		DependencyIndexes: file_quadsmith_sql_proto_depIdxs,
-		ExtensionInfos:    file_quadsmith_sql_proto_extTypes,
+		GoTypes:           file_quadsmith__sql_proto_goTypes,
+		DependencyIndexes: file_quadsmith__sql_proto_depIdxs,
+		ExtensionInfos:    file_quadsmith__sql_proto_extTypes,
 	}.Build()
-	File_quadsmith_sql_proto = out.File
-	file_quadsmith_sql_proto_goTypes = nil
-	file_quadsmith_sql_proto_depIdxs = nil
+	File_quadsmith__sql_proto = out.File
+	file_quadsmith__sql_proto_goTypes = nil
+	file_quadsmith__sql_proto_depIdxs = nil
 }

@@ -27,7 +27,7 @@ const (
 type Motor struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Uuid  string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	// A unique, human-readable slug (e.g., "tmotor-f80-pro-1900kv")
+	// A unique, human-readable identifier (e.g., "tmotor-f80-pro-1900kv")
 	Id               string           `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer     string           `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
 	Name             string           `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
@@ -146,7 +146,7 @@ func (x *Motor) GetReferenceLinks() []*ReferenceLink {
 // ---------------------------------------------------------
 type GetMotorRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Can be the UUID or the human-readable slug
+	// Can be the UUID or the human-readable ID
 	Id            string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Columns       []string `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -330,7 +330,7 @@ var File_quadsmith_motor_proto protoreflect.FileDescriptor
 
 const file_quadsmith_motor_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x1equadsmith/reference_link.proto\x1a\x13quadsmith/sql.proto\"\xef\x02\n" +
+	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xa3\x03\n" +
 	"\x05Motor\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -342,8 +342,7 @@ const file_quadsmith_motor_proto_rawDesc = "" +
 	"\x02kv\x18\b \x01(\rB\x04\xe0\xf3\x18\x01R\x02kv\x12 \n" +
 	"\vdescription\x18\t \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\n" +
-	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\n" +
-	"\xc2\xf3\x18\x06motors\";\n" +
+	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:>\x8a\xb5\x18\fmanufacturer\x8a\xb5\x18\x04name\x8a\xb5\x18\x12stator_diameter_mm\x8a\xb5\x18\x02kv\xc2\xf3\x18\x06motors\";\n" +
 	"\x0fGetMotorRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
@@ -401,8 +400,9 @@ func file_quadsmith_motor_proto_init() {
 	if File_quadsmith_motor_proto != nil {
 		return
 	}
+	file_quadsmith__common_proto_init()
+	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
-	file_quadsmith_sql_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
