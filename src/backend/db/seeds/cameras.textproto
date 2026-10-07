@@ -1,27 +1,9 @@
 cameras: {
-  uuid: "78744510-5235-4797-a8bd-dd85ee30d326"
-  id: "runcam-phoenix-2"
-  manufacturer: "RunCam"
-  name: "RunCam Phoenix 2"
-  weight_g: 9
-  protocol: "Analog"
-  width_mm: 19
-}
-cameras: {
   uuid: "a4c24db1-9024-4e23-9953-3dc8b9613673"
   id: "walksnail-avatar-hd-pro-camera"
   manufacturer: "Walksnail"
   name: "Walksnail Avatar HD Pro Camera"
   weight_g: 9.5
-  protocol: "Digital"
-  width_mm: 19
-}
-cameras: {
-  uuid: "1555417e-ba1b-4eb5-ae46-810b0b7b7900"
-  id: "caddx-nebula-pro"
-  manufacturer: "Caddx"
-  name: "Caddx Nebula Pro"
-  weight_g: 6
   protocol: "Digital"
   width_mm: 19
 }
@@ -35,29 +17,11 @@ cameras: {
   width_mm: 19
 }
 cameras: {
-  uuid: "a55cc596-b860-49a4-b08d-7c7d448d08ea"
-  id: "walksnail-avatar-hd-nano-camera-v3"
-  manufacturer: "Walksnail"
-  name: "Walksnail Avatar HD Nano Camera V3"
-  weight_g: 3
-  protocol: "Digital"
-  width_mm: 14
-}
-cameras: {
-  uuid: "956b292e-8f19-4434-9fc0-dccfdf7cec6e"
-  id: "hdzero-nano-90-camera"
-  manufacturer: "HDZero"
-  name: "HDZero Nano 90 Camera"
-  weight_g: 5.2
-  protocol: "Digital"
-  width_mm: 14
-}
-cameras: {
   uuid: "37198b31-b5bd-4c9b-918a-ef9ae5e0f5f8"
   id: "dji-o4-lite-camera"
   manufacturer: "DJI"
   name: "DJI O4 Lite Camera"
-  weight_g: 3.2
+  weight_g: 3
   protocol: "Digital"
   width_mm: 14
 }
@@ -66,7 +30,7 @@ cameras: {
   id: "dji-o4-wide-camera"
   manufacturer: "DJI"
   name: "DJI O4 Wide Camera"
-  weight_g: 8.3
+  weight_g: 41.5
   protocol: "Digital"
   width_mm: 20
 }
@@ -75,7 +39,7 @@ cameras: {
   id: "dji-o4-pro-camera"
   manufacturer: "DJI"
   name: "DJI O4 Pro Camera"
-  weight_g: 16.4
+  weight_g: 2.1
   protocol: "Digital"
   width_mm: 25
 }
@@ -93,7 +57,7 @@ cameras: {
   id: "c04-fpv-camera"
   manufacturer: "BETAFPV"
   name: "C04 FPV Camera"
-  weight_g: 2.74
+  weight_g: 1.45
 }
 cameras: {
   uuid: "aed30e9b-8a77-42dc-ba98-99b55fe484f2"
@@ -114,14 +78,14 @@ cameras: {
   id: "canopy-for-micro-camera"
   manufacturer: "BETAFPV"
   name: "Canopy for Micro Camera"
-  weight_g: 1.31
+  weight_g: 1
 }
 cameras: {
   uuid: "6871ff57-c355-4f1e-b06c-53b3292e8d5d"
   id: "canopy-for-nano-hd-camera"
   manufacturer: "BETAFPV"
   name: "Canopy for Nano HD Camera"
-  weight_g: 1.95
+  weight_g: 1
 }
 cameras: {
   uuid: "5dc05a7e-b864-422a-9006-eee7f3574d9a"
@@ -129,13 +93,14 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "Caddx Baby Ratel 14mm Nano 1200TVL"
   description: "Caddx Baby Ratel 14mm Nano 1200TVL 1.8mm FPV Camera"
-}
+
+  weight_g: 3}
 cameras: {
   uuid: "379652f5-5b9c-46fb-a88e-fb5f1b54d225"
   id: "caddx-ratel-19mm-micro-starlight-1200tvl"
   manufacturer: "BETAFPV"
   name: "Caddx Ratel 19mm Micro Starlight 1200TVL"
-  weight_g: 8
+  weight_g: 5.9
   description: "Caddx Ratel 19mm Micro Starlight 1200TVL HDR Low-Light FPV Camera"
 }
 cameras: {
@@ -143,7 +108,8 @@ cameras: {
   id: "caddx-baby-turtle-camera"
   manufacturer: "BETAFPV"
   name: "Caddx Baby Turtle Camera"
-}
+
+  weight_g: 3}
 cameras: {
   uuid: "ff12204d-afe9-42ff-af3b-406da5a843d3"
   id: "smo-4k-camera-adapter-cable"
@@ -156,73 +122,43 @@ cameras: {
   id: "case-v2-for-naked-camera"
   manufacturer: "BETAFPV"
   name: "Case V2 for Naked Camera"
-  weight_g: 6.57
+  weight_g: 0.82
 }
 cameras: {
   uuid: "6309c971-466b-4510-8958-9ffff453f89f"
   id: "customized-runcam-split-3-nano-camera"
   manufacturer: "BETAFPV"
   name: "Customized Runcam Split 3 Nano Camera"
-  weight_g: 10
+  weight_g: 4.5
 }
 cameras: {
   uuid: "652352a1-f2e3-469b-ae56-fc765d5d8af7"
   id: "customized-caddx-kangaroo-camera"
   manufacturer: "BETAFPV"
   name: "Customized Caddx Kangaroo Camera"
-  weight_g: 3.5
-}
-cameras: {
-  uuid: "c6a586f1-f79a-4e92-950a-cb58ada98da8"
-  id: "nd-filter-nd8-nd16"
-  manufacturer: "BETAFPV"
-  name: "ND Filter ND8 ND16"
-  description: "ND Filter ND8 ND16 for Turtle V2 / RunCam Split Mini 2"
+  weight_g: 5.9
 }
 cameras: {
   uuid: "3928718d-a42a-4a4d-a833-312bcc8b2cc0"
   id: "canopy-for-mini-camera"
   manufacturer: "BETAFPV"
   name: "Canopy for Mini Camera"
-  weight_g: 3.8
+  weight_g: 1
 }
 cameras: {
   uuid: "08f9d1a8-0d93-4c45-b401-473ba59cc77b"
   id: "betapfv-customized-eosv2-fpv-camera-ntsc"
   manufacturer: "BETAFPV"
   name: "BETAPFV Customized EOSV2 FPV Camera NTSC"
-  weight_g: 3.5
+  weight_g: 1.48
 }
 cameras: {
   uuid: "4af6f0c8-516a-416f-a304-429073764ab5"
   id: "caddxfpv-ratel-ultra-analog-camera"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Ratel Ultra Analog Camera"
-}
-cameras: {
-  uuid: "c94a080f-509a-4b91-abed-acee83146f26"
-  id: "gazer-analog-camera-filters"
-  manufacturer: "CADDXFPV"
-  name: "Gazer Analog Camera Filters"
-}
-cameras: {
-  uuid: "04d974ec-d7f8-4852-9bc7-ece6c13ff9bd"
-  id: "caddxfpv-infra-v2-camera"
-  manufacturer: "CADDXFPV"
-  name: "CaddxFPV Infra V2 Camera"
-}
-cameras: {
-  uuid: "837c47ae-045f-4f87-be78-f7c6d6e6bd91"
-  id: "caddxfpv-farsight-analog-camera"
-  manufacturer: "CADDX FPV"
-  name: "CaddxFPV Farsight Analog Camera"
-}
-cameras: {
-  uuid: "5e8de9d4-1838-4547-a474-ca3a22fc8525"
-  id: "caddxfpv-gazer-analog-camera"
-  manufacturer: "CADDX FPV"
-  name: "CaddxFPV Gazer Analog Camera"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "249b83ba-8791-47c1-9bbe-7c753d0b47f3"
   id: "caddxfpv-ratel-pro-analog-camera"
@@ -236,57 +172,36 @@ cameras: {
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Walnut Action Camera Magnetic Charging"
   description: "CADDXFPV Walnut Action Camera Magnetic Charging Part"
-}
-cameras: {
-  uuid: "7f021404-af68-45e0-851f-be186d589168"
-  id: "caddxfpv-camera-accessories-osd-menu-board"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Camera Accessories OSD Menu Board"
-}
-cameras: {
-  uuid: "9311b18b-0dd3-41bb-9ff8-60b1f0484598"
-  id: "caddxfpv-baby-ratel2-analog-camera"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Baby Ratel2 Analog Camera"
-}
-cameras: {
-  uuid: "52e1fa4a-97e2-417a-9e7e-630ef1e0a6a7"
-  id: "caddxfpv-ratel2-analog-camera"
-  manufacturer: "CADDXFPV"
-  name: "CaddxFPV Ratel2 Analog Camera"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "e2cfeb86-f048-4a2c-aac9-2dd2971f4832"
   id: "caddxfpv-ant-lite-analog-camera"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Ant Lite Analog Camera"
   description: "CADDXFPV Ant Lite Analog Camera  (FPV Cycle Edition)"
-}
-cameras: {
-  uuid: "766ada33-b048-44cb-a154-991102b73014"
-  id: "caddxfpv-ant-analog-camera"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Ant Analog Camera"
-}
+
+  weight_g: 1.7}
 cameras: {
   uuid: "c8189d00-6037-4298-b5b8-b0c05e75a9a1"
   id: "caddxfpv-camera-lens-family"
   manufacturer: "CADDXFPV"
   name: "CaddxFPV Camera Lens Family"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "08d40cf6-f781-4753-b305-e7cd9d98c382"
   id: "darwinfpv-caddx-ant-micro-fpv-camera"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV Caddx Ant  Micro FPV Camera"
-  weight_g: 2
+  weight_g: 1.7
 }
 cameras: {
   uuid: "98ea4e86-e810-43c6-8e78-f1dddf36f626"
   id: "runcam-thumb"
   manufacturer: "DarwinFPV"
   name: "RunCam Thumb"
-  weight_g: 9.8
+  weight_g: 27
 }
 cameras: {
   uuid: "d3df2154-1c3e-4bc6-aff7-9258bff0bb33"
@@ -294,96 +209,74 @@ cameras: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV Cement Ultra Durable FPV Drone"
   description: "DarwinFPV Cement Ultra Durable FPV Drone Camera"
-}
+
+  weight_g: 3}
 cameras: {
   uuid: "960ea027-3926-4d5c-8910-0c0df8c09e90"
   id: "nano-1-mini-action-fpv-camera"
   manufacturer: "DarwinFPV"
   name: "NANO 1 Mini Action FPV Camera"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "a9136de0-a6cf-4560-8ce1-2553509c636b"
   id: "darwin-129-professional-customized-camera"
   manufacturer: "DarwinFPV"
   name: "Darwin 129 Professional Customized Camera"
-  weight_g: 5
+  weight_g: 3.5
 }
 cameras: {
   uuid: "0ce4d839-208d-4dbb-8c02-1702fad02412"
   id: "newbeedrone-racespec-camera-mount"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone RaceSpec Camera Mount"
-}
+
+  weight_g: 1.3}
 cameras: {
   uuid: "f704e308-6016-47be-b3a2-40315defb4d6"
   id: "newbeedrone-whoop-training-camera-x3"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Whoop Training Camera x3"
-}
+
+  weight_g: 5.4}
 cameras: {
   uuid: "5d65add1-6cf2-4ece-b92f-48ed7f63a515"
   id: "newbeedrone-beeeye-v2-fpv-camera-10-10"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeEye V2 FPV Camera 10×10"
   description: "NewBeeDrone BeeEye V2 FPV Camera 10×10 – Ultra-Light 800 TVL"
-}
-cameras: {
-  uuid: "31209497-fc85-4d38-b573-a3b18415c131"
-  id: "newbeedrone-dji-o4-coaxial-mipi-camera"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone DJI O4 Coaxial MIPI Camera"
-  description: "NewBeeDrone DJI O4 Coaxial MIPI Camera Cable"
-}
+
+  weight_g: 19.5}
 cameras: {
   uuid: "ca07f0c5-8c5b-4b59-9ad1-90dd31e4ab25"
   id: "newbeedrone-dji-o4-pro-camera-naked"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone DJI O4 Pro Camera Naked"
   description: "NewBeeDrone DJI O4 Pro Camera Naked Kit – Lightweight FPV Mod for Drones"
-}
-cameras: {
-  uuid: "d89eee64-f7a9-49d1-b848-4eb018adbd45"
-  id: "newbeedrone-m2-screws-4mm-x5"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone M2 Screws 4mm x5"
-  description: "NewBeeDrone M2 Screws 4mm x5 for DJI Camera Mount"
-}
+
+  weight_g: 2.1}
 cameras: {
   uuid: "fc343577-630e-481f-be66-39adbafd4453"
   id: "newbeedrone-caddx-nano-ant-camera"
   manufacturer: "Caddx+NewBeeDrone"
   name: "NewBeeDrone × CADDX Nano ANT Camera"
-  weight_g: 2
+  weight_g: 1.7
   description: "NewBeeDrone × CADDX Nano ANT Camera for BLV5 - Plug-and-Play Replacement"
-}
-cameras: {
-  uuid: "81f115ff-69c3-4b1d-bf1a-c443e37263fb"
-  id: "newbeedrone-vivid-3d-printed-action-cam"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Vivid 3D Printed Action Cam"
-  description: "NewBeeDrone Vivid 3D Printed Action Cam Mount with M5 Hardware"
 }
 cameras: {
   uuid: "1ab3e82f-8995-47c0-9b7d-fc0d8fceee38"
   id: "newbeedrone-racespec-whoop-racing-camera-mount"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone RaceSpec Whoop Racing Camera Mount"
-  weight_g: 0.71
+  weight_g: 5.4
   description: "NewBeeDrone RaceSpec Whoop Racing Camera Mount 0.71g (30° or 40°)"
-}
-cameras: {
-  uuid: "b75f19ad-03e6-4423-aa1a-86b37bd5ea1e"
-  id: "newbeedrone-jst0-8-3pin-connector"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone JST0.8 3Pin Connector"
-  description: "NewBeeDrone JST0.8 3Pin Connector for BeeEye Replacement Camera Connector"
 }
 cameras: {
   uuid: "6af27f66-7583-47d6-8e2d-9d0a8bc03944"
   id: "newbeedrone-goober-canopy-camera-mount-v2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Goober Canopy Camera Mount V2"
-  weight_g: 1.47
+  weight_g: 1
 }
 cameras: {
   uuid: "8cdf6eca-77b9-47ab-94f6-063b0a670650"
@@ -391,32 +284,29 @@ cameras: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain Camera Connector Type: JST0.8mm"
   description: "NewBeeDrone BeeBrain Camera Connector Type: JST0.8mm 3Pin pack of 2"
-}
-cameras: {
-  uuid: "618304ab-021d-4e6e-8c89-cb2f16fb3dbb"
-  id: "newbeedrone-jst0-8-4pin-connector"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone JST0.8 4Pin Connector"
-  description: "NewBeeDrone JST0.8 4Pin Connector for Mark2 Camera or BeeBrain BLv3/BLv4 UART"
-}
+
+  weight_g: 1.3}
 cameras: {
   uuid: "6808473e-f92f-4651-90f5-c71d482726fc"
   id: "newbeedrone-beeeye-fpv-camera"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeEye FPV Camera"
-}
+
+  weight_g: 19.5}
 cameras: {
   uuid: "9dd13ab2-1f68-4917-bda9-d7f460346d7e"
   id: "newbeedrone-beebrain-v2-camera-color-mount"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain V2 Camera Color Mount"
-}
+
+  weight_g: 1.3}
 cameras: {
   uuid: "15655b79-be1b-46d9-acce-5cfd8d3e2f53"
   id: "aura-analog-fpv-camera"
   manufacturer: "Fat Shark"
   name: "Aura Analog FPV Camera"
-}
+
+  weight_g: 41.6}
 cameras: {
   uuid: "d050c125-a311-4d8d-a08e-5739432c2124"
   id: "dual-fpv-camera-switcher"
@@ -436,90 +326,64 @@ cameras: {
   id: "punch-shorty-dji-o4-pro-camera-mount"
   manufacturer: "Noozle3D"
   name: "Punch & Shorty DJI O4 Pro Camera Mount"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "11bfbdc7-0409-4595-952d-d3e4a7a4457f"
   id: "cinemini-dji-o4-pro-camera-mount"
   manufacturer: "Noozle3D"
   name: "CineMini DJI O4 Pro Camera Mount"
   description: "CineMini DJI O4 Pro Camera Mount for Naked GoPro Mount"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "5069afda-f6e9-42c0-b3b9-f2080c56012b"
   id: "cl2-dji-o4-pro-camera-mount"
   manufacturer: "Noozle3D"
   name: "CL2 DJI O4 Pro Camera Mount"
-}
-cameras: {
-  uuid: "dbbc56cc-7107-46c1-ae67-13a11cf91a46"
-  id: "tanq-2-s-dji-o4-pro-camera-mount"
-  manufacturer: "Noozle3D"
-  name: "TANQ 2 & S DJI O4 Pro Camera Mount"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "de46be52-cfbf-425e-aedd-a1457d502e9a"
   id: "dji-o4-air-unit-pro-camera-module"
   manufacturer: "DJI"
   name: "DJI O4 Air Unit Pro Camera Module"
-}
-cameras: {
-  uuid: "43957fcf-36b6-4cad-a47d-4f1e835c8557"
-  id: "punch-shorty-dji-vista-camera-mount"
-  manufacturer: "Noozle3D"
-  name: "Punch & Shorty DJI Vista Camera Mount"
-}
+
+  weight_g: 2.1}
 cameras: {
   uuid: "90bc0ebe-cb41-4536-9674-0c6aad999c3e"
   id: "thumb-2-action-camera-with-nd-filters"
   manufacturer: "Runcam"
   name: "Thumb 2 Action Camera with ND Filters"
-  weight_g: 27
-}
-cameras: {
-  uuid: "50212de2-1255-4a50-a0cd-2c2341413093"
-  id: "skylite-skyliner-mk3-camera-mount"
-  manufacturer: "Rotor Riot"
-  name: "Skylite / Skyliner MK3 Camera Mount"
-  description: "Skylite / Skyliner MK3 Camera Mount - MJF TPU"
+  weight_g: 49
 }
 cameras: {
   uuid: "3114717a-67c5-4e2b-8fc3-3d58080ea1e1"
   id: "vannystyle-pro-camera-plate-set"
   manufacturer: "Alex Vannover"
   name: "Vannystyle Pro Camera Plate Set"
-}
+
+  weight_g: 125}
 cameras: {
   uuid: "a930d1e1-7b1e-4511-adef-c011aaba9dab"
   id: "baby-ratel-2-camera-black"
   manufacturer: "Caddx"
   name: "Baby Ratel 2 Camera - Black"
-  weight_g: 3
-}
-cameras: {
-  uuid: "5cb2de3d-93ad-4c31-967e-d08832a2f7c2"
-  id: "tanq-2-s-protected-camera-mount"
-  manufacturer: "Noozle3D"
-  name: "TANQ 2 & S Protected Camera Mount"
-}
-cameras: {
-  uuid: "e1e9e804-f8e8-4a08-a059-9888a8000fd2"
-  id: "tanq-s-camera-cage-2-pack"
-  manufacturer: "Rotor Riot"
-  name: "TANQ S Camera Cage 2-Pack"
+  weight_g: 9.5
 }
 cameras: {
   uuid: "fdd65c94-61af-4111-86cb-dd41616220d5"
   id: "toothless-2-micro-camera-black"
   manufacturer: "Foxeer"
   name: "Toothless 2 Micro Camera - Black"
-  weight_g: 8.5
+  weight_g: 9.8
 }
 cameras: {
   uuid: "e645c235-4a6d-4bb4-9bed-5a85dfbf64ba"
   id: "action-camera-nd-filter-set"
   manufacturer: "Flywoo"
   name: "Action Camera ND Filter Set"
-  weight_g: 1.2
+  weight_g: 0.6
   description: "Action Camera ND Filter Set For Naked Gopro 12 Pro"
 }
 cameras: {
@@ -534,109 +398,28 @@ cameras: {
   id: "micro-cat-3-camera-black"
   manufacturer: "Foxeer"
   name: "Micro Cat 3 Camera - Black"
-  weight_g: 10.7
-}
-cameras: {
-  uuid: "07d2a027-da70-4013-b021-2c45dad9f38f"
-  id: "micro-night-cat-3-camera-black"
-  manufacturer: "Foxeer"
-  name: "Micro Night Cat 3 Camera - Black"
-  weight_g: 10.7
+  weight_g: 9.8
 }
 cameras: {
   uuid: "e8c881fa-68da-4f8a-bb46-d7a0ac0431e3"
   id: "tanq-2-camera-cage-set"
   manufacturer: "Rotor Riot"
   name: "TANQ 2 Camera Cage Set"
-}
-cameras: {
-  uuid: "131ac58b-5357-4cb2-8783-67777c07585e"
-  id: "tanq-2-s-camera-mounts"
-  manufacturer: "Noozle3D"
-  name: "TANQ 2 & S Camera Mounts"
-}
-cameras: {
-  uuid: "b15ee331-7b89-456b-ba9a-caff53748083"
-  id: "moongoat-camera-plate-2-pack"
-  manufacturer: "Ummagawd"
-  name: "Moongoat Camera Plate 2-Pack"
-}
-cameras: {
-  uuid: "3becfd81-6373-440f-b260-daffa12f9b20"
-  id: "cl2-air-camera-mount-choose-color"
-  manufacturer: "Noozle3D"
-  name: "CL2-AIR Camera Mount - Choose Color"
-}
-cameras: {
-  uuid: "66bcdd74-c085-4955-a562-685f00311365"
-  id: "moxy-camera-plate-protector"
-  manufacturer: "Noozle3D"
-  name: "Moxy Camera Plate Protector"
-}
-cameras: {
-  uuid: "56ba3d44-3349-40ee-ac03-6bcec073fd28"
-  id: "tanq-camera-mounts"
-  manufacturer: "Noozle3D"
-  name: "TANQ Camera Mounts"
-}
-cameras: {
-  uuid: "fca46585-6f47-4d32-ad16-65cbbcfef03b"
-  id: "tanq-camera-cage-set-choose-color"
-  manufacturer: "Rotor Riot"
-  name: "TANQ Camera Cage Set - Choose Color"
-}
-cameras: {
-  uuid: "cba53930-8bab-48d4-a217-30098f828009"
-  id: "skyliner-mk3-camera-plate"
-  manufacturer: "Rotor Riot"
-  name: "Skyliner MK3 Camera Plate"
-}
+
+  weight_g: 16}
 cameras: {
   uuid: "b96a80f6-a535-44f0-bdfa-f27818194dad"
   id: "moxy-camera-plate-choose-version"
   manufacturer: "Rotor Riot"
   name: "Moxy Camera Plate - Choose Version"
-}
-cameras: {
-  uuid: "bb63e9ca-9311-4b3a-be55-55f4c64958f0"
-  id: "link"
-  manufacturer: "Runcam"
-  name: "Link"
-  weight_g: 19.5
-  description: "Link with Falcon Nano Camera For DJI HD Video System"
-}
-cameras: {
-  uuid: "a0a11741-103a-433a-991b-ecdd3a80a6f9"
-  id: "vannystyle-replacement-cam-plates"
-  manufacturer: "Alex Vannover"
-  name: "Vannystyle Replacement Cam Plates"
-  description: "Vannystyle Replacement Cam Plates - Set of 2"
-}
-cameras: {
-  uuid: "6f3a7b2f-b16a-44c3-acd2-808a8024a5f0"
-  id: "skylite-skyliner-mk3-camera-mount-2"
-  manufacturer: "Noozle3D"
-  name: "Skylite / Skyliner MK3 Camera Mount"
-  description: "Skylite / Skyliner MK3 Camera Mount - Choose Color"
-}
-cameras: {
-  uuid: "74dddc48-d4d9-4c06-9a86-4bc0f8253b54"
-  id: "moxy-camera-mount-choose-version"
-  manufacturer: "Noozle3D"
-  name: "Moxy Camera Mount - Choose Version"
-}
-cameras: {
-  uuid: "f2ea0d79-9402-4ab0-b05c-619ba572c89f"
-  id: "cl2-camera-mounts-choose-color"
-  manufacturer: "Noozle3D"
-  name: "CL2 Camera Mounts - Choose Color"
-}
+
+  weight_g: 36.4}
 cameras: {
   uuid: "5caf807e-d322-492f-8a25-31ddae1159b4"
   id: "rc18g-1-8mm-lens"
   manufacturer: "Runcam"
   name: "RC18G 1.8mm Lens"
-  weight_g: 4.5
+  weight_g: 2
   description: "RC18G 1.8mm Lens for DJI and Phoenix Cameras"
 }
 cameras: {
@@ -644,31 +427,15 @@ cameras: {
   id: "skylite-camera-plate-choose-version"
   manufacturer: "Rotor Riot"
   name: "Skylite Camera Plate - Choose Version"
-}
+
+  weight_g: 8.5}
 cameras: {
   uuid: "2701e9b6-c2a4-49d5-9403-cc5a58a3454e"
   id: "5-injected-udp-propeller-guard-4-pack"
   manufacturer: "Stan FPV"
   name: "5 Injected UDP Propeller Guard 4-Pack"
-}
-cameras: {
-  uuid: "17cb49fb-25d4-4f01-8995-683046b32cd1"
-  id: "cinewhoop-camera-mount-3-hole"
-  manufacturer: "Noozle3D"
-  name: "Cinewhoop Camera Mount - 3 Hole"
-}
-cameras: {
-  uuid: "bc9bc593-cae9-4281-b640-8d9d1f9bab53"
-  id: "hd1-fpv-camera-mount-choose-color"
-  manufacturer: "Noozle3D"
-  name: "HD1 FPV Camera Mount - Choose Color"
-}
-cameras: {
-  uuid: "d1de500e-af8a-4faa-bc40-b20516b65867"
-  id: "cl1-camera-mounts"
-  manufacturer: "Noozle3D"
-  name: "CL1 Camera Mounts"
-}
+
+  weight_g: 2.32}
 cameras: {
   uuid: "e242a371-c30c-4416-a2ce-5a3ad0ee9097"
   id: "hq-4025-2-blade-propellers-1-5mm-shaft"
@@ -681,7 +448,7 @@ cameras: {
   id: "x-knight-canopy"
   manufacturer: "BETAFPV"
   name: "X-Knight Canopy"
-  weight_g: 3.87
+  weight_g: 142.9
 }
 cameras: {
   uuid: "15e79617-7cb9-4553-829e-ce87176fd560"
@@ -689,191 +456,94 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "Caddx Vista Digital HD System"
   description: "Caddx Vista Digital HD System for DJI HD FPV"
-}
-cameras: {
-  uuid: "3a6716a7-4634-48f3-a5a3-7d77938955e5"
-  id: "caddxfpv-mini-fpv-drone-storage-case"
-  manufacturer: "CADDXFPV"
-  name: "CaddxFPV Mini FPV Drone Storage Case"
-  description: "CaddxFPV Mini FPV Drone Storage Case for Curve Micro 16 and Tiny Whoops"
-}
-cameras: {
-  uuid: "f106cc28-1bdf-4bb0-8f02-05774f69ba84"
-  id: "caddxfpv-curve-micro-16-replacement-canopy"
-  manufacturer: "CADDXFPV"
-  name: "CaddxFPV Curve Micro 16 Replacement Canopy"
-}
-cameras: {
-  uuid: "c16ab1c6-b0ba-42c9-9f47-b2758cabb2d3"
-  id: "caddxfpv-curve-micro-16-replacement-propeller"
-  manufacturer: "CADDXFPV"
-  name: "CaddxFPV Curve Micro 16 Replacement Propeller"
-  description: "CaddxFPV Curve Micro 16 Replacement Propeller Set"
-}
-cameras: {
-  uuid: "03db595b-a912-4a87-a284-8417be1dbae5"
-  id: "caddxfpv-curve-micro-16-hd-tiny-whoop"
-  manufacturer: "CADDXFPV"
-  name: "CaddxFPV Curve Micro 16 HD Tiny Whoop"
-}
+
+  weight_g: 66.9}
 cameras: {
   uuid: "d5b69557-aaad-4ad4-a527-f6567d753004"
   id: "caddxfpv-custom-sticker-free-gift"
   manufacturer: "CADDX FPV"
   name: "CaddxFPV Custom Sticker - Free Gift"
-}
+
+  weight_g: 67}
 cameras: {
   uuid: "165f5240-8b21-4c9d-8fcb-eb07a0d4ef40"
   id: "caddxfpv-sticker"
   manufacturer: "CADDX FPV"
   name: "CaddxFPV Sticker"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "0c466031-28e4-4343-be01-0acb80c2b466"
   id: "caddxfpv-hq-3-blade-propeller-set"
   manufacturer: "CADDX FPV"
   name: "CaddxFPV HQ 3-Blade Propeller Set"
   description: "CaddxFPV HQ 3-Blade Propeller Set (2CW + 2CCW)"
-}
-cameras: {
-  uuid: "3e11fa48-ea35-413e-a79e-07b695febb41"
-  id: "caddxfpv-logo-keychain"
-  manufacturer: "CADDX FPV"
-  name: "CaddxFPV Logo Keychain"
-}
-cameras: {
-  uuid: "8ee6bae1-b46d-4a63-8144-c94d80abfbf8"
-  id: "caddxfpv-logo-neck-strap"
-  manufacturer: "CADDX FPV"
-  name: "CaddxFPV Logo Neck Strap"
-}
+
+  weight_g: 5}
 cameras: {
   uuid: "b34abce8-2792-4f77-8637-afa714ed0fa0"
   id: "caddxfpv-protos-sticker"
   manufacturer: "CADDX FPV"
   name: "CaddxFPV Protos Sticker"
-}
-cameras: {
-  uuid: "bc304eb6-1ae9-4096-8d2b-27bcdcacf6b5"
-  id: "caddxfpv-logo-pullover-hoodie"
-  manufacturer: "CADDX FPV"
-  name: "CaddxFPV Logo Pullover Hoodie"
-}
-cameras: {
-  uuid: "071d8dea-bd00-418b-a006-efd3cdfee6b8"
-  id: "caddxfpv-logo-half-zip-sweatshirt"
-  manufacturer: "CADDX FPV"
-  name: "CaddxFPV Logo Half-Zip Sweatshirt"
-}
+
+  weight_g: 104.4}
 cameras: {
   uuid: "9deab3b5-cb71-4336-9805-b51ea6b54d96"
   id: "caddxfpv-logo-tee"
   manufacturer: "CADDX FPV"
   name: "CaddxFPV Logo Tee"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "bcf91dbe-67b4-40dd-ad04-c068d93a8303"
   id: "caddxfpv-logo-cap"
   manufacturer: "CADDX FPV"
   name: "CaddxFPV Logo Cap"
-}
-cameras: {
-  uuid: "037683e7-68f8-470d-ace6-75f3dd2e4207"
-  id: "caddxfpv-protos-1-6-fpv-drone"
-  manufacturer: "CADDX FPV"
-  name: "CaddxFPV Protos 1.6 FPV Drone"
-}
-cameras: {
-  uuid: "96efb3cf-9129-4d77-a044-925dc3a2aa51"
-  id: "caddxfpv-protos-2s-charger"
-  manufacturer: "CADDXFPV"
-  name: "CaddxFPV Protos 2S Charger"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "aa9df92b-661f-4480-a762-dddcd78a0012"
   id: "caddxfpv-gofilm-20-power-cord-xt30"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Gofilm 20 Power Cord XT30"
-}
+
+  weight_g: 38.5}
 cameras: {
   uuid: "591cec5a-7e3a-4593-b3fb-ea55447e8a24"
   id: "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount"
   description: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount Propeller Set (2x CW / 2x CCW)"
-}
+
+  weight_g: 1.5}
 cameras: {
   uuid: "a320ffc5-2ebc-4b21-b600-07a41271cc7a"
   id: "caddxfpv-canvas-tote-bag"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Canvas Tote Bag"
-}
+
+  weight_g: 160}
 cameras: {
   uuid: "9b0c01d0-8fe8-4a57-94d6-c714fc746a5e"
   id: "caddxfpv-banner"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Banner"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "37e24bae-086a-4c98-9b7f-750cd182f2a1"
   id: "caddxfpv-circle"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Circle"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "15d527ba-42f6-43f7-8b2a-47a07701b5a3"
   id: "caddxfpv-arches"
   manufacturer: "CADDXFPV"
   name: "CADDXFPV Arches"
-}
-cameras: {
-  uuid: "2176d8a1-b421-4203-a825-224e986f9dad"
-  id: "caddxfpv-t-shirt"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV T-Shirt"
-}
-cameras: {
-  uuid: "a18e43b3-4672-42b3-9ac6-00f2e8351467"
-  id: "caddxfpv-walnut-mounting-case"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Walnut Mounting Case"
-}
-cameras: {
-  uuid: "893e24fe-7099-445c-96a8-1ff741141e44"
-  id: "pcba-caddx-walnut-external-charging-board"
-  manufacturer: "CADDXFPV"
-  name: "PCBA Caddx Walnut External Charging Board"
-}
-cameras: {
-  uuid: "6518f2e5-9cfb-464b-9d83-72c22592ed83"
-  id: "caddxfpv-silicon-cable"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Silicon Cable"
-}
-cameras: {
-  uuid: "1a2de312-20ca-40af-9077-c884f50c1d52"
-  id: "caddxfpv-cap"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Cap"
-}
-cameras: {
-  uuid: "3ab53756-c030-4945-8d7c-6c080325170d"
-  id: "caddxfpv-coaxial-cable-for-vista"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Coaxial Cable For Vista"
-}
-cameras: {
-  uuid: "bc218fad-5f08-4497-b84a-e487a2aa56d6"
-  id: "newbeedrone-whirligig-v2-replacement-parts"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Whirligig V2 Replacement Parts"
-}
-cameras: {
-  uuid: "271b1190-3649-4d8d-8985-8fe9124c79bc"
-  id: "kwad-crew-gift-card"
-  manufacturer: "Rotor Riot Gift Card"
-  name: "Kwad Crew Gift Card"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "a56cc1ef-2ff3-4aa0-8a66-d7eebe1182ec"
   id: "donut-5145-toroidal-5-props"
@@ -887,62 +557,22 @@ cameras: {
   id: "rotor-riot-kwad-crew-annual-membership"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot Kwad Crew Annual Membership"
-}
-cameras: {
-  uuid: "7ba44226-8b46-4a39-bea2-cba2940a97bf"
-  id: "caddx-coaxial-mipi-cable"
-  manufacturer: "Caddx"
-  name: "Caddx Coaxial MIPI Cable"
-  description: "Caddx Coaxial MIPI Cable for Air Unit Micro (15cm)"
-}
-cameras: {
-  uuid: "76b58ea7-3a54-4752-8934-5d8837016acc"
-  id: "caddx-coaxial-mipi-cable-2"
-  manufacturer: "Caddx"
-  name: "Caddx Coaxial MIPI Cable"
-  description: "Caddx Coaxial MIPI Cable for Vista - Choose Version"
-}
+
+  weight_g: 30}
 cameras: {
   uuid: "e5427a2c-26e9-49a1-972e-61882c2378a6"
   id: "hglrc-l-series-cameras-low-latency-night"
   manufacturer: "HGLRC"
   name: "HGLRC L-series cameras low latency night"
   description: "HGLRC L-series cameras low latency night vision for FPV Drone"
-}
-cameras: {
-  uuid: "011cab03-9529-43d0-b2ca-bddd5e2566c9"
-  id: "hglrc-silicone-shock-absorber"
-  manufacturer: "HGLRC"
-  name: "HGLRC Silicone Shock Absorber"
-  weight_g: 1.5
-  description: "HGLRC Silicone Shock Absorber for FPV Drone Action Camera Mount"
-}
-cameras: {
-  uuid: "e8d86684-4922-40f1-ab8d-c23ff3651fdd"
-  id: "dji-o4-pro-coaxial-camera-cable"
-  manufacturer: "DJI"
-  name: "DJI O4 Pro Coaxial Camera Cable"
-}
-cameras: {
-  uuid: "d5471307-7d9c-4561-bbd9-96974f7454e1"
-  id: "atlas-4-flash-1804-hq-t4x2x3-bundle-kit"
-  manufacturer: "FlyFishRC"
-  name: "Atlas 4 Flash 1804 HQ T4x2x3 Bundle Kit"
-  weight_g: 55.6
-}
-cameras: {
-  uuid: "65ead124-fe05-4570-bbe2-4b5cec5e8589"
-  id: "tony5-flash-2004-hq-t5x3-bundle-kit"
-  manufacturer: "FlyFishRC"
-  name: "TONY5 Flash 2004 HQ T5x3 Bundle Kit"
-  weight_g: 57
-}
+
+  weight_g: 11.8}
 cameras: {
   uuid: "a6fdb2e3-b95f-4383-833f-9d849df28234"
   id: "runcam-air-unit-wasp-digital-hd"
   manufacturer: "FlyFish-RC"
   name: "RUNCAM Air Unit Wasp Digital HD"
-  weight_g: 33
+  weight_g: 236.6
   description: "RUNCAM Air Unit Wasp Digital HD FPV Camera System"
 }
 cameras: {
@@ -950,15 +580,8 @@ cameras: {
   id: "runcam-link-wasp-digital-hd-fpv"
   manufacturer: "FlyFish-RC"
   name: "RunCam Link Wasp Digital HD FPV"
-  weight_g: 19.5
+  weight_g: 236.6
   description: "RunCam Link Wasp Digital HD FPV Camera System"
-}
-cameras: {
-  uuid: "bfcf6004-d456-414d-a557-6248c309610e"
-  id: "dji-fpv-goggles-v2"
-  manufacturer: "DJI"
-  name: "DJI FPV Goggles V2"
-  weight_g: 420
 }
 cameras: {
   uuid: "3de0cd41-8385-44c2-958e-ecddf4dc1fbe"
@@ -973,52 +596,44 @@ cameras: {
   id: "caddx-camera-for-whoopfly16-nimble65"
   manufacturer: "Sub250"
   name: "Caddx  Camera for Whoopfly16 Nimble65"
-}
+
+  weight_g: 5.9}
 cameras: {
   uuid: "e83a5635-68e6-4708-9e8c-154750033395"
   id: "caddx-walnut-fpv-action-camera"
   manufacturer: "Caddx"
   name: "Caddx Walnut FPV Action Camera"
-  weight_g: 62.8
+  weight_g: 5.9
 }
 cameras: {
   uuid: "275a68ac-a872-4fed-860b-4535d696b527"
   id: "caddx-ant-analog-camera-for-nanofly16"
   manufacturer: "sub250"
   name: "Caddx Ant Analog Camera for Nanofly16"
-}
+
+  weight_g: 2}
 cameras: {
   uuid: "8334ca23-ce9f-42ac-baa1-1a862ccd11ff"
   id: "caddx-ant-lite-4-3-fpv-camera"
   manufacturer: "FPVCycle"
   name: "Caddx Ant Lite 4:3 FPV Camera"
   description: "Caddx Ant Lite 4:3 FPV Camera - FPVCycle Edition"
-}
-cameras: {
-  uuid: "2663139f-1c39-4d6c-9bfd-c9d17fd49140"
-  id: "cineglide-camera-pod-lower-brace"
-  manufacturer: "FPVCycle"
-  name: "CineGlide - Camera Pod Lower Brace"
-}
+
+  weight_g: 1.7}
 cameras: {
   uuid: "9ea9df99-9f44-47b7-8f55-7b16a09cd050"
   id: "fpvcycle-nd-filter"
   manufacturer: "FPVCycle"
   name: "FPVCycle ND Filter"
   description: "FPVCycle ND Filter for GoPro and other Cameras - ND16 - 2 Pack"
-}
-cameras: {
-  uuid: "94f39759-be4f-41fd-8e2e-dfc310d84109"
-  id: "cineglide-5"
-  manufacturer: "FPVCycle"
-  name: "CineGlide - 5"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "f49bc7c3-45f7-4799-b0cb-1f3bcbeebc23"
   id: "beebrain-v2-camera-mount-and-canopy"
   manufacturer: "FPVCycle"
   name: "BeeBrain V2 Camera Mount and Canopy"
-  weight_g: 1.3
+  weight_g: 1
 }
 cameras: {
   uuid: "3952e2c1-5183-437a-925a-150b9cb3199b"
@@ -1027,7 +642,8 @@ cameras: {
   name: "C04 Camera and VTX Module"
   is_internal_only: true
   description: "C04 Camera and VTX Module (Internal Camera)"
-}
+
+  weight_g: 1.45}
 cameras: {
   uuid: "7839bc63-6106-48cd-9efe-6f222eac2c34"
   id: "betafpv-nd-filter"
@@ -1035,7 +651,8 @@ cameras: {
   name: "BETAFPV ND Filter"
   is_internal_only: true
   description: "BETAFPV ND Filter for DJI O3 Camera (Internal Camera)"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "b4b13a52-cb5e-4cc5-bf10-019917d51098"
   id: "cetus-lite-camera-and-vtx-module-2"
@@ -1043,7 +660,8 @@ cameras: {
   name: "Cetus Lite Camera and VTX Module"
   is_internal_only: true
   description: "Cetus Lite Camera and VTX Module (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "31edf0b8-ee1d-4ad5-8d0a-771aa988922e"
   id: "micro-canopy"
@@ -1051,7 +669,8 @@ cameras: {
   name: "Micro Canopy"
   is_internal_only: true
   description: "Micro Canopy for HD Camera (Internal Camera)"
-}
+
+  weight_g: 2.66}
 cameras: {
   uuid: "893cb6df-2165-4651-9513-03f9d7149723"
   id: "canopy"
@@ -1059,14 +678,16 @@ cameras: {
   name: "Canopy"
   is_internal_only: true
   description: "Canopy for Micro Camera 2022 (Internal Camera)"
-}
+
+  weight_g: 2.66}
 cameras: {
   uuid: "3ae6147a-62c0-41af-807b-498187ad1841"
   id: "internal-cam-0e66cabf-e465-4b43-a227-99c191abeb83"
   manufacturer: "BETAFPV"
   name: "Z01 Camera VTX Holder (Internal Camera)"
   is_internal_only: true
-}
+
+  weight_g: 4.14}
 cameras: {
   uuid: "affe1a98-59c1-4995-9557-024ba6ac663b"
   id: "h01-aio-camera-5-8g-25mw-vtx-2"
@@ -1074,7 +695,8 @@ cameras: {
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
   description: "H01 AIO Camera 5.8G 25mW VTX (Internal Camera)"
-}
+
+  weight_g: 32}
 cameras: {
   uuid: "a9840e42-a32f-405e-a506-e088b7e9b3c9"
   id: "walksnail-camera-nd-filter-2"
@@ -1082,15 +704,8 @@ cameras: {
   name: "Walksnail Camera ND Filter"
   is_internal_only: true
   description: "Walksnail Camera ND Filter (Internal Camera)"
-}
-cameras: {
-  uuid: "cfc505ed-3ad3-4c02-8e58-a695d07aefe9"
-  id: "walksnail-moonlight-camera-only-2"
-  manufacturer: "CADDXFPV"
-  name: "Walksnail Moonlight Camera Only"
-  is_internal_only: true
-  description: "Walksnail Moonlight Camera Only (Internal Camera)"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "efc0f4d9-c140-4c9a-a16d-4f4f21891ed2"
   id: "walksnail-avatar-hd-nano-camera-v3-2"
@@ -1098,7 +713,8 @@ cameras: {
   name: "Walksnail Avatar HD Nano Camera  V3"
   is_internal_only: true
   description: "Walksnail Avatar HD Nano Camera  V3 (Internal Camera)"
-}
+
+  weight_g: 3}
 cameras: {
   uuid: "fd823327-4899-463a-8aaf-cb77832924ad"
   id: "walksnail-avatar-hd-camera-v2-2"
@@ -1106,7 +722,8 @@ cameras: {
   name: "Walksnail Avatar HD Camera V2"
   is_internal_only: true
   description: "Walksnail Avatar HD Camera V2 (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "8ebbe145-186c-47e0-86f8-cca28ff6100c"
   id: "tbs-crossfire-micro-tx-v2-transmitter-2"
@@ -1114,15 +731,8 @@ cameras: {
   name: "TBS Crossfire Micro TX V2 Transmitter"
   is_internal_only: true
   description: "TBS Crossfire Micro TX V2 Transmitter Module - NDAA (Internal Camera)"
-}
-cameras: {
-  uuid: "b6352669-d476-4bc3-b352-977059cdfe89"
-  id: "cinemini-standard-camera-mount-2"
-  manufacturer: "Noozle3D"
-  name: "CineMini Standard Camera Mount"
-  is_internal_only: true
-  description: "CineMini Standard Camera Mount for Naked GoPro Mount (Internal Camera)"
-}
+
+  weight_g: 0.5}
 cameras: {
   uuid: "a3e1de00-ce8d-4de5-9568-75f87ec72a72"
   id: "punch-shorty-avatar-v2-dji-o3-2"
@@ -1130,7 +740,8 @@ cameras: {
   name: "Punch & Shorty Avatar V2/DJI O3"
   is_internal_only: true
   description: "Punch & Shorty Avatar V2/DJI O3 Camera Mount (Internal Camera)"
-}
+
+  weight_g: 390}
 cameras: {
   uuid: "76fa078d-0b74-4ecb-bdf2-627df586c1fc"
   id: "avatar-hd-moonlight-camera"
@@ -1138,7 +749,8 @@ cameras: {
   name: "Avatar HD Moonlight Camera"
   is_internal_only: true
   description: "Avatar HD Moonlight Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "0397717f-d7b4-4fb0-9db7-0dd1b03f0b95"
   id: "avatar-hd-moonlight-vtx-module-2"
@@ -1146,7 +758,8 @@ cameras: {
   name: "Avatar HD Moonlight VTX Module"
   is_internal_only: true
   description: "Avatar HD Moonlight VTX Module - Without Camera For Avatar HD Video System (Internal Camera)"
-}
+
+  weight_g: 41.6}
 cameras: {
   uuid: "b41d2102-c94d-48f0-86b2-7d8be89c77de"
   id: "skylite-skyliner-mk3-dji-o3-6"
@@ -1154,47 +767,8 @@ cameras: {
   name: "Skylite / Skyliner MK3 DJI O3"
   is_internal_only: true
   description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - MJF TPU (Internal Camera)"
-}
-cameras: {
-  uuid: "c3890a37-20f8-41e7-a0df-e72917da4ea4"
-  id: "skylite-skyliner-mk3-avatar-v2-7"
-  manufacturer: "Rotor Riot"
-  name: "Skylite / Skyliner MK3 Avatar V2"
-  is_internal_only: true
-  description: "Skylite / Skyliner MK3 Avatar V2 Pro Camera Mount - MJF TPU (Internal Camera)"
-}
-cameras: {
-  uuid: "3ca6093a-383a-4810-b3fc-ed843c615068"
-  id: "vista-vtx-2"
-  manufacturer: "Caddx"
-  name: "Vista VTX"
-  is_internal_only: true
-  description: "Vista VTX with Nebula Pro Nano Camera For DJI HD Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "10d16e50-3d31-4cc4-9123-5c268b8bf792"
-  id: "skylite-skyliner-mk3-avatar-v2-8"
-  manufacturer: "Noozle3D"
-  name: "Skylite / Skyliner MK3 Avatar V2"
-  is_internal_only: true
-  description: "Skylite / Skyliner MK3 Avatar V2 Pro Camera Mount - Choose Color (Internal Camera)"
-}
-cameras: {
-  uuid: "564421a7-7c50-41d4-ac2a-288a9713ffcd"
-  id: "avatar-hd-nano-camera-v3"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Nano Camera V3"
-  is_internal_only: true
-  description: "Avatar HD Nano Camera V3 with Cable (Internal Camera)"
-}
-cameras: {
-  uuid: "f043ef0b-e8bf-4352-b6ee-3eeded912be3"
-  id: "x-air-5-8-mkii-core-5-8-2"
-  manufacturer: "TrueRC"
-  name: "X²-Air 5.8 MKII & Core 5.8"
-  is_internal_only: true
-  description: "X²-Air 5.8 MKII & Core 5.8 Antenna Combo for Dominator HD Goggles (Internal Camera)"
-}
+
+  weight_g: 36.4}
 cameras: {
   uuid: "6c32270a-28c6-4c48-b109-5319a46cab3b"
   id: "avatar-mini-1s-vtx-6"
@@ -1202,23 +776,8 @@ cameras: {
   name: "Avatar Mini 1S VTX"
   is_internal_only: true
   description: "Avatar Mini 1S VTX Without Camera for Avatar HD Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "f3e757b8-5811-4c69-b505-cc84746484b5"
-  id: "avatar-hd-pro-replacement-camera-lens-2"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Pro Replacement Camera Lens"
-  is_internal_only: true
-  description: "Avatar HD Pro Replacement Camera Lens (Internal Camera)"
-}
-cameras: {
-  uuid: "78a0c4fb-b84c-4591-8c54-d16b93f89536"
-  id: "dji-o3-air-unit-camera-module-2"
-  manufacturer: "DJI"
-  name: "DJI O3 Air Unit Camera Module"
-  is_internal_only: true
-  description: "DJI O3 Air Unit Camera Module (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "b71f5bda-a749-46db-b18b-ec41078d33fe"
   id: "avatar-hd-lite-camera"
@@ -1226,7 +785,8 @@ cameras: {
   name: "Avatar HD Lite Camera"
   is_internal_only: true
   description: "Avatar HD Lite Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "5638698c-925e-4d7a-ac25-6ac0e2a32dc1"
   id: "avatar-hd-pro-camera"
@@ -1234,7 +794,8 @@ cameras: {
   name: "Avatar HD Pro Camera"
   is_internal_only: true
   description: "Avatar HD Pro Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 9.5}
 cameras: {
   uuid: "2c64a195-38b7-4cb7-ae95-ffa50ab633b2"
   id: "avatar-hd-camera-v2"
@@ -1242,39 +803,8 @@ cameras: {
   name: "Avatar HD Camera V2"
   is_internal_only: true
   description: "Avatar HD Camera V2 with Cable (Internal Camera)"
-}
-cameras: {
-  uuid: "343072b9-be68-4558-8cff-4fd98a086106"
-  id: "vision40-1s-lite-camera-adapter-2"
-  manufacturer: "Noozle3D"
-  name: "Vision40 1S Lite Camera Adapter"
-  is_internal_only: true
-  description: "Vision40 1S Lite Camera Adapter (Internal Camera)"
-}
-cameras: {
-  uuid: "cbc3d161-a82a-4616-9cda-a455899628cb"
-  id: "moxy-dji-o3-camera-mount-2"
-  manufacturer: "Noozle3D"
-  name: "Moxy DJI O3 Camera Mount"
-  is_internal_only: true
-  description: "Moxy DJI O3 Camera Mount (Internal Camera)"
-}
-cameras: {
-  uuid: "76e2c1e6-500f-4c38-b303-3344f6982b8e"
-  id: "reaper-nano-25-350mw-vtx-2"
-  manufacturer: "Foxeer"
-  name: "Reaper Nano 25-350mW VTX"
-  is_internal_only: true
-  description: "Reaper Nano 25-350mW VTX for Analog Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "b9aa6d79-7a27-4acf-95a9-7efac4cb8039"
-  id: "tanq-dji-o3-camera-mount-2"
-  manufacturer: "Noozle3D"
-  name: "TANQ DJI O3 Camera Mount"
-  is_internal_only: true
-  description: "TANQ DJI O3 Camera Mount (Internal Camera)"
-}
+
+  weight_g: 9.5}
 cameras: {
   uuid: "84db6a38-680a-4e18-bba7-4c5759d8a9d9"
   id: "skylite-skyliner-mk3-dji-o3-7"
@@ -1282,23 +812,8 @@ cameras: {
   name: "Skylite / Skyliner MK3 DJI O3"
   is_internal_only: true
   description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - Choose Color (Internal Camera)"
-}
-cameras: {
-  uuid: "855e5a67-b26c-4208-8a6d-4c46a3431a73"
-  id: "avatar-hd-replacement-camera-lens-2"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Replacement Camera Lens"
-  is_internal_only: true
-  description: "Avatar HD Replacement Camera Lens - Choose Version (Internal Camera)"
-}
-cameras: {
-  uuid: "f2acedc7-4f6f-4f3b-8786-c581c312ca3b"
-  id: "avatar-hd-replacement-camera-2"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Replacement Camera"
-  is_internal_only: true
-  description: "Avatar HD Replacement Camera with Cable - Choose Version (Internal Camera)"
-}
+
+  weight_g: 8.3}
 cameras: {
   uuid: "c6042efb-d2fc-464f-a6fa-4a1a11986e9a"
   id: "c04-camera-and-vtx-module-3"
@@ -1306,7 +821,8 @@ cameras: {
   name: "C04 Camera and VTX Module"
   is_internal_only: true
   description: "C04 Camera and VTX Module (Internal Camera)"
-}
+
+  weight_g: 1.45}
 cameras: {
   uuid: "7bb59852-4441-42f2-a39a-3946eb3e6434"
   id: "betafpv-nd-filter-2"
@@ -1314,7 +830,8 @@ cameras: {
   name: "BETAFPV ND Filter"
   is_internal_only: true
   description: "BETAFPV ND Filter for DJI O3 Camera (Internal Camera)"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "7fef63f6-221b-49a7-a75c-6a7e1c3117ea"
   id: "cetus-lite-camera-and-vtx-module-3"
@@ -1322,7 +839,8 @@ cameras: {
   name: "Cetus Lite Camera and VTX Module"
   is_internal_only: true
   description: "Cetus Lite Camera and VTX Module (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "f100cbef-80b3-4adf-bf6f-c5a01802b527"
   id: "micro-canopy-2"
@@ -1330,7 +848,8 @@ cameras: {
   name: "Micro Canopy"
   is_internal_only: true
   description: "Micro Canopy for HD Camera (Internal Camera)"
-}
+
+  weight_g: 2.66}
 cameras: {
   uuid: "72e5c3c6-aabd-4155-8d42-317a64e7380b"
   id: "canopy-2"
@@ -1338,14 +857,16 @@ cameras: {
   name: "Canopy"
   is_internal_only: true
   description: "Canopy for Micro Camera 2022 (Internal Camera)"
-}
+
+  weight_g: 2.66}
 cameras: {
   uuid: "6d7af870-5146-489c-9f5e-b41fef31f5e9"
   id: "internal-cam-6f5303f0-18e4-40e3-b3ff-3ab57c5fed2a"
   manufacturer: "BETAFPV"
   name: "Z01 Camera VTX Holder (Internal Camera)"
   is_internal_only: true
-}
+
+  weight_g: 4.14}
 cameras: {
   uuid: "d6e24edc-371b-437d-9479-1902bbd1620b"
   id: "h01-aio-camera-5-8g-25mw-vtx-3"
@@ -1353,7 +874,8 @@ cameras: {
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
   description: "H01 AIO Camera 5.8G 25mW VTX (Internal Camera)"
-}
+
+  weight_g: 32}
 cameras: {
   uuid: "a8d3c4e2-00a1-40bd-953e-29b140fe52b8"
   id: "walksnail-camera-nd-filter-3"
@@ -1361,15 +883,8 @@ cameras: {
   name: "Walksnail Camera ND Filter"
   is_internal_only: true
   description: "Walksnail Camera ND Filter (Internal Camera)"
-}
-cameras: {
-  uuid: "6de4f965-8a5a-46ff-b313-9cc9a50f43bd"
-  id: "walksnail-moonlight-camera-only-3"
-  manufacturer: "CADDXFPV"
-  name: "Walksnail Moonlight Camera Only"
-  is_internal_only: true
-  description: "Walksnail Moonlight Camera Only (Internal Camera)"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "6050bc22-e8ac-41b8-8982-b561f9f8999c"
   id: "walksnail-avatar-hd-nano-camera-v3-3"
@@ -1377,7 +892,8 @@ cameras: {
   name: "Walksnail Avatar HD Nano Camera  V3"
   is_internal_only: true
   description: "Walksnail Avatar HD Nano Camera  V3 (Internal Camera)"
-}
+
+  weight_g: 3}
 cameras: {
   uuid: "7efe74ac-6926-42cf-916a-d31efd76775d"
   id: "walksnail-avatar-hd-camera-v2-3"
@@ -1385,7 +901,8 @@ cameras: {
   name: "Walksnail Avatar HD Camera V2"
   is_internal_only: true
   description: "Walksnail Avatar HD Camera V2 (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "bf715803-5971-478c-afbc-76cb9aa67bfa"
   id: "tbs-crossfire-micro-tx-v2-transmitter-3"
@@ -1393,15 +910,8 @@ cameras: {
   name: "TBS Crossfire Micro TX V2 Transmitter"
   is_internal_only: true
   description: "TBS Crossfire Micro TX V2 Transmitter Module - NDAA (Internal Camera)"
-}
-cameras: {
-  uuid: "4d0615c8-3fc9-4fa2-9c03-9df2133b9e11"
-  id: "cinemini-standard-camera-mount-3"
-  manufacturer: "Noozle3D"
-  name: "CineMini Standard Camera Mount"
-  is_internal_only: true
-  description: "CineMini Standard Camera Mount for Naked GoPro Mount (Internal Camera)"
-}
+
+  weight_g: 0.5}
 cameras: {
   uuid: "ec9cc6f1-f291-47b6-bf10-b4add14da0cf"
   id: "punch-shorty-avatar-v2-dji-o3-3"
@@ -1409,7 +919,8 @@ cameras: {
   name: "Punch & Shorty Avatar V2/DJI O3"
   is_internal_only: true
   description: "Punch & Shorty Avatar V2/DJI O3 Camera Mount (Internal Camera)"
-}
+
+  weight_g: 390}
 cameras: {
   uuid: "a5e2eeaf-9076-4350-83cc-49f78bc57cb9"
   id: "avatar-hd-moonlight-camera-2"
@@ -1417,7 +928,8 @@ cameras: {
   name: "Avatar HD Moonlight Camera"
   is_internal_only: true
   description: "Avatar HD Moonlight Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "0a5453e2-f073-4e8d-89be-b8b8d81df47b"
   id: "avatar-hd-moonlight-vtx-module-3"
@@ -1425,7 +937,8 @@ cameras: {
   name: "Avatar HD Moonlight VTX Module"
   is_internal_only: true
   description: "Avatar HD Moonlight VTX Module - Without Camera For Avatar HD Video System (Internal Camera)"
-}
+
+  weight_g: 41.6}
 cameras: {
   uuid: "2c5b6146-2e5b-42c6-8a5d-ade3fc03c1c8"
   id: "skylite-skyliner-mk3-dji-o3-8"
@@ -1433,47 +946,8 @@ cameras: {
   name: "Skylite / Skyliner MK3 DJI O3"
   is_internal_only: true
   description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - MJF TPU (Internal Camera)"
-}
-cameras: {
-  uuid: "c15846fa-2981-42b7-9041-4afd36ba28f2"
-  id: "skylite-skyliner-mk3-avatar-v2-9"
-  manufacturer: "Rotor Riot"
-  name: "Skylite / Skyliner MK3 Avatar V2"
-  is_internal_only: true
-  description: "Skylite / Skyliner MK3 Avatar V2 Pro Camera Mount - MJF TPU (Internal Camera)"
-}
-cameras: {
-  uuid: "7a55aae4-b921-48d3-8ae5-b8a64e20285b"
-  id: "vista-vtx-3"
-  manufacturer: "Caddx"
-  name: "Vista VTX"
-  is_internal_only: true
-  description: "Vista VTX with Nebula Pro Nano Camera For DJI HD Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "26c61360-0b4c-427b-be2f-5b7bed3dccb4"
-  id: "skylite-skyliner-mk3-avatar-v2-10"
-  manufacturer: "Noozle3D"
-  name: "Skylite / Skyliner MK3 Avatar V2"
-  is_internal_only: true
-  description: "Skylite / Skyliner MK3 Avatar V2 Pro Camera Mount - Choose Color (Internal Camera)"
-}
-cameras: {
-  uuid: "e2b62156-e6a9-4926-89e7-bbddc085436e"
-  id: "avatar-hd-nano-camera-v3-2"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Nano Camera V3"
-  is_internal_only: true
-  description: "Avatar HD Nano Camera V3 with Cable (Internal Camera)"
-}
-cameras: {
-  uuid: "7f94d3b0-0c9e-47e1-9a2b-08e7240cda26"
-  id: "x-air-5-8-mkii-core-5-8-3"
-  manufacturer: "TrueRC"
-  name: "X²-Air 5.8 MKII & Core 5.8"
-  is_internal_only: true
-  description: "X²-Air 5.8 MKII & Core 5.8 Antenna Combo for Dominator HD Goggles (Internal Camera)"
-}
+
+  weight_g: 36.4}
 cameras: {
   uuid: "92b1f38d-ea33-49dd-b82b-34ec7e3e5c57"
   id: "avatar-mini-1s-vtx-7"
@@ -1481,23 +955,8 @@ cameras: {
   name: "Avatar Mini 1S VTX"
   is_internal_only: true
   description: "Avatar Mini 1S VTX Without Camera for Avatar HD Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "414b3e5a-b832-46b8-b3dd-f8db450243ae"
-  id: "avatar-hd-pro-replacement-camera-lens-3"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Pro Replacement Camera Lens"
-  is_internal_only: true
-  description: "Avatar HD Pro Replacement Camera Lens (Internal Camera)"
-}
-cameras: {
-  uuid: "5bd625f8-87c8-4e8e-ab67-779ea433ea84"
-  id: "dji-o3-air-unit-camera-module-3"
-  manufacturer: "DJI"
-  name: "DJI O3 Air Unit Camera Module"
-  is_internal_only: true
-  description: "DJI O3 Air Unit Camera Module (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "465cf3e3-eb90-42a8-b099-5e7af8847128"
   id: "avatar-hd-lite-camera-2"
@@ -1505,7 +964,8 @@ cameras: {
   name: "Avatar HD Lite Camera"
   is_internal_only: true
   description: "Avatar HD Lite Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "9e4b6a0f-04fb-493d-8a76-ef31a5d0df92"
   id: "avatar-hd-pro-camera-2"
@@ -1513,7 +973,8 @@ cameras: {
   name: "Avatar HD Pro Camera"
   is_internal_only: true
   description: "Avatar HD Pro Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 9.5}
 cameras: {
   uuid: "52a630a1-9ce3-4713-8fba-a823eb862443"
   id: "avatar-hd-camera-v2-2"
@@ -1521,39 +982,8 @@ cameras: {
   name: "Avatar HD Camera V2"
   is_internal_only: true
   description: "Avatar HD Camera V2 with Cable (Internal Camera)"
-}
-cameras: {
-  uuid: "78d7df7d-b322-4d85-8035-5f957538358e"
-  id: "vision40-1s-lite-camera-adapter-3"
-  manufacturer: "Noozle3D"
-  name: "Vision40 1S Lite Camera Adapter"
-  is_internal_only: true
-  description: "Vision40 1S Lite Camera Adapter (Internal Camera)"
-}
-cameras: {
-  uuid: "3b1bc672-8ef9-47d7-8094-e6cc123ac547"
-  id: "moxy-dji-o3-camera-mount-3"
-  manufacturer: "Noozle3D"
-  name: "Moxy DJI O3 Camera Mount"
-  is_internal_only: true
-  description: "Moxy DJI O3 Camera Mount (Internal Camera)"
-}
-cameras: {
-  uuid: "2095bf2a-c4d2-47bc-9bf5-c403aebea484"
-  id: "reaper-nano-25-350mw-vtx-3"
-  manufacturer: "Foxeer"
-  name: "Reaper Nano 25-350mW VTX"
-  is_internal_only: true
-  description: "Reaper Nano 25-350mW VTX for Analog Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "62f8ed63-bbf3-448b-8ac7-ce57d9a40be0"
-  id: "tanq-dji-o3-camera-mount-3"
-  manufacturer: "Noozle3D"
-  name: "TANQ DJI O3 Camera Mount"
-  is_internal_only: true
-  description: "TANQ DJI O3 Camera Mount (Internal Camera)"
-}
+
+  weight_g: 9.5}
 cameras: {
   uuid: "2710a442-d640-49c3-bb75-fb18702ac6f7"
   id: "skylite-skyliner-mk3-dji-o3-9"
@@ -1561,23 +991,8 @@ cameras: {
   name: "Skylite / Skyliner MK3 DJI O3"
   is_internal_only: true
   description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - Choose Color (Internal Camera)"
-}
-cameras: {
-  uuid: "da7cceff-8af6-4114-8f59-88ab634495f8"
-  id: "avatar-hd-replacement-camera-lens-3"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Replacement Camera Lens"
-  is_internal_only: true
-  description: "Avatar HD Replacement Camera Lens - Choose Version (Internal Camera)"
-}
-cameras: {
-  uuid: "400802c9-7bcc-43ea-b8cb-c936a5918086"
-  id: "avatar-hd-replacement-camera-3"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Replacement Camera"
-  is_internal_only: true
-  description: "Avatar HD Replacement Camera with Cable - Choose Version (Internal Camera)"
-}
+
+  weight_g: 8.3}
 cameras: {
   uuid: "e7e622d0-22ad-4d7b-8aef-e8446a155e02"
   id: "c04-camera-and-vtx-module-4"
@@ -1585,7 +1000,8 @@ cameras: {
   name: "C04 Camera and VTX Module"
   is_internal_only: true
   description: "C04 Camera and VTX Module (Internal Camera)"
-}
+
+  weight_g: 1.45}
 cameras: {
   uuid: "f88e66e8-125f-423f-b04e-a021e065aab8"
   id: "betafpv-nd-filter-3"
@@ -1593,7 +1009,8 @@ cameras: {
   name: "BETAFPV ND Filter"
   is_internal_only: true
   description: "BETAFPV ND Filter for DJI O3 Camera (Internal Camera)"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "8a6471fe-c90d-4f81-9f9e-370defacef6c"
   id: "cetus-lite-camera-and-vtx-module-4"
@@ -1601,7 +1018,8 @@ cameras: {
   name: "Cetus Lite Camera and VTX Module"
   is_internal_only: true
   description: "Cetus Lite Camera and VTX Module (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "3e5d1ae4-2669-475d-9240-8ae29879ade8"
   id: "micro-canopy-3"
@@ -1609,7 +1027,8 @@ cameras: {
   name: "Micro Canopy"
   is_internal_only: true
   description: "Micro Canopy for HD Camera (Internal Camera)"
-}
+
+  weight_g: 2.66}
 cameras: {
   uuid: "2435d35e-2e0c-43a6-9c8b-294cc0260605"
   id: "canopy-3"
@@ -1617,14 +1036,16 @@ cameras: {
   name: "Canopy"
   is_internal_only: true
   description: "Canopy for Micro Camera 2022 (Internal Camera)"
-}
+
+  weight_g: 2.66}
 cameras: {
   uuid: "44d092c0-a18a-4644-b59a-c136950a0b60"
   id: "internal-cam-52170b0c-b668-4671-8a17-b8b60ebed774"
   manufacturer: "BETAFPV"
   name: "Z01 Camera VTX Holder (Internal Camera)"
   is_internal_only: true
-}
+
+  weight_g: 4.14}
 cameras: {
   uuid: "40adaee2-4507-48af-9336-0d8a6ee603f7"
   id: "h01-aio-camera-5-8g-25mw-vtx-4"
@@ -1632,7 +1053,8 @@ cameras: {
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
   description: "H01 AIO Camera 5.8G 25mW VTX (Internal Camera)"
-}
+
+  weight_g: 32}
 cameras: {
   uuid: "3988130a-f95f-4493-b2cd-7d24449ccf54"
   id: "walksnail-camera-nd-filter-4"
@@ -1640,15 +1062,8 @@ cameras: {
   name: "Walksnail Camera ND Filter"
   is_internal_only: true
   description: "Walksnail Camera ND Filter (Internal Camera)"
-}
-cameras: {
-  uuid: "383e0f97-8caf-4f9f-a758-f2ddd2d09eb6"
-  id: "walksnail-moonlight-camera-only-4"
-  manufacturer: "CADDXFPV"
-  name: "Walksnail Moonlight Camera Only"
-  is_internal_only: true
-  description: "Walksnail Moonlight Camera Only (Internal Camera)"
-}
+
+  weight_g: 1}
 cameras: {
   uuid: "f5285cbc-1dfa-4e88-9de3-27fcbfbf911f"
   id: "walksnail-avatar-hd-nano-camera-v3-4"
@@ -1656,7 +1071,8 @@ cameras: {
   name: "Walksnail Avatar HD Nano Camera  V3"
   is_internal_only: true
   description: "Walksnail Avatar HD Nano Camera  V3 (Internal Camera)"
-}
+
+  weight_g: 3}
 cameras: {
   uuid: "f892e6aa-2d2d-436f-8b0f-a008809e2291"
   id: "walksnail-avatar-hd-camera-v2-4"
@@ -1664,7 +1080,8 @@ cameras: {
   name: "Walksnail Avatar HD Camera V2"
   is_internal_only: true
   description: "Walksnail Avatar HD Camera V2 (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "09cd4546-3d2b-4ae6-b68d-d5b282d9f195"
   id: "tbs-crossfire-micro-tx-v2-transmitter-4"
@@ -1672,15 +1089,8 @@ cameras: {
   name: "TBS Crossfire Micro TX V2 Transmitter"
   is_internal_only: true
   description: "TBS Crossfire Micro TX V2 Transmitter Module - NDAA (Internal Camera)"
-}
-cameras: {
-  uuid: "b449420b-86c2-4473-bb9f-0d619777016d"
-  id: "cinemini-standard-camera-mount-4"
-  manufacturer: "Noozle3D"
-  name: "CineMini Standard Camera Mount"
-  is_internal_only: true
-  description: "CineMini Standard Camera Mount for Naked GoPro Mount (Internal Camera)"
-}
+
+  weight_g: 0.5}
 cameras: {
   uuid: "d9f35540-33dd-4f3d-afc5-4f7034b2d32a"
   id: "punch-shorty-avatar-v2-dji-o3-4"
@@ -1688,7 +1098,8 @@ cameras: {
   name: "Punch & Shorty Avatar V2/DJI O3"
   is_internal_only: true
   description: "Punch & Shorty Avatar V2/DJI O3 Camera Mount (Internal Camera)"
-}
+
+  weight_g: 390}
 cameras: {
   uuid: "7ece214e-2136-4010-be97-d031ad6890a2"
   id: "avatar-hd-moonlight-camera-3"
@@ -1696,7 +1107,8 @@ cameras: {
   name: "Avatar HD Moonlight Camera"
   is_internal_only: true
   description: "Avatar HD Moonlight Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "5076bd2d-20c7-4fce-a9b9-91009ee51894"
   id: "avatar-hd-moonlight-vtx-module-4"
@@ -1704,7 +1116,8 @@ cameras: {
   name: "Avatar HD Moonlight VTX Module"
   is_internal_only: true
   description: "Avatar HD Moonlight VTX Module - Without Camera For Avatar HD Video System (Internal Camera)"
-}
+
+  weight_g: 41.6}
 cameras: {
   uuid: "3f5dd7e6-2573-43f8-acc2-c4575317f28d"
   id: "skylite-skyliner-mk3-dji-o3-10"
@@ -1712,47 +1125,8 @@ cameras: {
   name: "Skylite / Skyliner MK3 DJI O3"
   is_internal_only: true
   description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - MJF TPU (Internal Camera)"
-}
-cameras: {
-  uuid: "05da6b47-5351-4b49-bae5-246d07310ea4"
-  id: "skylite-skyliner-mk3-avatar-v2-11"
-  manufacturer: "Rotor Riot"
-  name: "Skylite / Skyliner MK3 Avatar V2"
-  is_internal_only: true
-  description: "Skylite / Skyliner MK3 Avatar V2 Pro Camera Mount - MJF TPU (Internal Camera)"
-}
-cameras: {
-  uuid: "3dd5cca3-b6d3-4321-be2c-71c1e071850a"
-  id: "vista-vtx-4"
-  manufacturer: "Caddx"
-  name: "Vista VTX"
-  is_internal_only: true
-  description: "Vista VTX with Nebula Pro Nano Camera For DJI HD Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "370a8657-e5f3-4348-9b68-fd6acbdc6568"
-  id: "skylite-skyliner-mk3-avatar-v2-12"
-  manufacturer: "Noozle3D"
-  name: "Skylite / Skyliner MK3 Avatar V2"
-  is_internal_only: true
-  description: "Skylite / Skyliner MK3 Avatar V2 Pro Camera Mount - Choose Color (Internal Camera)"
-}
-cameras: {
-  uuid: "428108a4-e056-40ce-b276-ae742434436f"
-  id: "avatar-hd-nano-camera-v3-3"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Nano Camera V3"
-  is_internal_only: true
-  description: "Avatar HD Nano Camera V3 with Cable (Internal Camera)"
-}
-cameras: {
-  uuid: "3b198a56-da10-42a0-b187-ae40183a0bae"
-  id: "x-air-5-8-mkii-core-5-8-4"
-  manufacturer: "TrueRC"
-  name: "X²-Air 5.8 MKII & Core 5.8"
-  is_internal_only: true
-  description: "X²-Air 5.8 MKII & Core 5.8 Antenna Combo for Dominator HD Goggles (Internal Camera)"
-}
+
+  weight_g: 36.4}
 cameras: {
   uuid: "4b3c9e01-f3f9-4cbd-8ac4-1ede66c0e7e5"
   id: "avatar-mini-1s-vtx-8"
@@ -1760,23 +1134,8 @@ cameras: {
   name: "Avatar Mini 1S VTX"
   is_internal_only: true
   description: "Avatar Mini 1S VTX Without Camera for Avatar HD Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "7b96cb1d-3c72-4eff-ae45-6dba93dae2d5"
-  id: "avatar-hd-pro-replacement-camera-lens-4"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Pro Replacement Camera Lens"
-  is_internal_only: true
-  description: "Avatar HD Pro Replacement Camera Lens (Internal Camera)"
-}
-cameras: {
-  uuid: "5846f540-5234-4966-bdf8-7fe2b7da1940"
-  id: "dji-o3-air-unit-camera-module-4"
-  manufacturer: "DJI"
-  name: "DJI O3 Air Unit Camera Module"
-  is_internal_only: true
-  description: "DJI O3 Air Unit Camera Module (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "5b9a8d74-bd35-40fb-9548-27b03f873019"
   id: "avatar-hd-lite-camera-3"
@@ -1784,7 +1143,8 @@ cameras: {
   name: "Avatar HD Lite Camera"
   is_internal_only: true
   description: "Avatar HD Lite Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 1.8}
 cameras: {
   uuid: "d2683d44-3e20-4f77-8267-0b327bad935c"
   id: "avatar-hd-pro-camera-3"
@@ -1792,7 +1152,8 @@ cameras: {
   name: "Avatar HD Pro Camera"
   is_internal_only: true
   description: "Avatar HD Pro Camera with Cable (Internal Camera)"
-}
+
+  weight_g: 9.5}
 cameras: {
   uuid: "e37142f1-82fa-4b3f-bd93-1d8929990606"
   id: "avatar-hd-camera-v2-3"
@@ -1800,39 +1161,8 @@ cameras: {
   name: "Avatar HD Camera V2"
   is_internal_only: true
   description: "Avatar HD Camera V2 with Cable (Internal Camera)"
-}
-cameras: {
-  uuid: "17e382fd-afc2-4513-a4bf-85c2fb379a79"
-  id: "vision40-1s-lite-camera-adapter-4"
-  manufacturer: "Noozle3D"
-  name: "Vision40 1S Lite Camera Adapter"
-  is_internal_only: true
-  description: "Vision40 1S Lite Camera Adapter (Internal Camera)"
-}
-cameras: {
-  uuid: "8b1acc8f-cc49-4491-ac31-b0f79447d61c"
-  id: "moxy-dji-o3-camera-mount-4"
-  manufacturer: "Noozle3D"
-  name: "Moxy DJI O3 Camera Mount"
-  is_internal_only: true
-  description: "Moxy DJI O3 Camera Mount (Internal Camera)"
-}
-cameras: {
-  uuid: "473528a0-8956-4b98-b14e-bc8423f21ffc"
-  id: "reaper-nano-25-350mw-vtx-4"
-  manufacturer: "Foxeer"
-  name: "Reaper Nano 25-350mW VTX"
-  is_internal_only: true
-  description: "Reaper Nano 25-350mW VTX for Analog Video System (Internal Camera)"
-}
-cameras: {
-  uuid: "78bda139-b5c9-4699-8f4e-2226a92e870f"
-  id: "tanq-dji-o3-camera-mount-4"
-  manufacturer: "Noozle3D"
-  name: "TANQ DJI O3 Camera Mount"
-  is_internal_only: true
-  description: "TANQ DJI O3 Camera Mount (Internal Camera)"
-}
+
+  weight_g: 9.5}
 cameras: {
   uuid: "c38400c1-1a05-4387-b9c0-131d736ca537"
   id: "skylite-skyliner-mk3-dji-o3-11"
@@ -1840,23 +1170,8 @@ cameras: {
   name: "Skylite / Skyliner MK3 DJI O3"
   is_internal_only: true
   description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - Choose Color (Internal Camera)"
-}
-cameras: {
-  uuid: "0fcabb33-0316-4620-8ca1-bcec907e2e06"
-  id: "avatar-hd-replacement-camera-lens-4"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Replacement Camera Lens"
-  is_internal_only: true
-  description: "Avatar HD Replacement Camera Lens - Choose Version (Internal Camera)"
-}
-cameras: {
-  uuid: "87154e25-0b04-4c2c-a1f8-2488ec4b7d24"
-  id: "avatar-hd-replacement-camera-4"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Replacement Camera"
-  is_internal_only: true
-  description: "Avatar HD Replacement Camera with Cable - Choose Version (Internal Camera)"
-}
+
+  weight_g: 8.3}
 cameras: {
   uuid: "ae8159e5-08b9-4731-b7b3-85729f4a7292"
   id: "hglrc-zeus-nano-vtx-350mw-16x16-2"
@@ -1864,12 +1179,5 @@ cameras: {
   name: "HGLRC Zeus nano VTX 350mW 16x16"
   is_internal_only: true
   description: "HGLRC Zeus nano VTX 350mW 16x16 20x20 25.5x25.5 mm For FPV Racing Drone (Internal Camera)"
-}
-cameras: {
-  uuid: "7aac8964-6c06-40f4-8acf-4953fb2f2f1f"
-  id: "dji-o3-coaxial-camera-cable-2"
-  manufacturer: "DJI"
-  name: "DJI O3 Coaxial Camera Cable"
-  is_internal_only: true
-  description: "DJI O3 Coaxial Camera Cable (Internal Camera)"
-}
+
+  weight_g: 2.4}

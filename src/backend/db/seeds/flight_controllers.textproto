@@ -3,7 +3,7 @@ flight_controllers: {
   id: "hglrc-zeus-f722"
   manufacturer: "HGLRC"
   name: "HGLRC Zeus F722"
-  weight_g: 8.1
+  weight_g: 9.1
   processor: "STM32F722RET6"
   gyro: "MPU6000"
 }
@@ -12,7 +12,7 @@ flight_controllers: {
   id: "hglrc-zeus-f722-mini"
   manufacturer: "HGLRC"
   name: "HGLRC Zeus F722 Mini"
-  weight_g: 4.6
+  weight_g: 5
   processor: "STM32F722"
   gyro: "MPU6000"
 }
@@ -21,7 +21,7 @@ flight_controllers: {
   id: "hglrc-specter-f405-v2"
   manufacturer: "HGLRC"
   name: "HGLRC Specter F405 V2"
-  weight_g: 7.2
+  weight_g: 29
   processor: "STM32F405"
   gyro: "MPU6000"
 }
@@ -30,7 +30,7 @@ flight_controllers: {
   id: "speedybee-f405-v4"
   manufacturer: "SpeedyBee"
   name: "SpeedyBee F405 V4 Flight Controller"
-  weight_g: 10.5
+  weight_g: 9
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -38,7 +38,7 @@ flight_controllers: {
   id: "meteor75-pro-ii-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor75 Pro II Brushless Whoop Quadcopter"
-  weight_g: 27.98
+  weight_g: 41.5
   processor: "Unknown"
 }
 flight_controllers: {
@@ -46,7 +46,7 @@ flight_controllers: {
   id: "meteor65-pro-ii-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor65 Pro II Brushless Whoop Quadcopter"
-  weight_g: 22.6
+  weight_g: 4.6
   processor: "Unknown"
 }
 flight_controllers: {
@@ -54,7 +54,7 @@ flight_controllers: {
   id: "meteor75-pro-ii-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Meteor75 Pro II FPV Kit"
-  weight_g: 45
+  weight_g: 41.5
   processor: "Unknown"
 }
 flight_controllers: {
@@ -67,44 +67,12 @@ flight_controllers: {
   internal_vtx_uuid: "63cd3de7-4ef9-49ab-bbd8-015d1e3328d5"
 }
 flight_controllers: {
-  uuid: "cdcd2312-b900-41ea-aaad-d807737e9855"
-  id: "p1-hd-vrx-standard"
-  manufacturer: "BETAFPV"
-  name: "P1 HD VRX (Standard)"
-  processor: "Unknown"
-  internal_receiver_uuid: "0c64c313-b34c-456e-895e-77388a3fe454"
-}
-flight_controllers: {
   uuid: "63aeb88b-7acd-4a5e-bb82-79676b55fd72"
   id: "monitor"
   manufacturer: "BETAFPV"
   name: "Monitor"
   weight_g: 143
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "a996c60f-4e81-4cb7-9102-2aa5ca985637"
-  id: "beta-test-matrix-1s-brushless-flight"
-  manufacturer: "BETAFPV"
-  name: "[BETA TEST] Matrix 1S Brushless Flight"
-  processor: "Unknown"
-  internal_vtx_uuid: "1cccf3d6-e751-4f01-9722-bb7bc455c539"
-  description: "[BETA TEST] Matrix 1S Brushless Flight Controller (AIO P1 HD VTX)"
-}
-flight_controllers: {
-  uuid: "b8e2d90f-08a2-4493-b02c-e28fc3df8f34"
-  id: "beta-test-p1-hd-vrx-nano"
-  manufacturer: "BETAFPV"
-  name: "[BETA TEST] P1 HD VRX (Nano)"
-  processor: "Unknown"
-  internal_receiver_uuid: "1c6df32e-9585-452f-ae29-55b6b295a598"
-}
-flight_controllers: {
-  uuid: "399c171a-fed1-45de-8abf-1cb238ef3edf"
-  id: "cube-2-4s-brushless-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "Cube 2-4S Brushless Flight Controller"
-  processor: "STM32F405"
 }
 flight_controllers: {
   uuid: "51f4add4-6bc8-4f9f-a107-3fce02a49628"
@@ -120,16 +88,9 @@ flight_controllers: {
   id: "meteor65-pro-ii-o4-brushless-whoop"
   manufacturer: "BETAFPV"
   name: "Meteor65 Pro II O4 Brushless Whoop"
-  weight_g: 36.2
+  weight_g: 4.6
   processor: "Unknown"
   description: "Meteor65 Pro II O4 Brushless Whoop Quadcopter"
-}
-flight_controllers: {
-  uuid: "7ac7d93c-a7aa-46f1-9c07-ead5f1f2f232"
-  id: "matrix-1-2s-brushed-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "Matrix 1-2S Brushed Flight Controller"
-  processor: "STM32F411"
 }
 flight_controllers: {
   uuid: "3448dc61-5bff-4395-b0dc-50917333f0f0"
@@ -156,21 +117,14 @@ flight_controllers: {
   processor: "Unknown"
 }
 flight_controllers: {
-  uuid: "a96002f4-95a7-4d04-975d-c6ce5015664c"
-  id: "matrix-1s-brushless-flight-controller-2"
-  manufacturer: "BETAFPV"
-  name: "Matrix 1S Brushless Flight Controller"
-  processor: "Unknown"
-  description: "Matrix 1S Brushless Flight Controller (5IN1 II)"
-}
-flight_controllers: {
   uuid: "95ec9715-739f-4763-a3f3-ac3feb2cbbc4"
   id: "p1-air-unit-hd-vtx"
   manufacturer: "BETAFPV"
   name: "P1 Air Unit HD VTX"
   processor: "Unknown"
   internal_vtx_uuid: "17a847c2-7ac7-4c09-9176-cb51f4fb3c00"
-}
+
+  weight_g: 37.5}
 flight_controllers: {
   uuid: "ad85c350-1207-45c7-aeee-591193335d1e"
   id: "meteor75-pro-p1-brushless-whoop-quadcopter"
@@ -192,7 +146,7 @@ flight_controllers: {
   id: "pavo20-pro-ii-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo20 Pro II Brushless Whoop Quadcopter"
-  weight_g: 72.6
+  weight_g: 35.7
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -200,7 +154,7 @@ flight_controllers: {
   id: "air65-air75-wisp-brushless-whoop"
   manufacturer: "BETAFPV"
   name: "Air65 & Air75 Wisp Brushless Whoop"
-  weight_g: 17
+  weight_g: 16.6
   processor: "STM32F411"
   description: "Air65 & Air75 Wisp Brushless Whoop Quadcopter (Limited Edition)"
 }
@@ -209,7 +163,7 @@ flight_controllers: {
   id: "air-ii-canopy"
   manufacturer: "BETAFPV"
   name: "Air II Canopy"
-  weight_g: 0.5
+  weight_g: 2.66
   processor: "Unknown"
 }
 flight_controllers: {
@@ -217,7 +171,7 @@ flight_controllers: {
   id: "pavo-pico-ii-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo Pico II Brushless Whoop Quadcopter"
-  weight_g: 59
+  weight_g: 19
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -225,14 +179,7 @@ flight_controllers: {
   id: "pavo-pico-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo Pico Brushless Whoop Quadcopter"
-  weight_g: 4.23
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "8d365d7d-9ca5-40b0-b022-94ce8ab3a4d7"
-  id: "betafpv-drone-screw-pack"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV Drone Screw Pack"
+  weight_g: 19
   processor: "Unknown"
 }
 flight_controllers: {
@@ -240,7 +187,7 @@ flight_controllers: {
   id: "meteor75-pro-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor75 Pro Brushless Whoop Quadcopter"
-  weight_g: 31
+  weight_g: 30.5
   processor: "STM32F411"
   description: "Meteor75 Pro Brushless Whoop Quadcopter (2022)"
 }
@@ -249,7 +196,7 @@ flight_controllers: {
   id: "toothpick-f405-2-4s-aio-brushless-flight-4"
   manufacturer: "BETAFPV"
   name: "Toothpick F405 2-4S AIO Brushless Flight"
-  weight_g: 5.76
+  weight_g: 7
   processor: "STM32F405"
   internal_esc_uuid: "e68df4b5-a836-4299-b873-f3764a47cf40"
   description: "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4"
@@ -259,7 +206,7 @@ flight_controllers: {
   id: "pavo20-pro-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo20 Pro Brushless Whoop Quadcopter"
-  weight_g: 66.3
+  weight_g: 35.7
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -267,7 +214,7 @@ flight_controllers: {
   id: "pavo-femto-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo Femto Brushless Whoop Quadcopter"
-  weight_g: 52.2
+  weight_g: 54.77
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -275,7 +222,7 @@ flight_controllers: {
   id: "meteor75-pro-o4-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor75 Pro O4 Brushless Whoop Quadcopter"
-  weight_g: 37.2
+  weight_g: 41.5
   processor: "Unknown"
 }
 flight_controllers: {
@@ -283,7 +230,7 @@ flight_controllers: {
   id: "meteor65-pro-o4-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor65 Pro O4 Brushless Whoop Quadcopter"
-  weight_g: 28.53
+  weight_g: 36.2
   processor: "Unknown"
 }
 flight_controllers: {
@@ -291,7 +238,7 @@ flight_controllers: {
   id: "beta95x-v3-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta95X V3 Whoop Quadcopter"
-  weight_g: 99.1
+  weight_g: 173
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -299,7 +246,7 @@ flight_controllers: {
   id: "air75-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Air75 Brushless Whoop Quadcopter"
-  weight_g: 21
+  weight_g: 4.45
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -307,15 +254,7 @@ flight_controllers: {
   id: "air65-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Air65 Brushless Whoop Quadcopter"
-  weight_g: 17.3
-  processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "9a7158e1-ff7e-48fe-8563-c8e2748a5c0d"
-  id: "air-1s-brushless-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "Air 1S Brushless Flight Controller"
-  weight_g: 2.9
+  weight_g: 16.6
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -324,27 +263,30 @@ flight_controllers: {
   manufacturer: "BETAFPV"
   name: "Pavo20 Pocket"
   processor: "STM32F405"
-}
+
+  weight_g: 95}
 flight_controllers: {
   uuid: "e44fc629-1d70-4199-88ea-9981ca0c43d2"
   id: "cetus-x-hd-brushless-quadcopter"
   manufacturer: "BETAFPV"
   name: "Cetus X HD Brushless Quadcopter"
   processor: "Unknown"
-}
+
+  weight_g: 55}
 flight_controllers: {
   uuid: "63dc65e8-e337-4d79-a03a-bae6d2faaeeb"
   id: "cetus-x-hd-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Cetus X HD FPV Kit"
   processor: "Unknown"
-}
+
+  weight_g: 55}
 flight_controllers: {
   uuid: "58aa833b-ceca-44f4-97d8-5c6138617043"
   id: "bt2-0-whoop-cable-pigtail"
   manufacturer: "BETAFPV"
   name: "BT2.0 Whoop Cable Pigtail"
-  weight_g: 1
+  weight_g: 1.28
   processor: "Unknown"
 }
 flight_controllers: {
@@ -354,35 +296,40 @@ flight_controllers: {
   name: "Pavo35 Brushless Whoop Quadcopter"
   processor: "STM32F722"
   internal_vtx_uuid: "aa059b4a-72c5-4b6b-99ba-42c17a6c19cc"
-}
+
+  weight_g: 113.9}
 flight_controllers: {
   uuid: "4d9a4dd1-e6f3-4632-b097-73364f6f715a"
   id: "pavo25-v2-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo25 V2 Brushless Whoop Quadcopter"
   processor: "STM32F722"
-}
+
+  weight_g: 113.9}
 flight_controllers: {
   uuid: "68399cf2-4a70-4fce-bcca-a8e393ca8f32"
   id: "aquila16-brushless-quadcopter"
   manufacturer: "BETAFPV"
   name: "Aquila16 Brushless Quadcopter"
   processor: "Unknown"
-}
+
+  weight_g: 47.1}
 flight_controllers: {
   uuid: "8d29f030-dcff-4e55-a98a-74fb7ee64b45"
   id: "aquila16-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Aquila16 FPV Kit"
   processor: "Unknown"
-}
+
+  weight_g: 47.1}
 flight_controllers: {
   uuid: "3a2841e0-e340-4a65-8e66-69e81a35f720"
   id: "pavo20-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo20 Brushless Whoop Quadcopter"
   processor: "STM32F405"
-}
+
+  weight_g: 35.7}
 flight_controllers: {
   uuid: "57a0ab75-dd68-4a02-8bdd-47c46b24f764"
   id: "f4-2-3s-20a-aio-fc-v1"
@@ -408,23 +355,14 @@ flight_controllers: {
   processor: "Unknown"
   internal_vtx_uuid: "9981815e-ef11-4667-a44a-ffebf85fd876"
   description: "Sub100g Whoop Drone with DJI O3 (Beta Test)"
-}
-flight_controllers: {
-  uuid: "d56dba68-f303-4de3-9efe-e368d0803ed0"
-  id: "f4-1s-12a-aio-brushless-flight-7"
-  manufacturer: "BETAFPV"
-  name: "F4 1S 12A AIO Brushless Flight"
-  weight_g: 4.23
-  processor: "STM32F405"
-  internal_esc_uuid: "0e4f2611-3f2a-4560-af92-a28672ac3a10"
-  description: "F4 1S 12A AIO Brushless Flight Controller V3"
-}
+
+  weight_g: 13.8}
 flight_controllers: {
   uuid: "af7017a0-dc15-4a15-a8cf-31c7a3bbff00"
   id: "meteor75-pro-brushless-whoop-quadcopter-2"
   manufacturer: "BETAFPV"
   name: "Meteor75 Pro Brushless Whoop Quadcopter"
-  weight_g: 35.77
+  weight_g: 30.5
   processor: "STM32F411"
   internal_vtx_uuid: "ca6f70b0-fa07-4d01-bef2-0c7affa6e6b7"
   description: "Meteor75 Pro Brushless Whoop Quadcopter (1S HD Digital VTX)"
@@ -434,7 +372,7 @@ flight_controllers: {
   id: "micro-canopy-lite"
   manufacturer: "BETAFPV"
   name: "Micro Canopy Lite"
-  weight_g: 1.12
+  weight_g: 2.66
   processor: "Unknown"
 }
 flight_controllers: {
@@ -442,7 +380,7 @@ flight_controllers: {
   id: "twig-xl-fpv-toothpick-quad"
   manufacturer: "BETAFPV"
   name: "TWIG XL FPV Toothpick Quad"
-  weight_g: 111
+  weight_g: 41.5
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -453,13 +391,14 @@ flight_controllers: {
   processor: "STM32F411"
   internal_vtx_uuid: "8dee38fb-a5b4-45d9-9b8c-d752733a6772"
   description: "Meteor85 Brushless Whoop Quadcopter (2S HD Digital VTX)"
-}
+
+  weight_g: 30.5}
 flight_controllers: {
   uuid: "e54e362b-96f6-4575-af18-dbb2b5d48ef7"
   id: "meteor85-brushless-whoop-quadcopter-2"
   manufacturer: "BETAFPV"
   name: "Meteor85 Brushless Whoop Quadcopter"
-  weight_g: 43.85
+  weight_g: 30.5
   processor: "STM32F411"
   description: "Meteor85 Brushless Whoop Quadcopter (2022)"
 }
@@ -468,7 +407,7 @@ flight_controllers: {
   id: "cetus-lite-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Cetus Lite FPV Kit"
-  weight_g: 36
+  weight_g: 55
   processor: "Unknown"
 }
 flight_controllers: {
@@ -484,35 +423,17 @@ flight_controllers: {
   id: "cetus-x-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Cetus X FPV Kit"
-  weight_g: 1499.7
+  weight_g: 55
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "de2bfbe9-44b6-463a-a2ab-bed70d5f3dbd"
-  id: "f4-1s-5a-aio-brushless-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "F4 1S 5A AIO Brushless Flight Controller"
-  weight_g: 2.96
-  processor: "STM32F411"
 }
 flight_controllers: {
   uuid: "41c90ce7-1edc-488a-b027-10b30bfd2f82"
   id: "f405-4s-20a-toothpick-brushless-flight"
   manufacturer: "BETAFPV"
   name: "F405 4S 20A Toothpick Brushless Flight"
-  weight_g: 8.35
+  weight_g: 6.1
   processor: "STM32F405"
   description: "F405 4S 20A Toothpick Brushless Flight Controller V5 BLHeli_S (ICM42688)"
-}
-flight_controllers: {
-  uuid: "2b7888a9-03c3-4f8e-8cdf-d984ad7b0e80"
-  id: "f4-1s-12a-aio-brushless-flight-8"
-  manufacturer: "BETAFPV"
-  name: "F4 1S 12A AIO Brushless Flight"
-  weight_g: 4.74
-  processor: "STM32F411"
-  internal_esc_uuid: "9e6aaa45-196a-4a0a-bbb5-4977117ad733"
-  description: "F4 1S 12A AIO Brushless Flight Controller 2022"
 }
 flight_controllers: {
   uuid: "59f05792-ed31-487f-b6e0-698fe22c8330"
@@ -522,7 +443,8 @@ flight_controllers: {
   processor: "STM32F411"
   internal_vtx_uuid: "b02a0551-405d-436b-a222-7c710eaca5e6"
   description: "Meteor75 Brushless Whoop Quadcopter (1S HD Digital VTX)"
-}
+
+  weight_g: 30.5}
 flight_controllers: {
   uuid: "f596a3c6-8d73-406f-98ad-1b05a902b7b2"
   id: "f411-4s-20a-toothpick-brushless-flight"
@@ -541,29 +463,12 @@ flight_controllers: {
   processor: "STM32F411"
 }
 flight_controllers: {
-  uuid: "d642e88d-152e-4cf1-8ea5-371a463d2d2d"
-  id: "a03-400mw-5-8g-vtx"
-  manufacturer: "BETAFPV"
-  name: "A03 400mW 5.8G VTX"
-  weight_g: 4.9
-  processor: "STM32F722"
-  internal_vtx_uuid: "1a242cdf-5bc0-4f69-853a-9e2e73d63ab8"
-}
-flight_controllers: {
   uuid: "f1246e94-b878-419e-9d0f-bcf63feed1de"
   id: "pavo25-walksnail-whoop-kit"
   manufacturer: "BETAFPV"
   name: "Pavo25 Walksnail Whoop Kit"
-  weight_g: 146
+  weight_g: 113.9
   processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "2388425d-ecce-41e2-8aaf-2176239daed3"
-  id: "f4-brushed-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "F4 Brushed Flight Controller"
-  weight_g: 3.68
-  processor: "STM32F411"
 }
 flight_controllers: {
   uuid: "89c9f7bc-1755-450f-a08e-f58602d32edd"
@@ -571,13 +476,14 @@ flight_controllers: {
   manufacturer: "BETAFPV"
   name: "CNC Vista Adapter"
   processor: "Unknown"
-}
+
+  weight_g: 0.29}
 flight_controllers: {
   uuid: "10a4da30-c96d-45e5-a85f-24c8781b093b"
   id: "pavo25-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo25 Whoop Quadcopter"
-  weight_g: 153.3
+  weight_g: 113.9
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -585,7 +491,7 @@ flight_controllers: {
   id: "pavo360-fpv-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo360 FPV Quadcopter"
-  weight_g: 326
+  weight_g: 54.77
   processor: "STM32F722"
   internal_vtx_uuid: "3192f35c-e651-434c-ba56-9bd6edc00c82"
 }
@@ -594,7 +500,7 @@ flight_controllers: {
   id: "smo-360-camera"
   manufacturer: "BETAFPV"
   name: "SMO 360 Camera"
-  weight_g: 55
+  weight_g: 1.45
   processor: "Unknown"
 }
 flight_controllers: {
@@ -602,7 +508,7 @@ flight_controllers: {
   id: "elrs-lite-receiver"
   manufacturer: "BETAFPV"
   name: "ELRS Lite Receiver"
-  weight_g: 0.46
+  weight_g: 0.82
   processor: "Unknown"
   internal_receiver_uuid: "b5de936f-25cb-4012-81a6-a842d7ba6707"
 }
@@ -611,7 +517,7 @@ flight_controllers: {
   id: "meteor65-pro-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor65 Pro Brushless Whoop Quadcopter"
-  weight_g: 23.01
+  weight_g: 4.6
   processor: "STM32F411"
   description: "Meteor65 Pro Brushless Whoop Quadcopter (2022)"
 }
@@ -620,26 +526,16 @@ flight_controllers: {
   id: "m03-5-8g-vtx"
   manufacturer: "BETAFPV"
   name: "M03 5.8G VTX"
-  weight_g: 1.1
+  weight_g: 0.6
   processor: "Unknown"
   internal_vtx_uuid: "1d4e6575-7787-4a63-8c6e-13a8493702e8"
-}
-flight_controllers: {
-  uuid: "26163ee5-41cd-4160-bc0e-4a161f468a3b"
-  id: "f4-1s-5a-aio-brushless-flight"
-  manufacturer: "BETAFPV"
-  name: "F4 1S 5A AIO Brushless Flight"
-  weight_g: 3.13
-  processor: "STM32F411"
-  internal_receiver_uuid: "19e0176d-d0a9-4f26-b19a-6bd76fb7f170"
-  description: "F4 1S 5A AIO Brushless Flight Controller (ELRS 2.4G)"
 }
 flight_controllers: {
   uuid: "7f593dbf-4723-472c-ab03-d226cd90aca7"
   id: "cetus-pro-brushless-quadcopter"
   manufacturer: "BETAFPV"
   name: "Cetus Pro Brushless Quadcopter"
-  weight_g: 33.19
+  weight_g: 55
   processor: "Unknown"
 }
 flight_controllers: {
@@ -647,7 +543,7 @@ flight_controllers: {
   id: "cetus-pro-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Cetus Pro FPV Kit"
-  weight_g: 33.19
+  weight_g: 55
   processor: "Unknown"
 }
 flight_controllers: {
@@ -675,21 +571,14 @@ flight_controllers: {
   manufacturer: "BETAFPV"
   name: "HX115 LR Toothpick Drone"
   processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "0988fd1a-b2ec-4a75-8301-96b66bf6def2"
-  id: "betafpv-lite-brushed-flight-controller-v2"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV Lite Brushed Flight Controller V2"
-  weight_g: 2.5
-  processor: "Unknown"
-}
+
+  weight_g: 3.6}
 flight_controllers: {
   uuid: "6191fcce-700c-414e-98a3-cf6449cedd14"
   id: "hx115-se-toothpick-drone"
   manufacturer: "BETAFPV"
   name: "HX115 SE Toothpick Drone"
-  weight_g: 40.76
+  weight_g: 3.6
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -697,7 +586,7 @@ flight_controllers: {
   id: "cetus-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Cetus FPV Kit"
-  weight_g: 35
+  weight_g: 55
   processor: "Unknown"
 }
 flight_controllers: {
@@ -705,7 +594,7 @@ flight_controllers: {
   id: "pavo30-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Pavo30 Whoop Quadcopter"
-  weight_g: 145
+  weight_g: 173
   processor: "STM32F722"
   internal_vtx_uuid: "3a8bf872-5d15-4a67-a89e-324968a871f6"
 }
@@ -714,18 +603,8 @@ flight_controllers: {
   id: "meteor65-lite-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor65 Lite Brushless Whoop Quadcopter"
-  weight_g: 21.18
+  weight_g: 4.6
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "874fd679-bc21-48c4-a2f0-258348926000"
-  id: "lite-1-2s-brushless-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "Lite 1-2S Brushless Flight Controller"
-  weight_g: 3.81
-  processor: "Unknown"
-  internal_vtx_uuid: "8b14b6cc-6b6c-4e8a-8db0-ba1e7b165fd1"
-  description: "Lite 1-2S Brushless Flight Controller (Silverware Firmware)"
 }
 flight_controllers: {
   uuid: "8da3c9d7-0b5d-4bc3-a34c-3c79adf80856"
@@ -742,13 +621,14 @@ flight_controllers: {
   name: "FPV Whoop Racing Advanced Kit"
   processor: "Unknown"
   description: "FPV Whoop Racing Advanced Kit (BF Edition)"
-}
+
+  weight_g: 35.7}
 flight_controllers: {
   uuid: "8a332fe0-6dae-4597-bf61-110ad47fa691"
   id: "f4-1s-aio-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "F4 1S AIO Brushless Flight Controller"
-  weight_g: 3.92
+  weight_g: 5.58
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -765,25 +645,16 @@ flight_controllers: {
   id: "a02-25-800mw-5-8g-vtx"
   manufacturer: "BETAFPV"
   name: "A02 25-800mW 5.8G VTX"
-  weight_g: 5.26
+  weight_g: 0.6
   processor: "STM32F722"
   internal_vtx_uuid: "d4180e39-e175-4486-a43d-3c14aba2f6cc"
-}
-flight_controllers: {
-  uuid: "fda21ec9-6f64-467d-8de5-876a66dd7e15"
-  id: "f722-35a-aio-brushless-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "F722 35A AIO Brushless Flight Controller"
-  weight_g: 9
-  processor: "STM32F722"
-  internal_esc_uuid: "9983d8cd-8854-46e4-952d-8cd26c2621fb"
 }
 flight_controllers: {
   uuid: "f864baa3-a5f3-485c-a80a-3b1f90ba0aeb"
   id: "beta75x-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta75X Whoop Quadcopter"
-  weight_g: 54.71
+  weight_g: 30.5
   processor: "STM32F405"
   internal_vtx_uuid: "ad392a94-eac0-4d4d-8f45-15ebd3908c97"
   description: "Beta75X Whoop Quadcopter (HD Digital VTX)"
@@ -793,7 +664,7 @@ flight_controllers: {
   id: "beta85x-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta85X Whoop Quadcopter"
-  weight_g: 66.6
+  weight_g: 3.2
   processor: "STM32F405"
   internal_vtx_uuid: "5193d389-507c-40f5-969f-937ed4fa3048"
   description: "Beta85X Whoop Quadcopter (HD Digital VTX)"
@@ -803,7 +674,7 @@ flight_controllers: {
   id: "meteor65-hd-whoop-quadcopter-1s"
   manufacturer: "BETAFPV"
   name: "Meteor65 HD Whoop Quadcopter (1S)"
-  weight_g: 27.46
+  weight_g: 28.53
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -811,7 +682,7 @@ flight_controllers: {
   id: "bec-board-for-naked-camera"
   manufacturer: "BETAFPV"
   name: "BEC Board for Naked Camera"
-  weight_g: 1.53
+  weight_g: 29.6
   processor: "Unknown"
 }
 flight_controllers: {
@@ -819,7 +690,7 @@ flight_controllers: {
   id: "x-knight-3-toothpick-quad"
   manufacturer: "BETAFPV"
   name: "X-Knight 3'' Toothpick Quad"
-  weight_g: 22.79
+  weight_g: 142.9
   processor: "STM32F411"
   internal_vtx_uuid: "5474b621-c10f-4abb-9e0d-222871a9e109"
   description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX)"
@@ -834,25 +705,11 @@ flight_controllers: {
   internal_vtx_uuid: "7c2bd4f8-94df-44d5-9764-c90605a46230"
 }
 flight_controllers: {
-  uuid: "cf753e1b-9dcf-4e36-b5f7-b2f91e1a5e77"
-  id: "beta85x-v2-pusher-kit"
-  manufacturer: "BETAFPV"
-  name: "Beta85X V2 Pusher Kit"
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "80a03299-ce96-471c-9fa4-d2c21678cf97"
-  id: "beta95x-v2-pusher-kit"
-  manufacturer: "BETAFPV"
-  name: "Beta95X V2 Pusher Kit"
-  processor: "STM32F405"
-}
-flight_controllers: {
   uuid: "e09c9f34-496e-467c-8a6a-3b7788422070"
   id: "beta85x-v2-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta85X V2 Whoop Quadcopter"
-  weight_g: 78
+  weight_g: 3.2
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -860,7 +717,7 @@ flight_controllers: {
   id: "beta95x-v2-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta95X V2 Whoop Quadcopter"
-  weight_g: 99
+  weight_g: 173
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -868,7 +725,7 @@ flight_controllers: {
   id: "beta95x-v2-whoop-quadcopter-hd-digital"
   manufacturer: "BETAFPV"
   name: "Beta95X V2 Whoop Quadcopter HD Digital"
-  weight_g: 113
+  weight_g: 173
   processor: "STM32F405"
   internal_vtx_uuid: "5c4e1c95-b298-4149-85c2-d9692d30ec5d"
   description: "Beta95X V2 Whoop Quadcopter HD Digital VTX"
@@ -878,7 +735,7 @@ flight_controllers: {
   id: "x-knight-5-fpv-toothpick-quad"
   manufacturer: "BETAFPV"
   name: "X-Knight 5'' FPV Toothpick Quad"
-  weight_g: 26.44
+  weight_g: 142.9
   processor: "Unknown"
 }
 flight_controllers: {
@@ -887,20 +744,22 @@ flight_controllers: {
   manufacturer: "BETAFPV"
   name: "FPV Whoop Racing Advanced Kit 2"
   processor: "Unknown"
-}
+
+  weight_g: 35.7}
 flight_controllers: {
   uuid: "4a5ddc44-00a6-43d6-b070-b0ea12a97162"
   id: "fpv-whoop-racing-starter-kit-2"
   manufacturer: "BETAFPV"
   name: "FPV Whoop Racing Starter Kit 2"
   processor: "Unknown"
-}
+
+  weight_g: 8.64}
 flight_controllers: {
   uuid: "2fd656bc-94f4-46a2-9fb3-ed4ef9a5e04d"
   id: "toothpick-f4-2-6s-aio-brushless-flight-4"
   manufacturer: "BETAFPV"
   name: "Toothpick F4 2-6S AIO Brushless Flight"
-  weight_g: 7
+  weight_g: 5.58
   processor: "STM32F411"
   internal_esc_uuid: "e62a5429-2a6e-4359-a10e-962af0ce9c64"
   description: "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32)"
@@ -910,7 +769,7 @@ flight_controllers: {
   id: "m02-25-350mw-5-8g-vtx"
   manufacturer: "BETAFPV"
   name: "M02 25-350mW 5.8G VTX"
-  weight_g: 1.7
+  weight_g: 0.6
   processor: "Unknown"
   internal_vtx_uuid: "6cc37fe2-ccca-4881-a6be-805b482cf489"
 }
@@ -919,7 +778,7 @@ flight_controllers: {
   id: "customized-naked-camera"
   manufacturer: "BETAFPV"
   name: "Customized Naked Camera"
-  weight_g: 29.32
+  weight_g: 1.45
   processor: "Unknown"
 }
 flight_controllers: {
@@ -927,7 +786,7 @@ flight_controllers: {
   id: "beta85x-whoop-quad-for-naked-camera"
   manufacturer: "BETAFPV"
   name: "Beta85X Whoop Quad for Naked Camera"
-  weight_g: 67.77
+  weight_g: 41.5
   processor: "Unknown"
 }
 flight_controllers: {
@@ -935,7 +794,7 @@ flight_controllers: {
   id: "beta95x-whoop-quad-for-naked-camera"
   manufacturer: "BETAFPV"
   name: "Beta95X Whoop Quad for Naked Camera"
-  weight_g: 85.2
+  weight_g: 54.77
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -944,7 +803,8 @@ flight_controllers: {
   manufacturer: "BETAFPV"
   name: "Case for Naked Camera"
   processor: "Unknown"
-}
+
+  weight_g: 0.82}
 flight_controllers: {
   uuid: "04a60466-62c3-48d7-8be6-0d8b405f3f95"
   id: "twig-et5-5-toothpick-quad"
@@ -966,7 +826,7 @@ flight_controllers: {
   id: "betafpv-nano-hd-camera"
   manufacturer: "BETAFPV"
   name: "BETAFPV Nano HD Camera"
-  weight_g: 6.52
+  weight_g: 0.7
   processor: "Unknown"
 }
 flight_controllers: {
@@ -974,7 +834,7 @@ flight_controllers: {
   id: "old-version-of-beta65x-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Old Version of Beta65X Whoop Quadcopter"
-  weight_g: 26
+  weight_g: 2.2
   processor: "STM32F405"
   description: "Old Version of Beta65X Whoop Quadcopter (2S)"
 }
@@ -983,7 +843,7 @@ flight_controllers: {
   id: "beta65x-hd-whoop-quadcopter-2s"
   manufacturer: "BETAFPV"
   name: "Beta65X HD Whoop Quadcopter (2S)"
-  weight_g: 30
+  weight_g: 36.2
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -999,7 +859,7 @@ flight_controllers: {
   id: "beta95x-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta95X Whoop Quadcopter"
-  weight_g: 110
+  weight_g: 173
   processor: "STM32F405"
   internal_vtx_uuid: "01043f2e-4f8b-4e9c-9692-95ce8f2006cd"
   description: "Beta95X Whoop Quadcopter (HD Digital VTX)"
@@ -1017,7 +877,7 @@ flight_controllers: {
   id: "x-knight-4-fpv-toothpick-quad"
   manufacturer: "BETAFPV"
   name: "X-Knight 4'' FPV Toothpick Quad"
-  weight_g: 24.43
+  weight_g: 142.9
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1025,7 +885,7 @@ flight_controllers: {
   id: "meteor75-brushless-whoop-quadcopter-2"
   manufacturer: "BETAFPV"
   name: "Meteor75 Brushless Whoop Quadcopter"
-  weight_g: 24.98
+  weight_g: 30.5
   processor: "STM32F411"
   description: "Meteor75 Brushless Whoop Quadcopter (2022)"
 }
@@ -1034,7 +894,7 @@ flight_controllers: {
   id: "hq-3030-3-blade-propellers"
   manufacturer: "BETAFPV"
   name: "HQ 3030 3-Blade Propellers"
-  weight_g: 1.5
+  weight_g: 4.4
   processor: "Unknown"
 }
 flight_controllers: {
@@ -1042,26 +902,16 @@ flight_controllers: {
   id: "meteor65-se-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor65 SE Brushless Whoop Quadcopter"
-  weight_g: 22.84
+  weight_g: 4.6
   processor: "Unknown"
   description: "Meteor65 SE Brushless Whoop Quadcopter (1S)"
-}
-flight_controllers: {
-  uuid: "b6515b88-8897-4235-89cf-311b5e6897c9"
-  id: "lite-1s-brushless-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "Lite 1S Brushless Flight Controller"
-  weight_g: 2.62
-  processor: "Unknown"
-  internal_vtx_uuid: "cdbc96bf-dca5-44e0-8c44-ce2d390abfe9"
-  description: "Lite 1S Brushless Flight Controller (Silverware Firmware)"
 }
 flight_controllers: {
   uuid: "da6b6f48-c404-4648-bbb3-8638a62c0847"
   id: "lite-2s-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "Lite 2S Brushless Flight Controller"
-  weight_g: 5.39
+  weight_g: 55
   processor: "Unknown"
   internal_vtx_uuid: "664cefec-588c-44ff-ba71-a7885d925382"
   description: "Lite 2S Brushless Flight Controller (Silverware Firmware)"
@@ -1071,7 +921,7 @@ flight_controllers: {
   id: "hx100-se-fpv-quad"
   manufacturer: "BETAFPV"
   name: "HX100 SE FPV Quad"
-  weight_g: 28.09
+  weight_g: 116.2
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1079,7 +929,7 @@ flight_controllers: {
   id: "meteor65-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Meteor65 Brushless Whoop Quadcopter"
-  weight_g: 22.83
+  weight_g: 4.6
   processor: "STM32F411"
   description: "Meteor65 Brushless Whoop Quadcopter (2022)"
 }
@@ -1088,7 +938,7 @@ flight_controllers: {
   id: "f405-2-4s-aio-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "F405 2-4S AIO Brushless Flight Controller"
-  weight_g: 5.3
+  weight_g: 5.58
   processor: "STM32F405"
   description: "F405 2-4S AIO Brushless Flight Controller (BLHeli_S) V3"
 }
@@ -1097,7 +947,7 @@ flight_controllers: {
   id: "toothpick-f4-2-4s-aio-brushless-flight-7"
   manufacturer: "BETAFPV"
   name: "Toothpick F4 2-4S AIO Brushless Flight"
-  weight_g: 6.63
+  weight_g: 7
   processor: "STM32F411"
   internal_esc_uuid: "e202fb6c-8280-4c56-a3f9-331cad62556a"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S)"
@@ -1107,7 +957,7 @@ flight_controllers: {
   id: "beta85x-fpv-whoop-quadcopter-2-3s"
   manufacturer: "BETAFPV"
   name: "Beta85X FPV Whoop Quadcopter (2-3S)"
-  weight_g: 58
+  weight_g: 55
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -1123,7 +973,7 @@ flight_controllers: {
   id: "beta85x-hd-whoop-quadcopter-4s"
   manufacturer: "BETAFPV"
   name: "Beta85X HD Whoop Quadcopter (4S)"
-  weight_g: 84.6
+  weight_g: 3.2
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -1131,7 +981,7 @@ flight_controllers: {
   id: "hx115-115mm-fpv-toothpick-quad"
   manufacturer: "BETAFPV"
   name: "HX115 115mm FPV Toothpick Quad"
-  weight_g: 66.6
+  weight_g: 3.5
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1147,7 +997,7 @@ flight_controllers: {
   id: "f4-1s-brushless-flight-controller-v2-2"
   manufacturer: "BETAFPV"
   name: "F4 1S Brushless Flight Controller V2.2"
-  weight_g: 2.69
+  weight_g: 5.58
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1155,7 +1005,7 @@ flight_controllers: {
   id: "betafpv-lite-2s-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "BETAFPV Lite 2S Brushless Flight Controller"
-  weight_g: 3.6
+  weight_g: 55
   processor: "Unknown"
   description: "BETAFPV Lite 2S Brushless Flight Controller (BetaTest)"
 }
@@ -1164,27 +1014,17 @@ flight_controllers: {
   id: "f4-1s-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "F4 1S Brushless Flight Controller"
-  weight_g: 3.3
+  weight_g: 5.58
   processor: "STM32F411"
   internal_receiver_uuid: "110c286f-682d-4348-8fb0-55a00fe7dc4d"
   description: "F4 1S Brushless Flight Controller ( Frsky RX )"
-}
-flight_controllers: {
-  uuid: "4c0ff731-71c3-4535-a0f9-a94089adfa57"
-  id: "a01-aio-camera-5-8g-vtx"
-  manufacturer: "BETAFPV"
-  name: "A01 AIO Camera 5.8G VTX"
-  weight_g: 3.2
-  processor: "Unknown"
-  internal_vtx_uuid: "7e30d6b5-e6f5-44c6-992c-f7343006cb16"
-  description: "A01 AIO Camera 5.8G VTX (Pin-Connected Version)"
 }
 flight_controllers: {
   uuid: "e3a8f596-61a9-4279-ad60-5437fc48dff0"
   id: "m01-aio-camera-5-8g-vtx-v2-1"
   manufacturer: "BETAFPV"
   name: "M01 AIO Camera 5.8G VTX V2.1"
-  weight_g: 2.72
+  weight_g: 1.45
   processor: "Unknown"
   internal_vtx_uuid: "7534d570-cbf7-46d5-b0c7-5ae841019f5b"
   description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected)"
@@ -1194,7 +1034,7 @@ flight_controllers: {
   id: "hq-3020-2-blade-propellers-1-5mm-shaft"
   manufacturer: "BETAFPV"
   name: "HQ 3020 2-Blade Propellers 1.5mm Shaft"
-  weight_g: 3.5
+  weight_g: 0.5
   processor: "Unknown"
 }
 flight_controllers: {
@@ -1202,7 +1042,7 @@ flight_controllers: {
   id: "toothpick-f4-2-4s-aio-brushless-flight-8"
   manufacturer: "BETAFPV"
   name: "Toothpick F4 2-4S AIO Brushless Flight"
-  weight_g: 6.2
+  weight_g: 7
   processor: "STM32F411"
   internal_esc_uuid: "9f72506f-e6d5-48f4-bd04-a335dce59347"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S)"
@@ -1212,7 +1052,7 @@ flight_controllers: {
   id: "hx100-100mm-fpv-quad"
   manufacturer: "BETAFPV"
   name: "HX100 100mm FPV Quad"
-  weight_g: 45.8
+  weight_g: 41.5
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1222,7 +1062,8 @@ flight_controllers: {
   name: "Power Whoop Connector Cable Set"
   processor: "Unknown"
   description: "Power Whoop Connector Cable Set for Beta85X"
-}
+
+  weight_g: 0.29}
 flight_controllers: {
   uuid: "909cec98-2adf-4034-baf6-3ca0b07f69f3"
   id: "4s-whoop-cable-pigtail-xt30"
@@ -1236,7 +1077,7 @@ flight_controllers: {
   id: "beta85x-whoop-quadcopter-4s"
   manufacturer: "BETAFPV"
   name: "Beta85X Whoop Quadcopter (4S)"
-  weight_g: 58.8
+  weight_g: 3.2
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1244,7 +1085,7 @@ flight_controllers: {
   id: "beta85x-4k-whoop-quadcopter-4s"
   manufacturer: "BETAFPV"
   name: "Beta85X 4K Whoop Quadcopter (4S)"
-  weight_g: 88.6
+  weight_g: 3.2
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -1252,7 +1093,7 @@ flight_controllers: {
   id: "beta75x-hd-whoop-quadcopter-3s"
   manufacturer: "BETAFPV"
   name: "Beta75X HD Whoop Quadcopter (3S)"
-  weight_g: 57.6
+  weight_g: 116.2
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1260,7 +1101,7 @@ flight_controllers: {
   id: "beta75x-whoop-quadcopter-3s"
   manufacturer: "BETAFPV"
   name: "Beta75X Whoop Quadcopter (3S)"
-  weight_g: 45.3
+  weight_g: 5.6
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1268,7 +1109,7 @@ flight_controllers: {
   id: "f4-2-4s-aio-brushless-flight-controller-4"
   manufacturer: "BETAFPV"
   name: "F4 2-4S AIO Brushless Flight Controller"
-  weight_g: 5.07
+  weight_g: 5.58
   processor: "STM32F411"
   internal_esc_uuid: "e191559a-e568-4b3b-91a1-ed8bd7b5ef76"
   description: "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S)"
@@ -1278,7 +1119,7 @@ flight_controllers: {
   id: "beta75-bnf-micro-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta75 BNF Micro Whoop Quadcopter"
-  weight_g: 32
+  weight_g: 20.2
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1286,7 +1127,7 @@ flight_controllers: {
   id: "f4-1s-brushless-flight-controller-2"
   manufacturer: "BETAFPV"
   name: "F4 1S Brushless Flight Controller"
-  weight_g: 3.3
+  weight_g: 5.58
   processor: "STM32F411"
   internal_receiver_uuid: "9cf6ec1a-a1e0-4ba1-9f46-8fe06b65034d"
   description: "F4 1S Brushless Flight Controller (No RX+OSD)"
@@ -1296,7 +1137,7 @@ flight_controllers: {
   id: "beta75-pro-2-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta75 Pro 2 Brushless Whoop Quadcopter"
-  weight_g: 28
+  weight_g: 30.5
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1304,7 +1145,7 @@ flight_controllers: {
   id: "beta65-pro-2-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta65 Pro 2 Brushless Whoop Quadcopter"
-  weight_g: 24
+  weight_g: 28.53
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1312,7 +1153,7 @@ flight_controllers: {
   id: "f4-1-2s-aio-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "F4 1-2S AIO Brushless Flight Controller"
-  weight_g: 4.5
+  weight_g: 5.58
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1320,44 +1161,16 @@ flight_controllers: {
   id: "t01-aio-camera-25mw-5-8g"
   manufacturer: "BETAFPV"
   name: "T01 AIO Camera 25mW 5.8G"
-  weight_g: 3.3
+  weight_g: 1.48
   processor: "Unknown"
   internal_vtx_uuid: "590ed84d-4438-4b54-b073-b6f24ada5c0d"
-}
-flight_controllers: {
-  uuid: "489610a4-120b-4e19-919d-8c28000f0336"
-  id: "f4-brushed-flight-controller-2"
-  manufacturer: "BETAFPV"
-  name: "F4 Brushed Flight Controller"
-  weight_g: 3.7
-  processor: "STM32F411"
-  internal_receiver_uuid: "4a1c93f9-0c52-42b1-9b44-9d25606743c7"
-  description: "F4 Brushed Flight Controller (SPI FUTABA RX + OSD)"
 }
 flight_controllers: {
   uuid: "4144ea96-6511-4135-a388-8a521c9e9584"
   id: "dsmx-micro-receiver"
   manufacturer: "BETAFPV"
   name: "DSMX Micro Receiver"
-  weight_g: 0.6
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "1146e5cf-e052-4d7a-ba4e-40a26bbbeae1"
-  id: "f4-brushed-flight-controller-3"
-  manufacturer: "BETAFPV"
-  name: "F4 Brushed Flight Controller"
-  weight_g: 3.8
-  processor: "STM32F411"
-  internal_receiver_uuid: "25a176c7-c8df-467d-9fd6-e360d69fd9df"
-  description: "F4 Brushed Flight Controller (DSMX Rx + OSD)"
-}
-flight_controllers: {
-  uuid: "1e7f6bfb-6945-46b3-8609-7bd2f7c8391e"
-  id: "betafpv-led-board-2pcs"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV LED Board (2PCS)"
-  weight_g: 1
+  weight_g: 0.82
   processor: "Unknown"
 }
 flight_controllers: {
@@ -1365,7 +1178,7 @@ flight_controllers: {
   id: "z02-aio-camera-5-8g-vtx"
   manufacturer: "BETAFPV"
   name: "Z02 AIO Camera 5.8G VTX"
-  weight_g: 4.2
+  weight_g: 1.45
   processor: "Unknown"
   internal_vtx_uuid: "aa40a685-6edf-4f36-ba1f-d01522e45778"
   description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version)"
@@ -1375,7 +1188,7 @@ flight_controllers: {
   id: "f405-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "F405 Brushless Flight Controller"
-  weight_g: 2.7
+  weight_g: 5.58
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -1383,7 +1196,7 @@ flight_controllers: {
   id: "betafpv-1200tvl-camera"
   manufacturer: "BETAFPV"
   name: "BETAFPV 1200TVL Camera"
-  weight_g: 4.2
+  weight_g: 1.45
   processor: "Unknown"
 }
 flight_controllers: {
@@ -1391,57 +1204,17 @@ flight_controllers: {
   id: "z02-aio-camera-5-8g-vtx-2"
   manufacturer: "BETAFPV"
   name: "Z02 AIO Camera 5.8G VTX"
-  weight_g: 4.7
+  weight_g: 1.45
   processor: "Unknown"
   internal_vtx_uuid: "00cd1018-c498-4e34-8b50-b69cb7297e16"
   description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version)"
-}
-flight_controllers: {
-  uuid: "3458b1e3-36ae-48de-b3c9-71b27a80bfd0"
-  id: "f3-brushed-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "F3 Brushed Flight Controller"
-  weight_g: 3.2
-  processor: "Unknown"
-  internal_receiver_uuid: "3f36bd87-b362-48c7-827c-91b2e96bff2a"
-  description: "F3 Brushed Flight Controller (Frsky Rx + OSD)"
-}
-flight_controllers: {
-  uuid: "db5c21dc-47a4-4076-a7c0-c574551d70c8"
-  id: "f4-brushed-flight-controller-4"
-  manufacturer: "BETAFPV"
-  name: "F4 Brushed Flight Controller"
-  weight_g: 3.7
-  processor: "STM32F411"
-  internal_receiver_uuid: "5766f915-3ff9-449a-a7b3-8495032c6a20"
-  description: "F4 Brushed Flight Controller (No Rx + OSD)"
-}
-flight_controllers: {
-  uuid: "47874c8f-f3c9-4b96-9618-9685c3f1132d"
-  id: "f3-brushed-flight-controller-2"
-  manufacturer: "BETAFPV"
-  name: "F3 Brushed Flight Controller"
-  weight_g: 3.7
-  processor: "Unknown"
-  internal_receiver_uuid: "874e1927-1057-426a-b355-9cd318ded288"
-  description: "F3 Brushed Flight Controller (Flysky Rx + OSD V1)"
-}
-flight_controllers: {
-  uuid: "7f3a281e-6e8d-4d23-8df1-6f3c86da96fe"
-  id: "f4-brushed-flight-controller-5"
-  manufacturer: "BETAFPV"
-  name: "F4 Brushed Flight Controller"
-  weight_g: 3.7
-  processor: "STM32F411"
-  internal_receiver_uuid: "7ae68f92-b368-47eb-b918-b3000fcab698"
-  description: "F4 Brushed Flight Controller (Frsky Rx / No RX)"
 }
 flight_controllers: {
   uuid: "34f07f7e-462a-4dbd-8b59-da3242acde23"
   id: "beta75-pro-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta75 Pro Brushless Whoop Quadcopter"
-  weight_g: 28.4
+  weight_g: 7.73
   processor: "STM32F411"
   description: "Beta75 Pro Brushless Whoop Quadcopter (1S)"
 }
@@ -1450,15 +1223,7 @@ flight_controllers: {
   id: "beta65s-lite-micro-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta65S Lite Micro Whoop Quadcopter"
-  weight_g: 25
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "4623a316-bbc7-4fe0-8f4a-f292322b3ade"
-  id: "betafpv-lite-brushed-flight-controller-v3"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV Lite Brushed Flight Controller V3"
-  weight_g: 3.2
+  weight_g: 16.6
   processor: "Unknown"
 }
 flight_controllers: {
@@ -1466,40 +1231,16 @@ flight_controllers: {
   id: "beta65-pro-brushless-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta65 Pro Brushless Whoop Quadcopter"
-  weight_g: 23.29
+  weight_g: 4.6
   processor: "STM32F411"
   description: "Beta65 Pro Brushless Whoop Quadcopter (1S)"
-}
-flight_controllers: {
-  uuid: "a12c8c82-44ad-4f3d-a27f-b9b36d22f813"
-  id: "alienwhoop-zer0-brushed-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "AlienWhoop ZER0 Brushed Flight Controller"
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "d5ec4f73-ef03-4d92-a765-06228c86cc7e"
-  id: "alienwhoop-f4-brushed-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "AlienWhoop F4 Brushed Flight Controller"
-  weight_g: 3.5
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "b95f5834-e591-465f-8f37-981e48c1f3ef"
-  id: "f3-brushed-flight-controller-3"
-  manufacturer: "BETAFPV"
-  name: "F3 Brushed Flight Controller"
-  weight_g: 3
-  processor: "Unknown"
-  description: "F3 Brushed Flight Controller (NO Receiver + OSD)"
 }
 flight_controllers: {
   uuid: "80c7c572-95c3-43a3-b35c-0a789135a257"
   id: "h02-aio-camera-5-8g-25mw-vtx-osd"
   manufacturer: "BETAFPV"
   name: "H02 AIO Camera 5.8G 25mW VTX OSD"
-  weight_g: 3.6
+  weight_g: 32
   processor: "Unknown"
   internal_vtx_uuid: "569515af-d2dd-4be0-a052-f7579dca41d1"
 }
@@ -1508,7 +1249,7 @@ flight_controllers: {
   id: "beta85-bnf-micro-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta85 BNF Micro Whoop Quadcopter"
-  weight_g: 43
+  weight_g: 7.73
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1516,7 +1257,7 @@ flight_controllers: {
   id: "beta75s-bnf-micro-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta75S BNF Micro Whoop Quadcopter"
-  weight_g: 38
+  weight_g: 4
   processor: "STM32F411"
 }
 flight_controllers: {
@@ -1524,7 +1265,7 @@ flight_controllers: {
   id: "beta65s-bnf-micro-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta65S BNF Micro Whoop Quadcopter"
-  weight_g: 25
+  weight_g: 4.6
   processor: "Unknown"
 }
 flight_controllers: {
@@ -1532,7 +1273,7 @@ flight_controllers: {
   id: "beta65-bnf-micro-whoop-quadcopter"
   manufacturer: "BETAFPV"
   name: "Beta65 BNF Micro Whoop Quadcopter"
-  weight_g: 20.5
+  weight_g: 2.2
   processor: "Unknown"
 }
 flight_controllers: {
@@ -1540,46 +1281,9 @@ flight_controllers: {
   id: "z01-aio-camera-5-8g-25mw-vtx"
   manufacturer: "BETAFPV"
   name: "Z01 AIO Camera 5.8G 25mW VTX"
-  weight_g: 4.3
+  weight_g: 32
   processor: "Unknown"
   internal_vtx_uuid: "ff621ea4-2a57-4ee0-8ed6-6f6399bd5b9f"
-}
-flight_controllers: {
-  uuid: "2f94d2ae-3647-484f-a2e0-e3e6e7ee4cd6"
-  id: "screws-and-rubber-dampers"
-  manufacturer: "BETAFPV"
-  name: "Screws and Rubber Dampers"
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "c8f5ad20-a895-4709-8a55-58fc79042f39"
-  id: "f3-brushed-flight-controller-4"
-  manufacturer: "BETAFPV"
-  name: "F3 Brushed Flight Controller"
-  weight_g: 3.5
-  processor: "Unknown"
-  internal_receiver_uuid: "09ea2d9c-2377-4eb3-97c1-f6ac38077697"
-  description: "F3 Brushed Flight Controller (Frsky Rx + OSD V2)"
-}
-flight_controllers: {
-  uuid: "2ec8a069-08c9-488e-8cbf-e98370029826"
-  id: "f3-brushed-flight-controller-5"
-  manufacturer: "BETAFPV"
-  name: "F3 Brushed Flight Controller"
-  weight_g: 3.2
-  processor: "Unknown"
-  internal_receiver_uuid: "e77f7c1e-6635-465f-a48e-21cd111f361b"
-  description: "F3 Brushed Flight Controller (DSMX Rx + OSD)"
-}
-flight_controllers: {
-  uuid: "cd952a0c-8506-4139-93d0-a7c9f6dee795"
-  id: "f3-evo-brushed-flight-controller"
-  manufacturer: "BETAFPV"
-  name: "F3 EVO Brushed Flight Controller"
-  weight_g: 2.8
-  processor: "Unknown"
-  internal_receiver_uuid: "7ea9315a-3f40-421c-8f76-774a0455d9e6"
-  description: "F3 EVO Brushed Flight Controller (Frsky Rx)"
 }
 flight_controllers: {
   uuid: "d63e84ba-a940-4812-bf75-e23e2fc8289a"
@@ -1589,7 +1293,8 @@ flight_controllers: {
   processor: "Unknown"
   internal_vtx_uuid: "5b576b3e-f5d8-4677-9bec-e4747f062d58"
   description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX"
-}
+
+  weight_g: 4.6}
 flight_controllers: {
   uuid: "870d0064-1656-4c2c-bc39-1a6b4991efae"
   id: "caddxfpv-protos-fpv-drone-rtf-kit"
@@ -1603,7 +1308,7 @@ flight_controllers: {
   id: "walksnail-avatar-gt-vtx"
   manufacturer: "CADDXFPV"
   name: "Walksnail Avatar GT VTX"
-  weight_g: 9.5
+  weight_g: 41.6
   processor: "Unknown"
   internal_vtx_uuid: "2d11f7f9-88ae-474b-bc83-c3103e747e50"
 }
@@ -1622,7 +1327,7 @@ flight_controllers: {
   id: "walksnail-avatar-gt-kit-only"
   manufacturer: "CADDXFPV"
   name: "Walksnail Avatar GT KIT Only"
-  weight_g: 9.5
+  weight_g: 41.6
   processor: "Unknown"
   internal_vtx_uuid: "15c94828-ee1d-4239-9c93-e18e5fd8d192"
 }
@@ -1639,7 +1344,7 @@ flight_controllers: {
   id: "walksnail-avatar-hd-kit-v2-32g"
   manufacturer: "CADDXFPV"
   name: "Walksnail Avatar HD Kit V2 (32G)"
-  weight_g: 7.2
+  weight_g: 1.8
   processor: "Unknown"
   internal_vtx_uuid: "8da83e83-ee07-4024-8536-8372a5f17dff"
 }
@@ -1648,7 +1353,7 @@ flight_controllers: {
   id: "walksnail-avatar-hd-kit-v2-8g"
   manufacturer: "CADDXFPV"
   name: "Walksnail Avatar HD Kit V2 (8G)"
-  weight_g: 7.2
+  weight_g: 1.8
   processor: "Unknown"
   internal_vtx_uuid: "1fab39e5-e2c0-47ba-b755-67725a018698"
 }
@@ -1657,7 +1362,7 @@ flight_controllers: {
   id: "walksnail-avatar-hd-goggles-x-kit-v2"
   manufacturer: "CADDXFPV"
   name: "Walksnail Avatar HD Goggles X + Kit V2"
-  weight_g: 290
+  weight_g: 1.8
   processor: "Unknown"
   internal_vtx_uuid: "554e3bd4-8a95-4dd7-9c84-085b87cd7a30"
 }
@@ -1668,15 +1373,8 @@ flight_controllers: {
   name: "Walksnail Avatar HD Goggles X + Pro Kit"
   processor: "Unknown"
   internal_vtx_uuid: "67385845-c7cf-4e50-95e2-29058d67ed59"
-}
-flight_controllers: {
-  uuid: "e94ea267-b5f3-4b5b-bc8d-9234c059e134"
-  id: "walksnail-vtx-connecting-fc-cable"
-  manufacturer: "CADDXFPV"
-  name: "Walksnail VTX Connecting FC Cable"
-  processor: "Unknown"
-  internal_vtx_uuid: "4c09d04c-ff33-414c-a317-05c19e5e5759"
-}
+
+  weight_g: 1.8}
 flight_controllers: {
   uuid: "1f92f03d-d89c-4abe-93ca-6a11e64dda6a"
   id: "caddxfpv-f4-aio-elrs"
@@ -1687,28 +1385,14 @@ flight_controllers: {
   internal_receiver_uuid: "74d7a534-ce02-404a-b488-b93449e52795"
 }
 flight_controllers: {
-  uuid: "d53c5526-ffa4-4cbe-a444-04ed456d5b6f"
-  id: "caddxfpv-camera-fc-cable"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Camera FC Cable"
-  processor: "Unknown"
-}
-flight_controllers: {
   uuid: "c2f8f86f-f63d-4d9a-aad6-54d58f3f20c4"
   id: "darwinfpv-f435-45a-am32-aio"
   manufacturer: "DarwinFPV - Official Store"
   name: "DarwinFPV F435 45A AM32 AIO"
   processor: "STM32F405"
   internal_esc_uuid: "03bdc3b2-f363-447b-8922-9046a04f1474"
-}
-flight_controllers: {
-  uuid: "ca03f543-813f-435e-8a0a-a2de0fb8e2e4"
-  id: "darwinfpv-25v-bec-power-distribution-board"
-  manufacturer: "DarwinFPV - Official Store"
-  name: "DarwinFPV 25V BEC Power Distribution Board"
-  weight_g: 10
-  processor: "Unknown"
-}
+
+  weight_g: 41.5}
 flight_controllers: {
   uuid: "19597d7a-567a-4e25-9ac8-14d91bba73ec"
   id: "darwinfpv-foldape4-4-inch-folding-long"
@@ -1716,7 +1400,8 @@ flight_controllers: {
   name: "DarwinFPV FoldApe4 4 Inch Folding Long"
   processor: "Unknown"
   description: "DarwinFPV FoldApe4 4 Inch Folding Long Range FPV Drone"
-}
+
+  weight_g: 250}
 flight_controllers: {
   uuid: "d31410e7-6e24-455f-8d0e-0e5e8b93af24"
   id: "darwinfpv-f411-45a-elrs-aio-cineape35-4"
@@ -1726,14 +1411,16 @@ flight_controllers: {
   internal_esc_uuid: "fdc4f26c-aa47-4754-881e-9854b05b6c83"
   internal_receiver_uuid: "c2de593a-f739-4f6e-93c5-ad7e03de6e4f"
   description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO"
-}
+
+  weight_g: 41.5}
 flight_controllers: {
   uuid: "0d06725c-e5cc-4a6e-afa5-855f552da1fc"
   id: "darwinfpv-cineape35-whoop-fpv-drone"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV CineApe35 Whoop FPV Drone"
   processor: "Unknown"
-}
+
+  weight_g: 144}
 flight_controllers: {
   uuid: "62c174a3-aac0-49c6-a9f8-9a54cebde10a"
   id: "darwinfpv-cement-ultra-durable-elrs-2-4g"
@@ -1749,7 +1436,7 @@ flight_controllers: {
   id: "tinyape25-walksnail-avatar-hd-freestyle-fpv"
   manufacturer: "DarwinFPV"
   name: "TinyApe25 Walksnail Avatar HD Freestyle FPV"
-  weight_g: 55
+  weight_g: 50.3
   processor: "STM32F411"
   internal_vtx_uuid: "78e53688-a6b6-44c3-b9a8-7fba74cea1ee"
   description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone"
@@ -1761,7 +1448,8 @@ flight_controllers: {
   name: "DarwinFPV HULK 45A 3-6S AIO"
   processor: "STM32F411"
   internal_esc_uuid: "ee916b8e-e710-4d10-beae-5a80913b6047"
-}
+
+  weight_g: 41.5}
 flight_controllers: {
   uuid: "64007840-d06e-460b-b960-b784b2a21151"
   id: "darwinfpv-fpvcycle-whoop-stack-flight-controller"
@@ -1769,13 +1457,14 @@ flight_controllers: {
   name: "DarwinFPV FPVCycle Whoop Stack Flight Controller"
   processor: "STM32F722"
   description: "DarwinFPV FPVCycle Whoop Stack Flight Controller 6S 45A Stack"
-}
+
+  weight_g: 10.1}
 flight_controllers: {
   uuid: "4ab5be23-e16d-4846-a795-23ad14d20d57"
   id: "darwinfpv-25-200-400-600mw-vtx"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 25/200/400/600mW VTX"
-  weight_g: 3.5
+  weight_g: 9.2
   processor: "Unknown"
   internal_vtx_uuid: "47639100-c93e-4bac-8297-c7001d4f6932"
 }
@@ -1787,7 +1476,8 @@ flight_controllers: {
   processor: "STM32F411"
   internal_esc_uuid: "f9b6e8cd-8f5b-48e1-931a-1faef1bd1a6b"
   internal_receiver_uuid: "5ff7f57c-3e4f-4840-b0c0-71d8894982d6"
-}
+
+  weight_g: 5}
 flight_controllers: {
   uuid: "8e2577d5-5456-4384-855a-f703a0797750"
   id: "newbeedrone-beeid-pro-m10-gps-module"
@@ -1795,7 +1485,8 @@ flight_controllers: {
   name: "NewBeeDrone BeeID Pro M10 GPS Module"
   processor: "Unknown"
   description: "NewBeeDrone BeeID Pro M10 GPS Module with RemoteID & IST8310 Compass"
-}
+
+  weight_g: 5.2}
 flight_controllers: {
   uuid: "d71009a5-89ad-4fff-8164-537e151b2730"
   id: "newbeedrone-lionbee-long-range-elrs2-4-aio"
@@ -1804,7 +1495,8 @@ flight_controllers: {
   processor: "Unknown"
   internal_receiver_uuid: "e8e4c3aa-e4d1-4bbe-b3c3-f05a66532330"
   description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl"
-}
+
+  weight_g: 4.57}
 flight_controllers: {
   uuid: "915c4319-db76-4d07-b783-08163b9289a6"
   id: "newbeedrone-lionbee-3inch-long-range-elrs2-4"
@@ -1820,18 +1512,10 @@ flight_controllers: {
   id: "newbeedrone-beebrain-blv5-aio-flight-controller"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller"
-  weight_g: 5.8
+  weight_g: 4.57
   processor: "Unknown"
   internal_receiver_uuid: "3c4a122e-3621-4bed-b418-80de5ffb3298"
   description: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G"
-}
-flight_controllers: {
-  uuid: "f3f48323-6cc7-4e61-9b0c-4a6a8f8ac896"
-  id: "newbeedrone-savagebee-longrange-3d-print-part"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone SavageBee LongRange 3D Print Part"
-  processor: "Unknown"
-  description: "NewBeeDrone SavageBee LongRange 3D Print Part kit"
 }
 flight_controllers: {
   uuid: "feb36229-227a-48a0-bfcc-d059d04971ce"
@@ -1840,7 +1524,8 @@ flight_controllers: {
   name: "NewBeeDrone StingerBee HD O4 Pro JST1.0"
   processor: "Unknown"
   description: "NewBeeDrone StingerBee HD O4 Pro JST1.0 16Pin to JST0.8 6Pin for Hummingbird255 AIO FC"
-}
+
+  weight_g: 10.2}
 flight_controllers: {
   uuid: "b147339d-c406-40c0-a4df-4203ffc4386d"
   id: "newbeedrone-beebrain-brushed-v2-5-aio-flight"
@@ -1850,42 +1535,16 @@ flight_controllers: {
   internal_receiver_uuid: "4672b90a-a3ef-40ec-9a2c-1a558b5c3dbf"
   internal_vtx_uuid: "f00bc2df-b9e6-4056-b784-c01e0a90ea4e"
   description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX"
-}
-flight_controllers: {
-  uuid: "cc77d876-2cf7-4796-91f5-7d043df6cd7c"
-  id: "beekart-acrobee65-brushed-car-conversion-kit"
-  manufacturer: "NewBeeDrone"
-  name: "BeeKart AcroBee65 Brushed Car Conversion Kit"
-  processor: "Unknown"
-}
+
+  weight_g: 4.57}
 flight_controllers: {
   uuid: "4d0177f5-a0f0-4c46-9858-08c4bf6084a5"
   id: "newbeedrone-beeid-v1-1-m10q-gps-module"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeID v1.1 M10Q GPS Module"
-  weight_g: 5.2
+  weight_g: 2.16
   processor: "Unknown"
   description: "NewBeeDrone BeeID v1.1 M10Q GPS Module with RemoteID & Drone Tracker"
-}
-flight_controllers: {
-  uuid: "899d7c78-5ae8-43ab-92e3-0c2e51b26950"
-  id: "newbeedrone-fettec-infinityaio-g4-flight-controller-4"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone FETTec InfinityAIO G4 Flight Controller"
-  weight_g: 19.4
-  processor: "Unknown"
-  internal_esc_uuid: "52038f5d-db25-46dc-9719-2769e45e5729"
-  description: "NewBeeDrone FETTec InfinityAIO G4 Flight Controller MPU6000 45A 3-6S"
-}
-flight_controllers: {
-  uuid: "aa435626-acfa-4f15-82a1-4d232a95db47"
-  id: "newbeedrone-beebrain-hd-g4-flight-controller"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone BeeBrain HD G4 Flight Controller"
-  weight_g: 7.4
-  processor: "Unknown"
-  internal_receiver_uuid: "4b7cfebb-c916-4fa9-a861-bb31c78c382e"
-  description: "NewBeeDrone BeeBrain HD G4 Flight Controller ExpressLRS (ELRS) 2.4G"
 }
 flight_controllers: {
   uuid: "94f4a89a-3922-4a2d-bdd2-c940031bd8f8"
@@ -1893,13 +1552,14 @@ flight_controllers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone VRDrone Flight Controller"
   processor: "Unknown"
-}
+
+  weight_g: 4.57}
 flight_controllers: {
   uuid: "5f021b3e-9d8d-40a0-a32a-bdcd9528b837"
   id: "newbeedrone-infinity200-rs-racing-flight-controller"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Infinity200 RS Racing Flight Controller"
-  weight_g: 4.85
+  weight_g: 4.57
   processor: "Unknown"
   description: "NewBeeDrone Infinity200 RS Racing Flight Controller | RaceSpec"
 }
@@ -1913,42 +1573,20 @@ flight_controllers: {
   description: "NewBeeDrone Cricket200 V2 F7 Flight Controller Dual BMI270"
 }
 flight_controllers: {
-  uuid: "85060784-f746-492b-ac54-ffc1d8cee725"
-  id: "newbeedrone-blackbox-chip"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone BlackBox Chip"
-  processor: "Unknown"
-  description: "NewBeeDrone BlackBox Chip for Infinity30 FC"
-}
-flight_controllers: {
   uuid: "0d51e1ca-bafa-4448-9049-d27ee1640ebd"
   id: "newbeedrone-replacement-2-4-hair-antenna"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Replacement 2.4 Hair Antenna"
   processor: "Unknown"
   description: "NewBeeDrone Replacement 2.4 Hair Antenna for Beeceiver V1 / Beebrain FC (1pc)"
-}
-flight_controllers: {
-  uuid: "176cbaf1-61dc-4e38-ace5-e69a4c358b42"
-  id: "newbeedrone-m3-grommet"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone M3 Grommet"
-  processor: "Unknown"
-  description: "NewBeeDrone M3 Grommet for Flight Controller Vibration Dampeners  (5 Pack)"
-}
+
+  weight_g: 3.3}
 flight_controllers: {
   uuid: "5eab45df-fb33-4b02-b031-7062d86ed0f4"
   id: "newbeedrone-infinity200-f4-flight-controller"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Infinity200 F4 Flight Controller"
   weight_g: 5.85
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "40b4a2a5-d6a7-4d67-8058-9f8b28aa6e96"
-  id: "newbeedrone-infinity305-f4-flight-controller"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Infinity305 F4 Flight Controller"
   processor: "STM32F405"
 }
 flight_controllers: {
@@ -1962,67 +1600,14 @@ flight_controllers: {
   description: "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1"
 }
 flight_controllers: {
-  uuid: "6be1fdb5-fbf7-416c-8622-9e402cdda923"
-  id: "rdq-bardwell-f7-v2"
-  manufacturer: "RaceDayQuads"
-  name: "RDQ Bardwell F7 V2"
-  weight_g: 8.3
-  processor: "STM32F722"
-  description: "RDQ Bardwell F7 V2 with iFlight Blitz E45S 45A 30x30 Stack/Combo"
-}
-flight_controllers: {
-  uuid: "f9246598-e43b-4e35-a553-555539a9ea4a"
-  id: "cl2-xr-6s-7-built-tuned"
-  manufacturer: "Rotor Riot Builds"
-  name: "CL2-XR 6S 7 Built & Tuned"
-  processor: "Unknown"
-  internal_receiver_uuid: "9ad9ce97-eb5e-4fd0-873b-8c1c6c244c2f"
-  internal_vtx_uuid: "87b2a4bc-a972-4568-afae-f9c4d2f33b7c"
-  description: "CL2-XR 6S 7 Built & Tuned Drone - Avatar / ELRS"
-}
-flight_controllers: {
   uuid: "0dce6de2-78a4-44de-8771-f3667e26f75b"
   id: "rotor-riot-brave-f7-v2-flight"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot Brave F7 V2 Flight"
   processor: "Unknown"
   description: "Rotor Riot Brave F7 V2 Flight Controller - NDAA"
-}
-flight_controllers: {
-  uuid: "3be376c6-7d6b-472d-ab73-163c7854e57d"
-  id: "skylite-ducted-4s-3-solder-free-built"
-  manufacturer: "Rotor Riot Builds"
-  name: "Skylite Ducted 4S 3 Solder-Free Built"
-  processor: "Unknown"
-  internal_receiver_uuid: "8e61981b-cba8-4126-8011-699e531319e6"
-  internal_vtx_uuid: "6666d103-f358-4d50-a0cd-86403b92810f"
-  description: "Skylite Ducted 4S 3 Solder-Free Built & Tuned Drone - Avatar / ELRS"
-}
-flight_controllers: {
-  uuid: "42f20e72-fcb3-4655-88c9-f67606d04a63"
-  id: "cl2-xr-6s-7-built-tuned-2"
-  manufacturer: "Rotor Riot Builds"
-  name: "CL2-XR 6S 7 Built & Tuned"
-  processor: "Unknown"
-  description: "CL2-XR 6S 7 Built & Tuned Drone - DJI O4 Pro / DJI"
-}
-flight_controllers: {
-  uuid: "52db1471-f3b6-4c06-b341-162c6caccbc7"
-  id: "tanq-s-4s-3-5-built"
-  manufacturer: "Rotor Riot Builds"
-  name: "Tanq S 4S 3.5 Built &"
-  processor: "Unknown"
-  description: "Tanq S 4S 3.5 Built & Tuned Drone - DJI O4 Pro / DJI"
-}
-flight_controllers: {
-  uuid: "f619a4f4-dfda-48ed-9ee8-9fefa73e266d"
-  id: "aura-vtx-for-analog-video-system"
-  manufacturer: "Fat Shark"
-  name: "Aura VTX for Analog Video System"
-  weight_g: 13
-  processor: "Unknown"
-  internal_vtx_uuid: "f95d6117-f464-4a47-aca8-c9362a4f7ecc"
-}
+
+  weight_g: 8}
 flight_controllers: {
   uuid: "f18f9560-05fc-4d33-8f72-b956036beded"
   id: "tbs-lucid-30x30-500a-pdb"
@@ -2032,29 +1617,15 @@ flight_controllers: {
   processor: "Unknown"
 }
 flight_controllers: {
-  uuid: "97ae05b9-0ea4-4911-873b-0e83de53d166"
-  id: "lucid-h7-30x30-flight-controller-ndaa"
-  manufacturer: "Team Black Sheep"
-  name: "Lucid H7 30x30 Flight Controller - NDAA"
-  processor: "STM32H743"
-}
-flight_controllers: {
   uuid: "7110a8ec-9919-42ac-8adf-6106e7840713"
   id: "goku-f405-ervt-1s-5a-5-in-1"
   manufacturer: "Flywoo"
   name: "GOKU F405 ERVT 1S 5A 5-in-1"
-  weight_g: 4
+  weight_g: 4.9
   processor: "STM32F405"
   internal_receiver_uuid: "f940d3a2-cbbc-4eb2-88f5-142426359504"
   internal_vtx_uuid: "571abb8a-eb6e-4ed9-aeb4-4d2ed7477e66"
   description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS"
-}
-flight_controllers: {
-  uuid: "7a3cb15c-3c4c-4ff3-897b-cdb04351d61e"
-  id: "kiss-ultra-v2-30x30-flight-controller"
-  manufacturer: "KISS ULTRA"
-  name: "KISS ULTRA V2 30x30 Flight Controller"
-  processor: "STM32H743"
 }
 flight_controllers: {
   uuid: "328d84e7-89fe-4148-9a45-18df68557f06"
@@ -2063,7 +1634,8 @@ flight_controllers: {
   name: "5V Boostybaby Ultra Small High Power"
   processor: "Unknown"
   description: "5V Boostybaby Ultra Small High Power Voltage Booster"
-}
+
+  weight_g: 1.3}
 flight_controllers: {
   uuid: "6ef95e4b-d8c0-4d4e-9cdb-d201cfe3ed00"
   id: "rotor-riot-brave-f7-flight-controller"
@@ -2071,13 +1643,14 @@ flight_controllers: {
   name: "Rotor Riot Brave F7 Flight Controller"
   processor: "Unknown"
   description: "Rotor Riot Brave F7 Flight Controller Wiring Kit"
-}
+
+  weight_g: 3.3}
 flight_controllers: {
   uuid: "b67b0279-4511-4d6d-a111-d210ff0fc544"
   id: "avatar-gt-kit-dual-antenna"
   manufacturer: "Walksnail"
   name: "Avatar GT Kit Dual Antenna"
-  weight_g: 9.5
+  weight_g: 41.6
   processor: "Unknown"
   internal_vtx_uuid: "ded1b7ae-04ea-4081-b7a4-3f95a1dfbfd6"
   description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System"
@@ -2097,7 +1670,7 @@ flight_controllers: {
   id: "avatar-hd-pro-kit-dual-antenna"
   manufacturer: "Walksnail"
   name: "Avatar HD Pro Kit Dual Antenna"
-  weight_g: 7.2
+  weight_g: 41.6
   processor: "Unknown"
   internal_vtx_uuid: "dae416b8-c05a-40c8-adf4-daf974af9e26"
   description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System"
@@ -2107,7 +1680,7 @@ flight_controllers: {
   id: "avatar-hd-kit-v2-dual-antenna"
   manufacturer: "Walksnail"
   name: "Avatar HD Kit V2 Dual Antenna"
-  weight_g: 7.2
+  weight_g: 41.6
   processor: "Unknown"
   internal_vtx_uuid: "d2831bd8-f458-467d-819e-b3ea55497291"
   description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System"
@@ -2117,7 +1690,7 @@ flight_controllers: {
   id: "whoop-lite-bundle"
   manufacturer: "Divimath"
   name: "Whoop Lite Bundle"
-  weight_g: 4.5
+  weight_g: 5.4
   processor: "Unknown"
   internal_vtx_uuid: "62ed4520-d65c-47d7-928f-926fa9b039e6"
   description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System"
@@ -2127,36 +1700,17 @@ flight_controllers: {
   id: "avatar-hd-mini-vtx-module-v3"
   manufacturer: "Walksnail"
   name: "Avatar HD Mini VTX Module V3"
-  weight_g: 13.4
+  weight_g: 6.8
   processor: "Unknown"
   internal_vtx_uuid: "636c340f-bbf7-4d1e-a24c-12dedb3add42"
   description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System"
-}
-flight_controllers: {
-  uuid: "baa20737-aaa5-4cb1-b17a-a9b20124bf96"
-  id: "hd-vtx-to-fc-cable"
-  manufacturer: "Rotor Riot Store"
-  name: "HD VTX to FC Cable"
-  processor: "Unknown"
-  internal_vtx_uuid: "61c375ce-5100-4a53-96d3-e4303ae7abf8"
-  description: "HD VTX to FC Cable for Avatar V2 VTX - Choose Version"
-}
-flight_controllers: {
-  uuid: "89988caf-5180-48a4-be01-10288e0bd062"
-  id: "avatar-hd-vtx-module-v2"
-  manufacturer: "Walksnail"
-  name: "Avatar HD VTX Module V2"
-  weight_g: 17.6
-  processor: "Unknown"
-  internal_vtx_uuid: "e560925d-3836-4e3b-947e-96f444667255"
-  description: "Avatar HD VTX Module V2 - 32GB Without Camera For Avatar HD Video System"
 }
 flight_controllers: {
   uuid: "62ae1cca-073e-4127-a72d-e89571fca047"
   id: "f722-v4-4-8s-30x30-flight-controller"
   manufacturer: "Foxeer"
   name: "F722 V4 4-8S 30x30 Flight Controller"
-  weight_g: 7.7
+  weight_g: 8
   processor: "STM32F722"
   description: "F722 V4 4-8S 30x30 Flight Controller with MPU6000 and Barometer"
 }
@@ -2165,38 +1719,10 @@ flight_controllers: {
   id: "avatar-hd-kit-v2"
   manufacturer: "Walksnail"
   name: "Avatar HD Kit V2"
-  weight_g: 7.2
+  weight_g: 1.8
   processor: "Unknown"
   internal_vtx_uuid: "5739f434-346a-4f18-af51-a6e7e871f075"
   description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System"
-}
-flight_controllers: {
-  uuid: "79b0b9bb-3dff-421d-94eb-f4bd6700337d"
-  id: "avatar-hd-pro-kit"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Pro Kit"
-  weight_g: 9.5
-  processor: "Unknown"
-  internal_vtx_uuid: "5986249a-ac32-4593-838f-dff5e601db93"
-  description: "Avatar HD Pro Kit with 32GB DVR & Gyro For Avatar HD Video System"
-}
-flight_controllers: {
-  uuid: "11c082de-c522-4e91-b09c-5ab8adea09c7"
-  id: "hd-vtx-to-fc-cable-2"
-  manufacturer: "Rotor Riot Store"
-  name: "HD VTX to FC Cable"
-  processor: "Unknown"
-  internal_vtx_uuid: "23ec1627-9d0a-4220-9099-d9ea734b849e"
-  description: "HD VTX to FC Cable for DJI O3 and Avatar V1 VTX - Choose Version"
-}
-flight_controllers: {
-  uuid: "456e3380-8e39-4d55-a490-91b3ddea8b11"
-  id: "g4-n-g4-2-6s-20x20-30x30-kiss-flight"
-  manufacturer: "FETtec"
-  name: "G4-N G4 2-6S 20x20-30x30 KISS Flight"
-  weight_g: 5.37
-  processor: "Unknown"
-  description: "G4-N G4 2-6S 20x20-30x30 KISS Flight Controller"
 }
 flight_controllers: {
   uuid: "408a9fbd-f732-4e26-96e6-c62bd2cce351"
@@ -2214,18 +1740,10 @@ flight_controllers: {
   id: "avatar-mini-1s-vtx"
   manufacturer: "Walksnail"
   name: "Avatar Mini 1S VTX"
-  weight_g: 3.5
+  weight_g: 1.8
   processor: "Unknown"
   internal_vtx_uuid: "648539ac-b369-4014-94b3-edde5271378d"
   description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System"
-}
-flight_controllers: {
-  uuid: "148bbe40-c9bd-4d95-8949-a6c31ef01c9e"
-  id: "flight-controller-m3-vibration-dampener-4"
-  manufacturer: "FT Ninja"
-  name: "Flight Controller M3 Vibration Dampener 4"
-  processor: "Unknown"
-  description: "Flight Controller M3 Vibration Dampener 4 Pack"
 }
 flight_controllers: {
   uuid: "e290f81d-da6a-49d4-95e3-083d20401cff"
@@ -2236,27 +1754,14 @@ flight_controllers: {
   processor: "Unknown"
 }
 flight_controllers: {
-  uuid: "25e5feae-e4a9-41d0-aaf3-bccce0e7fcc7"
-  id: "bubby-fpv-s-tune"
-  manufacturer: "Rates"
-  name: "Bubby FPV's Tune"
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "2928603b-7890-4b49-9c35-c8639a9abf92"
-  id: "rubber-flight-controller-dampener-4-pack"
-  manufacturer: "FT Ninja"
-  name: "Rubber Flight Controller Dampener 4-Pack"
-  processor: "Unknown"
-}
-flight_controllers: {
   uuid: "c7a31b9e-4cba-4aa6-8075-dc1a0bf5a595"
   id: "hglrc-f405-8s-v2-1-direct"
   manufacturer: "HGLRC"
   name: "HGLRC F405 8S V2.1 Direct"
   processor: "STM32F405"
   description: "HGLRC F405 8S V2.1 Direct Plug FC Racing/ Freestyle FPV Drone"
-}
+
+  weight_g: 15.5}
 flight_controllers: {
   uuid: "53ac8d6e-1308-45a7-b795-9a9be9e8c258"
   id: "hglrc-h743-12s-42688-fc"
@@ -2264,29 +1769,14 @@ flight_controllers: {
   name: "HGLRC H743 12S 42688 FC"
   processor: "STM32H743"
   description: "HGLRC H743 12S 42688 FC for 5-15 inch FPV Drone"
-}
-flight_controllers: {
-  uuid: "4c1f9c81-786c-4e9f-8278-04c24151c503"
-  id: "hglrc-d200-soccer-drone-drop-resistant-training"
-  manufacturer: "HGLRC"
-  name: "HGLRC D200 Soccer Drone Drop-resistant/ Training"
-  weight_g: 151
-  processor: "STM32F405"
-  description: "HGLRC D200 Soccer Drone Drop-resistant/ Training and Competition Soccer Drone"
-}
-flight_controllers: {
-  uuid: "1f186730-3b3a-4b3c-b460-1bd8c1017dbf"
-  id: "hglrc-rekon35-v2-long-range-fpv-drone"
-  manufacturer: "HGLRC"
-  name: "HGLRC Rekon35 v2 Long-Range FPV Drone"
-  processor: "STM32H743"
-}
+
+  weight_g: 7.3}
 flight_controllers: {
   uuid: "a4c74a7d-651a-4f82-84e4-80f9a6771544"
   id: "hglrc-specter-f722-lite-icm42688-gyro"
   manufacturer: "HGLRC"
   name: "HGLRC SPECTER F722 Lite ICM42688 gyro"
-  weight_g: 4
+  weight_g: 5
   processor: "STM32F722"
   internal_receiver_uuid: "4da8a069-d611-4376-b6d9-667996a4aa76"
   description: "HGLRC SPECTER F722 Lite ICM42688 gyro integrated ELRS 2.4G receiver flight controller"
@@ -2296,7 +1786,7 @@ flight_controllers: {
   id: "hglrc-wind5-lite-v2-racing-drone"
   manufacturer: "HGLRC"
   name: "HGLRC Wind5 Lite V2 Racing Drone"
-  weight_g: 283
+  weight_g: 80
   processor: "STM32F722"
   internal_receiver_uuid: "1ee26f9f-4c6f-4301-b43b-cbc1dfa2dfa3"
   description: "HGLRC Wind5 Lite V2 Racing Drone Elrs2.4G version"
@@ -2307,25 +1797,18 @@ flight_controllers: {
   manufacturer: "HGLRC"
   name: "Rekon Y6 5-inch Long-Range FPV Drone"
   processor: "STM32F722"
-}
+
+  weight_g: 311}
 flight_controllers: {
   uuid: "c319e263-096a-4173-8f7b-855617ed5d6d"
   id: "hglrc-specter-15a-elrs-aio-2-4s-2"
   manufacturer: "HGLRC"
   name: "HGLRC SPECTER 15A ELRS AIO 2-4S"
-  weight_g: 6.9
+  weight_g: 5.6
   processor: "STM32F411"
   internal_esc_uuid: "1ed11eb3-9ab2-4c9e-950b-8f3a8ca6fcfb"
   internal_receiver_uuid: "ab61a221-d90d-4de9-917a-28a33599e037"
   description: "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone"
-}
-flight_controllers: {
-  uuid: "76842a12-20ef-4a01-a0eb-f79f8d0e803e"
-  id: "rekon7-pro-long-range-fpv-analog"
-  manufacturer: "HGLRC"
-  name: "Rekon7 PRO Long Range FPV Analog"
-  processor: "STM32F405"
-  description: "Rekon7 PRO Long Range FPV Analog / Digital Version Racing Drone"
 }
 flight_controllers: {
   uuid: "cc7e1478-7614-4ef3-923c-5568daca3b10"
@@ -2334,40 +1817,16 @@ flight_controllers: {
   name: "HGLRC Draknight 2-inch toothpick O4 Fpv"
   processor: "STM32F411"
   description: "HGLRC Draknight 2-inch toothpick O4 Fpv drone"
-}
-flight_controllers: {
-  uuid: "8f3db12a-f3c6-44c5-bce4-8791b699b364"
-  id: "hglrc-tuning-adapter-usb-transfer-extension"
-  manufacturer: "HGLRC"
-  name: "HGLRC Tuning adapter USB Transfer Extension"
-  weight_g: 2.4
-  processor: "Unknown"
-  description: "HGLRC Tuning adapter USB Transfer Extension Cable Module for Flight Controller"
-}
-flight_controllers: {
-  uuid: "329246ff-372f-4bcd-9972-490bfede1e4e"
-  id: "mamba-mk4-h743-v2-55a-65a-128k"
-  manufacturer: "DIATONE OFFICIAL"
-  name: "MAMBA MK4 H743 V2 55A/65A 128K"
-  processor: "STM32H743"
-  description: "MAMBA MK4 H743 V2 55A/65A 128K AM32 Flight Control Stack 30mm/M3"
-}
-flight_controllers: {
-  uuid: "d0a92764-5e81-4afd-a826-97a70e62fb5e"
-  id: "mamba-mk5-g4-aio-alpha-40a-2"
-  manufacturer: "DIATONE OFFICIAL"
-  name: "MAMBA MK5 G4 AIO Alpha 40A"
-  processor: "Unknown"
-  internal_esc_uuid: "ab6d5dcc-80a0-4b47-8b29-aee05d91c048"
-  description: "MAMBA MK5 G4 AIO Alpha 40A 6S Dshot2400 Flight Controller"
-}
+
+  weight_g: 44.3}
 flight_controllers: {
   uuid: "08bf4a4d-5a05-4ad3-8fee-5b0d6b7b32ec"
   id: "mamba-f405mk2-v2-flight-controller"
   manufacturer: "DIATONE INNOVATIONS"
   name: "Mamba F405MK2 V2 Flight Controller"
   processor: "STM32F405"
-}
+
+  weight_g: 9}
 flight_controllers: {
   uuid: "45704872-9b0f-4fff-9564-0f4614246399"
   id: "mamba-f405mk2-v2-flight-controller-f40mk2-f55"
@@ -2375,14 +1834,16 @@ flight_controllers: {
   name: "MAMBA F405MK2 V2 Flight Controller F40MK2/F55"
   processor: "STM32F405"
   description: "MAMBA F405MK2 V2 Flight Controller F40MK2/F55 Stack 30MM/M3"
-}
+
+  weight_g: 9}
 flight_controllers: {
   uuid: "73328b55-97e7-45bb-80dd-8a4e9ffa3567"
   id: "mamba-mk4-f722-flight-controller-30mm-m3"
   manufacturer: "DIATONE INNOVATIONS"
   name: "MAMBA MK4 F722  Flight Controller 30mm/M3"
   processor: "STM32F722"
-}
+
+  weight_g: 6.9}
 flight_controllers: {
   uuid: "99a290d0-e11f-417f-9ab2-ce8023188030"
   id: "mamba-mk4-f722-mini-flight-controller"
@@ -2390,15 +1851,8 @@ flight_controllers: {
   name: "MAMBA MK4 F722 MINI Flight Controller"
   processor: "STM32F722"
   description: "MAMBA MK4 F722 MINI Flight Controller 20mm/M2"
-}
-flight_controllers: {
-  uuid: "dcef12c1-7a5e-4316-a14d-bb0a988588e8"
-  id: "mamba-mk4-f722-45a-f55a-f65a-128k-3-6s-flight"
-  manufacturer: "DIATONE INNOVATIONS"
-  name: "MAMBA MK4 F722 45A/F55A/F65A_128K 3-6S Flight"
-  processor: "STM32F722"
-  description: "MAMBA MK4 F722 45A/F55A/F65A_128K 3-6S Flight Controller Stack 30mm/M3"
-}
+
+  weight_g: 9.9}
 flight_controllers: {
   uuid: "9a30e94b-45c8-4fc2-b1fd-e9d395b67695"
   id: "winners-choice-mamba-mk4-f722-mini-f40-reactor"
@@ -2406,43 +1860,14 @@ flight_controllers: {
   name: "WINNERS' CHOICE-MAMBA MK4 F722 MINI F40/Reactor"
   processor: "STM32F722"
   description: "WINNERS' CHOICE-MAMBA MK4 F722 MINI F40/Reactor 44A/66A MINI Flight Controller Stack 20mm/M2"
-}
-flight_controllers: {
-  uuid: "8fc966f1-79c5-4583-baec-a34bc8bd2a64"
-  id: "diatone-roma-f7-6s-vista-multirotors"
-  manufacturer: "DIATONE OFFICIAL"
-  name: "DIATONE Roma F7 6S VISTA Multirotors"
-  processor: "STM32F722"
-  description: "DIATONE Roma F7 6S VISTA Multirotors 6S MSR/TBS Receiver"
-}
-flight_controllers: {
-  uuid: "a87782ec-d097-4f64-9625-dccb6d04975c"
-  id: "diatone-f22-s27-airplane-hobby-plane-mpp"
-  manufacturer: "DIATONE OFFICIAL"
-  name: "DIATONE F22/S27 Airplane Hobby Plane MPP"
-  processor: "Unknown"
-  description: "DIATONE F22/S27 Airplane Hobby Plane MPP Foam Toys RC Plane Kids Gift"
-}
-flight_controllers: {
-  uuid: "c7ee8124-25b9-48ff-a238-50141a079a47"
-  id: "mamba-fc-buzzer"
-  manufacturer: "DIATONE INNOVATIONS"
-  name: "MAMBA FC Buzzer"
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "f8249e81-941f-4f9b-a65f-062d43a8e9aa"
-  id: "mamba-stack-damping-acc-silicone-rings-standoff"
-  manufacturer: "DIATONE OFFICIAL"
-  name: "Mamba Stack Damping Acc -Silicone Rings/Standoff"
-  processor: "STM32F405"
-}
+
+  weight_g: 6}
 flight_controllers: {
   uuid: "df6e8e96-25ee-4485-85bc-9e7e71e93e37"
   id: "walksnail-avatar-digital-hd-mini-1s"
   manufacturer: "FlyFish-RC"
   name: "Walksnail Avatar Digital HD Mini 1S"
-  weight_g: 3.5
+  weight_g: 6.8
   processor: "Unknown"
   internal_vtx_uuid: "9355ce0e-4479-4450-a3b2-09fe7b0b6475"
   description: "Walksnail Avatar Digital HD Mini 1S VTX Nano Camera kit"
@@ -2452,7 +1877,7 @@ flight_controllers: {
   id: "walksnail-avatar-digital-hd-vtx-nano"
   manufacturer: "FlyFish-RC"
   name: "Walksnail Avatar Digital HD VTX Nano"
-  weight_g: 3.5
+  weight_g: 6.8
   processor: "Unknown"
   internal_vtx_uuid: "983d667f-4882-4839-969d-39fc20a4e871"
   description: "Walksnail Avatar Digital HD VTX Nano Camera kit"
@@ -2462,7 +1887,7 @@ flight_controllers: {
   id: "walksnail-avatar-digital-hd-vtx-micro"
   manufacturer: "FlyFish-RC"
   name: "Walksnail Avatar Digital HD VTX Micro"
-  weight_g: 6
+  weight_g: 6.8
   processor: "Unknown"
   internal_vtx_uuid: "f4d3f83a-df92-4423-970c-f59134625658"
   description: "Walksnail Avatar Digital HD VTX Micro Camera kit"
@@ -2472,7 +1897,7 @@ flight_controllers: {
   id: "sub250-oasisfly35-dc-hd-o4-pro"
   manufacturer: "Sub250"
   name: "Sub250 OasisFly35 DC HD O4 Pro"
-  weight_g: 194
+  weight_g: 170
   processor: "STM32F722"
   description: "(IN Stock ) Sub250 OasisFly35 DC HD O4 Pro GPS Freestyle Quadcopter"
 }
@@ -2481,7 +1906,7 @@ flight_controllers: {
   id: "sub250-dollyfly25-v2-hd-o4-pro"
   manufacturer: "Sub250"
   name: "Sub250 DollyFly25 V2 HD O4 Pro"
-  weight_g: 181.4
+  weight_g: 88
   processor: "STM32F722"
   description: "(IN Stock) Sub250 DollyFly25 V2 HD O4 Pro GPS 2.5-inch 4S CineWhoop"
 }
@@ -2495,15 +1920,6 @@ flight_controllers: {
   description: "(In Stock) Sub250 DollyFly16 1.6-inch HD O4 Pro 2S Whoop FPV Drone"
 }
 flight_controllers: {
-  uuid: "e2699b19-22bc-4f85-8fe9-6f875de856d7"
-  id: "sub250-redfox-a2-12a-aio-fc-2"
-  manufacturer: "Sub250"
-  name: "Sub250 Redfox A2  12A AIO FC"
-  processor: "STM32F411"
-  internal_esc_uuid: "0cf0f897-cc2d-4fa6-a001-b4500837fe25"
-  description: "Sub250 Redfox A2  12A AIO FC for Nanofly20 2S"
-}
-flight_controllers: {
   uuid: "2ad27a01-e9be-4228-84cb-1948bcd6476d"
   id: "redfox-a3-f722-35a-45a-aio-flight-2"
   manufacturer: "Sub250"
@@ -2511,7 +1927,8 @@ flight_controllers: {
   processor: "STM32F722"
   internal_esc_uuid: "b66c1ad5-ad66-4a63-a2e3-1e5a1a17e764"
   description: "Redfox A3 F722 35A/45A AIO Flight Controller for DollyFly25"
-}
+
+  weight_g: 8.7}
 flight_controllers: {
   uuid: "bcd628af-90fb-4b37-9286-77b6e6dbb430"
   id: "sub250-whoopfly16-rtf-combo"
@@ -2525,25 +1942,7 @@ flight_controllers: {
   id: "sub250-whoopfly16-ultra-light-analog-1s-mini"
   manufacturer: "Sub250"
   name: "Sub250 Whoopfly16 Ultra-light Analog 1s Mini"
-  weight_g: 35.2
+  weight_g: 37.7
   processor: "STM32F411"
   description: "Sub250 Whoopfly16 Ultra-light Analog 1s Mini Whoop 75mm FPV Drone A30"
-}
-flight_controllers: {
-  uuid: "5b1f5235-ab05-429e-8053-ed992543849e"
-  id: "sub250-1s-nanofly20-2-hdzero-micro"
-  manufacturer: "Sub250"
-  name: "Sub250 1S Nanofly20 2 HDZero Micro"
-  processor: "STM32F411"
-  internal_vtx_uuid: "e3bc1ddb-9522-4e14-9260-1f9c29587f0b"
-  description: "Sub250 1S Nanofly20 2 HDZero Micro Drone A30"
-}
-flight_controllers: {
-  uuid: "2e9bf4fb-03b0-40ff-8496-ca59f6311dd0"
-  id: "sub250-1s-nanofly20-2-analog-micro"
-  manufacturer: "Sub250"
-  name: "Sub250 1S Nanofly20 2 Analog Micro"
-  weight_g: 33
-  processor: "STM32F411"
-  description: "Sub250 1S Nanofly20 2 Analog Micro Quad A30"
 }

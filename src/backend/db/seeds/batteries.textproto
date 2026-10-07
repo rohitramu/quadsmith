@@ -3,7 +3,7 @@ batteries: {
   id: "tattu-r-line-version-5.0-1200mah-6s"
   manufacturer: "Tattu"
   name: "Tattu R-Line Version 5.0 1200mAh 6S"
-  weight_g: 197
+  weight_g: 20
   capacity_mah: 1200
   cell_count_s: 6
   chemistry: "LiPo"
@@ -36,7 +36,7 @@ batteries: {
   id: "gnb-3s-650mah-80c"
   manufacturer: "GNB"
   name: "GNB 3S 650mAh 80C"
-  weight_g: 45.9
+  weight_g: 62
   capacity_mah: 650
   cell_count_s: 3
   chemistry: "LiPo"
@@ -47,7 +47,7 @@ batteries: {
   id: "ovonic-4s-1300mah-100c"
   manufacturer: "Ovonic"
   name: "Ovonic 4S 1300mAh 100C"
-  weight_g: 156
+  weight_g: 169
   capacity_mah: 1300
   cell_count_s: 4
   chemistry: "LiPo"
@@ -58,7 +58,7 @@ batteries: {
   id: "tattu-r-line-version-5.0-1400mah-6s"
   manufacturer: "Tattu"
   name: "Tattu R-Line Version 5.0 1400mAh 6S"
-  weight_g: 222
+  weight_g: 20
   capacity_mah: 1400
   cell_count_s: 6
   chemistry: "LiPo"
@@ -69,40 +69,18 @@ batteries: {
   id: "gnb-8s-1100mah-130c"
   manufacturer: "GNB"
   name: "GNB 8S 1100mAh 130C"
-  weight_g: 256.7
+  weight_g: 230
   capacity_mah: 1100
   cell_count_s: 8
   chemistry: "LiPo"
   connector: "XT60"
 }
 batteries: {
-  uuid: "426b4655-788f-4642-a1b0-33adbed68dcc"
-  id: "betafpv-lava-1s-450mah"
-  manufacturer: "BetaFPV"
-  name: "BetaFPV LAVA 1S 450mAh"
-  weight_g: 12.2
-  capacity_mah: 450
-  cell_count_s: 1
-  chemistry: "LiPo"
-  connector: "BT2.0"
-}
-batteries: {
-  uuid: "221677db-5f86-42ce-9c48-02525e7c5e0b"
-  id: "betafpv-lava-1s-550mah"
-  manufacturer: "BetaFPV"
-  name: "BetaFPV LAVA 1S 550mAh"
-  weight_g: 14
-  capacity_mah: 550
-  cell_count_s: 1
-  chemistry: "LiPo"
-  connector: "BT2.0"
-}
-batteries: {
   uuid: "b4095c95-d15e-49c9-9ed0-bbcc518a0787"
   id: "betafpv-lava-3s-450mah"
   manufacturer: "BetaFPV"
   name: "BetaFPV LAVA 3S 450mAh"
-  weight_g: 37.8
+  weight_g: 26.1
   capacity_mah: 450
   cell_count_s: 3
   chemistry: "LiPo"
@@ -113,19 +91,8 @@ batteries: {
   id: "betafpv-lava-4s-450mah"
   manufacturer: "BetaFPV"
   name: "BetaFPV LAVA 4S 450mAh"
-  weight_g: 49.4
+  weight_g: 26.1
   capacity_mah: 450
-  cell_count_s: 4
-  chemistry: "LiPo"
-  connector: "XT30"
-}
-batteries: {
-  uuid: "759b6c4a-b1c2-4684-b65b-8659b8fde102"
-  id: "betafpv-lava-4s-850mah"
-  manufacturer: "BetaFPV"
-  name: "BetaFPV LAVA 4S 850mAh"
-  weight_g: 98
-  capacity_mah: 850
   cell_count_s: 4
   chemistry: "LiPo"
   connector: "XT30"
@@ -135,7 +102,7 @@ batteries: {
   id: "tattu-r-line-4s-650mah"
   manufacturer: "Tattu"
   name: "Tattu R-Line 4S 650mAh"
-  weight_g: 82
+  weight_g: 20
   capacity_mah: 650
   cell_count_s: 4
   chemistry: "LiPo"
@@ -146,7 +113,7 @@ batteries: {
   id: "tattu-r-line-4s-1300mah"
   manufacturer: "Tattu"
   name: "Tattu R-Line 4S 1300mAh"
-  weight_g: 150
+  weight_g: 5
   capacity_mah: 1300
   cell_count_s: 4
   chemistry: "LiPo"
@@ -157,7 +124,7 @@ batteries: {
   id: "tattu-r-line-4s-1550mah"
   manufacturer: "Tattu"
   name: "Tattu R-Line 4S 1550mAh"
-  weight_g: 177
+  weight_g: 5
   capacity_mah: 1550
   cell_count_s: 4
   chemistry: "LiPo"
@@ -168,7 +135,7 @@ batteries: {
   id: "tattu-r-line-6s-1050mah"
   manufacturer: "Tattu"
   name: "Tattu R-Line 6S 1050mAh"
-  weight_g: 180
+  weight_g: 186
   capacity_mah: 1050
   cell_count_s: 6
   chemistry: "LiPo"
@@ -179,7 +146,7 @@ batteries: {
   id: "tattu-r-line-6s-1300mah"
   manufacturer: "Tattu"
   name: "Tattu R-Line 6S 1300mAh"
-  weight_g: 208
+  weight_g: 20
   capacity_mah: 1300
   cell_count_s: 6
   chemistry: "LiPo"
@@ -190,7 +157,7 @@ batteries: {
   id: "ovonic-3s-450mah"
   manufacturer: "Ovonic"
   name: "Ovonic 3S 450mAh"
-  weight_g: 33.6
+  weight_g: 26.1
   capacity_mah: 450
   cell_count_s: 3
   chemistry: "LiPo"
@@ -201,7 +168,7 @@ batteries: {
   id: "ovonic-3s-850mah"
   manufacturer: "Ovonic"
   name: "Ovonic 3S 850mAh"
-  weight_g: 76
+  weight_g: 80
   capacity_mah: 850
   cell_count_s: 3
   chemistry: "LiPo"
@@ -212,7 +179,7 @@ batteries: {
   id: "ovonic-4s-850mah"
   manufacturer: "Ovonic"
   name: "Ovonic 4S 850mAh"
-  weight_g: 102
+  weight_g: 112
   capacity_mah: 850
   cell_count_s: 4
   chemistry: "LiPo"
@@ -223,7 +190,7 @@ batteries: {
   id: "ovonic-4s-1550mah"
   manufacturer: "Ovonic"
   name: "Ovonic 4S 1550mAh"
-  weight_g: 184
+  weight_g: 160
   capacity_mah: 1550
   cell_count_s: 4
   chemistry: "LiPo"
@@ -234,7 +201,7 @@ batteries: {
   id: "ovonic-6s-1000mah"
   manufacturer: "Ovonic"
   name: "Ovonic 6S 1000mAh"
-  weight_g: 171
+  weight_g: 185
   capacity_mah: 1000
   cell_count_s: 6
   chemistry: "LiPo"
@@ -245,7 +212,7 @@ batteries: {
   id: "ovonic-6s-1200mah"
   manufacturer: "Ovonic"
   name: "Ovonic 6S 1200mAh"
-  weight_g: 195
+  weight_g: 5
   capacity_mah: 1200
   cell_count_s: 6
   chemistry: "LiPo"
@@ -267,7 +234,7 @@ batteries: {
   id: "gnb-1s-530mah"
   manufacturer: "GNB"
   name: "GNB 1S 530mAh"
-  weight_g: 12
+  weight_g: 13
   capacity_mah: 530
   cell_count_s: 1
   chemistry: "LiPo"
@@ -278,7 +245,7 @@ batteries: {
   id: "gnb-2s-530mah"
   manufacturer: "GNB"
   name: "GNB 2S 530mAh"
-  weight_g: 26.5
+  weight_g: 34
   capacity_mah: 530
   cell_count_s: 2
   chemistry: "LiPo"
@@ -289,7 +256,7 @@ batteries: {
   id: "gnb-4s-650mah"
   manufacturer: "GNB"
   name: "GNB 4S 650mAh"
-  weight_g: 70
+  weight_g: 143
   capacity_mah: 650
   cell_count_s: 4
   chemistry: "LiPo"
@@ -311,7 +278,7 @@ batteries: {
   id: "gnb-6s-1100mah"
   manufacturer: "GNB"
   name: "GNB 6S 1100mAh"
-  weight_g: 177
+  weight_g: 190
   capacity_mah: 1100
   cell_count_s: 6
   chemistry: "LiPo"
@@ -322,7 +289,7 @@ batteries: {
   id: "gnb-6s-1300mah"
   manufacturer: "GNB"
   name: "GNB 6S 1300mAh"
-  weight_g: 189
+  weight_g: 198
   capacity_mah: 1300
   cell_count_s: 6
   chemistry: "LiPo"
@@ -333,7 +300,7 @@ batteries: {
   id: "betafpv-2s-300mah-(unverified)"
   manufacturer: "BetaFPV"
   name: "BetaFPV 2S 300mAh (Unverified)"
-  weight_g: 15
+  weight_g: 29.2
   capacity_mah: 300
   cell_count_s: 2
   chemistry: "LiPo"
@@ -344,7 +311,7 @@ batteries: {
   id: "betafpv-lava-2s-550mah"
   manufacturer: "BetaFPV"
   name: "BetaFPV LAVA 2S 550mAh"
-  weight_g: 29.5
+  weight_g: 29.2
   capacity_mah: 550
   cell_count_s: 2
   chemistry: "LiPo"
@@ -355,7 +322,7 @@ batteries: {
   id: "tattu-2s-450mah"
   manufacturer: "Tattu"
   name: "Tattu 2S 450mAh"
-  weight_g: 29
+  weight_g: 5
   capacity_mah: 450
   cell_count_s: 2
   chemistry: "LiPo"
@@ -366,7 +333,7 @@ batteries: {
   id: "tattu-2s-850mah"
   manufacturer: "Tattu"
   name: "Tattu 2S 850mAh"
-  weight_g: 40
+  weight_g: 20
   capacity_mah: 850
   cell_count_s: 2
   chemistry: "LiPo"
@@ -377,7 +344,7 @@ batteries: {
   id: "ovonic-2s-450mah-(unverified)"
   manufacturer: "Ovonic"
   name: "Ovonic 2S 450mAh (Unverified)"
-  weight_g: 24
+  weight_g: 27
   capacity_mah: 450
   cell_count_s: 2
   chemistry: "LiPo"
@@ -388,7 +355,7 @@ batteries: {
   id: "ovonic-2s-850mah-(unverified)"
   manufacturer: "Ovonic"
   name: "Ovonic 2S 850mAh (Unverified)"
-  weight_g: 45
+  weight_g: 49
   capacity_mah: 850
   cell_count_s: 2
   chemistry: "LiPo"
@@ -399,7 +366,7 @@ batteries: {
   id: "gnb-2s-380mah"
   manufacturer: "GNB"
   name: "GNB 2S 380mAh"
-  weight_g: 22
+  weight_g: 7.4
   capacity_mah: 380
   cell_count_s: 2
   chemistry: "LiPo"
@@ -410,7 +377,7 @@ batteries: {
   id: "gnb-2s-450mah"
   manufacturer: "GNB"
   name: "GNB 2S 450mAh"
-  weight_g: 27
+  weight_g: 28
   capacity_mah: 450
   cell_count_s: 2
   chemistry: "LiPo"
@@ -421,7 +388,7 @@ batteries: {
   id: "betafpv-2s-850mah-(unverified)"
   manufacturer: "BetaFPV"
   name: "BetaFPV 2S 850mAh (Unverified)"
-  weight_g: 45
+  weight_g: 38
   capacity_mah: 850
   cell_count_s: 2
   chemistry: "LiPo"
@@ -432,7 +399,7 @@ batteries: {
   id: "tattu-r-line-4s-1800mah"
   manufacturer: "Tattu"
   name: "Tattu R-Line 4S 1800mAh"
-  weight_g: 197
+  weight_g: 5
   capacity_mah: 1800
   cell_count_s: 4
   chemistry: "LiPo"
@@ -443,7 +410,7 @@ batteries: {
   id: "tattu-r-line-5s-1300mah-(unverified)"
   manufacturer: "Tattu"
   name: "Tattu R-Line 5S 1300mAh (Unverified)"
-  weight_g: 185
+  weight_g: 20
   capacity_mah: 1300
   cell_count_s: 5
   chemistry: "LiPo"
@@ -454,7 +421,7 @@ batteries: {
   id: "tattu-r-line-5s-1550mah"
   manufacturer: "Tattu"
   name: "Tattu R-Line 5S 1550mAh"
-  weight_g: 214
+  weight_g: 20
   capacity_mah: 1550
   cell_count_s: 5
   chemistry: "LiPo"
@@ -465,7 +432,7 @@ batteries: {
   id: "tattu-r-line-6s-1250mah-(unverified)"
   manufacturer: "Tattu"
   name: "Tattu R-Line 6S 1250mAh (Unverified)"
-  weight_g: 200
+  weight_g: 20
   capacity_mah: 1250
   cell_count_s: 6
   chemistry: "LiPo"
@@ -476,7 +443,7 @@ batteries: {
   id: "tattu-r-line-6s-1550mah"
   manufacturer: "Tattu"
   name: "Tattu R-Line 6S 1550mAh"
-  weight_g: 254
+  weight_g: 20
   capacity_mah: 1550
   cell_count_s: 6
   chemistry: "LiPo"
@@ -487,7 +454,7 @@ batteries: {
   id: "ovonic-2s-650mah"
   manufacturer: "Ovonic"
   name: "Ovonic 2S 650mAh"
-  weight_g: 45
+  weight_g: 5
   capacity_mah: 650
   cell_count_s: 2
   chemistry: "LiPo"
@@ -498,7 +465,7 @@ batteries: {
   id: "ovonic-3s-1300mah"
   manufacturer: "Ovonic"
   name: "Ovonic 3S 1300mAh"
-  weight_g: 115
+  weight_g: 100
   capacity_mah: 1300
   cell_count_s: 3
   chemistry: "LiPo"
@@ -509,7 +476,7 @@ batteries: {
   id: "ovonic-4s-1800mah"
   manufacturer: "Ovonic"
   name: "Ovonic 4S 1800mAh"
-  weight_g: 205
+  weight_g: 209
   capacity_mah: 1800
   cell_count_s: 4
   chemistry: "LiPo"
@@ -520,7 +487,7 @@ batteries: {
   id: "ovonic-6s-1550mah"
   manufacturer: "Ovonic"
   name: "Ovonic 6S 1550mAh"
-  weight_g: 245
+  weight_g: 20
   capacity_mah: 1550
   cell_count_s: 6
   chemistry: "LiPo"
@@ -531,7 +498,7 @@ batteries: {
   id: "gnb-1s-650mah"
   manufacturer: "GNB"
   name: "GNB 1S 650mAh"
-  weight_g: 17
+  weight_g: 62
   capacity_mah: 650
   cell_count_s: 1
   chemistry: "LiPo"
@@ -542,7 +509,7 @@ batteries: {
   id: "gnb-1s-720mah"
   manufacturer: "GNB"
   name: "GNB 1S 720mAh"
-  weight_g: 16.5
+  weight_g: 12
   capacity_mah: 720
   cell_count_s: 1
   chemistry: "LiPo"
@@ -553,7 +520,7 @@ batteries: {
   id: "gnb-2s-650mah"
   manufacturer: "GNB"
   name: "GNB 2S 650mAh"
-  weight_g: 31.4
+  weight_g: 36
   capacity_mah: 650
   cell_count_s: 2
   chemistry: "LiPo"
@@ -564,7 +531,7 @@ batteries: {
   id: "gnb-3s-1100mah"
   manufacturer: "GNB"
   name: "GNB 3S 1100mAh"
-  weight_g: 111
+  weight_g: 146
   capacity_mah: 1100
   cell_count_s: 3
   chemistry: "LiPo"
@@ -575,7 +542,7 @@ batteries: {
   id: "gnb-4s-1550mah"
   manufacturer: "GNB"
   name: "GNB 4S 1550mAh"
-  weight_g: 189
+  weight_g: 160
   capacity_mah: 1550
   cell_count_s: 4
   chemistry: "LiPo"
@@ -586,7 +553,7 @@ batteries: {
   id: "gnb-6s-1550mah"
   manufacturer: "GNB"
   name: "GNB 6S 1550mAh"
-  weight_g: 273
+  weight_g: 259
   capacity_mah: 1550
   cell_count_s: 6
   chemistry: "LiPo"
@@ -608,7 +575,7 @@ batteries: {
   id: "progressiverc-glacier-45c-1550mah-4s"
   manufacturer: "Glacier"
   name: "Glacier 45C 1550mAh 4S LiPo"
-  weight_g: 172
+  weight_g: 160
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -617,7 +584,7 @@ batteries: {
   id: "lava-ii-4s-battery"
   manufacturer: "BETAFPV"
   name: "LAVA II 4S Battery"
-  weight_g: 55
+  weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -640,19 +607,11 @@ batteries: {
   cell_count_s: 4
 }
 batteries: {
-  uuid: "891737cb-a1bb-493f-a992-30d1158c4bc3"
-  id: "lava-ii-1s-battery"
-  manufacturer: "BETAFPV"
-  name: "LAVA II 1S Battery"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
   uuid: "376d8e77-cbeb-4354-b6d1-a83937ff275a"
   id: "aquila20-exclusive-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "Aquila20 Exclusive Battery (2PCS)"
-  weight_g: 52
+  weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -661,7 +620,7 @@ batteries: {
   id: "600mah-2s-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "600mAh 2S Lipo Battery  (2PCS)"
-  weight_g: 38.5
+  weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -681,13 +640,14 @@ batteries: {
   name: "BT3.0 550mAh 2S Battery (2PCS)"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 29.2}
 batteries: {
   uuid: "aee21456-6de2-4df7-8e49-40b5ea8da53d"
   id: "lava-2s-3s-4s-550mah-75c-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "LAVA 2S/3S/4S 550mAh 75C Battery (2PCS)"
-  weight_g: 29.5
+  weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -705,7 +665,7 @@ batteries: {
   id: "lava-1s-550mah-75c-battery-4pcs"
   manufacturer: "BETAFPV"
   name: "LAVA 1S 550mAh 75C Battery (4PCS)"
-  weight_g: 14
+  weight_g: 12.2
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -732,7 +692,7 @@ batteries: {
   id: "lava-6s-1100mah-lipo-battery"
   manufacturer: "BETAFPV"
   name: "LAVA 6S 1100mAh LiPo Battery"
-  weight_g: 192
+  weight_g: 211
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -741,23 +701,7 @@ batteries: {
   id: "lava-4s-850mah-lipo-battery"
   manufacturer: "BETAFPV"
   name: "LAVA 4S 850mAh LiPo Battery"
-  weight_g: 98
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "2c63caf0-9718-4d08-89cd-14b967f2bcee"
-  id: "pavo-series-battery-strap-2pcs"
-  manufacturer: "BETAFPV"
-  name: "Pavo Series Battery Strap (2PCS)"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "7acccd20-9af0-479c-89c1-ce8b8f79265c"
-  id: "aquila16-exclusive-battery-2pcs"
-  manufacturer: "BETAFPV"
-  name: "Aquila16 Exclusive Battery (2PCS)"
+  weight_g: 110
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -768,30 +712,14 @@ batteries: {
   name: "BT3.0 450mAh 2S Battery (2PCS)"
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "49fee4bb-ef7f-403e-a572-6cd46cf998ef"
-  id: "2s-battery-charger-and-voltage-tester"
-  manufacturer: "BETAFPV"
-  name: "2S Battery Charger and Voltage Tester"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "fcbb8182-fc54-4a12-8cfa-597e72b1bbc6"
-  id: "bt2-0-550mah-1s-battery-4pcs"
-  manufacturer: "BETAFPV"
-  name: "BT2.0 550mAh 1S Battery (4PCS)"
-  weight_g: 13.99
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 26.1}
 batteries: {
   uuid: "f2a4efd6-f32d-4712-b811-6f1dfef4ee48"
   id: "450mah-2s-45c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "450mAh 2S 45C Lipo Battery (2PCS)"
-  weight_g: 28.2
+  weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -802,7 +730,8 @@ batteries: {
   name: "6 Ports 1S Battery Charger & Adapter"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 185}
 batteries: {
   uuid: "e48b3491-7fcf-4f23-9295-f1c40a0527ed"
   id: "bt2-0-battery-charger-and-voltage-tester"
@@ -818,16 +747,7 @@ batteries: {
   id: "750mah-4s-95c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "750mAh 4S 95C Lipo Battery (2PCS)"
-  weight_g: 81.74
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "7b56a8bc-5177-4935-9a45-585f16774fa6"
-  id: "650mah-1s-50c-hv-battery-4-pcs"
-  manufacturer: "BETAFPV"
-  name: "650mAh 1S 50C HV Battery (4 PCS)"
-  weight_g: 14
+  weight_g: 5
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -836,7 +756,7 @@ batteries: {
   id: "550mah-1s-lipo-hv-battery-4pcs"
   manufacturer: "BETAFPV"
   name: "550mAh 1S Lipo HV Battery (4PCS)"
-  weight_g: 12.88
+  weight_g: 69
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -845,7 +765,7 @@ batteries: {
   id: "1000mah-4s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "1000mAh 4S 75C Lipo Battery (2PCS)"
-  weight_g: 117.35
+  weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -854,7 +774,7 @@ batteries: {
   id: "550mah-6s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "550mAh 6S 75C Lipo Battery (2PCS)"
-  weight_g: 103.61
+  weight_g: 86
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -863,7 +783,7 @@ batteries: {
   id: "850mah-3s-4s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "850mAh 3S/4S 75C Lipo Battery (2PCS)"
-  weight_g: 101
+  weight_g: 80
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -872,35 +792,16 @@ batteries: {
   id: "bt2-0-260mah-1s-30c-battery-8pcs"
   manufacturer: "BETAFPV"
   name: "BT2.0 260mAh 1S 30C Battery (8PCS)"
-  weight_g: 7.16
+  weight_g: 7.11
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "05808177-665d-403f-bde0-62df9b5ceea9"
-  id: "bt2-0-connector-1s-lipo-charger-board"
-  manufacturer: "BETAFPV"
-  name: "BT2.0 Connector 1S Lipo Charger Board"
-  weight_g: 36.86
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "BT2.0 Connector 1S Lipo Charger Board & Adapter"
 }
 batteries: {
   uuid: "2463e634-c04e-4822-80cc-efb88d0349df"
   id: "ph2-0-battery-charger-and-voltage-tester"
   manufacturer: "BETAFPV"
   name: "PH2.0 Battery Charger and Voltage Tester"
-  weight_g: 15.14
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "a928c449-7699-4f76-bffa-367d6346c4f2"
-  id: "bt2-0-450mah-1s-30c-battery-4pcs"
-  manufacturer: "BETAFPV"
-  name: "BT2.0 450mAh 1S 30C Battery (4PCS)"
-  weight_g: 12.7
+  weight_g: 12.37
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -909,7 +810,7 @@ batteries: {
   id: "bt2-0-300mah-1s-30c-battery-8pcs"
   manufacturer: "BETAFPV"
   name: "BT2.0 300mAh 1S 30C Battery (8PCS)"
-  weight_g: 8.28
+  weight_g: 8.3
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -918,15 +819,7 @@ batteries: {
   id: "lipo-battery-drone-safety-handbag"
   manufacturer: "BETAFPV"
   name: "Lipo Battery Drone Safety Handbag"
-  weight_g: 130
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "b79c1045-9dbc-49a1-8f8a-2fa2f1549c04"
-  id: "lipo-battery-strap-kit"
-  manufacturer: "BETAFPV"
-  name: "Lipo Battery Strap Kit"
+  weight_g: 230.5
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -935,7 +828,7 @@ batteries: {
   id: "300mah-3s-45c-lipo-battery-s-version"
   manufacturer: "BETAFPV"
   name: "300mAh 3S 45C Lipo Battery S-Version"
-  weight_g: 24.8
+  weight_g: 42
   capacity_mah: 1550
   cell_count_s: 4
   description: "300mAh 3S 45C Lipo Battery S-Version (2PCS)"
@@ -945,7 +838,7 @@ batteries: {
   id: "foxeer-5-8g-lollipop-3-antenna-rhcp"
   manufacturer: "BETAFPV"
   name: "Foxeer 5.8G Lollipop 3 Antenna RHCP"
-  weight_g: 3.6
+  weight_g: 3.1
   capacity_mah: 1550
   cell_count_s: 4
   description: "Foxeer 5.8G Lollipop 3 Antenna RHCP UFL (2PCS)"
@@ -955,7 +848,7 @@ batteries: {
   id: "300mah-3s-45c-lipo-battery-r-version"
   manufacturer: "BETAFPV"
   name: "300mAh 3S 45C Lipo Battery R-Version"
-  weight_g: 26
+  weight_g: 42
   capacity_mah: 1550
   cell_count_s: 4
   description: "300mAh 3S 45C Lipo Battery R-Version (2PCS)"
@@ -965,7 +858,7 @@ batteries: {
   id: "450mah-4s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "450mAh 4S 75C Lipo Battery (2PCS)"
-  weight_g: 56.3
+  weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -974,7 +867,7 @@ batteries: {
   id: "450mah-3s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "450mAh 3S 75C Lipo Battery (2PCS)"
-  weight_g: 44
+  weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -983,7 +876,7 @@ batteries: {
   id: "350mah-2s-35c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "350mAh 2S 35C Lipo Battery (2PCS)"
-  weight_g: 20
+  weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1001,54 +894,19 @@ batteries: {
   id: "ph2-0-connector-1s-lipo-lihv-charger"
   manufacturer: "BETAFPV"
   name: "PH2.0 Connector 1S Lipo LiHV Charger"
-  weight_g: 36
+  weight_g: 185
   capacity_mah: 1550
   cell_count_s: 4
   description: "PH2.0 Connector 1S Lipo LiHV Charger Board"
-}
-batteries: {
-  uuid: "00b7a9b7-e27b-45db-b537-ed5d5c44c27a"
-  id: "1s-lipo-battery-voltage-tester"
-  manufacturer: "BETAFPV"
-  name: "1S LiPo Battery Voltage Tester"
-  weight_g: 4.5
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "206dba98-186e-4210-bf73-e4643144ee52"
-  id: "micro-whoop-battery-box-storage-case"
-  manufacturer: "BETAFPV"
-  name: "Micro Whoop Battery Box Storage Case"
-  capacity_mah: 1550
-  cell_count_s: 4
 }
 batteries: {
   uuid: "ae359f10-0300-4a11-be85-18b6d600dc80"
   id: "300mah-2s-45c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "300mAh 2S 45C Lipo Battery (2PCS)"
-  weight_g: 18.4
+  weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "84573ccd-3f1d-444f-9243-bf33c5afdf10"
-  id: "caddxfpv-curve-micro-16-6-channel-a30"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Curve Micro 16 6-Channel A30"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "CADDXFPV Curve Micro 16 6-Channel A30 LiHV Battery Charger"
-}
-batteries: {
-  uuid: "6c485dd9-731c-4365-9172-12ec6d159b1f"
-  id: "caddxfpv-curve-580mah-680mah-1s"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV CURVE 580mAh & 680mAh 1S"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "CADDXFPV CURVE 580mAh & 680mAh 1S 3.8V 95C FPV Lipo Battery with A30 connector"
 }
 batteries: {
   uuid: "69911b95-da68-45f3-a254-89d9bc3f144d"
@@ -1057,7 +915,8 @@ batteries: {
   name: "CaddxFPV Logo Battery Strap"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 2.3}
 batteries: {
   uuid: "7a046270-ccdf-4c61-a11a-5134037c4ad1"
   id: "walksnail-avatar-goggles-l-goggles"
@@ -1066,21 +925,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Walksnail Avatar Goggles L + Goggles Battery"
-}
-batteries: {
-  uuid: "2aeb2ba8-0960-4a56-9359-185be619a6f0"
-  id: "caddxfpv-xt30-goggles-battery-power-cable"
-  manufacturer: "CADDX FPV"
-  name: "CaddxFPV XT30 Goggles Battery Power Cable"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 290}
 batteries: {
   uuid: "e824211e-5745-45c8-833f-027b09f38abe"
   id: "caddxfpv-goggles-battery"
   manufacturer: "CADDX FPV"
   name: "CaddxFPV Goggles Battery"
-  weight_g: 126
+  weight_g: 102
   capacity_mah: 1550
   cell_count_s: 4
   description: "CaddxFPV Goggles Battery with Power Cable"
@@ -1090,7 +942,7 @@ batteries: {
   id: "caddxfpv-protos-2s-battery"
   manufacturer: "CADDX FPV"
   name: "CaddxFPV Protos 2S Battery"
-  weight_g: 41.9
+  weight_g: 203
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1102,15 +954,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "CADDXFPV 650mAh 4S 14.8V 150C FPV Lipo Battery"
-}
-batteries: {
-  uuid: "aa01b236-d7e7-4143-9b2c-715df22b36e2"
-  id: "caddxfpv-skid-battery-straps"
-  manufacturer: "CADDXFPV"
-  name: "CADDXFPV Skid Battery Straps"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 100}
 batteries: {
   uuid: "ed1de315-e906-46a0-ba9c-d7b7a46e1360"
   id: "darwinfpv-onelink-2s-3s-4s-battery"
@@ -1119,7 +964,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV OneLink 2S 3S 4S Battery Parallel Charger"
-}
+
+  weight_g: 189}
 batteries: {
   uuid: "06a4a495-f839-48ee-b390-cca8855f8293"
   id: "darwinfpv-onelink-4s-850mah-lipo-battery"
@@ -1127,7 +973,8 @@ batteries: {
   name: "DarwinFPV OneLink 4S 850mAh Lipo Battery"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 100}
 batteries: {
   uuid: "96eff43b-5e2e-40bc-b0d5-28632c24e5a4"
   id: "darwinfpv-onelink-2s-500mah-lipo-battery"
@@ -1135,7 +982,8 @@ batteries: {
   name: "DarwinFPV OneLink 2S 500mAh Lipo Battery"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "8f0bf941-6de9-43b7-b8c2-9368c98d793f"
   id: "darwinfpv-onelink-3s-500mah-lipo-battery"
@@ -1143,7 +991,8 @@ batteries: {
   name: "DarwinFPV OneLink 3S 500mAh Lipo Battery"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "a32052e8-0bbe-42a0-b55c-1e5f053f7112"
   id: "isdt-608pd-lipo-charger-dc-240w-10a-usb"
@@ -1169,7 +1018,7 @@ batteries: {
   id: "darwinfpv-5s-4200mah-18-5v-60c-lipo"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 5S 4200mAh 18.5V 60C Lipo"
-  weight_g: 500
+  weight_g: 85
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV 5S 4200mAh  18.5V 60C Lipo Battery"
@@ -1179,7 +1028,7 @@ batteries: {
   id: "darwinfpv-3s-1150mah-60c-11-4v-fpv"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 3S 1150mAh 60C 11.4V FPV"
-  weight_g: 71
+  weight_g: 73
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV 3S 1150mAh 60C 11.4V FPV Drone Battery"
@@ -1189,7 +1038,7 @@ batteries: {
   id: "darwinfpv-6s-1300mah-waterproof-lipo-battery"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 6S 1300mAh Waterproof Lipo Battery"
-  weight_g: 221.1
+  weight_g: 198
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1198,7 +1047,7 @@ batteries: {
   id: "darwinfpv-6s-650mah-120c-22-8v-lipo"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 6S 650mAh 120C 22.8v LiPo"
-  weight_g: 100
+  weight_g: 257
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV 6S 650mAh 120C 22.8v LiPo Battery"
@@ -1208,26 +1057,17 @@ batteries: {
   id: "darwinfpv-5s-3200mah-18-5v-110c-lipo"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 5S 3200mAh 18.5V 110C LiPo"
-  weight_g: 360
+  weight_g: 157
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV 5S 3200mAh  18.5V 110C LiPo Battery"
-}
-batteries: {
-  uuid: "ff391fcc-af98-4bc5-b2da-d301db8ee70a"
-  id: "hotrc-a400-battery-balance-charger"
-  manufacturer: "DarwinFPV"
-  name: "Hotrc A400  Battery Balance Charger"
-  weight_g: 135
-  capacity_mah: 1550
-  cell_count_s: 4
 }
 batteries: {
   uuid: "1097a6b7-dc75-4a13-a968-f78739b353ad"
   id: "darwinfpv-6s-1300mah-lipo-battery"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 6S 1300mAh Lipo Battery"
-  weight_g: 214
+  weight_g: 198
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1236,7 +1076,7 @@ batteries: {
   id: "darwinfpv-3s-500mah-11-4v-100c-battery"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 3S 500mAh 11.4V 100C  Battery"
-  weight_g: 40
+  weight_g: 146
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1245,7 +1085,7 @@ batteries: {
   id: "darwinfpv-500mah-2s-7-6v-100c-fpv"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 500mAh 2S 7.6V 100C FPV"
-  weight_g: 28
+  weight_g: 30
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV 500mAh 2S 7.6V 100C FPV Drone Battery"
@@ -1255,7 +1095,7 @@ batteries: {
   id: "darwinfpv-4s-850mah-15-2v-lipo-fpv"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 4S 850mAh 15.2V Lipo FPV"
-  weight_g: 89
+  weight_g: 5
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV 4S 850mAh 15.2V Lipo FPV Drone Battery"
@@ -1265,7 +1105,7 @@ batteries: {
   id: "darwinfpv-1500mah-4s-14-8v-110c-lipo"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 1500mAh 4S 14.8V 110C LiPo"
-  weight_g: 166
+  weight_g: 141
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV 1500mAh 4S 14.8V 110C LiPo Battery"
@@ -1278,35 +1118,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "DarwinFPV 380mAh 3S 11.4V 60C fpv drone battery"
-}
-batteries: {
-  uuid: "9a174d4b-621e-4e99-a17f-9b3db5055256"
-  id: "newbeedrone-nitro-nectar-gold-jp30-18650"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Nitro Nectar GOLD JP30 18650"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Nitro Nectar GOLD JP30 18650 6000mAh 6S2P High Rate Battery"
-}
-batteries: {
-  uuid: "42ac67d2-b709-453e-bc86-053a58c956df"
-  id: "newbeedrone-nitro-nectar-gold-50xg-21700"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Nitro Nectar GOLD 50XG 21700"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Nitro Nectar GOLD 50XG 21700 10000mAh 6S2P High Rate Battery"
-}
-batteries: {
-  uuid: "5e7bd0b7-03d5-4f3c-af5c-2218ce50373d"
-  id: "newbeedrone-nitro-nectar-gold-3000mah-tabless"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Nitro Nectar Gold 3000mAh Tabless"
-  weight_g: 315
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Nitro Nectar Gold 3000mAh Tabless 18650 6S1P lithium-ion Battery"
-}
+
+  weight_g: 27}
 batteries: {
   uuid: "037b6e28-0481-4a6b-839d-38777ddc224b"
   id: "newbeedrone-nitro-nectar-nx69-550mah-1s"
@@ -1315,16 +1128,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "NewBeeDrone Nitro Nectar NX69 550mAh 1S 80C HV LiPo Battery 2xBatteries"
-}
-batteries: {
-  uuid: "46439504-b126-4873-af20-f4d9f7164f5c"
-  id: "newbeedrone-nitro-nectar-gold-3000mah-1s"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Nitro Nectar Gold 3000mAh 1S"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Nitro Nectar Gold 3000mAh 1S Tabless 18650 Battery – 2 Pack"
-}
+
+  weight_g: 69}
 batteries: {
   uuid: "602ee5f0-207e-4f01-8350-b99e8b7b0c12"
   id: "newbeedrone-nitro-nectar-nx69-300mah-1s"
@@ -1333,125 +1138,17 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "NewBeeDrone Nitro Nectar NX69 300mAh 1S 80C HV LiPo Battery 4xBatteries"
-}
-batteries: {
-  uuid: "35ff9e1d-f4fd-44c5-8044-2bbb1fb34497"
-  id: "newbeedrone-nitro-nectar-gold-250mah-1s"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Nitro Nectar Gold 250mAh 1S"
-  weight_g: 7
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Nitro Nectar Gold 250mAh 1S HV LiPo Battery (4 Battery)"
-}
+
+  weight_g: 69}
 batteries: {
   uuid: "fbd736c5-d737-4bb6-b5c6-a713a08194d3"
   id: "newbeedrone-21700-5000mah-li-ion-battery"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone 21700 5000mAh Li-ion Battery"
-  weight_g: 155
+  weight_g: 69
   capacity_mah: 1550
   cell_count_s: 4
   description: "NewBeeDrone 21700 5000mAh Li-ion Battery – XT30 & JST-XH Connector"
-}
-batteries: {
-  uuid: "516f71c3-ef13-4508-a821-eac4c9a690a6"
-  id: "newbeedrone-xt30-lipo-pigtail-16awg"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone XT30 Lipo Pigtail 16AWG"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone XT30 Lipo Pigtail 16AWG (2PCS) for FPV Drones"
-}
-batteries: {
-  uuid: "0fcb0c64-4bbc-4690-9340-6908c67d1f26"
-  id: "newbeedrone-goggle-battery-jack-connector-to"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Goggle Battery Jack connector to"
-  weight_g: 15
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Goggle Battery Jack connector to XT60 adapter"
-}
-batteries: {
-  uuid: "68e574c2-fce1-416e-81e7-3f3104657c2d"
-  id: "newbeedrone-female-dc-to-female-xt60"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Female DC to Female XT60"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Female DC to Female XT60 Adaptor for Goggle Battery"
-}
-batteries: {
-  uuid: "03aca974-df67-4495-a33b-5ce95e8a39dc"
-  id: "newbeedrone-nectar-connector-gold"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Nectar Connector Gold"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Nectar Connector Gold - Gold Plated Solid Pin PH2.0 Battery Lead x5"
-}
-batteries: {
-  uuid: "16045367-0ba1-4b91-b109-5836006c0d06"
-  id: "newbeedrone-cinemah-3d-printed-action-cam"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone CineMah 3D Printed Action Cam"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone CineMah 3D Printed Action Cam Mount with M5 Hardware"
-}
-batteries: {
-  uuid: "6ccd8752-11db-441a-9d31-7f2790794d50"
-  id: "newbeedrone-cinemah-stick-on-foam-ducts"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone CineMah Stick-on Foam Ducts"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "fcf8f4bd-46fb-4942-a996-f2ca39e302d5"
-  id: "newbeedrone-nitro-nectar-gold-300mah-2s"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Nitro Nectar Gold 300mAh 2S"
-  weight_g: 18.15
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone Nitro Nectar Gold 300mAh 2S HV LiPo Battery with GNB27 (2 Battery)"
-}
-batteries: {
-  uuid: "c1ce1c8a-8015-4fae-a0bc-757a4d711e20"
-  id: "newbeedrone-cinemah-3d-printed-accessories"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone CineMah 3D Printed Accessories"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone CineMah 3D Printed Accessories  - GoPro Mounts, Ducts, Etc."
-}
-batteries: {
-  uuid: "cb1c4aa5-bbd8-4251-9588-dc2281d84924"
-  id: "newbeedrone-savagebee-battery-mount-1s"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone SavageBee Battery Mount 1S"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "a3bf8b03-20f9-475d-ac45-ff9c479fdaea"
-  id: "newbeedrone-xt60-lipo-pigtail-14awg"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone XT60 Lipo Pigtail 14AWG"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone XT60 Lipo Pigtail 14AWG (4PCS)"
-}
-batteries: {
-  uuid: "9bc4cbc0-0979-431a-bf98-8f29b9c92197"
-  id: "newbeedrone-xt30-lipo-pigtail-20awg"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone XT30 Lipo Pigtail 20AWG"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "NewBeeDrone XT30 Lipo Pigtail 20AWG (4PCS)"
 }
 batteries: {
   uuid: "c3a9489b-7e76-4d2d-b104-c06603296f19"
@@ -1461,7 +1158,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "NewBeeDrone Nectar Connector PH2.0 Clear Battery Lead  x5"
-}
+
+  weight_g: 69}
 batteries: {
   uuid: "6f0419de-0897-433e-bff4-c27e452c3b6a"
   id: "newbeedrone-small-battery-strap"
@@ -1469,32 +1167,8 @@ batteries: {
   name: "NewBeeDrone Small Battery Strap"
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "fc9822c1-5624-4c4a-9d5b-8e09cdaca1ca"
-  id: "newbeedrone-large-battery-strap-5-pack"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Large Battery Strap (5 Pack)"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "67c00a30-4845-4743-a275-2c44ab69c201"
-  id: "torvol-elite-lipo-safe-bag"
-  manufacturer: "RaceDayQuads"
-  name: "Torvol Elite LiPo Safe Bag"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "2cfcf69b-4e77-4cf8-88aa-0c01340276ac"
-  id: "parallel-charging-board-4mm-banana"
-  manufacturer: "RaceDayQuads"
-  name: "Parallel Charging Board 4mm Banana"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "Parallel Charging Board 4mm Banana Plug 1-3S Battery"
-}
+
+  weight_g: 2.3}
 batteries: {
   uuid: "36420e1a-a5fd-44c2-928e-02f3e4c24315"
   id: "3-pack-of-cnhl-black-series"
@@ -1513,7 +1187,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Upgrade Energy RED V4 4S1P 5000mAh Amprius SA124 Battery (XT60)"
-}
+
+  weight_g: 288}
 batteries: {
   uuid: "6e82eb7b-fce4-4988-8f02-41991e9adbf8"
   id: "upgrade-energy-red-v3-6s1p-5ah"
@@ -1522,7 +1197,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Upgrade Energy RED V3 6S1P 5Ah Molicel P50B Battery (XT60)"
-}
+
+  weight_g: 426}
 batteries: {
   uuid: "5c18af7e-f86c-4ee4-b070-4f17f0def904"
   id: "upgrade-energy-red-v3-6s1p-3ah"
@@ -1531,7 +1207,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Upgrade Energy RED V3 6S1P 3Ah Molicel P30B Long Battery (XT60)"
-}
+
+  weight_g: 426}
 batteries: {
   uuid: "06903b33-405f-4900-9c3b-d0154d7ba766"
   id: "upgrade-energy-red-v3-6s1p-3ah-2"
@@ -1540,25 +1217,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Upgrade Energy RED V3 6S1P 3Ah Molicel P30B Battery (XT60)"
-}
-batteries: {
-  uuid: "f8d7f6a7-e75c-46f7-89a8-54c11b226c4b"
-  id: "upgrade-energy-red-v3-4s2p-10ah"
-  manufacturer: "Upgrade Energy"
-  name: "Upgrade Energy RED V3 4S2P 10Ah"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "Upgrade Energy RED V3 4S2P 10Ah Molicel P50B Battery (XT60)"
-}
-batteries: {
-  uuid: "0ae1b9b1-4993-4374-a37a-2217cc6defdb"
-  id: "upgrade-energy-gold-v1-6s1p-11-1ah"
-  manufacturer: "Upgrade Energy"
-  name: "Upgrade Energy GOLD V1 6S1P 11.1Ah"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "Upgrade Energy GOLD V1 6S1P 11.1Ah Amprius SA08 Battery (XT60)"
-}
+
+  weight_g: 426}
 batteries: {
   uuid: "0b3bd45d-02f8-48fe-bd09-b814aaa4e0d0"
   id: "upgrade-energy-red-v3-6s2p-6000"
@@ -1567,25 +1227,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Upgrade Energy RED V3 6S2P 6000 mAh Molicel P30B Battery"
-}
-batteries: {
-  uuid: "7d4297d5-d38e-42bf-b4fd-d14f7cebb120"
-  id: "upgrade-energy-red-v3-6s6p-30ah"
-  manufacturer: "Upgrade Energy"
-  name: "Upgrade Energy RED V3 6S6P 30Ah"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "Upgrade Energy RED V3 6S6P 30Ah Molicel P50B Battery (XT90)"
-}
-batteries: {
-  uuid: "53998727-c408-4fc8-a6f0-fb1707f3d95c"
-  id: "upgrade-energy-red-v3-4s2p-10000mah"
-  manufacturer: "Upgrade Energy"
-  name: "Upgrade Energy RED V3 4S2P 10000mAh"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "Upgrade Energy RED V3 4S2P 10000mAh Molicel P50B Battery (XT90)"
-}
+
+  weight_g: 860}
 batteries: {
   uuid: "4a20ed7a-299c-43ef-914f-e504d0fb64d0"
   id: "upgrade-energy-red-v3-4s1p-5000mah"
@@ -1594,16 +1237,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Upgrade Energy RED V3 4S1P 5000mAh Molicel P50B Battery (XT60)"
-}
-batteries: {
-  uuid: "afb6c69a-9fc5-4ede-9b34-e906d183362d"
-  id: "upgrade-energy-gold-v1-6s2p-22-2ah"
-  manufacturer: "Upgrade Energy"
-  name: "Upgrade Energy GOLD V1 6S2P 22.2Ah"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "Upgrade Energy GOLD V1 6S2P 22.2Ah Amprius SA08 Battery (XT90)"
-}
+
+  weight_g: 288}
 batteries: {
   uuid: "163ac9b2-d271-4825-9d74-d7fd465d8fac"
   id: "upgrade-energy-red-v3-6s1p-5000mah"
@@ -1612,7 +1247,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Upgrade Energy RED V3 6S1P 5000mAh Molicel P50B Long (XT60)"
-}
+
+  weight_g: 426}
 batteries: {
   uuid: "b70f724c-f7c7-4fad-8492-59526fac236e"
   id: "upgrade-energy-red-v3-6s2p-10"
@@ -1621,21 +1257,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Upgrade Energy RED V3 6S2P 10 Ah Molicel P30B Battery (XT60)"
-}
-batteries: {
-  uuid: "29d76490-6808-4e5e-8b5e-62e95f3cfa7b"
-  id: "generic-battery-pad-black-no-logo"
-  manufacturer: "Rotor Riot"
-  name: "Generic Battery Pad - Black (NO LOGO)"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 860}
 batteries: {
   uuid: "db4da21c-d98e-4cd4-981c-358968efa144"
   id: "fat-shark-goggle-battery-v2"
   manufacturer: "Fat Shark"
   name: "Fat Shark Goggle Battery V2"
-  weight_g: 190
+  weight_g: 235.8
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1644,7 +1273,7 @@ batteries: {
   id: "gnb-4s-3500mah-battery-xt90"
   manufacturer: "GNB"
   name: "GNB 4S 3500mAh Battery - XT90"
-  weight_g: 356
+  weight_g: 63
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1653,7 +1282,7 @@ batteries: {
   id: "r-line-v5-0-6s-1550mah-battery-xt60"
   manufacturer: "Tattu"
   name: "R-Line V5.0 6S 1550mAh Battery - XT60"
-  weight_g: 254
+  weight_g: 20
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1671,7 +1300,7 @@ batteries: {
   id: "ministar-3s-650mah-70c-lipo-battery"
   manufacturer: "CNHL"
   name: "MiniStar 3S 650mAh 70C LiPo Battery"
-  weight_g: 70
+  weight_g: 86
   capacity_mah: 1550
   cell_count_s: 4
   description: "MiniStar 3S 650mAh 70C LiPo Battery with XT30 Connector (Copy)"
@@ -1684,7 +1313,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Rotor Riot Fuel Cell - 1S 500mAh 75C LiHV Battery with BT2.0 Connector - 3 Pack"
-}
+
+  weight_g: 30}
 batteries: {
   uuid: "ffe77114-19ef-432b-96fe-50300cd056c7"
   id: "4s-850mah-lihv-battery"
@@ -1693,7 +1323,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "4S 850mAh LiHV Battery with XT30 Connector"
-}
+
+  weight_g: 100}
 batteries: {
   uuid: "166ce2db-bb70-41a1-b46d-6e1e04958185"
   id: "6s-1300mah-120c-lihv-battery"
@@ -1702,13 +1333,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "6S 1300mAh 120C LiHV Battery with XT60 Connector"
-}
+
+  weight_g: 198}
 batteries: {
   uuid: "19ded0d4-5f06-4c56-bdcb-8e97e58d7159"
   id: "4s-300mah-80c-lihv-battery"
   manufacturer: "GNB"
   name: "4S 300mAh 80C LiHV Battery"
-  weight_g: 36
+  weight_g: 131
   capacity_mah: 1550
   cell_count_s: 4
   description: "4S 300mAh 80C LiHV Battery with XT30 Connector"
@@ -1718,7 +1350,7 @@ batteries: {
   id: "4s-720mah-100c-lihv-battery"
   manufacturer: "GNB"
   name: "4S 720mAh 100C LiHV Battery"
-  weight_g: 72
+  weight_g: 143
   capacity_mah: 1550
   cell_count_s: 4
   description: "4S 720mAh 100C LiHV Battery with XT30 Connector"
@@ -1730,7 +1362,8 @@ batteries: {
   name: "CineMini Elastic Battery Strap"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 2.3}
 batteries: {
   uuid: "a73945d5-52ab-4719-8192-1101d1d0dec2"
   id: "toothstor-4-port-2s-lipo-lihv-charger"
@@ -1749,13 +1382,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "2S 550mAh 75C LiHV Battery with BT3.0 Connector 2-Pack"
-}
+
+  weight_g: 26.1}
 batteries: {
   uuid: "eab6aec3-e036-4d83-93df-15d41627c336"
   id: "8s-8200mah-65c-lihv-battery"
   manufacturer: "GNB"
   name: "8S 8200mAh 65C LiHV Battery"
-  weight_g: 1160
+  weight_g: 252
   capacity_mah: 1550
   cell_count_s: 4
   description: "8S 8200mAh 65C LiHV Battery with XT90 Connector"
@@ -1765,7 +1399,7 @@ batteries: {
   id: "explorer-4s-30-ah-18650-li-ion"
   manufacturer: "Flywoo"
   name: "Explorer 4S 30 Ah 18650 Li-Ion"
-  weight_g: 198
+  weight_g: 5
   capacity_mah: 1550
   cell_count_s: 4
   description: "Explorer 4S 30 Ah 18650 Li-Ion Battery with XT30 Connector"
@@ -1778,7 +1412,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "GNB 6S 1500mAh HV Battery with XT60 Connector"
-}
+
+  weight_g: 218}
 batteries: {
   uuid: "f231db8c-a0f2-46ab-992e-a83619edce5c"
   id: "rotor-riot-tough-battery-strap-v2"
@@ -1787,39 +1422,24 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Rotor Riot Tough Battery Strap V2 - Choose Length"
-}
+
+  weight_g: 16}
 batteries: {
   uuid: "d19e0045-0dc0-4f13-b81b-e9584991ede4"
   id: "6s-1400mah-160c-lipo-battery"
   manufacturer: "GNB"
   name: "6S 1400mAh 160C LiPo Battery"
-  weight_g: 233
+  weight_g: 198
   capacity_mah: 1550
   cell_count_s: 4
   description: "6S 1400mAh 160C LiPo Battery with XT60 Connector"
-}
-batteries: {
-  uuid: "821e4fa0-ce92-4886-86ab-e5e184fb60df"
-  id: "shorty-lipo-pad"
-  manufacturer: "Pirat"
-  name: "Shorty LiPo Pad"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "725690b2-3ab1-416d-80e5-a2f6830e23f5"
-  id: "punch-lipo-pad"
-  manufacturer: "Pirat"
-  name: "Punch LiPo Pad"
-  capacity_mah: 1550
-  cell_count_s: 4
 }
 batteries: {
   uuid: "de0fdcc8-3ed8-41ca-b1c1-a5ce5545d6c6"
   id: "lollipop-v4-rhcp-15cm-sma-angle"
   manufacturer: "Foxeer"
   name: "Lollipop V4 RHCP 15CM SMA Angle"
-  weight_g: 14
+  weight_g: 9
   capacity_mah: 1550
   cell_count_s: 4
   description: "Lollipop V4 RHCP 15CM SMA Angle Antenna 2-Pack"
@@ -1829,7 +1449,7 @@ batteries: {
   id: "6s-5200mah-110c-lipo-battery"
   manufacturer: "GNB"
   name: "6S 5200mAh 110C LiPo Battery"
-  weight_g: 728
+  weight_g: 400
   capacity_mah: 1550
   cell_count_s: 4
   description: "6S 5200mAh 110C LiPo Battery with XT60 Connector"
@@ -1839,7 +1459,7 @@ batteries: {
   id: "6s-3500mah-110c-lipo-battery"
   manufacturer: "GNB"
   name: "6S 3500mAh 110C LiPo Battery"
-  weight_g: 520
+  weight_g: 400
   capacity_mah: 1550
   cell_count_s: 4
   description: "6S 3500mAh 110C LiPo Battery with XT60 Connector"
@@ -1849,7 +1469,7 @@ batteries: {
   id: "fat-shark-6-port-1s-lipo-lihv"
   manufacturer: "Fat Shark"
   name: "Fat Shark 6 Port 1S LiPo/LiHV"
-  weight_g: 140
+  weight_g: 185
   capacity_mah: 1550
   cell_count_s: 4
   description: "Fat Shark 6 Port 1S LiPo/LiHV Charger for BT2.0 & PH2.0"
@@ -1862,7 +1482,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Lollipop V4 Stubby SMA RHCP Antenna 2-Pack"
-}
+
+  weight_g: 3.1}
 batteries: {
   uuid: "3f1b2a42-9d34-4a0c-9c82-2f9d29f14eb4"
   id: "let-s-fly-rc-micro-battery-strap-155mm"
@@ -1870,13 +1491,14 @@ batteries: {
   name: "Let's Fly RC Micro Battery Strap - 155mm"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 7.5}
 batteries: {
   uuid: "34649ef1-d084-4db2-b61c-1c2ff16f81a3"
   id: "4s-660mah-90c-lihv-battery"
   manufacturer: "GNB"
   name: "4S 660mAh 90C LiHV Battery"
-  weight_g: 64
+  weight_g: 63
   capacity_mah: 1550
   cell_count_s: 4
   description: "4S 660mAh 90C LiHV Battery with XT30 Connector"
@@ -1886,7 +1508,7 @@ batteries: {
   id: "3300mah-18650-li-ion-battery"
   manufacturer: "Generic"
   name: "3300mAh 18650 Li-Ion Battery"
-  weight_g: 49.5
+  weight_g: 46.7
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1898,13 +1520,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Pizza Series 6S 1350mAh 150C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 2}
 batteries: {
   uuid: "ed15f652-4eee-44d3-a3da-6b0bb67c4d54"
   id: "1300mah-18350-li-ion-battery-2-pack"
   manufacturer: "Hibatt"
   name: "1300mAh 18350 Li-Ion Battery 2-Pack"
-  weight_g: 31
+  weight_g: 25
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -1915,13 +1538,14 @@ batteries: {
   name: "900mAh 18350 Li-Ion Battery 2-Pack"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 25}
 batteries: {
   uuid: "472bae6c-9860-4225-8b7b-af22dcacdccf"
   id: "r-line-version-1-0-4s-850mah-95c"
   manufacturer: "Tattu"
   name: "R-Line Version 1.0 4S 850mAh 95C"
-  weight_g: 108
+  weight_g: 100
   capacity_mah: 1550
   cell_count_s: 4
   description: "R-Line Version 1.0 4S 850mAh 95C LiPo Battery with XT30 Connector"
@@ -1931,7 +1555,7 @@ batteries: {
   id: "ministar-6s-1000mah-100c-lipo-battery"
   manufacturer: "CNHL"
   name: "MiniStar 6S 1000mAh 100C LiPo Battery"
-  weight_g: 186
+  weight_g: 346
   capacity_mah: 1550
   cell_count_s: 4
   description: "MiniStar 6S 1000mAh 100C LiPo Battery with XT60 Connector"
@@ -1944,13 +1568,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "1S 300mAh 75C LiHV Battery with BT2.0 Connector (5pcs)"
-}
+
+  weight_g: 5}
 batteries: {
   uuid: "d179930e-d3e1-4201-ba6c-4e095836a239"
   id: "rotor-riot-lipo-battery-bag-2"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot LiPo Battery Bag 2"
-  weight_g: 350
+  weight_g: 30
   capacity_mah: 1550
   cell_count_s: 4
   description: "Rotor Riot LiPo Battery Bag 2 with Cell Checker"
@@ -1963,7 +1588,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "1S 450mAh 80C LiHV Battery with PH2.0 Connector"
-}
+
+  weight_g: 13.3}
 batteries: {
   uuid: "f3205a5a-beed-4d29-ba13-32bfc1203f46"
   id: "ultra-black-4s-1550mah-150c-lipo"
@@ -2001,15 +1627,8 @@ batteries: {
   name: "Let's Fly RC Battery Strap - 240mm"
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "a8c77f88-8833-48cd-aff8-3a5108b4aa97"
-  id: "rotor-riot-battery-straps-3-pack"
-  manufacturer: "Rotor Riot"
-  name: "Rotor Riot Battery Straps (3 pack)"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 7.5}
 batteries: {
   uuid: "78f783da-d68d-4202-a61f-d5cdfc5f661a"
   id: "rotor-riot-battery-strap-250mm"
@@ -2017,7 +1636,8 @@ batteries: {
   name: "Rotor Riot Battery Strap - 250mm"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 7}
 batteries: {
   uuid: "ad0c0250-bbc6-43ef-a838-9c3a0b9c29f9"
   id: "r-line-version-4-0-6s-1550mah-130c"
@@ -2026,7 +1646,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "R-Line Version 4.0 6S 1550mAh 130C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "97defc8c-d5ae-4be2-8f4b-c92a5ccef2ea"
   id: "whoopstor-v3-6-port-1s-lipo-lihv"
@@ -2036,16 +1657,6 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Whoopstor V3 6 Port 1S LiPo/LiHV Charger for BT2.0 & PH2.0"
-}
-batteries: {
-  uuid: "466c3788-8e52-4709-bcf9-1ddd0c32dcc1"
-  id: "xtar-vc2-2-slot-battery-charger"
-  manufacturer: "Xtar"
-  name: "Xtar VC2 2 Slot Battery Charger"
-  weight_g: 109
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "Xtar VC2 2 Slot Battery Charger for 18650"
 }
 batteries: {
   uuid: "454c5e0a-62d9-4e95-9d44-e6165c31d380"
@@ -2062,7 +1673,7 @@ batteries: {
   id: "21700-5000mah-li-ion-transmitter-battery"
   manufacturer: "RadioMaster"
   name: "21700 5000mAh Li-Ion Transmitter Battery"
-  weight_g: 155
+  weight_g: 69
   capacity_mah: 1550
   cell_count_s: 4
   description: "21700 5000mAh Li-Ion Transmitter Battery for TX16S & TX12S MKII"
@@ -2072,7 +1683,7 @@ batteries: {
   id: "speedy-pizza-6s-1200mah-100c-lipo"
   manufacturer: "CNHL"
   name: "Speedy Pizza 6S 1200mAh 100C LiPo"
-  weight_g: 220
+  weight_g: 5
   capacity_mah: 1550
   cell_count_s: 4
   description: "Speedy Pizza 6S 1200mAh 100C LiPo Battery with XT60 Connector"
@@ -2082,7 +1693,7 @@ batteries: {
   id: "speedy-pizza-4s-1550mah-100c-lipo"
   manufacturer: "CNHL"
   name: "Speedy Pizza 4S 1550mAh 100C LiPo"
-  weight_g: 187
+  weight_g: 166
   capacity_mah: 1550
   cell_count_s: 4
   description: "Speedy Pizza 4S 1550mAh 100C LiPo Battery with XT60 Connector"
@@ -2105,7 +1716,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "1S 450mAh 75C LiHV Battery with BT2.0 Connector (5pcs)"
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "39f590df-409b-46c2-894d-de1d8c88347c"
   id: "6s-1100mah-120c-lipo-battery"
@@ -2134,7 +1746,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "LiPo Suction 2-6S Battery Discharger XT30 and XT60"
-}
+
+  weight_g: 8}
 batteries: {
   uuid: "8ad8a54f-e380-45d1-a72f-0095f427cd51"
   id: "18650-battery-tray-for-tx12-and-tx16"
@@ -2142,7 +1755,8 @@ batteries: {
   name: "18650 Battery Tray for TX12 and TX16"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 46.22}
 batteries: {
   uuid: "45378cba-4d0c-4a89-b955-647d4f9ad1c9"
   id: "pdevx-battery-strap-240mm"
@@ -2150,13 +1764,14 @@ batteries: {
   name: "PDEVX Battery Strap - 240mm"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 4.7}
 batteries: {
   uuid: "3a616051-ace5-49c6-9968-f3d0c7351f42"
   id: "ministar-3s-450mah-70c-lipo-battery"
   manufacturer: "CNHL"
   name: "MiniStar 3S 450mAh 70C LiPo Battery"
-  weight_g: 49
+  weight_g: 15
   capacity_mah: 1550
   cell_count_s: 4
   description: "MiniStar 3S 450mAh 70C LiPo Battery with XT30 Connector"
@@ -2166,7 +1781,7 @@ batteries: {
   id: "black-series-6s-2000mah-100c-lipo"
   manufacturer: "CNHL"
   name: "Black Series 6S 2000mAh 100C LiPo"
-  weight_g: 339
+  weight_g: 346
   capacity_mah: 1550
   cell_count_s: 4
   description: "Black Series 6S 2000mAh 100C LiPo Battery with XT60 Connector"
@@ -2178,17 +1793,8 @@ batteries: {
   name: "DJI Avata Battery Charging Hub"
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "b8562c5d-6ae9-4133-be85-5d6d2f06542c"
-  id: "1s-300mah-30c-lihv-battery"
-  manufacturer: "BetaFPV"
-  name: "1S 300mAh 30C LiHV Battery"
-  weight_g: 8.28
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "1S 300mAh 30C LiHV Battery with BT2.0 Connector"
-}
+
+  weight_g: 50}
 batteries: {
   uuid: "e31cae3d-3942-4709-aac0-8dd95419b8cc"
   id: "4s-450mah-75c-lipo-battery"
@@ -2197,7 +1803,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "4S 450mAh 75C LiPo Battery with XT30 Connector"
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "479da138-cdc7-48c6-b564-b1fba0e1374a"
   id: "ministar-6s-850mah-70c-lipo-battery"
@@ -2206,13 +1813,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "MiniStar 6S 850mAh 70C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 110}
 batteries: {
   uuid: "141fa683-c9cc-46b9-bedc-301d67c374c3"
   id: "ministar-4s-1300mah-120c-lipo-battery"
   manufacturer: "CNHL"
   name: "MiniStar 4S 1300mAh 120C LiPo Battery"
-  weight_g: 170
+  weight_g: 189
   capacity_mah: 1550
   cell_count_s: 4
   description: "MiniStar 4S 1300mAh 120C LiPo Battery with XT60 Connector"
@@ -2222,7 +1830,7 @@ batteries: {
   id: "black-series-6s-1100mah-100c-lipo"
   manufacturer: "CNHL"
   name: "Black Series 6S 1100mAh 100C LiPo"
-  weight_g: 211
+  weight_g: 346
   capacity_mah: 1550
   cell_count_s: 4
   description: "Black Series 6S 1100mAh 100C LiPo Battery with XT60 Connector"
@@ -2232,7 +1840,7 @@ batteries: {
   id: "rotor-riot-battery-strap-210mm"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot Battery Strap 210mm"
-  weight_g: 6
+  weight_g: 4.7
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -2244,7 +1852,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "MiniStar 6S 1250mAh 70C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 216}
 batteries: {
   uuid: "de97550c-9710-4a49-be40-11a6c222af4f"
   id: "r-line-version-4-0-4s-1300mah-130c"
@@ -2253,7 +1862,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "R-Line Version 4.0 4S 1300mAh 130C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "e94b006b-18da-4e62-b41e-c6888a276489"
   id: "r-line-version-4-0-6s-1050mah-130c"
@@ -2262,17 +1872,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "R-Line Version 4.0 6S 1050mAh 130C LiPo Battery with XT60 Connector"
-}
-batteries: {
-  uuid: "20c5093f-11f4-4a42-aa38-2bc97e0c06eb"
-  id: "1s-300mah-30c-lihv-battery-2"
-  manufacturer: "BetaFPV"
-  name: "1S 300mAh 30C LiHV Battery"
-  weight_g: 8.28
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "1S 300mAh 30C LiHV Battery with BT2.0 Connector (8pcs)"
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "442fc866-1f8a-4a7a-bffd-e90a3934adcc"
   id: "r-line-version-4-0-4s-1550mah-130c"
@@ -2281,7 +1882,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "R-Line Version 4.0 4S 1550mAh 130C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "4d23c5bc-4f1a-4d1f-97ed-425af28e05d8"
   id: "rotor-riot-battery-strap-155mm"
@@ -2289,21 +1891,14 @@ batteries: {
   name: "Rotor Riot Battery Strap - 155mm"
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "97347c9d-151a-4200-8acd-12b3a7acd20d"
-  id: "rotor-riot-battery-strap-125mm"
-  manufacturer: "Rotor Riot"
-  name: "Rotor Riot Battery Strap - 125mm"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 7.5}
 batteries: {
   uuid: "fa6b1a8f-47b9-4555-9fce-ff6130b49537"
   id: "rotor-riot-fuel-cell-2"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot Fuel Cell"
-  weight_g: 243
+  weight_g: 30
   capacity_mah: 1550
   cell_count_s: 4
   description: "Rotor Riot Fuel Cell - 6S 1300mAh 100C LiPo Battery with XT60 Connector"
@@ -2313,7 +1908,7 @@ batteries: {
   id: "rotor-riot-fuel-cell-3"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot Fuel Cell"
-  weight_g: 189
+  weight_g: 30
   capacity_mah: 1550
   cell_count_s: 4
   description: "Rotor Riot Fuel Cell - 4S 1500mAh 100C LiPo Battery with XT60 Connector"
@@ -2323,7 +1918,7 @@ batteries: {
   id: "rotor-riot-fuel-cell-4"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot Fuel Cell"
-  weight_g: 278
+  weight_g: 30
   capacity_mah: 1550
   cell_count_s: 4
   description: "Rotor Riot Fuel Cell - 6S 1500mAh 100C LiPo Battery with XT60 Connector"
@@ -2336,7 +1931,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Lollipop V4 RHCP Antenna 2-Pack - Choose Version"
-}
+
+  weight_g: 3.1}
 batteries: {
   uuid: "e84fb829-c6a9-495c-9aef-6b987a65fe90"
   id: "rotor-riot-lipo-battery-bag"
@@ -2345,16 +1941,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "Rotor Riot LiPo Battery Bag with Cell Checker"
-}
-batteries: {
-  uuid: "289d6d26-cb95-444e-bdb4-f14abad26c87"
-  id: "rotor-riot-sticky-battery-pad"
-  manufacturer: "Rotor Riot"
-  name: "Rotor Riot Sticky Battery Pad"
-  weight_g: 16
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 230.5}
 batteries: {
   uuid: "6f90b608-1a3d-4402-90aa-fc4de39e1fa1"
   id: "r-line-version-3-0-5s-1550mah-120c"
@@ -2363,7 +1951,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "R-Line Version 3.0 5S 1550mAh 120C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "30df7791-ed35-46fd-b39d-255dbaf6e346"
   id: "r-line-version-4-0-6s-1300mah-130c"
@@ -2372,23 +1961,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "R-Line Version 4.0 6S 1300mAh 130C LiPo Battery with XT60 Connector"
-}
-batteries: {
-  uuid: "16da8770-f34b-425e-aba4-826cd64616a8"
-  id: "lipo-cell-checker"
-  manufacturer: "FPV Elite"
-  name: "LiPo Cell Checker"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "0d1d6fc4-9169-4b40-a51f-5d3b5b87e53f"
-  id: "18650-battery-case-for-fat-shark-goggles"
-  manufacturer: "Fat Shark"
-  name: "18650 Battery Case for Fat Shark Goggles"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "e66e7d21-ba65-413a-b43c-951f9dfd2cc2"
   id: "funfly-4s-1550mah-100c-lipo-battery"
@@ -2397,7 +1971,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "FunFly 4S 1550mAh 100C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 175}
 batteries: {
   uuid: "41eee927-7a00-4f75-b733-24bfca97c99e"
   id: "funfly-4s-1300mah-100c-lipo-battery"
@@ -2406,7 +1981,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "FunFly 4S 1300mAh 100C LiPo Battery with XT60 Connector"
-}
+
+  weight_g: 20}
 batteries: {
   uuid: "c4f9806e-7ce7-477f-9cef-0bc7feab8b95"
   id: "voltage-cell-meter-battery-capacity-tester"
@@ -2414,32 +1990,8 @@ batteries: {
   name: "Voltage Cell Meter Battery Capacity Tester"
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "f2d6ebb2-db62-4fad-8ccf-507ddd0865cc"
-  id: "skyeliner-hd-battery-pad"
-  manufacturer: "Rotor Riot"
-  name: "Skyeliner HD Battery Pad"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "744e8ee6-020e-4dba-8490-5760f8cac659"
-  id: "rotor-riot-battery-pad-choose-color"
-  manufacturer: "Rotor Riot"
-  name: "Rotor Riot Battery Pad - Choose Color"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "e08f7474-7820-46d1-8290-80aec5547cfe"
-  id: "hglrc-1-6s-power-lithium-ion-battery-high"
-  manufacturer: "HGLRC Company"
-  name: "HGLRC 1-6S Power Lithium-ion Battery, High"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "HGLRC 1-6S Power Lithium-ion Battery, High Discharge Rate LIHV/LIPO Battery"
-}
+
+  weight_g: 121}
 batteries: {
   uuid: "93f5bd9b-e9e0-4b35-a61f-77313e58a0ef"
   id: "hglrc-nblade-pro-7-inch-long-battery"
@@ -2448,7 +2000,8 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "HGLRC Nblade PRO 7-inch Long Battery Life Freestyle Cinematic FPV Drone"
-}
+
+  weight_g: 904}
 batteries: {
   uuid: "73466238-8e13-4232-bd10-288867b0f78f"
   id: "hglrc-kevlar-battery-strap"
@@ -2457,13 +2010,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "HGLRC Kevlar battery strap - 15x250mm /20x250mm"
-}
+
+  weight_g: 16}
 batteries: {
   uuid: "fa31589a-486b-4192-a37a-a957a40095ae"
   id: "hglrc-thor-1s-charger-v2-racing"
   manufacturer: "HGLRC"
   name: "HGLRC Thor 1S Charger V2 Racing"
-  weight_g: 51.14
+  weight_g: 109
   capacity_mah: 1550
   cell_count_s: 4
   description: "HGLRC Thor 1S Charger V2 Racing Model FPV drone Lithium Battery 6-way Charging Board Charger"
@@ -2473,19 +2027,10 @@ batteries: {
   id: "hglrc-thor-6-port-lipo-battery"
   manufacturer: "HGLRC"
   name: "HGLRC Thor 6 Port Lipo Battery"
-  weight_g: 180.6
+  weight_g: 185
   capacity_mah: 1550
   cell_count_s: 4
   description: "HGLRC Thor 6 Port Lipo Battery Balance Charger Board Pro 40A XT60 XT30 Plug 2-6S Integrated with Lipo Discharger for IMAX B6 ISDT Q6 Nano HOTA D6 Pro P6"
-}
-batteries: {
-  uuid: "7cea7d9d-0f06-44ce-a97a-b68a0dc4a165"
-  id: "hglrc-thor-lipo-battery-balance-charger"
-  manufacturer: "HGLRC"
-  name: "HGLRC Thor Lipo Battery Balance Charger"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "HGLRC Thor Lipo Battery Balance Charger Board Pro 40A XT60 XT30 Plug 2-6S Integrated with Lipo Discharger for IMAX B6 ISDT Q6 Nano HOTA D6 Pro P6"
 }
 batteries: {
   uuid: "26e835eb-f2d2-4edc-86e8-22ff4e81a00d"
@@ -2495,55 +2040,14 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "HGLRC KRATOS Fireproof Explosionproof Battery Safe Bag Lipo Charging Hand Bag"
-}
-batteries: {
-  uuid: "18659722-0048-40ea-a3ec-ddeb49656e3b"
-  id: "hglrc-1-pcs-15x200mm-20x250mm-metal"
-  manufacturer: "HGLRC"
-  name: "HGLRC 1 PCS 15x200mm /20x250mm Metal"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "HGLRC 1 PCS 15x200mm /20x250mm Metal Buckle Battery Strap for Lipo Battery"
-}
-batteries: {
-  uuid: "f14ed0c2-2e8d-4a92-aa2f-6b474e87ce52"
-  id: "lipo-anti-slip-pad"
-  manufacturer: "DIATONE INNOVATIONS"
-  name: "Lipo anti-slip pad"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "47ab12bb-ec78-4e79-abbf-30703df3a484"
-  id: "diatone-logo-lipo-strap-2pcs"
-  manufacturer: "DIATONE OFFICIAL"
-  name: "DIATONE LOGO  Lipo Strap （2pcs）"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
-batteries: {
-  uuid: "1148eec0-1b95-4888-9d45-125fbb39d62f"
-  id: "flyfishrc-15mm-20mm-lipo-battery-strap"
-  manufacturer: "FlyFish RC"
-  name: "FlyFishRC 15mm 20mm Lipo Battery Strap"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "FlyFishRC 15mm 20mm Lipo Battery Strap - 5PCS"
-}
-batteries: {
-  uuid: "adc0f0cb-3b2d-4178-9935-8de761af0bce"
-  id: "flyfishrc-20mm-lipo-battery-strap-5pcs"
-  manufacturer: "FlyFish-RC"
-  name: "FlyFishRC 20mm Lipo Battery Strap - 5Pcs"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 167.7}
 batteries: {
   uuid: "374f6c9e-4e9d-4392-bda7-687b51a6ee60"
   id: "geprc-4s-530mah-90-180c-hv-3-8v-4-35v"
   manufacturer: "GEPRC"
   name: "GEPRC 4S 530mAh 90/180C HV 3.8V/4.35V"
-  weight_g: 51.2
+  weight_g: 50
   capacity_mah: 1550
   cell_count_s: 4
   description: "GEPRC 4S 530mAh 90/180C HV 3.8V/4.35V LiPo Battery"
@@ -2553,7 +2057,7 @@ batteries: {
   id: "sub250-1s-300mah-75-c-battery"
   manufacturer: "Sub250"
   name: "Sub250 1S 300mAh 75 C Battery"
-  weight_g: 8.4
+  weight_g: 5
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -2562,7 +2066,7 @@ batteries: {
   id: "sub250-1s-720mah-90c-battery"
   manufacturer: "Sub250"
   name: "Sub250 1S  720mAh 90C Battery"
-  weight_g: 16.5
+  weight_g: 13
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -2571,7 +2075,7 @@ batteries: {
   id: "sub250-4s-720mah-100c-battery"
   manufacturer: "Sub250"
   name: "Sub250 4S 720mAh 100C Battery"
-  weight_g: 68
+  weight_g: 143
   capacity_mah: 1550
   cell_count_s: 4
   description: "Sub250 4S 720mAh 100C Battery for Dollyfly25/Oasisfly25"
@@ -2581,7 +2085,7 @@ batteries: {
   id: "sub250-2s-530mah-90c-battery"
   manufacturer: "Sub250"
   name: "Sub250 2S 530mAh 90C Battery"
-  weight_g: 25.8
+  weight_g: 34
   capacity_mah: 1550
   cell_count_s: 4
 }
@@ -2593,32 +2097,24 @@ batteries: {
   capacity_mah: 1550
   cell_count_s: 4
   description: "RadioMaster 18650 Battery 3200mAh / 2500mAh 3.7V (2pcs) for TX16S / TX12/Pocket Radio Controller"
-}
+
+  weight_g: 46.22}
 batteries: {
   uuid: "49b24345-3e40-4e52-bdf0-8925477fc910"
   id: "sub250-1s-530mah-90c-battery-a30"
   manufacturer: "Sub250"
   name: "Sub250 1S 530mAh 90C Battery  A30"
-  weight_g: 12.9
+  weight_g: 12
   capacity_mah: 1550
   cell_count_s: 4
   description: "Sub250 1S 530mAh 90C Battery  A30 for whoopfly16/ Nanofly20 （2PCS/6PCS of Pack）"
-}
-batteries: {
-  uuid: "0daba708-e26e-4fc7-9f8e-355b32b68464"
-  id: "sub250-cw1-charger-support"
-  manufacturer: "sub250"
-  name: "Sub250-CW1 Charger Support"
-  capacity_mah: 1550
-  cell_count_s: 4
-  description: "Sub250-CW1 Charger Support for A30 and PH2.0 Plugs (Support Battery of Whoofly16 Nanofly16 /Nanofly20)"
 }
 batteries: {
   uuid: "c90d8bfb-6f05-4fc2-8667-13f66d93fdb9"
   id: "sub250-1s-380mah-90c-battery"
   manufacturer: "Sub250"
   name: "Sub250 1S 380mAh 90C  Battery"
-  weight_g: 9.7
+  weight_g: 10
   capacity_mah: 1550
   cell_count_s: 4
   description: "Sub250 1S 380mAh 90C  Battery for Nanofly16 (2pcs/6pcs)"
@@ -2630,7 +2126,8 @@ batteries: {
   name: "GNB 4S 1250mAh 120C/240C LiPo Battery"
   capacity_mah: 1550
   cell_count_s: 4
-}
+
+  weight_g: 180}
 batteries: {
   uuid: "32992785-a679-4d64-9537-4023fadc40d6"
   id: "fpvcycle-basic-battery-strap"
@@ -2638,15 +2135,8 @@ batteries: {
   name: "FPVCycle Basic Battery Strap"
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "2296bc52-4fe1-44d5-8fe3-35c9986dcca8"
-  id: "battery-rubber-bands-10-pack"
-  manufacturer: "FPVCycle"
-  name: "Battery Rubber Bands (10-Pack)"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 7}
 batteries: {
   uuid: "f24b67d3-9eb3-4fa9-ba09-738c33f6fed5"
   id: "xt60-battery-connector-prewired-male"
@@ -2654,12 +2144,5 @@ batteries: {
   name: "XT60 Battery Connector - Prewired - Male"
   capacity_mah: 1550
   cell_count_s: 4
-}
-batteries: {
-  uuid: "10d1fbc5-9316-4878-9eec-2f8af294046b"
-  id: "xt30-battery-connector-prewired-male"
-  manufacturer: "FPVCycle"
-  name: "XT30 Battery Connector - Prewired - Male"
-  capacity_mah: 1550
-  cell_count_s: 4
-}
+
+  weight_g: 7.72}
