@@ -24,7 +24,7 @@ Do not make up names for implementation phases (e.g., "Phase 2") or dictate the 
 ## Database IDs & Resource Names
 
 - The primary key for all database tables is a hidden `uuid` (UUID v7).
-- A human-readable `id` (slug or resource path) is stored as a UNIQUE TEXT column.
+- A human-readable `id` (unique identifier or resource path) is stored as a UNIQUE TEXT column.
 - All Foreign Keys should reference the `uuid` (e.g., `frame_uuid`), never the `id`.
 - The CLI, API, and Protobufs should expose and prefer the human-readable `id` for UX, performing the UUID translation internally in the backend SQL queries (falling back to UUID matching if the `id` isn't matched).
 

@@ -46,6 +46,7 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
 	pb "quadsmith/api/gen/quadsmith"
@@ -90,6 +91,9 @@ func main() {
 		fmt.Fprintf(f, "\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts}\n", d.Plural)
 		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Plural)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
+		fmt.Fprintf(f, "\t\t\tif len(columns) == 0 {\n")
+		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", d.Name)
+		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\treturn printOutput(res.Msg.%s, columns)\n", d.Plural)
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
@@ -263,6 +267,16 @@ func main() {
 	}
 }
 
+
+func GetDefaultColumns(m proto.Message) []string {
+	opts := m.ProtoReflect().Descriptor().Options()
+	if proto.HasExtension(opts, pb.E_DefaultColumns) {
+		if cols, ok := proto.GetExtension(opts, pb.E_DefaultColumns).([]string); ok && len(cols) > 0 {
+			return cols
+		}
+	}
+	return nil
+}
 
 func GetColumns(m interface{}) []string {
 	var cols []string

@@ -47,6 +47,7 @@ generate:
 	@go build -mod=vendor -o bin/protoc-gen-server ./src/backend/api/cmd/protoc-gen-server
 	@echo "--- Generating Protobuf & ConnectRPC Code ---"
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
+	@for f in src/backend/api/gen/quadsmith/_*.pb.go; do [ -f "$$f" ] && mv "$$f" "$$(echo $$f | sed 's|/_|/|')"; done || true
 	@gofmt -w src/backend/api/gen/
 	@npx -y sql-formatter -l postgresql --fix src/backend/db/schema.sql
 

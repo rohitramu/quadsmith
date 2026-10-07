@@ -347,7 +347,7 @@ var File_quadsmith_camera_proto protoreflect.FileDescriptor
 
 const file_quadsmith_camera_proto_rawDesc = "" +
 	"\n" +
-	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x1equadsmith/reference_link.proto\x1a\x14quadsmith/_sql.proto\"\xa7\x03\n" +
+	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xa7\x03\n" +
 	"\x06Camera\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -419,8 +419,8 @@ func file_quadsmith_camera_proto_init() {
 	if File_quadsmith_camera_proto != nil {
 		return
 	}
-	file_quadsmith_reference_link_proto_init()
 	file_quadsmith__sql_proto_init()
+	file_quadsmith_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
