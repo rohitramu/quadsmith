@@ -247,7 +247,7 @@ motors: {
   weight_g: 2.85
   stator_diameter_mm: 11
   stator_height_mm: 2
-  kv: 0
+  kv: 21000
 }
 motors: {
   uuid: "9a7bb89d-e7d7-441c-99dd-c4b6fbc75e76"
@@ -257,7 +257,7 @@ motors: {
   weight_g: 3.5
   stator_diameter_mm: 11
   stator_height_mm: 3
-  kv: 0
+  kv: 10500
 }
 motors: {
   uuid: "173d58e5-e145-41a4-830d-b702db574e91"
@@ -267,7 +267,7 @@ motors: {
   weight_g: 2.85
   stator_diameter_mm: 8
   stator_height_mm: 2
-  kv: 0
+  kv: 21000
 }
 motors: {
   uuid: "97db2ed0-1875-44a7-ba17-6c640bbacb97"
@@ -277,7 +277,7 @@ motors: {
   weight_g: 2.85
   stator_diameter_mm: 7
   stator_height_mm: 2
-  kv: 0
+  kv: 21000
 }
 motors: {
   uuid: "beaeaac3-d327-460c-b33e-674f83e634aa"
@@ -287,7 +287,7 @@ motors: {
   weight_g: 1.45
   stator_diameter_mm: 7
   stator_height_mm: 2
-  kv: 0
+  kv: 30000
 }
 motors: {
   uuid: "c5184eb5-9bc8-4f78-bd6d-f4c48cd4d9cf"
@@ -297,7 +297,7 @@ motors: {
   weight_g: 2.85
   stator_diameter_mm: 20
   stator_height_mm: 4
-  kv: 0
+  kv: 21000
 }
 motors: {
   uuid: "556f9fe6-adcd-404d-a9b9-f76254885ac1"
@@ -317,7 +317,7 @@ motors: {
   weight_g: 2.85
   stator_diameter_mm: 11
   stator_height_mm: 6
-  kv: 0
+  kv: 21000
 }
 motors: {
   uuid: "c4d3c2a8-3768-4777-97a6-46f0ac4c9cff"
@@ -326,7 +326,7 @@ motors: {
   name: "1105 Brushless Motors"
   stator_diameter_mm: 11
   stator_height_mm: 5
-  kv: 0
+  kv: 21000
 
   weight_g: 2.85}
 motors: {
@@ -337,7 +337,7 @@ motors: {
   weight_g: 5.3
   stator_diameter_mm: 11
   stator_height_mm: 4
-  kv: 0
+  kv: 7200
 }
 motors: {
   uuid: "191aa3d2-52d7-40ff-8992-9a67b72bdf0c"
@@ -357,7 +357,7 @@ motors: {
   weight_g: 22.2
   stator_diameter_mm: 20
   stator_height_mm: 6
-  kv: 0
+  kv: 2400
 }
 motors: {
   uuid: "6f9aa413-cd5f-40e3-9368-a9ea482ed00d"
@@ -377,7 +377,7 @@ motors: {
   weight_g: 34
   stator_diameter_mm: 23
   stator_height_mm: 6
-  kv: 0
+  kv: 1860
 }
 motors: {
   uuid: "bb9a3bbb-c6f8-4e45-ab8d-1e2826f566ac"
@@ -387,7 +387,7 @@ motors: {
   weight_g: 2.85
   stator_diameter_mm: 22
   stator_height_mm: 4
-  kv: 0
+  kv: 21000
 }
 motors: {
   uuid: "f3237f95-c409-41fc-b6c3-7fb933281b0a"
@@ -417,7 +417,7 @@ motors: {
   weight_g: 2.85
   stator_diameter_mm: 8
   stator_height_mm: 2
-  kv: 0
+  kv: 21000
 }
 motors: {
   uuid: "a85cc0cc-3c46-45c8-b16e-67a16700e904"
@@ -427,7 +427,7 @@ motors: {
   weight_g: 2.85
   stator_diameter_mm: 16
   stator_height_mm: 6
-  kv: 0
+  kv: 21000
 }
 motors: {
   uuid: "bcfce740-7821-46ed-80be-c72ceebedcb3"
@@ -437,7 +437,7 @@ motors: {
   weight_g: 16.1
   stator_diameter_mm: 18
   stator_height_mm: 5
-  kv: 0
+  kv: 1550
 }
 motors: {
   uuid: "51b8dcaa-c719-4cb8-9e6a-673961442c0f"
@@ -487,7 +487,7 @@ motors: {
   weight_g: 1.8
   stator_diameter_mm: 6
   stator_height_mm: 3
-  kv: 0
+  kv: 19000
 }
 motors: {
   uuid: "303ca7ef-3f67-44da-bab1-0be3fde58194"
@@ -497,7 +497,7 @@ motors: {
   weight_g: 2.95
   stator_diameter_mm: 7
   stator_height_mm: 16
-  kv: 0
+  kv: 17500
 }
 motors: {
   uuid: "6ab50d62-9915-4596-981d-b98f15b9d24b"
@@ -507,7 +507,7 @@ motors: {
   weight_g: 2.1
   stator_diameter_mm: 7
   stator_height_mm: 3
-  kv: 0
+  kv: 19000
 }
 motors: {
   uuid: "05cee930-63d3-4636-9791-12e339a32faf"
@@ -545,7 +545,7 @@ motors: {
   id: "protos-motors"
   manufacturer: "CADDX FPV"
   name: "Protos Motors"
-  kv: 0
+  kv: 1000
 
   weight_g: 104.4}
 motors: {
@@ -618,7 +618,7 @@ motors: {
   name: "DarwinFPV 2307.5 V3 SeaWater Brushless Motor"
   stator_diameter_mm: 23
   stator_height_mm: 7.5
-  kv: 0
+  kv: 1000
 
   weight_g: 250}
 motors: {
@@ -628,7 +628,7 @@ motors: {
   name: "DarwinFPV 2006.5 SeaWater Brushless Motor"
   stator_diameter_mm: 20
   stator_height_mm: 6.5
-  kv: 0
+  kv: 1000
 
   weight_g: 10.1}
 motors: {
@@ -638,7 +638,7 @@ motors: {
   name: "DarwinFPV 4320 Brushless Motor"
   stator_diameter_mm: 43
   stator_height_mm: 20
-  kv: 0
+  kv: 15000
 
   weight_g: 3.8}
 motors: {
@@ -648,7 +648,7 @@ motors: {
   name: "DarwinFPV 3115 Motor"
   stator_diameter_mm: 31
   stator_height_mm: 15
-  kv: 0
+  kv: 1000
 
   weight_g: 36.4}
 motors: {
@@ -668,7 +668,7 @@ motors: {
   name: "Darwin Seawater-proof 2307.5 Motor"
   stator_diameter_mm: 23
   stator_height_mm: 7.5
-  kv: 0
+  kv: 1000
 
   weight_g: 10.1}
 motors: {
@@ -708,7 +708,7 @@ motors: {
   name: "NewBeeDrone Cockroach V3 Carbon Fiber Motor"
   weight_g: 1
   description: "NewBeeDrone Cockroach V3 Carbon Fiber Motor Base"
-  kv: 0
+  kv: 1000
 }
 motors: {
   uuid: "435410f3-31e6-4f09-b87d-e9fcdae27f85"
@@ -726,7 +726,7 @@ motors: {
   id: "newbeedrone-whoop-motor-refresh-pack"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Whoop Motor Refresh Pack"
-  kv: 0
+  kv: 1000
 
   weight_g: 4.57}
 motors: {
@@ -734,7 +734,7 @@ motors: {
   id: "newbeedrone-cockroach-motor-base-cover"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Cockroach Motor Base Cover"
-  kv: 0
+  kv: 1000
 
   weight_g: 1}
 motors: {
@@ -743,7 +743,7 @@ motors: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone JST1.0 & JST1.25 Whoop Motor"
   description: "NewBeeDrone JST1.0 & JST1.25 Whoop Motor Plug Replacement Set"
-  kv: 0
+  kv: 1000
 
   weight_g: 4.57}
 motors: {
@@ -752,7 +752,7 @@ motors: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BDR Brushed Motor 3 Pack"
   weight_g: 1.85
-  kv: 0
+  kv: 699
 }
 motors: {
   uuid: "61e3c339-dc6e-4b4c-b7be-1d43a0aa783b"
@@ -763,7 +763,7 @@ motors: {
   description: "NewBeeDrone BDR PLAID Edition - 6mm Brushed Motor"
   stator_diameter_mm: 6
   stator_height_mm: 0
-  kv: 0
+  kv: 699
 }
 motors: {
   uuid: "7baf079c-a223-4107-aa3f-872e2ccf1910"
@@ -774,7 +774,7 @@ motors: {
   description: "NewBeeDrone BDR SILVER Edition - 6mm Brushed Motor"
   stator_diameter_mm: 6
   stator_height_mm: 0
-  kv: 0
+  kv: 699
 }
 motors: {
   uuid: "8392cbbd-2c96-4e75-8dbc-0ec405a23b51"
@@ -785,7 +785,7 @@ motors: {
   description: "NewBeeDrone BDR Unicorn Edition Motors - 6mm Brushed Motors"
   stator_diameter_mm: 6
   stator_height_mm: 0
-  kv: 0
+  kv: 699
 }
 motors: {
   uuid: "a50af04c-0836-411c-8897-86aa4acaf2e2"
@@ -796,7 +796,7 @@ motors: {
   description: "NewBeeDrone BDR BLACK Edition - 6mm Brushed Motor"
   stator_diameter_mm: 6
   stator_height_mm: 0
-  kv: 0
+  kv: 1000
 }
 motors: {
   uuid: "43154872-63fd-4504-88f7-4f5bbb8bcedc"
@@ -806,7 +806,7 @@ motors: {
   weight_g: 2.5
   stator_diameter_mm: 10
   stator_height_mm: 2
-  kv: 0
+  kv: 15000
 }
 motors: {
   uuid: "e7f80932-a55c-42cf-8167-e12c2c48062f"
@@ -998,7 +998,7 @@ motors: {
   description: "HGLRC MY5 freestyle 2306.5 motor 1.6w VTX FPV Drone"
   stator_diameter_mm: 23
   stator_height_mm: 6.5
-  kv: 0
+  kv: 1000
 
   weight_g: 120}
 motors: {
@@ -1131,7 +1131,7 @@ motors: {
   weight_g: 34.4
   stator_diameter_mm: 22
   stator_height_mm: 7
-  kv: 0
+  kv: 1850
 }
 motors: {
   uuid: "37ec9b69-861c-4eda-8d37-ece07d97b74f"
@@ -1161,7 +1161,7 @@ motors: {
   weight_g: 36.2
   stator_diameter_mm: 28
   stator_height_mm: 6.5
-  kv: 0
+  kv: 1750
 }
 motors: {
   uuid: "5c0c6d4b-23e9-4fdd-8d5e-41037e557979"
@@ -1181,7 +1181,7 @@ motors: {
   weight_g: 36.2
   stator_diameter_mm: 25
   stator_height_mm: 6
-  kv: 0
+  kv: 1750
 }
 motors: {
   uuid: "e0847596-bcd0-412b-8241-e3dd281cb2b7"
@@ -1191,7 +1191,7 @@ motors: {
   weight_g: 35.8
   stator_diameter_mm: 24
   stator_height_mm: 6
-  kv: 0
+  kv: 1950
 }
 motors: {
   uuid: "ef611bc2-5a1e-41df-9cc3-4e09f47b481b"
@@ -1211,7 +1211,7 @@ motors: {
   weight_g: 32.2
   stator_diameter_mm: 23
   stator_height_mm: 6
-  kv: 0
+  kv: 1750
 }
 motors: {
   uuid: "5ddf7972-773a-4d91-ac7f-f245e66b1f23"
@@ -1221,7 +1221,7 @@ motors: {
   weight_g: 32.2
   stator_diameter_mm: 23
   stator_height_mm: 6
-  kv: 0
+  kv: 1750
 }
 motors: {
   uuid: "1d6659eb-e6e7-425d-846e-db84c0e0b329"
@@ -1231,7 +1231,7 @@ motors: {
   weight_g: 32.2
   stator_diameter_mm: 22
   stator_height_mm: 7
-  kv: 0
+  kv: 1850
 }
 motors: {
   uuid: "15933ec8-9aad-4eba-8762-aef7d105a321"
@@ -1241,7 +1241,7 @@ motors: {
   weight_g: 32.2
   stator_diameter_mm: 22
   stator_height_mm: 7
-  kv: 0
+  kv: 1850
 }
 motors: {
   uuid: "a70811de-5684-417a-b0af-886c8e0d18b6"
@@ -1295,7 +1295,7 @@ motors: {
   description: "Sub250 1003 Motor 1.5mm Shaft  for 1.6 -2 inches Mini FPV drones"
   stator_diameter_mm: 10
   stator_height_mm: 3
-  kv: 0
+  kv: 19000
 }
 motors: {
   uuid: "5ea52586-1418-4143-9579-b386d8b4f25d"
@@ -1328,7 +1328,7 @@ motors: {
   description: "Sub250 M2 1002 Brushless Motor 1.5mm shaft Specially Designed for 1.6-2 inch FPV Drones"
   stator_diameter_mm: 10
   stator_height_mm: 2
-  kv: 0
+  kv: 14000
 }
 motors: {
   uuid: "0a9b8799-c731-4d86-af71-e76cc483bb5f"
@@ -1349,7 +1349,7 @@ motors: {
   description: "FPVCycle Cavity Series Motor 4012 - 1020kV - AI optimized design"
   stator_diameter_mm: 40
   stator_height_mm: 12
-  kv: 1020
+  kv: 7200
 
   weight_g: 5.3}
 motors: {
@@ -1369,7 +1369,7 @@ motors: {
   name: "FPVCycle 21mm Motor - M3/M5 Prop Shaft"
   stator_diameter_mm: 21
   stator_height_mm: 0
-  kv: 0
+  kv: 1620
 
   weight_g: 16}
 motors: {
@@ -1380,7 +1380,7 @@ motors: {
   description: "FPVCycle 25mm Motor - The Extra Smooth One"
   stator_diameter_mm: 25
   stator_height_mm: 0
-  kv: 0
+  kv: 1000
 
   weight_g: 41.5}
 motors: {
@@ -1401,7 +1401,7 @@ motors: {
   description: "FPVCycle 23mm Short Motor - THE Cinewhoop motor"
   stator_diameter_mm: 23
   stator_height_mm: 0
-  kv: 0
+  kv: 3450
 
   weight_g: 29}
 motors: {
