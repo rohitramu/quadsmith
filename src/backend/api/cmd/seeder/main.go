@@ -41,7 +41,7 @@ func main() {
 
 	fmt.Println("Seeding Database from textproto...")
 
-	dir := "backend/db/seeds/"
+	dir := "src/backend/db/seeds/"
 
 	// Motors
 	if b, err := os.ReadFile(dir + "motors.textproto"); err == nil {

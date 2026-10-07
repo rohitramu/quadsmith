@@ -1,16 +1,16 @@
-builds:  {
+builds: {
   uuid:  "01923019-2131-4192-3192-391294812399"
   id:  "bando-basher-5-inch"
   name:  "Bando Basher 5 inch"
   description:  "A durable 5 inch quad designed for hitting concrete bandos."
 }
-builds:  {
+builds: {
   uuid:  "01923019-2131-4192-3192-391294812398"
   id:  "long-range-explorer"
   name:  "Long Range Explorer"
   description:  "7 inch long range cruiser for mountain surfing."
 }
-builds:  {
+builds: {
   uuid:  "01923019-2131-4192-3192-391294812397"
   id:  "ultralight-toothpick"
   name:  "Ultralight Toothpick"

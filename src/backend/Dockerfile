@@ -3,17 +3,17 @@ FROM golang:1.27 AS builder
 WORKDIR /app
 
 # Copy go.work, go.mod files and vendor directory
-COPY go.work go.work.sum ./
-COPY tools/build_deps/go.mod tools/build_deps/go.sum ./tools/build_deps/
-COPY backend/api/go.mod backend/api/go.sum ./backend/api/
-COPY frontend/cli/go.mod frontend/cli/go.sum* ./frontend/cli/
-COPY vendor/ ./vendor/
+COPY src/go.work src/go.work.sum ./src/
+COPY src/build_deps/go.mod src/build_deps/go.sum ./src/build_deps/
+COPY src/backend/api/go.mod src/backend/api/go.sum ./src/backend/api/
+COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
+COPY src/vendor/ ./src/vendor/
 
 # Copy all source code (including pre-generated proto files)
 COPY . .
 
 # Build Server and Seeder
-RUN cd backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder
+RUN cd src/backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder
 
 
 # Stage 2: The Sandbox (Postgres + Go API)
@@ -42,7 +42,7 @@ docker-entrypoint.sh postgres > /var/log/postgres.log 2>&1 &\n\
 echo "Waiting for PostgreSQL to be ready..."\n\
 until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 1; done\n\
 echo "Applying Schema..."\n\
-psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/backend/db/schema.sql\n\
+psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql\n\
 echo "Seeding Database..."\n\
 ./seeder\n\
 exec ./server\n' > /app/sandbox-entrypoint.sh
@@ -54,7 +54,7 @@ COPY --from=builder /app/bin/server /app/server
 COPY --from=builder /app/bin/seeder /app/seeder
 
 # Copy database schema and seeds at the very end
-COPY backend/db/schema.sql /app/backend/db/schema.sql
-COPY backend/db/seeds /app/backend/db/seeds
+COPY src/backend/db/schema.sql /app/src/backend/db/schema.sql
+COPY src/backend/db/seeds /app/src/backend/db/seeds
 
 ENTRYPOINT ["/app/sandbox-entrypoint.sh"]

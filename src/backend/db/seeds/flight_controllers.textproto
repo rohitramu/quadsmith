@@ -493,7 +493,6 @@ flight_controllers: {
   name: "Pavo360 FPV Quadcopter"
   weight_g: 54.77
   processor: "STM32F722"
-  internal_vtx_uuid: "3192f35c-e651-434c-ba56-9bd6edc00c82"
 }
 flight_controllers: {
   uuid: "bebff03e-13c8-4e08-8da9-7feefbfa8c0e"
