@@ -57,20 +57,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListMotorsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Motor
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListMotorsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Motors...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Motor{})
 			}
-			err = printOutput(res.Msg.Motors, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -195,20 +223,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListFramesRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Frame
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListFramesRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Frames...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Frame{})
 			}
-			err = printOutput(res.Msg.Frames, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -333,20 +389,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListBatteriesRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Battery
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListBatteriesRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Batteries...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Battery{})
 			}
-			err = printOutput(res.Msg.Batteries, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -471,20 +555,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListEscsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := escClient.ListEscs(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Esc
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListEscsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := escClient.ListEscs(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Escs...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Esc{})
 			}
-			err = printOutput(res.Msg.Escs, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -609,20 +721,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListFlightControllersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.FlightController
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListFlightControllersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := flightcontrollerClient.ListFlightControllers(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.FlightControllers...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.FlightController{})
 			}
-			err = printOutput(res.Msg.FlightControllers, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -747,20 +887,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListReceiversRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Receiver
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListReceiversRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Receivers...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Receiver{})
 			}
-			err = printOutput(res.Msg.Receivers, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -885,20 +1053,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListVideoTransmittersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.VideoTransmitter
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListVideoTransmittersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := videotransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.VideoTransmitters...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.VideoTransmitter{})
 			}
-			err = printOutput(res.Msg.VideoTransmitters, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -1023,20 +1219,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListAntennasRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Antenna
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListAntennasRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Antennas...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Antenna{})
 			}
-			err = printOutput(res.Msg.Antennas, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -1161,20 +1385,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListCamerasRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Camera
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListCamerasRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Cameras...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Camera{})
 			}
-			err = printOutput(res.Msg.Cameras, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -1299,20 +1551,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListPropellersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Propeller
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListPropellersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Propellers...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Propeller{})
 			}
-			err = printOutput(res.Msg.Propellers, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},
@@ -1437,20 +1717,48 @@ func newRootCmd() *cobra.Command {
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			pageSize, _ := cmd.Flags().GetInt32("page-size")
 			pageToken, _ := cmd.Flags().GetString("page-token")
-			req := &pb.ListBuildsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: pageToken}
-			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(req))
-			if err != nil {
-				return err
+			if pageToken != "" {
+				if cmd.Flags().Changed("filter") && cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter or --sort when --page-token is provided")
+				}
+				if cmd.Flags().Changed("filter") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --filter when --page-token is provided")
+				}
+				if cmd.Flags().Changed("sort") {
+					cmd.SilenceUsage = false
+					return fmt.Errorf("cannot specify --sort when --page-token is provided")
+				}
+			}
+			if (jsonOut || yamlOut) && pageSize == 0 {
+				pageSize = 100
+			}
+			var all []*pb.Build
+			currentToken := pageToken
+			var lastNextPageToken string
+			for {
+				req := &pb.ListBuildsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Builds...)
+				lastNextPageToken = res.Msg.NextPageToken
+				if !(jsonOut || yamlOut) || res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Build{})
 			}
-			err = printOutput(res.Msg.Builds, columns, parsePageOffset(pageToken))
+			err := printOutput(all, columns, parsePageOffset(pageToken))
 			if err != nil {
 				return err
 			}
-			if res.Msg.NextPageToken != "" && !jsonOut && !yamlOut {
-				fmt.Printf("\nNext page token: %s\n", res.Msg.NextPageToken)
+			if lastNextPageToken != "" && !jsonOut && !yamlOut {
+				fmt.Printf("\nNext page token: %s\n", lastNextPageToken)
 			}
 			return nil
 		},

@@ -201,3 +201,69 @@ func TestSilenceUsage_OnUnknownFlag(t *testing.T) {
 		t.Errorf("unknown flag error should show usage text, got:\n%s", combined)
 	}
 }
+
+func TestList_DisallowsFilterWithPageToken(t *testing.T) {
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--page-token", "token123", "-f", "kv > 1000"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "cannot specify --filter when --page-token is provided") {
+		t.Errorf("expected filter conflict error, got:\n%s", combined)
+	}
+	if !strings.Contains(combined, "Usage:") {
+		t.Errorf("flag conflict should show usage, got:\n%s", combined)
+	}
+}
+
+func TestList_DisallowsSortWithPageToken(t *testing.T) {
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--page-token", "token123", "-s", "kv"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "cannot specify --sort when --page-token is provided") {
+		t.Errorf("expected sort conflict error, got:\n%s", combined)
+	}
+	if !strings.Contains(combined, "Usage:") {
+		t.Errorf("flag conflict should show usage, got:\n%s", combined)
+	}
+}
+
+func TestList_DisallowsFilterAndSortWithPageToken(t *testing.T) {
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--page-token", "token123", "-f", "kv > 1000", "-s", "kv"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "cannot specify --filter or --sort when --page-token is provided") {
+		t.Errorf("expected filter or sort conflict error, got:\n%s", combined)
+	}
+	if !strings.Contains(combined, "Usage:") {
+		t.Errorf("flag conflict should show usage, got:\n%s", combined)
+	}
+}
