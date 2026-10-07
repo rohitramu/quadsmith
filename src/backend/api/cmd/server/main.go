@@ -15,6 +15,7 @@ import (
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 	"quadsmith/api/internal/engines/evaluator"
+	"quadsmith/api/internal/static"
 )
 
 func main() {
@@ -56,6 +57,13 @@ func main() {
 
 	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool))
 	mux.Handle(path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler)
+
+	// Serve the React SPA for any unmatched paths
+	staticDir := os.Getenv("STATIC_DIR")
+	if staticDir == "" {
+		staticDir = "/app/web/dist"
+	}
+	mux.Handle("/", static.ServeSPA(staticDir))
 
 	// TODO: Add HTTP middleware for CORS to allow frontend applications to call this API.
 	// TODO: Add Authentication/Authorization interceptors to secure write operations (Create/Update/Delete).
