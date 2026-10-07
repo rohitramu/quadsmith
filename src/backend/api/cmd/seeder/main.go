@@ -173,6 +173,19 @@ func main() {
 		}
 	}
 
+	// Builds
+	if b, err := os.ReadFile(dir + "builds.textproto"); err == nil {
+		m := &pb.ListBuildsResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.Builds {
+			if err := pb.CreateBuild(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
 	if err := tx.Commit(ctx); err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to commit tx: %v\n", err)
 		os.Exit(1)

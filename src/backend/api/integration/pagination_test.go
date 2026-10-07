@@ -15,6 +15,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
+	"google.golang.org/protobuf/encoding/prototext"
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
@@ -140,9 +141,17 @@ func TestPagination_FullIteration(t *testing.T) {
 		pageToken = res.Msg.NextPageToken
 	}
 
-	// Total seeded motors is 139
-	if len(allIds) != 139 {
-		t.Fatalf("expected 139 total motors across all pages, got %d", len(allIds))
+	// Verify against total seeded motors
+	expectedMotors := 144
+	seedPath := filepath.Join("..", "..", "db", "seeds", "motors.textproto")
+	if b, err := os.ReadFile(seedPath); err == nil {
+		var seedResp pb.ListMotorsResponse
+		if err := prototext.Unmarshal(b, &seedResp); err == nil && len(seedResp.Motors) > 0 {
+			expectedMotors = len(seedResp.Motors)
+		}
+	}
+	if len(allIds) != expectedMotors {
+		t.Fatalf("expected %d total motors across all pages, got %d", expectedMotors, len(allIds))
 	}
 }
 

@@ -6,6 +6,18 @@ flight_controllers: {
   weight_g: 9.1
   processor: "STM32F722RET6"
   gyro: "MPU6000"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "971706b1-9710-4c6a-86d3-26db8b70d0ba"
@@ -15,6 +27,18 @@ flight_controllers: {
   weight_g: 5
   processor: "STM32F722"
   gyro: "MPU6000"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "15a59535-5041-4378-a0a6-716dff27bf88"
@@ -24,6 +48,18 @@ flight_controllers: {
   weight_g: 29
   processor: "STM32F405"
   gyro: "MPU6000"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "01a11091-1f13-7669-9fc3-1a0b25bdb420"
@@ -32,22 +68,11 @@ flight_controllers: {
   name: "SpeedyBee F405 V4 Flight Controller"
   weight_g: 9
   processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "c2313853-fcec-43bd-8b95-85ace8af50c8"
-  id: "meteor75-pro-ii-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor75 Pro II Brushless Whoop Quadcopter"
-  weight_g: 41.5
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "9a439799-0916-4d3c-8012-b4669592f811"
-  id: "meteor65-pro-ii-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor65 Pro II Brushless Whoop Quadcopter"
-  weight_g: 4.6
-  processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "cd7fad1b-10d9-4fdc-bf25-e905ff6c6220"
@@ -56,6 +81,19 @@ flight_controllers: {
   name: "Meteor75 Pro II FPV Kit"
   weight_g: 41.5
   processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "6b57f17e-8c88-44b8-ab68-d95fcaa9c08c"
@@ -64,7 +102,20 @@ flight_controllers: {
   name: "Air VTX"
   weight_g: 0.6
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "63cd3de7-4ef9-49ab-bbd8-015d1e3328d5"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "63aeb88b-7acd-4a5e-bb82-79676b55fd72"
@@ -73,6 +124,19 @@ flight_controllers: {
   name: "Monitor"
   weight_g: 143
   processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "51f4add4-6bc8-4f9f-a107-3fce02a49628"
@@ -81,7 +145,20 @@ flight_controllers: {
   name: "Meteor75 Pro II O4 Brushless Whoop"
   weight_g: 41.5
   processor: "Unknown"
+  gyro: "BMI270"
   description: "Meteor75 Pro II O4 Brushless Whoop Quadcopter"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "1d500f2a-9f98-4d89-b329-b5525c42a1e6"
@@ -90,7 +167,20 @@ flight_controllers: {
   name: "Meteor65 Pro II O4 Brushless Whoop"
   weight_g: 4.6
   processor: "Unknown"
+  gyro: "BMI270"
   description: "Meteor65 Pro II O4 Brushless Whoop Quadcopter"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "3448dc61-5bff-4395-b0dc-50917333f0f0"
@@ -99,55 +189,41 @@ flight_controllers: {
   name: "Meteor75 Pro HD FPV Kit"
   weight_g: 51.5
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "814a2ccb-04ac-4331-9ed0-7b3980053dcd"
-  id: "air75-ii-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Air75 II Brushless Whoop Quadcopter"
-  weight_g: 20.2
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "dc38908f-3146-4258-899c-6740afa8ceb2"
-  id: "air65-ii-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Air65 II Brushless Whoop Quadcopter"
-  weight_g: 16.6
-  processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "95ec9715-739f-4763-a3f3-ac3feb2cbbc4"
   id: "p1-air-unit-hd-vtx"
   manufacturer: "BETAFPV"
   name: "P1 Air Unit HD VTX"
-  processor: "Unknown"
-  internal_vtx_uuid: "17a847c2-7ac7-4c09-9176-cb51f4fb3c00"
-
-  weight_g: 37.5}
-flight_controllers: {
-  uuid: "ad85c350-1207-45c7-aeee-591193335d1e"
-  id: "meteor75-pro-p1-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor75 Pro P1 Brushless Whoop Quadcopter"
   weight_g: 37.5
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "f79f383a-68fd-4376-96f1-acd07e858b95"
-  id: "vr04-hd-fpv-goggles"
-  manufacturer: "BETAFPV"
-  name: "VR04 HD FPV Goggles"
-  weight_g: 400
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "01224d80-d366-4b51-aca4-00039a5b4f72"
-  id: "pavo20-pro-ii-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo20 Pro II Brushless Whoop Quadcopter"
-  weight_g: 35.7
-  processor: "STM32F405"
+  gyro: "ICM42688P"
+  internal_vtx_uuid: "17a847c2-7ac7-4c09-9176-cb51f4fb3c00"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "8b446897-110d-40d4-acc7-a8b1921bb2bb"
@@ -156,40 +232,20 @@ flight_controllers: {
   name: "Air65 & Air75 Wisp Brushless Whoop"
   weight_g: 16.6
   processor: "STM32F411"
+  gyro: "BMI270"
   description: "Air65 & Air75 Wisp Brushless Whoop Quadcopter (Limited Edition)"
-}
-flight_controllers: {
-  uuid: "9b9e7d9d-9f41-43a0-9cb1-eff83a46318b"
-  id: "air-ii-canopy"
-  manufacturer: "BETAFPV"
-  name: "Air II Canopy"
-  weight_g: 2.66
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "e7d2aaf3-230c-40e4-bbd3-b47b7ad14004"
-  id: "pavo-pico-ii-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo Pico II Brushless Whoop Quadcopter"
-  weight_g: 19
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "a5d3fd62-0d72-4a88-9f89-c245dd0553c7"
-  id: "pavo-pico-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo Pico Brushless Whoop Quadcopter"
-  weight_g: 19
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "a9786b24-f768-4da6-afab-deff3d46089d"
-  id: "meteor75-pro-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor75 Pro Brushless Whoop Quadcopter"
-  weight_g: 30.5
-  processor: "STM32F411"
-  description: "Meteor75 Pro Brushless Whoop Quadcopter (2022)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "d3d10516-9b24-4f01-8d69-d1acfc4cbc09"
@@ -198,138 +254,85 @@ flight_controllers: {
   name: "Toothpick F405 2-4S AIO Brushless Flight"
   weight_g: 7
   processor: "STM32F405"
+  gyro: "BMI270"
   internal_esc_uuid: "e68df4b5-a836-4299-b873-f3764a47cf40"
   description: "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4"
-}
-flight_controllers: {
-  uuid: "97c67a43-2066-4027-b484-3e15328d627a"
-  id: "pavo20-pro-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo20 Pro Brushless Whoop Quadcopter"
-  weight_g: 35.7
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "0c1ec1cf-eaa8-4381-802d-dedefca9fbbd"
-  id: "pavo-femto-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo Femto Brushless Whoop Quadcopter"
-  weight_g: 54.77
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "e6672e20-3638-47b2-8429-ee90a6dfab27"
-  id: "meteor75-pro-o4-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor75 Pro O4 Brushless Whoop Quadcopter"
-  weight_g: 41.5
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "ca184c0b-e84f-44ea-a4ca-fa539833fd82"
-  id: "meteor65-pro-o4-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor65 Pro O4 Brushless Whoop Quadcopter"
-  weight_g: 36.2
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "0bda78eb-f6f9-41cd-9a47-e9b6ea3f3706"
-  id: "beta95x-v3-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta95X V3 Whoop Quadcopter"
-  weight_g: 173
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "c302bf94-618e-455a-a2ee-08c0befa95bb"
-  id: "air75-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Air75 Brushless Whoop Quadcopter"
-  weight_g: 4.45
-  processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "23dd9b29-0aa9-477e-834a-cf56f21608ac"
-  id: "air65-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Air65 Brushless Whoop Quadcopter"
-  weight_g: 16.6
-  processor: "STM32F411"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "9e245383-9cfb-40b2-b245-857c4c9bb077"
   id: "pavo20-pocket"
   manufacturer: "BETAFPV"
   name: "Pavo20 Pocket"
+  weight_g: 95
   processor: "STM32F405"
-
-  weight_g: 95}
-flight_controllers: {
-  uuid: "e44fc629-1d70-4199-88ea-9981ca0c43d2"
-  id: "cetus-x-hd-brushless-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Cetus X HD Brushless Quadcopter"
-  processor: "Unknown"
-
-  weight_g: 55}
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "63dc65e8-e337-4d79-a03a-bae6d2faaeeb"
   id: "cetus-x-hd-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Cetus X HD FPV Kit"
+  weight_g: 55
   processor: "Unknown"
-
-  weight_g: 55}
-flight_controllers: {
-  uuid: "58aa833b-ceca-44f4-97d8-5c6138617043"
-  id: "bt2-0-whoop-cable-pigtail"
-  manufacturer: "BETAFPV"
-  name: "BT2.0 Whoop Cable Pigtail"
-  weight_g: 1.28
-  processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
-flight_controllers: {
-  uuid: "4929db50-f7df-4096-be16-cf4f62a81ae3"
-  id: "pavo35-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo35 Brushless Whoop Quadcopter"
-  processor: "STM32F722"
-  internal_vtx_uuid: "aa059b4a-72c5-4b6b-99ba-42c17a6c19cc"
-
-  weight_g: 113.9}
-flight_controllers: {
-  uuid: "4d9a4dd1-e6f3-4632-b097-73364f6f715a"
-  id: "pavo25-v2-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo25 V2 Brushless Whoop Quadcopter"
-  processor: "STM32F722"
-
-  weight_g: 113.9}
-flight_controllers: {
-  uuid: "68399cf2-4a70-4fce-bcca-a8e393ca8f32"
-  id: "aquila16-brushless-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Aquila16 Brushless Quadcopter"
-  processor: "Unknown"
-
-  weight_g: 47.1}
 flight_controllers: {
   uuid: "8d29f030-dcff-4e55-a98a-74fb7ee64b45"
   id: "aquila16-fpv-kit"
   manufacturer: "BETAFPV"
   name: "Aquila16 FPV Kit"
+  weight_g: 47.1
   processor: "Unknown"
-
-  weight_g: 47.1}
-flight_controllers: {
-  uuid: "3a2841e0-e340-4a65-8e66-69e81a35f720"
-  id: "pavo20-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo20 Brushless Whoop Quadcopter"
-  processor: "STM32F405"
-
-  weight_g: 35.7}
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "57a0ab75-dd68-4a02-8bdd-47c46b24f764"
   id: "f4-2-3s-20a-aio-fc-v1"
@@ -337,7 +340,20 @@ flight_controllers: {
   name: "F4 2-3S 20A AIO FC V1"
   weight_g: 5.58
   processor: "STM32F405"
+  gyro: "BMI270"
   internal_esc_uuid: "b40f8cc2-b3b8-412b-8301-1e7cfc9274ad"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "7419c0f0-86b5-4d02-a6cb-8b25fc43a455"
@@ -346,34 +362,42 @@ flight_controllers: {
   name: "BT3.0 Connectors"
   weight_g: 1.28
   processor: "Unknown"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "2117221f-a3ab-4be3-9432-612a2553b0f4"
   id: "sub100g-whoop-drone"
   manufacturer: "BETAFPV"
   name: "Sub100g Whoop Drone"
+  weight_g: 13.8
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "9981815e-ef11-4667-a44a-ffebf85fd876"
   description: "Sub100g Whoop Drone with DJI O3 (Beta Test)"
-
-  weight_g: 13.8}
-flight_controllers: {
-  uuid: "af7017a0-dc15-4a15-a8cf-31c7a3bbff00"
-  id: "meteor75-pro-brushless-whoop-quadcopter-2"
-  manufacturer: "BETAFPV"
-  name: "Meteor75 Pro Brushless Whoop Quadcopter"
-  weight_g: 30.5
-  processor: "STM32F411"
-  internal_vtx_uuid: "ca6f70b0-fa07-4d01-bef2-0c7affa6e6b7"
-  description: "Meteor75 Pro Brushless Whoop Quadcopter (1S HD Digital VTX)"
-}
-flight_controllers: {
-  uuid: "40aed9cf-f1f3-451d-8997-8b3f03665d58"
-  id: "micro-canopy-lite"
-  manufacturer: "BETAFPV"
-  name: "Micro Canopy Lite"
-  weight_g: 2.66
-  processor: "Unknown"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "9128285b-7deb-4771-8ae4-34381b093217"
@@ -382,25 +406,19 @@ flight_controllers: {
   name: "TWIG XL FPV Toothpick Quad"
   weight_g: 41.5
   processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "e411c43d-23a7-4eeb-9530-5f9a69230853"
-  id: "meteor85-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor85 Brushless Whoop Quadcopter"
-  processor: "STM32F411"
-  internal_vtx_uuid: "8dee38fb-a5b4-45d9-9b8c-d752733a6772"
-  description: "Meteor85 Brushless Whoop Quadcopter (2S HD Digital VTX)"
-
-  weight_g: 30.5}
-flight_controllers: {
-  uuid: "e54e362b-96f6-4575-af18-dbb2b5d48ef7"
-  id: "meteor85-brushless-whoop-quadcopter-2"
-  manufacturer: "BETAFPV"
-  name: "Meteor85 Brushless Whoop Quadcopter"
-  weight_g: 30.5
-  processor: "STM32F411"
-  description: "Meteor85 Brushless Whoop Quadcopter (2022)"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "dbd16db1-7385-41ee-9d6e-ee539d90458a"
@@ -409,6 +427,19 @@ flight_controllers: {
   name: "Cetus Lite FPV Kit"
   weight_g: 55
   processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "82acb189-7912-41ff-a54d-75b232afb457"
@@ -417,6 +448,19 @@ flight_controllers: {
   name: "C03 FPV Camera"
   weight_g: 1.45
   processor: "Unknown"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "85eb0dd5-6d07-4c76-8fe4-61b001796391"
@@ -425,6 +469,19 @@ flight_controllers: {
   name: "Cetus X FPV Kit"
   weight_g: 55
   processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "41c90ce7-1edc-488a-b027-10b30bfd2f82"
@@ -433,18 +490,21 @@ flight_controllers: {
   name: "F405 4S 20A Toothpick Brushless Flight"
   weight_g: 6.1
   processor: "STM32F405"
+  gyro: "ICM42688P"
   description: "F405 4S 20A Toothpick Brushless Flight Controller V5 BLHeli_S (ICM42688)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
-flight_controllers: {
-  uuid: "59f05792-ed31-487f-b6e0-698fe22c8330"
-  id: "meteor75-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor75 Brushless Whoop Quadcopter"
-  processor: "STM32F411"
-  internal_vtx_uuid: "b02a0551-405d-436b-a222-7c710eaca5e6"
-  description: "Meteor75 Brushless Whoop Quadcopter (1S HD Digital VTX)"
-
-  weight_g: 30.5}
 flight_controllers: {
   uuid: "f596a3c6-8d73-406f-98ad-1b05a902b7b2"
   id: "f411-4s-20a-toothpick-brushless-flight"
@@ -452,15 +512,20 @@ flight_controllers: {
   name: "F411 4S 20A Toothpick Brushless Flight"
   weight_g: 8.15
   processor: "STM32F411"
+  gyro: "ICM42688P"
   description: "F411 4S 20A Toothpick Brushless Flight Controller V5 BLHeli_S (BMI270)"
-}
-flight_controllers: {
-  uuid: "a5038005-8abd-48d6-9503-7079ccebd85b"
-  id: "cetus-x-brushless-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Cetus X Brushless Quadcopter"
-  weight_g: 55
-  processor: "STM32F411"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "f1246e94-b878-419e-9d0f-bcf63feed1de"
@@ -469,30 +534,40 @@ flight_controllers: {
   name: "Pavo25 Walksnail Whoop Kit"
   weight_g: 113.9
   processor: "STM32F405"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "89c9f7bc-1755-450f-a08e-f58602d32edd"
   id: "cnc-vista-adapter"
   manufacturer: "BETAFPV"
   name: "CNC Vista Adapter"
+  weight_g: 0.29
   processor: "Unknown"
-
-  weight_g: 0.29}
-flight_controllers: {
-  uuid: "10a4da30-c96d-45e5-a85f-24c8781b093b"
-  id: "pavo25-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo25 Whoop Quadcopter"
-  weight_g: 113.9
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "fa8b95cd-526d-4e53-895f-d265039da3e6"
-  id: "pavo360-fpv-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo360 FPV Quadcopter"
-  weight_g: 54.77
-  processor: "STM32F722"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "bebff03e-13c8-4e08-8da9-7feefbfa8c0e"
@@ -501,6 +576,19 @@ flight_controllers: {
   name: "SMO 360 Camera"
   weight_g: 1.45
   processor: "Unknown"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "1af14652-bd6f-453d-8a84-db99438de688"
@@ -509,16 +597,20 @@ flight_controllers: {
   name: "ELRS Lite Receiver"
   weight_g: 0.82
   processor: "Unknown"
+  gyro: "BMI270"
   internal_receiver_uuid: "b5de936f-25cb-4012-81a6-a842d7ba6707"
-}
-flight_controllers: {
-  uuid: "0e62d346-a933-426f-b974-7ed212840a5c"
-  id: "meteor65-pro-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor65 Pro Brushless Whoop Quadcopter"
-  weight_g: 4.6
-  processor: "STM32F411"
-  description: "Meteor65 Pro Brushless Whoop Quadcopter (2022)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "b9f5767b-c2bc-415a-8e60-ab811b07b5d3"
@@ -527,15 +619,20 @@ flight_controllers: {
   name: "M03 5.8G VTX"
   weight_g: 0.6
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "1d4e6575-7787-4a63-8c6e-13a8493702e8"
-}
-flight_controllers: {
-  uuid: "7f593dbf-4723-472c-ab03-d226cd90aca7"
-  id: "cetus-pro-brushless-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Cetus Pro Brushless Quadcopter"
-  weight_g: 55
-  processor: "Unknown"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "a2466690-c969-407f-a07b-c4587c632e60"
@@ -544,16 +641,19 @@ flight_controllers: {
   name: "Cetus Pro FPV Kit"
   weight_g: 55
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "80f82a92-6fae-4b2d-bb9b-4df072fde9a1"
-  id: "x-knight-35-fpv-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "X-Knight 35 FPV Quadcopter"
-  weight_g: 142.9
-  processor: "Unknown"
-  internal_vtx_uuid: "8e1b248f-f769-4108-baa0-460045a67d4d"
-  description: "X-Knight 35 FPV Quadcopter (HD Digital VTX)"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "cb515f72-04b0-44d3-b756-39f375527de0"
@@ -562,16 +662,42 @@ flight_controllers: {
   name: "ELRS Nano Receiver"
   weight_g: 0.7
   processor: "Unknown"
+  gyro: "BMI270"
   internal_receiver_uuid: "c302c0e5-00ed-4909-b981-757c38e13d5f"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "f8412703-2694-49ec-942b-a0d6c6ef82f9"
   id: "hx115-lr-toothpick-drone"
   manufacturer: "BETAFPV"
   name: "HX115 LR Toothpick Drone"
+  weight_g: 3.6
   processor: "STM32F411"
-
-  weight_g: 3.6}
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "6191fcce-700c-414e-98a3-cf6449cedd14"
   id: "hx115-se-toothpick-drone"
@@ -579,6 +705,19 @@ flight_controllers: {
   name: "HX115 SE Toothpick Drone"
   weight_g: 3.6
   processor: "STM32F411"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "3889dbe1-93ab-441e-ba61-b2e8d8aaa281"
@@ -587,41 +726,42 @@ flight_controllers: {
   name: "Cetus FPV Kit"
   weight_g: 55
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "371363f8-fbb5-4930-bafd-53d6726ccc64"
-  id: "pavo30-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Pavo30 Whoop Quadcopter"
-  weight_g: 173
-  processor: "STM32F722"
-  internal_vtx_uuid: "3a8bf872-5d15-4a67-a89e-324968a871f6"
-}
-flight_controllers: {
-  uuid: "d0dc3fb6-5031-402c-a386-f1f662fa133b"
-  id: "meteor65-lite-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor65 Lite Brushless Whoop Quadcopter"
-  weight_g: 4.6
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "8da3c9d7-0b5d-4bc3-a34c-3c79adf80856"
-  id: "smo-4k-camera-cable-pigtail"
-  manufacturer: "BETAFPV"
-  name: "SMO 4K Camera Cable Pigtail"
-  weight_g: 1.5
-  processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "f122a864-793c-4ebe-85cb-d38b25860d21"
   id: "fpv-whoop-racing-advanced-kit"
   manufacturer: "BETAFPV"
   name: "FPV Whoop Racing Advanced Kit"
+  weight_g: 35.7
   processor: "Unknown"
+  gyro: "BMI270"
   description: "FPV Whoop Racing Advanced Kit (BF Edition)"
-
-  weight_g: 35.7}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "8a332fe0-6dae-4597-bf61-110ad47fa691"
   id: "f4-1s-aio-brushless-flight-controller"
@@ -629,6 +769,19 @@ flight_controllers: {
   name: "F4 1S AIO Brushless Flight Controller"
   weight_g: 5.58
   processor: "STM32F411"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "f55610c5-306f-4b2c-a6a1-b7ab5eb33f7c"
@@ -637,7 +790,20 @@ flight_controllers: {
   name: "SPI Frsky Receiver"
   weight_g: 0.43
   processor: "Unknown"
+  gyro: "BMI270"
   internal_receiver_uuid: "c9037e17-7240-4bc5-b02b-a9e92cf24b88"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "7c2e13a0-2f47-4249-9dc6-ea2bd27f8a22"
@@ -646,35 +812,20 @@ flight_controllers: {
   name: "A02 25-800mW 5.8G VTX"
   weight_g: 0.6
   processor: "STM32F722"
+  gyro: "BMI270"
   internal_vtx_uuid: "d4180e39-e175-4486-a43d-3c14aba2f6cc"
-}
-flight_controllers: {
-  uuid: "f864baa3-a5f3-485c-a80a-3b1f90ba0aeb"
-  id: "beta75x-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta75X Whoop Quadcopter"
-  weight_g: 30.5
-  processor: "STM32F405"
-  internal_vtx_uuid: "ad392a94-eac0-4d4d-8f45-15ebd3908c97"
-  description: "Beta75X Whoop Quadcopter (HD Digital VTX)"
-}
-flight_controllers: {
-  uuid: "5858b45d-5d46-417c-ba7c-7551558feef4"
-  id: "beta85x-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta85X Whoop Quadcopter"
-  weight_g: 3.2
-  processor: "STM32F405"
-  internal_vtx_uuid: "5193d389-507c-40f5-969f-937ed4fa3048"
-  description: "Beta85X Whoop Quadcopter (HD Digital VTX)"
-}
-flight_controllers: {
-  uuid: "445ad715-bea3-4dc0-83de-49e85bed91d7"
-  id: "meteor65-hd-whoop-quadcopter-1s"
-  manufacturer: "BETAFPV"
-  name: "Meteor65 HD Whoop Quadcopter (1S)"
-  weight_g: 28.53
-  processor: "STM32F411"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "586e41aa-6946-407a-9fbc-3824582abf4f"
@@ -683,6 +834,19 @@ flight_controllers: {
   name: "BEC Board for Naked Camera"
   weight_g: 29.6
   processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "5deb6c16-78e6-4451-8090-aef280e2daa6"
@@ -691,43 +855,21 @@ flight_controllers: {
   name: "X-Knight 3'' Toothpick Quad"
   weight_g: 142.9
   processor: "STM32F411"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "5474b621-c10f-4abb-9e0d-222871a9e109"
   description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX)"
-}
-flight_controllers: {
-  uuid: "a7b70d51-79c3-4494-81df-fe925d7e0ca8"
-  id: "connector-cable-set-for-digital-vtx"
-  manufacturer: "BETAFPV"
-  name: "Connector Cable Set for Digital VTX"
-  weight_g: 0.29
-  processor: "Unknown"
-  internal_vtx_uuid: "7c2bd4f8-94df-44d5-9764-c90605a46230"
-}
-flight_controllers: {
-  uuid: "e09c9f34-496e-467c-8a6a-3b7788422070"
-  id: "beta85x-v2-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta85X V2 Whoop Quadcopter"
-  weight_g: 3.2
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "3bee5f25-78f9-4105-8ede-6934e0b751ae"
-  id: "beta95x-v2-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta95X V2 Whoop Quadcopter"
-  weight_g: 173
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "36d8c8ca-c72e-489d-97d9-560f7b0684ac"
-  id: "beta95x-v2-whoop-quadcopter-hd-digital"
-  manufacturer: "BETAFPV"
-  name: "Beta95X V2 Whoop Quadcopter HD Digital"
-  weight_g: 173
-  processor: "STM32F405"
-  internal_vtx_uuid: "5c4e1c95-b298-4149-85c2-d9692d30ec5d"
-  description: "Beta95X V2 Whoop Quadcopter HD Digital VTX"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "3bc2977a-e692-4d08-94b7-9581d4b62183"
@@ -736,23 +878,62 @@ flight_controllers: {
   name: "X-Knight 5'' FPV Toothpick Quad"
   weight_g: 142.9
   processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "d20d574b-3a27-4004-99fb-e31379b9bc30"
   id: "fpv-whoop-racing-advanced-kit-2"
   manufacturer: "BETAFPV"
   name: "FPV Whoop Racing Advanced Kit 2"
+  weight_g: 35.7
   processor: "Unknown"
-
-  weight_g: 35.7}
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "4a5ddc44-00a6-43d6-b070-b0ea12a97162"
   id: "fpv-whoop-racing-starter-kit-2"
   manufacturer: "BETAFPV"
   name: "FPV Whoop Racing Starter Kit 2"
+  weight_g: 8.64
   processor: "Unknown"
-
-  weight_g: 8.64}
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "2fd656bc-94f4-46a2-9fb3-ed4ef9a5e04d"
   id: "toothpick-f4-2-6s-aio-brushless-flight-4"
@@ -760,8 +941,21 @@ flight_controllers: {
   name: "Toothpick F4 2-6S AIO Brushless Flight"
   weight_g: 5.58
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_esc_uuid: "e62a5429-2a6e-4359-a10e-962af0ce9c64"
   description: "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "9bb72805-1ca3-4689-969e-9c1539d3143c"
@@ -770,7 +964,20 @@ flight_controllers: {
   name: "M02 25-350mW 5.8G VTX"
   weight_g: 0.6
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "6cc37fe2-ccca-4881-a6be-805b482cf489"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "47ab2741-2e47-4ed8-895d-39ce7b5d544e"
@@ -779,6 +986,19 @@ flight_controllers: {
   name: "Customized Naked Camera"
   weight_g: 1.45
   processor: "Unknown"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "eb3cf471-874f-4cda-8860-0cac255b0e00"
@@ -787,6 +1007,19 @@ flight_controllers: {
   name: "Beta85X Whoop Quad for Naked Camera"
   weight_g: 41.5
   processor: "Unknown"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "60babe7c-1a98-4624-a6cd-97fa7a2acc7c"
@@ -795,15 +1028,41 @@ flight_controllers: {
   name: "Beta95X Whoop Quad for Naked Camera"
   weight_g: 54.77
   processor: "STM32F405"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "a1bd24fd-5027-492c-8350-83c5c0da2e12"
   id: "case-for-naked-camera"
   manufacturer: "BETAFPV"
   name: "Case for Naked Camera"
+  weight_g: 0.82
   processor: "Unknown"
-
-  weight_g: 0.82}
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "04a60466-62c3-48d7-8be6-0d8b405f3f95"
   id: "twig-et5-5-toothpick-quad"
@@ -811,6 +1070,19 @@ flight_controllers: {
   name: "TWIG ET5 5'' Toothpick Quad"
   weight_g: 169.3
   processor: "STM32F405"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "40ca29c4-b94b-4dfb-873a-93cc9bde7036"
@@ -819,6 +1091,19 @@ flight_controllers: {
   name: "C02 FPV Micro Camera"
   weight_g: 1.4
   processor: "Unknown"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "2ce24375-e318-414a-a60c-542df0dc3716"
@@ -827,23 +1112,19 @@ flight_controllers: {
   name: "BETAFPV Nano HD Camera"
   weight_g: 0.7
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "fdb94901-5fca-4ff8-9da6-d4eda1c8e78f"
-  id: "old-version-of-beta65x-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Old Version of Beta65X Whoop Quadcopter"
-  weight_g: 2.2
-  processor: "STM32F405"
-  description: "Old Version of Beta65X Whoop Quadcopter (2S)"
-}
-flight_controllers: {
-  uuid: "3e32d4b6-e1b2-48ec-a36d-4c4d5cf36ceb"
-  id: "beta65x-hd-whoop-quadcopter-2s"
-  manufacturer: "BETAFPV"
-  name: "Beta65X HD Whoop Quadcopter (2S)"
-  weight_g: 36.2
-  processor: "STM32F411"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "537285d6-81b4-402c-b546-179d6114ebf2"
@@ -852,24 +1133,19 @@ flight_controllers: {
   name: "TWIG Mutant 4'' Toothpick Quad"
   weight_g: 148.3
   processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "b1e00843-39c3-4c9d-a078-f25f0665bed1"
-  id: "beta95x-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta95X Whoop Quadcopter"
-  weight_g: 173
-  processor: "STM32F405"
-  internal_vtx_uuid: "01043f2e-4f8b-4e9c-9692-95ce8f2006cd"
-  description: "Beta95X Whoop Quadcopter (HD Digital VTX)"
-}
-flight_controllers: {
-  uuid: "7d818073-7160-4108-9da3-7d9050fce643"
-  id: "4-5s-whoop-cable-pigtail-xt60"
-  manufacturer: "BETAFPV"
-  name: "4-5S Whoop Cable Pigtail (XT60)"
-  weight_g: 8.2
-  processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "39c62744-1999-4c3d-a639-d3d99b2bdffa"
@@ -878,32 +1154,19 @@ flight_controllers: {
   name: "X-Knight 4'' FPV Toothpick Quad"
   weight_g: 142.9
   processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "b4735bfe-3d1b-422b-9793-2679aadf1c03"
-  id: "meteor75-brushless-whoop-quadcopter-2"
-  manufacturer: "BETAFPV"
-  name: "Meteor75 Brushless Whoop Quadcopter"
-  weight_g: 30.5
-  processor: "STM32F411"
-  description: "Meteor75 Brushless Whoop Quadcopter (2022)"
-}
-flight_controllers: {
-  uuid: "0c27d483-1e6e-4223-9fea-42db15ad7893"
-  id: "hq-3030-3-blade-propellers"
-  manufacturer: "BETAFPV"
-  name: "HQ 3030 3-Blade Propellers"
-  weight_g: 4.4
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "ee5fb179-5652-4db6-958b-b1219a67693b"
-  id: "meteor65-se-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor65 SE Brushless Whoop Quadcopter"
-  weight_g: 4.6
-  processor: "Unknown"
-  description: "Meteor65 SE Brushless Whoop Quadcopter (1S)"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "da6b6f48-c404-4648-bbb3-8638a62c0847"
@@ -912,8 +1175,21 @@ flight_controllers: {
   name: "Lite 2S Brushless Flight Controller"
   weight_g: 55
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "664cefec-588c-44ff-ba71-a7885d925382"
   description: "Lite 2S Brushless Flight Controller (Silverware Firmware)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "2e1fbfb1-877e-4b0f-aa3b-5a2ce1fb5af0"
@@ -922,15 +1198,19 @@ flight_controllers: {
   name: "HX100 SE FPV Quad"
   weight_g: 116.2
   processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "d541a6fe-0b17-4853-a153-ebebf831f658"
-  id: "meteor65-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Meteor65 Brushless Whoop Quadcopter"
-  weight_g: 4.6
-  processor: "STM32F411"
-  description: "Meteor65 Brushless Whoop Quadcopter (2022)"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "f560c510-7003-4907-9ae2-5eedff9482cc"
@@ -939,7 +1219,20 @@ flight_controllers: {
   name: "F405 2-4S AIO Brushless Flight Controller"
   weight_g: 5.58
   processor: "STM32F405"
+  gyro: "BMI270"
   description: "F405 2-4S AIO Brushless Flight Controller (BLHeli_S) V3"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "cd1fbeb9-6660-48c5-8494-8a838a47974a"
@@ -948,32 +1241,21 @@ flight_controllers: {
   name: "Toothpick F4 2-4S AIO Brushless Flight"
   weight_g: 7
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_esc_uuid: "e202fb6c-8280-4c56-a3f9-331cad62556a"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S)"
-}
-flight_controllers: {
-  uuid: "ba042eef-fe35-44f5-9ec5-6ebfabfae64c"
-  id: "beta85x-fpv-whoop-quadcopter-2-3s"
-  manufacturer: "BETAFPV"
-  name: "Beta85X FPV Whoop Quadcopter (2-3S)"
-  weight_g: 55
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "ae6905bf-1428-4477-bc84-9af2f3514c1f"
-  id: "beta85x-hd-whoop-quadcopter-2-3s"
-  manufacturer: "BETAFPV"
-  name: "Beta85X HD Whoop Quadcopter (2-3S)"
-  weight_g: 58
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "4d04b4a1-c4eb-490c-8675-bf4d72f1e365"
-  id: "beta85x-hd-whoop-quadcopter-4s"
-  manufacturer: "BETAFPV"
-  name: "Beta85X HD Whoop Quadcopter (4S)"
-  weight_g: 3.2
-  processor: "STM32F405"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "cc0781e8-3a8e-4698-9da9-bd0d1fcfd05a"
@@ -982,6 +1264,19 @@ flight_controllers: {
   name: "HX115 115mm FPV Toothpick Quad"
   weight_g: 3.5
   processor: "STM32F411"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "3b21c9b5-da75-4ff3-890a-c83b0e338326"
@@ -990,6 +1285,19 @@ flight_controllers: {
   name: "HX115 115mm HD Toothpick Quad"
   weight_g: 74.3
   processor: "STM32F411"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "74eb340d-bf84-4b29-9b76-8e16e0c5418d"
@@ -998,6 +1306,19 @@ flight_controllers: {
   name: "F4 1S Brushless Flight Controller V2.2"
   weight_g: 5.58
   processor: "STM32F411"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "5b702e1c-f0f7-451c-8deb-1965ff66bf4b"
@@ -1006,7 +1327,20 @@ flight_controllers: {
   name: "BETAFPV Lite 2S Brushless Flight Controller"
   weight_g: 55
   processor: "Unknown"
+  gyro: "ICM42688P"
   description: "BETAFPV Lite 2S Brushless Flight Controller (BetaTest)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "ac9512d9-fee9-4141-b709-d095be8de59d"
@@ -1015,8 +1349,20 @@ flight_controllers: {
   name: "F4 1S Brushless Flight Controller"
   weight_g: 5.58
   processor: "STM32F411"
-  internal_receiver_uuid: "110c286f-682d-4348-8fb0-55a00fe7dc4d"
+  gyro: "BMI270"
   description: "F4 1S Brushless Flight Controller ( Frsky RX )"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "e3a8f596-61a9-4279-ad60-5437fc48dff0"
@@ -1025,16 +1371,21 @@ flight_controllers: {
   name: "M01 AIO Camera 5.8G VTX V2.1"
   weight_g: 1.45
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "7534d570-cbf7-46d5-b0c7-5ae841019f5b"
   description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected)"
-}
-flight_controllers: {
-  uuid: "a6718325-168e-4706-839b-64e5a6334842"
-  id: "hq-3020-2-blade-propellers-1-5mm-shaft"
-  manufacturer: "BETAFPV"
-  name: "HQ 3020 2-Blade Propellers 1.5mm Shaft"
-  weight_g: 0.5
-  processor: "Unknown"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "83cd4658-dbb3-4d5a-a068-bd8fd6ebe5c5"
@@ -1043,8 +1394,21 @@ flight_controllers: {
   name: "Toothpick F4 2-4S AIO Brushless Flight"
   weight_g: 7
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_esc_uuid: "9f72506f-e6d5-48f4-bd04-a335dce59347"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "a894f92b-d27d-417d-901a-b747cbb160f7"
@@ -1053,55 +1417,19 @@ flight_controllers: {
   name: "HX100 100mm FPV Quad"
   weight_g: 41.5
   processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "1d8631e5-14c8-450b-ba40-f543ec6d0a26"
-  id: "power-whoop-connector-cable-set"
-  manufacturer: "BETAFPV"
-  name: "Power Whoop Connector Cable Set"
-  processor: "Unknown"
-  description: "Power Whoop Connector Cable Set for Beta85X"
-
-  weight_g: 0.29}
-flight_controllers: {
-  uuid: "909cec98-2adf-4034-baf6-3ca0b07f69f3"
-  id: "4s-whoop-cable-pigtail-xt30"
-  manufacturer: "BETAFPV"
-  name: "4S Whoop Cable Pigtail (XT30)"
-  weight_g: 3.2
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "be3e4b93-7edb-41df-bcd6-1db72272d38e"
-  id: "beta85x-whoop-quadcopter-4s"
-  manufacturer: "BETAFPV"
-  name: "Beta85X Whoop Quadcopter (4S)"
-  weight_g: 3.2
-  processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "0a237804-0998-4af7-af93-10858e47641b"
-  id: "beta85x-4k-whoop-quadcopter-4s"
-  manufacturer: "BETAFPV"
-  name: "Beta85X 4K Whoop Quadcopter (4S)"
-  weight_g: 3.2
-  processor: "STM32F405"
-}
-flight_controllers: {
-  uuid: "1a16515f-5a68-4ad8-adab-6187b3d9f536"
-  id: "beta75x-hd-whoop-quadcopter-3s"
-  manufacturer: "BETAFPV"
-  name: "Beta75X HD Whoop Quadcopter (3S)"
-  weight_g: 116.2
-  processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "a053c6f5-d285-48a7-ba44-bd1342a425ea"
-  id: "beta75x-whoop-quadcopter-3s"
-  manufacturer: "BETAFPV"
-  name: "Beta75X Whoop Quadcopter (3S)"
-  weight_g: 5.6
-  processor: "STM32F411"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "e58db8a6-020e-4be3-98f6-d9e879992dfa"
@@ -1110,16 +1438,21 @@ flight_controllers: {
   name: "F4 2-4S AIO Brushless Flight Controller"
   weight_g: 5.58
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_esc_uuid: "e191559a-e568-4b3b-91a1-ed8bd7b5ef76"
   description: "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S)"
-}
-flight_controllers: {
-  uuid: "8ea6f966-c945-4de1-a619-42f581a26e53"
-  id: "beta75-bnf-micro-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta75 BNF Micro Whoop Quadcopter"
-  weight_g: 20.2
-  processor: "STM32F411"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "6e71f7c2-df9a-4a10-bb76-94e2611f5326"
@@ -1128,24 +1461,20 @@ flight_controllers: {
   name: "F4 1S Brushless Flight Controller"
   weight_g: 5.58
   processor: "STM32F411"
-  internal_receiver_uuid: "9cf6ec1a-a1e0-4ba1-9f46-8fe06b65034d"
+  gyro: "BMI270"
   description: "F4 1S Brushless Flight Controller (No RX+OSD)"
-}
-flight_controllers: {
-  uuid: "9ff956bc-2f4e-45e0-ad63-eab0996cf927"
-  id: "beta75-pro-2-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta75 Pro 2 Brushless Whoop Quadcopter"
-  weight_g: 30.5
-  processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "233855c7-3218-486d-8cce-4a200fea2433"
-  id: "beta65-pro-2-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta65 Pro 2 Brushless Whoop Quadcopter"
-  weight_g: 28.53
-  processor: "STM32F411"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "e5e9b5b8-fd11-4378-b195-472f431e6dc2"
@@ -1154,6 +1483,19 @@ flight_controllers: {
   name: "F4 1-2S AIO Brushless Flight Controller"
   weight_g: 5.58
   processor: "STM32F411"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "657d22da-a05f-4a5a-936e-a33248f1b9e5"
@@ -1162,7 +1504,20 @@ flight_controllers: {
   name: "T01 AIO Camera 25mW 5.8G"
   weight_g: 1.48
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "590ed84d-4438-4b54-b073-b6f24ada5c0d"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "4144ea96-6511-4135-a388-8a521c9e9584"
@@ -1171,6 +1526,19 @@ flight_controllers: {
   name: "DSMX Micro Receiver"
   weight_g: 0.82
   processor: "Unknown"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "55dbbca9-2e78-4e66-bf4d-47fae4b638cf"
@@ -1179,8 +1547,21 @@ flight_controllers: {
   name: "Z02 AIO Camera 5.8G VTX"
   weight_g: 1.45
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "aa40a685-6edf-4f36-ba1f-d01522e45778"
   description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "68a298d8-e380-4ab7-8579-cb145af012d0"
@@ -1189,6 +1570,19 @@ flight_controllers: {
   name: "F405 Brushless Flight Controller"
   weight_g: 5.58
   processor: "STM32F405"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "f9ac737d-4ea5-4048-b93d-c855fba9a012"
@@ -1197,6 +1591,19 @@ flight_controllers: {
   name: "BETAFPV 1200TVL Camera"
   weight_g: 1.45
   processor: "Unknown"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "09036004-9c52-49c9-9398-35cf5b07f45f"
@@ -1205,34 +1612,21 @@ flight_controllers: {
   name: "Z02 AIO Camera 5.8G VTX"
   weight_g: 1.45
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "00cd1018-c498-4e34-8b50-b69cb7297e16"
   description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version)"
-}
-flight_controllers: {
-  uuid: "34f07f7e-462a-4dbd-8b59-da3242acde23"
-  id: "beta75-pro-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta75 Pro Brushless Whoop Quadcopter"
-  weight_g: 7.73
-  processor: "STM32F411"
-  description: "Beta75 Pro Brushless Whoop Quadcopter (1S)"
-}
-flight_controllers: {
-  uuid: "b6b21755-ff8e-49fb-a329-b3d338abcbb5"
-  id: "beta65s-lite-micro-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta65S Lite Micro Whoop Quadcopter"
-  weight_g: 16.6
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "97e3a3f0-5a21-45cb-8f82-170a67f0cb31"
-  id: "beta65-pro-brushless-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta65 Pro Brushless Whoop Quadcopter"
-  weight_g: 4.6
-  processor: "STM32F411"
-  description: "Beta65 Pro Brushless Whoop Quadcopter (1S)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "80c7c572-95c3-43a3-b35c-0a789135a257"
@@ -1241,39 +1635,20 @@ flight_controllers: {
   name: "H02 AIO Camera 5.8G 25mW VTX OSD"
   weight_g: 32
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "569515af-d2dd-4be0-a052-f7579dca41d1"
-}
-flight_controllers: {
-  uuid: "b6754ffc-c807-4df9-bd99-bdd4a9440067"
-  id: "beta85-bnf-micro-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta85 BNF Micro Whoop Quadcopter"
-  weight_g: 7.73
-  processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "3b7d9790-8a2c-4259-9c47-e8946b5500cb"
-  id: "beta75s-bnf-micro-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta75S BNF Micro Whoop Quadcopter"
-  weight_g: 4
-  processor: "STM32F411"
-}
-flight_controllers: {
-  uuid: "73509d21-4afd-4f06-afe8-89296da730f4"
-  id: "beta65s-bnf-micro-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta65S BNF Micro Whoop Quadcopter"
-  weight_g: 4.6
-  processor: "Unknown"
-}
-flight_controllers: {
-  uuid: "91854b4d-5e39-47a8-9409-36fcaed84be4"
-  id: "beta65-bnf-micro-whoop-quadcopter"
-  manufacturer: "BETAFPV"
-  name: "Beta65 BNF Micro Whoop Quadcopter"
-  weight_g: 2.2
-  processor: "Unknown"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "77f74f56-b69f-4edd-815d-129326b420c0"
@@ -1282,25 +1657,48 @@ flight_controllers: {
   name: "Z01 AIO Camera 5.8G 25mW VTX"
   weight_g: 32
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "ff621ea4-2a57-4ee0-8ed6-6f6399bd5b9f"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "d63e84ba-a940-4812-bf75-e23e2fc8289a"
   id: "beta-test-walksnail-neuxs-aio-1s-flight"
   manufacturer: "CADDXFPV"
   name: "[BETA TEST] Walksnail Neuxs AIO-1S Flight"
+  weight_g: 4.6
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "5b576b3e-f5d8-4677-9bec-e4747f062d58"
   description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX"
-
-  weight_g: 4.6}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "870d0064-1656-4c2c-bc39-1a6b4991efae"
   id: "caddxfpv-protos-fpv-drone-rtf-kit"
-  manufacturer: "CADDX FPV"
+  manufacturer: "CADDXFPV"
   name: "CaddxFPV Protos FPV Drone RTF Kit"
   weight_g: 104.4
   processor: "STM32F405"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "badb9181-c95e-4407-b5d7-f9d0e3d38ba1"
@@ -1309,17 +1707,12 @@ flight_controllers: {
   name: "Walksnail Avatar GT VTX"
   weight_g: 41.6
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "2d11f7f9-88ae-474b-bc83-c3103e747e50"
-}
-flight_controllers: {
-  uuid: "bee14f4b-00eb-499a-9d66-fe36144654dc"
-  id: "walksnail-avatar-hd-goggles-x"
-  manufacturer: "CADDXFPV"
-  name: "Walksnail Avatar HD Goggles X +"
-  weight_g: 290
-  processor: "Unknown"
-  internal_vtx_uuid: "3e639930-76e6-40dc-8ab8-42afc27b2437"
-  description: "Walksnail Avatar HD Goggles X + Moonlight Kit"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "5eef6b93-e951-4517-abf4-f2f48953a622"
@@ -1328,7 +1721,12 @@ flight_controllers: {
   name: "Walksnail Avatar GT KIT Only"
   weight_g: 41.6
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "15c94828-ee1d-4239-9c93-e18e5fd8d192"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "c224e9c6-2036-4561-a71a-efc2ef6d8191"
@@ -1337,6 +1735,11 @@ flight_controllers: {
   name: "CADDXFPV Gofilm 20 Only"
   weight_g: 38.5
   processor: "STM32F405"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "eb613047-3870-4c1f-a7e0-2be7f38d8756"
@@ -1345,7 +1748,12 @@ flight_controllers: {
   name: "Walksnail Avatar HD Kit V2 (32G)"
   weight_g: 1.8
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "8da83e83-ee07-4024-8536-8372a5f17dff"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "caa99656-e864-461b-9534-b683495ba520"
@@ -1354,26 +1762,13 @@ flight_controllers: {
   name: "Walksnail Avatar HD Kit V2 (8G)"
   weight_g: 1.8
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "1fab39e5-e2c0-47ba-b755-67725a018698"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
-flight_controllers: {
-  uuid: "4f9880d1-5c4a-4d6a-a431-4ca37f2314ea"
-  id: "walksnail-avatar-hd-goggles-x-kit-v2"
-  manufacturer: "CADDXFPV"
-  name: "Walksnail Avatar HD Goggles X + Kit V2"
-  weight_g: 1.8
-  processor: "Unknown"
-  internal_vtx_uuid: "554e3bd4-8a95-4dd7-9c84-085b87cd7a30"
-}
-flight_controllers: {
-  uuid: "e330487c-fc03-4a0e-b4db-3bfaf60185bc"
-  id: "walksnail-avatar-hd-goggles-x-pro-kit"
-  manufacturer: "CADDXFPV"
-  name: "Walksnail Avatar HD Goggles X + Pro Kit"
-  processor: "Unknown"
-  internal_vtx_uuid: "67385845-c7cf-4e50-95e2-29058d67ed59"
-
-  weight_g: 1.8}
 flight_controllers: {
   uuid: "1f92f03d-d89c-4abe-93ca-6a11e64dda6a"
   id: "caddxfpv-f4-aio-elrs"
@@ -1381,45 +1776,86 @@ flight_controllers: {
   name: "CADDXFPV F4_AIO_ELRS"
   weight_g: 5.3
   processor: "STM32F405"
+  gyro: "BMI270"
   internal_receiver_uuid: "74d7a534-ce02-404a-b488-b93449e52795"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "c2f8f86f-f63d-4d9a-aad6-54d58f3f20c4"
   id: "darwinfpv-f435-45a-am32-aio"
-  manufacturer: "DarwinFPV - Official Store"
+  manufacturer: "DarwinFPV"
   name: "DarwinFPV F435 45A AM32 AIO"
+  weight_g: 41.5
   processor: "STM32F405"
+  gyro: "BMI270"
   internal_esc_uuid: "03bdc3b2-f363-447b-8922-9046a04f1474"
-
-  weight_g: 41.5}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "19597d7a-567a-4e25-9ac8-14d91bba73ec"
   id: "darwinfpv-foldape4-4-inch-folding-long"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV FoldApe4 4 Inch Folding Long"
+  weight_g: 250
   processor: "Unknown"
+  gyro: "ICM42688P"
   description: "DarwinFPV FoldApe4 4 Inch Folding Long Range FPV Drone"
-
-  weight_g: 250}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "d31410e7-6e24-455f-8d0e-0e5e8b93af24"
   id: "darwinfpv-f411-45a-elrs-aio-cineape35-4"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F411 45A ELRS AIO CineApe35"
+  weight_g: 41.5
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_esc_uuid: "fdc4f26c-aa47-4754-881e-9854b05b6c83"
   internal_receiver_uuid: "c2de593a-f739-4f6e-93c5-ad7e03de6e4f"
   description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO"
-
-  weight_g: 41.5}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "0d06725c-e5cc-4a6e-afa5-855f552da1fc"
   id: "darwinfpv-cineape35-whoop-fpv-drone"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV CineApe35 Whoop FPV Drone"
+  weight_g: 144
   processor: "Unknown"
-
-  weight_g: 144}
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "62c174a3-aac0-49c6-a9f8-9a54cebde10a"
   id: "darwinfpv-cement-ultra-durable-elrs-2-4g"
@@ -1427,8 +1863,17 @@ flight_controllers: {
   name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
   weight_g: 3
   processor: "Unknown"
+  gyro: "BMI270"
   internal_receiver_uuid: "a598eedb-5383-4f63-9f9f-64d0e99106e9"
   description: "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "67f4ff17-5a7a-4263-9c5e-0da6f7307577"
@@ -1437,27 +1882,54 @@ flight_controllers: {
   name: "TinyApe25 Walksnail Avatar HD Freestyle FPV"
   weight_g: 50.3
   processor: "STM32F411"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "78e53688-a6b6-44c3-b9a8-7fba74cea1ee"
   description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "ee915b21-a06b-43e1-9462-4a64363bd3b8"
   id: "darwinfpv-hulk-45a-3-6s-aio"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV HULK 45A 3-6S AIO"
+  weight_g: 41.5
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_esc_uuid: "ee916b8e-e710-4d10-beae-5a80913b6047"
-
-  weight_g: 41.5}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "64007840-d06e-460b-b960-b784b2a21151"
   id: "darwinfpv-fpvcycle-whoop-stack-flight-controller"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV FPVCycle Whoop Stack Flight Controller"
+  weight_g: 10.1
   processor: "STM32F722"
+  gyro: "BMI270"
   description: "DarwinFPV FPVCycle Whoop Stack Flight Controller 6S 45A Stack"
-
-  weight_g: 10.1}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "4ab5be23-e16d-4846-a795-23ad14d20d57"
   id: "darwinfpv-25-200-400-600mw-vtx"
@@ -1465,37 +1937,65 @@ flight_controllers: {
   name: "DarwinFPV 25/200/400/600mW VTX"
   weight_g: 9.2
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "47639100-c93e-4bac-8297-c7001d4f6932"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "217ffd4b-3953-4483-bc87-8e935782c097"
   id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  weight_g: 5
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_esc_uuid: "f9b6e8cd-8f5b-48e1-931a-1faef1bd1a6b"
   internal_receiver_uuid: "5ff7f57c-3e4f-4840-b0c0-71d8894982d6"
-
-  weight_g: 5}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://darwinfpv.com/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "8e2577d5-5456-4384-855a-f703a0797750"
   id: "newbeedrone-beeid-pro-m10-gps-module"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeID Pro M10 GPS Module"
+  weight_g: 5.2
   processor: "Unknown"
+  gyro: "BMI270"
   description: "NewBeeDrone BeeID Pro M10 GPS Module with RemoteID & IST8310 Compass"
-
-  weight_g: 5.2}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "d71009a5-89ad-4fff-8164-537e151b2730"
   id: "newbeedrone-lionbee-long-range-elrs2-4-aio"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
+  weight_g: 4.57
   processor: "Unknown"
+  gyro: "BMI270"
   internal_receiver_uuid: "e8e4c3aa-e4d1-4bbe-b3c3-f05a66532330"
   description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl"
-
-  weight_g: 4.57}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "915c4319-db76-4d07-b783-08163b9289a6"
   id: "newbeedrone-lionbee-3inch-long-range-elrs2-4"
@@ -1503,8 +2003,13 @@ flight_controllers: {
   name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
   weight_g: 62.3
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_receiver_uuid: "25a33ace-8a95-4e9e-8db9-d7e3c8057f2c"
   description: "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "09037858-15da-4afb-8e3a-45427c587874"
@@ -1513,29 +2018,43 @@ flight_controllers: {
   name: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller"
   weight_g: 4.57
   processor: "Unknown"
-  internal_receiver_uuid: "3c4a122e-3621-4bed-b418-80de5ffb3298"
+  gyro: "BMI270"
   description: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "feb36229-227a-48a0-bfcc-d059d04971ce"
   id: "newbeedrone-stingerbee-hd-o4-pro-jst1-0"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone StingerBee HD O4 Pro JST1.0"
+  weight_g: 10.2
   processor: "Unknown"
+  gyro: "ICM42688P"
   description: "NewBeeDrone StingerBee HD O4 Pro JST1.0 16Pin to JST0.8 6Pin for Hummingbird255 AIO FC"
-
-  weight_g: 10.2}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "b147339d-c406-40c0-a4df-4203ffc4386d"
   id: "newbeedrone-beebrain-brushed-v2-5-aio-flight"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
+  weight_g: 4.57
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_receiver_uuid: "4672b90a-a3ef-40ec-9a2c-1a558b5c3dbf"
   internal_vtx_uuid: "f00bc2df-b9e6-4056-b784-c01e0a90ea4e"
   description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX"
-
-  weight_g: 4.57}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "4d0177f5-a0f0-4c46-9858-08c4bf6084a5"
   id: "newbeedrone-beeid-v1-1-m10q-gps-module"
@@ -1543,16 +2062,26 @@ flight_controllers: {
   name: "NewBeeDrone BeeID v1.1 M10Q GPS Module"
   weight_g: 2.16
   processor: "Unknown"
+  gyro: "BMI270"
   description: "NewBeeDrone BeeID v1.1 M10Q GPS Module with RemoteID & Drone Tracker"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "94f4a89a-3922-4a2d-bdd2-c940031bd8f8"
   id: "newbeedrone-vrdrone-flight-controller"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone VRDrone Flight Controller"
+  weight_g: 4.57
   processor: "Unknown"
-
-  weight_g: 4.57}
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "5f021b3e-9d8d-40a0-a32a-bdcd9528b837"
   id: "newbeedrone-infinity200-rs-racing-flight-controller"
@@ -1560,7 +2089,12 @@ flight_controllers: {
   name: "NewBeeDrone Infinity200 RS Racing Flight Controller"
   weight_g: 4.57
   processor: "Unknown"
+  gyro: "BMI270"
   description: "NewBeeDrone Infinity200 RS Racing Flight Controller | RaceSpec"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "39a6f959-b416-4367-be5b-c3cf1a263b27"
@@ -1569,17 +2103,27 @@ flight_controllers: {
   name: "NewBeeDrone Cricket200 V2 F7 Flight Controller"
   weight_g: 5.85
   processor: "STM32F722"
+  gyro: "BMI270"
   description: "NewBeeDrone Cricket200 V2 F7 Flight Controller Dual BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "0d51e1ca-bafa-4448-9049-d27ee1640ebd"
   id: "newbeedrone-replacement-2-4-hair-antenna"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Replacement 2.4 Hair Antenna"
+  weight_g: 3.3
   processor: "Unknown"
+  gyro: "BMI270"
   description: "NewBeeDrone Replacement 2.4 Hair Antenna for Beeceiver V1 / Beebrain FC (1pc)"
-
-  weight_g: 3.3}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "5eab45df-fb33-4b02-b031-7062d86ed0f4"
   id: "newbeedrone-infinity200-f4-flight-controller"
@@ -1587,6 +2131,11 @@ flight_controllers: {
   name: "NewBeeDrone Infinity200 F4 Flight Controller"
   weight_g: 5.85
   processor: "STM32F405"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "2a0b1715-e92f-48f2-a153-b0e0fc2ce0bc"
@@ -1595,18 +2144,28 @@ flight_controllers: {
   name: "NewBeeDrone BeeCeiver Frsky"
   weight_g: 0.91
   processor: "Unknown"
+  gyro: "BMI270"
   internal_receiver_uuid: "64cf50bc-5a26-49ed-a2d1-95e14eeaeff6"
   description: "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "0dce6de2-78a4-44de-8771-f3667e26f75b"
   id: "rotor-riot-brave-f7-v2-flight"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot Brave F7 V2 Flight"
+  weight_g: 8
   processor: "Unknown"
+  gyro: "ICM42688P"
   description: "Rotor Riot Brave F7 V2 Flight Controller - NDAA"
-
-  weight_g: 8}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "f18f9560-05fc-4d33-8f72-b956036beded"
   id: "tbs-lucid-30x30-500a-pdb"
@@ -1614,6 +2173,11 @@ flight_controllers: {
   name: "TBS Lucid 30x30 500A PDB"
   weight_g: 36
   processor: "Unknown"
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "7110a8ec-9919-42ac-8adf-6106e7840713"
@@ -1622,28 +2186,43 @@ flight_controllers: {
   name: "GOKU F405 ERVT 1S 5A 5-in-1"
   weight_g: 4.9
   processor: "STM32F405"
+  gyro: "BMI270"
   internal_receiver_uuid: "f940d3a2-cbbc-4eb2-88f5-142426359504"
   internal_vtx_uuid: "571abb8a-eb6e-4ed9-aeb4-4d2ed7477e66"
   description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "328d84e7-89fe-4148-9a45-18df68557f06"
   id: "5v-boostybaby-ultra-small-high-power"
   manufacturer: "Fractal Engineering"
   name: "5V Boostybaby Ultra Small High Power"
+  weight_g: 1.3
   processor: "Unknown"
+  gyro: "BMI270"
   description: "5V Boostybaby Ultra Small High Power Voltage Booster"
-
-  weight_g: 1.3}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "6ef95e4b-d8c0-4d4e-9cdb-d201cfe3ed00"
   id: "rotor-riot-brave-f7-flight-controller"
   manufacturer: "Rotor Riot"
   name: "Rotor Riot Brave F7 Flight Controller"
+  weight_g: 3.3
   processor: "Unknown"
+  gyro: "BMI270"
   description: "Rotor Riot Brave F7 Flight Controller Wiring Kit"
-
-  weight_g: 3.3}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "b67b0279-4511-4d6d-a111-d210ff0fc544"
   id: "avatar-gt-kit-dual-antenna"
@@ -1651,8 +2230,13 @@ flight_controllers: {
   name: "Avatar GT Kit Dual Antenna"
   weight_g: 41.6
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "ded1b7ae-04ea-4081-b7a4-3f95a1dfbfd6"
   description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "9a1b08f3-ee22-4e05-a414-6774250709f6"
@@ -1661,8 +2245,13 @@ flight_controllers: {
   name: "Avatar HD VTX Module V2 Dual"
   weight_g: 15.4
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "9c8df7de-e9c4-4f7f-8c44-f0123dde811d"
   description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "3c9d52e7-a519-4513-94cf-51dcc4f32b8d"
@@ -1671,8 +2260,13 @@ flight_controllers: {
   name: "Avatar HD Pro Kit Dual Antenna"
   weight_g: 41.6
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "dae416b8-c05a-40c8-adf4-daf974af9e26"
   description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "9f6cd7b1-4729-46d1-ad1b-852fa2ef1a9b"
@@ -1681,8 +2275,13 @@ flight_controllers: {
   name: "Avatar HD Kit V2 Dual Antenna"
   weight_g: 41.6
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "d2831bd8-f458-467d-819e-b3ea55497291"
   description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "bbbbf623-ddb6-4c4e-b585-1df4ecda8162"
@@ -1691,8 +2290,13 @@ flight_controllers: {
   name: "Whoop Lite Bundle"
   weight_g: 5.4
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "62ed4520-d65c-47d7-928f-926fa9b039e6"
   description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "318cae93-c8dc-45aa-98cf-f61b29d053ac"
@@ -1701,8 +2305,13 @@ flight_controllers: {
   name: "Avatar HD Mini VTX Module V3"
   weight_g: 6.8
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "636c340f-bbf7-4d1e-a24c-12dedb3add42"
   description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "62ae1cca-073e-4127-a72d-e89571fca047"
@@ -1711,7 +2320,12 @@ flight_controllers: {
   name: "F722 V4 4-8S 30x30 Flight Controller"
   weight_g: 8
   processor: "STM32F722"
+  gyro: "ICM42688P"
   description: "F722 V4 4-8S 30x30 Flight Controller with MPU6000 and Barometer"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "30b922a6-e792-438e-b6be-36b60edd5813"
@@ -1720,19 +2334,13 @@ flight_controllers: {
   name: "Avatar HD Kit V2"
   weight_g: 1.8
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "5739f434-346a-4f18-af51-a6e7e871f075"
   description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System"
-}
-flight_controllers: {
-  uuid: "408a9fbd-f732-4e26-96e6-c62bd2cce351"
-  id: "avatar-hd-vrx-kit"
-  manufacturer: "Walksnail"
-  name: "Avatar HD VRX Kit"
-  weight_g: 3.5
-  processor: "Unknown"
-  internal_receiver_uuid: "173b0158-de47-4bb3-a989-8ea70592ebf9"
-  internal_vtx_uuid: "6b87a9cc-7bcb-4ba5-80f1-ea049459d2d7"
-  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "2391d3a5-3fb0-434d-b147-beb0201cd76c"
@@ -1741,35 +2349,58 @@ flight_controllers: {
   name: "Avatar Mini 1S VTX"
   weight_g: 1.8
   processor: "Unknown"
+  gyro: "BMI270"
   internal_vtx_uuid: "648539ac-b369-4014-94b3-edde5271378d"
   description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System"
-}
-flight_controllers: {
-  uuid: "e290f81d-da6a-49d4-95e3-083d20401cff"
-  id: "betafpv-bt2-0-whoop-pigtails-6-pack"
-  manufacturer: "BetaFPV"
-  name: "BetaFPV BT2.0 Whoop Pigtails 6 Pack"
-  weight_g: 0.91
-  processor: "Unknown"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "c7a31b9e-4cba-4aa6-8075-dc1a0bf5a595"
   id: "hglrc-f405-8s-v2-1-direct"
   manufacturer: "HGLRC"
   name: "HGLRC F405 8S V2.1 Direct"
+  weight_g: 15.5
   processor: "STM32F405"
+  gyro: "ICM42688P"
   description: "HGLRC F405 8S V2.1 Direct Plug FC Racing/ Freestyle FPV Drone"
-
-  weight_g: 15.5}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "53ac8d6e-1308-45a7-b795-9a9be9e8c258"
   id: "hglrc-h743-12s-42688-fc"
   manufacturer: "HGLRC"
   name: "HGLRC H743 12S 42688 FC"
+  weight_g: 7.3
   processor: "STM32H743"
+  gyro: "ICM42688P"
   description: "HGLRC H743 12S 42688 FC for 5-15 inch FPV Drone"
-
-  weight_g: 7.3}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "a4c74a7d-651a-4f82-84e4-80f9a6771544"
   id: "hglrc-specter-f722-lite-icm42688-gyro"
@@ -1777,8 +2408,21 @@ flight_controllers: {
   name: "HGLRC SPECTER F722 Lite ICM42688 gyro"
   weight_g: 5
   processor: "STM32F722"
+  gyro: "ICM42688P"
   internal_receiver_uuid: "4da8a069-d611-4376-b6d9-667996a4aa76"
   description: "HGLRC SPECTER F722 Lite ICM42688 gyro integrated ELRS 2.4G receiver flight controller"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "0e39a9cf-60ff-4a08-8714-32f0b13c5a78"
@@ -1787,17 +2431,43 @@ flight_controllers: {
   name: "HGLRC Wind5 Lite V2 Racing Drone"
   weight_g: 80
   processor: "STM32F722"
+  gyro: "ICM42688P"
   internal_receiver_uuid: "1ee26f9f-4c6f-4301-b43b-cbc1dfa2dfa3"
   description: "HGLRC Wind5 Lite V2 Racing Drone Elrs2.4G version"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "7efb41af-19e1-4a4e-9505-63aed1fccc69"
   id: "rekon-y6-5-inch-long-range-fpv-drone"
   manufacturer: "HGLRC"
   name: "Rekon Y6 5-inch Long-Range FPV Drone"
+  weight_g: 311
   processor: "STM32F722"
-
-  weight_g: 311}
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "c319e263-096a-4173-8f7b-855617ed5d6d"
   id: "hglrc-specter-15a-elrs-aio-2-4s-2"
@@ -1805,62 +2475,113 @@ flight_controllers: {
   name: "HGLRC SPECTER 15A ELRS AIO 2-4S"
   weight_g: 5.6
   processor: "STM32F411"
+  gyro: "BMI270"
   internal_esc_uuid: "1ed11eb3-9ab2-4c9e-950b-8f3a8ca6fcfb"
   internal_receiver_uuid: "ab61a221-d90d-4de9-917a-28a33599e037"
   description: "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
 }
 flight_controllers: {
   uuid: "cc7e1478-7614-4ef3-923c-5568daca3b10"
   id: "hglrc-draknight-2-inch-toothpick-o4-fpv"
   manufacturer: "HGLRC"
   name: "HGLRC Draknight 2-inch toothpick O4 Fpv"
+  weight_g: 44.3
   processor: "STM32F411"
+  gyro: "ICM42688P"
   description: "HGLRC Draknight 2-inch toothpick O4 Fpv drone"
-
-  weight_g: 44.3}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hglrc.net/pages/manual"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.hglrc.net/collections/flight-controller"
+  }
+}
 flight_controllers: {
   uuid: "08bf4a4d-5a05-4ad3-8fee-5b0d6b7b32ec"
   id: "mamba-f405mk2-v2-flight-controller"
   manufacturer: "DIATONE INNOVATIONS"
   name: "Mamba F405MK2 V2 Flight Controller"
+  weight_g: 9
   processor: "STM32F405"
-
-  weight_g: 9}
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "45704872-9b0f-4fff-9564-0f4614246399"
   id: "mamba-f405mk2-v2-flight-controller-f40mk2-f55"
   manufacturer: "DIATONE OFFICIAL"
   name: "MAMBA F405MK2 V2 Flight Controller F40MK2/F55"
+  weight_g: 9
   processor: "STM32F405"
+  gyro: "ICM42688P"
   description: "MAMBA F405MK2 V2 Flight Controller F40MK2/F55 Stack 30MM/M3"
-
-  weight_g: 9}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "73328b55-97e7-45bb-80dd-8a4e9ffa3567"
   id: "mamba-mk4-f722-flight-controller-30mm-m3"
   manufacturer: "DIATONE INNOVATIONS"
   name: "MAMBA MK4 F722  Flight Controller 30mm/M3"
+  weight_g: 6.9
   processor: "STM32F722"
-
-  weight_g: 6.9}
+  gyro: "ICM42688P"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "99a290d0-e11f-417f-9ab2-ce8023188030"
   id: "mamba-mk4-f722-mini-flight-controller"
   manufacturer: "DIATONE OFFICIAL"
   name: "MAMBA MK4 F722 MINI Flight Controller"
+  weight_g: 9.9
   processor: "STM32F722"
+  gyro: "ICM42688P"
   description: "MAMBA MK4 F722 MINI Flight Controller 20mm/M2"
-
-  weight_g: 9.9}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "9a30e94b-45c8-4fc2-b1fd-e9d395b67695"
   id: "winners-choice-mamba-mk4-f722-mini-f40-reactor"
   manufacturer: "DIATONE OFFICIAL"
   name: "WINNERS' CHOICE-MAMBA MK4 F722 MINI F40/Reactor"
+  weight_g: 6
   processor: "STM32F722"
+  gyro: "ICM42688P"
   description: "WINNERS' CHOICE-MAMBA MK4 F722 MINI F40/Reactor 44A/66A MINI Flight Controller Stack 20mm/M2"
-
-  weight_g: 6}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "df6e8e96-25ee-4485-85bc-9e7e71e93e37"
   id: "walksnail-avatar-digital-hd-mini-1s"
@@ -1868,8 +2589,13 @@ flight_controllers: {
   name: "Walksnail Avatar Digital HD Mini 1S"
   weight_g: 6.8
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "9355ce0e-4479-4450-a3b2-09fe7b0b6475"
   description: "Walksnail Avatar Digital HD Mini 1S VTX Nano Camera kit"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "0e044559-16e2-4396-a87e-687d09093cb2"
@@ -1878,8 +2604,13 @@ flight_controllers: {
   name: "Walksnail Avatar Digital HD VTX Nano"
   weight_g: 6.8
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "983d667f-4882-4839-969d-39fc20a4e871"
   description: "Walksnail Avatar Digital HD VTX Nano Camera kit"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "b5229205-39c5-4c51-ac63-196c9437a499"
@@ -1888,8 +2619,13 @@ flight_controllers: {
   name: "Walksnail Avatar Digital HD VTX Micro"
   weight_g: 6.8
   processor: "Unknown"
+  gyro: "ICM42688P"
   internal_vtx_uuid: "f4d3f83a-df92-4423-970c-f59134625658"
   description: "Walksnail Avatar Digital HD VTX Micro Camera kit"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "d5b304f9-b621-440a-b246-dbb896ffe3a1"
@@ -1898,7 +2634,12 @@ flight_controllers: {
   name: "Sub250 OasisFly35 DC HD O4 Pro"
   weight_g: 170
   processor: "STM32F722"
+  gyro: "ICM42688P"
   description: "(IN Stock ) Sub250 OasisFly35 DC HD O4 Pro GPS Freestyle Quadcopter"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "489ef91c-2d33-4a8d-8715-fd739aea8fb5"
@@ -1907,7 +2648,12 @@ flight_controllers: {
   name: "Sub250 DollyFly25 V2 HD O4 Pro"
   weight_g: 88
   processor: "STM32F722"
+  gyro: "ICM42688P"
   description: "(IN Stock) Sub250 DollyFly25 V2 HD O4 Pro GPS 2.5-inch 4S CineWhoop"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "e4f6994d-71da-46d2-837a-66fbfa4d0b5c"
@@ -1916,18 +2662,28 @@ flight_controllers: {
   name: "Sub250 DollyFly16 1.6-inch HD O4 Pro"
   weight_g: 88
   processor: "STM32F411"
+  gyro: "ICM42688P"
   description: "(In Stock) Sub250 DollyFly16 1.6-inch HD O4 Pro 2S Whoop FPV Drone"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "2ad27a01-e9be-4228-84cb-1948bcd6476d"
   id: "redfox-a3-f722-35a-45a-aio-flight-2"
   manufacturer: "Sub250"
   name: "Redfox A3 F722 35A/45A AIO Flight"
+  weight_g: 8.7
   processor: "STM32F722"
+  gyro: "BMI270"
   internal_esc_uuid: "b66c1ad5-ad66-4a63-a2e3-1e5a1a17e764"
   description: "Redfox A3 F722 35A/45A AIO Flight Controller for DollyFly25"
-
-  weight_g: 8.7}
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
 flight_controllers: {
   uuid: "bcd628af-90fb-4b37-9286-77b6e6dbb430"
   id: "sub250-whoopfly16-rtf-combo"
@@ -1935,6 +2691,11 @@ flight_controllers: {
   name: "Sub250 Whoopfly16 RTF Combo"
   weight_g: 35.2
   processor: "STM32F411"
+  gyro: "BMI270"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
 }
 flight_controllers: {
   uuid: "39c42ccc-78bd-46ee-a5cd-f097f6365c59"
@@ -1943,5 +2704,94 @@ flight_controllers: {
   name: "Sub250 Whoopfly16 Ultra-light Analog 1s Mini"
   weight_g: 37.7
   processor: "STM32F411"
+  gyro: "BMI270"
   description: "Sub250 Whoopfly16 Ultra-light Analog 1s Mini Whoop 75mm FPV Drone A30"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flight-controllers.html"
+  }
+}
+flight_controllers: {
+  uuid: "01923019-3006-7001-8001-000000000001"
+  id: "speedybee-f405-v4-fc"
+  manufacturer: "SpeedyBee"
+  name: "SpeedyBee F405 V4 30x30 Flight Controller"
+  weight_g: 8.8
+  processor: "F405"
+  gyro: "ICM42688P"
+  description: "Feature-packed 30x30mm flight controller with onboard Bluetooth & Wi-Fi for wireless Betaflight tuning, 4-level battery LED indicator, and SD card blackbox slot."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.speedybee.com/speedybee-f405-v4-bls-55a-30x30-fc-esc-stack/"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.speedybee.com/f405-v4-55a-stack-download/"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/speedybee-f405-v4-bls-30x30-fc-esc-stack.html"
+  }
+}
+flight_controllers: {
+  uuid: "01923019-3006-7001-8001-000000000002"
+  id: "tmotor-pacer-f7-fc"
+  manufacturer: "T-Motor"
+  name: "T-Motor PACER F7 Flight Controller"
+  weight_g: 7.5
+  processor: "F722"
+  gyro: "MPU6000"
+  description: "Clean and durable 30x30 F7 flight controller featuring dual BECs (5V 2A / 10V 2A) and plug-and-play DJI HD digital port."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://store.tmotor.com/product/pacer-f7-flight-controller.html"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/t-motor-pacer-f7-flight-controller"
+  }
+}
+flight_controllers: {
+  uuid: "01923019-3006-7001-8001-000000000003"
+  id: "holybro-kakute-h7-v2"
+  manufacturer: "Holybro"
+  name: "Holybro Kakute H7 V2 Flight Controller"
+  weight_g: 8
+  processor: "H743"
+  gyro: "ICM42688P"
+  description: "High-performance STM32H743 FC running at 480MHz, with 1MB RAM, 128MB flash blackbox, dual camera inputs, and integrated barometer."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://holybro.com/products/kakute-h7-v2"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://holybro.com/pages/manuals"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/holybro-kakute-h7-v2-flight-controller.html"
+  }
+}
+flight_controllers: {
+  uuid: "01923019-3006-7001-8001-000000000004"
+  id: "betafpv-f4-1s-12a-aio-v3"
+  manufacturer: "BETAFPV"
+  name: "BETAFPV F4 1S 12A AIO Brushless FC V3"
+  weight_g: 4.2
+  processor: "F411"
+  gyro: "BMI270"
+  description: "All-In-One flight controller designed for 1S whoop and toothpick quads, featuring integrated 12A continuous Bluejay ESC and ExpressLRS SPI receiver."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://support.betafpv.com"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
+  }
 }

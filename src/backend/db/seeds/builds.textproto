@@ -1,18 +1,131 @@
-builds: {
+builds:  {
   uuid:  "01923019-2131-4192-3192-391294812399"
   id:  "bando-basher-5-inch"
   name:  "Bando Basher 5 inch"
-  description:  "A durable 5 inch quad designed for hitting concrete bandos."
+  description:  "A durable 5-inch freestyle quadcopter built to withstand concrete hits in abandoned buildings, featuring the TBS Source One V5 frame, T-Motor F60 PRO V 1950KV motors, SpeedyBee F405 V4 stack, Caddx Ratel 2 camera, and CNHL 1500mAh 6S LiPo."
+  frame_uuid:  "01923019-3008-7001-8001-000000000001"
+  motor_uuid:  "01923019-3001-7001-8001-000000000001"
+  battery_uuid:  "01923019-3010-7001-8001-000000000003"
+  flight_controller_uuid:  "01923019-3006-7001-8001-000000000001"
+  esc_uuids:  "01923019-3007-7001-8001-000000000001"
+  receiver_uuids:  "01923019-3003-7001-8001-000000000001"
+  antenna_uuids:  "01923019-3009-7001-8001-000000000001"
+  propeller_uuid:  "bac19aec-99fc-43d4-b96d-d1feb30e6b6e"
+  camera_uuids:  "01923019-3005-7001-8001-000000000001"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://rotorriot.com/products/cl1-v2-budget-freestyle-diy-fpv-drone-build-kit"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://github.com/tbs-trappy/source_one"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/tbs-source-one-v5-5-frame.html"
+  }
 }
-builds: {
+builds:  {
   uuid:  "01923019-2131-4192-3192-391294812398"
   id:  "long-range-explorer"
-  name:  "Long Range Explorer"
-  description:  "7 inch long range cruiser for mountain surfing."
+  name:  "Long Range Explorer 7 inch"
+  description:  "A dedicated 7-inch mountain surfer and long-range cruiser engineered for 30+ minute endurance flights with Li-ion pack, TBS Crossfire telemetry, Holybro Kakute H7 flight controller, and Gemfan 7.5-inch cinelifter props."
+  frame_uuid:  "665415e7-251a-4bf4-acd2-643ea5eca28f"
+  motor_uuid:  "e82df2cb-428c-4f11-866b-5b09861c1a0c"
+  battery_uuid:  "01923019-3010-7001-8001-000000000007"
+  flight_controller_uuid:  "01923019-3006-7001-8001-000000000003"
+  esc_uuids:  "01923019-3007-7001-8001-000000000004"
+  receiver_uuids:  "01923019-3003-7001-8001-000000000004"
+  antenna_uuids:  "01923019-3009-7001-8001-000000000004"
+  propeller_uuid:  "01923019-3002-7001-8001-000000000006"
+  camera_uuids:  "01923019-3005-7001-8001-000000000006"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://flywoo.net/products/explorer-lr-4-v2-frame-kit"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/tbs-crossfire-nano-rx-special-edition.html"
+  }
 }
-builds: {
+builds:  {
   uuid:  "01923019-2131-4192-3192-391294812397"
   id:  "ultralight-toothpick"
-  name:  "Ultralight Toothpick"
-  description:  "Sub-250g 3-inch toothpick for park flying."
+  name:  "Ultralight Toothpick 3 inch"
+  description:  "Sub-250g 3-inch toothpick quadcopter for ultra-responsive park flying, featuring FPVCycle TP3 frame, Flywoo ROBO 1202.5 motors, BETAFPV AIO F4 FC, Caddx Ant nano camera, and HQProp 3x3x3 props."
+  frame_uuid:  "0e04d336-1756-4612-88a9-a617635b59d4"
+  motor_uuid:  "01923019-3001-7001-8001-000000000009"
+  battery_uuid:  "01923019-3010-7001-8001-000000000004"
+  flight_controller_uuid:  "01923019-3006-7001-8001-000000000004"
+  esc_uuids:  "01923019-3007-7001-8001-000000000004"
+  receiver_uuids:  "01923019-3003-7001-8001-000000000002"
+  antenna_uuids:  "01923019-3009-7001-8001-000000000002"
+  propeller_uuid:  "01923019-3002-7001-8001-000000000007"
+  camera_uuids:  "01923019-3005-7001-8001-000000000002"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
+  }
+}
+builds:  {
+  uuid:  "01923019-2131-4192-3192-391294812396"
+  id:  "cinewhoop-pavo20-pro"
+  name:  "CineWhoop Pavo20 Pro"
+  description:  "High-definition 2-inch cinewhoop specifically designed for butter-smooth cinematic indoor recording and proximity filming with DJI O3 Air Unit."
+  frame_uuid:  "10a092c4-55c8-43af-b125-998aa30b7d60"
+  motor_uuid:  "01923019-3001-7001-8001-000000000008"
+  battery_uuid:  "01923019-3010-7001-8001-000000000006"
+  flight_controller_uuid:  "01923019-3006-7001-8001-000000000004"
+  esc_uuids:  "01923019-3007-7001-8001-000000000004"
+  receiver_uuids:  "01923019-3003-7001-8001-000000000006"
+  antenna_uuids:  "01923019-3009-7001-8001-000000000002"
+  propeller_uuid:  "a872651b-74e4-473e-9631-0b1c3280e217"
+  camera_uuids:  "01923019-3005-7001-8001-000000000006"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/pavo20-pro-brushless-whoop-frame"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://support.betafpv.com"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://betafpv.com/products/pavo20-pro-brushless-whoop-frame"
+  }
+}
+builds:  {
+  uuid:  "01923019-2131-4192-3192-391294812395"
+  id:  "pro-freestyle-5-inch"
+  name:  "Pro Freestyle 5 inch"
+  description:  "Top-tier pro 6S freestyle build on the SpeedyBee Mario 5 DC frame, powered by T-Motor PACER F7 FC, T-Motor F55A PRO II ESC, T-Motor F60 PRO V 2020KV motors, Walksnail Avatar HD Pro camera system, and Ethix S3 Watermelon props."
+  frame_uuid:  "01923019-3008-7001-8001-000000000002"
+  motor_uuid:  "01923019-3001-7001-8001-000000000002"
+  battery_uuid:  "01923019-3010-7001-8001-000000000001"
+  flight_controller_uuid:  "01923019-3006-7001-8001-000000000002"
+  esc_uuids:  "01923019-3007-7001-8001-000000000002"
+  receiver_uuids:  "01923019-3003-7001-8001-000000000003"
+  antenna_uuids:  "01923019-3009-7001-8001-000000000001"
+  propeller_uuid:  "01923019-3002-7001-8001-000000000001"
+  camera_uuids:  "01923019-3005-7001-8001-000000000007"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.speedybee.com/speedybee-mario-5-frame/"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/speedybee-mario-5-dc-fpv-freestyle-frame-kit"
+  }
 }
