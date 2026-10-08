@@ -1,0 +1,660 @@
+package main
+
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
+	"net/http"
+	"strings"
+	"testing"
+
+	"connectrpc.com/connect"
+	"sigs.k8s.io/yaml"
+
+	pb "quadsmith/api/gen/quadsmith"
+	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+)
+
+// --- OUTPUT FORMAT TESTS ---
+
+func TestList_YAML(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			return connect.NewResponse(&pb.ListMotorsResponse{
+				Motors: []*pb.Motor{
+					{Id: "motor-alpha", Name: "Alpha Motor", Kv: 19500},
+					{Id: "motor-beta", Name: "Beta Motor", Kv: 22000},
+				},
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--yaml"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var results []map[string]interface{}
+	if err := yaml.Unmarshal(outBuf.Bytes(), &results); err != nil {
+		t.Fatalf("failed to unmarshal YAML output: %v\nOutput was:\n%s", err, outBuf.String())
+	}
+	if len(results) != 2 {
+		t.Fatalf("expected 2 items, got %d", len(results))
+	}
+	if results[0]["id"] != "motor-alpha" || results[1]["id"] != "motor-beta" {
+		t.Errorf("unexpected results: %+v", results)
+	}
+}
+
+func TestList_EmptySlice_JSON(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			return connect.NewResponse(&pb.ListMotorsResponse{
+				Motors: []*pb.Motor{},
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--json"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	trimmed := strings.TrimSpace(outBuf.String())
+	if trimmed != "[]" {
+		t.Errorf("expected empty JSON array '[]', got %q", trimmed)
+	}
+}
+
+func TestList_EmptySlice_YAML(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			return connect.NewResponse(&pb.ListMotorsResponse{
+				Motors: []*pb.Motor{},
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "--yaml"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	trimmed := strings.TrimSpace(outBuf.String())
+	if trimmed != "[]" {
+		t.Errorf("expected empty YAML array '[]', got %q", trimmed)
+	}
+}
+
+func TestList_EmptySlice_Table(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			return connect.NewResponse(&pb.ListMotorsResponse{
+				Motors: []*pb.Motor{},
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	trimmed := strings.TrimSpace(outBuf.String())
+	if trimmed != "No records found." {
+		t.Errorf("expected 'No records found.', got %q", trimmed)
+	}
+}
+
+func TestGet_JSON(t *testing.T) {
+	mock := &mockMotorService{
+		getMotorFunc: func(ctx context.Context, req *connect.Request[pb.GetMotorRequest]) (*connect.Response[pb.Motor], error) {
+			if req.Msg.Id == "motor-1" {
+				return connect.NewResponse(&pb.Motor{
+					Id:   "motor-1",
+					Name: "Test Motor 1",
+					Kv:   25000,
+				}), nil
+			}
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("not found"))
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "get", "motor-1", "--json"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var res map[string]interface{}
+	if err := json.Unmarshal(outBuf.Bytes(), &res); err != nil {
+		t.Fatalf("failed to unmarshal JSON: %v", err)
+	}
+	if res["id"] != "motor-1" || res["name"] != "Test Motor 1" {
+		t.Errorf("unexpected output: %+v", res)
+	}
+}
+
+func TestGet_YAML(t *testing.T) {
+	mock := &mockMotorService{
+		getMotorFunc: func(ctx context.Context, req *connect.Request[pb.GetMotorRequest]) (*connect.Response[pb.Motor], error) {
+			return connect.NewResponse(&pb.Motor{
+				Id:   "motor-yaml",
+				Name: "YAML Motor",
+				Kv:   18000,
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "get", "motor-yaml", "--yaml"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var res map[string]interface{}
+	if err := yaml.Unmarshal(outBuf.Bytes(), &res); err != nil {
+		t.Fatalf("failed to unmarshal YAML: %v", err)
+	}
+	if res["id"] != "motor-yaml" {
+		t.Errorf("expected motor-yaml, got: %+v", res)
+	}
+}
+
+func TestGet_Table(t *testing.T) {
+	mock := &mockMotorService{
+		getMotorFunc: func(ctx context.Context, req *connect.Request[pb.GetMotorRequest]) (*connect.Response[pb.Motor], error) {
+			return connect.NewResponse(&pb.Motor{
+				Id:   "motor-table",
+				Name: "Table Motor",
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "get", "motor-table"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	output := outBuf.String()
+	if !strings.Contains(output, "motor-table") || !strings.Contains(output, "Table Motor") {
+		t.Errorf("expected table output to contain motor-table and Table Motor, got:\n%s", output)
+	}
+}
+
+// --- VALUE FORMATTING TESTS ---
+
+func TestFormatValue(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    interface{}
+		expected string
+	}{
+		{"nil", nil, "-"},
+		{"empty string", "", "-"},
+		{"empty slice", []interface{}{}, "-"},
+		{"non-empty string", "test", "test"},
+		{"integer", 42, "42"},
+		{"float", 3.14, "3.14"},
+		{"boolean", true, "true"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := formatValue(tt.input)
+			if got != tt.expected {
+				t.Errorf("formatValue(%v) = %q, want %q", tt.input, got, tt.expected)
+			}
+		})
+	}
+}
+
+// --- COMMAND ALIASES AND SUBCOMMAND TESTS ---
+
+func TestCommandAliases(t *testing.T) {
+	rootCmd := newRootCmd()
+
+	tests := []struct {
+		alias        string
+		expectedRoot string
+	}{
+		{"fc", "flight-controllers"},
+		{"fcs", "flight-controllers"},
+		{"flightcontrollers", "flight-controllers"},
+		{"vtx", "video-transmitters"},
+		{"vtxs", "video-transmitters"},
+		{"videotransmitters", "video-transmitters"},
+		{"esc", "electronic-speed-controllers"},
+		{"escs", "electronic-speed-controllers"},
+		{"rx", "receivers"},
+		{"rxs", "receivers"},
+		{"gps", "gps-receivers"},
+		{"gpsreceivers", "gps-receivers"},
+		{"motors", "motors"},
+		{"frames", "frames"},
+		{"builds", "builds"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.alias, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{tt.alias})
+			if err != nil {
+				t.Fatalf("failed to find command for alias %q: %v", tt.alias, err)
+			}
+			if cmd.Name() != tt.expectedRoot {
+				t.Errorf("alias %q resolved to %q, want %q", tt.alias, cmd.Name(), tt.expectedRoot)
+			}
+		})
+	}
+}
+
+func TestDomainSubcommands(t *testing.T) {
+	rootCmd := newRootCmd()
+
+	domains := []string{
+		"antennas",
+		"batteries",
+		"builds",
+		"cameras",
+		"electronic-speed-controllers",
+		"flight-controllers",
+		"frames",
+		"gps-receivers",
+		"motors",
+		"propellers",
+		"receivers",
+		"video-transmitters",
+	}
+
+	for _, d := range domains {
+		t.Run(d, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{d})
+			if err != nil {
+				t.Fatalf("could not find domain %s: %v", d, err)
+			}
+
+			subcommands := make(map[string]bool)
+			for _, sub := range cmd.Commands() {
+				subcommands[sub.Name()] = true
+			}
+
+			if !subcommands["list"] {
+				t.Errorf("domain %s missing 'list' subcommand", d)
+			}
+			if !subcommands["get"] {
+				t.Errorf("domain %s missing 'get' subcommand", d)
+			}
+		})
+	}
+}
+
+// --- PROTOBUF REFLECTION & COLUMNS TESTS ---
+
+func TestGetColumns(t *testing.T) {
+	motorCols := GetColumns(&pb.Motor{})
+	if len(motorCols) == 0 {
+		t.Fatal("expected non-empty columns for Motor")
+	}
+
+	colMap := make(map[string]bool)
+	for _, c := range motorCols {
+		colMap[c] = true
+		if strings.HasPrefix(c, "XXX_") {
+			t.Errorf("found unexported protobuf field in columns: %s", c)
+		}
+	}
+
+	for _, expected := range []string{"id", "name", "kv", "weight_g"} {
+		if !colMap[expected] {
+			t.Errorf("expected Motor columns to contain %q, got: %v", expected, motorCols)
+		}
+	}
+
+	frameCols := GetColumns(&pb.Frame{})
+	frameMap := make(map[string]bool)
+	for _, c := range frameCols {
+		frameMap[c] = true
+	}
+	for _, expected := range []string{"id", "name", "wheelbase_mm"} {
+		if !frameMap[expected] {
+			t.Errorf("expected Frame columns to contain %q, got: %v", expected, frameCols)
+		}
+	}
+}
+
+func TestGetDefaultColumns(t *testing.T) {
+	defCols := GetDefaultColumns(&pb.Motor{})
+	if len(defCols) == 0 {
+		t.Fatal("expected non-empty default columns for Motor")
+	}
+
+	colMap := make(map[string]bool)
+	for _, c := range defCols {
+		colMap[c] = true
+	}
+
+	// manufacturer, name, and kv should be present in default columns
+	if !colMap["manufacturer"] || !colMap["name"] || !colMap["kv"] {
+		t.Errorf("expected 'manufacturer', 'name', and 'kv' in default columns, got: %v", defCols)
+	}
+}
+
+func TestList_CustomColumns(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			return connect.NewResponse(&pb.ListMotorsResponse{
+				Motors: []*pb.Motor{
+					{Id: "m1", Name: "Motor One", Kv: 19000, WeightG: 3.5},
+				},
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"motors", "list", "-c", "id,kv"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	lines := strings.Split(strings.TrimSpace(outBuf.String()), "\n")
+	if len(lines) < 2 {
+		t.Fatalf("expected header and row, got: %v", lines)
+	}
+
+	header := lines[0]
+	if !strings.Contains(header, "ID") || !strings.Contains(header, "KV") {
+		t.Errorf("expected header to contain ID and KV, got: %s", header)
+	}
+	if strings.Contains(header, "WEIGHT_G") {
+		t.Errorf("header should not contain unrequested column WEIGHT_G, got: %s", header)
+	}
+}
+
+// --- SHELL AUTOCOMPLETION TESTS ---
+
+func TestCompletion_ColumnFlag(t *testing.T) {
+	rootCmd := newRootCmd()
+	cmd, _, err := rootCmd.Find([]string{"motors", "list"})
+	if err != nil {
+		t.Fatalf("failed to find motors list: %v", err)
+	}
+
+	fn, ok := cmd.GetFlagCompletionFunc("column")
+	if !ok || fn == nil {
+		t.Fatal("expected flag completion function for --column")
+	}
+
+	// Completing "k" should suggest "kv"
+	completions, _ := fn(cmd, nil, "k")
+	foundKv := false
+	for _, c := range completions {
+		if c == "kv" {
+			foundKv = true
+			break
+		}
+	}
+	if !foundKv {
+		t.Errorf("expected 'kv' in column completions for 'k', got: %v", completions)
+	}
+
+	// When "id" is already specified, it should not suggest "id" again
+	_ = cmd.Flags().Set("column", "id")
+	completions, _ = fn(cmd, nil, "i")
+	for _, c := range completions {
+		if c == "id" {
+			t.Errorf("'id' was already selected and should not be suggested again: %v", completions)
+		}
+	}
+}
+
+func TestCompletion_SortFlag(t *testing.T) {
+	rootCmd := newRootCmd()
+	cmd, _, err := rootCmd.Find([]string{"motors", "list"})
+	if err != nil {
+		t.Fatalf("failed to find motors list: %v", err)
+	}
+
+	fn, ok := cmd.GetFlagCompletionFunc("sort")
+	if !ok || fn == nil {
+		t.Fatal("expected flag completion function for --sort")
+	}
+
+	// Completing empty string should suggest ascending and descending options
+	completions, _ := fn(cmd, nil, "")
+	foundAsc := false
+	foundDesc := false
+	for _, c := range completions {
+		if c == "kv" {
+			foundAsc = true
+		}
+		if c == "^kv" {
+			foundDesc = true
+		}
+	}
+	if !foundAsc || !foundDesc {
+		t.Errorf("expected both 'kv' and '^kv' in sort completions, got: %v", completions)
+	}
+
+	// Completing "^k" should only suggest descending
+	completions, _ = fn(cmd, nil, "^k")
+	if len(completions) == 0 || completions[0] != "^kv" {
+		t.Errorf("expected ['^kv'] for '^k', got: %v", completions)
+	}
+}
+
+func TestCompletion_FilterFlag(t *testing.T) {
+	rootCmd := newRootCmd()
+	cmd, _, err := rootCmd.Find([]string{"motors", "list"})
+	if err != nil {
+		t.Fatalf("failed to find motors list: %v", err)
+	}
+
+	fn, ok := cmd.GetFlagCompletionFunc("filter")
+	if !ok || fn == nil {
+		t.Fatal("expected flag completion function for --filter")
+	}
+
+	// Completing "weight_g > 10 && k" should complete to "weight_g > 10 && kv"
+	completions, _ := fn(cmd, nil, "weight_g > 10 && k")
+	found := false
+	for _, c := range completions {
+		if c == "weight_g > 10 && kv" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Errorf("expected 'weight_g > 10 && kv' in filter completions, got: %v", completions)
+	}
+}
+
+func TestCompletion_GetValidArgs(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			return connect.NewResponse(&pb.ListMotorsResponse{
+				Motors: []*pb.Motor{
+					{Id: "m-first"},
+					{Id: "m-second"},
+				},
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
+	rootCmd := newRootCmd()
+	cmd, _, err := rootCmd.Find([]string{"motors", "get"})
+	if err != nil {
+		t.Fatalf("failed to find motors get: %v", err)
+	}
+
+	if cmd.ValidArgsFunction == nil {
+		t.Fatal("expected ValidArgsFunction on motors get")
+	}
+
+	comps, directive := cmd.ValidArgsFunction(cmd, nil, "")
+	if len(comps) != 2 || comps[0] != "m-first" || comps[1] != "m-second" {
+		t.Errorf("unexpected completion results: %v, directive: %v", comps, directive)
+	}
+
+	// If an arg is already provided, it should return nil
+	comps, _ = cmd.ValidArgsFunction(cmd, []string{"m-first"}, "")
+	if len(comps) != 0 {
+		t.Errorf("expected no completions when arg is already provided, got: %v", comps)
+	}
+}
+
+// --- EVALUATE COMMAND TESTS ---
+
+func TestEvaluate_Success(t *testing.T) {
+	mockBuild := &mockBuildService{
+		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {
+			if req.Msg.Id == "build-1" {
+				return connect.NewResponse(&pb.Build{
+					Id:   "build-1",
+					Name: "Freestyle 5 inch",
+				}), nil
+			}
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("build not found"))
+		},
+	}
+
+	mockEval := &mockEvaluatorService{
+		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+			if req.Msg.Build.Id != "build-1" {
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("mismatched build"))
+			}
+			return connect.NewResponse(&pb.EvaluateBuildResponse{
+				TotalWeightG:           350.5,
+				HoverThrottlePercent:   28.4,
+				ThrustToWeightRatio:    7.2,
+				EstimatedFlightTimeMin: 6.5,
+				Warnings:               []string{"High KV for battery voltage"},
+			}), nil
+		},
+	}
+
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"evaluate", "build-1", "--payload", "30", "--json"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var res map[string]interface{}
+	if err := json.Unmarshal(outBuf.Bytes(), &res); err != nil {
+		t.Fatalf("failed to unmarshal JSON: %v\nOutput: %s", err, outBuf.String())
+	}
+
+	if res["warnings"] == nil {
+		t.Errorf("expected warnings in output: %+v", res)
+	}
+}
+
+func TestEvaluate_MissingArg(t *testing.T) {
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"evaluate"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error when evaluate is called without build ID")
+	}
+
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "accepts 1 arg(s), received 0") {
+		t.Errorf("expected 'accepts 1 arg(s), received 0', got:\n%s", combined)
+	}
+}
+
+func TestEvaluate_BuildNotFound(t *testing.T) {
+	mockBuild := &mockBuildService{
+		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("build does not exist"))
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
+	})
+
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"evaluate", "missing-build"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error for non-existent build")
+	}
+
+	if !strings.Contains(err.Error(), "failed to fetch build") {
+		t.Errorf("expected 'failed to fetch build' error, got: %v", err)
+	}
+}

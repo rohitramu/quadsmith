@@ -2,10 +2,16 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
 	"testing"
+
+	"connectrpc.com/connect"
+	pb "quadsmith/api/gen/quadsmith"
+	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 )
 
 func TestPrintTableTo_SliceWithRowNumbers(t *testing.T) {
@@ -210,6 +216,28 @@ func TestList_LimitNegative(t *testing.T) {
 }
 
 func TestList_LimitApplied(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			motors := []*pb.Motor{
+				{Id: "m1", Name: "Motor 1", Kv: 19000},
+				{Id: "m2", Name: "Motor 2", Kv: 21000},
+				{Id: "m3", Name: "Motor 3", Kv: 23000},
+				{Id: "m4", Name: "Motor 4", Kv: 25000},
+				{Id: "m5", Name: "Motor 5", Kv: 27000},
+			}
+			limit := int(req.Msg.PageSize)
+			if limit > len(motors) {
+				limit = len(motors)
+			}
+			return connect.NewResponse(&pb.ListMotorsResponse{
+				Motors: motors[:limit],
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
@@ -228,6 +256,26 @@ func TestList_LimitApplied(t *testing.T) {
 }
 
 func TestList_LimitJSON(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			motors := []*pb.Motor{
+				{Id: "m1", Name: "Motor 1", Kv: 19000},
+				{Id: "m2", Name: "Motor 2", Kv: 21000},
+				{Id: "m3", Name: "Motor 3", Kv: 23000},
+			}
+			limit := int(req.Msg.PageSize)
+			if limit > len(motors) {
+				limit = len(motors)
+			}
+			return connect.NewResponse(&pb.ListMotorsResponse{
+				Motors: motors[:limit],
+			}), nil
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
@@ -286,6 +334,35 @@ func TestList_RemovedPageSizeFlag(t *testing.T) {
 }
 
 func TestList_AutoPaging(t *testing.T) {
+	mock := &mockMotorService{
+		listMotorsFunc: func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error) {
+			if req.Msg.PageToken == "" {
+				var motors []*pb.Motor
+				for i := 1; i <= 100; i++ {
+					motors = append(motors, &pb.Motor{Id: fmt.Sprintf("m%d", i), Name: fmt.Sprintf("Motor %d", i)})
+				}
+				return connect.NewResponse(&pb.ListMotorsResponse{
+					Motors:        motors,
+					NextPageToken: "page-2",
+				}), nil
+			}
+			if req.Msg.PageToken == "page-2" {
+				var motors []*pb.Motor
+				for i := 101; i <= 120; i++ {
+					motors = append(motors, &pb.Motor{Id: fmt.Sprintf("m%d", i), Name: fmt.Sprintf("Motor %d", i)})
+				}
+				return connect.NewResponse(&pb.ListMotorsResponse{
+					Motors:        motors,
+					NextPageToken: "",
+				}), nil
+			}
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unexpected token: %s", req.Msg.PageToken))
+		},
+	}
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+	})
+
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
@@ -300,9 +377,9 @@ func TestList_AutoPaging(t *testing.T) {
 	if err := json.Unmarshal(outBuf.Bytes(), &results); err != nil {
 		t.Fatalf("failed to unmarshal JSON: %v\nOutput was:\n%s", err, outBuf.String())
 	}
-	// Total motors in DB is > 100 (143), confirming it paged across 100-item page size
-	if len(results) <= 100 {
-		t.Fatalf("expected > 100 items from auto-paging, got %d", len(results))
+	// Total motors is 120, confirming it paged across 100-item page size
+	if len(results) != 120 {
+		t.Fatalf("expected 120 items from auto-paging, got %d", len(results))
 	}
 }
 
