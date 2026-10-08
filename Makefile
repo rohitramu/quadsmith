@@ -1,4 +1,4 @@
-.PHONY: all build sandbox generate clean test test-e2e vendor tool breaking-change test-breaking
+.PHONY: all build sandbox generate clean test test-e2e vendor tool breaking-change test-breaking warn-breaking
 
 export GOWORK := $(shell pwd)/src/go.work
 
@@ -33,10 +33,27 @@ build: generate
 	@echo "--- Generating shell completions to bin/ ---"
 	@./bin/qs completion bash > bin/completion.bash || true
 	@./bin/qs completion zsh > bin/completion.zsh || true
+	@$(MAKE) --no-print-directory warn-breaking
 
 sandbox: build
 	@echo "--- Starting Quadsmith Sandbox (Docker) ---"
 	@./test/start_sandbox.sh $(PORT) || if [ $$? -eq 130 ]; then exit 0; else exit $$?; fi
+
+warn-breaking:
+	@if [ ! -s .tmp/breaking_warning.log ]; then \
+		rm -f .tmp/breaking_warning.log; \
+		cd src/backend/api && go test -mod=vendor -count=1 ./internal/regression/... > /dev/null 2>&1 || true; \
+	fi
+	@if [ -s .tmp/breaking_warning.log ]; then \
+		echo ""; \
+		echo "================================================================================"; \
+		echo "⚠️  WARNING: BREAKING CHANGES DETECTED"; \
+		echo "================================================================================"; \
+		cat .tmp/breaking_warning.log; \
+		echo "================================================================================"; \
+		echo ""; \
+		rm -f .tmp/breaking_warning.log; \
+	fi
 
 generate:
 	@echo "--- Installing protoc plugins from vendor ---"
@@ -49,6 +66,7 @@ generate:
 	@go build -mod=vendor -o bin/protoc-gen-store ./src/backend/api/cmd/protoc-gen-store
 	@go build -mod=vendor -o bin/protoc-gen-server ./src/backend/api/cmd/protoc-gen-server
 	@echo "--- Generating Protobuf & ConnectRPC Code ---"
+	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@for f in src/backend/api/gen/quadsmith/_*.pb.go; do [ -f "$$f" ] && mv "$$f" "$$(echo $$f | sed 's|/_|/|')"; done || true
 	@gofmt -s -w src/backend/api/gen/
@@ -60,15 +78,7 @@ test: generate
 	@echo "--- Running Go Tests ---"
 	@cd src/backend/api && go test -mod=vendor -count=1 ./...
 	@cd src/frontend/cli && go test -mod=vendor ./...
-	@if [ -s .tmp/breaking_warning.log ]; then \
-		echo ""; \
-		echo "================================================================================"; \
-		echo "⚠️  WARNING: BREAKING CHANGES DETECTED"; \
-		echo "================================================================================"; \
-		cat .tmp/breaking_warning.log; \
-		echo "================================================================================"; \
-		echo ""; \
-	fi
+	@$(MAKE) --no-print-directory warn-breaking
 	@echo "--- Running Web UI Tests ---"
 	@cd src/frontend/web && npm test
 	@rm -f .tmp/breaking_warning.log
