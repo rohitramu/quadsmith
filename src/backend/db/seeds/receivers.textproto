@@ -1,2041 +1,2041 @@
-receivers:  {
-
-  uuid:  "b0cf2152-68ff-41ac-9bc5-c7b6d34f2543"
-  id:  "tbs-crossfire-nano-rx"
-  manufacturer:  "Team Black Sheep"
-  name:  "TBS Crossfire Nano RX"
-  weight_g:  0.5
-  protocol:  "TBS Crossfire (CRSF)"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "TBS TBS Crossfire Nano RX TBS Crossfire (CRSF) receiver operating at 2400 MHz with telemetry support, weighing 0.50g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
-    url:  "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/iflight-nazgul-xl10-v6-6s-analog-10-inch-long-range-drone-2-5w-vtx-tbs-crossfire-nano-rx"
-  }
-}
-receivers:  {
-
-  uuid:  "632437ac-1938-4574-85eb-b9b2aeb000ff"
-  id:  "tbs-tracer-nano-rx"
-  manufacturer:  "Team Black Sheep"
-  name:  "TBS Tracer Nano RX"
-  weight_g:  3.24
-  protocol:  "TBS Crossfire (CRSF)"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "TBS TBS Tracer Nano RX TBS Crossfire (CRSF) receiver operating at 2400 MHz with telemetry support, weighing 3.24g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
-    url:  "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/team-blacksheep-tbs-tracer-nano-rx"
-  }
-}
-receivers:  {
-
-  uuid:  "d1a50985-ef0b-4357-b944-7367b21e24f5"
-  id:  "hglrc-hermes-expresslrs-900mhz"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Hermes ExpressLRS 900MHz"
-  weight_g:  1.8
-  protocol:  "ExpressLRS (ELRS)"
-  frequency_band_mhz:  900
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000014"
-  description:  "HGLRC HGLRC Hermes ExpressLRS 900MHz ExpressLRS (ELRS) receiver operating at 900 MHz with telemetry support, weighing 1.80g."
-}
-receivers:  {
-
-  uuid:  "e181ef41-1ef6-4ae0-8b4f-cb3976f0dffa"
-  id:  "superx-elrs-gemini-xross-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "SuperX ELRS Gemini Xross Receiver"
-  weight_g:  0.82
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV SuperX ELRS Gemini Xross Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/superx-elrs-gemini-xross-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/betafpv-superx-nanoo-dual-lr1121-elrs-gemini-xross-receiver-2-4ghz-915mhz"
-  }
-}
-receivers:  {
-
-  uuid:  "d850dcfd-c847-4f66-bf3a-146d2e40a48c"
-  id:  "micro-tx-v2-module"
-  manufacturer:  "BETAFPV"
-  name:  "Micro TX V2 Module"
-  weight_g:  28
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV Micro TX V2 Module ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 28.00g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/micro-tx-v2-module"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/betafpv-elrs-micro-tx-module-915mhz"
-  }
-}
-receivers:  {
-
-  uuid:  "42c78e9d-738d-427a-903c-67d36569f68e"
-  id:  "nano-tx-v2-module"
-  manufacturer:  "BETAFPV"
-  name:  "Nano TX V2 Module"
-  weight_g:  28
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV Nano TX V2 Module ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 28.00g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/nano-tx-v2-module"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/betafpv-elrs-nano-tx-v2-module-915mhz-copy"
-  }
-}
-receivers:  {
-
-  uuid:  "d015fe96-1726-419a-b54d-d808f93aa8bc"
-  id:  "superp-14ch-diversity-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "SuperP 14CH Diversity Receiver"
-  weight_g:  1.1
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV SuperP 14CH Diversity Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 1.10g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/superp-14ch-diversity-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "b64baa12-789b-467f-a52a-f2d42cefa06c"
-  id:  "superd-elrs-diversity-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "SuperD ELRS Diversity Receiver"
-  weight_g:  1.1
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV SuperD ELRS Diversity Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 1.10g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/superd-elrs-2-4g-diversity-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/betafpv-superd-elrs-diversity-receiver-2-4ghz"
-  }
-}
-receivers:  {
-
-  uuid:  "4c6df08a-008d-46bb-b474-42517b276c5c"
-  id:  "elrs-micro-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Micro Receiver"
-  weight_g:  0.7
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV ELRS Micro Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/elrs-micro-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/betafpv-elrs-micro-tx-module-915mhz"
-  }
-}
-receivers:  {
-
-  uuid:  "3a485ce2-9a9c-4848-babb-99cd2251471a"
-  id:  "ac900-dual-mode-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "AC900 Dual Mode Receiver"
-  weight_g:  0.82
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "AC900 Dual Mode Receiver (FrSky & FUTABA)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/x-boss-ac900-dual-mode-receiver-frsky-rx-futaba-rx"
-  }
-}
-receivers:  {
-
-  uuid:  "6a220766-0b18-414c-98b3-430901bd3a8e"
-  id:  "frsky-xm-sbus-mini-receiver"
-  manufacturer:  "BETAFPV"
-  name:  "FrSky XM+ SBUS Mini Receiver"
-  weight_g:  0.82
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "FrSky XM+ SBUS Mini Receiver (Repair Component)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/frsky-xm-sbus-mini-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "5963378e-db01-4d3c-ab2f-2622fc54b3cb"
-  id:  "dsmx-receiver-for-micro-drone"
-  manufacturer:  "BETAFPV"
-  name:  "DSMX Receiver for Micro Drone"
-  weight_g:  0.82
-  protocol:  "DSMX"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV DSMX Receiver for Micro Drone DSMX receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/micro-dsmx-receiver-for-brushless-drone"
-  }
-}
-receivers:  {
-
-  uuid:  "24a84c85-1183-45ce-9f6d-ec79835e657d"
-  id:  "darwinfpv-elrs-2-4g-nano-receiver"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV  ELRS 2.4G Nano Receiver"
-  weight_g:  3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV DarwinFPV  ELRS 2.4G Nano Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 3.00g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-2-4g-100mw-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "2bfab705-3ba5-4669-96bc-fb26813a9f54"
-  id:  "darwinfpv-foldape4-4-inch-folding-long-2"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV FoldApe4 4 Inch Folding Long"
-  weight_g:  250
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV FoldApe4 4 Inch Folding Long Range  RTF Kit"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-foldape4-4-inch-folding-long-range-rtf-kit"
-  }
-}
-receivers:  {
-
-  uuid:  "10b536a5-3800-41c2-818d-7523699b725a"
-  id:  "darwinfpv-x9-9-long-range-fpv-drone"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV X9 9 Long Range FPV Drone"
-  weight_g:  39
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV DarwinFPV X9 9 Long Range FPV Drone ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 39.00g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-x9-9-long-range-fpv-drone"
-  }
-}
-receivers:  {
-
-  uuid:  "d48defd1-3337-4219-9312-714094110990"
-  id:  "bayckrc-elrs-2-4g-nano-receiver"
-  manufacturer:  "DarwinFPV"
-  name:  "BAYCKRC ELRS 2.4G Nano Receiver"
-  weight_g:  1.6
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV BAYCKRC ELRS 2.4G Nano Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 1.60g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-2-4g-elrs-nano-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "b2b5b4ce-1edd-4be7-8c45-513616e93c3d"
-  id:  "hummingbird-v4-1-complete-fly-repair"
-  manufacturer:  "NewBeeDrone"
-  name:  "Hummingbird V4.1 Complete Fly & Repair"
-  weight_g:  4.57
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Hummingbird V4.1 Complete Fly & Repair Bundle"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/hummingbird-v4-1-complete-starter-bundle"
-  }
-}
-receivers:  {
-
-  uuid:  "2451cb66-17dd-43cc-92ad-e3367e366a74"
-  id:  "newbeedrone-acrobee75-blv5-bnf-elrs2-4g-2s"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone AcroBee75 BLV5 BNF ELRS2.4G 2S"
-  weight_g:  36.4
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone AcroBee75 BLV5 BNF ELRS2.4G 2S - The Ultimate Outdoor Whoop"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-acrobee75-blv5-bnf-elrs2-4g-2s"
-  }
-}
-receivers:  {
-
-  uuid:  "4debc895-b56c-4150-b203-3d1adb3704a6"
-  id:  "newbeedrone-beeceiver-elrs-2-4ghz-diversity"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeCeiver ELRS 2.4Ghz Diversity"
-  weight_g:  1.4
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone BeeCeiver ELRS 2.4Ghz Diversity with TCXO Oscillator Micro Receiver"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-beeceiver-diversity-with-tcxo-oscillator-micro-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/newbeedrone-beeceiver-expresslrs-2-4ghz-diversity-with-tcxo-oscillator-micro-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "43d5cead-0382-4209-9085-68d1a44e334a"
-  id:  "newbeedrone-2-4g-replacement-receiver-antennas-60mm"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone 2.4G Replacement Receiver Antennas 60mm"
-  weight_g:  4.57
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone 2.4G Replacement Receiver Antennas 60mm for BeeBrain BLV3/BLV4/HMB F4 V2"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-2-4g-replacement-receiver-antennas-60mm-for-beebrain-blv3-blv4-hmb-f4-v2"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/newbeedrone-2-4g-replacement-receiver-antennas-60mm-for-beebrain-blv3-blv4-hmb-f4-v2"
-  }
-}
-receivers:  {
-
-  uuid:  "dd71c2d6-a10b-4711-8cd3-ebfcce8303a1"
-  id:  "hdo-analog-fpv-goggles-ndaa"
-  manufacturer:  "Fat Shark"
-  name:  "HDO+ Analog FPV Goggles - NDAA"
-  weight_g:  235.8
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Fat Shark HDO+ Analog FPV Goggles - NDAA ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 235.80g."
-}
-receivers:  {
-
-  uuid:  "7aa5b5d3-1e7a-42af-8337-17848b6a50a1"
-  id:  "cinemini-2-5-3d-prints-bundle-dji-o4"
-  manufacturer:  "Rotor Riot"
-  name:  "CineMini 2.5 3D Prints Bundle - DJI O4"
-  weight_g:  3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Rotor Riot CineMini 2.5 3D Prints Bundle - DJI O4 ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 3.00g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://rotorriot.com/products/cinemini-2-5-3d-prints-bundle-dji-o4-pro"
-  }
-}
-receivers:  {
-
-  uuid:  "054a71f6-2837-4ac8-a22c-2213938973ea"
-  id:  "futaba-r7208sb"
-  manufacturer:  "Futaba"
-  name:  "Futaba R7208SB"
-  weight_g:  0.9
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Futaba R7208SB – FASSTest Bi-Directional Communication System S.Bus/S.Bus2 Port and 8 Channels Receiver"
-}
-receivers:  {
-
-  uuid:  "8daa9d8b-15fb-4ec8-bc6f-cf9e597181b9"
-  id:  "fat-shark-recon-hd-goggle-bundle"
-  manufacturer:  "Rotor Riot"
-  name:  "Fat Shark Recon HD Goggle Bundle"
-  weight_g:  235.8
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Rotor Riot Fat Shark Recon HD Goggle Bundle ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 235.80g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://rotorriot.com/products/fat-shark-recon-hd-goggle-bundle"
-  }
-}
-receivers:  {
-
-  uuid:  "7ca03770-6392-4cd4-88ec-6844c9a125ed"
-  id:  "nano-diversity-915mhz-receiver"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano Diversity 915MHz Receiver"
-  weight_g:  1.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "Nano Diversity 915MHz Receiver For Crossfire Protocol - NDAA"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/tbs-crossfire-diversity-nano-receiver-ndaa"
-  }
-}
-receivers:  {
-
-  uuid:  "44eccfa6-25af-4aad-ba28-73752a75f75d"
-  id:  "nano-pro-915mhz-receiver"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano PRO 915MHz Receiver"
-  weight_g:  1.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "Nano PRO 915MHz Receiver For Crossfire Protocol - NDAA"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/iflight-protek60-pro-o3-6s-hd-cinelifter-tbs-crossfire-nano-rx-zcam-red-version"
-  }
-}
-receivers:  {
-
-  uuid:  "a5fec8b4-17ce-4d9c-92fe-9680f922ebd4"
-  id:  "nano-se-915mhz-receiver"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano SE 915MHz Receiver"
-  weight_g:  0.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "Nano SE 915MHz Receiver For Crossfire Protocol - NDAA"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/crossfire-nano-se"
-  }
-}
-receivers:  {
-
-  uuid:  "5357171b-b056-4473-be8b-d54ca5ce7b61"
-  id:  "cl2-immortal-t-elrs-dual-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "CL2 Immortal T / ELRS Dual Antenna Mount"
-  weight_g:  0.7
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Noozle3D CL2 Immortal T / ELRS Dual Antenna Mount ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
-}
-receivers:  {
-
-  uuid:  "53fa1822-3ca5-4006-b2b3-4b07973a69fd"
-  id:  "xr4-gemini-xrossband-dual-band-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "XR4 Gemini Xrossband Dual-Band  Receiver"
-  weight_g:  1.7
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "XR4 Gemini Xrossband Dual-Band  Receiver for ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/xr4-gemini-xrossband-dual-band-expresslrs-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/pre-order-radiomaster-xr4-gemini-xrossband-dual-band-expresslrs-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "0d067b99-53dc-4ad5-8e56-46ccc4925cc3"
-  id:  "xr3-nano-multi-frequency-antenna-diversity-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "XR3 Nano Multi-Frequency Antenna Diversity Receiver"
-  weight_g:  1.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "XR3 Nano Multi-Frequency Antenna Diversity Receiver for ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/xr3-nano-multi-frequency-antenna-diversity-expresslrs-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomasterxr3-nano-multi-frequency-antenna-diversity-expresslrs-receiver-choose-antenna"
-  }
-}
-receivers:  {
-
-  uuid:  "56894c2c-7520-4763-890c-27bdabf56067"
-  id:  "xr2-nano-2-4ghz-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "XR2 Nano 2.4GHz Receiver"
-  weight_g:  0.8
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "XR2 Nano 2.4GHz Receiver for ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/xr2-nano-2-4ghz-expresslrs-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-xr2-nano-2-4ghz-expresslrs-receiver-w-ceramic-antenna"
-  }
-}
-receivers:  {
-
-  uuid:  "e38b1e37-fc81-4dff-ae2f-6be90e007537"
-  id:  "xr1-nano-multi-frequency-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "XR1 Nano Multi-Frequency Receiver"
-  weight_g:  1
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "XR1 Nano Multi-Frequency Receiver for ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/xr1-nano-multi-frequency-expresslrs-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/radiomaster-xr1-nano-multi-frequency-receiver-900mhz"
-  }
-}
-receivers:  {
-
-  uuid:  "3b039892-a62f-45aa-aaac-ad83f2f0cda7"
-  id:  "nomad-elrs-dual-1w-gemini-xrossband"
-  manufacturer:  "RadioMaster"
-  name:  "Nomad ELRS Dual 1W Gemini Xrossband"
-  weight_g:  87.2
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Nomad ELRS Dual 1W Gemini Xrossband TX Module"
-}
-receivers:  {
-
-  uuid:  "97e33d9c-ce15-4785-b5e1-6082fd48cf2e"
-  id:  "bandit-915-868mhz-receiver-antenna"
-  manufacturer:  "RadioMaster"
-  name:  "Bandit 915/868MHz Receiver Antenna"
-  weight_g:  5.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000014"
-  description:  "Bandit 915/868MHz Receiver Antenna - Choose Version"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/bandit-moxon-antenna"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-bandit-915mhz-elrs-rf-module"
-  }
-}
-receivers:  {
-
-  uuid:  "d2aac87f-4f75-4cf7-b804-a11c597d7ac6"
-  id:  "diversity-915-868mhz-receiver"
-  manufacturer:  "Foxeer"
-  name:  "Diversity 915/868MHz Receiver"
-  weight_g:  5.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000014"
-  description:  "Diversity 915/868MHz Receiver For ELRS Protocol"
-}
-receivers:  {
-
-  uuid:  "ad476e95-6719-495d-bee9-da1b90516e54"
-  id:  "rp4td-2-4ghz-true-diversity-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "RP4TD 2.4GHz True Diversity Receiver"
-  weight_g:  1
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "RP4TD 2.4GHz True Diversity Receiver For ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/rp4td-expresslrs-2-4ghz-diversity-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-rp4td-m-expresslrs-2-4ghz-mini-true-diversity-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "3fd83924-5351-4a82-a07c-bad5f66421c8"
-  id:  "rp3-2-4ghz-diversity-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "RP3 2.4GHz Diversity Receiver"
-  weight_g:  1.4
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000011"
-  description:  "RP3 2.4GHz Diversity Receiver For ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/rp3-expresslrs-2-4ghz-nano-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-rp3-elrs-2-4ghz-diversity-nano-receiver-w-ufl-antennas"
-  }
-}
-receivers:  {
-
-  uuid:  "395d6c69-9cad-4dda-99cf-eaf20a257e3f"
-  id:  "bandit-br1-915mhz-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "Bandit BR1 915MHz Receiver"
-  weight_g:  1.7
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "Bandit BR1 915MHz Receiver For ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/bandit-br1-expresslrs-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "0251c09c-e436-4384-8884-c2b875eced5d"
-  id:  "tanq-gps-immortal-t"
-  manufacturer:  "Noozle3D"
-  name:  "TANQ GPS & Immortal T /"
-  weight_g:  194
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "TANQ GPS & Immortal T / ELRS Antenna Mount"
-}
-receivers:  {
-
-  uuid:  "5a178a81-e1cf-41b7-b9fe-436983abd273"
-  id:  "er6gv-2-4ghz-pwm-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "ER6GV 2.4GHz PWM Receiver"
-  weight_g:  5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "ER6GV 2.4GHz PWM Receiver For ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/er6g-er6gv-2-4ghz-elrs-pwm-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-er6gv-2-4ghz-elrs-pwm-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "e918a555-55d6-4653-91ff-18899b0a22e0"
-  id:  "er4-2-4ghz-pwm-receiver"
-  manufacturer:  "RadioMaster"
-  name:  "ER4 2.4GHz PWM Receiver"
-  weight_g:  3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "ER4 2.4GHz PWM Receiver For ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/er4-2-4ghz-elrs-pwm-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-er4-2-4ghz-elrs-pwm-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "ec8973d7-2d6e-44c9-b092-f920d1159c6c"
-  id:  "nano-915mhz-receiver"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano 915MHz Receiver"
-  weight_g:  0.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "Nano 915MHz Receiver For Crossfire Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/iflight-nazgul-xl10-v6-6s-analog-10-inch-long-range-drone-2-5w-vtx-tbs-crossfire-nano-rx"
-  }
-}
-receivers:  {
-
-  uuid:  "dde85e91-cfe4-43b6-9807-40a0000bf970"
-  id:  "t-antenna-915-868mhz-receiver"
-  manufacturer:  "Foxeer"
-  name:  "T Antenna 915/868MHz Receiver"
-  weight_g:  5.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000014"
-  description:  "T Antenna 915/868MHz Receiver For ELRS Protocol"
-}
-receivers:  {
-
-  uuid:  "11c9d78a-2419-4a18-b1b6-e903b2b26f4f"
-  id:  "915-868mhz-elrs-t-antenna"
-  manufacturer:  "Foxeer"
-  name:  "915/868MHz ELRS T Antenna"
-  weight_g:  5.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000014"
-  description:  "915/868MHz ELRS T Antenna - Choose Version"
-}
-receivers:  {
-
-  uuid:  "d7c4b600-bb1e-4f60-ba97-ae68efb0b3c7"
-  id:  "2-4ghz-elrs-t-antenna-choose-version"
-  manufacturer:  "Foxeer"
-  name:  "2.4GHz ELRS T Antenna - Choose Version"
-  weight_g:  3.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Foxeer 2.4GHz ELRS T Antenna - Choose Version ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 3.30g."
-}
-receivers:  {
-
-  uuid:  "ea65339a-f3de-437a-9538-49e9ef527339"
-  id:  "t-antenna-2-4ghz-receiver"
-  manufacturer:  "Foxeer"
-  name:  "T Antenna 2.4GHz Receiver"
-  weight_g:  2.2
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "T Antenna 2.4GHz Receiver with LNA & PA For ELRS Protocol"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/foxeer-elrs-lite-2-4ghz-receiver-t-antenna"
-  }
-}
-receivers:  {
-
-  uuid:  "eb16f065-7880-46b4-9218-c6a5ffa6ee87"
-  id:  "lite-2-4ghz-receiver-for-elrs-protocol"
-  manufacturer:  "Foxeer"
-  name:  "Lite 2.4GHz Receiver For ELRS Protocol"
-  weight_g:  3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000012"
-  description:  "Foxeer Lite 2.4GHz Receiver For ELRS Protocol ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 3.00g."
-}
-receivers:  {
-
-  uuid:  "8b71cd1c-b46a-49e8-b899-9afe47a50a90"
-  id:  "d-pole-mkii-2-4ghz-receiver-antenna"
-  manufacturer:  "TrueRC"
-  name:  "D-Pole MKII 2.4GHz Receiver Antenna"
-  weight_g:  20
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "TrueRC D-Pole MKII 2.4GHz Receiver Antenna ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 20.00g."
-}
-receivers:  {
-
-  uuid:  "b7680398-fb32-4e74-8174-a239999fd5d5"
-  id:  "crossfire-micro-dipole-915mhz-rc-receiver"
-  manufacturer:  "Team Black Sheep"
-  name:  "Crossfire Micro Dipole 915MHz RC Receiver"
-  weight_g:  1.3
-  protocol:  "Crossfire"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "Crossfire Micro Dipole 915MHz RC Receiver Antenna"
-}
-receivers:  {
-
-  uuid:  "70d85ebd-eeac-43ef-8369-0e8f0f6d2c05"
-  id:  "tto-2-4ghz-receiver"
-  manufacturer:  "ImmersionRC"
-  name:  "Átto 2.4Ghz Receiver"
-  weight_g:  0.8
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Átto 2.4Ghz Receiver For Ghost Protocol - NDAA"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/immersionrc-ghost-atto-2-4ghz-rx"
-  }
-}
-receivers:  {
-
-  uuid:  "6cf4008b-288c-43c2-a0a1-83b4f45bcd13"
-  id:  "2-4ghz-t-antenna"
-  manufacturer:  "RadioMaster"
-  name:  "2.4GHz T Antenna"
-  weight_g:  9.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "2.4GHz T Antenna for RP1 and EP1 - Choose Version"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/2-4ghz-t-antenna"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-2-4ghz-t-antenna"
-  }
-}
-receivers:  {
-
-  uuid:  "75e69b1c-dbf7-45b9-8ec6-d5db6c663caa"
-  id:  "rp2-2-4ghz-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "RP2 2.4GHz Receiver For ELRS Protocol"
-  weight_g:  16.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000012"
-  description:  "RadioMaster RP2 2.4GHz Receiver For ELRS Protocol ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 16.50g."
-}
-receivers:  {
-
-  uuid:  "6ad98ca6-f42c-42f4-a62f-0a5f65d14ec1"
-  id:  "qt-2-4ghz-receiver-antenna"
-  manufacturer:  "ImmersionRC"
-  name:  "qT 2.4GHz Receiver Antenna"
-  weight_g:  3.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "qT 2.4GHz Receiver Antenna for Ghost Átto"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/immersionrc-ghost-qt-150mm-antenna-for-atto-2-4ghz-micro-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "c7792c9a-e30f-42a0-89ee-94a9da1bde84"
-  id:  "hook-v2-immortal-t-elrs-antenna-mount"
-  manufacturer:  "Noozle3D"
-  name:  "Hook V2 Immortal T / ELRS Antenna Mount"
-  weight_g:  155
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Noozle3D Hook V2 Immortal T / ELRS Antenna Mount ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 155.00g."
-}
-receivers:  {
-
-  uuid:  "b6dd4da0-cc0c-4f88-812c-7268e217760a"
-  id:  "rp1-2-4ghz-receiver-for-elrs-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "RP1 2.4GHz Receiver For ELRS Protocol"
-  weight_g:  2.2
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000011"
-  description:  "RadioMaster RP1 2.4GHz Receiver For ELRS Protocol ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 2.20g."
-}
-receivers:  {
-
-  uuid:  "40b503eb-51d7-4e5b-97ba-1debc58f02e0"
-  id:  "cl2-immortal-t-elrs-antenna"
-  manufacturer:  "Noozle3D"
-  name:  "CL2 Immortal T / ELRS Antenna"
-  weight_g:  5.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "CL2 Immortal T / ELRS Antenna Mount - Choose Color"
-}
-receivers:  {
-
-  uuid:  "769c9fd3-6924-43cd-8fdf-8b14bcedd156"
-  id:  "tx16s-mkii-max-joshua-bardwell-edition"
-  manufacturer:  "RadioMaster"
-  name:  "TX16S MKII MAX Joshua Bardwell Edition"
-  weight_g:  750
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "TX16S MKII MAX Joshua Bardwell Edition Radio Controller - ELRS"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/tx16s-mark-ii-max-radio-controller-joshua-bardwell-edition-elrs-m2"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-tx16s-mkii-max-joshua-bardwell-edition-edgetx-rc-transmitter-w-v4-0-hall-gimbals-elrs"
-  }
-}
-receivers:  {
-
-  uuid:  "a34feda7-2a95-4717-9385-6511ecdeff31"
-  id:  "tx16s-mk2-max-rotor-riot-edition"
-  manufacturer:  "RadioMaster"
-  name:  "TX16S MK2 Max Rotor Riot Edition"
-  weight_g:  750
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "TX16S MK2 Max Rotor Riot Edition Radio Controller - ELRS"
-}
-receivers:  {
-
-  uuid:  "50ae859f-2295-477a-8c3a-1a9966b79ba0"
-  id:  "minimortal-t-915mhz-rc-receiver-antenna"
-  manufacturer:  "FPVCycle"
-  name:  "Minimortal T 915MHz RC Receiver Antenna"
-  weight_g:  0.7
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "FPV Cycle Minimortal T 915MHz RC Receiver Antenna ExpressLRS receiver operating at 915 MHz with telemetry support, weighing 0.70g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/tbs-fpvcycle-minimortal-t-900mhz-40mm-u-fl-linear-antenna"
-  }
-}
-receivers:  {
-
-  uuid:  "a37ca8e9-6176-4529-8c9f-db52b5c9d8cf"
-  id:  "nano-2-4ghz-receiver-for-tracer-protocol"
-  manufacturer:  "Team Black Sheep"
-  name:  "Nano 2.4GHz Receiver for Tracer Protocol"
-  weight_g:  0.5
-  protocol:  "Tracer"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Team Black Sheep Nano 2.4GHz Receiver for Tracer Protocol Tracer receiver operating at 2400 MHz with telemetry support, weighing 0.50g."
-}
-receivers:  {
-
-  uuid:  "424c83a5-a37c-4b03-8659-46a89d3e1c91"
-  id:  "r81-2-4ghz-receiver-for-frsky-protocol"
-  manufacturer:  "RadioMaster"
-  name:  "R81 2.4GHz Receiver For FrSky Protocol"
-  weight_g:  5.55
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "RadioMaster R81 2.4GHz Receiver For FrSky Protocol FrSky D16 receiver operating at 2400 MHz with telemetry support, weighing 5.55g."
-}
-receivers:  {
-
-  uuid:  "515dd422-2230-4a19-8447-c530b270653b"
-  id:  "rekon-5-inch-rocket-8s-2-5w-elrs"
-  manufacturer:  "HGLRC"
-  name:  "Rekon 5-inch Rocket 8S 2.5W Elrs"
-  weight_g:  174
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Rekon 5-inch Rocket 8S 2.5W Elrs 2.4/915 dual-band"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hglrc.com/products/rekon-5-inch-rocket-8s-2-5w-elrs-2-4-915-dual-band"
-  }
-}
-receivers:  {
-
-  uuid:  "6d081d63-fb8a-4517-b2ff-6585fc62bac6"
-  id:  "hglrc-gemini-elrs-915mhz-2-4ghz"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Gemini ELRS 915MHz & 2.4GHz"
-  weight_g:  0.82
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "HGLRC Gemini ELRS 915MHz & 2.4GHz Dual-Band Single/Dual Antenna Receiver"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hglrc.com/products/hglrc-elrs-915mhz-2-4ghz-dual-band-single-dual-antenna-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/hglrc-gemini-elrs-2-4ghz-rx-dual-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "b8305249-a23c-4258-a718-cb9378ecf0ca"
-  id:  "diatone-roma-f4-dji-4-6s-drone"
-  manufacturer:  "Diatone"
-  name:  "DIATONE Roma F4 DJI 4/6S Drone"
-  weight_g:  13.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DIATONE Roma F4 DJI 4/6S Drone MSR/TBS Receiver"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.diatone.us/products/diatone-roma-f4-dji-4-6s"
-  }
-}
-receivers:  {
-
-  uuid:  "12ff7e0d-0e05-4065-aa44-4b0b88c19733"
-  id:  "sub250-elrs-lite-2-4g-receiver"
-  manufacturer:  "Sub250"
-  name:  "Sub250 ELRS Lite 2.4G Receiver"
-  weight_g:  0.6
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000012"
-  description:  "Sub250 Sub250 ELRS Lite 2.4G Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.60g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://sub250.com/products/sub250-elrs-lite-2-4g-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "d676a9f6-b295-4212-9758-ce819ebbfcc6"
-  id:  "sub250-elrs-nano-pro-2-4g-receiver"
-  manufacturer:  "Sub250"
-  name:  "Sub250 ELRS Nano Pro 2.4G Receiver"
-  weight_g:  0.6
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Sub250 Sub250 ELRS Nano Pro 2.4G Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.60g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://sub250.com/products/sub250-elrs-nano-pro-2-4g-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "3f1f6603-164a-476e-a05f-d90c701f42d8"
-  id:  "sub250-elrs-nano-2-4g-receiver"
-  manufacturer:  "Sub250"
-  name:  "Sub250 ELRS Nano 2.4G Receiver"
-  weight_g:  0.6
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Sub250 Sub250 ELRS Nano 2.4G Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.60g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://sub250.com/products/sub250-elrs-nano-2-4g-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "2c79cc2d-a773-4305-b0a9-ae06f15b8fff"
-  id:  "sub250-1s-nanofly16-1-6-inch-freestyle"
-  manufacturer:  "Sub250"
-  name:  "Sub250 1s Nanofly16 1.6 inch Freestyle"
-  weight_g:  28
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Sub250 1s Nanofly16  1.6 inch Freestyle Quadcopter"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://sub250.com/products/1s-nanofly-16-freestyle-quadcopter"
-  }
-}
-receivers:  {
-
-  uuid:  "b5de936f-25cb-4012-81a6-a842d7ba6707"
-  id:  "internal-rx-1af14652-bd6f-453d-8a84-db99438de688"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Lite Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.82
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV ELRS Lite Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/elrs-lite-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "c302c0e5-00ed-4909-b981-757c38e13d5f"
-  id:  "internal-rx-cb515f72-04b0-44d3-b756-39f375527de0"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Nano Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.7
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV ELRS Nano Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/elrs-nano-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "c9037e17-7240-4bc5-b02b-a9e92cf24b88"
-  id:  "internal-rx-f55610c5-306f-4b2c-a6a1-b7ab5eb33f7c"
-  manufacturer:  "BETAFPV"
-  name:  "SPI Frsky Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.43
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV SPI Frsky Receiver (Internal RX) FrSky D16 receiver operating at 2400 MHz with telemetry support, weighing 0.43g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/spi-frsky-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "74d7a534-ce02-404a-b488-b93449e52795"
-  id:  "internal-rx-1f92f03d-d89c-4abe-93ca-6a11e64dda6a"
-  manufacturer:  "CADDX"
-  name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
-  is_internal_only:  true
-  weight_g:  5.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "CADDXFPV CADDXFPV F4_AIO_ELRS (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 5.30g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://caddxfpv.com/products/cadx-caddxf4_aio_elrs"
-  }
-}
-receivers:  {
-
-  uuid:  "c2de593a-f739-4f6e-93c5-ad7e03de6e4f"
-  id:  "darwinfpv-f411-45a-elrs-aio-cineape35-5"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV F411 45A ELRS AIO CineApe35"
-  is_internal_only:  true
-  weight_g:  41.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
-  }
-}
-receivers:  {
-
-  uuid:  "a598eedb-5383-4f63-9f9f-64d0e99106e9"
-  id:  "darwinfpv-cement-ultra-durable-elrs-2-4g-2"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Cement Ultra Durable ELRS 2.4G"
-  is_internal_only:  true
-  weight_g:  3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-elrs-2-4g-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "5ff7f57c-3e4f-4840-b0c0-71d8894982d6"
-  id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio-4"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
-  is_internal_only:  true
-  weight_g:  5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
-  }
-}
-receivers:  {
-
-  uuid:  "e8e4c3aa-e4d1-4bbe-b3c3-f05a66532330"
-  id:  "newbeedrone-lionbee-long-range-elrs2-4-aio-2"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee long range ELRS2.4 AIO"
-  is_internal_only:  true
-  weight_g:  4.57
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-lionbee-long-range-elrs2-4-aio-flightcontrol"
-  }
-}
-receivers:  {
-
-  uuid:  "25a33ace-8a95-4e9e-8db9-d7e3c8057f2c"
-  id:  "newbeedrone-lionbee-3inch-long-range-elrs2-4-2"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee 3inch long range ELRS2.4"
-  is_internal_only:  true
-  weight_g:  62.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-lionbee-3inch-long-range-elrs2-4-aio-developer-kit"
-  }
-}
-receivers:  {
-
-  uuid:  "4672b90a-a3ef-40ec-9a2c-1a558b5c3dbf"
-  id:  "newbeedrone-beebrain-brushed-v2-5-aio-flight-2"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
-  is_internal_only:  true
-  weight_g:  4.57
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
-  }
-}
-receivers:  {
-
-  uuid:  "64cf50bc-5a26-49ed-a2d1-95e14eeaeff6"
-  id:  "newbeedrone-beeceiver-frsky-2"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeCeiver Frsky"
-  is_internal_only:  true
-  weight_g:  0.91
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-beeceiver-frsky-compatible-receiver-v1"
-  }
-}
-receivers:  {
-
-  uuid:  "f940d3a2-cbbc-4eb2-88f5-142426359504"
-  id:  "goku-f405-ervt-1s-5a-5-in-1-2"
-  manufacturer:  "Flywoo"
-  name:  "GOKU F405 ERVT 1S 5A 5-in-1"
-  is_internal_only:  true
-  weight_g:  4.9
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
-}
-receivers:  {
-
-  uuid:  "1a14933e-b728-4eab-b30e-a26c0b0a9eca"
-  id:  "internal-rx-0f285819-4640-44e9-8f1d-254fb487052a"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Lite Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.82
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV ELRS Lite Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/elrs-lite-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "b2c720d3-0353-4838-af8f-13a97dc9dd25"
-  id:  "internal-rx-9ce1c839-3fae-477e-a26d-d8b760934cf6"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Nano Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.7
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV ELRS Nano Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/elrs-nano-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "2d5b2f8d-fe16-4587-a506-974578c096d5"
-  id:  "internal-rx-53aad8e6-9293-4165-8856-d0bea8d8e4ba"
-  manufacturer:  "BETAFPV"
-  name:  "SPI Frsky Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.43
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV SPI Frsky Receiver (Internal RX) FrSky D16 receiver operating at 2400 MHz with telemetry support, weighing 0.43g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/spi-frsky-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "35ea2c93-05ab-458c-91a6-d16b7a9b7dea"
-  id:  "internal-rx-2f75a325-5e33-452e-93a2-93f94d71b54d"
-  manufacturer:  "CADDX"
-  name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
-  is_internal_only:  true
-  weight_g:  5.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "CADDXFPV CADDXFPV F4_AIO_ELRS (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 5.30g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://caddxfpv.com/products/cadx-caddxf4_aio_elrs"
-  }
-}
-receivers:  {
-
-  uuid:  "b7c8d86f-ef46-4fb8-88b5-65683c3750f4"
-  id:  "darwinfpv-f411-45a-elrs-aio-cineape35-6"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV F411 45A ELRS AIO CineApe35"
-  is_internal_only:  true
-  weight_g:  41.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
-  }
-}
-receivers:  {
-
-  uuid:  "eed31c09-c456-4684-a08e-5c856f97e4c4"
-  id:  "darwinfpv-cement-ultra-durable-elrs-2-4g-3"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Cement Ultra Durable ELRS 2.4G"
-  is_internal_only:  true
-  weight_g:  3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-elrs-2-4g-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "561e97ea-717b-43e6-8864-8e62fac6727e"
-  id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio-5"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
-  is_internal_only:  true
-  weight_g:  5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
-  }
-}
-receivers:  {
-
-  uuid:  "43b5e716-b012-4b69-ba93-87ad6cc1e369"
-  id:  "newbeedrone-lionbee-long-range-elrs2-4-aio-3"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee long range ELRS2.4 AIO"
-  is_internal_only:  true
-  weight_g:  4.57
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-lionbee-long-range-elrs2-4-aio-flightcontrol"
-  }
-}
-receivers:  {
-
-  uuid:  "d645ce4e-fa7c-468b-9435-83742d32ef19"
-  id:  "newbeedrone-lionbee-3inch-long-range-elrs2-4-3"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee 3inch long range ELRS2.4"
-  is_internal_only:  true
-  weight_g:  62.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-lionbee-3inch-long-range-elrs2-4-aio-developer-kit"
-  }
-}
-receivers:  {
-
-  uuid:  "41f5d5c4-7253-48b8-b59d-71809e9c2308"
-  id:  "newbeedrone-beebrain-brushed-v2-5-aio-flight-3"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
-  is_internal_only:  true
-  weight_g:  4.57
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
-  }
-}
-receivers:  {
-
-  uuid:  "7b5bec93-ef6f-4eb5-9a7d-0deefa998ebd"
-  id:  "newbeedrone-beeceiver-frsky-3"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeCeiver Frsky"
-  is_internal_only:  true
-  weight_g:  0.91
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-beeceiver-frsky-compatible-receiver-v1"
-  }
-}
-receivers:  {
-
-  uuid:  "9051993c-35b3-461a-80b1-a94834896d2e"
-  id:  "goku-f405-ervt-1s-5a-5-in-1-3"
-  manufacturer:  "Flywoo"
-  name:  "GOKU F405 ERVT 1S 5A 5-in-1"
-  is_internal_only:  true
-  weight_g:  4.9
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
-}
-receivers:  {
-
-  uuid:  "9c54fe07-b85c-409a-9378-dfb5fe229050"
-  id:  "internal-rx-47fe97d1-e70b-4bfc-9d1d-2712eb507c56"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Lite Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.82
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV ELRS Lite Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/elrs-lite-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "bd69a9d0-8548-40dd-ba68-90f3d95a7009"
-  id:  "internal-rx-fc0f9301-cf37-4417-aaee-1d30ba87b04f"
-  manufacturer:  "BETAFPV"
-  name:  "ELRS Nano Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.7
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV ELRS Nano Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/elrs-nano-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "29b74c6e-23e3-40c6-87dd-a9f0ac2a6d91"
-  id:  "internal-rx-0ecc0517-4eca-415e-b005-95963d5bd478"
-  manufacturer:  "BETAFPV"
-  name:  "SPI Frsky Receiver (Internal RX)"
-  is_internal_only:  true
-  weight_g:  0.43
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "BETAFPV SPI Frsky Receiver (Internal RX) FrSky D16 receiver operating at 2400 MHz with telemetry support, weighing 0.43g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/spi-frsky-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "6654d8ad-eb22-4ed8-917d-0850437e4da4"
-  id:  "internal-rx-f0e44073-9567-4702-a556-5cd1883e8296"
-  manufacturer:  "CADDX"
-  name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
-  is_internal_only:  true
-  weight_g:  5.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "CADDXFPV CADDXFPV F4_AIO_ELRS (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 5.30g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://caddxfpv.com/products/cadx-caddxf4_aio_elrs"
-  }
-}
-receivers:  {
-
-  uuid:  "87638d17-be2b-4d31-99d3-6d882a10306f"
-  id:  "darwinfpv-f411-45a-elrs-aio-cineape35-7"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV F411 45A ELRS AIO CineApe35"
-  is_internal_only:  true
-  weight_g:  41.5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
-  }
-}
-receivers:  {
-
-  uuid:  "9fc3577e-8769-4e86-81e4-dd6f1b2e5b83"
-  id:  "darwinfpv-cement-ultra-durable-elrs-2-4g-4"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV Cement Ultra Durable ELRS 2.4G"
-  is_internal_only:  true
-  weight_g:  3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-elrs-2-4g-receiver"
-  }
-}
-receivers:  {
-
-  uuid:  "eb82b94d-1932-4841-8427-29c4cc124048"
-  id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio-6"
-  manufacturer:  "DarwinFPV"
-  name:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
-  is_internal_only:  true
-  weight_g:  5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
-  }
-}
-receivers:  {
-
-  uuid:  "d72a2149-daca-4deb-8635-5b2fcdba562d"
-  id:  "newbeedrone-lionbee-long-range-elrs2-4-aio-4"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee long range ELRS2.4 AIO"
-  is_internal_only:  true
-  weight_g:  4.57
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-lionbee-long-range-elrs2-4-aio-flightcontrol"
-  }
-}
-receivers:  {
-
-  uuid:  "ebd3aea7-8ed6-42f6-b9ae-cc5e3547db2b"
-  id:  "newbeedrone-lionbee-3inch-long-range-elrs2-4-4"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone LionBee 3inch long range ELRS2.4"
-  is_internal_only:  true
-  weight_g:  62.3
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-lionbee-3inch-long-range-elrs2-4-aio-developer-kit"
-  }
-}
-receivers:  {
-
-  uuid:  "98ed7beb-7019-477d-a2e1-d850e286e75b"
-  id:  "newbeedrone-beebrain-brushed-v2-5-aio-flight-4"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
-  is_internal_only:  true
-  weight_g:  4.57
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
-  }
-}
-receivers:  {
-
-  uuid:  "5fc364c3-f008-409c-9551-5289ee802bb1"
-  id:  "newbeedrone-beeceiver-frsky-4"
-  manufacturer:  "NewBeeDrone"
-  name:  "NewBeeDrone BeeCeiver Frsky"
-  is_internal_only:  true
-  weight_g:  0.91
-  protocol:  "FrSky D16"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://newbeedrone.com/products/newbeedrone-beeceiver-frsky-compatible-receiver-v1"
-  }
-}
-receivers:  {
-
-  uuid:  "ad54842e-f701-4858-b169-1f2fc5f6286d"
-  id:  "goku-f405-ervt-1s-5a-5-in-1-4"
-  manufacturer:  "Flywoo"
-  name:  "GOKU F405 ERVT 1S 5A 5-in-1"
-  is_internal_only:  true
-  weight_g:  4.9
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
-}
-receivers:  {
-
-  uuid:  "4da8a069-d611-4376-b6d9-667996a4aa76"
-  id:  "hglrc-specter-f722-lite-icm42688-gyro-2"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC SPECTER F722 Lite ICM42688 gyro"
-  is_internal_only:  true
-  weight_g:  5
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000012"
-  description:  "HGLRC SPECTER F722 Lite ICM42688 gyro integrated ELRS 2.4G receiver flight controller (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hglrc.com/products/hglrc-specter-f722-lite-icm42688-gyro-integrated-elrs-2-4g-receiver-flight-control"
-  }
-}
-receivers:  {
-
-  uuid:  "1ee26f9f-4c6f-4301-b43b-cbc1dfa2dfa3"
-  id:  "hglrc-wind5-lite-v2-racing-drone-2"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC Wind5 Lite V2 Racing Drone"
-  is_internal_only:  true
-  weight_g:  80
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000012"
-  description:  "HGLRC Wind5 Lite V2 Racing Drone Elrs2.4G version (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hglrc.com/products/hglrc-wind5-lite-v2-racing-drone"
-  }
-}
-receivers:  {
-
-  uuid:  "ab61a221-d90d-4de9-917a-28a33599e037"
-  id:  "hglrc-specter-15a-elrs-aio-2-4s-3"
-  manufacturer:  "HGLRC"
-  name:  "HGLRC SPECTER 15A ELRS AIO 2-4S"
-  is_internal_only:  true
-  weight_g:  5.6
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone (Internal RX)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hglrc.com/products/hglrc-specter-15a-elrs-aio-2-4s-4-in-1-aio-fc-for-fpv-drone"
-  }
-}
-receivers:  {
-
-  uuid:  "01923019-3003-7001-8001-000000000001"
-  id:  "radiomaster-rp1-v2-elrs-2.4ghz"
-  manufacturer:  "RadioMaster"
-  name:  "RadioMaster RP1 V2 2.4GHz ELRS Nano Receiver"
-  weight_g:  0.53
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000011"
-  description:  "Compact open-source ExpressLRS 2.4GHz nano receiver featuring ESP8285 MCU and SX1280 RF chip with external 65mm U.FL T-antenna."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/rp1-expresslrs-2-4ghz-nano-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/radiomaster-rp1-v2-2-4ghz-elrs-nano-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-rp1-elrs-2-4ghz-nano-receiver-w-ufl-antenna"
-  }
-}
-receivers:  {
-
-  uuid:  "01923019-3003-7001-8001-000000000002"
-  id:  "radiomaster-rp2-v2-elrs-2.4ghz"
-  manufacturer:  "RadioMaster"
-  name:  "RadioMaster RP2 V2 2.4GHz ELRS Nano Receiver"
-  weight_g:  0.55
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000012"
-  description:  "Ultra-compact ExpressLRS nano receiver equipped with an integrated high-gain SMT ceramic antenna, ideal for whoops and micro quads."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/rp2-expresslrs-2-4ghz-nano-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-rp2-elrs-2-4ghz-nano-receiver-w-ceramic-antenna"
-  }
-}
-receivers:  {
-
-  uuid:  "01923019-3003-7001-8001-000000000003"
-  id:  "radiomaster-rp3-v2-elrs-2.4ghz"
-  manufacturer:  "RadioMaster"
-  name:  "RadioMaster RP3 V2 2.4GHz ELRS Diversity Receiver"
-  weight_g:  4.6
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000011"
-  description:  "True diversity 2.4GHz ExpressLRS receiver with dual SX1280 RF paths and power amplifier providing rock-solid long-range signal security."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/rp3-expresslrs-2-4ghz-nano-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-rp3-elrs-2-4ghz-diversity-nano-receiver-w-ufl-antennas"
-  }
-}
-receivers:  {
-
-  uuid:  "01923019-3003-7001-8001-000000000004"
-  id:  "tbs-crossfire-nano-rx-se"
-  manufacturer:  "Team Black Sheep"
-  name:  "TBS Crossfire Nano RX Special Edition"
-  weight_g:  0.5
-  protocol:  "Crossfire"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "Industry-standard 915MHz ultra-long-range receiver packaged with the durable TBS Immortal-T V2 antenna."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
-    url:  "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/tbs-crossfire-nano-rx-special-edition.html"
-  }
-}
-receivers:  {
-
-  uuid:  "01923019-3003-7001-8001-000000000005"
-  id:  "tbs-crossfire-diversity-nano-rx"
-  manufacturer:  "Team Black Sheep"
-  name:  "TBS Crossfire Diversity Nano RX"
-  weight_g:  1.8
-  protocol:  "Crossfire"
-  frequency_band_mhz:  915
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000013"
-  description:  "Full-range 8-channel diversity Crossfire receiver featuring dual RF front-ends and power-filtered outputs for extreme range and interference rejection."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:xf_nano_div_rx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
-    url:  "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/tbs-crossfire-diversity-nano-rx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/tbs-crossfire-diversity-nano-rx"
-  }
-}
-receivers:  {
-
-  uuid:  "01923019-3003-7001-8001-000000000006"
-  id:  "betafpv-elrs-lite-2.4ghz-rx"
-  manufacturer:  "BETAFPV"
-  name:  "BETAFPV ELRS Lite 2.4GHz Receiver"
-  weight_g:  0.47
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000012"
-  description:  "Ultralight 1S whoop ExpressLRS receiver with onboard ceramic SMD tower antenna and low-profile tower form factor."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/elrs-lite-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/products/elrs-lite-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/betafpv-elrs-lite-receiver-flat-antenna-v1-1-2-4ghz"
-  }
-}
-receivers:  {
-
-  uuid:  "01923019-3003-7001-8001-000000000007"
-  id:  "happymodel-ep1-dual-tcxo-2.4ghz-rx"
-  manufacturer:  "Happymodel"
-  name:  "Happymodel EP1 Dual TCXO 2.4GHz ELRS Receiver"
-  weight_g:  1
-  protocol:  "ExpressLRS"
-  frequency_band_mhz:  2400
-  has_telemetry:  true
-  antenna_uuids:  "01923019-3009-7001-8001-000000000011"
-  description:  "Temperature Compensated Crystal Oscillator (TCXO) true diversity ExpressLRS receiver offering stable frequency lock in extreme climates."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.happymodel.cn/index.php/2022/11/07/2-4g-elrs-ep1-ep2-ep1dual-tcxo-receiver/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
-    url:  "https://www.expresslrs.org/quick-start/receivers/hmep2400/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/happymodel-expresslrs-nano-2-4ghz-ep1-dual-tcxo-rx.html"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/happymodel-2-4ghz-ep1-dual-diversity-tcxo-rx-express-lrs-receiver"
+receivers: {
+
+  uuid: "b0cf2152-68ff-41ac-9bc5-c7b6d34f2543"
+  id: "tbs-crossfire-nano-rx"
+  manufacturer: "Team Black Sheep"
+  name: "TBS Crossfire Nano RX"
+  weight_g: 0.5
+  protocol: "TBS Crossfire (CRSF)"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "TBS TBS Crossfire Nano RX TBS Crossfire (CRSF) receiver operating at 2400 MHz with telemetry support, weighing 0.50g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/iflight-nazgul-xl10-v6-6s-analog-10-inch-long-range-drone-2-5w-vtx-tbs-crossfire-nano-rx"
+  }
+}
+receivers: {
+
+  uuid: "632437ac-1938-4574-85eb-b9b2aeb000ff"
+  id: "tbs-tracer-nano-rx"
+  manufacturer: "Team Black Sheep"
+  name: "TBS Tracer Nano RX"
+  weight_g: 3.24
+  protocol: "TBS Crossfire (CRSF)"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "TBS TBS Tracer Nano RX TBS Crossfire (CRSF) receiver operating at 2400 MHz with telemetry support, weighing 3.24g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/team-blacksheep-tbs-tracer-nano-rx"
+  }
+}
+receivers: {
+
+  uuid: "d1a50985-ef0b-4357-b944-7367b21e24f5"
+  id: "hglrc-hermes-expresslrs-900mhz"
+  manufacturer: "HGLRC"
+  name: "HGLRC Hermes ExpressLRS 900MHz"
+  weight_g: 1.8
+  protocol: "ExpressLRS (ELRS)"
+  frequency_band_mhz: 900
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000014"
+  description: "HGLRC HGLRC Hermes ExpressLRS 900MHz ExpressLRS (ELRS) receiver operating at 900 MHz with telemetry support, weighing 1.80g."
+}
+receivers: {
+
+  uuid: "e181ef41-1ef6-4ae0-8b4f-cb3976f0dffa"
+  id: "superx-elrs-gemini-xross-receiver"
+  manufacturer: "BETAFPV"
+  name: "SuperX ELRS Gemini Xross Receiver"
+  weight_g: 0.82
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV SuperX ELRS Gemini Xross Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/superx-elrs-gemini-xross-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/betafpv-superx-nanoo-dual-lr1121-elrs-gemini-xross-receiver-2-4ghz-915mhz"
+  }
+}
+receivers: {
+
+  uuid: "d850dcfd-c847-4f66-bf3a-146d2e40a48c"
+  id: "micro-tx-v2-module"
+  manufacturer: "BETAFPV"
+  name: "Micro TX V2 Module"
+  weight_g: 28
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV Micro TX V2 Module ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 28.00g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/micro-tx-v2-module"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/betafpv-elrs-micro-tx-module-915mhz"
+  }
+}
+receivers: {
+
+  uuid: "42c78e9d-738d-427a-903c-67d36569f68e"
+  id: "nano-tx-v2-module"
+  manufacturer: "BETAFPV"
+  name: "Nano TX V2 Module"
+  weight_g: 28
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV Nano TX V2 Module ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 28.00g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/nano-tx-v2-module"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/betafpv-elrs-nano-tx-v2-module-915mhz-copy"
+  }
+}
+receivers: {
+
+  uuid: "d015fe96-1726-419a-b54d-d808f93aa8bc"
+  id: "superp-14ch-diversity-receiver"
+  manufacturer: "BETAFPV"
+  name: "SuperP 14CH Diversity Receiver"
+  weight_g: 1.1
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV SuperP 14CH Diversity Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 1.10g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/superp-14ch-diversity-receiver"
+  }
+}
+receivers: {
+
+  uuid: "b64baa12-789b-467f-a52a-f2d42cefa06c"
+  id: "superd-elrs-diversity-receiver"
+  manufacturer: "BETAFPV"
+  name: "SuperD ELRS Diversity Receiver"
+  weight_g: 1.1
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV SuperD ELRS Diversity Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 1.10g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/superd-elrs-2-4g-diversity-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/betafpv-superd-elrs-diversity-receiver-2-4ghz"
+  }
+}
+receivers: {
+
+  uuid: "4c6df08a-008d-46bb-b474-42517b276c5c"
+  id: "elrs-micro-receiver"
+  manufacturer: "BETAFPV"
+  name: "ELRS Micro Receiver"
+  weight_g: 0.7
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV ELRS Micro Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/elrs-micro-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/betafpv-elrs-micro-tx-module-915mhz"
+  }
+}
+receivers: {
+
+  uuid: "3a485ce2-9a9c-4848-babb-99cd2251471a"
+  id: "ac900-dual-mode-receiver"
+  manufacturer: "BETAFPV"
+  name: "AC900 Dual Mode Receiver"
+  weight_g: 0.82
+  protocol: "FrSky D16"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "AC900 Dual Mode Receiver (FrSky & FUTABA)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/x-boss-ac900-dual-mode-receiver-frsky-rx-futaba-rx"
+  }
+}
+receivers: {
+
+  uuid: "6a220766-0b18-414c-98b3-430901bd3a8e"
+  id: "frsky-xm-sbus-mini-receiver"
+  manufacturer: "BETAFPV"
+  name: "FrSky XM+ SBUS Mini Receiver"
+  weight_g: 0.82
+  protocol: "FrSky D16"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "FrSky XM+ SBUS Mini Receiver (Repair Component)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/frsky-xm-sbus-mini-receiver"
+  }
+}
+receivers: {
+
+  uuid: "5963378e-db01-4d3c-ab2f-2622fc54b3cb"
+  id: "dsmx-receiver-for-micro-drone"
+  manufacturer: "BETAFPV"
+  name: "DSMX Receiver for Micro Drone"
+  weight_g: 0.82
+  protocol: "DSMX"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV DSMX Receiver for Micro Drone DSMX receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/micro-dsmx-receiver-for-brushless-drone"
+  }
+}
+receivers: {
+
+  uuid: "24a84c85-1183-45ce-9f6d-ec79835e657d"
+  id: "darwinfpv-elrs-2-4g-nano-receiver"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV  ELRS 2.4G Nano Receiver"
+  weight_g: 3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV DarwinFPV  ELRS 2.4G Nano Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 3.00g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-2-4g-100mw-receiver"
+  }
+}
+receivers: {
+
+  uuid: "2bfab705-3ba5-4669-96bc-fb26813a9f54"
+  id: "darwinfpv-foldape4-4-inch-folding-long-2"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV FoldApe4 4 Inch Folding Long"
+  weight_g: 250
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV FoldApe4 4 Inch Folding Long Range  RTF Kit"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-foldape4-4-inch-folding-long-range-rtf-kit"
+  }
+}
+receivers: {
+
+  uuid: "10b536a5-3800-41c2-818d-7523699b725a"
+  id: "darwinfpv-x9-9-long-range-fpv-drone"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV X9 9 Long Range FPV Drone"
+  weight_g: 39
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV DarwinFPV X9 9 Long Range FPV Drone ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 39.00g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-x9-9-long-range-fpv-drone"
+  }
+}
+receivers: {
+
+  uuid: "d48defd1-3337-4219-9312-714094110990"
+  id: "bayckrc-elrs-2-4g-nano-receiver"
+  manufacturer: "DarwinFPV"
+  name: "BAYCKRC ELRS 2.4G Nano Receiver"
+  weight_g: 1.6
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV BAYCKRC ELRS 2.4G Nano Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 1.60g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-2-4g-elrs-nano-receiver"
+  }
+}
+receivers: {
+
+  uuid: "b2b5b4ce-1edd-4be7-8c45-513616e93c3d"
+  id: "hummingbird-v4-1-complete-fly-repair"
+  manufacturer: "NewBeeDrone"
+  name: "Hummingbird V4.1 Complete Fly & Repair"
+  weight_g: 4.57
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Hummingbird V4.1 Complete Fly & Repair Bundle"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/hummingbird-v4-1-complete-starter-bundle"
+  }
+}
+receivers: {
+
+  uuid: "2451cb66-17dd-43cc-92ad-e3367e366a74"
+  id: "newbeedrone-acrobee75-blv5-bnf-elrs2-4g-2s"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone AcroBee75 BLV5 BNF ELRS2.4G 2S"
+  weight_g: 36.4
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone AcroBee75 BLV5 BNF ELRS2.4G 2S - The Ultimate Outdoor Whoop"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-acrobee75-blv5-bnf-elrs2-4g-2s"
+  }
+}
+receivers: {
+
+  uuid: "4debc895-b56c-4150-b203-3d1adb3704a6"
+  id: "newbeedrone-beeceiver-elrs-2-4ghz-diversity"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeCeiver ELRS 2.4Ghz Diversity"
+  weight_g: 1.4
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone BeeCeiver ELRS 2.4Ghz Diversity with TCXO Oscillator Micro Receiver"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-beeceiver-diversity-with-tcxo-oscillator-micro-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/newbeedrone-beeceiver-expresslrs-2-4ghz-diversity-with-tcxo-oscillator-micro-receiver"
+  }
+}
+receivers: {
+
+  uuid: "43d5cead-0382-4209-9085-68d1a44e334a"
+  id: "newbeedrone-2-4g-replacement-receiver-antennas-60mm"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone 2.4G Replacement Receiver Antennas 60mm"
+  weight_g: 4.57
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone 2.4G Replacement Receiver Antennas 60mm for BeeBrain BLV3/BLV4/HMB F4 V2"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-2-4g-replacement-receiver-antennas-60mm-for-beebrain-blv3-blv4-hmb-f4-v2"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/newbeedrone-2-4g-replacement-receiver-antennas-60mm-for-beebrain-blv3-blv4-hmb-f4-v2"
+  }
+}
+receivers: {
+
+  uuid: "dd71c2d6-a10b-4711-8cd3-ebfcce8303a1"
+  id: "hdo-analog-fpv-goggles-ndaa"
+  manufacturer: "Fat Shark"
+  name: "HDO+ Analog FPV Goggles - NDAA"
+  weight_g: 235.8
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Fat Shark HDO+ Analog FPV Goggles - NDAA ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 235.80g."
+}
+receivers: {
+
+  uuid: "7aa5b5d3-1e7a-42af-8337-17848b6a50a1"
+  id: "cinemini-2-5-3d-prints-bundle-dji-o4"
+  manufacturer: "Rotor Riot"
+  name: "CineMini 2.5 3D Prints Bundle - DJI O4"
+  weight_g: 3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Rotor Riot CineMini 2.5 3D Prints Bundle - DJI O4 ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 3.00g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://rotorriot.com/products/cinemini-2-5-3d-prints-bundle-dji-o4-pro"
+  }
+}
+receivers: {
+
+  uuid: "054a71f6-2837-4ac8-a22c-2213938973ea"
+  id: "futaba-r7208sb"
+  manufacturer: "Futaba"
+  name: "Futaba R7208SB"
+  weight_g: 0.9
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Futaba R7208SB – FASSTest Bi-Directional Communication System S.Bus/S.Bus2 Port and 8 Channels Receiver"
+}
+receivers: {
+
+  uuid: "8daa9d8b-15fb-4ec8-bc6f-cf9e597181b9"
+  id: "fat-shark-recon-hd-goggle-bundle"
+  manufacturer: "Rotor Riot"
+  name: "Fat Shark Recon HD Goggle Bundle"
+  weight_g: 235.8
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Rotor Riot Fat Shark Recon HD Goggle Bundle ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 235.80g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://rotorriot.com/products/fat-shark-recon-hd-goggle-bundle"
+  }
+}
+receivers: {
+
+  uuid: "7ca03770-6392-4cd4-88ec-6844c9a125ed"
+  id: "nano-diversity-915mhz-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Nano Diversity 915MHz Receiver"
+  weight_g: 1.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "Nano Diversity 915MHz Receiver For Crossfire Protocol - NDAA"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/tbs-crossfire-diversity-nano-receiver-ndaa"
+  }
+}
+receivers: {
+
+  uuid: "44eccfa6-25af-4aad-ba28-73752a75f75d"
+  id: "nano-pro-915mhz-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Nano PRO 915MHz Receiver"
+  weight_g: 1.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "Nano PRO 915MHz Receiver For Crossfire Protocol - NDAA"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/iflight-protek60-pro-o3-6s-hd-cinelifter-tbs-crossfire-nano-rx-zcam-red-version"
+  }
+}
+receivers: {
+
+  uuid: "a5fec8b4-17ce-4d9c-92fe-9680f922ebd4"
+  id: "nano-se-915mhz-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Nano SE 915MHz Receiver"
+  weight_g: 0.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "Nano SE 915MHz Receiver For Crossfire Protocol - NDAA"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/crossfire-nano-se"
+  }
+}
+receivers: {
+
+  uuid: "5357171b-b056-4473-be8b-d54ca5ce7b61"
+  id: "cl2-immortal-t-elrs-dual-antenna-mount"
+  manufacturer: "Noozle3D"
+  name: "CL2 Immortal T / ELRS Dual Antenna Mount"
+  weight_g: 0.7
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Noozle3D CL2 Immortal T / ELRS Dual Antenna Mount ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
+}
+receivers: {
+
+  uuid: "53fa1822-3ca5-4006-b2b3-4b07973a69fd"
+  id: "xr4-gemini-xrossband-dual-band-receiver"
+  manufacturer: "RadioMaster"
+  name: "XR4 Gemini Xrossband Dual-Band  Receiver"
+  weight_g: 1.7
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "XR4 Gemini Xrossband Dual-Band  Receiver for ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/xr4-gemini-xrossband-dual-band-expresslrs-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/pre-order-radiomaster-xr4-gemini-xrossband-dual-band-expresslrs-receiver"
+  }
+}
+receivers: {
+
+  uuid: "0d067b99-53dc-4ad5-8e56-46ccc4925cc3"
+  id: "xr3-nano-multi-frequency-antenna-diversity-receiver"
+  manufacturer: "RadioMaster"
+  name: "XR3 Nano Multi-Frequency Antenna Diversity Receiver"
+  weight_g: 1.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "XR3 Nano Multi-Frequency Antenna Diversity Receiver for ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/xr3-nano-multi-frequency-antenna-diversity-expresslrs-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomasterxr3-nano-multi-frequency-antenna-diversity-expresslrs-receiver-choose-antenna"
+  }
+}
+receivers: {
+
+  uuid: "56894c2c-7520-4763-890c-27bdabf56067"
+  id: "xr2-nano-2-4ghz-receiver"
+  manufacturer: "RadioMaster"
+  name: "XR2 Nano 2.4GHz Receiver"
+  weight_g: 0.8
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "XR2 Nano 2.4GHz Receiver for ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/xr2-nano-2-4ghz-expresslrs-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-xr2-nano-2-4ghz-expresslrs-receiver-w-ceramic-antenna"
+  }
+}
+receivers: {
+
+  uuid: "e38b1e37-fc81-4dff-ae2f-6be90e007537"
+  id: "xr1-nano-multi-frequency-receiver"
+  manufacturer: "RadioMaster"
+  name: "XR1 Nano Multi-Frequency Receiver"
+  weight_g: 1
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "XR1 Nano Multi-Frequency Receiver for ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/xr1-nano-multi-frequency-expresslrs-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/radiomaster-xr1-nano-multi-frequency-receiver-900mhz"
+  }
+}
+receivers: {
+
+  uuid: "3b039892-a62f-45aa-aaac-ad83f2f0cda7"
+  id: "nomad-elrs-dual-1w-gemini-xrossband"
+  manufacturer: "RadioMaster"
+  name: "Nomad ELRS Dual 1W Gemini Xrossband"
+  weight_g: 87.2
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Nomad ELRS Dual 1W Gemini Xrossband TX Module"
+}
+receivers: {
+
+  uuid: "97e33d9c-ce15-4785-b5e1-6082fd48cf2e"
+  id: "bandit-915-868mhz-receiver-antenna"
+  manufacturer: "RadioMaster"
+  name: "Bandit 915/868MHz Receiver Antenna"
+  weight_g: 5.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000014"
+  description: "Bandit 915/868MHz Receiver Antenna - Choose Version"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/bandit-moxon-antenna"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-bandit-915mhz-elrs-rf-module"
+  }
+}
+receivers: {
+
+  uuid: "d2aac87f-4f75-4cf7-b804-a11c597d7ac6"
+  id: "diversity-915-868mhz-receiver"
+  manufacturer: "Foxeer"
+  name: "Diversity 915/868MHz Receiver"
+  weight_g: 5.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000014"
+  description: "Diversity 915/868MHz Receiver For ELRS Protocol"
+}
+receivers: {
+
+  uuid: "ad476e95-6719-495d-bee9-da1b90516e54"
+  id: "rp4td-2-4ghz-true-diversity-receiver"
+  manufacturer: "RadioMaster"
+  name: "RP4TD 2.4GHz True Diversity Receiver"
+  weight_g: 1
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "RP4TD 2.4GHz True Diversity Receiver For ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/rp4td-expresslrs-2-4ghz-diversity-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-rp4td-m-expresslrs-2-4ghz-mini-true-diversity-receiver"
+  }
+}
+receivers: {
+
+  uuid: "3fd83924-5351-4a82-a07c-bad5f66421c8"
+  id: "rp3-2-4ghz-diversity-receiver"
+  manufacturer: "RadioMaster"
+  name: "RP3 2.4GHz Diversity Receiver"
+  weight_g: 1.4
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000011"
+  description: "RP3 2.4GHz Diversity Receiver For ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/rp3-expresslrs-2-4ghz-nano-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-rp3-elrs-2-4ghz-diversity-nano-receiver-w-ufl-antennas"
+  }
+}
+receivers: {
+
+  uuid: "395d6c69-9cad-4dda-99cf-eaf20a257e3f"
+  id: "bandit-br1-915mhz-receiver"
+  manufacturer: "RadioMaster"
+  name: "Bandit BR1 915MHz Receiver"
+  weight_g: 1.7
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "Bandit BR1 915MHz Receiver For ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/bandit-br1-expresslrs-receiver"
+  }
+}
+receivers: {
+
+  uuid: "0251c09c-e436-4384-8884-c2b875eced5d"
+  id: "tanq-gps-immortal-t"
+  manufacturer: "Noozle3D"
+  name: "TANQ GPS & Immortal T /"
+  weight_g: 194
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "TANQ GPS & Immortal T / ELRS Antenna Mount"
+}
+receivers: {
+
+  uuid: "5a178a81-e1cf-41b7-b9fe-436983abd273"
+  id: "er6gv-2-4ghz-pwm-receiver"
+  manufacturer: "RadioMaster"
+  name: "ER6GV 2.4GHz PWM Receiver"
+  weight_g: 5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "ER6GV 2.4GHz PWM Receiver For ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/er6g-er6gv-2-4ghz-elrs-pwm-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-er6gv-2-4ghz-elrs-pwm-receiver"
+  }
+}
+receivers: {
+
+  uuid: "e918a555-55d6-4653-91ff-18899b0a22e0"
+  id: "er4-2-4ghz-pwm-receiver"
+  manufacturer: "RadioMaster"
+  name: "ER4 2.4GHz PWM Receiver"
+  weight_g: 3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "ER4 2.4GHz PWM Receiver For ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/er4-2-4ghz-elrs-pwm-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-er4-2-4ghz-elrs-pwm-receiver"
+  }
+}
+receivers: {
+
+  uuid: "ec8973d7-2d6e-44c9-b092-f920d1159c6c"
+  id: "nano-915mhz-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Nano 915MHz Receiver"
+  weight_g: 0.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "Nano 915MHz Receiver For Crossfire Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/iflight-nazgul-xl10-v6-6s-analog-10-inch-long-range-drone-2-5w-vtx-tbs-crossfire-nano-rx"
+  }
+}
+receivers: {
+
+  uuid: "dde85e91-cfe4-43b6-9807-40a0000bf970"
+  id: "t-antenna-915-868mhz-receiver"
+  manufacturer: "Foxeer"
+  name: "T Antenna 915/868MHz Receiver"
+  weight_g: 5.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000014"
+  description: "T Antenna 915/868MHz Receiver For ELRS Protocol"
+}
+receivers: {
+
+  uuid: "11c9d78a-2419-4a18-b1b6-e903b2b26f4f"
+  id: "915-868mhz-elrs-t-antenna"
+  manufacturer: "Foxeer"
+  name: "915/868MHz ELRS T Antenna"
+  weight_g: 5.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000014"
+  description: "915/868MHz ELRS T Antenna - Choose Version"
+}
+receivers: {
+
+  uuid: "d7c4b600-bb1e-4f60-ba97-ae68efb0b3c7"
+  id: "2-4ghz-elrs-t-antenna-choose-version"
+  manufacturer: "Foxeer"
+  name: "2.4GHz ELRS T Antenna - Choose Version"
+  weight_g: 3.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Foxeer 2.4GHz ELRS T Antenna - Choose Version ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 3.30g."
+}
+receivers: {
+
+  uuid: "ea65339a-f3de-437a-9538-49e9ef527339"
+  id: "t-antenna-2-4ghz-receiver"
+  manufacturer: "Foxeer"
+  name: "T Antenna 2.4GHz Receiver"
+  weight_g: 2.2
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "T Antenna 2.4GHz Receiver with LNA & PA For ELRS Protocol"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/foxeer-elrs-lite-2-4ghz-receiver-t-antenna"
+  }
+}
+receivers: {
+
+  uuid: "eb16f065-7880-46b4-9218-c6a5ffa6ee87"
+  id: "lite-2-4ghz-receiver-for-elrs-protocol"
+  manufacturer: "Foxeer"
+  name: "Lite 2.4GHz Receiver For ELRS Protocol"
+  weight_g: 3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000012"
+  description: "Foxeer Lite 2.4GHz Receiver For ELRS Protocol ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 3.00g."
+}
+receivers: {
+
+  uuid: "8b71cd1c-b46a-49e8-b899-9afe47a50a90"
+  id: "d-pole-mkii-2-4ghz-receiver-antenna"
+  manufacturer: "TrueRC"
+  name: "D-Pole MKII 2.4GHz Receiver Antenna"
+  weight_g: 20
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "TrueRC D-Pole MKII 2.4GHz Receiver Antenna ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 20.00g."
+}
+receivers: {
+
+  uuid: "b7680398-fb32-4e74-8174-a239999fd5d5"
+  id: "crossfire-micro-dipole-915mhz-rc-receiver"
+  manufacturer: "Team Black Sheep"
+  name: "Crossfire Micro Dipole 915MHz RC Receiver"
+  weight_g: 1.3
+  protocol: "Crossfire"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "Crossfire Micro Dipole 915MHz RC Receiver Antenna"
+}
+receivers: {
+
+  uuid: "70d85ebd-eeac-43ef-8369-0e8f0f6d2c05"
+  id: "tto-2-4ghz-receiver"
+  manufacturer: "ImmersionRC"
+  name: "Átto 2.4Ghz Receiver"
+  weight_g: 0.8
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Átto 2.4Ghz Receiver For Ghost Protocol - NDAA"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/immersionrc-ghost-atto-2-4ghz-rx"
+  }
+}
+receivers: {
+
+  uuid: "6cf4008b-288c-43c2-a0a1-83b4f45bcd13"
+  id: "2-4ghz-t-antenna"
+  manufacturer: "RadioMaster"
+  name: "2.4GHz T Antenna"
+  weight_g: 9.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "2.4GHz T Antenna for RP1 and EP1 - Choose Version"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/2-4ghz-t-antenna"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-2-4ghz-t-antenna"
+  }
+}
+receivers: {
+
+  uuid: "75e69b1c-dbf7-45b9-8ec6-d5db6c663caa"
+  id: "rp2-2-4ghz-receiver-for-elrs-protocol"
+  manufacturer: "RadioMaster"
+  name: "RP2 2.4GHz Receiver For ELRS Protocol"
+  weight_g: 16.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000012"
+  description: "RadioMaster RP2 2.4GHz Receiver For ELRS Protocol ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 16.50g."
+}
+receivers: {
+
+  uuid: "6ad98ca6-f42c-42f4-a62f-0a5f65d14ec1"
+  id: "qt-2-4ghz-receiver-antenna"
+  manufacturer: "ImmersionRC"
+  name: "qT 2.4GHz Receiver Antenna"
+  weight_g: 3.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "qT 2.4GHz Receiver Antenna for Ghost Átto"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/immersionrc-ghost-qt-150mm-antenna-for-atto-2-4ghz-micro-receiver"
+  }
+}
+receivers: {
+
+  uuid: "c7792c9a-e30f-42a0-89ee-94a9da1bde84"
+  id: "hook-v2-immortal-t-elrs-antenna-mount"
+  manufacturer: "Noozle3D"
+  name: "Hook V2 Immortal T / ELRS Antenna Mount"
+  weight_g: 155
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Noozle3D Hook V2 Immortal T / ELRS Antenna Mount ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 155.00g."
+}
+receivers: {
+
+  uuid: "b6dd4da0-cc0c-4f88-812c-7268e217760a"
+  id: "rp1-2-4ghz-receiver-for-elrs-protocol"
+  manufacturer: "RadioMaster"
+  name: "RP1 2.4GHz Receiver For ELRS Protocol"
+  weight_g: 2.2
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000011"
+  description: "RadioMaster RP1 2.4GHz Receiver For ELRS Protocol ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 2.20g."
+}
+receivers: {
+
+  uuid: "40b503eb-51d7-4e5b-97ba-1debc58f02e0"
+  id: "cl2-immortal-t-elrs-antenna"
+  manufacturer: "Noozle3D"
+  name: "CL2 Immortal T / ELRS Antenna"
+  weight_g: 5.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "CL2 Immortal T / ELRS Antenna Mount - Choose Color"
+}
+receivers: {
+
+  uuid: "769c9fd3-6924-43cd-8fdf-8b14bcedd156"
+  id: "tx16s-mkii-max-joshua-bardwell-edition"
+  manufacturer: "RadioMaster"
+  name: "TX16S MKII MAX Joshua Bardwell Edition"
+  weight_g: 750
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "TX16S MKII MAX Joshua Bardwell Edition Radio Controller - ELRS"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/tx16s-mark-ii-max-radio-controller-joshua-bardwell-edition-elrs-m2"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-tx16s-mkii-max-joshua-bardwell-edition-edgetx-rc-transmitter-w-v4-0-hall-gimbals-elrs"
+  }
+}
+receivers: {
+
+  uuid: "a34feda7-2a95-4717-9385-6511ecdeff31"
+  id: "tx16s-mk2-max-rotor-riot-edition"
+  manufacturer: "RadioMaster"
+  name: "TX16S MK2 Max Rotor Riot Edition"
+  weight_g: 750
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "TX16S MK2 Max Rotor Riot Edition Radio Controller - ELRS"
+}
+receivers: {
+
+  uuid: "50ae859f-2295-477a-8c3a-1a9966b79ba0"
+  id: "minimortal-t-915mhz-rc-receiver-antenna"
+  manufacturer: "FPVCycle"
+  name: "Minimortal T 915MHz RC Receiver Antenna"
+  weight_g: 0.7
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "FPV Cycle Minimortal T 915MHz RC Receiver Antenna ExpressLRS receiver operating at 915 MHz with telemetry support, weighing 0.70g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/tbs-fpvcycle-minimortal-t-900mhz-40mm-u-fl-linear-antenna"
+  }
+}
+receivers: {
+
+  uuid: "a37ca8e9-6176-4529-8c9f-db52b5c9d8cf"
+  id: "nano-2-4ghz-receiver-for-tracer-protocol"
+  manufacturer: "Team Black Sheep"
+  name: "Nano 2.4GHz Receiver for Tracer Protocol"
+  weight_g: 0.5
+  protocol: "Tracer"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Team Black Sheep Nano 2.4GHz Receiver for Tracer Protocol Tracer receiver operating at 2400 MHz with telemetry support, weighing 0.50g."
+}
+receivers: {
+
+  uuid: "424c83a5-a37c-4b03-8659-46a89d3e1c91"
+  id: "r81-2-4ghz-receiver-for-frsky-protocol"
+  manufacturer: "RadioMaster"
+  name: "R81 2.4GHz Receiver For FrSky Protocol"
+  weight_g: 5.55
+  protocol: "FrSky D16"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "RadioMaster R81 2.4GHz Receiver For FrSky Protocol FrSky D16 receiver operating at 2400 MHz with telemetry support, weighing 5.55g."
+}
+receivers: {
+
+  uuid: "515dd422-2230-4a19-8447-c530b270653b"
+  id: "rekon-5-inch-rocket-8s-2-5w-elrs"
+  manufacturer: "HGLRC"
+  name: "Rekon 5-inch Rocket 8S 2.5W Elrs"
+  weight_g: 174
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Rekon 5-inch Rocket 8S 2.5W Elrs 2.4/915 dual-band"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.com/products/rekon-5-inch-rocket-8s-2-5w-elrs-2-4-915-dual-band"
+  }
+}
+receivers: {
+
+  uuid: "6d081d63-fb8a-4517-b2ff-6585fc62bac6"
+  id: "hglrc-gemini-elrs-915mhz-2-4ghz"
+  manufacturer: "HGLRC"
+  name: "HGLRC Gemini ELRS 915MHz & 2.4GHz"
+  weight_g: 0.82
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "HGLRC Gemini ELRS 915MHz & 2.4GHz Dual-Band Single/Dual Antenna Receiver"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.com/products/hglrc-elrs-915mhz-2-4ghz-dual-band-single-dual-antenna-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/hglrc-gemini-elrs-2-4ghz-rx-dual-receiver"
+  }
+}
+receivers: {
+
+  uuid: "b8305249-a23c-4258-a718-cb9378ecf0ca"
+  id: "diatone-roma-f4-dji-4-6s-drone"
+  manufacturer: "Diatone"
+  name: "DIATONE Roma F4 DJI 4/6S Drone"
+  weight_g: 13.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DIATONE Roma F4 DJI 4/6S Drone MSR/TBS Receiver"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.diatone.us/products/diatone-roma-f4-dji-4-6s"
+  }
+}
+receivers: {
+
+  uuid: "12ff7e0d-0e05-4065-aa44-4b0b88c19733"
+  id: "sub250-elrs-lite-2-4g-receiver"
+  manufacturer: "Sub250"
+  name: "Sub250 ELRS Lite 2.4G Receiver"
+  weight_g: 0.6
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000012"
+  description: "Sub250 Sub250 ELRS Lite 2.4G Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.60g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://sub250.com/products/sub250-elrs-lite-2-4g-receiver"
+  }
+}
+receivers: {
+
+  uuid: "d676a9f6-b295-4212-9758-ce819ebbfcc6"
+  id: "sub250-elrs-nano-pro-2-4g-receiver"
+  manufacturer: "Sub250"
+  name: "Sub250 ELRS Nano Pro 2.4G Receiver"
+  weight_g: 0.6
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Sub250 Sub250 ELRS Nano Pro 2.4G Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.60g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://sub250.com/products/sub250-elrs-nano-pro-2-4g-receiver"
+  }
+}
+receivers: {
+
+  uuid: "3f1f6603-164a-476e-a05f-d90c701f42d8"
+  id: "sub250-elrs-nano-2-4g-receiver"
+  manufacturer: "Sub250"
+  name: "Sub250 ELRS Nano 2.4G Receiver"
+  weight_g: 0.6
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Sub250 Sub250 ELRS Nano 2.4G Receiver ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.60g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://sub250.com/products/sub250-elrs-nano-2-4g-receiver"
+  }
+}
+receivers: {
+
+  uuid: "2c79cc2d-a773-4305-b0a9-ae06f15b8fff"
+  id: "sub250-1s-nanofly16-1-6-inch-freestyle"
+  manufacturer: "Sub250"
+  name: "Sub250 1s Nanofly16 1.6 inch Freestyle"
+  weight_g: 28
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "Sub250 1s Nanofly16  1.6 inch Freestyle Quadcopter"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://sub250.com/products/1s-nanofly-16-freestyle-quadcopter"
+  }
+}
+receivers: {
+
+  uuid: "b5de936f-25cb-4012-81a6-a842d7ba6707"
+  id: "internal-rx-1af14652-bd6f-453d-8a84-db99438de688"
+  manufacturer: "BETAFPV"
+  name: "ELRS Lite Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.82
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV ELRS Lite Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/elrs-lite-receiver"
+  }
+}
+receivers: {
+
+  uuid: "c302c0e5-00ed-4909-b981-757c38e13d5f"
+  id: "internal-rx-cb515f72-04b0-44d3-b756-39f375527de0"
+  manufacturer: "BETAFPV"
+  name: "ELRS Nano Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.7
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV ELRS Nano Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/elrs-nano-receiver"
+  }
+}
+receivers: {
+
+  uuid: "c9037e17-7240-4bc5-b02b-a9e92cf24b88"
+  id: "internal-rx-f55610c5-306f-4b2c-a6a1-b7ab5eb33f7c"
+  manufacturer: "BETAFPV"
+  name: "SPI Frsky Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.43
+  protocol: "FrSky D16"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV SPI Frsky Receiver (Internal RX) FrSky D16 receiver operating at 2400 MHz with telemetry support, weighing 0.43g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/spi-frsky-receiver"
+  }
+}
+receivers: {
+
+  uuid: "74d7a534-ce02-404a-b488-b93449e52795"
+  id: "internal-rx-1f92f03d-d89c-4abe-93ca-6a11e64dda6a"
+  manufacturer: "CADDX"
+  name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
+  is_internal_only: true
+  weight_g: 5.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "CADDXFPV CADDXFPV F4_AIO_ELRS (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 5.30g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://caddxfpv.com/products/cadx-caddxf4_aio_elrs"
+  }
+}
+receivers: {
+
+  uuid: "c2de593a-f739-4f6e-93c5-ad7e03de6e4f"
+  id: "darwinfpv-f411-45a-elrs-aio-cineape35-5"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only: true
+  weight_g: 41.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
+  }
+}
+receivers: {
+
+  uuid: "a598eedb-5383-4f63-9f9f-64d0e99106e9"
+  id: "darwinfpv-cement-ultra-durable-elrs-2-4g-2"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
+  is_internal_only: true
+  weight_g: 3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-elrs-2-4g-receiver"
+  }
+}
+receivers: {
+
+  uuid: "5ff7f57c-3e4f-4840-b0c0-71d8894982d6"
+  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio-4"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only: true
+  weight_g: 5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
+  }
+}
+receivers: {
+
+  uuid: "e8e4c3aa-e4d1-4bbe-b3c3-f05a66532330"
+  id: "newbeedrone-lionbee-long-range-elrs2-4-aio-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
+  is_internal_only: true
+  weight_g: 4.57
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-lionbee-long-range-elrs2-4-aio-flightcontrol"
+  }
+}
+receivers: {
+
+  uuid: "25a33ace-8a95-4e9e-8db9-d7e3c8057f2c"
+  id: "newbeedrone-lionbee-3inch-long-range-elrs2-4-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
+  is_internal_only: true
+  weight_g: 62.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-lionbee-3inch-long-range-elrs2-4-aio-developer-kit"
+  }
+}
+receivers: {
+
+  uuid: "4672b90a-a3ef-40ec-9a2c-1a558b5c3dbf"
+  id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
+  is_internal_only: true
+  weight_g: 4.57
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
+  }
+}
+receivers: {
+
+  uuid: "64cf50bc-5a26-49ed-a2d1-95e14eeaeff6"
+  id: "newbeedrone-beeceiver-frsky-2"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeCeiver Frsky"
+  is_internal_only: true
+  weight_g: 0.91
+  protocol: "FrSky D16"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-beeceiver-frsky-compatible-receiver-v1"
+  }
+}
+receivers: {
+
+  uuid: "f940d3a2-cbbc-4eb2-88f5-142426359504"
+  id: "goku-f405-ervt-1s-5a-5-in-1-2"
+  manufacturer: "Flywoo"
+  name: "GOKU F405 ERVT 1S 5A 5-in-1"
+  is_internal_only: true
+  weight_g: 4.9
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
+}
+receivers: {
+
+  uuid: "1a14933e-b728-4eab-b30e-a26c0b0a9eca"
+  id: "internal-rx-0f285819-4640-44e9-8f1d-254fb487052a"
+  manufacturer: "BETAFPV"
+  name: "ELRS Lite Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.82
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV ELRS Lite Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/elrs-lite-receiver"
+  }
+}
+receivers: {
+
+  uuid: "b2c720d3-0353-4838-af8f-13a97dc9dd25"
+  id: "internal-rx-9ce1c839-3fae-477e-a26d-d8b760934cf6"
+  manufacturer: "BETAFPV"
+  name: "ELRS Nano Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.7
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV ELRS Nano Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/elrs-nano-receiver"
+  }
+}
+receivers: {
+
+  uuid: "2d5b2f8d-fe16-4587-a506-974578c096d5"
+  id: "internal-rx-53aad8e6-9293-4165-8856-d0bea8d8e4ba"
+  manufacturer: "BETAFPV"
+  name: "SPI Frsky Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.43
+  protocol: "FrSky D16"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV SPI Frsky Receiver (Internal RX) FrSky D16 receiver operating at 2400 MHz with telemetry support, weighing 0.43g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/spi-frsky-receiver"
+  }
+}
+receivers: {
+
+  uuid: "35ea2c93-05ab-458c-91a6-d16b7a9b7dea"
+  id: "internal-rx-2f75a325-5e33-452e-93a2-93f94d71b54d"
+  manufacturer: "CADDX"
+  name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
+  is_internal_only: true
+  weight_g: 5.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "CADDXFPV CADDXFPV F4_AIO_ELRS (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 5.30g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://caddxfpv.com/products/cadx-caddxf4_aio_elrs"
+  }
+}
+receivers: {
+
+  uuid: "b7c8d86f-ef46-4fb8-88b5-65683c3750f4"
+  id: "darwinfpv-f411-45a-elrs-aio-cineape35-6"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only: true
+  weight_g: 41.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
+  }
+}
+receivers: {
+
+  uuid: "eed31c09-c456-4684-a08e-5c856f97e4c4"
+  id: "darwinfpv-cement-ultra-durable-elrs-2-4g-3"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
+  is_internal_only: true
+  weight_g: 3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-elrs-2-4g-receiver"
+  }
+}
+receivers: {
+
+  uuid: "561e97ea-717b-43e6-8864-8e62fac6727e"
+  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio-5"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only: true
+  weight_g: 5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
+  }
+}
+receivers: {
+
+  uuid: "43b5e716-b012-4b69-ba93-87ad6cc1e369"
+  id: "newbeedrone-lionbee-long-range-elrs2-4-aio-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
+  is_internal_only: true
+  weight_g: 4.57
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-lionbee-long-range-elrs2-4-aio-flightcontrol"
+  }
+}
+receivers: {
+
+  uuid: "d645ce4e-fa7c-468b-9435-83742d32ef19"
+  id: "newbeedrone-lionbee-3inch-long-range-elrs2-4-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
+  is_internal_only: true
+  weight_g: 62.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-lionbee-3inch-long-range-elrs2-4-aio-developer-kit"
+  }
+}
+receivers: {
+
+  uuid: "41f5d5c4-7253-48b8-b59d-71809e9c2308"
+  id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
+  is_internal_only: true
+  weight_g: 4.57
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
+  }
+}
+receivers: {
+
+  uuid: "7b5bec93-ef6f-4eb5-9a7d-0deefa998ebd"
+  id: "newbeedrone-beeceiver-frsky-3"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeCeiver Frsky"
+  is_internal_only: true
+  weight_g: 0.91
+  protocol: "FrSky D16"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-beeceiver-frsky-compatible-receiver-v1"
+  }
+}
+receivers: {
+
+  uuid: "9051993c-35b3-461a-80b1-a94834896d2e"
+  id: "goku-f405-ervt-1s-5a-5-in-1-3"
+  manufacturer: "Flywoo"
+  name: "GOKU F405 ERVT 1S 5A 5-in-1"
+  is_internal_only: true
+  weight_g: 4.9
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
+}
+receivers: {
+
+  uuid: "9c54fe07-b85c-409a-9378-dfb5fe229050"
+  id: "internal-rx-47fe97d1-e70b-4bfc-9d1d-2712eb507c56"
+  manufacturer: "BETAFPV"
+  name: "ELRS Lite Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.82
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV ELRS Lite Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.82g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/elrs-lite-receiver"
+  }
+}
+receivers: {
+
+  uuid: "bd69a9d0-8548-40dd-ba68-90f3d95a7009"
+  id: "internal-rx-fc0f9301-cf37-4417-aaee-1d30ba87b04f"
+  manufacturer: "BETAFPV"
+  name: "ELRS Nano Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.7
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV ELRS Nano Receiver (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 0.70g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/elrs-nano-receiver"
+  }
+}
+receivers: {
+
+  uuid: "29b74c6e-23e3-40c6-87dd-a9f0ac2a6d91"
+  id: "internal-rx-0ecc0517-4eca-415e-b005-95963d5bd478"
+  manufacturer: "BETAFPV"
+  name: "SPI Frsky Receiver (Internal RX)"
+  is_internal_only: true
+  weight_g: 0.43
+  protocol: "FrSky D16"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "BETAFPV SPI Frsky Receiver (Internal RX) FrSky D16 receiver operating at 2400 MHz with telemetry support, weighing 0.43g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/spi-frsky-receiver"
+  }
+}
+receivers: {
+
+  uuid: "6654d8ad-eb22-4ed8-917d-0850437e4da4"
+  id: "internal-rx-f0e44073-9567-4702-a556-5cd1883e8296"
+  manufacturer: "CADDX"
+  name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
+  is_internal_only: true
+  weight_g: 5.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "CADDXFPV CADDXFPV F4_AIO_ELRS (Internal RX) ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 5.30g."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://caddxfpv.com/products/cadx-caddxf4_aio_elrs"
+  }
+}
+receivers: {
+
+  uuid: "87638d17-be2b-4d31-99d3-6d882a10306f"
+  id: "darwinfpv-f411-45a-elrs-aio-cineape35-7"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV F411 45A ELRS AIO CineApe35"
+  is_internal_only: true
+  weight_g: 41.5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
+  }
+}
+receivers: {
+
+  uuid: "9fc3577e-8769-4e86-81e4-dd6f1b2e5b83"
+  id: "darwinfpv-cement-ultra-durable-elrs-2-4g-4"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
+  is_internal_only: true
+  weight_g: 3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV Cement Ultra Durable ELRS 2.4G Receiver (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-elrs-2-4g-receiver"
+  }
+}
+receivers: {
+
+  uuid: "eb82b94d-1932-4841-8427-29c4cc124048"
+  id: "darwinfpv-elrs3-0-f411-15a-bluejay-aio-6"
+  manufacturer: "DarwinFPV"
+  name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
+  is_internal_only: true
+  weight_g: 5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
+  }
+}
+receivers: {
+
+  uuid: "d72a2149-daca-4deb-8635-5b2fcdba562d"
+  id: "newbeedrone-lionbee-long-range-elrs2-4-aio-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
+  is_internal_only: true
+  weight_g: 4.57
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-lionbee-long-range-elrs2-4-aio-flightcontrol"
+  }
+}
+receivers: {
+
+  uuid: "ebd3aea7-8ed6-42f6-b9ae-cc5e3547db2b"
+  id: "newbeedrone-lionbee-3inch-long-range-elrs2-4-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
+  is_internal_only: true
+  weight_g: 62.3
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone LionBee 3inch long range ELRS2.4 AIO developer kit (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-lionbee-3inch-long-range-elrs2-4-aio-developer-kit"
+  }
+}
+receivers: {
+
+  uuid: "98ed7beb-7019-477d-a2e1-d850e286e75b"
+  id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
+  is_internal_only: true
+  weight_g: 4.57
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
+  }
+}
+receivers: {
+
+  uuid: "5fc364c3-f008-409c-9551-5289ee802bb1"
+  id: "newbeedrone-beeceiver-frsky-4"
+  manufacturer: "NewBeeDrone"
+  name: "NewBeeDrone BeeCeiver Frsky"
+  is_internal_only: true
+  weight_g: 0.91
+  protocol: "FrSky D16"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "NewBeeDrone BeeCeiver Frsky Compatible Receiver V1 (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://newbeedrone.com/products/newbeedrone-beeceiver-frsky-compatible-receiver-v1"
+  }
+}
+receivers: {
+
+  uuid: "ad54842e-f701-4858-b169-1f2fc5f6286d"
+  id: "goku-f405-ervt-1s-5a-5-in-1-4"
+  manufacturer: "Flywoo"
+  name: "GOKU F405 ERVT 1S 5A 5-in-1"
+  is_internal_only: true
+  weight_g: 4.9
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal RX)"
+}
+receivers: {
+
+  uuid: "4da8a069-d611-4376-b6d9-667996a4aa76"
+  id: "hglrc-specter-f722-lite-icm42688-gyro-2"
+  manufacturer: "HGLRC"
+  name: "HGLRC SPECTER F722 Lite ICM42688 gyro"
+  is_internal_only: true
+  weight_g: 5
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000012"
+  description: "HGLRC SPECTER F722 Lite ICM42688 gyro integrated ELRS 2.4G receiver flight controller (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.com/products/hglrc-specter-f722-lite-icm42688-gyro-integrated-elrs-2-4g-receiver-flight-control"
+  }
+}
+receivers: {
+
+  uuid: "1ee26f9f-4c6f-4301-b43b-cbc1dfa2dfa3"
+  id: "hglrc-wind5-lite-v2-racing-drone-2"
+  manufacturer: "HGLRC"
+  name: "HGLRC Wind5 Lite V2 Racing Drone"
+  is_internal_only: true
+  weight_g: 80
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000012"
+  description: "HGLRC Wind5 Lite V2 Racing Drone Elrs2.4G version (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.com/products/hglrc-wind5-lite-v2-racing-drone"
+  }
+}
+receivers: {
+
+  uuid: "ab61a221-d90d-4de9-917a-28a33599e037"
+  id: "hglrc-specter-15a-elrs-aio-2-4s-3"
+  manufacturer: "HGLRC"
+  name: "HGLRC SPECTER 15A ELRS AIO 2-4S"
+  is_internal_only: true
+  weight_g: 5.6
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000010"
+  description: "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone (Internal RX)"
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.com/products/hglrc-specter-15a-elrs-aio-2-4s-4-in-1-aio-fc-for-fpv-drone"
+  }
+}
+receivers: {
+
+  uuid: "01923019-3003-7001-8001-000000000001"
+  id: "radiomaster-rp1-v2-elrs-2.4ghz"
+  manufacturer: "RadioMaster"
+  name: "RadioMaster RP1 V2 2.4GHz ELRS Nano Receiver"
+  weight_g: 0.53
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000011"
+  description: "Compact open-source ExpressLRS 2.4GHz nano receiver featuring ESP8285 MCU and SX1280 RF chip with external 65mm U.FL T-antenna."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/rp1-expresslrs-2-4ghz-nano-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/radiomaster-rp1-v2-2-4ghz-elrs-nano-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-rp1-elrs-2-4ghz-nano-receiver-w-ufl-antenna"
+  }
+}
+receivers: {
+
+  uuid: "01923019-3003-7001-8001-000000000002"
+  id: "radiomaster-rp2-v2-elrs-2.4ghz"
+  manufacturer: "RadioMaster"
+  name: "RadioMaster RP2 V2 2.4GHz ELRS Nano Receiver"
+  weight_g: 0.55
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000012"
+  description: "Ultra-compact ExpressLRS nano receiver equipped with an integrated high-gain SMT ceramic antenna, ideal for whoops and micro quads."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/rp2-expresslrs-2-4ghz-nano-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-rp2-elrs-2-4ghz-nano-receiver-w-ceramic-antenna"
+  }
+}
+receivers: {
+
+  uuid: "01923019-3003-7001-8001-000000000003"
+  id: "radiomaster-rp3-v2-elrs-2.4ghz"
+  manufacturer: "RadioMaster"
+  name: "RadioMaster RP3 V2 2.4GHz ELRS Diversity Receiver"
+  weight_g: 4.6
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000011"
+  description: "True diversity 2.4GHz ExpressLRS receiver with dual SX1280 RF paths and power amplifier providing rock-solid long-range signal security."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/rp3-expresslrs-2-4ghz-nano-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/radiomaster-rp3-elrs-2-4ghz-diversity-nano-receiver-w-ufl-antennas"
+  }
+}
+receivers: {
+
+  uuid: "01923019-3003-7001-8001-000000000004"
+  id: "tbs-crossfire-nano-rx-se"
+  manufacturer: "Team Black Sheep"
+  name: "TBS Crossfire Nano RX Special Edition"
+  weight_g: 0.5
+  protocol: "Crossfire"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "Industry-standard 915MHz ultra-long-range receiver packaged with the durable TBS Immortal-T V2 antenna."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/tbs-crossfire-nano-rx-special-edition.html"
+  }
+}
+receivers: {
+
+  uuid: "01923019-3003-7001-8001-000000000005"
+  id: "tbs-crossfire-diversity-nano-rx"
+  manufacturer: "Team Black Sheep"
+  name: "TBS Crossfire Diversity Nano RX"
+  weight_g: 1.8
+  protocol: "Crossfire"
+  frequency_band_mhz: 915
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000013"
+  description: "Full-range 8-channel diversity Crossfire receiver featuring dual RF front-ends and power-filtered outputs for extreme range and interference rejection."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.team-blacksheep.com/products/prod:xf_nano_div_rx"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/tbs-crossfire-diversity-nano-rx"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/tbs-crossfire-diversity-nano-rx"
+  }
+}
+receivers: {
+
+  uuid: "01923019-3003-7001-8001-000000000006"
+  id: "betafpv-elrs-lite-2.4ghz-rx"
+  manufacturer: "BETAFPV"
+  name: "BETAFPV ELRS Lite 2.4GHz Receiver"
+  weight_g: 0.47
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000012"
+  description: "Ultralight 1S whoop ExpressLRS receiver with onboard ceramic SMD tower antenna and low-profile tower form factor."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://betafpv.com/products/elrs-lite-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://betafpv.com/products/elrs-lite-receiver"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/betafpv-elrs-lite-receiver-flat-antenna-v1-1-2-4ghz"
+  }
+}
+receivers: {
+
+  uuid: "01923019-3003-7001-8001-000000000007"
+  id: "happymodel-ep1-dual-tcxo-2.4ghz-rx"
+  manufacturer: "Happymodel"
+  name: "Happymodel EP1 Dual TCXO 2.4GHz ELRS Receiver"
+  weight_g: 1
+  protocol: "ExpressLRS"
+  frequency_band_mhz: 2400
+  has_telemetry: true
+  antenna_uuids: "01923019-3009-7001-8001-000000000011"
+  description: "Temperature Compensated Crystal Oscillator (TCXO) true diversity ExpressLRS receiver offering stable frequency lock in extreme climates."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.happymodel.cn/index.php/2022/11/07/2-4g-elrs-ep1-ep2-ep1dual-tcxo-receiver/"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.expresslrs.org/quick-start/receivers/hmep2400/"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/happymodel-expresslrs-nano-2-4ghz-ep1-dual-tcxo-rx.html"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/happymodel-2-4ghz-ep1-dual-diversity-tcxo-rx-express-lrs-receiver"
   }
 }

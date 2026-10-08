@@ -14,7 +14,7 @@
 export function formatStatorSize(
   diameter?: number | null,
   height?: number | null,
-  fallback: string = "-"
+  fallback: string = "-",
 ): string {
   if (diameter == null || height == null) return fallback;
 

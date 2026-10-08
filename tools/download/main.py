@@ -41,17 +41,22 @@ SHOPIFY_DOMAINS = [
     "darwinfpv.com",
     "newbeedrone.com",
     "caddxfpv.com",
-    "emax-usa.com"
+    "emax-usa.com",
 ]
+
 
 def search_retailers(query, session):
     for domain in SHOPIFY_DOMAINS:
         url = f"https://{domain}/search/suggest.json?q={urllib.parse.quote(query)}&resources[type]=product"
         try:
-            response = session.get(url, headers=HEADERS, impersonate="chrome110", timeout=8)
+            response = session.get(
+                url, headers=HEADERS, impersonate="chrome110", timeout=8
+            )
             if response.status_code == 200:
                 data = response.json()
-                products = data.get("resources", {}).get("results", {}).get("products", [])
+                products = (
+                    data.get("resources", {}).get("results", {}).get("products", [])
+                )
 
                 query_parts = query.lower().split()
                 best_match = None
@@ -73,6 +78,7 @@ def search_retailers(query, session):
 
     return ""
 
+
 def fetch_page_text(url, session):
     try:
         resp = session.get(url, headers=HEADERS, impersonate="chrome110", timeout=15)
@@ -88,27 +94,47 @@ def fetch_page_text(url, session):
     except Exception as e:
         return ""
 
+
 def clean_query(mfg, name):
     name_lower = name.lower()
     mfg_lower = mfg.lower()
 
     if name_lower.startswith(mfg_lower):
-        name = name[len(mfg):].strip()
+        name = name[len(mfg) :].strip()
 
     query = f"{mfg} {name}"
 
     # Strip exactly " - Official Store" first
-    query = re.compile(r'\s*-\s*official\s*store', re.IGNORECASE).sub("", query)
-    name = re.compile(r'\s*-\s*official\s*store', re.IGNORECASE).sub("", name)
+    query = re.compile(r"\s*-\s*official\s*store", re.IGNORECASE).sub("", query)
+    name = re.compile(r"\s*-\s*official\s*store", re.IGNORECASE).sub("", name)
 
-    fluff = ["brushless", "motor", "motors", "fpv", "drone", "quadcopter", "series", "racing", "ultralight", "micro", "v2", "v3", "se", "blushless", "seawater-proof"]
+    fluff = [
+        "brushless",
+        "motor",
+        "motors",
+        "fpv",
+        "drone",
+        "quadcopter",
+        "series",
+        "racing",
+        "ultralight",
+        "micro",
+        "v2",
+        "v3",
+        "se",
+        "blushless",
+        "seawater-proof",
+    ]
     for word in fluff:
-        query = re.compile(r'\b' + re.escape(word) + r'\b', re.IGNORECASE).sub("", query)
-        name = re.compile(r'\b' + re.escape(word) + r'\b', re.IGNORECASE).sub("", name)
+        query = re.compile(r"\b" + re.escape(word) + r"\b", re.IGNORECASE).sub(
+            "", query
+        )
+        name = re.compile(r"\b" + re.escape(word) + r"\b", re.IGNORECASE).sub("", name)
 
     query = " ".join(query.split())
     name = " ".join(name.split())
     return query, name
+
 
 def process_item(item, session):
     out_dir = os.path.join("..", "..", ".tmp", "raw_specs", item["type"])
@@ -139,7 +165,7 @@ def process_item(item, session):
             "id": item["id"],
             "manufacturer": item["manufacturer"],
             "name": item["name"],
-            "url": found_url
+            "url": found_url,
         }
         with open(meta_file, "w", encoding="utf-8") as f:
             json.dump(meta_data, f, indent=2)
@@ -147,6 +173,7 @@ def process_item(item, session):
         return f"Saved {item['manufacturer']} {item['name']} ({len(page_text)} chars)"
 
     return f"Failed to fetch page for {item['manufacturer']} {item['name']} from {found_url}"
+
 
 def collect_items():
     files = {
@@ -163,7 +190,7 @@ def collect_items():
     }
 
     items = []
-    block_regex = re.compile(r'(?s)\w+:\s*\{.*?\}')
+    block_regex = re.compile(r"(?s)\w+:\s*\{.*?\}")
     id_regex = re.compile(r'id:\s*"([^"]+)"')
     mfg_regex = re.compile(r'manufacturer:\s*"([^"]+)"')
     name_regex = re.compile(r'name:\s*"([^"]+)"')
@@ -182,14 +209,17 @@ def collect_items():
             name_match = name_regex.search(block)
 
             if id_match and mfg_match and name_match:
-                items.append({
-                    "type": ctype,
-                    "id": id_match.group(1),
-                    "manufacturer": mfg_match.group(1),
-                    "name": name_match.group(1)
-                })
+                items.append(
+                    {
+                        "type": ctype,
+                        "id": id_match.group(1),
+                        "manufacturer": mfg_match.group(1),
+                        "name": name_match.group(1),
+                    }
+                )
 
     return items
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -205,7 +235,9 @@ def main():
         print(f"Running with {args.parallelism} threads across internal Retailer APIs.")
         completed = 0
         with ThreadPoolExecutor(max_workers=args.parallelism) as executor:
-            futures = {executor.submit(process_item, item, session): item for item in items}
+            futures = {
+                executor.submit(process_item, item, session): item for item in items
+            }
             for future in as_completed(futures):
                 completed += 1
                 try:
@@ -220,6 +252,7 @@ def main():
             print(f"[{i}/{len(items)}] {res}")
 
     print("Done downloading raw specs!")
+
 
 if __name__ == "__main__":
     main()

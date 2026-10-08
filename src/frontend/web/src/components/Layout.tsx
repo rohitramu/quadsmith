@@ -33,21 +33,27 @@ export function Layout() {
       {/* Top Navbar */}
       <header className="sticky top-0 z-50 flex items-center h-16 px-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
         {/* Logo */}
-        <Link to="/" className="flex items-center hover:opacity-90 transition-opacity w-64">
+        <Link
+          to="/"
+          className="flex items-center hover:opacity-90 transition-opacity w-64"
+        >
           <img
             src={theme === "dark" ? logoDark : logoLight}
             alt="Quadsmith"
             className="h-11 w-auto"
           />
         </Link>
-        
+
         {/* Search Bar */}
         <div className="flex-1 max-w-2xl mx-auto px-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search components..." 
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+              size={18}
+            />
+            <input
+              type="text"
+              placeholder="Search components..."
               className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -71,17 +77,32 @@ export function Layout() {
         <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex flex-col overflow-y-auto">
           <nav className="p-4">
             <div className="mb-6">
-              <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Components</h2>
+              <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+                Components
+              </h2>
               <ul className="space-y-1">
                 <li>
                   <div className="flex items-center justify-between rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800">
-                    <Link to="/components/hardware" className="flex-1 px-3 py-2">Hardware</Link>
+                    <Link
+                      to="/components/hardware"
+                      className="flex-1 px-3 py-2"
+                    >
+                      Hardware
+                    </Link>
                     <button
                       onClick={() => toggleMenu("hardware")}
-                      aria-label={expandedMenu === "hardware" ? "Collapse Hardware menu" : "Expand Hardware menu"}
+                      aria-label={
+                        expandedMenu === "hardware"
+                          ? "Collapse Hardware menu"
+                          : "Expand Hardware menu"
+                      }
                       className="p-2 mr-1 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-500"
                     >
-                      {expandedMenu === "hardware" ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                      {expandedMenu === "hardware" ? (
+                        <ChevronDown size={16} />
+                      ) : (
+                        <ChevronRight size={16} />
+                      )}
                     </button>
                   </div>
                   {expandedMenu === "hardware" && (
@@ -100,10 +121,20 @@ export function Layout() {
                   )}
                 </li>
                 <li>
-                  <Link to="/components/software" className="block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800">Software</Link>
+                  <Link
+                    to="/components/software"
+                    className="block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                  >
+                    Software
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/components/gear" className="block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800">Gear</Link>
+                  <Link
+                    to="/components/gear"
+                    className="block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                  >
+                    Gear
+                  </Link>
                 </li>
               </ul>
             </div>

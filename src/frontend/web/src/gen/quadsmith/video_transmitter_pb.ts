@@ -2,8 +2,16 @@
 // @generated from file quadsmith/video_transmitter.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type {
+  GenFile,
+  GenMessage,
+  GenService,
+} from "@bufbuild/protobuf/codegenv2";
+import {
+  fileDesc,
+  messageDesc,
+  serviceDesc,
+} from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -13,8 +21,16 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file quadsmith/video_transmitter.proto.
  */
-export const file_quadsmith_video_transmitter: GenFile = /*@__PURE__*/
-  fileDesc("CiFxdWFkc21pdGgvdmlkZW9fdHJhbnNtaXR0ZXIucHJvdG8SCXF1YWRzbWl0aCKYAwoQVmlkZW9UcmFuc21pdHRlchISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISFgoIcHJvdG9jb2wYBiABKAlCBODzGAESFAoMbWF4X3Bvd2VyX213GAcgASgNEhsKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCCABKAISGwoTaW5wdXRfdm9sdGFnZV9tYXhfdhgJIAEoAhIVCg1hbnRlbm5hX3V1aWRzGAogAygJEhMKC2Rlc2NyaXB0aW9uGBUgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgWIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOkGStRgnChFWaWRlbyBUcmFuc21pdHRlchISVmlkZW8gVHJhbnNtaXR0ZXJzwvMYEnZpZGVvX3RyYW5zbWl0dGVycyI5ChpHZXRWaWRlb1RyYW5zbWl0dGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJInQKHExpc3RWaWRlb1RyYW5zbWl0dGVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJxCh1MaXN0VmlkZW9UcmFuc21pdHRlcnNSZXNwb25zZRI3ChJ2aWRlb190cmFuc21pdHRlcnMYASADKAsyGy5xdWFkc21pdGguVmlkZW9UcmFuc21pdHRlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAky4AEKF1ZpZGVvVHJhbnNtaXR0ZXJTZXJ2aWNlElkKE0dldFZpZGVvVHJhbnNtaXR0ZXISJS5xdWFkc21pdGguR2V0VmlkZW9UcmFuc21pdHRlclJlcXVlc3QaGy5xdWFkc21pdGguVmlkZW9UcmFuc21pdHRlchJqChVMaXN0VmlkZW9UcmFuc21pdHRlcnMSJy5xdWFkc21pdGguTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVxdWVzdBooLnF1YWRzbWl0aC5MaXN0VmlkZW9UcmFuc21pdHRlcnNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw", [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link]);
+export const file_quadsmith_video_transmitter: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "CiFxdWFkc21pdGgvdmlkZW9fdHJhbnNtaXR0ZXIucHJvdG8SCXF1YWRzbWl0aCKYAwoQVmlkZW9UcmFuc21pdHRlchISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISFgoIcHJvdG9jb2wYBiABKAlCBODzGAESFAoMbWF4X3Bvd2VyX213GAcgASgNEhsKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCCABKAISGwoTaW5wdXRfdm9sdGFnZV9tYXhfdhgJIAEoAhIVCg1hbnRlbm5hX3V1aWRzGAogAygJEhMKC2Rlc2NyaXB0aW9uGBUgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgWIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOkGStRgnChFWaWRlbyBUcmFuc21pdHRlchISVmlkZW8gVHJhbnNtaXR0ZXJzwvMYEnZpZGVvX3RyYW5zbWl0dGVycyI5ChpHZXRWaWRlb1RyYW5zbWl0dGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJInQKHExpc3RWaWRlb1RyYW5zbWl0dGVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJxCh1MaXN0VmlkZW9UcmFuc21pdHRlcnNSZXNwb25zZRI3ChJ2aWRlb190cmFuc21pdHRlcnMYASADKAsyGy5xdWFkc21pdGguVmlkZW9UcmFuc21pdHRlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAky4AEKF1ZpZGVvVHJhbnNtaXR0ZXJTZXJ2aWNlElkKE0dldFZpZGVvVHJhbnNtaXR0ZXISJS5xdWFkc21pdGguR2V0VmlkZW9UcmFuc21pdHRlclJlcXVlc3QaGy5xdWFkc21pdGguVmlkZW9UcmFuc21pdHRlchJqChVMaXN0VmlkZW9UcmFuc21pdHRlcnMSJy5xdWFkc21pdGguTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVxdWVzdBooLnF1YWRzbWl0aC5MaXN0VmlkZW9UcmFuc21pdHRlcnNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    [
+      file_quadsmith__common,
+      file_quadsmith__sql,
+      file_quadsmith_reference_link,
+    ],
+  );
 
 /**
  * ---------------------------------------------------------
@@ -102,7 +118,8 @@ export type VideoTransmitter = Message<"quadsmith.VideoTransmitter"> & {
  * Describes the message quadsmith.VideoTransmitter.
  * Use `create(VideoTransmitterSchema)` to create a new message.
  */
-export const VideoTransmitterSchema: GenMessage<VideoTransmitter> = /*@__PURE__*/
+export const VideoTransmitterSchema: GenMessage<VideoTransmitter> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_video_transmitter, 0);
 
 /**
@@ -112,82 +129,88 @@ export const VideoTransmitterSchema: GenMessage<VideoTransmitter> = /*@__PURE__*
  *
  * @generated from message quadsmith.GetVideoTransmitterRequest
  */
-export type GetVideoTransmitterRequest = Message<"quadsmith.GetVideoTransmitterRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
+export type GetVideoTransmitterRequest =
+  Message<"quadsmith.GetVideoTransmitterRequest"> & {
+    /**
+     * @generated from field: string id = 1;
+     */
+    id: string;
 
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
+    /**
+     * @generated from field: repeated string columns = 2;
+     */
+    columns: string[];
+  };
 
 /**
  * Describes the message quadsmith.GetVideoTransmitterRequest.
  * Use `create(GetVideoTransmitterRequestSchema)` to create a new message.
  */
-export const GetVideoTransmitterRequestSchema: GenMessage<GetVideoTransmitterRequest> = /*@__PURE__*/
+export const GetVideoTransmitterRequestSchema: GenMessage<GetVideoTransmitterRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_video_transmitter, 1);
 
 /**
  * @generated from message quadsmith.ListVideoTransmittersRequest
  */
-export type ListVideoTransmittersRequest = Message<"quadsmith.ListVideoTransmittersRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
+export type ListVideoTransmittersRequest =
+  Message<"quadsmith.ListVideoTransmittersRequest"> & {
+    /**
+     * @generated from field: string filter = 1;
+     */
+    filter: string;
 
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
+    /**
+     * @generated from field: int32 page_size = 2;
+     */
+    pageSize: number;
 
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
+    /**
+     * @generated from field: string page_token = 3;
+     */
+    pageToken: string;
 
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
+    /**
+     * @generated from field: repeated string columns = 4;
+     */
+    columns: string[];
 
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
+    /**
+     * @generated from field: repeated string sort = 5;
+     */
+    sort: string[];
+  };
 
 /**
  * Describes the message quadsmith.ListVideoTransmittersRequest.
  * Use `create(ListVideoTransmittersRequestSchema)` to create a new message.
  */
-export const ListVideoTransmittersRequestSchema: GenMessage<ListVideoTransmittersRequest> = /*@__PURE__*/
+export const ListVideoTransmittersRequestSchema: GenMessage<ListVideoTransmittersRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_video_transmitter, 2);
 
 /**
  * @generated from message quadsmith.ListVideoTransmittersResponse
  */
-export type ListVideoTransmittersResponse = Message<"quadsmith.ListVideoTransmittersResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.VideoTransmitter video_transmitters = 1;
-   */
-  videoTransmitters: VideoTransmitter[];
+export type ListVideoTransmittersResponse =
+  Message<"quadsmith.ListVideoTransmittersResponse"> & {
+    /**
+     * @generated from field: repeated quadsmith.VideoTransmitter video_transmitters = 1;
+     */
+    videoTransmitters: VideoTransmitter[];
 
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
+    /**
+     * @generated from field: string next_page_token = 2;
+     */
+    nextPageToken: string;
+  };
 
 /**
  * Describes the message quadsmith.ListVideoTransmittersResponse.
  * Use `create(ListVideoTransmittersResponseSchema)` to create a new message.
  */
-export const ListVideoTransmittersResponseSchema: GenMessage<ListVideoTransmittersResponse> = /*@__PURE__*/
+export const ListVideoTransmittersResponseSchema: GenMessage<ListVideoTransmittersResponse> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_video_transmitter, 3);
 
 /**
@@ -205,7 +228,7 @@ export const VideoTransmitterService: GenService<{
     methodKind: "unary";
     input: typeof GetVideoTransmitterRequestSchema;
     output: typeof VideoTransmitterSchema;
-  },
+  };
   /**
    * @generated from rpc quadsmith.VideoTransmitterService.ListVideoTransmitters
    */
@@ -213,7 +236,5 @@ export const VideoTransmitterService: GenService<{
     methodKind: "unary";
     input: typeof ListVideoTransmittersRequestSchema;
     output: typeof ListVideoTransmittersResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_quadsmith_video_transmitter, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_quadsmith_video_transmitter, 0);

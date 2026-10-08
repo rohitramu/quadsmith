@@ -7,9 +7,11 @@ import { ElectronicSpeedControllerService } from "./electronic_speed_controller_
 /**
  * @generated from rpc quadsmith.ElectronicSpeedControllerService.GetElectronicSpeedController
  */
-export const getElectronicSpeedController = ElectronicSpeedControllerService.method.getElectronicSpeedController;
+export const getElectronicSpeedController =
+  ElectronicSpeedControllerService.method.getElectronicSpeedController;
 
 /**
  * @generated from rpc quadsmith.ElectronicSpeedControllerService.ListElectronicSpeedControllers
  */
-export const listElectronicSpeedControllers = ElectronicSpeedControllerService.method.listElectronicSpeedControllers;
+export const listElectronicSpeedControllers =
+  ElectronicSpeedControllerService.method.listElectronicSpeedControllers;

@@ -1,7 +1,10 @@
 import { create } from "@bufbuild/protobuf";
 import { MotorSchema, type Motor } from "../../gen/quadsmith/motor_pb";
 import { FrameSchema, type Frame } from "../../gen/quadsmith/frame_pb";
-import { FlightControllerSchema, type FlightController } from "../../gen/quadsmith/flight_controller_pb";
+import {
+  FlightControllerSchema,
+  type FlightController,
+} from "../../gen/quadsmith/flight_controller_pb";
 import { ReferenceLinkType } from "../../gen/quadsmith/reference_link_pb";
 
 export const mockMotor1: Motor = create(MotorSchema, {
@@ -13,7 +16,8 @@ export const mockMotor1: Motor = create(MotorSchema, {
   statorDiameterMm: 22,
   statorHeightMm: 7,
   kv: 1900,
-  description: "Durable and affordable 2207 brushless motor for 5-inch freestyle quadcopters.",
+  description:
+    "Durable and affordable 2207 brushless motor for 5-inch freestyle quadcopters.",
   referenceLinks: [
     {
       type: ReferenceLinkType.PURCHASE,
@@ -35,7 +39,8 @@ export const mockMotor2: Motor = create(MotorSchema, {
   statorDiameterMm: 22,
   statorHeightMm: 7.5,
   kv: 2020,
-  description: "High-performance racing and freestyle motor engineered for maximum output.",
+  description:
+    "High-performance racing and freestyle motor engineered for maximum output.",
   referenceLinks: [],
 });
 
@@ -50,7 +55,8 @@ export const mockFrame1: Frame = create(FrameSchema, {
   weightG: 145,
   maxPropSizeMm: 130,
   geometry: "True X",
-  description: "Freestyle 5-inch frame featuring an innovative anti-vibration stack and CNC camera mount.",
+  description:
+    "Freestyle 5-inch frame featuring an innovative anti-vibration stack and CNC camera mount.",
   referenceLinks: [
     {
       type: ReferenceLinkType.PRODUCT_PAGE,
@@ -68,7 +74,8 @@ export const mockFC1: FlightController = create(FlightControllerSchema, {
   name: "F405 V4 FC",
   processor: "STM32F405",
   weightG: 8.8,
-  description: "Affordable F4 flight controller with wireless Bluetooth configuration via SpeedyBee App.",
+  description:
+    "Affordable F4 flight controller with wireless Bluetooth configuration via SpeedyBee App.",
   referenceLinks: [],
 });
 

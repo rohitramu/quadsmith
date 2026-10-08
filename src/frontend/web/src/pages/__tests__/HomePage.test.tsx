@@ -8,21 +8,29 @@ describe("HomePage Component", () => {
     renderWithProviders(<HomePage />);
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "Welcome to Quadsmith" })
+      screen.getByRole("heading", { level: 1, name: "Welcome to Quadsmith" }),
     ).toBeInTheDocument();
 
     expect(
-      screen.getByText(/ultimate hardware data sourcing and component browser for FPV drone builders/i)
+      screen.getByText(
+        /ultimate hardware data sourcing and component browser for FPV drone builders/i,
+      ),
     ).toBeInTheDocument();
   });
 
   it("renders Browse Hardware card linking to /components/hardware", () => {
     renderWithProviders(<HomePage />);
 
-    const browseHardwareLink = screen.getByRole("link", { name: /browse hardware/i });
+    const browseHardwareLink = screen.getByRole("link", {
+      name: /browse hardware/i,
+    });
     expect(browseHardwareLink).toBeInTheDocument();
     expect(browseHardwareLink).toHaveAttribute("href", "/components/hardware");
-    expect(screen.getByText(/explore our extensive catalog of fpv drone components/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /explore our extensive catalog of fpv drone components/i,
+      ),
+    ).toBeInTheDocument();
   });
 
   it("renders Build Planner placeholder card with coming soon message", () => {
@@ -30,7 +38,9 @@ describe("HomePage Component", () => {
 
     expect(screen.getByText("Build Planner (Coming Soon)")).toBeInTheDocument();
     expect(
-      screen.getByText(/design your dream drone and let quadsmith automatically check for component compatibility/i)
+      screen.getByText(
+        /design your dream drone and let quadsmith automatically check for component compatibility/i,
+      ),
     ).toBeInTheDocument();
   });
 });

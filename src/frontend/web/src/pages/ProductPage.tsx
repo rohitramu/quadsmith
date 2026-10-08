@@ -29,7 +29,7 @@ function ProductDetailView({
   const { data, isLoading, error } = useQuery(
     collection.getQuery,
     { id: productId },
-    { enabled: !!productId }
+    { enabled: !!productId },
   );
 
   const item = data as any;
@@ -46,15 +46,26 @@ function ProductDetailView({
         >
           {categoryId}
         </Link>
-        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
+        <ChevronRight
+          size={14}
+          className="text-zinc-400 dark:text-zinc-500 shrink-0"
+          aria-hidden="true"
+        />
         <Link
           to={`/components/${categoryId}/${collection.id}`}
           className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
         >
           {collection.name}
         </Link>
-        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
-        <span className="text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-md" aria-current="page">
+        <ChevronRight
+          size={14}
+          className="text-zinc-400 dark:text-zinc-500 shrink-0"
+          aria-hidden="true"
+        />
+        <span
+          className="text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-md"
+          aria-current="page"
+        >
           {item?.name || item?.id || productId}
         </span>
       </nav>
@@ -69,7 +80,9 @@ function ProductDetailView({
         <>
           <div className="mb-8">
             <h1 className="text-3xl font-bold">{item.name || item.id}</h1>
-            <p className="text-xl text-zinc-500 dark:text-zinc-400">{item.manufacturer || "Unknown Manufacturer"}</p>
+            <p className="text-xl text-zinc-500 dark:text-zinc-400">
+              {item.manufacturer || "Unknown Manufacturer"}
+            </p>
           </div>
 
           {/* Key Spec Highlight Cards */}
@@ -80,41 +93,56 @@ function ProductDetailView({
                   key={h.label}
                   className="p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800"
                 >
-                  <h3 className="text-sm font-semibold text-zinc-500 uppercase">{h.label}</h3>
-                  <div className="text-2xl mt-1 font-medium">{h.value(item)}</div>
+                  <h3 className="text-sm font-semibold text-zinc-500 uppercase">
+                    {h.label}
+                  </h3>
+                  <div className="text-2xl mt-1 font-medium">
+                    {h.value(item)}
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
           {/* Technical Specifications Table */}
-          {collection.technicalSpecs && collection.technicalSpecs.length > 0 && (
-            <div className="mt-6 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-              <h3 className="text-sm font-semibold text-zinc-500 uppercase mb-3">Specifications</h3>
-              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                {collection.technicalSpecs.map((spec) => (
-                  <div
-                    key={spec.label}
-                    className="flex justify-between py-1.5 border-b border-zinc-100 dark:border-zinc-800/60"
-                  >
-                    <dt className="text-zinc-500">{spec.label}</dt>
-                    <dd className="font-medium text-zinc-800 dark:text-zinc-200">{spec.value(item)}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          )}
+          {collection.technicalSpecs &&
+            collection.technicalSpecs.length > 0 && (
+              <div className="mt-6 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
+                <h3 className="text-sm font-semibold text-zinc-500 uppercase mb-3">
+                  Specifications
+                </h3>
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                  {collection.technicalSpecs.map((spec) => (
+                    <div
+                      key={spec.label}
+                      className="flex justify-between py-1.5 border-b border-zinc-100 dark:border-zinc-800/60"
+                    >
+                      <dt className="text-zinc-500">{spec.label}</dt>
+                      <dd className="font-medium text-zinc-800 dark:text-zinc-200">
+                        {spec.value(item)}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
 
           {item.description && (
             <div className="mt-6 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-              <h3 className="text-sm font-semibold text-zinc-500 uppercase mb-1">Description</h3>
-              <p className="text-zinc-700 dark:text-zinc-300 whitespace-pre-line">{item.description}</p>
+              <h3 className="text-sm font-semibold text-zinc-500 uppercase mb-1">
+                Description
+              </h3>
+              <p className="text-zinc-700 dark:text-zinc-300 whitespace-pre-line">
+                {item.description}
+              </p>
             </div>
           )}
 
           {item.referenceLinks && item.referenceLinks.length > 0 && (
             <div className="mt-6">
-              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-3">Reference Links</h2>
+              <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
+                Reference Links
+              </h2>
               <div className="flex flex-col gap-2">
                 {item.referenceLinks.map((link: any, idx: number) => (
                   <a
@@ -151,7 +179,9 @@ export function ProductPage() {
   if (!collection) {
     return (
       <div className="max-w-3xl">
-        <p className="text-zinc-500">Product page for {collectionId?.replace(/[-_]/g, " ")} coming soon.</p>
+        <p className="text-zinc-500">
+          Product page for {collectionId?.replace(/[-_]/g, " ")} coming soon.
+        </p>
       </div>
     );
   }

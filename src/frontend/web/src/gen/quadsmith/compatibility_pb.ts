@@ -2,8 +2,16 @@
 // @generated from file quadsmith/compatibility.proto (package quadsmith.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type {
+  GenFile,
+  GenMessage,
+  GenService,
+} from "@bufbuild/protobuf/codegenv2";
+import {
+  fileDesc,
+  messageDesc,
+  serviceDesc,
+} from "@bufbuild/protobuf/codegenv2";
 import type { Build } from "./build_pb";
 import { file_quadsmith_build } from "./build_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -11,85 +19,95 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file quadsmith/compatibility.proto.
  */
-export const file_quadsmith_compatibility: GenFile = /*@__PURE__*/
-  fileDesc("Ch1xdWFkc21pdGgvY29tcGF0aWJpbGl0eS5wcm90bxIMcXVhZHNtaXRoLnYxIjwKGUNoZWNrQ29tcGF0aWJpbGl0eVJlcXVlc3QSHwoFYnVpbGQYASABKAsyEC5xdWFkc21pdGguQnVpbGQiUgoaQ2hlY2tDb21wYXRpYmlsaXR5UmVzcG9uc2USNAoIbWVzc2FnZXMYASADKAsyIi5xdWFkc21pdGgudjEuQ29tcGF0aWJpbGl0eU1lc3NhZ2UilAEKFENvbXBhdGliaWxpdHlNZXNzYWdlEhQKDGNoZWNrZXJfbmFtZRgBIAEoCRISCgpjb21wb25lbnRzGAIgASgJEhYKDnNldmVyaXR5X2xldmVsGAMgASgFEhUKDXNldmVyaXR5X25hbWUYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRISCgpyZXNvbHV0aW9uGAYgASgJMoEBChRDb21wYXRpYmlsaXR5U2VydmljZRJpChJDaGVja0NvbXBhdGliaWxpdHkSJy5xdWFkc21pdGgudjEuQ2hlY2tDb21wYXRpYmlsaXR5UmVxdWVzdBooLnF1YWRzbWl0aC52MS5DaGVja0NvbXBhdGliaWxpdHlSZXNwb25zZSIAQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z", [file_quadsmith_build]);
+export const file_quadsmith_compatibility: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "Ch1xdWFkc21pdGgvY29tcGF0aWJpbGl0eS5wcm90bxIMcXVhZHNtaXRoLnYxIjwKGUNoZWNrQ29tcGF0aWJpbGl0eVJlcXVlc3QSHwoFYnVpbGQYASABKAsyEC5xdWFkc21pdGguQnVpbGQiUgoaQ2hlY2tDb21wYXRpYmlsaXR5UmVzcG9uc2USNAoIbWVzc2FnZXMYASADKAsyIi5xdWFkc21pdGgudjEuQ29tcGF0aWJpbGl0eU1lc3NhZ2UilAEKFENvbXBhdGliaWxpdHlNZXNzYWdlEhQKDGNoZWNrZXJfbmFtZRgBIAEoCRISCgpjb21wb25lbnRzGAIgASgJEhYKDnNldmVyaXR5X2xldmVsGAMgASgFEhUKDXNldmVyaXR5X25hbWUYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRISCgpyZXNvbHV0aW9uGAYgASgJMoEBChRDb21wYXRpYmlsaXR5U2VydmljZRJpChJDaGVja0NvbXBhdGliaWxpdHkSJy5xdWFkc21pdGgudjEuQ2hlY2tDb21wYXRpYmlsaXR5UmVxdWVzdBooLnF1YWRzbWl0aC52MS5DaGVja0NvbXBhdGliaWxpdHlSZXNwb25zZSIAQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    [file_quadsmith_build],
+  );
 
 /**
  * @generated from message quadsmith.v1.CheckCompatibilityRequest
  */
-export type CheckCompatibilityRequest = Message<"quadsmith.v1.CheckCompatibilityRequest"> & {
-  /**
-   * @generated from field: quadsmith.Build build = 1;
-   */
-  build?: Build | undefined;
-};
+export type CheckCompatibilityRequest =
+  Message<"quadsmith.v1.CheckCompatibilityRequest"> & {
+    /**
+     * @generated from field: quadsmith.Build build = 1;
+     */
+    build?: Build | undefined;
+  };
 
 /**
  * Describes the message quadsmith.v1.CheckCompatibilityRequest.
  * Use `create(CheckCompatibilityRequestSchema)` to create a new message.
  */
-export const CheckCompatibilityRequestSchema: GenMessage<CheckCompatibilityRequest> = /*@__PURE__*/
+export const CheckCompatibilityRequestSchema: GenMessage<CheckCompatibilityRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_compatibility, 0);
 
 /**
  * @generated from message quadsmith.v1.CheckCompatibilityResponse
  */
-export type CheckCompatibilityResponse = Message<"quadsmith.v1.CheckCompatibilityResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.v1.CompatibilityMessage messages = 1;
-   */
-  messages: CompatibilityMessage[];
-};
+export type CheckCompatibilityResponse =
+  Message<"quadsmith.v1.CheckCompatibilityResponse"> & {
+    /**
+     * @generated from field: repeated quadsmith.v1.CompatibilityMessage messages = 1;
+     */
+    messages: CompatibilityMessage[];
+  };
 
 /**
  * Describes the message quadsmith.v1.CheckCompatibilityResponse.
  * Use `create(CheckCompatibilityResponseSchema)` to create a new message.
  */
-export const CheckCompatibilityResponseSchema: GenMessage<CheckCompatibilityResponse> = /*@__PURE__*/
+export const CheckCompatibilityResponseSchema: GenMessage<CheckCompatibilityResponse> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_compatibility, 1);
 
 /**
  * @generated from message quadsmith.v1.CompatibilityMessage
  */
-export type CompatibilityMessage = Message<"quadsmith.v1.CompatibilityMessage"> & {
-  /**
-   * @generated from field: string checker_name = 1;
-   */
-  checkerName: string;
+export type CompatibilityMessage =
+  Message<"quadsmith.v1.CompatibilityMessage"> & {
+    /**
+     * @generated from field: string checker_name = 1;
+     */
+    checkerName: string;
 
-  /**
-   * e.g. "Motor and ESC"
-   *
-   * @generated from field: string components = 2;
-   */
-  components: string;
+    /**
+     * e.g. "Motor and ESC"
+     *
+     * @generated from field: string components = 2;
+     */
+    components: string;
 
-  /**
-   * @generated from field: int32 severity_level = 3;
-   */
-  severityLevel: number;
+    /**
+     * @generated from field: int32 severity_level = 3;
+     */
+    severityLevel: number;
 
-  /**
-   * @generated from field: string severity_name = 4;
-   */
-  severityName: string;
+    /**
+     * @generated from field: string severity_name = 4;
+     */
+    severityName: string;
 
-  /**
-   * @generated from field: string message = 5;
-   */
-  message: string;
+    /**
+     * @generated from field: string message = 5;
+     */
+    message: string;
 
-  /**
-   * @generated from field: string resolution = 6;
-   */
-  resolution: string;
-};
+    /**
+     * @generated from field: string resolution = 6;
+     */
+    resolution: string;
+  };
 
 /**
  * Describes the message quadsmith.v1.CompatibilityMessage.
  * Use `create(CompatibilityMessageSchema)` to create a new message.
  */
-export const CompatibilityMessageSchema: GenMessage<CompatibilityMessage> = /*@__PURE__*/
+export const CompatibilityMessageSchema: GenMessage<CompatibilityMessage> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_compatibility, 2);
 
 /**
@@ -103,7 +121,5 @@ export const CompatibilityService: GenService<{
     methodKind: "unary";
     input: typeof CheckCompatibilityRequestSchema;
     output: typeof CheckCompatibilityResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_quadsmith_compatibility, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_quadsmith_compatibility, 0);

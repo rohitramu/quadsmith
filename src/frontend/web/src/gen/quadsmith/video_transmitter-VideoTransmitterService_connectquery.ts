@@ -7,9 +7,11 @@ import { VideoTransmitterService } from "./video_transmitter_pb";
 /**
  * @generated from rpc quadsmith.VideoTransmitterService.GetVideoTransmitter
  */
-export const getVideoTransmitter = VideoTransmitterService.method.getVideoTransmitter;
+export const getVideoTransmitter =
+  VideoTransmitterService.method.getVideoTransmitter;
 
 /**
  * @generated from rpc quadsmith.VideoTransmitterService.ListVideoTransmitters
  */
-export const listVideoTransmitters = VideoTransmitterService.method.listVideoTransmitters;
+export const listVideoTransmitters =
+  VideoTransmitterService.method.listVideoTransmitters;

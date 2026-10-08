@@ -5,7 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TransportProvider } from "@connectrpc/connect-query";
 import type { Transport } from "@connectrpc/connect";
 import { MemoryRouter } from "react-router-dom";
-import { createMockTransport, type MockTransportOptions } from "./mocks/transport";
+import {
+  createMockTransport,
+  type MockTransportOptions,
+} from "./mocks/transport";
 import { AppRoutes } from "../App";
 
 export function createTestQueryClient() {
@@ -20,7 +23,10 @@ export function createTestQueryClient() {
   });
 }
 
-export interface RenderWithProvidersOptions extends Omit<RenderOptions, "wrapper"> {
+export interface RenderWithProvidersOptions extends Omit<
+  RenderOptions,
+  "wrapper"
+> {
   route?: string;
   initialEntries?: string[];
   transport?: Transport;
@@ -30,7 +36,7 @@ export interface RenderWithProvidersOptions extends Omit<RenderOptions, "wrapper
 
 export function renderWithProviders(
   ui: React.ReactElement,
-  options: RenderWithProvidersOptions = {}
+  options: RenderWithProvidersOptions = {},
 ) {
   const {
     route = "/",
@@ -60,11 +66,17 @@ export function renderWithProviders(
   };
 }
 
-export interface RenderAppOptions extends Omit<RenderWithProvidersOptions, "route"> {
+export interface RenderAppOptions extends Omit<
+  RenderWithProvidersOptions,
+  "route"
+> {
   initialRoute?: string;
 }
 
-export function renderApp(initialRoute: string = "/", options: RenderAppOptions = {}) {
+export function renderApp(
+  initialRoute: string = "/",
+  options: RenderAppOptions = {},
+) {
   return renderWithProviders(<AppRoutes />, {
     route: initialRoute,
     ...options,

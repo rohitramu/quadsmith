@@ -27,12 +27,12 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y protobuf-compiler
 
-    - name: Check out vendored modules
-      run: go mod vendor
-      working-directory: ./backend/api
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v3
 
-    - name: Run Tests
-      run: cd backend/api && go test ./...
+    - name: Install Web Dependencies
+      run: npm ci
+      working-directory: ./src/frontend/web
 
     - name: Verify Code Generation
       run: |
@@ -47,9 +47,21 @@ jobs:
         
         # Format Protobuf
         cd proto && ../bin/buf format -w && cd ..
+
+        # Format Textproto
+        find src -name "*.textproto" -exec ./bin/txtpbfmt {} +
+
+        # Format TypeScript
+        cd src/frontend/web && npx prettier --write "*.ts" "src/**/*.{ts,tsx}" && cd ../../..
+
+        # Format Python
+        uvx ruff format tools/
         
         # Format SQL
-        npx -y sql-formatter -l postgresql --fix backend/db/schema.sql
+        npx -y sql-formatter -l postgresql --fix src/backend/db/schema.sql
         
         # Ensure that no files were modified by the formatters
-        git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running the pre-commit hook to format code automatically." && exit 1)
+        git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, Protobuf, and Textproto files." && exit 1)
+
+    - name: Run Tests
+      run: make test

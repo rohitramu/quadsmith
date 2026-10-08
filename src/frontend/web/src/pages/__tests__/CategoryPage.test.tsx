@@ -11,20 +11,30 @@ describe("CategoryPage Component", () => {
       <Routes>
         <Route path="/components/:categoryId" element={<CategoryPage />} />
       </Routes>,
-      { route: "/components/hardware" }
+      { route: "/components/hardware" },
     );
 
     // Title
-    expect(screen.getByRole("heading", { level: 1, name: "hardware" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "hardware" }),
+    ).toBeInTheDocument();
 
     // Verify all hardware collections are present
     expect(HARDWARE_COLLECTIONS).toHaveLength(11);
     for (const collection of HARDWARE_COLLECTIONS) {
-      const heading = screen.getByRole("heading", { level: 2, name: collection.name });
+      const heading = screen.getByRole("heading", {
+        level: 2,
+        name: collection.name,
+      });
       expect(heading).toBeInTheDocument();
       const cardLink = heading.closest("a");
-      expect(cardLink).toHaveAttribute("href", `/components/hardware/${collection.id}`);
-      expect(screen.getByText(`Browse all ${collection.name.toLowerCase()}`)).toBeInTheDocument();
+      expect(cardLink).toHaveAttribute(
+        "href",
+        `/components/hardware/${collection.id}`,
+      );
+      expect(
+        screen.getByText(`Browse all ${collection.name.toLowerCase()}`),
+      ).toBeInTheDocument();
     }
   });
 
@@ -33,10 +43,14 @@ describe("CategoryPage Component", () => {
       <Routes>
         <Route path="/components/:categoryId" element={<CategoryPage />} />
       </Routes>,
-      { route: "/components/unknown-category" }
+      { route: "/components/unknown-category" },
     );
 
-    expect(screen.getByRole("heading", { level: 1, name: "unknown-category" })).toBeInTheDocument();
-    expect(screen.getByText("No collections found in this category.")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "unknown-category" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("No collections found in this category."),
+    ).toBeInTheDocument();
   });
 });

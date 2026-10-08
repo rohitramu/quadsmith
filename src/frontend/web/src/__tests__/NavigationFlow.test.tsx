@@ -8,7 +8,7 @@ describe("Full Application Navigation Flow", () => {
 
     // 1. Initial State: Home Page
     expect(
-      screen.getByRole("heading", { level: 1, name: "Welcome to Quadsmith" })
+      screen.getByRole("heading", { level: 1, name: "Welcome to Quadsmith" }),
     ).toBeInTheDocument();
 
     // 2. Click "Browse Hardware" card to navigate to /components/hardware
@@ -17,7 +17,7 @@ describe("Full Application Navigation Flow", () => {
 
     // 3. Verify on Category Page (/components/hardware)
     expect(
-      await screen.findByRole("heading", { level: 1, name: "hardware" })
+      await screen.findByRole("heading", { level: 1, name: "hardware" }),
     ).toBeInTheDocument();
 
     // 4. Click "Motors" card to navigate to /components/hardware/motors
@@ -26,7 +26,7 @@ describe("Full Application Navigation Flow", () => {
 
     // 5. Verify on Collection Page (/components/hardware/motors)
     expect(
-      await screen.findByRole("heading", { level: 1, name: "Motors" })
+      await screen.findByRole("heading", { level: 1, name: "Motors" }),
     ).toBeInTheDocument();
 
     // Wait for table to load
@@ -40,7 +40,7 @@ describe("Full Application Navigation Flow", () => {
 
     // 7. Verify on Product Details Page
     expect(
-      await screen.findByRole("heading", { level: 1, name: "ECO II 2207" })
+      await screen.findByRole("heading", { level: 1, name: "ECO II 2207" }),
     ).toBeInTheDocument();
     expect(screen.getByText("EMAX")).toBeInTheDocument();
     expect(screen.getAllByText("1900").length).toBeGreaterThan(0);
@@ -50,7 +50,7 @@ describe("Full Application Navigation Flow", () => {
     await user.click(motorsBreadcrumb);
 
     expect(
-      await screen.findByRole("heading", { level: 1, name: "Motors" })
+      await screen.findByRole("heading", { level: 1, name: "Motors" }),
     ).toBeInTheDocument();
 
     // 9. Click "Hardware" in sidebar to navigate back to hardware category
@@ -58,7 +58,7 @@ describe("Full Application Navigation Flow", () => {
     await user.click(hardwareSidebarLink);
 
     expect(
-      await screen.findByRole("heading", { level: 1, name: "hardware" })
+      await screen.findByRole("heading", { level: 1, name: "hardware" }),
     ).toBeInTheDocument();
 
     // 10. Click Quadsmith Logo to navigate back to Home Page
@@ -67,7 +67,10 @@ describe("Full Application Navigation Flow", () => {
     await user.click(logoLink!);
 
     expect(
-      await screen.findByRole("heading", { level: 1, name: "Welcome to Quadsmith" })
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "Welcome to Quadsmith",
+      }),
     ).toBeInTheDocument();
   });
 });

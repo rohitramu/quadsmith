@@ -23,6 +23,8 @@ endif
 all: build
 
 build: generate
+	@echo "--- Formatting textproto files with txtpbfmt ---"
+	@find src -name "*.textproto" -exec ./bin/txtpbfmt {} +
 	@echo "--- Building all Go binaries to bin/ ---"
 	@go build -mod=vendor -o bin/server ./src/backend/api/cmd/server/main.go
 
@@ -41,6 +43,7 @@ generate:
 	@cd src && go build -mod=vendor -o ../bin/protoc-gen-go google.golang.org/protobuf/cmd/protoc-gen-go
 	@cd src && go build -mod=vendor -o ../bin/protoc-gen-connect-go connectrpc.com/connect/cmd/protoc-gen-connect-go
 	@cd src && go build -mod=vendor -o ../bin/buf github.com/bufbuild/buf/cmd/buf
+	@cd src && go build -mod=vendor -o ../bin/txtpbfmt github.com/protocolbuffers/txtpbfmt/cmd/txtpbfmt
 	@echo "--- Building custom protoc plugins ---"
 	@go build -mod=vendor -o bin/protoc-gen-sql ./src/backend/api/cmd/protoc-gen-sql
 	@go build -mod=vendor -o bin/protoc-gen-store ./src/backend/api/cmd/protoc-gen-store
@@ -49,6 +52,7 @@ generate:
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@for f in src/backend/api/gen/quadsmith/_*.pb.go; do [ -f "$$f" ] && mv "$$f" "$$(echo $$f | sed 's|/_|/|')"; done || true
 	@gofmt -w src/backend/api/gen/
+	@cd src/frontend/web && npx prettier --write "src/gen/**/*.{ts,tsx}"
 	@npx -y sql-formatter -l postgresql --fix src/backend/db/schema.sql
 
 test: generate
@@ -73,7 +77,7 @@ vendor:
 		(cd $$mod && go get -u ./... && go mod tidy) || exit 1; \
 	done
 	@echo "Updating tools..."
-	@cd src/build_deps && go get github.com/bufbuild/buf/cmd/buf@latest google.golang.org/protobuf/cmd/protoc-gen-go@latest connectrpc.com/connect/cmd/protoc-gen-connect-go@latest && go mod tidy
+	@cd src/build_deps && go get github.com/bufbuild/buf/cmd/buf@latest google.golang.org/protobuf/cmd/protoc-gen-go@latest connectrpc.com/connect/cmd/protoc-gen-connect-go@latest github.com/protocolbuffers/txtpbfmt/cmd/txtpbfmt@latest && go mod tidy
 	@echo "--- Syncing vendor directory ---"
 	@cd src && go work vendor
 

@@ -58,8 +58,8 @@ export function SmartFilterInput({
             f.type === "string"
               ? `${f.name}.contains("")`
               : f.type === "boolean"
-              ? `${f.name} == true`
-              : `${f.name} >= `,
+                ? `${f.name} == true`
+                : `${f.name} >= `,
           detail: `${f.type} - ${f.description}`,
           category: "Field" as const,
         })),
@@ -67,7 +67,9 @@ export function SmartFilterInput({
     }
 
     const input = inputRef.current;
-    const cursorPos = input ? input.selectionStart ?? trimmed.length : trimmed.length;
+    const cursorPos = input
+      ? (input.selectionStart ?? trimmed.length)
+      : trimmed.length;
     const textBefore = trimmed.slice(0, cursorPos);
 
     // Check if user is typing after dot: fieldName.method
@@ -75,13 +77,27 @@ export function SmartFilterInput({
     if (dotMatch) {
       const fieldName = dotMatch[1];
       const methodPrefix = dotMatch[2].toLowerCase();
-      const field = fields.find((f) => f.name.toLowerCase() === fieldName.toLowerCase());
+      const field = fields.find(
+        (f) => f.name.toLowerCase() === fieldName.toLowerCase(),
+      );
 
       if (field && field.type === "string") {
         const methods = [
-          { name: "contains", insert: `contains("")`, desc: `String contains substring` },
-          { name: "startsWith", insert: `startsWith("")`, desc: `String starts with prefix` },
-          { name: "endsWith", insert: `endsWith("")`, desc: `String ends with suffix` },
+          {
+            name: "contains",
+            insert: `contains("")`,
+            desc: `String contains substring`,
+          },
+          {
+            name: "startsWith",
+            insert: `startsWith("")`,
+            desc: `String starts with prefix`,
+          },
+          {
+            name: "endsWith",
+            insert: `endsWith("")`,
+            desc: `String ends with suffix`,
+          },
         ];
         return methods
           .filter((m) => m.name.toLowerCase().startsWith(methodPrefix))
@@ -98,36 +114,113 @@ export function SmartFilterInput({
     // Check if user just typed a field name followed by space: "kv " or "manufacturer "
     const fieldSpaceMatch = textBefore.match(/([a-zA-Z0-9_]+)\s+$/);
     if (fieldSpaceMatch) {
-      const field = fields.find((f) => f.name.toLowerCase() === fieldSpaceMatch[1].toLowerCase());
+      const field = fields.find(
+        (f) => f.name.toLowerCase() === fieldSpaceMatch[1].toLowerCase(),
+      );
       if (field) {
         if (field.type === "number") {
           return [
-            { id: "op->=", label: ">= (Greater than or equal)", insertText: ">= ", detail: "Number comparison", category: "Operator" },
-            { id: "op-<=", label: "<= (Less than or equal)", insertText: "<= ", detail: "Number comparison", category: "Operator" },
-            { id: "op-==", label: "== (Exact equal)", insertText: "== ", detail: "Number equality", category: "Operator" },
-            { id: "op->", label: "> (Greater than)", insertText: "> ", detail: "Number comparison", category: "Operator" },
-            { id: "op-<", label: "< (Less than)", insertText: "< ", detail: "Number comparison", category: "Operator" },
-            { id: "op-!=", label: "!= (Not equal)", insertText: "!= ", detail: "Number inequality", category: "Operator" },
+            {
+              id: "op->=",
+              label: ">= (Greater than or equal)",
+              insertText: ">= ",
+              detail: "Number comparison",
+              category: "Operator",
+            },
+            {
+              id: "op-<=",
+              label: "<= (Less than or equal)",
+              insertText: "<= ",
+              detail: "Number comparison",
+              category: "Operator",
+            },
+            {
+              id: "op-==",
+              label: "== (Exact equal)",
+              insertText: "== ",
+              detail: "Number equality",
+              category: "Operator",
+            },
+            {
+              id: "op->",
+              label: "> (Greater than)",
+              insertText: "> ",
+              detail: "Number comparison",
+              category: "Operator",
+            },
+            {
+              id: "op-<",
+              label: "< (Less than)",
+              insertText: "< ",
+              detail: "Number comparison",
+              category: "Operator",
+            },
+            {
+              id: "op-!=",
+              label: "!= (Not equal)",
+              insertText: "!= ",
+              detail: "Number inequality",
+              category: "Operator",
+            },
           ];
         } else if (field.type === "boolean") {
           return [
-            { id: "op-true", label: "== true", insertText: "== true", detail: "Boolean true", category: "Operator" },
-            { id: "op-false", label: "== false", insertText: "== false", detail: "Boolean false", category: "Operator" },
+            {
+              id: "op-true",
+              label: "== true",
+              insertText: "== true",
+              detail: "Boolean true",
+              category: "Operator",
+            },
+            {
+              id: "op-false",
+              label: "== false",
+              insertText: "== false",
+              detail: "Boolean false",
+              category: "Operator",
+            },
           ];
         } else {
           return [
-            { id: "op-==", label: '== "" (Exact match)', insertText: '== ""', detail: "Exact string match", category: "Operator" },
-            { id: "op-!=", label: '!= "" (Not equal)', insertText: '!= ""', detail: "String inequality", category: "Operator" },
+            {
+              id: "op-==",
+              label: '== "" (Exact match)',
+              insertText: '== ""',
+              detail: "Exact string match",
+              category: "Operator",
+            },
+            {
+              id: "op-!=",
+              label: '!= "" (Not equal)',
+              insertText: '!= ""',
+              detail: "String inequality",
+              category: "Operator",
+            },
           ];
         }
       }
     }
 
     // Check if expression looks complete and user might want logical operators: " && " or " || "
-    if (/["'0-9)]\s*$/.test(textBefore) || /(true|false)\s*$/.test(textBefore)) {
+    if (
+      /["'0-9)]\s*$/.test(textBefore) ||
+      /(true|false)\s*$/.test(textBefore)
+    ) {
       return [
-        { id: "logic-and", label: "&& (AND)", insertText: " && ", detail: "Combine with AND condition", category: "Logic" },
-        { id: "logic-or", label: "|| (OR)", insertText: " || ", detail: "Combine with OR condition", category: "Logic" },
+        {
+          id: "logic-and",
+          label: "&& (AND)",
+          insertText: " && ",
+          detail: "Combine with AND condition",
+          category: "Logic",
+        },
+        {
+          id: "logic-or",
+          label: "|| (OR)",
+          insertText: " || ",
+          detail: "Combine with OR condition",
+          category: "Logic",
+        },
       ];
     }
 
@@ -144,8 +237,8 @@ export function SmartFilterInput({
           f.type === "string"
             ? `${f.name}.contains("")`
             : f.type === "boolean"
-            ? `${f.name} == true`
-            : `${f.name} >= `,
+              ? `${f.name} == true`
+              : `${f.name} >= `,
         detail: `${f.type} - ${f.description}`,
         category: "Field" as const,
       }));
@@ -161,7 +254,8 @@ export function SmartFilterInput({
   // Scroll selected suggestion into view
   useEffect(() => {
     if (!showSuggestions || selectedIndex < 0 || !listRef.current) return;
-    const itemEl = listRef.current.children[selectedIndex] as HTMLElement | undefined;
+    const itemEl = listRef.current.children[selectedIndex] as
+      HTMLElement | undefined;
     if (itemEl && typeof itemEl.scrollIntoView === "function") {
       itemEl.scrollIntoView({ block: "nearest" });
     }
@@ -194,7 +288,8 @@ export function SmartFilterInput({
     if (suggestion.category === "Method") {
       // Replace after the dot
       const dotIndex = textBefore.lastIndexOf(".");
-      newText = textBefore.slice(0, dotIndex + 1) + suggestion.insertText + textAfter;
+      newText =
+        textBefore.slice(0, dotIndex + 1) + suggestion.insertText + textAfter;
       newCursor = dotIndex + 1 + suggestion.insertText.length - 2; // place cursor inside quotes ("")
     } else if (suggestion.category === "Field") {
       // Replace last word token
@@ -242,7 +337,9 @@ export function SmartFilterInput({
       }
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        setSelectedIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
+        setSelectedIndex(
+          (prev) => (prev - 1 + suggestions.length) % suggestions.length,
+        );
         return;
       }
       if (e.key === "Tab") {
@@ -326,9 +423,14 @@ export function SmartFilterInput({
         >
           <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 bg-zinc-50 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
             <span>Query Autocompletion</span>
-            <span className="text-[10px] text-zinc-400 font-normal">Use ↑↓ to navigate, Tab to insert, Enter to apply</span>
+            <span className="text-[10px] text-zinc-400 font-normal">
+              Use ↑↓ to navigate, Tab to insert, Enter to apply
+            </span>
           </div>
-          <div ref={listRef} className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/50">
+          <div
+            ref={listRef}
+            className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/50"
+          >
             {suggestions.map((item, idx) => (
               <div
                 key={item.id}
@@ -349,10 +451,10 @@ export function SmartFilterInput({
                       item.category === "Field"
                         ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300"
                         : item.category === "Method"
-                        ? "bg-purple-100 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300"
-                        : item.category === "Operator"
-                        ? "bg-amber-100 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300"
-                        : "bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300"
+                          ? "bg-purple-100 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300"
+                          : item.category === "Operator"
+                            ? "bg-amber-100 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300"
+                            : "bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300"
                     }`}
                   >
                     {item.category}
@@ -418,32 +520,72 @@ export function SmartFilterInput({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">String Matching</p>
+              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                String Matching
+              </p>
               <ul className="space-y-1 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
-                <li><code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">manufacturer.contains("T-Motor")</code></li>
-                <li><code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">name.startsWith("Velox")</code></li>
-                <li><code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">manufacturer == "Emax"</code></li>
+                <li>
+                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                    manufacturer.contains("T-Motor")
+                  </code>
+                </li>
+                <li>
+                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                    name.startsWith("Velox")
+                  </code>
+                </li>
+                <li>
+                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                    manufacturer == "Emax"
+                  </code>
+                </li>
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Numeric Comparison</p>
+              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                Numeric Comparison
+              </p>
               <ul className="space-y-1 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
-                <li><code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">kv &gt;= 1900</code></li>
-                <li><code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">weight_g &lt; 35.0</code></li>
-                <li><code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">stator_diameter_mm == 22.0</code></li>
+                <li>
+                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                    kv &gt;= 1900
+                  </code>
+                </li>
+                <li>
+                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                    weight_g &lt; 35.0
+                  </code>
+                </li>
+                <li>
+                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                    stator_diameter_mm == 22.0
+                  </code>
+                </li>
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Compound Conditions</p>
+              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                Compound Conditions
+              </p>
               <ul className="space-y-1 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
-                <li><code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">kv &gt;= 1750 &amp;&amp; kv &lt;= 2000</code></li>
-                <li><code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">manufacturer == "T-Motor" || kv &gt; 2400</code></li>
+                <li>
+                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                    kv &gt;= 1750 &amp;&amp; kv &lt;= 2000
+                  </code>
+                </li>
+                <li>
+                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                    manufacturer == "T-Motor" || kv &gt; 2400
+                  </code>
+                </li>
               </ul>
             </div>
           </div>
 
           <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800">
-            <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Available Fields for this Collection:</p>
+            <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+              Available Fields for this Collection:
+            </p>
             <div className="flex flex-wrap gap-2">
               {fields.map((f) => (
                 <button
@@ -457,7 +599,8 @@ export function SmartFilterInput({
                   className="font-mono text-[11px] bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-2 py-0.5 rounded hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                   title={`Click to test: ${f.examples[0] || f.name}`}
                 >
-                  {f.name} <span className="text-zinc-400 text-[10px]">({f.type})</span>
+                  {f.name}{" "}
+                  <span className="text-zinc-400 text-[10px]">({f.type})</span>
                 </button>
               ))}
             </div>

@@ -10,8 +10,12 @@ import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";
 /**
  * Describes the file quadsmith/_sql.proto.
  */
-export const file_quadsmith__sql: GenFile = /*@__PURE__*/
-  fileDesc("ChRxdWFkc21pdGgvX3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbDpACgp0YWJsZV9uYW1lEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGLiOAyABKAlSCXRhYmxlTmFtZTpFCg5pc19wcmltYXJ5X2tleRIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYuY4DIAEoCFIMaXNQcmltYXJ5S2V5Oj8KCnJlZmVyZW5jZXMSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLqOAyABKAlSCnJlZmVyZW5jZXM6PAoJaXNfdW5pcXVlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi7jgMgASgIUghpc1VuaXF1ZTpCCgxjcmVhdGVfaW5kZXgSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLyOAyABKAhSC2NyZWF0ZUluZGV4OkAKC2NvbHVtbl90eXBlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi9jgMgASgJUgpjb2x1bW5UeXBlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z", [file_google_protobuf_descriptor]);
+export const file_quadsmith__sql: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "ChRxdWFkc21pdGgvX3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbDpACgp0YWJsZV9uYW1lEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGLiOAyABKAlSCXRhYmxlTmFtZTpFCg5pc19wcmltYXJ5X2tleRIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYuY4DIAEoCFIMaXNQcmltYXJ5S2V5Oj8KCnJlZmVyZW5jZXMSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLqOAyABKAlSCnJlZmVyZW5jZXM6PAoJaXNfdW5pcXVlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi7jgMgASgIUghpc1VuaXF1ZTpCCgxjcmVhdGVfaW5kZXgSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLyOAyABKAhSC2NyZWF0ZUluZGV4OkAKC2NvbHVtbl90eXBlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi9jgMgASgJUgpjb2x1bW5UeXBlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    [file_google_protobuf_descriptor],
+  );
 
 /**
  * The name of the SQL table to generate for this message.
@@ -20,7 +24,8 @@ export const file_quadsmith__sql: GenFile = /*@__PURE__*/
  *
  * @generated from extension: string table_name = 51000;
  */
-export const table_name: GenExtension<MessageOptions, string> = /*@__PURE__*/
+export const table_name: GenExtension<MessageOptions, string> =
+  /*@__PURE__*/
   extDesc(file_quadsmith__sql, 0);
 
 /**
@@ -28,7 +33,8 @@ export const table_name: GenExtension<MessageOptions, string> = /*@__PURE__*/
  *
  * @generated from extension: bool is_primary_key = 51001;
  */
-export const is_primary_key: GenExtension<FieldOptions, boolean> = /*@__PURE__*/
+export const is_primary_key: GenExtension<FieldOptions, boolean> =
+  /*@__PURE__*/
   extDesc(file_quadsmith__sql, 1);
 
 /**
@@ -38,7 +44,8 @@ export const is_primary_key: GenExtension<FieldOptions, boolean> = /*@__PURE__*/
  *
  * @generated from extension: string references = 51002;
  */
-export const references: GenExtension<FieldOptions, string> = /*@__PURE__*/
+export const references: GenExtension<FieldOptions, string> =
+  /*@__PURE__*/
   extDesc(file_quadsmith__sql, 2);
 
 /**
@@ -46,7 +53,8 @@ export const references: GenExtension<FieldOptions, string> = /*@__PURE__*/
  *
  * @generated from extension: bool is_unique = 51003;
  */
-export const is_unique: GenExtension<FieldOptions, boolean> = /*@__PURE__*/
+export const is_unique: GenExtension<FieldOptions, boolean> =
+  /*@__PURE__*/
   extDesc(file_quadsmith__sql, 3);
 
 /**
@@ -54,12 +62,13 @@ export const is_unique: GenExtension<FieldOptions, boolean> = /*@__PURE__*/
  *
  * @generated from extension: bool create_index = 51004;
  */
-export const create_index: GenExtension<FieldOptions, boolean> = /*@__PURE__*/
+export const create_index: GenExtension<FieldOptions, boolean> =
+  /*@__PURE__*/
   extDesc(file_quadsmith__sql, 4);
 
 /**
  * @generated from extension: string column_type = 51005;
  */
-export const column_type: GenExtension<FieldOptions, string> = /*@__PURE__*/
+export const column_type: GenExtension<FieldOptions, string> =
+  /*@__PURE__*/
   extDesc(file_quadsmith__sql, 5);
-

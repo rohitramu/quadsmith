@@ -12,11 +12,7 @@ import { VideoTransmitterService } from "../../gen/quadsmith/video_transmitter_p
 import { AntennaService } from "../../gen/quadsmith/antenna_pb";
 import { GpsReceiverService } from "../../gen/quadsmith/gps_receiver_pb";
 
-import {
-  mockMotors,
-  mockFrames,
-  mockFlightControllers,
-} from "./fixtures";
+import { mockMotors, mockFrames, mockFlightControllers } from "./fixtures";
 
 export interface MockTransportOptions {
   motors?: typeof mockMotors;
@@ -39,7 +35,10 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     service(MotorService, {
       listMotors(req) {
         if (simulateError) {
-          throw new ConnectError("Failed to fetch motors from server", Code.Internal);
+          throw new ConnectError(
+            "Failed to fetch motors from server",
+            Code.Internal,
+          );
         }
         let list = [...motors];
         if (req.filter) {
@@ -48,7 +47,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
             (m) =>
               m.name.toLowerCase().includes(lower) ||
               m.manufacturer.toLowerCase().includes(lower) ||
-              m.id.toLowerCase().includes(lower)
+              m.id.toLowerCase().includes(lower),
           );
         }
         if (req.sort && req.sort.length > 0) {
@@ -70,11 +69,17 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       },
       getMotor(req) {
         if (simulateError) {
-          throw new ConnectError("Failed to fetch motor details", Code.Internal);
+          throw new ConnectError(
+            "Failed to fetch motor details",
+            Code.Internal,
+          );
         }
         const item = motors.find((m) => m.id === req.id || m.uuid === req.id);
         if (!item) {
-          throw new ConnectError(`Motor with ID '${req.id}' not found`, Code.NotFound);
+          throw new ConnectError(
+            `Motor with ID '${req.id}' not found`,
+            Code.NotFound,
+          );
         }
         return item;
       },
@@ -90,7 +95,10 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       getFrame(req) {
         const item = frames.find((f) => f.id === req.id || f.uuid === req.id);
         if (!item) {
-          throw new ConnectError(`Frame with ID '${req.id}' not found`, Code.NotFound);
+          throw new ConnectError(
+            `Frame with ID '${req.id}' not found`,
+            Code.NotFound,
+          );
         }
         return item;
       },
@@ -101,9 +109,14 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         return { flightControllers, nextPageToken: "" };
       },
       getFlightController(req) {
-        const item = flightControllers.find((fc) => fc.id === req.id || fc.uuid === req.id);
+        const item = flightControllers.find(
+          (fc) => fc.id === req.id || fc.uuid === req.id,
+        );
         if (!item) {
-          throw new ConnectError(`Flight Controller with ID '${req.id}' not found`, Code.NotFound);
+          throw new ConnectError(
+            `Flight Controller with ID '${req.id}' not found`,
+            Code.NotFound,
+          );
         }
         return item;
       },
@@ -124,7 +137,10 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(ElectronicSpeedControllerService, {
-      listElectronicSpeedControllers: () => ({ electronicSpeedControllers: [], nextPageToken: "" }),
+      listElectronicSpeedControllers: () => ({
+        electronicSpeedControllers: [],
+        nextPageToken: "",
+      }),
       getElectronicSpeedController: () => {
         throw new ConnectError("ESC not found", Code.NotFound);
       },
@@ -145,7 +161,10 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(VideoTransmitterService, {
-      listVideoTransmitters: () => ({ videoTransmitters: [], nextPageToken: "" }),
+      listVideoTransmitters: () => ({
+        videoTransmitters: [],
+        nextPageToken: "",
+      }),
       getVideoTransmitter: () => {
         throw new ConnectError("VTX not found", Code.NotFound);
       },

@@ -13,7 +13,7 @@ describe("ProductPage Component", () => {
           element={<ProductPage />}
         />
       </Routes>,
-      { route: "/components/hardware/motors/emax-eco-ii-2207" }
+      { route: "/components/hardware/motors/emax-eco-ii-2207" },
     );
 
     // Verify breadcrumbs
@@ -21,11 +21,16 @@ describe("ProductPage Component", () => {
     expect(categoryLink).toHaveAttribute("href", "/components/hardware");
 
     const collectionLink = screen.getByRole("link", { name: "Motors" });
-    expect(collectionLink).toHaveAttribute("href", "/components/hardware/motors");
+    expect(collectionLink).toHaveAttribute(
+      "href",
+      "/components/hardware/motors",
+    );
 
     // Wait for product details to load
     await waitFor(() => {
-      expect(screen.getByRole("heading", { level: 1, name: "ECO II 2207" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { level: 1, name: "ECO II 2207" }),
+      ).toBeInTheDocument();
     });
 
     // Manufacturer
@@ -40,14 +45,20 @@ describe("ProductPage Component", () => {
 
     // Description
     expect(
-      screen.getByText("Durable and affordable 2207 brushless motor for 5-inch freestyle quadcopters.")
+      screen.getByText(
+        "Durable and affordable 2207 brushless motor for 5-inch freestyle quadcopters.",
+      ),
     ).toBeInTheDocument();
 
     // Reference Links
     expect(screen.getByText("Purchase")).toBeInTheDocument();
-    expect(screen.getByText("https://store.example.com/emax-eco-ii")).toBeInTheDocument();
+    expect(
+      screen.getByText("https://store.example.com/emax-eco-ii"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Official Product Page")).toBeInTheDocument();
-    expect(screen.getByText("https://emax-usa.com/products/eco-ii-2207")).toBeInTheDocument();
+    expect(
+      screen.getByText("https://emax-usa.com/products/eco-ii-2207"),
+    ).toBeInTheDocument();
   });
 
   it("renders error state when product is not found", async () => {
@@ -58,11 +69,13 @@ describe("ProductPage Component", () => {
           element={<ProductPage />}
         />
       </Routes>,
-      { route: "/components/hardware/motors/non-existent-motor" }
+      { route: "/components/hardware/motors/non-existent-motor" },
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Motor with ID 'non-existent-motor' not found/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Motor with ID 'non-existent-motor' not found/i),
+      ).toBeInTheDocument();
     });
   });
 
@@ -74,11 +87,11 @@ describe("ProductPage Component", () => {
           element={<ProductPage />}
         />
       </Routes>,
-      { route: "/components/hardware/unknown-collection/some-id" }
+      { route: "/components/hardware/unknown-collection/some-id" },
     );
 
     expect(
-      screen.getByText("Product page for unknown collection coming soon.")
+      screen.getByText("Product page for unknown collection coming soon."),
     ).toBeInTheDocument();
   });
 });

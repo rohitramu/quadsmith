@@ -80,7 +80,10 @@ function ColumnSelector({
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
@@ -153,7 +156,10 @@ function ColumnSelector({
         <div className="absolute right-0 top-full mt-1.5 w-72 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl z-50 p-2.5 text-xs">
           <div className="flex items-center justify-between px-2 py-1.5 border-b border-zinc-100 dark:border-zinc-800 mb-2">
             <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-              Columns <span className="font-normal text-zinc-400">({visibleColumns.length} visible)</span>
+              Columns{" "}
+              <span className="font-normal text-zinc-400">
+                ({visibleColumns.length} visible)
+              </span>
             </span>
             <button
               type="button"
@@ -176,7 +182,10 @@ function ColumnSelector({
                   draggable
                   onDragStart={(e) => {
                     e.dataTransfer.effectAllowed = "move";
-                    e.dataTransfer.setData("text/quadsmith-visible-idx", idx.toString());
+                    e.dataTransfer.setData(
+                      "text/quadsmith-visible-idx",
+                      idx.toString(),
+                    );
                     setDraggedIndex(idx);
                   }}
                   onDragOver={(e) => {
@@ -190,7 +199,9 @@ function ColumnSelector({
                   onDrop={(e) => {
                     e.preventDefault();
                     setDragOverIndex(null);
-                    const hiddenId = e.dataTransfer.getData("text/quadsmith-hidden-id");
+                    const hiddenId = e.dataTransfer.getData(
+                      "text/quadsmith-hidden-id",
+                    );
                     if (hiddenId) {
                       const next = [...selectedColumnIds];
                       next.splice(idx, 0, hiddenId);
@@ -214,11 +225,14 @@ function ColumnSelector({
                     draggedIndex === idx
                       ? "opacity-30 bg-zinc-100 dark:bg-zinc-800"
                       : dragOverIndex === idx
-                      ? "border-t-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30"
-                      : "hover:bg-zinc-50 dark:hover:bg-zinc-800/60 bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/70"
+                        ? "border-t-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30"
+                        : "hover:bg-zinc-50 dark:hover:bg-zinc-800/60 bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/70"
                   }`}
                 >
-                  <span title="Drag to reorder" className="cursor-grab active:cursor-grabbing shrink-0 flex items-center">
+                  <span
+                    title="Drag to reorder"
+                    className="cursor-grab active:cursor-grabbing shrink-0 flex items-center"
+                  >
                     <GripVertical
                       size={13}
                       className="text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200"
@@ -230,7 +244,11 @@ function ColumnSelector({
                     disabled={visibleColumns.length <= 1}
                     onChange={() => hideColumn(col.id)}
                     className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer disabled:opacity-40"
-                    title={visibleColumns.length <= 1 ? "At least one column must be visible" : "Hide column"}
+                    title={
+                      visibleColumns.length <= 1
+                        ? "At least one column must be visible"
+                        : "Hide column"
+                    }
                   />
                   <span className="font-medium text-zinc-800 dark:text-zinc-200 flex-1 truncate select-none">
                     {col.title}
@@ -273,7 +291,10 @@ function ColumnSelector({
                     draggable
                     onDragStart={(e) => {
                       e.dataTransfer.effectAllowed = "copyMove";
-                      e.dataTransfer.setData("text/quadsmith-hidden-id", col.id);
+                      e.dataTransfer.setData(
+                        "text/quadsmith-hidden-id",
+                        col.id,
+                      );
                     }}
                     onClick={() => showColumn(col.id)}
                     className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-zinc-50 dark:hover:bg-zinc-800/60 cursor-pointer select-none text-zinc-500 dark:text-zinc-400 group"
@@ -288,7 +309,10 @@ function ColumnSelector({
                     <span className="flex-1 truncate group-hover:text-zinc-700 dark:group-hover:text-zinc-300">
                       {col.title}
                     </span>
-                    <Plus size={12} className="text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 shrink-0" />
+                    <Plus
+                      size={12}
+                      className="text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 shrink-0"
+                    />
                   </div>
                 ))}
               </div>
@@ -327,7 +351,8 @@ function CollectionTableView({
     return collection.defaultColumnIds;
   }, [collection]);
 
-  const [selectedColumnIds, setSelectedColumnIds] = useState<string[]>(protoDefaultCols);
+  const [selectedColumnIds, setSelectedColumnIds] =
+    useState<string[]>(protoDefaultCols);
 
   const activeColumns = useMemo(() => {
     return selectedColumnIds
@@ -376,7 +401,7 @@ function CollectionTableView({
     },
     {
       placeholderData: keepPreviousData,
-    }
+    },
   );
 
   const nextPageToken = (data as any)?.nextPageToken;
@@ -411,7 +436,8 @@ function CollectionTableView({
   const startItem = count > 0 ? pageIndex * pageSize + 1 : 0;
   const endItem = pageIndex * pageSize + count;
   const hasNextPage = Boolean(
-    nextPageToken || (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1])
+    nextPageToken ||
+    (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1]),
   );
   const hasPrevPage = pageIndex > 0;
 
@@ -427,8 +453,15 @@ function CollectionTableView({
         >
           {categoryId}
         </Link>
-        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
-        <span className="text-zinc-900 dark:text-zinc-100 font-medium capitalize" aria-current="page">
+        <ChevronRight
+          size={14}
+          className="text-zinc-400 dark:text-zinc-500 shrink-0"
+          aria-hidden="true"
+        />
+        <span
+          className="text-zinc-900 dark:text-zinc-100 font-medium capitalize"
+          aria-current="page"
+        >
           {collection.name}
         </span>
       </nav>
@@ -446,7 +479,11 @@ function CollectionTableView({
         error={error ? error.message : null}
       />
 
-      {isLoading && <p className="text-sm text-zinc-500 mb-4">Loading {collection.name.toLowerCase()}...</p>}
+      {isLoading && (
+        <p className="text-sm text-zinc-500 mb-4">
+          Loading {collection.name.toLowerCase()}...
+        </p>
+      )}
 
       {data && (
         <>
@@ -456,14 +493,20 @@ function CollectionTableView({
               <span>
                 {count > 0 ? (
                   <>
-                    Showing <span className="font-medium text-zinc-700 dark:text-zinc-300">{startItem}–{endItem}</span> components
+                    Showing{" "}
+                    <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                      {startItem}–{endItem}
+                    </span>{" "}
+                    components
                   </>
                 ) : (
                   "0 components found"
                 )}
               </span>
               {isFetching && !isLoading && (
-                <span className="text-zinc-400 dark:text-zinc-500 animate-pulse">(updating...)</span>
+                <span className="text-zinc-400 dark:text-zinc-500 animate-pulse">
+                  (updating...)
+                </span>
               )}
             </div>
             <ColumnSelector
@@ -513,8 +556,12 @@ function CollectionTableView({
                 ))}
                 {items.length === 0 && (
                   <tr>
-                    <td colSpan={activeColumns.length} className="px-4 py-8 text-center text-zinc-500">
-                      No {collection.name.toLowerCase()} found matching the active filters.
+                    <td
+                      colSpan={activeColumns.length}
+                      className="px-4 py-8 text-center text-zinc-500"
+                    >
+                      No {collection.name.toLowerCase()} found matching the
+                      active filters.
                     </td>
                   </tr>
                 )}
@@ -604,12 +651,21 @@ export function CollectionPage() {
           >
             {categoryId}
           </Link>
-          <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
-          <span className="text-zinc-900 dark:text-zinc-100 font-medium capitalize" aria-current="page">
+          <ChevronRight
+            size={14}
+            className="text-zinc-400 dark:text-zinc-500 shrink-0"
+            aria-hidden="true"
+          />
+          <span
+            className="text-zinc-900 dark:text-zinc-100 font-medium capitalize"
+            aria-current="page"
+          >
             {collectionId?.replace(/[-_]/g, " ")}
           </span>
         </nav>
-        <p className="text-zinc-500">Implementation for {collectionId?.replace(/[-_]/g, " ")} coming soon.</p>
+        <p className="text-zinc-500">
+          Implementation for {collectionId?.replace(/[-_]/g, " ")} coming soon.
+        </p>
       </div>
     );
   }

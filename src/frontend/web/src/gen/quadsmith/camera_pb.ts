@@ -2,8 +2,16 @@
 // @generated from file quadsmith/camera.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type {
+  GenFile,
+  GenMessage,
+  GenService,
+} from "@bufbuild/protobuf/codegenv2";
+import {
+  fileDesc,
+  messageDesc,
+  serviceDesc,
+} from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -13,8 +21,16 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file quadsmith/camera.proto.
  */
-export const file_quadsmith_camera: GenFile = /*@__PURE__*/
-  fileDesc("ChZxdWFkc21pdGgvY2FtZXJhLnByb3RvEglxdWFkc21pdGgivQIKBkNhbWVyYRISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISEAoIcHJvdG9jb2wYBiABKAkSEwoLc2Vuc29yX3NpemUYByABKAkSEAoId2lkdGhfbW0YCCABKA0SFAoMbGVuc19zaXplX21tGAkgASgCEhMKC2Rlc2NyaXB0aW9uGBUgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgWIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOiCStRgRCgZDYW1lcmESB0NhbWVyYXPC8xgHY2FtZXJhcyIvChBHZXRDYW1lcmFSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiagoSTGlzdENhbWVyYXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiUgoTTGlzdENhbWVyYXNSZXNwb25zZRIiCgdjYW1lcmFzGAEgAygLMhEucXVhZHNtaXRoLkNhbWVyYRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkymgEKDUNhbWVyYVNlcnZpY2USOwoJR2V0Q2FtZXJhEhsucXVhZHNtaXRoLkdldENhbWVyYVJlcXVlc3QaES5xdWFkc21pdGguQ2FtZXJhEkwKC0xpc3RDYW1lcmFzEh0ucXVhZHNtaXRoLkxpc3RDYW1lcmFzUmVxdWVzdBoeLnF1YWRzbWl0aC5MaXN0Q2FtZXJhc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z", [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link]);
+export const file_quadsmith_camera: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "ChZxdWFkc21pdGgvY2FtZXJhLnByb3RvEglxdWFkc21pdGgivQIKBkNhbWVyYRISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISEAoIcHJvdG9jb2wYBiABKAkSEwoLc2Vuc29yX3NpemUYByABKAkSEAoId2lkdGhfbW0YCCABKA0SFAoMbGVuc19zaXplX21tGAkgASgCEhMKC2Rlc2NyaXB0aW9uGBUgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgWIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOiCStRgRCgZDYW1lcmESB0NhbWVyYXPC8xgHY2FtZXJhcyIvChBHZXRDYW1lcmFSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiagoSTGlzdENhbWVyYXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiUgoTTGlzdENhbWVyYXNSZXNwb25zZRIiCgdjYW1lcmFzGAEgAygLMhEucXVhZHNtaXRoLkNhbWVyYRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkymgEKDUNhbWVyYVNlcnZpY2USOwoJR2V0Q2FtZXJhEhsucXVhZHNtaXRoLkdldENhbWVyYVJlcXVlc3QaES5xdWFkc21pdGguQ2FtZXJhEkwKC0xpc3RDYW1lcmFzEh0ucXVhZHNtaXRoLkxpc3RDYW1lcmFzUmVxdWVzdBoeLnF1YWRzbWl0aC5MaXN0Q2FtZXJhc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    [
+      file_quadsmith__common,
+      file_quadsmith__sql,
+      file_quadsmith_reference_link,
+    ],
+  );
 
 /**
  * ---------------------------------------------------------
@@ -97,7 +113,8 @@ export type Camera = Message<"quadsmith.Camera"> & {
  * Describes the message quadsmith.Camera.
  * Use `create(CameraSchema)` to create a new message.
  */
-export const CameraSchema: GenMessage<Camera> = /*@__PURE__*/
+export const CameraSchema: GenMessage<Camera> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_camera, 0);
 
 /**
@@ -123,7 +140,8 @@ export type GetCameraRequest = Message<"quadsmith.GetCameraRequest"> & {
  * Describes the message quadsmith.GetCameraRequest.
  * Use `create(GetCameraRequestSchema)` to create a new message.
  */
-export const GetCameraRequestSchema: GenMessage<GetCameraRequest> = /*@__PURE__*/
+export const GetCameraRequestSchema: GenMessage<GetCameraRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_camera, 1);
 
 /**
@@ -160,7 +178,8 @@ export type ListCamerasRequest = Message<"quadsmith.ListCamerasRequest"> & {
  * Describes the message quadsmith.ListCamerasRequest.
  * Use `create(ListCamerasRequestSchema)` to create a new message.
  */
-export const ListCamerasRequestSchema: GenMessage<ListCamerasRequest> = /*@__PURE__*/
+export const ListCamerasRequestSchema: GenMessage<ListCamerasRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_camera, 2);
 
 /**
@@ -182,7 +201,8 @@ export type ListCamerasResponse = Message<"quadsmith.ListCamerasResponse"> & {
  * Describes the message quadsmith.ListCamerasResponse.
  * Use `create(ListCamerasResponseSchema)` to create a new message.
  */
-export const ListCamerasResponseSchema: GenMessage<ListCamerasResponse> = /*@__PURE__*/
+export const ListCamerasResponseSchema: GenMessage<ListCamerasResponse> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_camera, 3);
 
 /**
@@ -200,7 +220,7 @@ export const CameraService: GenService<{
     methodKind: "unary";
     input: typeof GetCameraRequestSchema;
     output: typeof CameraSchema;
-  },
+  };
   /**
    * @generated from rpc quadsmith.CameraService.ListCameras
    */
@@ -208,7 +228,5 @@ export const CameraService: GenService<{
     methodKind: "unary";
     input: typeof ListCamerasRequestSchema;
     output: typeof ListCamerasResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_quadsmith_camera, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_quadsmith_camera, 0);

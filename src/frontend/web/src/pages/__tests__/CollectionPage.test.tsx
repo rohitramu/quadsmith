@@ -8,9 +8,12 @@ describe("CollectionPage Component", () => {
   it("renders breadcrumbs, page title, and table data with mock motors", async () => {
     renderWithProviders(
       <Routes>
-        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={<CollectionPage />}
+        />
       </Routes>,
-      { route: "/components/hardware/motors" }
+      { route: "/components/hardware/motors" },
     );
 
     // Breadcrumbs
@@ -19,10 +22,14 @@ describe("CollectionPage Component", () => {
     expect(categoryBreadcrumb).toHaveAttribute("href", "/components/hardware");
 
     // Title
-    expect(screen.getByRole("heading", { level: 1, name: "Motors" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Motors" }),
+    ).toBeInTheDocument();
 
     // SmartFilterInput exists
-    expect(screen.getByPlaceholderText(/filter components/i)).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(/filter components/i),
+    ).toBeInTheDocument();
 
     // Wait for mock data to populate table
     await waitFor(() => {
@@ -33,15 +40,21 @@ describe("CollectionPage Component", () => {
 
     // Check row links to product detail pages
     const emaxLink = screen.getByRole("link", { name: /view eco ii 2207/i });
-    expect(emaxLink).toHaveAttribute("href", "/components/hardware/motors/emax-eco-ii-2207");
+    expect(emaxLink).toHaveAttribute(
+      "href",
+      "/components/hardware/motors/emax-eco-ii-2207",
+    );
   });
 
   it("handles sorting by clicking column headers", async () => {
     const { user } = renderWithProviders(
       <Routes>
-        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={<CollectionPage />}
+        />
       </Routes>,
-      { route: "/components/hardware/motors" }
+      { route: "/components/hardware/motors" },
     );
 
     await waitFor(() => {
@@ -68,9 +81,12 @@ describe("CollectionPage Component", () => {
   it("opens column selector and allows toggling visible columns", async () => {
     const { user } = renderWithProviders(
       <Routes>
-        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={<CollectionPage />}
+        />
       </Routes>,
-      { route: "/components/hardware/motors" }
+      { route: "/components/hardware/motors" },
     );
 
     await waitFor(() => {
@@ -83,7 +99,9 @@ describe("CollectionPage Component", () => {
 
     // Popover should be open
     expect(screen.getByText(/visible \(drag or arrows\)/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Reset to Default" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Reset to Default" }),
+    ).toBeInTheDocument();
 
     // Find checkbox for Stator Size column and uncheck it to hide
     const checkboxes = screen.getAllByRole("checkbox");
@@ -93,18 +111,21 @@ describe("CollectionPage Component", () => {
   it("renders empty state message when no items match filters", async () => {
     renderWithProviders(
       <Routes>
-        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={<CollectionPage />}
+        />
       </Routes>,
       {
         route: "/components/hardware/motors",
         transportOptions: { motors: [] },
-      }
+      },
     );
 
     await waitFor(() => {
       expect(screen.getByText("0 components found")).toBeInTheDocument();
       expect(
-        screen.getByText(/no motors found matching the active filters/i)
+        screen.getByText(/no motors found matching the active filters/i),
       ).toBeInTheDocument();
     });
   });
@@ -112,17 +133,20 @@ describe("CollectionPage Component", () => {
   it("renders error state when query fails", async () => {
     renderWithProviders(
       <Routes>
-        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={<CollectionPage />}
+        />
       </Routes>,
       {
         route: "/components/hardware/motors",
         transportOptions: { simulateError: true },
-      }
+      },
     );
 
     await waitFor(() => {
       expect(
-        screen.getByText(/failed to fetch motors from server/i)
+        screen.getByText(/failed to fetch motors from server/i),
       ).toBeInTheDocument();
     });
   });
@@ -130,13 +154,18 @@ describe("CollectionPage Component", () => {
   it("renders coming soon message for unknown collection", () => {
     renderWithProviders(
       <Routes>
-        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={<CollectionPage />}
+        />
       </Routes>,
-      { route: "/components/hardware/non-existent-collection" }
+      { route: "/components/hardware/non-existent-collection" },
     );
 
     expect(
-      screen.getByText("Implementation for non existent collection coming soon.")
+      screen.getByText(
+        "Implementation for non existent collection coming soon.",
+      ),
     ).toBeInTheDocument();
   });
 });

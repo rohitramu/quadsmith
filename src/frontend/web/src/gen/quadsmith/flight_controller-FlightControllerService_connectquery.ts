@@ -7,9 +7,11 @@ import { FlightControllerService } from "./flight_controller_pb";
 /**
  * @generated from rpc quadsmith.FlightControllerService.GetFlightController
  */
-export const getFlightController = FlightControllerService.method.getFlightController;
+export const getFlightController =
+  FlightControllerService.method.getFlightController;
 
 /**
  * @generated from rpc quadsmith.FlightControllerService.ListFlightControllers
  */
-export const listFlightControllers = FlightControllerService.method.listFlightControllers;
+export const listFlightControllers =
+  FlightControllerService.method.listFlightControllers;

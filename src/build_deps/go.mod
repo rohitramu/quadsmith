@@ -5,6 +5,7 @@ go 1.27.1
 require (
 	connectrpc.com/connect v1.21.0
 	github.com/bufbuild/buf v1.73.0
+	github.com/protocolbuffers/txtpbfmt v0.0.0-20260916144827-6e6d8ebdba95
 	google.golang.org/protobuf v1.36.12
 )
 
@@ -44,6 +45,7 @@ require (
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/gofrs/flock v0.13.1 // indirect
+	github.com/golang/glog v1.2.4 // indirect
 	github.com/google/go-containerregistry v0.22.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -52,6 +54,7 @@ require (
 	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
+	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/moby/api v1.56.0 // indirect
 	github.com/moby/moby/client v0.6.0 // indirect

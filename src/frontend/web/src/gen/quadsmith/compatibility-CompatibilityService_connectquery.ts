@@ -7,4 +7,5 @@ import { CompatibilityService } from "./compatibility_pb";
 /**
  * @generated from rpc quadsmith.v1.CompatibilityService.CheckCompatibility
  */
-export const checkCompatibility = CompatibilityService.method.checkCompatibility;
+export const checkCompatibility =
+  CompatibilityService.method.checkCompatibility;

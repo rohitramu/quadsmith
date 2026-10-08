@@ -19,10 +19,16 @@ export function CategoryPage() {
             <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               {c.name}
             </h2>
-            <p className="text-zinc-500 dark:text-zinc-400 mt-2">Browse all {c.name.toLowerCase()}</p>
+            <p className="text-zinc-500 dark:text-zinc-400 mt-2">
+              Browse all {c.name.toLowerCase()}
+            </p>
           </Link>
         ))}
-        {collections.length === 0 && <p className="text-zinc-500">No collections found in this category.</p>}
+        {collections.length === 0 && (
+          <p className="text-zinc-500">
+            No collections found in this category.
+          </p>
+        )}
       </div>
     </div>
   );

@@ -1,34 +1,79 @@
 #!/bin/bash
 set -e
 
-# Automatically run code generation to ensure schema and proto files are in sync
+# Check that generated files are up to date
+echo "Checking that generated files are up to date..."
 make generate
-
-# Format proto files
-cd proto && ../bin/buf format -w && cd ..
-
-# Format all staged Go files (and any we just generated)
-GO_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$' || true)
-GO_FILES="$GO_FILES src/frontend/cli/main.go"
-if [ -d "src/backend/api/gen" ]; then
-    GENERATED_GO=$(find src/backend/api/gen -name "*.go")
-    GO_FILES="$GO_FILES $GENERATED_GO"
+if ! git diff --exit-code -- src/backend/api/gen src/frontend/web/src/gen src/backend/db/schema.sql src/frontend/cli/main.go > /dev/null 2>&1; then
+    echo "Error: Generated files are out of sync with source definitions or unstaged."
+    echo "Please run 'make generate' and stage all generated changes before committing."
+    exit 1
 fi
-if [ -n "$GO_FILES" ]; then
-    UNIQUE_FILES=$(echo "$GO_FILES" | tr ' ' '\n' | sort -u)
-    gofmt -w $UNIQUE_FILES
-    git add $UNIQUE_FILES
+UNTRACKED_GEN=$(git status --porcelain -- src/backend/api/gen src/frontend/web/src/gen src/backend/db/schema.sql src/frontend/cli/main.go | grep '^??' || true)
+if [ -n "$UNTRACKED_GEN" ]; then
+    echo "Error: Found untracked generated files. Please stage all generated files before committing:"
+    echo "$UNTRACKED_GEN"
+    exit 1
 fi
 
-# Format and stage SQL files
-SQL_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.sql$' || true)
-SQL_FILES="$SQL_FILES src/backend/db/schema.sql"
-if [ -n "$SQL_FILES" ]; then
-    UNIQUE_SQL=$(echo "$SQL_FILES" | tr ' ' '\n' | sort -u)
-    # Use npx to run sql-formatter. It will download it if not present.
-    npx -y sql-formatter -l postgresql --fix $UNIQUE_SQL
-    git add $UNIQUE_SQL
+# Check Python formatting
+echo "Checking Python formatting..."
+if command -v uvx >/dev/null 2>&1; then
+    if ! uvx ruff format --check tools/ > /dev/null 2>&1; then
+        echo "Error: Python files are not formatted."
+        echo "Please run 'uvx ruff format tools/' to format them."
+        exit 1
+    fi
+elif command -v ruff >/dev/null 2>&1; then
+    if ! ruff format --check tools/ > /dev/null 2>&1; then
+        echo "Error: Python files are not formatted."
+        echo "Please run 'ruff format tools/' to format them."
+        exit 1
+    fi
 fi
 
-# Stage all proto files since we formatted them all
-git add proto/
+# Check Go formatting
+echo "Checking Go formatting..."
+UNFORMATTED_GO=$(gofmt -l $(find . -name "*.go" -not -path "*/vendor/*" -not -path "*/.tmp/*"))
+if [ -n "$UNFORMATTED_GO" ]; then
+    echo "Error: The following Go files are not formatted:"
+    echo "$UNFORMATTED_GO"
+    echo "Please run 'gofmt -w <files>' before committing."
+    exit 1
+fi
+
+# Check TypeScript formatting
+echo "Checking TypeScript formatting..."
+if ! (cd src/frontend/web && npx prettier --check "*.ts" "src/**/*.{ts,tsx}" > /dev/null 2>&1); then
+    echo "Error: TypeScript files are not formatted."
+    echo "Please run '(cd src/frontend/web && npx prettier --write \"*.ts\" \"src/**/*.{ts,tsx}\")' before committing."
+    exit 1
+fi
+
+# Check Protobuf formatting
+echo "Checking Protobuf formatting..."
+if ! (cd proto && ../bin/buf format -d --exit-code > /dev/null 2>&1); then
+    echo "Error: Protobuf files are not formatted."
+    echo "Please run '(cd proto && ../bin/buf format -w)' before committing."
+    exit 1
+fi
+
+# Check Textproto formatting
+echo "Checking Textproto formatting..."
+if [ ! -f bin/txtpbfmt ]; then
+    (cd src && go build -mod=vendor -o ../bin/txtpbfmt github.com/protocolbuffers/txtpbfmt/cmd/txtpbfmt)
+fi
+UNFORMATTED_TEXTPROTO=""
+for f in $(find src -name "*.textproto"); do
+    if [ -n "$(./bin/txtpbfmt -dry_run "$f")" ]; then
+        UNFORMATTED_TEXTPROTO="$UNFORMATTED_TEXTPROTO $f"
+    fi
+done
+if [ -n "$UNFORMATTED_TEXTPROTO" ]; then
+    echo "Error: The following textproto files are not formatted:"
+    for f in $UNFORMATTED_TEXTPROTO; do
+        echo "  $f"
+    done
+    echo "Please run 'make build' or format textproto files with txtpbfmt before committing."
+    exit 1
+fi

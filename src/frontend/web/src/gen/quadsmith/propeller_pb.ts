@@ -2,8 +2,16 @@
 // @generated from file quadsmith/propeller.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type {
+  GenFile,
+  GenMessage,
+  GenService,
+} from "@bufbuild/protobuf/codegenv2";
+import {
+  fileDesc,
+  messageDesc,
+  serviceDesc,
+} from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -13,8 +21,16 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file quadsmith/propeller.proto.
  */
-export const file_quadsmith_propeller: GenFile = /*@__PURE__*/
-  fileDesc("ChlxdWFkc21pdGgvcHJvcGVsbGVyLnByb3RvEglxdWFkc21pdGgiqQIKCVByb3BlbGxlchISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhAKCHdlaWdodF9nGAUgASgCEhMKC2RpYW1ldGVyX21tGAYgASgCEhAKCHBpdGNoX21tGAcgASgCEg4KBmJsYWRlcxgIIAEoDRIQCghtYXRlcmlhbBgJIAEoCRITCgtkZXNjcmlwdGlvbhgKIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYCyADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazopkrUYFwoJUHJvcGVsbGVyEgpQcm9wZWxsZXJzwvMYCnByb3BlbGxlcnMiMgoTR2V0UHJvcGVsbGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJIm0KFUxpc3RQcm9wZWxsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlsKFkxpc3RQcm9wZWxsZXJzUmVzcG9uc2USKAoKcHJvcGVsbGVycxgBIAMoCzIULnF1YWRzbWl0aC5Qcm9wZWxsZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMq8BChBQcm9wZWxsZXJTZXJ2aWNlEkQKDEdldFByb3BlbGxlchIeLnF1YWRzbWl0aC5HZXRQcm9wZWxsZXJSZXF1ZXN0GhQucXVhZHNtaXRoLlByb3BlbGxlchJVCg5MaXN0UHJvcGVsbGVycxIgLnF1YWRzbWl0aC5MaXN0UHJvcGVsbGVyc1JlcXVlc3QaIS5xdWFkc21pdGguTGlzdFByb3BlbGxlcnNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw", [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link]);
+export const file_quadsmith_propeller: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "ChlxdWFkc21pdGgvcHJvcGVsbGVyLnByb3RvEglxdWFkc21pdGgiqQIKCVByb3BlbGxlchISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhAKCHdlaWdodF9nGAUgASgCEhMKC2RpYW1ldGVyX21tGAYgASgCEhAKCHBpdGNoX21tGAcgASgCEg4KBmJsYWRlcxgIIAEoDRIQCghtYXRlcmlhbBgJIAEoCRITCgtkZXNjcmlwdGlvbhgKIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYCyADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazopkrUYFwoJUHJvcGVsbGVyEgpQcm9wZWxsZXJzwvMYCnByb3BlbGxlcnMiMgoTR2V0UHJvcGVsbGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJIm0KFUxpc3RQcm9wZWxsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlsKFkxpc3RQcm9wZWxsZXJzUmVzcG9uc2USKAoKcHJvcGVsbGVycxgBIAMoCzIULnF1YWRzbWl0aC5Qcm9wZWxsZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMq8BChBQcm9wZWxsZXJTZXJ2aWNlEkQKDEdldFByb3BlbGxlchIeLnF1YWRzbWl0aC5HZXRQcm9wZWxsZXJSZXF1ZXN0GhQucXVhZHNtaXRoLlByb3BlbGxlchJVCg5MaXN0UHJvcGVsbGVycxIgLnF1YWRzbWl0aC5MaXN0UHJvcGVsbGVyc1JlcXVlc3QaIS5xdWFkc21pdGguTGlzdFByb3BlbGxlcnNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    [
+      file_quadsmith__common,
+      file_quadsmith__sql,
+      file_quadsmith_reference_link,
+    ],
+  );
 
 /**
  * ---------------------------------------------------------
@@ -92,7 +108,8 @@ export type Propeller = Message<"quadsmith.Propeller"> & {
  * Describes the message quadsmith.Propeller.
  * Use `create(PropellerSchema)` to create a new message.
  */
-export const PropellerSchema: GenMessage<Propeller> = /*@__PURE__*/
+export const PropellerSchema: GenMessage<Propeller> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_propeller, 0);
 
 /**
@@ -118,66 +135,71 @@ export type GetPropellerRequest = Message<"quadsmith.GetPropellerRequest"> & {
  * Describes the message quadsmith.GetPropellerRequest.
  * Use `create(GetPropellerRequestSchema)` to create a new message.
  */
-export const GetPropellerRequestSchema: GenMessage<GetPropellerRequest> = /*@__PURE__*/
+export const GetPropellerRequestSchema: GenMessage<GetPropellerRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_propeller, 1);
 
 /**
  * @generated from message quadsmith.ListPropellersRequest
  */
-export type ListPropellersRequest = Message<"quadsmith.ListPropellersRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
+export type ListPropellersRequest =
+  Message<"quadsmith.ListPropellersRequest"> & {
+    /**
+     * @generated from field: string filter = 1;
+     */
+    filter: string;
 
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
+    /**
+     * @generated from field: int32 page_size = 2;
+     */
+    pageSize: number;
 
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
+    /**
+     * @generated from field: string page_token = 3;
+     */
+    pageToken: string;
 
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
+    /**
+     * @generated from field: repeated string columns = 4;
+     */
+    columns: string[];
 
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
+    /**
+     * @generated from field: repeated string sort = 5;
+     */
+    sort: string[];
+  };
 
 /**
  * Describes the message quadsmith.ListPropellersRequest.
  * Use `create(ListPropellersRequestSchema)` to create a new message.
  */
-export const ListPropellersRequestSchema: GenMessage<ListPropellersRequest> = /*@__PURE__*/
+export const ListPropellersRequestSchema: GenMessage<ListPropellersRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_propeller, 2);
 
 /**
  * @generated from message quadsmith.ListPropellersResponse
  */
-export type ListPropellersResponse = Message<"quadsmith.ListPropellersResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.Propeller propellers = 1;
-   */
-  propellers: Propeller[];
+export type ListPropellersResponse =
+  Message<"quadsmith.ListPropellersResponse"> & {
+    /**
+     * @generated from field: repeated quadsmith.Propeller propellers = 1;
+     */
+    propellers: Propeller[];
 
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
+    /**
+     * @generated from field: string next_page_token = 2;
+     */
+    nextPageToken: string;
+  };
 
 /**
  * Describes the message quadsmith.ListPropellersResponse.
  * Use `create(ListPropellersResponseSchema)` to create a new message.
  */
-export const ListPropellersResponseSchema: GenMessage<ListPropellersResponse> = /*@__PURE__*/
+export const ListPropellersResponseSchema: GenMessage<ListPropellersResponse> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_propeller, 3);
 
 /**
@@ -195,7 +217,7 @@ export const PropellerService: GenService<{
     methodKind: "unary";
     input: typeof GetPropellerRequestSchema;
     output: typeof PropellerSchema;
-  },
+  };
   /**
    * @generated from rpc quadsmith.PropellerService.ListPropellers
    */
@@ -203,7 +225,5 @@ export const PropellerService: GenService<{
     methodKind: "unary";
     input: typeof ListPropellersRequestSchema;
     output: typeof ListPropellersResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_quadsmith_propeller, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_quadsmith_propeller, 0);

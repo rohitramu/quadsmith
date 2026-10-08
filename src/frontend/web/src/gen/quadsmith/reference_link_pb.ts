@@ -2,15 +2,22 @@
 // @generated from file quadsmith/reference_link.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
+import type {
+  GenEnum,
+  GenFile,
+  GenMessage,
+} from "@bufbuild/protobuf/codegenv2";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file quadsmith/reference_link.proto.
  */
-export const file_quadsmith_reference_link: GenFile = /*@__PURE__*/
-  fileDesc("Ch5xdWFkc21pdGgvcmVmZXJlbmNlX2xpbmsucHJvdG8SCXF1YWRzbWl0aCJICg1SZWZlcmVuY2VMaW5rEioKBHR5cGUYASABKA4yHC5xdWFkc21pdGguUmVmZXJlbmNlTGlua1R5cGUSCwoDdXJsGAIgASgJKooCChFSZWZlcmVuY2VMaW5rVHlwZRIjCh9SRUZFUkVOQ0VfTElOS19UWVBFX1VOU1BFQ0lGSUVEEAASIAocUkVGRVJFTkNFX0xJTktfVFlQRV9QVVJDSEFTRRABEiQKIFJFRkVSRU5DRV9MSU5LX1RZUEVfUFJPRFVDVF9QQUdFEAISJQohUkVGRVJFTkNFX0xJTktfVFlQRV9ET0NVTUVOVEFUSU9OEAMSIgoeUkVGRVJFTkNFX0xJTktfVFlQRV9GT1JVTV9QT1NUEAQSHgoaUkVGRVJFTkNFX0xJTktfVFlQRV9SRVZJRVcQBRIdChlSRUZFUkVOQ0VfTElOS19UWVBFX09USEVSEAZCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM");
+export const file_quadsmith_reference_link: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "Ch5xdWFkc21pdGgvcmVmZXJlbmNlX2xpbmsucHJvdG8SCXF1YWRzbWl0aCJICg1SZWZlcmVuY2VMaW5rEioKBHR5cGUYASABKA4yHC5xdWFkc21pdGguUmVmZXJlbmNlTGlua1R5cGUSCwoDdXJsGAIgASgJKooCChFSZWZlcmVuY2VMaW5rVHlwZRIjCh9SRUZFUkVOQ0VfTElOS19UWVBFX1VOU1BFQ0lGSUVEEAASIAocUkVGRVJFTkNFX0xJTktfVFlQRV9QVVJDSEFTRRABEiQKIFJFRkVSRU5DRV9MSU5LX1RZUEVfUFJPRFVDVF9QQUdFEAISJQohUkVGRVJFTkNFX0xJTktfVFlQRV9ET0NVTUVOVEFUSU9OEAMSIgoeUkVGRVJFTkNFX0xJTktfVFlQRV9GT1JVTV9QT1NUEAQSHgoaUkVGRVJFTkNFX0xJTktfVFlQRV9SRVZJRVcQBRIdChlSRUZFUkVOQ0VfTElOS19UWVBFX09USEVSEAZCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+  );
 
 /**
  * @generated from message quadsmith.ReferenceLink
@@ -31,7 +38,8 @@ export type ReferenceLink = Message<"quadsmith.ReferenceLink"> & {
  * Describes the message quadsmith.ReferenceLink.
  * Use `create(ReferenceLinkSchema)` to create a new message.
  */
-export const ReferenceLinkSchema: GenMessage<ReferenceLink> = /*@__PURE__*/
+export const ReferenceLinkSchema: GenMessage<ReferenceLink> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_reference_link, 0);
 
 /**
@@ -77,6 +85,6 @@ export enum ReferenceLinkType {
 /**
  * Describes the enum quadsmith.ReferenceLinkType.
  */
-export const ReferenceLinkTypeSchema: GenEnum<ReferenceLinkType> = /*@__PURE__*/
+export const ReferenceLinkTypeSchema: GenEnum<ReferenceLinkType> =
+  /*@__PURE__*/
   enumDesc(file_quadsmith_reference_link, 0);
-

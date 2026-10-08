@@ -2,8 +2,16 @@
 // @generated from file quadsmith/receiver.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type {
+  GenFile,
+  GenMessage,
+  GenService,
+} from "@bufbuild/protobuf/codegenv2";
+import {
+  fileDesc,
+  messageDesc,
+  serviceDesc,
+} from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -13,8 +21,16 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file quadsmith/receiver.proto.
  */
-export const file_quadsmith_receiver: GenFile = /*@__PURE__*/
-  fileDesc("ChhxdWFkc21pdGgvcmVjZWl2ZXIucHJvdG8SCXF1YWRzbWl0aCLYAgoIUmVjZWl2ZXISEgoEdXVpZBgBIAEoCUIEyPMYARIQCgJpZBgCIAEoCUIE2PMYARIaCgxtYW51ZmFjdHVyZXIYAyABKAlCBODzGAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GBQgASgIEhAKCHdlaWdodF9nGAUgASgCEhYKCHByb3RvY29sGAYgASgJQgTg8xgBEhoKEmZyZXF1ZW5jeV9iYW5kX21oehgHIAEoDRIVCg1oYXNfdGVsZW1ldHJ5GAggASgIEhUKDWFudGVubmFfdXVpZHMYCSADKAkSEwoLZGVzY3JpcHRpb24YFSABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGBYgAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbms6JpK1GBUKCFJlY2VpdmVyEglSZWNlaXZlcnPC8xgJcmVjZWl2ZXJzIjEKEkdldFJlY2VpdmVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImwKFExpc3RSZWNlaXZlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiWAoVTGlzdFJlY2VpdmVyc1Jlc3BvbnNlEiYKCXJlY2VpdmVycxgBIAMoCzITLnF1YWRzbWl0aC5SZWNlaXZlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyqAEKD1JlY2VpdmVyU2VydmljZRJBCgtHZXRSZWNlaXZlchIdLnF1YWRzbWl0aC5HZXRSZWNlaXZlclJlcXVlc3QaEy5xdWFkc21pdGguUmVjZWl2ZXISUgoNTGlzdFJlY2VpdmVycxIfLnF1YWRzbWl0aC5MaXN0UmVjZWl2ZXJzUmVxdWVzdBogLnF1YWRzbWl0aC5MaXN0UmVjZWl2ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM", [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link]);
+export const file_quadsmith_receiver: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "ChhxdWFkc21pdGgvcmVjZWl2ZXIucHJvdG8SCXF1YWRzbWl0aCLYAgoIUmVjZWl2ZXISEgoEdXVpZBgBIAEoCUIEyPMYARIQCgJpZBgCIAEoCUIE2PMYARIaCgxtYW51ZmFjdHVyZXIYAyABKAlCBODzGAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GBQgASgIEhAKCHdlaWdodF9nGAUgASgCEhYKCHByb3RvY29sGAYgASgJQgTg8xgBEhoKEmZyZXF1ZW5jeV9iYW5kX21oehgHIAEoDRIVCg1oYXNfdGVsZW1ldHJ5GAggASgIEhUKDWFudGVubmFfdXVpZHMYCSADKAkSEwoLZGVzY3JpcHRpb24YFSABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGBYgAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbms6JpK1GBUKCFJlY2VpdmVyEglSZWNlaXZlcnPC8xgJcmVjZWl2ZXJzIjEKEkdldFJlY2VpdmVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImwKFExpc3RSZWNlaXZlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiWAoVTGlzdFJlY2VpdmVyc1Jlc3BvbnNlEiYKCXJlY2VpdmVycxgBIAMoCzITLnF1YWRzbWl0aC5SZWNlaXZlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyqAEKD1JlY2VpdmVyU2VydmljZRJBCgtHZXRSZWNlaXZlchIdLnF1YWRzbWl0aC5HZXRSZWNlaXZlclJlcXVlc3QaEy5xdWFkc21pdGguUmVjZWl2ZXISUgoNTGlzdFJlY2VpdmVycxIfLnF1YWRzbWl0aC5MaXN0UmVjZWl2ZXJzUmVxdWVzdBogLnF1YWRzbWl0aC5MaXN0UmVjZWl2ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    [
+      file_quadsmith__common,
+      file_quadsmith__sql,
+      file_quadsmith_reference_link,
+    ],
+  );
 
 /**
  * ---------------------------------------------------------
@@ -95,7 +111,8 @@ export type Receiver = Message<"quadsmith.Receiver"> & {
  * Describes the message quadsmith.Receiver.
  * Use `create(ReceiverSchema)` to create a new message.
  */
-export const ReceiverSchema: GenMessage<Receiver> = /*@__PURE__*/
+export const ReceiverSchema: GenMessage<Receiver> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_receiver, 0);
 
 /**
@@ -121,7 +138,8 @@ export type GetReceiverRequest = Message<"quadsmith.GetReceiverRequest"> & {
  * Describes the message quadsmith.GetReceiverRequest.
  * Use `create(GetReceiverRequestSchema)` to create a new message.
  */
-export const GetReceiverRequestSchema: GenMessage<GetReceiverRequest> = /*@__PURE__*/
+export const GetReceiverRequestSchema: GenMessage<GetReceiverRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_receiver, 1);
 
 /**
@@ -158,29 +176,32 @@ export type ListReceiversRequest = Message<"quadsmith.ListReceiversRequest"> & {
  * Describes the message quadsmith.ListReceiversRequest.
  * Use `create(ListReceiversRequestSchema)` to create a new message.
  */
-export const ListReceiversRequestSchema: GenMessage<ListReceiversRequest> = /*@__PURE__*/
+export const ListReceiversRequestSchema: GenMessage<ListReceiversRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_receiver, 2);
 
 /**
  * @generated from message quadsmith.ListReceiversResponse
  */
-export type ListReceiversResponse = Message<"quadsmith.ListReceiversResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.Receiver receivers = 1;
-   */
-  receivers: Receiver[];
+export type ListReceiversResponse =
+  Message<"quadsmith.ListReceiversResponse"> & {
+    /**
+     * @generated from field: repeated quadsmith.Receiver receivers = 1;
+     */
+    receivers: Receiver[];
 
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
+    /**
+     * @generated from field: string next_page_token = 2;
+     */
+    nextPageToken: string;
+  };
 
 /**
  * Describes the message quadsmith.ListReceiversResponse.
  * Use `create(ListReceiversResponseSchema)` to create a new message.
  */
-export const ListReceiversResponseSchema: GenMessage<ListReceiversResponse> = /*@__PURE__*/
+export const ListReceiversResponseSchema: GenMessage<ListReceiversResponse> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_receiver, 3);
 
 /**
@@ -198,7 +219,7 @@ export const ReceiverService: GenService<{
     methodKind: "unary";
     input: typeof GetReceiverRequestSchema;
     output: typeof ReceiverSchema;
-  },
+  };
   /**
    * @generated from rpc quadsmith.ReceiverService.ListReceivers
    */
@@ -206,7 +227,5 @@ export const ReceiverService: GenService<{
     methodKind: "unary";
     input: typeof ListReceiversRequestSchema;
     output: typeof ListReceiversResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_quadsmith_receiver, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_quadsmith_receiver, 0);
