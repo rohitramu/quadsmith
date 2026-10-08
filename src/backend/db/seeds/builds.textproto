@@ -1,4 +1,5 @@
 builds:  {
+
   uuid:  "01923019-2131-4192-3192-391294812399"
   id:  "bando-basher-5-inch"
   name:  "Bando Basher 5 inch"
@@ -27,6 +28,7 @@ builds:  {
   }
 }
 builds:  {
+
   uuid:  "01923019-2131-4192-3192-391294812398"
   id:  "long-range-explorer"
   name:  "Long Range Explorer 7 inch"
@@ -55,6 +57,7 @@ builds:  {
   }
 }
 builds:  {
+
   uuid:  "01923019-2131-4192-3192-391294812397"
   id:  "ultralight-toothpick"
   name:  "Ultralight Toothpick 3 inch"
@@ -74,15 +77,12 @@ builds:  {
     url:  "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
   }
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
-    url:  "https://support.betafpv.com"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
   }
 }
 builds:  {
+
   uuid:  "01923019-2131-4192-3192-391294812396"
   id:  "cinewhoop-pavo20-pro"
   name:  "CineWhoop Pavo20 Pro"
@@ -102,15 +102,12 @@ builds:  {
     url:  "https://betafpv.com/products/pavo20-pro-brushless-whoop-frame"
   }
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
-    url:  "https://support.betafpv.com"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://betafpv.com/products/pavo20-pro-brushless-whoop-frame"
   }
 }
 builds:  {
+
   uuid:  "01923019-2131-4192-3192-391294812395"
   id:  "pro-freestyle-5-inch"
   name:  "Pro Freestyle 5 inch"

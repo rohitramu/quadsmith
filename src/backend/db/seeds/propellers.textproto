@@ -1,4 +1,5 @@
 propellers:  {
+
   uuid:  "5bb5b8ae-fc45-45c0-a388-11e0d0ab6124"
   id:  "hqprop-5x4.3x3-v1s"
   manufacturer:  "HQProp"
@@ -10,15 +11,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp 5x4.3x3 V1S 3-blade Polycarbonate propeller with 127.0mm diameter and 109.2mm pitch, weighing 3.75g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-v1s-5x4-3x3-5-prop-choose-your-color"
   }
 }
 propellers:  {
+
   uuid:  "85e4b6d3-aeed-45c2-b51b-c55359528c7c"
   id:  "hqprop-t2x2x3"
   manufacturer:  "HQProp"
@@ -30,15 +28,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp T2x2x3 3-blade Polycarbonate propeller with 50.8mm diameter and 50.8mm pitch, weighing 0.75g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-durable-prop-t2x2x3-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "bac19aec-99fc-43d4-b96d-d1feb30e6b6e"
   id:  "gemfan-hurricane-51466-v2"
   manufacturer:  "Gemfan"
@@ -50,15 +45,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Gemfan Hurricane 51466 V2 3-blade Polycarbonate propeller with 131.8mm diameter and 91.4mm pitch, weighing 4.20g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-mck-edition-v2-51466-durable-tri-blade-5-prop-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "0801832b-b458-4ad5-a311-0e4f1efcc8da"
   id:  "gemfan-floppy-proppy-f5135"
   manufacturer:  "Gemfan"
@@ -69,16 +61,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Gemfan Gemfan Floppy Proppy F5135 3-blade Polycarbonate propeller with 129.5mm diameter and 88.9mm pitch, weighing 4.70g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "85fd29c1-857d-48e0-a5f7-f454ad4c52b6"
   id:  "hqprop-ethix-s5-light-grey"
   manufacturer:  "HQProp"
@@ -90,15 +75,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp Ethix S5 Light Grey 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.70g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/ethix-s5-light-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "cd0d879e-7b30-4d22-b4cd-475f103b8b70"
   id:  "hqprop-7x4x3"
   manufacturer:  "HQProp"
@@ -110,15 +92,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp 7X4X3 3-blade Polycarbonate propeller with 177.8mm diameter and 101.6mm pitch, weighing 10.30g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-durable-7x4x3-tri-blade-7-prop-4-pack"
   }
 }
 propellers:  {
+
   uuid:  "a609a8fc-e509-4f5e-a3b5-2ee4847192cf"
   id:  "gemfan-1219-3-blade"
   manufacturer:  "Gemfan"
@@ -130,15 +109,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Gemfan 1219 3-Blade 3-blade Polycarbonate propeller with 31.0mm diameter and 48.0mm pitch, weighing 0.18g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://www.racedayquads.com/products/gemfan-1219-3-31mm-durable-3-blade-prop-for-0-8mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "1d421d54-2b93-4bfe-a626-b1f3918f3426"
   id:  "gemfan-1636-4-blade"
   manufacturer:  "Gemfan"
@@ -150,15 +126,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Gemfan 1636 4-Blade 4-blade Polycarbonate propeller with 39.9mm diameter and 91.4mm pitch, weighing 0.50g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://www.racedayquads.com/products/gemfan-1636-durable-4-blade-whoop-prop-1mm-hole-choose-your-color"
   }
 }
 propellers:  {
+
   uuid:  "db4c27cd-dbf6-4fb8-83d1-5d00ee86562a"
   id:  "gemfan-2023-3-blade"
   manufacturer:  "Gemfan"
@@ -170,15 +143,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Gemfan 2023 3-Blade 3-blade Polycarbonate propeller with 50.8mm diameter and 58.4mm pitch, weighing 0.88g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-2023-3-tri-blade-prop-4cw-4ccw"
   }
 }
 propellers:  {
+
   uuid:  "f438ea4d-29f6-4730-b5d6-105105d04294"
   id:  "gemfan-4023-3-blade"
   manufacturer:  "Gemfan"
@@ -190,15 +160,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Gemfan 4023 3-Blade 3-blade Polycarbonate propeller with 101.6mm diameter and 58.4mm pitch, weighing 1.98g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-4023-3-blade-4-durable-prop-2cw-2ccw-1-5mm-hubchoose-color"
   }
 }
 propellers:  {
+
   uuid:  "c6ccaf42-c038-463b-b311-1e53a75c2fa0"
   id:  "gemfan-hurricane-51433"
   manufacturer:  "Gemfan"
@@ -210,15 +177,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Gemfan Hurricane 51433 3-blade Polycarbonate propeller with 130.8mm diameter and 110.0mm pitch, weighing 3.80g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-51433-christmas-limited-edition-santa-blue"
   }
 }
 propellers:  {
+
   uuid:  "a84c2809-0a8d-4eff-b7f3-ac4e36586e3b"
   id:  "gemfan-7040-3-blade"
   manufacturer:  "Gemfan"
@@ -229,16 +193,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Gemfan Gemfan 7040 3-Blade 3-blade Polycarbonate propeller with 177.8mm diameter and 101.6mm pitch, weighing 4.50g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "8a9d1fa6-3a22-4bed-86e8-2352ec189f35"
   id:  "hqprop-micro-whoop-31x3"
   manufacturer:  "HQProp"
@@ -249,16 +206,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQProp HQProp Micro Whoop 31x3 3-blade Polycarbonate propeller with 31.0mm diameter and 30.0mm pitch, weighing 1.13g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "9c6cb944-f7cd-4459-a3c9-b288309e88fa"
   id:  "hqprop-micro-whoop-40x4"
   manufacturer:  "HQProp"
@@ -269,16 +219,9 @@ propellers:  {
   blades:  4
   material:  "Polycarbonate"
   description:  "HQProp HQProp Micro Whoop 40x4 4-blade Polycarbonate propeller with 39.9mm diameter and 39.9mm pitch, weighing 3.50g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "d00fa7e1-7efc-4057-ba75-e0d6d9b84b3b"
   id:  "hqprop-t65mm-2.5-inch"
   manufacturer:  "HQProp"
@@ -289,16 +232,9 @@ propellers:  {
   blades:  2
   material:  "Polycarbonate"
   description:  "HQProp HQProp T65MM 2.5 Inch 2-blade Polycarbonate propeller with 65.0mm diameter and 39.9mm pitch, weighing 0.80g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "50f7726c-df27-4037-8bcb-c1779dac76f9"
   id:  "hqprop-t3x3x3"
   manufacturer:  "HQProp"
@@ -310,15 +246,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp T3x3x3 3-blade Polycarbonate propeller with 76.2mm diameter and 76.2mm pitch, weighing 1.13g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-t3x3x3-pc-dp-durable-prop-for-3-three-hole-mount"
   }
 }
 propellers:  {
+
   uuid:  "d1ce02e4-961c-499d-8424-3b84424edfde"
   id:  "hqprop-ethix-p3-peanut-butter"
   manufacturer:  "HQProp"
@@ -330,15 +263,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp Ethix P3 Peanut Butter 3-blade Polycarbonate propeller with 129.5mm diameter and 76.2mm pitch, weighing 3.50g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-ethix-p3-5-1x3x3-tri-blade-5-prop-4-pack-peanut-butter-jelly"
   }
 }
 propellers:  {
+
   uuid:  "6d5540a7-7f07-40a5-840d-185c39f77038"
   id:  "hqprop-ethix-s3-watermelon"
   manufacturer:  "HQProp"
@@ -350,15 +280,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp Ethix S3 Watermelon 3-blade Polycarbonate propeller with 127.0mm diameter and 78.7mm pitch, weighing 3.60g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-ethix-s3-watermelon-props"
   }
 }
 propellers:  {
+
   uuid:  "180c5d56-8970-405b-9308-254d1bde06de"
   id:  "hqprop-5.1x4.1x3"
   manufacturer:  "HQProp"
@@ -370,15 +297,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp 5.1x4.1x3 3-blade Polycarbonate propeller with 129.5mm diameter and 104.1mm pitch, weighing 4.75g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-5-1x4-1x3-5-prop-popo-compatible"
   }
 }
 propellers:  {
+
   uuid:  "194a58be-4a4c-48b3-bc42-85a97d25074a"
   id:  "hqprop-7x3.5x3"
   manufacturer:  "HQProp"
@@ -390,15 +314,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp 7x3.5x3 3-blade Polycarbonate propeller with 177.8mm diameter and 88.9mm pitch, weighing 8.80g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hqprop-7x3-5x3-light-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "84d6959a-80c2-4e81-828e-71fee9065947"
   id:  "hqprop-2.5x2.5x3"
   manufacturer:  "HQProp"
@@ -410,15 +331,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQProp 2.5x2.5x3 3-blade Polycarbonate propeller with 63.5mm diameter and 63.5mm pitch, weighing 5.30g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-2-5x2-5x3-2-5-props-choose-your-color"
   }
 }
 propellers:  {
+
   uuid:  "a55f6a33-8a46-4f95-b534-f4960a48294e"
   id:  "gemfan-d2-2-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -431,14 +349,11 @@ propellers:  {
   description:  "Gemfan D2.2 3-Blade Propellers (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-d2-2-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "c9e747f7-f870-4773-87e2-1f83a77c13f1"
   id:  "gemfan-1811-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -451,14 +366,11 @@ propellers:  {
   description:  "Gemfan 1811 3-Blade Propellers (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-1811-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "93fb946c-74d7-4b72-a89f-360f243d337b"
   id:  "gemfan-1409-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -471,14 +383,11 @@ propellers:  {
   description:  "Gemfan 1409 3-Blade Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-1409-3-blade-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "37023d68-1cff-415f-948e-a064826b1eac"
   id:  "gemfan-1614-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -491,14 +400,11 @@ propellers:  {
   description:  "Gemfan 1614 3-Blade Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-1614-3-blade-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "79109cc6-1b79-49bb-b475-2b199dad2008"
   id:  "gemfan-1207-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -511,14 +417,11 @@ propellers:  {
   description:  "Gemfan 1207 3-Blade Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-1207-3-blade-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "7fe56d45-ad2f-45fc-9f5e-7f6ceecc4566"
   id:  "hq-4025-2-blade-propellers-1-5mm-shaft"
   manufacturer:  "BETAFPV"
@@ -531,14 +434,11 @@ propellers:  {
   description:  "BETAFPV HQ 4025 2-Blade Propellers 1.5mm Shaft 2-blade Polycarbonate propeller with 101.6mm diameter and 63.5mm pitch, weighing 1.40g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/hq-4025-2-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "f0fff850-48c2-402a-8856-9ee963f3f76c"
   id:  "gemfan-5125-3-blade-propellers-5mm-1-5mm-shaft"
   manufacturer:  "BETAFPV"
@@ -551,14 +451,11 @@ propellers:  {
   description:  "BETAFPV Gemfan 5125 3-Blade Propellers 5mm/1.5mm Shaft 3-blade Polycarbonate propeller with 129.5mm diameter and 63.5mm pitch, weighing 2.78g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-5125-3-blade-propellers-5mm-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "453f79fb-4f75-4e48-9535-ec56864f319b"
   id:  "gemfan-1611-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -571,14 +468,11 @@ propellers:  {
   description:  "Gemfan 1611 3-Blade Propellers (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-1611-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "277fc2d5-475d-4e24-815b-9e6518fcdf44"
   id:  "1735-4-blades-pc-propellers-4-pcs"
   manufacturer:  "BETAFPV"
@@ -591,14 +485,11 @@ propellers:  {
   description:  "BETAFPV 1735 4-Blades PC Propellers  (4 PCS) 4-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 30.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/1735-pc-propellers-for-micro-fpv-racing-quads-12pcs"
   }
 }
 propellers:  {
+
   uuid:  "b1e1d0ee-4b09-497f-adc8-99ea80db530a"
   id:  "31mm-4-blade-micro-whoop-propellers"
   manufacturer:  "BETAFPV"
@@ -611,14 +502,11 @@ propellers:  {
   description:  "31mm 4-blade Micro Whoop Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/31mm-4-blade-micro-whoop-propellers"
   }
 }
 propellers:  {
+
   uuid:  "9ae7ce92-a83a-48c6-87c2-fb8007f147af"
   id:  "40mm-3-blade-micro-whoop-propellers"
   manufacturer:  "BETAFPV"
@@ -631,14 +519,11 @@ propellers:  {
   description:  "40mm 3-blade Micro Whoop Propellers (1.0mm shaft 4 Sets)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/40mm-3-blade-micro-whoop-propellers-4-sets"
   }
 }
 propellers:  {
+
   uuid:  "cb6882e5-83c5-4565-88d4-3f7df5c6fcf2"
   id:  "gemfan-2218-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -651,14 +536,11 @@ propellers:  {
   description:  "Gemfan 2218 3-Blade Propellers (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-2218-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "613756ba-ae8e-4032-b131-854c8b6967ee"
   id:  "hq-31mm-ultralight-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -671,14 +553,11 @@ propellers:  {
   description:  "HQ 31mm Ultralight 3-Blade Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/hq-31mm-ultralight-3-blade-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "8dedb8e0-8b9d-41a1-8af8-73e6800565d2"
   id:  "gemfan-1219s-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -691,14 +570,11 @@ propellers:  {
   description:  "Gemfan 1219S 3-Blade Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-1219s-3-blade-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "48053723-9d2a-4042-8f48-2a4011b445ab"
   id:  "gemfan-2023-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -711,14 +587,11 @@ propellers:  {
   description:  "Gemfan 2023 3-blade Propellers (1.5mm Shaft 4PCS)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-2023-3-blade-propellers1-5mm-shaft-4pcs"
   }
 }
 propellers:  {
+
   uuid:  "2bdfc5f8-9a06-4e6b-bff9-b7d18e9c748c"
   id:  "beta-45mm-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -731,14 +604,11 @@ propellers:  {
   description:  "Beta-45mm 3-Blade Propellers (1.5mm Shaft 4PCS)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/beta-45mm-3-blades-propellers-1-5mm-shaft-4pcs"
   }
 }
 propellers:  {
+
   uuid:  "e7c0cb87-0c45-42ba-ba8f-076b6db3aef7"
   id:  "gemfan-1210-2-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -751,14 +621,11 @@ propellers:  {
   description:  "Gemfan 1210 2-blade Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfam-1210-2-blade-propellers1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "b0593285-e5f2-4722-a162-25174d204f67"
   id:  "gemfan-1208-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -771,14 +638,11 @@ propellers:  {
   description:  "Gemfan 1208 3-blade Propellers(1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfam-1208-3-blade-propellers1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "9623e7eb-9769-4eea-880d-709797148362"
   id:  "hq-31mm-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -791,14 +655,11 @@ propellers:  {
   description:  "HQ 31mm 3-Blade Propellers (0.8mm Shaft 4PCS)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/hq-31mm-3-blade-propellers-0-8mm-shaft-4pcs"
   }
 }
 propellers:  {
+
   uuid:  "b3719bbd-e8a8-40b1-bf8f-f6d7d1859563"
   id:  "gemfan-45mm-2-blade-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -811,14 +672,11 @@ propellers:  {
   description:  "Gemfan 45mm 2-Blade & 3-Blade Propellers (1.5mm Shaft 4PCS)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-45mm-2-blade-3-blade-propellers-1-5mm-shaft-4pcs"
   }
 }
 propellers:  {
+
   uuid:  "a872651b-74e4-473e-9631-0b1c3280e217"
   id:  "gemfan-2015-2-blade-propellers-4pcs"
   manufacturer:  "BETAFPV"
@@ -831,14 +689,11 @@ propellers:  {
   description:  "Gemfan 2015 2-Blade Propellers 4PCS (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-2015-2-blade-propellers-4pcs-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "d38d99db-1982-4035-abe4-fabd3795e0a0"
   id:  "gemfan-51466-mck-v2-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -851,14 +706,11 @@ propellers:  {
   description:  "Gemfan 51466 MCK V2 3-Blade Propellers (5.0mm Shaft 4PCS)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-51466-mck-v2-3-blade-propellers-5-0mm-shaft-4pcs"
   }
 }
 propellers:  {
+
   uuid:  "de8e1b9e-01de-41bd-b400-e2c87dc9ec8e"
   id:  "gemfan-hurricane-51433-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -871,14 +723,11 @@ propellers:  {
   description:  "Gemfan Hurricane 51433 3-Blade Propellers (5.0mm Shaft 4PCS)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-hurricane-51433-3-blade-propellers-5-0mm-shaft-4pcs"
   }
 }
 propellers:  {
+
   uuid:  "c960c0b4-c018-4f56-90fe-d17b3d999e83"
   id:  "hq-65mm-2-blade-1-5mm-shaft-propellers"
   manufacturer:  "BETAFPV"
@@ -891,14 +740,11 @@ propellers:  {
   description:  "BETAFPV HQ 65mm 2-Blade 1.5mm Shaft Propellers 2-blade Polycarbonate propeller with 65.0mm diameter and 39.0mm pitch, weighing 0.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/65mm-2-blade-1-5mm-shaft-propellers"
   }
 }
 propellers:  {
+
   uuid:  "070e17c3-9431-4467-8734-f689d8eeccf9"
   id:  "gemfan-35mm-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -911,14 +757,11 @@ propellers:  {
   description:  "Gemfan 35mm 3-Blade Propellers (1.0mm Shaft 4PCS)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-35mm-3-blade-propellers-1-0mm-shaft-4pcs"
   }
 }
 propellers:  {
+
   uuid:  "f760a2e9-f65b-46f1-b221-7cbc2fba93d3"
   id:  "gemfan-40mm-2-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -931,14 +774,11 @@ propellers:  {
   description:  "Gemfan 40mm 2-Blade Propellers (1.0mm Shaft 4PCS)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-40mm-2-blade-propellers-1-0mm-shaft-4pcs"
   }
 }
 propellers:  {
+
   uuid:  "fabd7c65-1435-4f30-ac2e-5b6da6c95995"
   id:  "gemfan-3520-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -951,14 +791,11 @@ propellers:  {
   description:  "Gemfan 3520 3-Blade Propellers (1.5-5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-3520-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "68d643be-9b23-4f64-8703-813cb6519a18"
   id:  "hq-3520-3-blade-propellers-1-5mm-shaft"
   manufacturer:  "BETAFPV"
@@ -971,14 +808,11 @@ propellers:  {
   description:  "BETAFPV HQ 3520 3-Blade Propellers (1.5mm Shaft) 3-blade Polycarbonate propeller with 88.9mm diameter and 50.8mm pitch, weighing 1.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/hq-3520-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "c48baf28-814c-4611-b70f-6117488cd14f"
   id:  "gemfan-d63-5-blade-propellers-1-5mm-shaft"
   manufacturer:  "BETAFPV"
@@ -991,14 +825,11 @@ propellers:  {
   description:  "BETAFPV Gemfan D63 5-Blade Propellers 1.5mm Shaft 5-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 0.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-d63-5-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "36c0b1d6-f78a-4afe-a5d1-053671fcc9e6"
   id:  "hq-5025-3-blade-propellers-1-5mm-shaft"
   manufacturer:  "BETAFPV"
@@ -1011,14 +842,11 @@ propellers:  {
   description:  "BETAFPV HQ 5025 3-Blade Propellers 1.5mm Shaft 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/hq-5025-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "aa287113-66c0-4849-8cd9-4d446dc1996e"
   id:  "gemfan-2020-4-blade-propellers-1-5mm-shaft"
   manufacturer:  "BETAFPV"
@@ -1031,14 +859,15 @@ propellers:  {
   description:  "BETAFPV Gemfan 2020 4-Blade Propellers 1.5mm Shaft 4-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 30.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-2020-4-blade-propellers-1-5mm-shaft"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://www.racedayquads.com/products/betafpv-gemfan-2020-4-blade-propeller-set-of-4-1-5mm-shaft-black"
   }
 }
 propellers:  {
+
   uuid:  "f80977ee-ea8a-4bc4-849b-3adc981bcf93"
   id:  "gemfan-d63-3-blade-propellers-1-5mm-shaft"
   manufacturer:  "BETAFPV"
@@ -1051,14 +880,11 @@ propellers:  {
   description:  "BETAFPV Gemfan D63 3-Blade Propellers 1.5mm Shaft 3-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 0.43g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-d63-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "0ec44d2f-2f19-4541-b7dc-069fa7eac2d8"
   id:  "gemfan-4032-3-blade-propellers-5mm-shaft"
   manufacturer:  "BETAFPV"
@@ -1071,14 +897,11 @@ propellers:  {
   description:  "BETAFPV Gemfan 4032 3-Blade Propellers 5mm Shaft 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 30.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-4032-3-blade-propellers-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "8f78c503-3039-4fe3-a6cb-fee94f345c87"
   id:  "31mm-3-blade-micro-whoop-propellers"
   manufacturer:  "BETAFPV"
@@ -1091,14 +914,11 @@ propellers:  {
   description:  "31mm 3-blade Micro Whoop Propellers (0.8mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/31mm-3-blade-micro-whoop-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "c2912508-11cc-4ced-9233-40df0f64ae77"
   id:  "48mm-4-blade-micro-whoop-propellers"
   manufacturer:  "BETAFPV"
@@ -1111,14 +931,11 @@ propellers:  {
   description:  "48mm 4-blade Micro Whoop Propellers (1.0mm shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/48mm-4-blade-micro-whoop-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "2c4c8b38-6f5d-465b-ae59-7801af90f832"
   id:  "gemfan-3016-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -1131,14 +948,11 @@ propellers:  {
   description:  "Gemfan 3016 3-Blade Propellers (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-3016-3-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "c22cad45-99e3-428b-bd69-a77c44f714c2"
   id:  "gemfan-2540-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -1151,14 +965,11 @@ propellers:  {
   description:  "BETAFPV Gemfan 2540 3-Blade Propellers 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-2540-3-blade-propellers"
   }
 }
 propellers:  {
+
   uuid:  "84284e00-160b-4a14-9bcc-f78210e0dbd6"
   id:  "gemfan-31mm-3-blade-micro-whoop-propellers"
   manufacturer:  "BETAFPV"
@@ -1171,14 +982,11 @@ propellers:  {
   description:  "Gemfan 31mm 3-blade Micro Whoop Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/31mm-3-blade-micro-whoop-propellers-1-0mm-shaft-1"
   }
 }
 propellers:  {
+
   uuid:  "5ef6e8ad-93a7-4684-b5f0-ae37f5da48f9"
   id:  "48mm-4-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -1191,14 +999,11 @@ propellers:  {
   description:  "48mm 4-Blade Propellers for HX100 FPV Quad (1.5mm shaft )"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/48mm-4-blade-propellers-for-hx100-fpv-quad"
   }
 }
 propellers:  {
+
   uuid:  "3c6bf964-3a80-4bad-a2c9-f867a081e68b"
   id:  "65mm-2-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -1211,14 +1016,11 @@ propellers:  {
   description:  "65mm 2-Blade Propellers for HX100 FPV Quad (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/65mm-2-blade-propellers-for-hx100-fpv-quad-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "0b3752db-ce75-4d21-ac88-4ec677a0b811"
   id:  "gemfan-40mm-3-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -1231,14 +1033,11 @@ propellers:  {
   description:  "Gemfan 40mm 3-Blade Propellers (1.0mm Shaft 4 Sets)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-40mm-3-blade-propellers-1-0mm-shaft-16pcs"
   }
 }
 propellers:  {
+
   uuid:  "7b9dca5c-d8dd-42af-8bd4-80516f5329a5"
   id:  "gemfan-40mm-3-blade-propellers-2"
   manufacturer:  "BETAFPV"
@@ -1251,14 +1050,11 @@ propellers:  {
   description:  "Gemfan 40mm 3-Blade Propellers (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-40mm-3-blade-propellers-1-0mm-shaft-16pcs"
   }
 }
 propellers:  {
+
   uuid:  "f5f36dc3-9953-4899-aef2-35af8c5f4718"
   id:  "gemfan-40mm-4-blade-propellers"
   manufacturer:  "BETAFPV"
@@ -1271,14 +1067,11 @@ propellers:  {
   description:  "Gemfan 40mm 4-Blade Propellers (1.5mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-40mm-4-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "c7f68599-c900-4d42-8c05-48f89cd2e833"
   id:  "gemfan-40mm-4-blade-propellers-2"
   manufacturer:  "BETAFPV"
@@ -1291,14 +1084,11 @@ propellers:  {
   description:  "Gemfan 40mm 4-Blade Propellers (1.0mm Shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/gemfan-40mm-4-blade-propellers-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "cf8df091-60b4-4016-9f39-3015e1651734"
   id:  "40mm-4-blade-2s-whoop-propellers"
   manufacturer:  "BETAFPV"
@@ -1311,14 +1101,11 @@ propellers:  {
   description:  "40mm 4-blade 2S Whoop Propellers (1.5mm Shaft Hole)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/40mm-4-blade-2s-whoop-propellers-1-5mm-shaft-hole"
   }
 }
 propellers:  {
+
   uuid:  "f1d82d49-1fe0-4f40-92f2-af5a24927085"
   id:  "40mm-3-blade-chameleon-propellers"
   manufacturer:  "BETAFPV"
@@ -1331,14 +1118,11 @@ propellers:  {
   description:  "40mm 3-blade Chameleon Propellers (1.0mm shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/40mm-3-blade-chameleon-propellers"
   }
 }
 propellers:  {
+
   uuid:  "75b1d642-2060-4569-9186-edf82afa44f1"
   id:  "transparent-31mm-3-blade-micro-whoop-propellers"
   manufacturer:  "BETAFPV"
@@ -1351,14 +1135,11 @@ propellers:  {
   description:  "Transparent 31mm 3-blade Micro Whoop Propellers (0.8mm shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/transparent-3-blade-micro-whoop-propellers"
   }
 }
 propellers:  {
+
   uuid:  "34c3acbd-6530-4a67-929c-8165a6ca52cd"
   id:  "31mm-4-blade-micro-whoop-propellers-2"
   manufacturer:  "BETAFPV"
@@ -1371,14 +1152,11 @@ propellers:  {
   description:  "31mm 4-blade Micro Whoop Propellers (0.8mm shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/31mm-4-blade-micro-whoop-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "cc8e8b76-c6f0-4f1f-b0e3-8400d5caf2a8"
   id:  "48mm-3-blade-micro-whoop-propellers"
   manufacturer:  "BETAFPV"
@@ -1391,14 +1169,11 @@ propellers:  {
   description:  "48mm 3-blade Micro Whoop Propellers (1.0mm shaft)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/48mm-3-blade-micro-whoop-propellers"
   }
 }
 propellers:  {
+
   uuid:  "1a51da49-7078-441f-9efa-5548ba95fdbd"
   id:  "31mm-3-blade-micro-whoop-propellers-2"
   manufacturer:  "BETAFPV"
@@ -1411,14 +1186,11 @@ propellers:  {
   description:  "31mm 3-blade Micro Whoop Propellers (0.8mm shaft 4 Sets)"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/collections/props"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/collections/props"
+    url:  "https://betafpv.com/products/31mm-3-blade-micro-whoop-propellers-1-0mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "8e1e1aff-2da1-40f7-baa8-88a4946e5709"
   id:  "caddxfpv-hq-3-blade-propeller-set-2"
   manufacturer:  "CADDX"
@@ -1430,11 +1202,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "CaddxFPV HQ 3-Blade Propeller Set (2CW + 2CCW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/caddxfpv-hq-3-blade-propeller-set-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "af0e1d98-06b0-4a2b-81bf-c5868d442c7c"
   id:  "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount-2"
   manufacturer:  "CADDX"
@@ -1446,11 +1219,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount Propeller Set (2x CW / 2x CCW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/caddxfpv-t2x2x3-2-3-blade-t-mount-propeller-set-2x-cw-2x-ccw"
   }
 }
 propellers:  {
+
   uuid:  "4583de63-ed4e-42c8-bee6-5831f1bfef68"
   id:  "darwinfpv-d63-3-propeller"
   manufacturer:  "DarwinFPV"
@@ -1463,14 +1237,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV D63-3 Propeller 3-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 1.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-d63-3-propeller"
   }
 }
 propellers:  {
+
   uuid:  "c5bab505-8f36-4f1d-837d-18bcbf6b2f78"
   id:  "darwinfpv-cineape-25-ii-cinematic-whoop"
   manufacturer:  "DarwinFPV"
@@ -1483,14 +1254,11 @@ propellers:  {
   description:  "DarwinFPV CineApe 25 II  Cinematic Whoop FPV Drone"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-cineape-25-ii-cinematic-whoop-fpv-drone"
   }
 }
 propellers:  {
+
   uuid:  "365e3550-feae-4fdd-9d41-b42e53ff7a35"
   id:  "darwinfpv-babyape-iii-pro-hqprop-t3-5x2-5x3"
   manufacturer:  "DarwinFPV"
@@ -1503,14 +1271,11 @@ propellers:  {
   description:  "DarwinFPV BabyApe III Pro  HQProp T3.5X2.5X3 3.5 Inch Propeller"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-iii-pro-inch-propeller"
   }
 }
 propellers:  {
+
   uuid:  "db62119b-e290-4e78-8986-fe20d00e14e6"
   id:  "darwinfpv-6032-x6-d6-propeller"
   manufacturer:  "DarwinFPV"
@@ -1523,14 +1288,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV 6032 X6/D6 Propeller 3-blade Polycarbonate propeller with 153212.8mm diameter and 152.4mm pitch, weighing 5.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-6032-x6-d6-propeller"
   }
 }
 propellers:  {
+
   uuid:  "d49d625c-c4ac-4f66-9f2c-988300b60638"
   id:  "darwinfpv-cineape20-2023-3-2-inch-propellers"
   manufacturer:  "DarwinFPV"
@@ -1542,11 +1304,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "DarwinFPV CineApe20 2023-3 2 Inch Propellers 3-blade Polycarbonate propeller with 50.8mm diameter and 58.4mm pitch, weighing 5.00g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-cineape20-2023-3-2-inch-propellers"
   }
 }
 propellers:  {
+
   uuid:  "1aaee669-fd22-4485-b45b-cc0e83d0151c"
   id:  "darwinfpv-cineape35-d90-3-3-5-inch-fpv"
   manufacturer:  "DarwinFPV"
@@ -1558,11 +1321,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "DarwinFPV CineApe35 D90-3  3.5 inch FPV Drone Propeller"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-cineape35-d90-3-3-5-inch-fpv-drone-propeller"
   }
 }
 propellers:  {
+
   uuid:  "88adfc08-0ed0-4134-801e-06c4dc43e2c8"
   id:  "darwinfpv-gemfan-x-class-1308-13x8x3-13inch"
   manufacturer:  "DarwinFPV"
@@ -1574,11 +1338,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "DarwinFPV Gemfan X-CLASS 1308 13X8X3 13inch Propeller"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-gemfan-x-class-1308-13x8x3-13inch-propeller"
   }
 }
 propellers:  {
+
   uuid:  "69dbc8c8-90c9-4fbd-824f-7e78989f5ac9"
   id:  "darwinfpv-babyape-propeller"
   manufacturer:  "DarwinFPV"
@@ -1591,14 +1356,15 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV BabyApe Ⅱ Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-ⅱ-hqprop-t3-5x2x3-3-5-inch-propeller"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://pyrodrone.com/products/darwinfpv-babyape-ii-3-5-freestyle-fpv-hd-drone-elrs-2-4g-1"
   }
 }
 propellers:  {
+
   uuid:  "f3a98c5a-3a05-4b75-a4e3-f96cd3f53f22"
   id:  "darwinfpv-f4019-2-folding-propeller"
   manufacturer:  "DarwinFPV"
@@ -1611,14 +1377,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV F4019-2 Folding Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.42g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-f4019-2-folding-propeller"
   }
 }
 propellers:  {
+
   uuid:  "f0e5961b-56b5-4568-b1e8-bd286b7eec52"
   id:  "darwinfpv-gemfan-8060-3-glass-fiber-nylon"
   manufacturer:  "DarwinFPV"
@@ -1631,14 +1394,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV Gemfan 8060-3 Glass Fiber Nylon 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 12.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-gemfan-8060-3-glass-fiber-nylon"
   }
 }
 propellers:  {
+
   uuid:  "fcedb465-3503-48f4-83b6-e8874a80a8e1"
   id:  "darwinfpv-hurricane7050-3-propeller"
   manufacturer:  "DarwinFPV"
@@ -1651,14 +1411,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV Hurricane7050-3 Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 8.90g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-hurricane7050-3-propeller"
   }
 }
 propellers:  {
+
   uuid:  "450d8654-1d08-47e5-816f-f58d218b2545"
   id:  "darwinfpv-8040-3-glass-fiber-nylon-propeller"
   manufacturer:  "DarwinFPV"
@@ -1671,14 +1428,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV 8040-3 Glass Fiber Nylon Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 11.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-8040-3-glass-fiber-nylon-propeller"
   }
 }
 propellers:  {
+
   uuid:  "d9a0e89a-b807-4f5a-bb98-af4a118b10ff"
   id:  "darwinfpv-9045-3-glass-fiber-nylon-propeller"
   manufacturer:  "DarwinFPV"
@@ -1691,14 +1445,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV 9045-3 Glass Fiber Nylon Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 16.70g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/9045-3-glass-fiber-nylon-propeller"
   }
 }
 propellers:  {
+
   uuid:  "666b272f-040f-4671-a088-e6f14fd49472"
   id:  "darwinfpv-1050-3-fpv-drone-propeller"
   manufacturer:  "DarwinFPV"
@@ -1711,14 +1462,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV  1050-3 FPV Drone Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 16.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-1050-3-fpv-drone-propeller"
   }
 }
 propellers:  {
+
   uuid:  "48366e05-c898-4112-96ba-82a66d799330"
   id:  "darwinfpv-hqprop-t3-5x2x3grey-propeller-babyape"
   manufacturer:  "DarwinFPV"
@@ -1731,14 +1479,11 @@ propellers:  {
   description:  "DarwinFPV HQProp T3.5X2X3Grey Propeller / Babyape II"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-hqprop-t3-5x2x3grey-propeller"
   }
 }
 propellers:  {
+
   uuid:  "fd2f4e90-c9a9-41d6-87ac-aa4b7bd555fe"
   id:  "darwinfpv-cineape-25-hqprop-t63mmx6-propeller"
   manufacturer:  "DarwinFPV"
@@ -1751,14 +1496,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV CineApe 25 HQProp T63MMX6 Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 144.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/hqprop-t63mmx6-propeller"
   }
 }
 propellers:  {
+
   uuid:  "a37257cd-dbd1-4143-b3b6-79d6b81ed968"
   id:  "gemfan-4934-5-inch-3-blade-propeller"
   manufacturer:  "DarwinFPV"
@@ -1771,14 +1513,11 @@ propellers:  {
   description:  "DarwinFPV Gemfan 4934 5 inch 3-Blade Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/gemfan-4934-5-inch-3-blade-propeller"
   }
 }
 propellers:  {
+
   uuid:  "5e2fbac6-a81c-425c-8ee5-8f6a1c9056f1"
   id:  "darwinfpv-5-inch-51466-3-blades-propeller"
   manufacturer:  "DarwinFPV"
@@ -1791,14 +1530,11 @@ propellers:  {
   description:  "DarwinFPV Darwinfpv 5 inch 51466-3 blades propeller 3-blade Polycarbonate propeller with 129.5mm diameter and 118.4mm pitch, weighing 4.20g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-5-inch-3-blades-propeller"
   }
 }
 propellers:  {
+
   uuid:  "13882035-614f-4b21-a8fc-ab915993a5ee"
   id:  "darwinfpv-2512-2-5inch-3-blade-fpv-propellers"
   manufacturer:  "DarwinFPV"
@@ -1811,14 +1547,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV 2512 2.5inch 3-blade FPV Propellers 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/2512-2-5inch-3-blade-fpv-propellers"
   }
 }
 propellers:  {
+
   uuid:  "4b8f93a1-f041-44ea-905c-4a9675aedc7f"
   id:  "newbeedrone-tool-kit-v1-7"
   manufacturer:  "NewBeeDrone"
@@ -1830,11 +1563,16 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "NewBeeDrone NewBeeDrone Tool Kit V1.7 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 28.00g."
   reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-tool-kit-v1-6"
+  }
+  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://pyrodrone.com/products/newbeedrone-tool-kit-v1-7"
   }
 }
 propellers:  {
+
   uuid:  "bb9f3699-e424-429c-b881-b5f64eecc370"
   id:  "newbeedrone-whoop-propypop-tool"
   manufacturer:  "NewBeeDrone"
@@ -1846,11 +1584,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "NewBeeDrone Whoop PropyPop Tool for Easy Propeller Removal"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-whoop-propypop-tool"
   }
 }
 propellers:  {
+
   uuid:  "b3b60ce1-09f7-4da9-b92d-36073a6c193f"
   id:  "newbeedrone-azi-micro-propellers-40mm"
   manufacturer:  "NewBeeDrone"
@@ -1862,11 +1601,16 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "NewBeeDrone Azi (Tri-Blade) Micro Propellers 40mm - 1.5mm Shaft (4CCW+4CW)"
   reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-azi-tri-blade-micro-propellers-40mm"
+  }
+  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://www.racedayquads.com/products/newbeedrone-azi-tri-blade-micro-propellers-40mm-1-5mm-shaft-set-of-4"
   }
 }
 propellers:  {
+
   uuid:  "c13b9e97-d1b9-4a12-87df-016eadab1128"
   id:  "newbeedrone-venom-v2-super-durable-propellers"
   manufacturer:  "NewBeeDrone"
@@ -1878,11 +1622,16 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "NewBeeDrone Venom V2 Super Durable Propellers 31mm -1.0mm Shaft (4CCW+4CW)"
   reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-venom-v2-super-durable-propellers-31mm-1-0mm-shaft4ccw-4cw"
+  }
+  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://www.racedayquads.com/products/newbeedrone-venom-v2-super-durable-propellers-31mm-0-8mm-shaftset-of-4"
   }
 }
 propellers:  {
+
   uuid:  "9f1b41ec-cd8d-4766-8d7e-d0cfb589c503"
   id:  "newbeedrone-azi-micro-propellers-40mm-2"
   manufacturer:  "NewBeeDrone"
@@ -1894,11 +1643,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "NewBeeDrone Azi (Tri-Blade) Micro Propellers 40mm - 1.0mm Shaft (4CCW+4CW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-azi-tri-blade-micro-propellers-40mm"
   }
 }
 propellers:  {
+
   uuid:  "e283fce0-832d-4ac5-a335-fbd1fc9b54af"
   id:  "newbeedrone-beewire-lite-5-pack"
   manufacturer:  "NewBeeDrone"
@@ -1910,11 +1660,16 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "NewBeeDrone NewBeeDrone BeeWire Lite (5-Pack) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.20g."
   reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-beewire-lite-5-pack"
+  }
+  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://www.racedayquads.com/products/newbeedrone-beewire-lite-5-pack"
   }
 }
 propellers:  {
+
   uuid:  "90755b7e-0829-45b6-9dae-e03da6681efc"
   id:  "newbeedrone-venom-v2-super-durable-propellers-2"
   manufacturer:  "NewBeeDrone"
@@ -1926,11 +1681,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "NewBeeDrone Venom V2 Super Durable Propellers 31mm -0.8mm Shaft (4CCW+4CW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-venom-v2-super-durable-propellers-31mm-1-0mm-shaft4ccw-4cw"
   }
 }
 propellers:  {
+
   uuid:  "ba544f55-9b6b-43f1-bad4-518ebede22ec"
   id:  "tiny-cockroach"
   manufacturer:  "NewBeeDrone"
@@ -1942,11 +1698,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "NewBeeDrone Tiny Cockroach 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 2.80g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/tiny-cockroach"
   }
 }
 propellers:  {
+
   uuid:  "60b503c9-c3c7-4026-b9f5-161a26f16974"
   id:  "rotor-riot-ultimate-tool-kit"
   manufacturer:  "Rotor Riot"
@@ -1958,11 +1715,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Rotor Riot Ultimate Tool Kit - Choose Version"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://rotorriot.com/products/rotor-riot-ultimate-tool-kit"
   }
 }
 propellers:  {
+
   uuid:  "ab5998cd-405c-47dd-b356-0a792fb4f05e"
   id:  "40mm-1635-pc-3-blade-1-5mm-clear-blue"
   manufacturer:  "Gemfan"
@@ -1973,16 +1731,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Gemfan 40mm 1635 PC 3 Blade 1.5mm - Clear Blue 3-blade Polycarbonate propeller with 40.0mm diameter and 24.0mm pitch, weighing 0.54g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "0c3faa52-d034-46af-bc9e-3e6aeb2c76b3"
   id:  "cinelifter-glass-fiber-nylon-10-1x5-5x3-prop"
   manufacturer:  "Gemfan"
@@ -1993,16 +1744,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Cinelifter Glass Fiber Nylon 10.1X5.5x3 Prop 2-Pack"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "5ebbcb3a-bb06-42c1-bb93-baea45d6dc86"
   id:  "hq-10x4-5x3-macroquad-prop"
   manufacturer:  "HQProp"
@@ -2014,15 +1758,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQ 10X4.5X3 MacroQuad Prop 3-blade Polycarbonate propeller with 254.0mm diameter and 114.3mm pitch, weighing 9.00g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-macroquad-prop-10x4-5x3-black-glass-fiber-reinforced-nylon-choose-rotation"
   }
 }
 propellers:  {
+
   uuid:  "8cea3ffe-d6fb-45cf-b880-5fdea66da7e3"
   id:  "p2-tri-blade-5-props-4-pack-pickle"
   manufacturer:  "Ethix"
@@ -2033,12 +1774,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Ethix P2 Tri-Blade 5 Props 4 Pack - Pickle 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.80g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "8bd7d2d0-6952-402a-830c-088e0437763d"
   id:  "hurricane-2015-props-grey"
   manufacturer:  "Gemfan"
@@ -2049,16 +1787,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane 2015 Props - Grey 3-blade Polycarbonate propeller with 50.8mm diameter and 38.1mm pitch, weighing 0.50g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "1f5208c4-c249-4a7d-b7e7-b4ea7413dc34"
   id:  "t4x2-5-props-grey"
   manufacturer:  "HQProp"
@@ -2070,15 +1801,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp T4X2.5 Props - Grey 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 9.40g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-durable-prop-t4x2-5-grey"
   }
 }
 propellers:  {
+
   uuid:  "3deb5921-de24-498f-9f43-3b29139ae960"
   id:  "hq-juicy-j33-4-9x3-3x3-props"
   manufacturer:  "HQProp"
@@ -2089,16 +1817,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ Juicy J33 4.9x3.3x3 Props - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "7fd20f7b-f0a3-4422-959e-2184ecddf5a1"
   id:  "p3-3-tri-blade-5-props-4-pack"
   manufacturer:  "Ethix"
@@ -2109,12 +1830,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "P3.3 Tri-Blade 5 Props 4 Pack - Mango Lassi"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "600b214b-b348-4eaa-828e-ca383fcfc80f"
   id:  "t2-5x2-5x3-tri-blade-2-5-prop-4-pack"
   manufacturer:  "HQProp"
@@ -2125,16 +1843,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "T2.5x2.5x3 Tri-Blade 2.5 Prop 4 Pack - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "40a2390d-9964-4419-9e9a-9e184f069899"
   id:  "lr-4024-pc-2-blade-props"
   manufacturer:  "Gemfan"
@@ -2145,16 +1856,9 @@ propellers:  {
   blades:  2
   material:  "Polycarbonate"
   description:  "Gemfan LR 4024 PC 2 Blade Props 2-blade Polycarbonate propeller with 101.6mm diameter and 61.0mm pitch, weighing 3.16g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "ffb4c360-f459-4c62-b9aa-1bccb2ea3ada"
   id:  "proxy-5127-5-pdevx-and-pablo-flor"
   manufacturer:  "Gemfan"
@@ -2165,16 +1869,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Proxy 5127.5 PDEVX and Pablo Flor Edition Props - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "77bb22bf-f186-48ad-830f-c52242908183"
   id:  "t3-5x2-5x3-tri-blade-3-5-prop"
   manufacturer:  "HQProp"
@@ -2186,15 +1883,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "T3.5x2.5x3 Tri-Blade 3.5 Prop with 2mm Shaft 4 Pack - Let's Fly RC Edition"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-prop-t3-5x2-5x3-tri-blade-3-5-prop-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "0dea81a4-72c8-4fed-97a4-837e7faf3814"
   id:  "hurricane-51433-props-choose-color"
   manufacturer:  "Gemfan"
@@ -2206,15 +1900,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane 51433 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 110.0mm pitch, weighing 3.80g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-51433-christmas-limited-edition-santa-blue"
   }
 }
 propellers:  {
+
   uuid:  "b1cb8741-a6a0-4a8c-a692-62e659e3f2a5"
   id:  "hurricane-4937-props-black"
   manufacturer:  "Gemfan"
@@ -2225,16 +1916,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane 4937 Props - Black 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.50g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "64a980f6-16a2-4619-ae0b-81cc991a055b"
   id:  "hurricane-5127-props-clear-grey"
   manufacturer:  "Gemfan"
@@ -2245,16 +1929,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane 5127 Props - Clear Grey 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 4.40g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "013ad3c5-1ebd-45c1-a86c-912d2df50e52"
   id:  "hurricane-51366-mck-rev3-props"
   manufacturer:  "Gemfan"
@@ -2266,15 +1943,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Hurricane 51366 MCK Rev3 Props - Choose Color"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-mck-edition-rev3-51366-3-durable-tri-blade-5-prop-2cw-2ccw-choose-color"
   }
 }
 propellers:  {
+
   uuid:  "02e2881a-d987-4491-944f-a4d4abce31e3"
   id:  "duct-d63-3-props-clear-grey"
   manufacturer:  "Gemfan"
@@ -2285,16 +1959,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Gemfan Duct D63-3 Props - Clear Grey 3-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 2.00g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "87c09bd9-ace6-478d-9f46-56610e883df8"
   id:  "hq-r42-5-1x4-2x3-props-choose-color"
   manufacturer:  "HQProp"
@@ -2306,15 +1973,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQ R42 5.1x4.2x3 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 106.7mm pitch, weighing 4.10g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-r42-5-1x4-2x3-5-tri-blade-prop-4-pack-grey"
   }
 }
 propellers:  {
+
   uuid:  "a74f75bb-7121-4966-a281-238cd6640b8b"
   id:  "donut-5145-toroidal-5-props-2"
   manufacturer:  "Foxeer"
@@ -2325,12 +1989,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Donut 5145 Toroidal 5 Props - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "534bbd26-2f01-4854-9c20-48be28ae4eb7"
   id:  "t3-5x2-5x3-tri-blade-3-5-prop-4-pack"
   manufacturer:  "HQProp"
@@ -2342,15 +2003,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack - Choose Color"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-t3-5x2-5x3-tri-blade-3-5-prop-4-pack-2mm-t-mount-grey"
   }
 }
 propellers:  {
+
   uuid:  "c7a760c2-b94d-4e88-bdcf-b9261083225c"
   id:  "p3-5-tri-blade-5-props-4-pack"
   manufacturer:  "Ethix"
@@ -2361,12 +2019,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "P3.5 Tri-Blade 5 Props 4 Pack - Rad Berry"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "86cb3c5a-c119-4423-be9e-99fc2c202350"
   id:  "p3-tri-blade-5-props-4-pack"
   manufacturer:  "Ethix"
@@ -2379,10 +2034,11 @@ propellers:  {
   description:  "P3 Tri-Blade 5 Props 4 Pack - Peanut Butter & Jelly"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://www.racedayquads.com/products/hq-prop-ethix-p3-5-1x3x3-tri-blade-5-prop-4-pack-peanut-butter-jelly"
   }
 }
 propellers:  {
+
   uuid:  "acb63349-ead5-4fe4-80c8-391952049037"
   id:  "s3-tri-blade-5-props-4-pack-watermelon"
   manufacturer:  "Ethix"
@@ -2395,10 +2051,11 @@ propellers:  {
   description:  "Ethix S3 Tri-Blade 5 Props 4 Pack - Watermelon 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://www.racedayquads.com/products/hq-ethix-s3-watermelon-props"
   }
 }
 propellers:  {
+
   uuid:  "bfcd7e5b-288b-4ce9-950c-1d6ee16c0cca"
   id:  "dt-2-9x2-5x5-5-blade-3-props"
   manufacturer:  "HQProp"
@@ -2409,16 +2066,9 @@ propellers:  {
   blades:  5
   material:  "Polycarbonate"
   description:  "DT 2.9X2.5X5 5-Blade 3 Props for DJI Avata - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "dd65f909-897e-4fce-a015-2dc321fa3b25"
   id:  "1610-bi-blade-40mm-prop-8-pack"
   manufacturer:  "Gemfan"
@@ -2429,16 +2079,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "1610 Bi-Blade 40mm Prop 8 Pack - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "ac5c2a35-e701-4110-9b09-e3b523a51b75"
   id:  "hq-juicy-j37-4-9x3-7x3-props"
   manufacturer:  "HQProp"
@@ -2449,16 +2092,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ Juicy J37 4.9x3.7x3 Props - Rotor Riot Edition"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "f9a0d8ec-fb5c-4031-aebe-1893b7f72b19"
   id:  "40mmx2-bi-blade-40mm-prop-4-pack"
   manufacturer:  "HQProp"
@@ -2470,15 +2106,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp 40MMX2 Bi-Blade 40mm Prop 4 Pack 3-blade Polycarbonate propeller with 40.0mm diameter and 24.0mm pitch, weighing 0.26g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-40mmx2-ultralight-bi-blade-40mm-micro-whoop-prop-4-pack-grey"
   }
 }
 propellers:  {
+
   uuid:  "b43952db-d2d5-432a-a963-3f2d49c92da8"
   id:  "35mm-racewire-rotor-riot-edition"
   manufacturer:  "Rotor Riot"
@@ -2490,11 +2123,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "35mm Racewire Rotor Riot Edition - 4 Pack"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://rotorriot.com/products/35mm-racewire-rotor-riot-edition"
   }
 }
 propellers:  {
+
   uuid:  "2e1eea5e-0de3-428a-ba84-65765ea5fd6c"
   id:  "s4-tri-blade-5-props-4-pack-lemon-lime"
   manufacturer:  "Ethix"
@@ -2507,10 +2141,11 @@ propellers:  {
   description:  "Ethix S4 Tri-Blade 5 Props 4 Pack - Lemon Lime 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.60g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://www.racedayquads.com/products/hq-prop-ethix-s4-5x3-7x3-tri-blade-5-prop-4-pack-lemon-lime"
   }
 }
 propellers:  {
+
   uuid:  "6c95c69f-a618-43c2-b45d-49e7a077b33d"
   id:  "j75-tri-blade-7-prop-4-pack"
   manufacturer:  "HQProp"
@@ -2522,15 +2157,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp J75 Tri-Blade 7 Prop 4 Pack 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 9.10g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-j75-7x5x3-tri-blade-7-prop-4-pack-gray"
   }
 }
 propellers:  {
+
   uuid:  "97074d8a-7a7e-4300-a847-c477ee888b34"
   id:  "hq-r35-tri-blade-5-prop-4"
   manufacturer:  "HQProp"
@@ -2542,15 +2174,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ R35 Tri-Blade 5 Prop 4 Pack - Choose Color"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-5135v2-r35v2-5-1x3-5x3-tri-blade-5-prop-4-pack-choose-your-color"
   }
 }
 propellers:  {
+
   uuid:  "c0a8d13e-db9b-4c61-963c-2f4de0fe6d01"
   id:  "s5-tri-blade-5-props-4-pack-black"
   manufacturer:  "Ethix"
@@ -2561,12 +2190,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Ethix S5 Tri-Blade 5 Props 4 Pack - Black 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.70g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "21b863ee-c697-4793-a089-f51b584de408"
   id:  "dji-avata-propellers"
   manufacturer:  "DJI"
@@ -2579,10 +2205,11 @@ propellers:  {
   description:  "DJI DJI Avata Propellers 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 2.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://www.racedayquads.com/products/dji-avata-propellers"
   }
 }
 propellers:  {
+
   uuid:  "1f63a481-1e1a-4759-ad0b-351f623ed510"
   id:  "juicy-prop-j40-5-1-tri-blade-props"
   manufacturer:  "HQProp"
@@ -2594,15 +2221,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Juicy Prop J40 5.1 Tri-Blade Props - Choose Color"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-juicy-prop-j40-5-1-prop-4-pack-choose-your-color"
   }
 }
 propellers:  {
+
   uuid:  "dd325177-56c3-4369-aadd-4a4eaaf08b4f"
   id:  "hq-35mmx3-tri-blade-35mm-1mm-shaft"
   manufacturer:  "HQProp"
@@ -2613,16 +2237,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ 35MMX3 Tri-Blade 35mm 1mm Shaft Props - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "dbbfe9b5-7136-47cc-a379-84adc1a59331"
   id:  "hurricane-3520-props-choose-color"
   manufacturer:  "Gemfan"
@@ -2634,15 +2251,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane 3520 Props - Choose Color 3-blade Polycarbonate propeller with 88.9mm diameter and 50.8mm pitch, weighing 1.75g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-3520-durable-tri-blade-3-5-t-mount-1-5mm-propeller-2cw-2ccw-choose-color"
   }
 }
 propellers:  {
+
   uuid:  "1b5172e2-a51f-459f-a099-8f2af4e01e31"
   id:  "sbang-prop-4934-props"
   manufacturer:  "Gemfan"
@@ -2654,15 +2268,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "SBANG Prop 4934 Props - Choose Color and Rotation"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-sbang-4934-tri-blade-4-9-propeller-choose-rotation-color"
   }
 }
 propellers:  {
+
   uuid:  "c427fdb5-dd5c-4f5a-b44b-ac4b03e6373f"
   id:  "5136-props-choose-color"
   manufacturer:  "Gemfan"
@@ -2674,15 +2285,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan 5136 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 91.4mm pitch, weighing 4.30g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-vannystyle-5136-tri-blade-5-1-propeller-choose-color"
   }
 }
 propellers:  {
+
   uuid:  "73ba2485-7c29-4d41-be99-e03a8cbe82f9"
   id:  "hq-dp-t65mmx3-props"
   manufacturer:  "HQProp"
@@ -2693,16 +2301,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQProp HQ DP T65MMX3 Props 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.60g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "626bc1ba-4b53-482d-ab23-c19745a8b082"
   id:  "hq-juicy-j37-4-9x3-7x3-props-2"
   manufacturer:  "HQProp"
@@ -2713,16 +2314,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ Juicy J37 4.9x3.7x3 Props - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "2ba08ed3-13fe-4080-9ae9-bbc7e06849cf"
   id:  "hq-duct-4x4x6-props-for-ducted-hd1-vs"
   manufacturer:  "HQProp"
@@ -2733,16 +2327,9 @@ propellers:  {
   blades:  6
   material:  "Polycarbonate"
   description:  "HQProp HQ Duct 4X4X6 Props for Ducted HD1 VS 6-blade Polycarbonate propeller with 101.6mm diameter and 101.6mm pitch, weighing 3.10g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "cdb9412c-464c-4a35-983f-7ec25349be61"
   id:  "freestyle4s-durable-3-blade-props"
   manufacturer:  "Gemfan"
@@ -2753,16 +2340,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Freestyle4S Durable 3 Blade (5.1x3.6x3) Props - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "a4f66742-60c2-4a16-8338-aea8d44924fa"
   id:  "freestyle3s-durable-3-blade-props"
   manufacturer:  "Gemfan"
@@ -2773,16 +2353,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Freestyle3S Durable 3 Blade (5.1x3x3) Props - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "d1f1fb21-a5d6-44b6-b082-e5a0e271bb91"
   id:  "hq-2-9x2-9x4-quad-blade-3-props"
   manufacturer:  "HQProp"
@@ -2794,15 +2367,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQ 2.9x2.9x4 Quad-Blade 3 Props 4-blade Polycarbonate propeller with 73.7mm diameter and 73.7mm pitch, weighing 9.10g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-durable-2-9x2-9x4-quad-blade-3-prop-4-pack"
   }
 }
 propellers:  {
+
   uuid:  "b9221dd7-69c0-457a-b8a2-6c711ec37a31"
   id:  "hq-dp-t2x2x4-props"
   manufacturer:  "HQProp"
@@ -2813,16 +2383,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQProp HQ DP T2X2X4 Props 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.60g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "0825f73b-738e-429c-ac2e-c35ff0f57d97"
   id:  "hq-dp-t2x2-5x3-props-choose-color"
   manufacturer:  "HQProp"
@@ -2833,16 +2396,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQProp HQ DP T2X2.5X3 Props - Choose Color 3-blade Polycarbonate propeller with 12.7mm diameter and 76.2mm pitch, weighing 1.20g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "ac3c45d3-80e6-40b6-8b79-f932026a5193"
   id:  "lr-5126-2-blade-props-choose-color"
   manufacturer:  "Gemfan"
@@ -2853,16 +2409,9 @@ propellers:  {
   blades:  2
   material:  "Polycarbonate"
   description:  "Gemfan LR 5126 2 Blade Props - Choose Color 2-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 4.82g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "6354d1eb-1557-4a73-8585-687c0b0d81a8"
   id:  "hq-dp-t2x2x3-props"
   manufacturer:  "HQProp"
@@ -2873,16 +2422,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQProp HQ DP T2X2X3 Props 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.75g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "2326f665-1d50-438e-ac23-19eb381928df"
   id:  "hq-4-8x3-4x4-props"
   manufacturer:  "HQProp"
@@ -2893,16 +2435,9 @@ propellers:  {
   blades:  4
   material:  "Polycarbonate"
   description:  "HQProp HQ 4.8x3.4x4 Props 4-blade Polycarbonate propeller with 121.9mm diameter and 86.4mm pitch, weighing 4.20g."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "171e167a-0329-41e6-8076-389cf40bf231"
   id:  "hq-r38-headsupfpv-5-1x3-8x3-props"
   manufacturer:  "HQProp"
@@ -2913,16 +2448,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ R38 HeadsUPFPV 5.1x3.8x3 Props - Choose Color"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "c1a1f06a-eeb3-40b1-9f43-2bb7388e3d40"
   id:  "hq-7x4x3-props"
   manufacturer:  "HQProp"
@@ -2934,15 +2462,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQ 7X4X3 Props 3-blade Polycarbonate propeller with 177.8mm diameter and 101.6mm pitch, weighing 9.10g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-durable-7x4x3-tri-blade-7-prop-4-pack"
   }
 }
 propellers:  {
+
   uuid:  "70a41d77-1191-41a4-8bbe-3ec831f0b5b2"
   id:  "hq-3-cinewhoop-props-choose-color"
   manufacturer:  "HQProp"
@@ -2954,15 +2479,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp HQ 3 Cinewhoop Props - Choose Color 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.16g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-prop-duct-75mm-cinewhoop-hexa-blade-3-prop-2cw-2ccw-grey"
   }
 }
 propellers:  {
+
   uuid:  "b22965b8-1a2c-46e5-be38-0b0fce6e8abf"
   id:  "darwinfpv-babyape-pro-rtf"
   manufacturer:  "DarwinFPV"
@@ -2974,11 +2496,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "DarwinFPV BabyApe Ⅲ PRO RTF 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-pro-rtf"
   }
 }
 propellers:  {
+
   uuid:  "2a18df34-1bf5-49ec-adde-5a4e4c70f772"
   id:  "darwinfpv-babyape-pro-3-5-inch"
   manufacturer:  "DarwinFPV"
@@ -2990,11 +2513,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "DarwinFPV BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-pro-3-5-inch-freestyle-fpv-drone"
   }
 }
 propellers:  {
+
   uuid:  "ec000089-005c-4b9e-90a0-da0b3f615c6f"
   id:  "darwinfpv-gemfan-8046-3-glass-fiber-nylon"
   manufacturer:  "DarwinFPV"
@@ -3007,14 +2531,11 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV Gemfan 8046-3 Glass Fiber Nylon 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 13.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-gemfan-8046-3-glass-fiber-nylon"
   }
 }
 propellers:  {
+
   uuid:  "0591a75a-c8aa-4a99-bb2f-9a703a7d526b"
   id:  "darwinfpv-babyape-freestyle-fpv-drone"
   manufacturer:  "DarwinFPV"
@@ -3027,14 +2548,15 @@ propellers:  {
   description:  "DarwinFPV DarwinFPV BabyApe Ⅱ Freestyle FPV Drone 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-ⅱ-freestyle-fpv-drone"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://pyrodrone.com/products/darwinfpv-babyape-ii-3-5-freestyle-fpv-hd-drone-elrs-2-4g-1"
   }
 }
 propellers:  {
+
   uuid:  "4ab2d71e-54c1-4b31-ba32-5e6a15f604f0"
   id:  "darwinfpv-cineape-25-cinematic-whoop-fpv"
   manufacturer:  "DarwinFPV"
@@ -3047,14 +2569,11 @@ propellers:  {
   description:  "DarwinFPV CineApe 25 Cinematic Whoop FPV Drone"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://darwinfpv.com/collections/propeller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://darwinfpv.com/collections/propeller"
+    url:  "https://darwinfpv.com/products/cineape-25-cinematic-whoop-fpv-drone"
   }
 }
 propellers:  {
+
   uuid:  "65baa62c-f1ca-4d4f-8d7b-27810ba0e2a8"
   id:  "explorer-lr-4-hd-dji-o4"
   manufacturer:  "Flywoo"
@@ -3065,12 +2584,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Explorer LR 4 HD DJI O4 Pro Micro Long Range Drone - Choose Version"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "32d3324d-ee55-4d4b-9b0e-799a9bf3192c"
   id:  "dalprop-fold-series-f7-7-inch"
   manufacturer:  "HGLRC"
@@ -3082,11 +2598,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Dalprop Fold Series F7 7 Inch Folding Propeller Smooth DIY Props Long Range Compatible POPO for FPV Racing RC Drone（5 pairs）"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/dalprop-fold-series-f7-7-inch-folding-propeller-smooth-diy-props-long-range-compatible-popo-for-fpv-racing-rc-drone"
   }
 }
 propellers:  {
+
   uuid:  "9f98c0c6-bbfb-4d4d-b68d-2ef131672d8d"
   id:  "hqprop-t63-1-5mm-6-blade-propeller"
   manufacturer:  "HGLRC"
@@ -3098,11 +2615,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HGLRC HQprop T63 1.5mm 6-Blade Propeller 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.53g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/hqprop-t63-1-5mm-6-blade-propeller"
   }
 }
 propellers:  {
+
   uuid:  "908f77f0-3326-4165-b2ea-49630f6496cf"
   id:  "gemfan-d63-2-5-inch-5-blade-propeller"
   manufacturer:  "HGLRC"
@@ -3114,11 +2632,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HGLRC Gemfan D63 2.5 Inch 5-Blade Propeller 5-blade Polycarbonate propeller with 63.0mm diameter and 63.0mm pitch, weighing 0.80g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/gemfan-d63-2-5-inch-5-blade-propeller"
   }
 }
 propellers:  {
+
   uuid:  "bb16d259-4899-4211-b42a-7c4d794f84cf"
   id:  "gemfan-5125-hurricane-durable-3-blade"
   manufacturer:  "Gemfan"
@@ -3129,12 +2648,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Gemfan 5125 Hurricane Durable 3 Blade 1.5mm - Clear Gray"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "e4b99cd5-d0f2-4aa6-bda1-e6117972e6f5"
   id:  "gemfan-hurricane-51466-propeller"
   manufacturer:  "Gemfan"
@@ -3146,15 +2662,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane 51466 Propeller (Set of 4)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-mck-edition-v2-51466-durable-tri-blade-5-prop-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "65c1d18c-45c4-4788-bba1-479b9a092bb8"
   id:  "3-pairs-gemfan-5042-3-blade-propeller"
   manufacturer:  "HGLRC"
@@ -3166,11 +2679,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "3 Pairs Gemfan 5042 3-Blade Propeller for 5 FPV racing drone"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/3-pairs-gemfan-5042-3-blade-propeller-for-5-fpv-racing-drone"
   }
 }
 propellers:  {
+
   uuid:  "9ec0a0ec-5fcb-4bc9-8ba2-dc85448c6166"
   id:  "gemfan-7037-3"
   manufacturer:  "Diatone"
@@ -3182,11 +2696,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan 7037-3 for Cinelifter & Macro Quad (2CW+2CCW)1/pcs"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-7037-3-for-cinelifter-macro-quad-2cw-2ccw1-pcs"
   }
 }
 propellers:  {
+
   uuid:  "2252cd7d-56bf-4978-b959-a6090161868c"
   id:  "gemfan-flash-7042-2-propellers"
   manufacturer:  "Diatone"
@@ -3198,11 +2713,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan  Flash 7042-2 (2CW+2CCW) Propellers For Roma F7"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-7042-2-2cw-2ccw-for-roma-f7"
   }
 }
 propellers:  {
+
   uuid:  "76c861f1-d09c-4f7a-9f16-d38fa4880ccf"
   id:  "gemfan-hrricane-3520"
   manufacturer:  "Diatone"
@@ -3214,11 +2730,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "GEMFAN Hrricane 3520 for Toothpick&Ultralight (2CW+2CCW) For Roma F35"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-hrricane-3520-for-toothpick-ultralight-2cw-2ccw-for-roma-f35"
   }
 }
 propellers:  {
+
   uuid:  "2cfff5cc-7dc3-4bc0-9235-b714d9b879f7"
   id:  "gemfan-hrricane-51433"
   manufacturer:  "Diatone"
@@ -3230,11 +2747,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "GEMFAN Hrricane 51433 for Freestyle  Xmas (2CW+2CCW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-hrricane-51433-for-freestyle-xmas-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "2e049491-a89f-40f0-bb63-2cbe9ab1e182"
   id:  "hq-durable-prop-t4x2-5grey-2cw-2ccw-poly-carbonate"
   manufacturer:  "Diatone"
@@ -3246,11 +2764,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Diatone HQ Durable Prop T4X2.5Grey （2CW+2CCW)-Poly Carbonate 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 5.50g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/hq-durable-prop-t4x2-5grey-2cw-2ccw-poly-carbonate-1-pcs"
   }
 }
 propellers:  {
+
   uuid:  "4b17282e-8228-4554-9386-77a602bfd53a"
   id:  "gemfan-3-blades-squirt-props-63mm"
   manufacturer:  "Diatone"
@@ -3262,11 +2781,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "GEMFAN 3 Blades Squirt Props 63mm Propellers"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-3-bladessquirt-props-63mm-propellers"
   }
 }
 propellers:  {
+
   uuid:  "f7f2825c-6835-4971-9dd2-bfbc97eb95d1"
   id:  "gemfan-3-blades-hurricane-mck-51466-3-propellers"
   manufacturer:  "Diatone"
@@ -3278,11 +2798,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "GEMFAN 3-Blades Hurricane MCK 51466-3 (2CW+2CCW) Propellers"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-hurricane-mck-51466-3-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "04111eb5-6cca-49fb-8fee-089052664416"
   id:  "gemfan-hurricane-51455-4-2cw-2ccw"
   manufacturer:  "Diatone"
@@ -3294,11 +2815,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Diatone GEMFAN Hurricane 51455-4 (2CW+2CCW) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 5.00g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-hurricane-51455-4-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "76187c52-6ba0-4307-9785-b950f4bf1789"
   id:  "gemfan-hrricane-51433-2"
   manufacturer:  "Diatone"
@@ -3310,11 +2832,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "GEMFAN Hrricane 51433 for FREESTYLE (2CW+2CCW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-hrricane-51433-for-freestyle-xmas-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "92660781-687d-429b-bfcf-1980d0d55612"
   id:  "gemfan-3-blades-windancer-3028-3"
   manufacturer:  "Diatone"
@@ -3326,11 +2849,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "GEMFAN 3-Blades Windancer 3028-3 (2CW+2CCW) For GTR 349 Racing Drone"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-windancer-3028-3-2cw-2ccw-for"
   }
 }
 propellers:  {
+
   uuid:  "717b15cc-788f-440e-880c-203ab2416049"
   id:  "gemfan-3-blades-squirt-props-75mm-propellers"
   manufacturer:  "Diatone"
@@ -3342,11 +2866,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "GEMFAN 3-Blades Squirt Props 75mm (2CW+2CCW) Propellers For MXC 3 TAYCAN"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/gemfan-3-blades-squirt-props-75mm-2cw-2ccw-propellers-for-mxc-3-taycan"
   }
 }
 propellers:  {
+
   uuid:  "b77e3315-7b86-41d9-b732-01c24075545c"
   id:  "hq-ethix-s5-light-grey-poly"
   manufacturer:  "Diatone"
@@ -3358,11 +2883,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ Ethix S5 Light Grey (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/ethix-s5-light-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "4b7e0fa3-b00d-448a-9187-1dd07ad24595"
   id:  "hq-ethix-s4-lemon-lime-poly"
   manufacturer:  "Diatone"
@@ -3374,11 +2900,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ Ethix S4 Lemon Lime (2CW+2CCW)-Poly Carbonate Propellers"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/ethix-s4-lemon-lime-2cw-2ccw-poly-carbonate-propellers"
   }
 }
 propellers:  {
+
   uuid:  "8b3f6a6b-99a8-4220-8b4a-7d1dce53c3c7"
   id:  "hq-ethix-s3-prop-watermelon-poly"
   manufacturer:  "Diatone"
@@ -3390,11 +2917,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ Ethix S3 Prop Watermelon  (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/ethix-s3-prop-watermelon-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "bdedb7a4-d285-430d-80fc-adeac1d18e35"
   id:  "hqprop-3-blades-durable-prop-t2-5x2-5x3-black"
   manufacturer:  "Diatone"
@@ -3406,11 +2934,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp 3-Blades Durable Prop T2.5X2.5X3 Black (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/hqprop-durable-prop-t2-5x2-5x3-black-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "8d134ef3-987e-44df-848d-f27aba9c6031"
   id:  "hqprop-2-blades-durable-propellers-t3x2-grey"
   manufacturer:  "Diatone"
@@ -3422,11 +2951,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQprop 2-Blades Durable Propellers T3X2 Grey （2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/hqprop-2-blades-durable-propellers-t3x2-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "ae94d095-3889-47c8-86fc-36a3778b1222"
   id:  "hqprop-2-blade-micro-propellers-65mm-grey"
   manufacturer:  "Diatone"
@@ -3438,11 +2968,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp 2-Blade Micro Propellers 65MM Grey  (2CW+2CCW)-Poly Carbonate-1.5MM Shaft"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/hqprop-2-blade-micro-propellers-65mm-grey-2cw-2ccw-poly-carbonate-1-5mm-shaft"
   }
 }
 propellers:  {
+
   uuid:  "88f3f6ee-5d1a-4a6f-8507-98b774b2e4b1"
   id:  "hqprop-dt76mmx3-v2"
   manufacturer:  "HQProp"
@@ -3453,16 +2984,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQProp DT76MMX3 V2 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "1111fee3-f91c-412a-8ae9-a11383897f17"
   id:  "hq-macroquad-prop-8x4-5x3-black-glass-fiber"
   manufacturer:  "HQProp"
@@ -3474,15 +2998,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ MacroQuad Prop 8X4.5X3(CCW) Black-Glass Fiber Reinforced Nylon"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-macroquad-prop-8x4-5x3-v2-glass-fiber-reinforced-nylon-2cw-2ccw-black"
   }
 }
 propellers:  {
+
   uuid:  "307c5ad2-cee8-49e3-9f48-297dbc0d83ef"
   id:  "hq-macroquad-prop-8x4-5x3r-black-glass-fiber"
   manufacturer:  "HQProp"
@@ -3493,16 +3014,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ MacroQuad Prop 8X4.5X3R(CW) Black-Glass Fiber Reinforced Nylon"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "9f1909a8-0398-46ca-983d-6d36bbb75188"
   id:  "hq-macroquad-prop-8x4x3r-black-glass-fiber"
   manufacturer:  "HQProp"
@@ -3513,16 +3027,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ MacroQuad Prop 8X4X3R(CW) Black-Glass Fiber Nylon"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "c26521ce-e4eb-4dd6-b442-bd20cc90830c"
   id:  "hq-macroquad-prop-8x4x3-black-glass-fiber"
   manufacturer:  "HQProp"
@@ -3534,15 +3041,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ MacroQuad Prop 8X4X3(CCW) Black-Glass Fiber Nylon"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-macroquad-prop-8x4x3-glass-fiber-nylon-1cw-1ccw-black"
   }
 }
 propellers:  {
+
   uuid:  "12d28309-01cb-4724-86ec-330f8ef1b0df"
   id:  "flyfishrc-tool-kit-9pcs"
   manufacturer:  "FlyFishRC"
@@ -3554,11 +3058,16 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "FlyFishRC FlyFishRC Tool Kit - 9PCS 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 432.80g."
   reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://flyfish-rc.com/products/flyfishrc-tool-kit-9pcs"
+  }
+  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    url:  "https://pyrodrone.com/products/flyfishrc-tool-kit-9-pc"
   }
 }
 propellers:  {
+
   uuid:  "57e7454d-73ac-4de2-8431-3cf804269520"
   id:  "hqprop-dt2-9x2-5x4"
   manufacturer:  "HQProp"
@@ -3570,15 +3079,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp DT2.9X2.5X4 for DJI Avata (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hqprop-dt2-9x2-5x4-for-dji-avata-poly-carbonate-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "51de94ba-9e25-4e25-9042-46a7fd55dcc9"
   id:  "hq-durable-prop-t3x2x3-poly-carbonate"
   manufacturer:  "FlyFishRC"
@@ -3590,11 +3096,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ Durable Prop T3X2X3 (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://flyfish-rc.com/products/hq-durable-prop-t3x2x3-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "444ed7e5-471d-4206-90da-e65fce5d7c3f"
   id:  "hqprop-d6x4-5x3-grey"
   manufacturer:  "HQProp"
@@ -3606,15 +3113,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp D6X4.5X3 Grey for Cinewhoop (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hqprop-d6x4-5x3-for-cinewhoop-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "9ae86d8a-8129-41db-aa15-69d01ae84a6f"
   id:  "hqprop-ethix-k2-bubble-gum-6x4x2"
   manufacturer:  "HQProp"
@@ -3626,15 +3130,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp Ethix K2 Bubble Gum 6x4x2 Propeller (set of 4)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-ethix-k2-6x4x2-durable-bi-blade-6-prop-4-pack-bubble-gum"
   }
 }
 propellers:  {
+
   uuid:  "077c4f5a-ba6a-419b-8bcd-16c3d355ec95"
   id:  "hqprop-r38-headsup-racing-5-1x3-8x3-propeller"
   manufacturer:  "HQProp"
@@ -3646,15 +3147,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp R38 HeadsUp Racing 5.1x3.8x3 Propeller (Set of 4 - Yellow)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-r38-headsup-racing-5-1x3-8x3-tri-blade-5-prop-4-pack"
   }
 }
 propellers:  {
+
   uuid:  "2e115bf1-ba4e-4bde-afe6-b36fb84db2d0"
   id:  "ethix-p3-5-polycarbonate-5-1-propeller"
   manufacturer:  "HQProp"
@@ -3665,16 +3163,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Ethix P3.5 Polycarbonate 5.1 Propeller (Set of 4) - RAD Berry"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "35a0e0f2-89a3-4ef7-a36e-c5747cdbc41b"
   id:  "hqprop-ethix-s4-lemon-lime-props"
   manufacturer:  "HQProp"
@@ -3686,15 +3177,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp Ethix S4 Lemon Lime Props (Set of 4)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://www.racedayquads.com/products/hq-prop-ethix-s4-5x3-7x3-tri-blade-5-prop-4-pack-lemon-lime"
   }
 }
 propellers:  {
+
   uuid:  "8a9df725-2b70-48b1-a469-b30b4c9f5b9e"
   id:  "hqprop-ethix-s5-light-grey-props"
   manufacturer:  "HQProp"
@@ -3706,15 +3194,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp Ethix S5 Light Grey Props (Set of 4)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/ethix-s5-light-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "e168768e-68ac-4a66-be86-850e2d523b54"
   id:  "hq-macroquad-prop-10x4-5x3-black-glass-fiber"
   manufacturer:  "HQProp"
@@ -3726,15 +3211,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ MacroQuad Prop 10X4.5X3 Black-Glass Fiber Reinforced Nylon"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-macroquad-prop-10x4-5x3-black-glass-fiber-reinforced-nylon-choose-rotation"
   }
 }
 propellers:  {
+
   uuid:  "28c48e82-de65-47d3-80d9-374f556cd77c"
   id:  "hq-macroquad-prop-9x5x3-black-glass-fiber"
   manufacturer:  "HQProp"
@@ -3745,16 +3227,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ MacroQuad Prop 9X5X3 Black-Glass Fiber Reinforced Nylon"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "acae2a4b-bb2c-493b-9883-f22a98f91456"
   id:  "hqprop-j75-7x5x3-light-grey-poly"
   manufacturer:  "HQProp"
@@ -3766,15 +3241,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp J75 7X5X3 Light Grey (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hq-prop-j75-7-5x5x3-light-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "32ebaddf-dd19-4599-a2fe-f4763afd9294"
   id:  "hqprop-duct-t90mmx3"
   manufacturer:  "HQProp"
@@ -3786,15 +3258,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp Duct-T90MMX3 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hqprop-duct-t90mmx3-for-cinewhoop-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "b4323d28-59cf-4f60-b00f-0863b576970a"
   id:  "hqprop-6x2-5x3-light-grey-poly-carbonate"
   manufacturer:  "HQProp"
@@ -3806,15 +3275,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp 6X2.5X3 Light Grey (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hqprop-6x2-5x3-light-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "3ab7a022-f18e-4c75-b665-0272c9588bc8"
   id:  "hq-racing-prop-r35-poly-carbonate"
   manufacturer:  "HQProp"
@@ -3825,16 +3291,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ Racing Prop R35 (2CW+2CCW)-Poly Carbonate"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "e16e7792-5cd1-455d-96a2-87a0740c744f"
   id:  "hq-juicy-prop-j37-poly-carbonate"
   manufacturer:  "HQProp"
@@ -3845,16 +3304,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ Juicy Prop J37 (2CW+2CCW)-Poly Carbonate"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "8de61774-4ea4-417c-a7d0-acb7a98d4a65"
   id:  "hqprop-t76mmx3"
   manufacturer:  "HQProp"
@@ -3866,15 +3318,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQProp T76MMX3 for Cinewhoop Grey (2CW+2CCW)-Poly Carbonate"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
+    url:  "https://pyrodrone.com/products/hqprop-t76mmx3-for-cinewhoop-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
+
   uuid:  "c2ce7afd-bdfb-4200-a8e3-74a217070fed"
   id:  "hq-juicy-prop-j40-5-1x4x3-poly-carbonate"
   manufacturer:  "HQProp"
@@ -3885,16 +3334,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ Juicy Prop J40 5.1X4X3-Poly Carbonate(2CW+2CCW)"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/hqprop"
-  }
 }
 propellers:  {
+
   uuid:  "15e93b5d-73e7-41d5-b633-442916fd8f85"
   id:  "hq-t3-5-3-5-3-propeller-blades"
   manufacturer:  "Sub250"
@@ -3906,11 +3348,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ T3.5*3.5*3 Propeller blades (2CW+2CCW)  for Oasisfly35"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/hq-t3-5-3-5-3-propeller"
   }
 }
 propellers:  {
+
   uuid:  "fa69ffb5-1880-4e1c-9e16-a991f80d5b19"
   id:  "hq-prop-t3-3-3-black-propeller"
   manufacturer:  "HQProp"
@@ -3921,12 +3364,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "HQ Prop T3*3*3 Black Propeller For Oasisfly30"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "cbe23acc-9f84-4e9d-a55b-4f13ecc0229c"
   id:  "4-pairs-gemfan-1608-3-1-5mm-shaft"
   manufacturer:  "Gemfan"
@@ -3937,16 +3377,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "4 Pairs Gemfan 1608-3 1.5MM Shaft 40mm 3-Blade Propellers for Whoopfly16/ Nanofly16"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/collections/gemfan"
-  }
 }
 propellers:  {
+
   uuid:  "e6e8fc4e-984b-43bb-8cf4-0850bd3a3ce8"
   id:  "hq-1-5mm-shaft-51mm"
   manufacturer:  "Sub250"
@@ -3958,11 +3391,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "HQ 1.5MM Shaft 51mm - 3 Propellers for Sub250 Nanofly20"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/hq-1-5mm-shaft-51mm-3-propellers-for-sub250-nanofly20"
   }
 }
 propellers:  {
+
   uuid:  "d8f4eb12-c59f-467b-a051-d6fa524ba1c0"
   id:  "1-5-mm-shaft-hq-40mm-2-propellers"
   manufacturer:  "Sub250"
@@ -3974,11 +3408,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "1.5 mm Shaft HQ 40mm-2 Propellers  for Sub250 Nanofly16"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/1-5mm-shaft-hq-40mm-2-propellers-for-sub250-nanofly16"
   }
 }
 propellers:  {
+
   uuid:  "1f7dfd50-a54a-4bec-8725-64711cfbf00c"
   id:  "1-0-mm-shaft-hq-40mm-2-toothpick"
   manufacturer:  "HQProp"
@@ -3989,12 +3424,9 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "1.0 mm Shaft HQ 40mm-2 Toothpick Propellers for Nanofly16"
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
-  }
 }
 propellers:  {
+
   uuid:  "b8aba45e-fd16-4cb8-872f-0c46a7e26ab8"
   id:  "gemfan-5236-dark-grey-only-5-21-prop"
   manufacturer:  "FPVCycle"
@@ -4006,11 +3438,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "FPVCycle Gemfan 5236 (dark grey only) (5.21 Prop) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 3.90g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-5226-the-5-21-i-love-you-prop"
   }
 }
 propellers:  {
+
   uuid:  "878f5f27-fbc0-49b5-9c55-c4b814ca0ba9"
   id:  "gemfan-freestyle4-5-1x3-6x3-durable-f4-propellers"
   manufacturer:  "FPVCycle"
@@ -4022,11 +3455,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "FPVCycle Gemfan Freestyle4 5.1x3.6x3 Durable F4 Propellers 3-blade Polycarbonate propeller with 129.5mm diameter and 91.4mm pitch, weighing 3.60g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-freestyle4-5-1x3-6x3-durable-f4-propellers"
   }
 }
 propellers:  {
+
   uuid:  "838dda04-2bd6-4556-846d-37198b391e7f"
   id:  "gemfan-freestyle3-5-1x3x3-durable-f3-propellers"
   manufacturer:  "FPVCycle"
@@ -4038,11 +3472,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "FPVCycle Gemfan Freestyle3 5.1x3x3 Durable F3 Propellers 3-blade Polycarbonate propeller with 129.5mm diameter and 76.2mm pitch, weighing 3.50g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-freestyle3-5-1x3x3-durable-f3-propellers"
   }
 }
 propellers:  {
+
   uuid:  "e619a272-5154-45a2-a44c-8ded766dbc77"
   id:  "gemfan-lr5130-3-tri-blade-props-4-pack"
   manufacturer:  "FPVCycle"
@@ -4054,11 +3489,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan LR5130-3 Tri-Blade Props 4 Pack (Choose Color)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-lr5130-3-tri-blade-props-4-pack-choose-color"
   }
 }
 propellers:  {
+
   uuid:  "bb657606-5e85-4993-a7f0-898175158bd6"
   id:  "gemfan-long-range-7035-bi-blade-props-4"
   manufacturer:  "FPVCycle"
@@ -4070,11 +3506,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Long-Range 7035 Bi-Blade Props 4 Pack - (Choose Color)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-long-range-7035-2-blade-props-4-pack-choose-color"
   }
 }
 propellers:  {
+
   uuid:  "a5988909-4507-44e1-ad17-9a33c66c5667"
   id:  "gemfan-cinelifter-7035-7x3-5x3-tri-blade-7"
   manufacturer:  "FPVCycle"
@@ -4086,11 +3523,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan CineLifter 7035 7x3.5x3 Tri-Blade 7 Prop 4 Pack - (Choose Color)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-cinelifter-7035-7x3-5x3-tri-blade-7-prop-4-pack-choose-color"
   }
 }
 propellers:  {
+
   uuid:  "094120fa-7f1f-4501-8d14-9d5716e37501"
   id:  "geprc-2-prop-guard-ring-4-pack"
   manufacturer:  "FPVCycle"
@@ -4102,11 +3540,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "FPVCycle GepRC 2 Prop Guard Ring (4 pack) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 7.00g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/geprc-2-prop-guard-ring-4-pack"
   }
 }
 propellers:  {
+
   uuid:  "f407ec4d-c252-413f-9071-224bb6644cd2"
   id:  "gemfan-5-led-props"
   manufacturer:  "FPVCycle"
@@ -4118,11 +3557,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan 5 LED Props - Moonlight 51466 3-Blade LED Propellers (Set of 4)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-5-led-props-moonlight-51466-3-blade-led-propellers-set-of-4"
   }
 }
 propellers:  {
+
   uuid:  "5b2ed3c6-f6c6-4b11-9051-a3cca82df489"
   id:  "cinesplore-toothfairy-v4-duct-set-of-4"
   manufacturer:  "FPVCycle"
@@ -4134,11 +3574,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "FPVCycle CineSplore/ToothFairy V4 Duct - set of 4 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 249.00g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/cinesplore-v3-duct-set-of-4"
   }
 }
 propellers:  {
+
   uuid:  "e2134e65-90c2-46dd-a41b-8552e680b168"
   id:  "gemfan-hurricane-4024-props"
   manufacturer:  "FPVCycle"
@@ -4150,11 +3591,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane 4024 Props - (4CW +4CCW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-hurricane-4024-props-4cw-4ccw"
   }
 }
 propellers:  {
+
   uuid:  "54643ab9-e28f-4855-802a-434d38710aa6"
   id:  "toothpick-4-arms-pack-of-4"
   manufacturer:  "FPVCycle"
@@ -4166,11 +3608,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "FPVCycle ToothPick 4 Arms (Pack of 4) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 8.15g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/toothpick-4-arms-pack-of-5"
   }
 }
 propellers:  {
+
   uuid:  "5c647652-68b7-471e-8445-54a64b3da7d1"
   id:  "gemfan-hurricane-durable-tri-blade-sl"
   manufacturer:  "FPVCycle"
@@ -4182,11 +3625,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane Durable Tri Blade SL 5125 Propellers (2CW + 2CCW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-hurricane-durable-tri-blade-sl-5125-propellers-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "0ce2c9c6-88ea-43c9-a015-ae64b7ff3937"
   id:  "gemfan-4023"
   manufacturer:  "FPVCycle"
@@ -4198,11 +3642,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan 4023 - 4 TriBlade Prop (2CW + 2CCW) - Clear Grey"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-4023-4-triblade-prop-2cw-2ccw-clear-grey"
   }
 }
 propellers:  {
+
   uuid:  "98944b82-7b78-411f-adcd-1e7b4b38bc7e"
   id:  "glide-5-dead-cat-arms-2pc"
   manufacturer:  "FPVCycle"
@@ -4214,11 +3659,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "FPVCycle Glide 5” Dead Cat Arms (2pc) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 11.00g."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/glide-5-dead-cat-arms-2pc"
   }
 }
 propellers:  {
+
   uuid:  "8e638bd8-25d7-4e79-acda-61deedb83f43"
   id:  "gemfan-hurricane-tri-blade-51466-5-1-propeller"
   manufacturer:  "FPVCycle"
@@ -4230,11 +3676,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Gemfan Hurricane Tri-blade 51466 5.1 Propeller - (2CW + 2CCW)"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/propellers.html"
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://fpvcycle.com/products/gemfan-hurricane-tri-blade-51466-5-1-propeller-2cw-2ccw"
   }
 }
 propellers:  {
+
   uuid:  "01923019-3002-7001-8001-000000000001"
   id:  "hqprop-ethix-s3-watermelon-5x3.1x3"
   manufacturer:  "HQProp"
@@ -4253,8 +3700,13 @@ propellers:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://pyrodrone.com/products/hq-prop-ethix-s3-watermelon-props"
   }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/hq-ethix-s3-watermelon-props"
+  }
 }
 propellers:  {
+
   uuid:  "01923019-3002-7001-8001-000000000002"
   id:  "hqprop-ethix-s4-lemon-lime-5x3.7x3"
   manufacturer:  "HQProp"
@@ -4273,8 +3725,13 @@ propellers:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/hqprop-ethix-s4-lemon-lime-propeller-set-of-4.html"
   }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/hq-prop-ethix-s4-5x3-7x3-tri-blade-5-prop-4-pack-lemon-lime"
+  }
 }
 propellers:  {
+
   uuid:  "01923019-3002-7001-8001-000000000003"
   id:  "hqprop-ethix-s5-cinematic-5x4x3"
   manufacturer:  "HQProp"
@@ -4295,6 +3752,7 @@ propellers:  {
   }
 }
 propellers:  {
+
   uuid:  "01923019-3002-7001-8001-000000000004"
   id:  "gemfan-hurricane-51433-v2"
   manufacturer:  "Gemfan"
@@ -4315,6 +3773,7 @@ propellers:  {
   }
 }
 propellers:  {
+
   uuid:  "01923019-3002-7001-8001-000000000005"
   id:  "gemfan-hurricane-51477-v2"
   manufacturer:  "Gemfan"
@@ -4335,6 +3794,7 @@ propellers:  {
   }
 }
 propellers:  {
+
   uuid:  "01923019-3002-7001-8001-000000000006"
   id:  "gemfan-cinelifter-7535-3"
   manufacturer:  "Gemfan"
@@ -4346,15 +3806,12 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Heavy-lift 7.5-inch cinelifter propeller with reinforced hub for RED Komodo, BMPCC, and cinema payloads."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/gemfan-cinelifter-7535-propeller-set-of-4.html"
   }
 }
 propellers:  {
+
   uuid:  "01923019-3002-7001-8001-000000000007"
   id:  "hqprop-durable-3x3x3"
   manufacturer:  "HQProp"
@@ -4366,11 +3823,11 @@ propellers:  {
   material:  "Polycarbonate"
   description:  "Durable 3-inch tri-blade micro propeller ideal for toothpick and 3-inch cinewhoop builds."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/"
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/hq-prop-durable-3x3x3-tri-blade-prop-4-pack"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/hq-prop-durable-3x3x3-tri-blade-prop-4-pack"
+    url:  "https://www.racedayquads.com/products/hq-3x3x3-pc-dp-durable-prop-for-3"
   }
 }

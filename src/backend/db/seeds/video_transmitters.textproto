@@ -1,4 +1,5 @@
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ecc4d1d6-b8da-4f13-bd14-737c5eb17b08"
   id: "tbs-unify-pro32-nano"
   manufacturer: "Team Black Sheep"
@@ -10,12 +11,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "TBS TBS Unify Pro32 Nano DJI Digital video transmitter with up to 500mW output power, operating voltage 3.1-5.5V, weighing 1.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/diatone-tbs-unify-pro32-nano-adaptor-board-16-16"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "6cc9ebbb-069f-4cef-bba7-cb93a3f98e09"
   id: "walksnail-avatar-hd-mini-1s-vtx"
   manufacturer: "Walksnail"
@@ -27,20 +29,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Walksnail Avatar HD Mini 1S VTX Digital video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 1.8g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-l-with-mini-1s-kit"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-camera-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000005"
   id: "hdzero-freestyle-v2-vtx"
   manufacturer: "HDZero"
@@ -52,20 +51,21 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Rugged CNC-cased 1W digital HD transmitter for 5-inch and larger freestyle quads, with 0ms glass-to-glass latency."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hd-zero.com/product-page/hdzero-freestyle-v2-vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hd-zero.com/product-page/hdzero-freestyle-v2-vtx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.hd-zero.com/document"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/hdzero-freestyle-v2-vtx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/hdzero-freestyle-v2-vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/hdzero-freestyle-v2-20x20-25-1000mw-hd-vtx-kit-w-u-fl"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000004"
   id: "hdzero-whoop-lite-vtx"
   manufacturer: "HDZero"
@@ -77,20 +77,21 @@ video_transmitters: {
   input_voltage_max_v: 4.35
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Zero-latency digital video transmitter engineered for 1S racing whoops with standard 25.5x25.5mm mounting pattern."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hd-zero.com/product-page/hdzero-whoop-lite-vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hd-zero.com/product-page/hdzero-whoop-lite-vtx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.hd-zero.com/document"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/hdzero-whoop-lite-vtx.html"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/hdzero-whoop-lite-vtx.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/hdzero-whoop-lite-v2-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "59135644-10cc-4210-87b7-8c5a98970a8d"
   id: "dji-o4-lite-vtx"
   manufacturer: "DJI"
@@ -102,12 +103,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DJI DJI O4 Lite VTX Digital video transmitter with up to 1000mW output power, operating voltage 3.1-5.5V, weighing 3.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/heq-g-port-3-axis-gimbal-for-dji-o4-lite"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "dc164c44-e652-40b9-aec9-000ff26cd26a"
   id: "dji-o4-wide-vtx"
   manufacturer: "DJI"
@@ -119,12 +121,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DJI DJI O4 Wide VTX Digital video transmitter with up to 2000mW output power, operating voltage 7.0-26.0V, weighing 380.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/betafpv-meteor65-pro-ii-o4-hd-1s-70mm-brushless-whoop-quadcopter-with-dji-o4-wide-air-unit-choose-receiver"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "73be0eb6-e9cf-4209-b809-7dad5c0e5ae9"
   id: "hglrc-zeus-800mw-vtx"
   manufacturer: "HGLRC"
@@ -136,16 +139,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "HGLRC HGLRC Zeus 800mW VTX Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 4.8g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/hglrc-zeus-800mw-smart-mounting-20-20-30-30-vtx-for-fpv-racing-drone"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/hglrc-zeus-800mw-smart-mounting-20-20-30-30-vtx-for-fpv-racing-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "74eb2fce-87ca-4f64-bd62-dfa0fa02b96c"
   id: "hglrc-zeus-nano-vtx-350mw"
   manufacturer: "HGLRC"
@@ -157,16 +161,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "HGLRC HGLRC Zeus Nano VTX 350mW Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 2.4g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/hglrc-zeus-nano-vtx-350mw-for-fpv-racing-drone"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/hglrc-zeus-nano-350mw-16mm-20mm-25-5mm-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01a11091-1f13-7669-9fc3-1a021e2d1a0d"
   id: "readymaderc-cricket-pro-58g"
   manufacturer: "ReadyMadeRC"
@@ -178,12 +183,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "ReadyMadeRC RMRC Cricket Pro 5.8GHz VTX Analog video transmitter with up to 600mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01a11091-1f13-7669-9fc3-1a0a8a31c17b"
   id: "caddx-avatar-hd-nano-kit-v3"
   manufacturer: "CADDX"
@@ -195,12 +197,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Caddx Caddx Avatar HD Nano Kit V3 Walksnail Avatar video transmitter with up to 500mW output power, operating voltage 3.1-5.5V, weighing 1.8g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-nano-kit-v3-14cm"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-hd-nano-camera-v3-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f4f0595f-516e-4fd3-8853-e73df1a232c2"
   id: "5-8g-vtx-antenna-packet"
   manufacturer: "BETAFPV"
@@ -212,20 +219,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV 5.8G VTX Antenna Packet Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/5-8g-vtx-antenna-packet"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "16e42a81-80e0-44de-a3af-2f627092ffa3"
   id: "c04-camera-and-vtx-module"
   manufacturer: "BETAFPV"
@@ -237,20 +237,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV C04 Camera and VTX Module Analog video transmitter with up to 400mW output power, operating voltage 3.1-5.5V, weighing 1.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/c04-camera-and-vtx-module"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/betafpv-c04-camera-and-vtx-module-cetus-v2"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "44327c06-a6e5-4b96-992b-41688ddebf04"
   id: "betafpv-nd-filter-for-dji-o3-camera"
   manufacturer: "BETAFPV"
@@ -262,20 +259,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "BETAFPV BETAFPV ND Filter for DJI O3 Camera DJI Digital video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/nd-filter-for-dji-o3-camera"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "98c708b1-d28a-4a8d-bbdf-4099dabf0533"
   id: "cetus-lite-camera-and-vtx-module"
   manufacturer: "BETAFPV"
@@ -287,20 +277,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV Cetus Lite Camera and VTX Module Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 1.8g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/cetus-lite-camera-and-vtx-module"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "a6a362ce-dec7-405c-a65a-80acd407ceac"
   id: "h01-aio-camera-5-8g-25mw-vtx"
   manufacturer: "BETAFPV"
@@ -312,20 +295,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV H01 AIO Camera 5.8G 25mW VTX Analog video transmitter with up to 25mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/h01-fpv-aio-camera-5-8g-40ch-25mw-transmitter"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "802219e5-dff7-474a-97bf-5df0f886a768"
   id: "caddxfpv-gimbal-gm3-v2"
   manufacturer: "CADDX"
@@ -337,20 +313,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "CADDXFPV CaddxFPV Gimbal GM3 V2 Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 46.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/caddxfpv-gimbal-gm3-v2"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "8dc2c5ec-4c27-42cb-8046-d926ab198a8a"
   id: "walksnail-ascent-vrx-lite-vtx-kit"
   manufacturer: "CADDX"
@@ -362,20 +331,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Ascent VRX + Lite VTX Kit Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 6.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-ascent-vrx-with-lite-vtx-kit"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-ascent-lite-vtx-camera-kit-for-walksnail-ascent-goggles-vrx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "eb9ce8b8-225b-4e7c-a323-b5e705024e48"
   id: "walksnail-camera-nd-filter"
   manufacturer: "CADDX"
@@ -387,20 +353,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Camera ND Filter Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 3.1-5.5V, weighing 1.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-moonlight-camera-nd-filter"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/caddx-walksnail-moonlight-nd-filter-choose-your-version"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f3892e58-1c60-4f9c-b5bc-9c8c1234b6ee"
   id: "walksnail-pro-kit-gm3-v2"
   manufacturer: "CADDX"
@@ -412,20 +375,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Pro Kit + GM3 V2 + 3D Printed GM3 Mount"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/caddxfpv-gm3-with-pro-kit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "fcbff714-cda6-47a1-9dca-77e6b268b55b"
   id: "walksnail-moonlight-kit-gm3-v2"
   manufacturer: "CADDX"
@@ -437,20 +393,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Moonlight Kit + GM3 V2 + 3D Printed GM3 Mount"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-moonlight-kit-with-gm3-and-3d-printed-mounting-base-for-gm3"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/moonlight"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ad6f5224-1fac-4fa9-9f66-b172b5d46235"
   id: "walksnail-avatar-repeater-gt-kit"
   manufacturer: "CADDX"
@@ -462,20 +415,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar Repeater + GT Kit Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 52.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-repeater-with-gt-kit"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-repeater"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "c4dec316-88ff-4b8b-85c0-30ad975127c1"
   id: "caddxfpv-gm1-v2"
   manufacturer: "CADDX"
@@ -487,20 +437,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "CADDXFPV CaddxFPV GM1 V2 Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 5.9g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/caddxfpv-gm1"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5b19a5bf-a49b-4104-88b7-276addfc50ed"
   id: "walksnail-avatar-fpv-vrx-gt-kit"
   manufacturer: "CADDX"
@@ -512,20 +455,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar FPV VRX + GT Kit Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 3.1-5.5V, weighing 3.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-vrx-with-gt-kit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "6a245bb7-cf38-444d-b1e9-2e4bd3a631ef"
   id: "5-2g-and-5-8g-antenna"
   manufacturer: "CADDX"
@@ -537,20 +473,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "CADDXFPV 5.2G and 5.8G Antenna Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 3.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/5-2g-and-5-8g-antenna"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "fc5f8791-c2c0-4917-8e64-64ee7ea0a858"
   id: "walksnail-avatar-repeater-vrx"
   manufacturer: "CADDX"
@@ -562,20 +491,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar Repeater + VRX Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 145.9g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-repeater-with-vrx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-repeater"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "9eb6ad7d-6255-444b-b7ee-42b986763096"
   id: "walksnail-avatar-fpv-vrx-avatar"
   manufacturer: "CADDX"
@@ -587,20 +513,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar FPV VRX + Avatar HD Pro Kit (Dual)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-nano-kit-v3-14cm"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-vrx-kit-choose-version"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "301c812c-2442-4136-9ddc-25b3281d7014"
   id: "walksnail-avatar-fpv-vrx-moonlight-kit"
   manufacturer: "CADDX"
@@ -612,20 +535,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar FPV VRX + Moonlight Kit Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 3.1-5.5V, weighing 3.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-moonlight-kit"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/moonlight"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "d1faf719-cf91-40b3-a6f4-1bd6cc4677f2"
   id: "caddxfpv-gm2-pro-kit"
   manufacturer: "CADDX"
@@ -637,20 +557,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "CADDXFPV CADDXFPV GM2 + Pro Kit Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 51.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/caddxfpv-gm2-with-pro-kit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "82fb6930-218a-4510-8370-1f14f087a079"
   id: "caddxfpv-gm1-gm2-gm3"
   manufacturer: "CADDX"
@@ -662,20 +575,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "CADDXFPV CADDXFPV GM1/GM2/GM3 Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 16.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/caddxfpv-gm1-gm2-gm3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "bfc416af-9963-40a8-bf15-b7c72bd55580"
   id: "1-to-2-way-dc-power"
   manufacturer: "CADDX"
@@ -687,20 +593,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "1 to 2 Way DC Power Splitter Cable For VRX"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/1-to-2-way-dc-power-splitter-cable-for-vrx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/caddx-1-to-2-way-dc-power-splitter-cable"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "7497b6c0-28d2-47a9-a772-71feea53274e"
   id: "walksnail-avatar-hd-nano-camera-v3"
   manufacturer: "CADDX"
@@ -712,20 +615,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar HD Nano Camera  V3 Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 3.1-5.5V, weighing 3.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-nano-camera-v3"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-hd-nano-camera-v3-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e9297ea2-b4f1-4a85-a639-05f1fa35dc4e"
   id: "walksnail-avatar-hd-camera-v2"
   manufacturer: "CADDX"
@@ -737,20 +637,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar HD Camera V2 Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 3.1-5.5V, weighing 1.8g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-camera-v2"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/caddx-gm1-gimbal-pitch-120-for-19mm-fpv-camera-compatible-with-avatar-hd-goggles"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "55ff89b7-7d35-4d92-9522-ce7729d96d99"
   id: "darwinfpv-omnis-analog-vtx-series"
   manufacturer: "DarwinFPV"
@@ -762,16 +659,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV OMNIS Analog VTX Series Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 9.2g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-omnis-analog-vtx-series"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "d5e2dd7b-eab6-4f77-bed2-91bb271fb85c"
   id: "darwinfpv-babyape-mini-rtf"
   manufacturer: "DarwinFPV"
@@ -783,16 +677,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV BabyApe Ⅲ Mini RTF Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 250.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-mini-rtf"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "fc830364-79bb-4c87-97bd-a482aa6c7f84"
   id: "darwinfpv-babyape-rtf"
   manufacturer: "DarwinFPV"
@@ -804,16 +695,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV BabyApe Ⅲ  RTF Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 250.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-3-inch-drone-rtf"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "9d4bbcb8-1f81-48c0-888c-fd978aa9829b"
   id: "darwinfpv-hilink-hd-vtx"
   manufacturer: "DarwinFPV"
@@ -825,16 +713,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV HiLink HD VTX Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 9.2g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-hilink-hd-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "83e9fee0-1991-4943-880e-5e98242c3582"
   id: "darwinfpv-babyape-3-inch-freestyle"
   manufacturer: "DarwinFPV"
@@ -846,16 +731,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV BabyApe Ⅲ 3 Inch Freestyle FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-3-inch-freestyle-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "3ff50695-12c7-4483-aca5-baf52c1217f4"
   id: "darwinfpv-babyape-mini-2-inch"
   manufacturer: "DarwinFPV"
@@ -867,16 +749,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV BabyApe Ⅲ Mini 2 Inch Freestyle FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-mini-2-inch-freestyle-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e5d0897f-6e72-4774-b1e6-7f9a355d5c95"
   id: "darwinfpv-cineape20-rtf-kit"
   manufacturer: "DarwinFPV"
@@ -888,16 +767,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "DarwinFPV DarwinFPV CineApe20 RTF Kit Analog video transmitter with up to 100mW output power, operating voltage 7.0-26.0V, weighing 66.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-cineape20-rtf-kit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f9c1f4d3-4dc8-41b2-b99c-b4d62478df4d"
   id: "darwinfpv-cineape20-2-inch-whoop-fpv-drone"
   manufacturer: "DarwinFPV"
@@ -909,16 +785,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "DarwinFPV DarwinFPV CineApe20 2-inch Whoop FPV Drone Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 144.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-cineape20-compatible-with-pavo20-2-inch-whoop-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "cb2f6b2e-62b0-4987-8620-e9a1e2ea5189"
   id: "darwinfpv-toruk13-x-class-long-range-fpv"
   manufacturer: "DarwinFPV"
@@ -930,16 +803,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV Toruk13 X-CLASS Long Range FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-toruk13-x-class-long-range-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "8d26e94c-d4b7-440d-b95a-185678290ad9"
   id: "darwinfpv-cement-ultra-durable-5-8g-2-5w-waterproof"
   manufacturer: "DarwinFPV"
@@ -951,16 +821,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV Cement Ultra-Durable 5.8G 2.5W Waterproof VTX"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-5-8g-2-5w-waterproof-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "40268073-f0b8-474b-9759-5d2967261b22"
   id: "darwinfpv-akk-5-8g-1600mw-1-6w-vtx"
   manufacturer: "DarwinFPV"
@@ -972,16 +839,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "DarwinFPV DarwinFPV AKK 5.8G 1600mW 1.6W VTX Analog video transmitter with up to 1600mW output power, operating voltage 3.1-5.5V, weighing 0.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-akk-5-8g-1600mw-1-6w-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "97fe390f-30b3-4a56-af75-511c3687c5b5"
   id: "darwinfpv-vt5804-hv-max-5-8g-1w-vtx"
   manufacturer: "DarwinFPV"
@@ -993,16 +857,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV VT5804 HV MAX 5.8G 1W VTX Analog video transmitter with up to 1000mW output power, operating voltage 7.0-26.0V, weighing 9.2g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-vt5804-hv-max-5-8g-1w-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "bfc0b3cf-f15d-4429-830d-f121deb0d13b"
   id: "darwinfpv-hulk-waterproof-fpv-drone"
   manufacturer: "DarwinFPV"
@@ -1014,16 +875,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV HULK Ⅱ Waterproof FPV Drone Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 10.1g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-hulk-ⅱ-waterproof-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "9631116f-33bf-432b-89d2-6886442391dc"
   id: "darwinfpv-cement-5-8g-1000mw-vtx"
   manufacturer: "DarwinFPV"
@@ -1035,16 +893,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV Cement 5.8G 1000mW VTX Analog video transmitter with up to 1000mW output power, operating voltage 7.0-26.0V, weighing 8.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-cement-5-8g-1000mw-vtx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/darwinfpv-cement-ultra-durable-5-8g-1000mw-vtx-30x30mm"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "7af77cc2-9a64-461d-a216-94e3de19095b"
   id: "darwinfpv-5-8g-40ch-hulk-vtx"
   manufacturer: "DarwinFPV"
@@ -1056,16 +915,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "DarwinFPV DarwinFPV 5.8G 40CH HULK VTX Analog video transmitter with up to 200mW output power, operating voltage 3.1-5.5V, weighing 0.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-5-8g-40ch-hulk-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "2f674e90-ebb1-4bae-885c-2586dc77bd12"
   id: "darwinfpv-5-8g-40ch-1200mw-baby-ape-vtx"
   manufacturer: "DarwinFPV"
@@ -1077,16 +933,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV 5.8G 40CH 1200mW Baby Ape VTX Analog video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 74.1g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-5-8g-40ch-400mw-800mw-1200mw-baby-ape-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "85b32766-9f33-48e2-baf6-a95c4f8ad314"
   id: "darwinfpv-vt5804-5-8g-25-50-100-200-400mw-vtx"
   manufacturer: "DarwinFPV"
@@ -1098,16 +951,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV DarwinFPV VT5804 5.8G 25/50/100/200/400mW VTX Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 9.2g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/darwinfpv-vt5804-5-8g-25-50-100-200-400mw-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5f3808b3-c561-4010-a459-89d676e383c7"
   id: "darwinfpv-tinyape-freestyle-fpv-drone"
   manufacturer: "DarwinFPV"
@@ -1119,16 +969,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "DarwinFPV DarwinFPV TinyApe Freestyle FPV Drone Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 50.3g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/tinyape-freestyle-fpv-drone"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/darwinfpv-tinyape-freestyle-2-5-fpv-drone-pnp"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ae9bed50-540d-4b7d-88d9-26c36225c8ab"
   id: "newbeedrone-acrobee75-hd-o4-pusher-kit"
   manufacturer: "NewBeeDrone"
@@ -1140,12 +991,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone AcroBee75 HD O4 Pusher Kit with ELRS Receiver"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-acrobee75-hd-o4-pusher-kit-elrs"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/newbeedrone-acrobee75-hd-o4-pusher-2s-bnf-with-dji-o4-fpv-whoop-elrs-2-4ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "13b6cb3e-f929-4cb2-af3d-f9e7bd3dc80d"
   id: "newbeedrone-acrobee65-brushed-v2-elrs-bnf"
   manufacturer: "NewBeeDrone"
@@ -1157,12 +1013,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "NewBeeDrone AcroBee65 Brushed V2 ELRS BNF with SmartMAX VTX"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-acrobee65-brushed-v2-elrs-bnf"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/newbeedrone-acrobee65-v2-brushed-bnf-whoop-w-smartmax-vtx-elrs-2-4ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e8598f34-3feb-4479-990f-2e86cef6bc99"
   id: "newbeedrone-stingerbee-hd-o3-to-o4"
   manufacturer: "NewBeeDrone"
@@ -1174,12 +1035,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "NewBeeDrone StingerBee HD O3 to O4 Pro Conversion Kit"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-stingerbee-hd-o4-pro-upgrade-kit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "7601882f-0722-469f-871e-cc2ffee2f8f4"
   id: "newbeedrone-savagebee-pusher-5-8ghz-vtx-antenna"
   manufacturer: "NewBeeDrone"
@@ -1191,12 +1053,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone SavageBee Pusher 5.8Ghz VTX Antenna U.fl"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-savagebee-pusher-5-8ghz-vtx-antenna-u-fl"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "7dfd6fb0-2f99-4785-b300-2065bb2ff50c"
   id: "newbeedrone-acrobee75-hd-o4-pusher-bnf"
   manufacturer: "NewBeeDrone"
@@ -1208,12 +1071,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone AcroBee75 HD O4 Pusher BNF with DJI O4"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-acrobee75-hd-o4-pusher-bnf"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/newbeedrone-acrobee75-hd-o4-pusher-2s-bnf-with-dji-o4-fpv-whoop-elrs-2-4ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "6a5012fb-200e-4eda-b8b4-0a738d219fc6"
   id: "newbeedrone-cpl-filter-for-djl-o3"
   manufacturer: "NewBeeDrone"
@@ -1225,12 +1093,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "NewBeeDrone NewBeeDrone CPL Filter for DJl O3 DJI Digital video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-cpl-filter-o3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "c81bcc5b-f711-476f-aed7-55e47c7dd281"
   id: "newbeedrone-max-comfort-goggle-foam"
   manufacturer: "NewBeeDrone"
@@ -1242,12 +1111,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone Max Comfort Goggle Foam for DJI Goggles 2 / Avatar HD Goggles X- Sponge"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/pre-ordernewbeedrone-max-comfort-goggle-foam-for-dj-goggles-3"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/newbeedrone-max-comfort-goggle-foam-for-dji-goggles-2-and-integra"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "fb9252fd-9a02-40f1-aca9-c99ed441a52b"
   id: "newbeedrone-nd4-filter-for-djl-o3"
   manufacturer: "NewBeeDrone"
@@ -1259,12 +1133,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "NewBeeDrone NewBeeDrone ND4 Filter for DJl O3 DJI Digital video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-nd4-filter-for-djl-o3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "c82a1c67-fcaa-4128-ae47-a47c6c69d556"
   id: "newbeedrone-nd8-filter-for-djl-o3"
   manufacturer: "NewBeeDrone"
@@ -1276,12 +1151,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "NewBeeDrone NewBeeDrone ND8 Filter for DJl O3 DJI Digital video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-nd8-filter-for-djl-o3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "803aad5a-c1f3-49a1-b728-e54f34375506"
   id: "newbeedrone-max-comfort-goggle-foam-2"
   manufacturer: "NewBeeDrone"
@@ -1293,12 +1169,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone Max Comfort Goggle Foam for Walksnail Avatar Goggles X- Sponge"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/pre-ordernewbeedrone-max-comfort-goggle-foam-for-dj-goggles-3"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/newbeedrone-max-comfort-goggle-foam-for-dji-goggles-2-and-integra"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "08e36eff-a415-467e-b9ae-0f3528d156b6"
   id: "newbeedrone"
   manufacturer: "NewBeeDrone"
@@ -1310,12 +1191,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone Compatible DJI O3 Coaxial Cable"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-nitro-nectar-gold-jp30-18650-6000mah-6s2p-high-rate-battery"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "7dcf7bdc-c848-4466-9071-3a058acbc147"
   id: "newbeedrone-max-comfort-goggle-foam-3"
   manufacturer: "NewBeeDrone"
@@ -1327,12 +1209,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone Max Comfort Goggle Foam for DJI Goggles 3, DJI Integra Goggles, DJI Goggle 2 - Thiccc"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/pre-ordernewbeedrone-max-comfort-goggle-foam-for-dj-goggles-3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "89ac0eae-94ac-4d8d-8a52-313f6d261175"
   id: "newbeedrone-beebrain-vtx-connector-type-u-fl"
   manufacturer: "NewBeeDrone"
@@ -1344,12 +1227,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone BeeBrain VTX Connector Type: U.FL (3mm) pack of 4"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-beebrain-vtx-connector-type-u-fl-3mm-pack-of-4"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/newbeedrone-beebrain-vtx-connector-type-u-fl-3mm-pack-of-4"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "0a4036ff-d97d-44f9-a6ef-6c83cc568b02"
   id: "newbeedrone-mmcx-to-sma-extensions-straight"
   manufacturer: "NewBeeDrone"
@@ -1361,12 +1249,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone MMCX to SMA Extensions Straight MMCX 2-Pack"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-mmcx-to-sma-extensions-straight-mmcx-2-pack"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/newbeedrone-mmcx-to-sma-extensions-straight-mmcx-2-pack"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "c051a6b4-0f83-4937-8042-a87dabf9bb12"
   id: "reaper-extreme-v4-vtx"
   manufacturer: "Foxeer"
@@ -1378,12 +1271,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Reaper Extreme V4 VTX for Analog Video System"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "65c72514-564b-43bc-8660-2e09aea98ffa"
   id: "cl2-4s-5-solder-free-built"
   manufacturer: "Rotor Riot"
@@ -1395,12 +1285,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "CL2 4S 5 Solder-Free Built & Tuned Drone - Avatar / ELRS"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://rotorriot.com/products/cl2-4s-5-solder-free-built-tuned-drone-avatar-elrs"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "32e83a40-d9c3-42d9-81a7-100c0882d12f"
   id: "unify-pro32-dp-vtx"
   manufacturer: "Team Black Sheep"
@@ -1412,12 +1303,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Unify Pro32 DP VTX for Analog Video System - NDAA"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/tbs-unify-pro32-dp-mmcx-vtx-ndaa"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "b3e3bc54-8a8a-44f9-8fb4-0e431642e00c"
   id: "tbs-crossfire-micro-tx-v2-transmitter"
   manufacturer: "Team Black Sheep"
@@ -1429,12 +1321,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "TBS Crossfire Micro TX V2 Transmitter Module - NDAA"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/tbs-crossfire-micro-tx-v2"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f0d0f5aa-60fd-43fc-83de-2b75fd469b22"
   id: "tanq-2-dji-o4-pro-vtx-mount"
   manufacturer: "Noozle3D"
@@ -1446,12 +1339,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Noozle3D TANQ 2 DJI O4 Pro VTX Mount DJI Digital video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "69a9c769-6939-4a7b-8290-419a725a9b34"
   id: "punch-shorty-avatar-v2-dji-o3"
   manufacturer: "Noozle3D"
@@ -1463,12 +1353,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Punch & Shorty Avatar V2/DJI O3 Camera Mount"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "48c02a4a-97b9-41d2-a36a-d998688eed6c"
   id: "avatar-hd-moonlight-nd-filter"
   manufacturer: "Walksnail"
@@ -1480,20 +1367,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Moonlight ND Filter - Choose Version"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/moonlight"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "87c7b401-2927-4395-b0cf-efb9d20dc141"
   id: "avatar-hd-moonlight-vtx-module"
   manufacturer: "Walksnail"
@@ -1505,20 +1385,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Moonlight VTX Module - Without Camera For Avatar HD Video System"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-l-with-moonlight-kit-and-gm3"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/moonlight"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "654d5ce1-ed4d-4768-ab8b-083a2693c02e"
   id: "gm-series-fpv-gimbal"
   manufacturer: "CADDX"
@@ -1530,12 +1407,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "GM Series FPV Gimbal for Avatar HD System - Choose Version"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "c166f07e-8d01-421a-ac14-4bdcd29ad8c0"
   id: "skylite-skyliner-mk3-dji-o3"
   manufacturer: "Rotor Riot"
@@ -1547,12 +1421,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "SkyLite / Skyliner MK3 DJI O3 Antenna Mount - MJF TPU"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://rotorriot.com/products/skylite-skyliner-mk3-dji-o3-antenna-mount-velour"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ca72f8c8-b240-4511-a815-6f8cf2e1a38c"
   id: "skylite-skyliner-mk3-dji-o3-2"
   manufacturer: "Rotor Riot"
@@ -1564,12 +1439,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - MJF TPU"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://rotorriot.com/products/skylite-skyliner-mk3-dji-o3-antenna-mount-velour"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5bf7db16-14de-4390-809a-7f4dafe285ca"
   id: "g-port-3-axis-gimbal"
   manufacturer: "HEQ UAV"
@@ -1581,12 +1457,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "G-Port 3 Axis Gimbal for DJI and Caddx - Choose Version"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "79a7d20e-622f-40cc-b184-19552a99f9a9"
   id: "x30-super-hydrophobic-invisible-waterproofing-spray"
   manufacturer: "Flywoo"
@@ -1598,12 +1471,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Flywoo X30 Super Hydrophobic Invisible Waterproofing Spray Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 67.2g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "891e8b10-482a-4f45-a00e-fefa4dbe7d73"
   id: "tanq-s-moonlight-vtx-mount"
   manufacturer: "Noozle3D"
@@ -1615,12 +1485,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Noozle3D TANQ S Moonlight VTX Mount Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 2.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "1f3b7a53-4b63-4b4f-bc87-00d68421bf6f"
   id: "tanq-s-o3-air-unit-mount"
   manufacturer: "Noozle3D"
@@ -1632,12 +1499,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Noozle3D TANQ S O3 Air Unit Mount DJI Digital video transmitter with up to 2000mW output power, operating voltage 7.0-26.0V, weighing 36.4g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "27520617-6293-43e2-b255-ff841f62f479"
   id: "freestyle-v2-kit-for-hdzero-video-system"
   manufacturer: "Divimath"
@@ -1649,12 +1513,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Divimath Freestyle V2 Kit For HDZero Video System HDZero video transmitter with up to 200mW output power, operating voltage 7.0-26.0V, weighing 5.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "a8debf22-ad1d-4bd5-ac91-7e302627414d"
   id: "avatar-mini-1s-lite-antenna"
   manufacturer: "Walksnail"
@@ -1666,20 +1527,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar Mini 1S Lite Antenna Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 3.1-5.5V, weighing 1.8g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-mini-1s-lite-camera"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-camera-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "cf71ed44-12d9-46ed-b0bb-3a9c0fbd2c70"
   id: "cl2-avatar-v2-dual-long-antenna"
   manufacturer: "Noozle3D"
@@ -1691,12 +1549,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CL2 Avatar V2 Dual Long Antenna Mount - Choose Color"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e715716d-000f-4b31-b0fb-1e9448a7d5d3"
   id: "avatar-moonlight-4k-kit"
   manufacturer: "Walksnail"
@@ -1708,20 +1563,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar Moonlight 4K Kit For Avatar HD Video System"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/moonlight"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ac8a3e64-1ff1-4d49-afa4-17a46a176f51"
   id: "tanq-2-pro-spec-dji-o3"
   manufacturer: "Noozle3D"
@@ -1733,12 +1581,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "TANQ 2 Pro Spec DJI O3 VTX & Core Antenna Mount"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "4eb510e4-0fbd-4411-b8f5-9ac967fcf89d"
   id: "tanq-2-dji-o3-vtx-mount"
   manufacturer: "Noozle3D"
@@ -1750,12 +1595,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Noozle3D TANQ 2 DJI O3 VTX Mount DJI Digital video transmitter with up to 2000mW output power, operating voltage 7.0-26.0V, weighing 68.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "db67608a-f2b0-439e-a726-a92f96b0cf49"
   id: "tanq-2-avatar-v2-vtx-mount"
   manufacturer: "Noozle3D"
@@ -1767,12 +1609,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Noozle3D TANQ 2 Avatar V2 VTX Mount Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 15.4g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f2ae9420-a415-454f-a873-ae39194f863b"
   id: "riot-wing-kit"
   manufacturer: "Rotor Riot"
@@ -1784,12 +1623,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Rotor Riot Riot Wing Kit Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://rotorriot.com/products/riot-wing-kit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "49968c5c-0842-4d0b-b0ae-6f7d1ffac187"
   id: "avatar-mini-lite-1s-replacement-usb"
   manufacturer: "Walksnail"
@@ -1801,20 +1641,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar Mini Lite 1S Replacement USB Cable"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "2ff0872c-0f9a-4b9a-9415-8dacd00316f4"
   id: "u-fl-to-rp-sma-adapter"
   manufacturer: "Rotor Riot"
@@ -1826,12 +1655,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Rotor Riot u.FL to RP-SMA Adapter Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 5.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://rotorriot.com/products/u-fl-to-rp-sma-adapter"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "a28c3e20-9117-4175-830f-e09536904622"
   id: "x-air-5-8-mk-ii-antenna-pair"
   manufacturer: "TrueRC"
@@ -1843,12 +1673,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "X²-Air 5.8 MK II Antenna Pair for Dominator HD Goggles"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/truerc-x-air-5-8-mk-ii-rhcp-rp-sma"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e1e011f0-b508-4e42-8ca3-dceb3fe4bf10"
   id: "avatar-mini-1s-vtx-2"
   manufacturer: "Walksnail"
@@ -1860,20 +1691,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar Mini 1S VTX Without Camera for Avatar HD Video System"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/flywoo-flybee-20-2-drone-hd-w-walksnail-avatar-hd-mini-2s"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "196b4c45-d0dd-463f-80f1-f7d7670c2310"
   id: "o3-air-unit-nd-filter-choose-version"
   manufacturer: "Camera Butter"
@@ -1885,12 +1709,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Camera Butter O3 Air Unit ND Filter - Choose Version DJI Digital video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "2f04123d-25f6-4ca2-80e4-3dd386c82940"
   id: "tanq-1-2-dji-o3"
   manufacturer: "Noozle3D"
@@ -1902,12 +1723,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "TANQ 1 & 2 DJI O3 Antenna Mount - Choose Version"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "fa26a17e-aa08-46fa-8697-ad44c4dc549c"
   id: "skylite-skyliner-mk3-dji-o3-3"
   manufacturer: "Noozle3D"
@@ -1919,12 +1737,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "SkyLite / Skyliner MK3 DJI O3 Antenna Mount - Choose Color"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e12510ad-d758-4510-8837-e98076759b49"
   id: "skylite-skyliner-mk3-dji-o3-4"
   manufacturer: "Noozle3D"
@@ -1936,12 +1751,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - Choose Color"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "885b82ed-0377-4094-bc02-b002d3dcf574"
   id: "skylite-skyliner-mk3-dji-o3-5"
   manufacturer: "Noozle3D"
@@ -1953,12 +1765,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "SkyLite / Skyliner MK3 DJI O3 Conversion Kit"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "7998e428-0a19-4947-aaa3-f8086ae8e29d"
   id: "x-air-5-8-mkii-stubby-antenna"
   manufacturer: "TrueRC"
@@ -1970,12 +1779,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "X-Air 5.8 MKII & Stubby Antenna Set for Dominator HD Goggles"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "06059799-815b-4eda-9561-c83ad5cf15c6"
   id: "hglrc-draco-5-8ghz-hd-vtx-dual"
   manufacturer: "HGLRC"
@@ -1987,16 +1793,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "HGLRC Draco 5.8Ghz HD VTX Dual 1W FPV Air Unit"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/hglrc-draco-a1-a2-hd-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ad91fc4c-69fb-4481-8498-c1b378939ddd"
   id: "5-8g-vtx-pro-1-6w-for-fpv-racing-drone"
   manufacturer: "HGLRC"
@@ -2008,16 +1811,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "HGLRC 5.8G VTX PRO 1.6W For FPV Racing Drone Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/5-8g-vtx-pro-1-6w-for-fpv-racing-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "40207717-250f-400d-bd20-cde81c5601df"
   id: "3-3g-5w-high-power-sma-vtx-adjustable"
   manufacturer: "HGLRC"
@@ -2029,16 +1829,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "3.3G 5W High-Power SMA VTX Adjustable Power Long Range For FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/3-3g-5w-high-power-vtx-adjustable-power-long-range-for-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5e0104ab-2d45-458c-91ca-6e7ab5fa3e46"
   id: "4-9-6ghz-10w-high-power-vtx"
   manufacturer: "HGLRC"
@@ -2050,16 +1847,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "4.9-6Ghz 10W High-Power VTX for Aerial Photography / FPV Drone Racing"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/4-9-6ghz-10w-high-power-vtx-for-aerial-photography-fpv-drone-racing"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f96669c1-a1a4-423d-a56f-47aca3ad8b73"
   id: "5-8g-5-5w-high-power-vtx-adjustable"
   manufacturer: "HGLRC"
@@ -2071,16 +1865,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "5.8G 5.5W high power VTX adjustable power aerial photography FPV drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/5-8g-5-5w-high-power-vtx-adjustable-power-aerial-photography-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "683561d9-f6cd-4974-acd9-623b3715e9df"
   id: "hglrc-talon-2-inch-cinewhoop-analog-hd-fpv"
   manufacturer: "HGLRC"
@@ -2092,16 +1883,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "HGLRC Talon 2-inch cinewhoop Analog/HD FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/hglrc-talon-2-inch-cinewhoop-analog-hd-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "7d0bb751-b2d3-4e87-a285-46f219c8fce9"
   id: "hglrc-specter-25a-aio-hd-analog-vtx"
   manufacturer: "HGLRC"
@@ -2113,16 +1901,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "HGLRC SPECTER 25A AIO HD/Analog VTX Wireless Bluetooth tuning parameter adjustment integrated AIO"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/hglrc-specter-25a-aio-hd-analog-vtx-wireless-bluetooth-tuning-parameter-adjustment-integrated-aio"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "71ffefb8-910b-4057-adad-86ae3547ecf4"
   id: "hglrc-zeus-800mw-smart-mounting-20-20"
   manufacturer: "HGLRC"
@@ -2134,16 +1919,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "HGLRC Zeus 800mW Smart Mounting 20*20 / 30*30 VTX For FPV Racing Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/hglrc-zeus-800mw-smart-mounting-20-20-30-30-vtx-for-fpv-racing-drone"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/hglrc-zeus-800mw-smart-mounting-20-20-30-30-vtx-for-fpv-racing-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "baafc9e0-12b2-4174-b67a-a70bf4604fbd"
   id: "hglrc-zeus-nano-vtx-350mw-16x16"
   manufacturer: "HGLRC"
@@ -2155,16 +1941,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "HGLRC Zeus nano VTX 350mW 16x16 20x20 25.5x25.5 mm For FPV Racing Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.hglrc.com/products/hglrc-zeus-nano-vtx-350mw-for-fpv-racing-drone"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.hglrc.net/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/hglrc-zeus-nano-25-350mw-5-8ghz-16x16-20x20-25x25-vtx-u-fl"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "9a998a95-d5a0-4f8e-a476-334372d75864"
   id: "mamba-ultra-tiny-vtx-pdb-2-pcs"
   manufacturer: "Diatone"
@@ -2176,12 +1963,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Diatone MAMBA Ultra Tiny VTX PDB  （2/pcs） Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 6.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.diatone.us/products/mamba-ultra-tiny-vtx-pdb-2-pcs"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ab698c2b-2fbd-4599-9fea-a238d7d1072c"
   id: "flyfishrc-dual-band-5-8ghz-2-4ghz-ufl-antenna"
   manufacturer: "FlyFishRC"
@@ -2193,12 +1981,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "FlyFishRC Dual-Band 5.8Ghz/2.4Ghz UFL Antenna For DJI O3"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://flyfish-rc.com/products/flyfishrc-5-8ghz-2-4ghz-dual-band-ufl-antenna-for-dji-o3"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/flyfishrc-dual-band-5-8ghz-2-4ghz-antenna-for-dji-o3-u-fl-lhcp-red-choose-length"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "a40e8981-a5bf-478e-8402-b635d9e4cc07"
   id: "in-stock-dji-o4-air-unit"
   manufacturer: "DJI"
@@ -2210,12 +2003,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "DJI (IN Stock) DJI O4 Air Unit DJI Digital video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/dji-o4-air-unit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "04bc9866-781a-4225-89d2-a6a7cf65cc85"
   id: "sub250-send-t1600-vtx"
   manufacturer: "Sub250"
@@ -2227,12 +2021,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Sub250 Sub250 Send T1600 VTX Analog video transmitter with up to 1600mW output power, operating voltage 7.0-26.0V, weighing 15.9g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/sub250-send-t1600-vtx"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/sub250-send-t1600-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "10c9aab1-e7ea-41f2-a77f-c735553386fb"
   id: "sub250-oasisfly30-3-inches-hd"
   manufacturer: "Sub250"
@@ -2244,12 +2043,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Sub250 Oasisfly30 3 Inches HD without O3 Freestyle Quadcopter FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/sub250-oasisfly30-hd-o4-pro"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/sub250-oasisfly30-3-inches-hd-o4-pro-freestyle-quadcopter-without-o4-pro-choose-rx-type"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "c36fac3c-e9f4-4dd7-9446-be4a98c2306d"
   id: "sub250-dollyfly25-hd-o3"
   manufacturer: "Sub250"
@@ -2261,12 +2065,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Sub250 DollyFly25 HD O3 with LED 2.5-inch 4S CineWhoop"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/sub250-dollyfly25-hd-o3-with-led-2-5-inch-4s-cinewhoop"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/sub250-dollyfly25-2-5-4s-cinewhoop-w-dji-o3-hd-camera-system-choose-rx-type"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "1926775e-61b0-4cca-b975-a65d9a87d17c"
   id: "sub250-dollyfly25"
   manufacturer: "Sub250"
@@ -2278,12 +2087,17 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Sub250 DollyFly25 Without O3 Air Unit 2.5-inch 4S CineWhoop"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/dollyfly25-v2-hd-o4-pro-4s-gps-cinewhoop"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/sub250-dollyfly25-2-5-4s-cinewhoop-w-dji-o3-hd-camera-system-choose-rx-type"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e5b70c4f-d734-4dbd-87a4-2a1bf412d67c"
   id: "sub250-dollyfly25-hd-o3-2-5-inch-4s"
   manufacturer: "Sub250"
@@ -2295,12 +2109,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Sub250 DollyFly25 HD O3 2.5-inch 4S CineWhoop"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/dollyfly25-o3-4s-cinewhoop"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ad1282ab-f3fd-45ce-84c1-daabac82f47d"
   id: "sub250-send-t400-vtx"
   manufacturer: "Sub250"
@@ -2312,12 +2127,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Sub250 Sub250 Send T400 VTX Analog video transmitter with up to 200mW output power, operating voltage 3.1-5.5V, weighing 2.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/sub250-send-t400-vtx"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/sub250-send-t400-400mw-nano-vtx-ufl"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "2ff9cd56-2419-4dd5-a817-592e7ae72984"
   id: "sub250-whoopfly16-ultra-light-hd-zero-1s"
   manufacturer: "Sub250"
@@ -2329,12 +2149,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Sub250 Whoopfly16 Ultra-light HD Zero 1s Mini Whoop 75mm"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://sub250.com/products/whoopfly16-hd-zero-1s-tiny-whoop"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "63cd3de7-4ef9-49ab-bbd8-015d1e3328d5"
   id: "internal-video-transmitter-6b57f17e-8c88-44b8-ab68-d95fcaa9c08c"
   manufacturer: "BETAFPV"
@@ -2347,20 +2168,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV Air VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/air-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "17a847c2-7ac7-4c09-9176-cb51f4fb3c00"
   id: "internal-video-transmitter-95ec9715-739f-4763-a3f3-ac3feb2cbbc4"
   manufacturer: "BETAFPV"
@@ -2373,20 +2187,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV P1 Air Unit HD VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/p1-air-unit-hd-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "9981815e-ef11-4667-a44a-ffebf85fd876"
   id: "sub100g-whoop-drone-2"
   manufacturer: "BETAFPV"
@@ -2399,20 +2206,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/sub100g-whoop-drone-with-dji-o3-beta-test"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "1a242cdf-5bc0-4f69-853a-9e2e73d63ab8"
   id: "internal-video-transmitter-d642e88d-152e-4cf1-8ea5-371a463d2d2d"
   manufacturer: "BETAFPV"
@@ -2425,20 +2225,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV A03 400mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/a03-400mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "1d4e6575-7787-4a63-8c6e-13a8493702e8"
   id: "internal-video-transmitter-b9f5767b-c2bc-415a-8e60-ab811b07b5d3"
   manufacturer: "BETAFPV"
@@ -2451,20 +2244,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV M03 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m03-25-350mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "d4180e39-e175-4486-a43d-3c14aba2f6cc"
   id: "internal-video-transmitter-7c2e13a0-2f47-4249-9dc6-ea2bd27f8a22"
   manufacturer: "BETAFPV"
@@ -2477,20 +2263,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV A02 25-800mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/a02-25-800mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5474b621-c10f-4abb-9e0d-222871a9e109"
   id: "x-knight-3-toothpick-quad-2"
   manufacturer: "BETAFPV"
@@ -2503,20 +2282,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/x-knight-3-toothpick-quad-hd-digital-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "6cc37fe2-ccca-4881-a6be-805b482cf489"
   id: "internal-video-transmitter-9bb72805-1ca3-4689-969e-9c1539d3143c"
   manufacturer: "BETAFPV"
@@ -2529,20 +2301,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV M02 25-350mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m02-aio-5-8g-vtxpin-connected"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "664cefec-588c-44ff-ba71-a7885d925382"
   id: "lite-2s-brushless-flight-controller-2"
   manufacturer: "BETAFPV"
@@ -2555,20 +2320,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/lite-2s-brushless-flight-controller-frsky"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "7534d570-cbf7-46d5-b0c7-5ae841019f5b"
   id: "m01-aio-camera-5-8g-vtx-v2-1-2"
   manufacturer: "BETAFPV"
@@ -2581,20 +2339,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m01-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "590ed84d-4438-4b54-b073-b6f24ada5c0d"
   id: "internal-video-transmitter-657d22da-a05f-4a5a-936e-a33248f1b9e5"
   manufacturer: "BETAFPV"
@@ -2607,20 +2358,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal Video Transmitter) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/t01-aio-camera-25mw-5-8g"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "aa40a685-6edf-4f36-ba1f-d01522e45778"
   id: "z02-aio-camera-5-8g-vtx-3"
   manufacturer: "BETAFPV"
@@ -2633,20 +2377,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/copy-of-z02-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "00cd1018-c498-4e34-8b50-b69cb7297e16"
   id: "z02-aio-camera-5-8g-vtx-4"
   manufacturer: "BETAFPV"
@@ -2659,20 +2396,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/copy-of-z02-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "569515af-d2dd-4be0-a052-f7579dca41d1"
   id: "h02-aio-camera-5-8g-25mw-vtx"
   manufacturer: "BETAFPV"
@@ -2685,20 +2415,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/h02-aio-camera-5-8g-25mw-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ff621ea4-2a57-4ee0-8ed6-6f6399bd5b9f"
   id: "z01-aio-camera-5-8g-25mw-vtx-2"
   manufacturer: "BETAFPV"
@@ -2711,20 +2434,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z01 AIO Camera 5.8G 25mW VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/z01-aio-fpv-5-8g-25mw-transmitter-camera"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5b576b3e-f5d8-4677-9bec-e4747f062d58"
   id: "beta-test-walksnail-neuxs-aio-1s-flight-2"
   manufacturer: "CADDX"
@@ -2737,20 +2453,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/beta-test-walksnail-neuxs-aio-1s-flight-controller-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "2d11f7f9-88ae-474b-bc83-c3103e747e50"
   id: "internal-video-transmitter-badb9181-c95e-4407-b5d7-f9d0e3d38ba1"
   manufacturer: "CADDX"
@@ -2763,20 +2472,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar GT VTX (Internal Video Transmitter) Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-gt-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "15c94828-ee1d-4239-9c93-e18e5fd8d192"
   id: "walksnail-avatar-gt-kit-only-2"
   manufacturer: "CADDX"
@@ -2789,20 +2491,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar GT KIT Only (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-gt-kit-only"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "8da83e83-ee07-4024-8536-8372a5f17dff"
   id: "walksnail-avatar-hd-kit-v2"
   manufacturer: "CADDX"
@@ -2815,20 +2510,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar HD Kit V2 (32G) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-32g"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/walksnail-avatar-hd-kit-v2-20x20-25x25-vtx-kit-w-micro-camera-v2-dual-antennas-version"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "1fab39e5-e2c0-47ba-b755-67725a018698"
   id: "walksnail-avatar-hd-kit-v2-2"
   manufacturer: "CADDX"
@@ -2841,20 +2533,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar HD Kit V2 (8G) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-32g"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/walksnail-avatar-hd-kit-v2-20x20-25x25-vtx-kit-w-micro-camera-v2-dual-antennas-version"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "78e53688-a6b6-44c3-b9a8-7fba74cea1ee"
   id: "tinyape25-walksnail-avatar-hd-freestyle-fpv-2"
   manufacturer: "DarwinFPV"
@@ -2867,16 +2556,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/tinyape25-walksnail-avatar-hd-freestyle-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "47639100-c93e-4bac-8297-c7001d4f6932"
   id: "darwinfpv-25-200-400-600mw-vtx-2"
   manufacturer: "DarwinFPV"
@@ -2889,16 +2575,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV 25/200/400/600mW VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/25-200-400-600mw-tinyape-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f00bc2df-b9e6-4056-b784-c01e0a90ea4e"
   id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-5"
   manufacturer: "NewBeeDrone"
@@ -2911,12 +2594,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f95d6117-f464-4a47-aca8-c9362a4f7ecc"
   id: "aura-vtx"
   manufacturer: "Fat Shark"
@@ -2929,12 +2613,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Aura VTX for Analog Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "571abb8a-eb6e-4ed9-aeb4-4d2ed7477e66"
   id: "goku-f405-ervt-1s-5a-5-in-1-5"
   manufacturer: "Flywoo"
@@ -2947,12 +2628,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/flywoo-goku-ervt-5-in-1-aio-f405-fc-1s-5a-esc-400mw-vtx-elrs-rx-osd"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ded1b7ae-04ea-4081-b7a4-3f95a1dfbfd6"
   id: "avatar-gt-kit-dual-antenna-2"
   manufacturer: "Walksnail"
@@ -2965,20 +2647,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "9c8df7de-e9c4-4f7f-8c44-f0123dde811d"
   id: "avatar-hd-vtx-module-v2-dual-2"
   manufacturer: "Walksnail"
@@ -2991,20 +2662,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-vtx-v2-only-dual-antennas"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "dae416b8-c05a-40c8-adf4-daf974af9e26"
   id: "avatar-hd-pro-kit-dual-antenna-2"
   manufacturer: "Walksnail"
@@ -3017,20 +2681,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-x-with-pro-kit-dual-and-gm3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "d2831bd8-f458-467d-819e-b3ea55497291"
   id: "avatar-hd-kit-v2-dual-antenna-2"
   manufacturer: "Walksnail"
@@ -3043,20 +2700,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-dual-antenna"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "62ed4520-d65c-47d7-928f-926fa9b039e6"
   id: "whoop-lite-bundle-2"
   manufacturer: "Divimath"
@@ -3069,12 +2719,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "636c340f-bbf7-4d1e-a24c-12dedb3add42"
   id: "avatar-hd-mini-vtx-module-v3-2"
   manufacturer: "Walksnail"
@@ -3087,20 +2734,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-mini-vtx-v3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5739f434-346a-4f18-af51-a6e7e871f075"
   id: "avatar-hd-kit-v2-2"
   manufacturer: "Walksnail"
@@ -3113,20 +2753,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-kit-v2-dual"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/walksnail-avatar-hd-kit-v2-20x20-25x25-vtx-kit-w-micro-camera-v2-dual-antennas-version"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "6b87a9cc-7bcb-4ba5-80f1-ea049459d2d7"
   id: "avatar-hd-vrx-kit-5"
   manufacturer: "Walksnail"
@@ -3139,20 +2776,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-nano-kit-v3-14cm"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "648539ac-b369-4014-94b3-edde5271378d"
   id: "avatar-mini-1s-vtx-3"
   manufacturer: "Walksnail"
@@ -3165,20 +2795,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "68b26e4a-c4a7-49d5-89b3-ab7779bae5f2"
   id: "internal-video-transmitter-6358ffe6-3daf-40a1-b6f3-c91cbed80f3b"
   manufacturer: "BETAFPV"
@@ -3191,20 +2810,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV Air VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/air-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "168f97da-dd1b-4e15-9774-2fc4a0d35b36"
   id: "internal-video-transmitter-332a8bc9-0e1a-481e-9178-947e90cd1216"
   manufacturer: "BETAFPV"
@@ -3217,20 +2829,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV P1 Air Unit HD VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/p1-air-unit-hd-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "08189054-145d-4398-8e7c-59b64ffc9fac"
   id: "sub100g-whoop-drone-3"
   manufacturer: "BETAFPV"
@@ -3243,20 +2848,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/sub100g-whoop-drone-with-dji-o3-beta-test"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "15ade0cc-8d8f-4ec2-bb87-d132a4eb1258"
   id: "internal-video-transmitter-32929656-e0ad-4088-97a4-a485ec8bbbfa"
   manufacturer: "BETAFPV"
@@ -3269,20 +2867,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV A03 400mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/a03-400mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e9d3937f-a2f2-4a98-8de0-f21f057a000a"
   id: "internal-video-transmitter-adba1c1e-9788-49a7-8bbf-b0bcfe91db06"
   manufacturer: "BETAFPV"
@@ -3295,20 +2886,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV M03 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m03-25-350mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "26d12338-ff44-4cb0-ba1d-6afeb2faad61"
   id: "internal-video-transmitter-5f57aa3e-8a5b-425a-8248-e2ebae9fcdf6"
   manufacturer: "BETAFPV"
@@ -3321,20 +2905,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV A02 25-800mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/a02-25-800mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5726f05a-0a09-4a54-bc3b-51f27eb67ceb"
   id: "x-knight-3-toothpick-quad-3"
   manufacturer: "BETAFPV"
@@ -3347,20 +2924,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/x-knight-3-toothpick-quad-hd-digital-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "56d8db8b-40c1-45c8-a178-0c828e2b7e00"
   id: "internal-video-transmitter-ae52c708-51d1-472d-8951-3225c8125e04"
   manufacturer: "BETAFPV"
@@ -3373,20 +2943,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV M02 25-350mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m02-aio-5-8g-vtxpin-connected"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "09c7d8fa-b1d4-490c-bada-cf622a6d0f16"
   id: "lite-2s-brushless-flight-controller-3"
   manufacturer: "BETAFPV"
@@ -3399,20 +2962,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/lite-2s-brushless-flight-controller-frsky"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "cefae284-1e2d-4bfa-857a-d50330efa52e"
   id: "m01-aio-camera-5-8g-vtx-v2-1-3"
   manufacturer: "BETAFPV"
@@ -3425,20 +2981,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m01-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "8b914fda-2aa3-4be0-8041-0a429fbe9bdc"
   id: "internal-video-transmitter-99308e86-8805-4f4e-a49f-754569d94c6c"
   manufacturer: "BETAFPV"
@@ -3451,20 +3000,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal Video Transmitter) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/t01-aio-camera-25mw-5-8g"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "117c8359-d9af-4d85-ac0c-94a8256bc2bc"
   id: "z02-aio-camera-5-8g-vtx-5"
   manufacturer: "BETAFPV"
@@ -3477,20 +3019,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/copy-of-z02-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "a33cc2cc-106a-4c61-8ed5-b3e7d77714f7"
   id: "z02-aio-camera-5-8g-vtx-6"
   manufacturer: "BETAFPV"
@@ -3503,20 +3038,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/copy-of-z02-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "b4001ff3-ce95-495e-b09f-5909fa2c3ccf"
   id: "h02-aio-camera-5-8g-25mw-vtx-2"
   manufacturer: "BETAFPV"
@@ -3529,20 +3057,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/h02-aio-camera-5-8g-25mw-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "844e607e-de01-43b5-8043-4d78818e0f3b"
   id: "z01-aio-camera-5-8g-25mw-vtx-3"
   manufacturer: "BETAFPV"
@@ -3555,20 +3076,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z01 AIO Camera 5.8G 25mW VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/z01-aio-fpv-5-8g-25mw-transmitter-camera"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "14837492-0e30-419a-a407-6f0946593587"
   id: "beta-test-walksnail-neuxs-aio-1s-flight-3"
   manufacturer: "CADDX"
@@ -3581,20 +3095,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/beta-test-walksnail-neuxs-aio-1s-flight-controller-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "55644e34-8f82-4bf0-8cd2-bffde219d9b3"
   id: "internal-video-transmitter-761a48fd-ddaa-4197-a592-f4e46b642096"
   manufacturer: "CADDX"
@@ -3607,20 +3114,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar GT VTX (Internal Video Transmitter) Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-gt-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "be8850ae-b9e0-45b8-8cc7-38352cf9cd6c"
   id: "walksnail-avatar-gt-kit-only-3"
   manufacturer: "CADDX"
@@ -3633,20 +3133,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar GT KIT Only (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-gt-kit-only"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "a63bde13-6bad-422a-85e6-06f89470bda3"
   id: "walksnail-avatar-hd-kit-v2-3"
   manufacturer: "CADDX"
@@ -3659,20 +3152,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar HD Kit V2 (32G) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-32g"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/geprc-bnf-cinelog35-v2-hd-6s-3-5-cinewhoop-w-walksnail-avatar-v2-avatar-micro-cam-v2-elrs-2-4ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "2b603881-0555-4d0b-aa22-0f341c4786f8"
   id: "walksnail-avatar-hd-kit-v2-4"
   manufacturer: "CADDX"
@@ -3685,20 +3175,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar HD Kit V2 (8G) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-32g"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/flywoo-bnf-firefly-fr16-nano-baby-hd-v2-0-1s-1-6-micro-quad-w-walksnail-avatar-mini-1s-lite-avatar-lite-cam-elrs-2-4-ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "3e9f2161-a755-43cc-affe-4afa1fc0ded7"
   id: "tinyape25-walksnail-avatar-hd-freestyle-fpv-3"
   manufacturer: "DarwinFPV"
@@ -3711,16 +3198,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/tinyape25-walksnail-avatar-hd-freestyle-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ed6bb06c-fdee-43d2-84b8-33f9b08d5d9a"
   id: "darwinfpv-25-200-400-600mw-vtx-3"
   manufacturer: "DarwinFPV"
@@ -3733,16 +3217,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV 25/200/400/600mW VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/25-200-400-600mw-tinyape-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ee9ce5be-2843-477d-a234-30ba7c567075"
   id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-6"
   manufacturer: "NewBeeDrone"
@@ -3755,12 +3236,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "027a1872-7c69-4956-8921-f022a74a1ad5"
   id: "aura-vtx-2"
   manufacturer: "Fat Shark"
@@ -3773,12 +3255,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Aura VTX for Analog Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f6b48106-7945-49d9-9350-d6f2ab593939"
   id: "goku-f405-ervt-1s-5a-5-in-1-6"
   manufacturer: "Flywoo"
@@ -3791,12 +3270,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "765b6915-a706-4497-8adb-d9dedb621ac0"
   id: "avatar-gt-kit-dual-antenna-3"
   manufacturer: "Walksnail"
@@ -3809,20 +3285,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "406116c2-c785-43ab-8822-133952b81976"
   id: "avatar-hd-vtx-module-v2-dual-3"
   manufacturer: "Walksnail"
@@ -3835,20 +3300,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-vtx-v2-only-dual-antennas"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "75ea1874-e274-435e-9c3b-8548aac98107"
   id: "avatar-hd-pro-kit-dual-antenna-3"
   manufacturer: "Walksnail"
@@ -3861,20 +3319,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-x-with-pro-kit-dual-and-gm3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "9e1609bd-28b9-4cc7-9276-c057b1cf8563"
   id: "avatar-hd-kit-v2-dual-antenna-3"
   manufacturer: "Walksnail"
@@ -3887,20 +3338,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-dual-antenna"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "0ce53d97-9866-4921-a600-0d66049dd738"
   id: "whoop-lite-bundle-3"
   manufacturer: "Divimath"
@@ -3913,12 +3357,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ff7e0974-d8f9-4492-a302-067c8f0a8760"
   id: "avatar-hd-mini-vtx-module-v3-3"
   manufacturer: "Walksnail"
@@ -3931,20 +3372,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-mini-vtx-v3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "58d9a699-b450-42dd-8d3a-5805f5aa2c95"
   id: "avatar-hd-kit-v2-3"
   manufacturer: "Walksnail"
@@ -3957,20 +3391,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-kit-v2-dual"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/geprc-bnf-cinelog35-v2-hd-6s-3-5-cinewhoop-w-walksnail-avatar-v2-avatar-micro-cam-v2-elrs-2-4ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "93a62690-f77e-455d-9257-259621f9ae9e"
   id: "avatar-hd-vrx-kit-6"
   manufacturer: "Walksnail"
@@ -3983,20 +3414,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-nano-kit-v3-14cm"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "84c84f7c-56a8-41d1-a7d2-dfa41b7c33b0"
   id: "avatar-mini-1s-vtx-4"
   manufacturer: "Walksnail"
@@ -4009,20 +3433,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/flywoo-bnf-firefly-fr16-nano-baby-hd-v2-0-1s-1-6-micro-quad-w-walksnail-avatar-mini-1s-lite-avatar-lite-cam-elrs-2-4-ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5682e28f-49a9-4f5e-9569-e065997cac2b"
   id: "internal-video-transmitter-4ef8638f-dac2-4ac8-b0ec-5873947190a3"
   manufacturer: "BETAFPV"
@@ -4035,20 +3452,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV Air VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/air-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "dfdd3813-3648-4b36-9329-1cee02a0944e"
   id: "internal-video-transmitter-f76f9a90-e448-4b22-8d09-a21e83e67d8b"
   manufacturer: "BETAFPV"
@@ -4061,20 +3471,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV P1 Air Unit HD VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/p1-air-unit-hd-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "3f323eed-dd33-4f1a-ad9f-05f060463134"
   id: "sub100g-whoop-drone-4"
   manufacturer: "BETAFPV"
@@ -4087,20 +3490,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/sub100g-whoop-drone-with-dji-o3-beta-test"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "27b81d48-065a-4144-9ef4-55b3346f63dc"
   id: "internal-video-transmitter-eb9dd626-b02a-42a7-b391-24bbb1bf106d"
   manufacturer: "BETAFPV"
@@ -4113,20 +3509,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV A03 400mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/a03-400mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "dbc37721-e159-4394-948f-178a2ae5866a"
   id: "internal-video-transmitter-9e8da282-03b7-4296-8c18-b9fced8dde68"
   manufacturer: "BETAFPV"
@@ -4139,20 +3528,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "BETAFPV M03 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m03-25-350mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "fb8e7f0e-0716-46b2-9fa9-1065c65d5b78"
   id: "internal-video-transmitter-0a5a6f16-6856-41af-9e26-fb04ba547503"
   manufacturer: "BETAFPV"
@@ -4165,20 +3547,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV A02 25-800mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/a02-25-800mw-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "c47cd971-2a69-4aea-867d-e37d435ad36d"
   id: "x-knight-3-toothpick-quad-4"
   manufacturer: "BETAFPV"
@@ -4191,20 +3566,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/x-knight-3-toothpick-quad-hd-digital-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "4c63ff7f-ce50-4974-9c69-4ea5312ae5de"
   id: "internal-video-transmitter-84c6ce1a-b21a-4202-bf8f-dda67e20eacc"
   manufacturer: "BETAFPV"
@@ -4217,20 +3585,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV M02 25-350mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m02-aio-5-8g-vtxpin-connected"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "e8bff2a8-06d7-4003-afa7-2ed069e68cf3"
   id: "lite-2s-brushless-flight-controller-4"
   manufacturer: "BETAFPV"
@@ -4243,20 +3604,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/lite-2s-brushless-flight-controller-frsky"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "1f6ae3ed-c523-497c-b556-7ea3a0abf0ad"
   id: "m01-aio-camera-5-8g-vtx-v2-1-4"
   manufacturer: "BETAFPV"
@@ -4269,20 +3623,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/m01-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "28ebaff7-96e1-4f11-9f5f-22b3f1b10732"
   id: "internal-video-transmitter-bd63a3a0-8741-4bf0-a09b-d9924cebda00"
   manufacturer: "BETAFPV"
@@ -4295,20 +3642,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal Video Transmitter) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/t01-aio-camera-25mw-5-8g"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "260c0202-bce0-4fef-91ec-e7e36acbdd16"
   id: "z02-aio-camera-5-8g-vtx-7"
   manufacturer: "BETAFPV"
@@ -4321,20 +3661,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/copy-of-z02-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5ac52c7e-7a3f-44a1-8254-48cb5a2d6393"
   id: "z02-aio-camera-5-8g-vtx-8"
   manufacturer: "BETAFPV"
@@ -4347,20 +3680,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/copy-of-z02-aio-camera-5-8g-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "bcea6dba-f113-463e-92ec-d6a52a95f3b3"
   id: "h02-aio-camera-5-8g-25mw-vtx-3"
   manufacturer: "BETAFPV"
@@ -4373,20 +3699,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/h02-aio-camera-5-8g-25mw-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "1621640a-3560-4019-ab5f-2d140c7e48ae"
   id: "z01-aio-camera-5-8g-25mw-vtx-4"
   manufacturer: "BETAFPV"
@@ -4399,20 +3718,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Z01 AIO Camera 5.8G 25mW VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://support.betafpv.com"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://betafpv.com/products/z01-aio-fpv-5-8g-25mw-transmitter-camera"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "426237c6-d296-4d74-8f0b-c144c9a204a8"
   id: "beta-test-walksnail-neuxs-aio-1s-flight-4"
   manufacturer: "CADDX"
@@ -4425,20 +3737,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/beta-test-walksnail-neuxs-aio-1s-flight-controller-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "3bf1d3e6-50f4-4777-8513-dca52852b4b6"
   id: "internal-video-transmitter-d6131bd0-8b52-4252-b36b-3d698f404f12"
   manufacturer: "CADDX"
@@ -4451,20 +3756,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CADDXFPV Walksnail Avatar GT VTX (Internal Video Transmitter) Walksnail Avatar video transmitter with up to 25mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-gt-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "af52d562-b2c0-4be5-a985-d1a8248f17af"
   id: "walksnail-avatar-gt-kit-only-4"
   manufacturer: "CADDX"
@@ -4477,20 +3775,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar GT KIT Only (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-gt-kit-only"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ca62491c-8b0d-4508-aae9-057b31d321f5"
   id: "walksnail-avatar-hd-kit-v2-5"
   manufacturer: "CADDX"
@@ -4503,20 +3794,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar HD Kit V2 (32G) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-32g"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/geprc-bnf-cinelog35-v2-hd-6s-3-5-cinewhoop-w-walksnail-avatar-v2-avatar-micro-cam-v2-elrs-2-4ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "62d3bb6a-06b0-43c2-a884-a4a7aa328ce2"
   id: "walksnail-avatar-hd-kit-v2-6"
   manufacturer: "CADDX"
@@ -4529,20 +3817,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar HD Kit V2 (8G) (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-32g"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/flywoo-bnf-firefly-fr16-nano-baby-hd-v2-0-1s-1-6-micro-quad-w-walksnail-avatar-mini-1s-lite-avatar-lite-cam-elrs-2-4-ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "77347111-ee07-4144-a92d-3041d7659443"
   id: "tinyape25-walksnail-avatar-hd-freestyle-fpv-4"
   manufacturer: "DarwinFPV"
@@ -4555,16 +3840,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/tinyape25-walksnail-avatar-hd-freestyle-fpv-drone"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "b730d62b-8c2f-4ca4-9d7f-62bbcafb882b"
   id: "darwinfpv-25-200-400-600mw-vtx-4"
   manufacturer: "DarwinFPV"
@@ -4577,16 +3859,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "DarwinFPV 25/200/400/600mW VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/collections/vtx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://darwinfpv.com/collections/vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://darwinfpv.com/products/25-200-400-600mw-tinyape-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "40c2ebdd-1fb6-45bb-a2e1-19cc0a8cf9bb"
   id: "newbeedrone-beebrain-brushed-v2-5-aio-flight-7"
   manufacturer: "NewBeeDrone"
@@ -4599,12 +3878,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "41a0ba9f-7d31-432a-8062-304c502e98ae"
   id: "aura-vtx-3"
   manufacturer: "Fat Shark"
@@ -4617,12 +3897,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Aura VTX for Analog Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "ab8e4f14-5307-4ccb-97fe-b8bd2fdbc48c"
   id: "goku-f405-ervt-1s-5a-5-in-1-7"
   manufacturer: "Flywoo"
@@ -4635,12 +3912,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "5c8a489e-c59a-4448-be41-6c834572f069"
   id: "avatar-gt-kit-dual-antenna-4"
   manufacturer: "Walksnail"
@@ -4653,20 +3927,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "6316be57-46ba-48e7-8e16-29f3cb75d3f1"
   id: "avatar-hd-vtx-module-v2-dual-4"
   manufacturer: "Walksnail"
@@ -4679,20 +3942,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-vtx-v2-only-dual-antennas"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "c66c35ee-3831-4212-8a50-55cc5cdacc36"
   id: "avatar-hd-pro-kit-dual-antenna-4"
   manufacturer: "Walksnail"
@@ -4705,20 +3961,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-x-with-pro-kit-dual-and-gm3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "1bb07a2b-6239-4f71-a453-52edc210b879"
   id: "avatar-hd-kit-v2-dual-antenna-4"
   manufacturer: "Walksnail"
@@ -4731,20 +3980,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-dual-antenna"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "fef9d4ba-5cc5-48f0-85c9-1eeb93c2e9c4"
   id: "whoop-lite-bundle-4"
   manufacturer: "Divimath"
@@ -4757,12 +3999,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "85c3ae27-31bf-473e-bf94-2d39b597422e"
   id: "avatar-hd-mini-vtx-module-v3-4"
   manufacturer: "Walksnail"
@@ -4775,20 +4014,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-mini-vtx-v3"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f5fd911a-c515-4efa-9484-42a75bf6b1fe"
   id: "avatar-hd-kit-v2-4"
   manufacturer: "Walksnail"
@@ -4801,20 +4033,17 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-kit-v2-dual"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/flywoo-bnf-firefly-fr16-nano-baby-hd-v2-0-1s-1-6-micro-quad-w-walksnail-avatar-mini-1s-lite-avatar-lite-cam-elrs-2-4-ghz"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "a9510b59-b752-4384-8540-430c7d280493"
   id: "avatar-hd-vrx-kit-7"
   manufacturer: "Walksnail"
@@ -4827,20 +4056,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-nano-kit-v3-14cm"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "d8cc5af7-2c49-40fd-a5be-dc735796d3f5"
   id: "avatar-mini-1s-vtx-5"
   manufacturer: "Walksnail"
@@ -4853,20 +4075,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/collections/walksnail-avatar-system"
-  }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "9355ce0e-4479-4450-a3b2-09fe7b0b6475"
   id: "walksnail-avatar-digital-hd-mini-1s-2"
   manufacturer: "FlyFishRC"
@@ -4879,12 +4090,13 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar Digital HD Mini 1S VTX Nano Camera kit (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://flyfish-rc.com/products/walksnail-avatar-digital-hd-mini-1s-vtx-nano-camera-kit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "983d667f-4882-4839-969d-39fc20a4e871"
   id: "walksnail-avatar-digital-hd-vtx-nano-2"
   manufacturer: "FlyFishRC"
@@ -4897,12 +4109,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar Digital HD VTX Nano Camera kit (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://flyfish-rc.com/products/walksnail-avatar-digital-hd-vtx-micro-camera-kit-的副本"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "f4d3f83a-df92-4423-970c-f59134625658"
   id: "walksnail-avatar-digital-hd-vtx-micro-2"
   manufacturer: "FlyFishRC"
@@ -4915,12 +4128,13 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Walksnail Avatar Digital HD VTX Micro Camera kit (Internal Video Transmitter)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/fpv/video-transmitters.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://flyfish-rc.com/products/walksnail-avatar-digital-hd-vtx-micro-camera-kit"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000001"
   id: "dji-o3-air-unit"
   manufacturer: "DJI"
@@ -4932,20 +4146,25 @@ video_transmitters: {
   input_voltage_max_v: 26.4
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Flagship digital HD video transmission system with up to 10km range, 30ms latency, 4K/60fps D-Cinelike onboard recording, and RockSteady stabilization."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.dji.com/o3-air-unit"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.dji.com/o3-air-unit"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.dji.com/o3-air-unit/downloads"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://www.dji.com/o3-air-unit/downloads"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://store.dji.com/product/dji-o3-air-unit"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://store.dji.com/product/dji-o3-air-unit"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/darwinfpv-dji-o3-air-unit-cnc-aluminum-waterproof-case"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000002"
   id: "caddx-walksnail-avatar-hd-pro-vtx"
   manufacturer: "CADDX"
@@ -4957,20 +4176,25 @@ video_transmitters: {
   input_voltage_max_v: 25.2
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "High-power digital HD VTX featuring 32GB onboard storage, 1080p 60fps/120fps recording, and low-latency digital video transmission up to 4km."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-pro-vtx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-pro-vtx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-l-with-gm3-and-pro-kit"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-gt2-kit-dual-antennas-with-avatar-pro-camera-1080p-and-gt2-vtx-2w-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000003"
   id: "caddx-walksnail-avatar-hd-mini-1s-lite-vtx"
   manufacturer: "CADDX"
@@ -4982,20 +4206,25 @@ video_transmitters: {
   input_voltage_max_v: 5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Ultra-compact 1S digital HD transmitter designed specifically for lightweight micro whoops and toothpicks."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/walksnail-avatar-hd-mini-1s-lite-kit"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-mini-1s-lite-kit"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.caddxfpv.com/pages/download-center"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-kit"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-kit"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-mini-1s-lite-camera"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-camera-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000006"
   id: "tbs-unify-pro32-hv-5.8ghz"
   manufacturer: "Team Black Sheep"
@@ -5007,20 +4236,25 @@ video_transmitters: {
   input_voltage_max_v: 25.2
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Legendary 1W high-voltage analog video transmitter with SmartAudio V2.1 and CleanSwitch technology."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.team-blacksheep.com/products/prod:unify_pro32_hv"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.team-blacksheep.com/products/prod:unify_pro32_hv"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
-    url: "https://www.team-blacksheep.com/tbs-unify-pro32-manual.pdf"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://www.team-blacksheep.com/tbs-unify-pro32-manual.pdf"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/tbs-unify-pro32-hv-5-8ghz-video-transmitter-sma.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/tbs-unify-pro32-hv-5-8ghz-video-transmitter-sma.html"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/tbs-unify-pro32-hv-25-1000mw-5-8ghz-vtx-mmcx"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000007"
   id: "rushfpv-rush-tank-solo-5.8ghz"
   manufacturer: "RushFPV"
@@ -5032,16 +4266,21 @@ video_transmitters: {
   input_voltage_max_v: 36
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Ultra-durable 1.6W high-power analog transmitter with full CNC aluminum thermal armor and LOCK-ON technology."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://pyrodrone.com/products/rushfpv-rush-tank-solo-5-8ghz-vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://pyrodrone.com/products/rushfpv-rush-tank-solo-5-8ghz-vtx"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/rush-tank-solo-5-8ghz-vtx.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/rush-tank-solo-5-8ghz-vtx.html"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/rushfpv-rush-tank-solo-5-8ghz-1-6w-37ch-vtx-us-version"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000008"
   id: "speedybee-tx800-5.8ghz"
   manufacturer: "SpeedyBee"
@@ -5053,16 +4292,21 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Compact 20x20mm switchable 25/200/400/800mW analog VTX with IRC Tramp protocol and metal heat sink shield."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.speedybee.com/speedybee-tx800/"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.speedybee.com/speedybee-tx800/"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/speedybee-tx800-5-8ghz-vtx.html"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.getfpv.com/speedybee-tx800-5-8ghz-vtx.html"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/speedybee-bee35-analog-6s-3-5-cinewhoop-drone-with-tx800-vtx-and-speedybee-phonix-se-camera-choose-receiver"
   }
 }
-video_transmitters: {
+video_transmitters:  {
+
   uuid: "01923019-3004-7001-8001-000000000009"
   id: "foxeer-reaper-extreme-2.5w"
   manufacturer: "Foxeer"
@@ -5074,12 +4318,16 @@ video_transmitters: {
   input_voltage_max_v: 36
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Extreme long-range analog VTX pushing up to 2500mW with integrated cooling fan and aluminum casing."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.foxeer.com/foxeer-reaper-extreme-2-5w-5-8g-72ch-vtx-g-465"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url:  "https://www.foxeer.com/foxeer-reaper-extreme-2-5w-5-8g-72ch-vtx-g-465"
   }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/foxeer-reaper-extreme-5-8ghz-2-5w-72ch-vtx"
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/foxeer-reaper-extreme-5-8ghz-2-5w-72ch-vtx"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://pyrodrone.com/products/foxeer-reaper-extreme-2-5w-5-8ghz-37ch-adjustable-analog-vtx"
   }
 }
