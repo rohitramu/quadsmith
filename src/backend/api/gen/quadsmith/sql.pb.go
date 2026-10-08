@@ -70,22 +70,6 @@ var file_quadsmith__sql_proto_extTypes = []protoimpl.ExtensionInfo{
 		Tag:           "bytes,51005,opt,name=column_type",
 		Filename:      "quadsmith/_sql.proto",
 	},
-	{
-		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
-		ExtensionType: (*bool)(nil),
-		Field:         51006,
-		Name:          "quadsmith.sql.is_required",
-		Tag:           "varint,51006,opt,name=is_required",
-		Filename:      "quadsmith/_sql.proto",
-	},
-	{
-		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
-		ExtensionType: (*string)(nil),
-		Field:         51007,
-		Name:          "quadsmith.sql.default_value",
-		Tag:           "bytes,51007,opt,name=default_value",
-		Filename:      "quadsmith/_sql.proto",
-	},
 }
 
 // Extension fields to descriptorpb.MessageOptions.
@@ -120,15 +104,6 @@ var (
 	E_CreateIndex = &file_quadsmith__sql_proto_extTypes[4]
 	// optional string column_type = 51005;
 	E_ColumnType = &file_quadsmith__sql_proto_extTypes[5]
-	// Marks this column as NOT NULL in the generated table.
-	//
-	// optional bool is_required = 51006;
-	E_IsRequired = &file_quadsmith__sql_proto_extTypes[6]
-	// Specifies the default value for this column in the generated table.
-	// Example: [(quadsmith.sql.default_value) = "false"]
-	//
-	// optional string default_value = 51007;
-	E_DefaultValue = &file_quadsmith__sql_proto_extTypes[7]
 )
 
 var File_quadsmith__sql_proto protoreflect.FileDescriptor
@@ -145,10 +120,7 @@ const file_quadsmith__sql_proto_rawDesc = "" +
 	"\tis_unique\x12\x1d.google.protobuf.FieldOptions\x18\xbb\x8e\x03 \x01(\bR\bisUnique:B\n" +
 	"\fcreate_index\x12\x1d.google.protobuf.FieldOptions\x18\xbc\x8e\x03 \x01(\bR\vcreateIndex:@\n" +
 	"\vcolumn_type\x12\x1d.google.protobuf.FieldOptions\x18\xbd\x8e\x03 \x01(\tR\n" +
-	"columnType:@\n" +
-	"\vis_required\x12\x1d.google.protobuf.FieldOptions\x18\xbe\x8e\x03 \x01(\bR\n" +
-	"isRequired:D\n" +
-	"\rdefault_value\x12\x1d.google.protobuf.FieldOptions\x18\xbf\x8e\x03 \x01(\tR\fdefaultValueB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"columnTypeB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var file_quadsmith__sql_proto_goTypes = []any{
 	(*descriptorpb.MessageOptions)(nil), // 0: google.protobuf.MessageOptions
@@ -161,12 +133,10 @@ var file_quadsmith__sql_proto_depIdxs = []int32{
 	1, // 3: quadsmith.sql.is_unique:extendee -> google.protobuf.FieldOptions
 	1, // 4: quadsmith.sql.create_index:extendee -> google.protobuf.FieldOptions
 	1, // 5: quadsmith.sql.column_type:extendee -> google.protobuf.FieldOptions
-	1, // 6: quadsmith.sql.is_required:extendee -> google.protobuf.FieldOptions
-	1, // 7: quadsmith.sql.default_value:extendee -> google.protobuf.FieldOptions
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	0, // [0:8] is the sub-list for extension extendee
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	0, // [0:6] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -182,7 +152,7 @@ func file_quadsmith__sql_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith__sql_proto_rawDesc), len(file_quadsmith__sql_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
-			NumExtensions: 8,
+			NumExtensions: 6,
 			NumServices:   0,
 		},
 		GoTypes:           file_quadsmith__sql_proto_goTypes,

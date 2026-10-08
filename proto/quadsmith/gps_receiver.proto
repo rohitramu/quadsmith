@@ -40,10 +40,7 @@ message GpsReceiver {
   string protocol = 7 [(quadsmith.sql.create_index) = true];
 
   // Whether the unit has an integrated magnetic compass / magnetometer
-  bool has_compass = 8 [
-    (quadsmith.sql.is_required) = true,
-    (quadsmith.sql.default_value) = "false"
-  ];
+  optional bool has_compass = 8;
 
   // Compass chip model (e.g., "QMC5883L", "IST8310")
   string compass_chip = 9;

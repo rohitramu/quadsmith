@@ -34,11 +34,4 @@ extend google.protobuf.FieldOptions {
   // Generates a standard B-Tree index for this column to speed up CEL queries.
   bool create_index = 51004;
   string column_type = 51005;
-
-  // Marks this column as NOT NULL in the generated table.
-  bool is_required = 51006;
-
-  // Specifies the default value for this column in the generated table.
-  // Example: [(quadsmith.sql.default_value) = "false"]
-  string default_value = 51007;
 }

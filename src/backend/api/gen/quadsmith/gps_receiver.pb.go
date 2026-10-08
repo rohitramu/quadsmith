@@ -37,7 +37,7 @@ type GpsReceiver struct {
 	// Primary communication protocol (e.g., "UBLOX", "NMEA")
 	Protocol string `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Whether the unit has an integrated magnetic compass / magnetometer
-	HasCompass bool `protobuf:"varint,8,opt,name=has_compass,json=hasCompass,proto3" json:"has_compass,omitempty"`
+	HasCompass *bool `protobuf:"varint,8,opt,name=has_compass,json=hasCompass,proto3,oneof" json:"has_compass,omitempty"`
 	// Compass chip model (e.g., "QMC5883L", "IST8310")
 	CompassChip string `protobuf:"bytes,9,opt,name=compass_chip,json=compassChip,proto3" json:"compass_chip,omitempty"`
 	// Minimum operating input voltage
@@ -137,8 +137,8 @@ func (x *GpsReceiver) GetProtocol() string {
 }
 
 func (x *GpsReceiver) GetHasCompass() bool {
-	if x != nil {
-		return x.HasCompass
+	if x != nil && x.HasCompass != nil {
+		return *x.HasCompass
 	}
 	return false
 }
@@ -365,7 +365,7 @@ var File_quadsmith_gps_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xf8\x04\n" +
+	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xfe\x04\n" +
 	"\vGpsReceiver\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -374,16 +374,17 @@ const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x18\n" +
 	"\achipset\x18\x06 \x01(\tR\achipset\x12 \n" +
-	"\bprotocol\x18\a \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12.\n" +
-	"\vhas_compass\x18\b \x01(\bB\r\xf0\xf3\x18\x01\xfa\xf3\x18\x05falseR\n" +
-	"hasCompass\x12!\n" +
+	"\bprotocol\x18\a \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12$\n" +
+	"\vhas_compass\x18\b \x01(\bH\x00R\n" +
+	"hasCompass\x88\x01\x01\x12!\n" +
 	"\fcompass_chip\x18\t \x01(\tR\vcompassChip\x12-\n" +
 	"\x13input_voltage_min_v\x18\n" +
 	" \x01(\x02R\x10inputVoltageMinV\x12-\n" +
 	"\x13input_voltage_max_v\x18\v \x01(\x02R\x10inputVoltageMaxV\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:d\x8a\xb5\x18\fmanufacturer\x8a\xb5\x18\x04name\x8a\xb5\x18\achipset\x8a\xb5\x18\vhas_compass\x92\xb5\x18\x1d\n" +
-	"\fGPS Receiver\x12\rGPS Receivers\xc2\xf3\x18\rgps_receivers\"A\n" +
+	"\fGPS Receiver\x12\rGPS Receivers\xc2\xf3\x18\rgps_receiversB\x0e\n" +
+	"\f_has_compass\"A\n" +
 	"\x15GetGpsReceiverRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9b\x01\n" +
@@ -444,6 +445,7 @@ func file_quadsmith_gps_receiver_proto_init() {
 	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
+	file_quadsmith_gps_receiver_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
