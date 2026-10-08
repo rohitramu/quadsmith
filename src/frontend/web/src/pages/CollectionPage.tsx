@@ -70,7 +70,7 @@ const MOTOR_COLUMN_CONFIGS: Record<string, ColumnConfig> = {
   kv: {
     id: "kv",
     title: "KV",
-    renderCell: (m) => (m.kv ? `${m.kv} KV` : "-"),
+    renderCell: (m) => (m.kv ? `${m.kv}` : "-"),
   },
   stator_diameter_mm: {
     id: "stator_diameter_mm",
@@ -79,8 +79,8 @@ const MOTOR_COLUMN_CONFIGS: Record<string, ColumnConfig> = {
   },
   weight_g: {
     id: "weight_g",
-    title: "Weight",
-    renderCell: (m) => (m.weightG ? `${m.weightG}g` : "-"),
+    title: "Weight (g)",
+    renderCell: (m) => (m.weightG != null && m.weightG > 0 ? `${m.weightG}` : "-"),
   },
   description: {
     id: "description",

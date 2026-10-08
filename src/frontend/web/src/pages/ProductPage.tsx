@@ -62,12 +62,12 @@ export function ProductPage() {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-          <h3 className="text-sm font-semibold text-zinc-500 uppercase">KV Rating</h3>
-          <p className="text-2xl mt-1">{m.kv || "N/A"} KV</p>
+          <h3 className="text-sm font-semibold text-zinc-500 uppercase">KV</h3>
+          <p className="text-2xl mt-1">{m.kv || "N/A"}</p>
         </div>
         <div className="p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-          <h3 className="text-sm font-semibold text-zinc-500 uppercase">Weight</h3>
-          <p className="text-2xl mt-1">{m.weightG ? `${m.weightG}g` : "N/A"}</p>
+          <h3 className="text-sm font-semibold text-zinc-500 uppercase">Weight (g)</h3>
+          <p className="text-2xl mt-1">{m.weightG ? `${m.weightG}` : "N/A"}</p>
         </div>
         <div className="p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
           <h3 className="text-sm font-semibold text-zinc-500 uppercase">Stator Size</h3>
