@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/gps_receiver.proto
+// source: gps_receiver.proto
 
 package quadsmith
 
@@ -52,7 +52,7 @@ type GpsReceiver struct {
 
 func (x *GpsReceiver) Reset() {
 	*x = GpsReceiver{}
-	mi := &file_quadsmith_gps_receiver_proto_msgTypes[0]
+	mi := &file_gps_receiver_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -64,7 +64,7 @@ func (x *GpsReceiver) String() string {
 func (*GpsReceiver) ProtoMessage() {}
 
 func (x *GpsReceiver) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_gps_receiver_proto_msgTypes[0]
+	mi := &file_gps_receiver_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -77,7 +77,7 @@ func (x *GpsReceiver) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GpsReceiver.ProtoReflect.Descriptor instead.
 func (*GpsReceiver) Descriptor() ([]byte, []int) {
-	return file_quadsmith_gps_receiver_proto_rawDescGZIP(), []int{0}
+	return file_gps_receiver_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GpsReceiver) GetUuid() string {
@@ -191,7 +191,7 @@ type GetGpsReceiverRequest struct {
 
 func (x *GetGpsReceiverRequest) Reset() {
 	*x = GetGpsReceiverRequest{}
-	mi := &file_quadsmith_gps_receiver_proto_msgTypes[1]
+	mi := &file_gps_receiver_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -203,7 +203,7 @@ func (x *GetGpsReceiverRequest) String() string {
 func (*GetGpsReceiverRequest) ProtoMessage() {}
 
 func (x *GetGpsReceiverRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_gps_receiver_proto_msgTypes[1]
+	mi := &file_gps_receiver_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -216,7 +216,7 @@ func (x *GetGpsReceiverRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetGpsReceiverRequest.ProtoReflect.Descriptor instead.
 func (*GetGpsReceiverRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_gps_receiver_proto_rawDescGZIP(), []int{1}
+	return file_gps_receiver_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetGpsReceiverRequest) GetId() string {
@@ -246,7 +246,7 @@ type ListGpsReceiversRequest struct {
 
 func (x *ListGpsReceiversRequest) Reset() {
 	*x = ListGpsReceiversRequest{}
-	mi := &file_quadsmith_gps_receiver_proto_msgTypes[2]
+	mi := &file_gps_receiver_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -258,7 +258,7 @@ func (x *ListGpsReceiversRequest) String() string {
 func (*ListGpsReceiversRequest) ProtoMessage() {}
 
 func (x *ListGpsReceiversRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_gps_receiver_proto_msgTypes[2]
+	mi := &file_gps_receiver_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -271,7 +271,7 @@ func (x *ListGpsReceiversRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListGpsReceiversRequest.ProtoReflect.Descriptor instead.
 func (*ListGpsReceiversRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_gps_receiver_proto_rawDescGZIP(), []int{2}
+	return file_gps_receiver_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListGpsReceiversRequest) GetFilter() string {
@@ -319,7 +319,7 @@ type ListGpsReceiversResponse struct {
 
 func (x *ListGpsReceiversResponse) Reset() {
 	*x = ListGpsReceiversResponse{}
-	mi := &file_quadsmith_gps_receiver_proto_msgTypes[3]
+	mi := &file_gps_receiver_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -331,7 +331,7 @@ func (x *ListGpsReceiversResponse) String() string {
 func (*ListGpsReceiversResponse) ProtoMessage() {}
 
 func (x *ListGpsReceiversResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_gps_receiver_proto_msgTypes[3]
+	mi := &file_gps_receiver_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -344,7 +344,7 @@ func (x *ListGpsReceiversResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListGpsReceiversResponse.ProtoReflect.Descriptor instead.
 func (*ListGpsReceiversResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_gps_receiver_proto_rawDescGZIP(), []int{3}
+	return file_gps_receiver_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListGpsReceiversResponse) GetGpsReceivers() []*GpsReceiver {
@@ -361,11 +361,12 @@ func (x *ListGpsReceiversResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_gps_receiver_proto protoreflect.FileDescriptor
+var File_gps_receiver_proto protoreflect.FileDescriptor
 
-const file_quadsmith_gps_receiver_proto_rawDesc = "" +
+const file_gps_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x9a\x05\n" +
+	"\x12gps_receiver.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\x9a\x05\n" +
 	"\vGpsReceiver\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -409,26 +410,26 @@ const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	"\x10ListGpsReceivers\x12\".quadsmith.ListGpsReceiversRequest\x1a#.quadsmith.ListGpsReceiversResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_gps_receiver_proto_rawDescOnce sync.Once
-	file_quadsmith_gps_receiver_proto_rawDescData []byte
+	file_gps_receiver_proto_rawDescOnce sync.Once
+	file_gps_receiver_proto_rawDescData []byte
 )
 
-func file_quadsmith_gps_receiver_proto_rawDescGZIP() []byte {
-	file_quadsmith_gps_receiver_proto_rawDescOnce.Do(func() {
-		file_quadsmith_gps_receiver_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_gps_receiver_proto_rawDesc), len(file_quadsmith_gps_receiver_proto_rawDesc)))
+func file_gps_receiver_proto_rawDescGZIP() []byte {
+	file_gps_receiver_proto_rawDescOnce.Do(func() {
+		file_gps_receiver_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_gps_receiver_proto_rawDesc), len(file_gps_receiver_proto_rawDesc)))
 	})
-	return file_quadsmith_gps_receiver_proto_rawDescData
+	return file_gps_receiver_proto_rawDescData
 }
 
-var file_quadsmith_gps_receiver_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_gps_receiver_proto_goTypes = []any{
+var file_gps_receiver_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_gps_receiver_proto_goTypes = []any{
 	(*GpsReceiver)(nil),              // 0: quadsmith.GpsReceiver
 	(*GetGpsReceiverRequest)(nil),    // 1: quadsmith.GetGpsReceiverRequest
 	(*ListGpsReceiversRequest)(nil),  // 2: quadsmith.ListGpsReceiversRequest
 	(*ListGpsReceiversResponse)(nil), // 3: quadsmith.ListGpsReceiversResponse
 	(*ReferenceLink)(nil),            // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_gps_receiver_proto_depIdxs = []int32{
+var file_gps_receiver_proto_depIdxs = []int32{
 	4, // 0: quadsmith.GpsReceiver.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListGpsReceiversResponse.gps_receivers:type_name -> quadsmith.GpsReceiver
 	1, // 2: quadsmith.GpsReceiverService.GetGpsReceiver:input_type -> quadsmith.GetGpsReceiverRequest
@@ -442,30 +443,30 @@ var file_quadsmith_gps_receiver_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_gps_receiver_proto_init() }
-func file_quadsmith_gps_receiver_proto_init() {
-	if File_quadsmith_gps_receiver_proto != nil {
+func init() { file_gps_receiver_proto_init() }
+func file_gps_receiver_proto_init() {
+	if File_gps_receiver_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
-	file_quadsmith_gps_receiver_proto_msgTypes[0].OneofWrappers = []any{}
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
+	file_gps_receiver_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_gps_receiver_proto_rawDesc), len(file_quadsmith_gps_receiver_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_gps_receiver_proto_rawDesc), len(file_gps_receiver_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_gps_receiver_proto_goTypes,
-		DependencyIndexes: file_quadsmith_gps_receiver_proto_depIdxs,
-		MessageInfos:      file_quadsmith_gps_receiver_proto_msgTypes,
+		GoTypes:           file_gps_receiver_proto_goTypes,
+		DependencyIndexes: file_gps_receiver_proto_depIdxs,
+		MessageInfos:      file_gps_receiver_proto_msgTypes,
 	}.Build()
-	File_quadsmith_gps_receiver_proto = out.File
-	file_quadsmith_gps_receiver_proto_goTypes = nil
-	file_quadsmith_gps_receiver_proto_depIdxs = nil
+	File_gps_receiver_proto = out.File
+	file_gps_receiver_proto_goTypes = nil
+	file_gps_receiver_proto_depIdxs = nil
 }

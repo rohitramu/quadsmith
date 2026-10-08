@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/antenna.proto
+// source: antenna.proto
 
 package quadsmith
 
@@ -50,7 +50,7 @@ type Antenna struct {
 
 func (x *Antenna) Reset() {
 	*x = Antenna{}
-	mi := &file_quadsmith_antenna_proto_msgTypes[0]
+	mi := &file_antenna_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -62,7 +62,7 @@ func (x *Antenna) String() string {
 func (*Antenna) ProtoMessage() {}
 
 func (x *Antenna) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_antenna_proto_msgTypes[0]
+	mi := &file_antenna_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -75,7 +75,7 @@ func (x *Antenna) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Antenna.ProtoReflect.Descriptor instead.
 func (*Antenna) Descriptor() ([]byte, []int) {
-	return file_quadsmith_antenna_proto_rawDescGZIP(), []int{0}
+	return file_antenna_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Antenna) GetUuid() string {
@@ -182,7 +182,7 @@ type GetAntennaRequest struct {
 
 func (x *GetAntennaRequest) Reset() {
 	*x = GetAntennaRequest{}
-	mi := &file_quadsmith_antenna_proto_msgTypes[1]
+	mi := &file_antenna_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -194,7 +194,7 @@ func (x *GetAntennaRequest) String() string {
 func (*GetAntennaRequest) ProtoMessage() {}
 
 func (x *GetAntennaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_antenna_proto_msgTypes[1]
+	mi := &file_antenna_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -207,7 +207,7 @@ func (x *GetAntennaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAntennaRequest.ProtoReflect.Descriptor instead.
 func (*GetAntennaRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_antenna_proto_rawDescGZIP(), []int{1}
+	return file_antenna_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetAntennaRequest) GetId() string {
@@ -237,7 +237,7 @@ type ListAntennasRequest struct {
 
 func (x *ListAntennasRequest) Reset() {
 	*x = ListAntennasRequest{}
-	mi := &file_quadsmith_antenna_proto_msgTypes[2]
+	mi := &file_antenna_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -249,7 +249,7 @@ func (x *ListAntennasRequest) String() string {
 func (*ListAntennasRequest) ProtoMessage() {}
 
 func (x *ListAntennasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_antenna_proto_msgTypes[2]
+	mi := &file_antenna_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -262,7 +262,7 @@ func (x *ListAntennasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAntennasRequest.ProtoReflect.Descriptor instead.
 func (*ListAntennasRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_antenna_proto_rawDescGZIP(), []int{2}
+	return file_antenna_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListAntennasRequest) GetFilter() string {
@@ -310,7 +310,7 @@ type ListAntennasResponse struct {
 
 func (x *ListAntennasResponse) Reset() {
 	*x = ListAntennasResponse{}
-	mi := &file_quadsmith_antenna_proto_msgTypes[3]
+	mi := &file_antenna_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -322,7 +322,7 @@ func (x *ListAntennasResponse) String() string {
 func (*ListAntennasResponse) ProtoMessage() {}
 
 func (x *ListAntennasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_antenna_proto_msgTypes[3]
+	mi := &file_antenna_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -335,7 +335,7 @@ func (x *ListAntennasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAntennasResponse.ProtoReflect.Descriptor instead.
 func (*ListAntennasResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_antenna_proto_rawDescGZIP(), []int{3}
+	return file_antenna_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListAntennasResponse) GetAntennas() []*Antenna {
@@ -352,11 +352,12 @@ func (x *ListAntennasResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_antenna_proto protoreflect.FileDescriptor
+var File_antenna_proto protoreflect.FileDescriptor
 
-const file_quadsmith_antenna_proto_rawDesc = "" +
+const file_antenna_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xf6\x03\n" +
+	"\rantenna.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xf6\x03\n" +
 	"\aAntenna\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -394,26 +395,26 @@ const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\fListAntennas\x12\x1e.quadsmith.ListAntennasRequest\x1a\x1f.quadsmith.ListAntennasResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_antenna_proto_rawDescOnce sync.Once
-	file_quadsmith_antenna_proto_rawDescData []byte
+	file_antenna_proto_rawDescOnce sync.Once
+	file_antenna_proto_rawDescData []byte
 )
 
-func file_quadsmith_antenna_proto_rawDescGZIP() []byte {
-	file_quadsmith_antenna_proto_rawDescOnce.Do(func() {
-		file_quadsmith_antenna_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_antenna_proto_rawDesc), len(file_quadsmith_antenna_proto_rawDesc)))
+func file_antenna_proto_rawDescGZIP() []byte {
+	file_antenna_proto_rawDescOnce.Do(func() {
+		file_antenna_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_antenna_proto_rawDesc), len(file_antenna_proto_rawDesc)))
 	})
-	return file_quadsmith_antenna_proto_rawDescData
+	return file_antenna_proto_rawDescData
 }
 
-var file_quadsmith_antenna_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_antenna_proto_goTypes = []any{
+var file_antenna_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_antenna_proto_goTypes = []any{
 	(*Antenna)(nil),              // 0: quadsmith.Antenna
 	(*GetAntennaRequest)(nil),    // 1: quadsmith.GetAntennaRequest
 	(*ListAntennasRequest)(nil),  // 2: quadsmith.ListAntennasRequest
 	(*ListAntennasResponse)(nil), // 3: quadsmith.ListAntennasResponse
 	(*ReferenceLink)(nil),        // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_antenna_proto_depIdxs = []int32{
+var file_antenna_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Antenna.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListAntennasResponse.antennas:type_name -> quadsmith.Antenna
 	1, // 2: quadsmith.AntennaService.GetAntenna:input_type -> quadsmith.GetAntennaRequest
@@ -427,29 +428,29 @@ var file_quadsmith_antenna_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_antenna_proto_init() }
-func file_quadsmith_antenna_proto_init() {
-	if File_quadsmith_antenna_proto != nil {
+func init() { file_antenna_proto_init() }
+func file_antenna_proto_init() {
+	if File_antenna_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_antenna_proto_rawDesc), len(file_quadsmith_antenna_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_antenna_proto_rawDesc), len(file_antenna_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_antenna_proto_goTypes,
-		DependencyIndexes: file_quadsmith_antenna_proto_depIdxs,
-		MessageInfos:      file_quadsmith_antenna_proto_msgTypes,
+		GoTypes:           file_antenna_proto_goTypes,
+		DependencyIndexes: file_antenna_proto_depIdxs,
+		MessageInfos:      file_antenna_proto_msgTypes,
 	}.Build()
-	File_quadsmith_antenna_proto = out.File
-	file_quadsmith_antenna_proto_goTypes = nil
-	file_quadsmith_antenna_proto_depIdxs = nil
+	File_antenna_proto = out.File
+	file_antenna_proto_goTypes = nil
+	file_antenna_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/propeller.proto
+// source: propeller.proto
 
 package quadsmith
 
@@ -47,7 +47,7 @@ type Propeller struct {
 
 func (x *Propeller) Reset() {
 	*x = Propeller{}
-	mi := &file_quadsmith_propeller_proto_msgTypes[0]
+	mi := &file_propeller_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -59,7 +59,7 @@ func (x *Propeller) String() string {
 func (*Propeller) ProtoMessage() {}
 
 func (x *Propeller) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_propeller_proto_msgTypes[0]
+	mi := &file_propeller_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -72,7 +72,7 @@ func (x *Propeller) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Propeller.ProtoReflect.Descriptor instead.
 func (*Propeller) Descriptor() ([]byte, []int) {
-	return file_quadsmith_propeller_proto_rawDescGZIP(), []int{0}
+	return file_propeller_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Propeller) GetUuid() string {
@@ -165,7 +165,7 @@ type GetPropellerRequest struct {
 
 func (x *GetPropellerRequest) Reset() {
 	*x = GetPropellerRequest{}
-	mi := &file_quadsmith_propeller_proto_msgTypes[1]
+	mi := &file_propeller_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -177,7 +177,7 @@ func (x *GetPropellerRequest) String() string {
 func (*GetPropellerRequest) ProtoMessage() {}
 
 func (x *GetPropellerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_propeller_proto_msgTypes[1]
+	mi := &file_propeller_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -190,7 +190,7 @@ func (x *GetPropellerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPropellerRequest.ProtoReflect.Descriptor instead.
 func (*GetPropellerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_propeller_proto_rawDescGZIP(), []int{1}
+	return file_propeller_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetPropellerRequest) GetId() string {
@@ -220,7 +220,7 @@ type ListPropellersRequest struct {
 
 func (x *ListPropellersRequest) Reset() {
 	*x = ListPropellersRequest{}
-	mi := &file_quadsmith_propeller_proto_msgTypes[2]
+	mi := &file_propeller_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -232,7 +232,7 @@ func (x *ListPropellersRequest) String() string {
 func (*ListPropellersRequest) ProtoMessage() {}
 
 func (x *ListPropellersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_propeller_proto_msgTypes[2]
+	mi := &file_propeller_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -245,7 +245,7 @@ func (x *ListPropellersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPropellersRequest.ProtoReflect.Descriptor instead.
 func (*ListPropellersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_propeller_proto_rawDescGZIP(), []int{2}
+	return file_propeller_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListPropellersRequest) GetFilter() string {
@@ -293,7 +293,7 @@ type ListPropellersResponse struct {
 
 func (x *ListPropellersResponse) Reset() {
 	*x = ListPropellersResponse{}
-	mi := &file_quadsmith_propeller_proto_msgTypes[3]
+	mi := &file_propeller_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -305,7 +305,7 @@ func (x *ListPropellersResponse) String() string {
 func (*ListPropellersResponse) ProtoMessage() {}
 
 func (x *ListPropellersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_propeller_proto_msgTypes[3]
+	mi := &file_propeller_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -318,7 +318,7 @@ func (x *ListPropellersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPropellersResponse.ProtoReflect.Descriptor instead.
 func (*ListPropellersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_propeller_proto_rawDescGZIP(), []int{3}
+	return file_propeller_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListPropellersResponse) GetPropellers() []*Propeller {
@@ -335,11 +335,12 @@ func (x *ListPropellersResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_propeller_proto protoreflect.FileDescriptor
+var File_propeller_proto protoreflect.FileDescriptor
 
-const file_quadsmith_propeller_proto_rawDesc = "" +
+const file_propeller_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x9c\x03\n" +
+	"\x0fpropeller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\x9c\x03\n" +
 	"\tPropeller\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -378,26 +379,26 @@ const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\x0eListPropellers\x12 .quadsmith.ListPropellersRequest\x1a!.quadsmith.ListPropellersResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_propeller_proto_rawDescOnce sync.Once
-	file_quadsmith_propeller_proto_rawDescData []byte
+	file_propeller_proto_rawDescOnce sync.Once
+	file_propeller_proto_rawDescData []byte
 )
 
-func file_quadsmith_propeller_proto_rawDescGZIP() []byte {
-	file_quadsmith_propeller_proto_rawDescOnce.Do(func() {
-		file_quadsmith_propeller_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_propeller_proto_rawDesc), len(file_quadsmith_propeller_proto_rawDesc)))
+func file_propeller_proto_rawDescGZIP() []byte {
+	file_propeller_proto_rawDescOnce.Do(func() {
+		file_propeller_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_propeller_proto_rawDesc), len(file_propeller_proto_rawDesc)))
 	})
-	return file_quadsmith_propeller_proto_rawDescData
+	return file_propeller_proto_rawDescData
 }
 
-var file_quadsmith_propeller_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_propeller_proto_goTypes = []any{
+var file_propeller_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_propeller_proto_goTypes = []any{
 	(*Propeller)(nil),              // 0: quadsmith.Propeller
 	(*GetPropellerRequest)(nil),    // 1: quadsmith.GetPropellerRequest
 	(*ListPropellersRequest)(nil),  // 2: quadsmith.ListPropellersRequest
 	(*ListPropellersResponse)(nil), // 3: quadsmith.ListPropellersResponse
 	(*ReferenceLink)(nil),          // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_propeller_proto_depIdxs = []int32{
+var file_propeller_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Propeller.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListPropellersResponse.propellers:type_name -> quadsmith.Propeller
 	1, // 2: quadsmith.PropellerService.GetPropeller:input_type -> quadsmith.GetPropellerRequest
@@ -411,29 +412,29 @@ var file_quadsmith_propeller_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_propeller_proto_init() }
-func file_quadsmith_propeller_proto_init() {
-	if File_quadsmith_propeller_proto != nil {
+func init() { file_propeller_proto_init() }
+func file_propeller_proto_init() {
+	if File_propeller_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_propeller_proto_rawDesc), len(file_quadsmith_propeller_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_propeller_proto_rawDesc), len(file_propeller_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_propeller_proto_goTypes,
-		DependencyIndexes: file_quadsmith_propeller_proto_depIdxs,
-		MessageInfos:      file_quadsmith_propeller_proto_msgTypes,
+		GoTypes:           file_propeller_proto_goTypes,
+		DependencyIndexes: file_propeller_proto_depIdxs,
+		MessageInfos:      file_propeller_proto_msgTypes,
 	}.Build()
-	File_quadsmith_propeller_proto = out.File
-	file_quadsmith_propeller_proto_goTypes = nil
-	file_quadsmith_propeller_proto_depIdxs = nil
+	File_propeller_proto = out.File
+	file_propeller_proto_goTypes = nil
+	file_propeller_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/frame.proto
+// source: frame.proto
 
 package quadsmith
 
@@ -45,7 +45,7 @@ type Frame struct {
 
 func (x *Frame) Reset() {
 	*x = Frame{}
-	mi := &file_quadsmith_frame_proto_msgTypes[0]
+	mi := &file_frame_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -57,7 +57,7 @@ func (x *Frame) String() string {
 func (*Frame) ProtoMessage() {}
 
 func (x *Frame) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_frame_proto_msgTypes[0]
+	mi := &file_frame_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -70,7 +70,7 @@ func (x *Frame) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Frame.ProtoReflect.Descriptor instead.
 func (*Frame) Descriptor() ([]byte, []int) {
-	return file_quadsmith_frame_proto_rawDescGZIP(), []int{0}
+	return file_frame_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Frame) GetUuid() string {
@@ -156,7 +156,7 @@ type GetFrameRequest struct {
 
 func (x *GetFrameRequest) Reset() {
 	*x = GetFrameRequest{}
-	mi := &file_quadsmith_frame_proto_msgTypes[1]
+	mi := &file_frame_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -168,7 +168,7 @@ func (x *GetFrameRequest) String() string {
 func (*GetFrameRequest) ProtoMessage() {}
 
 func (x *GetFrameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_frame_proto_msgTypes[1]
+	mi := &file_frame_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -181,7 +181,7 @@ func (x *GetFrameRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFrameRequest.ProtoReflect.Descriptor instead.
 func (*GetFrameRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_frame_proto_rawDescGZIP(), []int{1}
+	return file_frame_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetFrameRequest) GetId() string {
@@ -211,7 +211,7 @@ type ListFramesRequest struct {
 
 func (x *ListFramesRequest) Reset() {
 	*x = ListFramesRequest{}
-	mi := &file_quadsmith_frame_proto_msgTypes[2]
+	mi := &file_frame_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -223,7 +223,7 @@ func (x *ListFramesRequest) String() string {
 func (*ListFramesRequest) ProtoMessage() {}
 
 func (x *ListFramesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_frame_proto_msgTypes[2]
+	mi := &file_frame_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -236,7 +236,7 @@ func (x *ListFramesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFramesRequest.ProtoReflect.Descriptor instead.
 func (*ListFramesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_frame_proto_rawDescGZIP(), []int{2}
+	return file_frame_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListFramesRequest) GetFilter() string {
@@ -284,7 +284,7 @@ type ListFramesResponse struct {
 
 func (x *ListFramesResponse) Reset() {
 	*x = ListFramesResponse{}
-	mi := &file_quadsmith_frame_proto_msgTypes[3]
+	mi := &file_frame_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -296,7 +296,7 @@ func (x *ListFramesResponse) String() string {
 func (*ListFramesResponse) ProtoMessage() {}
 
 func (x *ListFramesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_frame_proto_msgTypes[3]
+	mi := &file_frame_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -309,7 +309,7 @@ func (x *ListFramesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFramesResponse.ProtoReflect.Descriptor instead.
 func (*ListFramesResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_frame_proto_rawDescGZIP(), []int{3}
+	return file_frame_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListFramesResponse) GetFrames() []*Frame {
@@ -326,11 +326,12 @@ func (x *ListFramesResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_frame_proto protoreflect.FileDescriptor
+var File_frame_proto protoreflect.FileDescriptor
 
-const file_quadsmith_frame_proto_rawDesc = "" +
+const file_frame_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xb4\x03\n" +
+	"\vframe.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xb4\x03\n" +
 	"\x05Frame\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -368,26 +369,26 @@ const file_quadsmith_frame_proto_rawDesc = "" +
 	"ListFrames\x12\x1c.quadsmith.ListFramesRequest\x1a\x1d.quadsmith.ListFramesResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_frame_proto_rawDescOnce sync.Once
-	file_quadsmith_frame_proto_rawDescData []byte
+	file_frame_proto_rawDescOnce sync.Once
+	file_frame_proto_rawDescData []byte
 )
 
-func file_quadsmith_frame_proto_rawDescGZIP() []byte {
-	file_quadsmith_frame_proto_rawDescOnce.Do(func() {
-		file_quadsmith_frame_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_frame_proto_rawDesc), len(file_quadsmith_frame_proto_rawDesc)))
+func file_frame_proto_rawDescGZIP() []byte {
+	file_frame_proto_rawDescOnce.Do(func() {
+		file_frame_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_frame_proto_rawDesc), len(file_frame_proto_rawDesc)))
 	})
-	return file_quadsmith_frame_proto_rawDescData
+	return file_frame_proto_rawDescData
 }
 
-var file_quadsmith_frame_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_frame_proto_goTypes = []any{
+var file_frame_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_frame_proto_goTypes = []any{
 	(*Frame)(nil),              // 0: quadsmith.Frame
 	(*GetFrameRequest)(nil),    // 1: quadsmith.GetFrameRequest
 	(*ListFramesRequest)(nil),  // 2: quadsmith.ListFramesRequest
 	(*ListFramesResponse)(nil), // 3: quadsmith.ListFramesResponse
 	(*ReferenceLink)(nil),      // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_frame_proto_depIdxs = []int32{
+var file_frame_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Frame.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListFramesResponse.frames:type_name -> quadsmith.Frame
 	1, // 2: quadsmith.FrameService.GetFrame:input_type -> quadsmith.GetFrameRequest
@@ -401,29 +402,29 @@ var file_quadsmith_frame_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_frame_proto_init() }
-func file_quadsmith_frame_proto_init() {
-	if File_quadsmith_frame_proto != nil {
+func init() { file_frame_proto_init() }
+func file_frame_proto_init() {
+	if File_frame_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_frame_proto_rawDesc), len(file_quadsmith_frame_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_frame_proto_rawDesc), len(file_frame_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_frame_proto_goTypes,
-		DependencyIndexes: file_quadsmith_frame_proto_depIdxs,
-		MessageInfos:      file_quadsmith_frame_proto_msgTypes,
+		GoTypes:           file_frame_proto_goTypes,
+		DependencyIndexes: file_frame_proto_depIdxs,
+		MessageInfos:      file_frame_proto_msgTypes,
 	}.Build()
-	File_quadsmith_frame_proto = out.File
-	file_quadsmith_frame_proto_goTypes = nil
-	file_quadsmith_frame_proto_depIdxs = nil
+	File_frame_proto = out.File
+	file_frame_proto_goTypes = nil
+	file_frame_proto_depIdxs = nil
 }

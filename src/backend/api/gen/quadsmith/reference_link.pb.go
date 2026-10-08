@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/reference_link.proto
+// source: reference_link.proto
 
 package quadsmith
 
@@ -66,11 +66,11 @@ func (x ReferenceLinkType) String() string {
 }
 
 func (ReferenceLinkType) Descriptor() protoreflect.EnumDescriptor {
-	return file_quadsmith_reference_link_proto_enumTypes[0].Descriptor()
+	return file_reference_link_proto_enumTypes[0].Descriptor()
 }
 
 func (ReferenceLinkType) Type() protoreflect.EnumType {
-	return &file_quadsmith_reference_link_proto_enumTypes[0]
+	return &file_reference_link_proto_enumTypes[0]
 }
 
 func (x ReferenceLinkType) Number() protoreflect.EnumNumber {
@@ -79,7 +79,7 @@ func (x ReferenceLinkType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ReferenceLinkType.Descriptor instead.
 func (ReferenceLinkType) EnumDescriptor() ([]byte, []int) {
-	return file_quadsmith_reference_link_proto_rawDescGZIP(), []int{0}
+	return file_reference_link_proto_rawDescGZIP(), []int{0}
 }
 
 type ReferenceLink struct {
@@ -92,7 +92,7 @@ type ReferenceLink struct {
 
 func (x *ReferenceLink) Reset() {
 	*x = ReferenceLink{}
-	mi := &file_quadsmith_reference_link_proto_msgTypes[0]
+	mi := &file_reference_link_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -104,7 +104,7 @@ func (x *ReferenceLink) String() string {
 func (*ReferenceLink) ProtoMessage() {}
 
 func (x *ReferenceLink) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_reference_link_proto_msgTypes[0]
+	mi := &file_reference_link_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -117,7 +117,7 @@ func (x *ReferenceLink) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReferenceLink.ProtoReflect.Descriptor instead.
 func (*ReferenceLink) Descriptor() ([]byte, []int) {
-	return file_quadsmith_reference_link_proto_rawDescGZIP(), []int{0}
+	return file_reference_link_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ReferenceLink) GetType() ReferenceLinkType {
@@ -134,11 +134,11 @@ func (x *ReferenceLink) GetUrl() string {
 	return ""
 }
 
-var File_quadsmith_reference_link_proto protoreflect.FileDescriptor
+var File_reference_link_proto protoreflect.FileDescriptor
 
-const file_quadsmith_reference_link_proto_rawDesc = "" +
+const file_reference_link_proto_rawDesc = "" +
 	"\n" +
-	"\x1equadsmith/reference_link.proto\x12\tquadsmith\"S\n" +
+	"\x14reference_link.proto\x12\tquadsmith\"S\n" +
 	"\rReferenceLink\x120\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x1c.quadsmith.ReferenceLinkTypeR\x04type\x12\x10\n" +
 	"\x03url\x18\x02 \x01(\tR\x03url*\x8a\x02\n" +
@@ -152,24 +152,24 @@ const file_quadsmith_reference_link_proto_rawDesc = "" +
 	"\x19REFERENCE_LINK_TYPE_OTHER\x10\x06B\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_reference_link_proto_rawDescOnce sync.Once
-	file_quadsmith_reference_link_proto_rawDescData []byte
+	file_reference_link_proto_rawDescOnce sync.Once
+	file_reference_link_proto_rawDescData []byte
 )
 
-func file_quadsmith_reference_link_proto_rawDescGZIP() []byte {
-	file_quadsmith_reference_link_proto_rawDescOnce.Do(func() {
-		file_quadsmith_reference_link_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_reference_link_proto_rawDesc), len(file_quadsmith_reference_link_proto_rawDesc)))
+func file_reference_link_proto_rawDescGZIP() []byte {
+	file_reference_link_proto_rawDescOnce.Do(func() {
+		file_reference_link_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_reference_link_proto_rawDesc), len(file_reference_link_proto_rawDesc)))
 	})
-	return file_quadsmith_reference_link_proto_rawDescData
+	return file_reference_link_proto_rawDescData
 }
 
-var file_quadsmith_reference_link_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_quadsmith_reference_link_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_quadsmith_reference_link_proto_goTypes = []any{
+var file_reference_link_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_reference_link_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_reference_link_proto_goTypes = []any{
 	(ReferenceLinkType)(0), // 0: quadsmith.ReferenceLinkType
 	(*ReferenceLink)(nil),  // 1: quadsmith.ReferenceLink
 }
-var file_quadsmith_reference_link_proto_depIdxs = []int32{
+var file_reference_link_proto_depIdxs = []int32{
 	0, // 0: quadsmith.ReferenceLink.type:type_name -> quadsmith.ReferenceLinkType
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
@@ -178,27 +178,27 @@ var file_quadsmith_reference_link_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_reference_link_proto_init() }
-func file_quadsmith_reference_link_proto_init() {
-	if File_quadsmith_reference_link_proto != nil {
+func init() { file_reference_link_proto_init() }
+func file_reference_link_proto_init() {
+	if File_reference_link_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_reference_link_proto_rawDesc), len(file_quadsmith_reference_link_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_reference_link_proto_rawDesc), len(file_reference_link_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_quadsmith_reference_link_proto_goTypes,
-		DependencyIndexes: file_quadsmith_reference_link_proto_depIdxs,
-		EnumInfos:         file_quadsmith_reference_link_proto_enumTypes,
-		MessageInfos:      file_quadsmith_reference_link_proto_msgTypes,
+		GoTypes:           file_reference_link_proto_goTypes,
+		DependencyIndexes: file_reference_link_proto_depIdxs,
+		EnumInfos:         file_reference_link_proto_enumTypes,
+		MessageInfos:      file_reference_link_proto_msgTypes,
 	}.Build()
-	File_quadsmith_reference_link_proto = out.File
-	file_quadsmith_reference_link_proto_goTypes = nil
-	file_quadsmith_reference_link_proto_depIdxs = nil
+	File_reference_link_proto = out.File
+	file_reference_link_proto_goTypes = nil
+	file_reference_link_proto_depIdxs = nil
 }

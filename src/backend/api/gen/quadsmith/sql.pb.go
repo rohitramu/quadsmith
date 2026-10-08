@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/_sql.proto
+// source: _sql.proto
 
 package quadsmith
 
@@ -34,7 +34,7 @@ type TableOptions struct {
 
 func (x *TableOptions) Reset() {
 	*x = TableOptions{}
-	mi := &file_quadsmith__sql_proto_msgTypes[0]
+	mi := &file___sql_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -46,7 +46,7 @@ func (x *TableOptions) String() string {
 func (*TableOptions) ProtoMessage() {}
 
 func (x *TableOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith__sql_proto_msgTypes[0]
+	mi := &file___sql_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -59,7 +59,7 @@ func (x *TableOptions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TableOptions.ProtoReflect.Descriptor instead.
 func (*TableOptions) Descriptor() ([]byte, []int) {
-	return file_quadsmith__sql_proto_rawDescGZIP(), []int{0}
+	return file___sql_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *TableOptions) GetName() string {
@@ -92,7 +92,7 @@ type ColumnOptions struct {
 
 func (x *ColumnOptions) Reset() {
 	*x = ColumnOptions{}
-	mi := &file_quadsmith__sql_proto_msgTypes[1]
+	mi := &file___sql_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -104,7 +104,7 @@ func (x *ColumnOptions) String() string {
 func (*ColumnOptions) ProtoMessage() {}
 
 func (x *ColumnOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith__sql_proto_msgTypes[1]
+	mi := &file___sql_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -117,7 +117,7 @@ func (x *ColumnOptions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ColumnOptions.ProtoReflect.Descriptor instead.
 func (*ColumnOptions) Descriptor() ([]byte, []int) {
-	return file_quadsmith__sql_proto_rawDescGZIP(), []int{1}
+	return file___sql_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ColumnOptions) GetName() string {
@@ -162,14 +162,14 @@ func (x *ColumnOptions) GetColumnType() string {
 	return ""
 }
 
-var file_quadsmith__sql_proto_extTypes = []protoimpl.ExtensionInfo{
+var file___sql_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
 		ExtensionType: (*TableOptions)(nil),
 		Field:         51000,
 		Name:          "quadsmith.sql.table",
 		Tag:           "bytes,51000,opt,name=table",
-		Filename:      "quadsmith/_sql.proto",
+		Filename:      "_sql.proto",
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -177,7 +177,7 @@ var file_quadsmith__sql_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         51000,
 		Name:          "quadsmith.sql.column",
 		Tag:           "bytes,51000,opt,name=column",
-		Filename:      "quadsmith/_sql.proto",
+		Filename:      "_sql.proto",
 	},
 }
 
@@ -186,7 +186,7 @@ var (
 	// SQL table configuration for backend database mapping.
 	//
 	// optional quadsmith.sql.TableOptions table = 51000;
-	E_Table = &file_quadsmith__sql_proto_extTypes[0]
+	E_Table = &file___sql_proto_extTypes[0]
 )
 
 // Extension fields to descriptorpb.FieldOptions.
@@ -194,14 +194,15 @@ var (
 	// SQL column configuration for backend database mapping.
 	//
 	// optional quadsmith.sql.ColumnOptions column = 51000;
-	E_Column = &file_quadsmith__sql_proto_extTypes[1]
+	E_Column = &file___sql_proto_extTypes[1]
 )
 
-var File_quadsmith__sql_proto protoreflect.FileDescriptor
+var File___sql_proto protoreflect.FileDescriptor
 
-const file_quadsmith__sql_proto_rawDesc = "" +
+const file___sql_proto_rawDesc = "" +
 	"\n" +
-	"\x14quadsmith/_sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto\"\"\n" +
+	"\n" +
+	"_sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto\"\"\n" +
 	"\fTableOptions\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"\xca\x01\n" +
 	"\rColumnOptions\x12\x12\n" +
@@ -218,25 +219,25 @@ const file_quadsmith__sql_proto_rawDesc = "" +
 	"\x06column\x12\x1d.google.protobuf.FieldOptions\x18\xb8\x8e\x03 \x01(\v2\x1c.quadsmith.sql.ColumnOptionsR\x06columnB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith__sql_proto_rawDescOnce sync.Once
-	file_quadsmith__sql_proto_rawDescData []byte
+	file___sql_proto_rawDescOnce sync.Once
+	file___sql_proto_rawDescData []byte
 )
 
-func file_quadsmith__sql_proto_rawDescGZIP() []byte {
-	file_quadsmith__sql_proto_rawDescOnce.Do(func() {
-		file_quadsmith__sql_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith__sql_proto_rawDesc), len(file_quadsmith__sql_proto_rawDesc)))
+func file___sql_proto_rawDescGZIP() []byte {
+	file___sql_proto_rawDescOnce.Do(func() {
+		file___sql_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file___sql_proto_rawDesc), len(file___sql_proto_rawDesc)))
 	})
-	return file_quadsmith__sql_proto_rawDescData
+	return file___sql_proto_rawDescData
 }
 
-var file_quadsmith__sql_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_quadsmith__sql_proto_goTypes = []any{
+var file___sql_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file___sql_proto_goTypes = []any{
 	(*TableOptions)(nil),                // 0: quadsmith.sql.TableOptions
 	(*ColumnOptions)(nil),               // 1: quadsmith.sql.ColumnOptions
 	(*descriptorpb.MessageOptions)(nil), // 2: google.protobuf.MessageOptions
 	(*descriptorpb.FieldOptions)(nil),   // 3: google.protobuf.FieldOptions
 }
-var file_quadsmith__sql_proto_depIdxs = []int32{
+var file___sql_proto_depIdxs = []int32{
 	2, // 0: quadsmith.sql.table:extendee -> google.protobuf.MessageOptions
 	3, // 1: quadsmith.sql.column:extendee -> google.protobuf.FieldOptions
 	0, // 2: quadsmith.sql.table:type_name -> quadsmith.sql.TableOptions
@@ -248,27 +249,27 @@ var file_quadsmith__sql_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith__sql_proto_init() }
-func file_quadsmith__sql_proto_init() {
-	if File_quadsmith__sql_proto != nil {
+func init() { file___sql_proto_init() }
+func file___sql_proto_init() {
+	if File___sql_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith__sql_proto_rawDesc), len(file_quadsmith__sql_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file___sql_proto_rawDesc), len(file___sql_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 2,
 			NumServices:   0,
 		},
-		GoTypes:           file_quadsmith__sql_proto_goTypes,
-		DependencyIndexes: file_quadsmith__sql_proto_depIdxs,
-		MessageInfos:      file_quadsmith__sql_proto_msgTypes,
-		ExtensionInfos:    file_quadsmith__sql_proto_extTypes,
+		GoTypes:           file___sql_proto_goTypes,
+		DependencyIndexes: file___sql_proto_depIdxs,
+		MessageInfos:      file___sql_proto_msgTypes,
+		ExtensionInfos:    file___sql_proto_extTypes,
 	}.Build()
-	File_quadsmith__sql_proto = out.File
-	file_quadsmith__sql_proto_goTypes = nil
-	file_quadsmith__sql_proto_depIdxs = nil
+	File___sql_proto = out.File
+	file___sql_proto_goTypes = nil
+	file___sql_proto_depIdxs = nil
 }

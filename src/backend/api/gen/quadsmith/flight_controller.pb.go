@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/flight_controller.proto
+// source: flight_controller.proto
 
 package quadsmith
 
@@ -50,7 +50,7 @@ type FlightController struct {
 
 func (x *FlightController) Reset() {
 	*x = FlightController{}
-	mi := &file_quadsmith_flight_controller_proto_msgTypes[0]
+	mi := &file_flight_controller_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -62,7 +62,7 @@ func (x *FlightController) String() string {
 func (*FlightController) ProtoMessage() {}
 
 func (x *FlightController) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_flight_controller_proto_msgTypes[0]
+	mi := &file_flight_controller_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -75,7 +75,7 @@ func (x *FlightController) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FlightController.ProtoReflect.Descriptor instead.
 func (*FlightController) Descriptor() ([]byte, []int) {
-	return file_quadsmith_flight_controller_proto_rawDescGZIP(), []int{0}
+	return file_flight_controller_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *FlightController) GetUuid() string {
@@ -182,7 +182,7 @@ type GetFlightControllerRequest struct {
 
 func (x *GetFlightControllerRequest) Reset() {
 	*x = GetFlightControllerRequest{}
-	mi := &file_quadsmith_flight_controller_proto_msgTypes[1]
+	mi := &file_flight_controller_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -194,7 +194,7 @@ func (x *GetFlightControllerRequest) String() string {
 func (*GetFlightControllerRequest) ProtoMessage() {}
 
 func (x *GetFlightControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_flight_controller_proto_msgTypes[1]
+	mi := &file_flight_controller_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -207,7 +207,7 @@ func (x *GetFlightControllerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFlightControllerRequest.ProtoReflect.Descriptor instead.
 func (*GetFlightControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_flight_controller_proto_rawDescGZIP(), []int{1}
+	return file_flight_controller_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetFlightControllerRequest) GetId() string {
@@ -237,7 +237,7 @@ type ListFlightControllersRequest struct {
 
 func (x *ListFlightControllersRequest) Reset() {
 	*x = ListFlightControllersRequest{}
-	mi := &file_quadsmith_flight_controller_proto_msgTypes[2]
+	mi := &file_flight_controller_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -249,7 +249,7 @@ func (x *ListFlightControllersRequest) String() string {
 func (*ListFlightControllersRequest) ProtoMessage() {}
 
 func (x *ListFlightControllersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_flight_controller_proto_msgTypes[2]
+	mi := &file_flight_controller_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -262,7 +262,7 @@ func (x *ListFlightControllersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFlightControllersRequest.ProtoReflect.Descriptor instead.
 func (*ListFlightControllersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_flight_controller_proto_rawDescGZIP(), []int{2}
+	return file_flight_controller_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListFlightControllersRequest) GetFilter() string {
@@ -310,7 +310,7 @@ type ListFlightControllersResponse struct {
 
 func (x *ListFlightControllersResponse) Reset() {
 	*x = ListFlightControllersResponse{}
-	mi := &file_quadsmith_flight_controller_proto_msgTypes[3]
+	mi := &file_flight_controller_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -322,7 +322,7 @@ func (x *ListFlightControllersResponse) String() string {
 func (*ListFlightControllersResponse) ProtoMessage() {}
 
 func (x *ListFlightControllersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_flight_controller_proto_msgTypes[3]
+	mi := &file_flight_controller_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -335,7 +335,7 @@ func (x *ListFlightControllersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFlightControllersResponse.ProtoReflect.Descriptor instead.
 func (*ListFlightControllersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_flight_controller_proto_rawDescGZIP(), []int{3}
+	return file_flight_controller_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListFlightControllersResponse) GetFlightControllers() []*FlightController {
@@ -352,11 +352,12 @@ func (x *ListFlightControllersResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
+var File_flight_controller_proto protoreflect.FileDescriptor
 
-const file_quadsmith_flight_controller_proto_rawDesc = "" +
+const file_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xdc\x06\n" +
+	"\x17flight_controller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xdc\x06\n" +
 	"\x10FlightController\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -395,26 +396,26 @@ const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\x15ListFlightControllers\x12'.quadsmith.ListFlightControllersRequest\x1a(.quadsmith.ListFlightControllersResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_flight_controller_proto_rawDescOnce sync.Once
-	file_quadsmith_flight_controller_proto_rawDescData []byte
+	file_flight_controller_proto_rawDescOnce sync.Once
+	file_flight_controller_proto_rawDescData []byte
 )
 
-func file_quadsmith_flight_controller_proto_rawDescGZIP() []byte {
-	file_quadsmith_flight_controller_proto_rawDescOnce.Do(func() {
-		file_quadsmith_flight_controller_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_flight_controller_proto_rawDesc), len(file_quadsmith_flight_controller_proto_rawDesc)))
+func file_flight_controller_proto_rawDescGZIP() []byte {
+	file_flight_controller_proto_rawDescOnce.Do(func() {
+		file_flight_controller_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_flight_controller_proto_rawDesc), len(file_flight_controller_proto_rawDesc)))
 	})
-	return file_quadsmith_flight_controller_proto_rawDescData
+	return file_flight_controller_proto_rawDescData
 }
 
-var file_quadsmith_flight_controller_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_flight_controller_proto_goTypes = []any{
+var file_flight_controller_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_flight_controller_proto_goTypes = []any{
 	(*FlightController)(nil),              // 0: quadsmith.FlightController
 	(*GetFlightControllerRequest)(nil),    // 1: quadsmith.GetFlightControllerRequest
 	(*ListFlightControllersRequest)(nil),  // 2: quadsmith.ListFlightControllersRequest
 	(*ListFlightControllersResponse)(nil), // 3: quadsmith.ListFlightControllersResponse
 	(*ReferenceLink)(nil),                 // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_flight_controller_proto_depIdxs = []int32{
+var file_flight_controller_proto_depIdxs = []int32{
 	4, // 0: quadsmith.FlightController.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListFlightControllersResponse.flight_controllers:type_name -> quadsmith.FlightController
 	1, // 2: quadsmith.FlightControllerService.GetFlightController:input_type -> quadsmith.GetFlightControllerRequest
@@ -428,30 +429,30 @@ var file_quadsmith_flight_controller_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_flight_controller_proto_init() }
-func file_quadsmith_flight_controller_proto_init() {
-	if File_quadsmith_flight_controller_proto != nil {
+func init() { file_flight_controller_proto_init() }
+func file_flight_controller_proto_init() {
+	if File_flight_controller_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
-	file_quadsmith_flight_controller_proto_msgTypes[0].OneofWrappers = []any{}
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
+	file_flight_controller_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_flight_controller_proto_rawDesc), len(file_quadsmith_flight_controller_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_flight_controller_proto_rawDesc), len(file_flight_controller_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_flight_controller_proto_goTypes,
-		DependencyIndexes: file_quadsmith_flight_controller_proto_depIdxs,
-		MessageInfos:      file_quadsmith_flight_controller_proto_msgTypes,
+		GoTypes:           file_flight_controller_proto_goTypes,
+		DependencyIndexes: file_flight_controller_proto_depIdxs,
+		MessageInfos:      file_flight_controller_proto_msgTypes,
 	}.Build()
-	File_quadsmith_flight_controller_proto = out.File
-	file_quadsmith_flight_controller_proto_goTypes = nil
-	file_quadsmith_flight_controller_proto_depIdxs = nil
+	File_flight_controller_proto = out.File
+	file_flight_controller_proto_goTypes = nil
+	file_flight_controller_proto_depIdxs = nil
 }

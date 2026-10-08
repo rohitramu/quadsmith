@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/camera.proto
+// source: camera.proto
 
 package quadsmith
 
@@ -48,7 +48,7 @@ type Camera struct {
 
 func (x *Camera) Reset() {
 	*x = Camera{}
-	mi := &file_quadsmith_camera_proto_msgTypes[0]
+	mi := &file_camera_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -60,7 +60,7 @@ func (x *Camera) String() string {
 func (*Camera) ProtoMessage() {}
 
 func (x *Camera) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_camera_proto_msgTypes[0]
+	mi := &file_camera_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -73,7 +73,7 @@ func (x *Camera) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Camera.ProtoReflect.Descriptor instead.
 func (*Camera) Descriptor() ([]byte, []int) {
-	return file_quadsmith_camera_proto_rawDescGZIP(), []int{0}
+	return file_camera_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Camera) GetUuid() string {
@@ -173,7 +173,7 @@ type GetCameraRequest struct {
 
 func (x *GetCameraRequest) Reset() {
 	*x = GetCameraRequest{}
-	mi := &file_quadsmith_camera_proto_msgTypes[1]
+	mi := &file_camera_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -185,7 +185,7 @@ func (x *GetCameraRequest) String() string {
 func (*GetCameraRequest) ProtoMessage() {}
 
 func (x *GetCameraRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_camera_proto_msgTypes[1]
+	mi := &file_camera_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -198,7 +198,7 @@ func (x *GetCameraRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCameraRequest.ProtoReflect.Descriptor instead.
 func (*GetCameraRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_camera_proto_rawDescGZIP(), []int{1}
+	return file_camera_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetCameraRequest) GetId() string {
@@ -228,7 +228,7 @@ type ListCamerasRequest struct {
 
 func (x *ListCamerasRequest) Reset() {
 	*x = ListCamerasRequest{}
-	mi := &file_quadsmith_camera_proto_msgTypes[2]
+	mi := &file_camera_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -240,7 +240,7 @@ func (x *ListCamerasRequest) String() string {
 func (*ListCamerasRequest) ProtoMessage() {}
 
 func (x *ListCamerasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_camera_proto_msgTypes[2]
+	mi := &file_camera_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -253,7 +253,7 @@ func (x *ListCamerasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCamerasRequest.ProtoReflect.Descriptor instead.
 func (*ListCamerasRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_camera_proto_rawDescGZIP(), []int{2}
+	return file_camera_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListCamerasRequest) GetFilter() string {
@@ -301,7 +301,7 @@ type ListCamerasResponse struct {
 
 func (x *ListCamerasResponse) Reset() {
 	*x = ListCamerasResponse{}
-	mi := &file_quadsmith_camera_proto_msgTypes[3]
+	mi := &file_camera_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -313,7 +313,7 @@ func (x *ListCamerasResponse) String() string {
 func (*ListCamerasResponse) ProtoMessage() {}
 
 func (x *ListCamerasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_camera_proto_msgTypes[3]
+	mi := &file_camera_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -326,7 +326,7 @@ func (x *ListCamerasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCamerasResponse.ProtoReflect.Descriptor instead.
 func (*ListCamerasResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_camera_proto_rawDescGZIP(), []int{3}
+	return file_camera_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListCamerasResponse) GetCameras() []*Camera {
@@ -343,11 +343,12 @@ func (x *ListCamerasResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_camera_proto protoreflect.FileDescriptor
+var File_camera_proto protoreflect.FileDescriptor
 
-const file_quadsmith_camera_proto_rawDesc = "" +
+const file_camera_proto_rawDesc = "" +
 	"\n" +
-	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc4\x03\n" +
+	"\fcamera.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xc4\x03\n" +
 	"\x06Camera\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -383,26 +384,26 @@ const file_quadsmith_camera_proto_rawDesc = "" +
 	"\vListCameras\x12\x1d.quadsmith.ListCamerasRequest\x1a\x1e.quadsmith.ListCamerasResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_camera_proto_rawDescOnce sync.Once
-	file_quadsmith_camera_proto_rawDescData []byte
+	file_camera_proto_rawDescOnce sync.Once
+	file_camera_proto_rawDescData []byte
 )
 
-func file_quadsmith_camera_proto_rawDescGZIP() []byte {
-	file_quadsmith_camera_proto_rawDescOnce.Do(func() {
-		file_quadsmith_camera_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_camera_proto_rawDesc), len(file_quadsmith_camera_proto_rawDesc)))
+func file_camera_proto_rawDescGZIP() []byte {
+	file_camera_proto_rawDescOnce.Do(func() {
+		file_camera_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_camera_proto_rawDesc), len(file_camera_proto_rawDesc)))
 	})
-	return file_quadsmith_camera_proto_rawDescData
+	return file_camera_proto_rawDescData
 }
 
-var file_quadsmith_camera_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_camera_proto_goTypes = []any{
+var file_camera_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_camera_proto_goTypes = []any{
 	(*Camera)(nil),              // 0: quadsmith.Camera
 	(*GetCameraRequest)(nil),    // 1: quadsmith.GetCameraRequest
 	(*ListCamerasRequest)(nil),  // 2: quadsmith.ListCamerasRequest
 	(*ListCamerasResponse)(nil), // 3: quadsmith.ListCamerasResponse
 	(*ReferenceLink)(nil),       // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_camera_proto_depIdxs = []int32{
+var file_camera_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Camera.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListCamerasResponse.cameras:type_name -> quadsmith.Camera
 	1, // 2: quadsmith.CameraService.GetCamera:input_type -> quadsmith.GetCameraRequest
@@ -416,29 +417,29 @@ var file_quadsmith_camera_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_camera_proto_init() }
-func file_quadsmith_camera_proto_init() {
-	if File_quadsmith_camera_proto != nil {
+func init() { file_camera_proto_init() }
+func file_camera_proto_init() {
+	if File_camera_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_camera_proto_rawDesc), len(file_quadsmith_camera_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_camera_proto_rawDesc), len(file_camera_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_camera_proto_goTypes,
-		DependencyIndexes: file_quadsmith_camera_proto_depIdxs,
-		MessageInfos:      file_quadsmith_camera_proto_msgTypes,
+		GoTypes:           file_camera_proto_goTypes,
+		DependencyIndexes: file_camera_proto_depIdxs,
+		MessageInfos:      file_camera_proto_msgTypes,
 	}.Build()
-	File_quadsmith_camera_proto = out.File
-	file_quadsmith_camera_proto_goTypes = nil
-	file_quadsmith_camera_proto_depIdxs = nil
+	File_camera_proto = out.File
+	file_camera_proto_goTypes = nil
+	file_camera_proto_depIdxs = nil
 }

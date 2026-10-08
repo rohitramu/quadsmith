@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/compatibility.proto
+// source: compatibility.proto
 
 package quadsmith
 
@@ -30,7 +30,7 @@ type CheckCompatibilityRequest struct {
 
 func (x *CheckCompatibilityRequest) Reset() {
 	*x = CheckCompatibilityRequest{}
-	mi := &file_quadsmith_compatibility_proto_msgTypes[0]
+	mi := &file_compatibility_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +42,7 @@ func (x *CheckCompatibilityRequest) String() string {
 func (*CheckCompatibilityRequest) ProtoMessage() {}
 
 func (x *CheckCompatibilityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_compatibility_proto_msgTypes[0]
+	mi := &file_compatibility_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *CheckCompatibilityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckCompatibilityRequest.ProtoReflect.Descriptor instead.
 func (*CheckCompatibilityRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_compatibility_proto_rawDescGZIP(), []int{0}
+	return file_compatibility_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *CheckCompatibilityRequest) GetBuild() *Build {
@@ -74,7 +74,7 @@ type CheckCompatibilityResponse struct {
 
 func (x *CheckCompatibilityResponse) Reset() {
 	*x = CheckCompatibilityResponse{}
-	mi := &file_quadsmith_compatibility_proto_msgTypes[1]
+	mi := &file_compatibility_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -86,7 +86,7 @@ func (x *CheckCompatibilityResponse) String() string {
 func (*CheckCompatibilityResponse) ProtoMessage() {}
 
 func (x *CheckCompatibilityResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_compatibility_proto_msgTypes[1]
+	mi := &file_compatibility_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -99,7 +99,7 @@ func (x *CheckCompatibilityResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckCompatibilityResponse.ProtoReflect.Descriptor instead.
 func (*CheckCompatibilityResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_compatibility_proto_rawDescGZIP(), []int{1}
+	return file_compatibility_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *CheckCompatibilityResponse) GetMessages() []*CompatibilityMessage {
@@ -123,7 +123,7 @@ type CompatibilityMessage struct {
 
 func (x *CompatibilityMessage) Reset() {
 	*x = CompatibilityMessage{}
-	mi := &file_quadsmith_compatibility_proto_msgTypes[2]
+	mi := &file_compatibility_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -135,7 +135,7 @@ func (x *CompatibilityMessage) String() string {
 func (*CompatibilityMessage) ProtoMessage() {}
 
 func (x *CompatibilityMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_compatibility_proto_msgTypes[2]
+	mi := &file_compatibility_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -148,7 +148,7 @@ func (x *CompatibilityMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompatibilityMessage.ProtoReflect.Descriptor instead.
 func (*CompatibilityMessage) Descriptor() ([]byte, []int) {
-	return file_quadsmith_compatibility_proto_rawDescGZIP(), []int{2}
+	return file_compatibility_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CompatibilityMessage) GetCheckerName() string {
@@ -193,11 +193,11 @@ func (x *CompatibilityMessage) GetResolution() string {
 	return ""
 }
 
-var File_quadsmith_compatibility_proto protoreflect.FileDescriptor
+var File_compatibility_proto protoreflect.FileDescriptor
 
-const file_quadsmith_compatibility_proto_rawDesc = "" +
+const file_compatibility_proto_rawDesc = "" +
 	"\n" +
-	"\x1dquadsmith/compatibility.proto\x12\fquadsmith.v1\x1a\x15quadsmith/build.proto\"C\n" +
+	"\x13compatibility.proto\x12\fquadsmith.v1\x1a\vbuild.proto\"C\n" +
 	"\x19CheckCompatibilityRequest\x12&\n" +
 	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\"\\\n" +
 	"\x1aCheckCompatibilityResponse\x12>\n" +
@@ -217,25 +217,25 @@ const file_quadsmith_compatibility_proto_rawDesc = "" +
 	"\x12CheckCompatibility\x12'.quadsmith.v1.CheckCompatibilityRequest\x1a(.quadsmith.v1.CheckCompatibilityResponse\"\x00B\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_compatibility_proto_rawDescOnce sync.Once
-	file_quadsmith_compatibility_proto_rawDescData []byte
+	file_compatibility_proto_rawDescOnce sync.Once
+	file_compatibility_proto_rawDescData []byte
 )
 
-func file_quadsmith_compatibility_proto_rawDescGZIP() []byte {
-	file_quadsmith_compatibility_proto_rawDescOnce.Do(func() {
-		file_quadsmith_compatibility_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_compatibility_proto_rawDesc), len(file_quadsmith_compatibility_proto_rawDesc)))
+func file_compatibility_proto_rawDescGZIP() []byte {
+	file_compatibility_proto_rawDescOnce.Do(func() {
+		file_compatibility_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_compatibility_proto_rawDesc), len(file_compatibility_proto_rawDesc)))
 	})
-	return file_quadsmith_compatibility_proto_rawDescData
+	return file_compatibility_proto_rawDescData
 }
 
-var file_quadsmith_compatibility_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_quadsmith_compatibility_proto_goTypes = []any{
+var file_compatibility_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_compatibility_proto_goTypes = []any{
 	(*CheckCompatibilityRequest)(nil),  // 0: quadsmith.v1.CheckCompatibilityRequest
 	(*CheckCompatibilityResponse)(nil), // 1: quadsmith.v1.CheckCompatibilityResponse
 	(*CompatibilityMessage)(nil),       // 2: quadsmith.v1.CompatibilityMessage
 	(*Build)(nil),                      // 3: quadsmith.Build
 }
-var file_quadsmith_compatibility_proto_depIdxs = []int32{
+var file_compatibility_proto_depIdxs = []int32{
 	3, // 0: quadsmith.v1.CheckCompatibilityRequest.build:type_name -> quadsmith.Build
 	2, // 1: quadsmith.v1.CheckCompatibilityResponse.messages:type_name -> quadsmith.v1.CompatibilityMessage
 	0, // 2: quadsmith.v1.CompatibilityService.CheckCompatibility:input_type -> quadsmith.v1.CheckCompatibilityRequest
@@ -247,27 +247,27 @@ var file_quadsmith_compatibility_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_compatibility_proto_init() }
-func file_quadsmith_compatibility_proto_init() {
-	if File_quadsmith_compatibility_proto != nil {
+func init() { file_compatibility_proto_init() }
+func file_compatibility_proto_init() {
+	if File_compatibility_proto != nil {
 		return
 	}
-	file_quadsmith_build_proto_init()
+	file_build_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_compatibility_proto_rawDesc), len(file_quadsmith_compatibility_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_compatibility_proto_rawDesc), len(file_compatibility_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_compatibility_proto_goTypes,
-		DependencyIndexes: file_quadsmith_compatibility_proto_depIdxs,
-		MessageInfos:      file_quadsmith_compatibility_proto_msgTypes,
+		GoTypes:           file_compatibility_proto_goTypes,
+		DependencyIndexes: file_compatibility_proto_depIdxs,
+		MessageInfos:      file_compatibility_proto_msgTypes,
 	}.Build()
-	File_quadsmith_compatibility_proto = out.File
-	file_quadsmith_compatibility_proto_goTypes = nil
-	file_quadsmith_compatibility_proto_depIdxs = nil
+	File_compatibility_proto = out.File
+	file_compatibility_proto_goTypes = nil
+	file_compatibility_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package quadsmith;
 
-import "quadsmith/build.proto";
+import "build.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 

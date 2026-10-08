@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/evaluator.proto
+// source: evaluator.proto
 
 package quadsmith
 
@@ -33,7 +33,7 @@ type EvaluateBuildRequest struct {
 
 func (x *EvaluateBuildRequest) Reset() {
 	*x = EvaluateBuildRequest{}
-	mi := &file_quadsmith_evaluator_proto_msgTypes[0]
+	mi := &file_evaluator_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +45,7 @@ func (x *EvaluateBuildRequest) String() string {
 func (*EvaluateBuildRequest) ProtoMessage() {}
 
 func (x *EvaluateBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_evaluator_proto_msgTypes[0]
+	mi := &file_evaluator_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *EvaluateBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EvaluateBuildRequest.ProtoReflect.Descriptor instead.
 func (*EvaluateBuildRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_evaluator_proto_rawDescGZIP(), []int{0}
+	return file_evaluator_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *EvaluateBuildRequest) GetBuild() *Build {
@@ -91,7 +91,7 @@ type EvaluateBuildResponse struct {
 
 func (x *EvaluateBuildResponse) Reset() {
 	*x = EvaluateBuildResponse{}
-	mi := &file_quadsmith_evaluator_proto_msgTypes[1]
+	mi := &file_evaluator_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -103,7 +103,7 @@ func (x *EvaluateBuildResponse) String() string {
 func (*EvaluateBuildResponse) ProtoMessage() {}
 
 func (x *EvaluateBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_evaluator_proto_msgTypes[1]
+	mi := &file_evaluator_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -116,7 +116,7 @@ func (x *EvaluateBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EvaluateBuildResponse.ProtoReflect.Descriptor instead.
 func (*EvaluateBuildResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_evaluator_proto_rawDescGZIP(), []int{1}
+	return file_evaluator_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *EvaluateBuildResponse) GetTotalWeightG() float32 {
@@ -161,11 +161,11 @@ func (x *EvaluateBuildResponse) GetErrors() []string {
 	return nil
 }
 
-var File_quadsmith_evaluator_proto protoreflect.FileDescriptor
+var File_evaluator_proto protoreflect.FileDescriptor
 
-const file_quadsmith_evaluator_proto_rawDesc = "" +
+const file_evaluator_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/evaluator.proto\x12\tquadsmith\x1a\x15quadsmith/build.proto\"h\n" +
+	"\x0fevaluator.proto\x12\tquadsmith\x1a\vbuild.proto\"h\n" +
 	"\x14EvaluateBuildRequest\x12&\n" +
 	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12(\n" +
 	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\x97\x02\n" +
@@ -180,24 +180,24 @@ const file_quadsmith_evaluator_proto_rawDesc = "" +
 	"\rEvaluateBuild\x12\x1f.quadsmith.EvaluateBuildRequest\x1a .quadsmith.EvaluateBuildResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_evaluator_proto_rawDescOnce sync.Once
-	file_quadsmith_evaluator_proto_rawDescData []byte
+	file_evaluator_proto_rawDescOnce sync.Once
+	file_evaluator_proto_rawDescData []byte
 )
 
-func file_quadsmith_evaluator_proto_rawDescGZIP() []byte {
-	file_quadsmith_evaluator_proto_rawDescOnce.Do(func() {
-		file_quadsmith_evaluator_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_evaluator_proto_rawDesc), len(file_quadsmith_evaluator_proto_rawDesc)))
+func file_evaluator_proto_rawDescGZIP() []byte {
+	file_evaluator_proto_rawDescOnce.Do(func() {
+		file_evaluator_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_evaluator_proto_rawDesc), len(file_evaluator_proto_rawDesc)))
 	})
-	return file_quadsmith_evaluator_proto_rawDescData
+	return file_evaluator_proto_rawDescData
 }
 
-var file_quadsmith_evaluator_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_quadsmith_evaluator_proto_goTypes = []any{
+var file_evaluator_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_evaluator_proto_goTypes = []any{
 	(*EvaluateBuildRequest)(nil),  // 0: quadsmith.EvaluateBuildRequest
 	(*EvaluateBuildResponse)(nil), // 1: quadsmith.EvaluateBuildResponse
 	(*Build)(nil),                 // 2: quadsmith.Build
 }
-var file_quadsmith_evaluator_proto_depIdxs = []int32{
+var file_evaluator_proto_depIdxs = []int32{
 	2, // 0: quadsmith.EvaluateBuildRequest.build:type_name -> quadsmith.Build
 	0, // 1: quadsmith.EvaluatorService.EvaluateBuild:input_type -> quadsmith.EvaluateBuildRequest
 	1, // 2: quadsmith.EvaluatorService.EvaluateBuild:output_type -> quadsmith.EvaluateBuildResponse
@@ -208,27 +208,27 @@ var file_quadsmith_evaluator_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_evaluator_proto_init() }
-func file_quadsmith_evaluator_proto_init() {
-	if File_quadsmith_evaluator_proto != nil {
+func init() { file_evaluator_proto_init() }
+func file_evaluator_proto_init() {
+	if File_evaluator_proto != nil {
 		return
 	}
-	file_quadsmith_build_proto_init()
+	file_build_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_evaluator_proto_rawDesc), len(file_quadsmith_evaluator_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_evaluator_proto_rawDesc), len(file_evaluator_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_evaluator_proto_goTypes,
-		DependencyIndexes: file_quadsmith_evaluator_proto_depIdxs,
-		MessageInfos:      file_quadsmith_evaluator_proto_msgTypes,
+		GoTypes:           file_evaluator_proto_goTypes,
+		DependencyIndexes: file_evaluator_proto_depIdxs,
+		MessageInfos:      file_evaluator_proto_msgTypes,
 	}.Build()
-	File_quadsmith_evaluator_proto = out.File
-	file_quadsmith_evaluator_proto_goTypes = nil
-	file_quadsmith_evaluator_proto_depIdxs = nil
+	File_evaluator_proto = out.File
+	file_evaluator_proto_goTypes = nil
+	file_evaluator_proto_depIdxs = nil
 }

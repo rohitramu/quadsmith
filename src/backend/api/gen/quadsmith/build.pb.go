@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/build.proto
+// source: build.proto
 
 package quadsmith
 
@@ -59,7 +59,7 @@ type Build struct {
 
 func (x *Build) Reset() {
 	*x = Build{}
-	mi := &file_quadsmith_build_proto_msgTypes[0]
+	mi := &file_build_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -71,7 +71,7 @@ func (x *Build) String() string {
 func (*Build) ProtoMessage() {}
 
 func (x *Build) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_build_proto_msgTypes[0]
+	mi := &file_build_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -84,7 +84,7 @@ func (x *Build) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Build.ProtoReflect.Descriptor instead.
 func (*Build) Descriptor() ([]byte, []int) {
-	return file_quadsmith_build_proto_rawDescGZIP(), []int{0}
+	return file_build_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Build) GetUuid() string {
@@ -212,7 +212,7 @@ type GetBuildRequest struct {
 
 func (x *GetBuildRequest) Reset() {
 	*x = GetBuildRequest{}
-	mi := &file_quadsmith_build_proto_msgTypes[1]
+	mi := &file_build_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -224,7 +224,7 @@ func (x *GetBuildRequest) String() string {
 func (*GetBuildRequest) ProtoMessage() {}
 
 func (x *GetBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_build_proto_msgTypes[1]
+	mi := &file_build_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -237,7 +237,7 @@ func (x *GetBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBuildRequest.ProtoReflect.Descriptor instead.
 func (*GetBuildRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_build_proto_rawDescGZIP(), []int{1}
+	return file_build_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetBuildRequest) GetId() string {
@@ -267,7 +267,7 @@ type ListBuildsRequest struct {
 
 func (x *ListBuildsRequest) Reset() {
 	*x = ListBuildsRequest{}
-	mi := &file_quadsmith_build_proto_msgTypes[2]
+	mi := &file_build_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -279,7 +279,7 @@ func (x *ListBuildsRequest) String() string {
 func (*ListBuildsRequest) ProtoMessage() {}
 
 func (x *ListBuildsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_build_proto_msgTypes[2]
+	mi := &file_build_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -292,7 +292,7 @@ func (x *ListBuildsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBuildsRequest.ProtoReflect.Descriptor instead.
 func (*ListBuildsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_build_proto_rawDescGZIP(), []int{2}
+	return file_build_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListBuildsRequest) GetFilter() string {
@@ -340,7 +340,7 @@ type ListBuildsResponse struct {
 
 func (x *ListBuildsResponse) Reset() {
 	*x = ListBuildsResponse{}
-	mi := &file_quadsmith_build_proto_msgTypes[3]
+	mi := &file_build_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -352,7 +352,7 @@ func (x *ListBuildsResponse) String() string {
 func (*ListBuildsResponse) ProtoMessage() {}
 
 func (x *ListBuildsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_build_proto_msgTypes[3]
+	mi := &file_build_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -365,7 +365,7 @@ func (x *ListBuildsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBuildsResponse.ProtoReflect.Descriptor instead.
 func (*ListBuildsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_build_proto_rawDescGZIP(), []int{3}
+	return file_build_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListBuildsResponse) GetBuilds() []*Build {
@@ -382,11 +382,12 @@ func (x *ListBuildsResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_build_proto protoreflect.FileDescriptor
+var File_build_proto protoreflect.FileDescriptor
 
-const file_quadsmith_build_proto_rawDesc = "" +
+const file_build_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xfc\x06\n" +
+	"\vbuild.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xfc\x06\n" +
 	"\x05Build\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12\x12\n" +
@@ -429,26 +430,26 @@ const file_quadsmith_build_proto_rawDesc = "" +
 	"ListBuilds\x12\x1c.quadsmith.ListBuildsRequest\x1a\x1d.quadsmith.ListBuildsResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_build_proto_rawDescOnce sync.Once
-	file_quadsmith_build_proto_rawDescData []byte
+	file_build_proto_rawDescOnce sync.Once
+	file_build_proto_rawDescData []byte
 )
 
-func file_quadsmith_build_proto_rawDescGZIP() []byte {
-	file_quadsmith_build_proto_rawDescOnce.Do(func() {
-		file_quadsmith_build_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_build_proto_rawDesc), len(file_quadsmith_build_proto_rawDesc)))
+func file_build_proto_rawDescGZIP() []byte {
+	file_build_proto_rawDescOnce.Do(func() {
+		file_build_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_build_proto_rawDesc), len(file_build_proto_rawDesc)))
 	})
-	return file_quadsmith_build_proto_rawDescData
+	return file_build_proto_rawDescData
 }
 
-var file_quadsmith_build_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_build_proto_goTypes = []any{
+var file_build_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_build_proto_goTypes = []any{
 	(*Build)(nil),              // 0: quadsmith.Build
 	(*GetBuildRequest)(nil),    // 1: quadsmith.GetBuildRequest
 	(*ListBuildsRequest)(nil),  // 2: quadsmith.ListBuildsRequest
 	(*ListBuildsResponse)(nil), // 3: quadsmith.ListBuildsResponse
 	(*ReferenceLink)(nil),      // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_build_proto_depIdxs = []int32{
+var file_build_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
 	1, // 2: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
@@ -462,30 +463,30 @@ var file_quadsmith_build_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_build_proto_init() }
-func file_quadsmith_build_proto_init() {
-	if File_quadsmith_build_proto != nil {
+func init() { file_build_proto_init() }
+func file_build_proto_init() {
+	if File_build_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
-	file_quadsmith_build_proto_msgTypes[0].OneofWrappers = []any{}
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
+	file_build_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_build_proto_rawDesc), len(file_quadsmith_build_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_build_proto_rawDesc), len(file_build_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_build_proto_goTypes,
-		DependencyIndexes: file_quadsmith_build_proto_depIdxs,
-		MessageInfos:      file_quadsmith_build_proto_msgTypes,
+		GoTypes:           file_build_proto_goTypes,
+		DependencyIndexes: file_build_proto_depIdxs,
+		MessageInfos:      file_build_proto_msgTypes,
 	}.Build()
-	File_quadsmith_build_proto = out.File
-	file_quadsmith_build_proto_goTypes = nil
-	file_quadsmith_build_proto_depIdxs = nil
+	File_build_proto = out.File
+	file_build_proto_goTypes = nil
+	file_build_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/battery.proto
+// source: battery.proto
 
 package quadsmith
 
@@ -47,7 +47,7 @@ type Battery struct {
 
 func (x *Battery) Reset() {
 	*x = Battery{}
-	mi := &file_quadsmith_battery_proto_msgTypes[0]
+	mi := &file_battery_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -59,7 +59,7 @@ func (x *Battery) String() string {
 func (*Battery) ProtoMessage() {}
 
 func (x *Battery) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_battery_proto_msgTypes[0]
+	mi := &file_battery_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -72,7 +72,7 @@ func (x *Battery) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Battery.ProtoReflect.Descriptor instead.
 func (*Battery) Descriptor() ([]byte, []int) {
-	return file_quadsmith_battery_proto_rawDescGZIP(), []int{0}
+	return file_battery_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Battery) GetUuid() string {
@@ -165,7 +165,7 @@ type GetBatteryRequest struct {
 
 func (x *GetBatteryRequest) Reset() {
 	*x = GetBatteryRequest{}
-	mi := &file_quadsmith_battery_proto_msgTypes[1]
+	mi := &file_battery_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -177,7 +177,7 @@ func (x *GetBatteryRequest) String() string {
 func (*GetBatteryRequest) ProtoMessage() {}
 
 func (x *GetBatteryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_battery_proto_msgTypes[1]
+	mi := &file_battery_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -190,7 +190,7 @@ func (x *GetBatteryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBatteryRequest.ProtoReflect.Descriptor instead.
 func (*GetBatteryRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_battery_proto_rawDescGZIP(), []int{1}
+	return file_battery_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetBatteryRequest) GetId() string {
@@ -220,7 +220,7 @@ type ListBatteriesRequest struct {
 
 func (x *ListBatteriesRequest) Reset() {
 	*x = ListBatteriesRequest{}
-	mi := &file_quadsmith_battery_proto_msgTypes[2]
+	mi := &file_battery_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -232,7 +232,7 @@ func (x *ListBatteriesRequest) String() string {
 func (*ListBatteriesRequest) ProtoMessage() {}
 
 func (x *ListBatteriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_battery_proto_msgTypes[2]
+	mi := &file_battery_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -245,7 +245,7 @@ func (x *ListBatteriesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBatteriesRequest.ProtoReflect.Descriptor instead.
 func (*ListBatteriesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_battery_proto_rawDescGZIP(), []int{2}
+	return file_battery_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListBatteriesRequest) GetFilter() string {
@@ -293,7 +293,7 @@ type ListBatteriesResponse struct {
 
 func (x *ListBatteriesResponse) Reset() {
 	*x = ListBatteriesResponse{}
-	mi := &file_quadsmith_battery_proto_msgTypes[3]
+	mi := &file_battery_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -305,7 +305,7 @@ func (x *ListBatteriesResponse) String() string {
 func (*ListBatteriesResponse) ProtoMessage() {}
 
 func (x *ListBatteriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_battery_proto_msgTypes[3]
+	mi := &file_battery_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -318,7 +318,7 @@ func (x *ListBatteriesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBatteriesResponse.ProtoReflect.Descriptor instead.
 func (*ListBatteriesResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_battery_proto_rawDescGZIP(), []int{3}
+	return file_battery_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListBatteriesResponse) GetBatteries() []*Battery {
@@ -335,11 +335,12 @@ func (x *ListBatteriesResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_battery_proto protoreflect.FileDescriptor
+var File_battery_proto protoreflect.FileDescriptor
 
-const file_quadsmith_battery_proto_rawDesc = "" +
+const file_battery_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/battery.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe3\x03\n" +
+	"\rbattery.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xe3\x03\n" +
 	"\aBattery\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -379,26 +380,26 @@ const file_quadsmith_battery_proto_rawDesc = "" +
 	"\rListBatteries\x12\x1f.quadsmith.ListBatteriesRequest\x1a .quadsmith.ListBatteriesResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_battery_proto_rawDescOnce sync.Once
-	file_quadsmith_battery_proto_rawDescData []byte
+	file_battery_proto_rawDescOnce sync.Once
+	file_battery_proto_rawDescData []byte
 )
 
-func file_quadsmith_battery_proto_rawDescGZIP() []byte {
-	file_quadsmith_battery_proto_rawDescOnce.Do(func() {
-		file_quadsmith_battery_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_battery_proto_rawDesc), len(file_quadsmith_battery_proto_rawDesc)))
+func file_battery_proto_rawDescGZIP() []byte {
+	file_battery_proto_rawDescOnce.Do(func() {
+		file_battery_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_battery_proto_rawDesc), len(file_battery_proto_rawDesc)))
 	})
-	return file_quadsmith_battery_proto_rawDescData
+	return file_battery_proto_rawDescData
 }
 
-var file_quadsmith_battery_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_battery_proto_goTypes = []any{
+var file_battery_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_battery_proto_goTypes = []any{
 	(*Battery)(nil),               // 0: quadsmith.Battery
 	(*GetBatteryRequest)(nil),     // 1: quadsmith.GetBatteryRequest
 	(*ListBatteriesRequest)(nil),  // 2: quadsmith.ListBatteriesRequest
 	(*ListBatteriesResponse)(nil), // 3: quadsmith.ListBatteriesResponse
 	(*ReferenceLink)(nil),         // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_battery_proto_depIdxs = []int32{
+var file_battery_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Battery.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListBatteriesResponse.batteries:type_name -> quadsmith.Battery
 	1, // 2: quadsmith.BatteryService.GetBattery:input_type -> quadsmith.GetBatteryRequest
@@ -412,29 +413,29 @@ var file_quadsmith_battery_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_battery_proto_init() }
-func file_quadsmith_battery_proto_init() {
-	if File_quadsmith_battery_proto != nil {
+func init() { file_battery_proto_init() }
+func file_battery_proto_init() {
+	if File_battery_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_battery_proto_rawDesc), len(file_quadsmith_battery_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_battery_proto_rawDesc), len(file_battery_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_battery_proto_goTypes,
-		DependencyIndexes: file_quadsmith_battery_proto_depIdxs,
-		MessageInfos:      file_quadsmith_battery_proto_msgTypes,
+		GoTypes:           file_battery_proto_goTypes,
+		DependencyIndexes: file_battery_proto_depIdxs,
+		MessageInfos:      file_battery_proto_msgTypes,
 	}.Build()
-	File_quadsmith_battery_proto = out.File
-	file_quadsmith_battery_proto_goTypes = nil
-	file_quadsmith_battery_proto_depIdxs = nil
+	File_battery_proto = out.File
+	file_battery_proto_goTypes = nil
+	file_battery_proto_depIdxs = nil
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/receiver.proto
+// source: receiver.proto
 
 package quadsmith
 
@@ -47,7 +47,7 @@ type Receiver struct {
 
 func (x *Receiver) Reset() {
 	*x = Receiver{}
-	mi := &file_quadsmith_receiver_proto_msgTypes[0]
+	mi := &file_receiver_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -59,7 +59,7 @@ func (x *Receiver) String() string {
 func (*Receiver) ProtoMessage() {}
 
 func (x *Receiver) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_receiver_proto_msgTypes[0]
+	mi := &file_receiver_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -72,7 +72,7 @@ func (x *Receiver) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Receiver.ProtoReflect.Descriptor instead.
 func (*Receiver) Descriptor() ([]byte, []int) {
-	return file_quadsmith_receiver_proto_rawDescGZIP(), []int{0}
+	return file_receiver_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Receiver) GetUuid() string {
@@ -172,7 +172,7 @@ type GetReceiverRequest struct {
 
 func (x *GetReceiverRequest) Reset() {
 	*x = GetReceiverRequest{}
-	mi := &file_quadsmith_receiver_proto_msgTypes[1]
+	mi := &file_receiver_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -184,7 +184,7 @@ func (x *GetReceiverRequest) String() string {
 func (*GetReceiverRequest) ProtoMessage() {}
 
 func (x *GetReceiverRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_receiver_proto_msgTypes[1]
+	mi := &file_receiver_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -197,7 +197,7 @@ func (x *GetReceiverRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetReceiverRequest.ProtoReflect.Descriptor instead.
 func (*GetReceiverRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_receiver_proto_rawDescGZIP(), []int{1}
+	return file_receiver_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetReceiverRequest) GetId() string {
@@ -227,7 +227,7 @@ type ListReceiversRequest struct {
 
 func (x *ListReceiversRequest) Reset() {
 	*x = ListReceiversRequest{}
-	mi := &file_quadsmith_receiver_proto_msgTypes[2]
+	mi := &file_receiver_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -239,7 +239,7 @@ func (x *ListReceiversRequest) String() string {
 func (*ListReceiversRequest) ProtoMessage() {}
 
 func (x *ListReceiversRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_receiver_proto_msgTypes[2]
+	mi := &file_receiver_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -252,7 +252,7 @@ func (x *ListReceiversRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListReceiversRequest.ProtoReflect.Descriptor instead.
 func (*ListReceiversRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_receiver_proto_rawDescGZIP(), []int{2}
+	return file_receiver_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListReceiversRequest) GetFilter() string {
@@ -300,7 +300,7 @@ type ListReceiversResponse struct {
 
 func (x *ListReceiversResponse) Reset() {
 	*x = ListReceiversResponse{}
-	mi := &file_quadsmith_receiver_proto_msgTypes[3]
+	mi := &file_receiver_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -312,7 +312,7 @@ func (x *ListReceiversResponse) String() string {
 func (*ListReceiversResponse) ProtoMessage() {}
 
 func (x *ListReceiversResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_receiver_proto_msgTypes[3]
+	mi := &file_receiver_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -325,7 +325,7 @@ func (x *ListReceiversResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListReceiversResponse.ProtoReflect.Descriptor instead.
 func (*ListReceiversResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_receiver_proto_rawDescGZIP(), []int{3}
+	return file_receiver_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListReceiversResponse) GetReceivers() []*Receiver {
@@ -342,11 +342,12 @@ func (x *ListReceiversResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_receiver_proto protoreflect.FileDescriptor
+var File_receiver_proto protoreflect.FileDescriptor
 
-const file_quadsmith_receiver_proto_rawDesc = "" +
+const file_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xee\x03\n" +
+	"\x0ereceiver.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xee\x03\n" +
 	"\bReceiver\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -380,26 +381,26 @@ const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\rListReceivers\x12\x1f.quadsmith.ListReceiversRequest\x1a .quadsmith.ListReceiversResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_receiver_proto_rawDescOnce sync.Once
-	file_quadsmith_receiver_proto_rawDescData []byte
+	file_receiver_proto_rawDescOnce sync.Once
+	file_receiver_proto_rawDescData []byte
 )
 
-func file_quadsmith_receiver_proto_rawDescGZIP() []byte {
-	file_quadsmith_receiver_proto_rawDescOnce.Do(func() {
-		file_quadsmith_receiver_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_receiver_proto_rawDesc), len(file_quadsmith_receiver_proto_rawDesc)))
+func file_receiver_proto_rawDescGZIP() []byte {
+	file_receiver_proto_rawDescOnce.Do(func() {
+		file_receiver_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_receiver_proto_rawDesc), len(file_receiver_proto_rawDesc)))
 	})
-	return file_quadsmith_receiver_proto_rawDescData
+	return file_receiver_proto_rawDescData
 }
 
-var file_quadsmith_receiver_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_receiver_proto_goTypes = []any{
+var file_receiver_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_receiver_proto_goTypes = []any{
 	(*Receiver)(nil),              // 0: quadsmith.Receiver
 	(*GetReceiverRequest)(nil),    // 1: quadsmith.GetReceiverRequest
 	(*ListReceiversRequest)(nil),  // 2: quadsmith.ListReceiversRequest
 	(*ListReceiversResponse)(nil), // 3: quadsmith.ListReceiversResponse
 	(*ReferenceLink)(nil),         // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_receiver_proto_depIdxs = []int32{
+var file_receiver_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Receiver.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListReceiversResponse.receivers:type_name -> quadsmith.Receiver
 	1, // 2: quadsmith.ReceiverService.GetReceiver:input_type -> quadsmith.GetReceiverRequest
@@ -413,29 +414,29 @@ var file_quadsmith_receiver_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_receiver_proto_init() }
-func file_quadsmith_receiver_proto_init() {
-	if File_quadsmith_receiver_proto != nil {
+func init() { file_receiver_proto_init() }
+func file_receiver_proto_init() {
+	if File_receiver_proto != nil {
 		return
 	}
-	file_quadsmith__common_proto_init()
-	file_quadsmith__sql_proto_init()
-	file_quadsmith_reference_link_proto_init()
+	file___common_proto_init()
+	file___sql_proto_init()
+	file_reference_link_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_receiver_proto_rawDesc), len(file_quadsmith_receiver_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_receiver_proto_rawDesc), len(file_receiver_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_receiver_proto_goTypes,
-		DependencyIndexes: file_quadsmith_receiver_proto_depIdxs,
-		MessageInfos:      file_quadsmith_receiver_proto_msgTypes,
+		GoTypes:           file_receiver_proto_goTypes,
+		DependencyIndexes: file_receiver_proto_depIdxs,
+		MessageInfos:      file_receiver_proto_msgTypes,
 	}.Build()
-	File_quadsmith_receiver_proto = out.File
-	file_quadsmith_receiver_proto_goTypes = nil
-	file_quadsmith_receiver_proto_depIdxs = nil
+	File_receiver_proto = out.File
+	file_receiver_proto_goTypes = nil
+	file_receiver_proto_depIdxs = nil
 }
