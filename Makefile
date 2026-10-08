@@ -36,7 +36,7 @@ build: generate
 
 sandbox: build
 	@echo "--- Starting Quadsmith Sandbox (Docker) ---"
-	@./src/backend/start_sandbox.sh $(PORT) || if [ $$? -eq 130 ]; then exit 0; else exit $$?; fi
+	@./test/start_sandbox.sh $(PORT) || if [ $$? -eq 130 ]; then exit 0; else exit $$?; fi
 
 generate:
 	@echo "--- Installing protoc plugins from vendor ---"

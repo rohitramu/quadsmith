@@ -3,7 +3,7 @@
 # ==============================================================================
 # Purpose:
 #   Self-contained sandbox container for local development, automated testing,
-#   and E2E verification. Started via `make sandbox` or `src/backend/start_sandbox.sh`.
+#   and E2E verification. Started via `make sandbox` or `test/start_sandbox.sh`.
 #
 # Included Components:
 #   - PostgreSQL 15 Database (runs locally inside the container)
