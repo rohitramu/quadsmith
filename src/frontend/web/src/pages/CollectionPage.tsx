@@ -19,14 +19,15 @@ const MOTOR_FIELDS: FieldDef[] = [
   { name: "weight_g", type: "number", description: "Motor weight in grams", examples: ['weight_g < 35.0'] },
   { name: "stator_diameter_mm", type: "number", description: "Stator diameter in millimeters", examples: ['stator_diameter_mm == 22.0'] },
   { name: "stator_height_mm", type: "number", description: "Stator height in millimeters", examples: ['stator_height_mm == 7.0'] },
-  { name: "description", type: "string", description: "Product description", examples: ['description.contains("freestyle")'] },
+  { name: "description", type: "string", description: "Product description", examples: ['description.contains("brushless")'] },
 ];
 
 const MOTOR_PRESETS = [
-  { label: "High KV (>= 2400)", query: "kv >= 2400" },
-  { label: "Freestyle (1700 - 2000 KV)", query: "kv >= 1700 && kv <= 2000" },
-  { label: "T-Motor brand", query: 'manufacturer.contains("T-Motor")' },
   { label: "2207 Stator", query: "stator_diameter_mm == 22.0 && stator_height_mm == 7.0" },
+  { label: "2306 Stator", query: "stator_diameter_mm == 23.0 && stator_height_mm == 6.0" },
+  { label: "1404 Stator", query: "stator_diameter_mm == 14.0 && stator_height_mm == 4.0" },
+  { label: "Under 35g", query: "weight_g < 35.0" },
+  { label: "T-Motor", query: 'manufacturer.contains("T-Motor")' },
 ];
 
 interface ColumnConfig {
