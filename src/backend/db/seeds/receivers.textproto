@@ -1907,10 +1907,6 @@ receivers:  {
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-rp2-v2-expresslrs-2-4ghz-nano-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://pyrodrone.com/products/radiomaster-rp2-elrs-2-4ghz-nano-receiver-w-ceramic-antenna"
   }
 }
@@ -1929,10 +1925,6 @@ receivers:  {
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://www.radiomasterrc.com/products/rp3-expresslrs-2-4ghz-nano-receiver"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/radiomaster-rp3-expresslrs-2-4ghz-diversity-nano-receiver.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -1978,7 +1970,7 @@ receivers:  {
   description:  "Full-range 8-channel diversity Crossfire receiver featuring dual RF front-ends and power-filtered outputs for extreme range and interference rejection."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:crossfire_div_nano_rx"
+    url:  "https://www.team-blacksheep.com/products/prod:xf_nano_div_rx"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_DOCUMENTATION
@@ -2032,15 +2024,15 @@ receivers:  {
   description:  "Temperature Compensated Crystal Oscillator (TCXO) true diversity ExpressLRS receiver offering stable frequency lock in extreme climates."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "http://www.happymodel.cn/index.php/2022/10/24/happymodel-2-4g-expresslrs-ep1-dual-tcxo-true-diversity-receiver/"
+    url:  "https://www.happymodel.cn/index.php/2022/11/07/2-4g-elrs-ep1-ep2-ep1dual-tcxo-receiver/"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_DOCUMENTATION
-    url:  "https://www.expresslrs.org/quick-start/receivers/happymodel-2400/"
+    url:  "https://www.expresslrs.org/quick-start/receivers/hmep2400/"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/happymodel-2-4g-expresslrs-ep1-dual-tcxo-true-diversity-receiver"
+    url:  "https://www.getfpv.com/happymodel-expresslrs-nano-2-4ghz-ep1-dual-tcxo-rx.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE

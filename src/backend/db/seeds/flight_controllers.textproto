@@ -1247,7 +1247,7 @@ flight_controllers:  {
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/speedybee-f405-v4-bls-30x30-fc-esc-stack.html"
+    url:  "https://www.getfpv.com/speedybee-f405-v4-flight-controller-30x30.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -1266,11 +1266,11 @@ flight_controllers:  {
   description: "Clean and durable 30x30 F7 flight controller featuring dual BECs (5V 2A / 10V 2A) and plug-and-play DJI HD digital port."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://store.tmotor.com/product/pacer-f7-flight-controller.html"
+    url:  "https://tmotorhobby.com/goods-1083-T-MOTORHOBBY+Single-sided+Pacer+F7+FC.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/t-motor-pacer-f7-flight-controller"
+    url:  "https://www.getfpv.com/t-motor-pacer-f7-usb-c-flight-controller.html"
   }
 }
 flight_controllers:  {
@@ -1289,7 +1289,7 @@ flight_controllers:  {
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/holybro-kakute-h7-v2-flight-controller.html"
+    url:  "https://www.getfpv.com/holybro-kakute-h7-v2-1-flight-controller.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE

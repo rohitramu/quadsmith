@@ -15,16 +15,12 @@ builds:  {
   camera_uuids:  "01923019-3005-7001-8001-000000000001"
   video_transmitter_uuid:  "01923019-3004-7001-8001-000000000008"
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://rotorriot.com/products/cl1-v2-budget-freestyle-diy-fpv-drone-build-kit"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_DOCUMENTATION
     url:  "https://github.com/tbs-trappy/source_one"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/tbs-source-one-v5-5-frame.html"
+    url:  "https://www.getfpv.com/tbs-source-one-v5-5-frame-kit.html"
   }
 }
 builds:  {
@@ -45,7 +41,7 @@ builds:  {
   video_transmitter_uuid:  "01923019-3004-7001-8001-000000000006"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://flywoo.net/products/explorer-lr-4-v2-frame-kit"
+    url:  "https://rotorriot.com/products/cl2-xr-7-frame"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_DOCUMENTATION
@@ -124,10 +120,10 @@ builds:  {
   video_transmitter_uuid:  "01923019-3004-7001-8001-000000000002"
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.speedybee.com/speedybee-mario-5-frame/"
+    url:  "https://www.speedybee.com/mario-5-frame-download/"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/speedybee-mario-5-dc-fpv-freestyle-frame-kit"
+    url:  "https://pyrodrone.com/products/speedybee-mario-5-dc-o4-advanced-version-5-fpv-freestyle-frame"
   }
 }

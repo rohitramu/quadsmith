@@ -3694,11 +3694,11 @@ propellers:  {
   description:  "Steele Davis (Mr Steele) signature S3 Watermelon 5-inch propeller, renowned for low-end punch and smooth throttle response."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/ethix-s3-watermelon-props-p0092.html"
+    url:  "https://www.hqprop.com/ethix-s3-prop-watermelon-2cw2ccw-poly-carbonate-p0016-p0016.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/hq-prop-ethix-s3-watermelon-props"
+    url:  "https://pyrodrone.com/products/hq-ethix-s3-watermelon-props"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -3719,11 +3719,11 @@ propellers:  {
   description:  "Ethix S4 Lemon Lime propeller balancing mid-range efficiency and top-end speed for freestyle quads."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/ethix-s4-lemon-lime-props-p0106.html"
+    url:  "https://www.hqprop.com/ethix-s4-lemon-lime-2cw2ccw-poly-carbonate-p0017.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/hqprop-ethix-s4-lemon-lime-propeller-set-of-4.html"
+    url:  "https://www.getfpv.com/hqprop-ethix-s4-lemon-lime-props-set-of-4.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -3744,11 +3744,11 @@ propellers:  {
   description:  "S5 Cinematic prop optimized for ultra-smooth video capture with heavy payloads and GoPros."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hqprop.com/ethix-s5-cinematic-props-p0131.html"
+    url:  "https://www.hqprop.com/ethix-s5-light-grey-2cw2ccw-poly-carbonate-p0206.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/hqprop-ethix-s5-cinematic-props-4-pack"
+    url:  "https://pyrodrone.com/products/ethix-s5-light-grey-2cw-2ccw-poly-carbonate"
   }
 }
 propellers:  {
@@ -3765,11 +3765,15 @@ propellers:  {
   description:  "High-efficiency, lightweight 5.1-inch propeller designed for responsive freestyle maneuvers and race tracks."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/show.aspx?id=358&cid=43"
+    url:  "https://www.gfprops.com/products/gemfan-hurricane-51433-3-for-freestyle.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/gemfan-hurricane-51433-3-blade-propeller-set-of-4.html"
+    url:  "https://pyrodrone.com/products/gemfan-hurricane-51433-3-tri-prop"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/gemfan-hurricane-51433-durable-tri-blade-5-prop-4-pack-choose-your-color"
   }
 }
 propellers:  {
@@ -3786,11 +3790,15 @@ propellers:  {
   description:  "High-pitch aggressive racing and freestyle prop offering incredible top-end speed and grip."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.gemfanhobby.com/show.aspx?id=358&cid=43"
+    url:  "https://www.gfprops.com/products/gemfan-jb-hurricane-51477-3.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/gemfan-hurricane-51477-3-blade-propellers"
+    url:  "https://pyrodrone.com/products/hurricane-51477-3-blade-prop"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/gemfan-hurricane-51477-tri-blade-5-prop-4-pack-choose-your-color"
   }
 }
 propellers:  {
@@ -3807,7 +3815,7 @@ propellers:  {
   description:  "Heavy-lift 7.5-inch cinelifter propeller with reinforced hub for RED Komodo, BMPCC, and cinema payloads."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/gemfan-cinelifter-7535-propeller-set-of-4.html"
+    url:  "https://pyrodrone.com/products/gemfan-cinelifter-7-5-7535-7-5x3-5x3-tri-blade-carbon-fiber-nylon-propellers-2cw-2ccw"
   }
 }
 propellers:  {
@@ -3822,10 +3830,6 @@ propellers:  {
   blades:  3
   material:  "Polycarbonate"
   description:  "Durable 3-inch tri-blade micro propeller ideal for toothpick and 3-inch cinewhoop builds."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/hq-prop-durable-3x3x3-tri-blade-prop-4-pack"
-  }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.racedayquads.com/products/hq-3x3x3-pc-dp-durable-prop-for-3"

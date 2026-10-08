@@ -1011,7 +1011,7 @@ electronic_speed_controllers:  {
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/speedybee-55a-3-6s-blheli-s-4-in-1-esc-30x30.html"
+    url:  "https://www.getfpv.com/speedybee-f405-v4-stack-f4-v4-fc-55a-blheli-s-esc-30x30.html"
   }
 }
 electronic_speed_controllers:  {
@@ -1028,11 +1028,11 @@ electronic_speed_controllers:  {
   description:  "Premium BLHeli_32 racing ESC with ultra-low resistance MOSFETs, 128K PWM support, ESC telemetry, and integrated current sensor."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://store.tmotor.com/product/f55a-pro-ii-esc.html"
+    url:  "https://tmotorhobby.com/goods-821-T-Motor+F55A+Pro+II+55A+3-6s+BLHeli32+4-in-1+ESC+w+BEC.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/t-motor-f55a-pro-ii-32bit-4in1-esc-3-6s-dshot1200"
+    url:  "https://www.racedayquads.com/products/t-motor-f55a-pro-ii-55a-3-6s-am32-4-in-1-esc-w-bec-30x30"
   }
 }
 electronic_speed_controllers:  {
@@ -1049,11 +1049,7 @@ electronic_speed_controllers:  {
   description:  "High-performance 30x30 65A ESC featuring STM32F4 MCU, multi-layer high TG copper PCB, and smooth DShot2400 capability."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.foxeer.com/foxeer-reaper-f4-65a-128k-4in1-blheli-32-esc-g-354"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/foxeer-reaper-f4-65a-128k-4-in-1-blheli-32-esc.html"
+    url:  "https://www.foxeer.com/foxeer-reaper-f4-128k-65a-bl32-4in1-9-40v-esc-30-5-30-5mm-m3-g-420"
   }
 }
 electronic_speed_controllers:  {
@@ -1070,14 +1066,10 @@ electronic_speed_controllers:  {
   description:  "Lightweight 20x20mm 4-in-1 ESC engineered for 2-4S micro quads, toothpicks, and lightweight 3-inch drones."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/20a-aio-brushless-flight-controller"
+    url:  "https://betafpv.com/products/f4-2-3s-20a-aio-fc-v1"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/products/20a-aio-brushless-flight-controller"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/emax-avan-2-4-blades-propellers-1-5mm-shaft"
+    url:  "https://betafpv.com/products/f4-2-3s-20a-aio-fc-v1"
   }
 }

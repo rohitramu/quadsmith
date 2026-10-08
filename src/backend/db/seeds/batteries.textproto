@@ -3562,7 +3562,7 @@ batteries:  {
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/tattu-r-line-version-5-0-1400mah-22-2v-6s-150c-lipo-battery.html"
+    url:  "https://www.getfpv.com/tattu-r-line-version-5-0-1400mah-6s1p150c-lipo-battery.html"
   }
 }
 batteries:  {
@@ -3583,7 +3583,11 @@ batteries:  {
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/tattu-r-line-version-5-0-22-2v-150c-6s-1200mah-lipo-battery-xt60"
+    url:  "https://www.getfpv.com/tattu-r-line-version-5-0-1200mah-6s1p-150c-lipo-battery.html"
+  }
+  reference_links:  {
+    type:  REFERENCE_LINK_TYPE_PURCHASE
+    url:  "https://www.racedayquads.com/products/tattu-r-line-version-5-0-22-2v-6s-1200mah-150c-lipo-battery-xt60"
   }
 }
 batteries:  {
@@ -3600,15 +3604,7 @@ batteries:  {
   description:  "Value-packed, high-capacity 6S battery with heavy-duty silicone leads and reliable 100C burst output for bando bashing and daily freestyle."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://chinahobbyline.com/collections/cnhl-black-series/products/cnhl-black-series-1500mah-22-2v-6s-100c-lipo-battery-with-xt60-plug"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/cnhl-black-series-1500mah-6s-100c-lipo-battery"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://chinahobbyline.com/products/2-packs-cnhl-1500mah-8s-lipo-battery-xt60"
+    url:  "https://chinahobbyline.com/products/2-packs-cnhl-black-series-v2-0-1500mah-22-2v-6s-130c-lipo-battery-with-xt60-plug"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -3629,11 +3625,7 @@ batteries:  {
   description:  "Ideal power source for 3-inch cinewhoops, toothpicks, and lightweight micro long-range quadcopters."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://chinahobbyline.com/collections/cnhl-ministar-series/products/cnhl-ministar-650mah-14-8v-4s-70c-lipo-battery-with-xt30-plug"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/cnhl-ministar-650mah-14-8v-4s-70c-lipo-battery-with-xt30"
+    url:  "https://chinahobbyline.com/products/cnhl-ministar-series-650mah-14-8v-4s-70c-lipo-battery-with-xt30-plug"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -3654,14 +3646,10 @@ batteries:  {
   description:  "State-of-the-art Z-Folding process LiHV battery designed for 65mm micro whoops, delivering sustained high voltage and reduced sag."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/lava-1s-300mah-75c-battery"
+    url:  "https://betafpv.com/products/lava-1s-300mah-75c-battery-5pcs"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/products/lava-1s-300mah-75c-battery"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url:  "https://betafpv.com/products/lava-1s-300mah-75c-battery-5pcs"
   }
 }
@@ -3679,15 +3667,11 @@ batteries:  {
   description:  "High-discharge Z-Folding 1S battery for 75mm micro whoops and 2-inch toothpicks requiring maximum flight time and punch."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/lava-1s-450mah-75c-battery"
+    url:  "https://betafpv.com/products/lava-1s-450mah-75c-battery-4pcs"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://betafpv.com/products/lava-1s-450mah-75c-battery"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://betafpv.com/products/lava-2s-3s-4s-450mah-75c-battery-2pcs"
+    url:  "https://betafpv.com/products/lava-1s-450mah-75c-battery-4pcs"
   }
 }
 batteries:  {
@@ -3704,10 +3688,10 @@ batteries:  {
   description:  "Long-range cruising Li-ion battery pack built with high-density 18650 cells for 7-inch mountain surfers and endurance flights."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://gaoneng.pro/products/gnb-6s-3000mah-18650-li-ion-pack"
+    url:  "https://www.gaoneng.shop/products/gaoneng-gnb-6s-22.2v-3000mah-10c-xt60-li-ion-battery-made-with-sony-18650-vtc6"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/gnb-6s-3000mah-35a-18650-li-ion-battery"
+    url:  "https://pyrodrone.com/products/gnb-3000mah-6s-10c-li-ion-sony-vtc6-long-range-battery-xt60"
   }
 }

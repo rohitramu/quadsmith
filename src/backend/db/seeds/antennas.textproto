@@ -1959,15 +1959,15 @@ antennas:  {
   description: "Benchmark omnidirectional 5.8GHz circular polarized antenna offering incredible axial ratio and radiation pattern smoothness in an indestructible housing."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.truerc.ca/shop/5-8ghz-2/transmitter/singularity-5-8"
+    url:  "https://truerc.com/71964-singularity-58-sma"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/truerc-singularity-5-8ghz-antenna-rhcp-sma.html"
+    url:  "https://www.getfpv.com/truerc-singularity-5-8-sma-long-antenna-rhcp.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/truerc-singularity-5-8-stubby-for-dji-hd-goggles-black-4-pack-for-dji"
+    url:  "https://pyrodrone.com/products/truerc-singularity-5-8-sma-long-antenna-rhcp"
   }
 }
 antennas:  {
@@ -1985,15 +1985,15 @@ antennas:  {
   description: "Ultralight 1.2g micro U.FL omnidirectional circular polarized antenna for whoops and micro long-range quads."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.truerc.ca/shop/5-8ghz-2/transmitter/singularity-5-8"
+    url:  "https://truerc.com/71266-71224-core-58-ufl"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/truerc-singularity-5-8ghz-u-fl-antenna-rhcp"
+    url:  "https://pyrodrone.com/products/singularity-5-8-u-fl-rhcp"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/truerc-singularity-5-8-stubby-for-dji-hd-goggles-black-4-pack-for-dji"
+    url:  "https://pyrodrone.com/products/truerc-singularity-5-8ghz-u-fl-lite-rhcp-72mm"
   }
 }
 antennas:  {
@@ -2011,11 +2011,11 @@ antennas:  {
   description: "High gain 2.2 dBi omni antenna with rugged ultrasonic welded polycarbonate housing and 5.3-6.2GHz ultra-wide bandwidth."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.getfpv.com/lumenier-axii-2-5-8ghz-antenna-rhcp.html"
+    url:  "https://www.getfpv.com/lumenier-micro-axii-2-antenna-5-8ghz-sma.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/lumenier-axii-2-5-8ghz-antenna-rhcp.html"
+    url:  "https://www.getfpv.com/lumenier-micro-axii-2-antenna-5-8ghz-sma.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -2037,15 +2037,11 @@ antennas:  {
   description: "Compact form factor with nearly spherical coverage and welded ultrasonic housing designed by Team BlackSheep."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:tbs_triumph_pro_sma"
+    url:  "https://www.team-blacksheep.com/products/prod:triumph_pro_sma"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/tbs-triumph-pro-5-8ghz-sma-rhcp-antenna"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/tbs-tango-2-crossfire-remote-transmitter-tx-tango-ii-ndaa"
+    url:  "https://pyrodrone.com/products/tbs-triumph-pro-sma"
   }
 }
 antennas:  {
@@ -2062,16 +2058,8 @@ antennas:  {
   gain_dbi: 2.6
   description: "High efficiency 2.6 dBi RHCP antenna with gold-plated internal PCB and robust impact-resistant body."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.foxeer.com/foxeer-lollipop-4-plus-high-quality-5-8g-antenna-g-383"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/foxeer-lollipop-4-plus-5-8ghz-antenna-rhcp-sma-2pcs.html"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/foxeer-5-8g-lollipop-4-plus-2-6dbi-omni-antenna-2pcs-mmcx-60mm-lhcp-teal"
+    url:  "https://pyrodrone.com/products/foxeer-5-8g-lollipop-4-plus-2-6dbi-omni-antenna-2pcs-sma-100mm-rhcp-teal"
   }
 }
 antennas:  {
@@ -2089,15 +2077,11 @@ antennas:  {
   description: "Flexible T-style dipole receiver antenna with U.FL connector for ExpressLRS 2.4GHz receivers."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.radiomasterrc.com/products/rp1-expresslrs-2-4ghz-nano-receiver"
+    url:  "https://radiomasterrc.com/products/2-4ghz-t-antenna"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/radiomaster-2-4ghz-t-antenna-for-rp1-elrs-receiver-2-pack"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/radiomaster-2-4ghz-915mhz-dual-band-t-antenna-ipex1-ufl-1"
+    url:  "https://www.getfpv.com/radiomaster-u-fl-2-4ghz-t-antenna-65mm.html"
   }
 }
 antennas:  {
@@ -2158,7 +2142,7 @@ antennas:  {
   description: "Flexible 915MHz long-range dipole T-antenna for TBS Crossfire and ExpressLRS 900MHz receivers."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:crossfire_stock_ant"
+    url:  "https://www.team-blacksheep.com/products/prod:stock_rx_antenna"
   }
 }
 antennas:  {
@@ -2176,7 +2160,7 @@ antennas:  {
   description: "Flexible 868MHz EU-frequency dipole T-antenna for long-range telemetry receivers."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:crossfire_stock_ant"
+    url:  "https://www.team-blacksheep.com/products/prod:stock_rx_antenna"
   }
 }
 antennas:  {

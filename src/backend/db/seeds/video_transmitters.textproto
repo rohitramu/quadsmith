@@ -53,11 +53,7 @@ video_transmitters:  {
   description: "Rugged CNC-cased 1W digital HD transmitter for 5-inch and larger freestyle quads, with 0ms glass-to-glass latency."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hd-zero.com/product-page/hdzero-freestyle-v2-vtx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/hdzero-freestyle-v2-vtx"
+    url:  "https://www.hd-zero.com/product-page/hdzero-freestyle-v2-kit"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -78,8 +74,8 @@ video_transmitters:  {
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Zero-latency digital video transmitter engineered for 1S racing whoops with standard 25.5x25.5mm mounting pattern."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.hd-zero.com/product-page/hdzero-whoop-lite-vtx"
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://docs.hd-zero.com/whoop-lite"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -4178,19 +4174,15 @@ video_transmitters:  {
   description: "High-power digital HD VTX featuring 32GB onboard storage, 1080p 60fps/120fps recording, and low-latency digital video transmission up to 4km."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-pro-vtx"
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-vtx-v2-only-dual-antennas"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-pro-vtx"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-l-with-gm3-and-pro-kit"
+    url:  "https://caddxfpv.com/products/walksnail-avatar-hd-pro-kit"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/walksnail-avatar-gt2-kit-dual-antennas-with-avatar-pro-camera-1080p-and-gt2-vtx-2w-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
+    url:  "https://www.racedayquads.com/products/walksnail-avatar-hd-v2-vtx-module"
   }
 }
 video_transmitters:  {
@@ -4238,7 +4230,7 @@ video_transmitters:  {
   description: "Legendary 1W high-voltage analog video transmitter with SmartAudio V2.1 and CleanSwitch technology."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:unify_pro32_hv"
+    url:  "https://www.team-blacksheep.com/products/prod:unifypro32_hv"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_DOCUMENTATION
@@ -4246,7 +4238,7 @@ video_transmitters:  {
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/tbs-unify-pro32-hv-5-8ghz-video-transmitter-sma.html"
+    url:  "https://pyrodrone.com/products/tbs-unify-pro32-hv-mmcx"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -4266,13 +4258,10 @@ video_transmitters:  {
   input_voltage_max_v: 36
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Ultra-durable 1.6W high-power analog transmitter with full CNC aluminum thermal armor and LOCK-ON technology."
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://pyrodrone.com/products/rushfpv-rush-tank-solo-5-8ghz-vtx"
-  }
+
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/rush-tank-solo-5-8ghz-vtx.html"
+    url:  "https://www.getfpv.com/rushfpv-rush-tank-solo-5-8ghz-vtx.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -4293,16 +4282,12 @@ video_transmitters:  {
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Compact 20x20mm switchable 25/200/400/800mW analog VTX with IRC Tramp protocol and metal heat sink shield."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.speedybee.com/speedybee-tx800/"
+    type:  REFERENCE_LINK_TYPE_DOCUMENTATION
+    url:  "https://www.speedybee.com/tx800-download/"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/speedybee-tx800-5-8ghz-vtx.html"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/speedybee-bee35-analog-6s-3-5-cinewhoop-drone-with-tx800-vtx-and-speedybee-phonix-se-camera-choose-receiver"
   }
 }
 video_transmitters:  {
@@ -4320,11 +4305,7 @@ video_transmitters:  {
   description: "Extreme long-range analog VTX pushing up to 2500mW with integrated cooling fan and aluminum casing."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.foxeer.com/foxeer-reaper-extreme-2-5w-5-8g-72ch-vtx-g-465"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/foxeer-reaper-extreme-5-8ghz-2-5w-72ch-vtx"
+    url:  "https://www.foxeer.com/foxeer-5-8g-reaper-extreme-v2-2-5w-72ch-vtx-g-566"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE

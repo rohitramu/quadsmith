@@ -2163,11 +2163,11 @@ motors:  {
   description:  "Premium 5-inch freestyle and racing motor with high-temperature silver-core windings and titanium alloy shaft."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://store.tmotor.com/product/f60-pro-v-motor.html"
+    url:  "https://tmotorhobby.com/goods-1183-TMOTOR+F60+Pro+V+22075+Brushless+Racing+Motor+-+1750KV1950KV2020KV2550KV.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/t-motor-f60-pro-v-motor-1950kv-2020kv.html"
+    url:  "https://www.getfpv.com/t-motor-f60-pro-v-motor-1750kv-1950kv-2020kv-2550kv.html"
   }
 }
 motors:  {
@@ -2183,11 +2183,11 @@ motors:  {
   description:  "High-power 6S FPV racing motor engineered for linear throttle response and extreme bursts."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://store.tmotor.com/product/f60-pro-v-motor.html"
+    url:  "https://tmotorhobby.com/goods-1183-TMOTOR+F60+Pro+V+22075+Brushless+Racing+Motor+-+1750KV1950KV2020KV2550KV.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/t-motor-f60-pro-v-2020kv-motor"
+    url:  "https://www.getfpv.com/t-motor-f60-pro-v-motor-1750kv-1950kv-2020kv-2550kv.html"
   }
 }
 motors:  {
@@ -2203,11 +2203,11 @@ motors:  {
   description:  "Smooth and efficient 6S freestyle motor featuring unibell construction."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://store.tmotor.com/product/p2207-v3-motor.html"
+    url:  "https://tmotorhobby.com/goods-1181-P2207+V3.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/t-motor-pacer-v3-p2207-1950kv-motor.html"
+    url:  "https://www.getfpv.com/t-motor-pacer-v3-p2207-powerful-freestyle-motor-1750kv-1950kv-2080kv-2550kv.html"
   }
 }
 motors:  {
@@ -2223,7 +2223,7 @@ motors:  {
   description:  "Flagship 6S freestyle motor with curved N52H magnets, NSK bearings, and an O-ring cushioned bearing design."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://shop.iflight.com/xing2-2207-fpv-motor-pro1720"
+    url:  "https://shop.iflight.com/XING2-2207-4S-6S-FPV-Motor-Unibell-Black-for-Nazgul-Evoque-F5-pro1610"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -2243,7 +2243,7 @@ motors:  {
   description:  "High-KV 4S variant of the XING2 2207 series for lightweight high-RPM freestyle builds."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://shop.iflight.com/xing2-2207-fpv-motor-pro1720"
+    url:  "https://shop.iflight.com/XING2-2207-4S-6S-FPV-Motor-Unibell-Black-for-Nazgul-Evoque-F5-pro1610"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -2267,11 +2267,11 @@ motors:  {
   description:  "Reliable and budget-friendly 6S brushless motor featuring durable aerospace aluminum bell and dual EZO bearings."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://emax-usa.com/collections/eco-ii-series/products/emax-eco-ii-2207-motor"
+    url:  "https://shop.emax-usa.com/products/eco-ii-2207-brushless-motor-1700kv-1900kv-2400kv"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/emax-eco-ii-2207-1900kv-motor"
+    url:  "https://www.getfpv.com/emax-eco-ii-series-2207-motor-1700kv-1900kv-2400kv.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -2291,7 +2291,7 @@ motors:  {
   description:  "Ultra-lightweight premium racing motor with single-piece bell housing and Japanese NSK bearings."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/rcinpower-wasp-major-22-6-6-5-motor-gun-metal-gold-1860kv-2020kv-2420kv"
+    url:  "https://pyrodrone.com/products/rcinpower-wasp-major-22-6-6-5-gold"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -2335,11 +2335,11 @@ motors:  {
   description:  "Sub-250g ultralight micro motor engineered for 4S toothpick and micro long-range drones."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://flywoo.net/collections/robo-series/products/robo-1202-5-motor"
+    url:  "https://www.getfpv.com/flywoo-robo-rb-1202-5-5500kv-11500kv-fpv-motor-1-5mm-shaft.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://flywoo.net/collections/robo-series/products/robo-1202-5-motor"
+    url:  "https://www.getfpv.com/flywoo-robo-rb-1202-5-5500kv-11500kv-fpv-motor-1-5mm-shaft.html"
   }
 }
 motors:  {
@@ -2355,10 +2355,10 @@ motors:  {
   description:  "BST (Bearing Shield Technology) dust and water-resistant 6S freestyle motor with high-temperature curved arc magnets."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.axisflying.com/c227-motor"
+    url:  "https://www.axisflying.com/products/c227-5-inch-c2207-1960kv-brushless-motor"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/axisflying-c227-freestyle-motor-1960kv.html"
+    url:  "https://www.getfpv.com/axisflying-c227-motor-1960kv.html"
   }
 }

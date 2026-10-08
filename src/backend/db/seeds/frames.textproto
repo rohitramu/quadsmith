@@ -2726,20 +2726,16 @@ frames:  {
   geometry:  "True X"
   description:  "Popular open-source community collaborative freestyle frame designed by Team BlackSheep for durability, cheap spare arms, and easy maintenance."
   reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.team-blacksheep.com/products/prod:source_one_v5"
-  }
-  reference_links:  {
     type:  REFERENCE_LINK_TYPE_DOCUMENTATION
     url:  "https://github.com/tbs-trappy/source_one"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/tbs-source-one-v5-5-frame.html"
+    url:  "https://www.getfpv.com/tbs-source-one-v5-5-frame-kit.html"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/tbs-source-one-v5-5-inch-frame-20x20-insulation-mount-set"
+    url:  "https://www.racedayquads.com/products/tbs-source-one-v5-5-freestyle-long-range-frame"
   }
 }
 frames:  {
@@ -2755,11 +2751,7 @@ frames:  {
   description:  "Aerodynamic 5-inch deadcat freestyle frame with zero props in view for DJI O3, injection-molded TPU protection, and dual 20x20/30x30 mounting."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://www.speedybee.com/speedybee-mario-5-frame/"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/speedybee-mario-5-dc-fpv-freestyle-frame-kit"
+    url:  "https://www.speedybee.com/mario-5-frame-download/"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
@@ -2779,15 +2771,11 @@ frames:  {
   description:  "Flagship geometric frame with illuminated side panels, XT60 integrated plug, and CNC aluminum camera cage."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://shop.iflight.com/evoque-f5-v2-frame-kit-pro1873"
+    url:  "https://shop.iflight.com/Evoque-F5-V2-Frame-Kit-Pro1887"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/iflight-nazgul-evoque-f5-v2-frame-kit-deadcat-squashed-x.html"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.racedayquads.com/products/dji-o4-pro-upgrade-kit-for-iflight-nazgul-evoque-f5-f6-v2"
+    url:  "https://pyrodrone.com/products/iflight-nazgul-evoque-f5x-v2-squashed-x-geometry-fpv-drone-frame-kit"
   }
 }
 frames:  {
@@ -2807,11 +2795,7 @@ frames:  {
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/geprc-mark-5-frame-kit"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/gep-rc-mark5-frame-dji-o3-upgrade-kit-coral-orange"
+    url:  "https://www.racedayquads.com/products/geprc-mark5-pro-5-frame"
   }
 }
 frames:  {
@@ -2827,14 +2811,10 @@ frames:  {
   description:  "Ultralight Sub-250g 4-inch micro long-range frame designed by Dave_C FPV with deadcat geometry for obstruction-free flight recording."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url:  "https://flywoo.net/products/explorer-lr-4-v2-frame-kit"
+    url:  "https://flywoo.net/products/explorer-lr-dji-frame-kit"
   }
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://www.getfpv.com/flywoo-explorer-lr-4-quad-frame-kit-v2.html"
-  }
-  reference_links:  {
-    type:  REFERENCE_LINK_TYPE_PURCHASE
-    url:  "https://pyrodrone.com/products/flywoo-hexplorer-lr-4-hexa-copter-frame-kit-smo-4k-camera-mount"
+    url:  "https://www.getfpv.com/flywoo-explorer-lr-4-o3-frame-kit.html"
   }
 }
