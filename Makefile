@@ -1,4 +1,4 @@
-.PHONY: all build sandbox generate clean test vendor tool
+.PHONY: all build sandbox generate clean test test-e2e vendor tool
 
 export GOWORK := $(shell pwd)/src/go.work
 
@@ -58,13 +58,17 @@ test: generate
 	@echo "--- Running Web UI Tests ---"
 	@cd src/frontend/web && npm test
 
+test-e2e: build
+	@echo "--- Running E2E Sandbox Tests ---"
+	@go test -v ./test/...
+
 clean:
 	@echo "--- Cleaning Workspace ---"
 	@rm -rf bin/
 
 vendor:
 	@echo "--- Updating and vendoring dependencies ---"
-	@for mod in src/backend/api src/frontend/cli; do \
+	@for mod in src/backend/api src/frontend/cli test; do \
 		echo "Updating $$mod..."; \
 		(cd $$mod && go get -u ./... && go mod tidy) || exit 1; \
 	done

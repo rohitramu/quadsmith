@@ -1,4 +1,4 @@
-package integration
+package test
 
 import (
 	"bytes"
@@ -20,6 +20,22 @@ import (
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 )
+
+func resolveSeedPath(t *testing.T) string {
+	t.Helper()
+	// Relative from test/
+	p := filepath.Join("..", "src", "backend", "db", "seeds", "motors.textproto")
+	if _, err := os.Stat(p); err == nil {
+		return p
+	}
+	// Relative from root
+	p = filepath.Join("src", "backend", "db", "seeds", "motors.textproto")
+	if _, err := os.Stat(p); err == nil {
+		return p
+	}
+	t.Fatalf("Failed to resolve motors.textproto path")
+	return ""
+}
 
 func setupTestServer(t *testing.T) (*httptest.Server, *pgxpool.Pool) {
 	t.Helper()
@@ -143,7 +159,7 @@ func TestPagination_FullIteration(t *testing.T) {
 
 	// Verify against total seeded motors
 	expectedMotors := 143
-	seedPath := filepath.Join("..", "..", "db", "seeds", "motors.textproto")
+	seedPath := resolveSeedPath(t)
 	if b, err := os.ReadFile(seedPath); err == nil {
 		var seedResp pb.ListMotorsResponse
 		if err := prototext.Unmarshal(b, &seedResp); err == nil && len(seedResp.Motors) > 0 {
@@ -411,10 +427,7 @@ func TestCLI_Pagination(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	qsPath, err := filepath.Abs("../../../../bin/qs")
-	if err != nil {
-		t.Fatalf("Failed to resolve qs binary path: %v", err)
-	}
+	qsPath := resolveQSPath(t)
 
 	// 1. List with --limit, --filter, --sort
 	cmd := exec.Command(qsPath, "motors", "list", "--json", "--limit", "5", "--filter", `manufacturer == "BETAFPV"`, "--sort", "^kv")
@@ -423,7 +436,7 @@ func TestCLI_Pagination(t *testing.T) {
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
-	err = cmd.Run()
+	err := cmd.Run()
 	if err != nil {
 		t.Fatalf("CLI command failed: %v\nStderr: %s", err, stderr.String())
 	}

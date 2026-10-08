@@ -7,6 +7,7 @@ COPY src/go.work src/go.work.sum ./src/
 COPY src/build_deps/go.mod src/build_deps/go.sum ./src/build_deps/
 COPY src/backend/api/go.mod src/backend/api/go.sum ./src/backend/api/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
+COPY test/go.mod test/go.sum* ./test/
 COPY src/vendor/ ./src/vendor/
 
 # Copy all source code (including pre-generated proto files)

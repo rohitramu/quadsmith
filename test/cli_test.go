@@ -1,14 +1,35 @@
-package integration
+package test
 
 import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"testing"
 	"time"
 )
+
+func resolveQSPath(t *testing.T) string {
+	t.Helper()
+	// Try relative from test/ directory
+	qsPath, err := filepath.Abs("../bin/qs")
+	if err == nil {
+		if _, err := os.Stat(qsPath); err == nil {
+			return qsPath
+		}
+	}
+	// Try relative from repo root
+	qsPath, err = filepath.Abs("bin/qs")
+	if err == nil {
+		if _, err := os.Stat(qsPath); err == nil {
+			return qsPath
+		}
+	}
+	t.Fatalf("Failed to resolve qs binary path (checked ../bin/qs and bin/qs)")
+	return ""
+}
 
 func TestCLI_ListFrames(t *testing.T) {
 	// Fail if we can't reach the sandbox
@@ -18,10 +39,7 @@ func TestCLI_ListFrames(t *testing.T) {
 		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
 	}
 
-	qsPath, err := filepath.Abs("../../../../bin/qs")
-	if err != nil {
-		t.Fatalf("Failed to resolve qs binary path: %v", err)
-	}
+	qsPath := resolveQSPath(t)
 
 	cmd := exec.Command(qsPath, "frames", "list", "--json")
 	cmd.Env = append(cmd.Env, "QS_API_URL=http://127.0.0.1:8080")
@@ -54,10 +72,7 @@ func TestCLI_ListBuilds(t *testing.T) {
 		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
 	}
 
-	qsPath, err := filepath.Abs("../../../../bin/qs")
-	if err != nil {
-		t.Fatalf("Failed to resolve qs binary path: %v", err)
-	}
+	qsPath := resolveQSPath(t)
 
 	cmd := exec.Command(qsPath, "builds", "list", "--json")
 	cmd.Env = append(cmd.Env, "QS_API_URL=http://127.0.0.1:8080")
