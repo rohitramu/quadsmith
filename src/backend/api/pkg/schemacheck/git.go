@@ -29,8 +29,8 @@ func NewGitHelper() (*GitHelper, error) {
 // Precedence:
 //  1. BREAKING_AGAINST_REF environment variable (explicit override).
 //  2. GITHUB_BASE_REF environment variable (GitHub Actions PR base).
-//  3. Previous commit relative to what is currently checked out (HEAD~1).
-//     Falls back to HEAD if HEAD~1 does not exist (e.g. initial commit or shallow clone).
+//  3. If there are uncommitted changes: compare against HEAD.
+//  4. If there are no uncommitted changes: compare against HEAD~1 (or HEAD if HEAD~1 does not exist).
 func (g *GitHelper) ResolveBaseRef() (string, error) {
 	if envRef := os.Getenv("BREAKING_AGAINST_REF"); envRef != "" {
 		return strings.TrimSpace(envRef), nil
@@ -45,7 +45,12 @@ func (g *GitHelper) ResolveBaseRef() (string, error) {
 		}
 	}
 
-	// Compare against the previous commit relative to what is currently checked out (HEAD~1)
+	// 1. If we have uncommitted changes, check against HEAD
+	if g.HasUncommittedChanges() {
+		return "HEAD", nil
+	}
+
+	// 2. If we don't have uncommitted changes, check against HEAD~1
 	if g.refExists("HEAD~1") {
 		return "HEAD~1", nil
 	}
