@@ -158,6 +158,7 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
@@ -480,6 +481,56 @@ func GetColumns(m interface{}) []string {
 	return cols
 }
 
+func dataToJSON(data interface{}) ([]byte, error) {
+	if m, ok := data.(proto.Message); ok {
+		return protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}.Marshal(m)
+	}
+	v := reflect.ValueOf(data)
+	if v.IsValid() && v.Kind() == reflect.Slice {
+		var parts [][]byte
+		for i := 0; i < v.Len(); i++ {
+			elem := v.Index(i).Interface()
+			if pm, ok := elem.(proto.Message); ok {
+				b, err := protojson.MarshalOptions{UseProtoNames: true, EmitDefaultValues: true}.Marshal(pm)
+				if err != nil {
+					return nil, err
+				}
+				parts = append(parts, b)
+			} else {
+				b, err := json.Marshal(elem)
+				if err != nil {
+					return nil, err
+				}
+				parts = append(parts, b)
+			}
+		}
+		var sb strings.Builder
+		sb.WriteString("[")
+		for i, p := range parts {
+			if i > 0 {
+				sb.WriteString(",")
+			}
+			sb.Write(p)
+		}
+		sb.WriteString("]")
+		return []byte(sb.String()), nil
+	}
+	return json.Marshal(data)
+}
+
+func formatValue(val interface{}) string {
+	if val == nil {
+		return "-"
+	}
+	if s, ok := val.(string); ok && s == "" {
+		return "-"
+	}
+	if arr, ok := val.([]interface{}); ok && len(arr) == 0 {
+		return "-"
+	}
+	return fmt.Sprintf("%v", val)
+}
+
 func printOutput(out io.Writer, data interface{}, cols []string, startOffset ...int) error {
 	var isNilSlice bool
 	if data != nil {
@@ -494,22 +545,38 @@ func printOutput(out io.Writer, data interface{}, cols []string, startOffset ...
 			fmt.Fprintln(out, "[]")
 			return nil
 		}
-		b, err := json.MarshalIndent(data, "", "  ")
+		b, err := dataToJSON(data)
 		if err != nil {
 			return err
 		}
-		fmt.Fprintln(out, string(b))
+		var raw interface{}
+		if err := json.Unmarshal(b, &raw); err != nil {
+			return err
+		}
+		indented, err := json.MarshalIndent(raw, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Fprintln(out, string(indented))
 		return nil
 	} else if yamlOut {
 		if isNilSlice {
 			fmt.Fprintln(out, "[]")
 			return nil
 		}
-		b, err := yaml.Marshal(data)
+		b, err := dataToJSON(data)
 		if err != nil {
 			return err
 		}
-		fmt.Fprintln(out, string(b))
+		var raw interface{}
+		if err := json.Unmarshal(b, &raw); err != nil {
+			return err
+		}
+		yb, err := yaml.Marshal(raw)
+		if err != nil {
+			return err
+		}
+		fmt.Fprintln(out, string(yb))
 		return nil
 	}
 
@@ -532,7 +599,7 @@ func printTableTo(out io.Writer, data interface{}, cols []string, startOffset ..
 		offset = startOffset[0]
 	}
 
-	b, _ := json.Marshal(data)
+	b, _ := dataToJSON(data)
 	var v interface{}
 	json.Unmarshal(b, &v)
 
@@ -601,11 +668,7 @@ func printTableTo(out io.Writer, data interface{}, cols []string, startOffset ..
 			}
 			if m, ok := item.(map[string]interface{}); ok {
 				for i, k := range orderedKeys {
-					if m[k] == nil {
-						fmt.Fprintf(w, "-")
-					} else {
-						fmt.Fprintf(w, "%v", m[k])
-					}
+					fmt.Fprintf(w, "%s", formatValue(m[k]))
 					if i < len(orderedKeys)-1 {
 						fmt.Fprintf(w, "\t")
 					}
@@ -626,11 +689,7 @@ func printTableTo(out io.Writer, data interface{}, cols []string, startOffset ..
 			sort.Strings(keys)
 		}
 		for _, k := range keys {
-			if val[k] != nil {
-				fmt.Fprintf(w, "%s\t%v\n", k, val[k])
-			} else {
-				fmt.Fprintf(w, "%s\t-\n", k)
-			}
+			fmt.Fprintf(w, "%s\t%s\n", k, formatValue(val[k]))
 		}
 	default:
 		fmt.Fprintf(out, "%v\n", v)

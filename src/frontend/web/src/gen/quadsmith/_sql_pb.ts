@@ -11,7 +11,7 @@ import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";
  * Describes the file quadsmith/_sql.proto.
  */
 export const file_quadsmith__sql: GenFile = /*@__PURE__*/
-  fileDesc("ChRxdWFkc21pdGgvX3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbDpACgp0YWJsZV9uYW1lEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGLiOAyABKAlSCXRhYmxlTmFtZTpFCg5pc19wcmltYXJ5X2tleRIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYuY4DIAEoCFIMaXNQcmltYXJ5S2V5Oj8KCnJlZmVyZW5jZXMSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLqOAyABKAlSCnJlZmVyZW5jZXM6PAoJaXNfdW5pcXVlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi7jgMgASgIUghpc1VuaXF1ZTpCCgxjcmVhdGVfaW5kZXgSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLyOAyABKAhSC2NyZWF0ZUluZGV4OkAKC2NvbHVtbl90eXBlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi9jgMgASgJUgpjb2x1bW5UeXBlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z", [file_google_protobuf_descriptor]);
+  fileDesc("ChRxdWFkc21pdGgvX3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbDpACgp0YWJsZV9uYW1lEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGLiOAyABKAlSCXRhYmxlTmFtZTpFCg5pc19wcmltYXJ5X2tleRIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYuY4DIAEoCFIMaXNQcmltYXJ5S2V5Oj8KCnJlZmVyZW5jZXMSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLqOAyABKAlSCnJlZmVyZW5jZXM6PAoJaXNfdW5pcXVlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi7jgMgASgIUghpc1VuaXF1ZTpCCgxjcmVhdGVfaW5kZXgSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLyOAyABKAhSC2NyZWF0ZUluZGV4OkAKC2NvbHVtbl90eXBlEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi9jgMgASgJUgpjb2x1bW5UeXBlOkAKC2lzX3JlcXVpcmVkEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi+jgMgASgIUgppc1JlcXVpcmVkOkQKDWRlZmF1bHRfdmFsdWUSHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGL+OAyABKAlSDGRlZmF1bHRWYWx1ZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw", [file_google_protobuf_descriptor]);
 
 /**
  * The name of the SQL table to generate for this message.
@@ -62,4 +62,21 @@ export const create_index: GenExtension<FieldOptions, boolean> = /*@__PURE__*/
  */
 export const column_type: GenExtension<FieldOptions, string> = /*@__PURE__*/
   extDesc(file_quadsmith__sql, 5);
+
+/**
+ * Marks this column as NOT NULL in the generated table.
+ *
+ * @generated from extension: bool is_required = 51006;
+ */
+export const is_required: GenExtension<FieldOptions, boolean> = /*@__PURE__*/
+  extDesc(file_quadsmith__sql, 6);
+
+/**
+ * Specifies the default value for this column in the generated table.
+ * Example: [(quadsmith.sql.default_value) = "false"]
+ *
+ * @generated from extension: string default_value = 51007;
+ */
+export const default_value: GenExtension<FieldOptions, string> = /*@__PURE__*/
+  extDesc(file_quadsmith__sql, 7);
 

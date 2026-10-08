@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS gps_receivers (
   weight_g DECIMAL,
   chipset TEXT,
   protocol TEXT,
-  has_compass BOOLEAN,
+  has_compass BOOLEAN DEFAULT false NOT NULL,
   compass_chip TEXT,
   input_voltage_min_v DECIMAL,
   input_voltage_max_v DECIMAL,

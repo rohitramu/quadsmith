@@ -85,6 +85,18 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 			}
 		}
 
+		if proto.HasExtension(fOpts, quadsmith_sql.E_DefaultValue) {
+			if defVal, ok := proto.GetExtension(fOpts, quadsmith_sql.E_DefaultValue).(string); ok && defVal != "" {
+				colType += " DEFAULT " + defVal
+			}
+		}
+
+		if proto.HasExtension(fOpts, quadsmith_sql.E_IsRequired) {
+			if isReq, ok := proto.GetExtension(fOpts, quadsmith_sql.E_IsRequired).(bool); ok && isReq {
+				colType += " NOT NULL"
+			}
+		}
+
 		defs = append(defs, fmt.Sprintf("%s %s", colName, colType))
 
 		// Check primary key

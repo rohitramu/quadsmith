@@ -365,7 +365,7 @@ var File_quadsmith_gps_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe9\x04\n" +
+	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xf8\x04\n" +
 	"\vGpsReceiver\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -374,8 +374,8 @@ const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x18\n" +
 	"\achipset\x18\x06 \x01(\tR\achipset\x12 \n" +
-	"\bprotocol\x18\a \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12\x1f\n" +
-	"\vhas_compass\x18\b \x01(\bR\n" +
+	"\bprotocol\x18\a \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12.\n" +
+	"\vhas_compass\x18\b \x01(\bB\r\xf0\xf3\x18\x01\xfa\xf3\x18\x05falseR\n" +
 	"hasCompass\x12!\n" +
 	"\fcompass_chip\x18\t \x01(\tR\vcompassChip\x12-\n" +
 	"\x13input_voltage_min_v\x18\n" +
