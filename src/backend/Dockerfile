@@ -18,7 +18,7 @@ RUN cd src/backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/
 
 
 # Stage 2: Build the Web UI
-FROM node:20 AS web-builder
+FROM node:22 AS web-builder
 WORKDIR /app
 
 # Copy package files
