@@ -1418,22 +1418,7 @@ frames: {
     url: "https://newbeedrone.com/products/cockroach-82-brushless-super-durable-frame"
   }
 }
-frames: {
 
-  uuid: "b717ba35-c2ce-45ae-9081-23ed82f1bec3"
-  id: "newbeedrone-cockroach-82-brushless-super-durable-frame-2"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame"
-  weight_g: 3.3
-  wheelbase_mm: 75
-  max_prop_size_mm: 40
-  geometry: "True X"
-  description: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame 82mm Plastic Part Only"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/cockroach-82-brushless-super-durable-frame"
-  }
-}
 frames: {
 
   uuid: "d190b2a8-e79a-471f-a479-4fc360ad4b00"

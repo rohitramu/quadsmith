@@ -383,9 +383,9 @@ flight_controllers: {
 flight_controllers: {
 
   uuid: "cd1fbeb9-6660-48c5-8494-8a838a47974a"
-  id: "toothpick-f4-2-4s-aio-brushless-flight-7"
+  id: "toothpick-f4-2-4s-20a-aio-brushless-flight"
   manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-4S AIO Brushless Flight"
+  name: "Toothpick F4 2-4S 20A AIO Brushless Flight Controller"
   weight_g: 7
   processor: "STM32F411"
   gyro: "BMI270"
@@ -463,9 +463,9 @@ flight_controllers: {
 flight_controllers: {
 
   uuid: "ac9512d9-fee9-4141-b709-d095be8de59d"
-  id: "f4-1s-brushless-flight-controller"
+  id: "f4-1s-brushless-flight-controller-frsky-rx"
   manufacturer: "BETAFPV"
-  name: "F4 1S Brushless Flight Controller"
+  name: "F4 1S Brushless Flight Controller (Frsky RX)"
   weight_g: 5.58
   processor: "STM32F411"
   gyro: "BMI270"
@@ -482,9 +482,9 @@ flight_controllers: {
 flight_controllers: {
 
   uuid: "83cd4658-dbb3-4d5a-a068-bd8fd6ebe5c5"
-  id: "toothpick-f4-2-4s-aio-brushless-flight-8"
+  id: "toothpick-f4-2-4s-12a-aio-brushless-flight"
   manufacturer: "BETAFPV"
-  name: "Toothpick F4 2-4S AIO Brushless Flight"
+  name: "Toothpick F4 2-4S 12A AIO Brushless Flight Controller"
   weight_g: 7
   processor: "STM32F411"
   gyro: "BMI270"
@@ -529,9 +529,9 @@ flight_controllers: {
 flight_controllers: {
 
   uuid: "6e71f7c2-df9a-4a10-bb76-94e2611f5326"
-  id: "f4-1s-brushless-flight-controller-2"
+  id: "f4-1s-brushless-flight-controller-no-rx"
   manufacturer: "BETAFPV"
-  name: "F4 1S Brushless Flight Controller"
+  name: "F4 1S Brushless Flight Controller (No RX)"
   weight_g: 5.58
   processor: "STM32F411"
   gyro: "BMI270"

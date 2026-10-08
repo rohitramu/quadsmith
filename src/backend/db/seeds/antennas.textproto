@@ -841,12 +841,12 @@ antennas: {
 antennas: {
 
   uuid: "8a8a623e-ca96-45ee-b250-f3131790542e"
-  id: "newbeedrone-beebrain-clover-5-8ghz-antenna"
+  id: "newbeedrone-beebrain-clover-5-8ghz-antenna-lhcp"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna"
+  name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (LHCP)"
   weight_g: 4.27
   connector: "SMA"
-  polarization: "RHCP"
+  polarization: "LHCP"
   frequency_band_mhz: 5800
   length_mm: 75
   gain_dbi: 2.2
@@ -859,9 +859,9 @@ antennas: {
 antennas: {
 
   uuid: "3e31bc68-59b9-4bfe-a6f0-9ade9aea3837"
-  id: "newbeedrone-beebrain-clover-5-8ghz-antenna-2"
+  id: "newbeedrone-beebrain-clover-5-8ghz-antenna-rhcp"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna"
+  name: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (RHCP)"
   weight_g: 4.27
   connector: "SMA"
   polarization: "RHCP"
@@ -877,12 +877,12 @@ antennas: {
 antennas: {
 
   uuid: "930cd3a7-da5b-4efd-a996-45cabdb3e038"
-  id: "newbeedrone-honey-patch-antenna-5-8ghz"
+  id: "newbeedrone-honey-patch-antenna-5-8ghz-lhcp"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Honey Patch Antenna 5.8Ghz"
+  name: "NewBeeDrone Honey Patch Antenna 5.8Ghz (LHCP)"
   weight_g: 11
   connector: "SMA"
-  polarization: "RHCP"
+  polarization: "LHCP"
   frequency_band_mhz: 5800
   length_mm: 75
   gain_dbi: 8.5
@@ -899,12 +899,12 @@ antennas: {
 antennas: {
 
   uuid: "9e28303d-9bf1-4938-b650-9d29b553ce55"
-  id: "newbeedrone-honey-patch-antenna-5-8ghz-2"
+  id: "newbeedrone-honey-patch-antenna-5-8ghz-linear"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Honey Patch Antenna 5.8Ghz"
+  name: "NewBeeDrone Honey Patch Antenna 5.8Ghz (Linear)"
   weight_g: 11
   connector: "SMA"
-  polarization: "RHCP"
+  polarization: "Linear"
   frequency_band_mhz: 5800
   length_mm: 75
   gain_dbi: 8.5
@@ -979,9 +979,9 @@ antennas: {
 antennas: {
 
   uuid: "0b82610e-7983-4c95-9d4d-d15b2bcdc081"
-  id: "newbeedrone-honey-patch-antenna-5-8ghz-3"
+  id: "newbeedrone-honey-patch-antenna-5-8ghz-rhcp"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Honey Patch Antenna 5.8Ghz"
+  name: "NewBeeDrone Honey Patch Antenna 5.8Ghz (RHCP)"
   weight_g: 11
   connector: "SMA"
   polarization: "RHCP"
@@ -1631,9 +1631,9 @@ antennas: {
 antennas: {
 
   uuid: "4bc4681a-ae3c-45d1-b840-5e45564af6bf"
-  id: "osprey-5-8ghz-140mm-ipex-ufl-fpv-antenna"
+  id: "osprey-5-8ghz-140mm-ipex-ufl-fpv-antenna-rhcp"
   manufacturer: "FlyFishRC"
-  name: "Osprey 5.8Ghz 140mm ipex/UFL FPV Antenna"
+  name: "Osprey 5.8Ghz 140mm ipex/UFL FPV Antenna (RHCP)"
   weight_g: 3.56
   connector: "U.FL"
   polarization: "RHCP"
@@ -1747,12 +1747,12 @@ antennas: {
 antennas: {
 
   uuid: "df73695a-0c1b-416c-991b-f51c63be19bf"
-  id: "osprey-5-8ghz-140mm-ipex-ufl-fpv-antenna-2"
+  id: "osprey-5-8ghz-140mm-ipex-ufl-fpv-antenna-lhcp"
   manufacturer: "FlyFishRC"
-  name: "Osprey 5.8Ghz 140mm ipex/UFL FPV Antenna"
+  name: "Osprey 5.8Ghz 140mm ipex/UFL FPV Antenna (LHCP)"
   weight_g: 3.56
   connector: "U.FL"
-  polarization: "RHCP"
+  polarization: "LHCP"
   frequency_band_mhz: 5800
   length_mm: 65
   gain_dbi: 2.2

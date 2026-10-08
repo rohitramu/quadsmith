@@ -1964,22 +1964,9 @@ batteries: {
   manufacturer: "Upgrade Energy"
   name: "Upgrade Energy RED V3 6S1P 3Ah"
   weight_g: 426
-  capacity_mah: 1550
-  cell_count_s: 4
-  chemistry: "LiPo"
-  connector: "XT60"
-  description: "Upgrade Energy RED V3 6S1P 3Ah Molicel P30B Long Battery (XT60)"
-}
-batteries: {
-
-  uuid: "06903b33-405f-4900-9c3b-d0154d7ba766"
-  id: "upgrade-energy-red-v3-6s1p-3ah-2"
-  manufacturer: "Upgrade Energy"
-  name: "Upgrade Energy RED V3 6S1P 3Ah"
-  weight_g: 426
-  capacity_mah: 1550
-  cell_count_s: 4
-  chemistry: "LiPo"
+  capacity_mah: 3000
+  cell_count_s: 6
+  chemistry: "Li-ion"
   connector: "XT60"
   description: "Upgrade Energy RED V3 6S1P 3Ah Molicel P30B Battery (XT60)"
 }
@@ -2111,15 +2098,15 @@ batteries: {
 batteries: {
 
   uuid: "a118c133-b13a-479a-bd0f-cceb625d6d7d"
-  id: "rotor-riot-fuel-cell"
+  id: "rotor-riot-fuel-cell-1s-500mah"
   manufacturer: "Rotor Riot"
-  name: "Rotor Riot Fuel Cell"
-  weight_g: 30
-  capacity_mah: 1550
-  cell_count_s: 4
-  chemistry: "LiPo"
-  connector: "XT60"
-  description: "Rotor Riot Fuel Cell - 1S 500mAh 75C LiHV Battery with BT2.0 Connector - 3 Pack"
+  name: "Rotor Riot Fuel Cell 1S 500mAh LiHV Battery"
+  weight_g: 13
+  capacity_mah: 500
+  cell_count_s: 1
+  chemistry: "LiHV"
+  connector: "BT2.0"
+  description: "Rotor Riot Fuel Cell - 1S 500mAh 75C LiHV Battery with BT2.0 Connector"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
@@ -3053,12 +3040,12 @@ batteries: {
 batteries: {
 
   uuid: "fa6b1a8f-47b9-4555-9fce-ff6130b49537"
-  id: "rotor-riot-fuel-cell-2"
+  id: "rotor-riot-fuel-cell-6s-1300mah"
   manufacturer: "Rotor Riot"
-  name: "Rotor Riot Fuel Cell"
-  weight_g: 30
-  capacity_mah: 1550
-  cell_count_s: 4
+  name: "Rotor Riot Fuel Cell 6S 1300mAh LiPo Battery"
+  weight_g: 220
+  capacity_mah: 1300
+  cell_count_s: 6
   chemistry: "LiPo"
   connector: "XT60"
   description: "Rotor Riot Fuel Cell - 6S 1300mAh 100C LiPo Battery with XT60 Connector"
@@ -3070,11 +3057,11 @@ batteries: {
 batteries: {
 
   uuid: "4f67523d-d363-4767-9cc2-a93c9a4892bc"
-  id: "rotor-riot-fuel-cell-3"
+  id: "rotor-riot-fuel-cell-4s-1500mah"
   manufacturer: "Rotor Riot"
-  name: "Rotor Riot Fuel Cell"
-  weight_g: 30
-  capacity_mah: 1550
+  name: "Rotor Riot Fuel Cell 4S 1500mAh LiPo Battery"
+  weight_g: 175
+  capacity_mah: 1500
   cell_count_s: 4
   chemistry: "LiPo"
   connector: "XT60"
@@ -3087,12 +3074,12 @@ batteries: {
 batteries: {
 
   uuid: "b014451e-38c2-405f-9ce2-9fc21f9979b9"
-  id: "rotor-riot-fuel-cell-4"
+  id: "rotor-riot-fuel-cell-6s-1500mah"
   manufacturer: "Rotor Riot"
-  name: "Rotor Riot Fuel Cell"
-  weight_g: 30
-  capacity_mah: 1550
-  cell_count_s: 4
+  name: "Rotor Riot Fuel Cell 6S 1500mAh LiPo Battery"
+  weight_g: 245
+  capacity_mah: 1500
+  cell_count_s: 6
   chemistry: "LiPo"
   connector: "XT60"
   description: "Rotor Riot Fuel Cell - 6S 1500mAh 100C LiPo Battery with XT60 Connector"

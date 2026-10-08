@@ -491,9 +491,9 @@ propellers: {
 propellers: {
 
   uuid: "b1e1d0ee-4b09-497f-adc8-99ea80db530a"
-  id: "31mm-4-blade-micro-whoop-propellers"
+  id: "31mm-4-blade-micro-whoop-propellers-1-0mm-shaft"
   manufacturer: "BETAFPV"
-  name: "31mm 4-blade Micro Whoop Propellers"
+  name: "31mm 4-Blade Micro Whoop Propellers (1.0mm Shaft)"
   weight_g: 0.3
   diameter_mm: 31
   pitch_mm: 18.6
@@ -903,15 +903,15 @@ propellers: {
 propellers: {
 
   uuid: "8f78c503-3039-4fe3-a6cb-fee94f345c87"
-  id: "31mm-3-blade-micro-whoop-propellers"
+  id: "31mm-3-blade-micro-whoop-propellers-1-0mm-shaft"
   manufacturer: "BETAFPV"
-  name: "31mm 3-blade Micro Whoop Propellers"
+  name: "31mm 3-Blade Micro Whoop Propellers (1.0mm Shaft)"
   weight_g: 0.28
   diameter_mm: 31
   pitch_mm: 18.6
   blades: 3
   material: "Polycarbonate"
-  description: "31mm 3-blade Micro Whoop Propellers (0.8mm Shaft)"
+  description: "31mm 3-blade Micro Whoop Propellers (1.0mm Shaft)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/31mm-3-blade-micro-whoop-propellers-1-0mm-shaft"
@@ -1022,9 +1022,9 @@ propellers: {
 propellers: {
 
   uuid: "0b3752db-ce75-4d21-ac88-4ec677a0b811"
-  id: "gemfan-40mm-3-blade-propellers"
+  id: "gemfan-40mm-3-blade-propellers-1-0mm-shaft"
   manufacturer: "BETAFPV"
-  name: "Gemfan 40mm 3-Blade Propellers"
+  name: "Gemfan 40mm 3-Blade Propellers (1.0mm Shaft)"
   weight_g: 0.49
   diameter_mm: 40
   pitch_mm: 24
@@ -1039,9 +1039,9 @@ propellers: {
 propellers: {
 
   uuid: "7b9dca5c-d8dd-42af-8bd4-80516f5329a5"
-  id: "gemfan-40mm-3-blade-propellers-2"
+  id: "gemfan-40mm-3-blade-propellers-1-5mm-shaft"
   manufacturer: "BETAFPV"
-  name: "Gemfan 40mm 3-Blade Propellers"
+  name: "Gemfan 40mm 3-Blade Propellers (1.5mm Shaft)"
   weight_g: 0.49
   diameter_mm: 40
   pitch_mm: 24
@@ -1056,9 +1056,9 @@ propellers: {
 propellers: {
 
   uuid: "f5f36dc3-9953-4899-aef2-35af8c5f4718"
-  id: "gemfan-40mm-4-blade-propellers"
+  id: "gemfan-40mm-4-blade-propellers-1-5mm-shaft"
   manufacturer: "BETAFPV"
-  name: "Gemfan 40mm 4-Blade Propellers"
+  name: "Gemfan 40mm 4-Blade Propellers (1.5mm Shaft)"
   weight_g: 0.52
   diameter_mm: 40
   pitch_mm: 24
@@ -1073,9 +1073,9 @@ propellers: {
 propellers: {
 
   uuid: "c7f68599-c900-4d42-8c05-48f89cd2e833"
-  id: "gemfan-40mm-4-blade-propellers-2"
+  id: "gemfan-40mm-4-blade-propellers-1-0mm-shaft"
   manufacturer: "BETAFPV"
-  name: "Gemfan 40mm 4-Blade Propellers"
+  name: "Gemfan 40mm 4-Blade Propellers (1.0mm Shaft)"
   weight_g: 0.52
   diameter_mm: 40
   pitch_mm: 24
@@ -1141,9 +1141,9 @@ propellers: {
 propellers: {
 
   uuid: "34c3acbd-6530-4a67-929c-8165a6ca52cd"
-  id: "31mm-4-blade-micro-whoop-propellers-2"
+  id: "31mm-4-blade-micro-whoop-propellers-0-8mm-shaft"
   manufacturer: "BETAFPV"
-  name: "31mm 4-blade Micro Whoop Propellers"
+  name: "31mm 4-Blade Micro Whoop Propellers (0.8mm Shaft)"
   weight_g: 0.3
   diameter_mm: 31
   pitch_mm: 18.6
@@ -1175,15 +1175,15 @@ propellers: {
 propellers: {
 
   uuid: "1a51da49-7078-441f-9efa-5548ba95fdbd"
-  id: "31mm-3-blade-micro-whoop-propellers-2"
+  id: "31mm-3-blade-micro-whoop-propellers-0-8mm-shaft"
   manufacturer: "BETAFPV"
-  name: "31mm 3-blade Micro Whoop Propellers"
+  name: "31mm 3-Blade Micro Whoop Propellers (0.8mm Shaft)"
   weight_g: 0.28
   diameter_mm: 31
   pitch_mm: 18.6
   blades: 3
   material: "Polycarbonate"
-  description: "31mm 3-blade Micro Whoop Propellers (0.8mm shaft 4 Sets)"
+  description: "31mm 3-blade Micro Whoop Propellers (0.8mm shaft)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/31mm-3-blade-micro-whoop-propellers-1-0mm-shaft"
@@ -1519,9 +1519,9 @@ propellers: {
 propellers: {
 
   uuid: "b3b60ce1-09f7-4da9-b92d-36073a6c193f"
-  id: "newbeedrone-azi-micro-propellers-40mm"
+  id: "newbeedrone-azi-micro-propellers-40mm-1-5mm-shaft"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Azi Micro Propellers 40mm"
+  name: "NewBeeDrone Azi Micro Propellers 40mm (1.5mm Shaft)"
   weight_g: 0.46
   diameter_mm: 40
   pitch_mm: 24
@@ -1540,11 +1540,11 @@ propellers: {
 propellers: {
 
   uuid: "c13b9e97-d1b9-4a12-87df-016eadab1128"
-  id: "newbeedrone-venom-v2-super-durable-propellers"
+  id: "newbeedrone-venom-v2-super-durable-propellers-1-0mm-shaft"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Venom V2 Super Durable Propellers"
+  name: "NewBeeDrone Venom V2 Super Durable Propellers (1.0mm Shaft)"
   weight_g: 0.19
-  diameter_mm: 127
+  diameter_mm: 31
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
@@ -1561,9 +1561,9 @@ propellers: {
 propellers: {
 
   uuid: "9f1b41ec-cd8d-4766-8d7e-d0cfb589c503"
-  id: "newbeedrone-azi-micro-propellers-40mm-2"
+  id: "newbeedrone-azi-micro-propellers-40mm-1-0mm-shaft"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Azi Micro Propellers 40mm"
+  name: "NewBeeDrone Azi Micro Propellers 40mm (1.0mm Shaft)"
   weight_g: 0.46
   diameter_mm: 40
   pitch_mm: 24
@@ -1578,11 +1578,11 @@ propellers: {
 propellers: {
 
   uuid: "90755b7e-0829-45b6-9dae-e03da6681efc"
-  id: "newbeedrone-venom-v2-super-durable-propellers-2"
+  id: "newbeedrone-venom-v2-super-durable-propellers-0-8mm-shaft"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Venom V2 Super Durable Propellers"
+  name: "NewBeeDrone Venom V2 Super Durable Propellers (0.8mm Shaft)"
   weight_g: 0.19
-  diameter_mm: 127
+  diameter_mm: 31
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
@@ -1759,6 +1759,10 @@ propellers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hq-prop-t3-5x2-5x3-tri-blade-3-5-prop-grey-2cw-2ccw-poly-carbonate"
   }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/hq-prop-t3-5x2-5x3-tri-blade-3-5-prop-4-pack-2mm-t-mount-grey"
+  }
 }
 propellers: {
 
@@ -1863,23 +1867,7 @@ propellers: {
   material: "Polycarbonate"
   description: "Donut 5145 Toroidal 5 Props"
 }
-propellers: {
 
-  uuid: "534bbd26-2f01-4854-9c20-48be28ae4eb7"
-  id: "t3-5x2-5x3-tri-blade-3-5-prop-4-pack"
-  manufacturer: "HQProp"
-  name: "T3.5x2.5x3 Tri-Blade 3.5 Prop"
-  weight_g: 1.58
-  diameter_mm: 12.7
-  pitch_mm: 63.5
-  blades: 3
-  material: "Polycarbonate"
-  description: "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/hq-prop-t3-5x2-5x3-tri-blade-3-5-prop-4-pack-2mm-t-mount-grey"
-  }
-}
 propellers: {
 
   uuid: "c7a760c2-b94d-4e88-bdcf-b9261083225c"
@@ -2158,19 +2146,7 @@ propellers: {
   material: "Polycarbonate"
   description: "HQProp HQ DP T65MMX3 Props 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.60g."
 }
-propellers: {
 
-  uuid: "626bc1ba-4b53-482d-ab23-c19745a8b082"
-  id: "hq-juicy-j37-4-9x3-7x3-props-2"
-  manufacturer: "HQProp"
-  name: "HQ Juicy J37 4.9x3.7x3 Props"
-  weight_g: 3.4
-  diameter_mm: 124.46
-  pitch_mm: 93.98
-  blades: 3
-  material: "Polycarbonate"
-  description: "HQ Juicy J37 4.9x3.7x3 Props"
-}
 propellers: {
 
   uuid: "2ba08ed3-13fe-4080-9ae9-bbc7e06849cf"
@@ -2590,23 +2566,7 @@ propellers: {
     url: "https://www.diatone.us/products/gemfan-hurricane-51455-4-2cw-2ccw"
   }
 }
-propellers: {
 
-  uuid: "76187c52-6ba0-4307-9785-b950f4bf1789"
-  id: "gemfan-hrricane-51433-2"
-  manufacturer: "Diatone"
-  name: "GEMFAN Hrricane 51433"
-  weight_g: 3.8
-  diameter_mm: 129.54
-  pitch_mm: 110
-  blades: 3
-  material: "Polycarbonate"
-  description: "GEMFAN Hrricane 51433 for FREESTYLE (2CW+2CCW)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.diatone.us/products/gemfan-hrricane-51433-for-freestyle-xmas-2cw-2ccw"
-  }
-}
 propellers: {
 
   uuid: "92660781-687d-429b-bfcf-1980d0d55612"

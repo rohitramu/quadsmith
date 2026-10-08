@@ -1366,18 +1366,7 @@ motors: {
   kv: 29700
   description: "Hypetrain Hypetrain BB's 0802 29700KV Motor brushless motor with 29700 KV rating and 82 stator size, weighing 2.0g."
 }
-motors: {
 
-  uuid: "bf141891-b38e-4b95-911a-a451e232525f"
-  id: "hypetrain-bb-s-0802-29700kv-motor-4-pack"
-  manufacturer: "Hypetrain"
-  name: "Hypetrain BB's 0802 29700KV Motor"
-  weight_g: 2
-  stator_diameter_mm: 8
-  stator_height_mm: 2
-  kv: 29700
-  description: "Hypetrain BB's 0802 29700KV Motor 4-Pack Candy Box"
-}
 motors: {
 
   uuid: "95fb25cb-149f-4ac7-b84f-d8cb5ad2ed41"
