@@ -21,14 +21,12 @@ func TestGitHelper(t *testing.T) {
 
 	t.Logf("Resolved base ref: %s (uncommitted changes: %v)", baseRef, gh.HasUncommittedChanges())
 
-	if gh.HasUncommittedChanges() {
-		if baseRef != "HEAD" {
-			t.Errorf("Expected base ref to be 'HEAD' when uncommitted changes exist, got %s", baseRef)
-		}
-	} else {
-		if baseRef != "HEAD~1" && baseRef != "HEAD" {
-			t.Logf("Clean working tree resolved to: %s", baseRef)
-		}
+	expectedRef := "HEAD~1"
+	if !gh.refExists("HEAD~1") {
+		expectedRef = "HEAD"
+	}
+	if baseRef != expectedRef {
+		t.Errorf("Expected base ref to be %q (previous commit relative to currently checked out), got %q", expectedRef, baseRef)
 	}
 
 	// Test reading schema.sql from the resolved baseRef

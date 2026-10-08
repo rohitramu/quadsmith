@@ -27,13 +27,10 @@ func NewGitHelper() (*GitHelper, error) {
 
 // ResolveBaseRef determines the appropriate git reference to compare against.
 // Precedence:
-// 1. BREAKING_AGAINST_REF environment variable (explicit override).
-// 2. GITHUB_BASE_REF environment variable (GitHub Actions PR base).
-// 3. Local git state:
-//   - If there are staged or unstaged changes: compare against the latest commit (HEAD).
-//   - If working tree is clean:
-//   - If on a feature branch ahead of main: compare against the merge-base with main.
-//   - If on main: compare against the previous commit (HEAD~1).
+//  1. BREAKING_AGAINST_REF environment variable (explicit override).
+//  2. GITHUB_BASE_REF environment variable (GitHub Actions PR base).
+//  3. Previous commit relative to what is currently checked out (HEAD~1).
+//     Falls back to HEAD if HEAD~1 does not exist (e.g. initial commit or shallow clone).
 func (g *GitHelper) ResolveBaseRef() (string, error) {
 	if envRef := os.Getenv("BREAKING_AGAINST_REF"); envRef != "" {
 		return strings.TrimSpace(envRef), nil
@@ -48,32 +45,7 @@ func (g *GitHelper) ResolveBaseRef() (string, error) {
 		}
 	}
 
-	// 1. If there are staged or unstaged changes, compare working tree against HEAD
-	if g.HasUncommittedChanges() {
-		return "HEAD", nil
-	}
-
-	// 2. If working tree is clean:
-	// Check if we are on a feature branch diverged from main
-	mainRef := ""
-	if g.refExists("origin/main") {
-		mainRef = "origin/main"
-	} else if g.refExists("main") {
-		mainRef = "main"
-	}
-
-	if mainRef != "" {
-		base, err := g.mergeBase("HEAD", mainRef)
-		if err == nil && base != "" {
-			headCommit, _ := g.commitHash("HEAD")
-			// If on a branch ahead of main (head != merge-base), compare against merge-base
-			if headCommit != "" && headCommit != base {
-				return base, nil
-			}
-		}
-	}
-
-	// 3. If on main with a clean working tree, compare against the previous commit (HEAD~1)
+	// Compare against the previous commit relative to what is currently checked out (HEAD~1)
 	if g.refExists("HEAD~1") {
 		return "HEAD~1", nil
 	}
