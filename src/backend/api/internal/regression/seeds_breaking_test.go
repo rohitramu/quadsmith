@@ -1,6 +1,7 @@
 package regression
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -226,7 +227,8 @@ func TestSeeds_UnmarshalWithoutErrors(t *testing.T) {
 
 			count, ids, uuids, err := tt.unmarshal(data)
 			if err != nil {
-				t.Fatalf("FAILED TO UNMARSHAL %s: %v\nExisting seed data does not conform to the Protobuf definitions.", tt.filename, err)
+				reportBreakingChange(t, gh, "Seed Data", "current schema", fmt.Sprintf("FAILED TO UNMARSHAL %s: %v\nExisting seed data does not conform to the Protobuf definitions.", tt.filename, err))
+				return
 			}
 
 			t.Logf("%s: successfully parsed %d records", tt.filename, count)

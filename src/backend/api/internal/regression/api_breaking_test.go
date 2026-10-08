@@ -60,7 +60,8 @@ func TestAPI_NoBreakingChangesAgainstGitBase(t *testing.T) {
 	runErr := cmd.Run()
 	if runErr != nil {
 		output := strings.TrimSpace(stdout.String() + "\n" + stderr.String())
-		t.Fatalf("BREAKING API CHANGE DETECTED vs %s:\n%s\n\nRun 'buf breaking' to inspect, or restore backwards compatibility.", baseRef, output)
+		reportBreakingChange(t, gh, "API (Protobuf)", baseRef, fmt.Sprintf("%s\n\nRun 'buf breaking' to inspect, or restore backwards compatibility.", output))
+		return
 	}
 
 	t.Log("API Protobuf backwards compatibility check passed: 0 breaking changes detected.")

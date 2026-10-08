@@ -1,6 +1,7 @@
 package regression
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -49,11 +50,11 @@ func TestSchema_NoBreakingChangesAgainstGitBase(t *testing.T) {
 	breakingChanges := schemacheck.Compare(baseSchema, currSchema)
 	if len(breakingChanges) > 0 {
 		var report strings.Builder
-		report.WriteString(baseRef + ":\n")
 		for _, bc := range breakingChanges {
 			report.WriteString("  - " + bc.String() + "\n")
 		}
-		t.Fatalf("BREAKING DATABASE CHANGES DETECTED vs %s\n\nEnsure table/column modifications are backwards-compatible, or write pre-migration scripts.", report.String())
+		reportBreakingChange(t, gh, "Database Schema", baseRef, fmt.Sprintf("%sEnsure table/column modifications are backwards-compatible, or write pre-migration scripts.", report.String()))
+		return
 	}
 
 	t.Log("Database schema backwards compatibility check passed: 0 breaking changes detected.")

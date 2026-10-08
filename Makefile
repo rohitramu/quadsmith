@@ -56,15 +56,26 @@ generate:
 	@npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/schema.sql
 
 test: generate
+	@rm -f .tmp/breaking_warning.log
 	@echo "--- Running Go Tests ---"
-	@cd src/backend/api && go test -mod=vendor ./...
+	@cd src/backend/api && go test -mod=vendor -count=1 ./...
 	@cd src/frontend/cli && go test -mod=vendor ./...
+	@if [ -s .tmp/breaking_warning.log ]; then \
+		echo ""; \
+		echo "================================================================================"; \
+		echo "⚠️  WARNING: BREAKING CHANGES DETECTED"; \
+		echo "================================================================================"; \
+		cat .tmp/breaking_warning.log; \
+		echo "================================================================================"; \
+		echo ""; \
+	fi
 	@echo "--- Running Web UI Tests ---"
 	@cd src/frontend/web && npm test
+	@rm -f .tmp/breaking_warning.log
 
 breaking-change: generate
 	@echo "--- Running Breaking Change Regression Tests ---"
-	@cd src/backend/api && go test -mod=vendor -v ./internal/regression/... ./pkg/schemacheck/...
+	@cd src/backend/api && STRICT_BREAKING=1 go test -mod=vendor -v -count=1 ./internal/regression/... ./pkg/schemacheck/...
 
 test-breaking: breaking-change
 
@@ -74,7 +85,7 @@ test-e2e: build
 
 clean:
 	@echo "--- Cleaning Workspace ---"
-	@rm -rf bin/
+	@rm -rf bin/ .tmp/
 
 vendor:
 	@echo "--- Updating and vendoring dependencies ---"
