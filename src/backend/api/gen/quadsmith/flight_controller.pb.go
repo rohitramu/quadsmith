@@ -37,11 +37,11 @@ type FlightController struct {
 	// The gyro chip (e.g., "MPU6000", "BMI270")
 	Gyro string `protobuf:"bytes,7,opt,name=gyro,proto3" json:"gyro,omitempty"`
 	// If this board has an integrated Electronic Speed Controller, reference it here
-	InternalElectronicSpeedControllerUuid string `protobuf:"bytes,8,opt,name=internal_electronic_speed_controller_uuid,json=internalElectronicSpeedControllerUuid,proto3" json:"internal_electronic_speed_controller_uuid,omitempty"`
+	InternalElectronicSpeedControllerUuid *string `protobuf:"bytes,8,opt,name=internal_electronic_speed_controller_uuid,json=internalElectronicSpeedControllerUuid,proto3,oneof" json:"internal_electronic_speed_controller_uuid,omitempty"`
 	// If this board has an integrated SPI or Serial Receiver
-	InternalReceiverUuid string `protobuf:"bytes,9,opt,name=internal_receiver_uuid,json=internalReceiverUuid,proto3" json:"internal_receiver_uuid,omitempty"`
+	InternalReceiverUuid *string `protobuf:"bytes,9,opt,name=internal_receiver_uuid,json=internalReceiverUuid,proto3,oneof" json:"internal_receiver_uuid,omitempty"`
 	// If this board has an integrated Video Transmitter
-	InternalVideoTransmitterUuid string           `protobuf:"bytes,10,opt,name=internal_video_transmitter_uuid,json=internalVideoTransmitterUuid,proto3" json:"internal_video_transmitter_uuid,omitempty"`
+	InternalVideoTransmitterUuid *string          `protobuf:"bytes,10,opt,name=internal_video_transmitter_uuid,json=internalVideoTransmitterUuid,proto3,oneof" json:"internal_video_transmitter_uuid,omitempty"`
 	Description                  string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
 	ReferenceLinks               []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields                protoimpl.UnknownFields
@@ -135,22 +135,22 @@ func (x *FlightController) GetGyro() string {
 }
 
 func (x *FlightController) GetInternalElectronicSpeedControllerUuid() string {
-	if x != nil {
-		return x.InternalElectronicSpeedControllerUuid
+	if x != nil && x.InternalElectronicSpeedControllerUuid != nil {
+		return *x.InternalElectronicSpeedControllerUuid
 	}
 	return ""
 }
 
 func (x *FlightController) GetInternalReceiverUuid() string {
-	if x != nil {
-		return x.InternalReceiverUuid
+	if x != nil && x.InternalReceiverUuid != nil {
+		return *x.InternalReceiverUuid
 	}
 	return ""
 }
 
 func (x *FlightController) GetInternalVideoTransmitterUuid() string {
-	if x != nil {
-		return x.InternalVideoTransmitterUuid
+	if x != nil && x.InternalVideoTransmitterUuid != nil {
+		return *x.InternalVideoTransmitterUuid
 	}
 	return ""
 }
@@ -356,7 +356,7 @@ var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xd2\x05\n" +
+	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xce\x06\n" +
 	"\x10FlightController\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -365,14 +365,17 @@ const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1c\n" +
 	"\tprocessor\x18\x06 \x01(\tR\tprocessor\x12\x12\n" +
-	"\x04gyro\x18\a \x01(\tR\x04gyro\x12\x80\x01\n" +
-	")internal_electronic_speed_controller_uuid\x18\b \x01(\tB&\xd2\xf3\x18\"electronic_speed_controllers(uuid)R%internalElectronicSpeedControllerUuid\x12I\n" +
-	"\x16internal_receiver_uuid\x18\t \x01(\tB\x13\xd2\xf3\x18\x0freceivers(uuid)R\x14internalReceiverUuid\x12c\n" +
+	"\x04gyro\x18\a \x01(\tR\x04gyro\x12\x85\x01\n" +
+	")internal_electronic_speed_controller_uuid\x18\b \x01(\tB&\xd2\xf3\x18\"electronic_speed_controllers(uuid)H\x00R%internalElectronicSpeedControllerUuid\x88\x01\x01\x12N\n" +
+	"\x16internal_receiver_uuid\x18\t \x01(\tB\x13\xd2\xf3\x18\x0freceivers(uuid)H\x01R\x14internalReceiverUuid\x88\x01\x01\x12h\n" +
 	"\x1finternal_video_transmitter_uuid\x18\n" +
-	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x1cinternalVideoTransmitterUuid\x12 \n" +
+	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)H\x02R\x1cinternalVideoTransmitterUuid\x88\x01\x01\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:A\x92\xb5\x18'\n" +
-	"\x11Flight Controller\x12\x12Flight Controllers\xc2\xf3\x18\x12flight_controllers\"F\n" +
+	"\x11Flight Controller\x12\x12Flight Controllers\xc2\xf3\x18\x12flight_controllersB,\n" +
+	"*_internal_electronic_speed_controller_uuidB\x19\n" +
+	"\x17_internal_receiver_uuidB\"\n" +
+	" _internal_video_transmitter_uuid\"F\n" +
 	"\x1aGetFlightControllerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +
@@ -432,6 +435,7 @@ func file_quadsmith_flight_controller_proto_init() {
 	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
+	file_quadsmith_flight_controller_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

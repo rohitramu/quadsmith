@@ -67,11 +67,11 @@ func CreateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 			return nil
 		}
 		return s
-	}(m.VideoTransmitterUuid), func(s string) interface{} {
-		if s == "" {
+	}(m.VideoTransmitterUuid), func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
+		return *s
 	}(m.GpsReceiverUuid), m.ReferenceLinks)
 	return err
 }
@@ -154,13 +154,7 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 				}
 			})
 		case "gps_receiver_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.GpsReceiverUuid = *v
-				}
-			})
+			scanArgs[i] = &m.GpsReceiverUuid
 		case "reference_links":
 			scanArgs[i] = &m.ReferenceLinks
 		default:
@@ -231,11 +225,11 @@ func UpdateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 			return nil
 		}
 		return s
-	}(m.VideoTransmitterUuid), func(s string) interface{} {
-		if s == "" {
+	}(m.VideoTransmitterUuid), func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
+		return *s
 	}(m.GpsReceiverUuid), m.ReferenceLinks)
 	return err
 }
@@ -366,13 +360,7 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 					}
 				})
 			case "gps_receiver_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.GpsReceiverUuid = *v
-					}
-				})
+				scanArgs[i] = &m.GpsReceiverUuid
 			case "reference_links":
 				scanArgs[i] = &m.ReferenceLinks
 			default:

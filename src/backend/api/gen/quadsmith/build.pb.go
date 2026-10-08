@@ -51,7 +51,7 @@ type Build struct {
 	// The Video Transmitter used for this build
 	VideoTransmitterUuid string `protobuf:"bytes,15,opt,name=video_transmitter_uuid,json=videoTransmitterUuid,proto3" json:"video_transmitter_uuid,omitempty"`
 	// Optional GPS Receiver for navigation and rescue return-to-home
-	GpsReceiverUuid string           `protobuf:"bytes,16,opt,name=gps_receiver_uuid,json=gpsReceiverUuid,proto3" json:"gps_receiver_uuid,omitempty"`
+	GpsReceiverUuid *string          `protobuf:"bytes,16,opt,name=gps_receiver_uuid,json=gpsReceiverUuid,proto3,oneof" json:"gps_receiver_uuid,omitempty"`
 	ReferenceLinks  []*ReferenceLink `protobuf:"bytes,14,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -186,8 +186,8 @@ func (x *Build) GetVideoTransmitterUuid() string {
 }
 
 func (x *Build) GetGpsReceiverUuid() string {
-	if x != nil {
-		return x.GpsReceiverUuid
+	if x != nil && x.GpsReceiverUuid != nil {
+		return *x.GpsReceiverUuid
 	}
 	return ""
 }
@@ -386,7 +386,7 @@ var File_quadsmith_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_build_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xcd\x06\n" +
+	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe8\x06\n" +
 	"\x05Build\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12\x12\n" +
@@ -404,10 +404,11 @@ const file_quadsmith_build_proto_rawDesc = "" +
 	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12;\n" +
 	"\x0epropeller_uuid\x18\f \x01(\tB\x14\xd2\xf3\x18\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
 	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12R\n" +
-	"\x16video_transmitter_uuid\x18\x0f \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12C\n" +
-	"\x11gps_receiver_uuid\x18\x10 \x01(\tB\x17\xd2\xf3\x18\x13gps_receivers(uuid)R\x0fgpsReceiverUuid\x12A\n" +
+	"\x16video_transmitter_uuid\x18\x0f \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12H\n" +
+	"\x11gps_receiver_uuid\x18\x10 \x01(\tB\x17\xd2\xf3\x18\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12A\n" +
 	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x1d\x92\xb5\x18\x0f\n" +
-	"\x05Build\x12\x06Builds\xc2\xf3\x18\x06builds\";\n" +
+	"\x05Build\x12\x06Builds\xc2\xf3\x18\x06buildsB\x14\n" +
+	"\x12_gps_receiver_uuid\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
@@ -468,6 +469,7 @@ func file_quadsmith_build_proto_init() {
 	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
+	file_quadsmith_build_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

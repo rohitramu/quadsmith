@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file quadsmith/flight_controller.proto.
  */
 export const file_quadsmith_flight_controller: GenFile = /*@__PURE__*/
-  fileDesc("CiFxdWFkc21pdGgvZmxpZ2h0X2NvbnRyb2xsZXIucHJvdG8SCXF1YWRzbWl0aCKRBAoQRmxpZ2h0Q29udHJvbGxlchISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISEQoJcHJvY2Vzc29yGAYgASgJEgwKBGd5cm8YByABKAkSWQopaW50ZXJuYWxfZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX3V1aWQYCCABKAlCJtLzGCJlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzKHV1aWQpEjMKFmludGVybmFsX3JlY2VpdmVyX3V1aWQYCSABKAlCE9LzGA9yZWNlaXZlcnModXVpZCkSRQofaW50ZXJuYWxfdmlkZW9fdHJhbnNtaXR0ZXJfdXVpZBgKIAEoCUIc0vMYGHZpZGVvX3RyYW5zbWl0dGVycyh1dWlkKRITCgtkZXNjcmlwdGlvbhgVIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYFiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpBkrUYJwoRRmxpZ2h0IENvbnRyb2xsZXISEkZsaWdodCBDb250cm9sbGVyc8LzGBJmbGlnaHRfY29udHJvbGxlcnMiOQoaR2V0RmxpZ2h0Q29udHJvbGxlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJ0ChxMaXN0RmxpZ2h0Q29udHJvbGxlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkicQodTGlzdEZsaWdodENvbnRyb2xsZXJzUmVzcG9uc2USNwoSZmxpZ2h0X2NvbnRyb2xsZXJzGAEgAygLMhsucXVhZHNtaXRoLkZsaWdodENvbnRyb2xsZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMuABChdGbGlnaHRDb250cm9sbGVyU2VydmljZRJZChNHZXRGbGlnaHRDb250cm9sbGVyEiUucXVhZHNtaXRoLkdldEZsaWdodENvbnRyb2xsZXJSZXF1ZXN0GhsucXVhZHNtaXRoLkZsaWdodENvbnRyb2xsZXISagoVTGlzdEZsaWdodENvbnRyb2xsZXJzEicucXVhZHNtaXRoLkxpc3RGbGlnaHRDb250cm9sbGVyc1JlcXVlc3QaKC5xdWFkc21pdGguTGlzdEZsaWdodENvbnRyb2xsZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM", [file_quadsmith__name, file_quadsmith__sql, file_quadsmith_reference_link]);
+  fileDesc("CiFxdWFkc21pdGgvZmxpZ2h0X2NvbnRyb2xsZXIucHJvdG8SCXF1YWRzbWl0aCKNBQoQRmxpZ2h0Q29udHJvbGxlchISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISEQoJcHJvY2Vzc29yGAYgASgJEgwKBGd5cm8YByABKAkSXgopaW50ZXJuYWxfZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX3V1aWQYCCABKAlCJtLzGCJlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzKHV1aWQpSACIAQESOAoWaW50ZXJuYWxfcmVjZWl2ZXJfdXVpZBgJIAEoCUIT0vMYD3JlY2VpdmVycyh1dWlkKUgBiAEBEkoKH2ludGVybmFsX3ZpZGVvX3RyYW5zbWl0dGVyX3V1aWQYCiABKAlCHNLzGBh2aWRlb190cmFuc21pdHRlcnModXVpZClIAogBARITCgtkZXNjcmlwdGlvbhgVIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYFiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpBkrUYJwoRRmxpZ2h0IENvbnRyb2xsZXISEkZsaWdodCBDb250cm9sbGVyc8LzGBJmbGlnaHRfY29udHJvbGxlcnNCLAoqX2ludGVybmFsX2VsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkQhkKF19pbnRlcm5hbF9yZWNlaXZlcl91dWlkQiIKIF9pbnRlcm5hbF92aWRlb190cmFuc21pdHRlcl91dWlkIjkKGkdldEZsaWdodENvbnRyb2xsZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkidAocTGlzdEZsaWdodENvbnRyb2xsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJInEKHUxpc3RGbGlnaHRDb250cm9sbGVyc1Jlc3BvbnNlEjcKEmZsaWdodF9jb250cm9sbGVycxgBIAMoCzIbLnF1YWRzbWl0aC5GbGlnaHRDb250cm9sbGVyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTLgAQoXRmxpZ2h0Q29udHJvbGxlclNlcnZpY2USWQoTR2V0RmxpZ2h0Q29udHJvbGxlchIlLnF1YWRzbWl0aC5HZXRGbGlnaHRDb250cm9sbGVyUmVxdWVzdBobLnF1YWRzbWl0aC5GbGlnaHRDb250cm9sbGVyEmoKFUxpc3RGbGlnaHRDb250cm9sbGVycxInLnF1YWRzbWl0aC5MaXN0RmxpZ2h0Q29udHJvbGxlcnNSZXF1ZXN0GigucXVhZHNtaXRoLkxpc3RGbGlnaHRDb250cm9sbGVyc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z", [file_quadsmith__name, file_quadsmith__sql, file_quadsmith_reference_link]);
 
 /**
  * ---------------------------------------------------------
@@ -71,23 +71,23 @@ export type FlightController = Message<"quadsmith.FlightController"> & {
   /**
    * If this board has an integrated Electronic Speed Controller, reference it here
    *
-   * @generated from field: string internal_electronic_speed_controller_uuid = 8;
+   * @generated from field: optional string internal_electronic_speed_controller_uuid = 8;
    */
-  internalElectronicSpeedControllerUuid: string;
+  internalElectronicSpeedControllerUuid?: string | undefined;
 
   /**
    * If this board has an integrated SPI or Serial Receiver
    *
-   * @generated from field: string internal_receiver_uuid = 9;
+   * @generated from field: optional string internal_receiver_uuid = 9;
    */
-  internalReceiverUuid: string;
+  internalReceiverUuid?: string | undefined;
 
   /**
    * If this board has an integrated Video Transmitter
    *
-   * @generated from field: string internal_video_transmitter_uuid = 10;
+   * @generated from field: optional string internal_video_transmitter_uuid = 10;
    */
-  internalVideoTransmitterUuid: string;
+  internalVideoTransmitterUuid?: string | undefined;
 
   /**
    * @generated from field: string description = 21;

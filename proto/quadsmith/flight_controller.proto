@@ -39,13 +39,13 @@ message FlightController {
   // -------------------------------------------------------
 
   // If this board has an integrated Electronic Speed Controller, reference it here
-  string internal_electronic_speed_controller_uuid = 8 [(quadsmith.sql.references) = "electronic_speed_controllers(uuid)"];
+  optional string internal_electronic_speed_controller_uuid = 8 [(quadsmith.sql.references) = "electronic_speed_controllers(uuid)"];
 
   // If this board has an integrated SPI or Serial Receiver
-  string internal_receiver_uuid = 9 [(quadsmith.sql.references) = "receivers(uuid)"];
+  optional string internal_receiver_uuid = 9 [(quadsmith.sql.references) = "receivers(uuid)"];
 
   // If this board has an integrated Video Transmitter
-  string internal_video_transmitter_uuid = 10 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
+  optional string internal_video_transmitter_uuid = 10 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
   string description = 21;
   repeated ReferenceLink reference_links = 22;
 }

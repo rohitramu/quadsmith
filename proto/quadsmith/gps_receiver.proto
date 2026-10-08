@@ -43,7 +43,7 @@ message GpsReceiver {
   optional bool has_compass = 8;
 
   // Compass chip model (e.g., "QMC5883L", "IST8310")
-  string compass_chip = 9;
+  optional string compass_chip = 9;
 
   // Minimum operating input voltage
   float input_voltage_min_v = 10;

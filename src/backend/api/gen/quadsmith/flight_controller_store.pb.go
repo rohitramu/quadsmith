@@ -17,21 +17,21 @@ func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s string) interface{} {
-		if s == "" {
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
-	}(m.InternalElectronicSpeedControllerUuid), func(s string) interface{} {
-		if s == "" {
+		return *s
+	}(m.InternalElectronicSpeedControllerUuid), func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
-	}(m.InternalReceiverUuid), func(s string) interface{} {
-		if s == "" {
+		return *s
+	}(m.InternalReceiverUuid), func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
+		return *s
 	}(m.InternalVideoTransmitterUuid), m.Description, m.ReferenceLinks)
 	return err
 }
@@ -66,29 +66,11 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 		case "gyro":
 			scanArgs[i] = &m.Gyro
 		case "internal_electronic_speed_controller_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.InternalElectronicSpeedControllerUuid = *v
-				}
-			})
+			scanArgs[i] = &m.InternalElectronicSpeedControllerUuid
 		case "internal_receiver_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.InternalReceiverUuid = *v
-				}
-			})
+			scanArgs[i] = &m.InternalReceiverUuid
 		case "internal_video_transmitter_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.InternalVideoTransmitterUuid = *v
-				}
-			})
+			scanArgs[i] = &m.InternalVideoTransmitterUuid
 		case "description":
 			scanArgs[i] = &m.Description
 		case "reference_links":
@@ -111,21 +93,21 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 
 func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
 	query := `UPDATE flight_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, processor = $6, gyro = $7, internal_electronic_speed_controller_uuid = $8, internal_receiver_uuid = $9, internal_video_transmitter_uuid = $10, description = $11, reference_links = $12 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s string) interface{} {
-		if s == "" {
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
-	}(m.InternalElectronicSpeedControllerUuid), func(s string) interface{} {
-		if s == "" {
+		return *s
+	}(m.InternalElectronicSpeedControllerUuid), func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
-	}(m.InternalReceiverUuid), func(s string) interface{} {
-		if s == "" {
+		return *s
+	}(m.InternalReceiverUuid), func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
+		return *s
 	}(m.InternalVideoTransmitterUuid), m.Description, m.ReferenceLinks)
 	return err
 }
@@ -208,29 +190,11 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 			case "gyro":
 				scanArgs[i] = &m.Gyro
 			case "internal_electronic_speed_controller_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.InternalElectronicSpeedControllerUuid = *v
-					}
-				})
+				scanArgs[i] = &m.InternalElectronicSpeedControllerUuid
 			case "internal_receiver_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.InternalReceiverUuid = *v
-					}
-				})
+				scanArgs[i] = &m.InternalReceiverUuid
 			case "internal_video_transmitter_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.InternalVideoTransmitterUuid = *v
-					}
-				})
+				scanArgs[i] = &m.InternalVideoTransmitterUuid
 			case "description":
 				scanArgs[i] = &m.Description
 			case "reference_links":

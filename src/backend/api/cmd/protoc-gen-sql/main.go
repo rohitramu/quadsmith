@@ -87,6 +87,10 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 			}
 		}
 
+		if !field.Desc.IsList() && !field.Desc.HasPresence() {
+			colType += " NOT NULL"
+		}
+
 		defs = append(defs, fmt.Sprintf("%s %s", colName, colType))
 
 		// Check primary key

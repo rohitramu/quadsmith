@@ -95,8 +95,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
 		if err == nil {
 			totalWeight += fc.WeightG
-			if fc.InternalElectronicSpeedControllerUuid != "" {
-				esc, err := pb.GetElectronicSpeedController(ctx, s.db, fc.InternalElectronicSpeedControllerUuid, nil)
+			if fc.GetInternalElectronicSpeedControllerUuid() != "" {
+				esc, err := pb.GetElectronicSpeedController(ctx, s.db, fc.GetInternalElectronicSpeedControllerUuid(), nil)
 				if err == nil {
 					totalEscs += esc.MaxMotors
 					if esc.MotorCurrentMaxA > maxAmps {
@@ -115,8 +115,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		}
 	} else if b.FlightControllerUuid != "" {
 		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
-		if err == nil && fc.InternalVideoTransmitterUuid != "" {
-			videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, fc.InternalVideoTransmitterUuid, nil)
+		if err == nil && fc.GetInternalVideoTransmitterUuid() != "" {
+			videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, fc.GetInternalVideoTransmitterUuid(), nil)
 			if err == nil {
 				totalWeight += videoTransmitter.WeightG
 			}
@@ -148,8 +148,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	// 11. Fetch GPS Receiver
-	if b.GpsReceiverUuid != "" {
-		gps, err := pb.GetGpsReceiver(ctx, s.db, b.GpsReceiverUuid, nil)
+	if b.GetGpsReceiverUuid() != "" {
+		gps, err := pb.GetGpsReceiver(ctx, s.db, b.GetGpsReceiverUuid(), nil)
 		if err == nil {
 			totalWeight += gps.WeightG
 		}

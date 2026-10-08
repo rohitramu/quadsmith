@@ -92,10 +92,6 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	var colNames []string
 	var placeHolders []string
 	var mFields []string
-	var scanVars []string
-	var scanAddrs []string
-	var assignments []string
-
 	for i, field := range msg.Fields {
 		colName := string(field.Desc.Name())
 		colNames = append(colNames, colName)
@@ -115,24 +111,15 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 
 		goName := field.GoName
 		if strings.HasSuffix(colName, "uuid") {
-			mFields = append(mFields, "func(s string) interface{} { if s == \"\" { return nil }; return s }(m."+goName+")")
+			if field.Desc.HasPresence() {
+				mFields = append(mFields, "func(s *string) interface{} { if s == nil || *s == \"\" { return nil }; return *s }(m."+goName+")")
+			} else {
+				mFields = append(mFields, "func(s string) interface{} { if s == \"\" { return nil }; return s }(m."+goName+")")
+			}
 		} else if strings.HasSuffix(colName, "uuids") {
 			mFields = append(mFields, "func(s []string) interface{} { if len(s) == 0 { return nil }; return s }(m."+goName+")")
 		} else {
 			mFields = append(mFields, "m."+goName)
-		}
-
-		varType := goDataType(field.Desc)
-		scanVarName := "v_" + colName
-
-		if field.Desc.IsList() {
-			scanVars = append(scanVars, fmt.Sprintf("var %s %s", scanVarName, varType))
-			scanAddrs = append(scanAddrs, "&"+scanVarName)
-			assignments = append(assignments, fmt.Sprintf("m.%s = %s", goName, scanVarName))
-		} else {
-			scanVars = append(scanVars, fmt.Sprintf("var %s *%s", scanVarName, varType))
-			scanAddrs = append(scanAddrs, "&"+scanVarName)
-			assignments = append(assignments, fmt.Sprintf("if %s != nil { m.%s = *%s }", scanVarName, goName, scanVarName))
 		}
 	}
 
@@ -167,7 +154,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		field := msg.Fields[j]
 		goName := field.GoName
 		g.P("		case \"", colName, "\":")
-		if strings.HasSuffix(colName, "uuid") && colName != "uuid" && !field.Desc.IsList() {
+		if field.Desc.HasPresence() {
+			g.P("			scanArgs[i] = &m.", goName)
+		} else if strings.HasSuffix(colName, "uuid") && colName != "uuid" && !field.Desc.IsList() {
 			g.P("			var v *string")
 			g.P("			scanArgs[i] = &v")
 			g.P("			scanAssigns = append(scanAssigns, func() {")
@@ -311,7 +300,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		field := msg.Fields[j]
 		goName := field.GoName
 		g.P("			case \"", colName, "\":")
-		if strings.HasSuffix(colName, "uuid") && colName != "uuid" && !field.Desc.IsList() {
+		if field.Desc.HasPresence() {
+			g.P("				scanArgs[i] = &m.", goName)
+		} else if strings.HasSuffix(colName, "uuid") && colName != "uuid" && !field.Desc.IsList() {
 			g.P("				var v *string")
 			g.P("				scanArgs[i] = &v")
 			g.P("				scanAssigns = append(scanAssigns, func() {")

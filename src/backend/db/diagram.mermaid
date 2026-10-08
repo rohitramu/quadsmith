@@ -8,7 +8,11 @@ erDiagram
         UUID motor_uuid FK
         UUID battery_uuid FK
         UUID flight_controller_uuid FK
+        UUID_ARRAY electronic_speed_controller_uuids
+        UUID_ARRAY receiver_uuids
+        UUID_ARRAY antenna_uuids
         UUID propeller_uuid FK
+        UUID_ARRAY camera_uuids
         UUID video_transmitter_uuid FK
         UUID gps_receiver_uuid FK
         JSONB reference_links
@@ -95,6 +99,7 @@ erDiagram
         TEXT protocol
         INTEGER frequency_band_mhz
         BOOLEAN has_telemetry
+        UUID_ARRAY antenna_uuids
         TEXT description
         JSONB reference_links
     }
@@ -110,6 +115,7 @@ erDiagram
         INTEGER max_power_mw
         DECIMAL input_voltage_min_v
         DECIMAL input_voltage_max_v
+        UUID_ARRAY antenna_uuids
         TEXT description
         JSONB reference_links
     }
