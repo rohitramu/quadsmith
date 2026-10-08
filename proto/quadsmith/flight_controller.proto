@@ -16,7 +16,7 @@ message FlightController {
     singular: "Flight Controller"
     plural: "Flight Controllers"
   };
-  option (quadsmith.sql.table_name) = "flight_controllers";
+  option (quadsmith.sql.table) = {name: "flight_controllers"};
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

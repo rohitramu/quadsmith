@@ -51,14 +51,14 @@ func toSnakeCase(s string) string {
 
 func getTableName(msg *protogen.Message) string {
 	opts := msg.Desc.Options()
+	if proto.HasExtension(opts, quadsmith_sql.E_Table) {
+		if tblOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Table).(*quadsmith_sql.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
+			return tblOpts.Name
+		}
+	}
 	if proto.HasExtension(opts, quadsmith_sql.E_Name) {
 		if nameOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Name).(*quadsmith_sql.NameOptions); ok && nameOpts != nil && nameOpts.Plural != "" {
 			return toSnakeCase(nameOpts.Plural)
-		}
-	}
-	if proto.HasExtension(opts, quadsmith_sql.E_TableName) {
-		if tn, ok := proto.GetExtension(opts, quadsmith_sql.E_TableName).(string); ok && tn != "" {
-			return tn
 		}
 	}
 	return ""
@@ -86,6 +86,9 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 		}
 
 		colName := string(field.Desc.Name())
+		if colOpt != nil && colOpt.Name != "" {
+			colName = colOpt.Name
+		}
 		colType := sqlDataType(field.Desc)
 
 		if colOpt != nil && colOpt.IsUnique {
@@ -119,6 +122,9 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 		if proto.HasExtension(fOpts, quadsmith_sql.E_Column) {
 			if co, ok := proto.GetExtension(fOpts, quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && co.CreateIndex {
 				colName := string(field.Desc.Name())
+				if co.Name != "" {
+					colName = co.Name
+				}
 				g.P("CREATE INDEX IF NOT EXISTS idx_", tableName, "_", colName, " ON ", tableName, " (", colName, ");")
 			}
 		}

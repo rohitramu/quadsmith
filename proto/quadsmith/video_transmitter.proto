@@ -16,7 +16,7 @@ message VideoTransmitter {
     singular: "Video Transmitter"
     plural: "Video Transmitters"
   };
-  option (quadsmith.sql.table_name) = "video_transmitters";
+  option (quadsmith.sql.table) = {name: "video_transmitters"};
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

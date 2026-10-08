@@ -16,7 +16,7 @@ message Battery {
     singular: "Battery"
     plural: "Batteries"
   };
-  option (quadsmith.sql.table_name) = "batteries";
+  option (quadsmith.sql.table) = {name: "batteries"};
   option (quadsmith.frontend) = {
     default_columns: [
       "manufacturer",

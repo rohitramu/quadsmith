@@ -39,12 +39,12 @@ A `pre-commit` hook will ensure files are generated locally, and the CI pipeline
 ### Workstream 1: Custom Protobuf SQL Options
 **Goal**: Define the extensions required to map Protobuf messages to relational tables.
 
-1. **Create `proto/quadsmith/sql.proto`**:
-   - Define custom extensions for `google.protobuf.MessageOptions` (e.g., `table_name`).
-   - Define custom extensions for `google.protobuf.FieldOptions` (e.g., `is_primary_key`, `references`, `index`).
+1. **Create `proto/quadsmith/_sql.proto`**:
+   - Define custom extensions for `google.protobuf.MessageOptions` (`TableOptions table = 51000;`).
+   - Define custom extensions for `google.protobuf.FieldOptions` (`ColumnOptions column = 51000;`).
 2. **Define Domain Models**:
    - Create distinct `.proto` files for each resource (e.g., `motor.proto`, `build.proto`).
-   - Apply the custom SQL options to the domain models (e.g., `option (quadsmith.sql.table_name) = "motors";`).
+   - Apply the custom SQL options to the domain models (e.g., `option (quadsmith.sql.table) = {name: "motors"};`).
 
 ### Workstream 2: Schema Generator Script
 **Goal**: Build the Go tool that translates Protobuf definitions into SQL.

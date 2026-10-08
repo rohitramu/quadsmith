@@ -17,7 +17,7 @@ message Motor {
     plural: "Motors"
   };
   // This tells the Go generator to create a 'motors' table for this message
-  option (quadsmith.sql.table_name) = "motors";
+  option (quadsmith.sql.table) = {name: "motors"};
   option (quadsmith.frontend) = {
     default_columns: [
       "manufacturer",

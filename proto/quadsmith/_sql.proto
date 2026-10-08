@@ -7,14 +7,14 @@ import "google/protobuf/descriptor.proto";
 option go_package = "quadsmith/api/gen/quadsmith";
 
 // ---------------------------------------------------------
-// Custom Message Options
+// Table Options
 // ---------------------------------------------------------
 
-extend google.protobuf.MessageOptions {
+message TableOptions {
   // The name of the SQL table to generate for this message.
   // If omitted, the Go generator will not generate a table for this message.
-  // Example: option (quadsmith.sql.table_name) = "motors";
-  string table_name = 51000;
+  // Example: option (quadsmith.sql.table) = { name: "motors" };
+  string name = 1;
 }
 
 // ---------------------------------------------------------
@@ -22,22 +22,35 @@ extend google.protobuf.MessageOptions {
 // ---------------------------------------------------------
 
 message ColumnOptions {
+  // The name of the SQL column to generate for this field.
+  // If omitted, the Go generator will use the field name as the column name.
+  string name = 1;
+
   // Marks this field as the PRIMARY KEY of the generated table.
-  bool is_primary_key = 1;
+  bool is_primary_key = 2;
 
   // Defines a FOREIGN KEY constraint.
   // The value should be formatted as "target_table(target_column)".
   // Example: [(quadsmith.sql.column) = { references: "frames(uuid)" }]
-  string references = 2;
+  string references = 3;
 
   // Adds a UNIQUE constraint to the generated column.
-  bool is_unique = 3;
+  bool is_unique = 4;
 
   // Generates a standard B-Tree index for this column to speed up CEL queries.
-  bool create_index = 4;
+  bool create_index = 5;
 
   // Custom SQL column type override.
-  string column_type = 5;
+  string column_type = 6;
+}
+
+// ---------------------------------------------------------
+// Custom Message Options
+// ---------------------------------------------------------
+
+extend google.protobuf.MessageOptions {
+  // SQL table configuration for backend database mapping.
+  TableOptions table = 51000;
 }
 
 // ---------------------------------------------------------

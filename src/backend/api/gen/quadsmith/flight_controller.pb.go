@@ -356,23 +356,24 @@ var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xda\x06\n" +
+	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xdc\x06\n" +
 	"\x10FlightController\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\b\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02\x18\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\fmanufacturer\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1c\n" +
 	"\tprocessor\x18\x06 \x01(\tR\tprocessor\x12\x12\n" +
 	"\x04gyro\x18\a \x01(\tR\x04gyro\x12\x87\x01\n" +
-	")internal_electronic_speed_controller_uuid\x18\b \x01(\tB(\xc2\xf3\x18$\x12\"electronic_speed_controllers(uuid)H\x00R%internalElectronicSpeedControllerUuid\x88\x01\x01\x12P\n" +
-	"\x16internal_receiver_uuid\x18\t \x01(\tB\x15\xc2\xf3\x18\x11\x12\x0freceivers(uuid)H\x01R\x14internalReceiverUuid\x88\x01\x01\x12j\n" +
+	")internal_electronic_speed_controller_uuid\x18\b \x01(\tB(\xc2\xf3\x18$\x1a\"electronic_speed_controllers(uuid)H\x00R%internalElectronicSpeedControllerUuid\x88\x01\x01\x12P\n" +
+	"\x16internal_receiver_uuid\x18\t \x01(\tB\x15\xc2\xf3\x18\x11\x1a\x0freceivers(uuid)H\x01R\x14internalReceiverUuid\x88\x01\x01\x12j\n" +
 	"\x1finternal_video_transmitter_uuid\x18\n" +
-	" \x01(\tB\x1e\xc2\xf3\x18\x1a\x12\x18video_transmitters(uuid)H\x02R\x1cinternalVideoTransmitterUuid\x88\x01\x01\x12 \n" +
+	" \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)H\x02R\x1cinternalVideoTransmitterUuid\x88\x01\x01\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:A\x92\xb5\x18'\n" +
-	"\x11Flight Controller\x12\x12Flight Controllers\xc2\xf3\x18\x12flight_controllersB,\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:C\x92\xb5\x18'\n" +
+	"\x11Flight Controller\x12\x12Flight Controllers\xc2\xf3\x18\x14\n" +
+	"\x12flight_controllersB,\n" +
 	"*_internal_electronic_speed_controller_uuidB\x19\n" +
 	"\x17_internal_receiver_uuidB\"\n" +
 	" _internal_video_transmitter_uuid\"F\n" +

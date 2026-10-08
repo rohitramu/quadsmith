@@ -346,11 +346,11 @@ var File_quadsmith_electronic_speed_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_electronic_speed_controller_proto_rawDesc = "" +
 	"\n" +
-	"+quadsmith/electronic_speed_controller.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xb7\x04\n" +
+	"+quadsmith/electronic_speed_controller.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xb9\x04\n" +
 	"\x19ElectronicSpeedController\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\b\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02\x18\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\fmanufacturer\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1d\n" +
@@ -360,8 +360,9 @@ const file_quadsmith_electronic_speed_controller_proto_rawDesc = "" +
 	"\x15motor_current_burst_a\x18\b \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
 	"\bfirmware\x18\t \x01(\tR\bfirmware\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:_\x92\xb5\x18;\n" +
-	"\x1bElectronic Speed Controller\x12\x1cElectronic Speed Controllers\xc2\xf3\x18\x1celectronic_speed_controllers\"O\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:a\x92\xb5\x18;\n" +
+	"\x1bElectronic Speed Controller\x12\x1cElectronic Speed Controllers\xc2\xf3\x18\x1e\n" +
+	"\x1celectronic_speed_controllers\"O\n" +
 	"#GetElectronicSpeedControllerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa9\x01\n" +

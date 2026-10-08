@@ -14,18 +14,48 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith__sql: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChRxdWFkc21pdGgvX3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbCJ5Cg1Db2x1bW5PcHRpb25zEhYKDmlzX3ByaW1hcnlfa2V5GAEgASgIEhIKCnJlZmVyZW5jZXMYAiABKAkSEQoJaXNfdW5pcXVlGAMgASgIEhQKDGNyZWF0ZV9pbmRleBgEIAEoCBITCgtjb2x1bW5fdHlwZRgFIAEoCTpACgp0YWJsZV9uYW1lEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGLiOAyABKAlSCXRhYmxlTmFtZTpVCgZjb2x1bW4SHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLiOAyABKAsyHC5xdWFkc21pdGguc3FsLkNvbHVtbk9wdGlvbnNSBmNvbHVtbkIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "ChRxdWFkc21pdGgvX3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbCIcCgxUYWJsZU9wdGlvbnMSDAoEbmFtZRgBIAEoCSKHAQoNQ29sdW1uT3B0aW9ucxIMCgRuYW1lGAEgASgJEhYKDmlzX3ByaW1hcnlfa2V5GAIgASgIEhIKCnJlZmVyZW5jZXMYAyABKAkSEQoJaXNfdW5pcXVlGAQgASgIEhQKDGNyZWF0ZV9pbmRleBgFIAEoCBITCgtjb2x1bW5fdHlwZRgGIAEoCTpUCgV0YWJsZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxi4jgMgASgLMhsucXVhZHNtaXRoLnNxbC5UYWJsZU9wdGlvbnNSBXRhYmxlOlUKBmNvbHVtbhIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYuI4DIAEoCzIcLnF1YWRzbWl0aC5zcWwuQ29sdW1uT3B0aW9uc1IGY29sdW1uQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
     [file_google_protobuf_descriptor],
   );
+
+/**
+ * @generated from message quadsmith.sql.TableOptions
+ */
+export type TableOptions = Message<"quadsmith.sql.TableOptions"> & {
+  /**
+   * The name of the SQL table to generate for this message.
+   * If omitted, the Go generator will not generate a table for this message.
+   * Example: option (quadsmith.sql.table) = { name: "motors" };
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message quadsmith.sql.TableOptions.
+ * Use `create(TableOptionsSchema)` to create a new message.
+ */
+export const TableOptionsSchema: GenMessage<TableOptions> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith__sql, 0);
 
 /**
  * @generated from message quadsmith.sql.ColumnOptions
  */
 export type ColumnOptions = Message<"quadsmith.sql.ColumnOptions"> & {
   /**
+   * The name of the SQL column to generate for this field.
+   * If omitted, the Go generator will use the field name as the column name.
+   *
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
    * Marks this field as the PRIMARY KEY of the generated table.
    *
-   * @generated from field: bool is_primary_key = 1;
+   * @generated from field: bool is_primary_key = 2;
    */
   isPrimaryKey: boolean;
 
@@ -34,28 +64,28 @@ export type ColumnOptions = Message<"quadsmith.sql.ColumnOptions"> & {
    * The value should be formatted as "target_table(target_column)".
    * Example: [(quadsmith.sql.column) = { references: "frames(uuid)" }]
    *
-   * @generated from field: string references = 2;
+   * @generated from field: string references = 3;
    */
   references: string;
 
   /**
    * Adds a UNIQUE constraint to the generated column.
    *
-   * @generated from field: bool is_unique = 3;
+   * @generated from field: bool is_unique = 4;
    */
   isUnique: boolean;
 
   /**
    * Generates a standard B-Tree index for this column to speed up CEL queries.
    *
-   * @generated from field: bool create_index = 4;
+   * @generated from field: bool create_index = 5;
    */
   createIndex: boolean;
 
   /**
    * Custom SQL column type override.
    *
-   * @generated from field: string column_type = 5;
+   * @generated from field: string column_type = 6;
    */
   columnType: string;
 };
@@ -66,16 +96,14 @@ export type ColumnOptions = Message<"quadsmith.sql.ColumnOptions"> & {
  */
 export const ColumnOptionsSchema: GenMessage<ColumnOptions> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith__sql, 0);
+  messageDesc(file_quadsmith__sql, 1);
 
 /**
- * The name of the SQL table to generate for this message.
- * If omitted, the Go generator will not generate a table for this message.
- * Example: option (quadsmith.sql.table_name) = "motors";
+ * SQL table configuration for backend database mapping.
  *
- * @generated from extension: string table_name = 51000;
+ * @generated from extension: quadsmith.sql.TableOptions table = 51000;
  */
-export const table_name: GenExtension<MessageOptions, string> =
+export const table: GenExtension<MessageOptions, TableOptions> =
   /*@__PURE__*/
   extDesc(file_quadsmith__sql, 0);
 

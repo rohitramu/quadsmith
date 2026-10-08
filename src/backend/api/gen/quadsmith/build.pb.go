@@ -386,28 +386,29 @@ var File_quadsmith_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_build_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xfa\x06\n" +
+	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xfc\x06\n" +
 	"\x05Build\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\b\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02\x18\x01R\x02id\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x04 \x01(\tR\vdescription\x121\n" +
 	"\n" +
-	"frame_uuid\x18\x05 \x01(\tB\x12\xc2\xf3\x18\x0e\x12\fframes(uuid)R\tframeUuid\x121\n" +
+	"frame_uuid\x18\x05 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fframes(uuid)R\tframeUuid\x121\n" +
 	"\n" +
-	"motor_uuid\x18\x06 \x01(\tB\x12\xc2\xf3\x18\x0e\x12\fmotors(uuid)R\tmotorUuid\x128\n" +
-	"\fbattery_uuid\x18\a \x01(\tB\x15\xc2\xf3\x18\x11\x12\x0fbatteries(uuid)R\vbatteryUuid\x12T\n" +
-	"\x16flight_controller_uuid\x18\b \x01(\tB\x1e\xc2\xf3\x18\x1a\x12\x18flight_controllers(uuid)R\x14flightControllerUuid\x12I\n" +
+	"motor_uuid\x18\x06 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fmotors(uuid)R\tmotorUuid\x128\n" +
+	"\fbattery_uuid\x18\a \x01(\tB\x15\xc2\xf3\x18\x11\x1a\x0fbatteries(uuid)R\vbatteryUuid\x12T\n" +
+	"\x16flight_controller_uuid\x18\b \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18flight_controllers(uuid)R\x14flightControllerUuid\x12I\n" +
 	"!electronic_speed_controller_uuids\x18\t \x03(\tR\x1eelectronicSpeedControllerUuids\x12%\n" +
 	"\x0ereceiver_uuids\x18\n" +
 	" \x03(\tR\rreceiverUuids\x12#\n" +
 	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12=\n" +
-	"\x0epropeller_uuid\x18\f \x01(\tB\x16\xc2\xf3\x18\x12\x12\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
+	"\x0epropeller_uuid\x18\f \x01(\tB\x16\xc2\xf3\x18\x12\x1a\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
 	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12T\n" +
-	"\x16video_transmitter_uuid\x18\x0f \x01(\tB\x1e\xc2\xf3\x18\x1a\x12\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12J\n" +
-	"\x11gps_receiver_uuid\x18\x10 \x01(\tB\x19\xc2\xf3\x18\x15\x12\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12A\n" +
-	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x1d\x92\xb5\x18\x0f\n" +
-	"\x05Build\x12\x06Builds\xc2\xf3\x18\x06buildsB\x14\n" +
+	"\x16video_transmitter_uuid\x18\x0f \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12J\n" +
+	"\x11gps_receiver_uuid\x18\x10 \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12A\n" +
+	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x1f\x92\xb5\x18\x0f\n" +
+	"\x05Build\x12\x06Builds\xc2\xf3\x18\b\n" +
+	"\x06buildsB\x14\n" +
 	"\x12_gps_receiver_uuid\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +

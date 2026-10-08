@@ -22,27 +22,77 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type TableOptions struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The name of the SQL table to generate for this message.
+	// If omitted, the Go generator will not generate a table for this message.
+	// Example: option (quadsmith.sql.table) = { name: "motors" };
+	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TableOptions) Reset() {
+	*x = TableOptions{}
+	mi := &file_quadsmith__sql_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TableOptions) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TableOptions) ProtoMessage() {}
+
+func (x *TableOptions) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith__sql_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TableOptions.ProtoReflect.Descriptor instead.
+func (*TableOptions) Descriptor() ([]byte, []int) {
+	return file_quadsmith__sql_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *TableOptions) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 type ColumnOptions struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
+	// The name of the SQL column to generate for this field.
+	// If omitted, the Go generator will use the field name as the column name.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Marks this field as the PRIMARY KEY of the generated table.
-	IsPrimaryKey bool `protobuf:"varint,1,opt,name=is_primary_key,json=isPrimaryKey,proto3" json:"is_primary_key,omitempty"`
+	IsPrimaryKey bool `protobuf:"varint,2,opt,name=is_primary_key,json=isPrimaryKey,proto3" json:"is_primary_key,omitempty"`
 	// Defines a FOREIGN KEY constraint.
 	// The value should be formatted as "target_table(target_column)".
 	// Example: [(quadsmith.sql.column) = { references: "frames(uuid)" }]
-	References string `protobuf:"bytes,2,opt,name=references,proto3" json:"references,omitempty"`
+	References string `protobuf:"bytes,3,opt,name=references,proto3" json:"references,omitempty"`
 	// Adds a UNIQUE constraint to the generated column.
-	IsUnique bool `protobuf:"varint,3,opt,name=is_unique,json=isUnique,proto3" json:"is_unique,omitempty"`
+	IsUnique bool `protobuf:"varint,4,opt,name=is_unique,json=isUnique,proto3" json:"is_unique,omitempty"`
 	// Generates a standard B-Tree index for this column to speed up CEL queries.
-	CreateIndex bool `protobuf:"varint,4,opt,name=create_index,json=createIndex,proto3" json:"create_index,omitempty"`
+	CreateIndex bool `protobuf:"varint,5,opt,name=create_index,json=createIndex,proto3" json:"create_index,omitempty"`
 	// Custom SQL column type override.
-	ColumnType    string `protobuf:"bytes,5,opt,name=column_type,json=columnType,proto3" json:"column_type,omitempty"`
+	ColumnType    string `protobuf:"bytes,6,opt,name=column_type,json=columnType,proto3" json:"column_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ColumnOptions) Reset() {
 	*x = ColumnOptions{}
-	mi := &file_quadsmith__sql_proto_msgTypes[0]
+	mi := &file_quadsmith__sql_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -54,7 +104,7 @@ func (x *ColumnOptions) String() string {
 func (*ColumnOptions) ProtoMessage() {}
 
 func (x *ColumnOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith__sql_proto_msgTypes[0]
+	mi := &file_quadsmith__sql_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -67,7 +117,14 @@ func (x *ColumnOptions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ColumnOptions.ProtoReflect.Descriptor instead.
 func (*ColumnOptions) Descriptor() ([]byte, []int) {
-	return file_quadsmith__sql_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith__sql_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ColumnOptions) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
 }
 
 func (x *ColumnOptions) GetIsPrimaryKey() bool {
@@ -108,10 +165,10 @@ func (x *ColumnOptions) GetColumnType() string {
 var file_quadsmith__sql_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
-		ExtensionType: (*string)(nil),
+		ExtensionType: (*TableOptions)(nil),
 		Field:         51000,
-		Name:          "quadsmith.sql.table_name",
-		Tag:           "bytes,51000,opt,name=table_name",
+		Name:          "quadsmith.sql.table",
+		Tag:           "bytes,51000,opt,name=table",
 		Filename:      "quadsmith/_sql.proto",
 	},
 	{
@@ -126,12 +183,10 @@ var file_quadsmith__sql_proto_extTypes = []protoimpl.ExtensionInfo{
 
 // Extension fields to descriptorpb.MessageOptions.
 var (
-	// The name of the SQL table to generate for this message.
-	// If omitted, the Go generator will not generate a table for this message.
-	// Example: option (quadsmith.sql.table_name) = "motors";
+	// SQL table configuration for backend database mapping.
 	//
-	// optional string table_name = 51000;
-	E_TableName = &file_quadsmith__sql_proto_extTypes[0]
+	// optional quadsmith.sql.TableOptions table = 51000;
+	E_Table = &file_quadsmith__sql_proto_extTypes[0]
 )
 
 // Extension fields to descriptorpb.FieldOptions.
@@ -146,18 +201,20 @@ var File_quadsmith__sql_proto protoreflect.FileDescriptor
 
 const file_quadsmith__sql_proto_rawDesc = "" +
 	"\n" +
-	"\x14quadsmith/_sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto\"\xb6\x01\n" +
-	"\rColumnOptions\x12$\n" +
-	"\x0eis_primary_key\x18\x01 \x01(\bR\fisPrimaryKey\x12\x1e\n" +
+	"\x14quadsmith/_sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto\"\"\n" +
+	"\fTableOptions\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\xca\x01\n" +
+	"\rColumnOptions\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12$\n" +
+	"\x0eis_primary_key\x18\x02 \x01(\bR\fisPrimaryKey\x12\x1e\n" +
 	"\n" +
-	"references\x18\x02 \x01(\tR\n" +
+	"references\x18\x03 \x01(\tR\n" +
 	"references\x12\x1b\n" +
-	"\tis_unique\x18\x03 \x01(\bR\bisUnique\x12!\n" +
-	"\fcreate_index\x18\x04 \x01(\bR\vcreateIndex\x12\x1f\n" +
-	"\vcolumn_type\x18\x05 \x01(\tR\n" +
-	"columnType:@\n" +
-	"\n" +
-	"table_name\x12\x1f.google.protobuf.MessageOptions\x18\xb8\x8e\x03 \x01(\tR\ttableName:U\n" +
+	"\tis_unique\x18\x04 \x01(\bR\bisUnique\x12!\n" +
+	"\fcreate_index\x18\x05 \x01(\bR\vcreateIndex\x12\x1f\n" +
+	"\vcolumn_type\x18\x06 \x01(\tR\n" +
+	"columnType:T\n" +
+	"\x05table\x12\x1f.google.protobuf.MessageOptions\x18\xb8\x8e\x03 \x01(\v2\x1b.quadsmith.sql.TableOptionsR\x05table:U\n" +
 	"\x06column\x12\x1d.google.protobuf.FieldOptions\x18\xb8\x8e\x03 \x01(\v2\x1c.quadsmith.sql.ColumnOptionsR\x06columnB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
@@ -172,19 +229,21 @@ func file_quadsmith__sql_proto_rawDescGZIP() []byte {
 	return file_quadsmith__sql_proto_rawDescData
 }
 
-var file_quadsmith__sql_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_quadsmith__sql_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_quadsmith__sql_proto_goTypes = []any{
-	(*ColumnOptions)(nil),               // 0: quadsmith.sql.ColumnOptions
-	(*descriptorpb.MessageOptions)(nil), // 1: google.protobuf.MessageOptions
-	(*descriptorpb.FieldOptions)(nil),   // 2: google.protobuf.FieldOptions
+	(*TableOptions)(nil),                // 0: quadsmith.sql.TableOptions
+	(*ColumnOptions)(nil),               // 1: quadsmith.sql.ColumnOptions
+	(*descriptorpb.MessageOptions)(nil), // 2: google.protobuf.MessageOptions
+	(*descriptorpb.FieldOptions)(nil),   // 3: google.protobuf.FieldOptions
 }
 var file_quadsmith__sql_proto_depIdxs = []int32{
-	1, // 0: quadsmith.sql.table_name:extendee -> google.protobuf.MessageOptions
-	2, // 1: quadsmith.sql.column:extendee -> google.protobuf.FieldOptions
-	0, // 2: quadsmith.sql.column:type_name -> quadsmith.sql.ColumnOptions
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	2, // [2:3] is the sub-list for extension type_name
+	2, // 0: quadsmith.sql.table:extendee -> google.protobuf.MessageOptions
+	3, // 1: quadsmith.sql.column:extendee -> google.protobuf.FieldOptions
+	0, // 2: quadsmith.sql.table:type_name -> quadsmith.sql.TableOptions
+	1, // 3: quadsmith.sql.column:type_name -> quadsmith.sql.ColumnOptions
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	2, // [2:4] is the sub-list for extension type_name
 	0, // [0:2] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
@@ -200,7 +259,7 @@ func file_quadsmith__sql_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith__sql_proto_rawDesc), len(file_quadsmith__sql_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 2,
 			NumServices:   0,
 		},

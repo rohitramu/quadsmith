@@ -347,11 +347,11 @@ var File_quadsmith_camera_proto protoreflect.FileDescriptor
 
 const file_quadsmith_camera_proto_rawDesc = "" +
 	"\n" +
-	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc2\x03\n" +
+	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc4\x03\n" +
 	"\x06Camera\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\b\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02\x18\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\fmanufacturer\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1a\n" +
@@ -362,8 +362,9 @@ const file_quadsmith_camera_proto_rawDesc = "" +
 	"\flens_size_mm\x18\t \x01(\x02R\n" +
 	"lensSizeMm\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks: \x92\xb5\x18\x11\n" +
-	"\x06Camera\x12\aCameras\xc2\xf3\x18\acameras\"<\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\"\x92\xb5\x18\x11\n" +
+	"\x06Camera\x12\aCameras\xc2\xf3\x18\t\n" +
+	"\acameras\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x96\x01\n" +

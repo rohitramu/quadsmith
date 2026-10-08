@@ -32,14 +32,14 @@ func toSnakeCase(s string) string {
 
 func getTableName(msg *protogen.Message) string {
 	opts := msg.Desc.Options()
+	if proto.HasExtension(opts, quadsmith_sql.E_Table) {
+		if tblOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Table).(*quadsmith_sql.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
+			return tblOpts.Name
+		}
+	}
 	if proto.HasExtension(opts, quadsmith_sql.E_Name) {
 		if nameOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Name).(*quadsmith_sql.NameOptions); ok && nameOpts != nil && nameOpts.Plural != "" {
 			return toSnakeCase(nameOpts.Plural)
-		}
-	}
-	if proto.HasExtension(opts, quadsmith_sql.E_TableName) {
-		if tn, ok := proto.GetExtension(opts, quadsmith_sql.E_TableName).(string); ok && tn != "" {
-			return tn
 		}
 	}
 	return ""

@@ -365,16 +365,16 @@ var File_quadsmith_gps_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x98\x05\n" +
+	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x9a\x05\n" +
 	"\vGpsReceiver\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\b\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02\x18\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\fmanufacturer\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x18\n" +
 	"\achipset\x18\x06 \x01(\tR\achipset\x12\"\n" +
-	"\bprotocol\x18\a \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\bprotocol\x12$\n" +
+	"\bprotocol\x18\a \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12$\n" +
 	"\vhas_compass\x18\b \x01(\bH\x00R\n" +
 	"hasCompass\x88\x01\x01\x12&\n" +
 	"\fcompass_chip\x18\t \x01(\tH\x01R\vcompassChip\x88\x01\x01\x12-\n" +
@@ -382,12 +382,13 @@ const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	" \x01(\x02R\x10inputVoltageMinV\x12-\n" +
 	"\x13input_voltage_max_v\x18\v \x01(\x02R\x10inputVoltageMaxV\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:`\x8a\xb5\x18*\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:b\x8a\xb5\x18*\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\achipset\n" +
 	"\vhas_compass\x92\xb5\x18\x1d\n" +
-	"\fGPS Receiver\x12\rGPS Receivers\xc2\xf3\x18\rgps_receiversB\x0e\n" +
+	"\fGPS Receiver\x12\rGPS Receivers\xc2\xf3\x18\x0f\n" +
+	"\rgps_receiversB\x0e\n" +
 	"\f_has_compassB\x0f\n" +
 	"\r_compass_chip\"A\n" +
 	"\x15GetGpsReceiverRequest\x12\x0e\n" +

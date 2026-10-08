@@ -35,14 +35,14 @@ func toSnakeCase(s string) string {
 
 func getTableName(msg *protogen.Message) string {
 	opts := msg.Desc.Options()
+	if proto.HasExtension(opts, quadsmith_sql.E_Table) {
+		if tblOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Table).(*quadsmith_sql.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
+			return tblOpts.Name
+		}
+	}
 	if proto.HasExtension(opts, quadsmith_sql.E_Name) {
 		if nameOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Name).(*quadsmith_sql.NameOptions); ok && nameOpts != nil && nameOpts.Plural != "" {
 			return toSnakeCase(nameOpts.Plural)
-		}
-	}
-	if proto.HasExtension(opts, quadsmith_sql.E_TableName) {
-		if tn, ok := proto.GetExtension(opts, quadsmith_sql.E_TableName).(string); ok && tn != "" {
-			return tn
 		}
 	}
 	return ""
@@ -94,14 +94,18 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	var mFields []string
 	for i, field := range msg.Fields {
 		colName := string(field.Desc.Name())
-		colNames = append(colNames, colName)
-
 		colType := ""
 		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && co.ColumnType != "" {
-				colType = co.ColumnType
+			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+				if co.Name != "" {
+					colName = co.Name
+				}
+				if co.ColumnType != "" {
+					colType = co.ColumnType
+				}
 			}
 		}
+		colNames = append(colNames, colName)
 
 		if colType != "" {
 			placeHolders = append(placeHolders, fmt.Sprintf("$%d::%s", i+1, colType))
@@ -193,15 +197,20 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	argIdx := 2
 	for i, field := range msg.Fields {
 		colName := string(field.Desc.Name())
-		if colName == "uuid" || colName == "id" {
-			continue
-		}
-
 		colType := ""
 		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && co.ColumnType != "" {
-				colType = co.ColumnType
+			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+				if co.Name != "" {
+					colName = co.Name
+				}
+				if co.ColumnType != "" {
+					colType = co.ColumnType
+				}
 			}
+		}
+
+		if colName == "uuid" || colName == "id" {
+			continue
 		}
 
 		if colType != "" {

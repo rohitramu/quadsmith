@@ -16,7 +16,7 @@ message Propeller {
     singular: "Propeller"
     plural: "Propellers"
   };
-  option (quadsmith.sql.table_name) = "propellers";
+  option (quadsmith.sql.table) = {name: "propellers"};
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

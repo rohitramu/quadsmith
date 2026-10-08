@@ -339,11 +339,11 @@ var File_quadsmith_propeller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x9a\x03\n" +
+	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x9c\x03\n" +
 	"\tPropeller\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\b\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02\x18\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\fmanufacturer\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1f\n" +
 	"\vdiameter_mm\x18\x06 \x01(\x02R\n" +
@@ -353,9 +353,10 @@ const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\bmaterial\x18\t \x01(\tR\bmaterial\x12 \n" +
 	"\vdescription\x18\n" +
 	" \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:)\x92\xb5\x18\x17\n" +
+	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:+\x92\xb5\x18\x17\n" +
 	"\tPropeller\x12\n" +
-	"Propellers\xc2\xf3\x18\n" +
+	"Propellers\xc2\xf3\x18\f\n" +
+	"\n" +
 	"propellers\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
