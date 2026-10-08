@@ -1683,16 +1683,16 @@ video_transmitters: {
 video_transmitters: {
 
   uuid: "a40e8981-a5bf-478e-8402-b635d9e4cc07"
-  id: "in-stock-dji-o4-air-unit"
+  id: "dji-o4-air-unit"
   manufacturer: "DJI"
-  name: "(IN Stock) DJI O4 Air Unit"
+  name: "DJI O4 Air Unit"
   weight_g: 2.1
   protocol: "DJI O4"
   max_power_mw: 2000
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "DJI (IN Stock) DJI O4 Air Unit DJI O4 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
+  description: "DJI O4 Air Unit DJI O4 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/dji-o4-air-unit"

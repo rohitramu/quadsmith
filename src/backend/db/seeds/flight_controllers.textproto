@@ -1133,7 +1133,7 @@ flight_controllers: {
   weight_g: 170
   processor: "STM32F722"
   gyro: "ICM42688P"
-  description: "(IN Stock ) Sub250 OasisFly35 DC HD O4 Pro GPS Freestyle Quadcopter"
+  description: "Sub250 OasisFly35 DC HD O4 Pro GPS Freestyle Quadcopter"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-oasisfly35-dc-hd-o4-pro-gps-freestyle-quadcopter"
@@ -1148,7 +1148,7 @@ flight_controllers: {
   weight_g: 88
   processor: "STM32F722"
   gyro: "ICM42688P"
-  description: "(IN Stock) Sub250 DollyFly25 V2 HD O4 Pro GPS 2.5-inch 4S CineWhoop"
+  description: "Sub250 DollyFly25 V2 HD O4 Pro GPS 2.5-inch 4S CineWhoop"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/dollyfly25-v2-hd-o4-pro-4s-gps-cinewhoop"
@@ -1163,7 +1163,7 @@ flight_controllers: {
   weight_g: 88
   processor: "STM32F411"
   gyro: "ICM42688P"
-  description: "(In Stock) Sub250 DollyFly16 1.6-inch HD O4 Pro 2S Whoop FPV Drone"
+  description: "Sub250 DollyFly16 1.6-inch HD O4 Pro 2S Whoop FPV Drone"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-dollyfly16-1-6-inch-hd-o4-pro-2s-whoop-fpv-drone"
