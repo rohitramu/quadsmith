@@ -3,6 +3,7 @@ syntax = "proto3";
 package quadsmith;
 
 import "google/protobuf/descriptor.proto";
+import "quadsmith/_name.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 

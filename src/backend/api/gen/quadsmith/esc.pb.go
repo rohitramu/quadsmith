@@ -346,7 +346,7 @@ var File_quadsmith_esc_proto protoreflect.FileDescriptor
 
 const file_quadsmith_esc_proto_rawDesc = "" +
 	"\n" +
-	"\x13quadsmith/esc.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc4\x03\n" +
+	"\x13quadsmith/esc.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xef\x03\n" +
 	"\x03Esc\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -360,7 +360,8 @@ const file_quadsmith_esc_proto_rawDesc = "" +
 	"\x15motor_current_burst_a\x18\b \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
 	"\bfirmware\x18\t \x01(\tR\bfirmware\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\b\xc2\xf3\x18\x04escs\"9\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:3\x92\xb5\x18'\n" +
+	"\x03ESC\x12\x04ESCs\x1a\x04escs\"\x04escs*\x03esc2\x03Esc:\x04escs\xc2\xf3\x18\x04escs\"9\n" +
 	"\rGetEscRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x93\x01\n" +
@@ -418,6 +419,7 @@ func file_quadsmith_esc_proto_init() {
 	if File_quadsmith_esc_proto != nil {
 		return
 	}
+	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
 	type x struct{}

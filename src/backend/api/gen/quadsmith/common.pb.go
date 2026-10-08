@@ -44,7 +44,7 @@ var File_quadsmith__common_proto protoreflect.FileDescriptor
 
 const file_quadsmith__common_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto:J\n" +
+	"\x17quadsmith/_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\x1a\x15quadsmith/_name.proto:J\n" +
 	"\x0fdefault_columns\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x03(\tR\x0edefaultColumnsB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var file_quadsmith__common_proto_goTypes = []any{
@@ -64,6 +64,7 @@ func file_quadsmith__common_proto_init() {
 	if File_quadsmith__common_proto != nil {
 		return
 	}
+	file_quadsmith__name_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

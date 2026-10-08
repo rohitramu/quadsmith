@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package quadsmith;
 
+import "quadsmith/_name.proto";
 import "quadsmith/_sql.proto";
 import "quadsmith/reference_link.proto";
 
@@ -11,6 +12,15 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message FlightController {
+  option (quadsmith.name) = {
+    singular: "Flight Controller"
+    plural: "Flight Controllers"
+    cli: "flight-controllers"
+    api: "flight-controllers"
+    go: "flightController"
+    typescript: "FlightController"
+    sql: "flight_controllers"
+  };
   option (quadsmith.sql.table_name) = "flight_controllers";
 
   string uuid = 1 [(quadsmith.sql.is_primary_key) = true];

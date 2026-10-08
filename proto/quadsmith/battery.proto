@@ -3,6 +3,7 @@ syntax = "proto3";
 package quadsmith;
 
 import "quadsmith/_common.proto";
+import "quadsmith/_name.proto";
 import "quadsmith/_sql.proto";
 import "quadsmith/reference_link.proto";
 
@@ -12,6 +13,15 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message Battery {
+  option (quadsmith.name) = {
+    singular: "Battery"
+    plural: "Batteries"
+    cli: "batteries"
+    api: "batteries"
+    go: "battery"
+    typescript: "Battery"
+    sql: "batteries"
+  };
   option (quadsmith.sql.table_name) = "batteries";
   option (quadsmith.default_columns) = "manufacturer";
   option (quadsmith.default_columns) = "name";

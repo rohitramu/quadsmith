@@ -356,7 +356,7 @@ var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe0\x04\n" +
+	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xed\x05\n" +
 	"\x10FlightController\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -372,7 +372,8 @@ const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\x1finternal_video_transmitter_uuid\x18\n" +
 	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x1cinternalVideoTransmitterUuid\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x16\xc2\xf3\x18\x12flight_controllers\"F\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\xa2\x01\x92\xb5\x18\x87\x01\n" +
+	"\x11Flight Controller\x12\x12Flight Controllers\x1a\x12flight-controllers\"\x12flight-controllers*\x10flightController2\x10FlightController:\x12flight_controllers\xc2\xf3\x18\x12flight_controllers\"F\n" +
 	"\x1aGetFlightControllerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +
@@ -429,6 +430,7 @@ func file_quadsmith_flight_controller_proto_init() {
 	if File_quadsmith_flight_controller_proto != nil {
 		return
 	}
+	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
 	type x struct{}

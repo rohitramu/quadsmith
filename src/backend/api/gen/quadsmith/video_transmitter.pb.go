@@ -355,7 +355,7 @@ var File_quadsmith_video_transmitter_proto protoreflect.FileDescriptor
 
 const file_quadsmith_video_transmitter_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/video_transmitter.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x89\x04\n" +
+	"!quadsmith/video_transmitter.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x96\x05\n" +
 	"\x10VideoTransmitter\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -371,7 +371,8 @@ const file_quadsmith_video_transmitter_proto_rawDesc = "" +
 	"\rantenna_uuids\x18\n" +
 	" \x03(\tR\fantennaUuids\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x16\xc2\xf3\x18\x12video_transmitters\"F\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\xa2\x01\x92\xb5\x18\x87\x01\n" +
+	"\x11Video Transmitter\x12\x12Video Transmitters\x1a\x12video-transmitters\"\x12video-transmitters*\x10videoTransmitter2\x10VideoTransmitter:\x12video_transmitters\xc2\xf3\x18\x12video_transmitters\"F\n" +
 	"\x1aGetVideoTransmitterRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +
@@ -428,6 +429,7 @@ func file_quadsmith_video_transmitter_proto_init() {
 	if File_quadsmith_video_transmitter_proto != nil {
 		return
 	}
+	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
 	type x struct{}

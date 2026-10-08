@@ -3,6 +3,7 @@ syntax = "proto3";
 package quadsmith;
 
 import "quadsmith/_common.proto";
+import "quadsmith/_name.proto";
 import "quadsmith/_sql.proto";
 import "quadsmith/reference_link.proto";
 
@@ -12,6 +13,15 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message Motor {
+  option (quadsmith.name) = {
+    singular: "Motor"
+    plural: "Motors"
+    cli: "motors"
+    api: "motors"
+    go: "motor"
+    typescript: "Motor"
+    sql: "motors"
+  };
   // This tells the Go generator to create a 'motors' table for this message
   option (quadsmith.sql.table_name) = "motors";
   option (quadsmith.default_columns) = "manufacturer";

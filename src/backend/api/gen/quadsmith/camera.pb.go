@@ -347,7 +347,7 @@ var File_quadsmith_camera_proto protoreflect.FileDescriptor
 
 const file_quadsmith_camera_proto_rawDesc = "" +
 	"\n" +
-	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xa7\x03\n" +
+	"\x16quadsmith/camera.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe7\x03\n" +
 	"\x06Camera\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -362,7 +362,8 @@ const file_quadsmith_camera_proto_rawDesc = "" +
 	"\flens_size_mm\x18\t \x01(\x02R\n" +
 	"lensSizeMm\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\v\xc2\xf3\x18\acameras\"<\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:K\x92\xb5\x18<\n" +
+	"\x06Camera\x12\aCameras\x1a\acameras\"\acameras*\x06camera2\x06Camera:\acameras\xc2\xf3\x18\acameras\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x96\x01\n" +
@@ -419,6 +420,7 @@ func file_quadsmith_camera_proto_init() {
 	if File_quadsmith_camera_proto != nil {
 		return
 	}
+	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
 	type x struct{}

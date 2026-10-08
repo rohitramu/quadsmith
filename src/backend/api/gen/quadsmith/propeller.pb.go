@@ -339,7 +339,7 @@ var File_quadsmith_propeller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xf9\x02\n" +
+	"\x19quadsmith/propeller.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xce\x03\n" +
 	"\tPropeller\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -353,7 +353,12 @@ const file_quadsmith_propeller_proto_rawDesc = "" +
 	"\bmaterial\x18\t \x01(\tR\bmaterial\x12 \n" +
 	"\vdescription\x18\n" +
 	" \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x0e\xc2\xf3\x18\n" +
+	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:c\x92\xb5\x18Q\n" +
+	"\tPropeller\x12\n" +
+	"Propellers\x1a\n" +
+	"propellers\"\n" +
+	"propellers*\tpropeller2\tPropeller:\n" +
+	"propellers\xc2\xf3\x18\n" +
 	"propellers\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
@@ -413,6 +418,7 @@ func file_quadsmith_propeller_proto_init() {
 	if File_quadsmith_propeller_proto != nil {
 		return
 	}
+	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
 	type x struct{}

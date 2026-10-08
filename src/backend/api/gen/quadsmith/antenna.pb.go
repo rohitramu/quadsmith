@@ -356,7 +356,7 @@ var File_quadsmith_antenna_proto protoreflect.FileDescriptor
 
 const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xd7\x03\n" +
+	"\x17quadsmith/antenna.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x9e\x04\n" +
 	"\aAntenna\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -371,7 +371,8 @@ const file_quadsmith_antenna_proto_rawDesc = "" +
 	"\bgain_dbi\x18\n" +
 	" \x01(\x02R\againDbi\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\f\xc2\xf3\x18\bantennas\"=\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:S\x92\xb5\x18C\n" +
+	"\aAntenna\x12\bAntennas\x1a\bantennas\"\bantennas*\aantenna2\aAntenna:\bantennas\xc2\xf3\x18\bantennas\"=\n" +
 	"\x11GetAntennaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x97\x01\n" +
@@ -429,6 +430,7 @@ func file_quadsmith_antenna_proto_init() {
 	if File_quadsmith_antenna_proto != nil {
 		return
 	}
+	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
 	type x struct{}

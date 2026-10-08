@@ -9,21 +9,116 @@ import (
 	"strings"
 )
 
-var domains = []struct {
-	Name   string
-	Plural string
-}{
-	{"Motor", "Motors"},
-	{"Frame", "Frames"},
-	{"Battery", "Batteries"},
-	{"Esc", "Escs"},
-	{"FlightController", "FlightControllers"},
-	{"Receiver", "Receivers"},
-	{"VideoTransmitter", "VideoTransmitters"},
-	{"Antenna", "Antennas"},
-	{"Camera", "Cameras"},
-	{"Propeller", "Propellers"},
-	{"Build", "Builds"},
+type DomainName struct {
+	Singular   string
+	Plural     string
+	CLI        string
+	API        string
+	Go         string
+	TypeScript string
+	SQL        string
+}
+
+var domains = []DomainName{
+	{
+		Singular:   "Antenna",
+		Plural:     "Antennas",
+		CLI:        "antennas",
+		API:        "antennas",
+		Go:         "antenna",
+		TypeScript: "Antenna",
+		SQL:        "antennas",
+	},
+	{
+		Singular:   "Battery",
+		Plural:     "Batteries",
+		CLI:        "batteries",
+		API:        "batteries",
+		Go:         "battery",
+		TypeScript: "Battery",
+		SQL:        "batteries",
+	},
+	{
+		Singular:   "Build",
+		Plural:     "Builds",
+		CLI:        "builds",
+		API:        "builds",
+		Go:         "build",
+		TypeScript: "Build",
+		SQL:        "builds",
+	},
+	{
+		Singular:   "Camera",
+		Plural:     "Cameras",
+		CLI:        "cameras",
+		API:        "cameras",
+		Go:         "camera",
+		TypeScript: "Camera",
+		SQL:        "cameras",
+	},
+	{
+		Singular:   "ESC",
+		Plural:     "ESCs",
+		CLI:        "escs",
+		API:        "escs",
+		Go:         "esc",
+		TypeScript: "Esc",
+		SQL:        "escs",
+	},
+	{
+		Singular:   "Flight Controller",
+		Plural:     "Flight Controllers",
+		CLI:        "flight-controllers",
+		API:        "flight-controllers",
+		Go:         "flightController",
+		TypeScript: "FlightController",
+		SQL:        "flight_controllers",
+	},
+	{
+		Singular:   "Frame",
+		Plural:     "Frames",
+		CLI:        "frames",
+		API:        "frames",
+		Go:         "frame",
+		TypeScript: "Frame",
+		SQL:        "frames",
+	},
+	{
+		Singular:   "Motor",
+		Plural:     "Motors",
+		CLI:        "motors",
+		API:        "motors",
+		Go:         "motor",
+		TypeScript: "Motor",
+		SQL:        "motors",
+	},
+	{
+		Singular:   "Propeller",
+		Plural:     "Propellers",
+		CLI:        "propellers",
+		API:        "propellers",
+		Go:         "propeller",
+		TypeScript: "Propeller",
+		SQL:        "propellers",
+	},
+	{
+		Singular:   "Receiver",
+		Plural:     "Receivers",
+		CLI:        "receivers",
+		API:        "receivers",
+		Go:         "receiver",
+		TypeScript: "Receiver",
+		SQL:        "receivers",
+	},
+	{
+		Singular:   "Video Transmitter",
+		Plural:     "Video Transmitters",
+		CLI:        "video-transmitters",
+		API:        "video-transmitters",
+		Go:         "videoTransmitter",
+		TypeScript: "VideoTransmitter",
+		SQL:        "video_transmitters",
+	},
 }
 
 func main() {
@@ -85,14 +180,26 @@ func newRootCmd() *cobra.Command {
 `)
 
 	for _, d := range domains {
-		lowerName := strings.ToLower(d.Name)
-		lowerPlural := strings.ToLower(d.Plural)
+		clientVar := d.Go + "Client"
+		cmdVar := d.Go + "Cmd"
+		listCmdVar := d.Go + "ListCmd"
+		getCmdVar := d.Go + "GetCmd"
+		tsName := d.TypeScript
+		tsPlural := d.TypeScript + "s"
+		if strings.HasSuffix(d.TypeScript, "y") {
+			tsPlural = strings.TrimSuffix(d.TypeScript, "y") + "ies"
+		}
+		legacyAlias := strings.ToLower(tsPlural)
 
 		fmt.Fprintf(f, "\n\t// --- %s ---\n", d.Plural)
-		fmt.Fprintf(f, "\t%sClient := quadsmithconnect.New%sServiceClient(http.DefaultClient, targetURL)\n", lowerName, d.Name)
-		fmt.Fprintf(f, "\t%sCmd := &cobra.Command{Use: \"%s\"}\n", lowerPlural, lowerPlural)
+		fmt.Fprintf(f, "\t%s := quadsmithconnect.New%sServiceClient(http.DefaultClient, targetURL)\n", clientVar, tsName)
+		if d.CLI != legacyAlias {
+			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\", Aliases: []string{\"%s\"}}\n", cmdVar, d.CLI, legacyAlias)
+		} else {
+			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\"}\n", cmdVar, d.CLI)
+		}
 
-		fmt.Fprintf(f, "\t%sListCmd := &cobra.Command{\n", lowerPlural)
+		fmt.Fprintf(f, "\t%s := &cobra.Command{\n", listCmdVar)
 		fmt.Fprintf(f, "\t\tUse: \"list\",\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
 		fmt.Fprintf(f, "\t\t\tfilter, _ := cmd.Flags().GetString(\"filter\")\n")
@@ -103,7 +210,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\t\tcmd.SilenceUsage = false\n")
 		fmt.Fprintf(f, "\t\t\t\treturn fmt.Errorf(\"limit cannot be negative\")\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\tvar all []*pb.%s\n", d.Name)
+		fmt.Fprintf(f, "\t\t\tvar all []*pb.%s\n", tsName)
 		fmt.Fprintf(f, "\t\t\tvar currentToken string\n")
 		fmt.Fprintf(f, "\t\t\tfor {\n")
 		fmt.Fprintf(f, "\t\t\t\tpageSize := int32(100)\n")
@@ -116,10 +223,10 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\t\t\t\tpageSize = remaining\n")
 		fmt.Fprintf(f, "\t\t\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}\n", d.Plural)
-		fmt.Fprintf(f, "\t\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Plural)
+		fmt.Fprintf(f, "\t\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}\n", tsPlural)
+		fmt.Fprintf(f, "\t\t\t\tres, err := %s.List%s(context.Background(), connect.NewRequest(req))\n", clientVar, tsPlural)
 		fmt.Fprintf(f, "\t\t\t\tif err != nil { return err }\n")
-		fmt.Fprintf(f, "\t\t\t\tall = append(all, res.Msg.%s...)\n", d.Plural)
+		fmt.Fprintf(f, "\t\t\t\tall = append(all, res.Msg.%s...)\n", tsPlural)
 		fmt.Fprintf(f, "\t\t\t\tif limit > 0 && int32(len(all)) >= limit {\n")
 		fmt.Fprintf(f, "\t\t\t\t\tall = all[:limit]\n")
 		fmt.Fprintf(f, "\t\t\t\t\tbreak\n")
@@ -130,17 +237,17 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\t\tcurrentToken = res.Msg.NextPageToken\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\tif len(columns) == 0 {\n")
-		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", d.Name)
+		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", tsName)
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\terr := printOutput(cmd.OutOrStdout(), all, columns)\n")
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\treturn nil\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
-		fmt.Fprintf(f, "\t%sListCmd.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sListCmd.Flags().Int32P(\"limit\", \"l\", 0, \"Maximum number of items to return\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"filter\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
-		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
+		fmt.Fprintf(f, "\t%s.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", listCmdVar)
+		fmt.Fprintf(f, "\t%s.Flags().Int32P(\"limit\", \"l\", 0, \"Maximum number of items to return\")\n", listCmdVar)
+		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"filter\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", listCmdVar)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", tsName)
 		fmt.Fprintf(f, "\t\tre := regexp.MustCompile(`([a-zA-Z_]+)$`)\n")
 		fmt.Fprintf(f, "\t\tmatch := re.FindStringSubmatch(toComplete)\n")
 		fmt.Fprintf(f, "\t\tprefix := \"\"\n")
@@ -157,10 +264,10 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t}\n")
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
-		fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sListCmd.Flags().StringSliceP(\"sort\", \"s\", nil, \"Columns to sort by (e.g. ^kv)\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
-		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
+		fmt.Fprintf(f, "\t%s.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", listCmdVar)
+		fmt.Fprintf(f, "\t%s.Flags().StringSliceP(\"sort\", \"s\", nil, \"Columns to sort by (e.g. ^kv)\")\n", listCmdVar)
+		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", listCmdVar)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", tsName)
 		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
 		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[s] = true }\n")
@@ -173,8 +280,8 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
 
-		fmt.Fprintf(f, "\t%sListCmd.RegisterFlagCompletionFunc(\"sort\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
-		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
+		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"sort\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", listCmdVar)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", tsName)
 		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"sort\")\n")
 		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
 		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[strings.TrimPrefix(s, \"^\")] = true }\n")
@@ -193,32 +300,32 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t}\n")
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
-		fmt.Fprintf(f, "\t%sCmd.AddCommand(%sListCmd)\n\n", lowerPlural, lowerPlural)
-		// removed
-		fmt.Fprintf(f, "\t%sGetCmd := &cobra.Command{\n", lowerPlural)
+		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n\n", cmdVar, listCmdVar)
+
+		fmt.Fprintf(f, "\t%s := &cobra.Command{\n", getCmdVar)
 		fmt.Fprintf(f, "\t\tUse: \"get [id]\",\n")
 		fmt.Fprintf(f, "\t\tArgs: cobra.ExactArgs(1),\n")
 		fmt.Fprintf(f, "\t\tValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n")
 		fmt.Fprintf(f, "\t\t\tif len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }\n")
-		fmt.Fprintf(f, "\t\t\tres, err := %sClient.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{PageSize: 100}))\n", lowerName, d.Plural, d.Plural)
+		fmt.Fprintf(f, "\t\t\tres, err := %s.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{PageSize: 100}))\n", clientVar, tsPlural, tsPlural)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return nil, cobra.ShellCompDirectiveError }\n")
 		fmt.Fprintf(f, "\t\t\tvar comps []string\n")
-		fmt.Fprintf(f, "\t\t\tfor _, item := range res.Msg.%s {\n", d.Plural)
-		fmt.Fprintf(f, "\t\t\t\tcomps = append(comps, item.Id)\n") // Assuming every domain has an 'Id' field
+		fmt.Fprintf(f, "\t\t\tfor _, item := range res.Msg.%s {\n", tsPlural)
+		fmt.Fprintf(f, "\t\t\t\tcomps = append(comps, item.Id)\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\treturn comps, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
 		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"column\")\n")
-		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0], Columns: columns}\n", d.Name)
-		fmt.Fprintf(f, "\t\t\tres, err := %sClient.Get%s(context.Background(), connect.NewRequest(req))\n", lowerName, d.Name)
+		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0], Columns: columns}\n", tsName)
+		fmt.Fprintf(f, "\t\t\tres, err := %s.Get%s(context.Background(), connect.NewRequest(req))\n", clientVar, tsName)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\treturn printOutput(cmd.OutOrStdout(), res.Msg, columns)\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
-		fmt.Fprintf(f, "\t%sGetCmd.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", lowerPlural)
-		fmt.Fprintf(f, "\t%sGetCmd.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", lowerPlural)
-		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", d.Name)
+		fmt.Fprintf(f, "\t%s.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", getCmdVar)
+		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", getCmdVar)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", tsName)
 		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
 		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[s] = true }\n")
@@ -230,9 +337,9 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t}\n")
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
-		fmt.Fprintf(f, "\t%sCmd.AddCommand(%sGetCmd)\n\n", lowerPlural, lowerPlural)
+		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n\n", cmdVar, getCmdVar)
 
-		fmt.Fprintf(f, "\trootCmd.AddCommand(%sCmd)\n", lowerPlural)
+		fmt.Fprintf(f, "\trootCmd.AddCommand(%s)\n", cmdVar)
 	}
 
 	fmt.Fprintln(f, `

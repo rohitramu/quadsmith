@@ -330,7 +330,7 @@ var File_quadsmith_frame_proto protoreflect.FileDescriptor
 
 const file_quadsmith_frame_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x9d\x03\n" +
+	"\x15quadsmith/frame.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xd6\x03\n" +
 	"\x05Frame\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -342,7 +342,8 @@ const file_quadsmith_frame_proto_rawDesc = "" +
 	"\bgeometry\x18\b \x01(\tR\bgeometry\x12 \n" +
 	"\vdescription\x18\t \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\n" +
-	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:>\x8a\xb5\x18\fmanufacturer\x8a\xb5\x18\x04name\x8a\xb5\x18\fwheelbase_mm\x8a\xb5\x18\bgeometry\xc2\xf3\x18\x06frames\";\n" +
+	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:w\x8a\xb5\x18\fmanufacturer\x8a\xb5\x18\x04name\x8a\xb5\x18\fwheelbase_mm\x8a\xb5\x18\bgeometry\x92\xb5\x185\n" +
+	"\x05Frame\x12\x06Frames\x1a\x06frames\"\x06frames*\x05frame2\x05Frame:\x06frames\xc2\xf3\x18\x06frames\";\n" +
 	"\x0fGetFrameRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
@@ -401,6 +402,7 @@ func file_quadsmith_frame_proto_init() {
 		return
 	}
 	file_quadsmith__common_proto_init()
+	file_quadsmith__name_proto_init()
 	file_quadsmith__sql_proto_init()
 	file_quadsmith_reference_link_proto_init()
 	type x struct{}

@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package quadsmith;
 
+import "quadsmith/_name.proto";
 import "quadsmith/_sql.proto";
 import "quadsmith/reference_link.proto";
 
@@ -11,6 +12,15 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message VideoTransmitter {
+  option (quadsmith.name) = {
+    singular: "Video Transmitter"
+    plural: "Video Transmitters"
+    cli: "video-transmitters"
+    api: "video-transmitters"
+    go: "videoTransmitter"
+    typescript: "VideoTransmitter"
+    sql: "video_transmitters"
+  };
   option (quadsmith.sql.table_name) = "video_transmitters";
 
   string uuid = 1 [(quadsmith.sql.is_primary_key) = true];

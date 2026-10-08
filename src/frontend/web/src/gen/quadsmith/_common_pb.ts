@@ -6,12 +6,13 @@ import type { GenExtension, GenFile } from "@bufbuild/protobuf/codegenv2";
 import { extDesc, fileDesc } from "@bufbuild/protobuf/codegenv2";
 import type { MessageOptions } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";
+import { file_quadsmith__name } from "./_name_pb";
 
 /**
  * Describes the file quadsmith/_common.proto.
  */
 export const file_quadsmith__common: GenFile = /*@__PURE__*/
-  fileDesc("ChdxdWFkc21pdGgvX2NvbW1vbi5wcm90bxIJcXVhZHNtaXRoOkoKD2RlZmF1bHRfY29sdW1ucxIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgAygJUg5kZWZhdWx0Q29sdW1uc0IdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw", [file_google_protobuf_descriptor]);
+  fileDesc("ChdxdWFkc21pdGgvX2NvbW1vbi5wcm90bxIJcXVhZHNtaXRoOkoKD2RlZmF1bHRfY29sdW1ucxIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgAygJUg5kZWZhdWx0Q29sdW1uc0IdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw", [file_google_protobuf_descriptor, file_quadsmith__name]);
 
 /**
  * The default columns to display in CLI tables and UI collection listings.

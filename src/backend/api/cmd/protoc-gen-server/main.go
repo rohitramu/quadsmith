@@ -20,10 +20,25 @@ func main() {
 	})
 }
 
+func getTableName(msg *protogen.Message) string {
+	opts := msg.Desc.Options()
+	if proto.HasExtension(opts, quadsmith_sql.E_Name) {
+		if nameOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Name).(*quadsmith_sql.NameOptions); ok && nameOpts != nil && nameOpts.Sql != "" {
+			return nameOpts.Sql
+		}
+	}
+	if proto.HasExtension(opts, quadsmith_sql.E_TableName) {
+		if tn, ok := proto.GetExtension(opts, quadsmith_sql.E_TableName).(string); ok && tn != "" {
+			return tn
+		}
+	}
+	return ""
+}
+
 func generateFile(gen *protogen.Plugin, file *protogen.File) {
 	hasTables := false
 	for _, msg := range file.Messages {
-		if proto.HasExtension(msg.Desc.Options(), quadsmith_sql.E_TableName) {
+		if getTableName(msg) != "" {
 			hasTables = true
 			break
 		}
@@ -48,7 +63,7 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 	g.P()
 
 	for _, msg := range file.Messages {
-		if !proto.HasExtension(msg.Desc.Options(), quadsmith_sql.E_TableName) {
+		if getTableName(msg) == "" {
 			continue
 		}
 
