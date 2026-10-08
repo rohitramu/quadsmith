@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file quadsmith/_name.proto.
  */
 export const file_quadsmith__name: GenFile = /*@__PURE__*/
-  fileDesc("ChVxdWFkc21pdGgvX25hbWUucHJvdG8SCXF1YWRzbWl0aCJ2CgtOYW1lT3B0aW9ucxIQCghzaW5ndWxhchgBIAEoCRIOCgZwbHVyYWwYAiABKAkSCwoDY2xpGAMgASgJEgsKA2FwaRgEIAEoCRIKCgJnbxgFIAEoCRISCgp0eXBlc2NyaXB0GAYgASgJEgsKA3NxbBgHIAEoCTpNCgRuYW1lEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGNKGAyABKAsyFi5xdWFkc21pdGguTmFtZU9wdGlvbnNSBG5hbWVCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM", [file_google_protobuf_descriptor]);
+  fileDesc("ChVxdWFkc21pdGgvX25hbWUucHJvdG8SCXF1YWRzbWl0aCIvCgtOYW1lT3B0aW9ucxIQCghzaW5ndWxhchgBIAEoCRIOCgZwbHVyYWwYAiABKAk6TQoEbmFtZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjShgMgASgLMhYucXVhZHNtaXRoLk5hbWVPcHRpb25zUgRuYW1lQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z", [file_google_protobuf_descriptor]);
 
 /**
  * @generated from message quadsmith.NameOptions
@@ -31,41 +31,6 @@ export type NameOptions = Message<"quadsmith.NameOptions"> & {
    * @generated from field: string plural = 2;
    */
   plural: string;
-
-  /**
-   * Kebab case (e.g., "video-transmitters")
-   *
-   * @generated from field: string cli = 3;
-   */
-  cli: string;
-
-  /**
-   * Kebab case (e.g., "video-transmitters")
-   *
-   * @generated from field: string api = 4;
-   */
-  api: string;
-
-  /**
-   * Camel case (e.g., "videoTransmitter")
-   *
-   * @generated from field: string go = 5;
-   */
-  go: string;
-
-  /**
-   * Pascal case (e.g., "VideoTransmitter")
-   *
-   * @generated from field: string typescript = 6;
-   */
-  typescript: string;
-
-  /**
-   * Snake case (e.g., "video_transmitters")
-   *
-   * @generated from field: string sql = 7;
-   */
-  sql: string;
 };
 
 /**

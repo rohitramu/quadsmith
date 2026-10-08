@@ -15,11 +15,6 @@ message ElectronicSpeedController {
   option (quadsmith.name) = {
     singular: "Electronic Speed Controller"
     plural: "Electronic Speed Controllers"
-    cli: "electronic-speed-controllers"
-    api: "electronic-speed-controllers"
-    go: "electronicSpeedController"
-    typescript: "ElectronicSpeedController"
-    sql: "electronic_speed_controllers"
   };
   option (quadsmith.sql.table_name) = "electronic_speed_controllers";
 

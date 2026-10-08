@@ -15,11 +15,6 @@ message Receiver {
   option (quadsmith.name) = {
     singular: "Receiver"
     plural: "Receivers"
-    cli: "receivers"
-    api: "receivers"
-    go: "receiver"
-    typescript: "Receiver"
-    sql: "receivers"
   };
   option (quadsmith.sql.table_name) = "receivers";
 

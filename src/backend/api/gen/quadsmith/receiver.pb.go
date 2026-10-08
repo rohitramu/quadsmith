@@ -346,7 +346,7 @@ var File_quadsmith_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x99\x04\n" +
+	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe4\x03\n" +
 	"\bReceiver\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -359,8 +359,8 @@ const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\rhas_telemetry\x18\b \x01(\bR\fhasTelemetry\x12#\n" +
 	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:[\x92\xb5\x18J\n" +
-	"\bReceiver\x12\tReceivers\x1a\treceivers\"\treceivers*\breceiver2\bReceiver:\treceivers\xc2\xf3\x18\treceivers\">\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:&\x92\xb5\x18\x15\n" +
+	"\bReceiver\x12\tReceivers\xc2\xf3\x18\treceivers\">\n" +
 	"\x12GetReceiverRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x98\x01\n" +

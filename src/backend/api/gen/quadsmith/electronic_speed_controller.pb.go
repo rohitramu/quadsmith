@@ -346,7 +346,7 @@ var File_quadsmith_electronic_speed_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_electronic_speed_controller_proto_rawDesc = "" +
 	"\n" +
-	"+quadsmith/electronic_speed_controller.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc3\x05\n" +
+	"+quadsmith/electronic_speed_controller.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xb1\x04\n" +
 	"\x19ElectronicSpeedController\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -360,8 +360,8 @@ const file_quadsmith_electronic_speed_controller_proto_rawDesc = "" +
 	"\x15motor_current_burst_a\x18\b \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
 	"\bfirmware\x18\t \x01(\tR\bfirmware\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\xf0\x01\x92\xb5\x18\xcb\x01\n" +
-	"\x1bElectronic Speed Controller\x12\x1cElectronic Speed Controllers\x1a\x1celectronic-speed-controllers\"\x1celectronic-speed-controllers*\x19electronicSpeedController2\x19ElectronicSpeedController:\x1celectronic_speed_controllers\xc2\xf3\x18\x1celectronic_speed_controllers\"O\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:_\x92\xb5\x18;\n" +
+	"\x1bElectronic Speed Controller\x12\x1cElectronic Speed Controllers\xc2\xf3\x18\x1celectronic_speed_controllers\"O\n" +
 	"#GetElectronicSpeedControllerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa9\x01\n" +

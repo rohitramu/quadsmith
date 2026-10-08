@@ -330,7 +330,7 @@ var File_quadsmith_motor_proto protoreflect.FileDescriptor
 
 const file_quadsmith_motor_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xdc\x03\n" +
+	"\x15quadsmith/motor.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xb6\x03\n" +
 	"\x05Motor\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -342,8 +342,8 @@ const file_quadsmith_motor_proto_rawDesc = "" +
 	"\x02kv\x18\b \x01(\rB\x04\xe0\xf3\x18\x01R\x02kv\x12 \n" +
 	"\vdescription\x18\t \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\n" +
-	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:w\x8a\xb5\x18\fmanufacturer\x8a\xb5\x18\x04name\x8a\xb5\x18\x12stator_diameter_mm\x8a\xb5\x18\x02kv\x92\xb5\x185\n" +
-	"\x05Motor\x12\x06Motors\x1a\x06motors\"\x06motors*\x05motor2\x05Motor:\x06motors\xc2\xf3\x18\x06motors\";\n" +
+	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:Q\x8a\xb5\x18\fmanufacturer\x8a\xb5\x18\x04name\x8a\xb5\x18\x12stator_diameter_mm\x8a\xb5\x18\x02kv\x92\xb5\x18\x0f\n" +
+	"\x05Motor\x12\x06Motors\xc2\xf3\x18\x06motors\";\n" +
 	"\x0fGetMotorRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +

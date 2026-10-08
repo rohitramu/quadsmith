@@ -15,11 +15,6 @@ message Build {
   option (quadsmith.name) = {
     singular: "Build"
     plural: "Builds"
-    cli: "builds"
-    api: "builds"
-    go: "build"
-    typescript: "Build"
-    sql: "builds"
   };
   option (quadsmith.sql.table_name) = "builds";
 

@@ -27,17 +27,7 @@ type NameOptions struct {
 	// Title case with spaces (e.g., "Video Transmitter")
 	Singular string `protobuf:"bytes,1,opt,name=singular,proto3" json:"singular,omitempty"`
 	// Title case with spaces (e.g., "Video Transmitters")
-	Plural string `protobuf:"bytes,2,opt,name=plural,proto3" json:"plural,omitempty"`
-	// Kebab case (e.g., "video-transmitters")
-	Cli string `protobuf:"bytes,3,opt,name=cli,proto3" json:"cli,omitempty"`
-	// Kebab case (e.g., "video-transmitters")
-	Api string `protobuf:"bytes,4,opt,name=api,proto3" json:"api,omitempty"`
-	// Camel case (e.g., "videoTransmitter")
-	Go string `protobuf:"bytes,5,opt,name=go,proto3" json:"go,omitempty"`
-	// Pascal case (e.g., "VideoTransmitter")
-	Typescript string `protobuf:"bytes,6,opt,name=typescript,proto3" json:"typescript,omitempty"`
-	// Snake case (e.g., "video_transmitters")
-	Sql           string `protobuf:"bytes,7,opt,name=sql,proto3" json:"sql,omitempty"`
+	Plural        string `protobuf:"bytes,2,opt,name=plural,proto3" json:"plural,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -86,41 +76,6 @@ func (x *NameOptions) GetPlural() string {
 	return ""
 }
 
-func (x *NameOptions) GetCli() string {
-	if x != nil {
-		return x.Cli
-	}
-	return ""
-}
-
-func (x *NameOptions) GetApi() string {
-	if x != nil {
-		return x.Api
-	}
-	return ""
-}
-
-func (x *NameOptions) GetGo() string {
-	if x != nil {
-		return x.Go
-	}
-	return ""
-}
-
-func (x *NameOptions) GetTypescript() string {
-	if x != nil {
-		return x.Typescript
-	}
-	return ""
-}
-
-func (x *NameOptions) GetSql() string {
-	if x != nil {
-		return x.Sql
-	}
-	return ""
-}
-
 var file_quadsmith__name_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
@@ -142,17 +97,10 @@ var File_quadsmith__name_proto protoreflect.FileDescriptor
 
 const file_quadsmith__name_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/_name.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"\xa7\x01\n" +
+	"\x15quadsmith/_name.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"A\n" +
 	"\vNameOptions\x12\x1a\n" +
 	"\bsingular\x18\x01 \x01(\tR\bsingular\x12\x16\n" +
-	"\x06plural\x18\x02 \x01(\tR\x06plural\x12\x10\n" +
-	"\x03cli\x18\x03 \x01(\tR\x03cli\x12\x10\n" +
-	"\x03api\x18\x04 \x01(\tR\x03api\x12\x0e\n" +
-	"\x02go\x18\x05 \x01(\tR\x02go\x12\x1e\n" +
-	"\n" +
-	"typescript\x18\x06 \x01(\tR\n" +
-	"typescript\x12\x10\n" +
-	"\x03sql\x18\a \x01(\tR\x03sql:M\n" +
+	"\x06plural\x18\x02 \x01(\tR\x06plural:M\n" +
 	"\x04name\x12\x1f.google.protobuf.MessageOptions\x18҆\x03 \x01(\v2\x16.quadsmith.NameOptionsR\x04nameB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (

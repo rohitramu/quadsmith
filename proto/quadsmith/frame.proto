@@ -16,11 +16,6 @@ message Frame {
   option (quadsmith.name) = {
     singular: "Frame"
     plural: "Frames"
-    cli: "frames"
-    api: "frames"
-    go: "frame"
-    typescript: "Frame"
-    sql: "frames"
   };
   option (quadsmith.sql.table_name) = "frames";
   option (quadsmith.default_columns) = "manufacturer";

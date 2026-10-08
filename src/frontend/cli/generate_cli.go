@@ -10,129 +10,130 @@ import (
 )
 
 type DomainName struct {
-	Singular   string
-	Plural     string
-	CLI        string
-	API        string
-	Go         string
-	TypeScript string
-	SQL        string
-	Aliases    []string
+	Singular string
+	Plural   string
+	Aliases  []string
+}
+
+func toSnakeCase(s string) string {
+	words := strings.Fields(s)
+	for i, w := range words {
+		words[i] = strings.ToLower(w)
+	}
+	return strings.Join(words, "_")
+}
+
+func toKebabCase(s string) string {
+	words := strings.Fields(s)
+	for i, w := range words {
+		words[i] = strings.ToLower(w)
+	}
+	return strings.Join(words, "-")
+}
+
+func toCamelCase(s string) string {
+	words := strings.Fields(s)
+	if len(words) == 0 {
+		return ""
+	}
+	var sb strings.Builder
+	sb.WriteString(strings.ToLower(words[0]))
+	for _, w := range words[1:] {
+		if len(w) > 0 {
+			sb.WriteString(strings.ToUpper(w[:1]) + strings.ToLower(w[1:]))
+		}
+	}
+	return sb.String()
+}
+
+func toPascalCase(s string) string {
+	words := strings.Fields(s)
+	var sb strings.Builder
+	for _, w := range words {
+		if len(w) > 0 {
+			sb.WriteString(strings.ToUpper(w[:1]) + strings.ToLower(w[1:]))
+		}
+	}
+	return sb.String()
+}
+
+func (d DomainName) SQL() string {
+	return toSnakeCase(d.Plural)
+}
+
+func (d DomainName) CLI() string {
+	return toKebabCase(d.Plural)
+}
+
+func (d DomainName) API() string {
+	return toKebabCase(d.Plural)
+}
+
+func (d DomainName) Go() string {
+	return toCamelCase(d.Singular)
+}
+
+func (d DomainName) TypeScript() string {
+	return toPascalCase(d.Singular)
+}
+
+func (d DomainName) TypeScriptPlural() string {
+	return toPascalCase(d.Plural)
 }
 
 var domains = []DomainName{
 	{
-		Singular:   "Antenna",
-		Plural:     "Antennas",
-		CLI:        "antennas",
-		API:        "antennas",
-		Go:         "antenna",
-		TypeScript: "Antenna",
-		SQL:        "antennas",
+		Singular: "Antenna",
+		Plural:   "Antennas",
 	},
 	{
-		Singular:   "Battery",
-		Plural:     "Batteries",
-		CLI:        "batteries",
-		API:        "batteries",
-		Go:         "battery",
-		TypeScript: "Battery",
-		SQL:        "batteries",
+		Singular: "Battery",
+		Plural:   "Batteries",
 	},
 	{
-		Singular:   "Build",
-		Plural:     "Builds",
-		CLI:        "builds",
-		API:        "builds",
-		Go:         "build",
-		TypeScript: "Build",
-		SQL:        "builds",
+		Singular: "Build",
+		Plural:   "Builds",
 	},
 	{
-		Singular:   "Camera",
-		Plural:     "Cameras",
-		CLI:        "cameras",
-		API:        "cameras",
-		Go:         "camera",
-		TypeScript: "Camera",
-		SQL:        "cameras",
+		Singular: "Camera",
+		Plural:   "Cameras",
 	},
 	{
-		Singular:   "Electronic Speed Controller",
-		Plural:     "Electronic Speed Controllers",
-		CLI:        "electronic-speed-controllers",
-		API:        "electronic-speed-controllers",
-		Go:         "electronicSpeedController",
-		TypeScript: "ElectronicSpeedController",
-		SQL:        "electronic_speed_controllers",
-		Aliases:    []string{"escs", "esc"},
+		Singular: "Electronic Speed Controller",
+		Plural:   "Electronic Speed Controllers",
+		Aliases:  []string{"escs", "esc"},
 	},
 	{
-		Singular:   "Flight Controller",
-		Plural:     "Flight Controllers",
-		CLI:        "flight-controllers",
-		API:        "flight-controllers",
-		Go:         "flightController",
-		TypeScript: "FlightController",
-		SQL:        "flight_controllers",
-		Aliases:    []string{"flightcontrollers", "fc", "fcs"},
+		Singular: "Flight Controller",
+		Plural:   "Flight Controllers",
+		Aliases:  []string{"flightcontrollers", "fc", "fcs"},
 	},
 	{
-		Singular:   "Frame",
-		Plural:     "Frames",
-		CLI:        "frames",
-		API:        "frames",
-		Go:         "frame",
-		TypeScript: "Frame",
-		SQL:        "frames",
+		Singular: "Frame",
+		Plural:   "Frames",
 	},
 	{
-		Singular:   "GPS Receiver",
-		Plural:     "GPS Receivers",
-		CLI:        "gps-receivers",
-		API:        "gps-receivers",
-		Go:         "gpsReceiver",
-		TypeScript: "GpsReceiver",
-		SQL:        "gps_receivers",
-		Aliases:    []string{"gpsreceivers", "gps"},
+		Singular: "GPS Receiver",
+		Plural:   "GPS Receivers",
+		Aliases:  []string{"gpsreceivers", "gps"},
 	},
 	{
-		Singular:   "Motor",
-		Plural:     "Motors",
-		CLI:        "motors",
-		API:        "motors",
-		Go:         "motor",
-		TypeScript: "Motor",
-		SQL:        "motors",
+		Singular: "Motor",
+		Plural:   "Motors",
 	},
 	{
-		Singular:   "Propeller",
-		Plural:     "Propellers",
-		CLI:        "propellers",
-		API:        "propellers",
-		Go:         "propeller",
-		TypeScript: "Propeller",
-		SQL:        "propellers",
+		Singular: "Propeller",
+		Plural:   "Propellers",
 	},
 	{
-		Singular:   "Receiver",
-		Plural:     "Receivers",
-		CLI:        "receivers",
-		API:        "receivers",
-		Go:         "receiver",
-		TypeScript: "Receiver",
-		SQL:        "receivers",
-		Aliases:    []string{"rx", "rxs"},
+		Singular: "Receiver",
+		Plural:   "Receivers",
+		Aliases:  []string{"rx", "rxs"},
 	},
 	{
-		Singular:   "Video Transmitter",
-		Plural:     "Video Transmitters",
-		CLI:        "video-transmitters",
-		API:        "video-transmitters",
-		Go:         "videoTransmitter",
-		TypeScript: "VideoTransmitter",
-		SQL:        "video_transmitters",
-		Aliases:    []string{"videotransmitters", "vtx", "vtxs"},
+		Singular: "Video Transmitter",
+		Plural:   "Video Transmitters",
+		Aliases:  []string{"videotransmitters", "vtx", "vtxs"},
 	},
 }
 
@@ -195,24 +196,21 @@ func newRootCmd() *cobra.Command {
 `)
 
 	for _, d := range domains {
-		clientVar := d.Go + "Client"
-		cmdVar := d.Go + "Cmd"
-		listCmdVar := d.Go + "ListCmd"
-		getCmdVar := d.Go + "GetCmd"
-		tsName := d.TypeScript
-		tsPlural := d.TypeScript + "s"
-		if strings.HasSuffix(d.TypeScript, "y") {
-			tsPlural = strings.TrimSuffix(d.TypeScript, "y") + "ies"
-		}
+		clientVar := d.Go() + "Client"
+		cmdVar := d.Go() + "Cmd"
+		listCmdVar := d.Go() + "ListCmd"
+		getCmdVar := d.Go() + "GetCmd"
+		tsName := d.TypeScript()
+		tsPlural := d.TypeScriptPlural()
 		legacyAlias := strings.ToLower(tsPlural)
 		aliasMap := make(map[string]bool)
 		var aliasList []string
-		if d.CLI != legacyAlias {
+		if d.CLI() != legacyAlias {
 			aliasMap[legacyAlias] = true
 			aliasList = append(aliasList, legacyAlias)
 		}
 		for _, a := range d.Aliases {
-			if a != d.CLI && !aliasMap[a] {
+			if a != d.CLI() && !aliasMap[a] {
 				aliasMap[a] = true
 				aliasList = append(aliasList, a)
 			}
@@ -225,9 +223,9 @@ func newRootCmd() *cobra.Command {
 			for i, a := range aliasList {
 				quoted[i] = fmt.Sprintf("%q", a)
 			}
-			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\", Aliases: []string{%s}}\n", cmdVar, d.CLI, strings.Join(quoted, ", "))
+			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\", Aliases: []string{%s}}\n", cmdVar, d.CLI(), strings.Join(quoted, ", "))
 		} else {
-			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\"}\n", cmdVar, d.CLI)
+			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\"}\n", cmdVar, d.CLI())
 		}
 
 		fmt.Fprintf(f, "\t%s := &cobra.Command{\n", listCmdVar)

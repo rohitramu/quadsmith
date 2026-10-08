@@ -16,11 +16,6 @@ message Battery {
   option (quadsmith.name) = {
     singular: "Battery"
     plural: "Batteries"
-    cli: "batteries"
-    api: "batteries"
-    go: "battery"
-    typescript: "Battery"
-    sql: "batteries"
   };
   option (quadsmith.sql.table_name) = "batteries";
   option (quadsmith.default_columns) = "manufacturer";

@@ -15,11 +15,6 @@ message Propeller {
   option (quadsmith.name) = {
     singular: "Propeller"
     plural: "Propellers"
-    cli: "propellers"
-    api: "propellers"
-    go: "propeller"
-    typescript: "Propeller"
-    sql: "propellers"
   };
   option (quadsmith.sql.table_name) = "propellers";
 

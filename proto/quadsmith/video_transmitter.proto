@@ -15,11 +15,6 @@ message VideoTransmitter {
   option (quadsmith.name) = {
     singular: "Video Transmitter"
     plural: "Video Transmitters"
-    cli: "video-transmitters"
-    api: "video-transmitters"
-    go: "videoTransmitter"
-    typescript: "VideoTransmitter"
-    sql: "video_transmitters"
   };
   option (quadsmith.sql.table_name) = "video_transmitters";
 

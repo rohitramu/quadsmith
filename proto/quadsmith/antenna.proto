@@ -15,11 +15,6 @@ message Antenna {
   option (quadsmith.name) = {
     singular: "Antenna"
     plural: "Antennas"
-    cli: "antennas"
-    api: "antennas"
-    go: "antenna"
-    typescript: "Antenna"
-    sql: "antennas"
   };
   option (quadsmith.sql.table_name) = "antennas";
 

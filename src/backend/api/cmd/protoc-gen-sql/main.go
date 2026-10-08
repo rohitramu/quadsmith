@@ -39,11 +39,19 @@ func main() {
 	})
 }
 
+func toSnakeCase(s string) string {
+	words := strings.Fields(s)
+	for i, w := range words {
+		words[i] = strings.ToLower(w)
+	}
+	return strings.Join(words, "_")
+}
+
 func getTableName(msg *protogen.Message) string {
 	opts := msg.Desc.Options()
 	if proto.HasExtension(opts, quadsmith_sql.E_Name) {
-		if nameOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Name).(*quadsmith_sql.NameOptions); ok && nameOpts != nil && nameOpts.Sql != "" {
-			return nameOpts.Sql
+		if nameOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Name).(*quadsmith_sql.NameOptions); ok && nameOpts != nil && nameOpts.Plural != "" {
+			return toSnakeCase(nameOpts.Plural)
 		}
 	}
 	if proto.HasExtension(opts, quadsmith_sql.E_TableName) {

@@ -16,21 +16,6 @@ message NameOptions {
 
   // Title case with spaces (e.g., "Video Transmitters")
   string plural = 2;
-
-  // Kebab case (e.g., "video-transmitters")
-  string cli = 3;
-
-  // Kebab case (e.g., "video-transmitters")
-  string api = 4;
-
-  // Camel case (e.g., "videoTransmitter")
-  string go = 5;
-
-  // Pascal case (e.g., "VideoTransmitter")
-  string typescript = 6;
-
-  // Snake case (e.g., "video_transmitters")
-  string sql = 7;
 }
 
 extend google.protobuf.MessageOptions {

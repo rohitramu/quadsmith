@@ -16,11 +16,6 @@ message GpsReceiver {
   option (quadsmith.name) = {
     singular: "GPS Receiver"
     plural: "GPS Receivers"
-    cli: "gps-receivers"
-    api: "gps-receivers"
-    go: "gpsReceiver"
-    typescript: "GpsReceiver"
-    sql: "gps_receivers"
   };
   option (quadsmith.sql.table_name) = "gps_receivers";
   option (quadsmith.default_columns) = "manufacturer";

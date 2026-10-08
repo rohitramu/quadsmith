@@ -386,7 +386,7 @@ var File_quadsmith_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_build_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xf3\x06\n" +
+	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xcd\x06\n" +
 	"\x05Build\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12\x12\n" +
@@ -406,8 +406,8 @@ const file_quadsmith_build_proto_rawDesc = "" +
 	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12R\n" +
 	"\x16video_transmitter_uuid\x18\x0f \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12C\n" +
 	"\x11gps_receiver_uuid\x18\x10 \x01(\tB\x17\xd2\xf3\x18\x13gps_receivers(uuid)R\x0fgpsReceiverUuid\x12A\n" +
-	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:C\x92\xb5\x185\n" +
-	"\x05Build\x12\x06Builds\x1a\x06builds\"\x06builds*\x05build2\x05Build:\x06builds\xc2\xf3\x18\x06builds\";\n" +
+	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x1d\x92\xb5\x18\x0f\n" +
+	"\x05Build\x12\x06Builds\xc2\xf3\x18\x06builds\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +

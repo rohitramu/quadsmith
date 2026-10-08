@@ -15,11 +15,6 @@ message Camera {
   option (quadsmith.name) = {
     singular: "Camera"
     plural: "Cameras"
-    cli: "cameras"
-    api: "cameras"
-    go: "camera"
-    typescript: "Camera"
-    sql: "cameras"
   };
   option (quadsmith.sql.table_name) = "cameras";
 

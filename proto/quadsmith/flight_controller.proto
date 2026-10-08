@@ -15,11 +15,6 @@ message FlightController {
   option (quadsmith.name) = {
     singular: "Flight Controller"
     plural: "Flight Controllers"
-    cli: "flight-controllers"
-    api: "flight-controllers"
-    go: "flightController"
-    typescript: "FlightController"
-    sql: "flight_controllers"
   };
   option (quadsmith.sql.table_name) = "flight_controllers";
 
