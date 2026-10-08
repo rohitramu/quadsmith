@@ -17,6 +17,15 @@ message ElectronicSpeedController {
     plural: "Electronic Speed Controllers"
   };
   option (quadsmith.sql.table) = {name: "electronic_speed_controllers"};
+  option (quadsmith.frontend) = {
+    default_columns: [
+      "manufacturer",
+      "name",
+      "motor_current_max_a",
+      "max_motors",
+      "firmware"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

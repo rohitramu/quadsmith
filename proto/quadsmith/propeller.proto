@@ -17,6 +17,15 @@ message Propeller {
     plural: "Propellers"
   };
   option (quadsmith.sql.table) = {name: "propellers"};
+  option (quadsmith.frontend) = {
+    default_columns: [
+      "manufacturer",
+      "name",
+      "diameter_mm",
+      "pitch_mm",
+      "blades"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

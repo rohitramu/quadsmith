@@ -17,6 +17,15 @@ message Camera {
     plural: "Cameras"
   };
   option (quadsmith.sql.table) = {name: "cameras"};
+  option (quadsmith.frontend) = {
+    default_columns: [
+      "manufacturer",
+      "name",
+      "protocol",
+      "sensor_size",
+      "width_mm"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

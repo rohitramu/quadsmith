@@ -17,6 +17,15 @@ message Receiver {
     plural: "Receivers"
   };
   option (quadsmith.sql.table) = {name: "receivers"};
+  option (quadsmith.frontend) = {
+    default_columns: [
+      "manufacturer",
+      "name",
+      "protocol",
+      "frequency_band_mhz",
+      "has_telemetry"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

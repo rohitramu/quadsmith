@@ -17,6 +17,16 @@ message Antenna {
     plural: "Antennas"
   };
   option (quadsmith.sql.table) = {name: "antennas"};
+  option (quadsmith.frontend) = {
+    default_columns: [
+      "manufacturer",
+      "name",
+      "connector",
+      "polarization",
+      "frequency_band_mhz",
+      "gain_dbi"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

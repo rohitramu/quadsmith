@@ -357,7 +357,7 @@ var File_antenna_proto protoreflect.FileDescriptor
 const file_antenna_proto_rawDesc = "" +
 	"\n" +
 	"\rantenna.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x14reference_link.proto\"\xf6\x03\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xc5\x04\n" +
 	"\aAntenna\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -372,7 +372,13 @@ const file_antenna_proto_rawDesc = "" +
 	"\bgain_dbi\x18\n" +
 	" \x01(\x02R\againDbi\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:%\x92\xb5\x18\x13\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:t\x8a\xb5\x18K\n" +
+	"\fmanufacturer\n" +
+	"\x04name\n" +
+	"\tconnector\n" +
+	"\fpolarization\n" +
+	"\x12frequency_band_mhz\n" +
+	"\bgain_dbi\x92\xb5\x18\x13\n" +
 	"\aAntenna\x12\bAntennas\xc2\xf3\x18\n" +
 	"\n" +
 	"\bantennas\"=\n" +

@@ -17,6 +17,15 @@ message VideoTransmitter {
     plural: "Video Transmitters"
   };
   option (quadsmith.sql.table) = {name: "video_transmitters"};
+  option (quadsmith.frontend) = {
+    default_columns: [
+      "manufacturer",
+      "name",
+      "protocol",
+      "max_power_mw",
+      "weight_g"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

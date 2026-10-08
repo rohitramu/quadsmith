@@ -17,6 +17,13 @@ message Build {
     plural: "Builds"
   };
   option (quadsmith.sql.table) = {name: "builds"};
+  option (quadsmith.frontend) = {
+    default_columns: [
+      "id",
+      "name",
+      "description"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 

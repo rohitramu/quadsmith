@@ -347,7 +347,7 @@ var File_electronic_speed_controller_proto protoreflect.FileDescriptor
 const file_electronic_speed_controller_proto_rawDesc = "" +
 	"\n" +
 	"!electronic_speed_controller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x14reference_link.proto\"\xb9\x04\n" +
+	"_sql.proto\x1a\x14reference_link.proto\"\xfd\x04\n" +
 	"\x19ElectronicSpeedController\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -361,7 +361,13 @@ const file_electronic_speed_controller_proto_rawDesc = "" +
 	"\x15motor_current_burst_a\x18\b \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
 	"\bfirmware\x18\t \x01(\tR\bfirmware\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:a\x92\xb5\x18;\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\xa4\x01\x8a\xb5\x18?\n" +
+	"\fmanufacturer\n" +
+	"\x04name\n" +
+	"\x13motor_current_max_a\n" +
+	"\n" +
+	"max_motors\n" +
+	"\bfirmware\x92\xb5\x18;\n" +
 	"\x1bElectronic Speed Controller\x12\x1cElectronic Speed Controllers\xc2\xf3\x18\x1e\n" +
 	"\x1celectronic_speed_controllers\"O\n" +
 	"#GetElectronicSpeedControllerRequest\x12\x0e\n" +

@@ -17,6 +17,15 @@ message FlightController {
     plural: "Flight Controllers"
   };
   option (quadsmith.sql.table) = {name: "flight_controllers"};
+  option (quadsmith.frontend) = {
+    default_columns: [
+      "manufacturer",
+      "name",
+      "processor",
+      "gyro",
+      "weight_g"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 
