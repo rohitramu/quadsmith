@@ -152,23 +152,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "03fb5a8c-95d3-4fdd-9964-0d8a6c11d58c"
-  id: "nd-filter-for-dji-o4-pro-camera"
-  manufacturer: "BETAFPV"
-  name: "ND Filter for DJI O4 Pro Camera"
-  weight_g: 1
-  protocol: "DJI O4"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "BETAFPV ND Filter for DJI O4 Pro Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (DJI O4 protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/nd-filter-for-dji-o4-pro-camera"
-  }
-}
-cameras: {
-
   uuid: "5dc05a7e-b864-422a-9006-eee7f3574d9a"
   id: "caddx-baby-ratel-14mm-nano-1200tvl"
   manufacturer: "BETAFPV"
@@ -756,19 +739,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "e645c235-4a6d-4bb4-9bed-5a85dfbf64ba"
-  id: "action-camera-nd-filter-set"
-  manufacturer: "Flywoo"
-  name: "Action Camera ND Filter Set"
-  weight_g: 0.6
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "Action Camera ND Filter Set For Naked Gopro 12 Pro"
-}
-cameras: {
-
   uuid: "de3aa174-ccd0-4867-95aa-e359c2bd33ac"
   id: "naked-gopro-12-pro-action-camera-v2-1"
   manufacturer: "Flywoo"
@@ -1110,45 +1080,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "9ea9df99-9f44-47b7-8f55-7b16a09cd050"
-  id: "fpvcycle-nd-filter"
-  manufacturer: "FPVCycle"
-  name: "FPVCycle ND Filter"
-  weight_g: 1
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "FPVCycle ND Filter for GoPro and other Cameras - ND16 - 2 Pack"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://fpvcycle.com/products/nd-filter-for-gopro-and-other-cameras-nd16-2-pack"
-  }
-}
-cameras: {
-
-  uuid: "7839bc63-6106-48cd-9efe-6f222eac2c34"
-  id: "betafpv-nd-filter"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV ND Filter"
-  is_internal_only: true
-  weight_g: 1
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "BETAFPV ND Filter for DJI O3 Camera (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/nd-filter-for-dji-o3-camera"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/betafpv-nd-filters-for-dji-o4-camera-choose-density"
-  }
-}
-cameras: {
-
   uuid: "3ae6147a-62c0-41af-807b-498187ad1841"
   id: "internal-cam-0e66cabf-e465-4b43-a227-99c191abeb83"
   manufacturer: "BETAFPV"
@@ -1181,24 +1112,6 @@ cameras: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/h01-fpv-aio-camera-5-8g-40ch-25mw-transmitter"
-  }
-}
-cameras: {
-
-  uuid: "a9840e42-a32f-405e-a506-e088b7e9b3c9"
-  id: "walksnail-camera-nd-filter-2"
-  manufacturer: "CADDX"
-  name: "Walksnail Camera ND Filter"
-  is_internal_only: true
-  weight_g: 1
-  protocol: "Walksnail Avatar"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "Walksnail Camera ND Filter (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/walksnail-moonlight-camera-nd-filter"
   }
 }
 cameras: {
@@ -1371,24 +1284,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "7bb59852-4441-42f2-a39a-3946eb3e6434"
-  id: "betafpv-nd-filter-2"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV ND Filter"
-  is_internal_only: true
-  weight_g: 1
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "BETAFPV ND Filter for DJI O3 Camera (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/nd-filter-for-dji-o3-camera"
-  }
-}
-cameras: {
-
   uuid: "6d7af870-5146-489c-9f5e-b41fef31f5e9"
   id: "internal-cam-6f5303f0-18e4-40e3-b3ff-3ab57c5fed2a"
   manufacturer: "BETAFPV"
@@ -1421,24 +1316,6 @@ cameras: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/h01-fpv-aio-camera-5-8g-40ch-25mw-transmitter"
-  }
-}
-cameras: {
-
-  uuid: "a8d3c4e2-00a1-40bd-953e-29b140fe52b8"
-  id: "walksnail-camera-nd-filter-3"
-  manufacturer: "CADDX"
-  name: "Walksnail Camera ND Filter"
-  is_internal_only: true
-  weight_g: 1
-  protocol: "Walksnail Avatar"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "Walksnail Camera ND Filter (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/walksnail-moonlight-camera-nd-filter"
   }
 }
 cameras: {
@@ -1603,24 +1480,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "f88e66e8-125f-423f-b04e-a021e065aab8"
-  id: "betafpv-nd-filter-3"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV ND Filter"
-  is_internal_only: true
-  weight_g: 1
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "BETAFPV ND Filter for DJI O3 Camera (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/nd-filter-for-dji-o3-camera"
-  }
-}
-cameras: {
-
   uuid: "44d092c0-a18a-4644-b59a-c136950a0b60"
   id: "internal-cam-52170b0c-b668-4671-8a17-b8b60ebed774"
   manufacturer: "BETAFPV"
@@ -1653,24 +1512,6 @@ cameras: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/h01-fpv-aio-camera-5-8g-40ch-25mw-transmitter"
-  }
-}
-cameras: {
-
-  uuid: "3988130a-f95f-4493-b2cd-7d24449ccf54"
-  id: "walksnail-camera-nd-filter-4"
-  manufacturer: "CADDX"
-  name: "Walksnail Camera ND Filter"
-  is_internal_only: true
-  weight_g: 1
-  protocol: "Walksnail Avatar"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "Walksnail Camera ND Filter (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/walksnail-moonlight-camera-nd-filter"
   }
 }
 cameras: {

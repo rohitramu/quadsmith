@@ -244,24 +244,6 @@ video_transmitters: {
 }
 video_transmitters: {
 
-  uuid: "44327c06-a6e5-4b96-992b-41688ddebf04"
-  id: "betafpv-nd-filter-for-dji-o3-camera"
-  manufacturer: "BETAFPV"
-  name: "BETAFPV ND Filter for DJI O3 Camera"
-  weight_g: 0.74
-  protocol: "DJI O3"
-  max_power_mw: 2000
-  input_voltage_min_v: 3.1
-  input_voltage_max_v: 5.5
-  antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "BETAFPV BETAFPV ND Filter for DJI O3 Camera DJI O3 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/nd-filter-for-dji-o3-camera"
-  }
-}
-video_transmitters: {
-
   uuid: "98c708b1-d28a-4a8d-bbdf-4099dabf0533"
   id: "cetus-lite-camera-and-vtx-module"
   manufacturer: "BETAFPV"
@@ -334,28 +316,6 @@ video_transmitters: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-ascent-lite-vtx-camera-kit-for-walksnail-ascent-goggles-vrx"
-  }
-}
-video_transmitters: {
-
-  uuid: "eb9ce8b8-225b-4e7c-a323-b5e705024e48"
-  id: "walksnail-camera-nd-filter"
-  manufacturer: "CADDX"
-  name: "Walksnail Camera ND Filter"
-  weight_g: 1
-  protocol: "Walksnail Avatar"
-  max_power_mw: 1200
-  input_voltage_min_v: 3.1
-  input_voltage_max_v: 5.5
-  antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "CADDXFPV Walksnail Camera ND Filter Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 3.1-5.5V, weighing 1.0g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/walksnail-moonlight-camera-nd-filter"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/caddx-walksnail-moonlight-nd-filter-choose-your-version"
   }
 }
 video_transmitters: {
@@ -1078,24 +1038,6 @@ video_transmitters: {
 }
 video_transmitters: {
 
-  uuid: "6a5012fb-200e-4eda-b8b4-0a738d219fc6"
-  id: "newbeedrone-cpl-filter-for-djl-o3"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone CPL Filter for DJl O3"
-  weight_g: 0.74
-  protocol: "DJI O3"
-  max_power_mw: 2000
-  input_voltage_min_v: 3.1
-  input_voltage_max_v: 5.5
-  antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "NewBeeDrone NewBeeDrone CPL Filter for DJl O3 DJI O3 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-cpl-filter-o3"
-  }
-}
-video_transmitters: {
-
   uuid: "c81bcc5b-f711-476f-aed7-55e47c7dd281"
   id: "newbeedrone-max-comfort-goggle-foam"
   manufacturer: "NewBeeDrone"
@@ -1114,42 +1056,6 @@ video_transmitters: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-max-comfort-goggle-foam-for-dji-goggles-2-and-integra"
-  }
-}
-video_transmitters: {
-
-  uuid: "fb9252fd-9a02-40f1-aca9-c99ed441a52b"
-  id: "newbeedrone-nd4-filter-for-djl-o3"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone ND4 Filter for DJl O3"
-  weight_g: 0.74
-  protocol: "DJI O3"
-  max_power_mw: 2000
-  input_voltage_min_v: 3.1
-  input_voltage_max_v: 5.5
-  antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "NewBeeDrone NewBeeDrone ND4 Filter for DJl O3 DJI O3 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-nd4-filter-for-djl-o3"
-  }
-}
-video_transmitters: {
-
-  uuid: "c82a1c67-fcaa-4128-ae47-a47c6c69d556"
-  id: "newbeedrone-nd8-filter-for-djl-o3"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone ND8 Filter for DJl O3"
-  weight_g: 0.74
-  protocol: "DJI O3"
-  max_power_mw: 2000
-  input_voltage_min_v: 3.1
-  input_voltage_max_v: 5.5
-  antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "NewBeeDrone NewBeeDrone ND8 Filter for DJl O3 DJI O3 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-nd8-filter-for-djl-o3"
   }
 }
 video_transmitters: {
@@ -1349,24 +1255,6 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Punch & Shorty Avatar V2/DJI O3 Camera Mount"
-}
-video_transmitters: {
-
-  uuid: "48c02a4a-97b9-41d2-a36a-d998688eed6c"
-  id: "avatar-hd-moonlight-nd-filter"
-  manufacturer: "Walksnail"
-  name: "Avatar HD Moonlight ND Filter"
-  weight_g: 41.6
-  protocol: "Walksnail Avatar"
-  max_power_mw: 1200
-  input_voltage_min_v: 7
-  input_voltage_max_v: 26
-  antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Moonlight ND Filter - Choose Version"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/moonlight"
-  }
 }
 video_transmitters: {
 
@@ -1691,20 +1579,6 @@ video_transmitters: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-flybee-20-2-drone-hd-w-walksnail-avatar-hd-mini-2s"
   }
-}
-video_transmitters: {
-
-  uuid: "196b4c45-d0dd-463f-80f1-f7d7670c2310"
-  id: "o3-air-unit-nd-filter-choose-version"
-  manufacturer: "Camera Butter"
-  name: "O3 Air Unit ND Filter - Choose Version"
-  weight_g: 0.7
-  protocol: "DJI O3"
-  max_power_mw: 2000
-  input_voltage_min_v: 3.1
-  input_voltage_max_v: 5.5
-  antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "Camera Butter O3 Air Unit ND Filter - Choose Version DJI O3 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 0.7g."
 }
 video_transmitters: {
 
