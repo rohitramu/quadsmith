@@ -45,7 +45,7 @@ flowchart TD
             MemRouter --> ProductTests[Product Details & Specs]
         end
 
-        subgraph Future E2E Suite (Playwright - Specced Separately)
+        subgraph Future E2E Suite (Playwright in test/web)
             PW[Playwright Headless Browser]
             PreviewServer[Vite Preview / Go Backend Sandbox]
             PW --> PreviewServer
@@ -162,11 +162,12 @@ test: generate
 
 ---
 
-## 4. Future Roadmap: End-to-End (E2E) Browser Testing with Playwright
+## 4. Future Work: End-to-End (E2E) Browser Testing with Playwright
 
 To complement the in-memory test suite, full end-to-end browser testing using **Playwright** is planned as a future initiative.
 
 ### High-Level Scope (To be specced in a separate document):
+- **Directory Location (`test/web`)**: All future browser tests will be located in the `test/web` directory at the root of the repository, keeping them alongside the sandbox API/CLI integration tests in `test/api`.
 - **Real Browser Environment**: Running tests against real headless Chromium, WebKit, and Firefox instances.
 - **True CSS Layout & Visual Checks**: Validating Tailwind layout responsiveness, sticky headers, z-index layers, and popover positioning.
 - **Live Sandbox Integration**: Running tests against the live Docker Postgres + Go API backend sandbox (`make sandbox`).

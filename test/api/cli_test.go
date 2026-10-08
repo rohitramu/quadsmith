@@ -1,4 +1,4 @@
-package test
+package api
 
 import (
 	"bytes"
@@ -13,8 +13,15 @@ import (
 
 func resolveQSPath(t *testing.T) string {
 	t.Helper()
-	// Try relative from test/ directory
-	qsPath, err := filepath.Abs("../bin/qs")
+	// Try relative from test/api/
+	qsPath, err := filepath.Abs("../../bin/qs")
+	if err == nil {
+		if _, err := os.Stat(qsPath); err == nil {
+			return qsPath
+		}
+	}
+	// Try relative from test/
+	qsPath, err = filepath.Abs("../bin/qs")
 	if err == nil {
 		if _, err := os.Stat(qsPath); err == nil {
 			return qsPath
@@ -27,7 +34,7 @@ func resolveQSPath(t *testing.T) string {
 			return qsPath
 		}
 	}
-	t.Fatalf("Failed to resolve qs binary path (checked ../bin/qs and bin/qs)")
+	t.Fatalf("Failed to resolve qs binary path (checked ../../bin/qs, ../bin/qs, and bin/qs)")
 	return ""
 }
 
