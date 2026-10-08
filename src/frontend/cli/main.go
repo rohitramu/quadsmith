@@ -2027,19 +2027,21 @@ func printTableTo(out io.Writer, data interface{}, cols []string, startOffset ..
 		}
 
 		startIdx := offset + 1
-		fmt.Fprintf(w, "#")
+		maxIdx := startIdx + len(val) - 1
+		numWidth := len(fmt.Sprintf("%d", maxIdx))
+
 		if len(orderedKeys) > 0 {
 			fmt.Fprintf(w, "\t")
-		}
-		for i, k := range orderedKeys {
-			fmt.Fprintf(w, "%s", strings.ToUpper(k))
-			if i < len(orderedKeys)-1 {
-				fmt.Fprintf(w, "\t")
+			for i, k := range orderedKeys {
+				fmt.Fprintf(w, "%s", strings.ToUpper(k))
+				if i < len(orderedKeys)-1 {
+					fmt.Fprintf(w, "\t")
+				}
 			}
+			fmt.Fprintln(w)
 		}
-		fmt.Fprintln(w)
 		for idx, item := range val {
-			fmt.Fprintf(w, "%d", startIdx+idx)
+			fmt.Fprintf(w, "%*d", numWidth, startIdx+idx)
 			if len(orderedKeys) > 0 {
 				fmt.Fprintf(w, "\t")
 			}

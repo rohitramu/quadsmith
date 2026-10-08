@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -23,9 +24,9 @@ func TestPrintTableTo_SliceWithRowNumbers(t *testing.T) {
 		t.Fatalf("expected 3 lines, got %d:\n%s", len(lines), output)
 	}
 
-	// First line should start with #
-	if !strings.HasPrefix(lines[0], "#") {
-		t.Errorf("expected header to start with #, got: %s", lines[0])
+	// Header should not contain '#'
+	if strings.Contains(lines[0], "#") {
+		t.Errorf("header should not contain #, got: %s", lines[0])
 	}
 	if !strings.Contains(lines[0], "ID") || !strings.Contains(lines[0], "NAME") || !strings.Contains(lines[0], "KV") {
 		t.Errorf("header missing expected columns: %s", lines[0])
@@ -45,6 +46,32 @@ func TestPrintTableTo_SliceWithRowNumbers(t *testing.T) {
 	}
 	if !strings.Contains(lines[2], "m2") {
 		t.Errorf("expected second row to contain 'm2', got: %s", lines[2])
+	}
+}
+
+func TestPrintTableTo_RightJustifiedRowNumbers(t *testing.T) {
+	var data []map[string]interface{}
+	for i := 1; i <= 10; i++ {
+		data = append(data, map[string]interface{}{"id": fmt.Sprintf("m%d", i)})
+	}
+	var buf bytes.Buffer
+	printTableTo(&buf, data, []string{"id"})
+
+	lines := strings.Split(strings.TrimSpace(buf.String()), "\n")
+	if len(lines) != 11 {
+		t.Fatalf("expected 11 lines, got %d:\n%s", len(lines), buf.String())
+	}
+	// Header should not contain '#'
+	if strings.Contains(lines[0], "#") {
+		t.Errorf("header should not contain '#', got: %s", lines[0])
+	}
+	// Row 1 should have a leading space for right justification (" 1 ")
+	if !strings.HasPrefix(lines[1], " 1 ") {
+		t.Errorf("expected row 1 to start with ' 1 ', got: %q", lines[1])
+	}
+	// Row 10 should have no leading space ("10 ")
+	if !strings.HasPrefix(lines[10], "10 ") {
+		t.Errorf("expected row 10 to start with '10 ', got: %q", lines[10])
 	}
 }
 
