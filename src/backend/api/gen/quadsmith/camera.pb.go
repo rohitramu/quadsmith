@@ -30,18 +30,18 @@ type Camera struct {
 	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
-	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4", "Walksnail Avatar", "HDZero")
-	Protocol string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	Protocol string `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
-	SensorSize string `protobuf:"bytes,7,opt,name=sensor_size,json=sensorSize,proto3" json:"sensor_size,omitempty"`
+	SensorSize string `protobuf:"bytes,8,opt,name=sensor_size,json=sensorSize,proto3" json:"sensor_size,omitempty"`
 	// Width of the camera body in mm (e.g., 14 for nano, 19 for micro, 22 for standard)
-	WidthMm uint32 `protobuf:"varint,8,opt,name=width_mm,json=widthMm,proto3" json:"width_mm,omitempty"`
+	WidthMm uint32 `protobuf:"varint,9,opt,name=width_mm,json=widthMm,proto3" json:"width_mm,omitempty"`
 	// Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
-	LensSizeMm     float32          `protobuf:"fixed32,9,opt,name=lens_size_mm,json=lensSizeMm,proto3" json:"lens_size_mm,omitempty"`
-	Description    string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	LensSizeMm     float32          `protobuf:"fixed32,10,opt,name=lens_size_mm,json=lensSizeMm,proto3" json:"lens_size_mm,omitempty"`
+	Description    string           `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,12,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -354,16 +354,17 @@ const file_camera_proto_rawDesc = "" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1a\n" +
-	"\bprotocol\x18\x06 \x01(\tR\bprotocol\x12\x1f\n" +
-	"\vsensor_size\x18\a \x01(\tR\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
+	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x1a\n" +
+	"\bprotocol\x18\a \x01(\tR\bprotocol\x12\x1f\n" +
+	"\vsensor_size\x18\b \x01(\tR\n" +
 	"sensorSize\x12\x19\n" +
-	"\bwidth_mm\x18\b \x01(\rR\awidthMm\x12 \n" +
-	"\flens_size_mm\x18\t \x01(\x02R\n" +
+	"\bwidth_mm\x18\t \x01(\rR\awidthMm\x12 \n" +
+	"\flens_size_mm\x18\n" +
+	" \x01(\x02R\n" +
 	"lensSizeMm\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:[\x8a\xb5\x185\n" +
+	"\vdescription\x18\v \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\f \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:[\x8a\xb5\x185\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +

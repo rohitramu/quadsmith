@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_antenna: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg1hbnRlbm5hLnByb3RvEglxdWFkc21pdGgiswMKB0FudGVubmESFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GBQgASgIEhAKCHdlaWdodF9nGAUgASgCEhEKCWNvbm5lY3RvchgGIAEoCRIUCgxwb2xhcml6YXRpb24YByABKAkSGgoSZnJlcXVlbmN5X2JhbmRfbWh6GAggASgNEhEKCWxlbmd0aF9tbRgJIAEoAhIQCghnYWluX2RiaRgKIAEoAhITCgtkZXNjcmlwdGlvbhgVIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYFiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazp0irUYSwoMbWFudWZhY3R1cmVyCgRuYW1lCgljb25uZWN0b3IKDHBvbGFyaXphdGlvbgoSZnJlcXVlbmN5X2JhbmRfbWh6CghnYWluX2RiaZK1GBMKB0FudGVubmESCEFudGVubmFzwvMYCgoIYW50ZW5uYXMiMAoRR2V0QW50ZW5uYVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJrChNMaXN0QW50ZW5uYXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiVQoUTGlzdEFudGVubmFzUmVzcG9uc2USJAoIYW50ZW5uYXMYASADKAsyEi5xdWFkc21pdGguQW50ZW5uYRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyoQEKDkFudGVubmFTZXJ2aWNlEj4KCkdldEFudGVubmESHC5xdWFkc21pdGguR2V0QW50ZW5uYVJlcXVlc3QaEi5xdWFkc21pdGguQW50ZW5uYRJPCgxMaXN0QW50ZW5uYXMSHi5xdWFkc21pdGguTGlzdEFudGVubmFzUmVxdWVzdBofLnF1YWRzbWl0aC5MaXN0QW50ZW5uYXNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "Cg1hbnRlbm5hLnByb3RvEglxdWFkc21pdGgiswMKB0FudGVubmESFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GAUgASgIEhAKCHdlaWdodF9nGAYgASgCEhEKCWNvbm5lY3RvchgHIAEoCRIUCgxwb2xhcml6YXRpb24YCCABKAkSGgoSZnJlcXVlbmN5X2JhbmRfbWh6GAkgASgNEhEKCWxlbmd0aF9tbRgKIAEoAhIQCghnYWluX2RiaRgLIAEoAhITCgtkZXNjcmlwdGlvbhgMIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYDSADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazp0irUYSwoMbWFudWZhY3R1cmVyCgRuYW1lCgljb25uZWN0b3IKDHBvbGFyaXphdGlvbgoSZnJlcXVlbmN5X2JhbmRfbWh6CghnYWluX2RiaZK1GBMKB0FudGVubmESCEFudGVubmFzwvMYCgoIYW50ZW5uYXMiMAoRR2V0QW50ZW5uYVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJrChNMaXN0QW50ZW5uYXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiVQoUTGlzdEFudGVubmFzUmVzcG9uc2USJAoIYW50ZW5uYXMYASADKAsyEi5xdWFkc21pdGguQW50ZW5uYRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyoQEKDkFudGVubmFTZXJ2aWNlEj4KCkdldEFudGVubmESHC5xdWFkc21pdGguR2V0QW50ZW5uYVJlcXVlc3QaEi5xdWFkc21pdGguQW50ZW5uYRJPCgxMaXN0QW50ZW5uYXMSHi5xdWFkc21pdGguTGlzdEFudGVubmFzUmVxdWVzdBofLnF1YWRzbWl0aC5MaXN0QW50ZW5uYXNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file__common, file__sql, file_reference_link],
   );
 
@@ -49,57 +49,57 @@ export type Antenna = Message<"quadsmith.Antenna"> & {
   name: string;
 
   /**
-   * @generated from field: bool is_internal_only = 20;
+   * @generated from field: bool is_internal_only = 5;
    */
   isInternalOnly: boolean;
 
   /**
-   * @generated from field: float weight_g = 5;
+   * @generated from field: float weight_g = 6;
    */
   weightG: number;
 
   /**
    * E.g., "U.FL", "MMCX", "SMA", "RP-SMA"
    *
-   * @generated from field: string connector = 6;
+   * @generated from field: string connector = 7;
    */
   connector: string;
 
   /**
    * E.g., "RHCP", "LHCP", "Linear"
    *
-   * @generated from field: string polarization = 7;
+   * @generated from field: string polarization = 8;
    */
   polarization: string;
 
   /**
    * Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
    *
-   * @generated from field: uint32 frequency_band_mhz = 8;
+   * @generated from field: uint32 frequency_band_mhz = 9;
    */
   frequencyBandMhz: number;
 
   /**
    * Length in millimeters (e.g., 60, 100, 150)
    *
-   * @generated from field: float length_mm = 9;
+   * @generated from field: float length_mm = 10;
    */
   lengthMm: number;
 
   /**
    * Gain in dBi (e.g., 2.5, 3.0)
    *
-   * @generated from field: float gain_dbi = 10;
+   * @generated from field: float gain_dbi = 11;
    */
   gainDbi: number;
 
   /**
-   * @generated from field: string description = 21;
+   * @generated from field: string description = 12;
    */
   description: string;
 
   /**
-   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
+   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 13;
    */
   referenceLinks: ReferenceLink[];
 };

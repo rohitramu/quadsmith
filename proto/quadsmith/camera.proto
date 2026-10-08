@@ -33,23 +33,23 @@ message Camera {
 
   string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
-  bool is_internal_only = 20;
+  bool is_internal_only = 5;
 
-  float weight_g = 5;
+  float weight_g = 6;
 
   // Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4", "Walksnail Avatar", "HDZero")
-  string protocol = 6;
+  string protocol = 7;
 
   // Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
-  string sensor_size = 7;
+  string sensor_size = 8;
 
   // Width of the camera body in mm (e.g., 14 for nano, 19 for micro, 22 for standard)
-  uint32 width_mm = 8;
+  uint32 width_mm = 9;
 
   // Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
-  float lens_size_mm = 9;
-  string description = 21;
-  repeated ReferenceLink reference_links = 22;
+  float lens_size_mm = 10;
+  string description = 11;
+  repeated ReferenceLink reference_links = 12;
 }
 
 // ---------------------------------------------------------

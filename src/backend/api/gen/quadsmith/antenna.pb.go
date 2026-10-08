@@ -30,20 +30,20 @@ type Antenna struct {
 	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
-	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// E.g., "U.FL", "MMCX", "SMA", "RP-SMA"
-	Connector string `protobuf:"bytes,6,opt,name=connector,proto3" json:"connector,omitempty"`
+	Connector string `protobuf:"bytes,7,opt,name=connector,proto3" json:"connector,omitempty"`
 	// E.g., "RHCP", "LHCP", "Linear"
-	Polarization string `protobuf:"bytes,7,opt,name=polarization,proto3" json:"polarization,omitempty"`
+	Polarization string `protobuf:"bytes,8,opt,name=polarization,proto3" json:"polarization,omitempty"`
 	// Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
-	FrequencyBandMhz uint32 `protobuf:"varint,8,opt,name=frequency_band_mhz,json=frequencyBandMhz,proto3" json:"frequency_band_mhz,omitempty"`
+	FrequencyBandMhz uint32 `protobuf:"varint,9,opt,name=frequency_band_mhz,json=frequencyBandMhz,proto3" json:"frequency_band_mhz,omitempty"`
 	// Length in millimeters (e.g., 60, 100, 150)
-	LengthMm float32 `protobuf:"fixed32,9,opt,name=length_mm,json=lengthMm,proto3" json:"length_mm,omitempty"`
+	LengthMm float32 `protobuf:"fixed32,10,opt,name=length_mm,json=lengthMm,proto3" json:"length_mm,omitempty"`
 	// Gain in dBi (e.g., 2.5, 3.0)
-	GainDbi        float32          `protobuf:"fixed32,10,opt,name=gain_dbi,json=gainDbi,proto3" json:"gain_dbi,omitempty"`
-	Description    string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	GainDbi        float32          `protobuf:"fixed32,11,opt,name=gain_dbi,json=gainDbi,proto3" json:"gain_dbi,omitempty"`
+	Description    string           `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,13,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -363,16 +363,16 @@ const file_antenna_proto_rawDesc = "" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1c\n" +
-	"\tconnector\x18\x06 \x01(\tR\tconnector\x12\"\n" +
-	"\fpolarization\x18\a \x01(\tR\fpolarization\x12,\n" +
-	"\x12frequency_band_mhz\x18\b \x01(\rR\x10frequencyBandMhz\x12\x1b\n" +
-	"\tlength_mm\x18\t \x01(\x02R\blengthMm\x12\x19\n" +
-	"\bgain_dbi\x18\n" +
-	" \x01(\x02R\againDbi\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:t\x8a\xb5\x18K\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
+	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x1c\n" +
+	"\tconnector\x18\a \x01(\tR\tconnector\x12\"\n" +
+	"\fpolarization\x18\b \x01(\tR\fpolarization\x12,\n" +
+	"\x12frequency_band_mhz\x18\t \x01(\rR\x10frequencyBandMhz\x12\x1b\n" +
+	"\tlength_mm\x18\n" +
+	" \x01(\x02R\blengthMm\x12\x19\n" +
+	"\bgain_dbi\x18\v \x01(\x02R\againDbi\x12 \n" +
+	"\vdescription\x18\f \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:t\x8a\xb5\x18K\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tconnector\n" +

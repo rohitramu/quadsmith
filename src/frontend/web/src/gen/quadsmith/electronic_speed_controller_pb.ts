@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_electronic_speed_controller: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiFlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXIucHJvdG8SCXF1YWRzbWl0aCLuAwoZRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlchIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISEgoKbWF4X21vdG9ycxgGIAEoDRIbChNtb3Rvcl9jdXJyZW50X21heF9hGAcgASgCEh0KFW1vdG9yX2N1cnJlbnRfYnVyc3RfYRgIIAEoAhIQCghmaXJtd2FyZRgJIAEoCRITCgtkZXNjcmlwdGlvbhgVIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYFiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazqkAYq1GD8KDG1hbnVmYWN0dXJlcgoEbmFtZQoTbW90b3JfY3VycmVudF9tYXhfYQoKbWF4X21vdG9ycwoIZmlybXdhcmWStRg7ChtFbGVjdHJvbmljIFNwZWVkIENvbnRyb2xsZXISHEVsZWN0cm9uaWMgU3BlZWQgQ29udHJvbGxlcnPC8xgeChxlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzIkIKI0dldEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkifQolTGlzdEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIo0BCiZMaXN0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcnNSZXNwb25zZRJKChxlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzGAEgAygLMiQucXVhZHNtaXRoLkVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMqACCiBFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyU2VydmljZRJ0ChxHZXRFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyEi4ucXVhZHNtaXRoLkdldEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0GiQucXVhZHNtaXRoLkVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXIShQEKHkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVycxIwLnF1YWRzbWl0aC5MaXN0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcnNSZXF1ZXN0GjEucXVhZHNtaXRoLkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "CiFlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXIucHJvdG8SCXF1YWRzbWl0aCLuAwoZRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlchIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYBSABKAgSEAoId2VpZ2h0X2cYBiABKAISEgoKbWF4X21vdG9ycxgHIAEoDRIbChNtb3Rvcl9jdXJyZW50X21heF9hGAggASgCEh0KFW1vdG9yX2N1cnJlbnRfYnVyc3RfYRgJIAEoAhIQCghmaXJtd2FyZRgKIAEoCRITCgtkZXNjcmlwdGlvbhgLIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYDCADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazqkAYq1GD8KDG1hbnVmYWN0dXJlcgoEbmFtZQoTbW90b3JfY3VycmVudF9tYXhfYQoKbWF4X21vdG9ycwoIZmlybXdhcmWStRg7ChtFbGVjdHJvbmljIFNwZWVkIENvbnRyb2xsZXISHEVsZWN0cm9uaWMgU3BlZWQgQ29udHJvbGxlcnPC8xgeChxlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzIkIKI0dldEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkifQolTGlzdEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIo0BCiZMaXN0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcnNSZXNwb25zZRJKChxlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzGAEgAygLMiQucXVhZHNtaXRoLkVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMqACCiBFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyU2VydmljZRJ0ChxHZXRFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyEi4ucXVhZHNtaXRoLkdldEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0GiQucXVhZHNtaXRoLkVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXIShQEKHkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVycxIwLnF1YWRzbWl0aC5MaXN0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcnNSZXF1ZXN0GjEucXVhZHNtaXRoLkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
     [file__common, file__sql, file_reference_link],
   );
 
@@ -49,48 +49,48 @@ export type ElectronicSpeedController = Message<"quadsmith.ElectronicSpeedContro
   name: string;
 
   /**
-   * @generated from field: bool is_internal_only = 20;
+   * @generated from field: bool is_internal_only = 5;
    */
   isInternalOnly: boolean;
 
   /**
-   * @generated from field: float weight_g = 5;
+   * @generated from field: float weight_g = 6;
    */
   weightG: number;
 
   /**
    * E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
    *
-   * @generated from field: uint32 max_motors = 6;
+   * @generated from field: uint32 max_motors = 7;
    */
   maxMotors: number;
 
   /**
    * Continuous and Burst amperage ratings
    *
-   * @generated from field: float motor_current_max_a = 7;
+   * @generated from field: float motor_current_max_a = 8;
    */
   motorCurrentMaxA: number;
 
   /**
-   * @generated from field: float motor_current_burst_a = 8;
+   * @generated from field: float motor_current_burst_a = 9;
    */
   motorCurrentBurstA: number;
 
   /**
    * E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
    *
-   * @generated from field: string firmware = 9;
+   * @generated from field: string firmware = 10;
    */
   firmware: string;
 
   /**
-   * @generated from field: string description = 21;
+   * @generated from field: string description = 11;
    */
   description: string;
 
   /**
-   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
+   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 12;
    */
   referenceLinks: ReferenceLink[];
 };

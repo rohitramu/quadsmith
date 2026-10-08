@@ -30,17 +30,17 @@ type Receiver struct {
 	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
-	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// E.g., "ExpressLRS", "Crossfire", "FrSky"
-	Protocol string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	Protocol string `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// E.g., 2.4, 0.9 (for 900MHz)
-	FrequencyBandMhz uint32 `protobuf:"varint,7,opt,name=frequency_band_mhz,json=frequencyBandMhz,proto3" json:"frequency_band_mhz,omitempty"`
-	HasTelemetry     bool   `protobuf:"varint,8,opt,name=has_telemetry,json=hasTelemetry,proto3" json:"has_telemetry,omitempty"`
+	FrequencyBandMhz uint32 `protobuf:"varint,8,opt,name=frequency_band_mhz,json=frequencyBandMhz,proto3" json:"frequency_band_mhz,omitempty"`
+	HasTelemetry     bool   `protobuf:"varint,9,opt,name=has_telemetry,json=hasTelemetry,proto3" json:"has_telemetry,omitempty"`
 	// Array of antenna UUIDs included with or required by this receiver
-	AntennaUuids   []string         `protobuf:"bytes,9,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
-	Description    string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	AntennaUuids   []string         `protobuf:"bytes,10,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
+	Description    string           `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,12,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -353,14 +353,15 @@ const file_receiver_proto_rawDesc = "" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\"\n" +
-	"\bprotocol\x18\x06 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12,\n" +
-	"\x12frequency_band_mhz\x18\a \x01(\rR\x10frequencyBandMhz\x12#\n" +
-	"\rhas_telemetry\x18\b \x01(\bR\fhasTelemetry\x12#\n" +
-	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:m\x8a\xb5\x18A\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
+	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\"\n" +
+	"\bprotocol\x18\a \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12,\n" +
+	"\x12frequency_band_mhz\x18\b \x01(\rR\x10frequencyBandMhz\x12#\n" +
+	"\rhas_telemetry\x18\t \x01(\bR\fhasTelemetry\x12#\n" +
+	"\rantenna_uuids\x18\n" +
+	" \x03(\tR\fantennaUuids\x12 \n" +
+	"\vdescription\x18\v \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\f \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:m\x8a\xb5\x18A\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +

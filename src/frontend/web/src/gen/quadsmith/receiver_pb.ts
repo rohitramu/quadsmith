@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_receiver: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg5yZWNlaXZlci5wcm90bxIJcXVhZHNtaXRoIqcDCghSZWNlaXZlchIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISGAoIcHJvdG9jb2wYBiABKAlCBsLzGAIoARIaChJmcmVxdWVuY3lfYmFuZF9taHoYByABKA0SFQoNaGFzX3RlbGVtZXRyeRgIIAEoCBIVCg1hbnRlbm5hX3V1aWRzGAkgAygJEhMKC2Rlc2NyaXB0aW9uGBUgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgWIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOm2KtRhBCgxtYW51ZmFjdHVyZXIKBG5hbWUKCHByb3RvY29sChJmcmVxdWVuY3lfYmFuZF9taHoKDWhhc190ZWxlbWV0cnmStRgVCghSZWNlaXZlchIJUmVjZWl2ZXJzwvMYCwoJcmVjZWl2ZXJzIjEKEkdldFJlY2VpdmVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImwKFExpc3RSZWNlaXZlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiWAoVTGlzdFJlY2VpdmVyc1Jlc3BvbnNlEiYKCXJlY2VpdmVycxgBIAMoCzITLnF1YWRzbWl0aC5SZWNlaXZlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyqAEKD1JlY2VpdmVyU2VydmljZRJBCgtHZXRSZWNlaXZlchIdLnF1YWRzbWl0aC5HZXRSZWNlaXZlclJlcXVlc3QaEy5xdWFkc21pdGguUmVjZWl2ZXISUgoNTGlzdFJlY2VpdmVycxIfLnF1YWRzbWl0aC5MaXN0UmVjZWl2ZXJzUmVxdWVzdBogLnF1YWRzbWl0aC5MaXN0UmVjZWl2ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "Cg5yZWNlaXZlci5wcm90bxIJcXVhZHNtaXRoIqcDCghSZWNlaXZlchIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYBSABKAgSEAoId2VpZ2h0X2cYBiABKAISGAoIcHJvdG9jb2wYByABKAlCBsLzGAIoARIaChJmcmVxdWVuY3lfYmFuZF9taHoYCCABKA0SFQoNaGFzX3RlbGVtZXRyeRgJIAEoCBIVCg1hbnRlbm5hX3V1aWRzGAogAygJEhMKC2Rlc2NyaXB0aW9uGAsgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgMIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOm2KtRhBCgxtYW51ZmFjdHVyZXIKBG5hbWUKCHByb3RvY29sChJmcmVxdWVuY3lfYmFuZF9taHoKDWhhc190ZWxlbWV0cnmStRgVCghSZWNlaXZlchIJUmVjZWl2ZXJzwvMYCwoJcmVjZWl2ZXJzIjEKEkdldFJlY2VpdmVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImwKFExpc3RSZWNlaXZlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiWAoVTGlzdFJlY2VpdmVyc1Jlc3BvbnNlEiYKCXJlY2VpdmVycxgBIAMoCzITLnF1YWRzbWl0aC5SZWNlaXZlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyqAEKD1JlY2VpdmVyU2VydmljZRJBCgtHZXRSZWNlaXZlchIdLnF1YWRzbWl0aC5HZXRSZWNlaXZlclJlcXVlc3QaEy5xdWFkc21pdGguUmVjZWl2ZXISUgoNTGlzdFJlY2VpdmVycxIfLnF1YWRzbWl0aC5MaXN0UmVjZWl2ZXJzUmVxdWVzdBogLnF1YWRzbWl0aC5MaXN0UmVjZWl2ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
     [file__common, file__sql, file_reference_link],
   );
 
@@ -49,48 +49,48 @@ export type Receiver = Message<"quadsmith.Receiver"> & {
   name: string;
 
   /**
-   * @generated from field: bool is_internal_only = 20;
+   * @generated from field: bool is_internal_only = 5;
    */
   isInternalOnly: boolean;
 
   /**
-   * @generated from field: float weight_g = 5;
+   * @generated from field: float weight_g = 6;
    */
   weightG: number;
 
   /**
    * E.g., "ExpressLRS", "Crossfire", "FrSky"
    *
-   * @generated from field: string protocol = 6;
+   * @generated from field: string protocol = 7;
    */
   protocol: string;
 
   /**
    * E.g., 2.4, 0.9 (for 900MHz)
    *
-   * @generated from field: uint32 frequency_band_mhz = 7;
+   * @generated from field: uint32 frequency_band_mhz = 8;
    */
   frequencyBandMhz: number;
 
   /**
-   * @generated from field: bool has_telemetry = 8;
+   * @generated from field: bool has_telemetry = 9;
    */
   hasTelemetry: boolean;
 
   /**
    * Array of antenna UUIDs included with or required by this receiver
    *
-   * @generated from field: repeated string antenna_uuids = 9;
+   * @generated from field: repeated string antenna_uuids = 10;
    */
   antennaUuids: string[];
 
   /**
-   * @generated from field: string description = 21;
+   * @generated from field: string description = 11;
    */
   description: string;
 
   /**
-   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
+   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 12;
    */
   referenceLinks: ReferenceLink[];
 };

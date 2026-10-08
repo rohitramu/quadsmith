@@ -33,24 +33,24 @@ message VideoTransmitter {
 
   string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
-  bool is_internal_only = 20;
+  bool is_internal_only = 5;
 
-  float weight_g = 5;
+  float weight_g = 6;
 
   // E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
-  string protocol = 6 [(quadsmith.sql.column) = {create_index: true}];
+  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
 
   // Max output power in milliwatts (e.g., 800, 1000, 1200)
-  uint32 max_power_mw = 7;
+  uint32 max_power_mw = 8;
 
   // Input voltage range
-  float input_voltage_min_v = 8;
-  float input_voltage_max_v = 9;
+  float input_voltage_min_v = 9;
+  float input_voltage_max_v = 10;
 
   // Array of antenna UUIDs included with or required by this video transmitter
-  repeated string antenna_uuids = 10;
-  string description = 21;
-  repeated ReferenceLink reference_links = 22;
+  repeated string antenna_uuids = 11;
+  string description = 12;
+  repeated ReferenceLink reference_links = 13;
 }
 
 // ---------------------------------------------------------

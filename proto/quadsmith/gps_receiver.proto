@@ -32,30 +32,30 @@ message GpsReceiver {
 
   string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
-  bool is_internal_only = 20;
+  bool is_internal_only = 5;
 
-  float weight_g = 5;
+  float weight_g = 6;
 
   // GNSS chipset (e.g., "u-blox MAX-M10S", "u-blox M10", "M10050")
-  string chipset = 6;
+  string chipset = 7;
 
   // Primary communication protocol (e.g., "UBLOX", "NMEA")
-  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
+  string protocol = 8 [(quadsmith.sql.column) = {create_index: true}];
 
   // Whether the unit has an integrated magnetic compass / magnetometer
-  optional bool has_compass = 8;
+  optional bool has_compass = 9;
 
   // Compass chip model (e.g., "QMC5883L", "IST8310")
-  optional string compass_chip = 9;
+  optional string compass_chip = 10;
 
   // Minimum operating input voltage
-  float input_voltage_min_v = 10;
+  float input_voltage_min_v = 11;
 
   // Maximum operating input voltage
-  float input_voltage_max_v = 11;
+  float input_voltage_max_v = 12;
 
-  string description = 21;
-  repeated ReferenceLink reference_links = 22;
+  string description = 13;
+  repeated ReferenceLink reference_links = 14;
 }
 
 // ---------------------------------------------------------

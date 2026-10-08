@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_flight_controller: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChdmbGlnaHRfY29udHJvbGxlci5wcm90bxIJcXVhZHNtaXRoIs4FChBGbGlnaHRDb250cm9sbGVyEhQKBHV1aWQYASABKAlCBsLzGAIQARISCgJpZBgCIAEoCUIGwvMYAiABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgUIAEoCBIQCgh3ZWlnaHRfZxgFIAEoAhIRCglwcm9jZXNzb3IYBiABKAkSDAoEZ3lybxgHIAEoCRJgCilpbnRlcm5hbF9lbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJfdXVpZBgIIAEoCUIowvMYJBoiZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVycyh1dWlkKUgAiAEBEjoKFmludGVybmFsX3JlY2VpdmVyX3V1aWQYCSABKAlCFcLzGBEaD3JlY2VpdmVycyh1dWlkKUgBiAEBEkwKH2ludGVybmFsX3ZpZGVvX3RyYW5zbWl0dGVyX3V1aWQYCiABKAlCHsLzGBoaGHZpZGVvX3RyYW5zbWl0dGVycyh1dWlkKUgCiAEBEhMKC2Rlc2NyaXB0aW9uGBUgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgWIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOnaKtRgvCgxtYW51ZmFjdHVyZXIKBG5hbWUKCXByb2Nlc3NvcgoEZ3lybwoId2VpZ2h0X2eStRgnChFGbGlnaHQgQ29udHJvbGxlchISRmxpZ2h0IENvbnRyb2xsZXJzwvMYFAoSZmxpZ2h0X2NvbnRyb2xsZXJzQiwKKl9pbnRlcm5hbF9lbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJfdXVpZEIZChdfaW50ZXJuYWxfcmVjZWl2ZXJfdXVpZEIiCiBfaW50ZXJuYWxfdmlkZW9fdHJhbnNtaXR0ZXJfdXVpZCI5ChpHZXRGbGlnaHRDb250cm9sbGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJInQKHExpc3RGbGlnaHRDb250cm9sbGVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJxCh1MaXN0RmxpZ2h0Q29udHJvbGxlcnNSZXNwb25zZRI3ChJmbGlnaHRfY29udHJvbGxlcnMYASADKAsyGy5xdWFkc21pdGguRmxpZ2h0Q29udHJvbGxlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAky4AEKF0ZsaWdodENvbnRyb2xsZXJTZXJ2aWNlElkKE0dldEZsaWdodENvbnRyb2xsZXISJS5xdWFkc21pdGguR2V0RmxpZ2h0Q29udHJvbGxlclJlcXVlc3QaGy5xdWFkc21pdGguRmxpZ2h0Q29udHJvbGxlchJqChVMaXN0RmxpZ2h0Q29udHJvbGxlcnMSJy5xdWFkc21pdGguTGlzdEZsaWdodENvbnRyb2xsZXJzUmVxdWVzdBooLnF1YWRzbWl0aC5MaXN0RmxpZ2h0Q29udHJvbGxlcnNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "ChdmbGlnaHRfY29udHJvbGxlci5wcm90bxIJcXVhZHNtaXRoIs4FChBGbGlnaHRDb250cm9sbGVyEhQKBHV1aWQYASABKAlCBsLzGAIQARISCgJpZBgCIAEoCUIGwvMYAiABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgFIAEoCBIQCgh3ZWlnaHRfZxgGIAEoAhIRCglwcm9jZXNzb3IYByABKAkSDAoEZ3lybxgIIAEoCRJgCilpbnRlcm5hbF9lbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJfdXVpZBgJIAEoCUIowvMYJBoiZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVycyh1dWlkKUgAiAEBEjoKFmludGVybmFsX3JlY2VpdmVyX3V1aWQYCiABKAlCFcLzGBEaD3JlY2VpdmVycyh1dWlkKUgBiAEBEkwKH2ludGVybmFsX3ZpZGVvX3RyYW5zbWl0dGVyX3V1aWQYCyABKAlCHsLzGBoaGHZpZGVvX3RyYW5zbWl0dGVycyh1dWlkKUgCiAEBEhMKC2Rlc2NyaXB0aW9uGAwgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgNIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOnaKtRgvCgxtYW51ZmFjdHVyZXIKBG5hbWUKCXByb2Nlc3NvcgoEZ3lybwoId2VpZ2h0X2eStRgnChFGbGlnaHQgQ29udHJvbGxlchISRmxpZ2h0IENvbnRyb2xsZXJzwvMYFAoSZmxpZ2h0X2NvbnRyb2xsZXJzQiwKKl9pbnRlcm5hbF9lbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJfdXVpZEIZChdfaW50ZXJuYWxfcmVjZWl2ZXJfdXVpZEIiCiBfaW50ZXJuYWxfdmlkZW9fdHJhbnNtaXR0ZXJfdXVpZCI5ChpHZXRGbGlnaHRDb250cm9sbGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJInQKHExpc3RGbGlnaHRDb250cm9sbGVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJxCh1MaXN0RmxpZ2h0Q29udHJvbGxlcnNSZXNwb25zZRI3ChJmbGlnaHRfY29udHJvbGxlcnMYASADKAsyGy5xdWFkc21pdGguRmxpZ2h0Q29udHJvbGxlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAky4AEKF0ZsaWdodENvbnRyb2xsZXJTZXJ2aWNlElkKE0dldEZsaWdodENvbnRyb2xsZXISJS5xdWFkc21pdGguR2V0RmxpZ2h0Q29udHJvbGxlclJlcXVlc3QaGy5xdWFkc21pdGguRmxpZ2h0Q29udHJvbGxlchJqChVMaXN0RmxpZ2h0Q29udHJvbGxlcnMSJy5xdWFkc21pdGguTGlzdEZsaWdodENvbnRyb2xsZXJzUmVxdWVzdBooLnF1YWRzbWl0aC5MaXN0RmxpZ2h0Q29udHJvbGxlcnNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file__common, file__sql, file_reference_link],
   );
 
@@ -49,57 +49,57 @@ export type FlightController = Message<"quadsmith.FlightController"> & {
   name: string;
 
   /**
-   * @generated from field: bool is_internal_only = 20;
+   * @generated from field: bool is_internal_only = 5;
    */
   isInternalOnly: boolean;
 
   /**
-   * @generated from field: float weight_g = 5;
+   * @generated from field: float weight_g = 6;
    */
   weightG: number;
 
   /**
    * The MCU processor (e.g., "F411", "F405", "H743")
    *
-   * @generated from field: string processor = 6;
+   * @generated from field: string processor = 7;
    */
   processor: string;
 
   /**
    * The gyro chip (e.g., "MPU6000", "BMI270")
    *
-   * @generated from field: string gyro = 7;
+   * @generated from field: string gyro = 8;
    */
   gyro: string;
 
   /**
    * If this board has an integrated Electronic Speed Controller, reference it here
    *
-   * @generated from field: optional string internal_electronic_speed_controller_uuid = 8;
+   * @generated from field: optional string internal_electronic_speed_controller_uuid = 9;
    */
   internalElectronicSpeedControllerUuid?: string | undefined;
 
   /**
    * If this board has an integrated SPI or Serial Receiver
    *
-   * @generated from field: optional string internal_receiver_uuid = 9;
+   * @generated from field: optional string internal_receiver_uuid = 10;
    */
   internalReceiverUuid?: string | undefined;
 
   /**
    * If this board has an integrated Video Transmitter
    *
-   * @generated from field: optional string internal_video_transmitter_uuid = 10;
+   * @generated from field: optional string internal_video_transmitter_uuid = 11;
    */
   internalVideoTransmitterUuid?: string | undefined;
 
   /**
-   * @generated from field: string description = 21;
+   * @generated from field: string description = 12;
    */
   description: string;
 
   /**
-   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
+   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 13;
    */
   referenceLinks: ReferenceLink[];
 };

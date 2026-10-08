@@ -33,22 +33,22 @@ message Receiver {
 
   string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
-  bool is_internal_only = 20;
+  bool is_internal_only = 5;
 
-  float weight_g = 5;
+  float weight_g = 6;
 
   // E.g., "ExpressLRS", "Crossfire", "FrSky"
-  string protocol = 6 [(quadsmith.sql.column) = {create_index: true}];
+  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
 
   // E.g., 2.4, 0.9 (for 900MHz)
-  uint32 frequency_band_mhz = 7;
+  uint32 frequency_band_mhz = 8;
 
-  bool has_telemetry = 8;
+  bool has_telemetry = 9;
 
   // Array of antenna UUIDs included with or required by this receiver
-  repeated string antenna_uuids = 9;
-  string description = 21;
-  repeated ReferenceLink reference_links = 22;
+  repeated string antenna_uuids = 10;
+  string description = 11;
+  repeated ReferenceLink reference_links = 12;
 }
 
 // ---------------------------------------------------------

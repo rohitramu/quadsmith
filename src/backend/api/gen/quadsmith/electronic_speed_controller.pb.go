@@ -30,17 +30,17 @@ type ElectronicSpeedController struct {
 	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
-	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
-	MaxMotors uint32 `protobuf:"varint,6,opt,name=max_motors,json=maxMotors,proto3" json:"max_motors,omitempty"`
+	MaxMotors uint32 `protobuf:"varint,7,opt,name=max_motors,json=maxMotors,proto3" json:"max_motors,omitempty"`
 	// Continuous and Burst amperage ratings
-	MotorCurrentMaxA   float32 `protobuf:"fixed32,7,opt,name=motor_current_max_a,json=motorCurrentMaxA,proto3" json:"motor_current_max_a,omitempty"`
-	MotorCurrentBurstA float32 `protobuf:"fixed32,8,opt,name=motor_current_burst_a,json=motorCurrentBurstA,proto3" json:"motor_current_burst_a,omitempty"`
+	MotorCurrentMaxA   float32 `protobuf:"fixed32,8,opt,name=motor_current_max_a,json=motorCurrentMaxA,proto3" json:"motor_current_max_a,omitempty"`
+	MotorCurrentBurstA float32 `protobuf:"fixed32,9,opt,name=motor_current_burst_a,json=motorCurrentBurstA,proto3" json:"motor_current_burst_a,omitempty"`
 	// E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
-	Firmware       string           `protobuf:"bytes,9,opt,name=firmware,proto3" json:"firmware,omitempty"`
-	Description    string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	Firmware       string           `protobuf:"bytes,10,opt,name=firmware,proto3" json:"firmware,omitempty"`
+	Description    string           `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,12,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -353,15 +353,16 @@ const file_electronic_speed_controller_proto_rawDesc = "" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1d\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
+	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x1d\n" +
 	"\n" +
-	"max_motors\x18\x06 \x01(\rR\tmaxMotors\x12-\n" +
-	"\x13motor_current_max_a\x18\a \x01(\x02R\x10motorCurrentMaxA\x121\n" +
-	"\x15motor_current_burst_a\x18\b \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
-	"\bfirmware\x18\t \x01(\tR\bfirmware\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\xa4\x01\x8a\xb5\x18?\n" +
+	"max_motors\x18\a \x01(\rR\tmaxMotors\x12-\n" +
+	"\x13motor_current_max_a\x18\b \x01(\x02R\x10motorCurrentMaxA\x121\n" +
+	"\x15motor_current_burst_a\x18\t \x01(\x02R\x12motorCurrentBurstA\x12\x1a\n" +
+	"\bfirmware\x18\n" +
+	" \x01(\tR\bfirmware\x12 \n" +
+	"\vdescription\x18\v \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\f \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\xa4\x01\x8a\xb5\x18?\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\x13motor_current_max_a\n" +

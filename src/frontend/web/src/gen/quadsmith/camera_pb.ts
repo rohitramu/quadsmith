@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_camera: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CgxjYW1lcmEucHJvdG8SCXF1YWRzbWl0aCL+AgoGQ2FtZXJhEhQKBHV1aWQYASABKAlCBsLzGAIQARISCgJpZBgCIAEoCUIGwvMYAiABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgUIAEoCBIQCgh3ZWlnaHRfZxgFIAEoAhIQCghwcm90b2NvbBgGIAEoCRITCgtzZW5zb3Jfc2l6ZRgHIAEoCRIQCgh3aWR0aF9tbRgIIAEoDRIUCgxsZW5zX3NpemVfbW0YCSABKAISEwoLZGVzY3JpcHRpb24YFSABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGBYgAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbms6W4q1GDUKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKC3NlbnNvcl9zaXplCgh3aWR0aF9tbZK1GBEKBkNhbWVyYRIHQ2FtZXJhc8LzGAkKB2NhbWVyYXMiLwoQR2V0Q2FtZXJhUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImoKEkxpc3RDYW1lcmFzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlIKE0xpc3RDYW1lcmFzUmVzcG9uc2USIgoHY2FtZXJhcxgBIAMoCzIRLnF1YWRzbWl0aC5DYW1lcmESFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMpoBCg1DYW1lcmFTZXJ2aWNlEjsKCUdldENhbWVyYRIbLnF1YWRzbWl0aC5HZXRDYW1lcmFSZXF1ZXN0GhEucXVhZHNtaXRoLkNhbWVyYRJMCgtMaXN0Q2FtZXJhcxIdLnF1YWRzbWl0aC5MaXN0Q2FtZXJhc1JlcXVlc3QaHi5xdWFkc21pdGguTGlzdENhbWVyYXNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "CgxjYW1lcmEucHJvdG8SCXF1YWRzbWl0aCL+AgoGQ2FtZXJhEhQKBHV1aWQYASABKAlCBsLzGAIQARISCgJpZBgCIAEoCUIGwvMYAiABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgFIAEoCBIQCgh3ZWlnaHRfZxgGIAEoAhIQCghwcm90b2NvbBgHIAEoCRITCgtzZW5zb3Jfc2l6ZRgIIAEoCRIQCgh3aWR0aF9tbRgJIAEoDRIUCgxsZW5zX3NpemVfbW0YCiABKAISEwoLZGVzY3JpcHRpb24YCyABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbms6W4q1GDUKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKC3NlbnNvcl9zaXplCgh3aWR0aF9tbZK1GBEKBkNhbWVyYRIHQ2FtZXJhc8LzGAkKB2NhbWVyYXMiLwoQR2V0Q2FtZXJhUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImoKEkxpc3RDYW1lcmFzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlIKE0xpc3RDYW1lcmFzUmVzcG9uc2USIgoHY2FtZXJhcxgBIAMoCzIRLnF1YWRzbWl0aC5DYW1lcmESFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMpoBCg1DYW1lcmFTZXJ2aWNlEjsKCUdldENhbWVyYRIbLnF1YWRzbWl0aC5HZXRDYW1lcmFSZXF1ZXN0GhEucXVhZHNtaXRoLkNhbWVyYRJMCgtMaXN0Q2FtZXJhcxIdLnF1YWRzbWl0aC5MaXN0Q2FtZXJhc1JlcXVlc3QaHi5xdWFkc21pdGguTGlzdENhbWVyYXNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file__common, file__sql, file_reference_link],
   );
 
@@ -49,50 +49,50 @@ export type Camera = Message<"quadsmith.Camera"> & {
   name: string;
 
   /**
-   * @generated from field: bool is_internal_only = 20;
+   * @generated from field: bool is_internal_only = 5;
    */
   isInternalOnly: boolean;
 
   /**
-   * @generated from field: float weight_g = 5;
+   * @generated from field: float weight_g = 6;
    */
   weightG: number;
 
   /**
    * Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4", "Walksnail Avatar", "HDZero")
    *
-   * @generated from field: string protocol = 6;
+   * @generated from field: string protocol = 7;
    */
   protocol: string;
 
   /**
    * Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
    *
-   * @generated from field: string sensor_size = 7;
+   * @generated from field: string sensor_size = 8;
    */
   sensorSize: string;
 
   /**
    * Width of the camera body in mm (e.g., 14 for nano, 19 for micro, 22 for standard)
    *
-   * @generated from field: uint32 width_mm = 8;
+   * @generated from field: uint32 width_mm = 9;
    */
   widthMm: number;
 
   /**
    * Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
    *
-   * @generated from field: float lens_size_mm = 9;
+   * @generated from field: float lens_size_mm = 10;
    */
   lensSizeMm: number;
 
   /**
-   * @generated from field: string description = 21;
+   * @generated from field: string description = 11;
    */
   description: string;
 
   /**
-   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
+   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 12;
    */
   referenceLinks: ReferenceLink[];
 };

@@ -33,21 +33,21 @@ message ElectronicSpeedController {
 
   string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
-  bool is_internal_only = 20;
+  bool is_internal_only = 5;
 
-  float weight_g = 5;
+  float weight_g = 6;
 
   // E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
-  uint32 max_motors = 6;
+  uint32 max_motors = 7;
 
   // Continuous and Burst amperage ratings
-  float motor_current_max_a = 7;
-  float motor_current_burst_a = 8;
+  float motor_current_max_a = 8;
+  float motor_current_burst_a = 9;
 
   // E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
-  string firmware = 9;
-  string description = 21;
-  repeated ReferenceLink reference_links = 22;
+  string firmware = 10;
+  string description = 11;
+  repeated ReferenceLink reference_links = 12;
 }
 
 // ---------------------------------------------------------

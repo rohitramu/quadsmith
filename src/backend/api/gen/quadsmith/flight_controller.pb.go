@@ -30,20 +30,20 @@ type FlightController struct {
 	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
-	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// The MCU processor (e.g., "F411", "F405", "H743")
-	Processor string `protobuf:"bytes,6,opt,name=processor,proto3" json:"processor,omitempty"`
+	Processor string `protobuf:"bytes,7,opt,name=processor,proto3" json:"processor,omitempty"`
 	// The gyro chip (e.g., "MPU6000", "BMI270")
-	Gyro string `protobuf:"bytes,7,opt,name=gyro,proto3" json:"gyro,omitempty"`
+	Gyro string `protobuf:"bytes,8,opt,name=gyro,proto3" json:"gyro,omitempty"`
 	// If this board has an integrated Electronic Speed Controller, reference it here
-	InternalElectronicSpeedControllerUuid *string `protobuf:"bytes,8,opt,name=internal_electronic_speed_controller_uuid,json=internalElectronicSpeedControllerUuid,proto3,oneof" json:"internal_electronic_speed_controller_uuid,omitempty"`
+	InternalElectronicSpeedControllerUuid *string `protobuf:"bytes,9,opt,name=internal_electronic_speed_controller_uuid,json=internalElectronicSpeedControllerUuid,proto3,oneof" json:"internal_electronic_speed_controller_uuid,omitempty"`
 	// If this board has an integrated SPI or Serial Receiver
-	InternalReceiverUuid *string `protobuf:"bytes,9,opt,name=internal_receiver_uuid,json=internalReceiverUuid,proto3,oneof" json:"internal_receiver_uuid,omitempty"`
+	InternalReceiverUuid *string `protobuf:"bytes,10,opt,name=internal_receiver_uuid,json=internalReceiverUuid,proto3,oneof" json:"internal_receiver_uuid,omitempty"`
 	// If this board has an integrated Video Transmitter
-	InternalVideoTransmitterUuid *string          `protobuf:"bytes,10,opt,name=internal_video_transmitter_uuid,json=internalVideoTransmitterUuid,proto3,oneof" json:"internal_video_transmitter_uuid,omitempty"`
-	Description                  string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks               []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	InternalVideoTransmitterUuid *string          `protobuf:"bytes,11,opt,name=internal_video_transmitter_uuid,json=internalVideoTransmitterUuid,proto3,oneof" json:"internal_video_transmitter_uuid,omitempty"`
+	Description                  string           `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks               []*ReferenceLink `protobuf:"bytes,13,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields                protoimpl.UnknownFields
 	sizeCache                    protoimpl.SizeCache
 }
@@ -363,16 +363,16 @@ const file_flight_controller_proto_rawDesc = "" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1c\n" +
-	"\tprocessor\x18\x06 \x01(\tR\tprocessor\x12\x12\n" +
-	"\x04gyro\x18\a \x01(\tR\x04gyro\x12\x87\x01\n" +
-	")internal_electronic_speed_controller_uuid\x18\b \x01(\tB(\xc2\xf3\x18$\x1a\"electronic_speed_controllers(uuid)H\x00R%internalElectronicSpeedControllerUuid\x88\x01\x01\x12P\n" +
-	"\x16internal_receiver_uuid\x18\t \x01(\tB\x15\xc2\xf3\x18\x11\x1a\x0freceivers(uuid)H\x01R\x14internalReceiverUuid\x88\x01\x01\x12j\n" +
-	"\x1finternal_video_transmitter_uuid\x18\n" +
-	" \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)H\x02R\x1cinternalVideoTransmitterUuid\x88\x01\x01\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:v\x8a\xb5\x18/\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
+	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x1c\n" +
+	"\tprocessor\x18\a \x01(\tR\tprocessor\x12\x12\n" +
+	"\x04gyro\x18\b \x01(\tR\x04gyro\x12\x87\x01\n" +
+	")internal_electronic_speed_controller_uuid\x18\t \x01(\tB(\xc2\xf3\x18$\x1a\"electronic_speed_controllers(uuid)H\x00R%internalElectronicSpeedControllerUuid\x88\x01\x01\x12P\n" +
+	"\x16internal_receiver_uuid\x18\n" +
+	" \x01(\tB\x15\xc2\xf3\x18\x11\x1a\x0freceivers(uuid)H\x01R\x14internalReceiverUuid\x88\x01\x01\x12j\n" +
+	"\x1finternal_video_transmitter_uuid\x18\v \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)H\x02R\x1cinternalVideoTransmitterUuid\x88\x01\x01\x12 \n" +
+	"\vdescription\x18\f \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:v\x8a\xb5\x18/\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tprocessor\n" +

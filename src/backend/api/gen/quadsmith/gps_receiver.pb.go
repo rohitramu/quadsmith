@@ -30,22 +30,22 @@ type GpsReceiver struct {
 	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
-	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// GNSS chipset (e.g., "u-blox MAX-M10S", "u-blox M10", "M10050")
-	Chipset string `protobuf:"bytes,6,opt,name=chipset,proto3" json:"chipset,omitempty"`
+	Chipset string `protobuf:"bytes,7,opt,name=chipset,proto3" json:"chipset,omitempty"`
 	// Primary communication protocol (e.g., "UBLOX", "NMEA")
-	Protocol string `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	Protocol string `protobuf:"bytes,8,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Whether the unit has an integrated magnetic compass / magnetometer
-	HasCompass *bool `protobuf:"varint,8,opt,name=has_compass,json=hasCompass,proto3,oneof" json:"has_compass,omitempty"`
+	HasCompass *bool `protobuf:"varint,9,opt,name=has_compass,json=hasCompass,proto3,oneof" json:"has_compass,omitempty"`
 	// Compass chip model (e.g., "QMC5883L", "IST8310")
-	CompassChip *string `protobuf:"bytes,9,opt,name=compass_chip,json=compassChip,proto3,oneof" json:"compass_chip,omitempty"`
+	CompassChip *string `protobuf:"bytes,10,opt,name=compass_chip,json=compassChip,proto3,oneof" json:"compass_chip,omitempty"`
 	// Minimum operating input voltage
-	InputVoltageMinV float32 `protobuf:"fixed32,10,opt,name=input_voltage_min_v,json=inputVoltageMinV,proto3" json:"input_voltage_min_v,omitempty"`
+	InputVoltageMinV float32 `protobuf:"fixed32,11,opt,name=input_voltage_min_v,json=inputVoltageMinV,proto3" json:"input_voltage_min_v,omitempty"`
 	// Maximum operating input voltage
-	InputVoltageMaxV float32          `protobuf:"fixed32,11,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
-	Description      string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks   []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	InputVoltageMaxV float32          `protobuf:"fixed32,12,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
+	Description      string           `protobuf:"bytes,13,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks   []*ReferenceLink `protobuf:"bytes,14,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -372,18 +372,18 @@ const file_gps_receiver_proto_rawDesc = "" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x18\n" +
-	"\achipset\x18\x06 \x01(\tR\achipset\x12\"\n" +
-	"\bprotocol\x18\a \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12$\n" +
-	"\vhas_compass\x18\b \x01(\bH\x00R\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
+	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x18\n" +
+	"\achipset\x18\a \x01(\tR\achipset\x12\"\n" +
+	"\bprotocol\x18\b \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12$\n" +
+	"\vhas_compass\x18\t \x01(\bH\x00R\n" +
 	"hasCompass\x88\x01\x01\x12&\n" +
-	"\fcompass_chip\x18\t \x01(\tH\x01R\vcompassChip\x88\x01\x01\x12-\n" +
-	"\x13input_voltage_min_v\x18\n" +
-	" \x01(\x02R\x10inputVoltageMinV\x12-\n" +
-	"\x13input_voltage_max_v\x18\v \x01(\x02R\x10inputVoltageMaxV\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:b\x8a\xb5\x18*\n" +
+	"\fcompass_chip\x18\n" +
+	" \x01(\tH\x01R\vcompassChip\x88\x01\x01\x12-\n" +
+	"\x13input_voltage_min_v\x18\v \x01(\x02R\x10inputVoltageMinV\x12-\n" +
+	"\x13input_voltage_max_v\x18\f \x01(\x02R\x10inputVoltageMaxV\x12 \n" +
+	"\vdescription\x18\r \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:b\x8a\xb5\x18*\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\achipset\n" +

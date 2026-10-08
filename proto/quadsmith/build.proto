@@ -68,11 +68,11 @@ message Build {
   repeated string camera_uuids = 13;
 
   // The Video Transmitter used for this build
-  string video_transmitter_uuid = 15 [(quadsmith.sql.column) = {references: "video_transmitters(uuid)"}];
+  string video_transmitter_uuid = 14 [(quadsmith.sql.column) = {references: "video_transmitters(uuid)"}];
 
   // Optional GPS Receiver for navigation and rescue return-to-home
-  optional string gps_receiver_uuid = 16 [(quadsmith.sql.column) = {references: "gps_receivers(uuid)"}];
-  repeated ReferenceLink reference_links = 14;
+  optional string gps_receiver_uuid = 15 [(quadsmith.sql.column) = {references: "gps_receivers(uuid)"}];
+  repeated ReferenceLink reference_links = 16;
 }
 
 // ---------------------------------------------------------

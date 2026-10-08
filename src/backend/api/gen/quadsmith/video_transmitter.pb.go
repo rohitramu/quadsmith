@@ -30,19 +30,19 @@ type VideoTransmitter struct {
 	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Manufacturer   string                 `protobuf:"bytes,3,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	IsInternalOnly bool                   `protobuf:"varint,20,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
-	WeightG        float32                `protobuf:"fixed32,5,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
+	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
+	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
 	// E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
-	Protocol string `protobuf:"bytes,6,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	Protocol string `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Max output power in milliwatts (e.g., 800, 1000, 1200)
-	MaxPowerMw uint32 `protobuf:"varint,7,opt,name=max_power_mw,json=maxPowerMw,proto3" json:"max_power_mw,omitempty"`
+	MaxPowerMw uint32 `protobuf:"varint,8,opt,name=max_power_mw,json=maxPowerMw,proto3" json:"max_power_mw,omitempty"`
 	// Input voltage range
-	InputVoltageMinV float32 `protobuf:"fixed32,8,opt,name=input_voltage_min_v,json=inputVoltageMinV,proto3" json:"input_voltage_min_v,omitempty"`
-	InputVoltageMaxV float32 `protobuf:"fixed32,9,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
+	InputVoltageMinV float32 `protobuf:"fixed32,9,opt,name=input_voltage_min_v,json=inputVoltageMinV,proto3" json:"input_voltage_min_v,omitempty"`
+	InputVoltageMaxV float32 `protobuf:"fixed32,10,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
 	// Array of antenna UUIDs included with or required by this video transmitter
-	AntennaUuids   []string         `protobuf:"bytes,10,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
-	Description    string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	AntennaUuids   []string         `protobuf:"bytes,11,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
+	Description    string           `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks []*ReferenceLink `protobuf:"bytes,13,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -362,17 +362,17 @@ const file_video_transmitter_proto_rawDesc = "" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\"\n" +
-	"\bprotocol\x18\x06 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12 \n" +
-	"\fmax_power_mw\x18\a \x01(\rR\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
+	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\"\n" +
+	"\bprotocol\x18\a \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12 \n" +
+	"\fmax_power_mw\x18\b \x01(\rR\n" +
 	"maxPowerMw\x12-\n" +
-	"\x13input_voltage_min_v\x18\b \x01(\x02R\x10inputVoltageMinV\x12-\n" +
-	"\x13input_voltage_max_v\x18\t \x01(\x02R\x10inputVoltageMaxV\x12#\n" +
-	"\rantenna_uuids\x18\n" +
-	" \x03(\tR\fantennaUuids\x12 \n" +
-	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:}\x8a\xb5\x186\n" +
+	"\x13input_voltage_min_v\x18\t \x01(\x02R\x10inputVoltageMinV\x12-\n" +
+	"\x13input_voltage_max_v\x18\n" +
+	" \x01(\x02R\x10inputVoltageMaxV\x12#\n" +
+	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12 \n" +
+	"\vdescription\x18\f \x01(\tR\vdescription\x12A\n" +
+	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:}\x8a\xb5\x186\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +

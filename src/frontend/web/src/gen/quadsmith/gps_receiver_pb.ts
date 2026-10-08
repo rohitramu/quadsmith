@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_gps_receiver: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChJncHNfcmVjZWl2ZXIucHJvdG8SCXF1YWRzbWl0aCL2AwoLR3BzUmVjZWl2ZXISFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GBQgASgIEhAKCHdlaWdodF9nGAUgASgCEg8KB2NoaXBzZXQYBiABKAkSGAoIcHJvdG9jb2wYByABKAlCBsLzGAIoARIYCgtoYXNfY29tcGFzcxgIIAEoCEgAiAEBEhkKDGNvbXBhc3NfY2hpcBgJIAEoCUgBiAEBEhsKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCiABKAISGwoTaW5wdXRfdm9sdGFnZV9tYXhfdhgLIAEoAhITCgtkZXNjcmlwdGlvbhgVIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYFiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpiirUYKgoMbWFudWZhY3R1cmVyCgRuYW1lCgdjaGlwc2V0CgtoYXNfY29tcGFzc5K1GB0KDEdQUyBSZWNlaXZlchINR1BTIFJlY2VpdmVyc8LzGA8KDWdwc19yZWNlaXZlcnNCDgoMX2hhc19jb21wYXNzQg8KDV9jb21wYXNzX2NoaXAiNAoVR2V0R3BzUmVjZWl2ZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibwoXTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJiChhMaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2USLQoNZ3BzX3JlY2VpdmVycxgBIAMoCzIWLnF1YWRzbWl0aC5HcHNSZWNlaXZlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyvQEKEkdwc1JlY2VpdmVyU2VydmljZRJKCg5HZXRHcHNSZWNlaXZlchIgLnF1YWRzbWl0aC5HZXRHcHNSZWNlaXZlclJlcXVlc3QaFi5xdWFkc21pdGguR3BzUmVjZWl2ZXISWwoQTGlzdEdwc1JlY2VpdmVycxIiLnF1YWRzbWl0aC5MaXN0R3BzUmVjZWl2ZXJzUmVxdWVzdBojLnF1YWRzbWl0aC5MaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "ChJncHNfcmVjZWl2ZXIucHJvdG8SCXF1YWRzbWl0aCL2AwoLR3BzUmVjZWl2ZXISFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GAUgASgIEhAKCHdlaWdodF9nGAYgASgCEg8KB2NoaXBzZXQYByABKAkSGAoIcHJvdG9jb2wYCCABKAlCBsLzGAIoARIYCgtoYXNfY29tcGFzcxgJIAEoCEgAiAEBEhkKDGNvbXBhc3NfY2hpcBgKIAEoCUgBiAEBEhsKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCyABKAISGwoTaW5wdXRfdm9sdGFnZV9tYXhfdhgMIAEoAhITCgtkZXNjcmlwdGlvbhgNIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYDiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpiirUYKgoMbWFudWZhY3R1cmVyCgRuYW1lCgdjaGlwc2V0CgtoYXNfY29tcGFzc5K1GB0KDEdQUyBSZWNlaXZlchINR1BTIFJlY2VpdmVyc8LzGA8KDWdwc19yZWNlaXZlcnNCDgoMX2hhc19jb21wYXNzQg8KDV9jb21wYXNzX2NoaXAiNAoVR2V0R3BzUmVjZWl2ZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibwoXTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJiChhMaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2USLQoNZ3BzX3JlY2VpdmVycxgBIAMoCzIWLnF1YWRzbWl0aC5HcHNSZWNlaXZlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyvQEKEkdwc1JlY2VpdmVyU2VydmljZRJKCg5HZXRHcHNSZWNlaXZlchIgLnF1YWRzbWl0aC5HZXRHcHNSZWNlaXZlclJlcXVlc3QaFi5xdWFkc21pdGguR3BzUmVjZWl2ZXISWwoQTGlzdEdwc1JlY2VpdmVycxIiLnF1YWRzbWl0aC5MaXN0R3BzUmVjZWl2ZXJzUmVxdWVzdBojLnF1YWRzbWl0aC5MaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
     [file__common, file__sql, file_reference_link],
   );
 
@@ -49,64 +49,64 @@ export type GpsReceiver = Message<"quadsmith.GpsReceiver"> & {
   name: string;
 
   /**
-   * @generated from field: bool is_internal_only = 20;
+   * @generated from field: bool is_internal_only = 5;
    */
   isInternalOnly: boolean;
 
   /**
-   * @generated from field: float weight_g = 5;
+   * @generated from field: float weight_g = 6;
    */
   weightG: number;
 
   /**
    * GNSS chipset (e.g., "u-blox MAX-M10S", "u-blox M10", "M10050")
    *
-   * @generated from field: string chipset = 6;
+   * @generated from field: string chipset = 7;
    */
   chipset: string;
 
   /**
    * Primary communication protocol (e.g., "UBLOX", "NMEA")
    *
-   * @generated from field: string protocol = 7;
+   * @generated from field: string protocol = 8;
    */
   protocol: string;
 
   /**
    * Whether the unit has an integrated magnetic compass / magnetometer
    *
-   * @generated from field: optional bool has_compass = 8;
+   * @generated from field: optional bool has_compass = 9;
    */
   hasCompass?: boolean | undefined;
 
   /**
    * Compass chip model (e.g., "QMC5883L", "IST8310")
    *
-   * @generated from field: optional string compass_chip = 9;
+   * @generated from field: optional string compass_chip = 10;
    */
   compassChip?: string | undefined;
 
   /**
    * Minimum operating input voltage
    *
-   * @generated from field: float input_voltage_min_v = 10;
+   * @generated from field: float input_voltage_min_v = 11;
    */
   inputVoltageMinV: number;
 
   /**
    * Maximum operating input voltage
    *
-   * @generated from field: float input_voltage_max_v = 11;
+   * @generated from field: float input_voltage_max_v = 12;
    */
   inputVoltageMaxV: number;
 
   /**
-   * @generated from field: string description = 21;
+   * @generated from field: string description = 13;
    */
   description: string;
 
   /**
-   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
+   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 14;
    */
   referenceLinks: ReferenceLink[];
 };

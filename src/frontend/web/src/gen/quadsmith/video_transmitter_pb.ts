@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_video_transmitter: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Chd2aWRlb190cmFuc21pdHRlci5wcm90bxIJcXVhZHNtaXRoItwDChBWaWRlb1RyYW5zbWl0dGVyEhQKBHV1aWQYASABKAlCBsLzGAIQARISCgJpZBgCIAEoCUIGwvMYAiABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgUIAEoCBIQCgh3ZWlnaHRfZxgFIAEoAhIYCghwcm90b2NvbBgGIAEoCUIGwvMYAigBEhQKDG1heF9wb3dlcl9tdxgHIAEoDRIbChNpbnB1dF92b2x0YWdlX21pbl92GAggASgCEhsKE2lucHV0X3ZvbHRhZ2VfbWF4X3YYCSABKAISFQoNYW50ZW5uYV91dWlkcxgKIAMoCRITCgtkZXNjcmlwdGlvbhgVIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYFiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazp9irUYNgoMbWFudWZhY3R1cmVyCgRuYW1lCghwcm90b2NvbAoMbWF4X3Bvd2VyX213Cgh3ZWlnaHRfZ5K1GCcKEVZpZGVvIFRyYW5zbWl0dGVyEhJWaWRlbyBUcmFuc21pdHRlcnPC8xgUChJ2aWRlb190cmFuc21pdHRlcnMiOQoaR2V0VmlkZW9UcmFuc21pdHRlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJ0ChxMaXN0VmlkZW9UcmFuc21pdHRlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkicQodTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVzcG9uc2USNwoSdmlkZW9fdHJhbnNtaXR0ZXJzGAEgAygLMhsucXVhZHNtaXRoLlZpZGVvVHJhbnNtaXR0ZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMuABChdWaWRlb1RyYW5zbWl0dGVyU2VydmljZRJZChNHZXRWaWRlb1RyYW5zbWl0dGVyEiUucXVhZHNtaXRoLkdldFZpZGVvVHJhbnNtaXR0ZXJSZXF1ZXN0GhsucXVhZHNtaXRoLlZpZGVvVHJhbnNtaXR0ZXISagoVTGlzdFZpZGVvVHJhbnNtaXR0ZXJzEicucXVhZHNtaXRoLkxpc3RWaWRlb1RyYW5zbWl0dGVyc1JlcXVlc3QaKC5xdWFkc21pdGguTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "Chd2aWRlb190cmFuc21pdHRlci5wcm90bxIJcXVhZHNtaXRoItwDChBWaWRlb1RyYW5zbWl0dGVyEhQKBHV1aWQYASABKAlCBsLzGAIQARISCgJpZBgCIAEoCUIGwvMYAiABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgFIAEoCBIQCgh3ZWlnaHRfZxgGIAEoAhIYCghwcm90b2NvbBgHIAEoCUIGwvMYAigBEhQKDG1heF9wb3dlcl9tdxgIIAEoDRIbChNpbnB1dF92b2x0YWdlX21pbl92GAkgASgCEhsKE2lucHV0X3ZvbHRhZ2VfbWF4X3YYCiABKAISFQoNYW50ZW5uYV91dWlkcxgLIAMoCRITCgtkZXNjcmlwdGlvbhgMIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYDSADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazp9irUYNgoMbWFudWZhY3R1cmVyCgRuYW1lCghwcm90b2NvbAoMbWF4X3Bvd2VyX213Cgh3ZWlnaHRfZ5K1GCcKEVZpZGVvIFRyYW5zbWl0dGVyEhJWaWRlbyBUcmFuc21pdHRlcnPC8xgUChJ2aWRlb190cmFuc21pdHRlcnMiOQoaR2V0VmlkZW9UcmFuc21pdHRlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJ0ChxMaXN0VmlkZW9UcmFuc21pdHRlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkicQodTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVzcG9uc2USNwoSdmlkZW9fdHJhbnNtaXR0ZXJzGAEgAygLMhsucXVhZHNtaXRoLlZpZGVvVHJhbnNtaXR0ZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMuABChdWaWRlb1RyYW5zbWl0dGVyU2VydmljZRJZChNHZXRWaWRlb1RyYW5zbWl0dGVyEiUucXVhZHNtaXRoLkdldFZpZGVvVHJhbnNtaXR0ZXJSZXF1ZXN0GhsucXVhZHNtaXRoLlZpZGVvVHJhbnNtaXR0ZXISagoVTGlzdFZpZGVvVHJhbnNtaXR0ZXJzEicucXVhZHNtaXRoLkxpc3RWaWRlb1RyYW5zbWl0dGVyc1JlcXVlc3QaKC5xdWFkc21pdGguTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
     [file__common, file__sql, file_reference_link],
   );
 
@@ -49,55 +49,55 @@ export type VideoTransmitter = Message<"quadsmith.VideoTransmitter"> & {
   name: string;
 
   /**
-   * @generated from field: bool is_internal_only = 20;
+   * @generated from field: bool is_internal_only = 5;
    */
   isInternalOnly: boolean;
 
   /**
-   * @generated from field: float weight_g = 5;
+   * @generated from field: float weight_g = 6;
    */
   weightG: number;
 
   /**
    * E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
    *
-   * @generated from field: string protocol = 6;
+   * @generated from field: string protocol = 7;
    */
   protocol: string;
 
   /**
    * Max output power in milliwatts (e.g., 800, 1000, 1200)
    *
-   * @generated from field: uint32 max_power_mw = 7;
+   * @generated from field: uint32 max_power_mw = 8;
    */
   maxPowerMw: number;
 
   /**
    * Input voltage range
    *
-   * @generated from field: float input_voltage_min_v = 8;
+   * @generated from field: float input_voltage_min_v = 9;
    */
   inputVoltageMinV: number;
 
   /**
-   * @generated from field: float input_voltage_max_v = 9;
+   * @generated from field: float input_voltage_max_v = 10;
    */
   inputVoltageMaxV: number;
 
   /**
    * Array of antenna UUIDs included with or required by this video transmitter
    *
-   * @generated from field: repeated string antenna_uuids = 10;
+   * @generated from field: repeated string antenna_uuids = 11;
    */
   antennaUuids: string[];
 
   /**
-   * @generated from field: string description = 21;
+   * @generated from field: string description = 12;
    */
   description: string;
 
   /**
-   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
+   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 13;
    */
   referenceLinks: ReferenceLink[];
 };

@@ -33,30 +33,30 @@ message FlightController {
 
   string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
-  bool is_internal_only = 20;
+  bool is_internal_only = 5;
 
-  float weight_g = 5;
+  float weight_g = 6;
 
   // The MCU processor (e.g., "F411", "F405", "H743")
-  string processor = 6;
+  string processor = 7;
 
   // The gyro chip (e.g., "MPU6000", "BMI270")
-  string gyro = 7;
+  string gyro = 8;
 
   // -------------------------------------------------------
   // Integrated Components (AIO Support)
   // -------------------------------------------------------
 
   // If this board has an integrated Electronic Speed Controller, reference it here
-  optional string internal_electronic_speed_controller_uuid = 8 [(quadsmith.sql.column) = {references: "electronic_speed_controllers(uuid)"}];
+  optional string internal_electronic_speed_controller_uuid = 9 [(quadsmith.sql.column) = {references: "electronic_speed_controllers(uuid)"}];
 
   // If this board has an integrated SPI or Serial Receiver
-  optional string internal_receiver_uuid = 9 [(quadsmith.sql.column) = {references: "receivers(uuid)"}];
+  optional string internal_receiver_uuid = 10 [(quadsmith.sql.column) = {references: "receivers(uuid)"}];
 
   // If this board has an integrated Video Transmitter
-  optional string internal_video_transmitter_uuid = 10 [(quadsmith.sql.column) = {references: "video_transmitters(uuid)"}];
-  string description = 21;
-  repeated ReferenceLink reference_links = 22;
+  optional string internal_video_transmitter_uuid = 11 [(quadsmith.sql.column) = {references: "video_transmitters(uuid)"}];
+  string description = 12;
+  repeated ReferenceLink reference_links = 13;
 }
 
 // ---------------------------------------------------------

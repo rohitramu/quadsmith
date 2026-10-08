@@ -49,10 +49,10 @@ type Build struct {
 	// Array of cameras (e.g. primary FPV cam, secondary action cam)
 	CameraUuids []string `protobuf:"bytes,13,rep,name=camera_uuids,json=cameraUuids,proto3" json:"camera_uuids,omitempty"`
 	// The Video Transmitter used for this build
-	VideoTransmitterUuid string `protobuf:"bytes,15,opt,name=video_transmitter_uuid,json=videoTransmitterUuid,proto3" json:"video_transmitter_uuid,omitempty"`
+	VideoTransmitterUuid string `protobuf:"bytes,14,opt,name=video_transmitter_uuid,json=videoTransmitterUuid,proto3" json:"video_transmitter_uuid,omitempty"`
 	// Optional GPS Receiver for navigation and rescue return-to-home
-	GpsReceiverUuid *string          `protobuf:"bytes,16,opt,name=gps_receiver_uuid,json=gpsReceiverUuid,proto3,oneof" json:"gps_receiver_uuid,omitempty"`
-	ReferenceLinks  []*ReferenceLink `protobuf:"bytes,14,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	GpsReceiverUuid *string          `protobuf:"bytes,15,opt,name=gps_receiver_uuid,json=gpsReceiverUuid,proto3,oneof" json:"gps_receiver_uuid,omitempty"`
+	ReferenceLinks  []*ReferenceLink `protobuf:"bytes,16,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -405,9 +405,9 @@ const file_build_proto_rawDesc = "" +
 	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12=\n" +
 	"\x0epropeller_uuid\x18\f \x01(\tB\x16\xc2\xf3\x18\x12\x1a\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
 	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12T\n" +
-	"\x16video_transmitter_uuid\x18\x0f \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12J\n" +
-	"\x11gps_receiver_uuid\x18\x10 \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12A\n" +
-	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks::\x8a\xb5\x18\x17\n" +
+	"\x16video_transmitter_uuid\x18\x0e \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12J\n" +
+	"\x11gps_receiver_uuid\x18\x0f \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12A\n" +
+	"\x0freference_links\x18\x10 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks::\x8a\xb5\x18\x17\n" +
 	"\x02id\n" +
 	"\x04name\n" +
 	"\vdescription\x92\xb5\x18\x0f\n" +
