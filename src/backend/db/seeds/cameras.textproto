@@ -5,11 +5,11 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Walksnail Avatar HD Pro Camera"
   weight_g: 9.5
-  protocol: "Digital"
+  protocol: "Walksnail Avatar"
   sensor_size: "1/1.8\" CMOS"
   width_mm: 19
   lens_size_mm: 2.1
-  description: "Walksnail Walksnail Avatar HD Pro Camera FPV camera featuring a 1/1.8\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Digital protocol)."
+  description: "Walksnail Walksnail Avatar HD Pro Camera FPV camera featuring a 1/1.8\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Walksnail Avatar protocol)."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-camera"
@@ -26,11 +26,11 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Walksnail Moonlight Camera"
   weight_g: 8.9
-  protocol: "Digital"
+  protocol: "Walksnail Avatar"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
   lens_size_mm: 2.1
-  description: "Walksnail Walksnail Moonlight Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Digital protocol)."
+  description: "Walksnail Walksnail Moonlight Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Walksnail Avatar protocol)."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.caddxfpv.com/products/walksnail-moonlight-kit"
@@ -43,11 +43,11 @@ cameras: {
   manufacturer: "DJI"
   name: "DJI O4 Lite Camera"
   weight_g: 3
-  protocol: "Digital"
+  protocol: "DJI O4"
   sensor_size: "1/3\" CMOS"
   width_mm: 14
   lens_size_mm: 1.8
-  description: "DJI DJI O4 Lite Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Digital protocol)."
+  description: "DJI DJI O4 Lite Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (DJI O4 protocol)."
 }
 cameras: {
 
@@ -56,11 +56,11 @@ cameras: {
   manufacturer: "DJI"
   name: "DJI O4 Wide Camera"
   weight_g: 41.5
-  protocol: "Digital"
+  protocol: "DJI O4"
   sensor_size: "1/3\" CMOS"
   width_mm: 20
   lens_size_mm: 2.1
-  description: "DJI DJI O4 Wide Camera FPV camera featuring a 1/3\" CMOS sensor, 20mm width mounting pattern, and 2.1mm lens (Digital protocol)."
+  description: "DJI DJI O4 Wide Camera FPV camera featuring a 1/3\" CMOS sensor, 20mm width mounting pattern, and 2.1mm lens (DJI O4 protocol)."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor65-pro-ii-o4-hd-1s-70mm-brushless-whoop-quadcopter-with-dji-o4-wide-air-unit-choose-receiver"
@@ -73,11 +73,11 @@ cameras: {
   manufacturer: "DJI"
   name: "DJI O4 Pro Camera"
   weight_g: 2.1
-  protocol: "Digital"
+  protocol: "DJI O4"
   sensor_size: "1/3\" CMOS"
   width_mm: 25
   lens_size_mm: 2.1
-  description: "DJI DJI O4 Pro Camera FPV camera featuring a 1/3\" CMOS sensor, 25mm width mounting pattern, and 2.1mm lens (Digital protocol)."
+  description: "DJI DJI O4 Pro Camera FPV camera featuring a 1/3\" CMOS sensor, 25mm width mounting pattern, and 2.1mm lens (DJI O4 protocol)."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/iflight-bob57-o4-cinematic-6s-hd-bnf-w-dji-o4-air-unit-pro-choose-receiver"
@@ -157,11 +157,11 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "ND Filter for DJI O4 Pro Camera"
   weight_g: 1
-  protocol: "DJI Digital"
+  protocol: "DJI O4"
   sensor_size: "1/3\" CMOS"
   width_mm: 14
   lens_size_mm: 1.8
-  description: "BETAFPV ND Filter for DJI O4 Pro Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (DJI Digital protocol)."
+  description: "BETAFPV ND Filter for DJI O4 Pro Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (DJI O4 protocol)."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/nd-filter-for-dji-o4-pro-camera"
@@ -539,7 +539,7 @@ cameras: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone DJI O4 Pro Camera Naked"
   weight_g: 2.1
-  protocol: "DJI Digital"
+  protocol: "DJI O4"
   sensor_size: "1/3\" CMOS"
   width_mm: 14
   lens_size_mm: 1.8
@@ -692,7 +692,7 @@ cameras: {
   manufacturer: "Noozle3D"
   name: "CineMini DJI O4 Pro Camera Mount"
   weight_g: 1
-  protocol: "DJI Digital"
+  protocol: "DJI O4"
   sensor_size: "1/3\" CMOS"
   width_mm: 22
   lens_size_mm: 2.1
@@ -705,11 +705,11 @@ cameras: {
   manufacturer: "Noozle3D"
   name: "CL2 DJI O4 Pro Camera Mount"
   weight_g: 1
-  protocol: "DJI Digital"
+  protocol: "DJI O4"
   sensor_size: "1/3\" CMOS"
   width_mm: 14
   lens_size_mm: 1.8
-  description: "Noozle3D CL2 DJI O4 Pro Camera Mount FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (DJI Digital protocol)."
+  description: "Noozle3D CL2 DJI O4 Pro Camera Mount FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (DJI O4 protocol)."
 }
 cameras: {
 
@@ -1938,7 +1938,7 @@ cameras: {
   manufacturer: "DJI"
   name: "DJI O3 Camera Module"
   weight_g: 8.3
-  protocol: "DJI Digital"
+  protocol: "DJI O3"
   sensor_size: "1/1.7 CMOS"
   width_mm: 20
   lens_size_mm: 2

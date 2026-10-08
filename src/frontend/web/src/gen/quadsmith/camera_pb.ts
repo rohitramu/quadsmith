@@ -59,7 +59,7 @@ export type Camera = Message<"quadsmith.Camera"> & {
   weightG: number;
 
   /**
-   * Protocol / signal type (e.g., "Analog", "MIPI", "DJI Coaxial")
+   * Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4", "Walksnail Avatar", "HDZero")
    *
    * @generated from field: string protocol = 6;
    */

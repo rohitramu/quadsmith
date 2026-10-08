@@ -472,8 +472,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         name: "protocol",
         type: "string",
-        description: "Video protocol (Analog, Digital, MIPI, DJI Coaxial)",
-        examples: ['protocol == "Digital"', 'protocol == "Analog"'],
+        description: "Video protocol (Analog, DJI O3, DJI O4, Walksnail Avatar, HDZero, MIPI)",
+        examples: ['protocol == "DJI O3"', 'protocol == "Analog"'],
       },
       {
         name: "sensor_size",
@@ -507,8 +507,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
     ],
     presets: [
-      { label: "Digital Protocol", query: 'protocol.contains("Digital")' },
-      { label: "Analog Protocol", query: 'protocol.contains("Analog")' },
+      { label: "Digital Protocol", query: 'protocol != "Analog"' },
+      { label: "Analog Protocol", query: 'protocol == "Analog"' },
       { label: "19mm Width (Micro)", query: "width_mm == 19" },
       { label: "14mm Width (Nano)", query: "width_mm == 14" },
       { label: '1/1.8" CMOS Sensor', query: 'sensor_size.contains("1/1.8")' },
@@ -1622,8 +1622,9 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         name: "protocol",
         type: "string",
-        description: "Video transmission protocol (Analog, DJI Digital, Walksnail Avatar, HDZero)",
-        examples: ['protocol.contains("Digital")', 'protocol.contains("Analog")'],
+        description:
+          "Video transmission protocol (Analog, DJI O3, DJI O4, Walksnail Avatar, HDZero)",
+        examples: ['protocol.contains("DJI")', 'protocol == "Analog"'],
       },
       {
         name: "max_power_mw",
@@ -1659,7 +1660,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     presets: [
       {
         label: "Digital Protocol",
-        query: 'protocol.contains("Digital") || protocol.contains("HDZero")',
+        query: 'protocol != "Analog"',
       },
       { label: "Analog Protocol", query: 'protocol.contains("Analog")' },
       { label: "1000mW+ (1W+) Output", query: "max_power_mw >= 1000" },
