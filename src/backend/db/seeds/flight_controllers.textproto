@@ -336,7 +336,7 @@ flight_controllers: {
   id: "lite-2s-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "Lite 2S Brushless Flight Controller"
-  weight_g: 55
+  weight_g: 3.56
   processor: "STM32F411"
   gyro: "BMI270"
   internal_video_transmitter_uuid: "664cefec-588c-44ff-ba71-a7885d925382"
@@ -447,7 +447,7 @@ flight_controllers: {
   id: "betafpv-lite-2s-brushless-flight-controller"
   manufacturer: "BETAFPV"
   name: "BETAFPV Lite 2S Brushless Flight Controller"
-  weight_g: 55
+  weight_g: 3.56
   processor: "STM32F411"
   gyro: "BMI270"
   description: "BETAFPV Lite 2S Brushless Flight Controller (BetaTest)"
@@ -647,7 +647,7 @@ flight_controllers: {
   id: "darwinfpv-f435-45a-am32-aio"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F435 45A AM32 AIO"
-  weight_g: 41.5
+  weight_g: 7.2
   processor: "STM32F405"
   gyro: "BMI270"
   internal_electronic_speed_controller_uuid: "03bdc3b2-f363-447b-8922-9046a04f1474"
@@ -663,7 +663,7 @@ flight_controllers: {
   id: "darwinfpv-f411-45a-elrs-aio-cineape35-4"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F411 45A ELRS AIO CineApe35"
-  weight_g: 41.5
+  weight_g: 7.2
   processor: "STM32F411"
   gyro: "BMI270"
   internal_electronic_speed_controller_uuid: "fdc4f26c-aa47-4754-881e-9854b05b6c83"
@@ -696,7 +696,7 @@ flight_controllers: {
   id: "darwinfpv-hulk-45a-3-6s-aio"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV HULK 45A 3-6S AIO"
-  weight_g: 41.5
+  weight_g: 7.2
   processor: "STM32F411"
   gyro: "BMI270"
   internal_electronic_speed_controller_uuid: "ee916b8e-e710-4d10-beae-5a80913b6047"

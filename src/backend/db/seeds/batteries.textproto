@@ -1191,8 +1191,8 @@ batteries: {
   id: "750mah-4s-95c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "750mAh 4S 95C Lipo Battery (2PCS)"
-  weight_g: 5
-  capacity_mah: 1550
+  weight_g: 81.6
+  capacity_mah: 750
   cell_count_s: 4
   chemistry: "LiPo"
   connector: "XT60"
@@ -1208,9 +1208,9 @@ batteries: {
   id: "550mah-1s-lipo-hv-battery-4pcs"
   manufacturer: "BETAFPV"
   name: "550mAh 1S Lipo HV Battery (4PCS)"
-  weight_g: 69
-  capacity_mah: 1550
-  cell_count_s: 4
+  weight_g: 13.8
+  capacity_mah: 550
+  cell_count_s: 1
   chemistry: "LiPo"
   connector: "XT60"
   description: "BETAFPV 550mAh 1S Lipo HV Battery (4PCS) 4S 1550mAh LiPo battery with XT60 connector, weighing 69.0g."
@@ -1225,8 +1225,8 @@ batteries: {
   id: "1000mah-4s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
   name: "1000mAh 4S 75C Lipo Battery (2PCS)"
-  weight_g: 26.1
-  capacity_mah: 1550
+  weight_g: 120.4
+  capacity_mah: 1000
   cell_count_s: 4
   chemistry: "LiPo"
   connector: "XT60"
@@ -1361,23 +1361,6 @@ batteries: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-3s-45c-lipo-battery-s-version-2pcs"
-  }
-}
-batteries: {
-
-  uuid: "8829bae1-df02-4e6f-b300-088336c47123"
-  id: "foxeer-5-8g-lollipop-3-antenna-rhcp"
-  manufacturer: "BETAFPV"
-  name: "Foxeer 5.8G Lollipop 3 Antenna RHCP"
-  weight_g: 3.1
-  capacity_mah: 1550
-  cell_count_s: 4
-  chemistry: "LiPo"
-  connector: "XT60"
-  description: "Foxeer 5.8G Lollipop 3 Antenna RHCP UFL (2PCS)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/foxeer-5-8g-lollipop-3-fpv-antenna-2pcs"
   }
 }
 batteries: {
@@ -1853,9 +1836,9 @@ batteries: {
   id: "newbeedrone-nitro-nectar-nx69-550mah-1s"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Nitro Nectar NX69 550mAh 1S"
-  weight_g: 69
-  capacity_mah: 1550
-  cell_count_s: 4
+  weight_g: 13.5
+  capacity_mah: 550
+  cell_count_s: 1
   chemistry: "LiPo"
   connector: "XT60"
   description: "NewBeeDrone Nitro Nectar NX69 550mAh 1S 80C HV LiPo Battery 2xBatteries"
@@ -1947,19 +1930,6 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-small-battery-strap"
   }
-}
-batteries: {
-
-  uuid: "36420e1a-a5fd-44c2-928e-02f3e4c24315"
-  id: "3-pack-of-cnhl-black-series"
-  manufacturer: "RaceDayQuads"
-  name: "3 PACK of CNHL Black Series"
-  weight_g: 254
-  capacity_mah: 1550
-  cell_count_s: 4
-  chemistry: "LiPo"
-  connector: "XT60"
-  description: "3 PACK of CNHL Black Series 22.2V 6S 1500mAh 100C LiPo Battery - XT60"
 }
 batteries: {
 
@@ -2349,19 +2319,6 @@ batteries: {
 }
 batteries: {
 
-  uuid: "de0fdcc8-3ed8-41ca-b1c1-a5ce5545d6c6"
-  id: "lollipop-v4-rhcp-15cm-sma-angle"
-  manufacturer: "Foxeer"
-  name: "Lollipop V4 RHCP 15CM SMA Angle"
-  weight_g: 9
-  capacity_mah: 1550
-  cell_count_s: 4
-  chemistry: "LiPo"
-  connector: "XT60"
-  description: "Lollipop V4 RHCP 15CM SMA Angle Antenna 2-Pack"
-}
-batteries: {
-
   uuid: "cec20dbc-c099-4923-8641-f19949a204fb"
   id: "6s-5200mah-110c-lipo-battery"
   manufacturer: "GNB"
@@ -2402,23 +2359,6 @@ batteries: {
   chemistry: "LiHV"
   connector: "XT60"
   description: "Fat Shark 6 Port 1S LiPo/LiHV Charger for BT2.0 & PH2.0"
-}
-batteries: {
-
-  uuid: "88b3bce8-45a9-47a9-bee9-ff97f819d040"
-  id: "lollipop-v4-stubby-sma-rhcp-antenna"
-  manufacturer: "Foxeer"
-  name: "Lollipop V4 Stubby SMA RHCP Antenna"
-  weight_g: 3.1
-  capacity_mah: 1550
-  cell_count_s: 4
-  chemistry: "LiPo"
-  connector: "XT60"
-  description: "Lollipop V4 Stubby SMA RHCP Antenna 2-Pack"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/foxeer-lollipop-v4-5-8ghz-stubby-rp-sma-antenna-2-pack-choose-version"
-  }
 }
 batteries: {
 
@@ -3159,23 +3099,6 @@ batteries: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
-  }
-}
-batteries: {
-
-  uuid: "16d46e04-b4b4-45bb-b1c7-0105e48c747a"
-  id: "lollipop-v4-rhcp-antenna-2-pack"
-  manufacturer: "Foxeer"
-  name: "Lollipop V4 RHCP Antenna 2-Pack"
-  weight_g: 3.1
-  capacity_mah: 1550
-  cell_count_s: 4
-  chemistry: "LiPo"
-  connector: "XT60"
-  description: "Lollipop V4 RHCP Antenna 2-Pack - Choose Version"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/foxeer-lollipop-v4-5-8ghz-90-mmcx-antenna-set-of-2-rhcp"
   }
 }
 batteries: {

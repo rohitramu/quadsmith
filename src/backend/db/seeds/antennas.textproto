@@ -4,7 +4,7 @@ antennas: {
   id: "lumenier-axii-2-(rhcp)"
   manufacturer: "Lumenier"
   name: "Lumenier AXII 2 (RHCP)"
-  weight_g: 17
+  weight_g: 7.0
   connector: "SMA"
   polarization: "RHCP"
   frequency_band_mhz: 5800
@@ -22,7 +22,7 @@ antennas: {
   id: "lumenier-axii-2-5.8ghz-(rhcp)"
   manufacturer: "Lumenier"
   name: "Lumenier AXII 2 5.8GHz (RHCP)"
-  weight_g: 17
+  weight_g: 7.0
   connector: "SMA"
   polarization: "RHCP"
   frequency_band_mhz: 5800
@@ -230,7 +230,7 @@ antennas: {
   id: "lumenier-micro-axii-2-5.8ghz-(rhcp)"
   manufacturer: "Lumenier"
   name: "Lumenier Micro AXII 2 5.8GHz (RHCP)"
-  weight_g: 17
+  weight_g: 2.0
   connector: "U.FL"
   polarization: "RHCP"
   frequency_band_mhz: 5800
@@ -248,7 +248,7 @@ antennas: {
   id: "lumenier-double-axii-2-5.8ghz-(rhcp)"
   manufacturer: "Lumenier"
   name: "Lumenier Double AXII 2 5.8GHz (RHCP)"
-  weight_g: 17
+  weight_g: 11.5
   connector: "SMA"
   polarization: "RHCP"
   frequency_band_mhz: 5800
@@ -298,7 +298,7 @@ antennas: {
   id: "lumenier-axii-2-(lhcp)"
   manufacturer: "Lumenier"
   name: "Lumenier AXII 2 (LHCP)"
-  weight_g: 17
+  weight_g: 7.0
   connector: "SMA"
   polarization: "LHCP"
   frequency_band_mhz: 5800
@@ -316,7 +316,7 @@ antennas: {
   id: "lumenier-axii-2-5.8ghz-(lhcp)"
   manufacturer: "Lumenier"
   name: "Lumenier AXII 2 5.8GHz (LHCP)"
-  weight_g: 17
+  weight_g: 7.0
   connector: "SMA"
   polarization: "LHCP"
   frequency_band_mhz: 5800
@@ -452,7 +452,7 @@ antennas: {
   id: "lumenier-micro-axii-2-5.8ghz-(lhcp)"
   manufacturer: "Lumenier"
   name: "Lumenier Micro AXII 2 5.8GHz (LHCP)"
-  weight_g: 17
+  weight_g: 2.0
   connector: "U.FL"
   polarization: "LHCP"
   frequency_band_mhz: 5800
@@ -470,7 +470,7 @@ antennas: {
   id: "lumenier-double-axii-2-5.8ghz-(lhcp)"
   manufacturer: "Lumenier"
   name: "Lumenier Double AXII 2 5.8GHz (LHCP)"
-  weight_g: 17
+  weight_g: 11.5
   connector: "SMA"
   polarization: "LHCP"
   frequency_band_mhz: 5800
@@ -800,7 +800,7 @@ antennas: {
   id: "walksnail-ascent-hd-lite-antenna"
   manufacturer: "CADDX"
   name: "Walksnail Ascent HD Lite+ Antenna"
-  weight_g: 52
+  weight_g: 1.2
   connector: "SMA"
   polarization: "RHCP"
   frequency_band_mhz: 5800
@@ -1282,7 +1282,7 @@ antennas: {
   id: "5-8ghz-u-fl-dipole-whip-antenna-linear"
   manufacturer: "Rotor Riot"
   name: "5.8GHz U.FL Dipole Whip Antenna - Linear"
-  weight_g: 12
+  weight_g: 0.5
   connector: "U.FL"
   polarization: "Linear"
   frequency_band_mhz: 5800
@@ -1932,7 +1932,7 @@ antennas: {
   id: "dji-caddx-vista-short-antenna-80mm"
   manufacturer: "FPVCycle"
   name: "DJI Caddx Vista Short Antenna (80mm)"
-  weight_g: 66.9
+  weight_g: 1.5
   connector: "SMA"
   polarization: "Linear"
   frequency_band_mhz: 5800

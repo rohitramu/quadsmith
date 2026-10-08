@@ -102,7 +102,7 @@ electronic_speed_controllers: {
   id: "darwinfpv-3-6s-f411-fc-4-in"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 3-6S F411 FC 4 IN"
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 30
   motor_current_burst_a: 36
@@ -508,7 +508,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F435 45A AM32 AIO"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004
@@ -526,7 +526,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F411 45A ELRS AIO CineApe35"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004
@@ -544,7 +544,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV HULK 45A 3-6S AIO"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004
@@ -696,7 +696,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F435 45A AM32 AIO"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004
@@ -714,7 +714,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F411 45A ELRS AIO CineApe35"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004
@@ -732,7 +732,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV HULK 45A 3-6S AIO"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004
@@ -880,7 +880,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F435 45A AM32 AIO"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004
@@ -898,7 +898,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F411 45A ELRS AIO CineApe35"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004
@@ -916,7 +916,7 @@ electronic_speed_controllers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV HULK 45A 3-6S AIO"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 7.2
   max_motors: 4
   motor_current_max_a: 45
   motor_current_burst_a: 54.000004

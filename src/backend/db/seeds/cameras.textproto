@@ -55,7 +55,7 @@ cameras: {
   id: "dji-o4-wide-camera"
   manufacturer: "DJI"
   name: "DJI O4 Wide Camera"
-  weight_g: 41.5
+  weight_g: 3.0
   protocol: "DJI O4"
   sensor_size: "1/3\" CMOS"
   width_mm: 20
@@ -398,7 +398,7 @@ cameras: {
   id: "newbeedrone-whoop-training-camera-x3"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Whoop Training Camera x3"
-  weight_g: 5.4
+  weight_g: 1.8
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -415,7 +415,7 @@ cameras: {
   id: "newbeedrone-beeeye-v2-fpv-camera-10-10"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeEye V2 FPV Camera 10×10"
-  weight_g: 19.5
+  weight_g: 1.45
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -445,7 +445,7 @@ cameras: {
   id: "newbeedrone-beeeye-fpv-camera"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeEye FPV Camera"
-  weight_g: 19.5
+  weight_g: 1.45
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -466,7 +466,7 @@ cameras: {
   id: "aura-analog-fpv-camera"
   manufacturer: "Fat Shark"
   name: "Aura Analog FPV Camera"
-  weight_g: 41.6
+  weight_g: 1.4
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -651,7 +651,7 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 3.6
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -801,7 +801,7 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 3.6
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -947,7 +947,7 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 3.6
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19

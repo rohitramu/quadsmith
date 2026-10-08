@@ -110,7 +110,7 @@ video_transmitters: {
   id: "dji-o4-wide-vtx"
   manufacturer: "DJI"
   name: "DJI O4 Wide VTX"
-  weight_g: 380.6
+  weight_g: 19.5
   protocol: "DJI O4"
   max_power_mw: 2000
   input_voltage_min_v: 7
@@ -172,7 +172,7 @@ video_transmitters: {
   id: "readymaderc-cricket-pro-58g"
   manufacturer: "ReadyMadeRC"
   name: "RMRC Cricket Pro 5.8GHz VTX"
-  weight_g: 110
+  weight_g: 6.0
   protocol: "Analog"
   max_power_mw: 600
   input_voltage_min_v: 7
@@ -1674,7 +1674,7 @@ video_transmitters: {
   id: "5-8g-vtx-pro-1-6w-for-fpv-racing-drone"
   manufacturer: "HGLRC"
   name: "5.8G VTX PRO 1.6W For FPV Racing Drone"
-  weight_g: 110
+  weight_g: 6.8
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 7
@@ -1710,7 +1710,7 @@ video_transmitters: {
   id: "4-9-6ghz-10w-high-power-vtx"
   manufacturer: "HGLRC"
   name: "4.9-6Ghz 10W High-Power VTX"
-  weight_g: 110
+  weight_g: 38.0
   protocol: "Analog"
   max_power_mw: 200
   input_voltage_min_v: 7
@@ -2107,7 +2107,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 110
+  weight_g: 1.1
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2749,7 +2749,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 110
+  weight_g: 1.1
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -3391,7 +3391,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 110
+  weight_g: 1.1
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7

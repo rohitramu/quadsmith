@@ -200,7 +200,7 @@ propellers: {
   id: "hqprop-micro-whoop-31x3"
   manufacturer: "HQProp"
   name: "HQProp Micro Whoop 31x3"
-  weight_g: 1.13
+  weight_g: 0.28
   diameter_mm: 30.99
   pitch_mm: 29.97
   blades: 3
@@ -213,7 +213,7 @@ propellers: {
   id: "hqprop-micro-whoop-40x4"
   manufacturer: "HQProp"
   name: "HQProp Micro Whoop 40x4"
-  weight_g: 3.5
+  weight_g: 0.5
   diameter_mm: 39.88
   pitch_mm: 39.88
   blades: 4
@@ -324,7 +324,7 @@ propellers: {
   id: "hqprop-2.5x2.5x3"
   manufacturer: "HQProp"
   name: "HQProp 2.5x2.5x3"
-  weight_g: 5.3
+  weight_g: 1.3
   diameter_mm: 63.5
   pitch_mm: 63.5
   blades: 3
@@ -477,7 +477,7 @@ propellers: {
   id: "1735-4-blades-pc-propellers-4-pcs"
   manufacturer: "BETAFPV"
   name: "1735 4-Blades PC Propellers  (4 PCS)"
-  weight_g: 30
+  weight_g: 0.55
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 4
@@ -494,7 +494,7 @@ propellers: {
   id: "31mm-4-blade-micro-whoop-propellers"
   manufacturer: "BETAFPV"
   name: "31mm 4-blade Micro Whoop Propellers"
-  weight_g: 2.65
+  weight_g: 0.3
   diameter_mm: 31
   pitch_mm: 18.6
   blades: 4
@@ -511,7 +511,7 @@ propellers: {
   id: "40mm-3-blade-micro-whoop-propellers"
   manufacturer: "BETAFPV"
   name: "40mm 3-blade Micro Whoop Propellers"
-  weight_g: 4
+  weight_g: 0.5
   diameter_mm: 40
   pitch_mm: 24
   blades: 3
@@ -613,7 +613,7 @@ propellers: {
   id: "gemfan-1210-2-blade-propellers"
   manufacturer: "BETAFPV"
   name: "Gemfan 1210 2-blade Propellers"
-  weight_g: 4.82
+  weight_g: 0.19
   diameter_mm: 30.48
   pitch_mm: 25.4
   blades: 2
@@ -766,7 +766,7 @@ propellers: {
   id: "gemfan-40mm-2-blade-propellers"
   manufacturer: "BETAFPV"
   name: "Gemfan 40mm 2-Blade Propellers"
-  weight_g: 4.82
+  weight_g: 0.24
   diameter_mm: 40
   pitch_mm: 24
   blades: 2
@@ -851,7 +851,7 @@ propellers: {
   id: "gemfan-2020-4-blade-propellers-1-5mm-shaft"
   manufacturer: "BETAFPV"
   name: "Gemfan 2020 4-Blade Propellers 1.5mm Shaft"
-  weight_g: 30
+  weight_g: 0.93
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 4
@@ -889,7 +889,7 @@ propellers: {
   id: "gemfan-4032-3-blade-propellers-5mm-shaft"
   manufacturer: "BETAFPV"
   name: "Gemfan 4032 3-Blade Propellers 5mm Shaft"
-  weight_g: 30
+  weight_g: 3.09
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -906,7 +906,7 @@ propellers: {
   id: "31mm-3-blade-micro-whoop-propellers"
   manufacturer: "BETAFPV"
   name: "31mm 3-blade Micro Whoop Propellers"
-  weight_g: 2.65
+  weight_g: 0.28
   diameter_mm: 31
   pitch_mm: 18.6
   blades: 3
@@ -923,7 +923,7 @@ propellers: {
   id: "48mm-4-blade-micro-whoop-propellers"
   manufacturer: "BETAFPV"
   name: "48mm 4-blade Micro Whoop Propellers"
-  weight_g: 30.5
+  weight_g: 0.68
   diameter_mm: 48
   pitch_mm: 28.8
   blades: 4
@@ -1008,7 +1008,7 @@ propellers: {
   id: "65mm-2-blade-propellers"
   manufacturer: "BETAFPV"
   name: "65mm 2-Blade Propellers"
-  weight_g: 16.6
+  weight_g: 0.8
   diameter_mm: 65
   pitch_mm: 39
   blades: 2
@@ -1025,7 +1025,7 @@ propellers: {
   id: "gemfan-40mm-3-blade-propellers"
   manufacturer: "BETAFPV"
   name: "Gemfan 40mm 3-Blade Propellers"
-  weight_g: 30
+  weight_g: 0.49
   diameter_mm: 40
   pitch_mm: 24
   blades: 3
@@ -1042,7 +1042,7 @@ propellers: {
   id: "gemfan-40mm-3-blade-propellers-2"
   manufacturer: "BETAFPV"
   name: "Gemfan 40mm 3-Blade Propellers"
-  weight_g: 30
+  weight_g: 0.49
   diameter_mm: 40
   pitch_mm: 24
   blades: 3
@@ -1059,7 +1059,7 @@ propellers: {
   id: "gemfan-40mm-4-blade-propellers"
   manufacturer: "BETAFPV"
   name: "Gemfan 40mm 4-Blade Propellers"
-  weight_g: 30
+  weight_g: 0.52
   diameter_mm: 40
   pitch_mm: 24
   blades: 4
@@ -1076,7 +1076,7 @@ propellers: {
   id: "gemfan-40mm-4-blade-propellers-2"
   manufacturer: "BETAFPV"
   name: "Gemfan 40mm 4-Blade Propellers"
-  weight_g: 30
+  weight_g: 0.52
   diameter_mm: 40
   pitch_mm: 24
   blades: 4
@@ -1093,7 +1093,7 @@ propellers: {
   id: "40mm-4-blade-2s-whoop-propellers"
   manufacturer: "BETAFPV"
   name: "40mm 4-blade 2S Whoop Propellers"
-  weight_g: 54.77
+  weight_g: 0.52
   diameter_mm: 40
   pitch_mm: 24
   blades: 4
@@ -1110,7 +1110,7 @@ propellers: {
   id: "40mm-3-blade-chameleon-propellers"
   manufacturer: "BETAFPV"
   name: "40mm 3-blade Chameleon Propellers"
-  weight_g: 30
+  weight_g: 0.49
   diameter_mm: 40
   pitch_mm: 24
   blades: 3
@@ -1127,7 +1127,7 @@ propellers: {
   id: "transparent-31mm-3-blade-micro-whoop-propellers"
   manufacturer: "BETAFPV"
   name: "Transparent 31mm 3-blade Micro Whoop Propellers"
-  weight_g: 2.65
+  weight_g: 0.28
   diameter_mm: 31
   pitch_mm: 18.6
   blades: 3
@@ -1144,7 +1144,7 @@ propellers: {
   id: "31mm-4-blade-micro-whoop-propellers-2"
   manufacturer: "BETAFPV"
   name: "31mm 4-blade Micro Whoop Propellers"
-  weight_g: 2.65
+  weight_g: 0.3
   diameter_mm: 31
   pitch_mm: 18.6
   blades: 4
@@ -1161,7 +1161,7 @@ propellers: {
   id: "48mm-3-blade-micro-whoop-propellers"
   manufacturer: "BETAFPV"
   name: "48mm 3-blade Micro Whoop Propellers"
-  weight_g: 30.5
+  weight_g: 0.68
   diameter_mm: 48
   pitch_mm: 28.8
   blades: 3
@@ -1178,7 +1178,7 @@ propellers: {
   id: "31mm-3-blade-micro-whoop-propellers-2"
   manufacturer: "BETAFPV"
   name: "31mm 3-blade Micro Whoop Propellers"
-  weight_g: 2.65
+  weight_g: 0.28
   diameter_mm: 31
   pitch_mm: 18.6
   blades: 3
@@ -1195,7 +1195,7 @@ propellers: {
   id: "caddxfpv-hq-3-blade-propeller-set-2"
   manufacturer: "CADDX"
   name: "CaddxFPV HQ 3-Blade Propeller Set"
-  weight_g: 5
+  weight_g: 1.2
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -1212,7 +1212,7 @@ propellers: {
   id: "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount-2"
   manufacturer: "CADDX"
   name: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount"
-  weight_g: 1.5
+  weight_g: 0.85
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -1238,23 +1238,6 @@ propellers: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-d63-3-propeller"
-  }
-}
-propellers: {
-
-  uuid: "c5bab505-8f36-4f1d-837d-18bcbf6b2f78"
-  id: "darwinfpv-cineape-25-ii-cinematic-whoop"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV CineApe 25 II Cinematic Whoop"
-  weight_g: 144
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "DarwinFPV CineApe 25 II  Cinematic Whoop FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/products/darwinfpv-cineape-25-ii-cinematic-whoop-fpv-drone"
   }
 }
 propellers: {
@@ -1297,7 +1280,7 @@ propellers: {
   id: "darwinfpv-cineape20-2023-3-2-inch-propellers"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV CineApe20 2023-3 2 Inch Propellers"
-  weight_g: 5
+  weight_g: 0.88
   diameter_mm: 50.8
   pitch_mm: 58.42
   blades: 3
@@ -1306,23 +1289,6 @@ propellers: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-cineape20-2023-3-2-inch-propellers"
-  }
-}
-propellers: {
-
-  uuid: "1aaee669-fd22-4485-b45b-cc0e83d0151c"
-  id: "darwinfpv-cineape35-d90-3-3-5-inch-fpv"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV CineApe35 D90-3 3.5 inch FPV"
-  weight_g: 250
-  diameter_mm: 90
-  pitch_mm: 75
-  blades: 3
-  material: "Polycarbonate"
-  description: "DarwinFPV CineApe35 D90-3  3.5 inch FPV Drone Propeller"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/products/darwinfpv-cineape35-d90-3-3-5-inch-fpv-drone-propeller"
   }
 }
 propellers: {
@@ -1348,7 +1314,7 @@ propellers: {
   id: "darwinfpv-babyape-propeller"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV BabyApe Ⅱ Propeller"
-  weight_g: 250
+  weight_g: 1.18
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -1471,7 +1437,7 @@ propellers: {
   id: "darwinfpv-hqprop-t3-5x2x3grey-propeller-babyape"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV HQProp T3.5X2X3Grey Propeller / Babyape"
-  weight_g: 250
+  weight_g: 1.58
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -1488,7 +1454,7 @@ propellers: {
   id: "darwinfpv-cineape-25-hqprop-t63mmx6-propeller"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV CineApe 25 HQProp T63MMX6 Propeller"
-  weight_g: 144
+  weight_g: 2.1
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -1552,49 +1518,11 @@ propellers: {
 }
 propellers: {
 
-  uuid: "4b8f93a1-f041-44ea-905c-4a9675aedc7f"
-  id: "newbeedrone-tool-kit-v1-7"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Tool Kit V1.7"
-  weight_g: 28
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "NewBeeDrone NewBeeDrone Tool Kit V1.7 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 28.00g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-tool-kit-v1-6"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/newbeedrone-tool-kit-v1-7"
-  }
-}
-propellers: {
-
-  uuid: "bb9f3699-e424-429c-b881-b5f64eecc370"
-  id: "newbeedrone-whoop-propypop-tool"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Whoop PropyPop Tool"
-  weight_g: 4.57
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "NewBeeDrone Whoop PropyPop Tool for Easy Propeller Removal"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-whoop-propypop-tool"
-  }
-}
-propellers: {
-
   uuid: "b3b60ce1-09f7-4da9-b92d-36073a6c193f"
   id: "newbeedrone-azi-micro-propellers-40mm"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Azi  Micro Propellers 40mm"
-  weight_g: 30
+  weight_g: 0.46
   diameter_mm: 40
   pitch_mm: 24
   blades: 3
@@ -1636,7 +1564,7 @@ propellers: {
   id: "newbeedrone-azi-micro-propellers-40mm-2"
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone Azi  Micro Propellers 40mm"
-  weight_g: 30
+  weight_g: 0.46
   diameter_mm: 40
   pitch_mm: 24
   blades: 3
@@ -1645,27 +1573,6 @@ propellers: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-azi-tri-blade-micro-propellers-40mm"
-  }
-}
-propellers: {
-
-  uuid: "e283fce0-832d-4ac5-a335-fbd1fc9b54af"
-  id: "newbeedrone-beewire-lite-5-pack"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone BeeWire Lite (5-Pack)"
-  weight_g: 1.2
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "NewBeeDrone NewBeeDrone BeeWire Lite (5-Pack) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 1.20g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-beewire-lite-5-pack"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/newbeedrone-beewire-lite-5-pack"
   }
 }
 propellers: {
@@ -1683,40 +1590,6 @@ propellers: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-venom-v2-super-durable-propellers-31mm-1-0mm-shaft4ccw-4cw"
-  }
-}
-propellers: {
-
-  uuid: "ba544f55-9b6b-43f1-bad4-518ebede22ec"
-  id: "tiny-cockroach"
-  manufacturer: "NewBeeDrone"
-  name: "Tiny Cockroach"
-  weight_g: 2.8
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "NewBeeDrone Tiny Cockroach 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 2.80g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/tiny-cockroach"
-  }
-}
-propellers: {
-
-  uuid: "60b503c9-c3c7-4026-b9f5-161a26f16974"
-  id: "rotor-riot-ultimate-tool-kit"
-  manufacturer: "Rotor Riot"
-  name: "Rotor Riot Ultimate Tool Kit"
-  weight_g: 30
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "Rotor Riot Ultimate Tool Kit - Choose Version"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://rotorriot.com/products/rotor-riot-ultimate-tool-kit"
   }
 }
 propellers: {
@@ -1794,7 +1667,7 @@ propellers: {
   id: "t4x2-5-props-grey"
   manufacturer: "HQProp"
   name: "T4X2.5 Props - Grey"
-  weight_g: 9.4
+  weight_g: 2.35
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -1837,7 +1710,7 @@ propellers: {
   id: "t2-5x2-5x3-tri-blade-2-5-prop-4-pack"
   manufacturer: "HQProp"
   name: "T2.5x2.5x3 Tri-Blade 2.5 Prop 4 Pack"
-  weight_g: 9.1
+  weight_g: 1.3
   diameter_mm: 12.7
   pitch_mm: 63.5
   blades: 3
@@ -1876,7 +1749,7 @@ propellers: {
   id: "t3-5x2-5x3-tri-blade-3-5-prop"
   manufacturer: "HQProp"
   name: "T3.5x2.5x3 Tri-Blade 3.5 Prop"
-  weight_g: 4.2
+  weight_g: 1.58
   diameter_mm: 12.7
   pitch_mm: 63.5
   blades: 3
@@ -1996,7 +1869,7 @@ propellers: {
   id: "t3-5x2-5x3-tri-blade-3-5-prop-4-pack"
   manufacturer: "HQProp"
   name: "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack"
-  weight_g: 9.1
+  weight_g: 1.58
   diameter_mm: 12.7
   pitch_mm: 63.5
   blades: 3
@@ -2073,7 +1946,7 @@ propellers: {
   id: "1610-bi-blade-40mm-prop-8-pack"
   manufacturer: "Gemfan"
   name: "1610 Bi-Blade 40mm Prop 8 Pack"
-  weight_g: 30
+  weight_g: 0.24
   diameter_mm: 40
   pitch_mm: 24
   blades: 3
@@ -2112,23 +1985,6 @@ propellers: {
 }
 propellers: {
 
-  uuid: "b43952db-d2d5-432a-a963-3f2d49c92da8"
-  id: "35mm-racewire-rotor-riot-edition"
-  manufacturer: "Rotor Riot"
-  name: "35mm Racewire Rotor Riot Edition"
-  weight_g: 30
-  diameter_mm: 35
-  pitch_mm: 21
-  blades: 3
-  material: "Polycarbonate"
-  description: "35mm Racewire Rotor Riot Edition - 4 Pack"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://rotorriot.com/products/35mm-racewire-rotor-riot-edition"
-  }
-}
-propellers: {
-
   uuid: "2e1eea5e-0de3-428a-ba84-65765ea5fd6c"
   id: "s4-tri-blade-5-props-4-pack-lemon-lime"
   manufacturer: "Ethix"
@@ -2150,7 +2006,7 @@ propellers: {
   id: "j75-tri-blade-7-prop-4-pack"
   manufacturer: "HQProp"
   name: "J75 Tri-Blade 7 Prop 4 Pack"
-  weight_g: 9.1
+  weight_g: 8.8
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -2360,7 +2216,7 @@ propellers: {
   id: "hq-2-9x2-9x4-quad-blade-3-props"
   manufacturer: "HQProp"
   name: "HQ 2.9x2.9x4 Quad-Blade 3 Props"
-  weight_g: 9.1
+  weight_g: 2.05
   diameter_mm: 73.66
   pitch_mm: 73.66
   blades: 4
@@ -2472,7 +2328,7 @@ propellers: {
   id: "hq-3-cinewhoop-props"
   manufacturer: "HQProp"
   name: "HQ 3 Cinewhoop Props"
-  weight_g: 0.16
+  weight_g: 2.35
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -2481,40 +2337,6 @@ propellers: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hq-prop-duct-75mm-cinewhoop-hexa-blade-3-prop-2cw-2ccw-grey"
-  }
-}
-propellers: {
-
-  uuid: "b22965b8-1a2c-46e5-be38-0b0fce6e8abf"
-  id: "darwinfpv-babyape-pro-rtf"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV BabyApe Ⅲ PRO RTF"
-  weight_g: 250
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "DarwinFPV BabyApe Ⅲ PRO RTF 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-pro-rtf"
-  }
-}
-propellers: {
-
-  uuid: "2a18df34-1bf5-49ec-adde-5a4e4c70f772"
-  id: "darwinfpv-babyape-pro-3-5-inch"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV BabyApe Ⅲ Pro 3.5 Inch"
-  weight_g: 250
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "DarwinFPV BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-pro-3-5-inch-freestyle-fpv-drone"
   }
 }
 propellers: {
@@ -2533,57 +2355,6 @@ propellers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-gemfan-8046-3-glass-fiber-nylon"
   }
-}
-propellers: {
-
-  uuid: "0591a75a-c8aa-4a99-bb2f-9a703a7d526b"
-  id: "darwinfpv-babyape-freestyle-fpv-drone"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV BabyApe Ⅱ Freestyle FPV Drone"
-  weight_g: 250
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "DarwinFPV DarwinFPV BabyApe Ⅱ Freestyle FPV Drone 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/products/darwinfpv-babyape-ⅱ-freestyle-fpv-drone"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/darwinfpv-babyape-ii-3-5-freestyle-fpv-hd-drone-elrs-2-4g-1"
-  }
-}
-propellers: {
-
-  uuid: "4ab2d71e-54c1-4b31-ba32-5e6a15f604f0"
-  id: "darwinfpv-cineape-25-cinematic-whoop-fpv"
-  manufacturer: "DarwinFPV"
-  name: "DarwinFPV CineApe 25 Cinematic Whoop FPV"
-  weight_g: 144
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "DarwinFPV CineApe 25 Cinematic Whoop FPV Drone"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://darwinfpv.com/products/cineape-25-cinematic-whoop-fpv-drone"
-  }
-}
-propellers: {
-
-  uuid: "65baa62c-f1ca-4d4f-8d7b-27810ba0e2a8"
-  id: "explorer-lr-4-hd-dji-o4"
-  manufacturer: "Flywoo"
-  name: "Explorer LR 4 HD DJI O4"
-  weight_g: 41.5
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "Explorer LR 4 HD DJI O4 Pro Micro Long Range Drone - Choose Version"
 }
 propellers: {
 
@@ -3047,27 +2818,6 @@ propellers: {
 }
 propellers: {
 
-  uuid: "12d28309-01cb-4724-86ec-330f8ef1b0df"
-  id: "flyfishrc-tool-kit-9pcs"
-  manufacturer: "FlyFishRC"
-  name: "FlyFishRC Tool Kit - 9PCS"
-  weight_g: 432.8
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "FlyFishRC FlyFishRC Tool Kit - 9PCS 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 432.80g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://flyfish-rc.com/products/flyfishrc-tool-kit-9pcs"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/flyfishrc-tool-kit-9-pc"
-  }
-}
-propellers: {
-
   uuid: "57e7454d-73ac-4de2-8431-3cf804269520"
   id: "hqprop-dt2-9x2-5x4"
   manufacturer: "HQProp"
@@ -3089,7 +2839,7 @@ propellers: {
   id: "hq-durable-prop-t3x2x3-poly-carbonate"
   manufacturer: "FlyFishRC"
   name: "HQ Durable Prop T3X2X3 -Poly Carbonate"
-  weight_g: 68.3
+  weight_g: 1.48
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -3358,7 +3108,7 @@ propellers: {
   id: "hq-prop-t3-3-3-black-propeller"
   manufacturer: "HQProp"
   name: "HQ Prop T3*3*3 Black Propeller"
-  weight_g: 18.4
+  weight_g: 1.48
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -3371,7 +3121,7 @@ propellers: {
   id: "4-pairs-gemfan-1608-3-1-5mm-shaft"
   manufacturer: "Gemfan"
   name: "4 Pairs Gemfan 1608-3 1.5MM Shaft"
-  weight_g: 30
+  weight_g: 0.44
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
@@ -3401,7 +3151,7 @@ propellers: {
   id: "1-5-mm-shaft-hq-40mm-2-propellers"
   manufacturer: "Sub250"
   name: "1.5 mm Shaft HQ 40mm-2 Propellers"
-  weight_g: 1.2
+  weight_g: 0.24
   diameter_mm: 40
   pitch_mm: 24
   blades: 3
@@ -3529,23 +3279,6 @@ propellers: {
 }
 propellers: {
 
-  uuid: "094120fa-7f1f-4501-8d14-9d5716e37501"
-  id: "geprc-2-prop-guard-ring-4-pack"
-  manufacturer: "FPVCycle"
-  name: "GepRC 2 Prop Guard Ring (4 pack)"
-  weight_g: 7
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "FPVCycle GepRC 2 Prop Guard Ring (4 pack) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 7.00g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://fpvcycle.com/products/geprc-2-prop-guard-ring-4-pack"
-  }
-}
-propellers: {
-
   uuid: "f407ec4d-c252-413f-9071-224bb6644cd2"
   id: "gemfan-5-led-props"
   manufacturer: "FPVCycle"
@@ -3563,23 +3296,6 @@ propellers: {
 }
 propellers: {
 
-  uuid: "5b2ed3c6-f6c6-4b11-9051-a3cca82df489"
-  id: "cinesplore-toothfairy-v4-duct-set-of-4"
-  manufacturer: "FPVCycle"
-  name: "CineSplore/ToothFairy V4 Duct - set of 4"
-  weight_g: 249
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "FPVCycle CineSplore/ToothFairy V4 Duct - set of 4 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 249.00g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://fpvcycle.com/products/cinesplore-v3-duct-set-of-4"
-  }
-}
-propellers: {
-
   uuid: "e2134e65-90c2-46dd-a41b-8552e680b168"
   id: "gemfan-hurricane-4024-props"
   manufacturer: "FPVCycle"
@@ -3593,23 +3309,6 @@ propellers: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/gemfan-hurricane-4024-props-4cw-4ccw"
-  }
-}
-propellers: {
-
-  uuid: "54643ab9-e28f-4855-802a-434d38710aa6"
-  id: "toothpick-4-arms-pack-of-4"
-  manufacturer: "FPVCycle"
-  name: "ToothPick 4 Arms (Pack of 4)"
-  weight_g: 8.15
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "FPVCycle ToothPick 4 Arms (Pack of 4) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 8.15g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://fpvcycle.com/products/toothpick-4-arms-pack-of-5"
   }
 }
 propellers: {
@@ -3644,23 +3343,6 @@ propellers: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/gemfan-4023-4-triblade-prop-2cw-2ccw-clear-grey"
-  }
-}
-propellers: {
-
-  uuid: "98944b82-7b78-411f-adcd-1e7b4b38bc7e"
-  id: "glide-5-dead-cat-arms-2pc"
-  manufacturer: "FPVCycle"
-  name: "Glide 5” Dead Cat Arms (2pc)"
-  weight_g: 11
-  diameter_mm: 127
-  pitch_mm: 101.6
-  blades: 3
-  material: "Polycarbonate"
-  description: "FPVCycle Glide 5” Dead Cat Arms (2pc) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 11.00g."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://fpvcycle.com/products/glide-5-dead-cat-arms-2pc"
   }
 }
 propellers: {

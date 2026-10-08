@@ -1036,7 +1036,7 @@ frames: {
   id: "babyape-pro-3-5-inch-freestyle"
   manufacturer: "DarwinFPV"
   name: "BabyApe Ⅲ Pro 3.5 Inch Freestyle"
-  weight_g: 250
+  weight_g: 35.7
   wheelbase_mm: 156
   max_prop_size_mm: 88
   geometry: "Wide-X"
@@ -1052,7 +1052,7 @@ frames: {
   id: "babyape-3-inch-freestyle-fpv"
   manufacturer: "DarwinFPV"
   name: "BabyApe Ⅲ 3 Inch Freestyle FPV"
-  weight_g: 250
+  weight_g: 32.0
   wheelbase_mm: 156
   max_prop_size_mm: 76
   geometry: "Wide-X"
@@ -1168,7 +1168,7 @@ frames: {
   id: "darwinfpv-babyape-3-5-inch-fpv"
   manufacturer: "DarwinFPV"
   name: "DarwinFPV BabyApe Ⅱ 3.5 inch FPV"
-  weight_g: 250
+  weight_g: 35.7
   wheelbase_mm: 156
   max_prop_size_mm: 88
   geometry: "Wide-X"
@@ -2108,7 +2108,7 @@ frames: {
   id: "tony-5-o4-pro-sub250-fpv-freestyle-frame"
   manufacturer: "FlyFishRC"
   name: "Tony 5 O4 Pro Sub250 FPV Freestyle Frame"
-  weight_g: 248.7
+  weight_g: 57.7
   wheelbase_mm: 215
   max_prop_size_mm: 129.54
   geometry: "True-X"
@@ -2288,7 +2288,7 @@ frames: {
   id: "tony-5-sub250-fpv-freestyle-frame"
   manufacturer: "FlyFishRC"
   name: "Tony 5 Sub250 FPV Freestyle Frame"
-  weight_g: 248.7
+  weight_g: 57.7
   wheelbase_mm: 215
   max_prop_size_mm: 129.54
   geometry: "True-X"
@@ -2484,7 +2484,7 @@ frames: {
   id: "dollyfly25-v2-o4-pro-frame-and-parts"
   manufacturer: "Sub250"
   name: "DollyFly25 V2 O4 Pro Frame and Parts"
-  weight_g: 248.7
+  weight_g: 38.5
   wheelbase_mm: 215
   max_prop_size_mm: 129.54
   geometry: "True-X"

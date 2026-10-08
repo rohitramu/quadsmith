@@ -847,7 +847,7 @@ receivers: {
   id: "d-pole-mkii-2-4ghz-receiver-antenna"
   manufacturer: "TrueRC"
   name: "D-Pole MKII 2.4GHz Receiver Antenna"
-  weight_g: 20
+  weight_g: 0.6
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -890,7 +890,7 @@ receivers: {
   id: "2-4ghz-t-antenna"
   manufacturer: "RadioMaster"
   name: "2.4GHz T Antenna"
-  weight_g: 9.5
+  weight_g: 0.8
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -911,7 +911,7 @@ receivers: {
   id: "rp2-2-4ghz-receiver-for-elrs-protocol"
   manufacturer: "RadioMaster"
   name: "RP2 2.4GHz Receiver For ELRS Protocol"
-  weight_g: 16.5
+  weight_g: 0.55
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
