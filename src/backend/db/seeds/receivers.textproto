@@ -972,7 +972,7 @@ receivers: {
   frequency_band_mhz: 2400
   has_telemetry: true
   antenna_uuids: "01923019-3009-7001-8001-000000000010"
-  description: "CL2 Immortal T / ELRS Antenna Mount - Choose Color"
+  description: "CL2 Immortal T / ELRS Antenna Mount"
 }
 receivers: {
 

@@ -1744,7 +1744,7 @@ frames: {
   wheelbase_mm: 75
   max_prop_size_mm: 40
   geometry: "True X"
-  description: "Mobula7 V4 75mm Frame - 1S - Choose Color"
+  description: "Mobula7 V4 75mm Frame - 1S"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/happymodel-v4-75mm-whoop-frame-for-moblite7-mobula7-mobula7-1s-transparent-black"
@@ -1760,7 +1760,7 @@ frames: {
   wheelbase_mm: 75
   max_prop_size_mm: 40
   geometry: "True X"
-  description: "Mobula7 V3 75mm Frame - 2S - Choose Color"
+  description: "Mobula7 V3 75mm Frame - 2S"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/happymodel-mobula7-v3-frame-75mm-2s-whoop-frame-upgrade"

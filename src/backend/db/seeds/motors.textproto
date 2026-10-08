@@ -1301,14 +1301,14 @@ motors: {
 motors: {
 
   uuid: "f641d837-d788-4214-85e7-a45346be8317"
-  id: "gts-v3-1002-22000kv-motor-choose-color"
+  id: "gts-v3-1002-22000kv-motor"
   manufacturer: "RCINPOWER"
-  name: "GTS-V3 1002 22000KV Motor - Choose Color"
+  name: "GTS-V3 1002 22000KV Motor"
   weight_g: 2.5
   stator_diameter_mm: 10
   stator_height_mm: 2
   kv: 22000
-  description: "Rcinpower GTS-V3 1002 22000KV Motor - Choose Color brushless motor with 22000 KV rating and 102 stator size, weighing 2.5g."
+  description: "Rcinpower GTS-V3 1002 22000KV Motor brushless motor with 22000 KV rating and 102 stator size, weighing 2.5g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/rcinpower-gts-v3-1002-22000kv-motor-choose-color"
@@ -1341,14 +1341,14 @@ motors: {
 motors: {
 
   uuid: "f4d0ccc9-0b09-482b-8fc3-f8749420c5f1"
-  id: "gts-v3-1002-14000kv-motor-choose-color"
+  id: "gts-v3-1002-14000kv-motor"
   manufacturer: "RCINPOWER"
-  name: "GTS-V3 1002 14000KV Motor - Choose Color"
+  name: "GTS-V3 1002 14000KV Motor"
   weight_g: 2.5
   stator_diameter_mm: 10
   stator_height_mm: 2
   kv: 14000
-  description: "Rcinpower GTS-V3 1002 14000KV Motor - Choose Color brushless motor with 14000 KV rating and 102 stator size, weighing 2.5g."
+  description: "Rcinpower GTS-V3 1002 14000KV Motor brushless motor with 14000 KV rating and 102 stator size, weighing 2.5g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/rcinpower-gts-v3-1002-14000kv-motor-choose-color"

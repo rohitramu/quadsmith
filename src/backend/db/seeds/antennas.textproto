@@ -1400,7 +1400,7 @@ antennas: {
   frequency_band_mhz: 5800
   length_mm: 75
   gain_dbi: 2.2
-  description: "Skylite / Skyliner MK3 SMA Antenna Mount - Choose Color"
+  description: "Skylite / Skyliner MK3 SMA Antenna Mount"
 }
 antennas: {
 

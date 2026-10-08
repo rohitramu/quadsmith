@@ -1816,7 +1816,7 @@ propellers: {
   pitch_mm: 83.82
   blades: 3
   material: "Polycarbonate"
-  description: "HQ Juicy J33 4.9x3.3x3 Props - Choose Color"
+  description: "HQ Juicy J33 4.9x3.3x3 Props"
 }
 propellers: {
 
@@ -1842,7 +1842,7 @@ propellers: {
   pitch_mm: 63.5
   blades: 3
   material: "Polycarbonate"
-  description: "T2.5x2.5x3 Tri-Blade 2.5 Prop 4 Pack - Choose Color"
+  description: "T2.5x2.5x3 Tri-Blade 2.5 Prop 4 Pack"
 }
 propellers: {
 
@@ -1868,7 +1868,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "Proxy 5127.5 PDEVX and Pablo Flor Edition Props - Choose Color"
+  description: "Proxy 5127.5 PDEVX and Pablo Flor Edition Props"
 }
 propellers: {
 
@@ -1890,15 +1890,15 @@ propellers: {
 propellers: {
 
   uuid: "0dea81a4-72c8-4fed-97a4-837e7faf3814"
-  id: "hurricane-51433-props-choose-color"
+  id: "hurricane-51433-props"
   manufacturer: "Gemfan"
-  name: "Hurricane 51433 Props - Choose Color"
+  name: "Hurricane 51433 Props"
   weight_g: 3.8
   diameter_mm: 129.54
   pitch_mm: 110
   blades: 3
   material: "Polycarbonate"
-  description: "Gemfan Hurricane 51433 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 110.0mm pitch, weighing 3.80g."
+  description: "Gemfan Hurricane 51433 Props 3-blade Polycarbonate propeller with 129.5mm diameter and 110.0mm pitch, weighing 3.80g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gemfan-hurricane-51433-christmas-limited-edition-santa-blue"
@@ -1941,7 +1941,7 @@ propellers: {
   pitch_mm: 91.44
   blades: 3
   material: "Polycarbonate"
-  description: "Hurricane 51366 MCK Rev3 Props - Choose Color"
+  description: "Hurricane 51366 MCK Rev3 Props"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gemfan-hurricane-mck-edition-rev3-51366-3-durable-tri-blade-5-prop-2cw-2ccw-choose-color"
@@ -1963,15 +1963,15 @@ propellers: {
 propellers: {
 
   uuid: "87c09bd9-ace6-478d-9f46-56610e883df8"
-  id: "hq-r42-5-1x4-2x3-props-choose-color"
+  id: "hq-r42-5-1x4-2x3-props"
   manufacturer: "HQProp"
-  name: "HQ R42 5.1x4.2x3 Props - Choose Color"
+  name: "HQ R42 5.1x4.2x3 Props"
   weight_g: 4.1
   diameter_mm: 129.54
   pitch_mm: 106.67999
   blades: 3
   material: "Polycarbonate"
-  description: "HQProp HQ R42 5.1x4.2x3 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 106.7mm pitch, weighing 4.10g."
+  description: "HQProp HQ R42 5.1x4.2x3 Props 3-blade Polycarbonate propeller with 129.5mm diameter and 106.7mm pitch, weighing 4.10g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hq-prop-r42-5-1x4-2x3-5-tri-blade-prop-4-pack-grey"
@@ -1988,7 +1988,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "Donut 5145 Toroidal 5 Props - Choose Color"
+  description: "Donut 5145 Toroidal 5 Props"
 }
 propellers: {
 
@@ -2001,7 +2001,7 @@ propellers: {
   pitch_mm: 63.5
   blades: 3
   material: "Polycarbonate"
-  description: "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack - Choose Color"
+  description: "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hq-prop-t3-5x2-5x3-tri-blade-3-5-prop-4-pack-2mm-t-mount-grey"
@@ -2065,7 +2065,7 @@ propellers: {
   pitch_mm: 63.5
   blades: 5
   material: "Polycarbonate"
-  description: "DT 2.9X2.5X5 5-Blade 3 Props for DJI Avata - Choose Color"
+  description: "DT 2.9X2.5X5 5-Blade 3 Props for DJI Avata"
 }
 propellers: {
 
@@ -2078,7 +2078,7 @@ propellers: {
   pitch_mm: 24
   blades: 3
   material: "Polycarbonate"
-  description: "1610 Bi-Blade 40mm Prop 8 Pack - Choose Color"
+  description: "1610 Bi-Blade 40mm Prop 8 Pack"
 }
 propellers: {
 
@@ -2172,7 +2172,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "HQ R35 Tri-Blade 5 Prop 4 Pack - Choose Color"
+  description: "HQ R35 Tri-Blade 5 Prop 4 Pack"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hq-prop-5135v2-r35v2-5-1x3-5x3-tri-blade-5-prop-4-pack-choose-your-color"
@@ -2219,7 +2219,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "Juicy Prop J40 5.1 Tri-Blade Props - Choose Color"
+  description: "Juicy Prop J40 5.1 Tri-Blade Props"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hq-prop-juicy-prop-j40-5-1-prop-4-pack-choose-your-color"
@@ -2236,20 +2236,20 @@ propellers: {
   pitch_mm: 21
   blades: 3
   material: "Polycarbonate"
-  description: "HQ 35MMX3 Tri-Blade 35mm 1mm Shaft Props - Choose Color"
+  description: "HQ 35MMX3 Tri-Blade 35mm 1mm Shaft Props"
 }
 propellers: {
 
   uuid: "dbbfe9b5-7136-47cc-a379-84adc1a59331"
-  id: "hurricane-3520-props-choose-color"
+  id: "hurricane-3520-props"
   manufacturer: "Gemfan"
-  name: "Hurricane 3520 Props - Choose Color"
+  name: "Hurricane 3520 Props"
   weight_g: 1.75
   diameter_mm: 88.9
   pitch_mm: 50.8
   blades: 3
   material: "Polycarbonate"
-  description: "Gemfan Hurricane 3520 Props - Choose Color 3-blade Polycarbonate propeller with 88.9mm diameter and 50.8mm pitch, weighing 1.75g."
+  description: "Gemfan Hurricane 3520 Props 3-blade Polycarbonate propeller with 88.9mm diameter and 50.8mm pitch, weighing 1.75g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gemfan-hurricane-3520-durable-tri-blade-3-5-t-mount-1-5mm-propeller-2cw-2ccw-choose-color"
@@ -2266,7 +2266,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "SBANG Prop 4934 Props - Choose Color and Rotation"
+  description: "SBANG Prop 4934 Props"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gemfan-sbang-4934-tri-blade-4-9-propeller-choose-rotation-color"
@@ -2275,15 +2275,15 @@ propellers: {
 propellers: {
 
   uuid: "c427fdb5-dd5c-4f5a-b44b-ac4b03e6373f"
-  id: "5136-props-choose-color"
+  id: "5136-props"
   manufacturer: "Gemfan"
-  name: "5136 Props - Choose Color"
+  name: "5136 Props"
   weight_g: 4.3
   diameter_mm: 129.54
   pitch_mm: 91.44
   blades: 3
   material: "Polycarbonate"
-  description: "Gemfan 5136 Props - Choose Color 3-blade Polycarbonate propeller with 129.5mm diameter and 91.4mm pitch, weighing 4.30g."
+  description: "Gemfan 5136 Props 3-blade Polycarbonate propeller with 129.5mm diameter and 91.4mm pitch, weighing 4.30g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gemfan-vannystyle-5136-tri-blade-5-1-propeller-choose-color"
@@ -2313,7 +2313,7 @@ propellers: {
   pitch_mm: 93.98
   blades: 3
   material: "Polycarbonate"
-  description: "HQ Juicy J37 4.9x3.7x3 Props - Choose Color"
+  description: "HQ Juicy J37 4.9x3.7x3 Props"
 }
 propellers: {
 
@@ -2339,7 +2339,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "Freestyle4S Durable 3 Blade (5.1x3.6x3) Props - Choose Color"
+  description: "Freestyle4S Durable 3 Blade (5.1x3.6x3) Props"
 }
 propellers: {
 
@@ -2352,7 +2352,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "Freestyle3S Durable 3 Blade (5.1x3x3) Props - Choose Color"
+  description: "Freestyle3S Durable 3 Blade (5.1x3x3) Props"
 }
 propellers: {
 
@@ -2387,28 +2387,28 @@ propellers: {
 propellers: {
 
   uuid: "0825f73b-738e-429c-ac2e-c35ff0f57d97"
-  id: "hq-dp-t2x2-5x3-props-choose-color"
+  id: "hq-dp-t2x2-5x3-props"
   manufacturer: "HQProp"
-  name: "HQ DP T2X2.5X3 Props - Choose Color"
+  name: "HQ DP T2X2.5X3 Props"
   weight_g: 1.2
   diameter_mm: 12.7
   pitch_mm: 76.2
   blades: 3
   material: "Polycarbonate"
-  description: "HQProp HQ DP T2X2.5X3 Props - Choose Color 3-blade Polycarbonate propeller with 12.7mm diameter and 76.2mm pitch, weighing 1.20g."
+  description: "HQProp HQ DP T2X2.5X3 Props 3-blade Polycarbonate propeller with 12.7mm diameter and 76.2mm pitch, weighing 1.20g."
 }
 propellers: {
 
   uuid: "ac3c45d3-80e6-40b6-8b79-f932026a5193"
-  id: "lr-5126-2-blade-props-choose-color"
+  id: "lr-5126-2-blade-props"
   manufacturer: "Gemfan"
-  name: "LR 5126 2 Blade Props - Choose Color"
+  name: "LR 5126 2 Blade Props"
   weight_g: 4.82
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 2
   material: "Polycarbonate"
-  description: "Gemfan LR 5126 2 Blade Props - Choose Color 2-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 4.82g."
+  description: "Gemfan LR 5126 2 Blade Props 2-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 4.82g."
 }
 propellers: {
 
@@ -2447,7 +2447,7 @@ propellers: {
   pitch_mm: 96.52
   blades: 3
   material: "Polycarbonate"
-  description: "HQ R38 HeadsUPFPV 5.1x3.8x3 Props - Choose Color"
+  description: "HQ R38 HeadsUPFPV 5.1x3.8x3 Props"
 }
 propellers: {
 
@@ -2469,15 +2469,15 @@ propellers: {
 propellers: {
 
   uuid: "70a41d77-1191-41a4-8bbe-3ec831f0b5b2"
-  id: "hq-3-cinewhoop-props-choose-color"
+  id: "hq-3-cinewhoop-props"
   manufacturer: "HQProp"
-  name: "HQ 3 Cinewhoop Props - Choose Color"
+  name: "HQ 3 Cinewhoop Props"
   weight_g: 0.16
   diameter_mm: 127
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "HQProp HQ 3 Cinewhoop Props - Choose Color 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.16g."
+  description: "HQProp HQ 3 Cinewhoop Props 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 0.16g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hq-prop-duct-75mm-cinewhoop-hexa-blade-3-prop-2cw-2ccw-grey"
@@ -3487,7 +3487,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "Gemfan LR5130-3 Tri-Blade Props 4 Pack (Choose Color)"
+  description: "Gemfan LR5130-3 Tri-Blade Props 4 Pack"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/gemfan-lr5130-3-tri-blade-props-4-pack-choose-color"
@@ -3504,7 +3504,7 @@ propellers: {
   pitch_mm: 101.6
   blades: 3
   material: "Polycarbonate"
-  description: "Gemfan Long-Range 7035 Bi-Blade Props 4 Pack - (Choose Color)"
+  description: "Gemfan Long-Range 7035 Bi-Blade Props 4 Pack"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/gemfan-long-range-7035-2-blade-props-4-pack-choose-color"
@@ -3521,7 +3521,7 @@ propellers: {
   pitch_mm: 88.9
   blades: 3
   material: "Polycarbonate"
-  description: "Gemfan CineLifter 7035 7x3.5x3 Tri-Blade 7 Prop 4 Pack - (Choose Color)"
+  description: "Gemfan CineLifter 7035 7x3.5x3 Tri-Blade 7 Prop 4 Pack"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/gemfan-cinelifter-7035-7x3-5x3-tri-blade-7-prop-4-pack-choose-color"

@@ -1432,7 +1432,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "CL2 Avatar V2 Dual Long Antenna Mount - Choose Color"
+  description: "CL2 Avatar V2 Dual Long Antenna Mount"
 }
 video_transmitters: {
 
@@ -1606,7 +1606,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "SkyLite / Skyliner MK3 DJI O3 Antenna Mount - Choose Color"
+  description: "SkyLite / Skyliner MK3 DJI O3 Antenna Mount"
 }
 video_transmitters: {
 
@@ -1620,7 +1620,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "Skylite / Skyliner MK3 DJI O3 Camera Mount - Choose Color"
+  description: "Skylite / Skyliner MK3 DJI O3 Camera Mount"
 }
 video_transmitters: {
 
