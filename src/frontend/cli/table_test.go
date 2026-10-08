@@ -278,3 +278,42 @@ func TestList_AutoPaging(t *testing.T) {
 		t.Fatalf("expected > 100 items from auto-paging, got %d", len(results))
 	}
 }
+
+func TestCompletion_NoFlagDescriptions(t *testing.T) {
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"__complete", "motors", "list", "-"})
+
+	err := cmd.Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	lines := strings.Split(outBuf.String(), "\n")
+	for _, line := range lines {
+		if strings.HasPrefix(line, ":") || strings.TrimSpace(line) == "" {
+			continue
+		}
+		if strings.Contains(line, "\t") {
+			t.Errorf("completion line contained description: %q", line)
+		}
+	}
+}
+
+func TestCompletionScript_BashNoDesc(t *testing.T) {
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"completion", "bash"})
+
+	err := cmd.Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	script := outBuf.String()
+	if !strings.Contains(script, "__completeNoDesc") {
+		t.Errorf("expected bash completion script to use __completeNoDesc, got:\n%s", script)
+	}
+}

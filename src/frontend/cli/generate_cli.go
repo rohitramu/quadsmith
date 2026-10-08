@@ -63,6 +63,9 @@ var (
 func newRootCmd() *cobra.Command {
 	jsonOut = false
 	yamlOut = false
+	if _, ok := os.LookupEnv("QS_COMPLETION_DESCRIPTIONS"); !ok {
+		_ = os.Setenv("QS_COMPLETION_DESCRIPTIONS", "false")
+	}
 	targetURL := apiURL
 	if url := os.Getenv("QS_API_URL"); url != "" {
 		targetURL = url
@@ -277,22 +280,22 @@ func newRootCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			switch args[0] {
 			case "bash":
-				err := rootCmd.GenBashCompletionV2(os.Stdout, true)
+				err := rootCmd.GenBashCompletionV2(cmd.OutOrStdout(), false)
 				if err == nil {
 					// Dynamically bind to the exact path used to invoke the binary
 					if os.Args[0] != "qs" {
-						fmt.Printf("\ncomplete -o default -o nospace -F __start_qs %q\n", os.Args[0])
+						fmt.Fprintf(cmd.OutOrStdout(), "\ncomplete -o default -o nospace -F __start_qs %q\n", os.Args[0])
 					}
 					// Also support dynamic loading via bash-completion
-					fmt.Println("if [[ -n \"$1\" && \"$1\" != \"qs\" && \"$1\" != \"\" ]]; then complete -o default -o nospace -F __start_qs \"$1\"; fi")
+					fmt.Fprintln(cmd.OutOrStdout(), "if [[ -n \"$1\" && \"$1\" != \"qs\" && \"$1\" != \"\" ]]; then complete -o default -o nospace -F __start_qs \"$1\"; fi")
 				}
 				return err
 			case "zsh":
-				return rootCmd.GenZshCompletion(os.Stdout)
+				return rootCmd.GenZshCompletionNoDesc(cmd.OutOrStdout())
 			case "fish":
-				return rootCmd.GenFishCompletion(os.Stdout, true)
+				return rootCmd.GenFishCompletion(cmd.OutOrStdout(), false)
 			case "powershell":
-				return rootCmd.GenPowerShellCompletionWithDesc(os.Stdout)
+				return rootCmd.GenPowerShellCompletion(cmd.OutOrStdout())
 			default:
 				return nil
 			}
