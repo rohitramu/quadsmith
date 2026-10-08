@@ -4,8 +4,9 @@ import { getOption } from "@bufbuild/protobuf";
 import { listMotors } from "../gen/quadsmith/motor-MotorService_connectquery";
 import { MotorSchema } from "../gen/quadsmith/motor_pb";
 import { default_columns } from "../gen/quadsmith/_common_pb";
-import { ArrowUp, ArrowDown, ArrowUpDown, Columns3, GripVertical, ChevronUp, ChevronDown, Plus } from "lucide-react";
+import { ArrowUp, ArrowDown, ArrowUpDown, Columns3, GripVertical, ChevronUp, ChevronDown, Plus, ChevronLeft, ChevronRight, ChevronsLeft } from "lucide-react";
 import React, { useState, useMemo, useRef, useEffect } from "react";
+import { keepPreviousData } from "@tanstack/react-query";
 import { SmartFilterInput, type FieldDef } from "../components/SmartFilterInput";
 import { formatStatorSize } from "../lib/format";
 
@@ -365,6 +366,16 @@ export function CollectionPage() {
   const [filterQuery, setFilterQuery] = useState("");
   const [sortField, setSortField] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const [pageSize, setPageSize] = useState<number>(20);
+  const [pageIndex, setPageIndex] = useState<number>(0);
+  const [tokenHistory, setTokenHistory] = useState<string[]>([""]);
+
+  const [prevCollectionId, setPrevCollectionId] = useState(collectionId);
+  if (prevCollectionId !== collectionId) {
+    setPrevCollectionId(collectionId);
+    setPageIndex(0);
+    setTokenHistory([""]);
+  }
 
   // Read default columns from protobuf option
   const protoDefaultCols = useMemo(() => {
@@ -390,6 +401,8 @@ export function CollectionPage() {
   }, [sortField, sortDir]);
 
   const handleSortToggle = (field: string) => {
+    setPageIndex(0);
+    setTokenHistory([""]);
     if (sortField === field) {
       if (sortDir === "asc") setSortDir("desc");
       else setSortField(null);
@@ -399,13 +412,66 @@ export function CollectionPage() {
     }
   };
 
+  const handleFilterApply = (q: string) => {
+    setFilterQuery(q);
+    setPageIndex(0);
+    setTokenHistory([""]);
+  };
+
+  const handlePageSizeChange = (newSize: number) => {
+    setPageSize(newSize);
+    setPageIndex(0);
+    setTokenHistory([""]);
+  };
+
+  const currentToken = tokenHistory[pageIndex] || "";
+
   // Currently 'motors' is the implemented collection using the generated client.
   const isMotors = collectionId === "motors";
-  const { data, isLoading, error } = useQuery(
+  const { data, isLoading, isFetching, error } = useQuery(
     listMotors, 
-    { filter: filterQuery, sort: sortArray }, 
-    { enabled: isMotors }
+    { 
+      filter: filterQuery, 
+      sort: sortArray,
+      pageSize,
+      pageToken: currentToken,
+    }, 
+    { 
+      enabled: isMotors,
+      placeholderData: keepPreviousData,
+    }
   );
+
+  const handleNextPage = () => {
+    if (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1]) {
+      setPageIndex((prev) => prev + 1);
+      return;
+    }
+    if (data?.nextPageToken) {
+      setTokenHistory((prev) => {
+        const next = [...prev];
+        next[pageIndex + 1] = data.nextPageToken;
+        return next;
+      });
+      setPageIndex((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (pageIndex > 0) {
+      setPageIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleFirstPage = () => {
+    setPageIndex(0);
+  };
+
+  const count = data?.motors?.length ?? 0;
+  const startItem = count > 0 ? pageIndex * pageSize + 1 : 0;
+  const endItem = pageIndex * pageSize + count;
+  const hasNextPage = Boolean(data?.nextPageToken || (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1]));
+  const hasPrevPage = pageIndex > 0;
 
   return (
     <div>
@@ -417,7 +483,7 @@ export function CollectionPage() {
       {isMotors && (
         <SmartFilterInput
           value={filterQuery}
-          onApply={(q) => setFilterQuery(q)}
+          onApply={handleFilterApply}
           fields={MOTOR_FIELDS}
           presets={MOTOR_PRESETS}
           error={error ? error.message : null}
@@ -430,9 +496,20 @@ export function CollectionPage() {
         <>
           {/* Table Toolbar with Component Count & Column Selector */}
           <div className="flex items-center justify-between mb-3 text-xs text-zinc-500">
-            <span>
-              {data.motors.length} {data.motors.length === 1 ? "component" : "components"} found
-            </span>
+            <div className="flex items-center gap-2">
+              <span>
+                {count > 0 ? (
+                  <>
+                    Showing <span className="font-medium text-zinc-700 dark:text-zinc-300">{startItem}–{endItem}</span> components
+                  </>
+                ) : (
+                  "0 components found"
+                )}
+              </span>
+              {isFetching && !isLoading && (
+                <span className="text-zinc-400 dark:text-zinc-500 animate-pulse">(updating...)</span>
+              )}
+            </div>
             <ColumnSelector
               allColumns={Object.values(MOTOR_COLUMN_CONFIGS)}
               selectedColumnIds={selectedColumnIds}
@@ -479,6 +556,66 @@ export function CollectionPage() {
             </tbody>
           </table>
         </div>
+
+          {/* Bottom Pagination Controls */}
+          {(count > 0 || pageIndex > 0) && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 text-xs text-zinc-500 dark:text-zinc-400">
+              {/* Rows per page selector */}
+              <div className="flex items-center gap-2">
+                <span>Rows per page:</span>
+                <select
+                  value={pageSize}
+                  onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-2 py-1 text-zinc-700 dark:text-zinc-300 font-medium focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer shadow-xs"
+                >
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+                <span className="text-zinc-300 dark:text-zinc-700">|</span>
+                <span>
+                  Showing {startItem}–{endItem}
+                </span>
+              </div>
+
+              {/* Page navigation controls */}
+              <div className="flex items-center gap-1.5">
+                <span className="mr-2 font-medium text-zinc-700 dark:text-zinc-300">
+                  Page {pageIndex + 1}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleFirstPage}
+                  disabled={!hasPrevPage || isFetching}
+                  title="First Page"
+                  className="p-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-700 dark:text-zinc-300 shadow-xs"
+                >
+                  <ChevronsLeft size={14} />
+                </button>
+                <button
+                  type="button"
+                  onClick={handlePrevPage}
+                  disabled={!hasPrevPage || isFetching}
+                  title="Previous Page"
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-700 dark:text-zinc-300 shadow-xs"
+                >
+                  <ChevronLeft size={14} />
+                  <span>Previous</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNextPage}
+                  disabled={!hasNextPage || isFetching}
+                  title="Next Page"
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-700 dark:text-zinc-300 shadow-xs"
+                >
+                  <span>Next</span>
+                  <ChevronRight size={14} />
+                </button>
+              </div>
+            </div>
+          )}
         </>
       )}
       
