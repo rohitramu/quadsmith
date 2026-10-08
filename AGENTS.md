@@ -31,6 +31,13 @@ Do not make up names for implementation phases (e.g., "Phase 2") or dictate the 
 
 - Whenever providing example commands, file paths, or directory references in chat, always use relative paths from the root of the repository (e.g., `frontend/cli/qs` instead of `./qs`).
 
+## Development & Sandbox Execution
+
+- `make sandbox` starts the local server and Docker sandbox environment. It is a long-running daemon process that does not terminate unless an error occurs.
+- Never wait for `make sandbox` to complete execution. If executing `make sandbox`, run it as a background daemon process and monitor its startup output/logs instead of blocking on termination.
+- If only verifying build integrity, code generation, or breaking change warnings without needing a running server, use `make build` or `make warn-breaking` instead.
+
 ## Testing
 
 - Always run `make test` and ensure all tests pass whenever you make changes to the codebase. Do not consider a task complete or push code if there are failing tests.
+
