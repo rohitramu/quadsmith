@@ -1825,7 +1825,7 @@ batteries:  {
 batteries:  {
   uuid:  "69911b95-da68-45f3-a254-89d9bc3f144d"
   id:  "caddxfpv-logo-battery-strap"
-  manufacturer:  "CADDX FPV"
+  manufacturer:  "CADDX"
   name:  "CaddxFPV Logo Battery Strap"
   weight_g:  2.3
   capacity_mah:  1550
@@ -1841,7 +1841,7 @@ batteries:  {
 batteries:  {
   uuid:  "e7766ad0-b8c6-4fc6-93dc-0d49e6e175c1"
   id:  "caddxfpv-protos-2s-battery"
-  manufacturer:  "CADDX FPV"
+  manufacturer:  "CADDX"
   name:  "CaddxFPV Protos 2S Battery"
   weight_g:  203
   capacity_mah:  1550
@@ -1857,7 +1857,7 @@ batteries:  {
 batteries:  {
   uuid:  "47316e6d-fcb2-4687-a244-ece9611e1338"
   id:  "caddxfpv-650mah-4s-14-8v-150c-fpv"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV 650mAh 4S 14.8V 150C FPV"
   weight_g:  100
   capacity_mah:  1550
@@ -1873,7 +1873,7 @@ batteries:  {
 batteries:  {
   uuid:  "ed1de315-e906-46a0-ba9c-d7b7a46e1360"
   id:  "darwinfpv-onelink-2s-3s-4s-battery"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV OneLink 2S 3S 4S Battery"
   weight_g:  189
   capacity_mah:  1550
@@ -1889,14 +1889,14 @@ batteries:  {
 batteries:  {
   uuid:  "06a4a495-f839-48ee-b390-cca8855f8293"
   id:  "darwinfpv-onelink-4s-850mah-lipo-battery"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV OneLink 4S 850mAh Lipo Battery"
   weight_g:  100
   capacity_mah:  1550
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
-  description:  "DarwinFPV - Official Store DarwinFPV OneLink 4S 850mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 100.0g."
+  description:  "DarwinFPV OneLink 4S 850mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 100.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1905,14 +1905,14 @@ batteries:  {
 batteries:  {
   uuid:  "96eff43b-5e2e-40bc-b0d5-28632c24e5a4"
   id:  "darwinfpv-onelink-2s-500mah-lipo-battery"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV OneLink 2S 500mAh Lipo Battery"
   weight_g:  20
   capacity_mah:  1550
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
-  description:  "DarwinFPV - Official Store DarwinFPV OneLink 2S 500mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
+  description:  "DarwinFPV OneLink 2S 500mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1921,14 +1921,14 @@ batteries:  {
 batteries:  {
   uuid:  "8f0bf941-6de9-43b7-b8c2-9368c98d793f"
   id:  "darwinfpv-onelink-3s-500mah-lipo-battery"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV OneLink 3S 500mAh Lipo Battery"
   weight_g:  20
   capacity_mah:  1550
   cell_count_s:  4
   chemistry:  "LiPo"
   connector:  "XT60"
-  description:  "DarwinFPV - Official Store DarwinFPV OneLink 3S 500mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
+  description:  "DarwinFPV OneLink 3S 500mAh Lipo Battery 4S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/batteries.html"
@@ -1937,7 +1937,7 @@ batteries:  {
 batteries:  {
   uuid:  "a32052e8-0bbe-42a0-b55c-1e5f053f7112"
   id:  "isdt-608pd-lipo-charger-dc-240w-10a-usb"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "ISDT 608PD Lipo Charger,DC 240W/10A USB"
   weight_g:  85
   capacity_mah:  1550
@@ -1953,7 +1953,7 @@ batteries:  {
 batteries:  {
   uuid:  "a210ef14-d3d3-4372-acdb-52b22e5b1272"
   id:  "darwinfpv-6s-8200mah-80c-22-2v-fpv"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV 6S 8200mAh 80C 22.2V FPV"
   weight_g:  1380
   capacity_mah:  1550

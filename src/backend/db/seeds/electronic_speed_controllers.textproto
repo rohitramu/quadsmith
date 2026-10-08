@@ -17,7 +17,7 @@ electronic_speed_controllers:  {
 electronic_speed_controllers:  {
   uuid:  "5a5be012-c0c3-4986-99dd-97a7317148ce"
   id:  "caddxf4-aio-20a"
-  manufacturer:  "Caddx"
+  manufacturer:  "CADDX"
   name:  "CaddxF4 AIO 20A"
   weight_g:  5.3
   max_motors:  4
@@ -365,7 +365,7 @@ electronic_speed_controllers:  {
 electronic_speed_controllers:  {
   uuid:  "8b6a56c8-b3dd-4ad1-9827-fbf22ada7552"
   id:  "diatone-esc-power-distribution-board-3-6s"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "DIATONE ESC Power Distribution Board 3-6S"
   weight_g:  13.81
   max_motors:  4
@@ -381,14 +381,14 @@ electronic_speed_controllers:  {
 electronic_speed_controllers:  {
   uuid:  "ba0ca663-78b6-4107-a2a8-b4b74a3a98c8"
   id:  "mamba-f40-bls-dshot600-4in1-esc-40a-6s"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "MAMBA F40_BLS Dshot600 4IN1 ESC 40A 6S"
   weight_g:  6
   max_motors:  4
   motor_current_max_a:  40
   motor_current_burst_a:  48
   firmware:  "BLHeli_S"
-  description:  "DIATONE INNOVATIONS MAMBA F40_BLS Dshot600 4IN1 ESC 40A 6S 4-in-1 ESC running BLHeli_S firmware, rated for 40A continuous and 48A burst, weighing 6.0g."
+  description:  "Diatone MAMBA F40_BLS Dshot600 4IN1 ESC 40A 6S 4-in-1 ESC running BLHeli_S firmware, rated for 40A continuous and 48A burst, weighing 6.0g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"

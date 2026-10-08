@@ -1421,7 +1421,7 @@ propellers:  {
 propellers:  {
   uuid:  "8e1e1aff-2da1-40f7-baa8-88a4946e5709"
   id:  "caddxfpv-hq-3-blade-propeller-set-2"
-  manufacturer:  "CADDX FPV"
+  manufacturer:  "CADDX"
   name:  "CaddxFPV HQ 3-Blade Propeller Set"
   weight_g:  5
   diameter_mm:  127
@@ -1437,7 +1437,7 @@ propellers:  {
 propellers:  {
   uuid:  "af0e1d98-06b0-4a2b-81bf-c5868d442c7c"
   id:  "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount-2"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount"
   weight_g:  1.5
   diameter_mm:  127
@@ -1533,14 +1533,14 @@ propellers:  {
 propellers:  {
   uuid:  "d49d625c-c4ac-4f66-9f2c-988300b60638"
   id:  "darwinfpv-cineape20-2023-3-2-inch-propellers"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV CineApe20 2023-3 2 Inch Propellers"
   weight_g:  5
   diameter_mm:  50.8
   pitch_mm:  58.42
   blades:  3
   material:  "Polycarbonate"
-  description:  "DarwinFPV - Official Store DarwinFPV CineApe20 2023-3 2 Inch Propellers 3-blade Polycarbonate propeller with 50.8mm diameter and 58.4mm pitch, weighing 5.00g."
+  description:  "DarwinFPV CineApe20 2023-3 2 Inch Propellers 3-blade Polycarbonate propeller with 50.8mm diameter and 58.4mm pitch, weighing 5.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -1549,7 +1549,7 @@ propellers:  {
 propellers:  {
   uuid:  "1aaee669-fd22-4485-b45b-cc0e83d0151c"
   id:  "darwinfpv-cineape35-d90-3-3-5-inch-fpv"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV CineApe35 D90-3 3.5 inch FPV"
   weight_g:  250
   diameter_mm:  90
@@ -1565,7 +1565,7 @@ propellers:  {
 propellers:  {
   uuid:  "88adfc08-0ed0-4134-801e-06c4dc43e2c8"
   id:  "darwinfpv-gemfan-x-class-1308-13x8x3-13inch"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV Gemfan X-CLASS 1308 13X8X3 13inch"
   weight_g:  39
   diameter_mm:  330.2
@@ -2965,14 +2965,14 @@ propellers:  {
 propellers:  {
   uuid:  "b22965b8-1a2c-46e5-be38-0b0fce6e8abf"
   id:  "darwinfpv-babyape-pro-rtf"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV BabyApe Ⅲ PRO RTF"
   weight_g:  250
   diameter_mm:  127
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
-  description:  "DarwinFPV - Official Store DarwinFPV BabyApe Ⅲ PRO RTF 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
+  description:  "DarwinFPV BabyApe Ⅲ PRO RTF 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 250.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -2981,7 +2981,7 @@ propellers:  {
 propellers:  {
   uuid:  "2a18df34-1bf5-49ec-adde-5a4e4c70f772"
   id:  "darwinfpv-babyape-pro-3-5-inch"
-  manufacturer:  "DarwinFPV - Official Store"
+  manufacturer:  "DarwinFPV"
   name:  "DarwinFPV BabyApe Ⅲ Pro 3.5 Inch"
   weight_g:  250
   diameter_mm:  127
@@ -3173,7 +3173,7 @@ propellers:  {
 propellers:  {
   uuid:  "9ec0a0ec-5fcb-4bc9-8ba2-dc85448c6166"
   id:  "gemfan-7037-3"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "Gemfan 7037-3"
   weight_g:  6.5
   diameter_mm:  127
@@ -3189,7 +3189,7 @@ propellers:  {
 propellers:  {
   uuid:  "2252cd7d-56bf-4978-b959-a6090161868c"
   id:  "gemfan-flash-7042-2-propellers"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "Gemfan  Flash 7042-2  Propellers"
   weight_g:  5.48
   diameter_mm:  127
@@ -3205,7 +3205,7 @@ propellers:  {
 propellers:  {
   uuid:  "76c861f1-d09c-4f7a-9f16-d38fa4880ccf"
   id:  "gemfan-hrricane-3520"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "GEMFAN Hrricane 3520"
   weight_g:  1.75
   diameter_mm:  88.9
@@ -3221,7 +3221,7 @@ propellers:  {
 propellers:  {
   uuid:  "2cfff5cc-7dc3-4bc0-9235-b714d9b879f7"
   id:  "gemfan-hrricane-51433"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "GEMFAN Hrricane 51433"
   weight_g:  3.8
   diameter_mm:  129.54
@@ -3237,14 +3237,14 @@ propellers:  {
 propellers:  {
   uuid:  "2e049491-a89f-40f0-bb63-2cbe9ab1e182"
   id:  "hq-durable-prop-t4x2-5grey-2cw-2ccw-poly-carbonate"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "HQ Durable Prop T4X2.5Grey （2CW+2CCW)-Poly Carbonate"
   weight_g:  5.5
   diameter_mm:  127
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
-  description:  "DIATONE INNOVATIONS HQ Durable Prop T4X2.5Grey （2CW+2CCW)-Poly Carbonate 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 5.50g."
+  description:  "Diatone HQ Durable Prop T4X2.5Grey （2CW+2CCW)-Poly Carbonate 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 5.50g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3253,7 +3253,7 @@ propellers:  {
 propellers:  {
   uuid:  "4b17282e-8228-4554-9386-77a602bfd53a"
   id:  "gemfan-3-blades-squirt-props-63mm"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "GEMFAN 3 Blades Squirt Props 63mm"
   weight_g:  1.36
   diameter_mm:  63
@@ -3269,7 +3269,7 @@ propellers:  {
 propellers:  {
   uuid:  "f7f2825c-6835-4971-9dd2-bfbc97eb95d1"
   id:  "gemfan-3-blades-hurricane-mck-51466-3-propellers"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "GEMFAN 3-Blades Hurricane MCK 51466-3  Propellers"
   weight_g:  4.2
   diameter_mm:  129.54
@@ -3285,14 +3285,14 @@ propellers:  {
 propellers:  {
   uuid:  "04111eb5-6cca-49fb-8fee-089052664416"
   id:  "gemfan-hurricane-51455-4-2cw-2ccw"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "GEMFAN Hurricane 51455-4 (2CW+2CCW)"
   weight_g:  5
   diameter_mm:  127
   pitch_mm:  101.6
   blades:  3
   material:  "Polycarbonate"
-  description:  "DIATONE INNOVATIONS GEMFAN Hurricane 51455-4 (2CW+2CCW) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 5.00g."
+  description:  "Diatone GEMFAN Hurricane 51455-4 (2CW+2CCW) 3-blade Polycarbonate propeller with 127.0mm diameter and 101.6mm pitch, weighing 5.00g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_PURCHASE
     url:  "https://www.getfpv.com/propellers.html"
@@ -3301,7 +3301,7 @@ propellers:  {
 propellers:  {
   uuid:  "76187c52-6ba0-4307-9785-b950f4bf1789"
   id:  "gemfan-hrricane-51433-2"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "GEMFAN Hrricane 51433"
   weight_g:  3.8
   diameter_mm:  129.54
@@ -3317,7 +3317,7 @@ propellers:  {
 propellers:  {
   uuid:  "92660781-687d-429b-bfcf-1980d0d55612"
   id:  "gemfan-3-blades-windancer-3028-3"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "GEMFAN 3-Blades Windancer 3028-3"
   weight_g:  1.49
   diameter_mm:  76.2
@@ -3333,7 +3333,7 @@ propellers:  {
 propellers:  {
   uuid:  "717b15cc-788f-440e-880c-203ab2416049"
   id:  "gemfan-3-blades-squirt-props-75mm-propellers"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "GEMFAN 3-Blades Squirt Props 75mm  Propellers"
   weight_g:  1.9
   diameter_mm:  75
@@ -3349,7 +3349,7 @@ propellers:  {
 propellers:  {
   uuid:  "b77e3315-7b86-41d9-b732-01c24075545c"
   id:  "hq-ethix-s5-light-grey-poly"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "HQ Ethix S5 Light Grey -Poly"
   weight_g:  3.7
   diameter_mm:  127
@@ -3365,7 +3365,7 @@ propellers:  {
 propellers:  {
   uuid:  "4b7e0fa3-b00d-448a-9187-1dd07ad24595"
   id:  "hq-ethix-s4-lemon-lime-poly"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "HQ Ethix S4 Lemon Lime -Poly"
   weight_g:  3.6
   diameter_mm:  127
@@ -3381,7 +3381,7 @@ propellers:  {
 propellers:  {
   uuid:  "8b3f6a6b-99a8-4220-8b4a-7d1dce53c3c7"
   id:  "hq-ethix-s3-prop-watermelon-poly"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "HQ Ethix S3 Prop Watermelon -Poly"
   weight_g:  3.6
   diameter_mm:  127
@@ -3397,7 +3397,7 @@ propellers:  {
 propellers:  {
   uuid:  "bdedb7a4-d285-430d-80fc-adeac1d18e35"
   id:  "hqprop-3-blades-durable-prop-t2-5x2-5x3-black"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "HQProp 3-Blades Durable Prop T2.5X2.5X3 Black"
   weight_g:  1.2
   diameter_mm:  12.7
@@ -3413,7 +3413,7 @@ propellers:  {
 propellers:  {
   uuid:  "8d134ef3-987e-44df-848d-f27aba9c6031"
   id:  "hqprop-2-blades-durable-propellers-t3x2-grey"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "HQprop 2-Blades Durable Propellers T3X2 Grey"
   weight_g:  1.2
   diameter_mm:  127
@@ -3429,7 +3429,7 @@ propellers:  {
 propellers:  {
   uuid:  "ae94d095-3889-47c8-86fc-36a3778b1222"
   id:  "hqprop-2-blade-micro-propellers-65mm-grey"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "HQProp 2-Blade Micro Propellers 65MM Grey"
   weight_g:  1.6
   diameter_mm:  65
@@ -3581,7 +3581,7 @@ propellers:  {
 propellers:  {
   uuid:  "51de94ba-9e25-4e25-9042-46a7fd55dcc9"
   id:  "hq-durable-prop-t3x2x3-poly-carbonate"
-  manufacturer:  "FlyFish RC"
+  manufacturer:  "FlyFishRC"
   name:  "HQ Durable Prop T3X2X3 -Poly Carbonate"
   weight_g:  68.3
   diameter_mm:  127
@@ -3913,7 +3913,7 @@ propellers:  {
 propellers:  {
   uuid:  "fa69ffb5-1880-4e1c-9e16-a991f80d5b19"
   id:  "hq-prop-t3-3-3-black-propeller"
-  manufacturer:  "HQ"
+  manufacturer:  "HQProp"
   name:  "HQ Prop T3*3*3 Black Propeller"
   weight_g:  18.4
   diameter_mm:  127
@@ -3965,7 +3965,7 @@ propellers:  {
 propellers:  {
   uuid:  "d8f4eb12-c59f-467b-a051-d6fa524ba1c0"
   id:  "1-5-mm-shaft-hq-40mm-2-propellers"
-  manufacturer:  "sub250"
+  manufacturer:  "Sub250"
   name:  "1.5 mm Shaft HQ 40mm-2 Propellers"
   weight_g:  1.2
   diameter_mm:  40
@@ -3981,7 +3981,7 @@ propellers:  {
 propellers:  {
   uuid:  "1f7dfd50-a54a-4bec-8725-64711cfbf00c"
   id:  "1-0-mm-shaft-hq-40mm-2-toothpick"
-  manufacturer:  "HQ"
+  manufacturer:  "HQProp"
   name:  "1.0 mm Shaft HQ 40mm-2 Toothpick"
   weight_g:  0.24
   diameter_mm:  40
@@ -4221,7 +4221,7 @@ propellers:  {
 propellers:  {
   uuid:  "8e638bd8-25d7-4e79-acda-61deedb83f43"
   id:  "gemfan-hurricane-tri-blade-51466-5-1-propeller"
-  manufacturer:  "FPV Cycle"
+  manufacturer:  "FPVCycle"
   name:  "Gemfan Hurricane Tri-blade 51466 5.1 Propeller"
   weight_g:  5
   diameter_mm:  129.54

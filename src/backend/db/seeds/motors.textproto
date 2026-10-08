@@ -1203,7 +1203,7 @@ motors:  {
 motors:  {
   uuid:  "089dc704-8e6d-4f6d-b892-e56b230cb615"
   id:  "caddxfpv-1303-6000kv-brushless-motors"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV 1303 6000KV Brushless Motors"
   weight_g:  5.6
   stator_diameter_mm:  13
@@ -1684,7 +1684,7 @@ motors:  {
 motors:  {
   uuid:  "f641d837-d788-4214-85e7-a45346be8317"
   id:  "gts-v3-1002-22000kv-motor-choose-color"
-  manufacturer:  "Rcinpower"
+  manufacturer:  "RCINPOWER"
   name:  "GTS-V3 1002 22000KV Motor - Choose Color"
   weight_g:  2.5
   stator_diameter_mm:  10
@@ -1729,7 +1729,7 @@ motors:  {
 motors:  {
   uuid:  "f4d0ccc9-0b09-482b-8fc3-f8749420c5f1"
   id:  "gts-v3-1002-14000kv-motor-choose-color"
-  manufacturer:  "Rcinpower"
+  manufacturer:  "RCINPOWER"
   name:  "GTS-V3 1002 14000KV Motor - Choose Color"
   weight_g:  2.5
   stator_diameter_mm:  10
@@ -2157,7 +2157,7 @@ motors:  {
 motors:  {
   uuid:  "2102a569-aed8-4f72-9178-aa3a4a301fb1"
   id:  "mamba-2808-1100kv-racing-motor"
-  manufacturer:  "DIATONE OFFICIAL"
+  manufacturer:  "Diatone"
   name:  "MAMBA  2808 1100KV Racing Motor"
   weight_g:  54.5
   stator_diameter_mm:  28
@@ -2286,7 +2286,7 @@ motors:  {
 motors:  {
   uuid:  "e0847596-bcd0-412b-8241-e3dd281cb2b7"
   id:  "flash-2406-fpv-motor"
-  manufacturer:  "FlyFish RC"
+  manufacturer:  "FlyFishRC"
   name:  "Flash 2406 FPV Motor"
   weight_g:  35.8
   stator_diameter_mm:  24
@@ -2415,7 +2415,7 @@ motors:  {
 motors:  {
   uuid:  "2d98aaa3-a6ee-41f2-b595-23c338a65ef1"
   id:  "sub250-0702-27000kv-motor-compatible"
-  manufacturer:  "sub250"
+  manufacturer:  "Sub250"
   name:  "SUB250 0702 27000kv  Motor Compatible"
   weight_g:  1.4
   stator_diameter_mm:  7
@@ -2430,7 +2430,7 @@ motors:  {
 motors:  {
   uuid:  "cd324411-3d30-49f0-a65b-ed277c7bf0ef"
   id:  "sub250-1804-2450kv-3450kv-ultra-light-motor"
-  manufacturer:  "sub250"
+  manufacturer:  "Sub250"
   name:  "Sub250 1804 2450KV 3450KV Ultra-light Motor"
   weight_g:  14
   stator_diameter_mm:  18
@@ -2483,7 +2483,7 @@ motors:  {
 motors:  {
   uuid:  "5ea52586-1418-4143-9579-b386d8b4f25d"
   id:  "sub250-m1-0803-16500kv-1-0mm-motor"
-  manufacturer:  "sub250"
+  manufacturer:  "Sub250"
   name:  "Sub250 M1 0803 16500KV 1.0MM Motor"
   weight_g:  2.2
   stator_diameter_mm:  8
@@ -2498,7 +2498,7 @@ motors:  {
 motors:  {
   uuid:  "508cf17b-5904-4bbf-ae78-e221b8f0531d"
   id:  "sub250-m1-0803-19000kv-1-5-mm"
-  manufacturer:  "sub250"
+  manufacturer:  "Sub250"
   name:  "Sub250 M1 0803 19000KV 1.5 mm"
   weight_g:  2.2
   stator_diameter_mm:  8

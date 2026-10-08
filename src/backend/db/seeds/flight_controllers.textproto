@@ -794,7 +794,7 @@ flight_controllers: {
 flight_controllers: {
   uuid: "d63e84ba-a940-4812-bf75-e23e2fc8289a"
   id: "beta-test-walksnail-neuxs-aio-1s-flight"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "[BETA TEST] Walksnail Neuxs AIO-1S Flight"
   weight_g: 4.6
   processor: "STM32F411"
@@ -809,7 +809,7 @@ flight_controllers: {
 flight_controllers: {
   uuid: "870d0064-1656-4c2c-bc39-1a6b4991efae"
   id: "caddxfpv-protos-fpv-drone-rtf-kit"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "CaddxFPV Protos FPV Drone RTF Kit"
   weight_g: 104.4
   processor: "STM32F405"
@@ -823,7 +823,7 @@ flight_controllers: {
 flight_controllers: {
   uuid: "c224e9c6-2036-4561-a71a-efc2ef6d8191"
   id: "caddxfpv-gofilm-20-only"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "CADDXFPV Gofilm 20 Only"
   weight_g: 38.5
   processor: "STM32F405"
@@ -837,7 +837,7 @@ flight_controllers: {
 flight_controllers: {
   uuid: "1f92f03d-d89c-4abe-93ca-6a11e64dda6a"
   id: "caddxfpv-f4-aio-elrs"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "CADDXFPV F4_AIO_ELRS"
   weight_g: 5.3
   processor: "STM32F405"
@@ -1284,12 +1284,12 @@ flight_controllers: {
 flight_controllers: {
   uuid: "08bf4a4d-5a05-4ad3-8fee-5b0d6b7b32ec"
   id: "mamba-f405mk2-v2-flight-controller"
-  manufacturer: "DIATONE INNOVATIONS"
+  manufacturer: "Diatone"
   name: "Mamba F405MK2 V2 Flight Controller"
   weight_g: 9
   processor: "STM32F405"
   gyro: "ICM42688P"
-  description: "DIATONE INNOVATIONS Mamba F405MK2 V2 Flight Controller flight controller powered by STM32F405 MCU and ICM42688P gyro, weighing 9.0g."
+  description: "Diatone Mamba F405MK2 V2 Flight Controller flight controller powered by STM32F405 MCU and ICM42688P gyro, weighing 9.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/flight-controllers.html"
@@ -1298,7 +1298,7 @@ flight_controllers: {
 flight_controllers: {
   uuid: "45704872-9b0f-4fff-9564-0f4614246399"
   id: "mamba-f405mk2-v2-flight-controller-f40mk2-f55"
-  manufacturer: "DIATONE OFFICIAL"
+  manufacturer: "Diatone"
   name: "MAMBA F405MK2 V2 Flight Controller F40MK2/F55"
   weight_g: 9
   processor: "STM32F405"
@@ -1312,12 +1312,12 @@ flight_controllers: {
 flight_controllers: {
   uuid: "73328b55-97e7-45bb-80dd-8a4e9ffa3567"
   id: "mamba-mk4-f722-flight-controller-30mm-m3"
-  manufacturer: "DIATONE INNOVATIONS"
+  manufacturer: "Diatone"
   name: "MAMBA MK4 F722  Flight Controller 30mm/M3"
   weight_g: 6.9
   processor: "STM32F722"
   gyro: "ICM42688P"
-  description: "DIATONE INNOVATIONS MAMBA MK4 F722  Flight Controller 30mm/M3 flight controller powered by STM32F722 MCU and ICM42688P gyro, weighing 6.9g."
+  description: "Diatone MAMBA MK4 F722  Flight Controller 30mm/M3 flight controller powered by STM32F722 MCU and ICM42688P gyro, weighing 6.9g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/flight-controllers.html"
@@ -1326,7 +1326,7 @@ flight_controllers: {
 flight_controllers: {
   uuid: "99a290d0-e11f-417f-9ab2-ce8023188030"
   id: "mamba-mk4-f722-mini-flight-controller"
-  manufacturer: "DIATONE OFFICIAL"
+  manufacturer: "Diatone"
   name: "MAMBA MK4 F722 MINI Flight Controller"
   weight_g: 9.9
   processor: "STM32F722"
@@ -1340,7 +1340,7 @@ flight_controllers: {
 flight_controllers: {
   uuid: "9a30e94b-45c8-4fc2-b1fd-e9d395b67695"
   id: "winners-choice-mamba-mk4-f722-mini-f40-reactor"
-  manufacturer: "DIATONE OFFICIAL"
+  manufacturer: "Diatone"
   name: "WINNERS' CHOICE-MAMBA MK4 F722 MINI F40/Reactor"
   weight_g: 6
   processor: "STM32F722"

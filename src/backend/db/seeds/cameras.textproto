@@ -97,7 +97,7 @@ cameras:  {
 cameras:  {
   uuid:  "01923019-3005-7001-8001-000000000001"
   id:  "caddx-ratel-2"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Caddx Ratel 2 Micro FPV Camera"
   weight_g:  5.9
   protocol:  "Analog"
@@ -385,7 +385,7 @@ cameras:  {
 cameras:  {
   uuid:  "4af6f0c8-516a-416f-a304-429073764ab5"
   id:  "caddxfpv-ratel-ultra-analog-camera"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV Ratel Ultra Analog Camera"
   weight_g:  5.9
   protocol:  "Analog"
@@ -409,7 +409,7 @@ cameras:  {
 cameras:  {
   uuid:  "249b83ba-8791-47c1-9bbe-7c753d0b47f3"
   id:  "caddxfpv-ratel-pro-analog-camera"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV Ratel Pro Analog Camera"
   weight_g:  9.5
   protocol:  "Analog"
@@ -433,7 +433,7 @@ cameras:  {
 cameras:  {
   uuid:  "e30a1ae0-8489-494e-a606-7352d7b09ed0"
   id:  "caddxfpv-walnut-action-camera-magnetic-charging"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV Walnut Action Camera Magnetic Charging"
   weight_g:  5.9
   protocol:  "Analog"
@@ -457,7 +457,7 @@ cameras:  {
 cameras:  {
   uuid:  "e2cfeb86-f048-4a2c-aac9-2dd2971f4832"
   id:  "caddxfpv-ant-lite-analog-camera"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV Ant Lite Analog Camera"
   weight_g:  1.7
   protocol:  "Analog"
@@ -481,7 +481,7 @@ cameras:  {
 cameras:  {
   uuid:  "c8189d00-6037-4298-b5b8-b0c05e75a9a1"
   id:  "caddxfpv-camera-lens-family"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CaddxFPV Camera Lens Family"
   weight_g:  5.9
   protocol:  "Analog"
@@ -649,7 +649,7 @@ cameras:  {
 cameras:  {
   uuid:  "fc343577-630e-481f-be66-39adbafd4453"
   id:  "newbeedrone-caddx-nano-ant-camera"
-  manufacturer:  "Caddx+NewBeeDrone"
+  manufacturer:  "CADDX"
   name:  "NewBeeDrone × CADDX Nano ANT Camera"
   weight_g:  1.7
   protocol:  "Analog"
@@ -809,7 +809,7 @@ cameras:  {
 cameras:  {
   uuid:  "90bc0ebe-cb41-4536-9674-0c6aad999c3e"
   id:  "thumb-2-action-camera-with-nd-filters"
-  manufacturer:  "Runcam"
+  manufacturer:  "RunCam"
   name:  "Thumb 2 Action Camera with ND Filters"
   weight_g:  49
   protocol:  "Analog"
@@ -825,7 +825,7 @@ cameras:  {
 cameras:  {
   uuid:  "a930d1e1-7b1e-4511-adef-c011aaba9dab"
   id:  "baby-ratel-2-camera-black"
-  manufacturer:  "Caddx"
+  manufacturer:  "CADDX"
   name:  "Baby Ratel 2 Camera - Black"
   weight_g:  9.5
   protocol:  "Analog"
@@ -929,7 +929,7 @@ cameras:  {
 cameras:  {
   uuid:  "5caf807e-d322-492f-8a25-31ddae1159b4"
   id:  "rc18g-1-8mm-lens"
-  manufacturer:  "Runcam"
+  manufacturer:  "RunCam"
   name:  "RC18G 1.8mm Lens"
   weight_g:  2
   protocol:  "Analog"
@@ -985,7 +985,7 @@ cameras:  {
 cameras:  {
   uuid:  "0c466031-28e4-4343-be01-0acb80c2b466"
   id:  "caddxfpv-hq-3-blade-propeller-set"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CaddxFPV HQ 3-Blade Propeller Set"
   weight_g:  5
   protocol:  "Analog"
@@ -1009,7 +1009,7 @@ cameras:  {
 cameras:  {
   uuid:  "9deab3b5-cb71-4336-9805-b51ea6b54d96"
   id:  "caddxfpv-logo-tee"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CaddxFPV Logo Tee"
   weight_g:  5.9
   protocol:  "Analog"
@@ -1033,7 +1033,7 @@ cameras:  {
 cameras:  {
   uuid:  "bcf91dbe-67b4-40dd-ad04-c068d93a8303"
   id:  "caddxfpv-logo-cap"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CaddxFPV Logo Cap"
   weight_g:  5.9
   protocol:  "Analog"
@@ -1057,7 +1057,7 @@ cameras:  {
 cameras:  {
   uuid:  "591cec5a-7e3a-4593-b3fb-ea55447e8a24"
   id:  "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount"
   weight_g:  1.5
   protocol:  "Analog"
@@ -1081,7 +1081,7 @@ cameras:  {
 cameras:  {
   uuid:  "9b0c01d0-8fe8-4a57-94d6-c714fc746a5e"
   id:  "caddxfpv-banner"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV Banner"
   weight_g:  5.9
   protocol:  "Analog"
@@ -1105,7 +1105,7 @@ cameras:  {
 cameras:  {
   uuid:  "37e24bae-086a-4c98-9b7f-750cd182f2a1"
   id:  "caddxfpv-circle"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV Circle"
   weight_g:  5.9
   protocol:  "Analog"
@@ -1129,7 +1129,7 @@ cameras:  {
 cameras:  {
   uuid:  "15d527ba-42f6-43f7-8b2a-47a07701b5a3"
   id:  "caddxfpv-arches"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV Arches"
   weight_g:  5.9
   protocol:  "Analog"
@@ -1205,7 +1205,7 @@ cameras:  {
 cameras:  {
   uuid:  "3de0cd41-8385-44c2-958e-ecddf4dc1fbe"
   id:  "nimble65-65mm-analog-1s-mini-whoop"
-  manufacturer:  "sub250"
+  manufacturer:  "Sub250"
   name:  "Nimble65 65mm Analog 1S Mini Whoop"
   weight_g:  21
   protocol:  "Analog"
@@ -1237,7 +1237,7 @@ cameras:  {
 cameras:  {
   uuid:  "e83a5635-68e6-4708-9e8c-154750033395"
   id:  "caddx-walnut-fpv-action-camera"
-  manufacturer:  "Caddx"
+  manufacturer:  "CADDX"
   name:  "Caddx Walnut FPV Action Camera"
   weight_g:  5.9
   protocol:  "Analog"
@@ -1253,7 +1253,7 @@ cameras:  {
 cameras:  {
   uuid:  "275a68ac-a872-4fed-860b-4535d696b527"
   id:  "caddx-ant-analog-camera-for-nanofly16"
-  manufacturer:  "sub250"
+  manufacturer:  "Sub250"
   name:  "Caddx Ant Analog Camera for Nanofly16"
   weight_g:  2
   protocol:  "Analog"
@@ -1376,7 +1376,7 @@ cameras:  {
 cameras:  {
   uuid:  "a9840e42-a32f-405e-a506-e088b7e9b3c9"
   id:  "walksnail-camera-nd-filter-2"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Camera ND Filter"
   is_internal_only:  true
   weight_g:  1
@@ -1401,7 +1401,7 @@ cameras:  {
 cameras:  {
   uuid:  "efc0f4d9-c140-4c9a-a16d-4f4f21891ed2"
   id:  "walksnail-avatar-hd-nano-camera-v3-2"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Avatar HD Nano Camera  V3"
   is_internal_only:  true
   weight_g:  3
@@ -1426,7 +1426,7 @@ cameras:  {
 cameras:  {
   uuid:  "fd823327-4899-463a-8aaf-cb77832924ad"
   id:  "walksnail-avatar-hd-camera-v2-2"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Avatar HD Camera V2"
   is_internal_only:  true
   weight_g:  1.8
@@ -1668,7 +1668,7 @@ cameras:  {
 cameras:  {
   uuid:  "a8d3c4e2-00a1-40bd-953e-29b140fe52b8"
   id:  "walksnail-camera-nd-filter-3"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Camera ND Filter"
   is_internal_only:  true
   weight_g:  1
@@ -1693,7 +1693,7 @@ cameras:  {
 cameras:  {
   uuid:  "6050bc22-e8ac-41b8-8982-b561f9f8999c"
   id:  "walksnail-avatar-hd-nano-camera-v3-3"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Avatar HD Nano Camera  V3"
   is_internal_only:  true
   weight_g:  3
@@ -1718,7 +1718,7 @@ cameras:  {
 cameras:  {
   uuid:  "7efe74ac-6926-42cf-916a-d31efd76775d"
   id:  "walksnail-avatar-hd-camera-v2-3"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Avatar HD Camera V2"
   is_internal_only:  true
   weight_g:  1.8
@@ -1960,7 +1960,7 @@ cameras:  {
 cameras:  {
   uuid:  "3988130a-f95f-4493-b2cd-7d24449ccf54"
   id:  "walksnail-camera-nd-filter-4"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Camera ND Filter"
   is_internal_only:  true
   weight_g:  1
@@ -1985,7 +1985,7 @@ cameras:  {
 cameras:  {
   uuid:  "f5285cbc-1dfa-4e88-9de3-27fcbfbf911f"
   id:  "walksnail-avatar-hd-nano-camera-v3-4"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Avatar HD Nano Camera  V3"
   is_internal_only:  true
   weight_g:  3
@@ -2010,7 +2010,7 @@ cameras:  {
 cameras:  {
   uuid:  "f892e6aa-2d2d-436f-8b0f-a008809e2291"
   id:  "walksnail-avatar-hd-camera-v2-4"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Walksnail Avatar HD Camera V2"
   is_internal_only:  true
   weight_g:  1.8
@@ -2194,7 +2194,7 @@ cameras:  {
 cameras:  {
   uuid:  "01923019-3005-7001-8001-000000000002"
   id:  "caddx-ant-nano"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "Caddx Ant Nano 1200TVL FPV Camera"
   weight_g:  2
   protocol:  "Analog"

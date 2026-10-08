@@ -1,7 +1,7 @@
 receivers:  {
   uuid:  "b0cf2152-68ff-41ac-9bc5-c7b6d34f2543"
   id:  "tbs-crossfire-nano-rx"
-  manufacturer:  "TBS"
+  manufacturer:  "Team Black Sheep"
   name:  "TBS Crossfire Nano RX"
   weight_g:  0.5
   protocol:  "TBS Crossfire (CRSF)"
@@ -25,7 +25,7 @@ receivers:  {
 receivers:  {
   uuid:  "632437ac-1938-4574-85eb-b9b2aeb000ff"
   id:  "tbs-tracer-nano-rx"
-  manufacturer:  "TBS"
+  manufacturer:  "Team Black Sheep"
   name:  "TBS Tracer Nano RX"
   weight_g:  3.24
   protocol:  "TBS Crossfire (CRSF)"
@@ -505,14 +505,14 @@ receivers:  {
 receivers:  {
   uuid:  "8daa9d8b-15fb-4ec8-bc6f-cf9e597181b9"
   id:  "fat-shark-recon-hd-goggle-bundle"
-  manufacturer:  "Rotor Riot Store"
+  manufacturer:  "Rotor Riot"
   name:  "Fat Shark Recon HD Goggle Bundle"
   weight_g:  235.8
   protocol:  "ExpressLRS"
   frequency_band_mhz:  2400
   has_telemetry:  true
   antenna_uuids:  "01923019-3009-7001-8001-000000000010"
-  description:  "Rotor Riot Store Fat Shark Recon HD Goggle Bundle ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 235.80g."
+  description:  "Rotor Riot Fat Shark Recon HD Goggle Bundle ExpressLRS receiver operating at 2400 MHz with telemetry support, weighing 235.80g."
   reference_links:  {
     type:  REFERENCE_LINK_TYPE_DOCUMENTATION
     url:  "https://www.expresslrs.org/"
@@ -1269,7 +1269,7 @@ receivers:  {
 receivers:  {
   uuid:  "50ae859f-2295-477a-8c3a-1a9966b79ba0"
   id:  "minimortal-t-915mhz-rc-receiver-antenna"
-  manufacturer:  "FPV Cycle"
+  manufacturer:  "FPVCycle"
   name:  "Minimortal T 915MHz RC Receiver Antenna"
   weight_g:  0.7
   protocol:  "ExpressLRS"
@@ -1373,7 +1373,7 @@ receivers:  {
 receivers:  {
   uuid:  "b8305249-a23c-4258-a718-cb9378ecf0ca"
   id:  "diatone-roma-f4-dji-4-6s-drone"
-  manufacturer:  "DIATONE INNOVATIONS"
+  manufacturer:  "Diatone"
   name:  "DIATONE Roma F4 DJI 4/6S Drone"
   weight_g:  13.5
   protocol:  "ExpressLRS"
@@ -1548,7 +1548,7 @@ receivers:  {
 receivers:  {
   uuid:  "74d7a534-ce02-404a-b488-b93449e52795"
   id:  "internal-rx-1f92f03d-d89c-4abe-93ca-6a11e64dda6a"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
   is_internal_only:  true
   weight_g:  5.3
@@ -1812,7 +1812,7 @@ receivers:  {
 receivers:  {
   uuid:  "35ea2c93-05ab-458c-91a6-d16b7a9b7dea"
   id:  "internal-rx-2f75a325-5e33-452e-93a2-93f94d71b54d"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
   is_internal_only:  true
   weight_g:  5.3
@@ -2076,7 +2076,7 @@ receivers:  {
 receivers:  {
   uuid:  "6654d8ad-eb22-4ed8-917d-0850437e4da4"
   id:  "internal-rx-f0e44073-9567-4702-a556-5cd1883e8296"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV F4_AIO_ELRS (Internal RX)"
   is_internal_only:  true
   weight_g:  5.3
@@ -2400,7 +2400,7 @@ receivers:  {
 receivers:  {
   uuid:  "01923019-3003-7001-8001-000000000004"
   id:  "tbs-crossfire-nano-rx-se"
-  manufacturer:  "TBS"
+  manufacturer:  "Team Black Sheep"
   name:  "TBS Crossfire Nano RX Special Edition"
   weight_g:  0.5
   protocol:  "Crossfire"
@@ -2424,7 +2424,7 @@ receivers:  {
 receivers:  {
   uuid:  "01923019-3003-7001-8001-000000000005"
   id:  "tbs-crossfire-diversity-nano-rx"
-  manufacturer:  "TBS"
+  manufacturer:  "Team Black Sheep"
   name:  "TBS Crossfire Diversity Nano RX"
   weight_g:  1.8
   protocol:  "Crossfire"

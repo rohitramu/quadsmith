@@ -50,7 +50,7 @@ frames:  {
 frames:  {
   uuid:  "8fd51fba-8f88-4178-9797-f73ad4e1b45b"
   id:  "caddx-gofilm-20-frame"
-  manufacturer:  "Caddx"
+  manufacturer:  "CADDX"
   name:  "Caddx Gofilm 20 Frame"
   weight_g:  38.5
   wheelbase_mm:  94
@@ -1157,7 +1157,7 @@ frames:  {
 frames:  {
   uuid:  "ecd3d399-bc3d-4f31-bc3b-094ee1b368b7"
   id:  "protos-drone-frame"
-  manufacturer:  "CADDX FPV"
+  manufacturer:  "CADDX"
   name:  "Protos Drone Frame"
   weight_g:  104.4
   wheelbase_mm:  220
@@ -1172,7 +1172,7 @@ frames:  {
 frames:  {
   uuid:  "b3a04e3d-b47e-48d2-9af7-71d6835067db"
   id:  "caddxfpv-gofilm-20-frame"
-  manufacturer:  "CADDXFPV"
+  manufacturer:  "CADDX"
   name:  "CADDXFPV Gofilm 20 Frame"
   weight_g:  38.5
   wheelbase_mm:  94
@@ -2271,7 +2271,7 @@ frames:  {
 frames:  {
   uuid:  "ab17cef5-dbda-4d25-bde9-cd5fa38fec8d"
   id:  "hunter-5-fpv-racing-t700-frame-kit"
-  manufacturer:  "FlyFish RC"
+  manufacturer:  "FlyFishRC"
   name:  "Hunter 5 FPV Racing T700 Frame Kit"
   weight_g:  186.4
   wheelbase_mm:  225
@@ -2362,7 +2362,7 @@ frames:  {
 frames:  {
   uuid:  "eed7c0bb-aff8-44c9-b8a1-db3a323e9742"
   id:  "volador-vx3-vx3-5-o4-pro-freestyle"
-  manufacturer:  "FlyFish RC"
+  manufacturer:  "FlyFishRC"
   name:  "Volador VX3 VX3.5 O4 Pro Freestyle"
   weight_g:  70.5
   wheelbase_mm:  160
@@ -2377,7 +2377,7 @@ frames:  {
 frames:  {
   uuid:  "79e840d1-97a7-42ec-8274-7ddc4957ead6"
   id:  "volador-ii-vx5-o4-pro-fpv"
-  manufacturer:  "FlyFish RC"
+  manufacturer:  "FlyFishRC"
   name:  "Volador II VX5 O4 Pro FPV"
   weight_g:  177.4
   wheelbase_mm:  225
@@ -2392,7 +2392,7 @@ frames:  {
 frames:  {
   uuid:  "638793db-cfbe-4977-a0d6-15ce1fe96881"
   id:  "volador-ii-vd5-o4-pro-deadcat"
-  manufacturer:  "FlyFish RC"
+  manufacturer:  "FlyFishRC"
   name:  "Volador II VD5 O4 Pro Deadcat"
   weight_g:  186.4
   wheelbase_mm:  225
@@ -2540,7 +2540,7 @@ frames:  {
 frames:  {
   uuid:  "bab776d7-ab18-4ed7-a54a-c49546e5ef6e"
   id:  "volador-ii-vx5-o3-fpv-freestyle"
-  manufacturer:  "FlyFish RC"
+  manufacturer:  "FlyFishRC"
   name:  "Volador II VX5 O3 FPV Freestyle"
   weight_g:  177.4
   wheelbase_mm:  225
@@ -2555,7 +2555,7 @@ frames:  {
 frames:  {
   uuid:  "c20093d0-6e4f-4141-ba8d-449270ac3dac"
   id:  "volador-ii-vd5-o3-deadcat-fpv"
-  manufacturer:  "FlyFish RC"
+  manufacturer:  "FlyFishRC"
   name:  "Volador II VD5 O3 Deadcat FPV"
   weight_g:  186.4
   wheelbase_mm:  225
@@ -2684,7 +2684,7 @@ frames:  {
 frames:  {
   uuid:  "6f7e8b3b-53bd-4a67-a5c2-7dbdc65fbc09"
   id:  "dollyfly25-v2-o4-pro-frame-and-parts"
-  manufacturer:  "sub250"
+  manufacturer:  "Sub250"
   name:  "DollyFly25 V2 O4 Pro Frame and Parts"
   weight_g:  248.7
   wheelbase_mm:  215
@@ -2894,7 +2894,7 @@ frames:  {
 frames:  {
   uuid:  "01923019-3008-7001-8001-000000000001"
   id:  "tbs-source-one-v5-frame"
-  manufacturer:  "TBS"
+  manufacturer:  "Team Black Sheep"
   name:  "TBS Source One V5 5-Inch Frame"
   weight_g:  125
   wheelbase_mm:  226

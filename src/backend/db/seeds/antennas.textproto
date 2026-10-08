@@ -98,7 +98,7 @@ antennas: {
 antennas: {
   uuid: "a27e48be-0c3c-4884-86a5-88ca80f447bc"
   id: "tbs-triumph-pro-(rhcp)"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Triumph Pro (RHCP)"
   weight_g: 6.6
   connector: "SMA"
@@ -115,7 +115,7 @@ antennas: {
 antennas: {
   uuid: "75f229f4-b202-48ea-82d0-d17cb0e16df3"
   id: "tbs-immortal-t-v2"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Immortal T V2"
   weight_g: 0.84
   connector: "U.FL"
@@ -132,7 +132,7 @@ antennas: {
 antennas: {
   uuid: "c74eb058-4a03-4c01-9b94-0cf434369dc2"
   id: "tbs-diamond-antenna"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Diamond Antenna"
   weight_g: 20.6
   connector: "SMA"
@@ -591,7 +591,7 @@ antennas: {
 antennas: {
   uuid: "61f73529-a335-42e4-a7ee-4cf6f0306f48"
   id: "tbs-tracer-immortal-t-antenna"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Tracer Immortal T Antenna"
   weight_g: 0.84
   connector: "U.FL"
@@ -608,7 +608,7 @@ antennas: {
 antennas: {
   uuid: "65c6a869-60f1-48cf-a75f-2cccbd971a0a"
   id: "tbs-tracer-monopole-rx-antenna"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Tracer Monopole RX Antenna"
   weight_g: 0.33
   connector: "U.FL"
@@ -709,7 +709,7 @@ antennas: {
 antennas: {
   uuid: "e2d8da94-616c-499a-bbe5-f152f1a54b9d"
   id: "tbs-crossfire-immortal-t-v2"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Crossfire Immortal T V2"
   weight_g: 3.4
   connector: "U.FL"
@@ -798,7 +798,7 @@ antennas: {
 antennas: {
   uuid: "206c4d0e-50cf-4bd3-8536-771a3f26aa0c"
   id: "matek-900mhz-receiver-dipole-antenna"
-  manufacturer: "Matek"
+  manufacturer: "Matek Systems"
   name: "Matek 900MHz Receiver Dipole Antenna"
   weight_g: 5.3
   connector: "U.FL"
@@ -895,7 +895,7 @@ antennas: {
 antennas: {
   uuid: "2006358a-ee5a-4e77-9102-00e6fb83e6ed"
   id: "walksnail-ascent-hd-lite-antenna"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Ascent HD Lite+ Antenna"
   weight_g: 52
   connector: "SMA"
@@ -912,7 +912,7 @@ antennas: {
 antennas: {
   uuid: "5d9f959b-93f7-494e-b835-a1193ef35738"
   id: "polar-antenna-for-vista"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Polar Antenna for Vista"
   weight_g: 1
   connector: "U.FL"
@@ -1264,7 +1264,7 @@ antennas: {
 antennas: {
   uuid: "4cef26e4-13dd-4830-9c0c-9d0e6bebac9b"
   id: "5-8ghz-u-fl-light-dipole-antenna"
-  manufacturer: "Rotor Riot Store"
+  manufacturer: "Rotor Riot"
   name: "5.8Ghz U.FL Light Dipole Antenna"
   weight_g: 1.03
   connector: "U.FL"
@@ -1272,7 +1272,7 @@ antennas: {
   frequency_band_mhz: 5800
   length_mm: 65
   gain_dbi: 2
-  description: "Rotor Riot Store 5.8Ghz U.FL Light Dipole Antenna Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
+  description: "Rotor Riot 5.8Ghz U.FL Light Dipole Antenna Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/antennas.html"
@@ -1382,7 +1382,7 @@ antennas: {
 antennas: {
   uuid: "4d7bd388-3020-4e68-b6d5-026bd88a4ea5"
   id: "5-8ghz-u-fl-dipole-whip-antenna-linear"
-  manufacturer: "Rotor Riot Store"
+  manufacturer: "Rotor Riot"
   name: "5.8GHz U.FL Dipole Whip Antenna - Linear"
   weight_g: 12
   connector: "U.FL"
@@ -1390,7 +1390,7 @@ antennas: {
   frequency_band_mhz: 5800
   length_mm: 65
   gain_dbi: 2
-  description: "Rotor Riot Store 5.8GHz U.FL Dipole Whip Antenna - Linear Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
+  description: "Rotor Riot 5.8GHz U.FL Dipole Whip Antenna - Linear Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/antennas.html"
@@ -1576,7 +1576,7 @@ antennas: {
 antennas: {
   uuid: "f3e51fbf-ba17-4cb8-889a-a8c907b4c82e"
   id: "polar-antenna-10-5cm"
-  manufacturer: "Caddx"
+  manufacturer: "CADDX"
   name: "Polar Antenna 10.5cm"
   weight_g: 1.5
   connector: "U.FL"
@@ -1733,7 +1733,7 @@ antennas: {
 antennas: {
   uuid: "abe77204-2c98-464d-8df0-caa85e5df1bd"
   id: "mamba-ultra-antenna-5-8g-mmcx-bla"
-  manufacturer: "DIATONE OFFICIAL"
+  manufacturer: "Diatone"
   name: "Mamba Ultra Antenna 5.8G MMCX Bla"
   weight_g: 3.5
   connector: "MMCX"
@@ -1771,7 +1771,7 @@ antennas: {
 antennas: {
   uuid: "81de0899-6024-4c9f-9e4c-fc41cda1edb1"
   id: "osprey-flip-g2-dual-band-antenna"
-  manufacturer: "FlyFish RC"
+  manufacturer: "FlyFishRC"
   name: "Osprey FLIP G2 Dual band Antenna"
   weight_g: 3.2
   connector: "SMA"
@@ -1914,7 +1914,7 @@ antennas: {
 antennas: {
   uuid: "16a2f1be-d573-4d55-8e4d-576696e51b19"
   id: "osprey-5-8ghz-150mm-sma-antenna-rhcp"
-  manufacturer: "FlyFish-RC"
+  manufacturer: "FlyFishRC"
   name: "Osprey 5.8Ghz 150mm SMA Antenna - RHCP"
   weight_g: 6.9
   connector: "SMA"
@@ -2133,7 +2133,7 @@ antennas: {
 antennas: {
   uuid: "01923019-3009-7001-8001-000000000004"
   id: "tbs-triumph-pro-sma-rhcp"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Triumph Pro 5.8GHz SMA RHCP"
   weight_g: 9.4
   connector: "SMA"

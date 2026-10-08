@@ -1,7 +1,7 @@
 video_transmitters: {
   uuid: "ecc4d1d6-b8da-4f13-bd14-737c5eb17b08"
   id: "tbs-unify-pro32-nano"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Unify Pro32 Nano"
   weight_g: 1
   protocol: "DJI Digital"
@@ -186,7 +186,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "01a11091-1f13-7669-9fc3-1a0a8a31c17b"
   id: "caddx-avatar-hd-nano-kit-v3"
-  manufacturer: "Caddx"
+  manufacturer: "CADDX"
   name: "Caddx Avatar HD Nano Kit V3"
   weight_g: 1.8
   protocol: "Walksnail Avatar"
@@ -328,7 +328,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "802219e5-dff7-474a-97bf-5df0f886a768"
   id: "caddxfpv-gimbal-gm3-v2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "CaddxFPV Gimbal GM3 V2"
   weight_g: 46
   protocol: "Analog"
@@ -353,7 +353,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "8dc2c5ec-4c27-42cb-8046-d926ab198a8a"
   id: "walksnail-ascent-vrx-lite-vtx-kit"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Ascent VRX + Lite VTX Kit"
   weight_g: 6
   protocol: "Walksnail Avatar"
@@ -378,7 +378,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "eb9ce8b8-225b-4e7c-a323-b5e705024e48"
   id: "walksnail-camera-nd-filter"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Camera ND Filter"
   weight_g: 1
   protocol: "Walksnail Avatar"
@@ -403,7 +403,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "f3892e58-1c60-4f9c-b5bc-9c8c1234b6ee"
   id: "walksnail-pro-kit-gm3-v2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Pro Kit + GM3 V2"
   weight_g: 146
   protocol: "Walksnail Avatar"
@@ -428,7 +428,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "fcbff714-cda6-47a1-9dca-77e6b268b55b"
   id: "walksnail-moonlight-kit-gm3-v2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Moonlight Kit + GM3 V2"
   weight_g: 146
   protocol: "Walksnail Avatar"
@@ -453,7 +453,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "ad6f5224-1fac-4fa9-9f66-b172b5d46235"
   id: "walksnail-avatar-repeater-gt-kit"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar Repeater + GT Kit"
   weight_g: 52
   protocol: "Walksnail Avatar"
@@ -478,7 +478,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "c4dec316-88ff-4b8b-85c0-30ad975127c1"
   id: "caddxfpv-gm1-v2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "CaddxFPV GM1 V2"
   weight_g: 5.9
   protocol: "Analog"
@@ -503,7 +503,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "5b19a5bf-a49b-4104-88b7-276addfc50ed"
   id: "walksnail-avatar-fpv-vrx-gt-kit"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar FPV VRX + GT Kit"
   weight_g: 3.5
   protocol: "Walksnail Avatar"
@@ -528,7 +528,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "6a245bb7-cf38-444d-b1e9-2e4bd3a631ef"
   id: "5-2g-and-5-8g-antenna"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "5.2G and 5.8G Antenna"
   weight_g: 3.7
   protocol: "Analog"
@@ -553,7 +553,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "fc5f8791-c2c0-4917-8e64-64ee7ea0a858"
   id: "walksnail-avatar-repeater-vrx"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar Repeater + VRX"
   weight_g: 145.9
   protocol: "Walksnail Avatar"
@@ -578,7 +578,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "9eb6ad7d-6255-444b-b7ee-42b986763096"
   id: "walksnail-avatar-fpv-vrx-avatar"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar FPV VRX + Avatar"
   weight_g: 3.5
   protocol: "Walksnail Avatar"
@@ -603,7 +603,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "301c812c-2442-4136-9ddc-25b3281d7014"
   id: "walksnail-avatar-fpv-vrx-moonlight-kit"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar FPV VRX + Moonlight Kit"
   weight_g: 3.5
   protocol: "Walksnail Avatar"
@@ -628,7 +628,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "d1faf719-cf91-40b3-a6f4-1bd6cc4677f2"
   id: "caddxfpv-gm2-pro-kit"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "CADDXFPV GM2 + Pro Kit"
   weight_g: 51.5
   protocol: "Analog"
@@ -653,7 +653,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "82fb6930-218a-4510-8370-1f14f087a079"
   id: "caddxfpv-gm1-gm2-gm3"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "CADDXFPV GM1/GM2/GM3"
   weight_g: 16
   protocol: "Analog"
@@ -678,7 +678,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "bfc416af-9963-40a8-bf15-b7c72bd55580"
   id: "1-to-2-way-dc-power"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "1 to 2 Way DC Power"
   weight_g: 40
   protocol: "Analog"
@@ -703,7 +703,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "7497b6c0-28d2-47a9-a772-71feea53274e"
   id: "walksnail-avatar-hd-nano-camera-v3"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Nano Camera  V3"
   weight_g: 3
   protocol: "Walksnail Avatar"
@@ -728,7 +728,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "e9297ea2-b4f1-4a85-a639-05f1fa35dc4e"
   id: "walksnail-avatar-hd-camera-v2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Camera V2"
   weight_g: 1.8
   protocol: "Walksnail Avatar"
@@ -1386,7 +1386,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "65c72514-564b-43bc-8660-2e09aea98ffa"
   id: "cl2-4s-5-solder-free-built"
-  manufacturer: "Rotor Riot Builds"
+  manufacturer: "Rotor Riot"
   name: "CL2 4S 5 Solder-Free Built &"
   weight_g: 98
   protocol: "Analog"
@@ -1521,7 +1521,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "654d5ce1-ed4d-4768-ab8b-083a2693c02e"
   id: "gm-series-fpv-gimbal"
-  manufacturer: "Caddx"
+  manufacturer: "CADDX"
   name: "GM Series FPV Gimbal"
   weight_g: 67
   protocol: "Analog"
@@ -1817,7 +1817,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "2ff0872c-0f9a-4b9a-9415-8dacd00316f4"
   id: "u-fl-to-rp-sma-adapter"
-  manufacturer: "Rotor Riot Store"
+  manufacturer: "Rotor Riot"
   name: "u.FL to RP-SMA Adapter"
   weight_g: 5.7
   protocol: "Analog"
@@ -1825,7 +1825,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "Rotor Riot Store u.FL to RP-SMA Adapter Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 5.7g."
+  description: "Rotor Riot u.FL to RP-SMA Adapter Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 5.7g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -2167,7 +2167,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "9a998a95-d5a0-4f8e-a476-334372d75864"
   id: "mamba-ultra-tiny-vtx-pdb-2-pcs"
-  manufacturer: "DIATONE INNOVATIONS"
+  manufacturer: "Diatone"
   name: "MAMBA Ultra Tiny VTX PDB  （2/pcs）"
   weight_g: 6
   protocol: "Analog"
@@ -2175,7 +2175,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "DIATONE INNOVATIONS MAMBA Ultra Tiny VTX PDB  （2/pcs） Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 6.0g."
+  description: "Diatone MAMBA Ultra Tiny VTX PDB  （2/pcs） Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 6.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -2235,7 +2235,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "10c9aab1-e7ea-41f2-a77f-c735553386fb"
   id: "sub250-oasisfly30-3-inches-hd"
-  manufacturer: "sub250"
+  manufacturer: "Sub250"
   name: "Sub250 Oasisfly30 3 Inches HD"
   weight_g: 170
   protocol: "Analog"
@@ -2252,7 +2252,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "c36fac3c-e9f4-4dd7-9446-be4a98c2306d"
   id: "sub250-dollyfly25-hd-o3"
-  manufacturer: "sub250"
+  manufacturer: "Sub250"
   name: "Sub250 DollyFly25 HD O3"
   weight_g: 180
   protocol: "DJI Digital"
@@ -2727,7 +2727,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "5b576b3e-f5d8-4677-9bec-e4747f062d58"
   id: "beta-test-walksnail-neuxs-aio-1s-flight-2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "[BETA TEST] Walksnail Neuxs AIO-1S Flight"
   is_internal_only: true
   weight_g: 4.6
@@ -2753,7 +2753,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "2d11f7f9-88ae-474b-bc83-c3103e747e50"
   id: "internal-video-transmitter-badb9181-c95e-4407-b5d7-f9d0e3d38ba1"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 41.6
@@ -2779,7 +2779,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "15c94828-ee1d-4239-9c93-e18e5fd8d192"
   id: "walksnail-avatar-gt-kit-only-2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar GT KIT Only"
   is_internal_only: true
   weight_g: 41.6
@@ -2805,7 +2805,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "8da83e83-ee07-4024-8536-8372a5f17dff"
   id: "walksnail-avatar-hd-kit-v2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
   weight_g: 1.8
@@ -2831,7 +2831,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "1fab39e5-e2c0-47ba-b755-67725a018698"
   id: "walksnail-avatar-hd-kit-v2-2"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
   weight_g: 1.8
@@ -3571,7 +3571,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "14837492-0e30-419a-a407-6f0946593587"
   id: "beta-test-walksnail-neuxs-aio-1s-flight-3"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "[BETA TEST] Walksnail Neuxs AIO-1S Flight"
   is_internal_only: true
   weight_g: 4.6
@@ -3597,7 +3597,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "55644e34-8f82-4bf0-8cd2-bffde219d9b3"
   id: "internal-video-transmitter-761a48fd-ddaa-4197-a592-f4e46b642096"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 41.6
@@ -3623,7 +3623,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "be8850ae-b9e0-45b8-8cc7-38352cf9cd6c"
   id: "walksnail-avatar-gt-kit-only-3"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar GT KIT Only"
   is_internal_only: true
   weight_g: 41.6
@@ -3649,7 +3649,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "a63bde13-6bad-422a-85e6-06f89470bda3"
   id: "walksnail-avatar-hd-kit-v2-3"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
   weight_g: 1.8
@@ -3675,7 +3675,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "2b603881-0555-4d0b-aa22-0f341c4786f8"
   id: "walksnail-avatar-hd-kit-v2-4"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
   weight_g: 1.8
@@ -4415,7 +4415,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "426237c6-d296-4d74-8f0b-c144c9a204a8"
   id: "beta-test-walksnail-neuxs-aio-1s-flight-4"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "[BETA TEST] Walksnail Neuxs AIO-1S Flight"
   is_internal_only: true
   weight_g: 4.6
@@ -4441,7 +4441,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "3bf1d3e6-50f4-4777-8513-dca52852b4b6"
   id: "internal-video-transmitter-d6131bd0-8b52-4252-b36b-3d698f404f12"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 41.6
@@ -4467,7 +4467,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "af52d562-b2c0-4be5-a985-d1a8248f17af"
   id: "walksnail-avatar-gt-kit-only-4"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar GT KIT Only"
   is_internal_only: true
   weight_g: 41.6
@@ -4493,7 +4493,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "ca62491c-8b0d-4508-aae9-057b31d321f5"
   id: "walksnail-avatar-hd-kit-v2-5"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
   weight_g: 1.8
@@ -4519,7 +4519,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "62d3bb6a-06b0-43c2-a884-a4a7aa328ce2"
   id: "walksnail-avatar-hd-kit-v2-6"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
   weight_g: 1.8
@@ -4869,7 +4869,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "9355ce0e-4479-4450-a3b2-09fe7b0b6475"
   id: "walksnail-avatar-digital-hd-mini-1s-2"
-  manufacturer: "FlyFish-RC"
+  manufacturer: "FlyFishRC"
   name: "Walksnail Avatar Digital HD Mini 1S"
   is_internal_only: true
   weight_g: 6.8
@@ -4887,7 +4887,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "983d667f-4882-4839-969d-39fc20a4e871"
   id: "walksnail-avatar-digital-hd-vtx-nano-2"
-  manufacturer: "FlyFish-RC"
+  manufacturer: "FlyFishRC"
   name: "Walksnail Avatar Digital HD VTX Nano"
   is_internal_only: true
   weight_g: 6.8
@@ -4905,7 +4905,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "f4d3f83a-df92-4423-970c-f59134625658"
   id: "walksnail-avatar-digital-hd-vtx-micro-2"
-  manufacturer: "FlyFish-RC"
+  manufacturer: "FlyFishRC"
   name: "Walksnail Avatar Digital HD VTX Micro"
   is_internal_only: true
   weight_g: 6.8
@@ -4948,7 +4948,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "01923019-3004-7001-8001-000000000002"
   id: "caddx-walksnail-avatar-hd-pro-vtx"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Pro VTX"
   weight_g: 18
   protocol: "Walksnail Avatar"
@@ -4973,7 +4973,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "01923019-3004-7001-8001-000000000003"
   id: "caddx-walksnail-avatar-hd-mini-1s-lite-vtx"
-  manufacturer: "CADDXFPV"
+  manufacturer: "CADDX"
   name: "Walksnail Avatar HD Mini 1S Lite VTX"
   weight_g: 7.8
   protocol: "Walksnail Avatar"
@@ -4998,7 +4998,7 @@ video_transmitters: {
 video_transmitters: {
   uuid: "01923019-3004-7001-8001-000000000006"
   id: "tbs-unify-pro32-hv-5.8ghz"
-  manufacturer: "TBS"
+  manufacturer: "Team Black Sheep"
   name: "TBS Unify Pro32 HV 5.8GHz VTX"
   weight_g: 8.7
   protocol: "Analog"
