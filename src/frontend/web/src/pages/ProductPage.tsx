@@ -1,9 +1,9 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { getMotor } from "../gen/quadsmith/motor-MotorService_connectquery";
 import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
 import { formatStatorSize } from "../lib/format";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ChevronRight } from "lucide-react";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
   [ReferenceLinkType.PURCHASE]: "Purchase",
@@ -21,22 +21,41 @@ export function ProductPage() {
   const isMotors = collectionId === "motors";
   const { data, isLoading, error } = useQuery(getMotor, { id: productId }, { enabled: isMotors && !!productId });
 
-  if (!isMotors) {
-    return <p>Product page for {collectionId} coming soon.</p>;
-  }
-
-  if (isLoading) return <p>Loading details...</p>;
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
-  if (!data) return <p>Product not found.</p>;
-
   const m = data;
 
   return (
     <div className="max-w-3xl">
-      <div className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 capitalize flex gap-2">
-        <span>{categoryId}</span> &gt; <span>{collectionId?.replace('_', ' ')}</span> &gt; <span>{m.name || m.id}</span>
-      </div>
-      <div className="mb-8">
+      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap">
+        <Link
+          to={`/components/${categoryId}`}
+          className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+        >
+          {categoryId}
+        </Link>
+        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
+        <Link
+          to={`/components/${categoryId}/${collectionId}`}
+          className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+        >
+          {collectionId?.replace(/[-_]/g, ' ')}
+        </Link>
+        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
+        <span className="text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-md" aria-current="page">
+          {m?.name || m?.id || productId}
+        </span>
+      </nav>
+
+      {!isMotors ? (
+        <p>Product page for {collectionId?.replace(/[-_]/g, ' ')} coming soon.</p>
+      ) : isLoading ? (
+        <p>Loading details...</p>
+      ) : error ? (
+        <p className="text-red-500">Error: {error.message}</p>
+      ) : !m ? (
+        <p>Product not found.</p>
+      ) : (
+        <>
+          <div className="mb-8">
         <h1 className="text-3xl font-bold">{m.name || m.id}</h1>
         <p className="text-xl text-zinc-500 dark:text-zinc-400">{m.manufacturer || "Unknown Manufacturer"}</p>
       </div>
@@ -88,6 +107,8 @@ export function ProductPage() {
             ))}
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );

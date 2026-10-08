@@ -475,8 +475,21 @@ export function CollectionPage() {
 
   return (
     <div>
+      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap">
+        <Link
+          to={`/components/${categoryId}`}
+          className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+        >
+          {categoryId}
+        </Link>
+        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
+        <span className="text-zinc-900 dark:text-zinc-100 font-medium capitalize" aria-current="page">
+          {collectionId?.replace(/[-_]/g, ' ')}
+        </span>
+      </nav>
+
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold capitalize">{collectionId?.replace('_', ' ')}</h1>
+        <h1 className="text-3xl font-bold capitalize">{collectionId?.replace(/[-_]/g, ' ')}</h1>
       </div>
 
       {/* Smart Filter Input above the table */}
