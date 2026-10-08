@@ -2058,9 +2058,9 @@ func main() {
 
 func GetDefaultColumns(m proto.Message) []string {
 	opts := m.ProtoReflect().Descriptor().Options()
-	if proto.HasExtension(opts, pb.E_Collection) {
-		if coll, ok := proto.GetExtension(opts, pb.E_Collection).(*pb.CollectionOptions); ok && coll != nil && len(coll.DefaultColumns) > 0 {
-			return coll.DefaultColumns
+	if proto.HasExtension(opts, pb.E_Frontend) {
+		if front, ok := proto.GetExtension(opts, pb.E_Frontend).(*pb.FrontendOptions); ok && front != nil && len(front.DefaultColumns) > 0 {
+			return front.DefaultColumns
 		}
 	}
 	return nil

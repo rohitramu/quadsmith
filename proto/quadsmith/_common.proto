@@ -19,10 +19,10 @@ message NameOptions {
 }
 
 // ---------------------------------------------------------
-// Collection Options
+// Frontend Options
 // ---------------------------------------------------------
 
-message CollectionOptions {
+message FrontendOptions {
   // The default columns to display in CLI tables and UI collection listings.
   repeated string default_columns = 1;
 }
@@ -32,8 +32,8 @@ message CollectionOptions {
 // ---------------------------------------------------------
 
 extend google.protobuf.MessageOptions {
-  // Collection view configuration for UI and CLI listings.
-  CollectionOptions collection = 50001;
+  // Frontend configuration for UI and CLI listings.
+  FrontendOptions frontend = 50001;
 
   // Human-readable entity names for UI, CLI, and code generators.
   NameOptions name = 50002;

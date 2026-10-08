@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith__common: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChdxdWFkc21pdGgvX2NvbW1vbi5wcm90bxIJcXVhZHNtaXRoIi8KC05hbWVPcHRpb25zEhAKCHNpbmd1bGFyGAEgASgJEg4KBnBsdXJhbBgCIAEoCSIsChFDb2xsZWN0aW9uT3B0aW9ucxIXCg9kZWZhdWx0X2NvbHVtbnMYASADKAk6XwoKY29sbGVjdGlvbhIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgASgLMhwucXVhZHNtaXRoLkNvbGxlY3Rpb25PcHRpb25zUgpjb2xsZWN0aW9uOk0KBG5hbWUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0oYDIAEoCzIWLnF1YWRzbWl0aC5OYW1lT3B0aW9uc1IEbmFtZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "ChdxdWFkc21pdGgvX2NvbW1vbi5wcm90bxIJcXVhZHNtaXRoIi8KC05hbWVPcHRpb25zEhAKCHNpbmd1bGFyGAEgASgJEg4KBnBsdXJhbBgCIAEoCSIqCg9Gcm9udGVuZE9wdGlvbnMSFwoPZGVmYXVsdF9jb2x1bW5zGAEgAygJOlkKCGZyb250ZW5kEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGNGGAyABKAsyGi5xdWFkc21pdGguRnJvbnRlbmRPcHRpb25zUghmcm9udGVuZDpNCgRuYW1lEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGNKGAyABKAsyFi5xdWFkc21pdGguTmFtZU9wdGlvbnNSBG5hbWVCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
     [file_google_protobuf_descriptor],
   );
 
@@ -46,9 +46,9 @@ export const NameOptionsSchema: GenMessage<NameOptions> =
   messageDesc(file_quadsmith__common, 0);
 
 /**
- * @generated from message quadsmith.CollectionOptions
+ * @generated from message quadsmith.FrontendOptions
  */
-export type CollectionOptions = Message<"quadsmith.CollectionOptions"> & {
+export type FrontendOptions = Message<"quadsmith.FrontendOptions"> & {
   /**
    * The default columns to display in CLI tables and UI collection listings.
    *
@@ -58,19 +58,19 @@ export type CollectionOptions = Message<"quadsmith.CollectionOptions"> & {
 };
 
 /**
- * Describes the message quadsmith.CollectionOptions.
- * Use `create(CollectionOptionsSchema)` to create a new message.
+ * Describes the message quadsmith.FrontendOptions.
+ * Use `create(FrontendOptionsSchema)` to create a new message.
  */
-export const CollectionOptionsSchema: GenMessage<CollectionOptions> =
+export const FrontendOptionsSchema: GenMessage<FrontendOptions> =
   /*@__PURE__*/
   messageDesc(file_quadsmith__common, 1);
 
 /**
- * Collection view configuration for UI and CLI listings.
+ * Frontend configuration for UI and CLI listings.
  *
- * @generated from extension: quadsmith.CollectionOptions collection = 50001;
+ * @generated from extension: quadsmith.FrontendOptions frontend = 50001;
  */
-export const collection: GenExtension<MessageOptions, CollectionOptions> =
+export const frontend: GenExtension<MessageOptions, FrontendOptions> =
   /*@__PURE__*/
   extDesc(file_quadsmith__common, 0);
 

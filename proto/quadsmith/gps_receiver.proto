@@ -17,7 +17,7 @@ message GpsReceiver {
     plural: "GPS Receivers"
   };
   option (quadsmith.sql.table_name) = "gps_receivers";
-  option (quadsmith.collection) = {
+  option (quadsmith.frontend) = {
     default_columns: [
       "manufacturer",
       "name",

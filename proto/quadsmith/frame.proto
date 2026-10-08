@@ -17,7 +17,7 @@ message Frame {
     plural: "Frames"
   };
   option (quadsmith.sql.table_name) = "frames";
-  option (quadsmith.collection) = {
+  option (quadsmith.frontend) = {
     default_columns: [
       "manufacturer",
       "name",

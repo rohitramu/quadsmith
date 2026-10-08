@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { getOption } from "@bufbuild/protobuf";
-import { collection as collectionOpt } from "../gen/quadsmith/_common_pb";
+import { frontend as frontendOpt } from "../gen/quadsmith/_common_pb";
 import {
   ArrowUp,
   ArrowDown,
@@ -328,7 +328,7 @@ function CollectionTableView({
   // Read default columns from protobuf option if available, otherwise collection defaults
   const protoDefaultCols = useMemo(() => {
     try {
-      const opts = getOption(collection.schema, collectionOpt);
+      const opts = getOption(collection.schema, frontendOpt);
       if (opts?.defaultColumns && opts.defaultColumns.length > 0) {
         return opts.defaultColumns;
       }

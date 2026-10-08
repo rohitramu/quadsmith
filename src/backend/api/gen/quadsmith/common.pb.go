@@ -76,7 +76,7 @@ func (x *NameOptions) GetPlural() string {
 	return ""
 }
 
-type CollectionOptions struct {
+type FrontendOptions struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The default columns to display in CLI tables and UI collection listings.
 	DefaultColumns []string `protobuf:"bytes,1,rep,name=default_columns,json=defaultColumns,proto3" json:"default_columns,omitempty"`
@@ -84,20 +84,20 @@ type CollectionOptions struct {
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *CollectionOptions) Reset() {
-	*x = CollectionOptions{}
+func (x *FrontendOptions) Reset() {
+	*x = FrontendOptions{}
 	mi := &file_quadsmith__common_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CollectionOptions) String() string {
+func (x *FrontendOptions) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CollectionOptions) ProtoMessage() {}
+func (*FrontendOptions) ProtoMessage() {}
 
-func (x *CollectionOptions) ProtoReflect() protoreflect.Message {
+func (x *FrontendOptions) ProtoReflect() protoreflect.Message {
 	mi := &file_quadsmith__common_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -109,12 +109,12 @@ func (x *CollectionOptions) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CollectionOptions.ProtoReflect.Descriptor instead.
-func (*CollectionOptions) Descriptor() ([]byte, []int) {
+// Deprecated: Use FrontendOptions.ProtoReflect.Descriptor instead.
+func (*FrontendOptions) Descriptor() ([]byte, []int) {
 	return file_quadsmith__common_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CollectionOptions) GetDefaultColumns() []string {
+func (x *FrontendOptions) GetDefaultColumns() []string {
 	if x != nil {
 		return x.DefaultColumns
 	}
@@ -124,10 +124,10 @@ func (x *CollectionOptions) GetDefaultColumns() []string {
 var file_quadsmith__common_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
-		ExtensionType: (*CollectionOptions)(nil),
+		ExtensionType: (*FrontendOptions)(nil),
 		Field:         50001,
-		Name:          "quadsmith.collection",
-		Tag:           "bytes,50001,opt,name=collection",
+		Name:          "quadsmith.frontend",
+		Tag:           "bytes,50001,opt,name=frontend",
 		Filename:      "quadsmith/_common.proto",
 	},
 	{
@@ -142,10 +142,10 @@ var file_quadsmith__common_proto_extTypes = []protoimpl.ExtensionInfo{
 
 // Extension fields to descriptorpb.MessageOptions.
 var (
-	// Collection view configuration for UI and CLI listings.
+	// Frontend configuration for UI and CLI listings.
 	//
-	// optional quadsmith.CollectionOptions collection = 50001;
-	E_Collection = &file_quadsmith__common_proto_extTypes[0]
+	// optional quadsmith.FrontendOptions frontend = 50001;
+	E_Frontend = &file_quadsmith__common_proto_extTypes[0]
 	// Human-readable entity names for UI, CLI, and code generators.
 	//
 	// optional quadsmith.NameOptions name = 50002;
@@ -159,12 +159,10 @@ const file_quadsmith__common_proto_rawDesc = "" +
 	"\x17quadsmith/_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"A\n" +
 	"\vNameOptions\x12\x1a\n" +
 	"\bsingular\x18\x01 \x01(\tR\bsingular\x12\x16\n" +
-	"\x06plural\x18\x02 \x01(\tR\x06plural\"<\n" +
-	"\x11CollectionOptions\x12'\n" +
-	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumns:_\n" +
-	"\n" +
-	"collection\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2\x1c.quadsmith.CollectionOptionsR\n" +
-	"collection:M\n" +
+	"\x06plural\x18\x02 \x01(\tR\x06plural\":\n" +
+	"\x0fFrontendOptions\x12'\n" +
+	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumns:Y\n" +
+	"\bfrontend\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2\x1a.quadsmith.FrontendOptionsR\bfrontend:M\n" +
 	"\x04name\x12\x1f.google.protobuf.MessageOptions\x18҆\x03 \x01(\v2\x16.quadsmith.NameOptionsR\x04nameB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
@@ -182,13 +180,13 @@ func file_quadsmith__common_proto_rawDescGZIP() []byte {
 var file_quadsmith__common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_quadsmith__common_proto_goTypes = []any{
 	(*NameOptions)(nil),                 // 0: quadsmith.NameOptions
-	(*CollectionOptions)(nil),           // 1: quadsmith.CollectionOptions
+	(*FrontendOptions)(nil),             // 1: quadsmith.FrontendOptions
 	(*descriptorpb.MessageOptions)(nil), // 2: google.protobuf.MessageOptions
 }
 var file_quadsmith__common_proto_depIdxs = []int32{
-	2, // 0: quadsmith.collection:extendee -> google.protobuf.MessageOptions
+	2, // 0: quadsmith.frontend:extendee -> google.protobuf.MessageOptions
 	2, // 1: quadsmith.name:extendee -> google.protobuf.MessageOptions
-	1, // 2: quadsmith.collection:type_name -> quadsmith.CollectionOptions
+	1, // 2: quadsmith.frontend:type_name -> quadsmith.FrontendOptions
 	0, // 3: quadsmith.name:type_name -> quadsmith.NameOptions
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
