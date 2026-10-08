@@ -538,28 +538,6 @@ video_transmitters: {
 }
 video_transmitters: {
 
-  uuid: "bfc416af-9963-40a8-bf15-b7c72bd55580"
-  id: "1-to-2-way-dc-power"
-  manufacturer: "CADDX"
-  name: "1 to 2 Way DC Power"
-  weight_g: 40
-  protocol: "Analog"
-  max_power_mw: 800
-  input_voltage_min_v: 7
-  input_voltage_max_v: 26
-  antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "1 to 2 Way DC Power Splitter Cable For VRX"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/1-to-2-way-dc-power-splitter-cable-for-vrx"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/caddx-1-to-2-way-dc-power-splitter-cable"
-  }
-}
-video_transmitters: {
-
   uuid: "7497b6c0-28d2-47a9-a772-71feea53274e"
   id: "walksnail-avatar-hd-nano-camera-v3"
   manufacturer: "CADDX"
