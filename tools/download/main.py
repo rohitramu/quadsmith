@@ -14,8 +14,8 @@ import time
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from curl_cffi import requests
 from bs4 import BeautifulSoup
+from curl_cffi import requests
 
 DEFAULT_PARALLELISM = 10
 

@@ -25,9 +25,7 @@ export function CategoryPage() {
           </Link>
         ))}
         {collections.length === 0 && (
-          <p className="text-zinc-500">
-            No collections found in this category.
-          </p>
+          <p className="text-zinc-500">No collections found in this category.</p>
         )}
       </div>
     </div>

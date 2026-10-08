@@ -17,14 +17,8 @@ export function AppRoutes() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="components/:categoryId" element={<CategoryPage />} />
-        <Route
-          path="components/:categoryId/:collectionId"
-          element={<CollectionPage />}
-        />
-        <Route
-          path="components/:categoryId/:collectionId/:productId"
-          element={<ProductPage />}
-        />
+        <Route path="components/:categoryId/:collectionId" element={<CollectionPage />} />
+        <Route path="components/:categoryId/:collectionId/:productId" element={<ProductPage />} />
       </Route>
     </Routes>
   );

@@ -80,10 +80,7 @@ function ColumnSelector({
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     }
@@ -157,9 +154,7 @@ function ColumnSelector({
           <div className="flex items-center justify-between px-2 py-1.5 border-b border-zinc-100 dark:border-zinc-800 mb-2">
             <span className="font-semibold text-zinc-800 dark:text-zinc-200">
               Columns{" "}
-              <span className="font-normal text-zinc-400">
-                ({visibleColumns.length} visible)
-              </span>
+              <span className="font-normal text-zinc-400">({visibleColumns.length} visible)</span>
             </span>
             <button
               type="button"
@@ -182,10 +177,7 @@ function ColumnSelector({
                   draggable
                   onDragStart={(e) => {
                     e.dataTransfer.effectAllowed = "move";
-                    e.dataTransfer.setData(
-                      "text/quadsmith-visible-idx",
-                      idx.toString(),
-                    );
+                    e.dataTransfer.setData("text/quadsmith-visible-idx", idx.toString());
                     setDraggedIndex(idx);
                   }}
                   onDragOver={(e) => {
@@ -199,9 +191,7 @@ function ColumnSelector({
                   onDrop={(e) => {
                     e.preventDefault();
                     setDragOverIndex(null);
-                    const hiddenId = e.dataTransfer.getData(
-                      "text/quadsmith-hidden-id",
-                    );
+                    const hiddenId = e.dataTransfer.getData("text/quadsmith-hidden-id");
                     if (hiddenId) {
                       const next = [...selectedColumnIds];
                       next.splice(idx, 0, hiddenId);
@@ -291,10 +281,7 @@ function ColumnSelector({
                     draggable
                     onDragStart={(e) => {
                       e.dataTransfer.effectAllowed = "copyMove";
-                      e.dataTransfer.setData(
-                        "text/quadsmith-hidden-id",
-                        col.id,
-                      );
+                      e.dataTransfer.setData("text/quadsmith-hidden-id", col.id);
                     }}
                     onClick={() => showColumn(col.id)}
                     className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-zinc-50 dark:hover:bg-zinc-800/60 cursor-pointer select-none text-zinc-500 dark:text-zinc-400 group"
@@ -351,8 +338,7 @@ function CollectionTableView({
     return collection.defaultColumnIds;
   }, [collection]);
 
-  const [selectedColumnIds, setSelectedColumnIds] =
-    useState<string[]>(protoDefaultCols);
+  const [selectedColumnIds, setSelectedColumnIds] = useState<string[]>(protoDefaultCols);
 
   const activeColumns = useMemo(() => {
     return selectedColumnIds
@@ -436,8 +422,7 @@ function CollectionTableView({
   const startItem = count > 0 ? pageIndex * pageSize + 1 : 0;
   const endItem = pageIndex * pageSize + count;
   const hasNextPage = Boolean(
-    nextPageToken ||
-    (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1]),
+    nextPageToken || (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1]),
   );
   const hasPrevPage = pageIndex > 0;
 
@@ -480,9 +465,7 @@ function CollectionTableView({
       />
 
       {isLoading && (
-        <p className="text-sm text-zinc-500 mb-4">
-          Loading {collection.name.toLowerCase()}...
-        </p>
+        <p className="text-sm text-zinc-500 mb-4">Loading {collection.name.toLowerCase()}...</p>
       )}
 
       {data && (
@@ -560,8 +543,7 @@ function CollectionTableView({
                       colSpan={activeColumns.length}
                       className="px-4 py-8 text-center text-zinc-500"
                     >
-                      No {collection.name.toLowerCase()} found matching the
-                      active filters.
+                      No {collection.name.toLowerCase()} found matching the active filters.
                     </td>
                   </tr>
                 )}

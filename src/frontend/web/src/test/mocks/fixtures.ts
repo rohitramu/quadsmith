@@ -16,8 +16,7 @@ export const mockMotor1: Motor = create(MotorSchema, {
   statorDiameterMm: 22,
   statorHeightMm: 7,
   kv: 1900,
-  description:
-    "Durable and affordable 2207 brushless motor for 5-inch freestyle quadcopters.",
+  description: "Durable and affordable 2207 brushless motor for 5-inch freestyle quadcopters.",
   referenceLinks: [
     {
       type: ReferenceLinkType.PURCHASE,
@@ -39,8 +38,7 @@ export const mockMotor2: Motor = create(MotorSchema, {
   statorDiameterMm: 22,
   statorHeightMm: 7.5,
   kv: 2020,
-  description:
-    "High-performance racing and freestyle motor engineered for maximum output.",
+  description: "High-performance racing and freestyle motor engineered for maximum output.",
   referenceLinks: [],
 });
 

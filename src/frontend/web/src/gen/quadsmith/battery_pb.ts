@@ -2,16 +2,8 @@
 // @generated from file quadsmith/battery.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -25,11 +17,7 @@ export const file_quadsmith_battery: GenFile =
   /*@__PURE__*/
   fileDesc(
     "ChdxdWFkc21pdGgvYmF0dGVyeS5wcm90bxIJcXVhZHNtaXRoIuoCCgdCYXR0ZXJ5EhIKBHV1aWQYASABKAlCBMjzGAESEAoCaWQYAiABKAlCBNjzGAESGgoMbWFudWZhY3R1cmVyGAMgASgJQgTg8xgBEgwKBG5hbWUYBCABKAkSEAoId2VpZ2h0X2cYBSABKAISFAoMY2FwYWNpdHlfbWFoGAYgASgNEhoKDGNlbGxfY291bnRfcxgHIAEoDUIE4PMYARIRCgljaGVtaXN0cnkYCCABKAkSEQoJY29ubmVjdG9yGAkgASgJEhMKC2Rlc2NyaXB0aW9uGAogASgJEjEKD3JlZmVyZW5jZV9saW5rcxgLIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOl2KtRgMbWFudWZhY3R1cmVyirUYBG5hbWWKtRgMY2VsbF9jb3VudF9zirUYDGNhcGFjaXR5X21haJK1GBQKB0JhdHRlcnkSCUJhdHRlcmllc8LzGAliYXR0ZXJpZXMiMAoRR2V0QmF0dGVyeVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJsChRMaXN0QmF0dGVyaWVzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlcKFUxpc3RCYXR0ZXJpZXNSZXNwb25zZRIlCgliYXR0ZXJpZXMYASADKAsyEi5xdWFkc21pdGguQmF0dGVyeRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkypAEKDkJhdHRlcnlTZXJ2aWNlEj4KCkdldEJhdHRlcnkSHC5xdWFkc21pdGguR2V0QmF0dGVyeVJlcXVlc3QaEi5xdWFkc21pdGguQmF0dGVyeRJSCg1MaXN0QmF0dGVyaWVzEh8ucXVhZHNtaXRoLkxpc3RCYXR0ZXJpZXNSZXF1ZXN0GiAucXVhZHNtaXRoLkxpc3RCYXR0ZXJpZXNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
-    [
-      file_quadsmith__common,
-      file_quadsmith__sql,
-      file_quadsmith_reference_link,
-    ],
+    [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link],
   );
 
 /**
@@ -180,18 +168,17 @@ export const ListBatteriesRequestSchema: GenMessage<ListBatteriesRequest> =
 /**
  * @generated from message quadsmith.ListBatteriesResponse
  */
-export type ListBatteriesResponse =
-  Message<"quadsmith.ListBatteriesResponse"> & {
-    /**
-     * @generated from field: repeated quadsmith.Battery batteries = 1;
-     */
-    batteries: Battery[];
+export type ListBatteriesResponse = Message<"quadsmith.ListBatteriesResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.Battery batteries = 1;
+   */
+  batteries: Battery[];
 
-    /**
-     * @generated from field: string next_page_token = 2;
-     */
-    nextPageToken: string;
-  };
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
 
 /**
  * Describes the message quadsmith.ListBatteriesResponse.

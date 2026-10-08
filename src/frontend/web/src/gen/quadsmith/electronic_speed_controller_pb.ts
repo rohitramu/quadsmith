@@ -2,16 +2,8 @@
 // @generated from file quadsmith/electronic_speed_controller.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -25,11 +17,7 @@ export const file_quadsmith_electronic_speed_controller: GenFile =
   /*@__PURE__*/
   fileDesc(
     "CitxdWFkc21pdGgvZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyLnByb3RvEglxdWFkc21pdGgiogMKGUVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXISEgoEdXVpZBgBIAEoCUIEyPMYARIQCgJpZBgCIAEoCUIE2PMYARIaCgxtYW51ZmFjdHVyZXIYAyABKAlCBODzGAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GBQgASgIEhAKCHdlaWdodF9nGAUgASgCEhIKCm1heF9tb3RvcnMYBiABKA0SGwoTbW90b3JfY3VycmVudF9tYXhfYRgHIAEoAhIdChVtb3Rvcl9jdXJyZW50X2J1cnN0X2EYCCABKAISEAoIZmlybXdhcmUYCSABKAkSEwoLZGVzY3JpcHRpb24YFSABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGBYgAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbms6X5K1GDsKG0VsZWN0cm9uaWMgU3BlZWQgQ29udHJvbGxlchIcRWxlY3Ryb25pYyBTcGVlZCBDb250cm9sbGVyc8LzGBxlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzIkIKI0dldEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkifQolTGlzdEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIo0BCiZMaXN0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcnNSZXNwb25zZRJKChxlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzGAEgAygLMiQucXVhZHNtaXRoLkVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMqACCiBFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyU2VydmljZRJ0ChxHZXRFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyEi4ucXVhZHNtaXRoLkdldEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0GiQucXVhZHNtaXRoLkVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXIShQEKHkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVycxIwLnF1YWRzbWl0aC5MaXN0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcnNSZXF1ZXN0GjEucXVhZHNtaXRoLkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
-    [
-      file_quadsmith__common,
-      file_quadsmith__sql,
-      file_quadsmith_reference_link,
-    ],
+    [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link],
   );
 
 /**
@@ -39,74 +27,73 @@ export const file_quadsmith_electronic_speed_controller: GenFile =
  *
  * @generated from message quadsmith.ElectronicSpeedController
  */
-export type ElectronicSpeedController =
-  Message<"quadsmith.ElectronicSpeedController"> & {
-    /**
-     * @generated from field: string uuid = 1;
-     */
-    uuid: string;
+export type ElectronicSpeedController = Message<"quadsmith.ElectronicSpeedController"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
 
-    /**
-     * @generated from field: string id = 2;
-     */
-    id: string;
+  /**
+   * @generated from field: string id = 2;
+   */
+  id: string;
 
-    /**
-     * @generated from field: string manufacturer = 3;
-     */
-    manufacturer: string;
+  /**
+   * @generated from field: string manufacturer = 3;
+   */
+  manufacturer: string;
 
-    /**
-     * @generated from field: string name = 4;
-     */
-    name: string;
+  /**
+   * @generated from field: string name = 4;
+   */
+  name: string;
 
-    /**
-     * @generated from field: bool is_internal_only = 20;
-     */
-    isInternalOnly: boolean;
+  /**
+   * @generated from field: bool is_internal_only = 20;
+   */
+  isInternalOnly: boolean;
 
-    /**
-     * @generated from field: float weight_g = 5;
-     */
-    weightG: number;
+  /**
+   * @generated from field: float weight_g = 5;
+   */
+  weightG: number;
 
-    /**
-     * E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
-     *
-     * @generated from field: uint32 max_motors = 6;
-     */
-    maxMotors: number;
+  /**
+   * E.g., 1 for individual arm ESCs, 4 for 4-in-1 boards, 8 for X8 boards
+   *
+   * @generated from field: uint32 max_motors = 6;
+   */
+  maxMotors: number;
 
-    /**
-     * Continuous and Burst amperage ratings
-     *
-     * @generated from field: float motor_current_max_a = 7;
-     */
-    motorCurrentMaxA: number;
+  /**
+   * Continuous and Burst amperage ratings
+   *
+   * @generated from field: float motor_current_max_a = 7;
+   */
+  motorCurrentMaxA: number;
 
-    /**
-     * @generated from field: float motor_current_burst_a = 8;
-     */
-    motorCurrentBurstA: number;
+  /**
+   * @generated from field: float motor_current_burst_a = 8;
+   */
+  motorCurrentBurstA: number;
 
-    /**
-     * E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
-     *
-     * @generated from field: string firmware = 9;
-     */
-    firmware: string;
+  /**
+   * E.g., "BLHeli_S", "BLHeli_32", "AM32", "Bluejay"
+   *
+   * @generated from field: string firmware = 9;
+   */
+  firmware: string;
 
-    /**
-     * @generated from field: string description = 21;
-     */
-    description: string;
+  /**
+   * @generated from field: string description = 21;
+   */
+  description: string;
 
-    /**
-     * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
-     */
-    referenceLinks: ReferenceLink[];
-  };
+  /**
+   * @generated from field: repeated quadsmith.ReferenceLink reference_links = 22;
+   */
+  referenceLinks: ReferenceLink[];
+};
 
 /**
  * Describes the message quadsmith.ElectronicSpeedController.

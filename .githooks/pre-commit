@@ -19,12 +19,22 @@ fi
 # Check Python formatting
 echo "Checking Python formatting..."
 if command -v uvx >/dev/null 2>&1; then
+    if ! uvx ruff check --select I tools/ > /dev/null 2>&1; then
+        echo "Error: Python imports are not sorted."
+        echo "Please run 'uvx ruff check --select I --fix tools/' to organize them."
+        exit 1
+    fi
     if ! uvx ruff format --check tools/ > /dev/null 2>&1; then
         echo "Error: Python files are not formatted."
         echo "Please run 'uvx ruff format tools/' to format them."
         exit 1
     fi
 elif command -v ruff >/dev/null 2>&1; then
+    if ! ruff check --select I tools/ > /dev/null 2>&1; then
+        echo "Error: Python imports are not sorted."
+        echo "Please run 'ruff check --select I --fix tools/' to organize them."
+        exit 1
+    fi
     if ! ruff format --check tools/ > /dev/null 2>&1; then
         echo "Error: Python files are not formatted."
         echo "Please run 'ruff format tools/' to format them."
@@ -34,19 +44,19 @@ fi
 
 # Check Go formatting
 echo "Checking Go formatting..."
-UNFORMATTED_GO=$(gofmt -l $(find . -name "*.go" -not -path "*/vendor/*" -not -path "*/.tmp/*"))
+UNFORMATTED_GO=$(gofmt -s -l $(find . -name "*.go" -not -path "*/vendor/*" -not -path "*/.tmp/*"))
 if [ -n "$UNFORMATTED_GO" ]; then
-    echo "Error: The following Go files are not formatted:"
+    echo "Error: The following Go files are not formatted or need simplification:"
     echo "$UNFORMATTED_GO"
-    echo "Please run 'gofmt -w <files>' before committing."
+    echo "Please run 'gofmt -s -w <files>' before committing."
     exit 1
 fi
 
-# Check TypeScript formatting
-echo "Checking TypeScript formatting..."
-if ! (cd src/frontend/web && npx prettier --check "*.ts" "src/**/*.{ts,tsx}" > /dev/null 2>&1); then
-    echo "Error: TypeScript files are not formatted."
-    echo "Please run '(cd src/frontend/web && npx prettier --write \"*.ts\" \"src/**/*.{ts,tsx}\")' before committing."
+# Check TypeScript, HTML, and CSS formatting
+echo "Checking TypeScript, HTML, and CSS formatting..."
+if ! (cd src/frontend/web && npx prettier --check "*.html" "*.ts" "src/**/*.{ts,tsx,css,html}" > /dev/null 2>&1); then
+    echo "Error: TypeScript, HTML, or CSS files are not formatted."
+    echo "Please run '(cd src/frontend/web && npx prettier --write \"*.html\" \"*.ts\" \"src/**/*.{ts,tsx,css,html}\")' before committing."
     exit 1
 fi
 
@@ -65,7 +75,7 @@ if [ ! -f bin/txtpbfmt ]; then
 fi
 UNFORMATTED_TEXTPROTO=""
 for f in $(find src -name "*.textproto"); do
-    if [ -n "$(./bin/txtpbfmt -dry_run "$f")" ]; then
+    if [ -n "$(./bin/txtpbfmt -dry_run -expand_all_children "$f")" ]; then
         UNFORMATTED_TEXTPROTO="$UNFORMATTED_TEXTPROTO $f"
     fi
 done
@@ -74,6 +84,6 @@ if [ -n "$UNFORMATTED_TEXTPROTO" ]; then
     for f in $UNFORMATTED_TEXTPROTO; do
         echo "  $f"
     done
-    echo "Please run 'make build' or format textproto files with txtpbfmt before committing."
+    echo "Please run 'make build' or format textproto files with 'txtpbfmt -expand_all_children' before committing."
     exit 1
 fi

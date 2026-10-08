@@ -2,16 +2,8 @@
 // @generated from file quadsmith/flight_controller.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -25,11 +17,7 @@ export const file_quadsmith_flight_controller: GenFile =
   /*@__PURE__*/
   fileDesc(
     "CiFxdWFkc21pdGgvZmxpZ2h0X2NvbnRyb2xsZXIucHJvdG8SCXF1YWRzbWl0aCKNBQoQRmxpZ2h0Q29udHJvbGxlchISCgR1dWlkGAEgASgJQgTI8xgBEhAKAmlkGAIgASgJQgTY8xgBEhoKDG1hbnVmYWN0dXJlchgDIAEoCUIE4PMYARIMCgRuYW1lGAQgASgJEhgKEGlzX2ludGVybmFsX29ubHkYFCABKAgSEAoId2VpZ2h0X2cYBSABKAISEQoJcHJvY2Vzc29yGAYgASgJEgwKBGd5cm8YByABKAkSXgopaW50ZXJuYWxfZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX3V1aWQYCCABKAlCJtLzGCJlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJzKHV1aWQpSACIAQESOAoWaW50ZXJuYWxfcmVjZWl2ZXJfdXVpZBgJIAEoCUIT0vMYD3JlY2VpdmVycyh1dWlkKUgBiAEBEkoKH2ludGVybmFsX3ZpZGVvX3RyYW5zbWl0dGVyX3V1aWQYCiABKAlCHNLzGBh2aWRlb190cmFuc21pdHRlcnModXVpZClIAogBARITCgtkZXNjcmlwdGlvbhgVIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYFiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpBkrUYJwoRRmxpZ2h0IENvbnRyb2xsZXISEkZsaWdodCBDb250cm9sbGVyc8LzGBJmbGlnaHRfY29udHJvbGxlcnNCLAoqX2ludGVybmFsX2VsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkQhkKF19pbnRlcm5hbF9yZWNlaXZlcl91dWlkQiIKIF9pbnRlcm5hbF92aWRlb190cmFuc21pdHRlcl91dWlkIjkKGkdldEZsaWdodENvbnRyb2xsZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkidAocTGlzdEZsaWdodENvbnRyb2xsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJInEKHUxpc3RGbGlnaHRDb250cm9sbGVyc1Jlc3BvbnNlEjcKEmZsaWdodF9jb250cm9sbGVycxgBIAMoCzIbLnF1YWRzbWl0aC5GbGlnaHRDb250cm9sbGVyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTLgAQoXRmxpZ2h0Q29udHJvbGxlclNlcnZpY2USWQoTR2V0RmxpZ2h0Q29udHJvbGxlchIlLnF1YWRzbWl0aC5HZXRGbGlnaHRDb250cm9sbGVyUmVxdWVzdBobLnF1YWRzbWl0aC5GbGlnaHRDb250cm9sbGVyEmoKFUxpc3RGbGlnaHRDb250cm9sbGVycxInLnF1YWRzbWl0aC5MaXN0RmxpZ2h0Q29udHJvbGxlcnNSZXF1ZXN0GigucXVhZHNtaXRoLkxpc3RGbGlnaHRDb250cm9sbGVyc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
-    [
-      file_quadsmith__common,
-      file_quadsmith__sql,
-      file_quadsmith_reference_link,
-    ],
+    [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link],
   );
 
 /**
@@ -131,18 +119,17 @@ export const FlightControllerSchema: GenMessage<FlightController> =
  *
  * @generated from message quadsmith.GetFlightControllerRequest
  */
-export type GetFlightControllerRequest =
-  Message<"quadsmith.GetFlightControllerRequest"> & {
-    /**
-     * @generated from field: string id = 1;
-     */
-    id: string;
+export type GetFlightControllerRequest = Message<"quadsmith.GetFlightControllerRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
 
-    /**
-     * @generated from field: repeated string columns = 2;
-     */
-    columns: string[];
-  };
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
 
 /**
  * Describes the message quadsmith.GetFlightControllerRequest.
@@ -155,33 +142,32 @@ export const GetFlightControllerRequestSchema: GenMessage<GetFlightControllerReq
 /**
  * @generated from message quadsmith.ListFlightControllersRequest
  */
-export type ListFlightControllersRequest =
-  Message<"quadsmith.ListFlightControllersRequest"> & {
-    /**
-     * @generated from field: string filter = 1;
-     */
-    filter: string;
+export type ListFlightControllersRequest = Message<"quadsmith.ListFlightControllersRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
 
-    /**
-     * @generated from field: int32 page_size = 2;
-     */
-    pageSize: number;
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
 
-    /**
-     * @generated from field: string page_token = 3;
-     */
-    pageToken: string;
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
 
-    /**
-     * @generated from field: repeated string columns = 4;
-     */
-    columns: string[];
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
 
-    /**
-     * @generated from field: repeated string sort = 5;
-     */
-    sort: string[];
-  };
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
 
 /**
  * Describes the message quadsmith.ListFlightControllersRequest.
@@ -194,18 +180,17 @@ export const ListFlightControllersRequestSchema: GenMessage<ListFlightController
 /**
  * @generated from message quadsmith.ListFlightControllersResponse
  */
-export type ListFlightControllersResponse =
-  Message<"quadsmith.ListFlightControllersResponse"> & {
-    /**
-     * @generated from field: repeated quadsmith.FlightController flight_controllers = 1;
-     */
-    flightControllers: FlightController[];
+export type ListFlightControllersResponse = Message<"quadsmith.ListFlightControllersResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.FlightController flight_controllers = 1;
+   */
+  flightControllers: FlightController[];
 
-    /**
-     * @generated from field: string next_page_token = 2;
-     */
-    nextPageToken: string;
-  };
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
 
 /**
  * Describes the message quadsmith.ListFlightControllersResponse.

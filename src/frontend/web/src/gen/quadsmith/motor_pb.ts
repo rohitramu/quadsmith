@@ -2,16 +2,8 @@
 // @generated from file quadsmith/motor.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -25,11 +17,7 @@ export const file_quadsmith_motor: GenFile =
   /*@__PURE__*/
   fileDesc(
     "ChVxdWFkc21pdGgvbW90b3IucHJvdG8SCXF1YWRzbWl0aCLMAgoFTW90b3ISEgoEdXVpZBgBIAEoCUIEyPMYARIQCgJpZBgCIAEoCUIE2PMYARIaCgxtYW51ZmFjdHVyZXIYAyABKAlCBODzGAESDAoEbmFtZRgEIAEoCRIQCgh3ZWlnaHRfZxgFIAEoAhIaChJzdGF0b3JfZGlhbWV0ZXJfbW0YBiABKAISGAoQc3RhdG9yX2hlaWdodF9tbRgHIAEoAhIQCgJrdhgIIAEoDUIE4PMYARITCgtkZXNjcmlwdGlvbhgJIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYCiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpRirUYDG1hbnVmYWN0dXJlcoq1GARuYW1lirUYEnN0YXRvcl9kaWFtZXRlcl9tbYq1GAJrdpK1GA8KBU1vdG9yEgZNb3RvcnPC8xgGbW90b3JzIi4KD0dldE1vdG9yUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImkKEUxpc3RNb3RvcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiTwoSTGlzdE1vdG9yc1Jlc3BvbnNlEiAKBm1vdG9ycxgBIAMoCzIQLnF1YWRzbWl0aC5Nb3RvchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkykwEKDE1vdG9yU2VydmljZRI4CghHZXRNb3RvchIaLnF1YWRzbWl0aC5HZXRNb3RvclJlcXVlc3QaEC5xdWFkc21pdGguTW90b3ISSQoKTGlzdE1vdG9ycxIcLnF1YWRzbWl0aC5MaXN0TW90b3JzUmVxdWVzdBodLnF1YWRzbWl0aC5MaXN0TW90b3JzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
-    [
-      file_quadsmith__common,
-      file_quadsmith__sql,
-      file_quadsmith_reference_link,
-    ],
+    [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link],
   );
 
 /**
@@ -97,9 +85,7 @@ export type Motor = Message<"quadsmith.Motor"> & {
  * Describes the message quadsmith.Motor.
  * Use `create(MotorSchema)` to create a new message.
  */
-export const MotorSchema: GenMessage<Motor> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_motor, 0);
+export const MotorSchema: GenMessage<Motor> = /*@__PURE__*/ messageDesc(file_quadsmith_motor, 0);
 
 /**
  * ---------------------------------------------------------

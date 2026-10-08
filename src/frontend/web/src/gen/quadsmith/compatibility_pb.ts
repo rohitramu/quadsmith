@@ -2,16 +2,8 @@
 // @generated from file quadsmith/compatibility.proto (package quadsmith.v1, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Build } from "./build_pb";
 import { file_quadsmith_build } from "./build_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -29,13 +21,12 @@ export const file_quadsmith_compatibility: GenFile =
 /**
  * @generated from message quadsmith.v1.CheckCompatibilityRequest
  */
-export type CheckCompatibilityRequest =
-  Message<"quadsmith.v1.CheckCompatibilityRequest"> & {
-    /**
-     * @generated from field: quadsmith.Build build = 1;
-     */
-    build?: Build | undefined;
-  };
+export type CheckCompatibilityRequest = Message<"quadsmith.v1.CheckCompatibilityRequest"> & {
+  /**
+   * @generated from field: quadsmith.Build build = 1;
+   */
+  build?: Build | undefined;
+};
 
 /**
  * Describes the message quadsmith.v1.CheckCompatibilityRequest.
@@ -48,13 +39,12 @@ export const CheckCompatibilityRequestSchema: GenMessage<CheckCompatibilityReque
 /**
  * @generated from message quadsmith.v1.CheckCompatibilityResponse
  */
-export type CheckCompatibilityResponse =
-  Message<"quadsmith.v1.CheckCompatibilityResponse"> & {
-    /**
-     * @generated from field: repeated quadsmith.v1.CompatibilityMessage messages = 1;
-     */
-    messages: CompatibilityMessage[];
-  };
+export type CheckCompatibilityResponse = Message<"quadsmith.v1.CheckCompatibilityResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.v1.CompatibilityMessage messages = 1;
+   */
+  messages: CompatibilityMessage[];
+};
 
 /**
  * Describes the message quadsmith.v1.CheckCompatibilityResponse.
@@ -67,40 +57,39 @@ export const CheckCompatibilityResponseSchema: GenMessage<CheckCompatibilityResp
 /**
  * @generated from message quadsmith.v1.CompatibilityMessage
  */
-export type CompatibilityMessage =
-  Message<"quadsmith.v1.CompatibilityMessage"> & {
-    /**
-     * @generated from field: string checker_name = 1;
-     */
-    checkerName: string;
+export type CompatibilityMessage = Message<"quadsmith.v1.CompatibilityMessage"> & {
+  /**
+   * @generated from field: string checker_name = 1;
+   */
+  checkerName: string;
 
-    /**
-     * e.g. "Motor and ESC"
-     *
-     * @generated from field: string components = 2;
-     */
-    components: string;
+  /**
+   * e.g. "Motor and ESC"
+   *
+   * @generated from field: string components = 2;
+   */
+  components: string;
 
-    /**
-     * @generated from field: int32 severity_level = 3;
-     */
-    severityLevel: number;
+  /**
+   * @generated from field: int32 severity_level = 3;
+   */
+  severityLevel: number;
 
-    /**
-     * @generated from field: string severity_name = 4;
-     */
-    severityName: string;
+  /**
+   * @generated from field: string severity_name = 4;
+   */
+  severityName: string;
 
-    /**
-     * @generated from field: string message = 5;
-     */
-    message: string;
+  /**
+   * @generated from field: string message = 5;
+   */
+  message: string;
 
-    /**
-     * @generated from field: string resolution = 6;
-     */
-    resolution: string;
-  };
+  /**
+   * @generated from field: string resolution = 6;
+   */
+  resolution: string;
+};
 
 /**
  * Describes the message quadsmith.v1.CompatibilityMessage.

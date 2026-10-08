@@ -16,18 +16,9 @@ import { ReceiverSchema } from "../gen/quadsmith/receiver_pb";
 import { VideoTransmitterSchema } from "../gen/quadsmith/video_transmitter_pb";
 
 // Connect Query Services
-import {
-  listAntennas,
-  getAntenna,
-} from "../gen/quadsmith/antenna-AntennaService_connectquery";
-import {
-  listBatteries,
-  getBattery,
-} from "../gen/quadsmith/battery-BatteryService_connectquery";
-import {
-  listCameras,
-  getCamera,
-} from "../gen/quadsmith/camera-CameraService_connectquery";
+import { listAntennas, getAntenna } from "../gen/quadsmith/antenna-AntennaService_connectquery";
+import { listBatteries, getBattery } from "../gen/quadsmith/battery-BatteryService_connectquery";
+import { listCameras, getCamera } from "../gen/quadsmith/camera-CameraService_connectquery";
 import {
   listElectronicSpeedControllers,
   getElectronicSpeedController,
@@ -36,26 +27,17 @@ import {
   listFlightControllers,
   getFlightController,
 } from "../gen/quadsmith/flight_controller-FlightControllerService_connectquery";
-import {
-  listFrames,
-  getFrame,
-} from "../gen/quadsmith/frame-FrameService_connectquery";
+import { listFrames, getFrame } from "../gen/quadsmith/frame-FrameService_connectquery";
 import {
   listGpsReceivers,
   getGpsReceiver,
 } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
-import {
-  listMotors,
-  getMotor,
-} from "../gen/quadsmith/motor-MotorService_connectquery";
+import { listMotors, getMotor } from "../gen/quadsmith/motor-MotorService_connectquery";
 import {
   listPropellers,
   getPropeller,
 } from "../gen/quadsmith/propeller-PropellerService_connectquery";
-import {
-  listReceivers,
-  getReceiver,
-} from "../gen/quadsmith/receiver-ReceiverService_connectquery";
+import { listReceivers, getReceiver } from "../gen/quadsmith/receiver-ReceiverService_connectquery";
 import {
   listVideoTransmitters,
   getVideoTransmitter,
@@ -126,16 +108,13 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       id: "name",
       title: "Name",
       renderCell: (m) => (
-        <span className="font-medium text-zinc-900 dark:text-zinc-100">
-          {m.name || m.id}
-        </span>
+        <span className="font-medium text-zinc-900 dark:text-zinc-100">{m.name || m.id}</span>
       ),
     },
     weight_g: {
       id: "weight_g",
       title: "Weight (g)",
-      renderCell: (m) =>
-        m.weightG != null && m.weightG > 0 ? `${m.weightG}` : "-",
+      renderCell: (m) => (m.weightG != null && m.weightG > 0 ? `${m.weightG}` : "-"),
     },
     description: {
       id: "description",
@@ -180,10 +159,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "manufacturer",
         type: "string",
         description: "Manufacturer / Brand name",
-        examples: [
-          'manufacturer == "Lumenier"',
-          'manufacturer.contains("TrueRC")',
-        ],
+        examples: ['manufacturer == "Lumenier"', 'manufacturer.contains("TrueRC")'],
       },
       {
         name: "name",
@@ -268,8 +244,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       length_mm: {
         id: "length_mm",
         title: "Length (mm)",
-        renderCell: (a) =>
-          a.lengthMm != null && a.lengthMm > 0 ? `${a.lengthMm}` : "-",
+        renderCell: (a) => (a.lengthMm != null && a.lengthMm > 0 ? `${a.lengthMm}` : "-"),
       },
     },
     highlights: [
@@ -277,8 +252,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Polarization", value: (a) => a.polarization || "N/A" },
       {
         label: "Frequency",
-        value: (a) =>
-          a.frequencyBandMhz ? `${a.frequencyBandMhz} MHz` : "N/A",
+        value: (a) => (a.frequencyBandMhz ? `${a.frequencyBandMhz} MHz` : "N/A"),
       },
       {
         label: "Gain",
@@ -286,13 +260,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (a) =>
-          a.weightG != null && a.weightG > 0 ? `${a.weightG}` : "N/A",
+        value: (a) => (a.weightG != null && a.weightG > 0 ? `${a.weightG}` : "N/A"),
       },
       {
         label: "Length (mm)",
-        value: (a) =>
-          a.lengthMm != null && a.lengthMm > 0 ? `${a.lengthMm}` : "N/A",
+        value: (a) => (a.lengthMm != null && a.lengthMm > 0 ? `${a.lengthMm}` : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -308,13 +280,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Length (mm)",
-        value: (a) =>
-          a.lengthMm != null && a.lengthMm > 0 ? `${a.lengthMm}` : "-",
+        value: (a) => (a.lengthMm != null && a.lengthMm > 0 ? `${a.lengthMm}` : "-"),
       },
       {
         label: "Weight (g)",
-        value: (a) =>
-          a.weightG != null && a.weightG > 0 ? `${a.weightG}` : "-",
+        value: (a) => (a.weightG != null && a.weightG > 0 ? `${a.weightG}` : "-"),
       },
     ],
   },
@@ -358,11 +328,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "cell_count_s",
         type: "number",
         description: "Cell count (e.g. 1, 4, 6)",
-        examples: [
-          "cell_count_s == 6",
-          "cell_count_s == 4",
-          "cell_count_s == 1",
-        ],
+        examples: ["cell_count_s == 6", "cell_count_s == 4", "cell_count_s == 1"],
       },
       {
         name: "capacity_mah",
@@ -443,8 +409,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Connector", value: (b) => b.connector || "N/A" },
       {
         label: "Weight (g)",
-        value: (b) =>
-          b.weightG != null && b.weightG > 0 ? `${b.weightG}` : "N/A",
+        value: (b) => (b.weightG != null && b.weightG > 0 ? `${b.weightG}` : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -460,8 +425,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Connector", value: (b) => b.connector || "-" },
       {
         label: "Weight (g)",
-        value: (b) =>
-          b.weightG != null && b.weightG > 0 ? `${b.weightG}` : "-",
+        value: (b) => (b.weightG != null && b.weightG > 0 ? `${b.weightG}` : "-"),
       },
     ],
   },
@@ -475,13 +439,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     listQuery: listCameras,
     getQuery: getCamera,
     getDataList: (res) => res?.cameras ?? [],
-    defaultColumnIds: [
-      "manufacturer",
-      "name",
-      "protocol",
-      "sensor_size",
-      "width_mm",
-    ],
+    defaultColumnIds: ["manufacturer", "name", "protocol", "sensor_size", "width_mm"],
     fields: [
       {
         name: "id",
@@ -521,16 +479,12 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "sensor_size",
         type: "string",
         description: "Image sensor format",
-        examples: [
-          'sensor_size.contains("1/1.8")',
-          'sensor_size.contains("1/3")',
-        ],
+        examples: ['sensor_size.contains("1/1.8")', 'sensor_size.contains("1/3")'],
       },
       {
         name: "width_mm",
         type: "number",
-        description:
-          "Mounting width in mm (14 for nano, 19 for micro, 22 for standard)",
+        description: "Mounting width in mm (14 for nano, 19 for micro, 22 for standard)",
         examples: ["width_mm == 19", "width_mm == 14"],
       },
       {
@@ -580,8 +534,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       lens_size_mm: {
         id: "lens_size_mm",
         title: "Lens Size (mm)",
-        renderCell: (c) =>
-          c.lensSizeMm != null && c.lensSizeMm > 0 ? `${c.lensSizeMm}` : "-",
+        renderCell: (c) => (c.lensSizeMm != null && c.lensSizeMm > 0 ? `${c.lensSizeMm}` : "-"),
       },
     },
     highlights: [
@@ -593,13 +546,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Lens Size (mm)",
-        value: (c) =>
-          c.lensSizeMm != null && c.lensSizeMm > 0 ? `${c.lensSizeMm}` : "N/A",
+        value: (c) => (c.lensSizeMm != null && c.lensSizeMm > 0 ? `${c.lensSizeMm}` : "N/A"),
       },
       {
         label: "Weight (g)",
-        value: (c) =>
-          c.weightG != null && c.weightG > 0 ? `${c.weightG}` : "N/A",
+        value: (c) => (c.weightG != null && c.weightG > 0 ? `${c.weightG}` : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -608,13 +559,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Width (mm)", value: (c) => (c.widthMm ? `${c.widthMm}` : "-") },
       {
         label: "Lens Size (mm)",
-        value: (c) =>
-          c.lensSizeMm != null && c.lensSizeMm > 0 ? `${c.lensSizeMm}` : "-",
+        value: (c) => (c.lensSizeMm != null && c.lensSizeMm > 0 ? `${c.lensSizeMm}` : "-"),
       },
       {
         label: "Weight (g)",
-        value: (c) =>
-          c.weightG != null && c.weightG > 0 ? `${c.weightG}` : "-",
+        value: (c) => (c.weightG != null && c.weightG > 0 ? `${c.weightG}` : "-"),
       },
     ],
   },
@@ -629,13 +578,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     listQuery: listElectronicSpeedControllers,
     getQuery: getElectronicSpeedController,
     getDataList: (res) => res?.electronicSpeedControllers ?? [],
-    defaultColumnIds: [
-      "manufacturer",
-      "name",
-      "motor_current_max_a",
-      "max_motors",
-      "firmware",
-    ],
+    defaultColumnIds: ["manufacturer", "name", "motor_current_max_a", "max_motors", "firmware"],
     fields: [
       {
         name: "id",
@@ -665,10 +608,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "motor_current_max_a",
         type: "number",
         description: "Continuous current per motor in Amperes",
-        examples: [
-          "motor_current_max_a >= 45.0",
-          "motor_current_max_a >= 60.0",
-        ],
+        examples: ["motor_current_max_a >= 45.0", "motor_current_max_a >= 60.0"],
       },
       {
         name: "motor_current_burst_a",
@@ -686,10 +626,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "firmware",
         type: "string",
         description: "ESC firmware (BLHeli_32, BLHeli_S, AM32, Bluejay)",
-        examples: [
-          'firmware.contains("BLHeli_32")',
-          'firmware.contains("AM32")',
-        ],
+        examples: ['firmware.contains("BLHeli_32")', 'firmware.contains("AM32")'],
       },
       {
         name: "weight_g",
@@ -723,8 +660,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       motor_current_burst_a: {
         id: "motor_current_burst_a",
         title: "Burst Current (A)",
-        renderCell: (e) =>
-          e.motorCurrentBurstA ? `${e.motorCurrentBurstA}` : "-",
+        renderCell: (e) => (e.motorCurrentBurstA ? `${e.motorCurrentBurstA}` : "-"),
       },
       max_motors: {
         id: "max_motors",
@@ -751,8 +687,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Burst Current",
-        value: (e) =>
-          e.motorCurrentBurstA ? `${e.motorCurrentBurstA} A` : "N/A",
+        value: (e) => (e.motorCurrentBurstA ? `${e.motorCurrentBurstA} A` : "N/A"),
       },
       {
         label: "Motor Outputs",
@@ -768,8 +703,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Firmware", value: (e) => e.firmware || "N/A" },
       {
         label: "Weight (g)",
-        value: (e) =>
-          e.weightG != null && e.weightG > 0 ? `${e.weightG}` : "N/A",
+        value: (e) => (e.weightG != null && e.weightG > 0 ? `${e.weightG}` : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -795,8 +729,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Firmware", value: (e) => e.firmware || "-" },
       {
         label: "Weight (g)",
-        value: (e) =>
-          e.weightG != null && e.weightG > 0 ? `${e.weightG}` : "-",
+        value: (e) => (e.weightG != null && e.weightG > 0 ? `${e.weightG}` : "-"),
       },
     ],
   },
@@ -899,13 +832,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Gyro", value: (f) => f.gyro || "N/A" },
       {
         label: "Weight (g)",
-        value: (f) =>
-          f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "N/A",
+        value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "N/A"),
       },
       {
         label: "Integrated ESC",
-        value: (f) =>
-          f.internalElectronicSpeedControllerUuid ? "Yes (AIO)" : "No",
+        value: (f) => (f.internalElectronicSpeedControllerUuid ? "Yes (AIO)" : "No"),
       },
       {
         label: "Integrated Receiver",
@@ -921,8 +852,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Gyro / IMU", value: (f) => f.gyro || "-" },
       {
         label: "Integrated ESC",
-        value: (f) =>
-          f.internalElectronicSpeedControllerUuid ? "Yes (AIO)" : "No",
+        value: (f) => (f.internalElectronicSpeedControllerUuid ? "Yes (AIO)" : "No"),
       },
       {
         label: "Integrated Receiver",
@@ -934,8 +864,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (f) =>
-          f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "-",
+        value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "-"),
       },
     ],
   },
@@ -967,10 +896,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "manufacturer",
         type: "string",
         description: "Manufacturer / Brand name",
-        examples: [
-          'manufacturer == "ImpulseRC"',
-          'manufacturer == "FlyFishRC"',
-        ],
+        examples: ['manufacturer == "ImpulseRC"', 'manufacturer == "FlyFishRC"'],
       },
       {
         name: "name",
@@ -982,10 +908,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "wheelbase_mm",
         type: "number",
         description: "Diagonal motor-to-motor wheelbase in mm",
-        examples: [
-          "wheelbase_mm >= 210.0 && wheelbase_mm <= 235.0",
-          "wheelbase_mm > 220.0",
-        ],
+        examples: ["wheelbase_mm >= 210.0 && wheelbase_mm <= 235.0", "wheelbase_mm > 220.0"],
       },
       {
         name: "max_prop_size_mm",
@@ -1058,8 +981,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Geometry", value: (f) => f.geometry || "N/A" },
       {
         label: "Weight (g)",
-        value: (f) =>
-          f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "N/A",
+        value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -1077,8 +999,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Geometry", value: (f) => f.geometry || "-" },
       {
         label: "Weight (g)",
-        value: (f) =>
-          f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "-",
+        value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "-"),
       },
     ],
   },
@@ -1111,10 +1032,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "manufacturer",
         type: "string",
         description: "Manufacturer / Brand name",
-        examples: [
-          'manufacturer == "Matek Systems"',
-          'manufacturer == "Flywoo"',
-        ],
+        examples: ['manufacturer == "Matek Systems"', 'manufacturer == "Flywoo"'],
       },
       {
         name: "name",
@@ -1193,8 +1111,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       has_compass: {
         id: "has_compass",
         title: "Compass",
-        renderCell: (g) =>
-          g.hasCompass === true ? "Yes" : g.hasCompass === false ? "No" : "-",
+        renderCell: (g) => (g.hasCompass === true ? "Yes" : g.hasCompass === false ? "No" : "-"),
       },
       compass_chip: {
         id: "compass_chip",
@@ -1214,12 +1131,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Chipset", value: (g) => g.chipset || "N/A" },
       {
         label: "Compass",
-        value: (g) =>
-          g.hasCompass
-            ? g.compassChip
-              ? `Yes (${g.compassChip})`
-              : "Yes"
-            : "No",
+        value: (g) => (g.hasCompass ? (g.compassChip ? `Yes (${g.compassChip})` : "Yes") : "No"),
       },
       { label: "Protocol", value: (g) => g.protocol || "N/A" },
       {
@@ -1231,8 +1143,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (g) =>
-          g.weightG != null && g.weightG > 0 ? `${g.weightG}` : "N/A",
+        value: (g) => (g.weightG != null && g.weightG > 0 ? `${g.weightG}` : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -1253,8 +1164,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (g) =>
-          g.weightG != null && g.weightG > 0 ? `${g.weightG}` : "-",
+        value: (g) => (g.weightG != null && g.weightG > 0 ? `${g.weightG}` : "-"),
       },
     ],
   },
@@ -1286,10 +1196,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "manufacturer",
         type: "string",
         description: "Manufacturer / Brand name",
-        examples: [
-          'manufacturer.contains("T-Motor")',
-          'manufacturer == "Emax"',
-        ],
+        examples: ['manufacturer.contains("T-Motor")', 'manufacturer == "Emax"'],
       },
       {
         name: "name",
@@ -1388,8 +1295,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Stator Size",
-        value: (m) =>
-          formatStatorSize(m.statorDiameterMm, m.statorHeightMm, "-"),
+        value: (m) => formatStatorSize(m.statorDiameterMm, m.statorHeightMm, "-"),
       },
       { label: "Weight (g)", value: (m) => (m.weightG ? `${m.weightG}` : "-") },
     ],
@@ -1404,13 +1310,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     listQuery: listPropellers,
     getQuery: getPropeller,
     getDataList: (res) => res?.propellers ?? [],
-    defaultColumnIds: [
-      "manufacturer",
-      "name",
-      "diameter_mm",
-      "pitch_mm",
-      "blades",
-    ],
+    defaultColumnIds: ["manufacturer", "name", "diameter_mm", "pitch_mm", "blades"],
     fields: [
       {
         name: "id",
@@ -1440,10 +1340,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "diameter_mm",
         type: "number",
         description: 'Propeller diameter in millimeters (127mm for 5")',
-        examples: [
-          "diameter_mm >= 126.0 && diameter_mm <= 132.0",
-          "diameter_mm > 100.0",
-        ],
+        examples: ["diameter_mm >= 126.0 && diameter_mm <= 132.0", "diameter_mm > 100.0"],
       },
       {
         name: "pitch_mm",
@@ -1517,16 +1414,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         label: "Diameter",
         value: (p) =>
-          p.diameterMm
-            ? `${p.diameterMm} mm (~${(p.diameterMm / 25.4).toFixed(1)}")`
-            : "N/A",
+          p.diameterMm ? `${p.diameterMm} mm (~${(p.diameterMm / 25.4).toFixed(1)}")` : "N/A",
       },
       {
         label: "Pitch",
-        value: (p) =>
-          p.pitchMm
-            ? `${p.pitchMm} mm (~${(p.pitchMm / 25.4).toFixed(1)}")`
-            : "N/A",
+        value: (p) => (p.pitchMm ? `${p.pitchMm} mm (~${(p.pitchMm / 25.4).toFixed(1)}")` : "N/A"),
       },
       {
         label: "Blades",
@@ -1535,24 +1427,18 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Material", value: (p) => p.material || "N/A" },
       {
         label: "Weight (g)",
-        value: (p) =>
-          p.weightG != null && p.weightG > 0 ? `${p.weightG}` : "N/A",
+        value: (p) => (p.weightG != null && p.weightG > 0 ? `${p.weightG}` : "N/A"),
       },
     ],
     technicalSpecs: [
       {
         label: "Diameter (mm)",
         value: (p) =>
-          p.diameterMm
-            ? `${p.diameterMm} mm (~${(p.diameterMm / 25.4).toFixed(1)}")`
-            : "-",
+          p.diameterMm ? `${p.diameterMm} mm (~${(p.diameterMm / 25.4).toFixed(1)}")` : "-",
       },
       {
         label: "Pitch (mm)",
-        value: (p) =>
-          p.pitchMm
-            ? `${p.pitchMm} mm (~${(p.pitchMm / 25.4).toFixed(1)}")`
-            : "-",
+        value: (p) => (p.pitchMm ? `${p.pitchMm} mm (~${(p.pitchMm / 25.4).toFixed(1)}")` : "-"),
       },
       {
         label: "Blades",
@@ -1561,8 +1447,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Material", value: (p) => p.material || "-" },
       {
         label: "Weight (g)",
-        value: (p) =>
-          p.weightG != null && p.weightG > 0 ? `${p.weightG}` : "-",
+        value: (p) => (p.weightG != null && p.weightG > 0 ? `${p.weightG}` : "-"),
       },
     ],
   },
@@ -1576,13 +1461,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     listQuery: listReceivers,
     getQuery: getReceiver,
     getDataList: (res) => res?.receivers ?? [],
-    defaultColumnIds: [
-      "manufacturer",
-      "name",
-      "protocol",
-      "frequency_band_mhz",
-      "has_telemetry",
-    ],
+    defaultColumnIds: ["manufacturer", "name", "protocol", "frequency_band_mhz", "has_telemetry"],
     fields: [
       {
         name: "id",
@@ -1615,10 +1494,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "protocol",
         type: "string",
         description: "Radio protocol (ExpressLRS, TBS Crossfire (CRSF), FrSky)",
-        examples: [
-          'protocol.contains("Crossfire")',
-          'protocol.contains("ExpressLRS")',
-        ],
+        examples: ['protocol.contains("Crossfire")', 'protocol.contains("ExpressLRS")'],
       },
       {
         name: "frequency_band_mhz",
@@ -1675,8 +1551,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Protocol", value: (r) => r.protocol || "N/A" },
       {
         label: "Frequency",
-        value: (r) =>
-          r.frequencyBandMhz ? `${r.frequencyBandMhz} MHz` : "N/A",
+        value: (r) => (r.frequencyBandMhz ? `${r.frequencyBandMhz} MHz` : "N/A"),
       },
       {
         label: "Telemetry",
@@ -1684,8 +1559,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (r) =>
-          r.weightG != null && r.weightG > 0 ? `${r.weightG}` : "N/A",
+        value: (r) => (r.weightG != null && r.weightG > 0 ? `${r.weightG}` : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -1700,8 +1574,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (r) =>
-          r.weightG != null && r.weightG > 0 ? `${r.weightG}` : "-",
+        value: (r) => (r.weightG != null && r.weightG > 0 ? `${r.weightG}` : "-"),
       },
     ],
   },
@@ -1716,23 +1589,13 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     listQuery: listVideoTransmitters,
     getQuery: getVideoTransmitter,
     getDataList: (res) => res?.videoTransmitters ?? [],
-    defaultColumnIds: [
-      "manufacturer",
-      "name",
-      "protocol",
-      "max_power_mw",
-      "weight_g",
-    ],
+    defaultColumnIds: ["manufacturer", "name", "protocol", "max_power_mw", "weight_g"],
     fields: [
       {
         name: "id",
         type: "string",
         description: "Unique identifier",
-        examples: [
-          'id.contains("unify")',
-          'id.contains("avatar")',
-          'id.contains("vtx")',
-        ],
+        examples: ['id.contains("unify")', 'id.contains("avatar")', 'id.contains("vtx")'],
       },
       {
         name: "uuid",
@@ -1759,12 +1622,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         name: "protocol",
         type: "string",
-        description:
-          "Video transmission protocol (Analog, DJI Digital, Walksnail Avatar, HDZero)",
-        examples: [
-          'protocol.contains("Digital")',
-          'protocol.contains("Analog")',
-        ],
+        description: "Video transmission protocol (Analog, DJI Digital, Walksnail Avatar, HDZero)",
+        examples: ['protocol.contains("Digital")', 'protocol.contains("Analog")'],
       },
       {
         name: "max_power_mw",
@@ -1846,8 +1705,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (v) =>
-          v.weightG != null && v.weightG > 0 ? `${v.weightG}` : "N/A",
+        value: (v) => (v.weightG != null && v.weightG > 0 ? `${v.weightG}` : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -1866,16 +1724,13 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (v) =>
-          v.weightG != null && v.weightG > 0 ? `${v.weightG}` : "-",
+        value: (v) => (v.weightG != null && v.weightG > 0 ? `${v.weightG}` : "-"),
       },
     ],
   },
 ];
 
-export function getHardwareCollection(
-  collectionId?: string,
-): HardwareCollectionDef | undefined {
+export function getHardwareCollection(collectionId?: string): HardwareCollectionDef | undefined {
   if (!collectionId) return undefined;
   const normalized = collectionId.toLowerCase().trim();
   const kebab = normalized.replace(/_/g, "-");

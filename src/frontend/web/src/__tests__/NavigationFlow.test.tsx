@@ -16,18 +16,14 @@ describe("Full Application Navigation Flow", () => {
     await user.click(browseCard);
 
     // 3. Verify on Category Page (/components/hardware)
-    expect(
-      await screen.findByRole("heading", { level: 1, name: "hardware" }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { level: 1, name: "hardware" })).toBeInTheDocument();
 
     // 4. Click "Motors" card to navigate to /components/hardware/motors
     const motorsCard = screen.getByRole("link", { name: /browse all motors/i });
     await user.click(motorsCard);
 
     // 5. Verify on Collection Page (/components/hardware/motors)
-    expect(
-      await screen.findByRole("heading", { level: 1, name: "Motors" }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { level: 1, name: "Motors" })).toBeInTheDocument();
 
     // Wait for table to load
     await waitFor(() => {
@@ -49,17 +45,13 @@ describe("Full Application Navigation Flow", () => {
     const motorsBreadcrumb = screen.getByRole("link", { name: "Motors" });
     await user.click(motorsBreadcrumb);
 
-    expect(
-      await screen.findByRole("heading", { level: 1, name: "Motors" }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { level: 1, name: "Motors" })).toBeInTheDocument();
 
     // 9. Click "Hardware" in sidebar to navigate back to hardware category
     const hardwareSidebarLink = screen.getByRole("link", { name: "Hardware" });
     await user.click(hardwareSidebarLink);
 
-    expect(
-      await screen.findByRole("heading", { level: 1, name: "hardware" }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { level: 1, name: "hardware" })).toBeInTheDocument();
 
     // 10. Click Quadsmith Logo to navigate back to Home Page
     const logoLink = screen.getByAltText("Quadsmith").closest("a");

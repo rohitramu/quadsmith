@@ -33,10 +33,7 @@ export function Layout() {
       {/* Top Navbar */}
       <header className="sticky top-0 z-50 flex items-center h-16 px-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
         {/* Logo */}
-        <Link
-          to="/"
-          className="flex items-center hover:opacity-90 transition-opacity w-64"
-        >
+        <Link to="/" className="flex items-center hover:opacity-90 transition-opacity w-64">
           <img
             src={theme === "dark" ? logoDark : logoLight}
             alt="Quadsmith"
@@ -47,10 +44,7 @@ export function Layout() {
         {/* Search Bar */}
         <div className="flex-1 max-w-2xl mx-auto px-4">
           <div className="relative">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
-              size={18}
-            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
             <input
               type="text"
               placeholder="Search components..."
@@ -83,10 +77,7 @@ export function Layout() {
               <ul className="space-y-1">
                 <li>
                   <div className="flex items-center justify-between rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800">
-                    <Link
-                      to="/components/hardware"
-                      className="flex-1 px-3 py-2"
-                    >
+                    <Link to="/components/hardware" className="flex-1 px-3 py-2">
                       Hardware
                     </Link>
                     <button

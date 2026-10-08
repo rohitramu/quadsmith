@@ -2,10 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
 import { ExternalLink, ChevronRight } from "lucide-react";
-import {
-  getHardwareCollection,
-  type HardwareCollectionDef,
-} from "../lib/hardwareCollections";
+import { getHardwareCollection, type HardwareCollectionDef } from "../lib/hardwareCollections";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
   [ReferenceLinkType.PURCHASE]: "Purchase",
@@ -93,45 +90,36 @@ function ProductDetailView({
                   key={h.label}
                   className="p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800"
                 >
-                  <h3 className="text-sm font-semibold text-zinc-500 uppercase">
-                    {h.label}
-                  </h3>
-                  <div className="text-2xl mt-1 font-medium">
-                    {h.value(item)}
-                  </div>
+                  <h3 className="text-sm font-semibold text-zinc-500 uppercase">{h.label}</h3>
+                  <div className="text-2xl mt-1 font-medium">{h.value(item)}</div>
                 </div>
               ))}
             </div>
           )}
 
           {/* Technical Specifications Table */}
-          {collection.technicalSpecs &&
-            collection.technicalSpecs.length > 0 && (
-              <div className="mt-6 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                <h3 className="text-sm font-semibold text-zinc-500 uppercase mb-3">
-                  Specifications
-                </h3>
-                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                  {collection.technicalSpecs.map((spec) => (
-                    <div
-                      key={spec.label}
-                      className="flex justify-between py-1.5 border-b border-zinc-100 dark:border-zinc-800/60"
-                    >
-                      <dt className="text-zinc-500">{spec.label}</dt>
-                      <dd className="font-medium text-zinc-800 dark:text-zinc-200">
-                        {spec.value(item)}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            )}
+          {collection.technicalSpecs && collection.technicalSpecs.length > 0 && (
+            <div className="mt-6 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
+              <h3 className="text-sm font-semibold text-zinc-500 uppercase mb-3">Specifications</h3>
+              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                {collection.technicalSpecs.map((spec) => (
+                  <div
+                    key={spec.label}
+                    className="flex justify-between py-1.5 border-b border-zinc-100 dark:border-zinc-800/60"
+                  >
+                    <dt className="text-zinc-500">{spec.label}</dt>
+                    <dd className="font-medium text-zinc-800 dark:text-zinc-200">
+                      {spec.value(item)}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
 
           {item.description && (
             <div className="mt-6 p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-              <h3 className="text-sm font-semibold text-zinc-500 uppercase mb-1">
-                Description
-              </h3>
+              <h3 className="text-sm font-semibold text-zinc-500 uppercase mb-1">Description</h3>
               <p className="text-zinc-700 dark:text-zinc-300 whitespace-pre-line">
                 {item.description}
               </p>

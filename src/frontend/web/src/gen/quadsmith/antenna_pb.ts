@@ -2,16 +2,8 @@
 // @generated from file quadsmith/antenna.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -25,11 +17,7 @@ export const file_quadsmith_antenna: GenFile =
   /*@__PURE__*/
   fileDesc(
     "ChdxdWFkc21pdGgvYW50ZW5uYS5wcm90bxIJcXVhZHNtaXRoItwCCgdBbnRlbm5hEhIKBHV1aWQYASABKAlCBMjzGAESEAoCaWQYAiABKAlCBNjzGAESGgoMbWFudWZhY3R1cmVyGAMgASgJQgTg8xgBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgUIAEoCBIQCgh3ZWlnaHRfZxgFIAEoAhIRCgljb25uZWN0b3IYBiABKAkSFAoMcG9sYXJpemF0aW9uGAcgASgJEhoKEmZyZXF1ZW5jeV9iYW5kX21oehgIIAEoDRIRCglsZW5ndGhfbW0YCSABKAISEAoIZ2Fpbl9kYmkYCiABKAISEwoLZGVzY3JpcHRpb24YFSABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGBYgAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbms6I5K1GBMKB0FudGVubmESCEFudGVubmFzwvMYCGFudGVubmFzIjAKEUdldEFudGVubmFSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiawoTTGlzdEFudGVubmFzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlUKFExpc3RBbnRlbm5hc1Jlc3BvbnNlEiQKCGFudGVubmFzGAEgAygLMhIucXVhZHNtaXRoLkFudGVubmESFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMqEBCg5BbnRlbm5hU2VydmljZRI+CgpHZXRBbnRlbm5hEhwucXVhZHNtaXRoLkdldEFudGVubmFSZXF1ZXN0GhIucXVhZHNtaXRoLkFudGVubmESTwoMTGlzdEFudGVubmFzEh4ucXVhZHNtaXRoLkxpc3RBbnRlbm5hc1JlcXVlc3QaHy5xdWFkc21pdGguTGlzdEFudGVubmFzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
-    [
-      file_quadsmith__common,
-      file_quadsmith__sql,
-      file_quadsmith_reference_link,
-    ],
+    [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link],
   );
 
 /**

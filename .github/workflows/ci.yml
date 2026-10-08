@@ -43,25 +43,26 @@ jobs:
     - name: Verify Code Formatting
       run: |
         # Format Go
-        find . -name "*.go" -not -path "*/vendor/*" -exec gofmt -w {} +
+        find . -name "*.go" -not -path "*/vendor/*" -exec gofmt -s -w {} +
         
         # Format Protobuf
         cd proto && ../bin/buf format -w && cd ..
 
         # Format Textproto
-        find src -name "*.textproto" -exec ./bin/txtpbfmt {} +
+        find src -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 
-        # Format TypeScript
-        cd src/frontend/web && npx prettier --write "*.ts" "src/**/*.{ts,tsx}" && cd ../../..
+        # Format TypeScript, HTML, and CSS
+        cd src/frontend/web && npx prettier --write "*.html" "*.ts" "src/**/*.{ts,tsx,css,html}" && cd ../../..
 
-        # Format Python
+        # Format Python (isort + ruff format)
+        uvx ruff check --select I --fix tools/
         uvx ruff format tools/
         
         # Format SQL
-        npx -y sql-formatter -l postgresql --fix src/backend/db/schema.sql
+        npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/schema.sql
         
         # Ensure that no files were modified by the formatters
-        git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, Protobuf, and Textproto files." && exit 1)
+        git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, HTML, CSS, Protobuf, and Textproto files." && exit 1)
 
     - name: Run Tests
       run: make test

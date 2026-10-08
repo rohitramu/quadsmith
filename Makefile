@@ -24,12 +24,12 @@ all: build
 
 build: generate
 	@echo "--- Formatting textproto files with txtpbfmt ---"
-	@find src -name "*.textproto" -exec ./bin/txtpbfmt {} +
+	@find src -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 	@echo "--- Building all Go binaries to bin/ ---"
 	@go build -mod=vendor -o bin/server ./src/backend/api/cmd/server/main.go
 
 	@echo "--- Generating and building CLI to bin/qs ---"
-	@cd src/frontend/cli && go run generate_cli.go && gofmt -w main.go && go build -mod=vendor -o ../../../bin/qs main.go
+	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go && go build -mod=vendor -o ../../../bin/qs main.go
 	@echo "--- Generating shell completions to bin/ ---"
 	@./bin/qs completion bash > bin/completion.bash || true
 	@./bin/qs completion zsh > bin/completion.zsh || true
@@ -51,9 +51,9 @@ generate:
 	@echo "--- Generating Protobuf & ConnectRPC Code ---"
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@for f in src/backend/api/gen/quadsmith/_*.pb.go; do [ -f "$$f" ] && mv "$$f" "$$(echo $$f | sed 's|/_|/|')"; done || true
-	@gofmt -w src/backend/api/gen/
+	@gofmt -s -w src/backend/api/gen/
 	@cd src/frontend/web && npx prettier --write "src/gen/**/*.{ts,tsx}"
-	@npx -y sql-formatter -l postgresql --fix src/backend/db/schema.sql
+	@npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/schema.sql
 
 test: generate
 	@echo "--- Running Go Tests ---"

@@ -2,16 +2,8 @@
 // @generated from file quadsmith/evaluator.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Build } from "./build_pb";
 import { file_quadsmith_build } from "./build_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -55,42 +47,41 @@ export const EvaluateBuildRequestSchema: GenMessage<EvaluateBuildRequest> =
 /**
  * @generated from message quadsmith.EvaluateBuildResponse
  */
-export type EvaluateBuildResponse =
-  Message<"quadsmith.EvaluateBuildResponse"> & {
-    /**
-     * @generated from field: float total_weight_g = 1;
-     */
-    totalWeightG: number;
+export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> & {
+  /**
+   * @generated from field: float total_weight_g = 1;
+   */
+  totalWeightG: number;
 
-    /**
-     * @generated from field: float hover_throttle_percent = 2;
-     */
-    hoverThrottlePercent: number;
+  /**
+   * @generated from field: float hover_throttle_percent = 2;
+   */
+  hoverThrottlePercent: number;
 
-    /**
-     * @generated from field: float thrust_to_weight_ratio = 3;
-     */
-    thrustToWeightRatio: number;
+  /**
+   * @generated from field: float thrust_to_weight_ratio = 3;
+   */
+  thrustToWeightRatio: number;
 
-    /**
-     * @generated from field: float estimated_flight_time_min = 4;
-     */
-    estimatedFlightTimeMin: number;
+  /**
+   * @generated from field: float estimated_flight_time_min = 4;
+   */
+  estimatedFlightTimeMin: number;
 
-    /**
-     * Non-blocking issues (e.g. "Motors might overheat on 6S")
-     *
-     * @generated from field: repeated string warnings = 5;
-     */
-    warnings: string[];
+  /**
+   * Non-blocking issues (e.g. "Motors might overheat on 6S")
+   *
+   * @generated from field: repeated string warnings = 5;
+   */
+  warnings: string[];
 
-    /**
-     * Blocking compatibility issues (e.g. "ESC is 4S max but Battery is 6S")
-     *
-     * @generated from field: repeated string errors = 6;
-     */
-    errors: string[];
-  };
+  /**
+   * Blocking compatibility issues (e.g. "ESC is 4S max but Battery is 6S")
+   *
+   * @generated from field: repeated string errors = 6;
+   */
+  errors: string[];
+};
 
 /**
  * Describes the message quadsmith.EvaluateBuildResponse.

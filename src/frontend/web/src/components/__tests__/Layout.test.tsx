@@ -60,19 +60,14 @@ describe("Layout Component", () => {
       "href",
       "/components/software",
     );
-    expect(screen.getByRole("link", { name: "Gear" })).toHaveAttribute(
-      "href",
-      "/components/gear",
-    );
+    expect(screen.getByRole("link", { name: "Gear" })).toHaveAttribute("href", "/components/gear");
   });
 
   it("expands and collapses hardware collection sub-links on toggle button click", async () => {
     const { user } = renderWithProviders(<Layout />, { route: "/" });
 
     // Initially on "/", hardware submenu is collapsed
-    expect(
-      screen.queryByRole("link", { name: "Motors" }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Motors" })).not.toBeInTheDocument();
 
     const chevronButton = screen.getByRole("button", {
       name: "Expand Hardware menu",
@@ -85,17 +80,12 @@ describe("Layout Component", () => {
     for (const collection of HARDWARE_COLLECTIONS) {
       const link = screen.getByRole("link", { name: collection.name });
       expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute(
-        "href",
-        `/components/hardware/${collection.id}`,
-      );
+      expect(link).toHaveAttribute("href", `/components/hardware/${collection.id}`);
     }
 
     // Click again to collapse
     await user.click(chevronButton);
-    expect(
-      screen.queryByRole("link", { name: "Motors" }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Motors" })).not.toBeInTheDocument();
   });
 
   it("auto-expands hardware submenu when navigating to a hardware route", () => {

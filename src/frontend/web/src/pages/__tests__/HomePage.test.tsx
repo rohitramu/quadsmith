@@ -27,9 +27,7 @@ describe("HomePage Component", () => {
     expect(browseHardwareLink).toBeInTheDocument();
     expect(browseHardwareLink).toHaveAttribute("href", "/components/hardware");
     expect(
-      screen.getByText(
-        /explore our extensive catalog of fpv drone components/i,
-      ),
+      screen.getByText(/explore our extensive catalog of fpv drone components/i),
     ).toBeInTheDocument();
   });
 

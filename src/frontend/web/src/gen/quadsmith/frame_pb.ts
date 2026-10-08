@@ -2,16 +2,8 @@
 // @generated from file quadsmith/frame.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -25,11 +17,7 @@ export const file_quadsmith_frame: GenFile =
   /*@__PURE__*/
   fileDesc(
     "ChVxdWFkc21pdGgvZnJhbWUucHJvdG8SCXF1YWRzbWl0aCLGAgoFRnJhbWUSEgoEdXVpZBgBIAEoCUIEyPMYARIQCgJpZBgCIAEoCUIE2PMYARIaCgxtYW51ZmFjdHVyZXIYAyABKAlCBODzGAESDAoEbmFtZRgEIAEoCRIQCgh3ZWlnaHRfZxgFIAEoAhIUCgx3aGVlbGJhc2VfbW0YBiABKAISGAoQbWF4X3Byb3Bfc2l6ZV9tbRgHIAEoAhIQCghnZW9tZXRyeRgIIAEoCRITCgtkZXNjcmlwdGlvbhgJIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYCiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpRirUYDG1hbnVmYWN0dXJlcoq1GARuYW1lirUYDHdoZWVsYmFzZV9tbYq1GAhnZW9tZXRyeZK1GA8KBUZyYW1lEgZGcmFtZXPC8xgGZnJhbWVzIi4KD0dldEZyYW1lUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImkKEUxpc3RGcmFtZXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiTwoSTGlzdEZyYW1lc1Jlc3BvbnNlEiAKBmZyYW1lcxgBIAMoCzIQLnF1YWRzbWl0aC5GcmFtZRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkykwEKDEZyYW1lU2VydmljZRI4CghHZXRGcmFtZRIaLnF1YWRzbWl0aC5HZXRGcmFtZVJlcXVlc3QaEC5xdWFkc21pdGguRnJhbWUSSQoKTGlzdEZyYW1lcxIcLnF1YWRzbWl0aC5MaXN0RnJhbWVzUmVxdWVzdBodLnF1YWRzbWl0aC5MaXN0RnJhbWVzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
-    [
-      file_quadsmith__common,
-      file_quadsmith__sql,
-      file_quadsmith_reference_link,
-    ],
+    [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link],
   );
 
 /**
@@ -101,9 +89,7 @@ export type Frame = Message<"quadsmith.Frame"> & {
  * Describes the message quadsmith.Frame.
  * Use `create(FrameSchema)` to create a new message.
  */
-export const FrameSchema: GenMessage<Frame> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_frame, 0);
+export const FrameSchema: GenMessage<Frame> = /*@__PURE__*/ messageDesc(file_quadsmith_frame, 0);
 
 /**
  * ---------------------------------------------------------

@@ -2,16 +2,8 @@
 // @generated from file quadsmith/build.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenFile,
-  GenMessage,
-  GenService,
-} from "@bufbuild/protobuf/codegenv2";
-import {
-  fileDesc,
-  messageDesc,
-  serviceDesc,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_quadsmith__common } from "./_common_pb";
 import { file_quadsmith__sql } from "./_sql_pb";
 import type { ReferenceLink } from "./reference_link_pb";
@@ -25,11 +17,7 @@ export const file_quadsmith_build: GenFile =
   /*@__PURE__*/
   fileDesc(
     "ChVxdWFkc21pdGgvYnVpbGQucHJvdG8SCXF1YWRzbWl0aCKCBQoFQnVpbGQSEgoEdXVpZBgBIAEoCUIEyPMYARIQCgJpZBgCIAEoCUIE2PMYARIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEiQKCmZyYW1lX3V1aWQYBSABKAlCENLzGAxmcmFtZXModXVpZCkSJAoKbW90b3JfdXVpZBgGIAEoCUIQ0vMYDG1vdG9ycyh1dWlkKRIpCgxiYXR0ZXJ5X3V1aWQYByABKAlCE9LzGA9iYXR0ZXJpZXModXVpZCkSPAoWZmxpZ2h0X2NvbnRyb2xsZXJfdXVpZBgIIAEoCUIc0vMYGGZsaWdodF9jb250cm9sbGVycyh1dWlkKRIpCiFlbGVjdHJvbmljX3NwZWVkX2NvbnRyb2xsZXJfdXVpZHMYCSADKAkSFgoOcmVjZWl2ZXJfdXVpZHMYCiADKAkSFQoNYW50ZW5uYV91dWlkcxgLIAMoCRIsCg5wcm9wZWxsZXJfdXVpZBgMIAEoCUIU0vMYEHByb3BlbGxlcnModXVpZCkSFAoMY2FtZXJhX3V1aWRzGA0gAygJEjwKFnZpZGVvX3RyYW5zbWl0dGVyX3V1aWQYDyABKAlCHNLzGBh2aWRlb190cmFuc21pdHRlcnModXVpZCkSNwoRZ3BzX3JlY2VpdmVyX3V1aWQYECABKAlCF9LzGBNncHNfcmVjZWl2ZXJzKHV1aWQpSACIAQESMQoPcmVmZXJlbmNlX2xpbmtzGA4gAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbms6HZK1GA8KBUJ1aWxkEgZCdWlsZHPC8xgGYnVpbGRzQhQKEl9ncHNfcmVjZWl2ZXJfdXVpZCIuCg9HZXRCdWlsZFJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJpChFMaXN0QnVpbGRzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIk8KEkxpc3RCdWlsZHNSZXNwb25zZRIgCgZidWlsZHMYASADKAsyEC5xdWFkc21pdGguQnVpbGQSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMpMBCgxCdWlsZFNlcnZpY2USOAoIR2V0QnVpbGQSGi5xdWFkc21pdGguR2V0QnVpbGRSZXF1ZXN0GhAucXVhZHNtaXRoLkJ1aWxkEkkKCkxpc3RCdWlsZHMSHC5xdWFkc21pdGguTGlzdEJ1aWxkc1JlcXVlc3QaHS5xdWFkc21pdGguTGlzdEJ1aWxkc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
-    [
-      file_quadsmith__common,
-      file_quadsmith__sql,
-      file_quadsmith_reference_link,
-    ],
+    [file_quadsmith__common, file_quadsmith__sql, file_quadsmith_reference_link],
   );
 
 /**
@@ -147,9 +135,7 @@ export type Build = Message<"quadsmith.Build"> & {
  * Describes the message quadsmith.Build.
  * Use `create(BuildSchema)` to create a new message.
  */
-export const BuildSchema: GenMessage<Build> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_build, 0);
+export const BuildSchema: GenMessage<Build> = /*@__PURE__*/ messageDesc(file_quadsmith_build, 0);
 
 /**
  * ---------------------------------------------------------

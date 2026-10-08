@@ -2,11 +2,7 @@
 // @generated from file quadsmith/_common.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type {
-  GenExtension,
-  GenFile,
-  GenMessage,
-} from "@bufbuild/protobuf/codegenv2";
+import type { GenExtension, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { extDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { MessageOptions } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";

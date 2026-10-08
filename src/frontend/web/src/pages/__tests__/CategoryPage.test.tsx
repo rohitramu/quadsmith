@@ -15,9 +15,7 @@ describe("CategoryPage Component", () => {
     );
 
     // Title
-    expect(
-      screen.getByRole("heading", { level: 1, name: "hardware" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "hardware" })).toBeInTheDocument();
 
     // Verify all hardware collections are present
     expect(HARDWARE_COLLECTIONS).toHaveLength(11);
@@ -28,13 +26,8 @@ describe("CategoryPage Component", () => {
       });
       expect(heading).toBeInTheDocument();
       const cardLink = heading.closest("a");
-      expect(cardLink).toHaveAttribute(
-        "href",
-        `/components/hardware/${collection.id}`,
-      );
-      expect(
-        screen.getByText(`Browse all ${collection.name.toLowerCase()}`),
-      ).toBeInTheDocument();
+      expect(cardLink).toHaveAttribute("href", `/components/hardware/${collection.id}`);
+      expect(screen.getByText(`Browse all ${collection.name.toLowerCase()}`)).toBeInTheDocument();
     }
   });
 
@@ -46,11 +39,7 @@ describe("CategoryPage Component", () => {
       { route: "/components/unknown-category" },
     );
 
-    expect(
-      screen.getByRole("heading", { level: 1, name: "unknown-category" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("No collections found in this category."),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "unknown-category" })).toBeInTheDocument();
+    expect(screen.getByText("No collections found in this category.")).toBeInTheDocument();
   });
 });
