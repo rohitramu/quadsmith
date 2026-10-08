@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { getOption } from "@bufbuild/protobuf";
 import { frontend as frontendOpt } from "../gen/quadsmith/_common_pb";
@@ -318,13 +318,72 @@ function CollectionTableView({
   categoryId: string;
   collection: HardwareCollectionDef;
 }) {
-  const [filterQuery, setFilterQuery] = useState("");
-  const [showInternal, setShowInternal] = useState(false);
-  const [sortField, setSortField] = useState<string | null>(null);
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Read default columns from protobuf option if available, otherwise collection defaults
+  const protoDefaultCols = useMemo(() => {
+    try {
+      const opts = getOption(collection.schema, frontendOpt);
+      if (opts?.defaultColumns && opts.defaultColumns.length > 0) {
+        return opts.defaultColumns;
+      }
+    } catch {
+      // Fallback if option not present
+    }
+    return collection.defaultColumnIds;
+  }, [collection]);
+
+  const selectedColumnIds = useMemo(() => {
+    const colsParam = searchParams.get("columns");
+    if (!colsParam) {
+      return protoDefaultCols;
+    }
+    const parsed = colsParam
+      .split(",")
+      .map((c) => c.trim())
+      .filter((c) => c in collection.columns);
+    return parsed.length > 0 ? parsed : protoDefaultCols;
+  }, [searchParams, protoDefaultCols, collection.columns]);
+
+  const filterQuery = searchParams.get("filter") || "";
+
+  const showInternal =
+    searchParams.get("show_internal") === "true" || searchParams.get("internal") === "true";
+
+  const { sortField, sortDir } = useMemo(() => {
+    const sortParam = searchParams.get("sort");
+    const dirParam =
+      searchParams.get("dir") || searchParams.get("sort_dir") || searchParams.get("order");
+    if (!sortParam) {
+      return { sortField: null, sortDir: "asc" as const };
+    }
+    if (sortParam.startsWith("^") || sortParam.startsWith("-")) {
+      const field = sortParam.slice(1);
+      return {
+        sortField: field in collection.columns ? field : null,
+        sortDir: "desc" as const,
+      };
+    }
+    return {
+      sortField: sortParam in collection.columns ? sortParam : null,
+      sortDir: dirParam === "desc" ? ("desc" as const) : ("asc" as const),
+    };
+  }, [searchParams, collection.columns]);
+
   const [pageSize, setPageSize] = useState<number>(20);
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [tokenHistory, setTokenHistory] = useState<string[]>([""]);
+
+  // Reset pagination when search params change
+  const prevSearchParamsRef = useRef(searchParams.toString());
+  useEffect(() => {
+    const currentParams = searchParams.toString();
+    if (prevSearchParamsRef.current !== currentParams) {
+      prevSearchParamsRef.current = currentParams;
+      setPageIndex(0);
+      setTokenHistory([""]);
+    }
+  }, [searchParams]);
 
   const hasInternalField = useMemo(
     () => collection.fields.some((f) => f.name === "is_internal_only"),
@@ -344,21 +403,6 @@ function CollectionTableView({
     return `(${filterQuery}) && is_internal_only == false`;
   }, [hasInternalField, showInternal, filterQuery]);
 
-  // Read default columns from protobuf option if available, otherwise collection defaults
-  const protoDefaultCols = useMemo(() => {
-    try {
-      const opts = getOption(collection.schema, frontendOpt);
-      if (opts?.defaultColumns && opts.defaultColumns.length > 0) {
-        return opts.defaultColumns;
-      }
-    } catch {
-      // Fallback if option not present
-    }
-    return collection.defaultColumnIds;
-  }, [collection]);
-
-  const [selectedColumnIds, setSelectedColumnIds] = useState<string[]>(protoDefaultCols);
-
   const activeColumns = useMemo(() => {
     return selectedColumnIds
       .map((colKey) => collection.columns[colKey])
@@ -371,21 +415,55 @@ function CollectionTableView({
   }, [sortField, sortDir]);
 
   const handleSortToggle = (field: string) => {
-    setPageIndex(0);
-    setTokenHistory([""]);
+    const nextParams = new URLSearchParams(searchParams);
     if (sortField === field) {
-      if (sortDir === "asc") setSortDir("desc");
-      else setSortField(null);
+      if (sortDir === "asc") {
+        nextParams.set("sort", `^${field}`);
+      } else {
+        nextParams.delete("sort");
+      }
     } else {
-      setSortField(field);
-      setSortDir("asc");
+      nextParams.set("sort", field);
     }
+    nextParams.delete("dir");
+    nextParams.delete("sort_dir");
+    nextParams.delete("order");
+    setSearchParams(nextParams);
   };
 
   const handleFilterApply = (q: string) => {
-    setFilterQuery(q);
-    setPageIndex(0);
-    setTokenHistory([""]);
+    const nextParams = new URLSearchParams(searchParams);
+    const trimmed = q.trim();
+    if (trimmed) {
+      nextParams.set("filter", trimmed);
+    } else {
+      nextParams.delete("filter");
+    }
+    setSearchParams(nextParams);
+  };
+
+  const handleColumnsChange = (newCols: string[]) => {
+    const nextParams = new URLSearchParams(searchParams);
+    const isDefault =
+      newCols.length === protoDefaultCols.length &&
+      newCols.every((c, i) => c === protoDefaultCols[i]);
+    if (isDefault) {
+      nextParams.delete("columns");
+    } else {
+      nextParams.set("columns", newCols.join(","));
+    }
+    setSearchParams(nextParams);
+  };
+
+  const handleShowInternalChange = (checked: boolean) => {
+    const nextParams = new URLSearchParams(searchParams);
+    if (checked) {
+      nextParams.set("show_internal", "true");
+    } else {
+      nextParams.delete("show_internal");
+      nextParams.delete("internal");
+    }
+    setSearchParams(nextParams);
   };
 
   const handlePageSizeChange = (newSize: number) => {
@@ -521,11 +599,7 @@ function CollectionTableView({
                   <input
                     type="checkbox"
                     checked={showInternal}
-                    onChange={(e) => {
-                      setShowInternal(e.target.checked);
-                      setPageIndex(0);
-                      setTokenHistory([""]);
-                    }}
+                    onChange={(e) => handleShowInternalChange(e.target.checked)}
                     className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer"
                   />
                   <span>Show internal</span>
@@ -535,7 +609,7 @@ function CollectionTableView({
                 allColumns={Object.values(collection.columns)}
                 selectedColumnIds={selectedColumnIds}
                 defaultColumnIds={protoDefaultCols}
-                onChange={setSelectedColumnIds}
+                onChange={handleColumnsChange}
               />
             </div>
           </div>

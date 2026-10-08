@@ -1,8 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { renderWithProviders } from "../../test/test-utils";
 import { CollectionPage } from "../CollectionPage";
+
+function LocationDisplay() {
+  const location = useLocation();
+  return <div data-testid="location-search">{location.search}</div>;
+}
 
 describe("CollectionPage Component", () => {
   it("renders breadcrumbs, page title, and table data with mock motors", async () => {
@@ -192,6 +197,137 @@ describe("CollectionPage Component", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Integrated FC AIO")).toBeInTheDocument();
+    });
+  });
+
+  it("updates URL query parameters when sorting and filtering", async () => {
+    const { user } = renderWithProviders(
+      <Routes>
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={
+            <>
+              <CollectionPage />
+              <LocationDisplay />
+            </>
+          }
+        />
+      </Routes>,
+      { route: "/components/hardware/motors" },
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
+    });
+
+    const locationSearch = screen.getByTestId("location-search");
+    expect(locationSearch.textContent).toBe("");
+
+    // Click sort button for Name column -> asc
+    const sortBtn = screen.getByRole("button", { name: /sort by name/i });
+    await user.click(sortBtn);
+    await waitFor(() => {
+      expect(locationSearch.textContent).toBe("?sort=name");
+    });
+
+    // Click again -> desc (^name)
+    await user.click(sortBtn);
+    await waitFor(() => {
+      expect(locationSearch.textContent).toBe("?sort=%5Ename");
+    });
+
+    // Apply a filter
+    const filterInput = screen.getByPlaceholderText(/filter components/i);
+    await user.type(filterInput, "kv >= 2000{Enter}");
+    await waitFor(() => {
+      expect(locationSearch.textContent).toContain("filter=kv+%3E%3D+2000");
+      expect(locationSearch.textContent).toContain("sort=%5Ename");
+    });
+
+    // Click sort button again -> removes sort from URL
+    await user.click(sortBtn);
+    await waitFor(() => {
+      expect(locationSearch.textContent).not.toContain("sort=");
+      expect(locationSearch.textContent).toContain("filter=kv+%3E%3D+2000");
+    });
+  });
+
+  it("initializes sorting, filtering, and column selection from URL query parameters", async () => {
+    renderWithProviders(
+      <Routes>
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={
+            <>
+              <CollectionPage />
+              <LocationDisplay />
+            </>
+          }
+        />
+      </Routes>,
+      {
+        initialEntries: ["/components/hardware/motors?sort=%5Ename&filter=ECO&columns=name,kv"],
+      },
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
+    });
+
+    // Filter input should be populated with "ECO"
+    const filterInput = screen.getByPlaceholderText(/filter components/i) as HTMLInputElement;
+    expect(filterInput.value).toBe("ECO");
+
+    // Table header should show Name and KV columns
+    expect(screen.getByText("Name")).toBeInTheDocument();
+    expect(screen.getByText("KV")).toBeInTheDocument();
+
+    // Table header should NOT show Manufacturer or Stator Size
+    expect(screen.queryByText("Manufacturer")).not.toBeInTheDocument();
+    expect(screen.queryByText("Stator Size")).not.toBeInTheDocument();
+  });
+
+  it("updates URL columns parameter when modifying column selection and removes it on Reset to Default", async () => {
+    const { user } = renderWithProviders(
+      <Routes>
+        <Route
+          path="/components/:categoryId/:collectionId"
+          element={
+            <>
+              <CollectionPage />
+              <LocationDisplay />
+            </>
+          }
+        />
+      </Routes>,
+      { route: "/components/hardware/motors" },
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
+    });
+
+    const locationSearch = screen.getByTestId("location-search");
+    expect(locationSearch.textContent).toBe("");
+
+    // Open ColumnSelector
+    const columnsButton = screen.getByRole("button", { name: /columns \(/i });
+    await user.click(columnsButton);
+
+    // Hide Stator Size column by clicking its checkbox
+    const statorCheckbox = screen.getAllByRole("checkbox")[2]; // In visible columns
+    await user.click(statorCheckbox);
+
+    await waitFor(() => {
+      expect(locationSearch.textContent).toContain("columns=");
+    });
+
+    // Reset to Default
+    const resetButton = screen.getByRole("button", { name: /reset to default/i });
+    await user.click(resetButton);
+
+    await waitFor(() => {
+      expect(locationSearch.textContent).not.toContain("columns=");
     });
   });
 });
