@@ -15,6 +15,10 @@ gps_receivers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.mateksys.com/?portfolio=m10-5883"
   }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/mateksys-m10-5883-gnss-compass.html"
+  }
 }
 gps_receivers: {
   uuid: "01923019-3008-7001-8001-000000000002"
@@ -30,7 +34,11 @@ gps_receivers: {
   description: "Ultra-lightweight 2.5g micro GPS module engineered for toothpick and sub-250g quads, powered by 10th-generation M10050 GNSS chip."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://flywoo.net/products/goku-gm10-v3-gps"
+    url: "https://flywoo.net/products/goku-gm10-nano-v3-gps"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flywoo-goku-gm10-nano-v3-gps-module.html"
   }
 }
 gps_receivers: {
@@ -48,7 +56,11 @@ gps_receivers: {
   description: "Compact 18x18mm FPV GPS module featuring 10th-gen M10050 GNSS chip, integrated QMC5883L compass, and high-sensitivity ceramic patch antenna."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://flywoo.net/products/goku-gm10-v3-gps"
+    url: "https://flywoo.net/products/goku-gm10-mini-v3-gps"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flywoo-goku-gm10-mini-v3-gps-w-compass.html"
   }
 }
 gps_receivers: {
@@ -66,7 +78,11 @@ gps_receivers: {
   description: "Larger 25x25mm long-range GPS unit with high-gain active antenna and integrated QMC5883L compass for maximum satellite lock speed."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://flywoo.net/products/goku-gm10-v3-gps"
+    url: "https://flywoo.net/products/goku-gm10-pro-v3-gps-w-compass"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/flywoo-goku-gm10-pro-v3-gps-module-w-compass.html"
   }
 }
 gps_receivers: {
@@ -86,6 +102,10 @@ gps_receivers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://holybro.com/products/micro-m10-gps"
   }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/holybro-micro-m10-gps-w-case.html"
+  }
 }
 gps_receivers: {
   uuid: "01923019-3008-7001-8001-000000000006"
@@ -102,6 +122,10 @@ gps_receivers: {
   description: "Compact 21x21mm 10th-generation M10 GNSS module with onboard QMC5883L compass and multi-constellation concurrent satellite support."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.com/products/hglrc-m100-5883-gps"
+    url: "https://www.hglrc.com/products/m100-5883-gps"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.getfpv.com/hglrc-m100-5883-gps-module.html"
   }
 }
