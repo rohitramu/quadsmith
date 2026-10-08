@@ -55,6 +55,8 @@ test: generate
 	@echo "--- Running Go Tests ---"
 	@cd src/backend/api && go test -mod=vendor ./...
 	@cd src/frontend/cli && go test -mod=vendor ./...
+	@echo "--- Running Web UI Tests ---"
+	@cd src/frontend/web && npm test
 
 clean:
 	@echo "--- Cleaning Workspace ---"

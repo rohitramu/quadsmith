@@ -55,7 +55,11 @@ export function Layout() {
 
         {/* Actions */}
         <div className="flex justify-end w-64">
-          <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800">
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800"
+          >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         </div>
@@ -72,7 +76,11 @@ export function Layout() {
                 <li>
                   <div className="flex items-center justify-between rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800">
                     <Link to="/components/hardware" className="flex-1 px-3 py-2">Hardware</Link>
-                    <button onClick={() => toggleMenu("hardware")} className="p-2 mr-1 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-500">
+                    <button
+                      onClick={() => toggleMenu("hardware")}
+                      aria-label={expandedMenu === "hardware" ? "Collapse Hardware menu" : "Expand Hardware menu"}
+                      className="p-2 mr-1 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-500"
+                    >
                       {expandedMenu === "hardware" ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                     </button>
                   </div>
