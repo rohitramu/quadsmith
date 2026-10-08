@@ -52,7 +52,7 @@ jobs:
         find src -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 
         # Format TypeScript, HTML, and CSS
-        cd src/frontend/web && npx prettier --write "*.html" "*.ts" "src/**/*.{ts,tsx,css,html}" && cd ../../..
+        npx --prefix src/frontend/web prettier --write "src/frontend/web/index.html" "src/frontend/web/src/**/*.{ts,tsx,css,html}"
 
         # Format Python (isort + ruff format)
         uvx ruff check --select I --fix tools/

@@ -52,7 +52,7 @@ generate:
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@for f in src/backend/api/gen/quadsmith/_*.pb.go; do [ -f "$$f" ] && mv "$$f" "$$(echo $$f | sed 's|/_|/|')"; done || true
 	@gofmt -s -w src/backend/api/gen/
-	@cd src/frontend/web && npx prettier --write "src/gen/**/*.{ts,tsx}"
+	@npx --prefix src/frontend/web prettier --write "src/frontend/web/src/gen/**/*.{ts,tsx}"
 	@npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/schema.sql
 
 test: generate

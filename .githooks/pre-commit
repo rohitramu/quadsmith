@@ -54,9 +54,9 @@ fi
 
 # Check TypeScript, HTML, and CSS formatting
 echo "Checking TypeScript, HTML, and CSS formatting..."
-if ! (cd src/frontend/web && npx prettier --check "*.html" "*.ts" "src/**/*.{ts,tsx,css,html}" > /dev/null 2>&1); then
+if ! npx --prefix src/frontend/web prettier --check "src/frontend/web/index.html" "src/frontend/web/src/**/*.{ts,tsx,css,html}" > /dev/null 2>&1; then
     echo "Error: TypeScript, HTML, or CSS files are not formatted."
-    echo "Please run '(cd src/frontend/web && npx prettier --write \"*.html\" \"*.ts\" \"src/**/*.{ts,tsx,css,html}\")' before committing."
+    echo "Please run 'npx --prefix src/frontend/web prettier --write \"src/frontend/web/index.html\" \"src/frontend/web/src/**/*.{ts,tsx,css,html}\"' before committing."
     exit 1
 fi
 
