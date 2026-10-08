@@ -67,7 +67,7 @@ export interface HardwareCollectionDef {
   schema: any;
   listQuery: any;
   getQuery: any;
-  getDataList: (response: any) => any[];
+  getDataList: (response: any, includeInternal?: boolean) => any[];
   fields: FieldDef[];
   presets: { label: string; query: string }[];
   columns: Record<string, ColumnConfig>;
@@ -111,10 +111,16 @@ function createStandardColumns(): Record<string, ColumnConfig> {
         <span className="font-medium text-zinc-900 dark:text-zinc-100">{m.name || m.id}</span>
       ),
     },
+    is_internal_only: {
+      id: "is_internal_only",
+      title: "Internal Only",
+      renderCell: (m) => (m.isInternalOnly ? "Yes" : "No"),
+    },
     weight_g: {
       id: "weight_g",
       title: "Weight (g)",
-      renderCell: (m) => (m.weightG != null && m.weightG > 0 ? `${m.weightG}` : "-"),
+      renderCell: (m) =>
+        m.weightG != null && (m.weightG > 0 || m.isInternalOnly) ? `${m.weightG}` : "-",
     },
     description: {
       id: "description",
@@ -133,7 +139,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     schema: AntennaSchema,
     listQuery: listAntennas,
     getQuery: getAntenna,
-    getDataList: (res) => res?.antennas ?? [],
+    getDataList: (res, includeInternal = false) =>
+      (res?.antennas ?? []).filter((item: any) => includeInternal || !item.isInternalOnly),
     defaultColumnIds: [
       "manufacturer",
       "name",
@@ -143,6 +150,12 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       "gain_dbi",
     ],
     fields: [
+      {
+        name: "is_internal_only",
+        type: "boolean",
+        description: "Whether this antenna is integrated/internal only",
+        examples: ["is_internal_only == false", "is_internal_only == true"],
+      },
       {
         name: "id",
         type: "string",
@@ -438,9 +451,16 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     schema: CameraSchema,
     listQuery: listCameras,
     getQuery: getCamera,
-    getDataList: (res) => res?.cameras ?? [],
+    getDataList: (res, includeInternal = false) =>
+      (res?.cameras ?? []).filter((item: any) => includeInternal || !item.isInternalOnly),
     defaultColumnIds: ["manufacturer", "name", "protocol", "sensor_size", "width_mm"],
     fields: [
+      {
+        name: "is_internal_only",
+        type: "boolean",
+        description: "Whether this camera is integrated/internal only",
+        examples: ["is_internal_only == false", "is_internal_only == true"],
+      },
       {
         name: "id",
         type: "string",
@@ -577,9 +597,18 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     schema: ElectronicSpeedControllerSchema,
     listQuery: listElectronicSpeedControllers,
     getQuery: getElectronicSpeedController,
-    getDataList: (res) => res?.electronicSpeedControllers ?? [],
+    getDataList: (res, includeInternal = false) =>
+      (res?.electronicSpeedControllers ?? []).filter(
+        (item: any) => includeInternal || !item.isInternalOnly,
+      ),
     defaultColumnIds: ["manufacturer", "name", "motor_current_max_a", "max_motors", "firmware"],
     fields: [
+      {
+        name: "is_internal_only",
+        type: "boolean",
+        description: "Whether this ESC is integrated/internal only",
+        examples: ["is_internal_only == false", "is_internal_only == true"],
+      },
       {
         name: "id",
         type: "string",
@@ -743,9 +772,16 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     schema: FlightControllerSchema,
     listQuery: listFlightControllers,
     getQuery: getFlightController,
-    getDataList: (res) => res?.flightControllers ?? [],
+    getDataList: (res, includeInternal = false) =>
+      (res?.flightControllers ?? []).filter((item: any) => includeInternal || !item.isInternalOnly),
     defaultColumnIds: ["manufacturer", "name", "processor", "gyro", "weight_g"],
     fields: [
+      {
+        name: "is_internal_only",
+        type: "boolean",
+        description: "Whether this flight controller is integrated/internal only",
+        examples: ["is_internal_only == false", "is_internal_only == true"],
+      },
       {
         name: "id",
         type: "string",
@@ -1013,9 +1049,16 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     schema: GpsReceiverSchema,
     listQuery: listGpsReceivers,
     getQuery: getGpsReceiver,
-    getDataList: (res) => res?.gpsReceivers ?? [],
+    getDataList: (res, includeInternal = false) =>
+      (res?.gpsReceivers ?? []).filter((item: any) => includeInternal || !item.isInternalOnly),
     defaultColumnIds: ["manufacturer", "name", "chipset", "has_compass"],
     fields: [
+      {
+        name: "is_internal_only",
+        type: "boolean",
+        description: "Whether this GPS receiver is integrated/internal only",
+        examples: ["is_internal_only == false", "is_internal_only == true"],
+      },
       {
         name: "id",
         type: "string",
@@ -1460,9 +1503,16 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     schema: ReceiverSchema,
     listQuery: listReceivers,
     getQuery: getReceiver,
-    getDataList: (res) => res?.receivers ?? [],
+    getDataList: (res, includeInternal = false) =>
+      (res?.receivers ?? []).filter((item: any) => includeInternal || !item.isInternalOnly),
     defaultColumnIds: ["manufacturer", "name", "protocol", "frequency_band_mhz", "has_telemetry"],
     fields: [
+      {
+        name: "is_internal_only",
+        type: "boolean",
+        description: "Whether this receiver is integrated/internal only",
+        examples: ["is_internal_only == false", "is_internal_only == true"],
+      },
       {
         name: "id",
         type: "string",
@@ -1588,9 +1638,16 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     schema: VideoTransmitterSchema,
     listQuery: listVideoTransmitters,
     getQuery: getVideoTransmitter,
-    getDataList: (res) => res?.videoTransmitters ?? [],
+    getDataList: (res, includeInternal = false) =>
+      (res?.videoTransmitters ?? []).filter((item: any) => includeInternal || !item.isInternalOnly),
     defaultColumnIds: ["manufacturer", "name", "protocol", "max_power_mw", "weight_g"],
     fields: [
+      {
+        name: "is_internal_only",
+        type: "boolean",
+        description: "Whether this video transmitter is integrated/internal only",
+        examples: ["is_internal_only == false", "is_internal_only == true"],
+      },
       {
         name: "id",
         type: "string",

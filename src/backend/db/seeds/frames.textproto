@@ -1475,7 +1475,7 @@ frames: {
   uuid: "1958ca5a-439e-4d90-8360-97228c1f5849"
   id: "newbeedrone-inertia-5-dc-fpv-frame"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Inertia 5 DC  FPV Frame"
+  name: "NewBeeDrone Inertia 5 DC FPV Frame"
   weight_g: 197
   wheelbase_mm: 230
   max_prop_size_mm: 129.54
@@ -2699,7 +2699,7 @@ frames: {
   uuid: "592a05ee-d015-4dae-b8db-fecaac899484"
   id: "fpvcycle-glide-5-frame"
   manufacturer: "FPVCycle"
-  name: "FPVCycle Glide -  5 Frame"
+  name: "FPVCycle Glide - 5 Frame"
   weight_g: 70.5
   wheelbase_mm: 160
   max_prop_size_mm: 101.6

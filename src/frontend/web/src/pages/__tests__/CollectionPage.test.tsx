@@ -135,4 +135,63 @@ describe("CollectionPage Component", () => {
       screen.getByText("Implementation for non existent collection coming soon."),
     ).toBeInTheDocument();
   });
+
+  it("filters out internal-only products by default and shows them when toggled", async () => {
+    const { user } = renderWithProviders(
+      <Routes>
+        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+      </Routes>,
+      { route: "/components/hardware/flight-controllers" },
+    );
+
+    // Standalone FC should be visible
+    await waitFor(() => {
+      expect(screen.getByText("F405 V4 FC")).toBeInTheDocument();
+    });
+
+    // Internal FC should be filtered out by default
+    expect(screen.queryByText("Integrated FC AIO")).not.toBeInTheDocument();
+
+    // The 'Show internal' toggle should be present and unchecked
+    const showInternalCheckbox = screen.getByRole("checkbox", { name: /show internal/i });
+    expect(showInternalCheckbox).toBeInTheDocument();
+    expect(showInternalCheckbox).not.toBeChecked();
+
+    // Check the box to show internal components
+    await user.click(showInternalCheckbox);
+
+    // Both should now be visible
+    await waitFor(() => {
+      expect(screen.getByText("Integrated FC AIO")).toBeInTheDocument();
+    });
+    expect(screen.getByText("F405 V4 FC")).toBeInTheDocument();
+
+    // Uncheck to filter them out again
+    await user.click(showInternalCheckbox);
+    await waitFor(() => {
+      expect(screen.queryByText("Integrated FC AIO")).not.toBeInTheDocument();
+    });
+    expect(screen.getByText("F405 V4 FC")).toBeInTheDocument();
+  });
+
+  it("shows internal products when filtered explicitly with is_internal_only in smart filter", async () => {
+    const { user } = renderWithProviders(
+      <Routes>
+        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+      </Routes>,
+      { route: "/components/hardware/flight-controllers" },
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("F405 V4 FC")).toBeInTheDocument();
+    });
+    expect(screen.queryByText("Integrated FC AIO")).not.toBeInTheDocument();
+
+    const filterInput = screen.getByPlaceholderText(/filter components/i);
+    await user.type(filterInput, "is_internal_only == true{Enter}");
+
+    await waitFor(() => {
+      expect(screen.getByText("Integrated FC AIO")).toBeInTheDocument();
+    });
+  });
 });

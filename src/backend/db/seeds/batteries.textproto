@@ -907,7 +907,7 @@ batteries: {
   uuid: "376d8e77-cbeb-4354-b6d1-a83937ff275a"
   id: "aquila20-exclusive-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "Aquila20 Exclusive Battery (2PCS)"
+  name: "Aquila20 Exclusive Battery"
   weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
@@ -928,7 +928,7 @@ batteries: {
   uuid: "ffe41519-38a1-46d9-97a2-aaff5410e5f4"
   id: "600mah-2s-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "600mAh 2S Lipo Battery  (2PCS)"
+  name: "600mAh 2S Lipo Battery"
   weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
@@ -945,7 +945,7 @@ batteries: {
   uuid: "354a4840-f376-4197-ba2c-8da73853369f"
   id: "lava-1s-260mah-80c-battery-5pcs"
   manufacturer: "BETAFPV"
-  name: "LAVA 1S 260mAh 80C Battery (5PCS)"
+  name: "LAVA 1S 260mAh 80C Battery"
   weight_g: 7.11
   capacity_mah: 1550
   cell_count_s: 4
@@ -966,7 +966,7 @@ batteries: {
   uuid: "8375420d-93e6-4c1f-8664-395d63719116"
   id: "bt3-0-550mah-2s-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "BT3.0 550mAh 2S Battery (2PCS)"
+  name: "BT3.0 550mAh 2S Battery"
   weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
@@ -987,7 +987,7 @@ batteries: {
   uuid: "aee21456-6de2-4df7-8e49-40b5ea8da53d"
   id: "lava-2s-3s-4s-550mah-75c-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "LAVA 2S/3S/4S 550mAh 75C Battery (2PCS)"
+  name: "LAVA 2S/3S/4S 550mAh 75C Battery"
   weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
@@ -1004,7 +1004,7 @@ batteries: {
   uuid: "de7b7776-7053-45d7-944c-4cf601fb4786"
   id: "lava-2s-3s-4s-450mah-75c-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "LAVA 2S/3S/4S 450mAh 75C Battery (2PCS)"
+  name: "LAVA 2S/3S/4S 450mAh 75C Battery"
   weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
@@ -1025,7 +1025,7 @@ batteries: {
   uuid: "5dcf6e79-9b56-4d63-b82d-38b2b4ae2c6f"
   id: "lava-1s-550mah-75c-battery-4pcs"
   manufacturer: "BETAFPV"
-  name: "LAVA 1S 550mAh 75C Battery (4PCS)"
+  name: "LAVA 1S 550mAh 75C Battery"
   weight_g: 12.2
   capacity_mah: 1550
   cell_count_s: 4
@@ -1042,7 +1042,7 @@ batteries: {
   uuid: "ac25dd72-8d6f-4be9-9bce-8dd445545efe"
   id: "lava-1s-450mah-75c-battery-4pcs"
   manufacturer: "BETAFPV"
-  name: "LAVA 1S 450mAh 75C Battery (4PCS)"
+  name: "LAVA 1S 450mAh 75C Battery"
   weight_g: 12.2
   capacity_mah: 1550
   cell_count_s: 4
@@ -1063,7 +1063,7 @@ batteries: {
   uuid: "39d0266f-9ab8-4eef-9f75-eef013655585"
   id: "lava-1s-300mah-75c-battery-5pcs"
   manufacturer: "BETAFPV"
-  name: "LAVA 1S 300mAh 75C Battery (5PCS)"
+  name: "LAVA 1S 300mAh 75C Battery"
   weight_g: 8.3
   capacity_mah: 1550
   cell_count_s: 4
@@ -1118,7 +1118,7 @@ batteries: {
   uuid: "5c203f08-8e19-4520-9641-0bef1b459544"
   id: "bt3-0-450mah-2s-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "BT3.0 450mAh 2S Battery (2PCS)"
+  name: "BT3.0 450mAh 2S Battery"
   weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
@@ -1135,7 +1135,7 @@ batteries: {
   uuid: "f2a4efd6-f32d-4712-b811-6f1dfef4ee48"
   id: "450mah-2s-45c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "450mAh 2S 45C Lipo Battery (2PCS)"
+  name: "450mAh 2S 45C Lipo Battery"
   weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
@@ -1190,7 +1190,7 @@ batteries: {
   uuid: "ae7ccbf4-5ee4-45be-b698-42aa84f75438"
   id: "750mah-4s-95c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "750mAh 4S 95C Lipo Battery (2PCS)"
+  name: "750mAh 4S 95C Lipo Battery"
   weight_g: 81.6
   capacity_mah: 750
   cell_count_s: 4
@@ -1207,7 +1207,7 @@ batteries: {
   uuid: "1b634a20-8814-4ea4-8cd9-6d23a9bd31b0"
   id: "550mah-1s-lipo-hv-battery-4pcs"
   manufacturer: "BETAFPV"
-  name: "550mAh 1S Lipo HV Battery (4PCS)"
+  name: "550mAh 1S Lipo HV Battery"
   weight_g: 13.8
   capacity_mah: 550
   cell_count_s: 1
@@ -1224,7 +1224,7 @@ batteries: {
   uuid: "9bfa94fc-7677-4f9b-b277-b950b7d5c7e1"
   id: "1000mah-4s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "1000mAh 4S 75C Lipo Battery (2PCS)"
+  name: "1000mAh 4S 75C Lipo Battery"
   weight_g: 120.4
   capacity_mah: 1000
   cell_count_s: 4
@@ -1241,7 +1241,7 @@ batteries: {
   uuid: "cbdb8928-7401-4ad8-be40-a26a0cc0b046"
   id: "550mah-6s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "550mAh 6S 75C Lipo Battery (2PCS)"
+  name: "550mAh 6S 75C Lipo Battery"
   weight_g: 86
   capacity_mah: 1550
   cell_count_s: 4
@@ -1262,7 +1262,7 @@ batteries: {
   uuid: "e9227d27-cbd2-453b-b0a5-053c2d24f82f"
   id: "850mah-3s-4s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "850mAh 3S/4S 75C Lipo Battery (2PCS)"
+  name: "850mAh 3S/4S 75C Lipo Battery"
   weight_g: 80
   capacity_mah: 1550
   cell_count_s: 4
@@ -1279,7 +1279,7 @@ batteries: {
   uuid: "3d6b129b-670e-4ec2-a478-eb90c98452f2"
   id: "bt2-0-260mah-1s-30c-battery-8pcs"
   manufacturer: "BETAFPV"
-  name: "BT2.0 260mAh 1S 30C Battery (8PCS)"
+  name: "BT2.0 260mAh 1S 30C Battery"
   weight_g: 7.11
   capacity_mah: 1550
   cell_count_s: 4
@@ -1313,7 +1313,7 @@ batteries: {
   uuid: "cd3a2b38-99a0-4cbd-a881-84f98506df9a"
   id: "bt2-0-300mah-1s-30c-battery-8pcs"
   manufacturer: "BETAFPV"
-  name: "BT2.0 300mAh 1S 30C Battery (8PCS)"
+  name: "BT2.0 300mAh 1S 30C Battery"
   weight_g: 8.3
   capacity_mah: 1550
   cell_count_s: 4
@@ -1385,7 +1385,7 @@ batteries: {
   uuid: "65967e09-4671-4077-8f8f-b81e358588ce"
   id: "450mah-4s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "450mAh 4S 75C Lipo Battery (2PCS)"
+  name: "450mAh 4S 75C Lipo Battery"
   weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
@@ -1406,7 +1406,7 @@ batteries: {
   uuid: "c7546144-decd-449a-8f0b-36087010eafd"
   id: "450mah-3s-75c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "450mAh 3S 75C Lipo Battery (2PCS)"
+  name: "450mAh 3S 75C Lipo Battery"
   weight_g: 26.1
   capacity_mah: 1550
   cell_count_s: 4
@@ -1427,7 +1427,7 @@ batteries: {
   uuid: "4b82b9e6-b5d7-4bf2-9347-41b4ed002965"
   id: "350mah-2s-35c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "350mAh 2S 35C Lipo Battery (2PCS)"
+  name: "350mAh 2S 35C Lipo Battery"
   weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
@@ -1444,7 +1444,7 @@ batteries: {
   uuid: "3bd678ed-9048-4488-bdfc-4122f4728bb6"
   id: "ph2-0-300mah-1s-30c-battery-8pcs"
   manufacturer: "BETAFPV"
-  name: "PH2.0 300mAh 1S 30C Battery (8PCS)"
+  name: "PH2.0 300mAh 1S 30C Battery"
   weight_g: 8.3
   capacity_mah: 1550
   cell_count_s: 4
@@ -1478,7 +1478,7 @@ batteries: {
   uuid: "ae359f10-0300-4a11-be85-18b6d600dc80"
   id: "300mah-2s-45c-lipo-battery-2pcs"
   manufacturer: "BETAFPV"
-  name: "300mAh 2S 45C Lipo Battery (2PCS)"
+  name: "300mAh 2S 45C Lipo Battery"
   weight_g: 29.2
   capacity_mah: 1550
   cell_count_s: 4
@@ -1750,7 +1750,7 @@ batteries: {
   uuid: "8f772fdd-2486-457a-b333-40475302c32c"
   id: "darwinfpv-3s-500mah-11-4v-100c-battery"
   manufacturer: "DarwinFPV"
-  name: "DarwinFPV 3S 500mAh 11.4V 100C  Battery"
+  name: "DarwinFPV 3S 500mAh 11.4V 100C Battery"
   weight_g: 146
   capacity_mah: 1550
   cell_count_s: 4
@@ -2429,7 +2429,7 @@ batteries: {
   uuid: "ed15f652-4eee-44d3-a3da-6b0bb67c4d54"
   id: "1300mah-18350-li-ion-battery-2-pack"
   manufacturer: "Hibatt"
-  name: "1300mAh 18350 Li-Ion Battery 2-Pack"
+  name: "1300mAh 18350 Li-Ion Battery"
   weight_g: 25
   capacity_mah: 1550
   cell_count_s: 4
@@ -2442,7 +2442,7 @@ batteries: {
   uuid: "22049447-d19b-4398-8a8a-6f62503a6a30"
   id: "900mah-18350-li-ion-battery-2-pack"
   manufacturer: "RadioMaster"
-  name: "900mAh 18350 Li-Ion Battery 2-Pack"
+  name: "900mAh 18350 Li-Ion Battery"
   weight_g: 25
   capacity_mah: 1550
   cell_count_s: 4
@@ -3323,7 +3323,7 @@ batteries: {
   uuid: "55a27a7d-e2b8-4ffc-a314-2a54329d2535"
   id: "sub250-1s-720mah-90c-battery"
   manufacturer: "Sub250"
-  name: "Sub250 1S  720mAh 90C Battery"
+  name: "Sub250 1S 720mAh 90C Battery"
   weight_g: 13
   capacity_mah: 1550
   cell_count_s: 4
@@ -3387,7 +3387,7 @@ batteries: {
   uuid: "49b24345-3e40-4e52-bdf0-8925477fc910"
   id: "sub250-1s-530mah-90c-battery-a30"
   manufacturer: "Sub250"
-  name: "Sub250 1S 530mAh 90C Battery  A30"
+  name: "Sub250 1S 530mAh 90C Battery A30"
   weight_g: 12
   capacity_mah: 1550
   cell_count_s: 4
@@ -3404,7 +3404,7 @@ batteries: {
   uuid: "c90d8bfb-6f05-4fc2-8667-13f66d93fdb9"
   id: "sub250-1s-380mah-90c-battery"
   manufacturer: "Sub250"
-  name: "Sub250 1S 380mAh 90C  Battery"
+  name: "Sub250 1S 380mAh 90C Battery"
   weight_g: 10
   capacity_mah: 1550
   cell_count_s: 4

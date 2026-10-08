@@ -308,7 +308,7 @@ cameras: {
   uuid: "08d40cf6-f781-4753-b305-e7cd9d98c382"
   id: "darwinfpv-caddx-ant-micro-fpv-camera"
   manufacturer: "DarwinFPV"
-  name: "DarwinFPV Caddx Ant  Micro FPV Camera"
+  name: "DarwinFPV Caddx Ant Micro FPV Camera"
   weight_g: 1.7
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
@@ -397,7 +397,7 @@ cameras: {
   uuid: "f704e308-6016-47be-b3a2-40315defb4d6"
   id: "newbeedrone-whoop-training-camera-x3"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Whoop Training Camera x3"
+  name: "NewBeeDrone Whoop Training Camera"
   weight_g: 1.8
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
@@ -577,7 +577,7 @@ cameras: {
   uuid: "5dfb793c-e1ba-4e5c-b372-d3f7e828d848"
   id: "caddx-camera-for-whoopfly16-nimble65"
   manufacturer: "Sub250"
-  name: "Caddx  Camera for Whoopfly16 Nimble65"
+  name: "Caddx Camera for Whoopfly16 Nimble65"
   weight_g: 5.9
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
@@ -651,7 +651,7 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 3.6
+  weight_g: 0
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -667,9 +667,9 @@ cameras: {
   uuid: "efc0f4d9-c140-4c9a-a16d-4f4f21891ed2"
   id: "walksnail-avatar-hd-nano-camera-v3-2"
   manufacturer: "CADDX"
-  name: "Walksnail Avatar HD Nano Camera  V3"
+  name: "Walksnail Avatar HD Nano Camera V3"
   is_internal_only: true
-  weight_g: 3
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -691,7 +691,7 @@ cameras: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Camera V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -713,7 +713,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Moonlight Camera"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -735,7 +735,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Lite Camera"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -757,7 +757,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Pro Camera"
   is_internal_only: true
-  weight_g: 9.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/1.8\" CMOS"
   width_mm: 19
@@ -779,7 +779,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Camera V2"
   is_internal_only: true
-  weight_g: 9.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 19
@@ -801,7 +801,7 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 3.6
+  weight_g: 0
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -817,9 +817,9 @@ cameras: {
   uuid: "6050bc22-e8ac-41b8-8982-b561f9f8999c"
   id: "walksnail-avatar-hd-nano-camera-v3-3"
   manufacturer: "CADDX"
-  name: "Walksnail Avatar HD Nano Camera  V3"
+  name: "Walksnail Avatar HD Nano Camera V3"
   is_internal_only: true
-  weight_g: 3
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -837,7 +837,7 @@ cameras: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Camera V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -859,7 +859,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Moonlight Camera"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -881,7 +881,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Lite Camera"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -903,7 +903,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Pro Camera"
   is_internal_only: true
-  weight_g: 9.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/1.8\" CMOS"
   width_mm: 19
@@ -925,7 +925,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Camera V2"
   is_internal_only: true
-  weight_g: 9.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 19
@@ -947,7 +947,7 @@ cameras: {
   manufacturer: "BETAFPV"
   name: "H01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 3.6
+  weight_g: 0
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
   width_mm: 19
@@ -963,9 +963,9 @@ cameras: {
   uuid: "f5285cbc-1dfa-4e88-9de3-27fcbfbf911f"
   id: "walksnail-avatar-hd-nano-camera-v3-4"
   manufacturer: "CADDX"
-  name: "Walksnail Avatar HD Nano Camera  V3"
+  name: "Walksnail Avatar HD Nano Camera V3"
   is_internal_only: true
-  weight_g: 3
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -983,7 +983,7 @@ cameras: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Camera V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -1005,7 +1005,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Moonlight Camera"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -1027,7 +1027,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Lite Camera"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 14
@@ -1045,7 +1045,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Pro Camera"
   is_internal_only: true
-  weight_g: 9.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/1.8\" CMOS"
   width_mm: 19
@@ -1063,7 +1063,7 @@ cameras: {
   manufacturer: "Walksnail"
   name: "Avatar HD Camera V2"
   is_internal_only: true
-  weight_g: 9.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
   width_mm: 19

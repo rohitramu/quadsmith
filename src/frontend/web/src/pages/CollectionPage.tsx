@@ -319,11 +319,30 @@ function CollectionTableView({
   collection: HardwareCollectionDef;
 }) {
   const [filterQuery, setFilterQuery] = useState("");
+  const [showInternal, setShowInternal] = useState(false);
   const [sortField, setSortField] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [pageSize, setPageSize] = useState<number>(20);
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [tokenHistory, setTokenHistory] = useState<string[]>([""]);
+
+  const hasInternalField = useMemo(
+    () => collection.fields.some((f) => f.name === "is_internal_only"),
+    [collection],
+  );
+
+  const effectiveFilter = useMemo(() => {
+    if (!hasInternalField || showInternal) {
+      return filterQuery;
+    }
+    if (filterQuery && filterQuery.includes("is_internal_only")) {
+      return filterQuery;
+    }
+    if (!filterQuery) {
+      return "is_internal_only == false";
+    }
+    return `(${filterQuery}) && is_internal_only == false`;
+  }, [hasInternalField, showInternal, filterQuery]);
 
   // Read default columns from protobuf option if available, otherwise collection defaults
   const protoDefaultCols = useMemo(() => {
@@ -380,7 +399,7 @@ function CollectionTableView({
   const { data, isLoading, isFetching, error } = useQuery(
     collection.listQuery,
     {
-      filter: filterQuery,
+      filter: effectiveFilter,
       sort: sortArray,
       pageSize,
       pageToken: currentToken,
@@ -417,7 +436,11 @@ function CollectionTableView({
     setPageIndex(0);
   };
 
-  const items = useMemo(() => collection.getDataList(data), [collection, data]);
+  const items = useMemo(() => {
+    const includeInternal =
+      showInternal || Boolean(filterQuery && filterQuery.includes("is_internal_only"));
+    return collection.getDataList(data, includeInternal);
+  }, [collection, data, showInternal, filterQuery]);
   const count = items.length;
   const startItem = count > 0 ? pageIndex * pageSize + 1 : 0;
   const endItem = pageIndex * pageSize + count;
@@ -492,12 +515,29 @@ function CollectionTableView({
                 </span>
               )}
             </div>
-            <ColumnSelector
-              allColumns={Object.values(collection.columns)}
-              selectedColumnIds={selectedColumnIds}
-              defaultColumnIds={protoDefaultCols}
-              onChange={setSelectedColumnIds}
-            />
+            <div className="flex items-center gap-4">
+              {hasInternalField && (
+                <label className="flex items-center gap-1.5 cursor-pointer text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200">
+                  <input
+                    type="checkbox"
+                    checked={showInternal}
+                    onChange={(e) => {
+                      setShowInternal(e.target.checked);
+                      setPageIndex(0);
+                      setTokenHistory([""]);
+                    }}
+                    className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                  />
+                  <span>Show internal</span>
+                </label>
+              )}
+              <ColumnSelector
+                allColumns={Object.values(collection.columns)}
+                selectedColumnIds={selectedColumnIds}
+                defaultColumnIds={protoDefaultCols}
+                onChange={setSelectedColumnIds}
+              />
+            </div>
           </div>
 
           <div className="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">

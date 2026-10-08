@@ -1080,7 +1080,7 @@ flight_controllers: {
   uuid: "73328b55-97e7-45bb-80dd-8a4e9ffa3567"
   id: "mamba-mk4-f722-flight-controller-30mm-m3"
   manufacturer: "Diatone"
-  name: "MAMBA MK4 F722  Flight Controller 30mm/M3"
+  name: "MAMBA MK4 F722 Flight Controller 30mm/M3"
   weight_g: 6.9
   processor: "STM32F722"
   gyro: "ICM42688P"

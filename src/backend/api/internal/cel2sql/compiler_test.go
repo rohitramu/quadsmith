@@ -55,6 +55,12 @@ func TestCompile(t *testing.T) {
 			wantSql:  `(((kv > $1) AND (kv < $2)) OR ((stator_diameter_mm = $3) AND (stator_height_mm >= $4)))`,
 			wantArgs: []any{int64(1900), int64(2500), int64(22), int64(7)},
 		},
+		{
+			name:     "boolean comparison",
+			filter:   `is_internal_only == false`,
+			wantSql:  `(is_internal_only = $1)`,
+			wantArgs: []any{false},
+		},
 	}
 
 	for _, tt := range tests {

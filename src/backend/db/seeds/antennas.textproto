@@ -2119,7 +2119,7 @@ antennas: {
   manufacturer: "Generic"
   name: "Generic 2.4GHz SMD Ceramic Antenna"
   is_internal_only: true
-  weight_g: 0.1
+  weight_g: 0
   connector: "Integrated"
   polarization: "Linear"
   frequency_band_mhz: 2400

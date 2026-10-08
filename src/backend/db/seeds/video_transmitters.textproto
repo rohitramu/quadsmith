@@ -563,7 +563,7 @@ video_transmitters: {
   uuid: "7497b6c0-28d2-47a9-a772-71feea53274e"
   id: "walksnail-avatar-hd-nano-camera-v3"
   manufacturer: "CADDX"
-  name: "Walksnail Avatar HD Nano Camera  V3"
+  name: "Walksnail Avatar HD Nano Camera V3"
   weight_g: 3
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
@@ -643,7 +643,7 @@ video_transmitters: {
   uuid: "fc830364-79bb-4c87-97bd-a482aa6c7f84"
   id: "darwinfpv-babyape-rtf"
   manufacturer: "DarwinFPV"
-  name: "DarwinFPV BabyApe Ⅲ  RTF"
+  name: "DarwinFPV BabyApe Ⅲ RTF"
   weight_g: 250
   protocol: "Analog"
   max_power_mw: 800
@@ -1825,7 +1825,7 @@ video_transmitters: {
   uuid: "9a998a95-d5a0-4f8e-a476-334372d75864"
   id: "mamba-ultra-tiny-vtx-pdb-2-pcs"
   manufacturer: "Diatone"
-  name: "MAMBA Ultra Tiny VTX PDB  （2/pcs）"
+  name: "MAMBA Ultra Tiny VTX PDB"
   weight_g: 6
   protocol: "Analog"
   max_power_mw: 800
@@ -2031,7 +2031,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Air VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2050,7 +2050,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "P1 Air Unit HD VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 37.5
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2069,7 +2069,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Sub100g Whoop Drone"
   is_internal_only: true
-  weight_g: 13.8
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2088,7 +2088,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "A03 400mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 7
@@ -2107,7 +2107,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 1.1
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2126,7 +2126,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "A02 25-800mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2145,7 +2145,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "X-Knight 3'' Toothpick Quad"
   is_internal_only: true
-  weight_g: 142.9
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2164,7 +2164,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M02 25-350mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 350
   input_voltage_min_v: 3.1
@@ -2183,7 +2183,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Lite 2S Brushless Flight Controller"
   is_internal_only: true
-  weight_g: 55
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2202,7 +2202,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M01 AIO Camera 5.8G VTX V2.1"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2221,7 +2221,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "T01 AIO Camera 25mW 5.8G (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 3.3
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 3.1
@@ -2240,7 +2240,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z02 AIO Camera 5.8G VTX"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2259,7 +2259,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z02 AIO Camera 5.8G VTX"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2278,7 +2278,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "H02 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -2297,7 +2297,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -2316,7 +2316,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "[BETA TEST] Walksnail Neuxs AIO-1S Flight"
   is_internal_only: true
-  weight_g: 4.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -2335,7 +2335,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -2354,7 +2354,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar GT KIT Only"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -2373,7 +2373,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -2396,7 +2396,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -2419,7 +2419,7 @@ video_transmitters: {
   manufacturer: "DarwinFPV"
   name: "TinyApe25 Walksnail Avatar HD Freestyle FPV"
   is_internal_only: true
-  weight_g: 50.3
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -2438,7 +2438,7 @@ video_transmitters: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 25/200/400/600mW VTX"
   is_internal_only: true
-  weight_g: 9.2
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 600
   input_voltage_min_v: 7
@@ -2457,7 +2457,7 @@ video_transmitters: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 3.1
@@ -2476,7 +2476,7 @@ video_transmitters: {
   manufacturer: "Fat Shark"
   name: "Aura VTX"
   is_internal_only: true
-  weight_g: 52
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2491,7 +2491,7 @@ video_transmitters: {
   manufacturer: "Flywoo"
   name: "GOKU F405 ERVT 1S 5A 5-in-1"
   is_internal_only: true
-  weight_g: 4.9
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 3.1
@@ -2510,7 +2510,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar GT Kit Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -2525,7 +2525,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD VTX Module V2 Dual"
   is_internal_only: true
-  weight_g: 15.4
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -2544,7 +2544,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Pro Kit Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -2563,7 +2563,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Kit V2 Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -2582,7 +2582,7 @@ video_transmitters: {
   manufacturer: "Divimath"
   name: "Whoop Lite Bundle"
   is_internal_only: true
-  weight_g: 5.4
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2597,7 +2597,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Mini VTX Module V3"
   is_internal_only: true
-  weight_g: 6.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -2616,7 +2616,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -2639,7 +2639,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD VRX Kit"
   is_internal_only: true
-  weight_g: 3.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -2658,7 +2658,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar Mini 1S VTX"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -2673,7 +2673,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Air VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2692,7 +2692,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "P1 Air Unit HD VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 37.5
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2711,7 +2711,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Sub100g Whoop Drone"
   is_internal_only: true
-  weight_g: 13.8
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2730,7 +2730,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "A03 400mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 7
@@ -2749,7 +2749,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 1.1
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2768,7 +2768,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "A02 25-800mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2787,7 +2787,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "X-Knight 3'' Toothpick Quad"
   is_internal_only: true
-  weight_g: 142.9
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2806,7 +2806,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M02 25-350mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 350
   input_voltage_min_v: 3.1
@@ -2825,7 +2825,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Lite 2S Brushless Flight Controller"
   is_internal_only: true
-  weight_g: 55
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -2844,7 +2844,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M01 AIO Camera 5.8G VTX V2.1"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2863,7 +2863,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "T01 AIO Camera 25mW 5.8G (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 3.3
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 3.1
@@ -2882,7 +2882,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z02 AIO Camera 5.8G VTX"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2901,7 +2901,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z02 AIO Camera 5.8G VTX"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -2920,7 +2920,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "H02 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -2939,7 +2939,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -2958,7 +2958,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "[BETA TEST] Walksnail Neuxs AIO-1S Flight"
   is_internal_only: true
-  weight_g: 4.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -2977,7 +2977,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -2996,7 +2996,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar GT KIT Only"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3015,7 +3015,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3038,7 +3038,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3061,7 +3061,7 @@ video_transmitters: {
   manufacturer: "DarwinFPV"
   name: "TinyApe25 Walksnail Avatar HD Freestyle FPV"
   is_internal_only: true
-  weight_g: 50.3
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -3080,7 +3080,7 @@ video_transmitters: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 25/200/400/600mW VTX"
   is_internal_only: true
-  weight_g: 9.2
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 600
   input_voltage_min_v: 7
@@ -3099,7 +3099,7 @@ video_transmitters: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 3.1
@@ -3118,7 +3118,7 @@ video_transmitters: {
   manufacturer: "Fat Shark"
   name: "Aura VTX"
   is_internal_only: true
-  weight_g: 52
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -3133,7 +3133,7 @@ video_transmitters: {
   manufacturer: "Flywoo"
   name: "GOKU F405 ERVT 1S 5A 5-in-1"
   is_internal_only: true
-  weight_g: 4.9
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 3.1
@@ -3148,7 +3148,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar GT Kit Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3163,7 +3163,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD VTX Module V2 Dual"
   is_internal_only: true
-  weight_g: 15.4
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3182,7 +3182,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Pro Kit Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3201,7 +3201,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Kit V2 Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3220,7 +3220,7 @@ video_transmitters: {
   manufacturer: "Divimath"
   name: "Whoop Lite Bundle"
   is_internal_only: true
-  weight_g: 5.4
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -3235,7 +3235,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Mini VTX Module V3"
   is_internal_only: true
-  weight_g: 6.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3254,7 +3254,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3277,7 +3277,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD VRX Kit"
   is_internal_only: true
-  weight_g: 3.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3296,7 +3296,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar Mini 1S VTX"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3315,7 +3315,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Air VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -3334,7 +3334,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "P1 Air Unit HD VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 37.5
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -3353,7 +3353,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Sub100g Whoop Drone"
   is_internal_only: true
-  weight_g: 13.8
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -3372,7 +3372,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "A03 400mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 7
@@ -3391,7 +3391,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 1.1
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -3410,7 +3410,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "A02 25-800mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -3429,7 +3429,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "X-Knight 3'' Toothpick Quad"
   is_internal_only: true
-  weight_g: 142.9
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -3448,7 +3448,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M02 25-350mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 0.6
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 350
   input_voltage_min_v: 3.1
@@ -3467,7 +3467,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Lite 2S Brushless Flight Controller"
   is_internal_only: true
-  weight_g: 55
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -3486,7 +3486,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "M01 AIO Camera 5.8G VTX V2.1"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -3505,7 +3505,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "T01 AIO Camera 25mW 5.8G (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 3.3
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 3.1
@@ -3524,7 +3524,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z02 AIO Camera 5.8G VTX"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -3543,7 +3543,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z02 AIO Camera 5.8G VTX"
   is_internal_only: true
-  weight_g: 1.45
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -3562,7 +3562,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "H02 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -3581,7 +3581,7 @@ video_transmitters: {
   manufacturer: "BETAFPV"
   name: "Z01 AIO Camera 5.8G 25mW VTX"
   is_internal_only: true
-  weight_g: 32
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -3600,7 +3600,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "[BETA TEST] Walksnail Neuxs AIO-1S Flight"
   is_internal_only: true
-  weight_g: 4.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3619,7 +3619,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -3638,7 +3638,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar GT KIT Only"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3657,7 +3657,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3680,7 +3680,7 @@ video_transmitters: {
   manufacturer: "CADDX"
   name: "Walksnail Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3703,7 +3703,7 @@ video_transmitters: {
   manufacturer: "DarwinFPV"
   name: "TinyApe25 Walksnail Avatar HD Freestyle FPV"
   is_internal_only: true
-  weight_g: 50.3
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 25
   input_voltage_min_v: 7
@@ -3722,7 +3722,7 @@ video_transmitters: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV 25/200/400/600mW VTX"
   is_internal_only: true
-  weight_g: 9.2
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 600
   input_voltage_min_v: 7
@@ -3741,7 +3741,7 @@ video_transmitters: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 3.1
@@ -3760,7 +3760,7 @@ video_transmitters: {
   manufacturer: "Fat Shark"
   name: "Aura VTX"
   is_internal_only: true
-  weight_g: 52
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 7
@@ -3775,7 +3775,7 @@ video_transmitters: {
   manufacturer: "Flywoo"
   name: "GOKU F405 ERVT 1S 5A 5-in-1"
   is_internal_only: true
-  weight_g: 4.9
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 400
   input_voltage_min_v: 3.1
@@ -3790,7 +3790,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar GT Kit Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3805,7 +3805,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD VTX Module V2 Dual"
   is_internal_only: true
-  weight_g: 15.4
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3824,7 +3824,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Pro Kit Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3843,7 +3843,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Kit V2 Dual Antenna"
   is_internal_only: true
-  weight_g: 41.6
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3862,7 +3862,7 @@ video_transmitters: {
   manufacturer: "Divimath"
   name: "Whoop Lite Bundle"
   is_internal_only: true
-  weight_g: 5.4
+  weight_g: 0
   protocol: "Analog"
   max_power_mw: 800
   input_voltage_min_v: 3.1
@@ -3877,7 +3877,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Mini VTX Module V3"
   is_internal_only: true
-  weight_g: 6.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3896,7 +3896,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD Kit V2"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3919,7 +3919,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar HD VRX Kit"
   is_internal_only: true
-  weight_g: 3.5
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3938,7 +3938,7 @@ video_transmitters: {
   manufacturer: "Walksnail"
   name: "Avatar Mini 1S VTX"
   is_internal_only: true
-  weight_g: 1.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3953,7 +3953,7 @@ video_transmitters: {
   manufacturer: "FlyFishRC"
   name: "Walksnail Avatar Digital HD Mini 1S"
   is_internal_only: true
-  weight_g: 6.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 3.1
@@ -3972,7 +3972,7 @@ video_transmitters: {
   manufacturer: "FlyFishRC"
   name: "Walksnail Avatar Digital HD VTX Nano"
   is_internal_only: true
-  weight_g: 6.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7
@@ -3991,7 +3991,7 @@ video_transmitters: {
   manufacturer: "FlyFishRC"
   name: "Walksnail Avatar Digital HD VTX Micro"
   is_internal_only: true
-  weight_g: 6.8
+  weight_g: 0
   protocol: "Walksnail Avatar"
   max_power_mw: 1200
   input_voltage_min_v: 7

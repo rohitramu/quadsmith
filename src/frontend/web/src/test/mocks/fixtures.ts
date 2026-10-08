@@ -77,4 +77,16 @@ export const mockFC1: FlightController = create(FlightControllerSchema, {
   referenceLinks: [],
 });
 
-export const mockFlightControllers: FlightController[] = [mockFC1];
+export const mockFC2: FlightController = create(FlightControllerSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000021",
+  id: "integrated-fc-aio",
+  manufacturer: "BetaFPV",
+  name: "Integrated FC AIO",
+  processor: "STM32F411",
+  weightG: 0,
+  isInternalOnly: true,
+  description: "Internal integrated flight controller board.",
+  referenceLinks: [],
+});
+
+export const mockFlightControllers: FlightController[] = [mockFC1, mockFC2];

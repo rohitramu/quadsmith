@@ -559,7 +559,7 @@ motors: {
   uuid: "2b3c40b6-5efa-4ce0-9974-1f5e9ce50837"
   id: "lava-series-2006-brushless-motors"
   manufacturer: "BETAFPV"
-  name: "LAVA Series 2006 Brushless Motors"
+  name: "LAVA Series 2006 Brushless Motors"
   weight_g: 22.2
   stator_diameter_mm: 20
   stator_height_mm: 6
@@ -795,7 +795,7 @@ motors: {
   uuid: "303ca7ef-3f67-44da-bab1-0be3fde58194"
   id: "7x16mm-brushed-motors-2cw-2ccw"
   manufacturer: "BETAFPV"
-  name: "7x16mm Brushed Motors (2CW+2CCW)"
+  name: "7x16mm Brushed Motors"
   weight_g: 2.95
   stator_diameter_mm: 7
   stator_height_mm: 16
@@ -843,7 +843,7 @@ motors: {
   uuid: "e88215a6-898e-455c-9fa6-96bcb3b2f010"
   id: "8x20mm-15000kv-brushed-motors-2cw-2ccw"
   manufacturer: "BETAFPV"
-  name: "8x20mm 15000KV Brushed Motors (2CW+2CCW)"
+  name: "8x20mm 15000KV Brushed Motors"
   weight_g: 3.5
   stator_diameter_mm: 8
   stator_height_mm: 20
@@ -859,7 +859,7 @@ motors: {
   uuid: "38243485-a8b9-49a1-9a57-95cac5b72299"
   id: "7x20mm-17500kv-brushed-motors-2cw-2ccw"
   manufacturer: "BETAFPV"
-  name: "7x20mm 17500KV Brushed Motors (2CW+2CCW)"
+  name: "7x20mm 17500KV Brushed Motors"
   weight_g: 3.5
   stator_diameter_mm: 7
   stator_height_mm: 20
@@ -1135,7 +1135,7 @@ motors: {
   uuid: "810c53e5-7d7d-4e09-b95b-9c90bd5f8521"
   id: "newbeedrone-bdr-brushed-motor-3-pack"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone BDR Brushed Motor 3 Pack"
+  name: "NewBeeDrone BDR Brushed Motor"
   weight_g: 1.85
   stator_diameter_mm: 6
   stator_height_mm: 15
@@ -1371,7 +1371,7 @@ motors: {
   uuid: "bf141891-b38e-4b95-911a-a451e232525f"
   id: "hypetrain-bb-s-0802-29700kv-motor-4-pack"
   manufacturer: "Hypetrain"
-  name: "Hypetrain BB's 0802 29700KV Motor 4-Pack"
+  name: "Hypetrain BB's 0802 29700KV Motor"
   weight_g: 2
   stator_diameter_mm: 8
   stator_height_mm: 2
@@ -1659,7 +1659,7 @@ motors: {
   uuid: "2102a569-aed8-4f72-9178-aa3a4a301fb1"
   id: "mamba-2808-1100kv-racing-motor"
   manufacturer: "Diatone"
-  name: "MAMBA  2808 1100KV Racing Motor"
+  name: "MAMBA 2808 1100KV Racing Motor"
   weight_g: 54.5
   stator_diameter_mm: 28
   stator_height_mm: 8
@@ -1911,7 +1911,7 @@ motors: {
   uuid: "2d98aaa3-a6ee-41f2-b595-23c338a65ef1"
   id: "sub250-0702-27000kv-motor-compatible"
   manufacturer: "Sub250"
-  name: "SUB250 0702 27000kv  Motor Compatible"
+  name: "SUB250 0702 27000kv Motor Compatible"
   weight_g: 1.4
   stator_diameter_mm: 7
   stator_height_mm: 2

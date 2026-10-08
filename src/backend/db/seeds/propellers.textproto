@@ -476,7 +476,7 @@ propellers: {
   uuid: "277fc2d5-475d-4e24-815b-9e6518fcdf44"
   id: "1735-4-blades-pc-propellers-4-pcs"
   manufacturer: "BETAFPV"
-  name: "1735 4-Blades PC Propellers  (4 PCS)"
+  name: "1735 4-Blades PC Propellers"
   weight_g: 0.55
   diameter_mm: 127
   pitch_mm: 101.6
@@ -680,7 +680,7 @@ propellers: {
   uuid: "a872651b-74e4-473e-9631-0b1c3280e217"
   id: "gemfan-2015-2-blade-propellers-4pcs"
   manufacturer: "BETAFPV"
-  name: "Gemfan 2015 2-Blade Propellers 4PCS"
+  name: "Gemfan 2015 2-Blade Propellers"
   weight_g: 0.5
   diameter_mm: 50.8
   pitch_mm: 38.1
@@ -1419,7 +1419,7 @@ propellers: {
   uuid: "666b272f-040f-4671-a088-e6f14fd49472"
   id: "darwinfpv-1050-3-fpv-drone-propeller"
   manufacturer: "DarwinFPV"
-  name: "DarwinFPV  1050-3 FPV Drone Propeller"
+  name: "DarwinFPV 1050-3 FPV Drone Propeller"
   weight_g: 16.8
   diameter_mm: 127
   pitch_mm: 101.6
@@ -1521,7 +1521,7 @@ propellers: {
   uuid: "b3b60ce1-09f7-4da9-b92d-36073a6c193f"
   id: "newbeedrone-azi-micro-propellers-40mm"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Azi  Micro Propellers 40mm"
+  name: "NewBeeDrone Azi Micro Propellers 40mm"
   weight_g: 0.46
   diameter_mm: 40
   pitch_mm: 24
@@ -1563,7 +1563,7 @@ propellers: {
   uuid: "9f1b41ec-cd8d-4766-8d7e-d0cfb589c503"
   id: "newbeedrone-azi-micro-propellers-40mm-2"
   manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone Azi  Micro Propellers 40mm"
+  name: "NewBeeDrone Azi Micro Propellers 40mm"
   weight_g: 0.46
   diameter_mm: 40
   pitch_mm: 24
@@ -1640,7 +1640,7 @@ propellers: {
   uuid: "8cea3ffe-d6fb-45cf-b880-5fdea66da7e3"
   id: "p2-tri-blade-5-props-4-pack-pickle"
   manufacturer: "Ethix"
-  name: "P2 Tri-Blade 5 Props 4 Pack - Pickle"
+  name: "P2 Tri-Blade 5 Props - Pickle"
   weight_g: 3.8
   diameter_mm: 127
   pitch_mm: 101.6
@@ -1696,7 +1696,7 @@ propellers: {
   uuid: "7fd20f7b-f0a3-4422-959e-2184ecddf5a1"
   id: "p3-3-tri-blade-5-props-4-pack"
   manufacturer: "Ethix"
-  name: "P3.3 Tri-Blade 5 Props 4 Pack"
+  name: "P3.3 Tri-Blade 5 Props"
   weight_g: 3.5
   diameter_mm: 127
   pitch_mm: 101.6
@@ -1709,7 +1709,7 @@ propellers: {
   uuid: "600b214b-b348-4eaa-828e-ca383fcfc80f"
   id: "t2-5x2-5x3-tri-blade-2-5-prop-4-pack"
   manufacturer: "HQProp"
-  name: "T2.5x2.5x3 Tri-Blade 2.5 Prop 4 Pack"
+  name: "T2.5x2.5x3 Tri-Blade 2.5 Prop"
   weight_g: 1.3
   diameter_mm: 12.7
   pitch_mm: 63.5
@@ -1868,7 +1868,7 @@ propellers: {
   uuid: "534bbd26-2f01-4854-9c20-48be28ae4eb7"
   id: "t3-5x2-5x3-tri-blade-3-5-prop-4-pack"
   manufacturer: "HQProp"
-  name: "T3.5x2.5x3 Tri-Blade 3.5 Prop 4 Pack"
+  name: "T3.5x2.5x3 Tri-Blade 3.5 Prop"
   weight_g: 1.58
   diameter_mm: 12.7
   pitch_mm: 63.5
@@ -1885,7 +1885,7 @@ propellers: {
   uuid: "c7a760c2-b94d-4e88-bdcf-b9261083225c"
   id: "p3-5-tri-blade-5-props-4-pack"
   manufacturer: "Ethix"
-  name: "P3.5 Tri-Blade 5 Props 4 Pack"
+  name: "P3.5 Tri-Blade 5 Props"
   weight_g: 3.5
   diameter_mm: 127
   pitch_mm: 101.6
@@ -1898,7 +1898,7 @@ propellers: {
   uuid: "86cb3c5a-c119-4423-be9e-99fc2c202350"
   id: "p3-tri-blade-5-props-4-pack"
   manufacturer: "Ethix"
-  name: "P3 Tri-Blade 5 Props 4 Pack"
+  name: "P3 Tri-Blade 5 Props"
   weight_g: 2.6
   diameter_mm: 127
   pitch_mm: 101.6
@@ -1915,7 +1915,7 @@ propellers: {
   uuid: "acb63349-ead5-4fe4-80c8-391952049037"
   id: "s3-tri-blade-5-props-4-pack-watermelon"
   manufacturer: "Ethix"
-  name: "S3 Tri-Blade 5 Props 4 Pack - Watermelon"
+  name: "S3 Tri-Blade 5 Props - Watermelon"
   weight_g: 3.6
   diameter_mm: 127
   pitch_mm: 101.6
@@ -1945,7 +1945,7 @@ propellers: {
   uuid: "dd65f909-897e-4fce-a015-2dc321fa3b25"
   id: "1610-bi-blade-40mm-prop-8-pack"
   manufacturer: "Gemfan"
-  name: "1610 Bi-Blade 40mm Prop 8 Pack"
+  name: "1610 Bi-Blade 40mm Prop"
   weight_g: 0.24
   diameter_mm: 40
   pitch_mm: 24
@@ -1971,7 +1971,7 @@ propellers: {
   uuid: "f9a0d8ec-fb5c-4031-aebe-1893b7f72b19"
   id: "40mmx2-bi-blade-40mm-prop-4-pack"
   manufacturer: "HQProp"
-  name: "40MMX2 Bi-Blade 40mm Prop 4 Pack"
+  name: "40MMX2 Bi-Blade 40mm Prop"
   weight_g: 0.26
   diameter_mm: 40
   pitch_mm: 24
@@ -1988,7 +1988,7 @@ propellers: {
   uuid: "2e1eea5e-0de3-428a-ba84-65765ea5fd6c"
   id: "s4-tri-blade-5-props-4-pack-lemon-lime"
   manufacturer: "Ethix"
-  name: "S4 Tri-Blade 5 Props 4 Pack - Lemon Lime"
+  name: "S4 Tri-Blade 5 Props - Lemon Lime"
   weight_g: 3.6
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2005,7 +2005,7 @@ propellers: {
   uuid: "6c95c69f-a618-43c2-b45d-49e7a077b33d"
   id: "j75-tri-blade-7-prop-4-pack"
   manufacturer: "HQProp"
-  name: "J75 Tri-Blade 7 Prop 4 Pack"
+  name: "J75 Tri-Blade 7 Prop"
   weight_g: 8.8
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2039,7 +2039,7 @@ propellers: {
   uuid: "c0a8d13e-db9b-4c61-963c-2f4de0fe6d01"
   id: "s5-tri-blade-5-props-4-pack-black"
   manufacturer: "Ethix"
-  name: "S5 Tri-Blade 5 Props 4 Pack - Black"
+  name: "S5 Tri-Blade 5 Props - Black"
   weight_g: 3.7
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2189,7 +2189,7 @@ propellers: {
   uuid: "cdb9412c-464c-4a35-983f-7ec25349be61"
   id: "freestyle4s-durable-3-blade-props"
   manufacturer: "Gemfan"
-  name: "Freestyle4S Durable 3 Blade  Props"
+  name: "Freestyle4S Durable 3 Blade Props"
   weight_g: 3.6
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2202,7 +2202,7 @@ propellers: {
   uuid: "a4f66742-60c2-4a16-8338-aea8d44924fa"
   id: "freestyle3s-durable-3-blade-props"
   manufacturer: "Gemfan"
-  name: "Freestyle3S Durable 3 Blade  Props"
+  name: "Freestyle3S Durable 3 Blade Props"
   weight_g: 2.3
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2442,7 +2442,7 @@ propellers: {
   uuid: "65c1d18c-45c4-4788-bba1-479b9a092bb8"
   id: "3-pairs-gemfan-5042-3-blade-propeller"
   manufacturer: "HGLRC"
-  name: "3 Pairs Gemfan 5042 3-Blade Propeller"
+  name: "Gemfan 5042 3-Blade Propeller"
   weight_g: 1.3
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2476,7 +2476,7 @@ propellers: {
   uuid: "2252cd7d-56bf-4978-b959-a6090161868c"
   id: "gemfan-flash-7042-2-propellers"
   manufacturer: "Diatone"
-  name: "Gemfan  Flash 7042-2  Propellers"
+  name: "Gemfan Flash 7042-2 Propellers"
   weight_g: 5.48
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2527,7 +2527,7 @@ propellers: {
   uuid: "2e049491-a89f-40f0-bb63-2cbe9ab1e182"
   id: "hq-durable-prop-t4x2-5grey-2cw-2ccw-poly-carbonate"
   manufacturer: "Diatone"
-  name: "HQ Durable Prop T4X2.5Grey （2CW+2CCW)-Poly Carbonate"
+  name: "HQ Durable Prop T4X2.5Grey-Poly Carbonate"
   weight_g: 5.5
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2561,7 +2561,7 @@ propellers: {
   uuid: "f7f2825c-6835-4971-9dd2-bfbc97eb95d1"
   id: "gemfan-3-blades-hurricane-mck-51466-3-propellers"
   manufacturer: "Diatone"
-  name: "GEMFAN 3-Blades Hurricane MCK 51466-3  Propellers"
+  name: "GEMFAN 3-Blades Hurricane MCK 51466-3 Propellers"
   weight_g: 4.2
   diameter_mm: 129.54
   pitch_mm: 118.36
@@ -2578,7 +2578,7 @@ propellers: {
   uuid: "04111eb5-6cca-49fb-8fee-089052664416"
   id: "gemfan-hurricane-51455-4-2cw-2ccw"
   manufacturer: "Diatone"
-  name: "GEMFAN Hurricane 51455-4 (2CW+2CCW)"
+  name: "GEMFAN Hurricane 51455-4"
   weight_g: 5
   diameter_mm: 127
   pitch_mm: 101.6
@@ -2629,7 +2629,7 @@ propellers: {
   uuid: "717b15cc-788f-440e-880c-203ab2416049"
   id: "gemfan-3-blades-squirt-props-75mm-propellers"
   manufacturer: "Diatone"
-  name: "GEMFAN 3-Blades Squirt Props 75mm  Propellers"
+  name: "GEMFAN 3-Blades Squirt Props 75mm Propellers"
   weight_g: 1.9
   diameter_mm: 75
   pitch_mm: 45
@@ -3120,7 +3120,7 @@ propellers: {
   uuid: "cbe23acc-9f84-4e9d-a55b-4f13ecc0229c"
   id: "4-pairs-gemfan-1608-3-1-5mm-shaft"
   manufacturer: "Gemfan"
-  name: "4 Pairs Gemfan 1608-3 1.5MM Shaft"
+  name: "Gemfan 1608-3 1.5MM Shaft"
   weight_g: 0.44
   diameter_mm: 127
   pitch_mm: 101.6
@@ -3231,7 +3231,7 @@ propellers: {
   uuid: "e619a272-5154-45a2-a44c-8ded766dbc77"
   id: "gemfan-lr5130-3-tri-blade-props-4-pack"
   manufacturer: "FPVCycle"
-  name: "Gemfan LR5130-3 Tri-Blade Props 4 Pack"
+  name: "Gemfan LR5130-3 Tri-Blade Props"
   weight_g: 4.68
   diameter_mm: 127
   pitch_mm: 101.6

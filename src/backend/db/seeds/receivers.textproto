@@ -247,7 +247,7 @@ receivers: {
   uuid: "24a84c85-1183-45ce-9f6d-ec79835e657d"
   id: "darwinfpv-elrs-2-4g-nano-receiver"
   manufacturer: "DarwinFPV"
-  name: "DarwinFPV  ELRS 2.4G Nano Receiver"
+  name: "DarwinFPV ELRS 2.4G Nano Receiver"
   weight_g: 3
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
@@ -515,7 +515,7 @@ receivers: {
   uuid: "53fa1822-3ca5-4006-b2b3-4b07973a69fd"
   id: "xr4-gemini-xrossband-dual-band-receiver"
   manufacturer: "RadioMaster"
-  name: "XR4 Gemini Xrossband Dual-Band  Receiver"
+  name: "XR4 Gemini Xrossband Dual-Band Receiver"
   weight_g: 1.7
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
@@ -1181,7 +1181,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "ELRS Lite Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.82
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1199,7 +1199,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "ELRS Nano Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.7
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1217,7 +1217,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "SPI Frsky Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.43
+  weight_g: 0
   protocol: "FrSky D16"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1235,7 +1235,7 @@ receivers: {
   manufacturer: "CADDX"
   name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
   is_internal_only: true
-  weight_g: 5.3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1253,7 +1253,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F411 45A ELRS AIO CineApe35"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1271,7 +1271,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
   is_internal_only: true
-  weight_g: 3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1289,7 +1289,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
   is_internal_only: true
-  weight_g: 5
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1307,7 +1307,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1325,7 +1325,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
   is_internal_only: true
-  weight_g: 62.3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1343,7 +1343,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1361,7 +1361,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeCeiver Frsky"
   is_internal_only: true
-  weight_g: 0.91
+  weight_g: 0
   protocol: "FrSky D16"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1379,7 +1379,7 @@ receivers: {
   manufacturer: "Flywoo"
   name: "GOKU F405 ERVT 1S 5A 5-in-1"
   is_internal_only: true
-  weight_g: 4.9
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1393,7 +1393,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "ELRS Lite Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.82
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1411,7 +1411,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "ELRS Nano Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.7
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1429,7 +1429,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "SPI Frsky Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.43
+  weight_g: 0
   protocol: "FrSky D16"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1447,7 +1447,7 @@ receivers: {
   manufacturer: "CADDX"
   name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
   is_internal_only: true
-  weight_g: 5.3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1465,7 +1465,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F411 45A ELRS AIO CineApe35"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1483,7 +1483,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
   is_internal_only: true
-  weight_g: 3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1501,7 +1501,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
   is_internal_only: true
-  weight_g: 5
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1519,7 +1519,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1537,7 +1537,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
   is_internal_only: true
-  weight_g: 62.3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1555,7 +1555,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1573,7 +1573,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeCeiver Frsky"
   is_internal_only: true
-  weight_g: 0.91
+  weight_g: 0
   protocol: "FrSky D16"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1591,7 +1591,7 @@ receivers: {
   manufacturer: "Flywoo"
   name: "GOKU F405 ERVT 1S 5A 5-in-1"
   is_internal_only: true
-  weight_g: 4.9
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1605,7 +1605,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "ELRS Lite Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.82
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1623,7 +1623,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "ELRS Nano Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.7
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1641,7 +1641,7 @@ receivers: {
   manufacturer: "BETAFPV"
   name: "SPI Frsky Receiver (Internal RX)"
   is_internal_only: true
-  weight_g: 0.43
+  weight_g: 0
   protocol: "FrSky D16"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1659,7 +1659,7 @@ receivers: {
   manufacturer: "CADDX"
   name: "CADDXFPV F4_AIO_ELRS (Internal RX)"
   is_internal_only: true
-  weight_g: 5.3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1677,7 +1677,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV F411 45A ELRS AIO CineApe35"
   is_internal_only: true
-  weight_g: 41.5
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1695,7 +1695,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV Cement Ultra Durable ELRS 2.4G"
   is_internal_only: true
-  weight_g: 3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1713,7 +1713,7 @@ receivers: {
   manufacturer: "DarwinFPV"
   name: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO"
   is_internal_only: true
-  weight_g: 5
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1731,7 +1731,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone LionBee long range ELRS2.4 AIO"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1749,7 +1749,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone LionBee 3inch long range ELRS2.4"
   is_internal_only: true
-  weight_g: 62.3
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1767,7 +1767,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight"
   is_internal_only: true
-  weight_g: 4.57
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1785,7 +1785,7 @@ receivers: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone BeeCeiver Frsky"
   is_internal_only: true
-  weight_g: 0.91
+  weight_g: 0
   protocol: "FrSky D16"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1803,7 +1803,7 @@ receivers: {
   manufacturer: "Flywoo"
   name: "GOKU F405 ERVT 1S 5A 5-in-1"
   is_internal_only: true
-  weight_g: 4.9
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1817,7 +1817,7 @@ receivers: {
   manufacturer: "HGLRC"
   name: "HGLRC SPECTER F722 Lite ICM42688 gyro"
   is_internal_only: true
-  weight_g: 5
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1835,7 +1835,7 @@ receivers: {
   manufacturer: "HGLRC"
   name: "HGLRC Wind5 Lite V2 Racing Drone"
   is_internal_only: true
-  weight_g: 80
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
@@ -1853,7 +1853,7 @@ receivers: {
   manufacturer: "HGLRC"
   name: "HGLRC SPECTER 15A ELRS AIO 2-4S"
   is_internal_only: true
-  weight_g: 5.6
+  weight_g: 0
   protocol: "ExpressLRS"
   frequency_band_mhz: 2400
   has_telemetry: true
