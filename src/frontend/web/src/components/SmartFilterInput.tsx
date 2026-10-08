@@ -202,6 +202,13 @@ export function SmartFilterInput({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setShowSuggestions(false);
+      handleApply();
+      return;
+    }
+
     if (showSuggestions && suggestions.length > 0) {
       if (e.key === "ArrowDown") {
         e.preventDefault();
@@ -218,18 +225,10 @@ export function SmartFilterInput({
         insertSuggestion(suggestions[selectedIndex]);
         return;
       }
-      if (e.key === "Enter") {
-        e.preventDefault();
-        insertSuggestion(suggestions[selectedIndex]);
-        return;
-      }
       if (e.key === "Escape") {
         setShowSuggestions(false);
         return;
       }
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      handleApply();
     }
   };
 
@@ -302,7 +301,7 @@ export function SmartFilterInput({
         >
           <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 bg-zinc-50 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
             <span>Query Autocompletion</span>
-            <span className="text-[10px] text-zinc-400 font-normal">Use ↑↓ and Enter / Tab to select</span>
+            <span className="text-[10px] text-zinc-400 font-normal">Use ↑↓ to navigate, Tab to insert, Enter to apply</span>
           </div>
           <div className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/50">
             {suggestions.map((item, idx) => (
