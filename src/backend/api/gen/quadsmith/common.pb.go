@@ -11,6 +11,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
 	reflect "reflect"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -21,6 +22,60 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type NameOptions struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Title case with spaces (e.g., "Video Transmitter")
+	Singular string `protobuf:"bytes,1,opt,name=singular,proto3" json:"singular,omitempty"`
+	// Title case with spaces (e.g., "Video Transmitters")
+	Plural        string `protobuf:"bytes,2,opt,name=plural,proto3" json:"plural,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NameOptions) Reset() {
+	*x = NameOptions{}
+	mi := &file_quadsmith__common_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NameOptions) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NameOptions) ProtoMessage() {}
+
+func (x *NameOptions) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith__common_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NameOptions.ProtoReflect.Descriptor instead.
+func (*NameOptions) Descriptor() ([]byte, []int) {
+	return file_quadsmith__common_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *NameOptions) GetSingular() string {
+	if x != nil {
+		return x.Singular
+	}
+	return ""
+}
+
+func (x *NameOptions) GetPlural() string {
+	if x != nil {
+		return x.Plural
+	}
+	return ""
+}
+
 var file_quadsmith__common_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
@@ -28,6 +83,14 @@ var file_quadsmith__common_proto_extTypes = []protoimpl.ExtensionInfo{
 		Field:         50001,
 		Name:          "quadsmith.default_columns",
 		Tag:           "bytes,50001,rep,name=default_columns",
+		Filename:      "quadsmith/_common.proto",
+	},
+	{
+		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
+		ExtensionType: (*NameOptions)(nil),
+		Field:         50002,
+		Name:          "quadsmith.name",
+		Tag:           "bytes,50002,opt,name=name",
 		Filename:      "quadsmith/_common.proto",
 	},
 }
@@ -38,24 +101,48 @@ var (
 	//
 	// repeated string default_columns = 50001;
 	E_DefaultColumns = &file_quadsmith__common_proto_extTypes[0]
+	// Human-readable entity names for UI, CLI, and code generators.
+	//
+	// optional quadsmith.NameOptions name = 50002;
+	E_Name = &file_quadsmith__common_proto_extTypes[1]
 )
 
 var File_quadsmith__common_proto protoreflect.FileDescriptor
 
 const file_quadsmith__common_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\x1a\x15quadsmith/_name.proto:J\n" +
-	"\x0fdefault_columns\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x03(\tR\x0edefaultColumnsB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\x17quadsmith/_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"A\n" +
+	"\vNameOptions\x12\x1a\n" +
+	"\bsingular\x18\x01 \x01(\tR\bsingular\x12\x16\n" +
+	"\x06plural\x18\x02 \x01(\tR\x06plural:J\n" +
+	"\x0fdefault_columns\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x03(\tR\x0edefaultColumns:M\n" +
+	"\x04name\x12\x1f.google.protobuf.MessageOptions\x18҆\x03 \x01(\v2\x16.quadsmith.NameOptionsR\x04nameB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
+var (
+	file_quadsmith__common_proto_rawDescOnce sync.Once
+	file_quadsmith__common_proto_rawDescData []byte
+)
+
+func file_quadsmith__common_proto_rawDescGZIP() []byte {
+	file_quadsmith__common_proto_rawDescOnce.Do(func() {
+		file_quadsmith__common_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith__common_proto_rawDesc), len(file_quadsmith__common_proto_rawDesc)))
+	})
+	return file_quadsmith__common_proto_rawDescData
+}
+
+var file_quadsmith__common_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_quadsmith__common_proto_goTypes = []any{
-	(*descriptorpb.MessageOptions)(nil), // 0: google.protobuf.MessageOptions
+	(*NameOptions)(nil),                 // 0: quadsmith.NameOptions
+	(*descriptorpb.MessageOptions)(nil), // 1: google.protobuf.MessageOptions
 }
 var file_quadsmith__common_proto_depIdxs = []int32{
-	0, // 0: quadsmith.default_columns:extendee -> google.protobuf.MessageOptions
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	0, // [0:1] is the sub-list for extension extendee
+	1, // 0: quadsmith.default_columns:extendee -> google.protobuf.MessageOptions
+	1, // 1: quadsmith.name:extendee -> google.protobuf.MessageOptions
+	0, // 2: quadsmith.name:type_name -> quadsmith.NameOptions
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	2, // [2:3] is the sub-list for extension type_name
+	0, // [0:2] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -64,19 +151,19 @@ func file_quadsmith__common_proto_init() {
 	if File_quadsmith__common_proto != nil {
 		return
 	}
-	file_quadsmith__name_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith__common_proto_rawDesc), len(file_quadsmith__common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   0,
-			NumExtensions: 1,
+			NumMessages:   1,
+			NumExtensions: 2,
 			NumServices:   0,
 		},
 		GoTypes:           file_quadsmith__common_proto_goTypes,
 		DependencyIndexes: file_quadsmith__common_proto_depIdxs,
+		MessageInfos:      file_quadsmith__common_proto_msgTypes,
 		ExtensionInfos:    file_quadsmith__common_proto_extTypes,
 	}.Build()
 	File_quadsmith__common_proto = out.File

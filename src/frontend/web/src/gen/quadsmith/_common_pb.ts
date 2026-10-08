@@ -2,17 +2,43 @@
 // @generated from file quadsmith/_common.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type { GenExtension, GenFile } from "@bufbuild/protobuf/codegenv2";
-import { extDesc, fileDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenExtension, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
+import { extDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { MessageOptions } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";
-import { file_quadsmith__name } from "./_name_pb";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file quadsmith/_common.proto.
  */
 export const file_quadsmith__common: GenFile = /*@__PURE__*/
-  fileDesc("ChdxdWFkc21pdGgvX2NvbW1vbi5wcm90bxIJcXVhZHNtaXRoOkoKD2RlZmF1bHRfY29sdW1ucxIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgAygJUg5kZWZhdWx0Q29sdW1uc0IdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw", [file_google_protobuf_descriptor, file_quadsmith__name]);
+  fileDesc("ChdxdWFkc21pdGgvX2NvbW1vbi5wcm90bxIJcXVhZHNtaXRoIi8KC05hbWVPcHRpb25zEhAKCHNpbmd1bGFyGAEgASgJEg4KBnBsdXJhbBgCIAEoCTpKCg9kZWZhdWx0X2NvbHVtbnMSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0YYDIAMoCVIOZGVmYXVsdENvbHVtbnM6TQoEbmFtZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjShgMgASgLMhYucXVhZHNtaXRoLk5hbWVPcHRpb25zUgRuYW1lQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z", [file_google_protobuf_descriptor]);
+
+/**
+ * @generated from message quadsmith.NameOptions
+ */
+export type NameOptions = Message<"quadsmith.NameOptions"> & {
+  /**
+   * Title case with spaces (e.g., "Video Transmitter")
+   *
+   * @generated from field: string singular = 1;
+   */
+  singular: string;
+
+  /**
+   * Title case with spaces (e.g., "Video Transmitters")
+   *
+   * @generated from field: string plural = 2;
+   */
+  plural: string;
+};
+
+/**
+ * Describes the message quadsmith.NameOptions.
+ * Use `create(NameOptionsSchema)` to create a new message.
+ */
+export const NameOptionsSchema: GenMessage<NameOptions> = /*@__PURE__*/
+  messageDesc(file_quadsmith__common, 0);
 
 /**
  * The default columns to display in CLI tables and UI collection listings.
@@ -21,4 +47,12 @@ export const file_quadsmith__common: GenFile = /*@__PURE__*/
  */
 export const default_columns: GenExtension<MessageOptions, string[]> = /*@__PURE__*/
   extDesc(file_quadsmith__common, 0);
+
+/**
+ * Human-readable entity names for UI, CLI, and code generators.
+ *
+ * @generated from extension: quadsmith.NameOptions name = 50002;
+ */
+export const name: GenExtension<MessageOptions, NameOptions> = /*@__PURE__*/
+  extDesc(file_quadsmith__common, 1);
 

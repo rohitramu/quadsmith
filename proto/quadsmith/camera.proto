@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package quadsmith;
 
-import "quadsmith/_name.proto";
+import "quadsmith/_common.proto";
 import "quadsmith/_sql.proto";
 import "quadsmith/reference_link.proto";
 

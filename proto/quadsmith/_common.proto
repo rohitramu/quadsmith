@@ -3,14 +3,29 @@ syntax = "proto3";
 package quadsmith;
 
 import "google/protobuf/descriptor.proto";
-import "quadsmith/_name.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 
 // ---------------------------------------------------------
+// Entity Naming Options
+// ---------------------------------------------------------
+
+message NameOptions {
+  // Title case with spaces (e.g., "Video Transmitter")
+  string singular = 1;
+
+  // Title case with spaces (e.g., "Video Transmitters")
+  string plural = 2;
+}
+
+// ---------------------------------------------------------
 // Custom Message Options
 // ---------------------------------------------------------
+
 extend google.protobuf.MessageOptions {
   // The default columns to display in CLI tables and UI collection listings.
   repeated string default_columns = 50001;
+
+  // Human-readable entity names for UI, CLI, and code generators.
+  NameOptions name = 50002;
 }
