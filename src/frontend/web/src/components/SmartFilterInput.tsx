@@ -39,6 +39,7 @@ export function SmartFilterInput({
   const [showHelp, setShowHelp] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setQuery(initialValue);
@@ -141,6 +142,15 @@ export function SmartFilterInput({
   useEffect(() => {
     setSelectedIndex(0);
   }, [suggestions]);
+
+  // Scroll selected suggestion into view
+  useEffect(() => {
+    if (!showSuggestions || selectedIndex < 0 || !listRef.current) return;
+    const itemEl = listRef.current.children[selectedIndex] as HTMLElement | undefined;
+    if (itemEl && typeof itemEl.scrollIntoView === "function") {
+      itemEl.scrollIntoView({ block: "nearest" });
+    }
+  }, [selectedIndex, showSuggestions]);
 
   const handleApply = (queryToApply?: string) => {
     const q = (queryToApply !== undefined ? queryToApply : query).trim();
@@ -303,7 +313,7 @@ export function SmartFilterInput({
             <span>Query Autocompletion</span>
             <span className="text-[10px] text-zinc-400 font-normal">Use ↑↓ to navigate, Tab to insert, Enter to apply</span>
           </div>
-          <div className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/50">
+          <div ref={listRef} className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/50">
             {suggestions.map((item, idx) => (
               <div
                 key={item.id}
