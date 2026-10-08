@@ -1,3 +1,20 @@
+# ==============================================================================
+# Quadsmith Production Container Image
+# ==============================================================================
+# Purpose:
+#   Production-ready container image for deploying the Quadsmith web application.
+#   Designed for cloud platforms (GCP Cloud Run, Fly.io, Render, Railway, VPS, etc.).
+#
+# Included Components:
+#   - Go Backend API Server (ConnectRPC over HTTP/2 & HTTP/1.1)
+#   - React 19 SPA Web Frontend (Vite build served directly by Go via static.ServeSPA)
+#   - Root CA certificates and timezone data (Alpine Linux base)
+#
+# Requirements:
+#   - Requires an external PostgreSQL database provided via the DATABASE_URL
+#     environment variable (e.g. Neon, Cloud SQL, AWS RDS, or managed Postgres).
+# ==============================================================================
+
 # Stage 1: Build the Go server binary
 FROM golang:1.27 AS builder
 WORKDIR /app

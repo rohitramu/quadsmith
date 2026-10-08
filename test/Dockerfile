@@ -1,3 +1,23 @@
+# ==============================================================================
+# Quadsmith Sandbox / Test Container Image
+# ==============================================================================
+# Purpose:
+#   Self-contained sandbox container for local development, automated testing,
+#   and E2E verification. Started via `make sandbox` or `src/backend/start_sandbox.sh`.
+#
+# Included Components:
+#   - PostgreSQL 15 Database (runs locally inside the container)
+#   - psqldef (declarative schema management tool)
+#   - Database schema (src/backend/db/schema.sql) and initial seed data
+#   - Database Seeder binary (populates hardware catalog on startup)
+#   - Go Backend API Server (ConnectRPC on port 8080)
+#   - React 19 SPA Web Frontend (served directly from the API server)
+#
+# Usage:
+#   - Automatically initializes Postgres, applies schema with psqldef, runs
+#     the seeder, and starts the API server and web UI on container boot.
+# ==============================================================================
+
 # Stage 1: Build the Go binaries
 FROM golang:1.27 AS builder
 WORKDIR /app

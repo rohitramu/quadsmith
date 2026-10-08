@@ -1,6 +1,7 @@
 node_modules/
 .env
 /.tmp/
+.ruff_cache/
 
 # Generated Protobuf / ConnectRPC code
 
