@@ -26,11 +26,11 @@ message GpsReceiver {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 
-  string id = 2 [(quadsmith.sql.is_unique) = true];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
 
-  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
   bool is_internal_only = 20;
 
@@ -40,7 +40,7 @@ message GpsReceiver {
   string chipset = 6;
 
   // Primary communication protocol (e.g., "UBLOX", "NMEA")
-  string protocol = 7 [(quadsmith.sql.create_index) = true];
+  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
 
   // Whether the unit has an integrated magnetic compass / magnetometer
   optional bool has_compass = 8;

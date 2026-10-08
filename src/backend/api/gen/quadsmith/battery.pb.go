@@ -339,15 +339,15 @@ var File_quadsmith_battery_proto protoreflect.FileDescriptor
 
 const file_quadsmith_battery_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/battery.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xd9\x03\n" +
-	"\aBattery\x12\x18\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
-	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
+	"\x17quadsmith/battery.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe1\x03\n" +
+	"\aBattery\x12\x1a\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\b\x01R\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02\x18\x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12!\n" +
-	"\fcapacity_mah\x18\x06 \x01(\rR\vcapacityMah\x12&\n" +
-	"\fcell_count_s\x18\a \x01(\rB\x04\xe0\xf3\x18\x01R\n" +
+	"\fcapacity_mah\x18\x06 \x01(\rR\vcapacityMah\x12(\n" +
+	"\fcell_count_s\x18\a \x01(\rB\x06\xc2\xf3\x18\x02 \x01R\n" +
 	"cellCountS\x12\x1c\n" +
 	"\tchemistry\x18\b \x01(\tR\tchemistry\x12\x1c\n" +
 	"\tconnector\x18\t \x01(\tR\tconnector\x12 \n" +

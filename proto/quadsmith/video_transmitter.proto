@@ -18,18 +18,18 @@ message VideoTransmitter {
   };
   option (quadsmith.sql.table_name) = "video_transmitters";
 
-  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 
-  string id = 2 [(quadsmith.sql.is_unique) = true];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
 
-  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
   bool is_internal_only = 20;
 
   float weight_g = 5;
 
   // E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
-  string protocol = 6 [(quadsmith.sql.create_index) = true];
+  string protocol = 6 [(quadsmith.sql.column) = {create_index: true}];
 
   // Max output power in milliwatts (e.g., 800, 1000, 1200)
   uint32 max_power_mw = 7;

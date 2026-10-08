@@ -18,9 +18,9 @@ message Build {
   };
   option (quadsmith.sql.table_name) = "builds";
 
-  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 
-  string id = 2 [(quadsmith.sql.is_unique) = true];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
 
   string name = 3;
   string description = 4;
@@ -30,20 +30,20 @@ message Build {
   // -------------------------------------------------------
 
   // The frame used for this build
-  string frame_uuid = 5 [(quadsmith.sql.references) = "frames(uuid)"];
+  string frame_uuid = 5 [(quadsmith.sql.column) = {references: "frames(uuid)"}];
 
   // The motor SKU used for this build (assumes 4x for a standard quad)
-  string motor_uuid = 6 [(quadsmith.sql.references) = "motors(uuid)"];
+  string motor_uuid = 6 [(quadsmith.sql.column) = {references: "motors(uuid)"}];
 
   // The primary battery recommended/used
-  string battery_uuid = 7 [(quadsmith.sql.references) = "batteries(uuid)"];
+  string battery_uuid = 7 [(quadsmith.sql.column) = {references: "batteries(uuid)"}];
 
   // -------------------------------------------------------
   // Electronics & Subsystems
   // -------------------------------------------------------
 
   // The central Flight Controller (which may be an AIO board)
-  string flight_controller_uuid = 8 [(quadsmith.sql.references) = "flight_controllers(uuid)"];
+  string flight_controller_uuid = 8 [(quadsmith.sql.column) = {references: "flight_controllers(uuid)"}];
 
   // Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
   repeated string electronic_speed_controller_uuids = 9;
@@ -55,16 +55,16 @@ message Build {
   repeated string antenna_uuids = 11;
 
   // The propeller SKU used (assumes 4x or 8x depending on motors)
-  string propeller_uuid = 12 [(quadsmith.sql.references) = "propellers(uuid)"];
+  string propeller_uuid = 12 [(quadsmith.sql.column) = {references: "propellers(uuid)"}];
 
   // Array of cameras (e.g. primary FPV cam, secondary action cam)
   repeated string camera_uuids = 13;
 
   // The Video Transmitter used for this build
-  string video_transmitter_uuid = 15 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
+  string video_transmitter_uuid = 15 [(quadsmith.sql.column) = {references: "video_transmitters(uuid)"}];
 
   // Optional GPS Receiver for navigation and rescue return-to-home
-  optional string gps_receiver_uuid = 16 [(quadsmith.sql.references) = "gps_receivers(uuid)"];
+  optional string gps_receiver_uuid = 16 [(quadsmith.sql.column) = {references: "gps_receivers(uuid)"}];
   repeated ReferenceLink reference_links = 14;
 }
 

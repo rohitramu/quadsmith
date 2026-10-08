@@ -26,11 +26,11 @@ message Battery {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 
-  string id = 2 [(quadsmith.sql.is_unique) = true];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
 
-  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
 
   float weight_g = 5;
@@ -39,7 +39,7 @@ message Battery {
   uint32 capacity_mah = 6;
 
   // Number of cells in series (e.g., 4 for 4S, 6 for 6S)
-  uint32 cell_count_s = 7 [(quadsmith.sql.create_index) = true];
+  uint32 cell_count_s = 7 [(quadsmith.sql.column) = {create_index: true}];
 
   // E.g., "LiPo", "LiHV", "Li-ion"
   string chemistry = 8;

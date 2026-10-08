@@ -18,11 +18,11 @@ message FlightController {
   };
   option (quadsmith.sql.table_name) = "flight_controllers";
 
-  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 
-  string id = 2 [(quadsmith.sql.is_unique) = true];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
 
-  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
   bool is_internal_only = 20;
 
@@ -39,13 +39,13 @@ message FlightController {
   // -------------------------------------------------------
 
   // If this board has an integrated Electronic Speed Controller, reference it here
-  optional string internal_electronic_speed_controller_uuid = 8 [(quadsmith.sql.references) = "electronic_speed_controllers(uuid)"];
+  optional string internal_electronic_speed_controller_uuid = 8 [(quadsmith.sql.column) = {references: "electronic_speed_controllers(uuid)"}];
 
   // If this board has an integrated SPI or Serial Receiver
-  optional string internal_receiver_uuid = 9 [(quadsmith.sql.references) = "receivers(uuid)"];
+  optional string internal_receiver_uuid = 9 [(quadsmith.sql.column) = {references: "receivers(uuid)"}];
 
   // If this board has an integrated Video Transmitter
-  optional string internal_video_transmitter_uuid = 10 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
+  optional string internal_video_transmitter_uuid = 10 [(quadsmith.sql.column) = {references: "video_transmitters(uuid)"}];
   string description = 21;
   repeated ReferenceLink reference_links = 22;
 }

@@ -97,9 +97,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		colNames = append(colNames, colName)
 
 		colType := ""
-		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_ColumnType) {
-			if ct, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_ColumnType).(string); ok && ct != "" {
-				colType = ct
+		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
+			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && co.ColumnType != "" {
+				colType = co.ColumnType
 			}
 		}
 
@@ -198,9 +198,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		}
 
 		colType := ""
-		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_ColumnType) {
-			if ct, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_ColumnType).(string); ok && ct != "" {
-				colType = ct
+		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
+			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && co.ColumnType != "" {
+				colType = co.ColumnType
 			}
 		}
 

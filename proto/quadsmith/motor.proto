@@ -27,18 +27,18 @@ message Motor {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
 
   // A unique, human-readable identifier (e.g., "tmotor-f80-pro-1900kv")
-  string id = 2 [(quadsmith.sql.is_unique) = true];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
 
-  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
 
   float weight_g = 5;
   float stator_diameter_mm = 6;
   float stator_height_mm = 7;
-  uint32 kv = 8 [(quadsmith.sql.create_index) = true];
+  uint32 kv = 8 [(quadsmith.sql.column) = {create_index: true}];
   string description = 9;
   repeated ReferenceLink reference_links = 10;
 }

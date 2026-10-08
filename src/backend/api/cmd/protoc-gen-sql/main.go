@@ -78,13 +78,18 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 	for _, field := range msg.Fields {
 		fOpts := field.Desc.Options()
 
+		var colOpt *quadsmith_sql.ColumnOptions
+		if proto.HasExtension(fOpts, quadsmith_sql.E_Column) {
+			if co, ok := proto.GetExtension(fOpts, quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+				colOpt = co
+			}
+		}
+
 		colName := string(field.Desc.Name())
 		colType := sqlDataType(field.Desc)
 
-		if proto.HasExtension(fOpts, quadsmith_sql.E_IsUnique) {
-			if isUnq, ok := proto.GetExtension(fOpts, quadsmith_sql.E_IsUnique).(bool); ok && isUnq {
-				colType += " UNIQUE"
-			}
+		if colOpt != nil && colOpt.IsUnique {
+			colType += " UNIQUE"
 		}
 
 		if !field.Desc.IsList() && !field.Desc.HasPresence() {
@@ -94,17 +99,13 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 		defs = append(defs, fmt.Sprintf("%s %s", colName, colType))
 
 		// Check primary key
-		if proto.HasExtension(fOpts, quadsmith_sql.E_IsPrimaryKey) {
-			if isPk, ok := proto.GetExtension(fOpts, quadsmith_sql.E_IsPrimaryKey).(bool); ok && isPk {
-				defs = append(defs, fmt.Sprintf("PRIMARY KEY (%s)", colName))
-			}
+		if colOpt != nil && colOpt.IsPrimaryKey {
+			defs = append(defs, fmt.Sprintf("PRIMARY KEY (%s)", colName))
 		}
 
 		// Check foreign key
-		if proto.HasExtension(fOpts, quadsmith_sql.E_References) {
-			if ref, ok := proto.GetExtension(fOpts, quadsmith_sql.E_References).(string); ok && ref != "" {
-				alters = append(alters, fmt.Sprintf("ALTER TABLE %s ADD CONSTRAINT fk_%s_%s FOREIGN KEY (%s) REFERENCES %s;", tableName, tableName, colName, colName, ref))
-			}
+		if colOpt != nil && colOpt.References != "" {
+			alters = append(alters, fmt.Sprintf("ALTER TABLE %s ADD CONSTRAINT fk_%s_%s FOREIGN KEY (%s) REFERENCES %s;", tableName, tableName, colName, colName, colOpt.References))
 		}
 	}
 
@@ -115,8 +116,8 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 	// Generate indexes
 	for _, field := range msg.Fields {
 		fOpts := field.Desc.Options()
-		if proto.HasExtension(fOpts, quadsmith_sql.E_CreateIndex) {
-			if isIdx, ok := proto.GetExtension(fOpts, quadsmith_sql.E_CreateIndex).(bool); ok && isIdx {
+		if proto.HasExtension(fOpts, quadsmith_sql.E_Column) {
+			if co, ok := proto.GetExtension(fOpts, quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && co.CreateIndex {
 				colName := string(field.Desc.Name())
 				g.P("CREATE INDEX IF NOT EXISTS idx_", tableName, "_", colName, " ON ", tableName, " (", colName, ");")
 			}

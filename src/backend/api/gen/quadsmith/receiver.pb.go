@@ -346,15 +346,15 @@ var File_quadsmith_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe4\x03\n" +
-	"\bReceiver\x12\x18\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
-	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x04\xe0\xf3\x18\x01R\fmanufacturer\x12\x12\n" +
+	"\x18quadsmith/receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xec\x03\n" +
+	"\bReceiver\x12\x1a\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\b\x01R\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02\x18\x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\fmanufacturer\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12 \n" +
-	"\bprotocol\x18\x06 \x01(\tB\x04\xe0\xf3\x18\x01R\bprotocol\x12,\n" +
+	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\"\n" +
+	"\bprotocol\x18\x06 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\bprotocol\x12,\n" +
 	"\x12frequency_band_mhz\x18\a \x01(\rR\x10frequencyBandMhz\x12#\n" +
 	"\rhas_telemetry\x18\b \x01(\bR\fhasTelemetry\x12#\n" +
 	"\rantenna_uuids\x18\t \x03(\tR\fantennaUuids\x12 \n" +
