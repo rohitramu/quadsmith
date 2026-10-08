@@ -19,12 +19,21 @@ message NameOptions {
 }
 
 // ---------------------------------------------------------
+// Collection Options
+// ---------------------------------------------------------
+
+message CollectionOptions {
+  // The default columns to display in CLI tables and UI collection listings.
+  repeated string default_columns = 1;
+}
+
+// ---------------------------------------------------------
 // Custom Message Options
 // ---------------------------------------------------------
 
 extend google.protobuf.MessageOptions {
-  // The default columns to display in CLI tables and UI collection listings.
-  repeated string default_columns = 50001;
+  // Collection view configuration for UI and CLI listings.
+  CollectionOptions collection = 50001;
 
   // Human-readable entity names for UI, CLI, and code generators.
   NameOptions name = 50002;

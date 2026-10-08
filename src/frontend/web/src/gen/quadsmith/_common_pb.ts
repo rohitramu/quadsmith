@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith__common: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChdxdWFkc21pdGgvX2NvbW1vbi5wcm90bxIJcXVhZHNtaXRoIi8KC05hbWVPcHRpb25zEhAKCHNpbmd1bGFyGAEgASgJEg4KBnBsdXJhbBgCIAEoCTpKCg9kZWZhdWx0X2NvbHVtbnMSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0YYDIAMoCVIOZGVmYXVsdENvbHVtbnM6TQoEbmFtZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjShgMgASgLMhYucXVhZHNtaXRoLk5hbWVPcHRpb25zUgRuYW1lQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "ChdxdWFkc21pdGgvX2NvbW1vbi5wcm90bxIJcXVhZHNtaXRoIi8KC05hbWVPcHRpb25zEhAKCHNpbmd1bGFyGAEgASgJEg4KBnBsdXJhbBgCIAEoCSIsChFDb2xsZWN0aW9uT3B0aW9ucxIXCg9kZWZhdWx0X2NvbHVtbnMYASADKAk6XwoKY29sbGVjdGlvbhIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgASgLMhwucXVhZHNtaXRoLkNvbGxlY3Rpb25PcHRpb25zUgpjb2xsZWN0aW9uOk0KBG5hbWUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0oYDIAEoCzIWLnF1YWRzbWl0aC5OYW1lT3B0aW9uc1IEbmFtZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file_google_protobuf_descriptor],
   );
 
@@ -46,11 +46,31 @@ export const NameOptionsSchema: GenMessage<NameOptions> =
   messageDesc(file_quadsmith__common, 0);
 
 /**
- * The default columns to display in CLI tables and UI collection listings.
- *
- * @generated from extension: repeated string default_columns = 50001;
+ * @generated from message quadsmith.CollectionOptions
  */
-export const default_columns: GenExtension<MessageOptions, string[]> =
+export type CollectionOptions = Message<"quadsmith.CollectionOptions"> & {
+  /**
+   * The default columns to display in CLI tables and UI collection listings.
+   *
+   * @generated from field: repeated string default_columns = 1;
+   */
+  defaultColumns: string[];
+};
+
+/**
+ * Describes the message quadsmith.CollectionOptions.
+ * Use `create(CollectionOptionsSchema)` to create a new message.
+ */
+export const CollectionOptionsSchema: GenMessage<CollectionOptions> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith__common, 1);
+
+/**
+ * Collection view configuration for UI and CLI listings.
+ *
+ * @generated from extension: quadsmith.CollectionOptions collection = 50001;
+ */
+export const collection: GenExtension<MessageOptions, CollectionOptions> =
   /*@__PURE__*/
   extDesc(file_quadsmith__common, 0);
 

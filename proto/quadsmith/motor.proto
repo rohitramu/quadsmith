@@ -18,10 +18,14 @@ message Motor {
   };
   // This tells the Go generator to create a 'motors' table for this message
   option (quadsmith.sql.table_name) = "motors";
-  option (quadsmith.default_columns) = "manufacturer";
-  option (quadsmith.default_columns) = "name";
-  option (quadsmith.default_columns) = "stator_diameter_mm";
-  option (quadsmith.default_columns) = "kv";
+  option (quadsmith.collection) = {
+    default_columns: [
+      "manufacturer",
+      "name",
+      "stator_diameter_mm",
+      "kv"
+    ]
+  };
 
   string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
 

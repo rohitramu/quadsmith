@@ -76,13 +76,58 @@ func (x *NameOptions) GetPlural() string {
 	return ""
 }
 
+type CollectionOptions struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The default columns to display in CLI tables and UI collection listings.
+	DefaultColumns []string `protobuf:"bytes,1,rep,name=default_columns,json=defaultColumns,proto3" json:"default_columns,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *CollectionOptions) Reset() {
+	*x = CollectionOptions{}
+	mi := &file_quadsmith__common_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CollectionOptions) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CollectionOptions) ProtoMessage() {}
+
+func (x *CollectionOptions) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith__common_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CollectionOptions.ProtoReflect.Descriptor instead.
+func (*CollectionOptions) Descriptor() ([]byte, []int) {
+	return file_quadsmith__common_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CollectionOptions) GetDefaultColumns() []string {
+	if x != nil {
+		return x.DefaultColumns
+	}
+	return nil
+}
+
 var file_quadsmith__common_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
-		ExtensionType: ([]string)(nil),
+		ExtensionType: (*CollectionOptions)(nil),
 		Field:         50001,
-		Name:          "quadsmith.default_columns",
-		Tag:           "bytes,50001,rep,name=default_columns",
+		Name:          "quadsmith.collection",
+		Tag:           "bytes,50001,opt,name=collection",
 		Filename:      "quadsmith/_common.proto",
 	},
 	{
@@ -97,10 +142,10 @@ var file_quadsmith__common_proto_extTypes = []protoimpl.ExtensionInfo{
 
 // Extension fields to descriptorpb.MessageOptions.
 var (
-	// The default columns to display in CLI tables and UI collection listings.
+	// Collection view configuration for UI and CLI listings.
 	//
-	// repeated string default_columns = 50001;
-	E_DefaultColumns = &file_quadsmith__common_proto_extTypes[0]
+	// optional quadsmith.CollectionOptions collection = 50001;
+	E_Collection = &file_quadsmith__common_proto_extTypes[0]
 	// Human-readable entity names for UI, CLI, and code generators.
 	//
 	// optional quadsmith.NameOptions name = 50002;
@@ -114,8 +159,12 @@ const file_quadsmith__common_proto_rawDesc = "" +
 	"\x17quadsmith/_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"A\n" +
 	"\vNameOptions\x12\x1a\n" +
 	"\bsingular\x18\x01 \x01(\tR\bsingular\x12\x16\n" +
-	"\x06plural\x18\x02 \x01(\tR\x06plural:J\n" +
-	"\x0fdefault_columns\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x03(\tR\x0edefaultColumns:M\n" +
+	"\x06plural\x18\x02 \x01(\tR\x06plural\"<\n" +
+	"\x11CollectionOptions\x12'\n" +
+	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumns:_\n" +
+	"\n" +
+	"collection\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2\x1c.quadsmith.CollectionOptionsR\n" +
+	"collection:M\n" +
 	"\x04name\x12\x1f.google.protobuf.MessageOptions\x18҆\x03 \x01(\v2\x16.quadsmith.NameOptionsR\x04nameB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
@@ -130,18 +179,20 @@ func file_quadsmith__common_proto_rawDescGZIP() []byte {
 	return file_quadsmith__common_proto_rawDescData
 }
 
-var file_quadsmith__common_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_quadsmith__common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_quadsmith__common_proto_goTypes = []any{
 	(*NameOptions)(nil),                 // 0: quadsmith.NameOptions
-	(*descriptorpb.MessageOptions)(nil), // 1: google.protobuf.MessageOptions
+	(*CollectionOptions)(nil),           // 1: quadsmith.CollectionOptions
+	(*descriptorpb.MessageOptions)(nil), // 2: google.protobuf.MessageOptions
 }
 var file_quadsmith__common_proto_depIdxs = []int32{
-	1, // 0: quadsmith.default_columns:extendee -> google.protobuf.MessageOptions
-	1, // 1: quadsmith.name:extendee -> google.protobuf.MessageOptions
-	0, // 2: quadsmith.name:type_name -> quadsmith.NameOptions
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	2, // [2:3] is the sub-list for extension type_name
+	2, // 0: quadsmith.collection:extendee -> google.protobuf.MessageOptions
+	2, // 1: quadsmith.name:extendee -> google.protobuf.MessageOptions
+	1, // 2: quadsmith.collection:type_name -> quadsmith.CollectionOptions
+	0, // 3: quadsmith.name:type_name -> quadsmith.NameOptions
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	2, // [2:4] is the sub-list for extension type_name
 	0, // [0:2] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
@@ -157,7 +208,7 @@ func file_quadsmith__common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith__common_proto_rawDesc), len(file_quadsmith__common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 2,
 			NumServices:   0,
 		},

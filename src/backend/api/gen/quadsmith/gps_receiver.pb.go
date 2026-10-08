@@ -365,7 +365,7 @@ var File_quadsmith_gps_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x94\x05\n" +
+	"\x1cquadsmith/gps_receiver.proto\x12\tquadsmith\x1a\x17quadsmith/_common.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x90\x05\n" +
 	"\vGpsReceiver\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -382,7 +382,11 @@ const file_quadsmith_gps_receiver_proto_rawDesc = "" +
 	" \x01(\x02R\x10inputVoltageMinV\x12-\n" +
 	"\x13input_voltage_max_v\x18\v \x01(\x02R\x10inputVoltageMaxV\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:d\x8a\xb5\x18\fmanufacturer\x8a\xb5\x18\x04name\x8a\xb5\x18\achipset\x8a\xb5\x18\vhas_compass\x92\xb5\x18\x1d\n" +
+	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:`\x8a\xb5\x18*\n" +
+	"\fmanufacturer\n" +
+	"\x04name\n" +
+	"\achipset\n" +
+	"\vhas_compass\x92\xb5\x18\x1d\n" +
 	"\fGPS Receiver\x12\rGPS Receivers\xc2\xf3\x18\rgps_receiversB\x0e\n" +
 	"\f_has_compassB\x0f\n" +
 	"\r_compass_chip\"A\n" +
