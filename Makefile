@@ -1,4 +1,4 @@
-.PHONY: all build sandbox generate clean test test-e2e vendor tool
+.PHONY: all build sandbox generate clean test test-e2e vendor tool breaking-change test-breaking
 
 export GOWORK := $(shell pwd)/src/go.work
 
@@ -61,6 +61,12 @@ test: generate
 	@cd src/frontend/cli && go test -mod=vendor ./...
 	@echo "--- Running Web UI Tests ---"
 	@cd src/frontend/web && npm test
+
+breaking-change: generate
+	@echo "--- Running Breaking Change Regression Tests ---"
+	@cd src/backend/api && go test -mod=vendor -v ./internal/regression/... ./pkg/schemacheck/...
+
+test-breaking: breaking-change
 
 test-e2e: build
 	@echo "--- Running E2E Sandbox Tests ---"
