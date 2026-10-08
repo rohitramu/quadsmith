@@ -38,8 +38,8 @@ type Build struct {
 	BatteryUuid string `protobuf:"bytes,7,opt,name=battery_uuid,json=batteryUuid,proto3" json:"battery_uuid,omitempty"`
 	// The central Flight Controller (which may be an AIO board)
 	FlightControllerUuid string `protobuf:"bytes,8,opt,name=flight_controller_uuid,json=flightControllerUuid,proto3" json:"flight_controller_uuid,omitempty"`
-	// Array of ESC boards (e.g. one 4-in-1, or four individual ESCs)
-	EscUuids []string `protobuf:"bytes,9,rep,name=esc_uuids,json=escUuids,proto3" json:"esc_uuids,omitempty"`
+	// Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
+	ElectronicSpeedControllerUuids []string `protobuf:"bytes,9,rep,name=electronic_speed_controller_uuids,json=electronicSpeedControllerUuids,proto3" json:"electronic_speed_controller_uuids,omitempty"`
 	// Array of receivers (e.g. primary ELRS, backup crossfire)
 	ReceiverUuids []string `protobuf:"bytes,10,rep,name=receiver_uuids,json=receiverUuids,proto3" json:"receiver_uuids,omitempty"`
 	// Array of antennas
@@ -141,9 +141,9 @@ func (x *Build) GetFlightControllerUuid() string {
 	return ""
 }
 
-func (x *Build) GetEscUuids() []string {
+func (x *Build) GetElectronicSpeedControllerUuids() []string {
 	if x != nil {
-		return x.EscUuids
+		return x.ElectronicSpeedControllerUuids
 	}
 	return nil
 }
@@ -377,7 +377,7 @@ var File_quadsmith_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_build_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x80\x06\n" +
+	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xae\x06\n" +
 	"\x05Build\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12\x12\n" +
@@ -388,8 +388,8 @@ const file_quadsmith_build_proto_rawDesc = "" +
 	"\n" +
 	"motor_uuid\x18\x06 \x01(\tB\x10\xd2\xf3\x18\fmotors(uuid)R\tmotorUuid\x126\n" +
 	"\fbattery_uuid\x18\a \x01(\tB\x13\xd2\xf3\x18\x0fbatteries(uuid)R\vbatteryUuid\x12R\n" +
-	"\x16flight_controller_uuid\x18\b \x01(\tB\x1c\xd2\xf3\x18\x18flight_controllers(uuid)R\x14flightControllerUuid\x12\x1b\n" +
-	"\tesc_uuids\x18\t \x03(\tR\bescUuids\x12%\n" +
+	"\x16flight_controller_uuid\x18\b \x01(\tB\x1c\xd2\xf3\x18\x18flight_controllers(uuid)R\x14flightControllerUuid\x12I\n" +
+	"!electronic_speed_controller_uuids\x18\t \x03(\tR\x1eelectronicSpeedControllerUuids\x12%\n" +
 	"\x0ereceiver_uuids\x18\n" +
 	" \x03(\tR\rreceiverUuids\x12#\n" +
 	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12;\n" +

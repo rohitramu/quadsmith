@@ -11,17 +11,17 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // ---------------------------------------------------------
 // Domain Model
 // ---------------------------------------------------------
-message Esc {
+message ElectronicSpeedController {
   option (quadsmith.name) = {
-    singular: "ESC"
-    plural: "ESCs"
-    cli: "escs"
-    api: "escs"
-    go: "esc"
-    typescript: "Esc"
-    sql: "escs"
+    singular: "Electronic Speed Controller"
+    plural: "Electronic Speed Controllers"
+    cli: "electronic-speed-controllers"
+    api: "electronic-speed-controllers"
+    go: "electronicSpeedController"
+    typescript: "ElectronicSpeedController"
+    sql: "electronic_speed_controllers"
   };
-  option (quadsmith.sql.table_name) = "escs";
+  option (quadsmith.sql.table_name) = "electronic_speed_controllers";
 
   string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
 
@@ -49,12 +49,12 @@ message Esc {
 // ---------------------------------------------------------
 // RPC Requests & Responses
 // ---------------------------------------------------------
-message GetEscRequest {
+message GetElectronicSpeedControllerRequest {
   string id = 1;
   repeated string columns = 2;
 }
 
-message ListEscsRequest {
+message ListElectronicSpeedControllersRequest {
   string filter = 1;
   int32 page_size = 2;
   string page_token = 3;
@@ -62,15 +62,15 @@ message ListEscsRequest {
   repeated string sort = 5;
 }
 
-message ListEscsResponse {
-  repeated Esc escs = 1;
+message ListElectronicSpeedControllersResponse {
+  repeated ElectronicSpeedController electronic_speed_controllers = 1;
   string next_page_token = 2;
 }
 
 // ---------------------------------------------------------
 // gRPC Service
 // ---------------------------------------------------------
-service EscService {
-  rpc GetEsc(GetEscRequest) returns (Esc);
-  rpc ListEscs(ListEscsRequest) returns (ListEscsResponse);
+service ElectronicSpeedControllerService {
+  rpc GetElectronicSpeedController(GetElectronicSpeedControllerRequest) returns (ElectronicSpeedController);
+  rpc ListElectronicSpeedControllers(ListElectronicSpeedControllersRequest) returns (ListElectronicSpeedControllersResponse);
 }

@@ -76,11 +76,11 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		}
 	}
 
-	// 5. Fetch ESCs
+	// 5. Fetch Electronic Speed Controllers
 	var totalEscs uint32 = 0
 	var maxAmps float32 = 0
-	for _, id := range b.EscUuids {
-		esc, err := pb.GetEsc(ctx, s.db, id, nil)
+	for _, id := range b.ElectronicSpeedControllerUuids {
+		esc, err := pb.GetElectronicSpeedController(ctx, s.db, id, nil)
 		if err == nil {
 			totalWeight += esc.WeightG
 			totalEscs += esc.MaxMotors
@@ -90,13 +90,13 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		}
 	}
 
-	// 6. Fetch Flight Controller (and Internal ESC)
+	// 6. Fetch Flight Controller (and Internal Electronic Speed Controller)
 	if b.FlightControllerUuid != "" {
 		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
 		if err == nil {
 			totalWeight += fc.WeightG
-			if fc.InternalEscUuid != "" {
-				esc, err := pb.GetEsc(ctx, s.db, fc.InternalEscUuid, nil)
+			if fc.InternalElectronicSpeedControllerUuid != "" {
+				esc, err := pb.GetElectronicSpeedController(ctx, s.db, fc.InternalElectronicSpeedControllerUuid, nil)
 				if err == nil {
 					totalEscs += esc.MaxMotors
 					if esc.MotorCurrentMaxA > maxAmps {

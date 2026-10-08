@@ -691,10 +691,10 @@ func newRootCmd() *cobra.Command {
 
 	rootCmd.AddCommand(cameraCmd)
 
-	// --- ESCs ---
-	escClient := quadsmithconnect.NewEscServiceClient(http.DefaultClient, targetURL)
-	escCmd := &cobra.Command{Use: "escs"}
-	escListCmd := &cobra.Command{
+	// --- Electronic Speed Controllers ---
+	electronicSpeedControllerClient := quadsmithconnect.NewElectronicSpeedControllerServiceClient(http.DefaultClient, targetURL)
+	electronicSpeedControllerCmd := &cobra.Command{Use: "electronic-speed-controllers", Aliases: []string{"electronicspeedcontrollers", "escs", "esc"}}
+	electronicSpeedControllerListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			filter, _ := cmd.Flags().GetString("filter")
@@ -705,7 +705,7 @@ func newRootCmd() *cobra.Command {
 				cmd.SilenceUsage = false
 				return fmt.Errorf("limit cannot be negative")
 			}
-			var all []*pb.Esc
+			var all []*pb.ElectronicSpeedController
 			var currentToken string
 			for {
 				pageSize := int32(100)
@@ -718,12 +718,12 @@ func newRootCmd() *cobra.Command {
 						pageSize = remaining
 					}
 				}
-				req := &pb.ListEscsRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
-				res, err := escClient.ListEscs(context.Background(), connect.NewRequest(req))
+				req := &pb.ListElectronicSpeedControllersRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := electronicSpeedControllerClient.ListElectronicSpeedControllers(context.Background(), connect.NewRequest(req))
 				if err != nil {
 					return err
 				}
-				all = append(all, res.Msg.Escs...)
+				all = append(all, res.Msg.ElectronicSpeedControllers...)
 				if limit > 0 && int32(len(all)) >= limit {
 					all = all[:limit]
 					break
@@ -734,7 +734,7 @@ func newRootCmd() *cobra.Command {
 				currentToken = res.Msg.NextPageToken
 			}
 			if len(columns) == 0 {
-				columns = GetDefaultColumns(&pb.Esc{})
+				columns = GetDefaultColumns(&pb.ElectronicSpeedController{})
 			}
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
@@ -743,10 +743,10 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
-	escListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
-	escListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
-	escListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		cols := GetColumns(&pb.Esc{})
+	electronicSpeedControllerListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	electronicSpeedControllerListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
+	electronicSpeedControllerListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.ElectronicSpeedController{})
 		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
 		match := re.FindStringSubmatch(toComplete)
 		prefix := ""
@@ -763,10 +763,10 @@ func newRootCmd() *cobra.Command {
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
-	escListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
-	escListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
-	escListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		cols := GetColumns(&pb.Esc{})
+	electronicSpeedControllerListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
+	electronicSpeedControllerListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
+	electronicSpeedControllerListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.ElectronicSpeedController{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
 		for _, s := range selected {
@@ -780,8 +780,8 @@ func newRootCmd() *cobra.Command {
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
-	escListCmd.RegisterFlagCompletionFunc("sort", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		cols := GetColumns(&pb.Esc{})
+	electronicSpeedControllerListCmd.RegisterFlagCompletionFunc("sort", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.ElectronicSpeedController{})
 		selected, _ := cmd.Flags().GetStringSlice("sort")
 		selectedMap := make(map[string]bool)
 		for _, s := range selected {
@@ -802,38 +802,38 @@ func newRootCmd() *cobra.Command {
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
-	escCmd.AddCommand(escListCmd)
+	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerListCmd)
 
-	escGetCmd := &cobra.Command{
+	electronicSpeedControllerGetCmd := &cobra.Command{
 		Use:  "get [id]",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
 			}
-			res, err := escClient.ListEscs(context.Background(), connect.NewRequest(&pb.ListEscsRequest{PageSize: 100}))
+			res, err := electronicSpeedControllerClient.ListElectronicSpeedControllers(context.Background(), connect.NewRequest(&pb.ListElectronicSpeedControllersRequest{PageSize: 100}))
 			if err != nil {
 				return nil, cobra.ShellCompDirectiveError
 			}
 			var comps []string
-			for _, item := range res.Msg.Escs {
+			for _, item := range res.Msg.ElectronicSpeedControllers {
 				comps = append(comps, item.Id)
 			}
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			columns, _ := cmd.Flags().GetStringSlice("column")
-			req := &pb.GetEscRequest{Id: args[0], Columns: columns}
-			res, err := escClient.GetEsc(context.Background(), connect.NewRequest(req))
+			req := &pb.GetElectronicSpeedControllerRequest{Id: args[0], Columns: columns}
+			res, err := electronicSpeedControllerClient.GetElectronicSpeedController(context.Background(), connect.NewRequest(req))
 			if err != nil {
 				return err
 			}
 			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
-	escGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
-	escGetCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		cols := GetColumns(&pb.Esc{})
+	electronicSpeedControllerGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
+	electronicSpeedControllerGetCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.ElectronicSpeedController{})
 		selected, _ := cmd.Flags().GetStringSlice("column")
 		selectedMap := make(map[string]bool)
 		for _, s := range selected {
@@ -847,13 +847,13 @@ func newRootCmd() *cobra.Command {
 		}
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
-	escCmd.AddCommand(escGetCmd)
+	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerGetCmd)
 
-	rootCmd.AddCommand(escCmd)
+	rootCmd.AddCommand(electronicSpeedControllerCmd)
 
 	// --- Flight Controllers ---
 	flightControllerClient := quadsmithconnect.NewFlightControllerServiceClient(http.DefaultClient, targetURL)
-	flightControllerCmd := &cobra.Command{Use: "flight-controllers", Aliases: []string{"flightcontrollers"}}
+	flightControllerCmd := &cobra.Command{Use: "flight-controllers", Aliases: []string{"flightcontrollers", "fc", "fcs"}}
 	flightControllerListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1493,7 +1493,7 @@ func newRootCmd() *cobra.Command {
 
 	// --- Receivers ---
 	receiverClient := quadsmithconnect.NewReceiverServiceClient(http.DefaultClient, targetURL)
-	receiverCmd := &cobra.Command{Use: "receivers"}
+	receiverCmd := &cobra.Command{Use: "receivers", Aliases: []string{"rx", "rxs"}}
 	receiverListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1653,7 +1653,7 @@ func newRootCmd() *cobra.Command {
 
 	// --- Video Transmitters ---
 	videoTransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(http.DefaultClient, targetURL)
-	videoTransmitterCmd := &cobra.Command{Use: "video-transmitters", Aliases: []string{"videotransmitters"}}
+	videoTransmitterCmd := &cobra.Command{Use: "video-transmitters", Aliases: []string{"videotransmitters", "vtx", "vtxs"}}
 	videoTransmitterListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {

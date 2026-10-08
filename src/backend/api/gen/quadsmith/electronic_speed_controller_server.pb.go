@@ -9,23 +9,23 @@ import (
 	"quadsmith/api/internal/pagination"
 )
 
-type EscServiceHandler struct {
+type ElectronicSpeedControllerServiceHandler struct {
 	db *pgxpool.Pool
 }
 
-func NewEscServiceHandler(db *pgxpool.Pool) *EscServiceHandler {
-	return &EscServiceHandler{db: db}
+func NewElectronicSpeedControllerServiceHandler(db *pgxpool.Pool) *ElectronicSpeedControllerServiceHandler {
+	return &ElectronicSpeedControllerServiceHandler{db: db}
 }
 
-func (s *EscServiceHandler) GetEsc(ctx context.Context, req *connect.Request[GetEscRequest]) (*connect.Response[Esc], error) {
-	m, err := GetEsc(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
+func (s *ElectronicSpeedControllerServiceHandler) GetElectronicSpeedController(ctx context.Context, req *connect.Request[GetElectronicSpeedControllerRequest]) (*connect.Response[ElectronicSpeedController], error) {
+	m, err := GetElectronicSpeedController(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	return connect.NewResponse(m), nil
 }
 
-func (s *EscServiceHandler) ListEscs(ctx context.Context, req *connect.Request[ListEscsRequest]) (*connect.Response[ListEscsResponse], error) {
+func (s *ElectronicSpeedControllerServiceHandler) ListElectronicSpeedControllers(ctx context.Context, req *connect.Request[ListElectronicSpeedControllersRequest]) (*connect.Response[ListElectronicSpeedControllersResponse], error) {
 	pageSize, err := pagination.ParsePageSize(req.Msg.GetPageSize())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
@@ -41,7 +41,7 @@ func (s *EscServiceHandler) ListEscs(ctx context.Context, req *connect.Request[L
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
-	items, err := ListEscs(ctx, s.db, req.Msg.GetColumns(), sort, where, pageSize+1, offset, args...)
+	items, err := ListElectronicSpeedControllers(ctx, s.db, req.Msg.GetColumns(), sort, where, pageSize+1, offset, args...)
 	if err != nil {
 		if pagination.IsInvalidArgument(err) {
 			return nil, connect.NewError(connect.CodeInvalidArgument, err)
@@ -58,9 +58,9 @@ func (s *EscServiceHandler) ListEscs(ctx context.Context, req *connect.Request[L
 		}
 	}
 
-	res := &ListEscsResponse{
-		Escs:          items,
-		NextPageToken: nextPageToken,
+	res := &ListElectronicSpeedControllersResponse{
+		ElectronicSpeedControllers: items,
+		NextPageToken:              nextPageToken,
 	}
 	return connect.NewResponse(res), nil
 }

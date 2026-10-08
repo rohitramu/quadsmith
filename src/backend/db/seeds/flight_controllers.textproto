@@ -108,7 +108,7 @@ flight_controllers: {
   weight_g: 7
   processor: "STM32F405"
   gyro: "BMI270"
-  internal_esc_uuid: "e68df4b5-a836-4299-b873-f3764a47cf40"
+  internal_electronic_speed_controller_uuid: "e68df4b5-a836-4299-b873-f3764a47cf40"
   description: "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -153,7 +153,7 @@ flight_controllers: {
   weight_g: 5.58
   processor: "STM32F405"
   gyro: "BMI270"
-  internal_esc_uuid: "b40f8cc2-b3b8-412b-8301-1e7cfc9274ad"
+  internal_electronic_speed_controller_uuid: "b40f8cc2-b3b8-412b-8301-1e7cfc9274ad"
   description: "BETAFPV F4 2-3S 20A AIO FC V1 flight controller powered by STM32F405 MCU and BMI270 gyro with integrated ESC, weighing 5.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -376,7 +376,7 @@ flight_controllers: {
   weight_g: 5.58
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_esc_uuid: "e62a5429-2a6e-4359-a10e-962af0ce9c64"
+  internal_electronic_speed_controller_uuid: "e62a5429-2a6e-4359-a10e-962af0ce9c64"
   description: "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -532,7 +532,7 @@ flight_controllers: {
   weight_g: 7
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_esc_uuid: "e202fb6c-8280-4c56-a3f9-331cad62556a"
+  internal_electronic_speed_controller_uuid: "e202fb6c-8280-4c56-a3f9-331cad62556a"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -665,7 +665,7 @@ flight_controllers: {
   weight_g: 7
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_esc_uuid: "9f72506f-e6d5-48f4-bd04-a335dce59347"
+  internal_electronic_speed_controller_uuid: "9f72506f-e6d5-48f4-bd04-a335dce59347"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -710,7 +710,7 @@ flight_controllers: {
   weight_g: 5.58
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_esc_uuid: "e191559a-e568-4b3b-91a1-ed8bd7b5ef76"
+  internal_electronic_speed_controller_uuid: "e191559a-e568-4b3b-91a1-ed8bd7b5ef76"
   description: "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -857,7 +857,7 @@ flight_controllers: {
   weight_g: 41.5
   processor: "STM32F405"
   gyro: "BMI270"
-  internal_esc_uuid: "03bdc3b2-f363-447b-8922-9046a04f1474"
+  internal_electronic_speed_controller_uuid: "03bdc3b2-f363-447b-8922-9046a04f1474"
   description: "DarwinFPV DarwinFPV F435 45A AM32 AIO flight controller powered by STM32F405 MCU and BMI270 gyro with integrated ESC, weighing 41.5g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -876,7 +876,7 @@ flight_controllers: {
   weight_g: 41.5
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_esc_uuid: "fdc4f26c-aa47-4754-881e-9854b05b6c83"
+  internal_electronic_speed_controller_uuid: "fdc4f26c-aa47-4754-881e-9854b05b6c83"
   internal_receiver_uuid: "c2de593a-f739-4f6e-93c5-ad7e03de6e4f"
   description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO"
   reference_links: {
@@ -915,7 +915,7 @@ flight_controllers: {
   weight_g: 41.5
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_esc_uuid: "ee916b8e-e710-4d10-beae-5a80913b6047"
+  internal_electronic_speed_controller_uuid: "ee916b8e-e710-4d10-beae-5a80913b6047"
   description: "DarwinFPV DarwinFPV HULK 45A 3-6S AIO flight controller powered by STM32F411 MCU and BMI270 gyro with integrated ESC, weighing 41.5g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -952,7 +952,7 @@ flight_controllers: {
   weight_g: 5
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_esc_uuid: "f9b6e8cd-8f5b-48e1-931a-1faef1bd1a6b"
+  internal_electronic_speed_controller_uuid: "f9b6e8cd-8f5b-48e1-931a-1faef1bd1a6b"
   internal_receiver_uuid: "5ff7f57c-3e4f-4840-b0c0-71d8894982d6"
   description: "DarwinFPV DarwinFPV ELRS3.0 F411 15A Bluejay AIO flight controller powered by STM32F411 MCU and BMI270 gyro with integrated ESC, built-in receiver, weighing 5.0g."
   reference_links: {
@@ -1243,7 +1243,7 @@ flight_controllers: {
   weight_g: 5.6
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_esc_uuid: "1ed11eb3-9ab2-4c9e-950b-8f3a8ca6fcfb"
+  internal_electronic_speed_controller_uuid: "1ed11eb3-9ab2-4c9e-950b-8f3a8ca6fcfb"
   internal_receiver_uuid: "ab61a221-d90d-4de9-917a-28a33599e037"
   description: "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone"
   reference_links: {
@@ -1401,7 +1401,7 @@ flight_controllers: {
   weight_g: 8.7
   processor: "STM32F722"
   gyro: "BMI270"
-  internal_esc_uuid: "b66c1ad5-ad66-4a63-a2e3-1e5a1a17e764"
+  internal_electronic_speed_controller_uuid: "b66c1ad5-ad66-4a63-a2e3-1e5a1a17e764"
   description: "Redfox A3 F722 35A/45A AIO Flight Controller for DollyFly25"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE

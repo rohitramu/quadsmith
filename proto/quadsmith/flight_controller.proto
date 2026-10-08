@@ -43,8 +43,8 @@ message FlightController {
   // Integrated Components (AIO Support)
   // -------------------------------------------------------
 
-  // If this board has an integrated ESC, reference it here
-  string internal_esc_uuid = 8 [(quadsmith.sql.references) = "escs(uuid)"];
+  // If this board has an integrated Electronic Speed Controller, reference it here
+  string internal_electronic_speed_controller_uuid = 8 [(quadsmith.sql.references) = "electronic_speed_controllers(uuid)"];
 
   // If this board has an integrated SPI or Serial Receiver
   string internal_receiver_uuid = 9 [(quadsmith.sql.references) = "receivers(uuid)"];

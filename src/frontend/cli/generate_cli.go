@@ -17,6 +17,7 @@ type DomainName struct {
 	Go         string
 	TypeScript string
 	SQL        string
+	Aliases    []string
 }
 
 var domains = []DomainName{
@@ -57,13 +58,14 @@ var domains = []DomainName{
 		SQL:        "cameras",
 	},
 	{
-		Singular:   "ESC",
-		Plural:     "ESCs",
-		CLI:        "escs",
-		API:        "escs",
-		Go:         "esc",
-		TypeScript: "Esc",
-		SQL:        "escs",
+		Singular:   "Electronic Speed Controller",
+		Plural:     "Electronic Speed Controllers",
+		CLI:        "electronic-speed-controllers",
+		API:        "electronic-speed-controllers",
+		Go:         "electronicSpeedController",
+		TypeScript: "ElectronicSpeedController",
+		SQL:        "electronic_speed_controllers",
+		Aliases:    []string{"escs", "esc"},
 	},
 	{
 		Singular:   "Flight Controller",
@@ -73,6 +75,7 @@ var domains = []DomainName{
 		Go:         "flightController",
 		TypeScript: "FlightController",
 		SQL:        "flight_controllers",
+		Aliases:    []string{"flightcontrollers", "fc", "fcs"},
 	},
 	{
 		Singular:   "Frame",
@@ -109,6 +112,7 @@ var domains = []DomainName{
 		Go:         "receiver",
 		TypeScript: "Receiver",
 		SQL:        "receivers",
+		Aliases:    []string{"rx", "rxs"},
 	},
 	{
 		Singular:   "Video Transmitter",
@@ -118,6 +122,7 @@ var domains = []DomainName{
 		Go:         "videoTransmitter",
 		TypeScript: "VideoTransmitter",
 		SQL:        "video_transmitters",
+		Aliases:    []string{"videotransmitters", "vtx", "vtxs"},
 	},
 }
 
@@ -190,11 +195,27 @@ func newRootCmd() *cobra.Command {
 			tsPlural = strings.TrimSuffix(d.TypeScript, "y") + "ies"
 		}
 		legacyAlias := strings.ToLower(tsPlural)
+		aliasMap := make(map[string]bool)
+		var aliasList []string
+		if d.CLI != legacyAlias {
+			aliasMap[legacyAlias] = true
+			aliasList = append(aliasList, legacyAlias)
+		}
+		for _, a := range d.Aliases {
+			if a != d.CLI && !aliasMap[a] {
+				aliasMap[a] = true
+				aliasList = append(aliasList, a)
+			}
+		}
 
 		fmt.Fprintf(f, "\n\t// --- %s ---\n", d.Plural)
 		fmt.Fprintf(f, "\t%s := quadsmithconnect.New%sServiceClient(http.DefaultClient, targetURL)\n", clientVar, tsName)
-		if d.CLI != legacyAlias {
-			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\", Aliases: []string{\"%s\"}}\n", cmdVar, d.CLI, legacyAlias)
+		if len(aliasList) > 0 {
+			quoted := make([]string, len(aliasList))
+			for i, a := range aliasList {
+				quoted[i] = fmt.Sprintf("%q", a)
+			}
+			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\", Aliases: []string{%s}}\n", cmdVar, d.CLI, strings.Join(quoted, ", "))
 		} else {
 			fmt.Fprintf(f, "\t%s := &cobra.Command{Use: \"%s\"}\n", cmdVar, d.CLI)
 		}

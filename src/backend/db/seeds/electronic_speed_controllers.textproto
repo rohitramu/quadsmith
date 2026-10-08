@@ -1,4 +1,4 @@
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "59b0e835-da96-4143-9674-dc6a950ac7c7"
   id:  "redfox-a3-f722-45a-aio"
   manufacturer:  "Redfox"
@@ -14,7 +14,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "5a5be012-c0c3-4986-99dd-97a7317148ce"
   id:  "caddxf4-aio-20a"
   manufacturer:  "Caddx"
@@ -30,7 +30,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "043313ce-9ddb-47df-b915-56a28855f49e"
   id:  "happymodel-x12-5-in-1-aio"
   manufacturer:  "Happymodel"
@@ -46,7 +46,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "19578f9c-b43e-4323-b6ee-8af447a274f4"
   id:  "hglrc-zeus-48a"
   manufacturer:  "HGLRC"
@@ -66,7 +66,7 @@ escs:  {
     url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "0ceda915-f01c-4b27-bc8c-e01c22e58d2a"
   id:  "hglrc-specter-60a-4-in-1-esc"
   manufacturer:  "HGLRC"
@@ -86,7 +86,7 @@ escs:  {
     url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "e139857a-59f5-4df8-bee1-f6736c521d47"
   id:  "darwinfpv-cement-ultra-durable-blheli-32-am32-12s"
   manufacturer:  "DarwinFPV"
@@ -106,7 +106,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "ad0b6f98-4c7b-48a4-861d-757afe7f1b93"
   id:  "darwinfpv-3-6s-f411-fc-4-in"
   manufacturer:  "DarwinFPV"
@@ -126,7 +126,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "11c49b81-907d-49e0-b9ab-9f6285f405c0"
   id:  "darwinfpv-betaflight-f4-fc-50a-dshot600"
   manufacturer:  "DarwinFPV"
@@ -146,7 +146,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "71200654-3789-4592-934f-81336be485f8"
   id:  "darwinfpv-fpv-esc-flight-controller-betaflight"
   manufacturer:  "DarwinFPV"
@@ -166,7 +166,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "2348ba8f-9576-44b0-9620-c28786da9a42"
   id:  "newbeedrone-infinity200-v2-4in1-esc-55a"
   manufacturer:  "NewBeeDrone"
@@ -182,7 +182,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "8b439f1d-ed5c-4cca-ae13-d20dcc372815"
   id:  "lucid-90a-12s-am32-esc-ndaa"
   manufacturer:  "Team Black Sheep"
@@ -198,7 +198,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "a31cfe82-973b-4ee5-accf-752843308665"
   id:  "goku-gn745-v3-2-6s-25x25-aio"
   manufacturer:  "Flywoo"
@@ -214,7 +214,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "ec186492-b783-4e46-82c3-71bc03893df1"
   id:  "fettec-sfoc-50a-2-8s-20x20-4in1-esc"
   manufacturer:  "FETtec"
@@ -230,7 +230,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "48761253-4708-4e98-b314-b0f4c48e711a"
   id:  "goku-f405-hd-v2-1-2s-25x25"
   manufacturer:  "Flywoo"
@@ -246,7 +246,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "af59dfa0-30ee-4489-9865-9c3a2b1aebab"
   id:  "kakute-g4-25x25-aio-flight-controller"
   manufacturer:  "Holybro"
@@ -262,7 +262,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "a1c0e659-bff7-4508-8849-25120750e255"
   id:  "hglrc-specter-60a-4in1-esc-3-6s"
   manufacturer:  "HGLRC"
@@ -282,7 +282,7 @@ escs:  {
     url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "2cc3c66a-d9d5-42ce-89ff-68c80560f139"
   id:  "hglrc-60a-4in1-6s-bl32-mini"
   manufacturer:  "HGLRC"
@@ -302,7 +302,7 @@ escs:  {
     url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "dd2e76bf-c831-484a-8267-b9cd65a33787"
   id:  "hglrc-60a-4in1-6s-8-bit-v2"
   manufacturer:  "HGLRC"
@@ -322,7 +322,7 @@ escs:  {
     url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "aafe496c-9d6a-4611-8919-8f4818a58db4"
   id:  "hglrc-60a-4in1-mini-8s-32-bit"
   manufacturer:  "HGLRC"
@@ -342,7 +342,7 @@ escs:  {
     url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "c2c3e035-cd09-4a92-9698-dbf520caf0e1"
   id:  "hglrc-h743-8s-mini-v1-fc"
   manufacturer:  "HGLRC"
@@ -362,7 +362,7 @@ escs:  {
     url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "8b6a56c8-b3dd-4ad1-9827-fbf22ada7552"
   id:  "diatone-esc-power-distribution-board-3-6s"
   manufacturer:  "DIATONE INNOVATIONS"
@@ -378,7 +378,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "ba0ca663-78b6-4107-a2a8-b4b74a3a98c8"
   id:  "mamba-f40-bls-dshot600-4in1-esc-40a-6s"
   manufacturer:  "DIATONE INNOVATIONS"
@@ -394,7 +394,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "16189d90-32b6-46ac-b36b-594e40f14645"
   id:  "fpvcycle-darwinfpv-whoop-stack-flight-controller"
   manufacturer:  "FPVCycle"
@@ -410,7 +410,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "e68df4b5-a836-4299-b873-f3764a47cf40"
   id:  "toothpick-f405-2-4s-aio-brushless-flight"
   manufacturer:  "BETAFPV"
@@ -435,7 +435,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "b40f8cc2-b3b8-412b-8301-1e7cfc9274ad"
   id:  "internal-esc-57a0ab75-dd68-4a02-8bdd-47c46b24f764"
   manufacturer:  "BETAFPV"
@@ -460,7 +460,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "e62a5429-2a6e-4359-a10e-962af0ce9c64"
   id:  "toothpick-f4-2-6s-aio-brushless-flight"
   manufacturer:  "BETAFPV"
@@ -485,7 +485,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "e202fb6c-8280-4c56-a3f9-331cad62556a"
   id:  "toothpick-f4-2-4s-aio-brushless-flight"
   manufacturer:  "BETAFPV"
@@ -510,7 +510,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "9f72506f-e6d5-48f4-bd04-a335dce59347"
   id:  "toothpick-f4-2-4s-aio-brushless-flight-2"
   manufacturer:  "BETAFPV"
@@ -535,7 +535,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "e191559a-e568-4b3b-91a1-ed8bd7b5ef76"
   id:  "f4-2-4s-aio-brushless-flight-controller"
   manufacturer:  "BETAFPV"
@@ -560,7 +560,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "03bdc3b2-f363-447b-8922-9046a04f1474"
   id:  "darwinfpv-f435-45a-am32-aio"
   manufacturer:  "DarwinFPV"
@@ -581,7 +581,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "fdc4f26c-aa47-4754-881e-9854b05b6c83"
   id:  "darwinfpv-f411-45a-elrs-aio-cineape35"
   manufacturer:  "DarwinFPV"
@@ -602,7 +602,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "ee916b8e-e710-4d10-beae-5a80913b6047"
   id:  "darwinfpv-hulk-45a-3-6s-aio"
   manufacturer:  "DarwinFPV"
@@ -623,7 +623,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "f9b6e8cd-8f5b-48e1-931a-1faef1bd1a6b"
   id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio"
   manufacturer:  "DarwinFPV"
@@ -644,7 +644,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "6ac97d86-7e36-4bc4-8ea5-20d9510dd28d"
   id:  "toothpick-f405-2-4s-aio-brushless-flight-2"
   manufacturer:  "BETAFPV"
@@ -669,7 +669,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "ad4c5c4d-9c15-4d86-871c-0e2370e97f46"
   id:  "internal-esc-33b0a15c-46f1-489c-b4c9-86d111e8f26f"
   manufacturer:  "BETAFPV"
@@ -694,7 +694,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "6798e20d-7ab5-40c6-817a-24592f217166"
   id:  "toothpick-f4-2-6s-aio-brushless-flight-2"
   manufacturer:  "BETAFPV"
@@ -719,7 +719,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "87cdd545-3070-4847-a623-e67e8f5eca7a"
   id:  "toothpick-f4-2-4s-aio-brushless-flight-3"
   manufacturer:  "BETAFPV"
@@ -744,7 +744,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "81c7bf54-f645-44cc-9210-14a0caf36f49"
   id:  "toothpick-f4-2-4s-aio-brushless-flight-4"
   manufacturer:  "BETAFPV"
@@ -769,7 +769,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "72b797a8-dcbf-48a2-a3c6-3325fbf69dae"
   id:  "f4-2-4s-aio-brushless-flight-controller-2"
   manufacturer:  "BETAFPV"
@@ -794,7 +794,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "6077da29-741a-4483-b436-48615736e14a"
   id:  "darwinfpv-f435-45a-am32-aio-2"
   manufacturer:  "DarwinFPV"
@@ -815,7 +815,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "3b899722-6708-4832-8de9-f61da8ee7e4a"
   id:  "darwinfpv-f411-45a-elrs-aio-cineape35-2"
   manufacturer:  "DarwinFPV"
@@ -836,7 +836,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "5d396242-6db4-40e5-a0a4-04106a76921f"
   id:  "darwinfpv-hulk-45a-3-6s-aio-2"
   manufacturer:  "DarwinFPV"
@@ -857,7 +857,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "0b8e2d61-9ded-4af7-8cfa-b2de2d29d2c8"
   id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio-2"
   manufacturer:  "DarwinFPV"
@@ -878,7 +878,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "797e8e9e-3f55-4893-889c-19d819a3d4b2"
   id:  "toothpick-f405-2-4s-aio-brushless-flight-3"
   manufacturer:  "BETAFPV"
@@ -903,7 +903,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "dd593a0d-ea93-4e0b-ad3d-0ff8ae444027"
   id:  "internal-esc-26c9c5af-eeda-46f9-94e5-a92ff4b1a7dd"
   manufacturer:  "BETAFPV"
@@ -928,7 +928,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "cf68eaec-beb1-4416-9a7c-b8b84644ff11"
   id:  "toothpick-f4-2-6s-aio-brushless-flight-3"
   manufacturer:  "BETAFPV"
@@ -953,7 +953,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "f5e73450-37d7-4984-9ffc-e3b1f19d6017"
   id:  "toothpick-f4-2-4s-aio-brushless-flight-5"
   manufacturer:  "BETAFPV"
@@ -978,7 +978,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "13a7c00e-d00e-4683-b4f2-8352626b6b12"
   id:  "toothpick-f4-2-4s-aio-brushless-flight-6"
   manufacturer:  "BETAFPV"
@@ -1003,7 +1003,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "9adf8a69-834d-4fe4-8353-2d19a1dae49c"
   id:  "f4-2-4s-aio-brushless-flight-controller-3"
   manufacturer:  "BETAFPV"
@@ -1028,7 +1028,7 @@ escs:  {
     url:  "https://betafpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "50ac0c86-4aef-4747-8c61-acee7c9434c8"
   id:  "darwinfpv-f435-45a-am32-aio-3"
   manufacturer:  "DarwinFPV"
@@ -1049,7 +1049,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "0488ffb9-1cae-4838-bf63-b13847551706"
   id:  "darwinfpv-f411-45a-elrs-aio-cineape35-3"
   manufacturer:  "DarwinFPV"
@@ -1070,7 +1070,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "6c5f533d-283a-453e-86a9-c0df09a36747"
   id:  "darwinfpv-hulk-45a-3-6s-aio-3"
   manufacturer:  "DarwinFPV"
@@ -1091,7 +1091,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "338d6faf-57da-4425-922b-da7ba1394043"
   id:  "darwinfpv-elrs3-0-f411-15a-bluejay-aio-3"
   manufacturer:  "DarwinFPV"
@@ -1112,7 +1112,7 @@ escs:  {
     url:  "https://darwinfpv.com/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "1ed11eb3-9ab2-4c9e-950b-8f3a8ca6fcfb"
   id:  "hglrc-specter-15a-elrs-aio-2-4s"
   manufacturer:  "HGLRC"
@@ -1133,7 +1133,7 @@ escs:  {
     url:  "https://www.hglrc.net/collections/esc"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "b66c1ad5-ad66-4a63-a2e3-1e5a1a17e764"
   id:  "redfox-a3-f722-35a-45a-aio-flight"
   manufacturer:  "Sub250"
@@ -1150,7 +1150,7 @@ escs:  {
     url:  "https://www.getfpv.com/electronics/electronic-speed-controllers-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "01923019-3007-7001-8001-000000000001"
   id:  "speedybee-55a-4-in-1-esc"
   manufacturer:  "SpeedyBee"
@@ -1174,7 +1174,7 @@ escs:  {
     url:  "https://www.getfpv.com/speedybee-55a-3-6s-blheli-s-4-in-1-esc-30x30.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "01923019-3007-7001-8001-000000000002"
   id:  "tmotor-f55a-pro-ii-4-in-1-esc"
   manufacturer:  "T-Motor"
@@ -1194,7 +1194,7 @@ escs:  {
     url:  "https://pyrodrone.com/products/t-motor-f55a-pro-ii-32bit-4in1-esc-3-6s-dshot1200"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "01923019-3007-7001-8001-000000000003"
   id:  "foxeer-reaper-f4-65a-4-in-1-esc"
   manufacturer:  "Foxeer"
@@ -1214,7 +1214,7 @@ escs:  {
     url:  "https://www.getfpv.com/foxeer-reaper-f4-65a-128k-4-in-1-blheli-32-esc.html"
   }
 }
-escs:  {
+electronic_speed_controllers:  {
   uuid:  "01923019-3007-7001-8001-000000000004"
   id:  "betafpv-20a-4-in-1-esc"
   manufacturer:  "BETAFPV"

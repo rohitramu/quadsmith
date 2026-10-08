@@ -36,8 +36,8 @@ type FlightController struct {
 	Processor string `protobuf:"bytes,6,opt,name=processor,proto3" json:"processor,omitempty"`
 	// The gyro chip (e.g., "MPU6000", "BMI270")
 	Gyro string `protobuf:"bytes,7,opt,name=gyro,proto3" json:"gyro,omitempty"`
-	// If this board has an integrated ESC, reference it here
-	InternalEscUuid string `protobuf:"bytes,8,opt,name=internal_esc_uuid,json=internalEscUuid,proto3" json:"internal_esc_uuid,omitempty"`
+	// If this board has an integrated Electronic Speed Controller, reference it here
+	InternalElectronicSpeedControllerUuid string `protobuf:"bytes,8,opt,name=internal_electronic_speed_controller_uuid,json=internalElectronicSpeedControllerUuid,proto3" json:"internal_electronic_speed_controller_uuid,omitempty"`
 	// If this board has an integrated SPI or Serial Receiver
 	InternalReceiverUuid string `protobuf:"bytes,9,opt,name=internal_receiver_uuid,json=internalReceiverUuid,proto3" json:"internal_receiver_uuid,omitempty"`
 	// If this board has an integrated Video Transmitter
@@ -134,9 +134,9 @@ func (x *FlightController) GetGyro() string {
 	return ""
 }
 
-func (x *FlightController) GetInternalEscUuid() string {
+func (x *FlightController) GetInternalElectronicSpeedControllerUuid() string {
 	if x != nil {
-		return x.InternalEscUuid
+		return x.InternalElectronicSpeedControllerUuid
 	}
 	return ""
 }
@@ -356,7 +356,7 @@ var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xed\x05\n" +
+	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x15quadsmith/_name.proto\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xb4\x06\n" +
 	"\x10FlightController\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -365,9 +365,8 @@ const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\x10is_internal_only\x18\x14 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1c\n" +
 	"\tprocessor\x18\x06 \x01(\tR\tprocessor\x12\x12\n" +
-	"\x04gyro\x18\a \x01(\tR\x04gyro\x12:\n" +
-	"\x11internal_esc_uuid\x18\b \x01(\tB\x0e\xd2\xf3\x18\n" +
-	"escs(uuid)R\x0finternalEscUuid\x12I\n" +
+	"\x04gyro\x18\a \x01(\tR\x04gyro\x12\x80\x01\n" +
+	")internal_electronic_speed_controller_uuid\x18\b \x01(\tB&\xd2\xf3\x18\"electronic_speed_controllers(uuid)R%internalElectronicSpeedControllerUuid\x12I\n" +
 	"\x16internal_receiver_uuid\x18\t \x01(\tB\x13\xd2\xf3\x18\x0freceivers(uuid)R\x14internalReceiverUuid\x12c\n" +
 	"\x1finternal_video_transmitter_uuid\x18\n" +
 	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x1cinternalVideoTransmitterUuid\x12 \n" +

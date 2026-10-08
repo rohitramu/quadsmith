@@ -50,8 +50,8 @@ message Build {
   // The central Flight Controller (which may be an AIO board)
   string flight_controller_uuid = 8 [(quadsmith.sql.references) = "flight_controllers(uuid)"];
 
-  // Array of ESC boards (e.g. one 4-in-1, or four individual ESCs)
-  repeated string esc_uuids = 9;
+  // Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
+  repeated string electronic_speed_controller_uuids = 9;
 
   // Array of receivers (e.g. primary ELRS, backup crossfire)
   repeated string receiver_uuids = 10;

@@ -32,7 +32,7 @@ func main() {
 	defer tx.Rollback(ctx)
 
 	tables := []string{
-		"builds", "motors", "frames", "batteries", "escs", "flight_controllers",
+		"builds", "motors", "frames", "batteries", "electronic_speed_controllers", "flight_controllers",
 		"receivers", "video_transmitters", "antennas", "cameras", "propellers",
 	}
 	for _, table := range tables {
@@ -82,14 +82,14 @@ func main() {
 		}
 	}
 
-	// ESCs
-	if b, err := os.ReadFile(dir + "escs.textproto"); err == nil {
-		m := &pb.ListEscsResponse{}
+	// Electronic Speed Controllers
+	if b, err := os.ReadFile(dir + "electronic_speed_controllers.textproto"); err == nil {
+		m := &pb.ListElectronicSpeedControllersResponse{}
 		if err := prototext.Unmarshal(b, m); err != nil {
 			panic(err)
 		}
-		for _, v := range m.Escs {
-			if err := pb.CreateEsc(ctx, tx, v); err != nil {
+		for _, v := range m.ElectronicSpeedControllers {
+			if err := pb.CreateElectronicSpeedController(ctx, tx, v); err != nil {
 				panic(err)
 			}
 		}

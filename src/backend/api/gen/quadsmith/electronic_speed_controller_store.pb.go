@@ -10,8 +10,8 @@ import (
 	"strings"
 )
 
-func CreateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
-	query := `INSERT INTO escs (uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
+func CreateElectronicSpeedController(ctx context.Context, tx pgx.Tx, m *ElectronicSpeedController) error {
+	query := `INSERT INTO electronic_speed_controllers (uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -21,17 +21,17 @@ func CreateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
 	return err
 }
 
-func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Esc, error) {
+func GetElectronicSpeedController(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*ElectronicSpeedController, error) {
 	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware", "description", "reference_links"}
 	}
-	query := `SELECT ` + colsStr + ` FROM escs WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM electronic_speed_controllers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
-	m := &Esc{}
+	m := &ElectronicSpeedController{}
 	for i, col := range cols {
 		switch col {
 		case "uuid":
@@ -74,26 +74,26 @@ func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []strin
 	return m, nil
 }
 
-func UpdateEsc(ctx context.Context, tx pgx.Tx, m *Esc) error {
-	query := `UPDATE escs SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, max_motors = $6, motor_current_max_a = $7, motor_current_burst_a = $8, firmware = $9, description = $10, reference_links = $11 WHERE uuid = $1`
+func UpdateElectronicSpeedController(ctx context.Context, tx pgx.Tx, m *ElectronicSpeedController) error {
+	query := `UPDATE electronic_speed_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, max_motors = $6, motor_current_max_a = $7, motor_current_burst_a = $8, firmware = $9, description = $10, reference_links = $11 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MotorCurrentMaxA, m.MotorCurrentBurstA, m.Firmware, m.Description, m.ReferenceLinks)
 	return err
 }
 
-func DeleteEsc(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM escs WHERE id = $1 OR uuid::text = $1`
+func DeleteElectronicSpeedController(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
+	query := `DELETE FROM electronic_speed_controllers WHERE id = $1 OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
-func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Esc, error) {
+func ListElectronicSpeedControllers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*ElectronicSpeedController, error) {
 	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware", "description", "reference_links"}
 	}
-	query := `SELECT ` + colsStr + ` FROM escs`
+	query := `SELECT ` + colsStr + ` FROM electronic_speed_controllers`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
@@ -134,11 +134,11 @@ func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []stri
 		return nil, err
 	}
 	defer rows.Close()
-	results := make([]*Esc, 0)
+	results := make([]*ElectronicSpeedController, 0)
 	for rows.Next() {
 		scanArgs := make([]interface{}, len(cols))
 		scanAssigns := make([]func(), 0, len(cols))
-		m := &Esc{}
+		m := &ElectronicSpeedController{}
 		for i, col := range cols {
 			switch col {
 			case "uuid":

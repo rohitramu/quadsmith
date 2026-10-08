@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS builds (
   motor_uuid UUID,
   battery_uuid UUID,
   flight_controller_uuid UUID,
-  esc_uuids UUID[],
+  electronic_speed_controller_uuids UUID[],
   receiver_uuids UUID[],
   antenna_uuids UUID[],
   propeller_uuid UUID,
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS cameras (
 
 CREATE INDEX IF NOT EXISTS idx_cameras_manufacturer ON cameras (manufacturer);
 
-CREATE TABLE IF NOT EXISTS escs (
+CREATE TABLE IF NOT EXISTS electronic_speed_controllers (
   uuid UUID,
   PRIMARY KEY (uuid),
   id TEXT UNIQUE,
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS escs (
   reference_links JSONB
 );
 
-CREATE INDEX IF NOT EXISTS idx_escs_manufacturer ON escs (manufacturer);
+CREATE INDEX IF NOT EXISTS idx_electronic_speed_controllers_manufacturer ON electronic_speed_controllers (manufacturer);
 
 CREATE TABLE IF NOT EXISTS flight_controllers (
   uuid UUID,
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS flight_controllers (
   weight_g DECIMAL,
   processor TEXT,
   gyro TEXT,
-  internal_esc_uuid UUID,
+  internal_electronic_speed_controller_uuid UUID,
   internal_receiver_uuid UUID,
   internal_video_transmitter_uuid UUID,
   description TEXT,
@@ -223,7 +223,7 @@ ALTER TABLE builds
 ADD CONSTRAINT fk_builds_video_transmitter_uuid FOREIGN KEY (video_transmitter_uuid) REFERENCES video_transmitters (uuid);
 
 ALTER TABLE flight_controllers
-ADD CONSTRAINT fk_flight_controllers_internal_esc_uuid FOREIGN KEY (internal_esc_uuid) REFERENCES escs (uuid);
+ADD CONSTRAINT fk_flight_controllers_internal_electronic_speed_controller_uuid FOREIGN KEY (internal_electronic_speed_controller_uuid) REFERENCES electronic_speed_controllers (uuid);
 
 ALTER TABLE flight_controllers
 ADD CONSTRAINT fk_flight_controllers_internal_receiver_uuid FOREIGN KEY (internal_receiver_uuid) REFERENCES receivers (uuid);

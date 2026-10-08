@@ -79,7 +79,7 @@ export function Layout() {
                     <ul className="pl-6 mt-1 space-y-1">
                       <li><Link to="/components/hardware/motors" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">Motors</Link></li>
                       <li><Link to="/components/hardware/frames" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">Frames</Link></li>
-                      <li><Link to="/components/hardware/escs" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">ESCs</Link></li>
+                      <li><Link to="/components/hardware/electronic-speed-controllers" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">Electronic Speed Controllers</Link></li>
                       <li><Link to="/components/hardware/flight_controllers" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">Flight Controllers</Link></li>
                     </ul>
                   )}

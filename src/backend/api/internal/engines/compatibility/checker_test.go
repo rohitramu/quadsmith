@@ -10,7 +10,7 @@ func TestMotorEscCompatibility(t *testing.T) {
 		Motor: &pb.Motor{
 			StatorDiameterMm: 22,
 		},
-		Escs: []*pb.Esc{
+		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
 			{MotorCurrentMaxA: 15},
 		},
 	}
@@ -58,7 +58,7 @@ func TestCompatibleBuild(t *testing.T) {
 		Motor: &pb.Motor{
 			StatorDiameterMm: 22,
 		},
-		Escs: []*pb.Esc{
+		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
 			{MotorCurrentMaxA: 45},
 		},
 	}

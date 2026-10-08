@@ -62,14 +62,14 @@ erDiagram
         DECIMAL weight_g
         TEXT processor
         TEXT gyro
-        UUID internal_esc_uuid FK
+        UUID internal_electronic_speed_controller_uuid FK
         UUID internal_receiver_uuid FK
         UUID internal_video_transmitter_uuid FK
         TEXT description
         JSONB reference_links
     }
 
-    escs {
+    electronic_speed_controllers {
         UUID uuid PK
         TEXT id UK
         TEXT manufacturer
@@ -165,6 +165,6 @@ erDiagram
     builds ||--o| propellers : has
     builds ||--o| video_transmitters : has
 
-    flight_controllers ||--o| escs : internal_esc
+    flight_controllers ||--o| electronic_speed_controllers : internal_electronic_speed_controller
     flight_controllers ||--o| receivers : internal_receiver
     flight_controllers ||--o| video_transmitters : internal_video_transmitter

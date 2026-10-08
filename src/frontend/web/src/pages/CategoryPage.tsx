@@ -7,7 +7,7 @@ export function CategoryPage() {
   const collections = categoryId === "hardware" ? [
     { id: "motors", name: "Motors" },
     { id: "frames", name: "Frames" },
-    { id: "escs", name: "ESCs" },
+    { id: "electronic-speed-controllers", name: "Electronic Speed Controllers" },
     { id: "flight_controllers", name: "Flight Controllers" },
   ] : [];
 
