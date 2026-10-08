@@ -1,11 +1,15 @@
 /**
  * Formats motor stator diameter and height into standard stator size format.
- * Format: <minimum-2-digit-diameter><minimum-2-digit-height>
+ * Format:
+ *   If diameter is a decimal number: "<diameter>x<height>"
+ *   Otherwise: <minimum-2-digit-diameter><minimum-2-digit-height>
  * Examples:
  *   (22, 7) -> "2207"
  *   (14, 4) -> "1404"
  *   (7, 2)  -> "0702"
  *   (23, 6.5) -> "2306.5"
+ *   (22.6, 6.5) -> "22.6x6.5"
+ *   (8.5, 20) -> "8.5x20"
  */
 export function formatStatorSize(
   diameter?: number | null,
@@ -13,6 +17,10 @@ export function formatStatorSize(
   fallback: string = "-"
 ): string {
   if (diameter == null || height == null) return fallback;
+
+  if (!Number.isInteger(diameter)) {
+    return `${diameter}x${height}`;
+  }
 
   const pad = (val: number): string => {
     if (Number.isInteger(val)) {
