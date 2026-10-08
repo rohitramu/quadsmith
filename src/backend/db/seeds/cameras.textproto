@@ -772,164 +772,163 @@ cameras: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/caddx-gm1-gimbal-pitch-120-for-19mm-fpv-camera-compatible-with-avatar-hd-goggles"
   }
+}
+cameras: {
 
-  cameras: {
-
-    uuid: "01923019-3005-7001-8001-000000000002"
-    id: "caddx-ant-nano"
-    manufacturer: "CADDX"
-    name: "Caddx Ant Nano 1200TVL FPV Camera"
-    weight_g: 2
-    protocol: "Analog"
-    sensor_size: "1/3 CMOS"
-    width_mm: 14
-    lens_size_mm: 1.8
-    description: "Ultra-compact, lightweight 14x14mm nano camera engineered for whoops and toothpicks, with 1200TVL Global WDR."
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-      url: "https://caddxfpv.com/products/caddx-ant-analog-camera"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://pyrodrone.com/products/caddx-ant-4-3-black-nano-fpv-camera"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://www.racedayquads.com/products/caddx-ant-lite-nano-1200tvl-cmos-pal-ntsc-fpv-camera-choose-your-version"
-    }
+  uuid: "01923019-3005-7001-8001-000000000002"
+  id: "caddx-ant-nano"
+  manufacturer: "CADDX"
+  name: "Caddx Ant Nano 1200TVL FPV Camera"
+  weight_g: 2
+  protocol: "Analog"
+  sensor_size: "1/3 CMOS"
+  width_mm: 14
+  lens_size_mm: 1.8
+  description: "Ultra-compact, lightweight 14x14mm nano camera engineered for whoops and toothpicks, with 1200TVL Global WDR."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://caddxfpv.com/products/caddx-ant-analog-camera"
   }
-  cameras: {
-
-    uuid: "01923019-3005-7001-8001-000000000003"
-    id: "foxeer-predator-5-micro"
-    manufacturer: "Foxeer"
-    name: "Foxeer Predator 5 Micro FPV Camera"
-    weight_g: 6.3
-    protocol: "Analog"
-    sensor_size: "1/3 CMOS"
-    width_mm: 19
-    lens_size_mm: 1.7
-    description: "Race-proven 1000TVL micro analog camera featuring switchable 4:3 / 16:9 aspect ratio and multi-mode day/night presets."
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-      url: "https://www.foxeer.com/foxeer-predator-v5-micro-camera-g-297"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://pyrodrone.com/products/foxeer-micro-predator-5-m8-lens-4ms-latency-super-wdr-19-19mm"
-    }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/caddx-ant-4-3-black-nano-fpv-camera"
   }
-  cameras: {
-
-    uuid: "01923019-3005-7001-8001-000000000004"
-    id: "foxeer-predator-5-nano"
-    manufacturer: "Foxeer"
-    name: "Foxeer Predator 5 Nano FPV Camera"
-    weight_g: 4.3
-    protocol: "Analog"
-    sensor_size: "1/3 CMOS"
-    width_mm: 14
-    lens_size_mm: 1.7
-    description: "14x14mm nano version of the legendary Predator 5 with low latency, super WDR, and switchable aspect ratio."
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-      url: "https://www.foxeer.com/foxeer-predator-5-nano-five33-edition-hv-flip-ntsc-g-405"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://www.racedayquads.com/products/foxeer-predator-5-nano-1000tvl-4-3-16-9-pal-ntsc-fpv-camera-1-7mm-five33-edition"
-    }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/caddx-ant-lite-nano-1200tvl-cmos-pal-ntsc-fpv-camera-choose-your-version"
   }
-  cameras: {
+}
+cameras: {
 
-    uuid: "01923019-3005-7001-8001-000000000005"
-    id: "runcam-phoenix-2-sp-v5"
-    manufacturer: "RunCam"
-    name: "RunCam Phoenix 2 Special Edition Micro FPV Camera"
-    weight_g: 9
-    protocol: "Analog"
-    sensor_size: "1/2 CMOS"
-    width_mm: 19
-    lens_size_mm: 2.1
-    description: "Premium freestyle camera with large 1/2-inch image sensor, f/2.0 aperture lens, and vivid natural color reproduction."
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-      url: "https://shop.runcam.com/runcam-phoenix-2/"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://www.racedayquads.com/products/runcam-phoenix-2-spv5-fpv-camera"
-    }
+  uuid: "01923019-3005-7001-8001-000000000003"
+  id: "foxeer-predator-5-micro"
+  manufacturer: "Foxeer"
+  name: "Foxeer Predator 5 Micro FPV Camera"
+  weight_g: 6.3
+  protocol: "Analog"
+  sensor_size: "1/3 CMOS"
+  width_mm: 19
+  lens_size_mm: 1.7
+  description: "Race-proven 1000TVL micro analog camera featuring switchable 4:3 / 16:9 aspect ratio and multi-mode day/night presets."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.foxeer.com/foxeer-predator-v5-micro-camera-g-297"
   }
-  cameras: {
-
-    uuid: "01923019-3005-7001-8001-000000000006"
-    id: "dji-o3-camera-module"
-    manufacturer: "DJI"
-    name: "DJI O3 Camera Module"
-    weight_g: 8.3
-    protocol: "DJI O3"
-    sensor_size: "1/1.7 CMOS"
-    width_mm: 20
-    lens_size_mm: 2
-    description: "Original DJI O3 4K/60fps camera module with 155-degree ultra-wide field of view and RockSteady EIS support."
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-      url: "https://www.dji.com/o3-air-unit"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_DOCUMENTATION
-      url: "https://www.dji.com/o3-air-unit/downloads"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://store.dji.com/product/dji-o3-air-unit-camera-module"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://pyrodrone.com/products/dji-o3-air-unit-fpv-camera-module"
-    }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/foxeer-micro-predator-5-m8-lens-4ms-latency-super-wdr-19-19mm"
   }
-  cameras: {
+}
+cameras: {
 
-    uuid: "01923019-3005-7001-8001-000000000007"
-    id: "caddx-walksnail-avatar-hd-pro-camera"
-    manufacturer: "Walksnail"
-    name: "Walksnail Avatar HD Pro Camera"
-    weight_g: 9.5
-    protocol: "Walksnail Avatar"
-    sensor_size: "1/1.8 CMOS"
-    width_mm: 19
-    lens_size_mm: 2.1
-    description: "Flagship digital HD camera featuring Sony Starvis II sensor for incredible low-light night flight and true 1080p video clarity."
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-      url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-camera"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-camera"
-    }
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PURCHASE
-      url: "https://pyrodrone.com/products/walksnail-avatar-gt2-kit-dual-antennas-with-avatar-pro-camera-1080p-and-gt2-vtx-2w-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
-    }
+  uuid: "01923019-3005-7001-8001-000000000004"
+  id: "foxeer-predator-5-nano"
+  manufacturer: "Foxeer"
+  name: "Foxeer Predator 5 Nano FPV Camera"
+  weight_g: 4.3
+  protocol: "Analog"
+  sensor_size: "1/3 CMOS"
+  width_mm: 14
+  lens_size_mm: 1.7
+  description: "14x14mm nano version of the legendary Predator 5 with low latency, super WDR, and switchable aspect ratio."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.foxeer.com/foxeer-predator-5-nano-five33-edition-hv-flip-ntsc-g-405"
   }
-  cameras: {
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/foxeer-predator-5-nano-1000tvl-4-3-16-9-pal-ntsc-fpv-camera-1-7mm-five33-edition"
+  }
+}
+cameras: {
 
-    uuid: "01923019-3005-7001-8001-000000000008"
-    id: "hdzero-nano-v2-camera"
-    manufacturer: "HDZero"
-    name: "HDZero Nano V2 Camera"
-    weight_g: 4.3
-    protocol: "HDZero"
-    sensor_size: "1/2 CMOS"
-    width_mm: 14
-    lens_size_mm: 1.8
-    description: "Zero-latency digital camera with custom high-sensitivity sensor offering 720p 60fps feed and sharp image definition."
-    reference_links: {
-      type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-      url: "https://www.hd-zero.com/product-page/nano-v2-hdzero-camera"
-    }
+  uuid: "01923019-3005-7001-8001-000000000005"
+  id: "runcam-phoenix-2-sp-v5"
+  manufacturer: "RunCam"
+  name: "RunCam Phoenix 2 Special Edition Micro FPV Camera"
+  weight_g: 9
+  protocol: "Analog"
+  sensor_size: "1/2 CMOS"
+  width_mm: 19
+  lens_size_mm: 2.1
+  description: "Premium freestyle camera with large 1/2-inch image sensor, f/2.0 aperture lens, and vivid natural color reproduction."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://shop.runcam.com/runcam-phoenix-2/"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://www.racedayquads.com/products/runcam-phoenix-2-spv5-fpv-camera"
+  }
+}
+cameras: {
+
+  uuid: "01923019-3005-7001-8001-000000000006"
+  id: "dji-o3-camera-module"
+  manufacturer: "DJI"
+  name: "DJI O3 Camera Module"
+  weight_g: 8.3
+  protocol: "DJI O3"
+  sensor_size: "1/1.7 CMOS"
+  width_mm: 20
+  lens_size_mm: 2
+  description: "Original DJI O3 4K/60fps camera module with 155-degree ultra-wide field of view and RockSteady EIS support."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.dji.com/o3-air-unit"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.dji.com/o3-air-unit/downloads"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://store.dji.com/product/dji-o3-air-unit-camera-module"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/dji-o3-air-unit-fpv-camera-module"
+  }
+}
+cameras: {
+
+  uuid: "01923019-3005-7001-8001-000000000007"
+  id: "caddx-walksnail-avatar-hd-pro-camera"
+  manufacturer: "Walksnail"
+  name: "Walksnail Avatar HD Pro Camera"
+  weight_g: 9.5
+  protocol: "Walksnail Avatar"
+  sensor_size: "1/1.8 CMOS"
+  width_mm: 19
+  lens_size_mm: 2.1
+  description: "Flagship digital HD camera featuring Sony Starvis II sensor for incredible low-light night flight and true 1080p video clarity."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-camera"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-camera"
+  }
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PURCHASE
+    url: "https://pyrodrone.com/products/walksnail-avatar-gt2-kit-dual-antennas-with-avatar-pro-camera-1080p-and-gt2-vtx-2w-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
+  }
+}
+cameras: {
+
+  uuid: "01923019-3005-7001-8001-000000000008"
+  id: "hdzero-nano-v2-camera"
+  manufacturer: "HDZero"
+  name: "HDZero Nano V2 Camera"
+  weight_g: 4.3
+  protocol: "HDZero"
+  sensor_size: "1/2 CMOS"
+  width_mm: 14
+  lens_size_mm: 1.8
+  description: "Zero-latency digital camera with custom high-sensitivity sensor offering 720p 60fps feed and sharp image definition."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hd-zero.com/product-page/nano-v2-hdzero-camera"
   }
 }
