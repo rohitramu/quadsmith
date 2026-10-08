@@ -203,40 +203,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "ff12204d-afe9-42ff-af3b-406da5a843d3"
-  id: "smo-4k-camera-adapter-cable"
-  manufacturer: "BETAFPV"
-  name: "SMO 4K Camera Adapter Cable"
-  weight_g: 0.7
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "BETAFPV SMO 4K Camera Adapter Cable FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/smo-4k-camera-adapter-cable"
-  }
-}
-cameras: {
-
-  uuid: "32181b6a-9cf3-4e82-9f26-2c0db9a24a71"
-  id: "case-v2-for-naked-camera"
-  manufacturer: "BETAFPV"
-  name: "Case V2 for Naked Camera"
-  weight_g: 0.82
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "BETAFPV Case V2 for Naked Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/case-v2-for-naked-camera"
-  }
-}
-cameras: {
-
   uuid: "6309c971-466b-4510-8958-9ffff453f89f"
   id: "customized-runcam-split-3-nano-camera"
   manufacturer: "BETAFPV"
@@ -322,23 +288,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "e30a1ae0-8489-494e-a606-7352d7b09ed0"
-  id: "caddxfpv-walnut-action-camera-magnetic-charging"
-  manufacturer: "CADDX"
-  name: "CADDXFPV Walnut Action Camera Magnetic Charging"
-  weight_g: 5.9
-  protocol: "Analog"
-  sensor_size: "1/2.3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "CADDXFPV Walnut Action Camera Magnetic Charging Part"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/caddx-walnut-action-camera-magnetic-charging-part"
-  }
-}
-cameras: {
-
   uuid: "e2cfeb86-f048-4a2c-aac9-2dd2971f4832"
   id: "caddxfpv-ant-lite-analog-camera"
   manufacturer: "CADDX"
@@ -352,23 +301,6 @@ cameras: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-ant-lite-4-3-fpvcycle-edition"
-  }
-}
-cameras: {
-
-  uuid: "c8189d00-6037-4298-b5b8-b0c05e75a9a1"
-  id: "caddxfpv-camera-lens-family"
-  manufacturer: "CADDX"
-  name: "CaddxFPV Camera Lens Family"
-  weight_g: 5.9
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "CADDXFPV CaddxFPV Camera Lens Family FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/lens-family"
   }
 }
 cameras: {
@@ -408,9 +340,9 @@ cameras: {
 cameras: {
 
   uuid: "d3df2154-1c3e-4bc6-aff7-9258bff0bb33"
-  id: "darwinfpv-cement-ultra-durable-fpv-drone"
+  id: "darwinfpv-cement-ultra-durable-fpv-camera"
   manufacturer: "DarwinFPV"
-  name: "DarwinFPV Cement Ultra Durable FPV Drone"
+  name: "DarwinFPV Cement Ultra Durable FPV Camera"
   weight_g: 3
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
@@ -462,27 +394,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "0ce4d839-208d-4dbb-8c02-1702fad02412"
-  id: "newbeedrone-racespec-camera-mount"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone RaceSpec Camera Mount"
-  weight_g: 1.3
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "NewBeeDrone NewBeeDrone RaceSpec Camera Mount FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-racespec-camera-mount"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/newbeedrone-racespec-whoop-racing-camera-mount-0-71g-30-or-40"
-  }
-}
-cameras: {
-
   uuid: "f704e308-6016-47be-b3a2-40315defb4d6"
   id: "newbeedrone-whoop-training-camera-x3"
   manufacturer: "NewBeeDrone"
@@ -517,23 +428,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "ca07f0c5-8c5b-4b59-9ad1-90dd31e4ab25"
-  id: "newbeedrone-dji-o4-pro-camera-naked"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone DJI O4 Pro Camera Naked"
-  weight_g: 2.1
-  protocol: "DJI O4"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "NewBeeDrone DJI O4 Pro Camera Naked Kit – Lightweight FPV Mod for Drones"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-dji-o4-pro-camera-naked-kit"
-  }
-}
-cameras: {
-
   uuid: "fc343577-630e-481f-be66-39adbafd4453"
   id: "newbeedrone-caddx-nano-ant-camera"
   manufacturer: "CADDX"
@@ -544,48 +438,6 @@ cameras: {
   width_mm: 14
   lens_size_mm: 1.8
   description: "NewBeeDrone × CADDX Nano ANT Camera for BLV5 - Plug-and-Play Replacement"
-}
-cameras: {
-
-  uuid: "1ab3e82f-8995-47c0-9b7d-fc0d8fceee38"
-  id: "newbeedrone-racespec-whoop-racing-camera-mount"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone RaceSpec Whoop Racing Camera Mount"
-  weight_g: 5.4
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "NewBeeDrone RaceSpec Whoop Racing Camera Mount 0.71g (30° or 40°)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-whoop-racing-camera-mount-0-71g"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/newbeedrone-racespec-whoop-racing-camera-mount-0-71g-30-or-40"
-  }
-}
-cameras: {
-
-  uuid: "8cdf6eca-77b9-47ab-94f6-063b0a670650"
-  id: "newbeedrone-beebrain-camera-connector-type-jst0-8mm"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone BeeBrain Camera Connector Type: JST0.8mm"
-  weight_g: 1.3
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "NewBeeDrone BeeBrain Camera Connector Type: JST0.8mm 3Pin pack of 2"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-beebrain-camera-connector-type-jst0-8mm-3pin-pack-of-2"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/newbeedrone-beebrain-camera-connector-type-jst0-8mm-3pin-pack-of-2"
-  }
 }
 cameras: {
 
@@ -610,27 +462,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "9dd13ab2-1f68-4917-bda9-d7f460346d7e"
-  id: "newbeedrone-beebrain-v2-camera-color-mount"
-  manufacturer: "NewBeeDrone"
-  name: "NewBeeDrone BeeBrain V2 Camera Color Mount"
-  weight_g: 1.3
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "NewBeeDrone NewBeeDrone BeeBrain V2 Camera Color Mount FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://newbeedrone.com/products/newbeedrone-beebrain-v2-camera-color-mount"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.racedayquads.com/products/newbeedrone-beebrain-v2-camera-color-mount"
-  }
-}
-cameras: {
-
   uuid: "15655b79-be1b-46d9-acce-5cfd8d3e2f53"
   id: "aura-analog-fpv-camera"
   manufacturer: "Fat Shark"
@@ -644,19 +475,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "d050c125-a311-4d8d-a08e-5739432c2124"
-  id: "dual-fpv-camera-switcher"
-  manufacturer: "ViFly"
-  name: "Dual FPV Camera Switcher"
-  weight_g: 0.5
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "ViFly Dual FPV Camera Switcher FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
-}
-cameras: {
-
   uuid: "c4ae7e47-9f5f-4e68-8cad-5a87980d2369"
   id: "naked-gopro-13-pro-action-camera-v2-1"
   manufacturer: "Flywoo"
@@ -667,32 +485,6 @@ cameras: {
   width_mm: 19
   lens_size_mm: 2.1
   description: "Flywoo Naked Gopro 13 Pro Action Camera V2.1 FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-}
-cameras: {
-
-  uuid: "11bfbdc7-0409-4595-952d-d3e4a7a4457f"
-  id: "cinemini-dji-o4-pro-camera-mount"
-  manufacturer: "Noozle3D"
-  name: "CineMini DJI O4 Pro Camera Mount"
-  weight_g: 1
-  protocol: "DJI O4"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 22
-  lens_size_mm: 2.1
-  description: "CineMini DJI O4 Pro Camera Mount for Naked GoPro Mount"
-}
-cameras: {
-
-  uuid: "5069afda-f6e9-42c0-b3b9-f2080c56012b"
-  id: "cl2-dji-o4-pro-camera-mount"
-  manufacturer: "Noozle3D"
-  name: "CL2 DJI O4 Pro Camera Mount"
-  weight_g: 1
-  protocol: "DJI O4"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "Noozle3D CL2 DJI O4 Pro Camera Mount FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (DJI O4 protocol)."
 }
 cameras: {
 
@@ -765,215 +557,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "e8c881fa-68da-4f8a-bb46-d7a0ac0431e3"
-  id: "tanq-2-camera-cage-set"
-  manufacturer: "Rotor Riot"
-  name: "TANQ 2 Camera Cage Set"
-  weight_g: 16
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "Rotor Riot TANQ 2 Camera Cage Set FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://rotorriot.com/products/tanq-2-camera-cage-set"
-  }
-}
-cameras: {
-
-  uuid: "5caf807e-d322-492f-8a25-31ddae1159b4"
-  id: "rc18g-1-8mm-lens"
-  manufacturer: "RunCam"
-  name: "RC18G 1.8mm Lens"
-  weight_g: 2
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "RC18G 1.8mm Lens for DJI and Phoenix Cameras"
-}
-cameras: {
-
-  uuid: "2701e9b6-c2a4-49d5-9403-cc5a58a3454e"
-  id: "5-injected-udp-propeller-guard-4-pack"
-  manufacturer: "Stan FPV"
-  name: "5 Injected UDP Propeller Guard 4-Pack"
-  weight_g: 2.32
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "Stan FPV 5 Injected UDP Propeller Guard 4-Pack FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
-}
-cameras: {
-
-  uuid: "e242a371-c30c-4416-a2ce-5a3ad0ee9097"
-  id: "hq-4025-2-blade-propellers-1-5mm-shaft"
-  manufacturer: "BETAFPV"
-  name: "HQ 4025 2-Blade Propellers 1.5mm Shaft"
-  weight_g: 1.4
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "BETAFPV HQ 4025 2-Blade Propellers 1.5mm Shaft FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/hq-4025-2-blade-propellers-1-5mm-shaft"
-  }
-}
-cameras: {
-
-  uuid: "0c466031-28e4-4343-be01-0acb80c2b466"
-  id: "caddxfpv-hq-3-blade-propeller-set"
-  manufacturer: "CADDX"
-  name: "CaddxFPV HQ 3-Blade Propeller Set"
-  weight_g: 5
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "CaddxFPV HQ 3-Blade Propeller Set (2CW + 2CCW)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/caddxfpv-hq-3-blade-propeller-set-2cw-2ccw"
-  }
-}
-cameras: {
-
-  uuid: "9deab3b5-cb71-4336-9805-b51ea6b54d96"
-  id: "caddxfpv-logo-tee"
-  manufacturer: "CADDX"
-  name: "CaddxFPV Logo Tee"
-  weight_g: 5.9
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "CADDXFPV CaddxFPV Logo Tee FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/caddxfpv-classic-tee"
-  }
-}
-cameras: {
-
-  uuid: "bcf91dbe-67b4-40dd-ad04-c068d93a8303"
-  id: "caddxfpv-logo-cap"
-  manufacturer: "CADDX"
-  name: "CaddxFPV Logo Cap"
-  weight_g: 5.9
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "CADDXFPV CaddxFPV Logo Cap FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/caddxfpv-logo-cap"
-  }
-}
-cameras: {
-
-  uuid: "591cec5a-7e3a-4593-b3fb-ea55447e8a24"
-  id: "caddxfpv-hqprop-t2x2x3-2-3-blade-t-mount"
-  manufacturer: "CADDX"
-  name: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount"
-  weight_g: 1.5
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "CADDXFPV HQprop T2X2X3 2 3-Blade T-Mount Propeller Set (2x CW / 2x CCW)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/caddxfpv-t2x2x3-2-3-blade-t-mount-propeller-set-2x-cw-2x-ccw"
-  }
-}
-cameras: {
-
-  uuid: "9b0c01d0-8fe8-4a57-94d6-c714fc746a5e"
-  id: "caddxfpv-banner"
-  manufacturer: "CADDX"
-  name: "CADDXFPV Banner"
-  weight_g: 5.9
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "CADDXFPV CADDXFPV Banner FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/caddxfpv-banner"
-  }
-}
-cameras: {
-
-  uuid: "37e24bae-086a-4c98-9b7f-750cd182f2a1"
-  id: "caddxfpv-circle"
-  manufacturer: "CADDX"
-  name: "CADDXFPV Circle"
-  weight_g: 5.9
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "CADDXFPV CADDXFPV Circle FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/caddxfpv-circle"
-  }
-}
-cameras: {
-
-  uuid: "15d527ba-42f6-43f7-8b2a-47a07701b5a3"
-  id: "caddxfpv-arches"
-  manufacturer: "CADDX"
-  name: "CADDXFPV Arches"
-  weight_g: 5.9
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "CADDXFPV CADDXFPV Arches FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://caddxfpv.com/products/caddxfpv-arches"
-  }
-}
-cameras: {
-
-  uuid: "a56cc1ef-2ff3-4aa0-8a66-d7eebe1182ec"
-  id: "donut-5145-toroidal-5-props"
-  manufacturer: "Foxeer"
-  name: "Donut 5145 Toroidal 5 Props"
-  weight_g: 4.3
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "Donut 5145 Toroidal 5 Props - Choose Color"
-}
-cameras: {
-
-  uuid: "9f5351b9-21ba-4997-ab38-e7693e76e8d6"
-  id: "rotor-riot-kwad-crew-annual-membership"
-  manufacturer: "Rotor Riot"
-  name: "Rotor Riot Kwad Crew Annual Membership"
-  weight_g: 30
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "Rotor Riot Rotor Riot Kwad Crew Annual Membership FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://rotorriot.com/products/kwad-crew"
-  }
-}
-cameras: {
-
   uuid: "e5427a2c-26e9-49a1-972e-61882c2378a6"
   id: "hglrc-l-series-cameras-low-latency-night"
   manufacturer: "HGLRC"
@@ -987,23 +570,6 @@ cameras: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-l-series-cameras-low-latency-night-vision-for-fpv-drone"
-  }
-}
-cameras: {
-
-  uuid: "3de0cd41-8385-44c2-958e-ecddf4dc1fbe"
-  id: "nimble65-65mm-analog-1s-mini-whoop"
-  manufacturer: "Sub250"
-  name: "Nimble65 65mm Analog 1S Mini Whoop"
-  weight_g: 21
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 22
-  lens_size_mm: 2.1
-  description: "Nimble65 65mm Analog 1S Mini Whoop Quadcopter"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://sub250.com/products/nimble65-whoop-quadcopter"
   }
 }
 cameras: {
@@ -1080,24 +646,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "3ae6147a-62c0-41af-807b-498187ad1841"
-  id: "internal-cam-0e66cabf-e465-4b43-a227-99c191abeb83"
-  manufacturer: "BETAFPV"
-  name: "Z01 Camera VTX Holder (Internal Camera)"
-  is_internal_only: true
-  weight_g: 4.14
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "BETAFPV Z01 Camera VTX Holder (Internal Camera) FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/z01-camera-holder"
-  }
-}
-cameras: {
-
   uuid: "affe1a98-59c1-4995-9557-024ba6ac663b"
   id: "h01-aio-camera-5-8g-25mw-vtx-2"
   manufacturer: "BETAFPV"
@@ -1160,24 +708,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "8ebbe145-186c-47e0-86f8-cca28ff6100c"
-  id: "tbs-crossfire-micro-tx-v2-transmitter-2"
-  manufacturer: "Team Black Sheep"
-  name: "TBS Crossfire Micro TX V2 Transmitter"
-  is_internal_only: true
-  weight_g: 0.5
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "TBS Crossfire Micro TX V2 Transmitter Module - NDAA (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/tbs-crossfire-micro-tx-v2"
-  }
-}
-cameras: {
-
   uuid: "76fa078d-0b74-4ecb-bdf2-627df586c1fc"
   id: "avatar-hd-moonlight-camera"
   manufacturer: "Walksnail"
@@ -1196,24 +726,6 @@ cameras: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/walksnail-avatar-hd-moonlight-camera-module"
-  }
-}
-cameras: {
-
-  uuid: "6c32270a-28c6-4c48-b109-5319a46cab3b"
-  id: "avatar-mini-1s-vtx-6"
-  manufacturer: "Walksnail"
-  name: "Avatar Mini 1S VTX"
-  is_internal_only: true
-  weight_g: 1.8
-  protocol: "Walksnail Avatar"
-  sensor_size: "1/2.7\" CMOS"
-  width_mm: 22
-  lens_size_mm: 2.1
-  description: "Avatar Mini 1S VTX Without Camera for Avatar HD Video System (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/sub250-whoopfly16-1-6-walksnail-avatar-mini-1s-tiny-whoop-choose-receiver"
   }
 }
 cameras: {
@@ -1284,24 +796,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "6d7af870-5146-489c-9f5e-b41fef31f5e9"
-  id: "internal-cam-6f5303f0-18e4-40e3-b3ff-3ab57c5fed2a"
-  manufacturer: "BETAFPV"
-  name: "Z01 Camera VTX Holder (Internal Camera)"
-  is_internal_only: true
-  weight_g: 4.14
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "BETAFPV Z01 Camera VTX Holder (Internal Camera) FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/z01-camera-holder"
-  }
-}
-cameras: {
-
   uuid: "d6e24edc-371b-437d-9479-1902bbd1620b"
   id: "h01-aio-camera-5-8g-25mw-vtx-3"
   manufacturer: "BETAFPV"
@@ -1360,24 +854,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "bf715803-5971-478c-afbc-76cb9aa67bfa"
-  id: "tbs-crossfire-micro-tx-v2-transmitter-3"
-  manufacturer: "Team Black Sheep"
-  name: "TBS Crossfire Micro TX V2 Transmitter"
-  is_internal_only: true
-  weight_g: 0.5
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "TBS Crossfire Micro TX V2 Transmitter Module - NDAA (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/tbs-crossfire-micro-tx-v2"
-  }
-}
-cameras: {
-
   uuid: "a5e2eeaf-9076-4350-83cc-49f78bc57cb9"
   id: "avatar-hd-moonlight-camera-2"
   manufacturer: "Walksnail"
@@ -1397,20 +873,6 @@ cameras: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/moonlight"
   }
-}
-cameras: {
-
-  uuid: "92b1f38d-ea33-49dd-b82b-34ec7e3e5c57"
-  id: "avatar-mini-1s-vtx-7"
-  manufacturer: "Walksnail"
-  name: "Avatar Mini 1S VTX"
-  is_internal_only: true
-  weight_g: 1.8
-  protocol: "Walksnail Avatar"
-  sensor_size: "1/2.7\" CMOS"
-  width_mm: 22
-  lens_size_mm: 2.1
-  description: "Avatar Mini 1S VTX Without Camera for Avatar HD Video System (Internal Camera)"
 }
 cameras: {
 
@@ -1480,24 +942,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "44d092c0-a18a-4644-b59a-c136950a0b60"
-  id: "internal-cam-52170b0c-b668-4671-8a17-b8b60ebed774"
-  manufacturer: "BETAFPV"
-  name: "Z01 Camera VTX Holder (Internal Camera)"
-  is_internal_only: true
-  weight_g: 4.14
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "BETAFPV Z01 Camera VTX Holder (Internal Camera) FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/z01-camera-holder"
-  }
-}
-cameras: {
-
   uuid: "40adaee2-4507-48af-9336-0d8a6ee603f7"
   id: "h01-aio-camera-5-8g-25mw-vtx-4"
   manufacturer: "BETAFPV"
@@ -1556,24 +1000,6 @@ cameras: {
 }
 cameras: {
 
-  uuid: "09cd4546-3d2b-4ae6-b68d-d5b282d9f195"
-  id: "tbs-crossfire-micro-tx-v2-transmitter-4"
-  manufacturer: "Team Black Sheep"
-  name: "TBS Crossfire Micro TX V2 Transmitter"
-  is_internal_only: true
-  weight_g: 0.5
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 19
-  lens_size_mm: 2.1
-  description: "TBS Crossfire Micro TX V2 Transmitter Module - NDAA (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://pyrodrone.com/products/tbs-crossfire-micro-tx-v2"
-  }
-}
-cameras: {
-
   uuid: "7ece214e-2136-4010-be97-d031ad6890a2"
   id: "avatar-hd-moonlight-camera-3"
   manufacturer: "Walksnail"
@@ -1593,20 +1019,6 @@ cameras: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/moonlight"
   }
-}
-cameras: {
-
-  uuid: "4b3c9e01-f3f9-4cbd-8ac4-1ede66c0e7e5"
-  id: "avatar-mini-1s-vtx-8"
-  manufacturer: "Walksnail"
-  name: "Avatar Mini 1S VTX"
-  is_internal_only: true
-  weight_g: 1.8
-  protocol: "Walksnail Avatar"
-  sensor_size: "1/2.7\" CMOS"
-  width_mm: 22
-  lens_size_mm: 2.1
-  description: "Avatar Mini 1S VTX Without Camera for Avatar HD Video System (Internal Camera)"
 }
 cameras: {
 
@@ -1664,24 +1076,6 @@ cameras: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/geprc-bnf-cinelog35-v2-hd-6s-3-5-cinewhoop-w-walksnail-avatar-v2-avatar-micro-cam-v2-elrs-2-4ghz"
-  }
-}
-cameras: {
-
-  uuid: "ae8159e5-08b9-4731-b7b3-85729f4a7292"
-  id: "hglrc-zeus-nano-vtx-350mw-16x16-2"
-  manufacturer: "HGLRC"
-  name: "HGLRC Zeus nano VTX 350mW 16x16"
-  is_internal_only: true
-  weight_g: 2.4
-  protocol: "Analog"
-  sensor_size: "1/3\" CMOS"
-  width_mm: 14
-  lens_size_mm: 1.8
-  description: "HGLRC Zeus nano VTX 350mW 16x16 20x20 25.5x25.5 mm For FPV Racing Drone (Internal Camera)"
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.hglrc.com/products/hglrc-zeus-nano-vtx-350mw-for-fpv-racing-drone"
   }
 }
 cameras: {
