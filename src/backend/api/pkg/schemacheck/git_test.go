@@ -19,9 +19,19 @@ func TestGitHelper(t *testing.T) {
 		t.Fatalf("Failed to resolve base ref: %v", err)
 	}
 
-	t.Logf("Resolved base ref: %s", baseRef)
+	t.Logf("Resolved base ref: %s (uncommitted changes: %v)", baseRef, gh.HasUncommittedChanges())
 
-	// Test reading schema.sql from HEAD
+	if gh.HasUncommittedChanges() {
+		if baseRef != "HEAD" {
+			t.Errorf("Expected base ref to be 'HEAD' when uncommitted changes exist, got %s", baseRef)
+		}
+	} else {
+		if baseRef != "HEAD~1" && baseRef != "HEAD" {
+			t.Logf("Clean working tree resolved to: %s", baseRef)
+		}
+	}
+
+	// Test reading schema.sql from the resolved baseRef
 	content, err := gh.GetFileAtRef(baseRef, "src/backend/db/schema.sql")
 	if err != nil {
 		t.Fatalf("Failed to read schema.sql at base ref %s: %v", baseRef, err)
