@@ -9,7 +9,7 @@ erDiagram
         UUID battery_uuid FK
         UUID flight_controller_uuid FK
         UUID propeller_uuid FK
-        UUID vtx_uuid FK
+        UUID video_transmitter_uuid FK
         JSONB reference_links
     }
 
@@ -64,7 +64,7 @@ erDiagram
         TEXT gyro
         UUID internal_esc_uuid FK
         UUID internal_receiver_uuid FK
-        UUID internal_vtx_uuid FK
+        UUID internal_video_transmitter_uuid FK
         TEXT description
         JSONB reference_links
     }
@@ -167,4 +167,4 @@ erDiagram
 
     flight_controllers ||--o| escs : internal_esc
     flight_controllers ||--o| receivers : internal_receiver
-    flight_controllers ||--o| video_transmitters : internal_vtx
+    flight_controllers ||--o| video_transmitters : internal_video_transmitter

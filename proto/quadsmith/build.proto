@@ -55,8 +55,8 @@ message Build {
   // Array of cameras (e.g. primary FPV cam, secondary action cam)
   repeated string camera_uuids = 13;
 
-  // The Video Transmitter (VTX) used for this build
-  string vtx_uuid = 15 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
+  // The Video Transmitter used for this build
+  string video_transmitter_uuid = 15 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
   repeated ReferenceLink reference_links = 14;
 }
 

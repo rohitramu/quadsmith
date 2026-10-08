@@ -11,9 +11,9 @@ This document outlines the conceptual domain model for Quadsmith's hardware cata
 **Rationale:** By having all parts inherit a unified `Component` identity, we implement global relations cleanly. Community features like `Reviews`, `Questions`, `Collections`, and `ReferenceLinks` can safely reference a single Component ID. A `Review` object doesn't need to know if it is reviewing a Motor or a Frame; it simply points to the base `Component` ID. 
 
 ### 2.2 Reusable Sub-Assemblies (True Aggregate Roots)
-**Decision:** Electronics are grouped into intermediate standalone Aggregate Roots (`FlightStack` for FC+ESC, `VtxConfiguration` for VTX+Antennas) rather than being embedded by-value into the root `Build` entity.
+**Decision:** Electronics are grouped into intermediate standalone Aggregate Roots (`FlightStack` for FC+ESC, `VideoTransmitterConfiguration` for Video Transmitter+Antennas) rather than being embedded by-value into the root `Build` entity.
 
-**Rationale:** In our domain, a `FlightStack` is a distinct entity with its own unique identity (ID). A `Build` merely stores a reference to a `FlightStack ID`. This allows a user to define a trusted VTX+Antenna loadout once, and reference that exact same loadout across multiple builds. If the loadout is updated, it updates everywhere it is referenced, mirroring real-world modularity.
+**Rationale:** In our domain, a `FlightStack` is a distinct entity with its own unique identity (ID). A `Build` merely stores a reference to a `FlightStack ID`. This allows a user to define a trusted Video Transmitter+Antenna loadout once, and reference that exact same loadout across multiple builds. If the loadout is updated, it updates everywhere it is referenced, mirroring real-world modularity.
 
 ### 2.3 Strict Relational Entities for Managed Dictionaries
 **Decision:** Hardware characteristics like `RfProtocol` and `BoardMountPattern` are modeled as strict Relational Entities (with unique IDs), rather than freeform strings, validation lists, or static enums. Hardware objects hold explicit references (e.g., `protocolId`) to these entities.
@@ -31,7 +31,7 @@ This document outlines the conceptual domain model for Quadsmith's hardware cata
 **Decision:** We use a unified `Component` wrapper (via Protobuf `oneof`) to serve all hardware and gear types from a single API (`ListComponent`, `GetComponent`), but we *keep* top-level domain entities like `Build`, `Component`, and `Manufacturer` separated into their own APIs rather than wrapping them all in a global `Resource` API.
 
 **Rationale:** 
-1. **API Scalability:** With 20+ distinct component types (Motors, Frames, VTXs), fragmenting the API into `ListMotors`, `GetMotor`, etc., would create 80+ RPCs. Unifying them inside a single `Component` wrapper keeps the API surface manageable and allows compatibility engines to iterate over mixed arrays (`[]*Component`) seamlessly.
+1. **API Scalability:** With 20+ distinct component types (Motors, Frames, Video Transmitters), fragmenting the API into `ListMotors`, `GetMotor`, etc., would create 80+ RPCs. Unifying them inside a single `Component` wrapper keeps the API surface manageable and allows compatibility engines to iterate over mixed arrays (`[]*Component`) seamlessly.
 2. **Isomorphic vs. Heteromorphic Lifecycles:** Motors, frames, and antennas are isomorphic—they are read-only, physical items produced by manufacturers. A unified wrapper makes perfect sense. In contrast, `Builds` and `Users` are heteromorphic. A `Build` is a mutable user assembly, while a `User` handles authentication. If we had wrapped everything into an uber-`Resource` object, the API would become too abstract, forcing clients to navigate nested `oneof`s (e.g. `res.GetComponent().GetMotor()`) and mixing vastly different database relations and permission models in a single network call.
 
 ## 3. Domain Architecture Breakdown
@@ -44,7 +44,7 @@ All parts in the system inherit the base abstract `Component` identity. This enc
 
 ### 3.2 Hardware Components
 The `HardwareComponent` entity inherits from `Component` and introduces physical attributes like `weightG`. It serves as the parent class for concrete hardware classes:
-- `Frame`, `Motor`, `Propeller`, `FlightController`, `Esc`, `Battery`, `Vtx`, `Camera`, `Receiver`, `Gps`, `Antenna`, `Transmitter`, `Goggles`.
+- `Frame`, `Motor`, `Propeller`, `FlightController`, `Esc`, `Battery`, `VideoTransmitter`, `Camera`, `Receiver`, `Gps`, `Antenna`, `Transmitter`, `Goggles`.
 
 Each subclass holds attributes unique to its category (e.g., `kV` for Motors, `wheelbaseMm` for Frames).
 
@@ -52,11 +52,11 @@ Each subclass holds attributes unique to its category (e.g., `kV` for Motors, `w
 The `Software` entity represents a parent product family (e.g., "Betaflight"). It is a standalone entity that does *not* inherit from the global `Component` identity.
 
 Each `Software` product contains a collection of `SoftwareComponent` entities. The `SoftwareComponent` entity inherits from the base `Component` table, giving it a global identity for reviews and compatibility checks. It serves as the parent class for specific firmware categories:
-- `FcFirmware`, `EscFirmware`, `VtxFirmware`, `OperatingSystem`.
+- `FcFirmware`, `EscFirmware`, `VideoTransmitterFirmware`, `OperatingSystem`.
 
 ### 3.4 Managed Dictionaries (Relational Taxonomy)
 Dynamic standardizations maintained at runtime as strict entities:
-- **`VtxEcosystem`**: e.g., DJI, Walksnail, HDZero, Analog
+- **`VideoEcosystem`**: e.g., DJI, Walksnail, HDZero, Analog
 - **`RfFrequency`**: e.g., 2.4GHz, 5.8GHz, 900MHz
 - **`RfProtocol`**: e.g., ELRS, Crossfire
 - **`AntennaPolarization`**: e.g., RHCP, LHCP, Linear
@@ -66,7 +66,7 @@ Dynamic standardizations maintained at runtime as strict entities:
 ### 3.5 The Aircraft (`Build` Root Aggregate)
 The `Build` entity is the Root Aggregate representing a user's complete quadcopter. 
 - **Direct References:** Holds IDs to `Frame`, `Motor`, `Propeller`, `Camera`, `Gps`.
-- **Sub-Assembly References:** Holds IDs to `FlightStack`, `VtxConfiguration`, `ReceiverConfiguration`.
+- **Sub-Assembly References:** Holds IDs to `FlightStack`, `VideoTransmitterConfiguration`, `ReceiverConfiguration`.
 - **Metadata:** `name`, `crashResistanceRating`, `miscWeightG`, `isVerified`.
 - **Taxonomy:** `Tags` (e.g., "freestyle", "cinewhoop").
 

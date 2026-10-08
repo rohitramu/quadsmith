@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/vtx.proto
+// source: quadsmith/video_transmitter.proto
 
 package quadsmith
 
@@ -39,7 +39,7 @@ type VideoTransmitter struct {
 	// Input voltage range
 	InputVoltageMinV float32 `protobuf:"fixed32,8,opt,name=input_voltage_min_v,json=inputVoltageMinV,proto3" json:"input_voltage_min_v,omitempty"`
 	InputVoltageMaxV float32 `protobuf:"fixed32,9,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
-	// Array of antenna UUIDs included with or required by this VTX
+	// Array of antenna UUIDs included with or required by this video transmitter
 	AntennaUuids   []string         `protobuf:"bytes,10,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
 	Description    string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
 	ReferenceLinks []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
@@ -49,7 +49,7 @@ type VideoTransmitter struct {
 
 func (x *VideoTransmitter) Reset() {
 	*x = VideoTransmitter{}
-	mi := &file_quadsmith_vtx_proto_msgTypes[0]
+	mi := &file_quadsmith_video_transmitter_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -61,7 +61,7 @@ func (x *VideoTransmitter) String() string {
 func (*VideoTransmitter) ProtoMessage() {}
 
 func (x *VideoTransmitter) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_vtx_proto_msgTypes[0]
+	mi := &file_quadsmith_video_transmitter_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -74,7 +74,7 @@ func (x *VideoTransmitter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VideoTransmitter.ProtoReflect.Descriptor instead.
 func (*VideoTransmitter) Descriptor() ([]byte, []int) {
-	return file_quadsmith_vtx_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_video_transmitter_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *VideoTransmitter) GetUuid() string {
@@ -181,7 +181,7 @@ type GetVideoTransmitterRequest struct {
 
 func (x *GetVideoTransmitterRequest) Reset() {
 	*x = GetVideoTransmitterRequest{}
-	mi := &file_quadsmith_vtx_proto_msgTypes[1]
+	mi := &file_quadsmith_video_transmitter_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -193,7 +193,7 @@ func (x *GetVideoTransmitterRequest) String() string {
 func (*GetVideoTransmitterRequest) ProtoMessage() {}
 
 func (x *GetVideoTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_vtx_proto_msgTypes[1]
+	mi := &file_quadsmith_video_transmitter_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -206,7 +206,7 @@ func (x *GetVideoTransmitterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVideoTransmitterRequest.ProtoReflect.Descriptor instead.
 func (*GetVideoTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_vtx_proto_rawDescGZIP(), []int{1}
+	return file_quadsmith_video_transmitter_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetVideoTransmitterRequest) GetId() string {
@@ -236,7 +236,7 @@ type ListVideoTransmittersRequest struct {
 
 func (x *ListVideoTransmittersRequest) Reset() {
 	*x = ListVideoTransmittersRequest{}
-	mi := &file_quadsmith_vtx_proto_msgTypes[2]
+	mi := &file_quadsmith_video_transmitter_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -248,7 +248,7 @@ func (x *ListVideoTransmittersRequest) String() string {
 func (*ListVideoTransmittersRequest) ProtoMessage() {}
 
 func (x *ListVideoTransmittersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_vtx_proto_msgTypes[2]
+	mi := &file_quadsmith_video_transmitter_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -261,7 +261,7 @@ func (x *ListVideoTransmittersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListVideoTransmittersRequest.ProtoReflect.Descriptor instead.
 func (*ListVideoTransmittersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_vtx_proto_rawDescGZIP(), []int{2}
+	return file_quadsmith_video_transmitter_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListVideoTransmittersRequest) GetFilter() string {
@@ -309,7 +309,7 @@ type ListVideoTransmittersResponse struct {
 
 func (x *ListVideoTransmittersResponse) Reset() {
 	*x = ListVideoTransmittersResponse{}
-	mi := &file_quadsmith_vtx_proto_msgTypes[3]
+	mi := &file_quadsmith_video_transmitter_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -321,7 +321,7 @@ func (x *ListVideoTransmittersResponse) String() string {
 func (*ListVideoTransmittersResponse) ProtoMessage() {}
 
 func (x *ListVideoTransmittersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_vtx_proto_msgTypes[3]
+	mi := &file_quadsmith_video_transmitter_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -334,7 +334,7 @@ func (x *ListVideoTransmittersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListVideoTransmittersResponse.ProtoReflect.Descriptor instead.
 func (*ListVideoTransmittersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_vtx_proto_rawDescGZIP(), []int{3}
+	return file_quadsmith_video_transmitter_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListVideoTransmittersResponse) GetVideoTransmitters() []*VideoTransmitter {
@@ -351,11 +351,11 @@ func (x *ListVideoTransmittersResponse) GetNextPageToken() string {
 	return ""
 }
 
-var File_quadsmith_vtx_proto protoreflect.FileDescriptor
+var File_quadsmith_video_transmitter_proto protoreflect.FileDescriptor
 
-const file_quadsmith_vtx_proto_rawDesc = "" +
+const file_quadsmith_video_transmitter_proto_rawDesc = "" +
 	"\n" +
-	"\x13quadsmith/vtx.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x89\x04\n" +
+	"!quadsmith/video_transmitter.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\x89\x04\n" +
 	"\x10VideoTransmitter\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -390,26 +390,26 @@ const file_quadsmith_vtx_proto_rawDesc = "" +
 	"\x15ListVideoTransmitters\x12'.quadsmith.ListVideoTransmittersRequest\x1a(.quadsmith.ListVideoTransmittersResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
-	file_quadsmith_vtx_proto_rawDescOnce sync.Once
-	file_quadsmith_vtx_proto_rawDescData []byte
+	file_quadsmith_video_transmitter_proto_rawDescOnce sync.Once
+	file_quadsmith_video_transmitter_proto_rawDescData []byte
 )
 
-func file_quadsmith_vtx_proto_rawDescGZIP() []byte {
-	file_quadsmith_vtx_proto_rawDescOnce.Do(func() {
-		file_quadsmith_vtx_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_vtx_proto_rawDesc), len(file_quadsmith_vtx_proto_rawDesc)))
+func file_quadsmith_video_transmitter_proto_rawDescGZIP() []byte {
+	file_quadsmith_video_transmitter_proto_rawDescOnce.Do(func() {
+		file_quadsmith_video_transmitter_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_video_transmitter_proto_rawDesc), len(file_quadsmith_video_transmitter_proto_rawDesc)))
 	})
-	return file_quadsmith_vtx_proto_rawDescData
+	return file_quadsmith_video_transmitter_proto_rawDescData
 }
 
-var file_quadsmith_vtx_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_quadsmith_vtx_proto_goTypes = []any{
+var file_quadsmith_video_transmitter_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_quadsmith_video_transmitter_proto_goTypes = []any{
 	(*VideoTransmitter)(nil),              // 0: quadsmith.VideoTransmitter
 	(*GetVideoTransmitterRequest)(nil),    // 1: quadsmith.GetVideoTransmitterRequest
 	(*ListVideoTransmittersRequest)(nil),  // 2: quadsmith.ListVideoTransmittersRequest
 	(*ListVideoTransmittersResponse)(nil), // 3: quadsmith.ListVideoTransmittersResponse
 	(*ReferenceLink)(nil),                 // 4: quadsmith.ReferenceLink
 }
-var file_quadsmith_vtx_proto_depIdxs = []int32{
+var file_quadsmith_video_transmitter_proto_depIdxs = []int32{
 	4, // 0: quadsmith.VideoTransmitter.reference_links:type_name -> quadsmith.ReferenceLink
 	0, // 1: quadsmith.ListVideoTransmittersResponse.video_transmitters:type_name -> quadsmith.VideoTransmitter
 	1, // 2: quadsmith.VideoTransmitterService.GetVideoTransmitter:input_type -> quadsmith.GetVideoTransmitterRequest
@@ -423,9 +423,9 @@ var file_quadsmith_vtx_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_vtx_proto_init() }
-func file_quadsmith_vtx_proto_init() {
-	if File_quadsmith_vtx_proto != nil {
+func init() { file_quadsmith_video_transmitter_proto_init() }
+func file_quadsmith_video_transmitter_proto_init() {
+	if File_quadsmith_video_transmitter_proto != nil {
 		return
 	}
 	file_quadsmith__sql_proto_init()
@@ -434,17 +434,17 @@ func file_quadsmith_vtx_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_vtx_proto_rawDesc), len(file_quadsmith_vtx_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_video_transmitter_proto_rawDesc), len(file_quadsmith_video_transmitter_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_quadsmith_vtx_proto_goTypes,
-		DependencyIndexes: file_quadsmith_vtx_proto_depIdxs,
-		MessageInfos:      file_quadsmith_vtx_proto_msgTypes,
+		GoTypes:           file_quadsmith_video_transmitter_proto_goTypes,
+		DependencyIndexes: file_quadsmith_video_transmitter_proto_depIdxs,
+		MessageInfos:      file_quadsmith_video_transmitter_proto_msgTypes,
 	}.Build()
-	File_quadsmith_vtx_proto = out.File
-	file_quadsmith_vtx_proto_goTypes = nil
-	file_quadsmith_vtx_proto_depIdxs = nil
+	File_quadsmith_video_transmitter_proto = out.File
+	file_quadsmith_video_transmitter_proto_goTypes = nil
+	file_quadsmith_video_transmitter_proto_depIdxs = nil
 }

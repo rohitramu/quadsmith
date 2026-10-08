@@ -16,7 +16,7 @@ func TestCompiler_Extensive(t *testing.T) {
 		cel.Variable("motor.stator_width_mm", cel.DoubleType),
 		cel.Variable("frame.is_ducted", cel.BoolType),
 		cel.Variable("frame.wheelbase_mm", cel.IntType),
-		cel.Variable("vtx.protocol", cel.StringType),
+		cel.Variable("video_transmitter.protocol", cel.StringType),
 		cel.Variable("mount_patterns", cel.ListType(cel.StringType)),
 		cel.Variable("error.trigger", cel.IntType),
 		cel.Function("unsupportedFunc",
@@ -43,7 +43,7 @@ func TestCompiler_Extensive(t *testing.T) {
 		wantArgs  []any
 		wantError bool
 	}{
-		{"Equals String", `vtx.protocol == "avatar"`, `(db_vtx.protocol = $1)`, []any{"avatar"}, false},
+		{"Equals String", `video_transmitter.protocol == "avatar"`, `(db_video_transmitter.protocol = $1)`, []any{"avatar"}, false},
 		{"Not Equals Int", `motor.kv_rating != 1800`, `(db_motor.kv_rating != $1)`, []any{int64(1800)}, false},
 		{"Greater Than Float", `motor.stator_width_mm > 22.5`, `(db_motor.stator_width_mm > $1)`, []any{float64(22.5)}, false},
 		{"Less Than or Equal", `frame.wheelbase_mm <= 250`, `(db_frame.wheelbase_mm <= $1)`, []any{int64(250)}, false},
@@ -62,7 +62,7 @@ func TestCompiler_Extensive(t *testing.T) {
 		// CEL represents unary minus as "-_"
 		{"Unary Minus", `-motor.kv_rating < -1000`, `(-(db_motor.kv_rating) < $1)`, []any{int64(-1000)}, false},
 		{"IN operator", `"16x16" in mount_patterns`, `$1 = ANY(db_mount_patterns)`, []any{"16x16"}, false},
-		{"Unsupported Function", `vtx.protocol.unsupportedFunc("dji")`, "", nil, true},
+		{"Unsupported Function", `video_transmitter.protocol.unsupportedFunc("dji")`, "", nil, true},
 		{"Mapping Error", `error.trigger == 1`, "", nil, true},
 	}
 

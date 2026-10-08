@@ -11,7 +11,7 @@ import (
 )
 
 func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
-	query := `INSERT INTO flight_controllers (uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	query := `INSERT INTO flight_controllers (uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -32,19 +32,20 @@ func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 			return nil
 		}
 		return s
-	}(m.InternalVtxUuid), m.Description, m.ReferenceLinks)
+	}(m.InternalVideoTransmitterUuid), m.Description, m.ReferenceLinks)
 	return err
 }
 
 func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*FlightController, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description, reference_links"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_vtx_uuid", "description", "reference_links"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_video_transmitter_uuid", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM flight_controllers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
 	m := &FlightController{}
 	for i, col := range cols {
 		switch col {
@@ -65,11 +66,29 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 		case "gyro":
 			scanArgs[i] = &m.Gyro
 		case "internal_esc_uuid":
-			scanArgs[i] = &m.InternalEscUuid
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.InternalEscUuid = *v
+				}
+			})
 		case "internal_receiver_uuid":
-			scanArgs[i] = &m.InternalReceiverUuid
-		case "internal_vtx_uuid":
-			scanArgs[i] = &m.InternalVtxUuid
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.InternalReceiverUuid = *v
+				}
+			})
+		case "internal_video_transmitter_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.InternalVideoTransmitterUuid = *v
+				}
+			})
 		case "description":
 			scanArgs[i] = &m.Description
 		case "reference_links":
@@ -79,15 +98,19 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 			scanArgs[i] = &dummy
 		}
 	}
+
 	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
 	}
 	return m, nil
 }
 
 func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
-	query := `UPDATE flight_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, processor = $6, gyro = $7, internal_esc_uuid = $8, internal_receiver_uuid = $9, internal_vtx_uuid = $10, description = $11, reference_links = $12 WHERE uuid = $1`
+	query := `UPDATE flight_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, processor = $6, gyro = $7, internal_esc_uuid = $8, internal_receiver_uuid = $9, internal_video_transmitter_uuid = $10, description = $11, reference_links = $12 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -103,7 +126,7 @@ func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 			return nil
 		}
 		return s
-	}(m.InternalVtxUuid), m.Description, m.ReferenceLinks)
+	}(m.InternalVideoTransmitterUuid), m.Description, m.ReferenceLinks)
 	return err
 }
 
@@ -114,17 +137,17 @@ func DeleteFlightController(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 }
 
 func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*FlightController, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_vtx_uuid, description, reference_links"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_esc_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_vtx_uuid", "description", "reference_links"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_esc_uuid", "internal_receiver_uuid", "internal_video_transmitter_uuid", "description", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM flight_controllers`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_esc_uuid": true, "internal_receiver_uuid": true, "internal_vtx_uuid": true, "description": true, "reference_links": true}
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_esc_uuid": true, "internal_receiver_uuid": true, "internal_video_transmitter_uuid": true, "description": true, "reference_links": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -164,6 +187,7 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 	results := make([]*FlightController, 0)
 	for rows.Next() {
 		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
 		m := &FlightController{}
 		for i, col := range cols {
 			switch col {
@@ -184,11 +208,29 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 			case "gyro":
 				scanArgs[i] = &m.Gyro
 			case "internal_esc_uuid":
-				scanArgs[i] = &m.InternalEscUuid
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.InternalEscUuid = *v
+					}
+				})
 			case "internal_receiver_uuid":
-				scanArgs[i] = &m.InternalReceiverUuid
-			case "internal_vtx_uuid":
-				scanArgs[i] = &m.InternalVtxUuid
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.InternalReceiverUuid = *v
+					}
+				})
+			case "internal_video_transmitter_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.InternalVideoTransmitterUuid = *v
+					}
+				})
 			case "description":
 				scanArgs[i] = &m.Description
 			case "reference_links":
@@ -201,6 +243,9 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
 		}
 		results = append(results, m)
 	}

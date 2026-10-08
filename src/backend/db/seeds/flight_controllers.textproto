@@ -330,7 +330,7 @@ flight_controllers: {
   weight_g: 0.6
   processor: "STM32F722"
   gyro: "BMI270"
-  internal_vtx_uuid: "d4180e39-e175-4486-a43d-3c14aba2f6cc"
+  internal_video_transmitter_uuid: "d4180e39-e175-4486-a43d-3c14aba2f6cc"
   description: "BETAFPV A02 25-800mW 5.8G VTX flight controller powered by STM32F722 MCU and BMI270 gyro with on-board VTX, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -353,7 +353,7 @@ flight_controllers: {
   weight_g: 142.9
   processor: "STM32F411"
   gyro: "ICM42688P"
-  internal_vtx_uuid: "5474b621-c10f-4abb-9e0d-222871a9e109"
+  internal_video_transmitter_uuid: "5474b621-c10f-4abb-9e0d-222871a9e109"
   description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -465,7 +465,7 @@ flight_controllers: {
   weight_g: 55
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_vtx_uuid: "664cefec-588c-44ff-ba71-a7885d925382"
+  internal_video_transmitter_uuid: "664cefec-588c-44ff-ba71-a7885d925382"
   description: "Lite 2S Brushless Flight Controller (Silverware Firmware)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -799,7 +799,7 @@ flight_controllers: {
   weight_g: 4.6
   processor: "STM32F411"
   gyro: "BMI270"
-  internal_vtx_uuid: "5b576b3e-f5d8-4677-9bec-e4747f062d58"
+  internal_video_transmitter_uuid: "5b576b3e-f5d8-4677-9bec-e4747f062d58"
   description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
@@ -896,7 +896,7 @@ flight_controllers: {
   weight_g: 50.3
   processor: "STM32F411"
   gyro: "ICM42688P"
-  internal_vtx_uuid: "78e53688-a6b6-44c3-b9a8-7fba74cea1ee"
+  internal_video_transmitter_uuid: "78e53688-a6b6-44c3-b9a8-7fba74cea1ee"
   description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -1002,7 +1002,7 @@ flight_controllers: {
   processor: "STM32F411"
   gyro: "BMI270"
   internal_receiver_uuid: "4672b90a-a3ef-40ec-9a2c-1a558b5c3dbf"
-  internal_vtx_uuid: "f00bc2df-b9e6-4056-b784-c01e0a90ea4e"
+  internal_video_transmitter_uuid: "f00bc2df-b9e6-4056-b784-c01e0a90ea4e"
   description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
@@ -1088,7 +1088,7 @@ flight_controllers: {
   processor: "STM32F405"
   gyro: "BMI270"
   internal_receiver_uuid: "f940d3a2-cbbc-4eb2-88f5-142426359504"
-  internal_vtx_uuid: "571abb8a-eb6e-4ed9-aeb4-4d2ed7477e66"
+  internal_video_transmitter_uuid: "571abb8a-eb6e-4ed9-aeb4-4d2ed7477e66"
   description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE

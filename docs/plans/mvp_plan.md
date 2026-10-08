@@ -9,7 +9,7 @@ This document outlines the multi-stage implementation plan for the Quadsmith MVP
 *   **Monorepo Structure**: Standard Go workspace (`go.work`) separating modules like `/backend/api`, `/backend/engines`, and `/frontend/cli`. The database schemas live purely in `/db` (not a Go module).
 *   **Data Modeling**: PostgreSQL, with component specifications strictly typed and encoded as Protobuf (`JSONB` in the DB). Raw JSON has been eliminated from the proto specs (e.g., `bec_outputs`, `uart_connections` are now strictly typed messages). 
 *   **Draft Builds**: Allowed natively at the DB level by making component foreign keys on the `Build` table nullable.
-*   **Sub-assemblies**: Modeled as distinct CRUD resources (`FlightStack`, `VtxConfiguration`, `ReceiverConfiguration`), allowing reuse across different builds.
+*   **Sub-assemblies**: Modeled as distinct CRUD resources (`FlightStack`, `VideoTransmitterConfiguration`, `ReceiverConfiguration`), allowing reuse across different builds.
 *   **Filtering**: Pure CEL (Common Expression Language) for querying component attributes, using the native, highly-optimized Go runtime.
 *   **Scraping**: Isolated from the core application. Scraping tools will be housed in an isolated package to keep production dependencies clean.
 

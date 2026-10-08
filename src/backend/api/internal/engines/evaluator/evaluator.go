@@ -108,17 +108,17 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	// 7. Fetch Video Transmitter (Standalone or Internal to FC)
-	if b.VtxUuid != "" {
-		vtx, err := pb.GetVideoTransmitter(ctx, s.db, b.VtxUuid, nil)
+	if b.VideoTransmitterUuid != "" {
+		videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, b.VideoTransmitterUuid, nil)
 		if err == nil {
-			totalWeight += vtx.WeightG
+			totalWeight += videoTransmitter.WeightG
 		}
 	} else if b.FlightControllerUuid != "" {
 		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
-		if err == nil && fc.InternalVtxUuid != "" {
-			vtx, err := pb.GetVideoTransmitter(ctx, s.db, fc.InternalVtxUuid, nil)
+		if err == nil && fc.InternalVideoTransmitterUuid != "" {
+			videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, fc.InternalVideoTransmitterUuid, nil)
 			if err == nil {
-				totalWeight += vtx.WeightG
+				totalWeight += videoTransmitter.WeightG
 			}
 		}
 	}

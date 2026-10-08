@@ -2336,9 +2336,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "63cd3de7-4ef9-49ab-bbd8-015d1e3328d5"
-  id: "internal-vtx-6b57f17e-8c88-44b8-ab68-d95fcaa9c08c"
+  id: "internal-video-transmitter-6b57f17e-8c88-44b8-ab68-d95fcaa9c08c"
   manufacturer: "BETAFPV"
-  name: "Air VTX (Internal VTX)"
+  name: "Air VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -2346,7 +2346,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV Air VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV Air VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2362,9 +2362,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "17a847c2-7ac7-4c09-9176-cb51f4fb3c00"
-  id: "internal-vtx-95ec9715-739f-4763-a3f3-ac3feb2cbbc4"
+  id: "internal-video-transmitter-95ec9715-739f-4763-a3f3-ac3feb2cbbc4"
   manufacturer: "BETAFPV"
-  name: "P1 Air Unit HD VTX (Internal VTX)"
+  name: "P1 Air Unit HD VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 37.5
   protocol: "Analog"
@@ -2372,7 +2372,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV P1 Air Unit HD VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
+  description: "BETAFPV P1 Air Unit HD VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2398,7 +2398,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal VTX)"
+  description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2414,9 +2414,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "1a242cdf-5bc0-4f69-853a-9e2e73d63ab8"
-  id: "internal-vtx-d642e88d-152e-4cf1-8ea5-371a463d2d2d"
+  id: "internal-video-transmitter-d642e88d-152e-4cf1-8ea5-371a463d2d2d"
   manufacturer: "BETAFPV"
-  name: "A03 400mW 5.8G VTX (Internal VTX)"
+  name: "A03 400mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 32
   protocol: "Analog"
@@ -2424,7 +2424,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV A03 400mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
+  description: "BETAFPV A03 400mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2440,9 +2440,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "1d4e6575-7787-4a63-8c6e-13a8493702e8"
-  id: "internal-vtx-b9f5767b-c2bc-415a-8e60-ab811b07b5d3"
+  id: "internal-video-transmitter-b9f5767b-c2bc-415a-8e60-ab811b07b5d3"
   manufacturer: "BETAFPV"
-  name: "M03 5.8G VTX (Internal VTX)"
+  name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 110
   protocol: "Analog"
@@ -2450,7 +2450,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV M03 5.8G VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
+  description: "BETAFPV M03 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2466,9 +2466,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "d4180e39-e175-4486-a43d-3c14aba2f6cc"
-  id: "internal-vtx-7c2e13a0-2f47-4249-9dc6-ea2bd27f8a22"
+  id: "internal-video-transmitter-7c2e13a0-2f47-4249-9dc6-ea2bd27f8a22"
   manufacturer: "BETAFPV"
-  name: "A02 25-800mW 5.8G VTX (Internal VTX)"
+  name: "A02 25-800mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -2476,7 +2476,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV A02 25-800mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV A02 25-800mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2502,7 +2502,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal VTX)"
+  description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2518,9 +2518,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "6cc37fe2-ccca-4881-a6be-805b482cf489"
-  id: "internal-vtx-9bb72805-1ca3-4689-969e-9c1539d3143c"
+  id: "internal-video-transmitter-9bb72805-1ca3-4689-969e-9c1539d3143c"
   manufacturer: "BETAFPV"
-  name: "M02 25-350mW 5.8G VTX (Internal VTX)"
+  name: "M02 25-350mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -2528,7 +2528,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV M02 25-350mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV M02 25-350mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2554,7 +2554,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal VTX)"
+  description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2580,7 +2580,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal VTX)"
+  description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2596,9 +2596,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "590ed84d-4438-4b54-b073-b6f24ada5c0d"
-  id: "internal-vtx-657d22da-a05f-4a5a-936e-a33248f1b9e5"
+  id: "internal-video-transmitter-657d22da-a05f-4a5a-936e-a33248f1b9e5"
   manufacturer: "BETAFPV"
-  name: "T01 AIO Camera 25mW 5.8G (Internal VTX)"
+  name: "T01 AIO Camera 25mW 5.8G (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 3.3
   protocol: "Analog"
@@ -2606,7 +2606,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal VTX) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
+  description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal Video Transmitter) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2632,7 +2632,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal VTX)"
+  description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2658,7 +2658,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal VTX)"
+  description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2684,7 +2684,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal VTX)"
+  description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2710,7 +2710,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z01 AIO Camera 5.8G 25mW VTX (Internal VTX)"
+  description: "Z01 AIO Camera 5.8G 25mW VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -2736,7 +2736,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal VTX)"
+  description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -2752,9 +2752,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "2d11f7f9-88ae-474b-bc83-c3103e747e50"
-  id: "internal-vtx-badb9181-c95e-4407-b5d7-f9d0e3d38ba1"
+  id: "internal-video-transmitter-badb9181-c95e-4407-b5d7-f9d0e3d38ba1"
   manufacturer: "CADDXFPV"
-  name: "Walksnail Avatar GT VTX (Internal VTX)"
+  name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 41.6
   protocol: "Walksnail Avatar"
@@ -2762,7 +2762,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "CADDXFPV Walksnail Avatar GT VTX (Internal VTX) Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
+  description: "CADDXFPV Walksnail Avatar GT VTX (Internal Video Transmitter) Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -2788,7 +2788,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar GT KIT Only (Internal VTX)"
+  description: "Walksnail Avatar GT KIT Only (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -2814,7 +2814,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar HD Kit V2 (32G) (Internal VTX)"
+  description: "Walksnail Avatar HD Kit V2 (32G) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -2840,7 +2840,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar HD Kit V2 (8G) (Internal VTX)"
+  description: "Walksnail Avatar HD Kit V2 (8G) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -2866,7 +2866,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal VTX)"
+  description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/collections/vtx"
@@ -2888,7 +2888,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "DarwinFPV 25/200/400/600mW VTX (Internal VTX)"
+  description: "DarwinFPV 25/200/400/600mW VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/collections/vtx"
@@ -2910,7 +2910,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal VTX)"
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -2928,7 +2928,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "Aura VTX for Analog Video System (Internal VTX)"
+  description: "Aura VTX for Analog Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -2946,7 +2946,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal VTX)"
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -2964,7 +2964,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal VTX)"
+  description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -2990,7 +2990,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3016,7 +3016,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3042,7 +3042,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3068,7 +3068,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal VTX)"
+  description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -3086,7 +3086,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3112,7 +3112,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3138,7 +3138,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal VTX)"
+  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3164,7 +3164,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3180,9 +3180,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "68b26e4a-c4a7-49d5-89b3-ab7779bae5f2"
-  id: "internal-vtx-6358ffe6-3daf-40a1-b6f3-c91cbed80f3b"
+  id: "internal-video-transmitter-6358ffe6-3daf-40a1-b6f3-c91cbed80f3b"
   manufacturer: "BETAFPV"
-  name: "Air VTX (Internal VTX)"
+  name: "Air VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -3190,7 +3190,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV Air VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV Air VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3206,9 +3206,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "168f97da-dd1b-4e15-9774-2fc4a0d35b36"
-  id: "internal-vtx-332a8bc9-0e1a-481e-9178-947e90cd1216"
+  id: "internal-video-transmitter-332a8bc9-0e1a-481e-9178-947e90cd1216"
   manufacturer: "BETAFPV"
-  name: "P1 Air Unit HD VTX (Internal VTX)"
+  name: "P1 Air Unit HD VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 37.5
   protocol: "Analog"
@@ -3216,7 +3216,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV P1 Air Unit HD VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
+  description: "BETAFPV P1 Air Unit HD VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3242,7 +3242,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal VTX)"
+  description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3258,9 +3258,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "15ade0cc-8d8f-4ec2-bb87-d132a4eb1258"
-  id: "internal-vtx-32929656-e0ad-4088-97a4-a485ec8bbbfa"
+  id: "internal-video-transmitter-32929656-e0ad-4088-97a4-a485ec8bbbfa"
   manufacturer: "BETAFPV"
-  name: "A03 400mW 5.8G VTX (Internal VTX)"
+  name: "A03 400mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 32
   protocol: "Analog"
@@ -3268,7 +3268,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV A03 400mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
+  description: "BETAFPV A03 400mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3284,9 +3284,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "e9d3937f-a2f2-4a98-8de0-f21f057a000a"
-  id: "internal-vtx-adba1c1e-9788-49a7-8bbf-b0bcfe91db06"
+  id: "internal-video-transmitter-adba1c1e-9788-49a7-8bbf-b0bcfe91db06"
   manufacturer: "BETAFPV"
-  name: "M03 5.8G VTX (Internal VTX)"
+  name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 110
   protocol: "Analog"
@@ -3294,7 +3294,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV M03 5.8G VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
+  description: "BETAFPV M03 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3310,9 +3310,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "26d12338-ff44-4cb0-ba1d-6afeb2faad61"
-  id: "internal-vtx-5f57aa3e-8a5b-425a-8248-e2ebae9fcdf6"
+  id: "internal-video-transmitter-5f57aa3e-8a5b-425a-8248-e2ebae9fcdf6"
   manufacturer: "BETAFPV"
-  name: "A02 25-800mW 5.8G VTX (Internal VTX)"
+  name: "A02 25-800mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -3320,7 +3320,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV A02 25-800mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV A02 25-800mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3346,7 +3346,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal VTX)"
+  description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3362,9 +3362,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "56d8db8b-40c1-45c8-a178-0c828e2b7e00"
-  id: "internal-vtx-ae52c708-51d1-472d-8951-3225c8125e04"
+  id: "internal-video-transmitter-ae52c708-51d1-472d-8951-3225c8125e04"
   manufacturer: "BETAFPV"
-  name: "M02 25-350mW 5.8G VTX (Internal VTX)"
+  name: "M02 25-350mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -3372,7 +3372,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV M02 25-350mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV M02 25-350mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3398,7 +3398,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal VTX)"
+  description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3424,7 +3424,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal VTX)"
+  description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3440,9 +3440,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "8b914fda-2aa3-4be0-8041-0a429fbe9bdc"
-  id: "internal-vtx-99308e86-8805-4f4e-a49f-754569d94c6c"
+  id: "internal-video-transmitter-99308e86-8805-4f4e-a49f-754569d94c6c"
   manufacturer: "BETAFPV"
-  name: "T01 AIO Camera 25mW 5.8G (Internal VTX)"
+  name: "T01 AIO Camera 25mW 5.8G (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 3.3
   protocol: "Analog"
@@ -3450,7 +3450,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal VTX) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
+  description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal Video Transmitter) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3476,7 +3476,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal VTX)"
+  description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3502,7 +3502,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal VTX)"
+  description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3528,7 +3528,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal VTX)"
+  description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3554,7 +3554,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z01 AIO Camera 5.8G 25mW VTX (Internal VTX)"
+  description: "Z01 AIO Camera 5.8G 25mW VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -3580,7 +3580,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal VTX)"
+  description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3596,9 +3596,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "55644e34-8f82-4bf0-8cd2-bffde219d9b3"
-  id: "internal-vtx-761a48fd-ddaa-4197-a592-f4e46b642096"
+  id: "internal-video-transmitter-761a48fd-ddaa-4197-a592-f4e46b642096"
   manufacturer: "CADDXFPV"
-  name: "Walksnail Avatar GT VTX (Internal VTX)"
+  name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 41.6
   protocol: "Walksnail Avatar"
@@ -3606,7 +3606,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "CADDXFPV Walksnail Avatar GT VTX (Internal VTX) Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
+  description: "CADDXFPV Walksnail Avatar GT VTX (Internal Video Transmitter) Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3632,7 +3632,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar GT KIT Only (Internal VTX)"
+  description: "Walksnail Avatar GT KIT Only (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3658,7 +3658,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar HD Kit V2 (32G) (Internal VTX)"
+  description: "Walksnail Avatar HD Kit V2 (32G) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3684,7 +3684,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar HD Kit V2 (8G) (Internal VTX)"
+  description: "Walksnail Avatar HD Kit V2 (8G) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3710,7 +3710,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal VTX)"
+  description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/collections/vtx"
@@ -3732,7 +3732,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "DarwinFPV 25/200/400/600mW VTX (Internal VTX)"
+  description: "DarwinFPV 25/200/400/600mW VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/collections/vtx"
@@ -3754,7 +3754,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal VTX)"
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -3772,7 +3772,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "Aura VTX for Analog Video System (Internal VTX)"
+  description: "Aura VTX for Analog Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -3790,7 +3790,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal VTX)"
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -3808,7 +3808,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal VTX)"
+  description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3834,7 +3834,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3860,7 +3860,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3886,7 +3886,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3912,7 +3912,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal VTX)"
+  description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -3930,7 +3930,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3956,7 +3956,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -3982,7 +3982,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal VTX)"
+  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4008,7 +4008,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4024,9 +4024,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "5682e28f-49a9-4f5e-9569-e065997cac2b"
-  id: "internal-vtx-4ef8638f-dac2-4ac8-b0ec-5873947190a3"
+  id: "internal-video-transmitter-4ef8638f-dac2-4ac8-b0ec-5873947190a3"
   manufacturer: "BETAFPV"
-  name: "Air VTX (Internal VTX)"
+  name: "Air VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -4034,7 +4034,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV Air VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV Air VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4050,9 +4050,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "dfdd3813-3648-4b36-9329-1cee02a0944e"
-  id: "internal-vtx-f76f9a90-e448-4b22-8d09-a21e83e67d8b"
+  id: "internal-video-transmitter-f76f9a90-e448-4b22-8d09-a21e83e67d8b"
   manufacturer: "BETAFPV"
-  name: "P1 Air Unit HD VTX (Internal VTX)"
+  name: "P1 Air Unit HD VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 37.5
   protocol: "Analog"
@@ -4060,7 +4060,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV P1 Air Unit HD VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
+  description: "BETAFPV P1 Air Unit HD VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 37.5g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4086,7 +4086,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal VTX)"
+  description: "Sub100g Whoop Drone with DJI O3 (Beta Test) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4102,9 +4102,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "27b81d48-065a-4144-9ef4-55b3346f63dc"
-  id: "internal-vtx-eb9dd626-b02a-42a7-b391-24bbb1bf106d"
+  id: "internal-video-transmitter-eb9dd626-b02a-42a7-b391-24bbb1bf106d"
   manufacturer: "BETAFPV"
-  name: "A03 400mW 5.8G VTX (Internal VTX)"
+  name: "A03 400mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 32
   protocol: "Analog"
@@ -4112,7 +4112,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV A03 400mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
+  description: "BETAFPV A03 400mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 400mW output power, operating voltage 7.0-26.0V, weighing 32.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4128,9 +4128,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "dbc37721-e159-4394-948f-178a2ae5866a"
-  id: "internal-vtx-9e8da282-03b7-4296-8c18-b9fced8dde68"
+  id: "internal-video-transmitter-9e8da282-03b7-4296-8c18-b9fced8dde68"
   manufacturer: "BETAFPV"
-  name: "M03 5.8G VTX (Internal VTX)"
+  name: "M03 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 110
   protocol: "Analog"
@@ -4138,7 +4138,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "BETAFPV M03 5.8G VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
+  description: "BETAFPV M03 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4154,9 +4154,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "fb8e7f0e-0716-46b2-9fa9-1065c65d5b78"
-  id: "internal-vtx-0a5a6f16-6856-41af-9e26-fb04ba547503"
+  id: "internal-video-transmitter-0a5a6f16-6856-41af-9e26-fb04ba547503"
   manufacturer: "BETAFPV"
-  name: "A02 25-800mW 5.8G VTX (Internal VTX)"
+  name: "A02 25-800mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -4164,7 +4164,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV A02 25-800mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV A02 25-800mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4190,7 +4190,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal VTX)"
+  description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4206,9 +4206,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "4c63ff7f-ce50-4974-9c69-4ea5312ae5de"
-  id: "internal-vtx-84c6ce1a-b21a-4202-bf8f-dda67e20eacc"
+  id: "internal-video-transmitter-84c6ce1a-b21a-4202-bf8f-dda67e20eacc"
   manufacturer: "BETAFPV"
-  name: "M02 25-350mW 5.8G VTX (Internal VTX)"
+  name: "M02 25-350mW 5.8G VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 0.6
   protocol: "Analog"
@@ -4216,7 +4216,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV M02 25-350mW 5.8G VTX (Internal VTX) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
+  description: "BETAFPV M02 25-350mW 5.8G VTX (Internal Video Transmitter) Analog video transmitter with up to 350mW output power, operating voltage 3.1-5.5V, weighing 0.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4242,7 +4242,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal VTX)"
+  description: "Lite 2S Brushless Flight Controller (Silverware Firmware) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4268,7 +4268,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal VTX)"
+  description: "M01 AIO Camera 5.8G VTX V2.1(Pin-Connected) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4284,9 +4284,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "28ebaff7-96e1-4f11-9f5f-22b3f1b10732"
-  id: "internal-vtx-bd63a3a0-8741-4bf0-a09b-d9924cebda00"
+  id: "internal-video-transmitter-bd63a3a0-8741-4bf0-a09b-d9924cebda00"
   manufacturer: "BETAFPV"
-  name: "T01 AIO Camera 25mW 5.8G (Internal VTX)"
+  name: "T01 AIO Camera 25mW 5.8G (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 3.3
   protocol: "Analog"
@@ -4294,7 +4294,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal VTX) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
+  description: "BETAFPV T01 AIO Camera 25mW 5.8G (Internal Video Transmitter) Analog video transmitter with up to 25mW output power, operating voltage 3.1-5.5V, weighing 3.3g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4320,7 +4320,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal VTX)"
+  description: "Z02 AIO Camera 5.8G VTX  (Wire-Connected Version) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4346,7 +4346,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal VTX)"
+  description: "Z02 AIO Camera 5.8G VTX (Pin-Connected Version) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4372,7 +4372,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal VTX)"
+  description: "H02 AIO Camera 5.8G 25mW VTX OSD (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4398,7 +4398,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Z01 AIO Camera 5.8G 25mW VTX (Internal VTX)"
+  description: "Z01 AIO Camera 5.8G 25mW VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/collections/vtx"
@@ -4424,7 +4424,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal VTX)"
+  description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4440,9 +4440,9 @@ video_transmitters: {
 }
 video_transmitters: {
   uuid: "3bf1d3e6-50f4-4777-8513-dca52852b4b6"
-  id: "internal-vtx-d6131bd0-8b52-4252-b36b-3d698f404f12"
+  id: "internal-video-transmitter-d6131bd0-8b52-4252-b36b-3d698f404f12"
   manufacturer: "CADDXFPV"
-  name: "Walksnail Avatar GT VTX (Internal VTX)"
+  name: "Walksnail Avatar GT VTX (Internal Video Transmitter)"
   is_internal_only: true
   weight_g: 41.6
   protocol: "Walksnail Avatar"
@@ -4450,7 +4450,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "CADDXFPV Walksnail Avatar GT VTX (Internal VTX) Walksnail Avatar video transmitter with up to 25mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
+  description: "CADDXFPV Walksnail Avatar GT VTX (Internal Video Transmitter) Walksnail Avatar video transmitter with up to 25mW output power, operating voltage 7.0-26.0V, weighing 41.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4476,7 +4476,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar GT KIT Only (Internal VTX)"
+  description: "Walksnail Avatar GT KIT Only (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4502,7 +4502,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar HD Kit V2 (32G) (Internal VTX)"
+  description: "Walksnail Avatar HD Kit V2 (32G) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4528,7 +4528,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar HD Kit V2 (8G) (Internal VTX)"
+  description: "Walksnail Avatar HD Kit V2 (8G) (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4554,7 +4554,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal VTX)"
+  description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/collections/vtx"
@@ -4576,7 +4576,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "DarwinFPV 25/200/400/600mW VTX (Internal VTX)"
+  description: "DarwinFPV 25/200/400/600mW VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/collections/vtx"
@@ -4598,7 +4598,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal VTX)"
+  description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -4616,7 +4616,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "Aura VTX for Analog Video System (Internal VTX)"
+  description: "Aura VTX for Analog Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -4634,7 +4634,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal VTX)"
+  description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -4652,7 +4652,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal VTX)"
+  description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4678,7 +4678,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD VTX Module V2 Dual Antenna - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4704,7 +4704,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Pro Kit Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4730,7 +4730,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Kit V2 Dual Antenna with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4756,7 +4756,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
-  description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal VTX)"
+  description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -4774,7 +4774,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Mini VTX Module V3 - 32GB Without Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4800,7 +4800,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal VTX)"
+  description: "Avatar HD Kit V2 with 32GB DVR & Gyro For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4826,7 +4826,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal VTX)"
+  description: "Avatar HD VRX Kit for Avatar HD Video System - Choose Version (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4852,7 +4852,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal VTX)"
+  description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/collections/walksnail-avatar-system"
@@ -4878,7 +4878,7 @@ video_transmitters: {
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar Digital HD Mini 1S VTX Nano Camera kit (Internal VTX)"
+  description: "Walksnail Avatar Digital HD Mini 1S VTX Nano Camera kit (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -4896,7 +4896,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar Digital HD VTX Nano Camera kit (Internal VTX)"
+  description: "Walksnail Avatar Digital HD VTX Nano Camera kit (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"
@@ -4914,7 +4914,7 @@ video_transmitters: {
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
-  description: "Walksnail Avatar Digital HD VTX Micro Camera kit (Internal VTX)"
+  description: "Walksnail Avatar Digital HD VTX Micro Camera kit (Internal Video Transmitter)"
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/fpv/video-transmitters.html"

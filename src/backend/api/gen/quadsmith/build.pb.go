@@ -48,11 +48,11 @@ type Build struct {
 	PropellerUuid string `protobuf:"bytes,12,opt,name=propeller_uuid,json=propellerUuid,proto3" json:"propeller_uuid,omitempty"`
 	// Array of cameras (e.g. primary FPV cam, secondary action cam)
 	CameraUuids []string `protobuf:"bytes,13,rep,name=camera_uuids,json=cameraUuids,proto3" json:"camera_uuids,omitempty"`
-	// The Video Transmitter (VTX) used for this build
-	VtxUuid        string           `protobuf:"bytes,15,opt,name=vtx_uuid,json=vtxUuid,proto3" json:"vtx_uuid,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,14,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// The Video Transmitter used for this build
+	VideoTransmitterUuid string           `protobuf:"bytes,15,opt,name=video_transmitter_uuid,json=videoTransmitterUuid,proto3" json:"video_transmitter_uuid,omitempty"`
+	ReferenceLinks       []*ReferenceLink `protobuf:"bytes,14,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *Build) Reset() {
@@ -176,9 +176,9 @@ func (x *Build) GetCameraUuids() []string {
 	return nil
 }
 
-func (x *Build) GetVtxUuid() string {
+func (x *Build) GetVideoTransmitterUuid() string {
 	if x != nil {
-		return x.VtxUuid
+		return x.VideoTransmitterUuid
 	}
 	return ""
 }
@@ -377,7 +377,7 @@ var File_quadsmith_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_build_proto_rawDesc = "" +
 	"\n" +
-	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xac\x05\n" +
+	"\x15quadsmith/build.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc7\x05\n" +
 	"\x05Build\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12\x12\n" +
@@ -394,8 +394,8 @@ const file_quadsmith_build_proto_rawDesc = "" +
 	" \x03(\tR\rreceiverUuids\x12#\n" +
 	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12;\n" +
 	"\x0epropeller_uuid\x18\f \x01(\tB\x14\xd2\xf3\x18\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
-	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x127\n" +
-	"\bvtx_uuid\x18\x0f \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\avtxUuid\x12A\n" +
+	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12R\n" +
+	"\x16video_transmitter_uuid\x18\x0f \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12A\n" +
 	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\n" +
 	"\xc2\xf3\x18\x06builds\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +

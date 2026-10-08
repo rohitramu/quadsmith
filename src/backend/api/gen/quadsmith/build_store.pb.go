@@ -11,7 +11,7 @@ import (
 )
 
 func CreateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
-	query := `INSERT INTO builds (uuid, id, name, description, frame_uuid, motor_uuid, battery_uuid, flight_controller_uuid, esc_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, vtx_uuid, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
+	query := `INSERT INTO builds (uuid, id, name, description, frame_uuid, motor_uuid, battery_uuid, flight_controller_uuid, esc_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -67,19 +67,20 @@ func CreateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 			return nil
 		}
 		return s
-	}(m.VtxUuid), m.ReferenceLinks)
+	}(m.VideoTransmitterUuid), m.ReferenceLinks)
 	return err
 }
 
 func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Build, error) {
-	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, battery_uuid, flight_controller_uuid, esc_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, vtx_uuid, reference_links"
+	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, battery_uuid, flight_controller_uuid, esc_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "battery_uuid", "flight_controller_uuid", "esc_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "vtx_uuid", "reference_links"}
+		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "battery_uuid", "flight_controller_uuid", "esc_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM builds WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
 	m := &Build{}
 	for i, col := range cols {
 		switch col {
@@ -92,13 +93,37 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 		case "description":
 			scanArgs[i] = &m.Description
 		case "frame_uuid":
-			scanArgs[i] = &m.FrameUuid
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.FrameUuid = *v
+				}
+			})
 		case "motor_uuid":
-			scanArgs[i] = &m.MotorUuid
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.MotorUuid = *v
+				}
+			})
 		case "battery_uuid":
-			scanArgs[i] = &m.BatteryUuid
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.BatteryUuid = *v
+				}
+			})
 		case "flight_controller_uuid":
-			scanArgs[i] = &m.FlightControllerUuid
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.FlightControllerUuid = *v
+				}
+			})
 		case "esc_uuids":
 			scanArgs[i] = &m.EscUuids
 		case "receiver_uuids":
@@ -106,11 +131,23 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 		case "antenna_uuids":
 			scanArgs[i] = &m.AntennaUuids
 		case "propeller_uuid":
-			scanArgs[i] = &m.PropellerUuid
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.PropellerUuid = *v
+				}
+			})
 		case "camera_uuids":
 			scanArgs[i] = &m.CameraUuids
-		case "vtx_uuid":
-			scanArgs[i] = &m.VtxUuid
+		case "video_transmitter_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.VideoTransmitterUuid = *v
+				}
+			})
 		case "reference_links":
 			scanArgs[i] = &m.ReferenceLinks
 		default:
@@ -118,15 +155,19 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 			scanArgs[i] = &dummy
 		}
 	}
+
 	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
 	}
 	return m, nil
 }
 
 func UpdateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
-	query := `UPDATE builds SET name = $2, description = $3, frame_uuid = $4, motor_uuid = $5, battery_uuid = $6, flight_controller_uuid = $7, esc_uuids = $8, receiver_uuids = $9, antenna_uuids = $10, propeller_uuid = $11, camera_uuids = $12, vtx_uuid = $13, reference_links = $14 WHERE uuid = $1`
+	query := `UPDATE builds SET name = $2, description = $3, frame_uuid = $4, motor_uuid = $5, battery_uuid = $6, flight_controller_uuid = $7, esc_uuids = $8, receiver_uuids = $9, antenna_uuids = $10, propeller_uuid = $11, camera_uuids = $12, video_transmitter_uuid = $13, reference_links = $14 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Name, m.Description, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -177,7 +218,7 @@ func UpdateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 			return nil
 		}
 		return s
-	}(m.VtxUuid), m.ReferenceLinks)
+	}(m.VideoTransmitterUuid), m.ReferenceLinks)
 	return err
 }
 
@@ -188,17 +229,17 @@ func DeleteBuild(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Build, error) {
-	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, battery_uuid, flight_controller_uuid, esc_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, vtx_uuid, reference_links"
+	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, battery_uuid, flight_controller_uuid, esc_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, reference_links"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "battery_uuid", "flight_controller_uuid", "esc_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "vtx_uuid", "reference_links"}
+		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "battery_uuid", "flight_controller_uuid", "esc_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "reference_links"}
 	}
 	query := `SELECT ` + colsStr + ` FROM builds`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "battery_uuid": true, "flight_controller_uuid": true, "esc_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "vtx_uuid": true, "reference_links": true}
+	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "battery_uuid": true, "flight_controller_uuid": true, "esc_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "video_transmitter_uuid": true, "reference_links": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -238,6 +279,7 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	results := make([]*Build, 0)
 	for rows.Next() {
 		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
 		m := &Build{}
 		for i, col := range cols {
 			switch col {
@@ -250,13 +292,37 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 			case "description":
 				scanArgs[i] = &m.Description
 			case "frame_uuid":
-				scanArgs[i] = &m.FrameUuid
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.FrameUuid = *v
+					}
+				})
 			case "motor_uuid":
-				scanArgs[i] = &m.MotorUuid
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.MotorUuid = *v
+					}
+				})
 			case "battery_uuid":
-				scanArgs[i] = &m.BatteryUuid
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.BatteryUuid = *v
+					}
+				})
 			case "flight_controller_uuid":
-				scanArgs[i] = &m.FlightControllerUuid
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.FlightControllerUuid = *v
+					}
+				})
 			case "esc_uuids":
 				scanArgs[i] = &m.EscUuids
 			case "receiver_uuids":
@@ -264,11 +330,23 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 			case "antenna_uuids":
 				scanArgs[i] = &m.AntennaUuids
 			case "propeller_uuid":
-				scanArgs[i] = &m.PropellerUuid
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.PropellerUuid = *v
+					}
+				})
 			case "camera_uuids":
 				scanArgs[i] = &m.CameraUuids
-			case "vtx_uuid":
-				scanArgs[i] = &m.VtxUuid
+			case "video_transmitter_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.VideoTransmitterUuid = *v
+					}
+				})
 			case "reference_links":
 				scanArgs[i] = &m.ReferenceLinks
 			default:
@@ -279,6 +357,9 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
 		}
 		results = append(results, m)
 	}

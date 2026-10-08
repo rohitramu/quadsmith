@@ -30,6 +30,7 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 	}
 	query := `SELECT ` + colsStr + ` FROM motors WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
 	m := &Motor{}
 	for i, col := range cols {
 		switch col {
@@ -58,9 +59,13 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 			scanArgs[i] = &dummy
 		}
 	}
+
 	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
 	}
 	return m, nil
 }
@@ -128,6 +133,7 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	results := make([]*Motor, 0)
 	for rows.Next() {
 		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
 		m := &Motor{}
 		for i, col := range cols {
 			switch col {
@@ -159,6 +165,9 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
 		}
 		results = append(results, m)
 	}

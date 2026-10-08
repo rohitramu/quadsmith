@@ -35,6 +35,7 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 	}
 	query := `SELECT ` + colsStr + ` FROM receivers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
 	m := &Receiver{}
 	for i, col := range cols {
 		switch col {
@@ -67,9 +68,13 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 			scanArgs[i] = &dummy
 		}
 	}
+
 	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
 	}
 	return m, nil
 }
@@ -142,6 +147,7 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 	results := make([]*Receiver, 0)
 	for rows.Next() {
 		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
 		m := &Receiver{}
 		for i, col := range cols {
 			switch col {
@@ -177,6 +183,9 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
 		}
 		results = append(results, m)
 	}

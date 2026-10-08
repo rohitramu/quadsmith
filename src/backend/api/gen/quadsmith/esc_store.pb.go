@@ -30,6 +30,7 @@ func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []strin
 	}
 	query := `SELECT ` + colsStr + ` FROM escs WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
 	m := &Esc{}
 	for i, col := range cols {
 		switch col {
@@ -62,9 +63,13 @@ func GetEsc(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []strin
 			scanArgs[i] = &dummy
 		}
 	}
+
 	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
 	if err != nil {
 		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
 	}
 	return m, nil
 }
@@ -132,6 +137,7 @@ func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []stri
 	results := make([]*Esc, 0)
 	for rows.Next() {
 		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
 		m := &Esc{}
 		for i, col := range cols {
 			switch col {
@@ -167,6 +173,9 @@ func ListEscs(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []stri
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
 		}
 		results = append(results, m)
 	}

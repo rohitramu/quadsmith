@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS builds (
   antenna_uuids UUID[],
   propeller_uuid UUID,
   camera_uuids UUID[],
-  vtx_uuid UUID,
+  video_transmitter_uuid UUID,
   reference_links JSONB
 );
 
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS flight_controllers (
   gyro TEXT,
   internal_esc_uuid UUID,
   internal_receiver_uuid UUID,
-  internal_vtx_uuid UUID,
+  internal_video_transmitter_uuid UUID,
   description TEXT,
   reference_links JSONB
 );
@@ -220,7 +220,7 @@ ALTER TABLE builds
 ADD CONSTRAINT fk_builds_propeller_uuid FOREIGN KEY (propeller_uuid) REFERENCES propellers (uuid);
 
 ALTER TABLE builds
-ADD CONSTRAINT fk_builds_vtx_uuid FOREIGN KEY (vtx_uuid) REFERENCES video_transmitters (uuid);
+ADD CONSTRAINT fk_builds_video_transmitter_uuid FOREIGN KEY (video_transmitter_uuid) REFERENCES video_transmitters (uuid);
 
 ALTER TABLE flight_controllers
 ADD CONSTRAINT fk_flight_controllers_internal_esc_uuid FOREIGN KEY (internal_esc_uuid) REFERENCES escs (uuid);
@@ -229,4 +229,4 @@ ALTER TABLE flight_controllers
 ADD CONSTRAINT fk_flight_controllers_internal_receiver_uuid FOREIGN KEY (internal_receiver_uuid) REFERENCES receivers (uuid);
 
 ALTER TABLE flight_controllers
-ADD CONSTRAINT fk_flight_controllers_internal_vtx_uuid FOREIGN KEY (internal_vtx_uuid) REFERENCES video_transmitters (uuid);
+ADD CONSTRAINT fk_flight_controllers_internal_video_transmitter_uuid FOREIGN KEY (internal_video_transmitter_uuid) REFERENCES video_transmitters (uuid);

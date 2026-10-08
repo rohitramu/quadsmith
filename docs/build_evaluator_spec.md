@@ -9,8 +9,8 @@ The Build Evaluator is a logic module that takes a Quadcopter `Build` configurat
 - **Frame**: Wheelbase (mm), Configuration (Puller/Pusher, Ducted/Un-ducted).
 - **Motors**: KV, Stator Size (Diameter mm, Height mm).
 - **Propellers**: Diameter (in), Pitch (in), Blade Count.
-- **Components**: FC, ESC, VTX, RX, Camera, GPS (used for accumulating Dry Weight).
-- **VTX**: Max Power (mW).
+- **Components**: FC, ESC, Video Transmitter, RX, Camera, GPS (used for accumulating Dry Weight).
+- **Video Transmitter**: Max Power (mW).
 - **Receiver**: Protocol (e.g., ELRS, Crossfire, SBUS).
 
 ### 2.2 Runtime Parameters (User Input)
@@ -27,7 +27,7 @@ The Build Evaluator is a logic module that takes a Quadcopter `Build` configurat
 - **Center of Gravity (CG) Offset**: If a heavy payload is mounted far forward, the CG shifts. The evaluator calculates the necessary thrust differential where rear motors must work harder to maintain hover, effectively reducing total max usable thrust.
 - **Inertia Tensor ($I_{xx}, I_{yy}, I_{zz}$)**:
   Uses a point-mass approximation for full 3D agility estimates.
-  - **Core Mass ($M_{core}$)**: Sum of Frame, FC, ESC, VTX, RX, Camera. Located at center $(0,0,0)$.
+  - **Core Mass ($M_{core}$)**: Sum of Frame, FC, ESC, Video Transmitter, RX, Camera. Located at center $(0,0,0)$.
   - **Battery & Payload Mass**: Offset along the Z-axis (top vs bottom mount) and X-axis (forward/back), significantly impacting Pitch ($I_{yy}$) and Roll ($I_{xx}$) inertia.
   - **Arm Mass ($M_{arm}$)**: Motor + Propeller weight.
   - **Distance ($r$)**: $\frac{\text{Wheelbase}}{2}$.
@@ -76,7 +76,7 @@ Calculated for multiple flight styles simultaneously:
 ### 4.4 Range
 Presented as two separate bottlenecks:
 - **Aerodynamic Range**: $v_{cruise} \times \text{Flight Time}_{cinematic}$.
-- **Estimated RF Range**: Based on VTX Max Power and Protocol. (e.g., 25mW Analog ~500m, 800mW Digital ~4km, ELRS 2.4GHz ~15km). The practical range is the minimum of Video and Control limits.
+- **Estimated RF Range**: Based on Video Transmitter Max Power and Protocol. (e.g., 25mW Analog ~500m, 800mW Digital ~4km, ELRS 2.4GHz ~15km). The practical range is the minimum of Video and Control limits.
 
 ### 4.5 Prop Wash Handling Quality
 - **Disk Loading ($DL$)**: $\frac{M_{total}}{\text{Total Swept Area}}$ (Lower is better for grip and float).

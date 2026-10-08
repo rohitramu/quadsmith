@@ -46,28 +46,28 @@ This object-oriented pattern keeps rules encapsulated while allowing the fronten
 ## 4. Rules & Checkers
 
 ### 4.1. Electrical Compatibility
-- **Voltage Limits:** Primary power (ESC, FC) checked against battery voltage. Peripheral power (VTX, Camera, RX, GPS) checked against FC BEC outputs first, then VBAT. (Outputs `DEFINITE_INCOMPATIBILITY`).
+- **Voltage Limits:** Primary power (ESC, FC) checked against battery voltage. Peripheral power (Video Transmitter, Camera, RX, GPS) checked against FC BEC outputs first, then VBAT. (Outputs `DEFINITE_INCOMPATIBILITY`).
 - **Motor vs. ESC Current:** Heuristic calculation of peak motor draw compared against ESC limits. (Outputs `HEURISTIC_INCOMPATIBILITY`).
 - **Battery Discharge Limits:** Calculated total system draw compared against battery C-Rating capacity. (Outputs `HEURISTIC_INCOMPATIBILITY`).
 
 ### 4.2. Physical Compatibility
 - **Propeller Clearance:** Frame `maxPropSizeMm` must be $\ge$ Propeller `diameterMm`. (Outputs `DEFINITE_INCOMPATIBILITY`).
 - **Mount Patterns:**
-  - **Stack:** Frame `BoardMountPattern` must intersect with FC, ESC, and VTX mount patterns (e.g., 20x20mm, 30.5x30.5mm).
+  - **Stack:** Frame `BoardMountPattern` must intersect with FC, ESC, and Video Transmitter mount patterns (e.g., 20x20mm, 30.5x30.5mm).
   - **Motors:** Frame `MotorMountPattern` must intersect with Motor mount patterns (e.g., 16x16mm).
 - **Camera Fit:** Camera `widthMm` vs Frame `cameraMountWidthMm`. (Outputs `DEFINITE_INCOMPATIBILITY`, or `PARTIAL_COMPATIBILITY` if known adapters exist).
-- **Spatial / Stack Clearance:** Heuristic sum of FC, ESC, and VTX `boardHeightMm` vs the frame's available height.
+- **Spatial / Stack Clearance:** Heuristic sum of FC, ESC, and Video Transmitter `boardHeightMm` vs the frame's available height.
 
 ### 4.3. Software & Ecosystem Compatibility
-- **Video Ecosystem:** Camera, VTX, and Goggles must all share the same `VtxEcosystem` (e.g., DJI O3, Walksnail, Analog). (Outputs `DEFINITE_INCOMPATIBILITY`).
-- **Camera-VTX Connection:** Matches the `videoConnectionStandard` between the Camera and VTX. For proprietary digital systems (MIPI cables), a mismatch is a `DEFINITE_INCOMPATIBILITY`. If both are "Analog", it passes but outputs an `INFORMATIONAL` Note reminding the user to wire them through the FC for OSD.
+- **Video Ecosystem:** Camera, Video Transmitter, and Goggles must all share the same Video Ecosystem (e.g., DJI O3, Walksnail, Analog). (Outputs `DEFINITE_INCOMPATIBILITY`).
+- **Camera-Video Transmitter Connection:** Matches the `videoConnectionStandard` between the Camera and Video Transmitter. For proprietary digital systems (MIPI cables), a mismatch is a `DEFINITE_INCOMPATIBILITY`. If both are "Analog", it passes but outputs an `INFORMATIONAL` Note reminding the user to wire them through the FC for OSD.
 - **Control Link:** Receiver and Transmitter must share an intersecting `RfProtocol` (e.g., ExpressLRS, Crossfire).
 - **Firmware Matching:** FC and ESC target firmwares (e.g., Betaflight, Bluejay, AM32).
 
 ### 4.4. RF & Antenna Compatibility
-- **Frequency Matching:** VTX/Goggles and RX/TX must operate on the same `RfFrequency` (e.g., 5.8GHz, 2.4GHz, 900MHz).
-- **Antenna Connectors:** VTX/RX connector type (e.g., SMA, MMCX, U.FL) must exactly match the selected Antenna's connector.
-- **Antenna Polarization:** VTX antenna (e.g., RHCP, LHCP, Linear) must match Goggles antenna polarization. (Mismatch outputs `HEURISTIC_INCOMPATIBILITY` as it causes massive signal loss, though video still technically works at close range).
+- **Frequency Matching:** Video Transmitter/Goggles and RX/TX must operate on the same `RfFrequency` (e.g., 5.8GHz, 2.4GHz, 900MHz).
+- **Antenna Connectors:** Video Transmitter/RX connector type (e.g., SMA, MMCX, U.FL) must exactly match the selected Antenna's connector.
+- **Antenna Polarization:** Video Transmitter antenna (e.g., RHCP, LHCP, Linear) must match Goggles antenna polarization. (Mismatch outputs `HEURISTIC_INCOMPATIBILITY` as it causes massive signal loss, though video still technically works at close range).
 
 ### 4.5. Database Overrides
 - **Known Incompatibilities:** Queries the `IncompatibilityIssue` table. If the evaluated components trigger a specific override record (e.g., "This specific FC has a noisy gyro when paired with this specific ESC"), it outputs the issue's defined message and severity.
@@ -76,5 +76,5 @@ This object-oriented pattern keeps rules encapsulated while allowing the fronten
 - **UART Availability:** Calculates the total number of UARTs required by the selected peripherals:
   - **Receiver:** Typically requires 1 full UART.
   - **GPS:** Requires 1 full UART.
-  - **Digital VTX:** Requires 1 full UART for OSD/MSP (Analog usually does not).
+  - **Digital Video Transmitter:** Requires 1 full UART for OSD/MSP (Analog usually does not).
 - **Validation:** Compares the total required UARTs against the Flight Controller's available `uartConnections`. (Outputs `DEFINITE_INCOMPATIBILITY` if there are not enough UARTs).

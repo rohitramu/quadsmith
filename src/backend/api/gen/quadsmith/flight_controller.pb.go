@@ -41,11 +41,11 @@ type FlightController struct {
 	// If this board has an integrated SPI or Serial Receiver
 	InternalReceiverUuid string `protobuf:"bytes,9,opt,name=internal_receiver_uuid,json=internalReceiverUuid,proto3" json:"internal_receiver_uuid,omitempty"`
 	// If this board has an integrated Video Transmitter
-	InternalVtxUuid string           `protobuf:"bytes,10,opt,name=internal_vtx_uuid,json=internalVtxUuid,proto3" json:"internal_vtx_uuid,omitempty"`
-	Description     string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks  []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	InternalVideoTransmitterUuid string           `protobuf:"bytes,10,opt,name=internal_video_transmitter_uuid,json=internalVideoTransmitterUuid,proto3" json:"internal_video_transmitter_uuid,omitempty"`
+	Description                  string           `protobuf:"bytes,21,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks               []*ReferenceLink `protobuf:"bytes,22,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *FlightController) Reset() {
@@ -148,9 +148,9 @@ func (x *FlightController) GetInternalReceiverUuid() string {
 	return ""
 }
 
-func (x *FlightController) GetInternalVtxUuid() string {
+func (x *FlightController) GetInternalVideoTransmitterUuid() string {
 	if x != nil {
-		return x.InternalVtxUuid
+		return x.InternalVideoTransmitterUuid
 	}
 	return ""
 }
@@ -356,7 +356,7 @@ var File_quadsmith_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xc5\x04\n" +
+	"!quadsmith/flight_controller.proto\x12\tquadsmith\x1a\x14quadsmith/_sql.proto\x1a\x1equadsmith/reference_link.proto\"\xe0\x04\n" +
 	"\x10FlightController\x12\x18\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x04\xc8\xf3\x18\x01R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xd8\xf3\x18\x01R\x02id\x12(\n" +
@@ -368,9 +368,9 @@ const file_quadsmith_flight_controller_proto_rawDesc = "" +
 	"\x04gyro\x18\a \x01(\tR\x04gyro\x12:\n" +
 	"\x11internal_esc_uuid\x18\b \x01(\tB\x0e\xd2\xf3\x18\n" +
 	"escs(uuid)R\x0finternalEscUuid\x12I\n" +
-	"\x16internal_receiver_uuid\x18\t \x01(\tB\x13\xd2\xf3\x18\x0freceivers(uuid)R\x14internalReceiverUuid\x12H\n" +
-	"\x11internal_vtx_uuid\x18\n" +
-	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x0finternalVtxUuid\x12 \n" +
+	"\x16internal_receiver_uuid\x18\t \x01(\tB\x13\xd2\xf3\x18\x0freceivers(uuid)R\x14internalReceiverUuid\x12c\n" +
+	"\x1finternal_video_transmitter_uuid\x18\n" +
+	" \x01(\tB\x1c\xd2\xf3\x18\x18video_transmitters(uuid)R\x1cinternalVideoTransmitterUuid\x12 \n" +
 	"\vdescription\x18\x15 \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\x16 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:\x16\xc2\xf3\x18\x12flight_controllers\"F\n" +
 	"\x1aGetFlightControllerRequest\x12\x0e\n" +

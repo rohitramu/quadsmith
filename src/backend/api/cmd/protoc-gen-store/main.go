@@ -135,22 +135,38 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	query := `SELECT ` + colsStr + ` FROM ", tableName, " WHERE id = $1 OR uuid::text = $1 LIMIT 1`")
 
 	g.P("	scanArgs := make([]interface{}, len(cols))")
+	g.P("	scanAssigns := make([]func(), 0, len(cols))")
 	g.P("	m := &", msgName, "{}")
 	g.P("	for i, col := range cols {")
 	g.P("		switch col {")
 	for j, colName := range colNames {
+		field := msg.Fields[j]
+		goName := field.GoName
 		g.P("		case \"", colName, "\":")
-		g.P("			scanArgs[i] = &m.", msg.Fields[j].GoName)
+		if strings.HasSuffix(colName, "uuid") && colName != "uuid" && !field.Desc.IsList() {
+			g.P("			var v *string")
+			g.P("			scanArgs[i] = &v")
+			g.P("			scanAssigns = append(scanAssigns, func() {")
+			g.P("				if v != nil {")
+			g.P("					m.", goName, " = *v")
+			g.P("				}")
+			g.P("			})")
+		} else {
+			g.P("			scanArgs[i] = &m.", goName)
+		}
 	}
 	g.P("		default:")
 	g.P("			var dummy interface{}")
 	g.P("			scanArgs[i] = &dummy")
 	g.P("		}")
 	g.P("	}")
-
+	g.P()
 	g.P("	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)")
 	g.P("	if err != nil {")
 	g.P("		return nil, err")
+	g.P("	}")
+	g.P("	for _, assign := range scanAssigns {")
+	g.P("		assign()")
 	g.P("	}")
 	g.P("	return m, nil")
 	g.P("}")
@@ -263,12 +279,25 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	for rows.Next() {")
 
 	g.P("		scanArgs := make([]interface{}, len(cols))")
+	g.P("		scanAssigns := make([]func(), 0, len(cols))")
 	g.P("		m := &", msgName, "{}")
 	g.P("		for i, col := range cols {")
 	g.P("			switch col {")
 	for j, colName := range colNames {
+		field := msg.Fields[j]
+		goName := field.GoName
 		g.P("			case \"", colName, "\":")
-		g.P("				scanArgs[i] = &m.", msg.Fields[j].GoName)
+		if strings.HasSuffix(colName, "uuid") && colName != "uuid" && !field.Desc.IsList() {
+			g.P("				var v *string")
+			g.P("				scanArgs[i] = &v")
+			g.P("				scanAssigns = append(scanAssigns, func() {")
+			g.P("					if v != nil {")
+			g.P("						m.", goName, " = *v")
+			g.P("					}")
+			g.P("				})")
+		} else {
+			g.P("				scanArgs[i] = &m.", goName)
+		}
 	}
 	g.P("			default:")
 	g.P("				var dummy interface{}")
@@ -278,6 +307,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("		err := rows.Scan(scanArgs...)")
 	g.P("		if err != nil {")
 	g.P("			return nil, err")
+	g.P("		}")
+	g.P("		for _, assign := range scanAssigns {")
+	g.P("			assign()")
 	g.P("		}")
 	g.P("		results = append(results, m)")
 	g.P("	}")
