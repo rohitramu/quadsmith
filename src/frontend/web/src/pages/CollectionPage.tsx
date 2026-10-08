@@ -1,124 +1,62 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { getOption } from "@bufbuild/protobuf";
-import { listMotors } from "../gen/quadsmith/motor-MotorService_connectquery";
-import { MotorSchema } from "../gen/quadsmith/motor_pb";
 import { default_columns } from "../gen/quadsmith/_common_pb";
-import { ArrowUp, ArrowDown, ArrowUpDown, Columns3, GripVertical, ChevronUp, ChevronDown, Plus, ChevronLeft, ChevronRight, ChevronsLeft } from "lucide-react";
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import {
+  ArrowUp,
+  ArrowDown,
+  ArrowUpDown,
+  Columns3,
+  GripVertical,
+  ChevronUp,
+  ChevronDown,
+  Plus,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+} from "lucide-react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { keepPreviousData } from "@tanstack/react-query";
-import { SmartFilterInput, type FieldDef } from "../components/SmartFilterInput";
-import { formatStatorSize } from "../lib/format";
+import { SmartFilterInput } from "../components/SmartFilterInput";
+import {
+  getHardwareCollection,
+  type HardwareCollectionDef,
+  type ColumnConfig,
+} from "../lib/hardwareCollections";
 
-const MOTOR_FIELDS: FieldDef[] = [
-  { name: "id", type: "string", description: "Unique identifier", examples: ['id == "flash-2207-fpv-motor"', 'id.contains("2207")'] },
-  { name: "uuid", type: "string", description: "Unique UUID identifier", examples: ['uuid.startsWith("f07a")'] },
-  { name: "manufacturer", type: "string", description: "Manufacturer / Brand name", examples: ['manufacturer.contains("T-Motor")', 'manufacturer == "Emax"'] },
-  { name: "name", type: "string", description: "Motor model name", examples: ['name.contains("Velox")'] },
-  { name: "kv", type: "number", description: "RPM per volt (velocity constant)", examples: ['kv >= 1900', 'kv == 1750'] },
-  { name: "weight_g", type: "number", description: "Motor weight in grams", examples: ['weight_g < 35.0'] },
-  { name: "stator_diameter_mm", type: "number", description: "Stator diameter in millimeters", examples: ['stator_diameter_mm == 22.0'] },
-  { name: "stator_height_mm", type: "number", description: "Stator height in millimeters", examples: ['stator_height_mm == 7.0'] },
-  { name: "description", type: "string", description: "Product description", examples: ['description.contains("brushless")'] },
-];
-
-const MOTOR_PRESETS = [
-  { label: "2207 Stator", query: "stator_diameter_mm == 22.0 && stator_height_mm == 7.0" },
-  { label: "2306 Stator", query: "stator_diameter_mm == 23.0 && stator_height_mm == 6.0" },
-  { label: "1404 Stator", query: "stator_diameter_mm == 14.0 && stator_height_mm == 4.0" },
-  { label: "Under 35g", query: "weight_g < 35.0" },
-  { label: "T-Motor", query: 'manufacturer.contains("T-Motor")' },
-];
-
-interface ColumnConfig {
-  id: string;
+function ColumnHeader({
+  title,
+  field,
+  sortField,
+  sortDir,
+  onSortToggle,
+}: {
   title: string;
-  renderCell: (m: any) => React.ReactNode;
-}
-
-const MOTOR_COLUMN_CONFIGS: Record<string, ColumnConfig> = {
-  id: {
-    id: "id",
-    title: "ID",
-    renderCell: (m) => (
-      <span className="relative z-20 font-mono text-xs text-zinc-700 dark:text-zinc-300 select-all">
-        {m.id}
-      </span>
-    ),
-  },
-  uuid: {
-    id: "uuid",
-    title: "UUID",
-    renderCell: (m) => (
-      <span
-        className="relative z-20 font-mono text-[11px] text-zinc-500 dark:text-zinc-400 select-all block truncate max-w-[140px]"
-        title={m.uuid}
-      >
-        {m.uuid}
-      </span>
-    ),
-  },
-  manufacturer: {
-    id: "manufacturer",
-    title: "Manufacturer",
-    renderCell: (m) => m.manufacturer || "Unknown",
-  },
-  name: {
-    id: "name",
-    title: "Name",
-    renderCell: (m) => <span className="font-medium text-zinc-900 dark:text-zinc-100">{m.name || m.id}</span>,
-  },
-  kv: {
-    id: "kv",
-    title: "KV",
-    renderCell: (m) => (m.kv ? `${m.kv}` : "-"),
-  },
-  stator_diameter_mm: {
-    id: "stator_diameter_mm",
-    title: "Stator Size",
-    renderCell: (m) => <span className="font-mono">{formatStatorSize(m.statorDiameterMm, m.statorHeightMm)}</span>,
-  },
-  weight_g: {
-    id: "weight_g",
-    title: "Weight (g)",
-    renderCell: (m) => (m.weightG != null && m.weightG > 0 ? `${m.weightG}` : "-"),
-  },
-  description: {
-    id: "description",
-    title: "Description",
-    renderCell: (m) => m.description || "-",
-  },
-};
-
-function ColumnHeader({ 
-  title, 
-  field, 
-  sortField, 
-  sortDir, 
-  onSortToggle 
-}: { 
-  title: string; 
-  field: string; 
-  sortField: string | null; 
-  sortDir: "asc" | "desc"; 
-  onSortToggle: (field: string) => void; 
+  field: string;
+  sortField: string | null;
+  sortDir: "asc" | "desc";
+  onSortToggle: (field: string) => void;
 }) {
   return (
     <div className="flex items-center gap-1.5">
       <span>{title}</span>
-      <button 
+      <button
         type="button"
-        onClick={() => onSortToggle(field)} 
+        onClick={() => onSortToggle(field)}
         title={`Sort by ${title}`}
         className={`p-1 rounded transition-colors cursor-pointer ${
-          sortField === field 
-            ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50' 
-            : 'hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400'
+          sortField === field
+            ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50"
+            : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400"
         }`}
       >
-        {sortField === field && sortDir === "asc" ? <ArrowUp size={13} /> : 
-         sortField === field && sortDir === "desc" ? <ArrowDown size={13} /> : 
-         <ArrowUpDown size={13} />}
+        {sortField === field && sortDir === "asc" ? (
+          <ArrowUp size={13} />
+        ) : sortField === field && sortDir === "desc" ? (
+          <ArrowDown size={13} />
+        ) : (
+          <ArrowUpDown size={13} />
+        )}
       </button>
     </div>
   );
@@ -362,8 +300,13 @@ function ColumnSelector({
   );
 }
 
-export function CollectionPage() {
-  const { categoryId, collectionId } = useParams();
+function CollectionTableView({
+  categoryId,
+  collection,
+}: {
+  categoryId: string;
+  collection: HardwareCollectionDef;
+}) {
   const [filterQuery, setFilterQuery] = useState("");
   const [sortField, setSortField] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
@@ -371,30 +314,26 @@ export function CollectionPage() {
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [tokenHistory, setTokenHistory] = useState<string[]>([""]);
 
-  const [prevCollectionId, setPrevCollectionId] = useState(collectionId);
-  if (prevCollectionId !== collectionId) {
-    setPrevCollectionId(collectionId);
-    setPageIndex(0);
-    setTokenHistory([""]);
-  }
-
-  // Read default columns from protobuf option
+  // Read default columns from protobuf option if available, otherwise collection defaults
   const protoDefaultCols = useMemo(() => {
-    const protoCols = getOption(MotorSchema, default_columns);
-    if (protoCols && protoCols.length > 0) {
-      return protoCols;
+    try {
+      const protoCols = getOption(collection.schema, default_columns);
+      if (protoCols && protoCols.length > 0) {
+        return protoCols;
+      }
+    } catch {
+      // Fallback if option not present
     }
-    return ["manufacturer", "name", "kv", "stator_diameter_mm"];
-  }, []);
+    return collection.defaultColumnIds;
+  }, [collection]);
 
-  // State to track selected columns (initialized to proto default columns)
   const [selectedColumnIds, setSelectedColumnIds] = useState<string[]>(protoDefaultCols);
 
   const activeColumns = useMemo(() => {
     return selectedColumnIds
-      .map((colKey) => MOTOR_COLUMN_CONFIGS[colKey])
+      .map((colKey) => collection.columns[colKey])
       .filter((c): c is ColumnConfig => !!c);
-  }, [selectedColumnIds]);
+  }, [selectedColumnIds, collection]);
 
   const sortArray = useMemo(() => {
     if (!sortField) return [];
@@ -427,31 +366,30 @@ export function CollectionPage() {
 
   const currentToken = tokenHistory[pageIndex] || "";
 
-  // Currently 'motors' is the implemented collection using the generated client.
-  const isMotors = collectionId === "motors";
   const { data, isLoading, isFetching, error } = useQuery(
-    listMotors, 
-    { 
-      filter: filterQuery, 
+    collection.listQuery,
+    {
+      filter: filterQuery,
       sort: sortArray,
       pageSize,
       pageToken: currentToken,
-    }, 
-    { 
-      enabled: isMotors,
+    },
+    {
       placeholderData: keepPreviousData,
     }
   );
+
+  const nextPageToken = (data as any)?.nextPageToken;
 
   const handleNextPage = () => {
     if (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1]) {
       setPageIndex((prev) => prev + 1);
       return;
     }
-    if (data?.nextPageToken) {
+    if (nextPageToken) {
       setTokenHistory((prev) => {
         const next = [...prev];
-        next[pageIndex + 1] = data.nextPageToken;
+        next[pageIndex + 1] = nextPageToken;
         return next;
       });
       setPageIndex((prev) => prev + 1);
@@ -468,15 +406,21 @@ export function CollectionPage() {
     setPageIndex(0);
   };
 
-  const count = data?.motors?.length ?? 0;
+  const items = useMemo(() => collection.getDataList(data), [collection, data]);
+  const count = items.length;
   const startItem = count > 0 ? pageIndex * pageSize + 1 : 0;
   const endItem = pageIndex * pageSize + count;
-  const hasNextPage = Boolean(data?.nextPageToken || (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1]));
+  const hasNextPage = Boolean(
+    nextPageToken || (pageIndex + 1 < tokenHistory.length && tokenHistory[pageIndex + 1])
+  );
   const hasPrevPage = pageIndex > 0;
 
   return (
     <div>
-      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap">
+      <nav
+        aria-label="Breadcrumb"
+        className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
+      >
         <Link
           to={`/components/${categoryId}`}
           className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
@@ -485,28 +429,26 @@ export function CollectionPage() {
         </Link>
         <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
         <span className="text-zinc-900 dark:text-zinc-100 font-medium capitalize" aria-current="page">
-          {collectionId?.replace(/[-_]/g, ' ')}
+          {collection.name}
         </span>
       </nav>
 
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold capitalize">{collectionId?.replace(/[-_]/g, ' ')}</h1>
+        <h1 className="text-3xl font-bold">{collection.name}</h1>
       </div>
 
       {/* Smart Filter Input above the table */}
-      {isMotors && (
-        <SmartFilterInput
-          value={filterQuery}
-          onApply={handleFilterApply}
-          fields={MOTOR_FIELDS}
-          presets={MOTOR_PRESETS}
-          error={error ? error.message : null}
-        />
-      )}
-      
-      {isLoading && <p className="text-sm text-zinc-500 mb-4">Loading components...</p>}
-      
-      {isMotors && data && (
+      <SmartFilterInput
+        value={filterQuery}
+        onApply={handleFilterApply}
+        fields={collection.fields}
+        presets={collection.presets}
+        error={error ? error.message : null}
+      />
+
+      {isLoading && <p className="text-sm text-zinc-500 mb-4">Loading {collection.name.toLowerCase()}...</p>}
+
+      {data && (
         <>
           {/* Table Toolbar with Component Count & Column Selector */}
           <div className="flex items-center justify-between mb-3 text-xs text-zinc-500">
@@ -525,7 +467,7 @@ export function CollectionPage() {
               )}
             </div>
             <ColumnSelector
-              allColumns={Object.values(MOTOR_COLUMN_CONFIGS)}
+              allColumns={Object.values(collection.columns)}
               selectedColumnIds={selectedColumnIds}
               defaultColumnIds={protoDefaultCols}
               onChange={setSelectedColumnIds}
@@ -533,43 +475,52 @@ export function CollectionPage() {
           </div>
 
           <div className="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
-          <table className="w-full text-left text-sm text-zinc-600 dark:text-zinc-400">
-            <thead className="bg-zinc-50 dark:bg-zinc-950/50 text-xs uppercase font-semibold text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
-              <tr>
-                {activeColumns.map((col) => (
-                  <th key={col.id} className="px-4 py-3">
-                    <ColumnHeader 
-                      title={col.title} 
-                      field={col.id}
-                      sortField={sortField} 
-                      sortDir={sortDir} 
-                      onSortToggle={handleSortToggle}
-                    />
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-              {data.motors.map((m: any) => (
-                <tr key={m.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group relative">
-                  {activeColumns.map((col, idx) => (
-                    <td key={col.id} className="px-4 py-3">
-                      {idx === 0 && (
-                        <Link to={`/components/${categoryId}/${collectionId}/${m.id}`} className="absolute inset-0 z-10" aria-label={`View ${m.name}`} />
-                      )}
-                      {col.renderCell(m)}
-                    </td>
+            <table className="w-full text-left text-sm text-zinc-600 dark:text-zinc-400">
+              <thead className="bg-zinc-50 dark:bg-zinc-950/50 text-xs uppercase font-semibold text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
+                <tr>
+                  {activeColumns.map((col) => (
+                    <th key={col.id} className="px-4 py-3">
+                      <ColumnHeader
+                        title={col.title}
+                        field={col.id}
+                        sortField={sortField}
+                        sortDir={sortDir}
+                        onSortToggle={handleSortToggle}
+                      />
+                    </th>
                   ))}
                 </tr>
-              ))}
-              {data.motors.length === 0 && (
-                <tr>
-                  <td colSpan={activeColumns.length} className="px-4 py-8 text-center text-zinc-500">No motors found matching the active filters.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+                {items.map((item: any) => (
+                  <tr
+                    key={item.id}
+                    className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group relative"
+                  >
+                    {activeColumns.map((col, idx) => (
+                      <td key={col.id} className="px-4 py-3">
+                        {idx === 0 && (
+                          <Link
+                            to={`/components/${categoryId}/${collection.id}/${item.id}`}
+                            className="absolute inset-0 z-10"
+                            aria-label={`View ${item.name || item.id}`}
+                          />
+                        )}
+                        {col.renderCell(item)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+                {items.length === 0 && (
+                  <tr>
+                    <td colSpan={activeColumns.length} className="px-4 py-8 text-center text-zinc-500">
+                      No {collection.name.toLowerCase()} found matching the active filters.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
 
           {/* Bottom Pagination Controls */}
           {(count > 0 || pageIndex > 0) && (
@@ -632,11 +583,42 @@ export function CollectionPage() {
           )}
         </>
       )}
-      
-      {!isMotors && (
-        <p className="text-zinc-500">Implementation for {collectionId} list coming soon.</p>
-      )}
     </div>
   );
 }
 
+export function CollectionPage() {
+  const { categoryId, collectionId } = useParams();
+  const collection = getHardwareCollection(collectionId);
+
+  if (!collection) {
+    return (
+      <div>
+        <nav
+          aria-label="Breadcrumb"
+          className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
+        >
+          <Link
+            to={`/components/${categoryId}`}
+            className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+          >
+            {categoryId}
+          </Link>
+          <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
+          <span className="text-zinc-900 dark:text-zinc-100 font-medium capitalize" aria-current="page">
+            {collectionId?.replace(/[-_]/g, " ")}
+          </span>
+        </nav>
+        <p className="text-zinc-500">Implementation for {collectionId?.replace(/[-_]/g, " ")} coming soon.</p>
+      </div>
+    );
+  }
+
+  return (
+    <CollectionTableView
+      key={collection.id}
+      categoryId={categoryId || "hardware"}
+      collection={collection}
+    />
+  );
+}

@@ -3,7 +3,7 @@ import { Filter, X, HelpCircle, Sparkles } from "lucide-react";
 
 export interface FieldDef {
   name: string;
-  type: "string" | "number";
+  type: "string" | "number" | "boolean";
   description: string;
   examples: string[];
 }
@@ -54,7 +54,12 @@ export function SmartFilterInput({
         ...fields.map((f) => ({
           id: `field-${f.name}`,
           label: f.name,
-          insertText: f.type === "string" ? `${f.name}.contains("")` : `${f.name} >= `,
+          insertText:
+            f.type === "string"
+              ? `${f.name}.contains("")`
+              : f.type === "boolean"
+              ? `${f.name} == true`
+              : `${f.name} >= `,
           detail: `${f.type} - ${f.description}`,
           category: "Field" as const,
         })),
@@ -104,6 +109,11 @@ export function SmartFilterInput({
             { id: "op-<", label: "< (Less than)", insertText: "< ", detail: "Number comparison", category: "Operator" },
             { id: "op-!=", label: "!= (Not equal)", insertText: "!= ", detail: "Number inequality", category: "Operator" },
           ];
+        } else if (field.type === "boolean") {
+          return [
+            { id: "op-true", label: "== true", insertText: "== true", detail: "Boolean true", category: "Operator" },
+            { id: "op-false", label: "== false", insertText: "== false", detail: "Boolean false", category: "Operator" },
+          ];
         } else {
           return [
             { id: "op-==", label: '== "" (Exact match)', insertText: '== ""', detail: "Exact string match", category: "Operator" },
@@ -114,7 +124,7 @@ export function SmartFilterInput({
     }
 
     // Check if expression looks complete and user might want logical operators: " && " or " || "
-    if (/["'0-9)]\s*$/.test(textBefore)) {
+    if (/["'0-9)]\s*$/.test(textBefore) || /(true|false)\s*$/.test(textBefore)) {
       return [
         { id: "logic-and", label: "&& (AND)", insertText: " && ", detail: "Combine with AND condition", category: "Logic" },
         { id: "logic-or", label: "|| (OR)", insertText: " || ", detail: "Combine with OR condition", category: "Logic" },
@@ -130,7 +140,12 @@ export function SmartFilterInput({
       .map((f) => ({
         id: `field-${f.name}`,
         label: f.name,
-        insertText: f.type === "string" ? `${f.name}.contains("")` : `${f.name} >= `,
+        insertText:
+          f.type === "string"
+            ? `${f.name}.contains("")`
+            : f.type === "boolean"
+            ? `${f.name} == true`
+            : `${f.name} >= `,
         detail: `${f.type} - ${f.description}`,
         category: "Field" as const,
       }));
