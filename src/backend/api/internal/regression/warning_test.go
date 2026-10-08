@@ -5,10 +5,13 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"quadsmith/api/pkg/schemacheck"
 )
+
+var reportMu sync.Mutex
 
 // isStrictBreaking returns whether breaking changes should fail tests as errors.
 // Currently (pre-launch), breaking changes are treated as warnings by default
@@ -41,19 +44,94 @@ func reportBreakingChange(t *testing.T, gh *schemacheck.GitHelper, category, bas
 		return
 	}
 
-	// Warning mode: log to test output and record to .tmp/breaking_warning.log
+	// Warning mode: log to test output and record
 	t.Logf("⚠️  WARNING: %s", msg)
 
 	if gh != nil && gh.RepoRoot != "" {
-		tmpDir := filepath.Join(gh.RepoRoot, ".tmp")
-		_ = os.MkdirAll(tmpDir, 0755)
-		logPath := filepath.Join(tmpDir, "breaking_warning.log")
-		f, err := os.OpenFile(logPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-		if err == nil {
-			defer f.Close()
-			_, _ = f.WriteString(msg + "\n\n")
+		writeReportFile(gh.RepoRoot, category, msg, true)
+	}
+}
+
+// reportCleanStatus records that a layer evaluated cleanly without breaking changes.
+func reportCleanStatus(gh *schemacheck.GitHelper, category, baseRef, statusMsg string) {
+	msg := fmt.Sprintf("[%s vs %s]\n  %s\n", category, baseRef, statusMsg)
+	if gh != nil && gh.RepoRoot != "" {
+		writeReportFile(gh.RepoRoot, category, msg, false)
+	}
+}
+
+func writeReportFile(repoRoot, category, content string, isBreaking bool) {
+	reportMu.Lock()
+	defer reportMu.Unlock()
+
+	tmpDir := filepath.Join(repoRoot, ".tmp")
+	_ = os.MkdirAll(tmpDir, 0755)
+
+	slug := strings.ToLower(category)
+	slug = strings.ReplaceAll(slug, " ", "_")
+	slug = strings.ReplaceAll(slug, "/", "_")
+	slug = strings.ReplaceAll(slug, "(", "")
+	slug = strings.ReplaceAll(slug, ")", "")
+
+	if isBreaking {
+		_ = os.Remove(filepath.Join(tmpDir, fmt.Sprintf("clean_%s.log", slug)))
+		_ = os.WriteFile(filepath.Join(tmpDir, fmt.Sprintf("breaking_%s.log", slug)), []byte(content), 0644)
+	} else {
+		_ = os.Remove(filepath.Join(tmpDir, fmt.Sprintf("breaking_%s.log", slug)))
+		_ = os.WriteFile(filepath.Join(tmpDir, fmt.Sprintf("clean_%s.log", slug)), []byte(content), 0644)
+	}
+
+	rebuildWarningLogLocked(tmpDir)
+}
+
+func rebuildWarningLogLocked(tmpDir string) {
+	entries, err := os.ReadDir(tmpDir)
+	if err != nil {
+		return
+	}
+
+	hasBreaking := false
+	for _, entry := range entries {
+		if strings.HasPrefix(entry.Name(), "breaking_") && strings.HasSuffix(entry.Name(), ".log") {
+			hasBreaking = true
+			break
 		}
 	}
+
+	logPath := filepath.Join(tmpDir, "breaking_warning.log")
+	if !hasBreaking {
+		_ = os.Remove(logPath)
+		return
+	}
+
+	// Order of sections: API, Database (SQL) Schema, Seed Data
+	sections := []string{"api_protobuf", "database_sql_schema", "seed_data"}
+	var combined strings.Builder
+
+	for _, sec := range sections {
+		breakingPath := filepath.Join(tmpDir, fmt.Sprintf("breaking_%s.log", sec))
+		cleanPath := filepath.Join(tmpDir, fmt.Sprintf("clean_%s.log", sec))
+
+		var sectionText string
+		if data, err := os.ReadFile(breakingPath); err == nil && len(data) > 0 {
+			sectionText = strings.TrimSpace(string(data))
+		} else if data, err := os.ReadFile(cleanPath); err == nil && len(data) > 0 {
+			sectionText = strings.TrimSpace(string(data))
+		}
+
+		if sectionText != "" {
+			if combined.Len() > 0 {
+				combined.WriteString("\n\n")
+			}
+			combined.WriteString(sectionText)
+		}
+	}
+
+	if combined.Len() > 0 {
+		combined.WriteString("\n")
+	}
+
+	_ = os.WriteFile(logPath, []byte(combined.String()), 0644)
 }
 
 func TestIsStrictBreaking(t *testing.T) {

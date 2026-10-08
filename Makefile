@@ -41,7 +41,7 @@ sandbox: build
 
 warn-breaking:
 	@if [ ! -s .tmp/breaking_warning.log ]; then \
-		rm -f .tmp/breaking_warning.log; \
+		rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log; \
 		cd src/backend/api && go test -mod=vendor -count=1 ./internal/regression/... > /dev/null 2>&1 || true; \
 	fi
 	@if [ -s .tmp/breaking_warning.log ]; then \
@@ -52,7 +52,7 @@ warn-breaking:
 		cat .tmp/breaking_warning.log; \
 		echo "================================================================================"; \
 		echo ""; \
-		rm -f .tmp/breaking_warning.log; \
+		rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log; \
 	fi
 
 generate:
@@ -74,14 +74,14 @@ generate:
 	@npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/schema.sql
 
 test: generate
-	@rm -f .tmp/breaking_warning.log
+	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 	@echo "--- Running Go Tests ---"
 	@cd src/backend/api && go test -mod=vendor -count=1 ./...
 	@cd src/frontend/cli && go test -mod=vendor ./...
 	@$(MAKE) --no-print-directory warn-breaking
 	@echo "--- Running Web UI Tests ---"
 	@cd src/frontend/web && npm test
-	@rm -f .tmp/breaking_warning.log
+	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 
 breaking-change: generate
 	@echo "--- Running Breaking Change Regression Tests ---"

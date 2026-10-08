@@ -36,6 +36,8 @@ type BreakingChange struct {
 	Table       string
 	Column      string
 	Description string
+	Impact      string
+	Remediation string
 	Severity    Severity
 }
 
@@ -44,6 +46,22 @@ func (b BreakingChange) String() string {
 		return fmt.Sprintf("[%s] %s (%s.%s): %s", b.Severity, b.Type, b.Table, b.Column, b.Description)
 	}
 	return fmt.Sprintf("[%s] %s (%s): %s", b.Severity, b.Type, b.Table, b.Description)
+}
+
+func (b BreakingChange) DetailedString() string {
+	var sb strings.Builder
+	if b.Column != "" {
+		sb.WriteString(fmt.Sprintf("[%s] %s (%s.%s): %s", b.Severity, b.Type, b.Table, b.Column, b.Description))
+	} else {
+		sb.WriteString(fmt.Sprintf("[%s] %s (%s): %s", b.Severity, b.Type, b.Table, b.Description))
+	}
+	if b.Impact != "" {
+		sb.WriteString(fmt.Sprintf("\n    • Impact: %s", b.Impact))
+	}
+	if b.Remediation != "" {
+		sb.WriteString(fmt.Sprintf("\n    • Remediation: %s", b.Remediation))
+	}
+	return sb.String()
 }
 
 // Column represents a table column definition.
@@ -305,6 +323,8 @@ func Compare(baseline, current *Schema) []BreakingChange {
 				Type:        ChangeTableDropped,
 				Table:       tableName,
 				Description: fmt.Sprintf("Table %q was dropped from the schema.", tableName),
+				Impact:      "Permanently deletes the table and all its stored rows. Breaks foreign keys and queries referencing this table.",
+				Remediation: "Keep the table, mark it deprecated in proto, or add an explicit pre-migration script before dropping.",
 				Severity:    SeverityBreaking,
 			})
 			continue
@@ -317,6 +337,8 @@ func Compare(baseline, current *Schema) []BreakingChange {
 				Table:       tableName,
 				Column:      currTable.PrimaryKey,
 				Description: fmt.Sprintf("Primary key for table %q was changed from %q to %q.", tableName, baseTable.PrimaryKey, currTable.PrimaryKey),
+				Impact:      "Alters primary table indexing, invalidates existing primary key references, and requires schema rewrites.",
+				Remediation: "Keep the existing UUID primary key and add a secondary index or UNIQUE constraint on the new column instead.",
 				Severity:    SeverityBreaking,
 			})
 		}
@@ -330,6 +352,8 @@ func Compare(baseline, current *Schema) []BreakingChange {
 					Table:       tableName,
 					Column:      colName,
 					Description: fmt.Sprintf("Column %q was dropped from table %q.", colName, tableName),
+					Impact:      "Permanently deletes data stored in this column across all records. Breaks queries selecting this column.",
+					Remediation: "Retain the column, deprecate it in proto, or write a pre-migration script in src/backend/db/migrations/ to archive data.",
 					Severity:    SeverityBreaking,
 				})
 				continue
@@ -342,6 +366,8 @@ func Compare(baseline, current *Schema) []BreakingChange {
 					Table:       tableName,
 					Column:      colName,
 					Description: fmt.Sprintf("Column %q in table %q changed type from %s to %s.", colName, tableName, baseCol.DataType, currCol.DataType),
+					Impact:      "Altering column data types can cause type cast failures, data truncation, or exclusive table locks on existing databases.",
+					Remediation: "Retain the existing column and introduce a new column, or add a pre-migration script with a USING clause to cast data.",
 					Severity:    SeverityBreaking,
 				})
 			}
@@ -353,6 +379,8 @@ func Compare(baseline, current *Schema) []BreakingChange {
 					Table:       tableName,
 					Column:      colName,
 					Description: fmt.Sprintf("Existing column %q in table %q was changed from nullable to NOT NULL without a DEFAULT value.", colName, tableName),
+					Impact:      "PostgreSQL will reject ALTER TABLE if any existing row contains a NULL value in this column.",
+					Remediation: "Provide a DEFAULT value in proto/schema or backfill NULL entries via a pre-migration script before enforcing NOT NULL.",
 					Severity:    SeverityBreaking,
 				})
 			}
@@ -364,6 +392,8 @@ func Compare(baseline, current *Schema) []BreakingChange {
 					Table:       tableName,
 					Column:      colName,
 					Description: fmt.Sprintf("UNIQUE constraint added to existing column %q in table %q.", colName, tableName),
+					Impact:      "PostgreSQL will fail to add the UNIQUE constraint if existing rows contain duplicate values.",
+					Remediation: "Deduplicate existing rows via a pre-migration script before adding the UNIQUE constraint.",
 					Severity:    SeverityBreaking,
 				})
 			}
@@ -378,6 +408,8 @@ func Compare(baseline, current *Schema) []BreakingChange {
 						Table:       tableName,
 						Column:      colName,
 						Description: fmt.Sprintf("Newly added column %q in table %q is NOT NULL without a DEFAULT value.", colName, tableName),
+						Impact:      "Adding a NOT NULL column without a DEFAULT value fails on existing populated tables.",
+						Remediation: "Specify a DEFAULT value in proto/SQL options or make the new column nullable (e.g. optional in proto).",
 						Severity:    SeverityBreaking,
 					})
 				}
@@ -395,6 +427,8 @@ func Compare(baseline, current *Schema) []BreakingChange {
 					Table:       baseFk.Table,
 					Column:      baseFk.Column,
 					Description: fmt.Sprintf("Foreign key constraint %q on %s(%s) referencing %s(%s) was dropped.", fkName, baseFk.Table, baseFk.Column, baseFk.RefTable, baseFk.RefColumn),
+					Impact:      "Removes relational integrity enforcement between parent and child tables.",
+					Remediation: "Verify why the constraint was removed and ensure application-level or replacement constraints protect referential integrity.",
 					Severity:    SeverityBreaking,
 				})
 			}

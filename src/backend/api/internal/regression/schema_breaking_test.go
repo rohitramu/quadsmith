@@ -51,11 +51,12 @@ func TestSchema_NoBreakingChangesAgainstGitBase(t *testing.T) {
 	if len(breakingChanges) > 0 {
 		var report strings.Builder
 		for _, bc := range breakingChanges {
-			report.WriteString("  - " + bc.String() + "\n")
+			report.WriteString("  - " + bc.DetailedString() + "\n")
 		}
-		reportBreakingChange(t, gh, "Database Schema", baseRef, fmt.Sprintf("%sEnsure table/column modifications are backwards-compatible, or write pre-migration scripts.", report.String()))
+		reportBreakingChange(t, gh, "Database (SQL) Schema", baseRef, fmt.Sprintf("%s\nEnsure table/column modifications are backwards-compatible, or write pre-migration scripts.", strings.TrimRight(report.String(), "\n")))
 		return
 	}
 
+	reportCleanStatus(gh, "Database (SQL) Schema", baseRef, "✓ No breaking changes detected (PostgreSQL schema is backwards-compatible).")
 	t.Log("Database schema backwards compatibility check passed: 0 breaking changes detected.")
 }

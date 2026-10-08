@@ -64,6 +64,7 @@ func TestAPI_NoBreakingChangesAgainstGitBase(t *testing.T) {
 		return
 	}
 
+	reportCleanStatus(gh, "API (Protobuf)", baseRef, "✓ No breaking changes detected (API definitions are backwards-compatible).")
 	t.Log("API Protobuf backwards compatibility check passed: 0 breaking changes detected.")
 }
 

@@ -3,6 +3,7 @@ package schemacheck
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -325,6 +326,29 @@ CREATE TABLE motors (uuid UUID PRIMARY KEY);
 	}
 	if changes[0].Type != ChangeForeignKeyDropped {
 		t.Errorf("Expected ChangeForeignKeyDropped, got %v", changes[0])
+	}
+}
+
+func TestBreakingChange_DetailedString(t *testing.T) {
+	bc := BreakingChange{
+		Type:        ChangeColumnDropped,
+		Table:       "motors",
+		Column:      "kv",
+		Description: `Column "kv" was dropped from table "motors".`,
+		Impact:      "Permanently deletes data stored in this column across all records. Breaks queries selecting this column.",
+		Remediation: "Retain the column, deprecate it in proto, or write a pre-migration script in src/backend/db/migrations/ to archive data.",
+		Severity:    SeverityBreaking,
+	}
+
+	detail := bc.DetailedString()
+	if !strings.Contains(detail, "[BREAKING] COLUMN_DROPPED (motors.kv)") {
+		t.Errorf("Unexpected header in DetailedString: %s", detail)
+	}
+	if !strings.Contains(detail, "• Impact: Permanently deletes data") {
+		t.Errorf("Missing impact in DetailedString: %s", detail)
+	}
+	if !strings.Contains(detail, "• Remediation: Retain the column") {
+		t.Errorf("Missing remediation in DetailedString: %s", detail)
 	}
 }
 
