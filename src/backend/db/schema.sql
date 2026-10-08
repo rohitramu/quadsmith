@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS builds (
   propeller_uuid UUID,
   camera_uuids UUID[],
   video_transmitter_uuid UUID,
+  gps_receiver_uuid UUID,
   reference_links JSONB
 );
 
@@ -126,6 +127,28 @@ CREATE TABLE IF NOT EXISTS frames (
 );
 
 CREATE INDEX IF NOT EXISTS idx_frames_manufacturer ON frames (manufacturer);
+
+CREATE TABLE IF NOT EXISTS gps_receivers (
+  uuid UUID,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE,
+  manufacturer TEXT,
+  name TEXT,
+  is_internal_only BOOLEAN,
+  weight_g DECIMAL,
+  chipset TEXT,
+  protocol TEXT,
+  has_compass BOOLEAN,
+  compass_chip TEXT,
+  input_voltage_min_v DECIMAL,
+  input_voltage_max_v DECIMAL,
+  description TEXT,
+  reference_links JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_gps_receivers_manufacturer ON gps_receivers (manufacturer);
+
+CREATE INDEX IF NOT EXISTS idx_gps_receivers_protocol ON gps_receivers (protocol);
 
 CREATE TABLE IF NOT EXISTS motors (
   uuid UUID,
@@ -221,6 +244,9 @@ ADD CONSTRAINT fk_builds_propeller_uuid FOREIGN KEY (propeller_uuid) REFERENCES 
 
 ALTER TABLE builds
 ADD CONSTRAINT fk_builds_video_transmitter_uuid FOREIGN KEY (video_transmitter_uuid) REFERENCES video_transmitters (uuid);
+
+ALTER TABLE builds
+ADD CONSTRAINT fk_builds_gps_receiver_uuid FOREIGN KEY (gps_receiver_uuid) REFERENCES gps_receivers (uuid);
 
 ALTER TABLE flight_controllers
 ADD CONSTRAINT fk_flight_controllers_internal_electronic_speed_controller_uuid FOREIGN KEY (internal_electronic_speed_controller_uuid) REFERENCES electronic_speed_controllers (uuid);

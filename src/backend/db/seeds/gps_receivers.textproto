@@ -1,0 +1,107 @@
+gps_receivers: {
+  uuid: "01923019-3008-7001-8001-000000000001"
+  id: "matek-m10-5883"
+  manufacturer: "Matek Systems"
+  name: "Matek M10-5883 GNSS & Compass"
+  weight_g: 9.0
+  chipset: "u-blox MAX-M10S"
+  protocol: "UBLOX"
+  has_compass: true
+  compass_chip: "QMC5883L"
+  input_voltage_min_v: 4.0
+  input_voltage_max_v: 9.0
+  description: "High-precision GNSS positioning module with integrated QMC5883L magnetic compass and 18x18mm ceramic patch antenna, powered by u-blox MAX-M10S."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.mateksys.com/?portfolio=m10-5883"
+  }
+}
+gps_receivers: {
+  uuid: "01923019-3008-7001-8001-000000000002"
+  id: "flywoo-goku-gm10-nano-v3"
+  manufacturer: "Flywoo"
+  name: "GOKU GM10 Nano V3 GPS"
+  weight_g: 2.5
+  chipset: "M10050"
+  protocol: "UBLOX"
+  has_compass: false
+  input_voltage_min_v: 3.3
+  input_voltage_max_v: 5.0
+  description: "Ultra-lightweight 2.5g micro GPS module engineered for toothpick and sub-250g quads, powered by 10th-generation M10050 GNSS chip."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://flywoo.net/products/goku-gm10-v3-gps"
+  }
+}
+gps_receivers: {
+  uuid: "01923019-3008-7001-8001-000000000003"
+  id: "flywoo-goku-gm10-mini-v3"
+  manufacturer: "Flywoo"
+  name: "GOKU GM10 Mini V3 GPS with Compass"
+  weight_g: 4.1
+  chipset: "M10050"
+  protocol: "UBLOX"
+  has_compass: true
+  compass_chip: "QMC5883L"
+  input_voltage_min_v: 5.0
+  input_voltage_max_v: 5.0
+  description: "Compact 18x18mm FPV GPS module featuring 10th-gen M10050 GNSS chip, integrated QMC5883L compass, and high-sensitivity ceramic patch antenna."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://flywoo.net/products/goku-gm10-v3-gps"
+  }
+}
+gps_receivers: {
+  uuid: "01923019-3008-7001-8001-000000000004"
+  id: "flywoo-goku-gm10-pro-v3"
+  manufacturer: "Flywoo"
+  name: "GOKU GM10 Pro V3 GPS with Compass"
+  weight_g: 7.3
+  chipset: "M10050"
+  protocol: "UBLOX"
+  has_compass: true
+  compass_chip: "QMC5883L"
+  input_voltage_min_v: 5.0
+  input_voltage_max_v: 5.0
+  description: "Larger 25x25mm long-range GPS unit with high-gain active antenna and integrated QMC5883L compass for maximum satellite lock speed."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://flywoo.net/products/goku-gm10-v3-gps"
+  }
+}
+gps_receivers: {
+  uuid: "01923019-3008-7001-8001-000000000005"
+  id: "holybro-micro-m10"
+  manufacturer: "Holybro"
+  name: "Holybro Micro M10 GPS"
+  weight_g: 14.0
+  chipset: "u-blox M10"
+  protocol: "UBLOX"
+  has_compass: true
+  compass_chip: "IST8310"
+  input_voltage_min_v: 4.7
+  input_voltage_max_v: 5.2
+  description: "Multi-constellation GNSS module equipped with high-gain 25x25mm active ceramic antenna, IST8310 digital compass, and MAX2659 LNA amplifier."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://holybro.com/products/micro-m10-gps"
+  }
+}
+gps_receivers: {
+  uuid: "01923019-3008-7001-8001-000000000006"
+  id: "hglrc-m100-5883"
+  manufacturer: "HGLRC"
+  name: "HGLRC M100-5883 GPS"
+  weight_g: 7.7
+  chipset: "M10"
+  protocol: "UBLOX"
+  has_compass: true
+  compass_chip: "QMC5883L"
+  input_voltage_min_v: 3.3
+  input_voltage_max_v: 5.0
+  description: "Compact 21x21mm 10th-generation M10 GNSS module with onboard QMC5883L compass and multi-constellation concurrent satellite support."
+  reference_links: {
+    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hglrc.com/products/hglrc-m100-5883-gps"
+  }
+}

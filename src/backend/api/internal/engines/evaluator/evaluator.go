@@ -147,6 +147,14 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		}
 	}
 
+	// 11. Fetch GPS Receiver
+	if b.GpsReceiverUuid != "" {
+		gps, err := pb.GetGpsReceiver(ctx, s.db, b.GpsReceiverUuid, nil)
+		if err == nil {
+			totalWeight += gps.WeightG
+		}
+	}
+
 	// System Validation
 	// TODO: Implement mechanical compatibility checks (e.g. Flight Controller mounting hole spacing vs Frame mounts).
 	// TODO: Implement electrical compatibility checks (e.g. Battery Voltage vs FC max voltage, Receiver protocol vs FC UARTs).

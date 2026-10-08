@@ -67,6 +67,9 @@ message Build {
 
   // The Video Transmitter used for this build
   string video_transmitter_uuid = 15 [(quadsmith.sql.references) = "video_transmitters(uuid)"];
+
+  // Optional GPS Receiver for navigation and rescue return-to-home
+  string gps_receiver_uuid = 16 [(quadsmith.sql.references) = "gps_receivers(uuid)"];
   repeated ReferenceLink reference_links = 14;
 }
 

@@ -9,6 +9,7 @@ export function CategoryPage() {
     { id: "frames", name: "Frames" },
     { id: "electronic-speed-controllers", name: "Electronic Speed Controllers" },
     { id: "flight_controllers", name: "Flight Controllers" },
+    { id: "gps-receivers", name: "GPS Receivers" },
   ] : [];
 
   return (

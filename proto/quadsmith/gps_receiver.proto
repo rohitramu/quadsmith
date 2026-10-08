@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "quadsmith/_common.proto";
+import "quadsmith/_name.proto";
+import "quadsmith/_sql.proto";
+import "quadsmith/reference_link.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message GpsReceiver {
+  option (quadsmith.name) = {
+    singular: "GPS Receiver"
+    plural: "GPS Receivers"
+    cli: "gps-receivers"
+    api: "gps-receivers"
+    go: "gpsReceiver"
+    typescript: "GpsReceiver"
+    sql: "gps_receivers"
+  };
+  option (quadsmith.sql.table_name) = "gps_receivers";
+  option (quadsmith.default_columns) = "manufacturer";
+  option (quadsmith.default_columns) = "name";
+  option (quadsmith.default_columns) = "chipset";
+  option (quadsmith.default_columns) = "has_compass";
+
+  string uuid = 1 [(quadsmith.sql.is_primary_key) = true];
+
+  string id = 2 [(quadsmith.sql.is_unique) = true];
+
+  string manufacturer = 3 [(quadsmith.sql.create_index) = true];
+  string name = 4;
+  bool is_internal_only = 20;
+
+  float weight_g = 5;
+
+  // GNSS chipset (e.g., "u-blox MAX-M10S", "u-blox M10", "M10050")
+  string chipset = 6;
+
+  // Primary communication protocol (e.g., "UBLOX", "NMEA")
+  string protocol = 7 [(quadsmith.sql.create_index) = true];
+
+  // Whether the unit has an integrated magnetic compass / magnetometer
+  bool has_compass = 8;
+
+  // Compass chip model (e.g., "QMC5883L", "IST8310")
+  string compass_chip = 9;
+
+  // Minimum operating input voltage
+  float input_voltage_min_v = 10;
+
+  // Maximum operating input voltage
+  float input_voltage_max_v = 11;
+
+  string description = 21;
+  repeated ReferenceLink reference_links = 22;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetGpsReceiverRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListGpsReceiversRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListGpsReceiversResponse {
+  repeated GpsReceiver gps_receivers = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service GpsReceiverService {
+  rpc GetGpsReceiver(GetGpsReceiverRequest) returns (GpsReceiver);
+  rpc ListGpsReceivers(ListGpsReceiversRequest) returns (ListGpsReceiversResponse);
+}

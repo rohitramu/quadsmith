@@ -10,6 +10,7 @@ erDiagram
         UUID flight_controller_uuid FK
         UUID propeller_uuid FK
         UUID video_transmitter_uuid FK
+        UUID gps_receiver_uuid FK
         JSONB reference_links
     }
 
@@ -158,12 +159,30 @@ erDiagram
         JSONB reference_links
     }
 
+    gps_receivers {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        BOOLEAN is_internal_only
+        DECIMAL weight_g
+        TEXT chipset
+        TEXT protocol
+        BOOLEAN has_compass
+        TEXT compass_chip
+        DECIMAL input_voltage_min_v
+        DECIMAL input_voltage_max_v
+        TEXT description
+        JSONB reference_links
+    }
+
     builds ||--o| frames : has
     builds ||--o| motors : has
     builds ||--o| batteries : has
     builds ||--o| flight_controllers : has
     builds ||--o| propellers : has
     builds ||--o| video_transmitters : has
+    builds ||--o| gps_receivers : has
 
     flight_controllers ||--o| electronic_speed_controllers : internal_electronic_speed_controller
     flight_controllers ||--o| receivers : internal_receiver

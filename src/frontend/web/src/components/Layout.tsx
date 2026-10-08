@@ -81,6 +81,7 @@ export function Layout() {
                       <li><Link to="/components/hardware/frames" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">Frames</Link></li>
                       <li><Link to="/components/hardware/electronic-speed-controllers" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">Electronic Speed Controllers</Link></li>
                       <li><Link to="/components/hardware/flight_controllers" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">Flight Controllers</Link></li>
+                      <li><Link to="/components/hardware/gps-receivers" className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400">GPS Receivers</Link></li>
                     </ul>
                   )}
                 </li>

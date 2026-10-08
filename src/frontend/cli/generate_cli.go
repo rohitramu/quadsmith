@@ -87,6 +87,16 @@ var domains = []DomainName{
 		SQL:        "frames",
 	},
 	{
+		Singular:   "GPS Receiver",
+		Plural:     "GPS Receivers",
+		CLI:        "gps-receivers",
+		API:        "gps-receivers",
+		Go:         "gpsReceiver",
+		TypeScript: "GpsReceiver",
+		SQL:        "gps_receivers",
+		Aliases:    []string{"gpsreceivers", "gps"},
+	},
+	{
 		Singular:   "Motor",
 		Plural:     "Motors",
 		CLI:        "motors",

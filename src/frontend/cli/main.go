@@ -1171,6 +1171,166 @@ func newRootCmd() *cobra.Command {
 
 	rootCmd.AddCommand(frameCmd)
 
+	// --- GPS Receivers ---
+	gpsReceiverClient := quadsmithconnect.NewGpsReceiverServiceClient(http.DefaultClient, targetURL)
+	gpsReceiverCmd := &cobra.Command{Use: "gps-receivers", Aliases: []string{"gpsreceivers", "gps"}}
+	gpsReceiverListCmd := &cobra.Command{
+		Use: "list",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filter, _ := cmd.Flags().GetString("filter")
+			columns, _ := cmd.Flags().GetStringSlice("column")
+			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
+			}
+			var all []*pb.GpsReceiver
+			var currentToken string
+			for {
+				pageSize := int32(100)
+				if limit > 0 {
+					remaining := limit - int32(len(all))
+					if remaining <= 0 {
+						break
+					}
+					if remaining < pageSize {
+						pageSize = remaining
+					}
+				}
+				req := &pb.ListGpsReceiversRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}
+				res, err := gpsReceiverClient.ListGpsReceivers(context.Background(), connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.GpsReceivers...)
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
+			}
+			if len(columns) == 0 {
+				columns = GetDefaultColumns(&pb.GpsReceiver{})
+			}
+			err := printOutput(cmd.OutOrStdout(), all, columns)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+	}
+	gpsReceiverListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	gpsReceiverListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
+	gpsReceiverListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.GpsReceiver{})
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range cols {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base+c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
+	gpsReceiverListCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
+	gpsReceiverListCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^kv)")
+	gpsReceiverListCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.GpsReceiver{})
+		selected, _ := cmd.Flags().GetStringSlice("column")
+		selectedMap := make(map[string]bool)
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
+		var filtered []string
+		for _, c := range cols {
+			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
+				filtered = append(filtered, c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
+	gpsReceiverListCmd.RegisterFlagCompletionFunc("sort", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.GpsReceiver{})
+		selected, _ := cmd.Flags().GetStringSlice("sort")
+		selectedMap := make(map[string]bool)
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
+		isDesc := strings.HasPrefix(toComplete, "^")
+		cleanPrefix := strings.TrimPrefix(toComplete, "^")
+		var filtered []string
+		for _, c := range cols {
+			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
+				if isDesc {
+					filtered = append(filtered, "^"+c)
+				} else {
+					filtered = append(filtered, c)
+					filtered = append(filtered, "^"+c)
+				}
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
+	gpsReceiverCmd.AddCommand(gpsReceiverListCmd)
+
+	gpsReceiverGetCmd := &cobra.Command{
+		Use:  "get [id]",
+		Args: cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := gpsReceiverClient.ListGpsReceivers(context.Background(), connect.NewRequest(&pb.ListGpsReceiversRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.GpsReceivers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			columns, _ := cmd.Flags().GetStringSlice("column")
+			req := &pb.GetGpsReceiverRequest{Id: args[0], Columns: columns}
+			res, err := gpsReceiverClient.GetGpsReceiver(context.Background(), connect.NewRequest(req))
+			if err != nil {
+				return err
+			}
+			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+		},
+	}
+	gpsReceiverGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
+	gpsReceiverGetCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		cols := GetColumns(&pb.GpsReceiver{})
+		selected, _ := cmd.Flags().GetStringSlice("column")
+		selectedMap := make(map[string]bool)
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
+		var filtered []string
+		for _, c := range cols {
+			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
+				filtered = append(filtered, c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
+	gpsReceiverCmd.AddCommand(gpsReceiverGetCmd)
+
+	rootCmd.AddCommand(gpsReceiverCmd)
+
 	// --- Motors ---
 	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, targetURL)
 	motorCmd := &cobra.Command{Use: "motors"}

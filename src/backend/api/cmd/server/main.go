@@ -54,6 +54,8 @@ func main() {
 	mux.Handle(path_NewPropellerServiceHandler, h_NewPropellerServiceHandler)
 	path_NewBuildServiceHandler, h_NewBuildServiceHandler := quadsmithconnect.NewBuildServiceHandler(pb.NewBuildServiceHandler(pool))
 	mux.Handle(path_NewBuildServiceHandler, h_NewBuildServiceHandler)
+	path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler := quadsmithconnect.NewGpsReceiverServiceHandler(pb.NewGpsReceiverServiceHandler(pool))
+	mux.Handle(path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler)
 
 	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool))
 	mux.Handle(path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler)

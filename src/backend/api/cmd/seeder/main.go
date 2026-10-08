@@ -33,7 +33,7 @@ func main() {
 
 	tables := []string{
 		"builds", "motors", "frames", "batteries", "electronic_speed_controllers", "flight_controllers",
-		"receivers", "video_transmitters", "antennas", "cameras", "propellers",
+		"receivers", "video_transmitters", "antennas", "cameras", "propellers", "gps_receivers",
 	}
 	for _, table := range tables {
 		tx.Exec(ctx, "TRUNCATE TABLE "+table+" CASCADE;")
@@ -168,6 +168,19 @@ func main() {
 		}
 		for _, v := range m.FlightControllers {
 			if err := pb.CreateFlightController(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// GPS Receivers
+	if b, err := os.ReadFile(dir + "gps_receivers.textproto"); err == nil {
+		m := &pb.ListGpsReceiversResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.GpsReceivers {
+			if err := pb.CreateGpsReceiver(ctx, tx, v); err != nil {
 				panic(err)
 			}
 		}
