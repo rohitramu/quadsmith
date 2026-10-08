@@ -9,6 +9,7 @@ erDiagram
         UUID battery_uuid FK
         UUID flight_controller_uuid FK
         UUID propeller_uuid FK
+        UUID vtx_uuid FK
         JSONB reference_links
     }
 
@@ -162,6 +163,7 @@ erDiagram
     builds ||--o| batteries : has
     builds ||--o| flight_controllers : has
     builds ||--o| propellers : has
+    builds ||--o| video_transmitters : has
 
     flight_controllers ||--o| escs : internal_esc
     flight_controllers ||--o| receivers : internal_receiver

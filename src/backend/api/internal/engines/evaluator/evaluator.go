@@ -107,6 +107,46 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		}
 	}
 
+	// 7. Fetch Video Transmitter (Standalone or Internal to FC)
+	if b.VtxUuid != "" {
+		vtx, err := pb.GetVideoTransmitter(ctx, s.db, b.VtxUuid, nil)
+		if err == nil {
+			totalWeight += vtx.WeightG
+		}
+	} else if b.FlightControllerUuid != "" {
+		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
+		if err == nil && fc.InternalVtxUuid != "" {
+			vtx, err := pb.GetVideoTransmitter(ctx, s.db, fc.InternalVtxUuid, nil)
+			if err == nil {
+				totalWeight += vtx.WeightG
+			}
+		}
+	}
+
+	// 8. Fetch Cameras
+	for _, cid := range b.CameraUuids {
+		cam, err := pb.GetCamera(ctx, s.db, cid, nil)
+		if err == nil {
+			totalWeight += cam.WeightG
+		}
+	}
+
+	// 9. Fetch Receivers
+	for _, rid := range b.ReceiverUuids {
+		rx, err := pb.GetReceiver(ctx, s.db, rid, nil)
+		if err == nil {
+			totalWeight += rx.WeightG
+		}
+	}
+
+	// 10. Fetch Antennas
+	for _, aid := range b.AntennaUuids {
+		ant, err := pb.GetAntenna(ctx, s.db, aid, nil)
+		if err == nil {
+			totalWeight += ant.WeightG
+		}
+	}
+
 	// System Validation
 	// TODO: Implement mechanical compatibility checks (e.g. Flight Controller mounting hole spacing vs Frame mounts).
 	// TODO: Implement electrical compatibility checks (e.g. Battery Voltage vs FC max voltage, Receiver protocol vs FC UARTs).

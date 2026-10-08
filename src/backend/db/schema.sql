@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS builds (
   antenna_uuids UUID[],
   propeller_uuid UUID,
   camera_uuids UUID[],
+  vtx_uuid UUID,
   reference_links JSONB
 );
 
@@ -217,6 +218,9 @@ ADD CONSTRAINT fk_builds_flight_controller_uuid FOREIGN KEY (flight_controller_u
 
 ALTER TABLE builds
 ADD CONSTRAINT fk_builds_propeller_uuid FOREIGN KEY (propeller_uuid) REFERENCES propellers (uuid);
+
+ALTER TABLE builds
+ADD CONSTRAINT fk_builds_vtx_uuid FOREIGN KEY (vtx_uuid) REFERENCES video_transmitters (uuid);
 
 ALTER TABLE flight_controllers
 ADD CONSTRAINT fk_flight_controllers_internal_esc_uuid FOREIGN KEY (internal_esc_uuid) REFERENCES escs (uuid);

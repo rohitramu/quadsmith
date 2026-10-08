@@ -416,8 +416,8 @@ func TestCLI_Pagination(t *testing.T) {
 		t.Fatalf("Failed to resolve qs binary path: %v", err)
 	}
 
-	// 1. List with --page-size, --filter, --sort
-	cmd := exec.Command(qsPath, "motors", "list", "--json", "--page-size", "5", "--filter", `manufacturer == "BETAFPV"`, "--sort", "^kv")
+	// 1. List with --limit, --filter, --sort
+	cmd := exec.Command(qsPath, "motors", "list", "--json", "--limit", "5", "--filter", `manufacturer == "BETAFPV"`, "--sort", "^kv")
 	cmd.Env = append(cmd.Env, "QS_API_URL="+srv.URL)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
