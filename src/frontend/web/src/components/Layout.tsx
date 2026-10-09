@@ -303,9 +303,10 @@ export function Layout() {
                               to={`/${getCollectionPath(c)}`}
                               className="flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
                             >
-                              <span
-                                className={`w-2 h-2 rounded-full shrink-0 ${colColor.dotClass}`}
-                                aria-hidden="true"
+                              <CollectionIcon
+                                collection={c.id}
+                                size={15}
+                                className={`${colColor.textClass} shrink-0`}
                               />
                               <span>{c.name}</span>
                             </Link>

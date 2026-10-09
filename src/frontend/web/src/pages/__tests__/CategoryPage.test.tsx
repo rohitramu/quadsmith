@@ -27,6 +27,9 @@ describe("CategoryPage Component", () => {
       expect(heading).toBeInTheDocument();
       const cardLink = heading.closest("a");
       expect(cardLink).toHaveAttribute("href", `/components/hardware/${collection.id}`);
+      // Collection icon should be present in the card
+      const iconSvg = cardLink?.querySelector("svg");
+      expect(iconSvg).toBeInTheDocument();
       if (collection.description) {
         expect(screen.getByText(collection.description)).toBeInTheDocument();
       }

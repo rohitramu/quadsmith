@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionIcon } from "../components/CollectionIcon";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
 export function CategoryPage() {
@@ -33,7 +34,12 @@ export function CategoryPage() {
               <div className={`absolute top-0 left-0 right-0 h-1.5 ${colColor.trimClass}`} />
 
               <div>
-                <div className="mb-2">
+                <div className="flex items-center gap-2.5 mb-2">
+                  <CollectionIcon
+                    collection={c.id}
+                    size={22}
+                    className={`${colColor.textClass} shrink-0`}
+                  />
                   <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors">
                     {c.name}
                   </h2>

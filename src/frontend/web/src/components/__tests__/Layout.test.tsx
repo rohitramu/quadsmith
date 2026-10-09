@@ -77,11 +77,13 @@ describe("Layout Component", () => {
     // Click to expand
     await user.click(chevronButton);
 
-    // All hardware collections should now be visible
+    // All hardware collections should now be visible with icons instead of dots
     for (const collection of HARDWARE_COLLECTIONS) {
       const link = screen.getByRole("link", { name: collection.name });
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute("href", `/components/hardware/${collection.id}`);
+      expect(link.querySelector("svg")).toBeInTheDocument();
+      expect(link.querySelector(".rounded-full")).not.toBeInTheDocument();
     }
 
     // Click again to collapse

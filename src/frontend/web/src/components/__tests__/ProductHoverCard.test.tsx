@@ -37,6 +37,9 @@ describe("ProductHoverCard", () => {
     expect(card).toBeInTheDocument();
     expect(screen.getByText("EMAX")).toBeInTheDocument();
     expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /details/i })).toBeInTheDocument();
+    // Product ID should be omitted from the hover card
+    expect(screen.queryByText(mockMotor1.id)).not.toBeInTheDocument();
 
     // Fire mouseLeave
     act(() => {

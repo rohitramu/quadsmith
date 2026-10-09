@@ -219,10 +219,7 @@ export function ProductHoverCard({
             )}
 
             {/* Footer Direct Link */}
-            <div className="mt-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-              <span className="text-[11px] font-mono text-zinc-400 truncate max-w-[170px]">
-                {product.id}
-              </span>
+            <div className="mt-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-end">
               <Link
                 to={productUrl}
                 className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
