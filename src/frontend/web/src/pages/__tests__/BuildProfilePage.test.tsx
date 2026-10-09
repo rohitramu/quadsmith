@@ -200,10 +200,7 @@ describe("BuildProfilePage Component", () => {
     expect(
       screen.getByText(/could not find a build profile for "unknown-build-id"/i),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /return to builds feed/i })).toHaveAttribute(
-      "href",
-      "/",
-    );
+    expect(screen.getByRole("link", { name: /return to builds/i })).toHaveAttribute("href", "/");
   });
 
   it("renders build primary display image and media showcase with images and video embeds", async () => {

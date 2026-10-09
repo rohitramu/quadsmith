@@ -51,7 +51,8 @@ describe("Layout Component", () => {
   it("renders sidebar navigation links", () => {
     renderWithProviders(<Layout />, { route: "/" });
 
-    // Category links
+    // Sidebar links
+    expect(screen.getByRole("link", { name: "Builds" })).toHaveAttribute("href", "/");
     expect(screen.getByRole("link", { name: "Hardware" })).toHaveAttribute(
       "href",
       "/components/hardware",

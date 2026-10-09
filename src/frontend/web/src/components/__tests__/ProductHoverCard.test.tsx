@@ -47,4 +47,38 @@ describe("ProductHoverCard", () => {
     // Popover should be unmounted
     expect(screen.queryByTestId("product-hover-card")).not.toBeInTheDocument();
   });
+
+  it("supports rendering as a table row and displays popover when hovering anywhere on row", async () => {
+    renderWithProviders(
+      <table>
+        <tbody>
+          <ProductHoverCard
+            as="tr"
+            collectionId="motors"
+            item={mockMotor1}
+            data-testid="row-trigger"
+          >
+            <td>Cell 1: Name</td>
+            <td data-testid="row-cell-2">Cell 2: KV</td>
+          </ProductHoverCard>
+        </tbody>
+      </table>,
+    );
+
+    const row = screen.getByTestId("product-hover-trigger");
+    expect(row.tagName).toBe("TR");
+
+    const cell2 = screen.getByTestId("row-cell-2");
+
+    // Hover over any cell in the row
+    act(() => {
+      fireEvent.mouseEnter(row, { clientX: 250, clientY: 100 });
+      fireEvent.mouseMove(cell2, { clientX: 300, clientY: 100 });
+      vi.advanceTimersByTime(250);
+    });
+
+    const card = screen.getByTestId("product-hover-card");
+    expect(card).toBeInTheDocument();
+    expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
+  });
 });

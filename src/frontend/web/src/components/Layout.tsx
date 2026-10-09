@@ -255,17 +255,13 @@ export function Layout() {
                 <li>
                   <Link
                     to="/"
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-sm font-medium ${
+                    className={`block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
                       location.pathname === "/"
                         ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400"
                         : "text-zinc-700 dark:text-zinc-300"
                     }`}
                   >
-                    <span
-                      className={`w-2 h-2 rounded-full shrink-0 ${getCollectionColor("builds").dotClass}`}
-                      aria-hidden="true"
-                    />
-                    <span>Builds Feed</span>
+                    Builds
                   </Link>
                 </li>
               </ul>

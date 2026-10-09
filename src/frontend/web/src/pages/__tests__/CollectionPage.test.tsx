@@ -330,4 +330,35 @@ describe("CollectionPage Component", () => {
       expect(locationSearch.textContent).not.toContain("columns=");
     });
   });
+
+  it("displays product hover card when hovering over any cell in the table row", async () => {
+    const { user } = renderWithProviders(
+      <Routes>
+        <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
+      </Routes>,
+      { route: "/components/hardware/motors" },
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
+    });
+
+    // Find the row triggers
+    const rowTriggers = screen.getAllByTestId("product-hover-trigger");
+    expect(rowTriggers.length).toBeGreaterThan(0);
+
+    // Hover over the first row trigger (a <tr> element)
+    await user.hover(rowTriggers[0]);
+
+    // Fast-forward or wait for hover card
+    await waitFor(
+      () => {
+        expect(screen.getByTestId("product-hover-card")).toBeInTheDocument();
+      },
+      { timeout: 1000 },
+    );
+
+    expect(screen.getByTestId("product-hover-card")).toBeInTheDocument();
+    expect(screen.getByText("Details")).toBeInTheDocument();
+  });
 });

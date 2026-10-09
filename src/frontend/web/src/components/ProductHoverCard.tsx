@@ -17,6 +17,7 @@ export interface ProductHoverCardProps {
   productId?: string;
   children: React.ReactNode;
   className?: string;
+  as?: React.ElementType;
 }
 
 export function ProductHoverCard({
@@ -25,6 +26,7 @@ export function ProductHoverCard({
   productId,
   children,
   className = "",
+  as,
 }: ProductHoverCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number; placeAbove: boolean }>({
@@ -33,8 +35,9 @@ export function ProductHoverCard({
     placeAbove: false,
   });
 
-  const triggerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const lastMousePosRef = useRef<{ clientX: number; clientY: number } | null>(null);
   const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -62,6 +65,10 @@ export function ProductHoverCard({
     const placeAbove = spaceBelow < estimatedHeight && rect.top > estimatedHeight;
 
     let left = rect.left;
+    if (as === "tr" && lastMousePosRef.current) {
+      left = lastMousePosRef.current.clientX - 40;
+    }
+
     if (left + cardWidth > window.innerWidth - 16) {
       left = window.innerWidth - cardWidth - 16;
     }
@@ -74,9 +81,10 @@ export function ProductHoverCard({
       left: left + window.scrollX,
       placeAbove,
     });
-  }, []);
+  }, [as]);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    lastMousePosRef.current = { clientX: e.clientX, clientY: e.clientY };
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
@@ -85,6 +93,10 @@ export function ProductHoverCard({
       updatePosition();
       setIsOpen(true);
     }, 200); // 200ms hover intent delay
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    lastMousePosRef.current = { clientX: e.clientX, clientY: e.clientY };
   };
 
   const handleMouseLeave = () => {
@@ -109,12 +121,16 @@ export function ProductHoverCard({
     : `components/hardware/${collectionId}`;
   const productUrl = `/${targetPath}/${product?.id || product?.uuid || productId}`;
 
+  const Component = (as || "div") as React.ElementType;
+  const combinedClassName = as ? className : `inline-block ${className}`.trim();
+
   return (
-    <div
+    <Component
       ref={triggerRef}
       onMouseEnter={handleMouseEnter}
+      onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`inline-block ${className}`}
+      className={combinedClassName}
       data-testid="product-hover-trigger"
     >
       {children}
@@ -218,6 +234,6 @@ export function ProductHoverCard({
           </div>,
           document.body,
         )}
-    </div>
+    </Component>
   );
 }

@@ -637,8 +637,11 @@ function CollectionTableView({
               </thead>
               <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                 {items.map((item: any) => (
-                  <tr
+                  <ProductHoverCard
                     key={item.id}
+                    as="tr"
+                    collectionId={collection.id}
+                    item={item}
                     className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group relative"
                   >
                     {activeColumns.map((col, idx) => (
@@ -651,15 +654,13 @@ function CollectionTableView({
                           />
                         )}
                         {col.id === "name" ? (
-                          <ProductHoverCard collectionId={collection.id} item={item}>
-                            <div className="relative z-20 inline-block">{col.renderCell(item)}</div>
-                          </ProductHoverCard>
+                          <div className="relative z-20 inline-block">{col.renderCell(item)}</div>
                         ) : (
                           col.renderCell(item)
                         )}
                       </td>
                     ))}
-                  </tr>
+                  </ProductHoverCard>
                 ))}
                 {items.length === 0 && (
                   <tr>

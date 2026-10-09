@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import { renderApp } from "../test/test-utils";
 
 describe("Full Application Navigation Flow", () => {
@@ -87,9 +87,10 @@ describe("Full Application Navigation Flow", () => {
     expect(await screen.findByText("All-Up Weight")).toBeInTheDocument();
     expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
 
-    // 13. Click "Builds Feed" in sidebar to navigate back to home
-    const buildsFeedLink = screen.getByRole("link", { name: "Builds Feed" });
-    await user.click(buildsFeedLink);
+    // 13. Click "Builds" in sidebar to navigate back to home
+    const sidebar = screen.getByRole("complementary");
+    const buildsLink = within(sidebar).getByRole("link", { name: "Builds" });
+    await user.click(buildsLink);
 
     expect(
       await screen.findByRole("heading", {

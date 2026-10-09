@@ -249,7 +249,7 @@ export function BuildProfilePage() {
           to="/"
           className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:underline"
         >
-          ← Return to Builds Feed
+          ← Return to Builds
         </Link>
       </div>
     );
