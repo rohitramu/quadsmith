@@ -202,6 +202,16 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const maxFlightTime = parseFloat(Math.max(1, 7.2 / Math.pow(weightRatio, 1.35)).toFixed(1));
         const minFlightTime = parseFloat((maxFlightTime / 1.9).toFixed(1));
         const flightTime = parseFloat(((minFlightTime + maxFlightTime) / 2).toFixed(1));
+
+        const maxAccelerationMps2 = parseFloat(Math.max(0, (twr - 1.0) * 9.80665).toFixed(1));
+        const fwdThrustN = (totalThrust * 0.95) / 101.97162;
+        const cdA = 0.0095 + 0.006 * payloadRatio;
+        const pitchSpeed = 61.5;
+        const denom = 0.5 * 1.225 * cdA + fwdThrustN / (pitchSpeed * pitchSpeed);
+        const topSpeedKmh = parseFloat(
+          (Math.sqrt(Math.max(0, fwdThrustN / denom)) * 3.6).toFixed(1),
+        );
+
         return {
           totalWeightG: totalWeight,
           thrustToWeightRatio: parseFloat(twr.toFixed(2)),
@@ -209,6 +219,8 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           estimatedFlightTimeMin: flightTime,
           minFlightTimeMin: minFlightTime,
           maxFlightTimeMin: maxFlightTime,
+          maxAccelerationMps2,
+          topSpeedKmh,
           warnings,
           errors,
         };

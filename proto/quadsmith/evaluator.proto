@@ -30,6 +30,12 @@ message EvaluateBuildResponse {
   // max_flight_time_min: Gentle cruising / cinematic forward flight
   float min_flight_time_min = 7;
   float max_flight_time_min = 8;
+
+  // Maximum vertical punchout acceleration in m/s^2 (meters per second squared)
+  float max_acceleration_mps2 = 9;
+
+  // Estimated terminal forward top speed in km/h (drag and pitch speed limited)
+  float top_speed_kmh = 10;
 }
 
 service EvaluatorService {

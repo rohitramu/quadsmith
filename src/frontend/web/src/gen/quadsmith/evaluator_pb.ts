@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJRChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZBIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCIu4BChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFgoOdG90YWxfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEiEKGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW4YBCABKAISEAoId2FybmluZ3MYBSADKAkSDgoGZXJyb3JzGAYgAygJEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAjJmChBFdmFsdWF0b3JTZXJ2aWNlElIKDUV2YWx1YXRlQnVpbGQSHy5xdWFkc21pdGguRXZhbHVhdGVCdWlsZFJlcXVlc3QaIC5xdWFkc21pdGguRXZhbHVhdGVCdWlsZFJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJRChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZBIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCIqQCChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFgoOdG90YWxfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEiEKGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW4YBCABKAISEAoId2FybmluZ3MYBSADKAkSDgoGZXJyb3JzGAYgAygJEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAhIdChVtYXhfYWNjZWxlcmF0aW9uX21wczIYCSABKAISFQoNdG9wX3NwZWVkX2ttaBgKIAEoAjJmChBFdmFsdWF0b3JTZXJ2aWNlElIKDUV2YWx1YXRlQnVpbGQSHy5xdWFkc21pdGguRXZhbHVhdGVCdWlsZFJlcXVlc3QaIC5xdWFkc21pdGguRXZhbHVhdGVCdWlsZFJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
     [file_build],
   );
 
@@ -95,6 +95,20 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
    * @generated from field: float max_flight_time_min = 8;
    */
   maxFlightTimeMin: number;
+
+  /**
+   * Maximum vertical punchout acceleration in m/s^2 (meters per second squared)
+   *
+   * @generated from field: float max_acceleration_mps2 = 9;
+   */
+  maxAccelerationMps2: number;
+
+  /**
+   * Estimated terminal forward top speed in km/h (drag and pitch speed limited)
+   *
+   * @generated from field: float top_speed_kmh = 10;
+   */
+  topSpeedKmh: number;
 };
 
 /**

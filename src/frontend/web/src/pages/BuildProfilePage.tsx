@@ -33,6 +33,8 @@ import {
   Camera as CameraIcon,
   Compass,
   Zap,
+  Rocket,
+  Wind,
   Plus,
   Minus,
   RefreshCw,
@@ -338,8 +340,8 @@ export function BuildProfilePage() {
         {/* Evaluation Metrics Cards */}
         {isLoadingEvaluation && !evaluation ? (
           <div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              {[1, 2, 3, 4].map((i) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div
                   key={i}
                   className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between animate-pulse"
@@ -364,7 +366,7 @@ export function BuildProfilePage() {
               isFetchingEvaluation ? "opacity-75" : "opacity-100"
             }`}
           >
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               {/* Metric 1: AUW Total Weight */}
               <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                 <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
@@ -405,7 +407,45 @@ export function BuildProfilePage() {
                 </div>
               </div>
 
-              {/* Metric 3: Hover Throttle */}
+              {/* Metric 3: Max Acceleration */}
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                  <Rocket size={14} />
+                  <span>Max Acceleration</span>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                    {evaluation.maxAccelerationMps2.toFixed(1)}
+                    <span className="text-sm font-normal text-zinc-500 ml-1">m/s²</span>
+                  </div>
+                  <div className="text-[11px] text-zinc-500 mt-1">
+                    {evaluation.maxAccelerationMps2 > 0
+                      ? `~${(evaluation.maxAccelerationMps2 / 9.80665).toFixed(1)} G vertical punchout`
+                      : "No positive climb"}
+                  </div>
+                </div>
+              </div>
+
+              {/* Metric 4: Top Speed */}
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                  <Wind size={14} />
+                  <span>Top Speed</span>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                    {Math.round(evaluation.topSpeedKmh)}
+                    <span className="text-sm font-normal text-zinc-500 ml-1">km/h</span>
+                  </div>
+                  <div className="text-[11px] text-zinc-500 mt-1">
+                    {evaluation.topSpeedKmh > 0
+                      ? `~${Math.round(evaluation.topSpeedKmh * 0.621371)} mph terminal`
+                      : "Insufficient forward thrust"}
+                  </div>
+                </div>
+              </div>
+
+              {/* Metric 5: Hover Throttle */}
               <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                 <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                   <Zap size={14} />
@@ -434,7 +474,7 @@ export function BuildProfilePage() {
                 </div>
               </div>
 
-              {/* Metric 4: Estimated Flight Time */}
+              {/* Metric 6: Estimated Flight Time */}
               <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                 <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                   <Clock size={14} />

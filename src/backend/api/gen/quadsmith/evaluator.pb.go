@@ -90,8 +90,12 @@ type EvaluateBuildResponse struct {
 	// max_flight_time_min: Gentle cruising / cinematic forward flight
 	MinFlightTimeMin float32 `protobuf:"fixed32,7,opt,name=min_flight_time_min,json=minFlightTimeMin,proto3" json:"min_flight_time_min,omitempty"`
 	MaxFlightTimeMin float32 `protobuf:"fixed32,8,opt,name=max_flight_time_min,json=maxFlightTimeMin,proto3" json:"max_flight_time_min,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Maximum vertical punchout acceleration in m/s^2 (meters per second squared)
+	MaxAccelerationMps2 float32 `protobuf:"fixed32,9,opt,name=max_acceleration_mps2,json=maxAccelerationMps2,proto3" json:"max_acceleration_mps2,omitempty"`
+	// Estimated terminal forward top speed in km/h (drag and pitch speed limited)
+	TopSpeedKmh   float32 `protobuf:"fixed32,10,opt,name=top_speed_kmh,json=topSpeedKmh,proto3" json:"top_speed_kmh,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *EvaluateBuildResponse) Reset() {
@@ -180,6 +184,20 @@ func (x *EvaluateBuildResponse) GetMaxFlightTimeMin() float32 {
 	return 0
 }
 
+func (x *EvaluateBuildResponse) GetMaxAccelerationMps2() float32 {
+	if x != nil {
+		return x.MaxAccelerationMps2
+	}
+	return 0
+}
+
+func (x *EvaluateBuildResponse) GetTopSpeedKmh() float32 {
+	if x != nil {
+		return x.TopSpeedKmh
+	}
+	return 0
+}
+
 var File_evaluator_proto protoreflect.FileDescriptor
 
 const file_evaluator_proto_rawDesc = "" +
@@ -187,7 +205,7 @@ const file_evaluator_proto_rawDesc = "" +
 	"\x0fevaluator.proto\x12\tquadsmith\x1a\vbuild.proto\"h\n" +
 	"\x14EvaluateBuildRequest\x12&\n" +
 	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12(\n" +
-	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\xf5\x02\n" +
+	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\xcd\x03\n" +
 	"\x15EvaluateBuildResponse\x12$\n" +
 	"\x0etotal_weight_g\x18\x01 \x01(\x02R\ftotalWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
@@ -196,7 +214,10 @@ const file_evaluator_proto_rawDesc = "" +
 	"\bwarnings\x18\x05 \x03(\tR\bwarnings\x12\x16\n" +
 	"\x06errors\x18\x06 \x03(\tR\x06errors\x12-\n" +
 	"\x13min_flight_time_min\x18\a \x01(\x02R\x10minFlightTimeMin\x12-\n" +
-	"\x13max_flight_time_min\x18\b \x01(\x02R\x10maxFlightTimeMin2f\n" +
+	"\x13max_flight_time_min\x18\b \x01(\x02R\x10maxFlightTimeMin\x122\n" +
+	"\x15max_acceleration_mps2\x18\t \x01(\x02R\x13maxAccelerationMps2\x12\"\n" +
+	"\rtop_speed_kmh\x18\n" +
+	" \x01(\x02R\vtopSpeedKmh2f\n" +
 	"\x10EvaluatorService\x12R\n" +
 	"\rEvaluateBuild\x12\x1f.quadsmith.EvaluateBuildRequest\x1a .quadsmith.EvaluateBuildResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 

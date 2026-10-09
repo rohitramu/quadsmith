@@ -39,12 +39,20 @@ describe("BuildProfilePage Component", () => {
       }),
     ).toBeInTheDocument();
 
-    // Check AUW, TWR, Hover Throttle, Flight Time metrics
+    // Check AUW, TWR, Max Accel, Top Speed, Hover Throttle, Flight Time metrics
     expect(await screen.findByText("All-Up Weight")).toBeInTheDocument();
     expect(await screen.findByText("566")).toBeInTheDocument(); // 565.5 rounded to 566
 
     expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
     expect(screen.getByText("6.4")).toBeInTheDocument(); // 3645 / 565.5 ~ 6.4
+
+    expect(screen.getByText("Max Acceleration")).toBeInTheDocument();
+    expect(screen.getByText("53.4")).toBeInTheDocument();
+    expect(screen.getByText(/5\.4 G vertical punchout/i)).toBeInTheDocument();
+
+    expect(screen.getByText("Top Speed")).toBeInTheDocument();
+    expect(screen.getByText("173")).toBeInTheDocument(); // 172.5 rounded to 173 km/h
+    expect(screen.getByText(/107 mph terminal/i)).toBeInTheDocument();
 
     expect(screen.getByText("Hover Throttle")).toBeInTheDocument();
     expect(screen.getByText("Est. Flight Time")).toBeInTheDocument();
@@ -142,6 +150,8 @@ describe("BuildProfilePage Component", () => {
     // Verify metric cards remain continuously mounted and present without layout collapse
     expect(screen.getByText("All-Up Weight")).toBeInTheDocument();
     expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
+    expect(screen.getByText("Max Acceleration")).toBeInTheDocument();
+    expect(screen.getByText("Top Speed")).toBeInTheDocument();
     expect(screen.getByText("Hover Throttle")).toBeInTheDocument();
     expect(screen.getByText("Est. Flight Time")).toBeInTheDocument();
   });

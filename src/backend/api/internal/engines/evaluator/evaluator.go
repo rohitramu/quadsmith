@@ -167,7 +167,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	totalWeight := baseWeight + payloadWeight
 
 	// Aerodynamic Physics Estimation
-	thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, physErrors, physWarnings := CalculatePhysics(
+	thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, maxAccelerationMps2, topSpeedKmh, physErrors, physWarnings := CalculatePhysics(
 		motor,
 		prop,
 		battery,
@@ -185,6 +185,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		EstimatedFlightTimeMin: flightTime,
 		MinFlightTimeMin:       minFlightTime,
 		MaxFlightTimeMin:       maxFlightTime,
+		MaxAccelerationMps2:    maxAccelerationMps2,
+		TopSpeedKmh:            topSpeedKmh,
 		Warnings:               warnings,
 		Errors:                 errors,
 	}
@@ -193,7 +195,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 }
 
 // CalculatePhysics computes aerodynamic static thrust, thrust-to-weight ratio,
-// hover throttle percentage, and estimated flight time range (min, max, and mixed).
+// hover throttle percentage, estimated flight time range (min, max, and mixed),
+// max vertical acceleration, and terminal top speed.
 func CalculatePhysics(
 	motor *pb.Motor,
 	prop *pb.Propeller,
@@ -201,10 +204,20 @@ func CalculatePhysics(
 	baseWeight float32,
 	payloadWeight float32,
 	maxEscAmps float32,
-) (thrustToWeight float32, hoverThrottle float32, flightTime float32, minFlightTime float32, maxFlightTime float32, errors []string, warnings []string) {
+) (
+	thrustToWeight float32,
+	hoverThrottle float32,
+	flightTime float32,
+	minFlightTime float32,
+	maxFlightTime float32,
+	maxAccelerationMps2 float32,
+	topSpeedKmh float32,
+	errors []string,
+	warnings []string,
+) {
 	if motor == nil || prop == nil || battery == nil {
 		warnings = append(warnings, "Need a Motor, Propeller, and Battery to run physics estimation")
-		return 0, 0, 0, 0, 0, errors, warnings
+		return 0, 0, 0, 0, 0, 0, 0, errors, warnings
 	}
 
 	safeBase := float64(baseWeight)
@@ -340,5 +353,38 @@ func CalculatePhysics(
 		flightTime = (minFlightTime + maxFlightTime) / 2.0
 	}
 
-	return thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, errors, warnings
+	// 9. Maximum vertical punchout acceleration (m/s^2):
+	// Under 100% throttle punchout: F_net = F_thrust - F_gravity = (TWR - 1.0) * m * g
+	// Upward vertical acceleration: a_max = (TWR - 1.0) * g (in m/s^2)
+	const gAccel = 9.80665 // m/s^2 standard gravity
+	if thrustToWeight > 1.0 {
+		maxAccelerationMps2 = (thrustToWeight - 1.0) * float32(gAccel)
+	} else {
+		maxAccelerationMps2 = 0.0
+	}
+
+	// 10. Terminal forward top speed (km/h) in high-tilt forward flight:
+	// In forward flight, propeller aerodynamic inflow unloads the motor to ~86% Kv*V.
+	// Equilibrium forward velocity balances thrust against frontal parasitic drag and induced drag:
+	// T_fwd = 0.5 * rho * CdA * V^2 + T_fwd * (V / V_pitch)^2
+	if totalThrust > 0 && propPitchMm > 0 {
+		loadedRpmFwd := float64(motor.Kv) * float64(voltage) * 0.86
+		pitchSpeedMps := (loadedRpmFwd / 60.0) * (float64(propPitchMm) / 1000.0)
+
+		cdABase := 0.005 + 0.0012*float64(diaIn)
+		cdAPayload := 0.006 * math.Min(1.0, float64(payloadWeight)/math.Max(1.0, safeBase))
+		cdA := cdABase + cdAPayload
+
+		forwardThrustN := (float64(totalThrust) * 0.95) / 101.97162
+
+		if pitchSpeedMps > 0 && forwardThrustN > 0 {
+			denom := 0.5*rho*cdA + (forwardThrustN / (pitchSpeedMps * pitchSpeedMps))
+			if denom > 0 {
+				vMps := math.Sqrt(forwardThrustN / denom)
+				topSpeedKmh = float32(vMps * 3.6)
+			}
+		}
+	}
+
+	return thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, maxAccelerationMps2, topSpeedKmh, errors, warnings
 }
