@@ -16,6 +16,7 @@ import { getReceiver } from "../gen/quadsmith/receiver-ReceiverService_connectqu
 import { getAntenna } from "../gen/quadsmith/antenna-AntennaService_connectquery";
 import { getGpsReceiver } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
 import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
+import { SystemMessageSeverity } from "../gen/quadsmith/evaluator_pb";
 import { MediaGallery } from "../components/MediaGallery";
 import { getTwrDescription } from "../lib/format";
 import {
@@ -500,40 +501,53 @@ export function BuildProfilePage() {
             </div>
 
             {/* Diagnostic Alerts / Compatibility Checks */}
-            {evaluation.errors.length > 0 && (
-              <div className="mb-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 flex items-start gap-3">
-                <AlertOctagon size={20} className="shrink-0 mt-0.5 text-red-600" />
-                <div>
-                  <div className="font-bold text-sm">Compatibility Issues Detected</div>
-                  <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
-                    {evaluation.errors.map((err, i) => (
-                      <li key={i}>{err}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
+            {(() => {
+              const errors = evaluation.systemMessages.filter(
+                (m) => m.severity === SystemMessageSeverity.ERROR,
+              );
+              const warnings = evaluation.systemMessages.filter(
+                (m) => m.severity === SystemMessageSeverity.WARNING,
+              );
 
-            {evaluation.warnings.length > 0 && (
-              <div className="mb-3 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 flex items-start gap-3">
-                <AlertTriangle size={20} className="shrink-0 mt-0.5 text-amber-600" />
-                <div>
-                  <div className="font-bold text-sm">Evaluation Warnings</div>
-                  <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
-                    {evaluation.warnings.map((warn, i) => (
-                      <li key={i}>{warn}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
+              return (
+                <>
+                  {errors.length > 0 && (
+                    <div className="mb-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 flex items-start gap-3">
+                      <AlertOctagon size={20} className="shrink-0 mt-0.5 text-red-600" />
+                      <div>
+                        <div className="font-bold text-sm">Compatibility Issues Detected</div>
+                        <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
+                          {errors.map((err, i) => (
+                            <li key={i}>{err.message}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
 
-            {evaluation.errors.length === 0 && evaluation.warnings.length === 0 && (
-              <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center gap-2.5 text-xs font-medium">
-                <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-                <span>All evaluated components are fully compatible and flight-ready.</span>
-              </div>
-            )}
+                  {warnings.length > 0 && (
+                    <div className="mb-3 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 flex items-start gap-3">
+                      <AlertTriangle size={20} className="shrink-0 mt-0.5 text-amber-600" />
+                      <div>
+                        <div className="font-bold text-sm">Evaluation Warnings</div>
+                        <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
+                          {warnings.map((warn, i) => (
+                            <li key={i}>{warn.message}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+
+                  {errors.length === 0 && warnings.length === 0 && (
+                    <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center gap-2.5 text-xs font-medium">
+                      <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                      <span>All evaluated components are fully compatible and flight-ready.</span>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
         ) : null}
       </section>

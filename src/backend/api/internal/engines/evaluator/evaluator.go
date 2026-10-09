@@ -26,15 +26,17 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	var baseWeight float32 = 0
-	var errors []string
-	var warnings []string
+	var systemMessages []*pb.SystemMessage
 
 	// 1. Fetch Frame
 	var frame *pb.Frame
 	if b.FrameUuid != "" {
 		f, err := pb.GetFrame(ctx, s.db, b.FrameUuid, nil)
 		if err != nil {
-			errors = append(errors, fmt.Sprintf("Frame not found: %s", b.FrameUuid))
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+				Message:  fmt.Sprintf("Frame not found: %s", b.FrameUuid),
+			})
 		} else {
 			frame = f
 			baseWeight += frame.WeightG
@@ -46,7 +48,10 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	if b.MotorUuid != "" {
 		m, err := pb.GetMotor(ctx, s.db, b.MotorUuid, nil)
 		if err != nil {
-			errors = append(errors, fmt.Sprintf("Motor not found: %s", b.MotorUuid))
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+				Message:  fmt.Sprintf("Motor not found: %s", b.MotorUuid),
+			})
 		} else {
 			motor = m
 			baseWeight += (motor.WeightG * 4) // Quadcopter = 4 motors
@@ -58,7 +63,10 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	if b.BatteryUuid != "" {
 		bat, err := pb.GetBattery(ctx, s.db, b.BatteryUuid, nil)
 		if err != nil {
-			errors = append(errors, fmt.Sprintf("Battery not found: %s", b.BatteryUuid))
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+				Message:  fmt.Sprintf("Battery not found: %s", b.BatteryUuid),
+			})
 		} else {
 			battery = bat
 			baseWeight += battery.WeightG
@@ -70,7 +78,10 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	if b.PropellerUuid != "" {
 		p, err := pb.GetPropeller(ctx, s.db, b.PropellerUuid, nil)
 		if err != nil {
-			errors = append(errors, fmt.Sprintf("Propeller not found: %s", b.PropellerUuid))
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+				Message:  fmt.Sprintf("Propeller not found: %s", b.PropellerUuid),
+			})
 		} else {
 			prop = p
 			baseWeight += (prop.WeightG * 4) // Quadcopter = 4 props
@@ -160,7 +171,10 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	// TODO: Implement mechanical compatibility checks (e.g. Flight Controller mounting hole spacing vs Frame mounts).
 	// TODO: Implement electrical compatibility checks (e.g. Battery Voltage vs FC max voltage, Receiver protocol vs FC UARTs).
 	if totalEscs < 4 && totalEscs > 0 {
-		errors = append(errors, fmt.Sprintf("Not enough ESCs: need 4, have %d", totalEscs))
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+			Message:  fmt.Sprintf("Not enough ESCs: need 4, have %d", totalEscs),
+		})
 	}
 
 	payloadWeight := req.Msg.GetPayloadWeightG()
@@ -175,8 +189,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		payloadWeight,
 		maxAmps,
 	)
-	errors = append(errors, phys.Errors...)
-	warnings = append(warnings, phys.Warnings...)
+	systemMessages = append(systemMessages, phys.SystemMessages...)
 
 	res := &pb.EvaluateBuildResponse{
 		TotalWeightG:           totalWeight,
@@ -188,8 +201,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		MaxFlightTimeMin:       phys.MaxFlightTimeMin,
 		MaxAccelerationMps2:    phys.MaxAccelerationMps2,
 		TopSpeedKmh:            phys.TopSpeedKmh,
-		Warnings:               warnings,
-		Errors:                 errors,
+		SystemMessages:         systemMessages,
 	}
 
 	return connect.NewResponse(res), nil
@@ -205,8 +217,27 @@ type PhysicsResult struct {
 	MaxFlightTimeMin       float32
 	MaxAccelerationMps2    float32
 	TopSpeedKmh            float32
-	Errors                 []string
-	Warnings               []string
+	SystemMessages         []*pb.SystemMessage
+}
+
+func (r PhysicsResult) Errors() []string {
+	var errs []string
+	for _, m := range r.SystemMessages {
+		if m.Severity == pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR {
+			errs = append(errs, m.Message)
+		}
+	}
+	return errs
+}
+
+func (r PhysicsResult) Warnings() []string {
+	var warns []string
+	for _, m := range r.SystemMessages {
+		if m.Severity == pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING {
+			warns = append(warns, m.Message)
+		}
+	}
+	return warns
 }
 
 // CalculatePhysics computes aerodynamic static thrust, thrust-to-weight ratio,
@@ -222,7 +253,12 @@ func CalculatePhysics(
 ) PhysicsResult {
 	if motor == nil || prop == nil || battery == nil {
 		return PhysicsResult{
-			Warnings: []string{"Need a Motor, Propeller, and Battery to run physics estimation"},
+			SystemMessages: []*pb.SystemMessage{
+				{
+					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+					Message:  "Need a Motor, Propeller, and Battery to run physics estimation",
+				},
+			},
 		}
 	}
 
@@ -235,8 +271,7 @@ func CalculatePhysics(
 		maxFlightTime       float32
 		maxAccelerationMps2 float32
 		topSpeedKmh         float32
-		errors              []string
-		warnings            []string
+		systemMessages      []*pb.SystemMessage
 	)
 
 	safeBase := float64(baseWeight)
@@ -379,9 +414,15 @@ func CalculatePhysics(
 	}
 
 	if hoverThrottle > 100.0 {
-		errors = append(errors, "Drone is too heavy to take off (Hover throttle > 100%)")
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+			Message:  "Drone is too heavy to take off (Hover throttle > 100%)",
+		})
 	} else if hoverThrottle > 50.0 {
-		warnings = append(warnings, "Drone will be very sluggish (Hover throttle > 50%)")
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+			Message:  "Drone will be very sluggish (Hover throttle > 50%)",
+		})
 	}
 
 	// Average propeller RPM at hover:
@@ -410,7 +451,10 @@ func CalculatePhysics(
 	totalCruiseAmps := cruiseWatts / nominalVoltage
 
 	if totalCruiseAmps > float32(maxEscAmps*4) && maxEscAmps > 0 {
-		warnings = append(warnings, "Cruise amps exceeds ESC continuous rating")
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+			Message:  "Cruise amps exceeds ESC continuous rating",
+		})
 	}
 
 	if totalCruiseAmps > 0 && battery.CapacityMah > 0 {
@@ -474,7 +518,10 @@ func CalculatePhysics(
 	burstAmpsPerMotor := pElecBurst / float64(voltage)
 
 	if maxEscAmps > 0 && burstAmpsPerMotor > float64(maxEscAmps)*1.25 {
-		warnings = append(warnings, fmt.Sprintf("Full-throttle current (%.1fA/motor) exceeds ESC burst rating (%.1fA)", burstAmpsPerMotor, float64(maxEscAmps)*1.25))
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+			Message:  fmt.Sprintf("Full-throttle current (%.1fA/motor) exceeds ESC burst rating (%.1fA)", burstAmpsPerMotor, float64(maxEscAmps)*1.25),
+		})
 	}
 
 	if thrustToWeight >= 1.0 && hoverRpm > 0 {
@@ -484,11 +531,17 @@ func CalculatePhysics(
 		hoverAmpsPerMotor := pElecHover / float64(nominalVoltage)
 
 		if maxEscAmps > 0 && hoverAmpsPerMotor > float64(maxEscAmps) {
-			warnings = append(warnings, fmt.Sprintf("Hover current (%.1fA/motor) exceeds ESC continuous rating (%.1fA)", hoverAmpsPerMotor, maxEscAmps))
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+				Message:  fmt.Sprintf("Hover current (%.1fA/motor) exceeds ESC continuous rating (%.1fA)", hoverAmpsPerMotor, maxEscAmps),
+			})
 		}
 
 		if motor.WeightG > 0 && pElecHover > float64(motor.WeightG)*20.0 {
-			warnings = append(warnings, fmt.Sprintf("Hover power (%.1fW/motor) exceeds motor thermal dissipation limit (%.1fW)", pElecHover, float64(motor.WeightG)*20.0))
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+				Message:  fmt.Sprintf("Hover power (%.1fW/motor) exceeds motor thermal dissipation limit (%.1fW)", pElecHover, float64(motor.WeightG)*20.0),
+			})
 		}
 	}
 
@@ -501,7 +554,6 @@ func CalculatePhysics(
 		MaxFlightTimeMin:       maxFlightTime,
 		MaxAccelerationMps2:    maxAccelerationMps2,
 		TopSpeedKmh:            topSpeedKmh,
-		Errors:                 errors,
-		Warnings:               warnings,
+		SystemMessages:         systemMessages,
 	}
 }

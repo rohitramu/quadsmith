@@ -364,7 +364,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0], Columns: columns}\n", tsName)
 		fmt.Fprintf(f, "\t\t\tres, err := %s.Get%s(context.Background(), connect.NewRequest(req))\n", clientVar, tsName)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
-		fmt.Fprintf(f, "\t\t\treturn printOutput(cmd.OutOrStdout(), res.Msg, columns)\n")
+		fmt.Fprintf(f, "\t\t\treturn printGetOutput(cmd.OutOrStdout(), res.Msg, columns)\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
 		fmt.Fprintf(f, "\t%s.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", getCmdVar)
@@ -548,6 +548,49 @@ func formatValue(val interface{}) string {
 		return "-"
 	}
 	return fmt.Sprintf("%v", val)
+}
+
+func printGetOutput(out io.Writer, data interface{}, cols []string) error {
+	if data == nil {
+		fmt.Fprintln(out, "No record found.")
+		return nil
+	}
+
+	b, err := dataToJSON(data)
+	if err != nil {
+		return err
+	}
+	var raw interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if len(cols) > 0 {
+		if m, ok := raw.(map[string]interface{}); ok {
+			filtered := make(map[string]interface{})
+			for _, c := range cols {
+				if val, exists := m[c]; exists {
+					filtered[c] = val
+				}
+			}
+			raw = filtered
+		}
+	}
+
+	if jsonOut {
+		indented, err := json.MarshalIndent(raw, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Fprintln(out, string(indented))
+		return nil
+	}
+
+	yb, err := yaml.Marshal(raw)
+	if err != nil {
+		return err
+	}
+	fmt.Fprint(out, string(yb))
+	return nil
 }
 
 func printOutput(out io.Writer, data interface{}, cols []string, startOffset ...int) error {

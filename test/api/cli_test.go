@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 )
@@ -134,5 +135,50 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	if _, ok := eval["hover_rpm"]; !ok {
 		t.Errorf("Expected hover_rpm in evaluation response, got: %v", eval)
 	}
+	if _, ok := eval["system_messages"]; !ok {
+		t.Errorf("Expected system_messages in evaluation response, got: %v", eval)
+	}
 	t.Logf("CLI returned evaluation: %v", eval)
+}
+
+func TestCLI_BuildsGet(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	qsPath := resolveQSPath(t)
+
+	// 1. Test YAML output by default
+	cmdYAML := exec.Command(qsPath, "builds", "get", "bando-basher-5-inch")
+	cmdYAML.Env = append(cmdYAML.Env, "QS_API_URL="+apiUrl)
+	var stdoutYAML, stderrYAML bytes.Buffer
+	cmdYAML.Stdout = &stdoutYAML
+	cmdYAML.Stderr = &stderrYAML
+	if err := cmdYAML.Run(); err != nil {
+		t.Fatalf("CLI builds get failed: %v\nStderr: %s", err, stderrYAML.String())
+	}
+	outputYAML := stdoutYAML.String()
+	if !strings.Contains(outputYAML, "id: bando-basher-5-inch") {
+		t.Errorf("Expected YAML output with 'id: bando-basher-5-inch', got:\n%s", outputYAML)
+	}
+
+	// 2. Test --json flag
+	cmdJSON := exec.Command(qsPath, "builds", "get", "bando-basher-5-inch", "--json")
+	cmdJSON.Env = append(cmdJSON.Env, "QS_API_URL="+apiUrl)
+	var stdoutJSON, stderrJSON bytes.Buffer
+	cmdJSON.Stdout = &stdoutJSON
+	cmdJSON.Stderr = &stderrJSON
+	if err := cmdJSON.Run(); err != nil {
+		t.Fatalf("CLI builds get --json failed: %v\nStderr: %s", err, stderrJSON.String())
+	}
+	var resJSON map[string]interface{}
+	if err := json.Unmarshal(stdoutJSON.Bytes(), &resJSON); err != nil {
+		t.Fatalf("Failed to parse JSON output: %v\nOutput: %s", err, stdoutJSON.String())
+	}
+	if resJSON["id"] != "bando-basher-5-inch" {
+		t.Errorf("Expected id == 'bando-basher-5-inch', got: %v", resJSON["id"])
+	}
 }

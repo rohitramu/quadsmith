@@ -202,7 +202,7 @@ func TestGet_YAML(t *testing.T) {
 	}
 }
 
-func TestGet_Table(t *testing.T) {
+func TestGet_DefaultYAML(t *testing.T) {
 	mock := &mockMotorService{
 		getMotorFunc: func(ctx context.Context, req *connect.Request[pb.GetMotorRequest]) (*connect.Response[pb.Motor], error) {
 			return connect.NewResponse(&pb.Motor{
@@ -224,9 +224,12 @@ func TestGet_Table(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	output := outBuf.String()
-	if !strings.Contains(output, "motor-table") || !strings.Contains(output, "Table Motor") {
-		t.Errorf("expected table output to contain motor-table and Table Motor, got:\n%s", output)
+	var res map[string]interface{}
+	if err := yaml.Unmarshal(outBuf.Bytes(), &res); err != nil {
+		t.Fatalf("expected valid YAML by default, got: %v\nOutput:\n%s", err, outBuf.String())
+	}
+	if res["id"] != "motor-table" || res["name"] != "Table Motor" {
+		t.Errorf("expected motor-table and Table Motor, got: %+v", res)
 	}
 }
 
@@ -659,7 +662,12 @@ func TestEvaluate_Success(t *testing.T) {
 				HoverThrottlePercent:   28.4,
 				ThrustToWeightRatio:    7.2,
 				EstimatedFlightTimeMin: 6.5,
-				Warnings:               []string{"High KV for battery voltage"},
+				SystemMessages: []*pb.SystemMessage{
+					{
+						Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+						Message:  "High KV for battery voltage",
+					},
+				},
 			}), nil
 		},
 	}
@@ -683,8 +691,8 @@ func TestEvaluate_Success(t *testing.T) {
 		t.Fatalf("failed to unmarshal JSON: %v\nOutput: %s", err, outBuf.String())
 	}
 
-	if res["warnings"] == nil {
-		t.Errorf("expected warnings in output: %+v", res)
+	if res["system_messages"] == nil {
+		t.Errorf("expected system_messages in output: %+v", res)
 	}
 }
 

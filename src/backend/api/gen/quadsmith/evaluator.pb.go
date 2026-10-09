@@ -21,6 +21,110 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type SystemMessageSeverity int32
+
+const (
+	SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED SystemMessageSeverity = 0
+	SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_INFO        SystemMessageSeverity = 1
+	SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING     SystemMessageSeverity = 2
+	SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR       SystemMessageSeverity = 3
+)
+
+// Enum value maps for SystemMessageSeverity.
+var (
+	SystemMessageSeverity_name = map[int32]string{
+		0: "SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED",
+		1: "SYSTEM_MESSAGE_SEVERITY_INFO",
+		2: "SYSTEM_MESSAGE_SEVERITY_WARNING",
+		3: "SYSTEM_MESSAGE_SEVERITY_ERROR",
+	}
+	SystemMessageSeverity_value = map[string]int32{
+		"SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED": 0,
+		"SYSTEM_MESSAGE_SEVERITY_INFO":        1,
+		"SYSTEM_MESSAGE_SEVERITY_WARNING":     2,
+		"SYSTEM_MESSAGE_SEVERITY_ERROR":       3,
+	}
+)
+
+func (x SystemMessageSeverity) Enum() *SystemMessageSeverity {
+	p := new(SystemMessageSeverity)
+	*p = x
+	return p
+}
+
+func (x SystemMessageSeverity) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SystemMessageSeverity) Descriptor() protoreflect.EnumDescriptor {
+	return file_evaluator_proto_enumTypes[0].Descriptor()
+}
+
+func (SystemMessageSeverity) Type() protoreflect.EnumType {
+	return &file_evaluator_proto_enumTypes[0]
+}
+
+func (x SystemMessageSeverity) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SystemMessageSeverity.Descriptor instead.
+func (SystemMessageSeverity) EnumDescriptor() ([]byte, []int) {
+	return file_evaluator_proto_rawDescGZIP(), []int{0}
+}
+
+type SystemMessage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Severity      SystemMessageSeverity  `protobuf:"varint,1,opt,name=severity,proto3,enum=quadsmith.SystemMessageSeverity" json:"severity,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SystemMessage) Reset() {
+	*x = SystemMessage{}
+	mi := &file_evaluator_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SystemMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SystemMessage) ProtoMessage() {}
+
+func (x *SystemMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_evaluator_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SystemMessage.ProtoReflect.Descriptor instead.
+func (*SystemMessage) Descriptor() ([]byte, []int) {
+	return file_evaluator_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *SystemMessage) GetSeverity() SystemMessageSeverity {
+	if x != nil {
+		return x.Severity
+	}
+	return SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED
+}
+
+func (x *SystemMessage) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 type EvaluateBuildRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// A complete or partial Build object. The backend will look up the referenced
@@ -33,7 +137,7 @@ type EvaluateBuildRequest struct {
 
 func (x *EvaluateBuildRequest) Reset() {
 	*x = EvaluateBuildRequest{}
-	mi := &file_evaluator_proto_msgTypes[0]
+	mi := &file_evaluator_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +149,7 @@ func (x *EvaluateBuildRequest) String() string {
 func (*EvaluateBuildRequest) ProtoMessage() {}
 
 func (x *EvaluateBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_evaluator_proto_msgTypes[0]
+	mi := &file_evaluator_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +162,7 @@ func (x *EvaluateBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EvaluateBuildRequest.ProtoReflect.Descriptor instead.
 func (*EvaluateBuildRequest) Descriptor() ([]byte, []int) {
-	return file_evaluator_proto_rawDescGZIP(), []int{0}
+	return file_evaluator_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *EvaluateBuildRequest) GetBuild() *Build {
@@ -81,10 +185,6 @@ type EvaluateBuildResponse struct {
 	HoverThrottlePercent   float32                `protobuf:"fixed32,2,opt,name=hover_throttle_percent,json=hoverThrottlePercent,proto3" json:"hover_throttle_percent,omitempty"`
 	ThrustToWeightRatio    float32                `protobuf:"fixed32,3,opt,name=thrust_to_weight_ratio,json=thrustToWeightRatio,proto3" json:"thrust_to_weight_ratio,omitempty"`
 	EstimatedFlightTimeMin float32                `protobuf:"fixed32,4,opt,name=estimated_flight_time_min,json=estimatedFlightTimeMin,proto3" json:"estimated_flight_time_min,omitempty"`
-	// Non-blocking issues (e.g. "Motors might overheat on 6S")
-	Warnings []string `protobuf:"bytes,5,rep,name=warnings,proto3" json:"warnings,omitempty"`
-	// Blocking compatibility issues (e.g. "ESC is 4S max but Battery is 6S")
-	Errors []string `protobuf:"bytes,6,rep,name=errors,proto3" json:"errors,omitempty"`
 	// Flight time range (minutes) based on flight aggression:
 	// min_flight_time_min: Aggressive freestyle / acro / sustained punchouts
 	// max_flight_time_min: Gentle cruising / cinematic forward flight
@@ -95,14 +195,16 @@ type EvaluateBuildResponse struct {
 	// Estimated terminal forward top speed in km/h (drag and pitch speed limited)
 	TopSpeedKmh float32 `protobuf:"fixed32,10,opt,name=top_speed_kmh,json=topSpeedKmh,proto3" json:"top_speed_kmh,omitempty"`
 	// Average propeller RPM at hover under standard conditions (sea-level, no wind)
-	HoverRpm      uint32 `protobuf:"varint,11,opt,name=hover_rpm,json=hoverRpm,proto3" json:"hover_rpm,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	HoverRpm uint32 `protobuf:"varint,11,opt,name=hover_rpm,json=hoverRpm,proto3" json:"hover_rpm,omitempty"`
+	// System diagnostic messages (errors, warnings, and informational notices)
+	SystemMessages []*SystemMessage `protobuf:"bytes,12,rep,name=system_messages,json=systemMessages,proto3" json:"system_messages,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *EvaluateBuildResponse) Reset() {
 	*x = EvaluateBuildResponse{}
-	mi := &file_evaluator_proto_msgTypes[1]
+	mi := &file_evaluator_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -114,7 +216,7 @@ func (x *EvaluateBuildResponse) String() string {
 func (*EvaluateBuildResponse) ProtoMessage() {}
 
 func (x *EvaluateBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_evaluator_proto_msgTypes[1]
+	mi := &file_evaluator_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -127,7 +229,7 @@ func (x *EvaluateBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EvaluateBuildResponse.ProtoReflect.Descriptor instead.
 func (*EvaluateBuildResponse) Descriptor() ([]byte, []int) {
-	return file_evaluator_proto_rawDescGZIP(), []int{1}
+	return file_evaluator_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *EvaluateBuildResponse) GetTotalWeightG() float32 {
@@ -156,20 +258,6 @@ func (x *EvaluateBuildResponse) GetEstimatedFlightTimeMin() float32 {
 		return x.EstimatedFlightTimeMin
 	}
 	return 0
-}
-
-func (x *EvaluateBuildResponse) GetWarnings() []string {
-	if x != nil {
-		return x.Warnings
-	}
-	return nil
-}
-
-func (x *EvaluateBuildResponse) GetErrors() []string {
-	if x != nil {
-		return x.Errors
-	}
-	return nil
 }
 
 func (x *EvaluateBuildResponse) GetMinFlightTimeMin() float32 {
@@ -207,27 +295,41 @@ func (x *EvaluateBuildResponse) GetHoverRpm() uint32 {
 	return 0
 }
 
+func (x *EvaluateBuildResponse) GetSystemMessages() []*SystemMessage {
+	if x != nil {
+		return x.SystemMessages
+	}
+	return nil
+}
+
 var File_evaluator_proto protoreflect.FileDescriptor
 
 const file_evaluator_proto_rawDesc = "" +
 	"\n" +
-	"\x0fevaluator.proto\x12\tquadsmith\x1a\vbuild.proto\"h\n" +
+	"\x0fevaluator.proto\x12\tquadsmith\x1a\vbuild.proto\"g\n" +
+	"\rSystemMessage\x12<\n" +
+	"\bseverity\x18\x01 \x01(\x0e2 .quadsmith.SystemMessageSeverityR\bseverity\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"h\n" +
 	"\x14EvaluateBuildRequest\x12&\n" +
 	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12(\n" +
-	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\xea\x03\n" +
+	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\x97\x04\n" +
 	"\x15EvaluateBuildResponse\x12$\n" +
 	"\x0etotal_weight_g\x18\x01 \x01(\x02R\ftotalWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
 	"\x16thrust_to_weight_ratio\x18\x03 \x01(\x02R\x13thrustToWeightRatio\x129\n" +
-	"\x19estimated_flight_time_min\x18\x04 \x01(\x02R\x16estimatedFlightTimeMin\x12\x1a\n" +
-	"\bwarnings\x18\x05 \x03(\tR\bwarnings\x12\x16\n" +
-	"\x06errors\x18\x06 \x03(\tR\x06errors\x12-\n" +
+	"\x19estimated_flight_time_min\x18\x04 \x01(\x02R\x16estimatedFlightTimeMin\x12-\n" +
 	"\x13min_flight_time_min\x18\a \x01(\x02R\x10minFlightTimeMin\x12-\n" +
 	"\x13max_flight_time_min\x18\b \x01(\x02R\x10maxFlightTimeMin\x122\n" +
 	"\x15max_acceleration_mps2\x18\t \x01(\x02R\x13maxAccelerationMps2\x12\"\n" +
 	"\rtop_speed_kmh\x18\n" +
 	" \x01(\x02R\vtopSpeedKmh\x12\x1b\n" +
-	"\thover_rpm\x18\v \x01(\rR\bhoverRpm2f\n" +
+	"\thover_rpm\x18\v \x01(\rR\bhoverRpm\x12A\n" +
+	"\x0fsystem_messages\x18\f \x03(\v2\x18.quadsmith.SystemMessageR\x0esystemMessagesJ\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\bwarningsR\x06errors*\xaa\x01\n" +
+	"\x15SystemMessageSeverity\x12'\n" +
+	"#SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED\x10\x00\x12 \n" +
+	"\x1cSYSTEM_MESSAGE_SEVERITY_INFO\x10\x01\x12#\n" +
+	"\x1fSYSTEM_MESSAGE_SEVERITY_WARNING\x10\x02\x12!\n" +
+	"\x1dSYSTEM_MESSAGE_SEVERITY_ERROR\x10\x032f\n" +
 	"\x10EvaluatorService\x12R\n" +
 	"\rEvaluateBuild\x12\x1f.quadsmith.EvaluateBuildRequest\x1a .quadsmith.EvaluateBuildResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
@@ -243,21 +345,26 @@ func file_evaluator_proto_rawDescGZIP() []byte {
 	return file_evaluator_proto_rawDescData
 }
 
-var file_evaluator_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_evaluator_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_evaluator_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_evaluator_proto_goTypes = []any{
-	(*EvaluateBuildRequest)(nil),  // 0: quadsmith.EvaluateBuildRequest
-	(*EvaluateBuildResponse)(nil), // 1: quadsmith.EvaluateBuildResponse
-	(*Build)(nil),                 // 2: quadsmith.Build
+	(SystemMessageSeverity)(0),    // 0: quadsmith.SystemMessageSeverity
+	(*SystemMessage)(nil),         // 1: quadsmith.SystemMessage
+	(*EvaluateBuildRequest)(nil),  // 2: quadsmith.EvaluateBuildRequest
+	(*EvaluateBuildResponse)(nil), // 3: quadsmith.EvaluateBuildResponse
+	(*Build)(nil),                 // 4: quadsmith.Build
 }
 var file_evaluator_proto_depIdxs = []int32{
-	2, // 0: quadsmith.EvaluateBuildRequest.build:type_name -> quadsmith.Build
-	0, // 1: quadsmith.EvaluatorService.EvaluateBuild:input_type -> quadsmith.EvaluateBuildRequest
-	1, // 2: quadsmith.EvaluatorService.EvaluateBuild:output_type -> quadsmith.EvaluateBuildResponse
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // 0: quadsmith.SystemMessage.severity:type_name -> quadsmith.SystemMessageSeverity
+	4, // 1: quadsmith.EvaluateBuildRequest.build:type_name -> quadsmith.Build
+	1, // 2: quadsmith.EvaluateBuildResponse.system_messages:type_name -> quadsmith.SystemMessage
+	2, // 3: quadsmith.EvaluatorService.EvaluateBuild:input_type -> quadsmith.EvaluateBuildRequest
+	3, // 4: quadsmith.EvaluatorService.EvaluateBuild:output_type -> quadsmith.EvaluateBuildResponse
+	4, // [4:5] is the sub-list for method output_type
+	3, // [3:4] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_evaluator_proto_init() }
@@ -271,13 +378,14 @@ func file_evaluator_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_evaluator_proto_rawDesc), len(file_evaluator_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   2,
+			NumEnums:      1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_evaluator_proto_goTypes,
 		DependencyIndexes: file_evaluator_proto_depIdxs,
+		EnumInfos:         file_evaluator_proto_enumTypes,
 		MessageInfos:      file_evaluator_proto_msgTypes,
 	}.Build()
 	File_evaluator_proto = out.File

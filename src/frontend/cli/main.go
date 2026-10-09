@@ -196,7 +196,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	antennaGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -356,7 +356,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	batteryGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -516,7 +516,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	buildGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -676,7 +676,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	cameraGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -836,7 +836,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	electronicSpeedControllerGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -996,7 +996,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	flightControllerGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1156,7 +1156,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	frameGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1316,7 +1316,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	gpsReceiverGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1476,7 +1476,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	motorGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1636,7 +1636,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	propellerGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1796,7 +1796,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	receiverGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -1956,7 +1956,7 @@ func newRootCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return printOutput(cmd.OutOrStdout(), res.Msg, columns)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, columns)
 		},
 	}
 	videoTransmitterGetCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
@@ -2143,6 +2143,49 @@ func formatValue(val interface{}) string {
 		return "-"
 	}
 	return fmt.Sprintf("%v", val)
+}
+
+func printGetOutput(out io.Writer, data interface{}, cols []string) error {
+	if data == nil {
+		fmt.Fprintln(out, "No record found.")
+		return nil
+	}
+
+	b, err := dataToJSON(data)
+	if err != nil {
+		return err
+	}
+	var raw interface{}
+	if err := json.Unmarshal(b, &raw); err != nil {
+		return err
+	}
+	if len(cols) > 0 {
+		if m, ok := raw.(map[string]interface{}); ok {
+			filtered := make(map[string]interface{})
+			for _, c := range cols {
+				if val, exists := m[c]; exists {
+					filtered[c] = val
+				}
+			}
+			raw = filtered
+		}
+	}
+
+	if jsonOut {
+		indented, err := json.MarshalIndent(raw, "", "  ")
+		if err != nil {
+			return err
+		}
+		fmt.Fprintln(out, string(indented))
+		return nil
+	}
+
+	yb, err := yaml.Marshal(raw)
+	if err != nil {
+		return err
+	}
+	fmt.Fprint(out, string(yb))
+	return nil
 }
 
 func printOutput(out io.Writer, data interface{}, cols []string, startOffset ...int) error {

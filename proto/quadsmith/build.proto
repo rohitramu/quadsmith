@@ -21,8 +21,7 @@ message Build {
   option (quadsmith.frontend) = {
     default_columns: [
       "id",
-      "name",
-      "description"
+      "name"
     ]
   };
 

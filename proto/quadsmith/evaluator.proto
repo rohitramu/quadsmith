@@ -6,6 +6,18 @@ import "build.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 
+enum SystemMessageSeverity {
+  SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED = 0;
+  SYSTEM_MESSAGE_SEVERITY_INFO = 1;
+  SYSTEM_MESSAGE_SEVERITY_WARNING = 2;
+  SYSTEM_MESSAGE_SEVERITY_ERROR = 3;
+}
+
+message SystemMessage {
+  SystemMessageSeverity severity = 1;
+  string message = 2;
+}
+
 message EvaluateBuildRequest {
   // A complete or partial Build object. The backend will look up the referenced
   // UUIDs/IDs to fetch the actual components for evaluation.
@@ -18,12 +30,6 @@ message EvaluateBuildResponse {
   float hover_throttle_percent = 2;
   float thrust_to_weight_ratio = 3;
   float estimated_flight_time_min = 4;
-
-  // Non-blocking issues (e.g. "Motors might overheat on 6S")
-  repeated string warnings = 5;
-
-  // Blocking compatibility issues (e.g. "ESC is 4S max but Battery is 6S")
-  repeated string errors = 6;
 
   // Flight time range (minutes) based on flight aggression:
   // min_flight_time_min: Aggressive freestyle / acro / sustained punchouts
@@ -39,6 +45,12 @@ message EvaluateBuildResponse {
 
   // Average propeller RPM at hover under standard conditions (sea-level, no wind)
   uint32 hover_rpm = 11;
+
+  // System diagnostic messages (errors, warnings, and informational notices)
+  repeated SystemMessage system_messages = 12;
+
+  reserved 5, 6;
+  reserved "warnings", "errors";
 }
 
 service EvaluatorService {

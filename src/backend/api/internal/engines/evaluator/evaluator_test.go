@@ -31,11 +31,11 @@ func TestEvaluatePhysics_5InchFreestyle(t *testing.T) {
 
 	res := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, maxEscAmps)
 
-	if len(res.Errors) > 0 {
-		t.Fatalf("Unexpected physics errors: %v", res.Errors)
+	if len(res.Errors()) > 0 {
+		t.Fatalf("Unexpected physics errors: %v", res.Errors())
 	}
-	if len(res.Warnings) > 0 {
-		t.Fatalf("Unexpected physics warnings: %v", res.Warnings)
+	if len(res.Warnings()) > 0 {
+		t.Fatalf("Unexpected physics warnings: %v", res.Warnings())
 	}
 
 	// 5-inch 6S freestyle drone should have realistic TWR between 5.5:1 and 7.5:1
@@ -179,8 +179,8 @@ func TestEvaluatePhysics_ToothpickPayloadConsistency(t *testing.T) {
 	if res0.HoverRpm < 13000 || res0.HoverRpm > 22000 {
 		t.Errorf("Expected bare toothpick hover RPM between 13,000 and 22,000, got %d", res0.HoverRpm)
 	}
-	if len(res0.Errors) > 0 {
-		t.Errorf("Unexpected errors for bare toothpick: %v", res0.Errors)
+	if len(res0.Errors()) > 0 {
+		t.Errorf("Unexpected errors for bare toothpick: %v", res0.Errors())
 	}
 
 	// 2. Toothpick with +200g heavy payload (TWR ~1.8 > 1.0)
@@ -195,10 +195,10 @@ func TestEvaluatePhysics_ToothpickPayloadConsistency(t *testing.T) {
 	if res200.HoverRpm <= res0.HoverRpm {
 		t.Errorf("Expected hover RPM with 200g payload (%d) > bare (%d)", res200.HoverRpm, res0.HoverRpm)
 	}
-	if len(res200.Errors) > 0 {
-		t.Errorf("Expected no 'too heavy to take off' error when TWR > 1.0, got: %v", res200.Errors)
+	if len(res200.Errors()) > 0 {
+		t.Errorf("Expected no 'too heavy to take off' error when TWR > 1.0, got: %v", res200.Errors())
 	}
-	if len(res200.Warnings) == 0 {
+	if len(res200.Warnings()) == 0 {
 		t.Errorf("Expected sluggish warning for +200g payload on 139g toothpick, got none")
 	}
 
@@ -217,7 +217,7 @@ func TestEvaluatePhysics_ToothpickPayloadConsistency(t *testing.T) {
 	if resOver.HoverThrottlePercent < 100.0 {
 		t.Errorf("Hover throttle must be >= 100%% when TWR < 1.0, got %.1f%%", resOver.HoverThrottlePercent)
 	}
-	if len(resOver.Errors) == 0 {
+	if len(resOver.Errors()) == 0 {
 		t.Errorf("Expected takeoff error for overloaded toothpick, got none")
 	}
 }
@@ -245,11 +245,11 @@ func TestEvaluatePhysics_7InchLongRange(t *testing.T) {
 
 	res := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
 
-	if len(res.Errors) > 0 {
-		t.Fatalf("Unexpected errors: %v", res.Errors)
+	if len(res.Errors()) > 0 {
+		t.Fatalf("Unexpected errors: %v", res.Errors())
 	}
-	if len(res.Warnings) > 0 {
-		t.Fatalf("Unexpected warnings: %v", res.Warnings)
+	if len(res.Warnings()) > 0 {
+		t.Fatalf("Unexpected warnings: %v", res.Warnings())
 	}
 
 	// 7-inch cruiser should have TWR ~3.8 - 5.5
@@ -318,7 +318,7 @@ func TestEvaluatePhysics_OverloadedDrone(t *testing.T) {
 	if res.HoverThrottlePercent < 100.0 {
 		t.Errorf("Expected hover throttle >= 100%% for overloaded drone, got %.1f%%", res.HoverThrottlePercent)
 	}
-	if len(res.Errors) == 0 {
+	if len(res.Errors()) == 0 {
 		t.Errorf("Expected 'too heavy to take off' error, got none")
 	}
 }
@@ -348,20 +348,20 @@ func TestEvaluatePhysics_SluggishWarning(t *testing.T) {
 		t.Errorf("Expected hover throttle > 50%%, got %.1f%%", res.HoverThrottlePercent)
 	}
 	foundSluggish := false
-	for _, w := range res.Warnings {
+	for _, w := range res.Warnings() {
 		if w == "Drone will be very sluggish (Hover throttle > 50%)" {
 			foundSluggish = true
 			break
 		}
 	}
 	if !foundSluggish {
-		t.Errorf("Expected sluggish warning, got %v", res.Warnings)
+		t.Errorf("Expected sluggish warning, got %v", res.Warnings())
 	}
 }
 
 func TestEvaluatePhysics_MissingInputs(t *testing.T) {
 	res := CalculatePhysics(nil, nil, nil, 500, 0, 40)
-	if len(res.Warnings) == 0 {
+	if len(res.Warnings()) == 0 {
 		t.Errorf("Expected missing components warning, got none")
 	}
 }
@@ -411,14 +411,14 @@ func TestEvaluatePhysics_ToothpickExtremeOverload(t *testing.T) {
 
 	// Must report takeoff error
 	foundTakeoffError := false
-	for _, e := range res.Errors {
+	for _, e := range res.Errors() {
 		if e == "Drone is too heavy to take off (Hover throttle > 100%)" {
 			foundTakeoffError = true
 			break
 		}
 	}
 	if !foundTakeoffError {
-		t.Errorf("Expected takeoff error, got %v", res.Errors)
+		t.Errorf("Expected takeoff error, got %v", res.Errors())
 	}
 
 	// Max acceleration and top speed must be 0
@@ -455,13 +455,13 @@ func TestEvaluatePhysics_ElectricalWarnings(t *testing.T) {
 	res := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
 
 	foundEscWarning := false
-	for _, w := range res.Warnings {
+	for _, w := range res.Warnings() {
 		if strings.Contains(w, "exceeds ESC burst rating") {
 			foundEscWarning = true
 			break
 		}
 	}
 	if !foundEscWarning {
-		t.Errorf("Expected ESC burst overload warning for 5A ESC on 5-inch build, got warnings: %v", res.Warnings)
+		t.Errorf("Expected ESC burst overload warning for 5A ESC on 5-inch build, got warnings: %v", res.Warnings())
 	}
 }

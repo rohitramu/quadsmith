@@ -2,8 +2,8 @@
 // @generated from file evaluator.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Build } from "./build_pb";
 import { file_build } from "./build_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -14,9 +14,32 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJRChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZBIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCIrcCChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFgoOdG90YWxfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEiEKGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW4YBCABKAISEAoId2FybmluZ3MYBSADKAkSDgoGZXJyb3JzGAYgAygJEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAhIdChVtYXhfYWNjZWxlcmF0aW9uX21wczIYCSABKAISFQoNdG9wX3NwZWVkX2ttaBgKIAEoAhIRCglob3Zlcl9ycG0YCyABKA0yZgoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIlEKFEV2YWx1YXRlQnVpbGRSZXF1ZXN0Eh8KBWJ1aWxkGAEgASgLMhAucXVhZHNtaXRoLkJ1aWxkEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAIi5gIKFUV2YWx1YXRlQnVpbGRSZXNwb25zZRIWCg50b3RhbF93ZWlnaHRfZxgBIAEoAhIeChZob3Zlcl90aHJvdHRsZV9wZXJjZW50GAIgASgCEh4KFnRocnVzdF90b193ZWlnaHRfcmF0aW8YAyABKAISIQoZZXN0aW1hdGVkX2ZsaWdodF90aW1lX21pbhgEIAEoAhIbChNtaW5fZmxpZ2h0X3RpbWVfbWluGAcgASgCEhsKE21heF9mbGlnaHRfdGltZV9taW4YCCABKAISHQoVbWF4X2FjY2VsZXJhdGlvbl9tcHMyGAkgASgCEhUKDXRvcF9zcGVlZF9rbWgYCiABKAISEQoJaG92ZXJfcnBtGAsgASgNEjEKD3N5c3RlbV9tZXNzYWdlcxgMIAMoCzIYLnF1YWRzbWl0aC5TeXN0ZW1NZXNzYWdlSgQIBRAGSgQIBhAHUgh3YXJuaW5nc1IGZXJyb3JzKqoBChVTeXN0ZW1NZXNzYWdlU2V2ZXJpdHkSJwojU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfVU5TUEVDSUZJRUQQABIgChxTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9JTkZPEAESIwofU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfV0FSTklORxACEiEKHVNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0VSUk9SEAMyZgoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file_build],
   );
+
+/**
+ * @generated from message quadsmith.SystemMessage
+ */
+export type SystemMessage = Message<"quadsmith.SystemMessage"> & {
+  /**
+   * @generated from field: quadsmith.SystemMessageSeverity severity = 1;
+   */
+  severity: SystemMessageSeverity;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.SystemMessage.
+ * Use `create(SystemMessageSchema)` to create a new message.
+ */
+export const SystemMessageSchema: GenMessage<SystemMessage> =
+  /*@__PURE__*/
+  messageDesc(file_evaluator, 0);
 
 /**
  * @generated from message quadsmith.EvaluateBuildRequest
@@ -42,7 +65,7 @@ export type EvaluateBuildRequest = Message<"quadsmith.EvaluateBuildRequest"> & {
  */
 export const EvaluateBuildRequestSchema: GenMessage<EvaluateBuildRequest> =
   /*@__PURE__*/
-  messageDesc(file_evaluator, 0);
+  messageDesc(file_evaluator, 1);
 
 /**
  * @generated from message quadsmith.EvaluateBuildResponse
@@ -67,20 +90,6 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
    * @generated from field: float estimated_flight_time_min = 4;
    */
   estimatedFlightTimeMin: number;
-
-  /**
-   * Non-blocking issues (e.g. "Motors might overheat on 6S")
-   *
-   * @generated from field: repeated string warnings = 5;
-   */
-  warnings: string[];
-
-  /**
-   * Blocking compatibility issues (e.g. "ESC is 4S max but Battery is 6S")
-   *
-   * @generated from field: repeated string errors = 6;
-   */
-  errors: string[];
 
   /**
    * Flight time range (minutes) based on flight aggression:
@@ -116,6 +125,13 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
    * @generated from field: uint32 hover_rpm = 11;
    */
   hoverRpm: number;
+
+  /**
+   * System diagnostic messages (errors, warnings, and informational notices)
+   *
+   * @generated from field: repeated quadsmith.SystemMessage system_messages = 12;
+   */
+  systemMessages: SystemMessage[];
 };
 
 /**
@@ -124,7 +140,39 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
  */
 export const EvaluateBuildResponseSchema: GenMessage<EvaluateBuildResponse> =
   /*@__PURE__*/
-  messageDesc(file_evaluator, 1);
+  messageDesc(file_evaluator, 2);
+
+/**
+ * @generated from enum quadsmith.SystemMessageSeverity
+ */
+export enum SystemMessageSeverity {
+  /**
+   * @generated from enum value: SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: SYSTEM_MESSAGE_SEVERITY_INFO = 1;
+   */
+  INFO = 1,
+
+  /**
+   * @generated from enum value: SYSTEM_MESSAGE_SEVERITY_WARNING = 2;
+   */
+  WARNING = 2,
+
+  /**
+   * @generated from enum value: SYSTEM_MESSAGE_SEVERITY_ERROR = 3;
+   */
+  ERROR = 3,
+}
+
+/**
+ * Describes the enum quadsmith.SystemMessageSeverity.
+ */
+export const SystemMessageSeveritySchema: GenEnum<SystemMessageSeverity> =
+  /*@__PURE__*/
+  enumDesc(file_evaluator, 0);
 
 /**
  * @generated from service quadsmith.EvaluatorService
