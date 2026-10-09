@@ -250,6 +250,21 @@ export const mockAntenna1: Antenna = create(AntennaSchema, {
   description: "Omnidirectional high-gain circular polarized antenna.",
 });
 
+export const mockRxAntenna1: Antenna = create(AntennaSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000091",
+  id: "radiomaster-t-antenna-2.4ghz",
+  manufacturer: "RadioMaster",
+  name: "RadioMaster T-Antenna 2.4GHz",
+  weightG: 1.5,
+  frequencyBandMhz: 2400,
+  gainDbi: 2.0,
+  polarization: "Linear",
+  connector: "U.FL",
+  description: "Flexible T-style dipole receiver antenna for 2.4GHz receivers.",
+});
+
+export const mockAntennas: Antenna[] = [mockAntenna1, mockRxAntenna1];
+
 export const mockGps1: GpsReceiver = create(GpsReceiverSchema, {
   uuid: "018f0000-0000-7000-0000-000000000095",
   id: "matek-m8q-5883",

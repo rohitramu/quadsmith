@@ -27,12 +27,12 @@ const STAGES = [
   {
     stage: 2,
     title: "Flight Electronics",
-    subtitle: "FC, ESC & Receiver",
+    subtitle: "FC, ESC, RX, Antenna & GPS",
   },
   {
     stage: 3,
-    title: "Vision & Navigation",
-    subtitle: "VTX, Cam, Antenna, GPS (Optional)",
+    title: "Video",
+    subtitle: "VTX, Camera & Antenna (Optional)",
   },
   {
     stage: 4,

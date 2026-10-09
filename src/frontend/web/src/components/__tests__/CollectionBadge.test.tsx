@@ -47,4 +47,50 @@ describe("CollectionBadge Component", () => {
     expect(container).toHaveClass("px-2");
     expect(container).toHaveClass("py-0.5");
   });
+
+  it("renders abbreviated chip names for FC, ESC, VTX, Props, RX, and TX", () => {
+    const { unmount: u1 } = renderWithProviders(
+      <CollectionBadge collection="flight-controllers" />,
+    );
+    expect(screen.getByText("FC")).toBeInTheDocument();
+    u1();
+
+    const { unmount: u2 } = renderWithProviders(
+      <CollectionBadge collection="electronic-speed-controllers" />,
+    );
+    expect(screen.getByText("ESC")).toBeInTheDocument();
+    u2();
+
+    const { unmount: u3 } = renderWithProviders(
+      <CollectionBadge collection="video-transmitters" />,
+    );
+    expect(screen.getByText("VTX")).toBeInTheDocument();
+    u3();
+
+    const { unmount: u4 } = renderWithProviders(<CollectionBadge collection="propellers" />);
+    expect(screen.getByText("Props")).toBeInTheDocument();
+    u4();
+
+    const { unmount: u5 } = renderWithProviders(<CollectionBadge collection="receivers" />);
+    expect(screen.getByText("RX")).toBeInTheDocument();
+    u5();
+
+    const { unmount: u6 } = renderWithProviders(<CollectionBadge collection="transmitters" />);
+    expect(screen.getByText("TX")).toBeInTheDocument();
+    u6();
+  });
+
+  it("converts full collection labels to chip abbreviations", () => {
+    const { unmount: u1 } = renderWithProviders(
+      <CollectionBadge collection="flight-controllers" label="Flight Controllers" />,
+    );
+    expect(screen.getByText("FC")).toBeInTheDocument();
+    u1();
+
+    const { unmount: u2 } = renderWithProviders(
+      <CollectionBadge collection="video-transmitters" label="Video Transmitters" />,
+    );
+    expect(screen.getByText("VTX")).toBeInTheDocument();
+    u2();
+  });
 });

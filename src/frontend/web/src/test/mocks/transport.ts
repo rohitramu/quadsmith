@@ -26,7 +26,7 @@ import {
   mockCamera1,
   mockVTX1,
   mockReceivers,
-  mockAntenna1,
+  mockAntennas,
   mockGps1,
   mockBuilds,
   mockEvaluation1,
@@ -368,10 +368,11 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(AntennaService, {
-      listAntennas: () => ({ antennas: [mockAntenna1], nextPageToken: "" }),
+      listAntennas: () => ({ antennas: mockAntennas, nextPageToken: "" }),
       getAntenna: (req) => {
-        if (req.id === mockAntenna1.id || req.id === mockAntenna1.uuid) {
-          return mockAntenna1;
+        const item = mockAntennas.find((a) => a.id === req.id || a.uuid === req.id);
+        if (item) {
+          return item;
         }
         throw new ConnectError("Antenna not found", Code.NotFound);
       },

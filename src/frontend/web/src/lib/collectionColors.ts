@@ -18,6 +18,7 @@ import { VideoTransmitterSchema } from "../gen/quadsmith/video_transmitter_pb";
 export interface CollectionColorDef {
   id: string;
   name: string;
+  shortName?: string;
   colorName: string;
   hex: string;
   badgeClass: string;
@@ -243,9 +244,43 @@ export const COLOR_PRESETS_BY_HEX: Record<string, ColorStylePreset> = {
   },
 };
 
+export const COLLECTION_SHORT_NAMES: Record<string, string> = {
+  "flight-controllers": "FC",
+  "flight controllers": "FC",
+  "flight-controller": "FC",
+  "flight controller": "FC",
+  fc: "FC",
+  fcs: "FC",
+  "electronic-speed-controllers": "ESC",
+  "electronic speed controllers": "ESC",
+  "electronic-speed-controller": "ESC",
+  "electronic speed controller": "ESC",
+  esc: "ESC",
+  escs: "ESC",
+  "video-transmitters": "VTX",
+  "video transmitters": "VTX",
+  "video-transmitter": "VTX",
+  "video transmitter": "VTX",
+  vtx: "VTX",
+  vtxs: "VTX",
+  propellers: "Props",
+  propeller: "Props",
+  props: "Props",
+  prop: "Props",
+  receivers: "RX",
+  receiver: "RX",
+  rx: "RX",
+  rxs: "RX",
+  transmitters: "TX",
+  transmitter: "TX",
+  tx: "TX",
+  txs: "TX",
+};
+
 export const DEFAULT_COLLECTION_COLOR: CollectionColorDef = {
   id: "default",
   name: "Collection",
+  shortName: "Collection",
   ...COLOR_PRESETS_BY_HEX["#64748b"],
 };
 
@@ -263,9 +298,11 @@ export function getCollectionColorByCode(
     normalizedHex = "#" + normalizedHex;
   }
   const preset = COLOR_PRESETS_BY_HEX[normalizedHex] || COLOR_PRESETS_BY_HEX["#64748b"];
+  const shortName = COLLECTION_SHORT_NAMES[id] || COLLECTION_SHORT_NAMES[name] || name;
   return {
     id,
     name,
+    shortName,
     colorName: preset.colorName,
     hex: preset.hex,
     badgeClass: preset.badgeClass,
@@ -433,6 +470,12 @@ export function normalizeCollectionKey(raw?: string | null): string {
     case "videotransmitters":
       return "video-transmitters";
 
+    case "tx":
+    case "txs":
+    case "transmitter":
+    case "transmitters":
+      return "transmitters";
+
     default:
       return clean;
   }
@@ -443,6 +486,14 @@ export function normalizeCollectionKey(raw?: string | null): string {
  */
 export function getCollectionColor(rawKey?: string | null): CollectionColorDef {
   const normalized = normalizeCollectionKey(rawKey);
+  if (normalized === "transmitters") {
+    return {
+      id: "transmitters",
+      name: "Transmitters",
+      shortName: "TX",
+      ...COLOR_PRESETS_BY_HEX["#0ea5e9"],
+    };
+  }
   if (normalized && COLLECTION_COLORS[normalized]) {
     return COLLECTION_COLORS[normalized];
   }

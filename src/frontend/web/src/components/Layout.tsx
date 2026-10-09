@@ -9,6 +9,7 @@ import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollecti
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
 import { CollectionIcon } from "./CollectionIcon";
+import { EllipsisHint } from "./EllipsisHint";
 
 export function Layout() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
@@ -359,6 +360,9 @@ export function Layout() {
           </div>
         </main>
       </div>
+
+      {/* Global Ellipsis Hint for all truncated text across UI */}
+      <EllipsisHint />
     </div>
   );
 }
