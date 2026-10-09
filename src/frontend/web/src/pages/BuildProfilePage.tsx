@@ -447,7 +447,7 @@ export function BuildProfilePage() {
                       : `~${evaluation.estimatedFlightTimeMin.toFixed(1)}`}
                     <span className="text-sm font-normal text-zinc-500 ml-1">min</span>
                   </div>
-                  <div className="text-[11px] text-zinc-500 mt-1">Aggressive to smooth cruise</div>
+                  <div className="text-[11px] text-zinc-500 mt-1">Depends on flight style</div>
                 </div>
               </div>
             </div>
