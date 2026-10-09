@@ -117,26 +117,33 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 		t.Errorf("expected CodeNotFound, got %v: %v", connect.CodeOf(err), err)
 	}
 
-	// 3. Build missing required component (e.g. motor) should return InvalidArgument
+	// 3. Missing build_id should return InvalidArgument
 	_, err = evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
-		Build: &pb.Build{
-			FrameUuid:            "0e04d336-1756-4612-88a9-a617635b59d4",
-			PropellerUuid:        "01923019-3002-7001-8001-000000000007",
-			FlightControllerUuid: "01923019-3006-7001-8001-000000000004",
-		},
 		BatteryId: "betafpv-lava-1s-300mah-75c-lihv",
 	}))
 	if err == nil {
-		t.Fatal("expected error when build is missing motor, got nil")
+		t.Fatal("expected error when build_id is missing, got nil")
 	}
 	if connect.CodeOf(err) != connect.CodeInvalidArgument {
 		t.Errorf("expected CodeInvalidArgument, got %v: %v", connect.CodeOf(err), err)
 	}
-	if !strings.Contains(err.Error(), "build is missing required motor") {
-		t.Errorf("expected 'build is missing required motor' error, got: %v", err)
+	if !strings.Contains(err.Error(), "build_id is required") {
+		t.Errorf("expected 'build_id is required' error, got: %v", err)
 	}
 
-	// 4. Valid build with battery evaluates successfully
+	// 4. Non-existent build should return NotFound
+	_, err = evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
+		BuildId:   "non-existent-build",
+		BatteryId: "betafpv-lava-1s-300mah-75c-lihv",
+	}))
+	if err == nil {
+		t.Fatal("expected error when build does not exist, got nil")
+	}
+	if connect.CodeOf(err) != connect.CodeNotFound {
+		t.Errorf("expected CodeNotFound, got %v: %v", connect.CodeOf(err), err)
+	}
+
+	// 5. Valid build with battery evaluates successfully
 	res, err := evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
 		BuildId:   "ultralight-toothpick",
 		BatteryId: "betafpv-lava-1s-300mah-75c-lihv",
@@ -157,7 +164,7 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 		t.Errorf("expected positive thrust_to_weight_ratio, got: %v", res.Msg.ThrustToWeightRatio)
 	}
 
-	// 5. Evaluate with payload and verify all-up weight includes the payload
+	// 6. Evaluate with payload and verify all-up weight includes the payload
 	resWithPayload, err := evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
 		BuildId:        "ultralight-toothpick",
 		BatteryId:      "betafpv-lava-1s-300mah-75c-lihv",

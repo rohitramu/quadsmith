@@ -235,7 +235,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           maxAccelerationMps2,
           topSpeedKmh,
           systemMessages,
-          buildId: req.build?.id || req.buildId || "",
+          buildId: req.buildId || "",
           payloadWeightG: payload,
           batteryId: req.batteryId || mockBattery1.id,
           minVoltage: 14.8,
@@ -253,7 +253,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           maxCurrentA: 39.4,
           defaultBatteryId:
             options.defaultBatteryId !== undefined ? options.defaultBatteryId : defaultBatteryId,
-          buildId: req.build?.id || req.buildId || "",
+          buildId: req.buildId || "",
         };
       },
     });

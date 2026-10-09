@@ -617,122 +617,134 @@ func TestEvaluateBuild_Validation(t *testing.T) {
 	s := NewEvaluatorServiceHandler(nil)
 	ctx := context.Background()
 
-	t.Run("Missing build", func(t *testing.T) {
+	t.Run("Missing build_id", func(t *testing.T) {
 		_, err := s.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{}))
 		if err == nil {
-			t.Fatal("expected error for missing build, got nil")
+			t.Fatal("expected error for missing build_id, got nil")
 		}
 		if connect.CodeOf(err) != connect.CodeInvalidArgument {
 			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
 		}
-		if !strings.Contains(err.Error(), "build is required") {
+		if !strings.Contains(err.Error(), "build_id is required") {
+			t.Errorf("expected 'build_id is required', got: %v", err)
+		}
+	})
+
+	t.Run("Build not found", func(t *testing.T) {
+		_, err := s.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
+			BuildId:   "non-existent-build",
+			BatteryId: "battery-1",
+		}))
+		if err == nil {
+			t.Fatal("expected error for non-existent build, got nil")
+		}
+		if connect.CodeOf(err) != connect.CodeNotFound {
+			t.Errorf("expected CodeNotFound, got %v", connect.CodeOf(err))
+		}
+		if !strings.Contains(err.Error(), "build not found") {
+			t.Errorf("expected 'build not found', got: %v", err)
+		}
+	})
+}
+
+func TestGetBuildElectricalLimits_Validation(t *testing.T) {
+	s := NewEvaluatorServiceHandler(nil)
+	ctx := context.Background()
+
+	t.Run("Missing build_id", func(t *testing.T) {
+		_, err := s.GetBuildElectricalLimits(ctx, connect.NewRequest(&pb.GetBuildElectricalLimitsRequest{}))
+		if err == nil {
+			t.Fatal("expected error for missing build_id, got nil")
+		}
+		if connect.CodeOf(err) != connect.CodeInvalidArgument {
+			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
+		}
+		if !strings.Contains(err.Error(), "build_id is required") {
+			t.Errorf("expected 'build_id is required', got: %v", err)
+		}
+	})
+
+	t.Run("Build not found", func(t *testing.T) {
+		_, err := s.GetBuildElectricalLimits(ctx, connect.NewRequest(&pb.GetBuildElectricalLimitsRequest{
+			BuildId: "non-existent-build",
+		}))
+		if err == nil {
+			t.Fatal("expected error for non-existent build, got nil")
+		}
+		if connect.CodeOf(err) != connect.CodeNotFound {
+			t.Errorf("expected CodeNotFound, got %v", connect.CodeOf(err))
+		}
+		if !strings.Contains(err.Error(), "build not found") {
+			t.Errorf("expected 'build not found', got: %v", err)
+		}
+	})
+}
+
+func TestValidateBuildComponents(t *testing.T) {
+	t.Run("Nil build", func(t *testing.T) {
+		err := ValidateBuildComponents(nil)
+		if err == nil || !strings.Contains(err.Error(), "build is required") {
 			t.Errorf("expected 'build is required', got: %v", err)
 		}
 	})
 
-	t.Run("Missing battery_id", func(t *testing.T) {
-		req := &pb.EvaluateBuildRequest{
-			Build: &pb.Build{
-				FrameUuid:            "frame-1",
-				MotorUuid:            "motor-1",
-				PropellerUuid:        "prop-1",
-				FlightControllerUuid: "fc-1",
-			},
-			BatteryId: "",
-		}
-		_, err := s.EvaluateBuild(ctx, connect.NewRequest(req))
-		if err == nil {
-			t.Fatal("expected error for missing battery_id, got nil")
-		}
-		if connect.CodeOf(err) != connect.CodeInvalidArgument {
-			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
-		}
-		if !strings.Contains(err.Error(), "battery_id is required") {
-			t.Errorf("expected 'battery_id is required', got: %v", err)
-		}
-	})
-
 	t.Run("Build missing frame", func(t *testing.T) {
-		req := &pb.EvaluateBuildRequest{
-			Build: &pb.Build{
-				MotorUuid:            "motor-1",
-				PropellerUuid:        "prop-1",
-				FlightControllerUuid: "fc-1",
-			},
-			BatteryId: "battery-1",
+		b := &pb.Build{
+			MotorUuid:            "motor-1",
+			PropellerUuid:        "prop-1",
+			FlightControllerUuid: "fc-1",
 		}
-		_, err := s.EvaluateBuild(ctx, connect.NewRequest(req))
-		if err == nil {
-			t.Fatal("expected error for missing frame, got nil")
-		}
-		if connect.CodeOf(err) != connect.CodeInvalidArgument {
-			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
-		}
-		if !strings.Contains(err.Error(), "build is missing required frame") {
+		err := ValidateBuildComponents(b)
+		if err == nil || !strings.Contains(err.Error(), "build is missing required frame") {
 			t.Errorf("expected 'build is missing required frame', got: %v", err)
 		}
 	})
 
 	t.Run("Build missing motor", func(t *testing.T) {
-		req := &pb.EvaluateBuildRequest{
-			Build: &pb.Build{
-				FrameUuid:            "frame-1",
-				PropellerUuid:        "prop-1",
-				FlightControllerUuid: "fc-1",
-			},
-			BatteryId: "battery-1",
+		b := &pb.Build{
+			FrameUuid:            "frame-1",
+			PropellerUuid:        "prop-1",
+			FlightControllerUuid: "fc-1",
 		}
-		_, err := s.EvaluateBuild(ctx, connect.NewRequest(req))
-		if err == nil {
-			t.Fatal("expected error for missing motor, got nil")
-		}
-		if connect.CodeOf(err) != connect.CodeInvalidArgument {
-			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
-		}
-		if !strings.Contains(err.Error(), "build is missing required motor") {
+		err := ValidateBuildComponents(b)
+		if err == nil || !strings.Contains(err.Error(), "build is missing required motor") {
 			t.Errorf("expected 'build is missing required motor', got: %v", err)
 		}
 	})
 
 	t.Run("Build missing propeller", func(t *testing.T) {
-		req := &pb.EvaluateBuildRequest{
-			Build: &pb.Build{
-				FrameUuid:            "frame-1",
-				MotorUuid:            "motor-1",
-				FlightControllerUuid: "fc-1",
-			},
-			BatteryId: "battery-1",
+		b := &pb.Build{
+			FrameUuid:            "frame-1",
+			MotorUuid:            "motor-1",
+			FlightControllerUuid: "fc-1",
 		}
-		_, err := s.EvaluateBuild(ctx, connect.NewRequest(req))
-		if err == nil {
-			t.Fatal("expected error for missing propeller, got nil")
-		}
-		if connect.CodeOf(err) != connect.CodeInvalidArgument {
-			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
-		}
-		if !strings.Contains(err.Error(), "build is missing required propeller") {
+		err := ValidateBuildComponents(b)
+		if err == nil || !strings.Contains(err.Error(), "build is missing required propeller") {
 			t.Errorf("expected 'build is missing required propeller', got: %v", err)
 		}
 	})
 
 	t.Run("Build missing flight controller", func(t *testing.T) {
-		req := &pb.EvaluateBuildRequest{
-			Build: &pb.Build{
-				FrameUuid:     "frame-1",
-				MotorUuid:     "motor-1",
-				PropellerUuid: "prop-1",
-			},
-			BatteryId: "battery-1",
+		b := &pb.Build{
+			FrameUuid:     "frame-1",
+			MotorUuid:     "motor-1",
+			PropellerUuid: "prop-1",
 		}
-		_, err := s.EvaluateBuild(ctx, connect.NewRequest(req))
-		if err == nil {
-			t.Fatal("expected error for missing flight controller, got nil")
-		}
-		if connect.CodeOf(err) != connect.CodeInvalidArgument {
-			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
-		}
-		if !strings.Contains(err.Error(), "build is missing required flight controller") {
+		err := ValidateBuildComponents(b)
+		if err == nil || !strings.Contains(err.Error(), "build is missing required flight controller") {
 			t.Errorf("expected 'build is missing required flight controller', got: %v", err)
+		}
+	})
+
+	t.Run("Valid build components", func(t *testing.T) {
+		b := &pb.Build{
+			FrameUuid:            "frame-1",
+			MotorUuid:            "motor-1",
+			PropellerUuid:        "prop-1",
+			FlightControllerUuid: "fc-1",
+		}
+		if err := ValidateBuildComponents(b); err != nil {
+			t.Errorf("expected no error for valid build, got: %v", err)
 		}
 	})
 }

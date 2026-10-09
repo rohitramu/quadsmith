@@ -649,11 +649,11 @@ func TestEvaluate_Success(t *testing.T) {
 			if req.Msg.BatteryId == "" {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery_id is required"))
 			}
-			if req.Msg.Build.Id != "build-1" {
+			if req.Msg.BuildId != "build-1" {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("mismatched build"))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:              req.Msg.Build.Id,
+				BuildId:              req.Msg.BuildId,
 				PayloadWeightG:       req.Msg.PayloadWeightG,
 				BatteryId:            req.Msg.BatteryId,
 				AllUpWeightG:         350.5,
@@ -728,7 +728,7 @@ func TestEvaluate_DefaultYAML(t *testing.T) {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery_id is required"))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:             req.Msg.Build.Id,
+				BuildId:             req.Msg.BuildId,
 				PayloadWeightG:      req.Msg.PayloadWeightG,
 				BatteryId:           req.Msg.BatteryId,
 				AllUpWeightG:        350.5,
@@ -792,7 +792,7 @@ func TestEvaluate_WithBatteryOverride(t *testing.T) {
 				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("expected custom-bat, got %s", req.Msg.BatteryId))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:        req.Msg.Build.Id,
+				BuildId:        req.Msg.BuildId,
 				PayloadWeightG: req.Msg.PayloadWeightG,
 				BatteryId:      req.Msg.BatteryId,
 				AllUpWeightG:   320.0,
@@ -946,7 +946,7 @@ func TestEvaluate_AutoSelectLightestBattery(t *testing.T) {
 		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
 			evaluatedBattery = req.Msg.BatteryId
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:      req.Msg.Build.Id,
+				BuildId:      req.Msg.BuildId,
 				BatteryId:    req.Msg.BatteryId,
 				AllUpWeightG: 350.5,
 			}), nil
@@ -995,13 +995,13 @@ func TestEvaluate_MissingArg(t *testing.T) {
 }
 
 func TestEvaluate_BuildNotFound(t *testing.T) {
-	mockBuild := &mockBuildService{
-		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("build does not exist"))
+	mockEval := &mockEvaluatorService{
+		getBuildElectricalLimitsFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("build not found: missing-build"))
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
 	})
 
 	cmd := newRootCmd()
@@ -1016,7 +1016,7 @@ func TestEvaluate_BuildNotFound(t *testing.T) {
 		t.Fatal("expected error for non-existent build")
 	}
 
-	if !strings.Contains(err.Error(), "failed to fetch build") {
-		t.Errorf("expected 'failed to fetch build' error, got: %v", err)
+	if !strings.Contains(err.Error(), "build not found") {
+		t.Errorf("expected 'build not found' error, got: %v", err)
 	}
 }

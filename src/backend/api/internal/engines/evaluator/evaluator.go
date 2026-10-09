@@ -21,24 +21,20 @@ func NewEvaluatorServiceHandler(db *pgxpool.Pool) *EvaluatorServiceHandler {
 }
 
 func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
-	b := req.Msg.GetBuild()
-	buildId := req.Msg.GetBuildId()
-	if b != nil && buildId == "" {
-		buildId = b.Id
-		if buildId == "" {
-			buildId = b.Uuid
-		}
+	buildId := strings.TrimSpace(req.Msg.GetBuildId())
+	if buildId == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build_id is required"))
 	}
-	if (b == nil || (b.FrameUuid == "" && b.MotorUuid == "")) && buildId != "" && s.db != nil {
+	var b *pb.Build
+	if s.db != nil {
 		fetched, err := pb.GetBuild(ctx, s.db, buildId, nil)
-		if err == nil && fetched != nil {
-			b = fetched
-		} else if b == nil {
+		if err != nil || fetched == nil {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
 		}
+		b = fetched
 	}
 	if b == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is required"))
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
 	}
 
 	// Validate required fields in the request
@@ -48,17 +44,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	// Validate required components in the build
-	if strings.TrimSpace(b.FrameUuid) == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required frame"))
-	}
-	if strings.TrimSpace(b.MotorUuid) == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required motor"))
-	}
-	if strings.TrimSpace(b.PropellerUuid) == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required propeller"))
-	}
-	if strings.TrimSpace(b.FlightControllerUuid) == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required flight controller"))
+	if err := ValidateBuildComponents(b); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
 	var baseWeight float32 = 0
@@ -262,20 +249,10 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	)
 	systemMessages = append(systemMessages, phys.SystemMessages...)
 
-	if b != nil {
-		if b.Id != "" {
-			buildId = b.Id
-		} else if buildId != "" && s.db != nil {
-			var canonicalId string
-			if err := s.db.QueryRow(ctx, `SELECT id FROM builds WHERE uuid::text = $1 OR id = $1`, buildId).Scan(&canonicalId); err == nil && canonicalId != "" {
-				buildId = canonicalId
-			}
-		} else if b.Uuid != "" && s.db != nil {
-			var canonicalId string
-			if err := s.db.QueryRow(ctx, `SELECT id FROM builds WHERE uuid::text = $1 OR id = $1`, b.Uuid).Scan(&canonicalId); err == nil && canonicalId != "" {
-				buildId = canonicalId
-			}
-		}
+	if b.Id != "" {
+		buildId = b.Id
+	} else if b.Uuid != "" {
+		buildId = b.Uuid
 	}
 
 	evaluatedBatteryId := batteryId
@@ -664,23 +641,20 @@ func CalculatePhysics(
 // GetBuildElectricalLimits calculates electrical limits (min/max voltage and max current)
 // and returns the lightest compatible battery.
 func (s *EvaluatorServiceHandler) GetBuildElectricalLimits(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
-	b := req.Msg.GetBuild()
-	buildId := req.Msg.GetBuildId()
-	if b != nil && buildId == "" {
-		buildId = b.Id
-		if buildId == "" {
-			buildId = b.Uuid
-		}
+	buildId := strings.TrimSpace(req.Msg.GetBuildId())
+	if buildId == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build_id is required"))
 	}
-	if (b == nil || (b.FlightControllerUuid == "" && b.MotorUuid == "" && len(b.ElectronicSpeedControllerUuids) == 0)) && buildId != "" && s.db != nil {
+	var b *pb.Build
+	if s.db != nil {
 		fetched, err := pb.GetBuild(ctx, s.db, buildId, nil)
-		if err != nil {
+		if err != nil || fetched == nil {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
 		}
 		b = fetched
 	}
 	if b == nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is required"))
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
 	}
 
 	limits, err := s.CalculateElectricalLimits(ctx, b)
@@ -690,16 +664,10 @@ func (s *EvaluatorServiceHandler) GetBuildElectricalLimits(ctx context.Context, 
 
 	if b.Id != "" {
 		limits.BuildId = b.Id
-	} else if buildId != "" && s.db != nil {
-		var canonicalId string
-		if err := s.db.QueryRow(ctx, `SELECT id FROM builds WHERE uuid::text = $1 OR id = $1`, buildId).Scan(&canonicalId); err == nil && canonicalId != "" {
-			limits.BuildId = canonicalId
-		}
-	} else if b.Uuid != "" && s.db != nil {
-		var canonicalId string
-		if err := s.db.QueryRow(ctx, `SELECT id FROM builds WHERE uuid::text = $1 OR id = $1`, b.Uuid).Scan(&canonicalId); err == nil && canonicalId != "" {
-			limits.BuildId = canonicalId
-		}
+	} else if b.Uuid != "" {
+		limits.BuildId = b.Uuid
+	} else {
+		limits.BuildId = buildId
 	}
 
 	return connect.NewResponse(limits), nil
@@ -825,4 +793,24 @@ func (s *EvaluatorServiceHandler) FindLightestCompatibleBattery(ctx context.Cont
 	}
 
 	return batteryId
+}
+
+// ValidateBuildComponents checks that a build has all required component IDs.
+func ValidateBuildComponents(b *pb.Build) error {
+	if b == nil {
+		return fmt.Errorf("build is required")
+	}
+	if strings.TrimSpace(b.FrameUuid) == "" {
+		return fmt.Errorf("build is missing required frame")
+	}
+	if strings.TrimSpace(b.MotorUuid) == "" {
+		return fmt.Errorf("build is missing required motor")
+	}
+	if strings.TrimSpace(b.PropellerUuid) == "" {
+		return fmt.Errorf("build is missing required propeller")
+	}
+	if strings.TrimSpace(b.FlightControllerUuid) == "" {
+		return fmt.Errorf("build is missing required flight controller")
+	}
+	return nil
 }

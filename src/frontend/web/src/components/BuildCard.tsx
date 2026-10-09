@@ -30,7 +30,7 @@ export function BuildCard({ build }: BuildCardProps) {
   // Fetch electrical limits to determine default lightest compatible battery
   const { data: electricalLimits, isLoading: isLoadingLimits } = useQuery(
     getBuildElectricalLimits,
-    { build, buildId: build.id || build.uuid },
+    { buildId: build.id || build.uuid },
     { staleTime: 60_000 },
   );
 
@@ -38,7 +38,6 @@ export function BuildCard({ build }: BuildCardProps) {
   const { data: evaluation } = useQuery(
     evaluateBuild,
     {
-      build,
       buildId: build.id || build.uuid,
       payloadWeightG: 0,
       batteryId: electricalLimits?.defaultBatteryId || "",

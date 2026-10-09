@@ -145,11 +145,7 @@ export function BuildProfilePage() {
     data: electricalLimits,
     isLoading: isLoadingLimits,
     error: limitsError,
-  } = useQuery(
-    getBuildElectricalLimits,
-    { build, buildId: build?.id || buildId },
-    { enabled: !!build },
-  );
+  } = useQuery(getBuildElectricalLimits, { buildId: build?.id || buildId }, { enabled: !!build });
 
   const batteryFilter = useMemo(() => {
     return buildBatteryCelFilter(electricalLimits);
@@ -205,7 +201,6 @@ export function BuildProfilePage() {
   } = useQuery(
     evaluateBuild,
     {
-      build,
       buildId: build?.id || buildId,
       payloadWeightG,
       batteryId: selectedBatteryId,

@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package quadsmith;
 
-import "build.proto";
-
 option go_package = "quadsmith/api/gen/quadsmith";
 
 enum SystemMessageSeverity {
@@ -19,16 +17,15 @@ message SystemMessage {
 }
 
 message EvaluateBuildRequest {
-  // A complete or partial Build object. The backend will look up the referenced
-  // UUIDs/IDs to fetch the actual components for evaluation.
-  Build build = 1;
+  // Required build ID or UUID to evaluate.
+  string build_id = 1;
   float payload_weight_g = 2;
 
   // Required battery ID or UUID to evaluate the build with.
   string battery_id = 3;
 
-  // Optional build ID or UUID. If build is omitted, the backend fetches this build.
-  string build_id = 4;
+  reserved 4;
+  reserved "build";
 }
 
 message EvaluateBuildResponse {
@@ -70,8 +67,11 @@ message EvaluateBuildResponse {
 }
 
 message GetBuildElectricalLimitsRequest {
-  Build build = 1;
-  string build_id = 2;
+  // Required build ID or UUID.
+  string build_id = 1;
+
+  reserved 2;
+  reserved "build";
 }
 
 message GetBuildElectricalLimitsResponse {

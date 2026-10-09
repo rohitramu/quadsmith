@@ -4,8 +4,6 @@
 
 import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Build } from "./build_pb";
-import { file_build } from "./build_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -14,8 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIncKFEV2YWx1YXRlQnVpbGRSZXF1ZXN0Eh8KBWJ1aWxkGAEgASgLMhAucXVhZHNtaXRoLkJ1aWxkEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAISEgoKYmF0dGVyeV9pZBgDIAEoCRIQCghidWlsZF9pZBgEIAEoCSKMBAoVRXZhbHVhdGVCdWlsZFJlc3BvbnNlEhcKD2FsbF91cF93ZWlnaHRfZxgBIAEoAhIeChZob3Zlcl90aHJvdHRsZV9wZXJjZW50GAIgASgCEh4KFnRocnVzdF90b193ZWlnaHRfcmF0aW8YAyABKAISGwoTbWluX2ZsaWdodF90aW1lX21pbhgHIAEoAhIbChNtYXhfZmxpZ2h0X3RpbWVfbWluGAggASgCEh0KFW1heF9hY2NlbGVyYXRpb25fbXBzMhgJIAEoAhIVCg10b3Bfc3BlZWRfa21oGAogASgCEhEKCWhvdmVyX3JwbRgLIAEoDRIxCg9zeXN0ZW1fbWVzc2FnZXMYDCADKAsyGC5xdWFkc21pdGguU3lzdGVtTWVzc2FnZRIQCghidWlsZF9pZBgNIAEoCRIYChBwYXlsb2FkX3dlaWdodF9nGA4gASgCEhIKCmJhdHRlcnlfaWQYDyABKAkSEwoLbWluX3ZvbHRhZ2UYECABKAISEwoLbWF4X3ZvbHRhZ2UYESABKAISFQoNbWF4X2N1cnJlbnRfYRgSIAEoAkoECAQQBUoECAUQBkoECAYQB0oECBMQFFIZZXN0aW1hdGVkX2ZsaWdodF90aW1lX21pblIId2FybmluZ3NSBmVycm9yc1IOYnVpbGRfd2VpZ2h0X2dSDnRvdGFsX3dlaWdodF9nIlQKH0dldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QSHwoFYnVpbGQYASABKAsyEC5xdWFkc21pdGguQnVpbGQSEAoIYnVpbGRfaWQYAiABKAkikQEKIEdldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1Jlc3BvbnNlEhMKC21pbl92b2x0YWdlGAEgASgCEhMKC21heF92b2x0YWdlGAIgASgCEhUKDW1heF9jdXJyZW50X2EYAyABKAISGgoSZGVmYXVsdF9iYXR0ZXJ5X2lkGAQgASgJEhAKCGJ1aWxkX2lkGAUgASgJKqoBChVTeXN0ZW1NZXNzYWdlU2V2ZXJpdHkSJwojU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfVU5TUEVDSUZJRUQQABIgChxTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9JTkZPEAESIwofU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfV0FSTklORxACEiEKHVNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0VSUk9SEAMy2wEKEEV2YWx1YXRvclNlcnZpY2USUgoNRXZhbHVhdGVCdWlsZBIfLnF1YWRzbWl0aC5FdmFsdWF0ZUJ1aWxkUmVxdWVzdBogLnF1YWRzbWl0aC5FdmFsdWF0ZUJ1aWxkUmVzcG9uc2UScwoYR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzEioucXVhZHNtaXRoLkdldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QaKy5xdWFkc21pdGguR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
-    [file_build],
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJImMKFEV2YWx1YXRlQnVpbGRSZXF1ZXN0EhAKCGJ1aWxkX2lkGAEgASgJEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAISEgoKYmF0dGVyeV9pZBgDIAEoCUoECAQQBVIFYnVpbGQijAQKFUV2YWx1YXRlQnVpbGRSZXNwb25zZRIXCg9hbGxfdXBfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAhIdChVtYXhfYWNjZWxlcmF0aW9uX21wczIYCSABKAISFQoNdG9wX3NwZWVkX2ttaBgKIAEoAhIRCglob3Zlcl9ycG0YCyABKA0SMQoPc3lzdGVtX21lc3NhZ2VzGAwgAygLMhgucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2USEAoIYnVpbGRfaWQYDSABKAkSGAoQcGF5bG9hZF93ZWlnaHRfZxgOIAEoAhISCgpiYXR0ZXJ5X2lkGA8gASgJEhMKC21pbl92b2x0YWdlGBAgASgCEhMKC21heF92b2x0YWdlGBEgASgCEhUKDW1heF9jdXJyZW50X2EYEiABKAJKBAgEEAVKBAgFEAZKBAgGEAdKBAgTEBRSGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW5SCHdhcm5pbmdzUgZlcnJvcnNSDmJ1aWxkX3dlaWdodF9nUg50b3RhbF93ZWlnaHRfZyJACh9HZXRCdWlsZEVsZWN0cmljYWxMaW1pdHNSZXF1ZXN0EhAKCGJ1aWxkX2lkGAEgASgJSgQIAhADUgVidWlsZCKRAQogR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2USEwoLbWluX3ZvbHRhZ2UYASABKAISEwoLbWF4X3ZvbHRhZ2UYAiABKAISFQoNbWF4X2N1cnJlbnRfYRgDIAEoAhIaChJkZWZhdWx0X2JhdHRlcnlfaWQYBCABKAkSEAoIYnVpbGRfaWQYBSABKAkqqgEKFVN5c3RlbU1lc3NhZ2VTZXZlcml0eRInCiNTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9VTlNQRUNJRklFRBAAEiAKHFNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0lORk8QARIjCh9TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9XQVJOSU5HEAISIQodU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfRVJST1IQAzLbAQoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZRJzChhHZXRCdWlsZEVsZWN0cmljYWxMaW1pdHMSKi5xdWFkc21pdGguR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBorLnF1YWRzbWl0aC5HZXRCdWlsZEVsZWN0cmljYWxMaW1pdHNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
   );
 
 /**
@@ -46,12 +43,11 @@ export const SystemMessageSchema: GenMessage<SystemMessage> =
  */
 export type EvaluateBuildRequest = Message<"quadsmith.EvaluateBuildRequest"> & {
   /**
-   * A complete or partial Build object. The backend will look up the referenced
-   * UUIDs/IDs to fetch the actual components for evaluation.
+   * Required build ID or UUID to evaluate.
    *
-   * @generated from field: quadsmith.Build build = 1;
+   * @generated from field: string build_id = 1;
    */
-  build?: Build | undefined;
+  buildId: string;
 
   /**
    * @generated from field: float payload_weight_g = 2;
@@ -64,13 +60,6 @@ export type EvaluateBuildRequest = Message<"quadsmith.EvaluateBuildRequest"> & {
    * @generated from field: string battery_id = 3;
    */
   batteryId: string;
-
-  /**
-   * Optional build ID or UUID. If build is omitted, the backend fetches this build.
-   *
-   * @generated from field: string build_id = 4;
-   */
-  buildId: string;
 };
 
 /**
@@ -193,12 +182,9 @@ export const EvaluateBuildResponseSchema: GenMessage<EvaluateBuildResponse> =
 export type GetBuildElectricalLimitsRequest =
   Message<"quadsmith.GetBuildElectricalLimitsRequest"> & {
     /**
-     * @generated from field: quadsmith.Build build = 1;
-     */
-    build?: Build | undefined;
-
-    /**
-     * @generated from field: string build_id = 2;
+     * Required build ID or UUID.
+     *
+     * @generated from field: string build_id = 1;
      */
     buildId: string;
   };

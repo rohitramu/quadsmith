@@ -410,16 +410,12 @@ func newRootCmd() *cobra.Command {
 			return comps, cobra.ShellCompDirectiveNoFileComp
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			bReq := &pb.GetBuildRequest{Id: args[0]}
-			bRes, err := buildClient.GetBuild(context.Background(), connect.NewRequest(bReq))
-			if err != nil { return fmt.Errorf("failed to fetch build: %w", err) }
-			
+			buildId := args[0]
 			payload, _ := cmd.Flags().GetFloat32("payload")
 			battery, _ := cmd.Flags().GetString("battery")
 			if battery == "" {
 				lRes, err := evalClient.GetBuildElectricalLimits(context.Background(), connect.NewRequest(&pb.GetBuildElectricalLimitsRequest{
-					Build:   bRes.Msg,
-					BuildId: args[0],
+					BuildId: buildId,
 				}))
 				if err != nil {
 					return fmt.Errorf("failed to determine electrical limits for build: %w", err)
@@ -430,8 +426,7 @@ func newRootCmd() *cobra.Command {
 				battery = lRes.Msg.DefaultBatteryId
 			}
 			eReq := &pb.EvaluateBuildRequest{
-				BuildId:        args[0],
-				Build:          bRes.Msg,
+				BuildId:        buildId,
 				PayloadWeightG: payload,
 				BatteryId:      battery,
 			}
