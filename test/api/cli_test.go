@@ -277,3 +277,45 @@ func TestCLI_BuildsGet(t *testing.T) {
 		t.Errorf("Expected 'unknown flag: --yaml', got: %s", stderrGetReject.String())
 	}
 }
+
+func TestCLI_Search(t *testing.T) {
+	apiUrl := getAPIURL()
+	qsPath := resolveQSPath(t)
+
+	// 1. Basic search table output
+	cmd := exec.Command(qsPath, "search", "tattu")
+	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("CLI search failed: %v\nStderr: %s", err, stderr.String())
+	}
+	outStr := stdout.String()
+	if !strings.Contains(outStr, "COLLECTION") || !strings.Contains(outStr, "ID") {
+		t.Errorf("Expected table headers in search output, got:\n%s", outStr)
+	}
+	if !strings.Contains(strings.ToLower(outStr), "tattu") {
+		t.Errorf("Expected search output to contain 'tattu', got:\n%s", outStr)
+	}
+
+	// 2. Search with --selector and --json
+	cmdJSON := exec.Command(qsPath, "search", "tattu", "--selector", "batteries:cell_count_s == 6", "--json")
+	cmdJSON.Env = append(cmdJSON.Env, "QS_API_URL="+apiUrl)
+	var stdoutJSON, stderrJSON bytes.Buffer
+	cmdJSON.Stdout = &stdoutJSON
+	cmdJSON.Stderr = &stderrJSON
+
+	if err := cmdJSON.Run(); err != nil {
+		t.Fatalf("CLI search with selector failed: %v\nStderr: %s", err, stderrJSON.String())
+	}
+	var res map[string]interface{}
+	if err := json.Unmarshal(stdoutJSON.Bytes(), &res); err != nil {
+		t.Fatalf("Failed to parse JSON output: %v\nOutput: %s", err, stdoutJSON.String())
+	}
+	results, ok := res["results"].([]interface{})
+	if !ok || len(results) == 0 {
+		t.Fatalf("Expected results array in search response, got: %v", res)
+	}
+}

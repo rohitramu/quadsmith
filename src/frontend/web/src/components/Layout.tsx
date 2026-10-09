@@ -1,6 +1,8 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
-import { Moon, Sun, Search, ChevronDown, ChevronRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { Moon, Sun, Search, ChevronDown, ChevronRight, X, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { useQuery } from "@connectrpc/connect-query";
+import { search } from "../gen/quadsmith/search-SearchService_connectquery";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
@@ -8,10 +10,74 @@ import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollecti
 export function Layout() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const location = useLocation();
+  const navigate = useNavigate();
   const [expandedMenu, setExpandedMenu] = useState<string | null>(() => {
     if (location.pathname.includes("/components/hardware")) return "hardware";
     return null;
   });
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery.trim());
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const { data: searchResponse, isLoading: isSearching } = useQuery(
+    search,
+    { query: debouncedQuery, limit: 8 },
+    { enabled: debouncedQuery.length > 0 },
+  );
+
+  const searchResults = searchResponse?.results || [];
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setIsSearchOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Reset selected index when results change
+  useEffect(() => {
+    setSelectedIndex(-1);
+  }, [searchResults]);
+
+  const handleSelectResult = (item: { path: string; id: string }) => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+    navigate(`/${item.path}/${item.id}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!isSearchOpen || searchResults.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev < searchResults.length - 1 ? prev + 1 : 0));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev > 0 ? prev - 1 : searchResults.length - 1));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
+        handleSelectResult(searchResults[selectedIndex]);
+      }
+    } else if (e.key === "Escape") {
+      setIsSearchOpen(false);
+    }
+  };
 
   const toggleMenu = (menu: string) => {
     setExpandedMenu(expandedMenu === menu ? null : menu);
@@ -41,16 +107,116 @@ export function Layout() {
           />
         </Link>
 
-        {/* Search Bar */}
-        <div className="flex-1 max-w-2xl mx-auto px-4">
+        {/* Search Bar with Autocomplete Dropdown */}
+        <div ref={searchContainerRef} className="flex-1 max-w-2xl mx-auto px-4 relative">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setIsSearchOpen(true);
+              }}
+              onFocus={() => {
+                if (searchQuery.trim().length > 0) {
+                  setIsSearchOpen(true);
+                }
+              }}
+              onKeyDown={handleKeyDown}
               placeholder="Search components..."
-              className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-full py-2 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setIsSearchOpen(false);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              >
+                <X size={15} />
+              </button>
+            )}
           </div>
+
+          {/* Autocomplete Dropdown */}
+          {isSearchOpen && debouncedQuery.length > 0 && (
+            <div className="absolute left-4 right-4 mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden z-50 max-h-96 overflow-y-auto">
+              {isSearching ? (
+                <div className="p-4 text-center text-sm text-zinc-400 flex items-center justify-center gap-2">
+                  <Loader2 size={16} className="animate-spin text-blue-500" />
+                  <span>Searching catalog...</span>
+                </div>
+              ) : searchResults.length === 0 ? (
+                <div className="p-4 text-center text-sm text-zinc-500 dark:text-zinc-400">
+                  No matching components or builds found for &ldquo;
+                  <span className="font-semibold">{debouncedQuery}</span>&rdquo;
+                </div>
+              ) : (
+                <ul className="py-1 divide-y divide-zinc-100 dark:divide-zinc-800/50">
+                  {searchResults.map((item, idx) => {
+                    const isSelected = idx === selectedIndex;
+                    const details: string[] = [];
+                    if (item.metadata["manufacturer"]) details.push(item.metadata["manufacturer"]);
+                    if (item.metadata["cell_count_s"])
+                      details.push(`${item.metadata["cell_count_s"]}S`);
+                    if (item.metadata["capacity_mah"])
+                      details.push(`${item.metadata["capacity_mah"]}mAh`);
+                    if (item.metadata["weight_g"]) details.push(`${item.metadata["weight_g"]}g`);
+
+                    return (
+                      <li key={`${item.path}-${item.id}`}>
+                        <button
+                          type="button"
+                          onClick={() => handleSelectResult(item)}
+                          className={`w-full text-left px-3.5 py-2.5 flex items-center gap-3 transition-colors ${
+                            isSelected
+                              ? "bg-blue-50 dark:bg-blue-950/40 text-blue-900 dark:text-blue-100"
+                              : "hover:bg-zinc-50 dark:hover:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100"
+                          }`}
+                        >
+                          {item.primaryDisplayImage ? (
+                            <img
+                              src={item.primaryDisplayImage}
+                              alt={item.name}
+                              className="w-9 h-9 object-cover rounded-lg border border-zinc-200 dark:border-zinc-800 shrink-0"
+                            />
+                          ) : (
+                            <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 text-zinc-400">
+                              <Search size={16} />
+                            </div>
+                          )}
+
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-xs sm:text-sm truncate">
+                                {item.name}
+                              </span>
+                              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono shrink-0">
+                                {item.collectionName}
+                              </span>
+                            </div>
+
+                            {details.length > 0 ? (
+                              <p className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5 truncate">
+                                {details.join(" • ")}
+                              </p>
+                            ) : item.description ? (
+                              <p className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5 truncate">
+                                {item.description}
+                              </p>
+                            ) : null}
+                          </div>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Actions */}

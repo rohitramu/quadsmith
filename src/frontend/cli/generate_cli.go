@@ -517,6 +517,111 @@ func newRootCmd() *cobra.Command {
 	}
 	rootCmd.AddCommand(completionCmd)
 
+	// --- SEARCH ---
+	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, targetURL)
+	searchCmd := &cobra.Command{
+		Use:   "search [query]",
+		Short: "Fuzzy text completion search across collections",
+		Args:  cobra.MaximumNArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var query string
+			if len(args) > 0 {
+				query = args[0]
+			}
+
+			limit, _ := cmd.Flags().GetInt32("limit")
+			if limit <= 0 {
+				limit = 10
+			}
+
+			selectorStrs, _ := cmd.Flags().GetStringArray("selector")
+			pathFlag, _ := cmd.Flags().GetString("path")
+			filterFlag, _ := cmd.Flags().GetString("filter")
+
+			var selectors []*pb.SearchSelector
+			for _, s := range selectorStrs {
+				s = strings.TrimSpace(s)
+				if s == "" {
+					continue
+				}
+				parts := strings.SplitN(s, ":", 2)
+				sel := &pb.SearchSelector{Path: strings.TrimSpace(parts[0])}
+				if len(parts) == 2 && strings.TrimSpace(parts[1]) != "" {
+					f := strings.TrimSpace(parts[1])
+					sel.Filter = &f
+				}
+				selectors = append(selectors, sel)
+			}
+
+			if pathFlag != "" {
+				sel := &pb.SearchSelector{Path: strings.TrimSpace(pathFlag)}
+				if filterFlag != "" {
+					f := strings.TrimSpace(filterFlag)
+					sel.Filter = &f
+				}
+				selectors = append(selectors, sel)
+			}
+
+			sReq := &pb.SearchRequest{
+				Query:     query,
+				Selectors: selectors,
+				Limit:     limit,
+			}
+
+			sRes, err := searchClient.Search(context.Background(), connect.NewRequest(sReq))
+			if err != nil {
+				return fmt.Errorf("search failed: %w", err)
+			}
+
+			if jsonOut {
+				out, err := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(sRes.Msg)
+				if err != nil {
+					return err
+				}
+				fmt.Fprintln(cmd.OutOrStdout(), string(out))
+				return nil
+			}
+
+			if len(sRes.Msg.Results) == 0 {
+				fmt.Fprintln(cmd.OutOrStdout(), "No results found.")
+				return nil
+			}
+
+			w := tabwriter.NewWriter(cmd.OutOrStdout(), 0, 0, 2, ' ', 0)
+			fmt.Fprintln(w, "COLLECTION\tID\tNAME\tSCORE\tDETAILS")
+			for _, item := range sRes.Msg.Results {
+				scoreStr := fmt.Sprintf("%.2f", item.MatchScore)
+				var details []string
+				if m, ok := item.Metadata["manufacturer"]; ok && m != "" {
+					details = append(details, m)
+				}
+				if wt, ok := item.Metadata["weight_g"]; ok && wt != "" {
+					details = append(details, wt+"g")
+				}
+				if c, ok := item.Metadata["cell_count_s"]; ok && c != "" {
+					details = append(details, c+"S")
+				}
+				if capMah, ok := item.Metadata["capacity_mah"]; ok && capMah != "" {
+					details = append(details, capMah+"mAh")
+				}
+				detailStr := strings.Join(details, " • ")
+				if detailStr == "" && item.Description != "" {
+					detailStr = item.Description
+					if len(detailStr) > 40 {
+						detailStr = detailStr[:37] + "..."
+					}
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n", item.CollectionName, item.Id, item.Name, scoreStr, detailStr)
+			}
+			return w.Flush()
+		},
+	}
+	searchCmd.Flags().StringArrayP("selector", "s", nil, "Target collection selector with optional filter (<path>[:<filter>])")
+	searchCmd.Flags().StringP("path", "p", "", "Target single collection path (e.g. batteries, frames)")
+	searchCmd.Flags().StringP("filter", "f", "", "CEL filter expression for single collection path")
+	searchCmd.Flags().Int32P("limit", "n", 10, "Maximum number of results to return")
+	rootCmd.AddCommand(searchCmd)
+
 	return rootCmd
 }
 

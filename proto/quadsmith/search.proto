@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package quadsmith;
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// SearchSelector binds a specific collection path to an optional CEL filter.
+message SearchSelector {
+  // Path identifying the target collection (e.g., "components/hardware/batteries", "builds").
+  string path = 1;
+
+  // Optional Common Expression Language (CEL) filter expression applied to this collection.
+  // Example: "min_voltage >= 14.8 && max_voltage <= 25.2 && max_current_a >= 30.0"
+  optional string filter = 2;
+}
+
+// SearchResultItem represents an individual match from any collection.
+message SearchResultItem {
+  // Human-readable identifier (e.g. "tattu-r-line-v5-1200mah-6s-150c", "bando-basher-5-inch")
+  string id = 1;
+
+  // Hidden database UUIDv7 primary key
+  string uuid = 2;
+
+  // Display name of the entity
+  string name = 3;
+
+  // Canonical collection path where this item resides (e.g. "components/hardware/batteries")
+  string path = 4;
+
+  // Human-readable collection display title (e.g. "Batteries", "Builds")
+  string collection_name = 5;
+
+  // Primary preview / thumbnail image URL, if available
+  optional string primary_display_image = 6;
+
+  // Brief description or specification summary
+  string description = 7;
+
+  // Fuzzy match relevance score normalized between 0.0 and 1.0 (higher is more relevant)
+  float match_score = 8;
+
+  // Subtype-specific key-value summary attributes for display badges (e.g., manufacturer, weight_g)
+  map<string, string> metadata = 9;
+}
+
+// SearchRequest for text completion across collections.
+message SearchRequest {
+  // The search text entered by the user (can be empty string for initial combobox load).
+  string query = 1;
+
+  // Optional array of selector objects. If omitted or empty, all registered collections are searched.
+  repeated SearchSelector selectors = 2;
+
+  // Maximum number of ranked results to return (Default: 10, Maximum: 100).
+  int32 limit = 3;
+}
+
+// SearchResponse containing ordered matches across collections.
+message SearchResponse {
+  repeated SearchResultItem results = 1;
+}
+
+// SearchService provides global and filtered typeahead fuzzy text search.
+service SearchService {
+  rpc Search(SearchRequest) returns (SearchResponse);
+}

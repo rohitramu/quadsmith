@@ -15,6 +15,7 @@ import (
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 	"quadsmith/api/internal/engines/evaluator"
+	"quadsmith/api/internal/engines/search"
 	"quadsmith/api/internal/static"
 )
 
@@ -29,6 +30,9 @@ func main() {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
 	defer pool.Close()
+
+	// Ensure pg_trgm extension is available for fuzzy text completion search
+	_, _ = pool.Exec(context.Background(), "CREATE EXTENSION IF NOT EXISTS pg_trgm;")
 
 	mux := http.NewServeMux()
 
@@ -59,6 +63,9 @@ func main() {
 
 	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool))
 	mux.Handle(path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler)
+
+	path_NewSearchServiceHandler, h_NewSearchServiceHandler := quadsmithconnect.NewSearchServiceHandler(search.NewSearchServiceHandler(pool))
+	mux.Handle(path_NewSearchServiceHandler, h_NewSearchServiceHandler)
 
 	// Serve the React SPA for any unmatched paths
 	staticDir := os.Getenv("STATIC_DIR")
