@@ -44,6 +44,8 @@ type FlightController struct {
 	InternalVideoTransmitterUuid *string          `protobuf:"bytes,11,opt,name=internal_video_transmitter_uuid,json=internalVideoTransmitterUuid,proto3,oneof" json:"internal_video_transmitter_uuid,omitempty"`
 	Description                  string           `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
 	ReferenceLinks               []*ReferenceLink `protobuf:"bytes,13,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	PrimaryDisplayImage          *string          `protobuf:"bytes,14,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	Media                        []*Media         `protobuf:"bytes,15,rep,name=media,proto3" json:"media,omitempty"`
 	unknownFields                protoimpl.UnknownFields
 	sizeCache                    protoimpl.SizeCache
 }
@@ -165,6 +167,20 @@ func (x *FlightController) GetDescription() string {
 func (x *FlightController) GetReferenceLinks() []*ReferenceLink {
 	if x != nil {
 		return x.ReferenceLinks
+	}
+	return nil
+}
+
+func (x *FlightController) GetPrimaryDisplayImage() string {
+	if x != nil && x.PrimaryDisplayImage != nil {
+		return *x.PrimaryDisplayImage
+	}
+	return ""
+}
+
+func (x *FlightController) GetMedia() []*Media {
+	if x != nil {
+		return x.Media
 	}
 	return nil
 }
@@ -357,7 +373,7 @@ var File_flight_controller_proto protoreflect.FileDescriptor
 const file_flight_controller_proto_rawDesc = "" +
 	"\n" +
 	"\x17flight_controller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x14reference_link.proto\"\x8f\a\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x8a\b\n" +
 	"\x10FlightController\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -372,7 +388,9 @@ const file_flight_controller_proto_rawDesc = "" +
 	" \x01(\tB\x15\xc2\xf3\x18\x11\x1a\x0freceivers(uuid)H\x01R\x14internalReceiverUuid\x88\x01\x01\x12j\n" +
 	"\x1finternal_video_transmitter_uuid\x18\v \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)H\x02R\x1cinternalVideoTransmitterUuid\x88\x01\x01\x12 \n" +
 	"\vdescription\x18\f \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:v\x8a\xb5\x18/\n" +
+	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
+	"\x15primary_display_image\x18\x0e \x01(\tH\x03R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
+	"\x05media\x18\x0f \x03(\v2\x10.quadsmith.MediaR\x05media:v\x8a\xb5\x18/\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tprocessor\n" +
@@ -382,7 +400,8 @@ const file_flight_controller_proto_rawDesc = "" +
 	"\x12flight_controllersB,\n" +
 	"*_internal_electronic_speed_controller_uuidB\x19\n" +
 	"\x17_internal_receiver_uuidB\"\n" +
-	" _internal_video_transmitter_uuid\"F\n" +
+	" _internal_video_transmitter_uuidB\x18\n" +
+	"\x16_primary_display_image\"F\n" +
 	"\x1aGetFlightControllerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +
@@ -419,19 +438,21 @@ var file_flight_controller_proto_goTypes = []any{
 	(*ListFlightControllersRequest)(nil),  // 2: quadsmith.ListFlightControllersRequest
 	(*ListFlightControllersResponse)(nil), // 3: quadsmith.ListFlightControllersResponse
 	(*ReferenceLink)(nil),                 // 4: quadsmith.ReferenceLink
+	(*Media)(nil),                         // 5: quadsmith.Media
 }
 var file_flight_controller_proto_depIdxs = []int32{
 	4, // 0: quadsmith.FlightController.reference_links:type_name -> quadsmith.ReferenceLink
-	0, // 1: quadsmith.ListFlightControllersResponse.flight_controllers:type_name -> quadsmith.FlightController
-	1, // 2: quadsmith.FlightControllerService.GetFlightController:input_type -> quadsmith.GetFlightControllerRequest
-	2, // 3: quadsmith.FlightControllerService.ListFlightControllers:input_type -> quadsmith.ListFlightControllersRequest
-	0, // 4: quadsmith.FlightControllerService.GetFlightController:output_type -> quadsmith.FlightController
-	3, // 5: quadsmith.FlightControllerService.ListFlightControllers:output_type -> quadsmith.ListFlightControllersResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5, // 1: quadsmith.FlightController.media:type_name -> quadsmith.Media
+	0, // 2: quadsmith.ListFlightControllersResponse.flight_controllers:type_name -> quadsmith.FlightController
+	1, // 3: quadsmith.FlightControllerService.GetFlightController:input_type -> quadsmith.GetFlightControllerRequest
+	2, // 4: quadsmith.FlightControllerService.ListFlightControllers:input_type -> quadsmith.ListFlightControllersRequest
+	0, // 5: quadsmith.FlightControllerService.GetFlightController:output_type -> quadsmith.FlightController
+	3, // 6: quadsmith.FlightControllerService.ListFlightControllers:output_type -> quadsmith.ListFlightControllersResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_flight_controller_proto_init() }
@@ -441,6 +462,7 @@ func file_flight_controller_proto_init() {
 	}
 	file___common_proto_init()
 	file___sql_proto_init()
+	file_media_proto_init()
 	file_reference_link_proto_init()
 	file_flight_controller_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}

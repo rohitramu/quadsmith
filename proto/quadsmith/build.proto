@@ -4,6 +4,7 @@ package quadsmith;
 
 import "_common.proto";
 import "_sql.proto";
+import "media.proto";
 import "reference_link.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
@@ -73,6 +74,8 @@ message Build {
   // Optional GPS Receiver for navigation and rescue return-to-home
   optional string gps_receiver_uuid = 15 [(quadsmith.sql.column) = {references: "gps_receivers(uuid)"}];
   repeated ReferenceLink reference_links = 16;
+  optional string primary_display_image = 17;
+  repeated Media media = 18;
 }
 
 // ---------------------------------------------------------

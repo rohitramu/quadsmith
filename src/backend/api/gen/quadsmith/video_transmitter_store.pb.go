@@ -11,7 +11,7 @@ import (
 )
 
 func CreateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter) error {
-	query := `INSERT INTO video_transmitters (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	query := `INSERT INTO video_transmitters (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -22,16 +22,16 @@ func CreateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter)
 			return nil
 		}
 		return s
-	}(m.AntennaUuids), m.Description, m.ReferenceLinks)
+	}(m.AntennaUuids), m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
 	return err
 }
 
 func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*VideoTransmitter, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media"}
 	}
 	query := `SELECT ` + colsStr + ` FROM video_transmitters WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -65,6 +65,10 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 			scanArgs[i] = &m.Description
 		case "reference_links":
 			scanArgs[i] = &m.ReferenceLinks
+		case "primary_display_image":
+			scanArgs[i] = &m.PrimaryDisplayImage
+		case "media":
+			scanArgs[i] = &m.Media
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -82,13 +86,13 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 }
 
 func UpdateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter) error {
-	query := `UPDATE video_transmitters SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, max_power_mw = $7, input_voltage_min_v = $8, input_voltage_max_v = $9, antenna_uuids = $10, description = $11, reference_links = $12 WHERE uuid = $1`
+	query := `UPDATE video_transmitters SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, max_power_mw = $7, input_voltage_min_v = $8, input_voltage_max_v = $9, antenna_uuids = $10, description = $11, reference_links = $12, primary_display_image = $13, media = $14 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
 		return s
-	}(m.AntennaUuids), m.Description, m.ReferenceLinks)
+	}(m.AntennaUuids), m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
 	return err
 }
 
@@ -99,17 +103,17 @@ func DeleteVideoTransmitter(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 }
 
 func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*VideoTransmitter, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media"}
 	}
 	query := `SELECT ` + colsStr + ` FROM video_transmitters`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true}
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -179,6 +183,10 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 				scanArgs[i] = &m.Description
 			case "reference_links":
 				scanArgs[i] = &m.ReferenceLinks
+			case "primary_display_image":
+				scanArgs[i] = &m.PrimaryDisplayImage
+			case "media":
+				scanArgs[i] = &m.Media
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

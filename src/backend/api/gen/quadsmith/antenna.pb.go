@@ -41,11 +41,13 @@ type Antenna struct {
 	// Length in millimeters (e.g., 60, 100, 150)
 	LengthMm float32 `protobuf:"fixed32,10,opt,name=length_mm,json=lengthMm,proto3" json:"length_mm,omitempty"`
 	// Gain in dBi (e.g., 2.5, 3.0)
-	GainDbi        float32          `protobuf:"fixed32,11,opt,name=gain_dbi,json=gainDbi,proto3" json:"gain_dbi,omitempty"`
-	Description    string           `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,13,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	GainDbi             float32          `protobuf:"fixed32,11,opt,name=gain_dbi,json=gainDbi,proto3" json:"gain_dbi,omitempty"`
+	Description         string           `protobuf:"bytes,12,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,13,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	PrimaryDisplayImage *string          `protobuf:"bytes,14,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	Media               []*Media         `protobuf:"bytes,15,rep,name=media,proto3" json:"media,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Antenna) Reset() {
@@ -165,6 +167,20 @@ func (x *Antenna) GetDescription() string {
 func (x *Antenna) GetReferenceLinks() []*ReferenceLink {
 	if x != nil {
 		return x.ReferenceLinks
+	}
+	return nil
+}
+
+func (x *Antenna) GetPrimaryDisplayImage() string {
+	if x != nil && x.PrimaryDisplayImage != nil {
+		return *x.PrimaryDisplayImage
+	}
+	return ""
+}
+
+func (x *Antenna) GetMedia() []*Media {
+	if x != nil {
+		return x.Media
 	}
 	return nil
 }
@@ -357,7 +373,7 @@ var File_antenna_proto protoreflect.FileDescriptor
 const file_antenna_proto_rawDesc = "" +
 	"\n" +
 	"\rantenna.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x14reference_link.proto\"\xc5\x04\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xc0\x05\n" +
 	"\aAntenna\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -372,7 +388,9 @@ const file_antenna_proto_rawDesc = "" +
 	" \x01(\x02R\blengthMm\x12\x19\n" +
 	"\bgain_dbi\x18\v \x01(\x02R\againDbi\x12 \n" +
 	"\vdescription\x18\f \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:t\x8a\xb5\x18K\n" +
+	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
+	"\x15primary_display_image\x18\x0e \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
+	"\x05media\x18\x0f \x03(\v2\x10.quadsmith.MediaR\x05media:t\x8a\xb5\x18K\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tconnector\n" +
@@ -381,7 +399,8 @@ const file_antenna_proto_rawDesc = "" +
 	"\bgain_dbi\x92\xb5\x18\x13\n" +
 	"\aAntenna\x12\bAntennas\xc2\xf3\x18\n" +
 	"\n" +
-	"\bantennas\"=\n" +
+	"\bantennasB\x18\n" +
+	"\x16_primary_display_image\"=\n" +
 	"\x11GetAntennaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x97\x01\n" +
@@ -419,19 +438,21 @@ var file_antenna_proto_goTypes = []any{
 	(*ListAntennasRequest)(nil),  // 2: quadsmith.ListAntennasRequest
 	(*ListAntennasResponse)(nil), // 3: quadsmith.ListAntennasResponse
 	(*ReferenceLink)(nil),        // 4: quadsmith.ReferenceLink
+	(*Media)(nil),                // 5: quadsmith.Media
 }
 var file_antenna_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Antenna.reference_links:type_name -> quadsmith.ReferenceLink
-	0, // 1: quadsmith.ListAntennasResponse.antennas:type_name -> quadsmith.Antenna
-	1, // 2: quadsmith.AntennaService.GetAntenna:input_type -> quadsmith.GetAntennaRequest
-	2, // 3: quadsmith.AntennaService.ListAntennas:input_type -> quadsmith.ListAntennasRequest
-	0, // 4: quadsmith.AntennaService.GetAntenna:output_type -> quadsmith.Antenna
-	3, // 5: quadsmith.AntennaService.ListAntennas:output_type -> quadsmith.ListAntennasResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5, // 1: quadsmith.Antenna.media:type_name -> quadsmith.Media
+	0, // 2: quadsmith.ListAntennasResponse.antennas:type_name -> quadsmith.Antenna
+	1, // 3: quadsmith.AntennaService.GetAntenna:input_type -> quadsmith.GetAntennaRequest
+	2, // 4: quadsmith.AntennaService.ListAntennas:input_type -> quadsmith.ListAntennasRequest
+	0, // 5: quadsmith.AntennaService.GetAntenna:output_type -> quadsmith.Antenna
+	3, // 6: quadsmith.AntennaService.ListAntennas:output_type -> quadsmith.ListAntennasResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_antenna_proto_init() }
@@ -441,7 +462,9 @@ func file_antenna_proto_init() {
 	}
 	file___common_proto_init()
 	file___sql_proto_init()
+	file_media_proto_init()
 	file_reference_link_proto_init()
+	file_antenna_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

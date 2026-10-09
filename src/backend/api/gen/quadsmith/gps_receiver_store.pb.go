@@ -11,22 +11,22 @@ import (
 )
 
 func CreateGpsReceiver(ctx context.Context, tx pgx.Tx, m *GpsReceiver) error {
-	query := `INSERT INTO gps_receivers (uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, has_compass, compass_chip, input_voltage_min_v, input_voltage_max_v, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+	query := `INSERT INTO gps_receivers (uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, has_compass, compass_chip, input_voltage_min_v, input_voltage_max_v, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Chipset, m.Protocol, m.HasCompass, m.CompassChip, m.InputVoltageMinV, m.InputVoltageMaxV, m.Description, m.ReferenceLinks)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Chipset, m.Protocol, m.HasCompass, m.CompassChip, m.InputVoltageMinV, m.InputVoltageMaxV, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
 	return err
 }
 
 func GetGpsReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*GpsReceiver, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, has_compass, compass_chip, input_voltage_min_v, input_voltage_max_v, description, reference_links"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, has_compass, compass_chip, input_voltage_min_v, input_voltage_max_v, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "chipset", "protocol", "has_compass", "compass_chip", "input_voltage_min_v", "input_voltage_max_v", "description", "reference_links"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "chipset", "protocol", "has_compass", "compass_chip", "input_voltage_min_v", "input_voltage_max_v", "description", "reference_links", "primary_display_image", "media"}
 	}
 	query := `SELECT ` + colsStr + ` FROM gps_receivers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -62,6 +62,10 @@ func GetGpsReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 			scanArgs[i] = &m.Description
 		case "reference_links":
 			scanArgs[i] = &m.ReferenceLinks
+		case "primary_display_image":
+			scanArgs[i] = &m.PrimaryDisplayImage
+		case "media":
+			scanArgs[i] = &m.Media
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -79,8 +83,8 @@ func GetGpsReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 }
 
 func UpdateGpsReceiver(ctx context.Context, tx pgx.Tx, m *GpsReceiver) error {
-	query := `UPDATE gps_receivers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, chipset = $6, protocol = $7, has_compass = $8, compass_chip = $9, input_voltage_min_v = $10, input_voltage_max_v = $11, description = $12, reference_links = $13 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Chipset, m.Protocol, m.HasCompass, m.CompassChip, m.InputVoltageMinV, m.InputVoltageMaxV, m.Description, m.ReferenceLinks)
+	query := `UPDATE gps_receivers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, chipset = $6, protocol = $7, has_compass = $8, compass_chip = $9, input_voltage_min_v = $10, input_voltage_max_v = $11, description = $12, reference_links = $13, primary_display_image = $14, media = $15 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Chipset, m.Protocol, m.HasCompass, m.CompassChip, m.InputVoltageMinV, m.InputVoltageMaxV, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
 	return err
 }
 
@@ -91,17 +95,17 @@ func DeleteGpsReceiver(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListGpsReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*GpsReceiver, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, has_compass, compass_chip, input_voltage_min_v, input_voltage_max_v, description, reference_links"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, has_compass, compass_chip, input_voltage_min_v, input_voltage_max_v, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "chipset", "protocol", "has_compass", "compass_chip", "input_voltage_min_v", "input_voltage_max_v", "description", "reference_links"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "chipset", "protocol", "has_compass", "compass_chip", "input_voltage_min_v", "input_voltage_max_v", "description", "reference_links", "primary_display_image", "media"}
 	}
 	query := `SELECT ` + colsStr + ` FROM gps_receivers`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "chipset": true, "protocol": true, "has_compass": true, "compass_chip": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "description": true, "reference_links": true}
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "chipset": true, "protocol": true, "has_compass": true, "compass_chip": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -173,6 +177,10 @@ func ListGpsReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 				scanArgs[i] = &m.Description
 			case "reference_links":
 				scanArgs[i] = &m.ReferenceLinks
+			case "primary_display_image":
+				scanArgs[i] = &m.PrimaryDisplayImage
+			case "media":
+				scanArgs[i] = &m.Media
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

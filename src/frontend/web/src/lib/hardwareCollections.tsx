@@ -127,6 +127,21 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       title: "Description",
       renderCell: (m) => m.description || "-",
     },
+    primary_display_image: {
+      id: "primary_display_image",
+      title: "Image",
+      renderCell: (m) =>
+        m.primaryDisplayImage ? (
+          <img
+            src={m.primaryDisplayImage}
+            alt={m.name || m.id}
+            className="w-9 h-9 object-cover rounded-md border border-zinc-200 dark:border-zinc-800 shadow-2xs"
+            loading="lazy"
+          />
+        ) : (
+          <span className="text-zinc-400">-</span>
+        ),
+    },
   };
 }
 

@@ -6,6 +6,7 @@ import {
   type FlightController,
 } from "../../gen/quadsmith/flight_controller_pb";
 import { ReferenceLinkType } from "../../gen/quadsmith/reference_link_pb";
+import { MediaType } from "../../gen/quadsmith/media_pb";
 
 export const mockMotor1: Motor = create(MotorSchema, {
   uuid: "018f0000-0000-7000-0000-000000000001",
@@ -25,6 +26,19 @@ export const mockMotor1: Motor = create(MotorSchema, {
     {
       type: ReferenceLinkType.PRODUCT_PAGE,
       url: "https://emax-usa.com/products/eco-ii-2207",
+    },
+  ],
+  primaryDisplayImage: "https://emax-usa.com/images/eco-ii-2207.jpg",
+  media: [
+    {
+      type: MediaType.IMAGE,
+      url: "https://emax-usa.com/images/eco-ii-2207-diagram.jpg",
+      title: "Motor Dimensions & Specs",
+    },
+    {
+      type: MediaType.YOUTUBE,
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      title: "EMAX ECO II Thrust Bench Test",
     },
   ],
 });
@@ -231,6 +245,20 @@ export const mockBuild1: Build = create(BuildSchema, {
     {
       type: ReferenceLinkType.PURCHASE,
       url: "https://www.getfpv.com/tbs-source-one-v5-5-frame-kit.html",
+    },
+  ],
+  primaryDisplayImage:
+    "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1200&q=80",
+  media: [
+    {
+      type: MediaType.IMAGE,
+      url: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1200&q=80",
+      title: "Bando Basher 5 inch Freestyle Frame",
+    },
+    {
+      type: MediaType.YOUTUBE,
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      title: "Bando Basher Flight & Durability Test",
     },
   ],
 });

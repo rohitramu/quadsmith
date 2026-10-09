@@ -38,11 +38,13 @@ type Receiver struct {
 	FrequencyBandMhz uint32 `protobuf:"varint,8,opt,name=frequency_band_mhz,json=frequencyBandMhz,proto3" json:"frequency_band_mhz,omitempty"`
 	HasTelemetry     bool   `protobuf:"varint,9,opt,name=has_telemetry,json=hasTelemetry,proto3" json:"has_telemetry,omitempty"`
 	// Array of antenna UUIDs included with or required by this receiver
-	AntennaUuids   []string         `protobuf:"bytes,10,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
-	Description    string           `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,12,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	AntennaUuids        []string         `protobuf:"bytes,10,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
+	Description         string           `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,12,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	PrimaryDisplayImage *string          `protobuf:"bytes,13,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	Media               []*Media         `protobuf:"bytes,14,rep,name=media,proto3" json:"media,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Receiver) Reset() {
@@ -155,6 +157,20 @@ func (x *Receiver) GetDescription() string {
 func (x *Receiver) GetReferenceLinks() []*ReferenceLink {
 	if x != nil {
 		return x.ReferenceLinks
+	}
+	return nil
+}
+
+func (x *Receiver) GetPrimaryDisplayImage() string {
+	if x != nil && x.PrimaryDisplayImage != nil {
+		return *x.PrimaryDisplayImage
+	}
+	return ""
+}
+
+func (x *Receiver) GetMedia() []*Media {
+	if x != nil {
+		return x.Media
 	}
 	return nil
 }
@@ -347,7 +363,7 @@ var File_receiver_proto protoreflect.FileDescriptor
 const file_receiver_proto_rawDesc = "" +
 	"\n" +
 	"\x0ereceiver.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x14reference_link.proto\"\xb3\x04\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xae\x05\n" +
 	"\bReceiver\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -361,14 +377,17 @@ const file_receiver_proto_rawDesc = "" +
 	"\rantenna_uuids\x18\n" +
 	" \x03(\tR\fantennaUuids\x12 \n" +
 	"\vdescription\x18\v \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\f \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:m\x8a\xb5\x18A\n" +
+	"\x0freference_links\x18\f \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
+	"\x15primary_display_image\x18\r \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
+	"\x05media\x18\x0e \x03(\v2\x10.quadsmith.MediaR\x05media:m\x8a\xb5\x18A\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +
 	"\x12frequency_band_mhz\n" +
 	"\rhas_telemetry\x92\xb5\x18\x15\n" +
 	"\bReceiver\x12\tReceivers\xc2\xf3\x18\v\n" +
-	"\treceivers\">\n" +
+	"\treceiversB\x18\n" +
+	"\x16_primary_display_image\">\n" +
 	"\x12GetReceiverRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x98\x01\n" +
@@ -405,19 +424,21 @@ var file_receiver_proto_goTypes = []any{
 	(*ListReceiversRequest)(nil),  // 2: quadsmith.ListReceiversRequest
 	(*ListReceiversResponse)(nil), // 3: quadsmith.ListReceiversResponse
 	(*ReferenceLink)(nil),         // 4: quadsmith.ReferenceLink
+	(*Media)(nil),                 // 5: quadsmith.Media
 }
 var file_receiver_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Receiver.reference_links:type_name -> quadsmith.ReferenceLink
-	0, // 1: quadsmith.ListReceiversResponse.receivers:type_name -> quadsmith.Receiver
-	1, // 2: quadsmith.ReceiverService.GetReceiver:input_type -> quadsmith.GetReceiverRequest
-	2, // 3: quadsmith.ReceiverService.ListReceivers:input_type -> quadsmith.ListReceiversRequest
-	0, // 4: quadsmith.ReceiverService.GetReceiver:output_type -> quadsmith.Receiver
-	3, // 5: quadsmith.ReceiverService.ListReceivers:output_type -> quadsmith.ListReceiversResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5, // 1: quadsmith.Receiver.media:type_name -> quadsmith.Media
+	0, // 2: quadsmith.ListReceiversResponse.receivers:type_name -> quadsmith.Receiver
+	1, // 3: quadsmith.ReceiverService.GetReceiver:input_type -> quadsmith.GetReceiverRequest
+	2, // 4: quadsmith.ReceiverService.ListReceivers:input_type -> quadsmith.ListReceiversRequest
+	0, // 5: quadsmith.ReceiverService.GetReceiver:output_type -> quadsmith.Receiver
+	3, // 6: quadsmith.ReceiverService.ListReceivers:output_type -> quadsmith.ListReceiversResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_receiver_proto_init() }
@@ -427,7 +448,9 @@ func file_receiver_proto_init() {
 	}
 	file___common_proto_init()
 	file___sql_proto_init()
+	file_media_proto_init()
 	file_reference_link_proto_init()
+	file_receiver_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

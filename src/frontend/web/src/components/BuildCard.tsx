@@ -75,9 +75,17 @@ export function BuildCard({ build }: BuildCardProps) {
       {/* Header bar: Avatar, Title, Handle */}
       <div className="p-4 sm:p-5 pb-3 flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0 select-none">
-            {build.name.charAt(0) || "Q"}
-          </div>
+          {build.primaryDisplayImage ? (
+            <img
+              src={build.primaryDisplayImage}
+              alt=""
+              className="w-10 h-10 rounded-xl object-cover shadow-xs shrink-0 border border-zinc-200 dark:border-zinc-800"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0 select-none">
+              {build.name.charAt(0) || "Q"}
+            </div>
+          )}
           <div className="min-w-0">
             <Link
               to={`/builds/${build.id}`}
@@ -105,23 +113,44 @@ export function BuildCard({ build }: BuildCardProps) {
         </button>
       </div>
 
-      {/* Visual / Banner area with schematic styling */}
+      {/* Visual / Banner area with schematic styling or build photo */}
       <Link
         to={`/builds/${build.id}`}
-        className="block relative bg-gradient-to-b from-zinc-100/80 to-zinc-50 dark:from-zinc-950/60 dark:to-zinc-900/40 px-5 py-6 border-y border-zinc-100 dark:border-zinc-800/60 text-center"
+        tabIndex={-1}
+        aria-hidden="true"
+        className="block relative bg-gradient-to-b from-zinc-100/80 to-zinc-50 dark:from-zinc-950/60 dark:to-zinc-900/40 border-y border-zinc-100 dark:border-zinc-800/60 overflow-hidden"
       >
-        <div className="relative z-10 flex flex-col items-center justify-center py-2">
-          {/* Stylized Quad Silhouette */}
-          <div className="w-20 h-20 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/60 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3 shadow-inner group-hover:scale-105 transition-transform duration-200">
-            <Compass size={38} className="transform rotate-45" />
+        {build.primaryDisplayImage ? (
+          <div className="relative h-44 w-full overflow-hidden bg-zinc-900">
+            <img
+              src={build.primaryDisplayImage}
+              alt=""
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+              <span className="font-medium bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded">
+                {componentCount} components
+              </span>
+            </div>
           </div>
-          <span className="text-xs uppercase tracking-wider font-semibold text-zinc-400 dark:text-zinc-500">
-            Complete Build Profile
-          </span>
-          <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mt-0.5">
-            {componentCount} hardware components configured
-          </span>
-        </div>
+        ) : (
+          <div className="px-5 py-6 text-center">
+            <div className="relative z-10 flex flex-col items-center justify-center py-2">
+              {/* Stylized Quad Silhouette */}
+              <div className="w-20 h-20 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/60 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3 shadow-inner group-hover:scale-105 transition-transform duration-200">
+                <Compass size={38} className="transform rotate-45" />
+              </div>
+              <span className="text-xs uppercase tracking-wider font-semibold text-zinc-400 dark:text-zinc-500">
+                Complete Build Profile
+              </span>
+              <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mt-0.5">
+                {componentCount} hardware components configured
+              </span>
+            </div>
+          </div>
+        )}
       </Link>
 
       {/* Card Body: Description */}

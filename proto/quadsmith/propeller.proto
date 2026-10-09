@@ -4,6 +4,7 @@ package quadsmith;
 
 import "_common.proto";
 import "_sql.proto";
+import "media.proto";
 import "reference_link.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
@@ -49,6 +50,8 @@ message Propeller {
   string material = 9;
   string description = 10;
   repeated ReferenceLink reference_links = 11;
+  optional string primary_display_image = 12;
+  repeated Media media = 13;
 }
 
 // ---------------------------------------------------------

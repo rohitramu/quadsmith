@@ -11,22 +11,22 @@ import (
 )
 
 func CreateAntenna(ctx context.Context, tx pgx.Tx, m *Antenna) error {
-	query := `INSERT INTO antennas (uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	query := `INSERT INTO antennas (uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandMhz, m.LengthMm, m.GainDbi, m.Description, m.ReferenceLinks)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandMhz, m.LengthMm, m.GainDbi, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
 	return err
 }
 
 func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Antenna, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "connector", "polarization", "frequency_band_mhz", "length_mm", "gain_dbi", "description", "reference_links"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "connector", "polarization", "frequency_band_mhz", "length_mm", "gain_dbi", "description", "reference_links", "primary_display_image", "media"}
 	}
 	query := `SELECT ` + colsStr + ` FROM antennas WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -60,6 +60,10 @@ func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.Description
 		case "reference_links":
 			scanArgs[i] = &m.ReferenceLinks
+		case "primary_display_image":
+			scanArgs[i] = &m.PrimaryDisplayImage
+		case "media":
+			scanArgs[i] = &m.Media
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -77,8 +81,8 @@ func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 }
 
 func UpdateAntenna(ctx context.Context, tx pgx.Tx, m *Antenna) error {
-	query := `UPDATE antennas SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, connector = $6, polarization = $7, frequency_band_mhz = $8, length_mm = $9, gain_dbi = $10, description = $11, reference_links = $12 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandMhz, m.LengthMm, m.GainDbi, m.Description, m.ReferenceLinks)
+	query := `UPDATE antennas SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, connector = $6, polarization = $7, frequency_band_mhz = $8, length_mm = $9, gain_dbi = $10, description = $11, reference_links = $12, primary_display_image = $13, media = $14 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandMhz, m.LengthMm, m.GainDbi, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
 	return err
 }
 
@@ -89,17 +93,17 @@ func DeleteAntenna(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Antenna, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "connector", "polarization", "frequency_band_mhz", "length_mm", "gain_dbi", "description", "reference_links"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "connector", "polarization", "frequency_band_mhz", "length_mm", "gain_dbi", "description", "reference_links", "primary_display_image", "media"}
 	}
 	query := `SELECT ` + colsStr + ` FROM antennas`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "connector": true, "polarization": true, "frequency_band_mhz": true, "length_mm": true, "gain_dbi": true, "description": true, "reference_links": true}
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "connector": true, "polarization": true, "frequency_band_mhz": true, "length_mm": true, "gain_dbi": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -169,6 +173,10 @@ func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 				scanArgs[i] = &m.Description
 			case "reference_links":
 				scanArgs[i] = &m.ReferenceLinks
+			case "primary_display_image":
+				scanArgs[i] = &m.PrimaryDisplayImage
+			case "media":
+				scanArgs[i] = &m.Media
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

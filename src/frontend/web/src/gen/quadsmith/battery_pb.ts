@@ -6,6 +6,8 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file__common } from "./_common_pb";
 import { file__sql } from "./_sql_pb";
+import type { Media } from "./media_pb";
+import { file_media } from "./media_pb";
 import type { ReferenceLink } from "./reference_link_pb";
 import { file_reference_link } from "./reference_link_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -16,8 +18,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_battery: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg1iYXR0ZXJ5LnByb3RvEglxdWFkc21pdGgi8AIKB0JhdHRlcnkSFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIQCgh3ZWlnaHRfZxgFIAEoAhIUCgxjYXBhY2l0eV9tYWgYBiABKA0SHAoMY2VsbF9jb3VudF9zGAcgASgNQgbC8xgCKAESEQoJY2hlbWlzdHJ5GAggASgJEhEKCWNvbm5lY3RvchgJIAEoCRITCgtkZXNjcmlwdGlvbhgKIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYCyADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpbirUYMAoMbWFudWZhY3R1cmVyCgRuYW1lCgxjZWxsX2NvdW50X3MKDGNhcGFjaXR5X21haJK1GBQKB0JhdHRlcnkSCUJhdHRlcmllc8LzGAsKCWJhdHRlcmllcyIwChFHZXRCYXR0ZXJ5UmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImwKFExpc3RCYXR0ZXJpZXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiVwoVTGlzdEJhdHRlcmllc1Jlc3BvbnNlEiUKCWJhdHRlcmllcxgBIAMoCzISLnF1YWRzbWl0aC5CYXR0ZXJ5EhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTKkAQoOQmF0dGVyeVNlcnZpY2USPgoKR2V0QmF0dGVyeRIcLnF1YWRzbWl0aC5HZXRCYXR0ZXJ5UmVxdWVzdBoSLnF1YWRzbWl0aC5CYXR0ZXJ5ElIKDUxpc3RCYXR0ZXJpZXMSHy5xdWFkc21pdGguTGlzdEJhdHRlcmllc1JlcXVlc3QaIC5xdWFkc21pdGguTGlzdEJhdHRlcmllc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
-    [file__common, file__sql, file_reference_link],
+    "Cg1iYXR0ZXJ5LnByb3RvEglxdWFkc21pdGgizwMKB0JhdHRlcnkSFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIQCgh3ZWlnaHRfZxgFIAEoAhIUCgxjYXBhY2l0eV9tYWgYBiABKA0SHAoMY2VsbF9jb3VudF9zGAcgASgNQgbC8xgCKAESEQoJY2hlbWlzdHJ5GAggASgJEhEKCWNvbm5lY3RvchgJIAEoCRITCgtkZXNjcmlwdGlvbhgKIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYCyADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluaxIiChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDCABKAlIAIgBARIfCgVtZWRpYRgNIAMoCzIQLnF1YWRzbWl0aC5NZWRpYTpbirUYMAoMbWFudWZhY3R1cmVyCgRuYW1lCgxjZWxsX2NvdW50X3MKDGNhcGFjaXR5X21haJK1GBQKB0JhdHRlcnkSCUJhdHRlcmllc8LzGAsKCWJhdHRlcmllc0IYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlIjAKEUdldEJhdHRlcnlSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibAoUTGlzdEJhdHRlcmllc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJXChVMaXN0QmF0dGVyaWVzUmVzcG9uc2USJQoJYmF0dGVyaWVzGAEgAygLMhIucXVhZHNtaXRoLkJhdHRlcnkSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMqQBCg5CYXR0ZXJ5U2VydmljZRI+CgpHZXRCYXR0ZXJ5EhwucXVhZHNtaXRoLkdldEJhdHRlcnlSZXF1ZXN0GhIucXVhZHNtaXRoLkJhdHRlcnkSUgoNTGlzdEJhdHRlcmllcxIfLnF1YWRzbWl0aC5MaXN0QmF0dGVyaWVzUmVxdWVzdBogLnF1YWRzbWl0aC5MaXN0QmF0dGVyaWVzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    [file__common, file__sql, file_media, file_reference_link],
   );
 
 /**
@@ -90,6 +92,16 @@ export type Battery = Message<"quadsmith.Battery"> & {
    * @generated from field: repeated quadsmith.ReferenceLink reference_links = 11;
    */
   referenceLinks: ReferenceLink[];
+
+  /**
+   * @generated from field: optional string primary_display_image = 12;
+   */
+  primaryDisplayImage?: string | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.Media media = 13;
+   */
+  media: Media[];
 };
 
 /**

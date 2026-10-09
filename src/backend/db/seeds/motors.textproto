@@ -17,6 +17,17 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-1404-4500kv-for-2-5-tiny-whoops-and-3-freestyle-fpv-drone-motor-1-pc"
   }
+  primary_display_image: "https://sub250.com/cdn/shop/files/Sub25014044500kvmotor_1.jpg"
+  media: {
+    type: MEDIA_TYPE_IMAGE
+    url: "https://sub250.com/cdn/shop/files/Sub25014044500kvmotor_1.jpg"
+    title: "Sub250 1404 4500KV Studio View"
+  }
+  media: {
+    type: MEDIA_TYPE_YOUTUBE
+    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    title: "Sub250 1404 Motor Overview and Thrust Testing"
+  }
 }
 motors: {
 

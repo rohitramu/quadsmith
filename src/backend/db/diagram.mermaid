@@ -16,6 +16,8 @@ erDiagram
         UUID video_transmitter_uuid FK
         UUID gps_receiver_uuid FK
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     motors {
@@ -29,6 +31,8 @@ erDiagram
         INTEGER kv
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     frames {
@@ -42,6 +46,8 @@ erDiagram
         TEXT geometry
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     batteries {
@@ -56,6 +62,8 @@ erDiagram
         TEXT connector
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     flight_controllers {
@@ -72,6 +80,8 @@ erDiagram
         UUID internal_video_transmitter_uuid FK
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     electronic_speed_controllers {
@@ -87,6 +97,8 @@ erDiagram
         TEXT firmware
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     receivers {
@@ -102,6 +114,8 @@ erDiagram
         UUID_ARRAY antenna_uuids
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     video_transmitters {
@@ -118,6 +132,8 @@ erDiagram
         UUID_ARRAY antenna_uuids
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     antennas {
@@ -134,6 +150,8 @@ erDiagram
         DECIMAL gain_dbi
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     propellers {
@@ -148,6 +166,8 @@ erDiagram
         TEXT material
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     cameras {
@@ -163,6 +183,8 @@ erDiagram
         DECIMAL lens_size_mm
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     gps_receivers {
@@ -180,6 +202,8 @@ erDiagram
         DECIMAL input_voltage_max_v
         TEXT description
         JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
     }
 
     builds ||--o| frames : has

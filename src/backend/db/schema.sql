@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS antennas (
   length_mm DECIMAL NOT NULL,
   gain_dbi DECIMAL NOT NULL,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_antennas_manufacturer ON antennas (manufacturer);
@@ -30,7 +32,9 @@ CREATE TABLE IF NOT EXISTS batteries (
   chemistry TEXT NOT NULL,
   connector TEXT NOT NULL,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_batteries_manufacturer ON batteries (manufacturer);
@@ -54,7 +58,9 @@ CREATE TABLE IF NOT EXISTS builds (
   camera_uuids UUID[],
   video_transmitter_uuid UUID NOT NULL,
   gps_receiver_uuid UUID,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE TABLE IF NOT EXISTS cameras (
@@ -70,7 +76,9 @@ CREATE TABLE IF NOT EXISTS cameras (
   width_mm INTEGER NOT NULL,
   lens_size_mm DECIMAL NOT NULL,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_cameras_manufacturer ON cameras (manufacturer);
@@ -88,7 +96,9 @@ CREATE TABLE IF NOT EXISTS electronic_speed_controllers (
   motor_current_burst_a DECIMAL NOT NULL,
   firmware TEXT NOT NULL,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_electronic_speed_controllers_manufacturer ON electronic_speed_controllers (manufacturer);
@@ -107,7 +117,9 @@ CREATE TABLE IF NOT EXISTS flight_controllers (
   internal_receiver_uuid UUID,
   internal_video_transmitter_uuid UUID,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_flight_controllers_manufacturer ON flight_controllers (manufacturer);
@@ -123,7 +135,9 @@ CREATE TABLE IF NOT EXISTS frames (
   max_prop_size_mm DECIMAL NOT NULL,
   geometry TEXT NOT NULL,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_frames_manufacturer ON frames (manufacturer);
@@ -143,7 +157,9 @@ CREATE TABLE IF NOT EXISTS gps_receivers (
   input_voltage_min_v DECIMAL NOT NULL,
   input_voltage_max_v DECIMAL NOT NULL,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_gps_receivers_manufacturer ON gps_receivers (manufacturer);
@@ -161,7 +177,9 @@ CREATE TABLE IF NOT EXISTS motors (
   stator_height_mm DECIMAL NOT NULL,
   kv INTEGER NOT NULL,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_motors_manufacturer ON motors (manufacturer);
@@ -180,7 +198,9 @@ CREATE TABLE IF NOT EXISTS propellers (
   blades INTEGER NOT NULL,
   material TEXT NOT NULL,
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_propellers_manufacturer ON propellers (manufacturer);
@@ -198,7 +218,9 @@ CREATE TABLE IF NOT EXISTS receivers (
   has_telemetry BOOLEAN NOT NULL,
   antenna_uuids UUID[],
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_receivers_manufacturer ON receivers (manufacturer);
@@ -219,7 +241,9 @@ CREATE TABLE IF NOT EXISTS video_transmitters (
   input_voltage_max_v DECIMAL NOT NULL,
   antenna_uuids UUID[],
   description TEXT NOT NULL,
-  reference_links JSONB
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
 );
 
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_manufacturer ON video_transmitters (manufacturer);

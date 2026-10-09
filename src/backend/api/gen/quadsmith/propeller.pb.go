@@ -38,11 +38,13 @@ type Propeller struct {
 	// Number of blades (e.g., 2, 3, 4)
 	Blades uint32 `protobuf:"varint,8,opt,name=blades,proto3" json:"blades,omitempty"`
 	// E.g., "Polycarbonate", "Carbon Fiber"
-	Material       string           `protobuf:"bytes,9,opt,name=material,proto3" json:"material,omitempty"`
-	Description    string           `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks []*ReferenceLink `protobuf:"bytes,11,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	Material            string           `protobuf:"bytes,9,opt,name=material,proto3" json:"material,omitempty"`
+	Description         string           `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,11,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	PrimaryDisplayImage *string          `protobuf:"bytes,12,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	Media               []*Media         `protobuf:"bytes,13,rep,name=media,proto3" json:"media,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Propeller) Reset() {
@@ -148,6 +150,20 @@ func (x *Propeller) GetDescription() string {
 func (x *Propeller) GetReferenceLinks() []*ReferenceLink {
 	if x != nil {
 		return x.ReferenceLinks
+	}
+	return nil
+}
+
+func (x *Propeller) GetPrimaryDisplayImage() string {
+	if x != nil && x.PrimaryDisplayImage != nil {
+		return *x.PrimaryDisplayImage
+	}
+	return ""
+}
+
+func (x *Propeller) GetMedia() []*Media {
+	if x != nil {
+		return x.Media
 	}
 	return nil
 }
@@ -340,7 +356,7 @@ var File_propeller_proto protoreflect.FileDescriptor
 const file_propeller_proto_rawDesc = "" +
 	"\n" +
 	"\x0fpropeller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x14reference_link.proto\"\xd3\x03\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xce\x04\n" +
 	"\tPropeller\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -354,7 +370,9 @@ const file_propeller_proto_rawDesc = "" +
 	"\bmaterial\x18\t \x01(\tR\bmaterial\x12 \n" +
 	"\vdescription\x18\n" +
 	" \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:b\x8a\xb5\x183\n" +
+	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
+	"\x15primary_display_image\x18\f \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
+	"\x05media\x18\r \x03(\v2\x10.quadsmith.MediaR\x05media:b\x8a\xb5\x183\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\vdiameter_mm\n" +
@@ -363,7 +381,8 @@ const file_propeller_proto_rawDesc = "" +
 	"\tPropeller\x12\n" +
 	"Propellers\xc2\xf3\x18\f\n" +
 	"\n" +
-	"propellers\"?\n" +
+	"propellersB\x18\n" +
+	"\x16_primary_display_image\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x99\x01\n" +
@@ -402,19 +421,21 @@ var file_propeller_proto_goTypes = []any{
 	(*ListPropellersRequest)(nil),  // 2: quadsmith.ListPropellersRequest
 	(*ListPropellersResponse)(nil), // 3: quadsmith.ListPropellersResponse
 	(*ReferenceLink)(nil),          // 4: quadsmith.ReferenceLink
+	(*Media)(nil),                  // 5: quadsmith.Media
 }
 var file_propeller_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Propeller.reference_links:type_name -> quadsmith.ReferenceLink
-	0, // 1: quadsmith.ListPropellersResponse.propellers:type_name -> quadsmith.Propeller
-	1, // 2: quadsmith.PropellerService.GetPropeller:input_type -> quadsmith.GetPropellerRequest
-	2, // 3: quadsmith.PropellerService.ListPropellers:input_type -> quadsmith.ListPropellersRequest
-	0, // 4: quadsmith.PropellerService.GetPropeller:output_type -> quadsmith.Propeller
-	3, // 5: quadsmith.PropellerService.ListPropellers:output_type -> quadsmith.ListPropellersResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5, // 1: quadsmith.Propeller.media:type_name -> quadsmith.Media
+	0, // 2: quadsmith.ListPropellersResponse.propellers:type_name -> quadsmith.Propeller
+	1, // 3: quadsmith.PropellerService.GetPropeller:input_type -> quadsmith.GetPropellerRequest
+	2, // 4: quadsmith.PropellerService.ListPropellers:input_type -> quadsmith.ListPropellersRequest
+	0, // 5: quadsmith.PropellerService.GetPropeller:output_type -> quadsmith.Propeller
+	3, // 6: quadsmith.PropellerService.ListPropellers:output_type -> quadsmith.ListPropellersResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_propeller_proto_init() }
@@ -424,7 +445,9 @@ func file_propeller_proto_init() {
 	}
 	file___common_proto_init()
 	file___sql_proto_init()
+	file_media_proto_init()
 	file_reference_link_proto_init()
+	file_propeller_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

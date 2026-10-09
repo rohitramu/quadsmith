@@ -47,6 +47,13 @@ describe("ProductPage Component", () => {
     expect(screen.getByText("https://store.example.com/emax-eco-ii")).toBeInTheDocument();
     expect(screen.getByText("Official Product Page")).toBeInTheDocument();
     expect(screen.getByText("https://emax-usa.com/products/eco-ii-2207")).toBeInTheDocument();
+
+    // Primary Display Image & Media Gallery
+    expect(screen.getByAltText("Primary Display")).toBeInTheDocument();
+    expect(screen.getByText("Media Gallery")).toBeInTheDocument();
+    expect(screen.getByText("Motor Dimensions & Specs")).toBeInTheDocument();
+    expect(screen.getByText("EMAX ECO II Thrust Bench Test")).toBeInTheDocument();
+    expect(screen.getByTitle("EMAX ECO II Thrust Bench Test")).toBeInTheDocument();
   });
 
   it("renders error state when product is not found", async () => {

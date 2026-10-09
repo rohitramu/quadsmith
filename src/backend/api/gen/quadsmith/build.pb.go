@@ -51,10 +51,12 @@ type Build struct {
 	// The Video Transmitter used for this build
 	VideoTransmitterUuid string `protobuf:"bytes,14,opt,name=video_transmitter_uuid,json=videoTransmitterUuid,proto3" json:"video_transmitter_uuid,omitempty"`
 	// Optional GPS Receiver for navigation and rescue return-to-home
-	GpsReceiverUuid *string          `protobuf:"bytes,15,opt,name=gps_receiver_uuid,json=gpsReceiverUuid,proto3,oneof" json:"gps_receiver_uuid,omitempty"`
-	ReferenceLinks  []*ReferenceLink `protobuf:"bytes,16,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	GpsReceiverUuid     *string          `protobuf:"bytes,15,opt,name=gps_receiver_uuid,json=gpsReceiverUuid,proto3,oneof" json:"gps_receiver_uuid,omitempty"`
+	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,16,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	PrimaryDisplayImage *string          `protobuf:"bytes,17,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	Media               []*Media         `protobuf:"bytes,18,rep,name=media,proto3" json:"media,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Build) Reset() {
@@ -195,6 +197,20 @@ func (x *Build) GetGpsReceiverUuid() string {
 func (x *Build) GetReferenceLinks() []*ReferenceLink {
 	if x != nil {
 		return x.ReferenceLinks
+	}
+	return nil
+}
+
+func (x *Build) GetPrimaryDisplayImage() string {
+	if x != nil && x.PrimaryDisplayImage != nil {
+		return *x.PrimaryDisplayImage
+	}
+	return ""
+}
+
+func (x *Build) GetMedia() []*Media {
+	if x != nil {
+		return x.Media
 	}
 	return nil
 }
@@ -387,7 +403,7 @@ var File_build_proto protoreflect.FileDescriptor
 const file_build_proto_rawDesc = "" +
 	"\n" +
 	"\vbuild.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x14reference_link.proto\"\x97\a\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x92\b\n" +
 	"\x05Build\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12\x12\n" +
@@ -407,13 +423,16 @@ const file_build_proto_rawDesc = "" +
 	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12T\n" +
 	"\x16video_transmitter_uuid\x18\x0e \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12J\n" +
 	"\x11gps_receiver_uuid\x18\x0f \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12A\n" +
-	"\x0freference_links\x18\x10 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks::\x8a\xb5\x18\x17\n" +
+	"\x0freference_links\x18\x10 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
+	"\x15primary_display_image\x18\x11 \x01(\tH\x01R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
+	"\x05media\x18\x12 \x03(\v2\x10.quadsmith.MediaR\x05media::\x8a\xb5\x18\x17\n" +
 	"\x02id\n" +
 	"\x04name\n" +
 	"\vdescription\x92\xb5\x18\x0f\n" +
 	"\x05Build\x12\x06Builds\xc2\xf3\x18\b\n" +
 	"\x06buildsB\x14\n" +
-	"\x12_gps_receiver_uuid\";\n" +
+	"\x12_gps_receiver_uuidB\x18\n" +
+	"\x16_primary_display_image\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
@@ -451,19 +470,21 @@ var file_build_proto_goTypes = []any{
 	(*ListBuildsRequest)(nil),  // 2: quadsmith.ListBuildsRequest
 	(*ListBuildsResponse)(nil), // 3: quadsmith.ListBuildsResponse
 	(*ReferenceLink)(nil),      // 4: quadsmith.ReferenceLink
+	(*Media)(nil),              // 5: quadsmith.Media
 }
 var file_build_proto_depIdxs = []int32{
 	4, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
-	0, // 1: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
-	1, // 2: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
-	2, // 3: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
-	0, // 4: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
-	3, // 5: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5, // 1: quadsmith.Build.media:type_name -> quadsmith.Media
+	0, // 2: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
+	1, // 3: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
+	2, // 4: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
+	0, // 5: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
+	3, // 6: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_build_proto_init() }
@@ -473,6 +494,7 @@ func file_build_proto_init() {
 	}
 	file___common_proto_init()
 	file___sql_proto_init()
+	file_media_proto_init()
 	file_reference_link_proto_init()
 	file_build_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}

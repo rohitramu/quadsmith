@@ -173,4 +173,20 @@ describe("BuildProfilePage Component", () => {
       "/",
     );
   });
+
+  it("renders build primary display image and media showcase with images and video embeds", async () => {
+    renderBuildProfile();
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 2,
+        name: /build media & video showcase/i,
+      }),
+    ).toBeInTheDocument();
+
+    expect(screen.getByAltText("Primary Display")).toBeInTheDocument();
+    expect(screen.getByText("Bando Basher 5 inch Freestyle Frame")).toBeInTheDocument();
+    expect(screen.getByText("Bando Basher Flight & Durability Test")).toBeInTheDocument();
+    expect(screen.getByTitle("Bando Basher Flight & Durability Test")).toBeInTheDocument();
+  });
 });

@@ -13,6 +13,17 @@ frames: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/impulserc-apex-evo-5-hd-freestyle-frame-kit"
   }
+  primary_display_image: "https://cdn.shopify.com/s/files/1/1285/4651/products/apex-evo-5-hd-front.jpg"
+  media: {
+    type: MEDIA_TYPE_IMAGE
+    url: "https://cdn.shopify.com/s/files/1/1285/4651/products/apex-evo-5-hd-front.jpg"
+    title: "ImpulseRC Apex EVO 5 Frame Front View"
+  }
+  media: {
+    type: MEDIA_TYPE_YOUTUBE
+    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    title: "Apex EVO Assembly & Review"
+  }
 }
 frames: {
 

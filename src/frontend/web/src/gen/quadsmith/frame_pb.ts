@@ -6,6 +6,8 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file__common } from "./_common_pb";
 import { file__sql } from "./_sql_pb";
+import type { Media } from "./media_pb";
+import { file_media } from "./media_pb";
 import type { ReferenceLink } from "./reference_link_pb";
 import { file_reference_link } from "./reference_link_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -16,8 +18,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_frame: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CgtmcmFtZS5wcm90bxIJcXVhZHNtaXRoIsoCCgVGcmFtZRIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIMCgRuYW1lGAQgASgJEhAKCHdlaWdodF9nGAUgASgCEhQKDHdoZWVsYmFzZV9tbRgGIAEoAhIYChBtYXhfcHJvcF9zaXplX21tGAcgASgCEhAKCGdlb21ldHJ5GAggASgJEhMKC2Rlc2NyaXB0aW9uGAkgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgKIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rOk+KtRgsCgxtYW51ZmFjdHVyZXIKBG5hbWUKDHdoZWVsYmFzZV9tbQoIZ2VvbWV0cnmStRgPCgVGcmFtZRIGRnJhbWVzwvMYCAoGZnJhbWVzIi4KD0dldEZyYW1lUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImkKEUxpc3RGcmFtZXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiTwoSTGlzdEZyYW1lc1Jlc3BvbnNlEiAKBmZyYW1lcxgBIAMoCzIQLnF1YWRzbWl0aC5GcmFtZRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkykwEKDEZyYW1lU2VydmljZRI4CghHZXRGcmFtZRIaLnF1YWRzbWl0aC5HZXRGcmFtZVJlcXVlc3QaEC5xdWFkc21pdGguRnJhbWUSSQoKTGlzdEZyYW1lcxIcLnF1YWRzbWl0aC5MaXN0RnJhbWVzUmVxdWVzdBodLnF1YWRzbWl0aC5MaXN0RnJhbWVzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
-    [file__common, file__sql, file_reference_link],
+    "CgtmcmFtZS5wcm90bxIJcXVhZHNtaXRoIqkDCgVGcmFtZRIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIMCgRuYW1lGAQgASgJEhAKCHdlaWdodF9nGAUgASgCEhQKDHdoZWVsYmFzZV9tbRgGIAEoAhIYChBtYXhfcHJvcF9zaXplX21tGAcgASgCEhAKCGdlb21ldHJ5GAggASgJEhMKC2Rlc2NyaXB0aW9uGAkgASgJEjEKD3JlZmVyZW5jZV9saW5rcxgKIAMoCzIYLnF1YWRzbWl0aC5SZWZlcmVuY2VMaW5rEiIKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgLIAEoCUgAiAEBEh8KBW1lZGlhGAwgAygLMhAucXVhZHNtaXRoLk1lZGlhOk+KtRgsCgxtYW51ZmFjdHVyZXIKBG5hbWUKDHdoZWVsYmFzZV9tbQoIZ2VvbWV0cnmStRgPCgVGcmFtZRIGRnJhbWVzwvMYCAoGZnJhbWVzQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2UiLgoPR2V0RnJhbWVSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdEZyYW1lc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJPChJMaXN0RnJhbWVzUmVzcG9uc2USIAoGZnJhbWVzGAEgAygLMhAucXVhZHNtaXRoLkZyYW1lEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTKTAQoMRnJhbWVTZXJ2aWNlEjgKCEdldEZyYW1lEhoucXVhZHNtaXRoLkdldEZyYW1lUmVxdWVzdBoQLnF1YWRzbWl0aC5GcmFtZRJJCgpMaXN0RnJhbWVzEhwucXVhZHNtaXRoLkxpc3RGcmFtZXNSZXF1ZXN0Gh0ucXVhZHNtaXRoLkxpc3RGcmFtZXNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    [file__common, file__sql, file_media, file_reference_link],
   );
 
 /**
@@ -83,6 +85,16 @@ export type Frame = Message<"quadsmith.Frame"> & {
    * @generated from field: repeated quadsmith.ReferenceLink reference_links = 10;
    */
   referenceLinks: ReferenceLink[];
+
+  /**
+   * @generated from field: optional string primary_display_image = 11;
+   */
+  primaryDisplayImage?: string | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.Media media = 12;
+   */
+  media: Media[];
 };
 
 /**

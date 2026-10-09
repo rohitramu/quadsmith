@@ -43,11 +43,13 @@ type GpsReceiver struct {
 	// Minimum operating input voltage
 	InputVoltageMinV float32 `protobuf:"fixed32,11,opt,name=input_voltage_min_v,json=inputVoltageMinV,proto3" json:"input_voltage_min_v,omitempty"`
 	// Maximum operating input voltage
-	InputVoltageMaxV float32          `protobuf:"fixed32,12,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
-	Description      string           `protobuf:"bytes,13,opt,name=description,proto3" json:"description,omitempty"`
-	ReferenceLinks   []*ReferenceLink `protobuf:"bytes,14,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	InputVoltageMaxV    float32          `protobuf:"fixed32,12,opt,name=input_voltage_max_v,json=inputVoltageMaxV,proto3" json:"input_voltage_max_v,omitempty"`
+	Description         string           `protobuf:"bytes,13,opt,name=description,proto3" json:"description,omitempty"`
+	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,14,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	PrimaryDisplayImage *string          `protobuf:"bytes,15,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	Media               []*Media         `protobuf:"bytes,16,rep,name=media,proto3" json:"media,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *GpsReceiver) Reset() {
@@ -174,6 +176,20 @@ func (x *GpsReceiver) GetDescription() string {
 func (x *GpsReceiver) GetReferenceLinks() []*ReferenceLink {
 	if x != nil {
 		return x.ReferenceLinks
+	}
+	return nil
+}
+
+func (x *GpsReceiver) GetPrimaryDisplayImage() string {
+	if x != nil && x.PrimaryDisplayImage != nil {
+		return *x.PrimaryDisplayImage
+	}
+	return ""
+}
+
+func (x *GpsReceiver) GetMedia() []*Media {
+	if x != nil {
+		return x.Media
 	}
 	return nil
 }
@@ -366,7 +382,7 @@ var File_gps_receiver_proto protoreflect.FileDescriptor
 const file_gps_receiver_proto_rawDesc = "" +
 	"\n" +
 	"\x12gps_receiver.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x14reference_link.proto\"\x9a\x05\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x95\x06\n" +
 	"\vGpsReceiver\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -383,7 +399,9 @@ const file_gps_receiver_proto_rawDesc = "" +
 	"\x13input_voltage_min_v\x18\v \x01(\x02R\x10inputVoltageMinV\x12-\n" +
 	"\x13input_voltage_max_v\x18\f \x01(\x02R\x10inputVoltageMaxV\x12 \n" +
 	"\vdescription\x18\r \x01(\tR\vdescription\x12A\n" +
-	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks:b\x8a\xb5\x18*\n" +
+	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
+	"\x15primary_display_image\x18\x0f \x01(\tH\x02R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
+	"\x05media\x18\x10 \x03(\v2\x10.quadsmith.MediaR\x05media:b\x8a\xb5\x18*\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\achipset\n" +
@@ -391,7 +409,8 @@ const file_gps_receiver_proto_rawDesc = "" +
 	"\fGPS Receiver\x12\rGPS Receivers\xc2\xf3\x18\x0f\n" +
 	"\rgps_receiversB\x0e\n" +
 	"\f_has_compassB\x0f\n" +
-	"\r_compass_chip\"A\n" +
+	"\r_compass_chipB\x18\n" +
+	"\x16_primary_display_image\"A\n" +
 	"\x15GetGpsReceiverRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9b\x01\n" +
@@ -428,19 +447,21 @@ var file_gps_receiver_proto_goTypes = []any{
 	(*ListGpsReceiversRequest)(nil),  // 2: quadsmith.ListGpsReceiversRequest
 	(*ListGpsReceiversResponse)(nil), // 3: quadsmith.ListGpsReceiversResponse
 	(*ReferenceLink)(nil),            // 4: quadsmith.ReferenceLink
+	(*Media)(nil),                    // 5: quadsmith.Media
 }
 var file_gps_receiver_proto_depIdxs = []int32{
 	4, // 0: quadsmith.GpsReceiver.reference_links:type_name -> quadsmith.ReferenceLink
-	0, // 1: quadsmith.ListGpsReceiversResponse.gps_receivers:type_name -> quadsmith.GpsReceiver
-	1, // 2: quadsmith.GpsReceiverService.GetGpsReceiver:input_type -> quadsmith.GetGpsReceiverRequest
-	2, // 3: quadsmith.GpsReceiverService.ListGpsReceivers:input_type -> quadsmith.ListGpsReceiversRequest
-	0, // 4: quadsmith.GpsReceiverService.GetGpsReceiver:output_type -> quadsmith.GpsReceiver
-	3, // 5: quadsmith.GpsReceiverService.ListGpsReceivers:output_type -> quadsmith.ListGpsReceiversResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	5, // 1: quadsmith.GpsReceiver.media:type_name -> quadsmith.Media
+	0, // 2: quadsmith.ListGpsReceiversResponse.gps_receivers:type_name -> quadsmith.GpsReceiver
+	1, // 3: quadsmith.GpsReceiverService.GetGpsReceiver:input_type -> quadsmith.GetGpsReceiverRequest
+	2, // 4: quadsmith.GpsReceiverService.ListGpsReceivers:input_type -> quadsmith.ListGpsReceiversRequest
+	0, // 5: quadsmith.GpsReceiverService.GetGpsReceiver:output_type -> quadsmith.GpsReceiver
+	3, // 6: quadsmith.GpsReceiverService.ListGpsReceivers:output_type -> quadsmith.ListGpsReceiversResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_gps_receiver_proto_init() }
@@ -450,6 +471,7 @@ func file_gps_receiver_proto_init() {
 	}
 	file___common_proto_init()
 	file___sql_proto_init()
+	file_media_proto_init()
 	file_reference_link_proto_init()
 	file_gps_receiver_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}

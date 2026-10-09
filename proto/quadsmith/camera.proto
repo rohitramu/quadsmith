@@ -4,6 +4,7 @@ package quadsmith;
 
 import "_common.proto";
 import "_sql.proto";
+import "media.proto";
 import "reference_link.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
@@ -50,6 +51,8 @@ message Camera {
   float lens_size_mm = 10;
   string description = 11;
   repeated ReferenceLink reference_links = 12;
+  optional string primary_display_image = 13;
+  repeated Media media = 14;
 }
 
 // ---------------------------------------------------------

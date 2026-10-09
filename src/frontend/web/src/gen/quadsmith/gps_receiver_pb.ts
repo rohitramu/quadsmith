@@ -6,6 +6,8 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file__common } from "./_common_pb";
 import { file__sql } from "./_sql_pb";
+import type { Media } from "./media_pb";
+import { file_media } from "./media_pb";
 import type { ReferenceLink } from "./reference_link_pb";
 import { file_reference_link } from "./reference_link_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -16,8 +18,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_gps_receiver: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChJncHNfcmVjZWl2ZXIucHJvdG8SCXF1YWRzbWl0aCL2AwoLR3BzUmVjZWl2ZXISFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GAUgASgIEhAKCHdlaWdodF9nGAYgASgCEg8KB2NoaXBzZXQYByABKAkSGAoIcHJvdG9jb2wYCCABKAlCBsLzGAIoARIYCgtoYXNfY29tcGFzcxgJIAEoCEgAiAEBEhkKDGNvbXBhc3NfY2hpcBgKIAEoCUgBiAEBEhsKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCyABKAISGwoTaW5wdXRfdm9sdGFnZV9tYXhfdhgMIAEoAhITCgtkZXNjcmlwdGlvbhgNIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYDiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluazpiirUYKgoMbWFudWZhY3R1cmVyCgRuYW1lCgdjaGlwc2V0CgtoYXNfY29tcGFzc5K1GB0KDEdQUyBSZWNlaXZlchINR1BTIFJlY2VpdmVyc8LzGA8KDWdwc19yZWNlaXZlcnNCDgoMX2hhc19jb21wYXNzQg8KDV9jb21wYXNzX2NoaXAiNAoVR2V0R3BzUmVjZWl2ZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibwoXTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJiChhMaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2USLQoNZ3BzX3JlY2VpdmVycxgBIAMoCzIWLnF1YWRzbWl0aC5HcHNSZWNlaXZlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyvQEKEkdwc1JlY2VpdmVyU2VydmljZRJKCg5HZXRHcHNSZWNlaXZlchIgLnF1YWRzbWl0aC5HZXRHcHNSZWNlaXZlclJlcXVlc3QaFi5xdWFkc21pdGguR3BzUmVjZWl2ZXISWwoQTGlzdEdwc1JlY2VpdmVycxIiLnF1YWRzbWl0aC5MaXN0R3BzUmVjZWl2ZXJzUmVxdWVzdBojLnF1YWRzbWl0aC5MaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
-    [file__common, file__sql, file_reference_link],
+    "ChJncHNfcmVjZWl2ZXIucHJvdG8SCXF1YWRzbWl0aCLVBAoLR3BzUmVjZWl2ZXISFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GAUgASgIEhAKCHdlaWdodF9nGAYgASgCEg8KB2NoaXBzZXQYByABKAkSGAoIcHJvdG9jb2wYCCABKAlCBsLzGAIoARIYCgtoYXNfY29tcGFzcxgJIAEoCEgAiAEBEhkKDGNvbXBhc3NfY2hpcBgKIAEoCUgBiAEBEhsKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCyABKAISGwoTaW5wdXRfdm9sdGFnZV9tYXhfdhgMIAEoAhITCgtkZXNjcmlwdGlvbhgNIAEoCRIxCg9yZWZlcmVuY2VfbGlua3MYDiADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluaxIiChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDyABKAlIAogBARIfCgVtZWRpYRgQIAMoCzIQLnF1YWRzbWl0aC5NZWRpYTpiirUYKgoMbWFudWZhY3R1cmVyCgRuYW1lCgdjaGlwc2V0CgtoYXNfY29tcGFzc5K1GB0KDEdQUyBSZWNlaXZlchINR1BTIFJlY2VpdmVyc8LzGA8KDWdwc19yZWNlaXZlcnNCDgoMX2hhc19jb21wYXNzQg8KDV9jb21wYXNzX2NoaXBCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSI0ChVHZXRHcHNSZWNlaXZlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJvChdMaXN0R3BzUmVjZWl2ZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJImIKGExpc3RHcHNSZWNlaXZlcnNSZXNwb25zZRItCg1ncHNfcmVjZWl2ZXJzGAEgAygLMhYucXVhZHNtaXRoLkdwc1JlY2VpdmVyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTK9AQoSR3BzUmVjZWl2ZXJTZXJ2aWNlEkoKDkdldEdwc1JlY2VpdmVyEiAucXVhZHNtaXRoLkdldEdwc1JlY2VpdmVyUmVxdWVzdBoWLnF1YWRzbWl0aC5HcHNSZWNlaXZlchJbChBMaXN0R3BzUmVjZWl2ZXJzEiIucXVhZHNtaXRoLkxpc3RHcHNSZWNlaXZlcnNSZXF1ZXN0GiMucXVhZHNtaXRoLkxpc3RHcHNSZWNlaXZlcnNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    [file__common, file__sql, file_media, file_reference_link],
   );
 
 /**
@@ -109,6 +111,16 @@ export type GpsReceiver = Message<"quadsmith.GpsReceiver"> & {
    * @generated from field: repeated quadsmith.ReferenceLink reference_links = 14;
    */
   referenceLinks: ReferenceLink[];
+
+  /**
+   * @generated from field: optional string primary_display_image = 15;
+   */
+  primaryDisplayImage?: string | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.Media media = 16;
+   */
+  media: Media[];
 };
 
 /**

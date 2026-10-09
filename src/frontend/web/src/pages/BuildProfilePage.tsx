@@ -16,6 +16,7 @@ import { getReceiver } from "../gen/quadsmith/receiver-ReceiverService_connectqu
 import { getAntenna } from "../gen/quadsmith/antenna-AntennaService_connectquery";
 import { getGpsReceiver } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
 import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
+import { MediaGallery } from "../components/MediaGallery";
 import {
   ChevronRight,
   Gauge,
@@ -643,6 +644,15 @@ export function BuildProfilePage() {
           )}
         </div>
       </section>
+
+      {/* ============================================================ */}
+      {/* BUILD MEDIA & SHOWCASE                                       */}
+      {/* ============================================================ */}
+      <MediaGallery
+        primaryDisplayImage={build.primaryDisplayImage}
+        media={build.media}
+        title="Build Media & Video Showcase"
+      />
 
       {/* ============================================================ */}
       {/* REFERENCE LINKS                                              */}

@@ -3,6 +3,7 @@ import { useQuery } from "@connectrpc/connect-query";
 import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
 import { ExternalLink, ChevronRight } from "lucide-react";
 import { getHardwareCollection, type HardwareCollectionDef } from "../lib/hardwareCollections";
+import { MediaGallery } from "../components/MediaGallery";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
   [ReferenceLinkType.PURCHASE]: "Purchase",
@@ -125,6 +126,13 @@ function ProductDetailView({
               </p>
             </div>
           )}
+
+          {/* Media & Display Image Gallery */}
+          <MediaGallery
+            primaryDisplayImage={item.primaryDisplayImage}
+            media={item.media}
+            title="Media Gallery"
+          />
 
           {item.referenceLinks && item.referenceLinks.length > 0 && (
             <div className="mt-6">

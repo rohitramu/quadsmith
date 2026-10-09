@@ -6,6 +6,8 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file__common } from "./_common_pb";
 import { file__sql } from "./_sql_pb";
+import type { Media } from "./media_pb";
+import { file_media } from "./media_pb";
 import type { ReferenceLink } from "./reference_link_pb";
 import { file_reference_link } from "./reference_link_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -16,8 +18,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_camera: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CgxjYW1lcmEucHJvdG8SCXF1YWRzbWl0aCL+AgoGQ2FtZXJhEhQKBHV1aWQYASABKAlCBsLzGAIQARISCgJpZBgCIAEoCUIGwvMYAiABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgFIAEoCBIQCgh3ZWlnaHRfZxgGIAEoAhIQCghwcm90b2NvbBgHIAEoCRITCgtzZW5zb3Jfc2l6ZRgIIAEoCRIQCgh3aWR0aF9tbRgJIAEoDRIUCgxsZW5zX3NpemVfbW0YCiABKAISEwoLZGVzY3JpcHRpb24YCyABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbms6W4q1GDUKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKC3NlbnNvcl9zaXplCgh3aWR0aF9tbZK1GBEKBkNhbWVyYRIHQ2FtZXJhc8LzGAkKB2NhbWVyYXMiLwoQR2V0Q2FtZXJhUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImoKEkxpc3RDYW1lcmFzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlIKE0xpc3RDYW1lcmFzUmVzcG9uc2USIgoHY2FtZXJhcxgBIAMoCzIRLnF1YWRzbWl0aC5DYW1lcmESFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMpoBCg1DYW1lcmFTZXJ2aWNlEjsKCUdldENhbWVyYRIbLnF1YWRzbWl0aC5HZXRDYW1lcmFSZXF1ZXN0GhEucXVhZHNtaXRoLkNhbWVyYRJMCgtMaXN0Q2FtZXJhcxIdLnF1YWRzbWl0aC5MaXN0Q2FtZXJhc1JlcXVlc3QaHi5xdWFkc21pdGguTGlzdENhbWVyYXNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
-    [file__common, file__sql, file_reference_link],
+    "CgxjYW1lcmEucHJvdG8SCXF1YWRzbWl0aCLdAwoGQ2FtZXJhEhQKBHV1aWQYASABKAlCBsLzGAIQARISCgJpZBgCIAEoCUIGwvMYAiABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEgwKBG5hbWUYBCABKAkSGAoQaXNfaW50ZXJuYWxfb25seRgFIAEoCBIQCgh3ZWlnaHRfZxgGIAEoAhIQCghwcm90b2NvbBgHIAEoCRITCgtzZW5zb3Jfc2l6ZRgIIAEoCRIQCgh3aWR0aF9tbRgJIAEoDRIUCgxsZW5zX3NpemVfbW0YCiABKAISEwoLZGVzY3JpcHRpb24YCyABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbmsSIgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGA0gASgJSACIAQESHwoFbWVkaWEYDiADKAsyEC5xdWFkc21pdGguTWVkaWE6W4q1GDUKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKC3NlbnNvcl9zaXplCgh3aWR0aF9tbZK1GBEKBkNhbWVyYRIHQ2FtZXJhc8LzGAkKB2NhbWVyYXNCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSIvChBHZXRDYW1lcmFSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiagoSTGlzdENhbWVyYXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiUgoTTGlzdENhbWVyYXNSZXNwb25zZRIiCgdjYW1lcmFzGAEgAygLMhEucXVhZHNtaXRoLkNhbWVyYRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkymgEKDUNhbWVyYVNlcnZpY2USOwoJR2V0Q2FtZXJhEhsucXVhZHNtaXRoLkdldENhbWVyYVJlcXVlc3QaES5xdWFkc21pdGguQ2FtZXJhEkwKC0xpc3RDYW1lcmFzEh0ucXVhZHNtaXRoLkxpc3RDYW1lcmFzUmVxdWVzdBoeLnF1YWRzbWl0aC5MaXN0Q2FtZXJhc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    [file__common, file__sql, file_media, file_reference_link],
   );
 
 /**
@@ -95,6 +97,16 @@ export type Camera = Message<"quadsmith.Camera"> & {
    * @generated from field: repeated quadsmith.ReferenceLink reference_links = 12;
    */
   referenceLinks: ReferenceLink[];
+
+  /**
+   * @generated from field: optional string primary_display_image = 13;
+   */
+  primaryDisplayImage?: string | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.Media media = 14;
+   */
+  media: Media[];
 };
 
 /**

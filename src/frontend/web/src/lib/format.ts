@@ -32,3 +32,32 @@ export function formatStatorSize(
 
   return `${pad(diameter)}${pad(height)}`;
 }
+
+/**
+ * Extracts YouTube video ID and returns the standard embed URL.
+ * Supports youtu.be, youtube.com/watch?v=, youtube.com/shorts/, and youtube.com/embed/.
+ */
+export function getYouTubeEmbedUrl(url?: string | null): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.includes("youtu.be")) {
+      const id = parsed.pathname.replace(/^\//, "").split("/")[0];
+      return id ? `https://www.youtube.com/embed/${id}` : null;
+    }
+    if (parsed.pathname.startsWith("/shorts/")) {
+      const id = parsed.pathname.split("/")[2];
+      return id ? `https://www.youtube.com/embed/${id}` : null;
+    }
+    if (parsed.searchParams.has("v")) {
+      const id = parsed.searchParams.get("v");
+      return id ? `https://www.youtube.com/embed/${id}` : null;
+    }
+    if (parsed.pathname.startsWith("/embed/")) {
+      return url;
+    }
+  } catch {
+    // Return null if not a valid URL
+  }
+  return null;
+}
