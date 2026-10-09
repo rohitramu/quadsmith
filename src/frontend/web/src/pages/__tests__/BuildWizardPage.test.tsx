@@ -92,7 +92,7 @@ describe("BuildWizardPage Component", () => {
     expect(await screen.findByText("2A. Flight Controller")).toBeInTheDocument();
   });
 
-  it("handles conditional ESC selection: standalone FC requires ESC, AIO FC allows built-in ESC", async () => {
+  it("handles conditional ESC and Receiver selection: standalone FC requires separate components, AIO FC allows integrated components with rich specs", async () => {
     const user = userEvent.setup();
     renderWizard();
 
@@ -108,22 +108,39 @@ describe("BuildWizardPage Component", () => {
     await user.click(await screen.findByText("F405 V4 FC"));
     expect(screen.getByText("Requires separate ESC")).toBeInTheDocument();
 
-    // In-built FC ESC card should be disabled
+    // Integrated FC ESC card should be disabled
     expect(
-      screen.getByText("Use In-built FC ESC").closest(".cursor-not-allowed"),
+      screen.getByText("Use Integrated FC ESC").closest(".cursor-not-allowed"),
     ).toBeInTheDocument();
-    expect(screen.getByText("Requires AIO FC with internal ESC")).toBeInTheDocument();
+    expect(screen.getByText("Requires AIO FC with integrated ESC")).toBeInTheDocument();
+
+    // Integrated FC Receiver card should be disabled
+    expect(
+      screen.getByText("Use Integrated FC Receiver").closest(".cursor-not-allowed"),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Requires FC with integrated receiver/i)).toBeInTheDocument();
 
     // Select AIO FC (Integrated FC AIO)
     await user.click(screen.getByText("Integrated FC AIO"));
-    expect(screen.getByText(/✓ Available on selected FC/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/✓ Available on selected FC/i).length).toBeGreaterThanOrEqual(1);
 
-    // Now In-built FC ESC card is clickable
-    await user.click(screen.getByText("Use In-built FC ESC"));
+    // Now Integrated FC ESC card is clickable and displays rich specs
+    expect(screen.getByText("BetaFPV Integrated 20A ESC")).toBeInTheDocument();
+    expect(screen.getByText("20A")).toBeInTheDocument();
+    expect(screen.getByText(/4x Motors • BLHeli_S/i)).toBeInTheDocument();
+    await user.click(screen.getByText("Use Integrated FC ESC"));
     expect(
-      screen.getByText("Use In-built FC ESC").closest(".border-emerald-500"),
+      screen.getByText("Use Integrated FC ESC").closest(".border-emerald-500"),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("Selected").length).toBeGreaterThanOrEqual(1);
+
+    // Integrated FC Receiver card is clickable and displays rich specs (protocol, frequency band, telemetry)
+    expect(screen.getByText("BetaFPV Integrated ELRS 2.4GHz RX")).toBeInTheDocument();
+    expect(screen.getByText("ExpressLRS")).toBeInTheDocument();
+    expect(screen.getByText(/2.4 GHz • Telemetry/i)).toBeInTheDocument();
+    await user.click(screen.getByText("Use Integrated FC Receiver"));
+    expect(
+      screen.getByText("Use Integrated FC Receiver").closest(".border-emerald-500"),
+    ).toBeInTheDocument();
   });
 
   it("handles Stage 3 optional components and 'Set All to None'", async () => {

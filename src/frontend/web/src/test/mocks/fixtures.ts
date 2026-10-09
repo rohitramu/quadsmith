@@ -99,6 +99,8 @@ export const mockFC2: FlightController = create(FlightControllerSchema, {
   processor: "STM32F411",
   weightG: 0,
   isInternalOnly: true,
+  internalElectronicSpeedControllerUuid: "018f0000-0000-7000-0000-000000000045",
+  internalReceiverUuid: "018f0000-0000-7000-0000-000000000085",
   description: "Internal integrated flight controller board.",
   referenceLinks: [],
 });
@@ -152,8 +154,25 @@ export const mockESC1: ElectronicSpeedController = create(ElectronicSpeedControl
   maxMotors: 4,
   motorCurrentMaxA: 50,
   motorCurrentBurstA: 60,
+  firmware: "BLHeli_S",
   description: "Durable 50A 4-in-1 BLHeli_S electronic speed controller.",
 });
+
+export const mockInternalESC: ElectronicSpeedController = create(ElectronicSpeedControllerSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000045",
+  id: "betafpv-integrated-20a-esc",
+  manufacturer: "BetaFPV",
+  name: "BetaFPV Integrated 20A ESC",
+  weightG: 0,
+  maxMotors: 4,
+  motorCurrentMaxA: 20,
+  motorCurrentBurstA: 25,
+  firmware: "BLHeli_S",
+  isInternalOnly: true,
+  description: "Internal 20A 4-in-1 BLHeli_S electronic speed controller.",
+});
+
+export const mockESCs: ElectronicSpeedController[] = [mockESC1, mockInternalESC];
 
 export const mockPropeller1: Propeller = create(PropellerSchema, {
   uuid: "018f0000-0000-7000-0000-000000000050",
@@ -198,8 +217,25 @@ export const mockReceiver1: Receiver = create(ReceiverSchema, {
   name: "Crossfire Nano RX",
   weightG: 0.5,
   protocol: "CRSF",
+  frequencyBandMhz: 915,
+  hasTelemetry: true,
   description: "Long-range CRSF telemetry receiver.",
 });
+
+export const mockInternalRx: Receiver = create(ReceiverSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000085",
+  id: "betafpv-integrated-elrs-rx",
+  manufacturer: "BetaFPV",
+  name: "BetaFPV Integrated ELRS 2.4GHz RX",
+  protocol: "ExpressLRS",
+  frequencyBandMhz: 2400,
+  hasTelemetry: true,
+  weightG: 0,
+  isInternalOnly: true,
+  description: "Internal SPI ExpressLRS 2.4GHz receiver.",
+});
+
+export const mockReceivers: Receiver[] = [mockReceiver1, mockInternalRx];
 
 export const mockAntenna1: Antenna = create(AntennaSchema, {
   uuid: "018f0000-0000-7000-0000-000000000090",

@@ -21,11 +21,11 @@ import {
   mockFrames,
   mockFlightControllers,
   mockBattery1,
-  mockESC1,
+  mockESCs,
   mockPropeller1,
   mockCamera1,
   mockVTX1,
-  mockReceiver1,
+  mockReceivers,
   mockAntenna1,
   mockGps1,
   mockBuilds,
@@ -321,12 +321,13 @@ export function createMockTransport(options: MockTransportOptions = {}) {
 
     service(ElectronicSpeedControllerService, {
       listElectronicSpeedControllers: () => ({
-        electronicSpeedControllers: [mockESC1],
+        electronicSpeedControllers: mockESCs,
         nextPageToken: "",
       }),
       getElectronicSpeedController: (req) => {
-        if (req.id === mockESC1.id || req.id === mockESC1.uuid) {
-          return mockESC1;
+        const esc = mockESCs.find((e) => e.id === req.id || e.uuid === req.id);
+        if (esc) {
+          return esc;
         }
         throw new ConnectError("ESC not found", Code.NotFound);
       },
@@ -343,10 +344,11 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(ReceiverService, {
-      listReceivers: () => ({ receivers: [mockReceiver1], nextPageToken: "" }),
+      listReceivers: () => ({ receivers: mockReceivers, nextPageToken: "" }),
       getReceiver: (req) => {
-        if (req.id === mockReceiver1.id || req.id === mockReceiver1.uuid) {
-          return mockReceiver1;
+        const rx = mockReceivers.find((r) => r.id === req.id || r.uuid === req.id);
+        if (rx) {
+          return rx;
         }
         throw new ConnectError("Receiver not found", Code.NotFound);
       },

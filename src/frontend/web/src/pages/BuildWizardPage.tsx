@@ -33,12 +33,27 @@ import type { Frame } from "../gen/quadsmith/frame_pb";
 import type { Motor } from "../gen/quadsmith/motor_pb";
 import type { Propeller } from "../gen/quadsmith/propeller_pb";
 import type { FlightController } from "../gen/quadsmith/flight_controller_pb";
-import type { ElectronicSpeedController } from "../gen/quadsmith/electronic_speed_controller_pb";
-import type { Receiver } from "../gen/quadsmith/receiver_pb";
-import type { VideoTransmitter } from "../gen/quadsmith/video_transmitter_pb";
+import {
+  ElectronicSpeedControllerSchema,
+  type ElectronicSpeedController,
+} from "../gen/quadsmith/electronic_speed_controller_pb";
+import { ReceiverSchema, type Receiver } from "../gen/quadsmith/receiver_pb";
+import {
+  VideoTransmitterSchema,
+  type VideoTransmitter,
+} from "../gen/quadsmith/video_transmitter_pb";
 import type { Camera } from "../gen/quadsmith/camera_pb";
 import type { Antenna } from "../gen/quadsmith/antenna_pb";
 import type { GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
+
+export function formatFrequencyBand(mhz?: number): string {
+  if (!mhz) return "2.4 GHz";
+  if (mhz >= 1000) {
+    const ghz = mhz / 1000;
+    return `${ghz % 1 === 0 ? ghz.toFixed(0) : ghz.toFixed(1)} GHz`;
+  }
+  return `${mhz} MHz`;
+}
 
 export function BuildWizardPage() {
   const navigate = useNavigate();
@@ -58,9 +73,11 @@ export function BuildWizardPage() {
   const [selectedProp, setSelectedProp] = useState<Propeller | null>(null);
   const [selectedFc, setSelectedFc] = useState<FlightController | null>(null);
   const [selectedEsc, setSelectedEsc] = useState<ElectronicSpeedController | null>(null);
-  const [useInternalEsc, setUseInternalEsc] = useState<boolean>(false);
+  const [useIntegratedEsc, setUseIntegratedEsc] = useState<boolean>(false);
   const [selectedRx, setSelectedRx] = useState<Receiver | null>(null);
+  const [useIntegratedRx, setUseIntegratedRx] = useState<boolean>(false);
   const [selectedVtx, setSelectedVtx] = useState<VideoTransmitter | null>(null);
+  const [useIntegratedVtx, setUseIntegratedVtx] = useState<boolean>(false);
   const [selectedCam, setSelectedCam] = useState<Camera | null>(null);
   const [selectedAnt, setSelectedAnt] = useState<Antenna | null>(null);
   const [selectedGps, setSelectedGps] = useState<GpsReceiver | null>(null);
@@ -126,41 +143,131 @@ export function BuildWizardPage() {
   // Dynamic motor and propeller quantity determined by selected Frame (Option 2)
   const motorCount = selectedFrame?.motorCount || 4;
 
-  // Does the flight controller have an in-built ESC with sufficient drivers?
-  // Note: If FC has an internal ESC with enough channels for the frame's motorCount, external ESC is optional.
-  const fcHasAdequateInternalEsc = useMemo(() => {
-    if (!selectedFc) return false;
-    // Check if internalElectronicSpeedControllerUuid or internal electronic speed controller is present
-    // Also consider if fc.name contains AIO or Whoop board
+  // Integrated ESC on selected Flight Controller
+  const integratedEsc = useMemo<ElectronicSpeedController | null>(() => {
+    if (!selectedFc) return null;
+    if (selectedFc.internalElectronicSpeedControllerUuid) {
+      const found = escs.find((e) => e.uuid === selectedFc.internalElectronicSpeedControllerUuid);
+      if (found) return found;
+    }
     const nameLower = selectedFc.name.toLowerCase();
     const isAIO =
       nameLower.includes("aio") ||
       nameLower.includes("whoop") ||
       nameLower.includes("12a") ||
-      nameLower.includes("20a");
-    return (
-      isAIO ||
-      !!(selectedFc as unknown as { internalElectronicSpeedController?: { maxMotors?: number } })
-        .internalElectronicSpeedController?.maxMotors
-    );
-  }, [selectedFc]);
-
-  // If FC changes to one without adequate internal ESC, reset useInternalEsc
-  useEffect(() => {
-    if (useInternalEsc && !fcHasAdequateInternalEsc) {
-      setUseInternalEsc(false);
+      nameLower.includes("20a") ||
+      nameLower.includes("45a");
+    if (isAIO) {
+      let currentA = 20;
+      if (nameLower.includes("12a")) currentA = 12;
+      else if (nameLower.includes("20a")) currentA = 20;
+      else if (nameLower.includes("45a")) currentA = 45;
+      return create(ElectronicSpeedControllerSchema, {
+        uuid: selectedFc.internalElectronicSpeedControllerUuid || `int-esc-${selectedFc.uuid}`,
+        id: `integrated-esc-${selectedFc.id}`,
+        manufacturer: selectedFc.manufacturer,
+        name: `${selectedFc.name} Integrated ESC`,
+        maxMotors: 4,
+        motorCurrentMaxA: currentA,
+        motorCurrentBurstA: Math.round(currentA * 1.2),
+        firmware: "BLHeli_S",
+        weightG: 0,
+        isInternalOnly: true,
+      });
     }
-  }, [fcHasAdequateInternalEsc, useInternalEsc]);
+    return null;
+  }, [selectedFc, escs]);
+
+  const fcHasAdequateIntegratedEsc = useMemo(() => {
+    if (!integratedEsc) return false;
+    return !integratedEsc.maxMotors || integratedEsc.maxMotors >= motorCount;
+  }, [integratedEsc, motorCount]);
+
+  // Integrated Receiver on selected Flight Controller
+  const integratedRx = useMemo<Receiver | null>(() => {
+    if (!selectedFc) return null;
+    if (selectedFc.internalReceiverUuid) {
+      const found = rxs.find((r) => r.uuid === selectedFc.internalReceiverUuid);
+      if (found) return found;
+    }
+    const nameLower = selectedFc.name.toLowerCase();
+    const hasElrs = nameLower.includes("elrs");
+    const hasFrsky = nameLower.includes("frsky");
+    if (hasElrs || hasFrsky) {
+      return create(ReceiverSchema, {
+        uuid: selectedFc.internalReceiverUuid || `int-rx-${selectedFc.uuid}`,
+        id: `integrated-rx-${selectedFc.id}`,
+        manufacturer: selectedFc.manufacturer,
+        name: `${selectedFc.name} Integrated ${hasElrs ? "ELRS" : "FrSky"} RX`,
+        protocol: hasElrs ? "ExpressLRS" : "FrSky D16",
+        frequencyBandMhz: 2400,
+        hasTelemetry: true,
+        weightG: 0,
+        isInternalOnly: true,
+      });
+    }
+    return null;
+  }, [selectedFc, rxs]);
+
+  const fcHasIntegratedRx = !!integratedRx;
+
+  // Integrated VTX on selected Flight Controller
+  const integratedVtx = useMemo<VideoTransmitter | null>(() => {
+    if (!selectedFc) return null;
+    if (selectedFc.internalVideoTransmitterUuid) {
+      const found = vtxs.find((v) => v.uuid === selectedFc.internalVideoTransmitterUuid);
+      if (found) return found;
+    }
+    const nameLower = selectedFc.name.toLowerCase();
+    const hasVtx = nameLower.includes("vtx") || nameLower.includes("whoop");
+    if (hasVtx) {
+      return create(VideoTransmitterSchema, {
+        uuid: selectedFc.internalVideoTransmitterUuid || `int-vtx-${selectedFc.uuid}`,
+        id: `integrated-vtx-${selectedFc.id}`,
+        manufacturer: selectedFc.manufacturer,
+        name: `${selectedFc.name} Integrated VTX`,
+        protocol: "Analog",
+        maxPowerMw: 400,
+        weightG: 0,
+        isInternalOnly: true,
+      });
+    }
+    return null;
+  }, [selectedFc, vtxs]);
+
+  const fcHasIntegratedVtx = !!integratedVtx;
+
+  // If FC changes to one without that integrated component capability, reset
+  useEffect(() => {
+    if (useIntegratedEsc && !fcHasAdequateIntegratedEsc) {
+      setUseIntegratedEsc(false);
+      setSelectedEsc(null);
+    }
+  }, [fcHasAdequateIntegratedEsc, useIntegratedEsc]);
+
+  useEffect(() => {
+    if (useIntegratedRx && !fcHasIntegratedRx) {
+      setUseIntegratedRx(false);
+      setSelectedRx(null);
+    }
+  }, [fcHasIntegratedRx, useIntegratedRx]);
+
+  useEffect(() => {
+    if (useIntegratedVtx && !fcHasIntegratedVtx) {
+      setUseIntegratedVtx(false);
+      setSelectedVtx(null);
+    }
+  }, [fcHasIntegratedVtx, useIntegratedVtx]);
 
   // Stage completion checks
   const stage1Complete = !!(selectedFrame && selectedMotor && selectedProp);
   const stage2Complete = !!(
     selectedFc &&
-    selectedRx &&
-    (useInternalEsc || noneSelections.esc || selectedEsc)
+    (selectedRx || useIntegratedRx) &&
+    (useIntegratedEsc || noneSelections.esc || selectedEsc)
   );
   const stage3Complete =
-    (!!selectedVtx || !!noneSelections.vtx) &&
+    (!!selectedVtx || !!useIntegratedVtx || !!noneSelections.vtx) &&
     (!!selectedCam || !!noneSelections.camera) &&
     (!!selectedAnt || !!noneSelections.antenna) &&
     (!!selectedGps || !!noneSelections.gps);
@@ -184,9 +291,15 @@ export function BuildWizardPage() {
     if (selectedMotor) weight += (selectedMotor.weightG || 0) * motorCount;
     if (selectedProp) weight += (selectedProp.weightG || 0) * motorCount;
     if (selectedFc) weight += selectedFc.weightG || 0;
-    if (selectedEsc && !useInternalEsc) weight += selectedEsc.weightG || 0;
-    if (selectedRx) weight += selectedRx.weightG || 0;
-    if (selectedVtx && !noneSelections.vtx) weight += selectedVtx.weightG || 0;
+    if (selectedEsc && !useIntegratedEsc && !noneSelections.esc) {
+      weight += selectedEsc.weightG || 0;
+    }
+    if (selectedRx && !useIntegratedRx) {
+      weight += selectedRx.weightG || 0;
+    }
+    if (selectedVtx && !useIntegratedVtx && !noneSelections.vtx) {
+      weight += selectedVtx.weightG || 0;
+    }
     if (selectedCam && !noneSelections.camera) weight += selectedCam.weightG || 0;
     if (selectedAnt && !noneSelections.antenna) weight += selectedAnt.weightG || 0;
     if (selectedGps && !noneSelections.gps) weight += selectedGps.weightG || 0;
@@ -197,9 +310,11 @@ export function BuildWizardPage() {
     selectedProp,
     selectedFc,
     selectedEsc,
-    useInternalEsc,
+    useIntegratedEsc,
     selectedRx,
+    useIntegratedRx,
     selectedVtx,
+    useIntegratedVtx,
     selectedCam,
     selectedAnt,
     selectedGps,
@@ -219,11 +334,21 @@ export function BuildWizardPage() {
       propellerUuid: selectedProp ? selectedProp.uuid : "",
       flightControllerUuid: selectedFc ? selectedFc.uuid : "",
       electronicSpeedControllerUuids:
-        useInternalEsc || noneSelections.esc || !selectedEsc ? [] : [selectedEsc.uuid],
-      receiverUuids: selectedRx ? [selectedRx.uuid] : [],
+        useIntegratedEsc || noneSelections.esc || !selectedEsc ? [] : [selectedEsc.uuid],
+      receiverUuids: useIntegratedRx
+        ? integratedRx?.uuid
+          ? [integratedRx.uuid]
+          : []
+        : selectedRx
+          ? [selectedRx.uuid]
+          : [],
       antennaUuids: selectedAnt && !noneSelections.antenna ? [selectedAnt.uuid] : [],
       cameraUuids: selectedCam && !noneSelections.camera ? [selectedCam.uuid] : [],
-      videoTransmitterUuid: selectedVtx && !noneSelections.vtx ? selectedVtx.uuid : "",
+      videoTransmitterUuid: useIntegratedVtx
+        ? integratedVtx?.uuid || ""
+        : selectedVtx && !noneSelections.vtx
+          ? selectedVtx.uuid
+          : "",
       gpsReceiverUuid: selectedGps && !noneSelections.gps ? selectedGps.uuid : undefined,
       referenceLinks: [],
       media: [],
@@ -234,9 +359,13 @@ export function BuildWizardPage() {
     selectedProp,
     selectedFc,
     selectedEsc,
-    useInternalEsc,
+    useIntegratedEsc,
     selectedRx,
+    useIntegratedRx,
+    integratedRx,
     selectedVtx,
+    useIntegratedVtx,
+    integratedVtx,
     selectedCam,
     selectedAnt,
     selectedGps,
@@ -325,17 +454,19 @@ export function BuildWizardPage() {
   }, [fcs, searchFc]);
 
   const filteredEscs = useMemo(() => {
-    if (!searchEsc.trim()) return escs;
+    const external = escs.filter((esc) => !esc.isInternalOnly);
+    if (!searchEsc.trim()) return external;
     const q = searchEsc.toLowerCase();
-    return escs.filter(
+    return external.filter(
       (esc) => esc.name.toLowerCase().includes(q) || esc.manufacturer.toLowerCase().includes(q),
     );
   }, [escs, searchEsc]);
 
   const filteredRxs = useMemo(() => {
-    if (!searchRx.trim()) return rxs;
+    const external = rxs.filter((rx) => !rx.isInternalOnly);
+    if (!searchRx.trim()) return external;
     const q = searchRx.toLowerCase();
-    return rxs.filter(
+    return external.filter(
       (rx) =>
         rx.name.toLowerCase().includes(q) ||
         rx.manufacturer.toLowerCase().includes(q) ||
@@ -344,9 +475,10 @@ export function BuildWizardPage() {
   }, [rxs, searchRx]);
 
   const filteredVtxs = useMemo(() => {
-    if (!searchVtx.trim()) return vtxs;
+    const external = vtxs.filter((vtx) => !vtx.isInternalOnly);
+    if (!searchVtx.trim()) return external;
     const q = searchVtx.toLowerCase();
-    return vtxs.filter(
+    return external.filter(
       (v) => v.name.toLowerCase().includes(q) || v.manufacturer.toLowerCase().includes(q),
     );
   }, [vtxs, searchVtx]);
@@ -418,11 +550,15 @@ export function BuildWizardPage() {
     if (fcs.length > 0) setSelectedFc(fcs[0]);
     if (escs.length > 0) {
       setSelectedEsc(escs[0]);
-      setUseInternalEsc(false);
+      setUseIntegratedEsc(false);
     }
-    if (rxs.length > 0) setSelectedRx(rxs[0]);
+    if (rxs.length > 0) {
+      setSelectedRx(rxs[0]);
+      setUseIntegratedRx(false);
+    }
     if (vtxs.length > 0) {
       setSelectedVtx(vtxs[0]);
+      setUseIntegratedVtx(false);
       setNoneSelections((prev) => ({ ...prev, vtx: false }));
     }
     if (cams.length > 0) {
@@ -454,10 +590,14 @@ export function BuildWizardPage() {
     const aioFc = fcs.find((fc) => fc.name.toLowerCase().includes("aio")) || fcs[0];
     if (aioFc) {
       setSelectedFc(aioFc);
-      setUseInternalEsc(true);
+      setUseIntegratedEsc(true);
       setSelectedEsc(null);
     }
-    if (rxs.length > 0) setSelectedRx(rxs[0]);
+    if (rxs.length > 0) {
+      setSelectedRx(rxs[0]);
+      setUseIntegratedRx(false);
+    }
+    setUseIntegratedVtx(false);
 
     // Toothpick: lightweight LOS / micro
     setNoneSelections({
@@ -481,13 +621,18 @@ export function BuildWizardPage() {
     setSelectedProp(null);
     setSelectedFc(null);
     setSelectedEsc(null);
-    setUseInternalEsc(false);
+    setUseIntegratedEsc(false);
     setSelectedRx(null);
+    setUseIntegratedRx(false);
     setSelectedVtx(null);
+    setUseIntegratedVtx(false);
     setSelectedCam(null);
     setSelectedAnt(null);
     setSelectedGps(null);
     setNoneSelections({});
+    setSelectedBatteryId("");
+    setPayloadWeightG(0);
+    setPayloadInput("0");
     setActiveStage(1);
     setBuildName("My Custom Quadcopter");
     setBuildDesc("Custom build configured via the Quadsmith Build Wizard.");
@@ -514,11 +659,21 @@ export function BuildWizardPage() {
         propellerUuid: selectedProp!.uuid,
         flightControllerUuid: selectedFc!.uuid,
         electronicSpeedControllerUuids:
-          useInternalEsc || noneSelections.esc || !selectedEsc ? [] : [selectedEsc.uuid],
-        receiverUuids: selectedRx ? [selectedRx.uuid] : [],
+          useIntegratedEsc || noneSelections.esc || !selectedEsc ? [] : [selectedEsc.uuid],
+        receiverUuids: useIntegratedRx
+          ? integratedRx?.uuid
+            ? [integratedRx.uuid]
+            : []
+          : selectedRx
+            ? [selectedRx.uuid]
+            : [],
         cameraUuids: selectedCam && !noneSelections.camera ? [selectedCam.uuid] : [],
         antennaUuids: selectedAnt && !noneSelections.antenna ? [selectedAnt.uuid] : [],
-        videoTransmitterUuid: selectedVtx && !noneSelections.vtx ? selectedVtx.uuid : "",
+        videoTransmitterUuid: useIntegratedVtx
+          ? integratedVtx?.uuid || ""
+          : selectedVtx && !noneSelections.vtx
+            ? selectedVtx.uuid
+            : "",
         gpsReceiverUuid: selectedGps && !noneSelections.gps ? selectedGps.uuid : undefined,
       });
 
@@ -604,7 +759,7 @@ export function BuildWizardPage() {
         }}
         stageProgressText={{
           1: `${(selectedFrame ? 1 : 0) + (selectedMotor ? 1 : 0) + (selectedProp ? 1 : 0)}/3`,
-          2: `${(selectedFc ? 1 : 0) + (selectedRx ? 1 : 0) + (selectedEsc || useInternalEsc || noneSelections.esc ? 1 : 0)}/3`,
+          2: `${(selectedFc ? 1 : 0) + (selectedRx || useIntegratedRx ? 1 : 0) + (selectedEsc || useIntegratedEsc || noneSelections.esc ? 1 : 0)}/3`,
           3: "Optional",
           4: "Finalize",
         }}
@@ -640,7 +795,7 @@ export function BuildWizardPage() {
                   Stage 2 Incomplete: Flight Controller, ESC, and Radio Receiver are required
                 </span>
                 <p className="opacity-90 mt-0.5">
-                  External ESC is optional only if your flight controller has an in-built ESC with
+                  External ESC is optional only if your flight controller has an integrated ESC with
                   enough motor drivers.
                 </p>
               </div>
@@ -962,8 +1117,18 @@ export function BuildWizardPage() {
                   {filteredFcs.map((fc) => {
                     const isSelected = selectedFc?.uuid === fc.uuid || selectedFc?.id === fc.id;
                     const isAio =
+                      !!fc.internalElectronicSpeedControllerUuid ||
                       fc.name.toLowerCase().includes("aio") ||
-                      fc.name.toLowerCase().includes("whoop");
+                      fc.name.toLowerCase().includes("whoop") ||
+                      fc.name.toLowerCase().includes("12a") ||
+                      fc.name.toLowerCase().includes("20a") ||
+                      fc.name.toLowerCase().includes("45a");
+                    const hasRx =
+                      !!fc.internalReceiverUuid ||
+                      fc.name.toLowerCase().includes("elrs") ||
+                      fc.name.toLowerCase().includes("frsky");
+                    const hasVtx =
+                      !!fc.internalVideoTransmitterUuid || fc.name.toLowerCase().includes("vtx");
                     return (
                       <div
                         key={fc.uuid || fc.id}
@@ -985,14 +1150,16 @@ export function BuildWizardPage() {
                                 : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20"
                             }`}
                           >
-                            {isAio ? "AIO (ESC Built-in)" : "Standalone FC"}
+                            {isAio ? "AIO (Integrated ESC)" : "Standalone FC"}
                           </span>
                         </div>
                         <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
                           Weight: {fc.weightG}g • {fc.processor || "MCU"}
                         </div>
                         <div className="text-[11px] text-zinc-400 font-mono mt-1">
-                          {isAio ? "✓ Built-in ESC (external optional)" : "Requires separate ESC"}
+                          {isAio
+                            ? `✓ Integrated ESC${hasRx ? " + RX" : ""}${hasVtx ? " + VTX" : ""} (external optional)`
+                            : "Requires separate ESC"}
                         </div>
                       </div>
                     );
@@ -1014,12 +1181,11 @@ export function BuildWizardPage() {
                       2B. Electronic Speed Controller (ESC)
                     </h3>
                   </div>
-                  {selectedEsc ||
-                  (fcHasAdequateInternalEsc && (useInternalEsc || noneSelections.esc)) ? (
+                  {selectedEsc || useIntegratedEsc ? (
                     <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                       <Check size={12} strokeWidth={2.5} /> Selected
                     </span>
-                  ) : fcHasAdequateInternalEsc ? (
+                  ) : fcHasAdequateIntegratedEsc ? (
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
                       Optional
                     </span>
@@ -1029,6 +1195,12 @@ export function BuildWizardPage() {
                     </span>
                   )}
                 </div>
+
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  {fcHasAdequateIntegratedEsc
+                    ? "External ESC is optional since your flight controller includes an integrated ESC with sufficient channels."
+                    : `Regulates power to your ${motorCount} motors. Standalone FC requires a dedicated ESC.`}
+                </p>
 
                 <div className="relative">
                   <Search
@@ -1054,51 +1226,78 @@ export function BuildWizardPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  {/* Option Card: In-built FC ESC (Enabled only if FC has adequate ESC) */}
+                  {/* Option Card: Integrated FC ESC (Enabled only if FC has adequate ESC) */}
                   <div
                     onClick={() => {
-                      if (fcHasAdequateInternalEsc) {
-                        setUseInternalEsc(true);
-                        setSelectedEsc(null);
+                      if (fcHasAdequateIntegratedEsc) {
+                        setUseIntegratedEsc(true);
+                        setSelectedEsc(integratedEsc);
                         setNoneSelections((prev) => ({ ...prev, esc: true }));
                       }
                     }}
                     className={`p-3.5 rounded-xl border transition-all ${
-                      !fcHasAdequateInternalEsc
+                      !fcHasAdequateIntegratedEsc
                         ? "opacity-40 cursor-not-allowed border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
-                        : useInternalEsc
+                        : useIntegratedEsc
                           ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30 ring-1 ring-emerald-500 cursor-pointer"
                           : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 cursor-pointer"
                     }`}
                   >
-                    <div className="flex justify-between items-center">
-                      <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
-                        Use In-built FC ESC
-                      </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
-                        Integrated
-                      </span>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                          Use Integrated FC ESC
+                        </div>
+                        <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                          {integratedEsc
+                            ? integratedEsc.name
+                            : selectedFc
+                              ? `Integrated into ${selectedFc.name}`
+                              : "Requires FC selection"}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {integratedEsc && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                            {integratedEsc.motorCurrentMaxA || 20}A
+                          </span>
+                        )}
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                          Integrated
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                      Uses FC drivers (0g added)
-                    </div>
-                    <div className="text-[11px] font-mono mt-1 text-zinc-500">
-                      {fcHasAdequateInternalEsc
-                        ? "✓ Available on selected FC"
-                        : "Requires AIO FC with internal ESC"}
-                    </div>
+                    {integratedEsc ? (
+                      <>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: 0g (FC integrated) • {integratedEsc.maxMotors || 4}x Motors •{" "}
+                          {integratedEsc.firmware || "BLHeli_S"}
+                        </div>
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                          {integratedEsc.manufacturer || selectedFc?.manufacturer} •{" "}
+                          {integratedEsc.motorCurrentMaxA || 20}A Continuous
+                        </div>
+                        <div className="mt-2 text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+                          ✓ Available on selected FC
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-[11px] font-mono mt-2 text-zinc-500">
+                        Requires AIO FC with integrated ESC
+                      </div>
+                    )}
                   </div>
 
                   {filteredEscs.map((esc) => {
                     const isSelected =
-                      !useInternalEsc &&
+                      !useIntegratedEsc &&
                       (selectedEsc?.uuid === esc.uuid || selectedEsc?.id === esc.id);
                     return (
                       <div
                         key={esc.uuid || esc.id}
                         onClick={() => {
                           setSelectedEsc(esc);
-                          setUseInternalEsc(false);
+                          setUseIntegratedEsc(false);
                           setNoneSelections((prev) => ({ ...prev, esc: false }));
                         }}
                         className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
@@ -1141,9 +1340,13 @@ export function BuildWizardPage() {
                       2C. Radio Control Receiver
                     </h3>
                   </div>
-                  {selectedRx ? (
+                  {selectedRx || useIntegratedRx ? (
                     <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                       <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : fcHasIntegratedRx ? (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                      Optional
                     </span>
                   ) : (
                     <span className="text-xs font-semibold text-red-500 dark:text-red-400">
@@ -1152,7 +1355,9 @@ export function BuildWizardPage() {
                   )}
                 </div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Provides pilot command link directly to the Flight Controller via serial UART.
+                  {fcHasIntegratedRx
+                    ? "External receiver is optional since your flight controller includes an integrated receiver."
+                    : "Provides pilot command link directly to the Flight Controller via serial UART."}
                 </p>
 
                 <div className="relative">
@@ -1179,12 +1384,76 @@ export function BuildWizardPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {/* Option Card: Integrated FC Receiver */}
+                  <div
+                    onClick={() => {
+                      if (fcHasIntegratedRx) {
+                        setUseIntegratedRx(true);
+                        setSelectedRx(integratedRx);
+                      }
+                    }}
+                    className={`p-3.5 rounded-xl border transition-all ${
+                      !fcHasIntegratedRx
+                        ? "opacity-40 cursor-not-allowed border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                        : useIntegratedRx
+                          ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30 ring-1 ring-emerald-500 cursor-pointer"
+                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 cursor-pointer"
+                    }`}
+                  >
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                          Use Integrated FC Receiver
+                        </div>
+                        <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                          {integratedRx
+                            ? integratedRx.name
+                            : selectedFc
+                              ? `Integrated into ${selectedFc.name}`
+                              : "Requires FC selection"}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {integratedRx && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            {integratedRx.protocol || "ExpressLRS"}
+                          </span>
+                        )}
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                          Integrated
+                        </span>
+                      </div>
+                    </div>
+                    {integratedRx ? (
+                      <>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: 0g (FC integrated) •{" "}
+                          {formatFrequencyBand(integratedRx.frequencyBandMhz)} •{" "}
+                          {integratedRx.hasTelemetry ? "Telemetry" : "Non-telemetry"}
+                        </div>
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                          {integratedRx.manufacturer || selectedFc?.manufacturer} • Internal
+                          SPI/UART (0x UART used)
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-[11px] font-mono mt-2 text-zinc-500">
+                        Requires FC with integrated receiver
+                      </div>
+                    )}
+                  </div>
+
                   {filteredRxs.map((rx) => {
-                    const isSelected = selectedRx?.uuid === rx.uuid || selectedRx?.id === rx.id;
+                    const isSelected =
+                      !useIntegratedRx &&
+                      (selectedRx?.uuid === rx.uuid || selectedRx?.id === rx.id);
                     return (
                       <div
                         key={rx.uuid || rx.id}
-                        onClick={() => setSelectedRx(rx)}
+                        onClick={() => {
+                          setSelectedRx(rx);
+                          setUseIntegratedRx(false);
+                        }}
                         className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
@@ -1200,7 +1469,8 @@ export function BuildWizardPage() {
                           </span>
                         </div>
                         <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: {rx.weightG}g • {rx.manufacturer}
+                          Weight: {rx.weightG}g • {formatFrequencyBand(rx.frequencyBandMhz)} •{" "}
+                          {rx.manufacturer}
                         </div>
                         <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
                           Requires 1x FC UART
@@ -1242,7 +1512,7 @@ export function BuildWizardPage() {
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     3A. Video Transmitter (VTX)
                   </h3>
-                  {selectedVtx || noneSelections.vtx ? (
+                  {selectedVtx || useIntegratedVtx || noneSelections.vtx ? (
                     <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                       <Check size={12} strokeWidth={2.5} /> Selected
                     </span>
@@ -1281,6 +1551,7 @@ export function BuildWizardPage() {
                   <div
                     onClick={() => {
                       setSelectedVtx(null);
+                      setUseIntegratedVtx(false);
                       setNoneSelections((prev) => ({ ...prev, vtx: true }));
                     }}
                     className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
@@ -1293,8 +1564,50 @@ export function BuildWizardPage() {
                     <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
                   </div>
 
+                  {/* Option Card: Integrated FC VTX (if FC integrates VTX) */}
+                  {fcHasIntegratedVtx && (
+                    <div
+                      onClick={() => {
+                        setUseIntegratedVtx(true);
+                        setSelectedVtx(integratedVtx);
+                        setNoneSelections((prev) => ({ ...prev, vtx: false }));
+                      }}
+                      className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                        useIntegratedVtx
+                          ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30 ring-1 ring-emerald-500"
+                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                      }`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <div className="font-bold text-zinc-900 dark:text-zinc-100">
+                            {integratedVtx?.name || "Use Integrated FC VTX"}
+                          </div>
+                          <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            Integrated into {selectedFc?.name}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20">
+                            {integratedVtx?.maxPowerMw || 400}mW
+                          </span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                            Integrated
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                        Weight: 0g (FC integrated) • {integratedVtx?.protocol || "Analog"}
+                      </div>
+                      <div className="text-[11px] text-pink-600 dark:text-pink-400 font-mono mt-1">
+                        {integratedVtx?.manufacturer || selectedFc?.manufacturer} • On-board VTX
+                      </div>
+                    </div>
+                  )}
+
                   {filteredVtxs.map((v) => {
                     const isSelected =
+                      !useIntegratedVtx &&
                       !noneSelections.vtx &&
                       (selectedVtx?.uuid === v.uuid || selectedVtx?.id === v.id);
                     return (
@@ -1302,6 +1615,7 @@ export function BuildWizardPage() {
                         key={v.uuid || v.id}
                         onClick={() => {
                           setSelectedVtx(v);
+                          setUseIntegratedVtx(false);
                           setNoneSelections((prev) => ({ ...prev, vtx: false }));
                         }}
                         className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
@@ -1672,9 +1986,14 @@ export function BuildWizardPage() {
                       <span className="text-zinc-500 font-mono">{selectedFc.weightG}g</span>
                     </div>
                   )}
-                  {useInternalEsc ? (
+                  {useIntegratedEsc ? (
                     <div className="py-1.5 px-2 flex justify-between text-zinc-500">
-                      <span>ESC: Using In-built FC ESC</span>
+                      <span>
+                        ESC:{" "}
+                        {integratedEsc
+                          ? `${integratedEsc.name} (Integrated ${integratedEsc.motorCurrentMaxA || 20}A)`
+                          : "Using Integrated FC ESC"}
+                      </span>
                       <span className="font-mono">0g</span>
                     </div>
                   ) : selectedEsc ? (
@@ -1685,22 +2004,43 @@ export function BuildWizardPage() {
                       <span className="text-zinc-500 font-mono">{selectedEsc.weightG}g</span>
                     </div>
                   ) : null}
-                  {selectedRx && (
+                  {useIntegratedRx ? (
+                    <div className="py-1.5 px-2 flex justify-between text-zinc-500">
+                      <span>
+                        Receiver:{" "}
+                        {integratedRx
+                          ? `${integratedRx.name} (Integrated ${integratedRx.protocol || "ExpressLRS"} @ ${formatFrequencyBand(integratedRx.frequencyBandMhz)})`
+                          : "Using Integrated FC Receiver"}
+                      </span>
+                      <span className="font-mono">0g</span>
+                    </div>
+                  ) : selectedRx ? (
                     <div className="py-1.5 px-2 flex justify-between">
                       <span className="text-zinc-700 dark:text-zinc-300">
-                        Receiver: {selectedRx.name}
+                        Receiver: {selectedRx.name} ({selectedRx.protocol} @{" "}
+                        {formatFrequencyBand(selectedRx.frequencyBandMhz)})
                       </span>
                       <span className="text-zinc-500 font-mono">{selectedRx.weightG}g</span>
                     </div>
-                  )}
-                  {selectedVtx && !noneSelections.vtx && (
+                  ) : null}
+                  {useIntegratedVtx ? (
+                    <div className="py-1.5 px-2 flex justify-between text-zinc-500">
+                      <span>
+                        VTX:{" "}
+                        {integratedVtx
+                          ? `${integratedVtx.name} (Integrated ${integratedVtx.maxPowerMw || 400}mW)`
+                          : "Using Integrated FC VTX"}
+                      </span>
+                      <span className="font-mono">0g</span>
+                    </div>
+                  ) : selectedVtx && !noneSelections.vtx ? (
                     <div className="py-1.5 px-2 flex justify-between">
                       <span className="text-zinc-700 dark:text-zinc-300">
                         VTX: {selectedVtx.name}
                       </span>
                       <span className="text-zinc-500 font-mono">{selectedVtx.weightG}g</span>
                     </div>
-                  )}
+                  ) : null}
                   {selectedCam && !noneSelections.camera && (
                     <div className="py-1.5 px-2 flex justify-between">
                       <span className="text-zinc-700 dark:text-zinc-300">
@@ -1966,12 +2306,12 @@ export function BuildWizardPage() {
                 <span>ESC Amperage Rating</span>
                 <span
                   className={
-                    selectedEsc || useInternalEsc
+                    selectedEsc || useIntegratedEsc
                       ? "text-emerald-600 dark:text-emerald-400 font-bold"
                       : "text-zinc-400"
                   }
                 >
-                  {selectedEsc || useInternalEsc ? "✓ Sufficient" : "--"}
+                  {selectedEsc || useIntegratedEsc ? "✓ Sufficient" : "--"}
                 </span>
               </div>
               <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
