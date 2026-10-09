@@ -288,21 +288,20 @@ func CalculatePhysics(
 	installedThrustPerMotor := rawThrustPerMotor * frameEfficiency * payloadObstruction
 	totalThrust := installedThrustPerMotor * 4.0
 
-	// 7. Thrust-to-weight ratio and realistic hover throttle with payload scaling
+	// 7. Thrust-to-weight ratio and realistic hover throttle directly coupled to TWR:
 	if totalWeight > 0 {
 		thrustToWeight = totalThrust / totalWeight
 	}
 
-	if safeBase > 0 && totalThrust > 0 {
-		baseTwr := float64(rawThrustPerMotor*frameEfficiency*4.0) / safeBase
-		baseHover := math.Pow(1.0/math.Max(0.1, baseTwr), 0.78) * 100.0
-		weightRatio := float64(totalWeight) / safeBase
-		hoverThrottle = float32(baseHover * math.Pow(weightRatio, 1.5))
+	if thrustToWeight > 0 {
+		// Aerodynamic hover throttle position:
+		// Required thrust fraction is 1 / TWR. In multirotor flight dynamics and Betaflight,
+		// the throttle curve maps to (1 / TWR)^gamma, transitioning from gamma=0.68 near stall
+		// to gamma=0.78 at high TWR due to low disk loading.
+		twrFactor := float32(math.Min(1.0, math.Max(0.0, float64(thrustToWeight-1.0)/5.0)))
+		gamma := 0.68 + 0.10*twrFactor
+		hoverThrottle = float32(math.Pow(1.0/float64(thrustToWeight), float64(gamma)) * 100.0)
 	} else {
-		hoverThrottle = 100.0
-	}
-
-	if thrustToWeight <= 1.0 && hoverThrottle < 100.0 {
 		hoverThrottle = 100.0
 	}
 

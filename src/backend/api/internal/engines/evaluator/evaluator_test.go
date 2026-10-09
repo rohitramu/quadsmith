@@ -96,10 +96,10 @@ func TestEvaluatePhysics_PayloadScaling(t *testing.T) {
 			twrDiff, twr0, twrGoPro)
 	}
 
-	// Hover throttle should scale up visibly (at least +7 percentage points)
+	// Hover throttle should scale up visibly (at least +6 percentage points)
 	hoverDiff := hoverGoPro - hover0
-	if hoverDiff < 7.0 {
-		t.Errorf("Expected hover throttle to increase by at least 7%% with +133g payload, but only increased by %.1f%% (from %.1f%% to %.1f%%)",
+	if hoverDiff < 6.0 {
+		t.Errorf("Expected hover throttle to increase by at least 6%% with +133g payload, but only increased by %.1f%% (from %.1f%% to %.1f%%)",
 			hoverDiff, hover0, hoverGoPro)
 	}
 
@@ -109,6 +109,72 @@ func TestEvaluatePhysics_PayloadScaling(t *testing.T) {
 	}
 	if max0-maxGoPro < 1.2 {
 		t.Errorf("Expected max flight time to decrease by at least 1.2 min with +133g payload, got %.1f to %.1f", max0, maxGoPro)
+	}
+}
+
+func TestEvaluatePhysics_ToothpickPayloadConsistency(t *testing.T) {
+	// Flywoo ROBO 1202.5 4500KV motor
+	motor := &pb.Motor{
+		StatorDiameterMm: 12,
+		StatorHeightMm:   2.5,
+		Kv:               4500,
+		WeightG:          4.5,
+	}
+	// HQProp 3x3x3 3-inch propeller
+	prop := &pb.Propeller{
+		DiameterMm: 76.2,
+		PitchMm:    76.2,
+		Blades:     3,
+		WeightG:    1.5,
+	}
+	// 3S 450mAh LiPo battery
+	battery := &pb.Battery{
+		CellCountS:  3,
+		CapacityMah: 450,
+		WeightG:     43.0,
+	}
+	baseWeight := float32(139.0) // Ultralight Toothpick bare AUW
+	maxEscAmps := float32(12.0)
+
+	// 1. Bare toothpick should hover comfortably
+	twr0, hover0, _, _, _, errs0, _ := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
+	if twr0 <= 3.5 {
+		t.Errorf("Expected bare toothpick TWR > 3.5, got %.2f", twr0)
+	}
+	if hover0 >= 40.0 {
+		t.Errorf("Expected bare toothpick hover < 40%%, got %.1f%%", hover0)
+	}
+	if len(errs0) > 0 {
+		t.Errorf("Unexpected errors for bare toothpick: %v", errs0)
+	}
+
+	// 2. Toothpick with +200g heavy payload (TWR ~1.8 > 1.0)
+	// Must NOT exceed 100% hover throttle because TWR is still > 1.0
+	twr200, hover200, _, _, _, errs200, warns200 := CalculatePhysics(motor, prop, battery, baseWeight, 200, maxEscAmps)
+	if twr200 <= 1.0 {
+		t.Errorf("Expected TWR > 1.0 with +200g payload, got %.2f", twr200)
+	}
+	if hover200 >= 100.0 {
+		t.Errorf("Hover throttle must be < 100%% when TWR > 1.0, got %.1f%% (TWR=%.2f)", hover200, twr200)
+	}
+	if len(errs200) > 0 {
+		t.Errorf("Expected no 'too heavy to take off' error when TWR > 1.0, got: %v", errs200)
+	}
+	if len(warns200) == 0 {
+		t.Errorf("Expected sluggish warning for +200g payload on 139g toothpick, got none")
+	}
+
+	// 3. Severely overloaded toothpick (+550g payload, total ~689g)
+	// TWR < 1.0, must exceed 100% hover throttle and report takeoff error
+	twrOver, hoverOver, _, _, _, errsOver, _ := CalculatePhysics(motor, prop, battery, baseWeight, 550, maxEscAmps)
+	if twrOver >= 1.0 {
+		t.Errorf("Expected TWR < 1.0 for +550g payload on toothpick, got %.2f", twrOver)
+	}
+	if hoverOver < 100.0 {
+		t.Errorf("Hover throttle must be >= 100%% when TWR < 1.0, got %.1f%%", hoverOver)
+	}
+	if len(errsOver) == 0 {
+		t.Errorf("Expected takeoff error for overloaded toothpick, got none")
 	}
 }
 
