@@ -44,7 +44,7 @@ describe("BuildProfilePage Component", () => {
     expect(await screen.findByText("566")).toBeInTheDocument(); // 565.5 rounded to 566
 
     expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
-    expect(screen.getByText("5.3")).toBeInTheDocument(); // 3000 / 565.5 ~ 5.3
+    expect(screen.getByText("9.7")).toBeInTheDocument(); // 5500 / 565.5 ~ 9.7
 
     expect(screen.getByText("Hover Throttle")).toBeInTheDocument();
     expect(screen.getByText("Est. Flight Time")).toBeInTheDocument();

@@ -181,8 +181,9 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const payload = req.payloadWeightG || 0;
         const baseWeight = mockEvaluation1.totalWeightG;
         const totalWeight = baseWeight + payload;
-        const twr = totalWeight > 0 ? 3000 / totalWeight : 0;
-        const hover = twr > 0 ? (1 / twr) * 100 : 0;
+        const totalThrust = 5500; // Realistic 5" 6S total static thrust (4x 1375g)
+        const twr = totalWeight > 0 ? totalThrust / totalWeight : 0;
+        const hover = twr > 0 ? Math.sqrt(1 / twr) * 100 : 0;
         const warnings: string[] = [];
         const errors: string[] = [];
         if (hover > 50) {
@@ -195,7 +196,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           totalWeightG: totalWeight,
           thrustToWeightRatio: parseFloat(twr.toFixed(2)),
           hoverThrottlePercent: parseFloat(hover.toFixed(1)),
-          estimatedFlightTimeMin: parseFloat(Math.max(1, 6 - payload / 50).toFixed(1)),
+          estimatedFlightTimeMin: parseFloat(Math.max(1, 16 - payload / 20).toFixed(1)),
           warnings,
           errors,
         };

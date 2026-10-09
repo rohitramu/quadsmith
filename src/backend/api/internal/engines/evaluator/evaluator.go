@@ -3,6 +3,7 @@ package evaluator
 import (
 	"context"
 	"fmt"
+	"math"
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -162,49 +163,10 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		errors = append(errors, fmt.Sprintf("Not enough ESCs: need 4, have %d", totalEscs))
 	}
 
-	// Physics Estimation (Placeholder for MVP)
-	// TODO: Replace this naive linear estimation with a proper aerodynamic simulation.
-	// We need thrust curve interpolation based on propeller pitch/diameter and stator volume.
-	// Also factor in battery voltage sag under load, motor efficiency (g/W), and air density.
-	var thrustToWeight float32 = 0
-	var hoverThrottle float32 = 0
-	var flightTime float32 = 0
-
-	if motor != nil && prop != nil && battery != nil {
-		voltage := float32(battery.CellCountS) * 3.7
-
-		// Naive thrust formula
-		statorVol := motor.StatorDiameterMm * motor.StatorHeightMm
-		thrustPerMotor := (statorVol * float32(motor.Kv) * voltage * (prop.DiameterMm / 25.4) * (prop.PitchMm / 25.4)) / 1500.0
-		totalThrust := thrustPerMotor * 4
-
-		if totalWeight > 0 {
-			thrustToWeight = totalThrust / totalWeight
-			hoverThrottle = (1.0 / thrustToWeight) * 100.0
-		}
-
-		if hoverThrottle > 100 {
-			errors = append(errors, "Drone is too heavy to take off (Hover throttle > 100%)")
-		} else if hoverThrottle > 50 {
-			warnings = append(warnings, "Drone will be very sluggish (Hover throttle > 50%)")
-		}
-
-		// Flight time estimation
-		// Assume hover takes (totalWeight / 4) grams of thrust per motor
-		// Amps = thrust / efficiency(g/W) / voltage
-		hoverAmpsPerMotor := (totalWeight / 4.0) / 3.0 / voltage
-		totalHoverAmps := hoverAmpsPerMotor * 4.0
-
-		if totalHoverAmps > float32(maxAmps*4) && maxAmps > 0 {
-			warnings = append(warnings, "Hover amps exceeds ESC continuous rating")
-		}
-
-		if totalHoverAmps > 0 {
-			flightTime = (float32(battery.CapacityMah) / 1000.0) / totalHoverAmps * 60.0 // minutes
-		}
-	} else {
-		warnings = append(warnings, "Need a Motor, Propeller, and Battery to run physics estimation")
-	}
+	// Aerodynamic Physics Estimation
+	thrustToWeight, hoverThrottle, flightTime, physErrors, physWarnings := CalculatePhysics(motor, prop, battery, totalWeight, maxAmps)
+	errors = append(errors, physErrors...)
+	warnings = append(warnings, physWarnings...)
 
 	res := &pb.EvaluateBuildResponse{
 		TotalWeightG:           totalWeight,
@@ -216,4 +178,113 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	return connect.NewResponse(res), nil
+}
+
+// CalculatePhysics computes aerodynamic static thrust, thrust-to-weight ratio,
+// quadratic hover throttle percentage, and estimated flight time.
+func CalculatePhysics(
+	motor *pb.Motor,
+	prop *pb.Propeller,
+	battery *pb.Battery,
+	totalWeight float32,
+	maxEscAmps float32,
+) (thrustToWeight float32, hoverThrottle float32, flightTime float32, errors []string, warnings []string) {
+	if motor == nil || prop == nil || battery == nil {
+		warnings = append(warnings, "Need a Motor, Propeller, and Battery to run physics estimation")
+		return 0, 0, 0, errors, warnings
+	}
+
+	cellCount := float32(battery.CellCountS)
+	if cellCount == 0 {
+		cellCount = 4
+	}
+	// Nominal loaded voltage under moderate load (~3.7V per cell for LiPo)
+	voltage := cellCount * 3.7
+
+	propDiaMm := prop.DiameterMm
+	if propDiaMm <= 0 {
+		propDiaMm = 127.0 // default 5-inch
+	}
+	propPitchMm := prop.PitchMm
+	if propPitchMm <= 0 {
+		propPitchMm = propDiaMm * 0.7
+	}
+	propBlades := prop.Blades
+	if propBlades < 2 {
+		propBlades = 3
+	}
+
+	diaIn := propDiaMm / 25.4
+	pitchIn := propPitchMm / 25.4
+
+	// 1. Non-dimensional thrust coefficient Ct based on momentum and blade element theory:
+	// Ct_2blade = 0.045 + 0.090 * (P / D)
+	// Blade solidity scaling: (blades / 2)^0.45
+	pOverD := pitchIn / diaIn
+	ct2Blade := 0.045 + 0.090*pOverD
+	bladeFactor := float32(math.Pow(float64(propBlades)/2.0, 0.45))
+	ct := ct2Blade * bladeFactor
+
+	// 2. Motor stator volume (mm^3) as proxy for torque capability
+	statorD := motor.StatorDiameterMm
+	statorH := motor.StatorHeightMm
+	statorVol := float32(math.Pi/4.0) * statorD * statorD * statorH
+	if statorVol <= 0 {
+		// Fallback estimate from motor weight if stator dimensions missing
+		if motor.WeightG > 0 {
+			statorVol = motor.WeightG * 80.0
+		} else {
+			statorVol = 2600.0 // standard 2207 size
+		}
+	}
+
+	// 3. Propeller aerodynamic torque demand scale: D^4 * P * sqrt(blades / 2)
+	propTorqueScale := math.Pow(float64(diaIn), 4) * float64(pitchIn) * math.Sqrt(float64(propBlades)/2.0)
+	torqueRatio := float64(statorVol) / math.Max(1.0, propTorqueScale)
+
+	// Full-throttle loaded RPM: well-matched motor reaches ~76% of no-load (Kv * V)
+	rpmLoadFactor := 0.76 * math.Min(1.08, math.Max(0.60, math.Pow(torqueRatio/1.08, 0.15)))
+	loadedRpm := float32(float64(float32(motor.Kv)*voltage) * rpmLoadFactor)
+
+	// 4. Static thrust (momentum / blade element theory):
+	// T = Ct * rho * n^2 * D^4
+	const rho = 1.225 // kg/m^3 standard sea-level air density
+	dM := float64(propDiaMm) / 1000.0
+	n := float64(loadedRpm) / 60.0
+	thrustNewtons := float64(ct) * rho * (n * n) * math.Pow(dM, 4)
+	thrustPerMotor := float32(thrustNewtons * 101.97162) // 1 N = 101.97162 g
+	totalThrust := thrustPerMotor * 4.0
+
+	// 5. Thrust-to-weight ratio and hover throttle
+	if totalWeight > 0 {
+		thrustToWeight = totalThrust / totalWeight
+		// Propeller thrust scales quadratically with throttle: T/Tmax = (throttle)^2
+		// Hover throttle = sqrt(1 / TWR) * 100%
+		if thrustToWeight > 0 {
+			hoverThrottle = float32((1.0 / math.Sqrt(float64(thrustToWeight))) * 100.0)
+		}
+	}
+
+	if hoverThrottle > 100.0 {
+		errors = append(errors, "Drone is too heavy to take off (Hover throttle > 100%)")
+	} else if hoverThrottle > 50.0 {
+		warnings = append(warnings, "Drone will be very sluggish (Hover throttle > 50%)")
+	}
+
+	// 6. Flight time estimation based on disk loading and hover power:
+	// Larger props have higher hover efficiency (g/W) due to lower disk loading
+	effGW := float32(math.Min(8.0, math.Max(3.2, 3.2+0.45*float64(diaIn))))
+	hoverWatts := totalWeight / effGW
+	totalHoverAmps := hoverWatts / voltage
+
+	if totalHoverAmps > float32(maxEscAmps*4) && maxEscAmps > 0 {
+		warnings = append(warnings, "Hover amps exceeds ESC continuous rating")
+	}
+
+	if totalHoverAmps > 0 && battery.CapacityMah > 0 {
+		usableAh := (float32(battery.CapacityMah) / 1000.0) * 0.85 // 85% usable battery capacity
+		flightTime = (usableAh / totalHoverAmps) * 60.0            // minutes
+	}
+
+	return thrustToWeight, hoverThrottle, flightTime, errors, warnings
 }
