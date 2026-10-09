@@ -31,6 +31,8 @@ import {
   Camera as CameraIcon,
   Compass,
   Zap,
+  Plus,
+  Minus,
 } from "lucide-react";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
@@ -224,24 +226,55 @@ export function BuildProfilePage() {
                 +{payloadWeightG}g
               </span>
             </div>
-            <div className="relative flex items-center my-1.5">
-              <input
-                type="text"
-                inputMode="decimal"
-                value={payloadInput}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (val === "" || /^\d*\.?\d*$/.test(val)) {
-                    setPayloadInput(val);
-                  }
+            <div className="flex items-center gap-1.5 my-1.5">
+              <button
+                type="button"
+                onClick={() => {
+                  const current = Math.max(0, parseFloat(payloadInput) || 0);
+                  const next = Math.max(0, Math.round(current - 10));
+                  setPayloadInput(String(next));
                 }}
-                placeholder="0"
-                className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 pr-8 text-sm font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs"
-                aria-label="Payload weight in grams"
-              />
-              <span className="absolute right-3 text-xs text-zinc-400 font-mono pointer-events-none select-none">
-                g
-              </span>
+                disabled={payloadWeightG <= 0}
+                title="Remove 10g"
+                aria-label="Remove 10 grams"
+                className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
+              >
+                <Minus size={14} />
+              </button>
+
+              <div className="relative flex-1 flex items-center">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={payloadInput}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === "" || /^\d*\.?\d*$/.test(val)) {
+                      setPayloadInput(val);
+                    }
+                  }}
+                  placeholder="0"
+                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 pr-7 text-sm font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs text-center"
+                  aria-label="Payload weight in grams"
+                />
+                <span className="absolute right-2.5 text-xs text-zinc-400 font-mono pointer-events-none select-none">
+                  g
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const current = Math.max(0, parseFloat(payloadInput) || 0);
+                  const next = Math.round(current + 10);
+                  setPayloadInput(String(next));
+                }}
+                title="Add 10g"
+                aria-label="Add 10 grams"
+                className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
+              >
+                <Plus size={14} />
+              </button>
             </div>
             <div className="flex gap-1 mt-2 text-[10px]">
               <button

@@ -118,6 +118,24 @@ describe("BuildProfilePage Component", () => {
     expect(await screen.findByText("699")).toBeInTheDocument();
     expect(screen.getByText("+133g")).toBeInTheDocument();
     expect(screen.getByText(/includes \+133g payload/i)).toBeInTheDocument();
+
+    // Test + button to add 10 grams (133 + 10 = 143g)
+    const plusButton = screen.getByRole("button", { name: /add 10 grams/i });
+    await user.click(plusButton);
+    expect(payloadInput).toHaveValue("143");
+    expect(screen.getByText("+143g")).toBeInTheDocument();
+
+    // Test - button to remove 10 grams (143 - 10 = 133g)
+    const minusButton = screen.getByRole("button", { name: /remove 10 grams/i });
+    await user.click(minusButton);
+    expect(payloadInput).toHaveValue("133");
+    expect(screen.getByText("+133g")).toBeInTheDocument();
+
+    // Reset to Bare (0g) and verify - button is disabled
+    const bareButton = screen.getByRole("button", { name: "Bare (0g)" });
+    await user.click(bareButton);
+    expect(payloadInput).toHaveValue("0");
+    expect(minusButton).toBeDisabled();
   });
 
   it("renders reference documentation links", async () => {
