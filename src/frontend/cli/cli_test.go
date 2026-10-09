@@ -36,7 +36,7 @@ func TestList_YAML(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "list", "--yaml"})
+	cmd.SetArgs([]string{"components", "motors", "list", "--yaml"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -69,7 +69,7 @@ func TestList_EmptySlice_JSON(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "list", "--json"})
+	cmd.SetArgs([]string{"components", "motors", "list", "--json"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -96,7 +96,7 @@ func TestList_EmptySlice_YAML(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "list", "--yaml"})
+	cmd.SetArgs([]string{"components", "motors", "list", "--yaml"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -123,7 +123,7 @@ func TestList_EmptySlice_Table(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "list"})
+	cmd.SetArgs([]string{"components", "motors", "list"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -155,7 +155,7 @@ func TestGet_JSON(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "get", "motor-1", "--json"})
+	cmd.SetArgs([]string{"components", "motors", "get", "motor-1", "--json"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -187,7 +187,7 @@ func TestGet_YAML(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "get", "motor-yaml", "--yaml"})
+	cmd.SetArgs([]string{"components", "motors", "get", "motor-yaml", "--yaml"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -218,7 +218,7 @@ func TestGet_Table(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "get", "motor-table"})
+	cmd.SetArgs([]string{"components", "motors", "get", "motor-table"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -262,30 +262,88 @@ func TestFormatValue(t *testing.T) {
 func TestCommandAliases(t *testing.T) {
 	rootCmd := newRootCmd()
 
-	tests := []struct {
+	// Root-level commands & aliases
+	rootTests := []struct {
+		alias        string
+		expectedRoot string
+	}{
+		{"build", "builds"},
+		{"builds", "builds"},
+		{"component", "components"},
+		{"components", "components"},
+	}
+
+	for _, tt := range rootTests {
+		t.Run(tt.alias, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{tt.alias})
+			if err != nil {
+				t.Fatalf("failed to find command for alias %q: %v", tt.alias, err)
+			}
+			if cmd.Name() != tt.expectedRoot {
+				t.Errorf("alias %q resolved to %q, want %q", tt.alias, cmd.Name(), tt.expectedRoot)
+			}
+		})
+	}
+
+	// Builds subcommands & aliases
+	buildTests := []struct {
+		alias    string
+		expected string
+	}{
+		{"eval", "evaluate"},
+		{"evaluate", "evaluate"},
+	}
+	for _, tt := range buildTests {
+		t.Run("builds/"+tt.alias, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{"builds", tt.alias})
+			if err != nil {
+				t.Fatalf("failed to find builds alias %q: %v", tt.alias, err)
+			}
+			if cmd.Name() != tt.expected {
+				t.Errorf("builds alias %q resolved to %q, want %q", tt.alias, cmd.Name(), tt.expected)
+			}
+		})
+	}
+
+	// Component collection aliases under components
+	componentTests := []struct {
 		alias        string
 		expectedRoot string
 	}{
 		{"fc", "flight-controllers"},
 		{"fcs", "flight-controllers"},
 		{"flightcontrollers", "flight-controllers"},
+		{"flight-controller", "flight-controllers"},
 		{"vtx", "video-transmitters"},
 		{"vtxs", "video-transmitters"},
 		{"videotransmitters", "video-transmitters"},
+		{"video-transmitter", "video-transmitters"},
 		{"esc", "electronic-speed-controllers"},
 		{"escs", "electronic-speed-controllers"},
+		{"electronic-speed-controller", "electronic-speed-controllers"},
 		{"rx", "receivers"},
 		{"rxs", "receivers"},
+		{"receiver", "receivers"},
 		{"gps", "gps-receivers"},
 		{"gpsreceivers", "gps-receivers"},
+		{"gps-receiver", "gps-receivers"},
 		{"motors", "motors"},
+		{"motor", "motors"},
 		{"frames", "frames"},
-		{"builds", "builds"},
+		{"frame", "frames"},
+		{"antennas", "antennas"},
+		{"antenna", "antennas"},
+		{"batteries", "batteries"},
+		{"battery", "batteries"},
+		{"propellers", "propellers"},
+		{"propeller", "propellers"},
+		{"props", "propellers"},
+		{"prop", "propellers"},
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.alias, func(t *testing.T) {
-			cmd, _, err := rootCmd.Find([]string{tt.alias})
+	for _, tt := range componentTests {
+		t.Run("components/"+tt.alias, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{"components", tt.alias})
 			if err != nil {
 				t.Fatalf("failed to find command for alias %q: %v", tt.alias, err)
 			}
@@ -299,10 +357,27 @@ func TestCommandAliases(t *testing.T) {
 func TestDomainSubcommands(t *testing.T) {
 	rootCmd := newRootCmd()
 
-	domains := []string{
+	// Verify builds subcommand under rootCmd
+	t.Run("builds", func(t *testing.T) {
+		cmd, _, err := rootCmd.Find([]string{"builds"})
+		if err != nil {
+			t.Fatalf("could not find builds subcommand: %v", err)
+		}
+		subcommands := make(map[string]bool)
+		for _, sub := range cmd.Commands() {
+			subcommands[sub.Name()] = true
+		}
+		for _, expected := range []string{"list", "get", "evaluate"} {
+			if !subcommands[expected] {
+				t.Errorf("builds missing %q subcommand", expected)
+			}
+		}
+	})
+
+	// Verify components subcommand and its 11 component collections
+	componentCollections := []string{
 		"antennas",
 		"batteries",
-		"builds",
 		"cameras",
 		"electronic-speed-controllers",
 		"flight-controllers",
@@ -314,11 +389,11 @@ func TestDomainSubcommands(t *testing.T) {
 		"video-transmitters",
 	}
 
-	for _, d := range domains {
-		t.Run(d, func(t *testing.T) {
-			cmd, _, err := rootCmd.Find([]string{d})
+	for _, c := range componentCollections {
+		t.Run("components/"+c, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{"components", c})
 			if err != nil {
-				t.Fatalf("could not find domain %s: %v", d, err)
+				t.Fatalf("could not find component collection components/%s: %v", c, err)
 			}
 
 			subcommands := make(map[string]bool)
@@ -327,10 +402,10 @@ func TestDomainSubcommands(t *testing.T) {
 			}
 
 			if !subcommands["list"] {
-				t.Errorf("domain %s missing 'list' subcommand", d)
+				t.Errorf("components/%s missing 'list' subcommand", c)
 			}
 			if !subcommands["get"] {
-				t.Errorf("domain %s missing 'get' subcommand", d)
+				t.Errorf("components/%s missing 'get' subcommand", c)
 			}
 		})
 	}
@@ -404,7 +479,7 @@ func TestList_CustomColumns(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"motors", "list", "-c", "id,kv"})
+	cmd.SetArgs([]string{"components", "motors", "list", "-c", "id,kv"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -428,7 +503,7 @@ func TestList_CustomColumns(t *testing.T) {
 
 func TestCompletion_ColumnFlag(t *testing.T) {
 	rootCmd := newRootCmd()
-	cmd, _, err := rootCmd.Find([]string{"motors", "list"})
+	cmd, _, err := rootCmd.Find([]string{"components", "motors", "list"})
 	if err != nil {
 		t.Fatalf("failed to find motors list: %v", err)
 	}
@@ -463,7 +538,7 @@ func TestCompletion_ColumnFlag(t *testing.T) {
 
 func TestCompletion_SortFlag(t *testing.T) {
 	rootCmd := newRootCmd()
-	cmd, _, err := rootCmd.Find([]string{"motors", "list"})
+	cmd, _, err := rootCmd.Find([]string{"components", "motors", "list"})
 	if err != nil {
 		t.Fatalf("failed to find motors list: %v", err)
 	}
@@ -498,7 +573,7 @@ func TestCompletion_SortFlag(t *testing.T) {
 
 func TestCompletion_FilterFlag(t *testing.T) {
 	rootCmd := newRootCmd()
-	cmd, _, err := rootCmd.Find([]string{"motors", "list"})
+	cmd, _, err := rootCmd.Find([]string{"components", "motors", "list"})
 	if err != nil {
 		t.Fatalf("failed to find motors list: %v", err)
 	}
@@ -538,7 +613,7 @@ func TestCompletion_GetValidArgs(t *testing.T) {
 	})
 
 	rootCmd := newRootCmd()
-	cmd, _, err := rootCmd.Find([]string{"motors", "get"})
+	cmd, _, err := rootCmd.Find([]string{"components", "motors", "get"})
 	if err != nil {
 		t.Fatalf("failed to find motors get: %v", err)
 	}
@@ -597,7 +672,7 @@ func TestEvaluate_Success(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"evaluate", "build-1", "--payload", "30", "--json"})
+	cmd.SetArgs([]string{"builds", "evaluate", "build-1", "--payload", "30", "--json"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -613,13 +688,49 @@ func TestEvaluate_Success(t *testing.T) {
 	}
 }
 
+func TestEvaluate_AliasEval(t *testing.T) {
+	mockBuild := &mockBuildService{
+		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {
+			if req.Msg.Id == "build-1" {
+				return connect.NewResponse(&pb.Build{
+					Id:   "build-1",
+					Name: "Freestyle 5 inch",
+				}), nil
+			}
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("build not found"))
+		},
+	}
+
+	mockEval := &mockEvaluatorService{
+		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+			return connect.NewResponse(&pb.EvaluateBuildResponse{
+				TotalWeightG: 350.5,
+			}), nil
+		},
+	}
+
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"builds", "eval", "build-1", "--json"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
 func TestEvaluate_MissingArg(t *testing.T) {
 	cmd := newRootCmd()
 	var errBuf bytes.Buffer
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"evaluate"})
+	cmd.SetArgs([]string{"builds", "evaluate"})
 
 	err := cmd.Execute()
 	if err == nil {
@@ -647,7 +758,7 @@ func TestEvaluate_BuildNotFound(t *testing.T) {
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"evaluate", "missing-build"})
+	cmd.SetArgs([]string{"builds", "evaluate", "missing-build"})
 
 	err := cmd.Execute()
 	if err == nil {

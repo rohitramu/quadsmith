@@ -49,7 +49,7 @@ func TestCLI_ListFrames(t *testing.T) {
 
 	qsPath := resolveQSPath(t)
 
-	cmd := exec.Command(qsPath, "frames", "list", "--json")
+	cmd := exec.Command(qsPath, "components", "frames", "list", "--json")
 	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
@@ -100,4 +100,36 @@ func TestCLI_ListBuilds(t *testing.T) {
 	}
 
 	t.Logf("CLI returned %d builds", len(builds))
+}
+
+func TestCLI_BuildsEvaluate(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	qsPath := resolveQSPath(t)
+
+	cmd := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--json")
+	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err = cmd.Run()
+	if err != nil {
+		t.Fatalf("CLI command failed: %v\nStderr: %s", err, stderr.String())
+	}
+
+	var eval map[string]interface{}
+	if err := json.Unmarshal(stdout.Bytes(), &eval); err != nil {
+		t.Fatalf("Failed to parse CLI JSON output: %v\nOutput: %s", err, stdout.String())
+	}
+
+	if _, ok := eval["thrust_to_weight_ratio"]; !ok {
+		t.Errorf("Expected thrust_to_weight_ratio in evaluation response, got: %v", eval)
+	}
+	t.Logf("CLI returned evaluation: %v", eval)
 }

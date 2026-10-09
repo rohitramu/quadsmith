@@ -52,9 +52,16 @@ func newRootCmd() *cobra.Command {
 		cmd.SilenceUsage = true
 	}
 
+	componentsCmd := &cobra.Command{
+		Use:     "components",
+		Aliases: []string{"component"},
+		Short:   "Hardware component collections",
+	}
+	rootCmd.AddCommand(componentsCmd)
+
 	// --- Antennas ---
 	antennaClient := quadsmithconnect.NewAntennaServiceClient(http.DefaultClient, targetURL)
-	antennaCmd := &cobra.Command{Use: "antennas"}
+	antennaCmd := &cobra.Command{Use: "antennas", Aliases: []string{"antenna"}}
 	antennaListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -210,11 +217,11 @@ func newRootCmd() *cobra.Command {
 	})
 	antennaCmd.AddCommand(antennaGetCmd)
 
-	rootCmd.AddCommand(antennaCmd)
+	componentsCmd.AddCommand(antennaCmd)
 
 	// --- Batteries ---
 	batteryClient := quadsmithconnect.NewBatteryServiceClient(http.DefaultClient, targetURL)
-	batteryCmd := &cobra.Command{Use: "batteries"}
+	batteryCmd := &cobra.Command{Use: "batteries", Aliases: []string{"battery"}}
 	batteryListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -370,11 +377,11 @@ func newRootCmd() *cobra.Command {
 	})
 	batteryCmd.AddCommand(batteryGetCmd)
 
-	rootCmd.AddCommand(batteryCmd)
+	componentsCmd.AddCommand(batteryCmd)
 
 	// --- Builds ---
 	buildClient := quadsmithconnect.NewBuildServiceClient(http.DefaultClient, targetURL)
-	buildCmd := &cobra.Command{Use: "builds"}
+	buildCmd := &cobra.Command{Use: "builds", Aliases: []string{"build"}}
 	buildListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -534,7 +541,7 @@ func newRootCmd() *cobra.Command {
 
 	// --- Cameras ---
 	cameraClient := quadsmithconnect.NewCameraServiceClient(http.DefaultClient, targetURL)
-	cameraCmd := &cobra.Command{Use: "cameras"}
+	cameraCmd := &cobra.Command{Use: "cameras", Aliases: []string{"camera"}}
 	cameraListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -690,11 +697,11 @@ func newRootCmd() *cobra.Command {
 	})
 	cameraCmd.AddCommand(cameraGetCmd)
 
-	rootCmd.AddCommand(cameraCmd)
+	componentsCmd.AddCommand(cameraCmd)
 
 	// --- Electronic Speed Controllers ---
 	electronicSpeedControllerClient := quadsmithconnect.NewElectronicSpeedControllerServiceClient(http.DefaultClient, targetURL)
-	electronicSpeedControllerCmd := &cobra.Command{Use: "electronic-speed-controllers", Aliases: []string{"electronicspeedcontrollers", "escs", "esc"}}
+	electronicSpeedControllerCmd := &cobra.Command{Use: "electronic-speed-controllers", Aliases: []string{"electronicspeedcontrollers", "escs", "esc", "electronic-speed-controller"}}
 	electronicSpeedControllerListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -850,11 +857,11 @@ func newRootCmd() *cobra.Command {
 	})
 	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerGetCmd)
 
-	rootCmd.AddCommand(electronicSpeedControllerCmd)
+	componentsCmd.AddCommand(electronicSpeedControllerCmd)
 
 	// --- Flight Controllers ---
 	flightControllerClient := quadsmithconnect.NewFlightControllerServiceClient(http.DefaultClient, targetURL)
-	flightControllerCmd := &cobra.Command{Use: "flight-controllers", Aliases: []string{"flightcontrollers", "fc", "fcs"}}
+	flightControllerCmd := &cobra.Command{Use: "flight-controllers", Aliases: []string{"flightcontrollers", "fc", "fcs", "flight-controller"}}
 	flightControllerListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1010,11 +1017,11 @@ func newRootCmd() *cobra.Command {
 	})
 	flightControllerCmd.AddCommand(flightControllerGetCmd)
 
-	rootCmd.AddCommand(flightControllerCmd)
+	componentsCmd.AddCommand(flightControllerCmd)
 
 	// --- Frames ---
 	frameClient := quadsmithconnect.NewFrameServiceClient(http.DefaultClient, targetURL)
-	frameCmd := &cobra.Command{Use: "frames"}
+	frameCmd := &cobra.Command{Use: "frames", Aliases: []string{"frame"}}
 	frameListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1170,11 +1177,11 @@ func newRootCmd() *cobra.Command {
 	})
 	frameCmd.AddCommand(frameGetCmd)
 
-	rootCmd.AddCommand(frameCmd)
+	componentsCmd.AddCommand(frameCmd)
 
 	// --- GPS Receivers ---
 	gpsReceiverClient := quadsmithconnect.NewGpsReceiverServiceClient(http.DefaultClient, targetURL)
-	gpsReceiverCmd := &cobra.Command{Use: "gps-receivers", Aliases: []string{"gpsreceivers", "gps"}}
+	gpsReceiverCmd := &cobra.Command{Use: "gps-receivers", Aliases: []string{"gpsreceivers", "gps", "gps-receiver"}}
 	gpsReceiverListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1330,11 +1337,11 @@ func newRootCmd() *cobra.Command {
 	})
 	gpsReceiverCmd.AddCommand(gpsReceiverGetCmd)
 
-	rootCmd.AddCommand(gpsReceiverCmd)
+	componentsCmd.AddCommand(gpsReceiverCmd)
 
 	// --- Motors ---
 	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, targetURL)
-	motorCmd := &cobra.Command{Use: "motors"}
+	motorCmd := &cobra.Command{Use: "motors", Aliases: []string{"motor"}}
 	motorListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1490,11 +1497,11 @@ func newRootCmd() *cobra.Command {
 	})
 	motorCmd.AddCommand(motorGetCmd)
 
-	rootCmd.AddCommand(motorCmd)
+	componentsCmd.AddCommand(motorCmd)
 
 	// --- Propellers ---
 	propellerClient := quadsmithconnect.NewPropellerServiceClient(http.DefaultClient, targetURL)
-	propellerCmd := &cobra.Command{Use: "propellers"}
+	propellerCmd := &cobra.Command{Use: "propellers", Aliases: []string{"propeller", "props", "prop"}}
 	propellerListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1650,11 +1657,11 @@ func newRootCmd() *cobra.Command {
 	})
 	propellerCmd.AddCommand(propellerGetCmd)
 
-	rootCmd.AddCommand(propellerCmd)
+	componentsCmd.AddCommand(propellerCmd)
 
 	// --- Receivers ---
 	receiverClient := quadsmithconnect.NewReceiverServiceClient(http.DefaultClient, targetURL)
-	receiverCmd := &cobra.Command{Use: "receivers", Aliases: []string{"rx", "rxs"}}
+	receiverCmd := &cobra.Command{Use: "receivers", Aliases: []string{"rx", "rxs", "receiver"}}
 	receiverListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1810,11 +1817,11 @@ func newRootCmd() *cobra.Command {
 	})
 	receiverCmd.AddCommand(receiverGetCmd)
 
-	rootCmd.AddCommand(receiverCmd)
+	componentsCmd.AddCommand(receiverCmd)
 
 	// --- Video Transmitters ---
 	videoTransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(http.DefaultClient, targetURL)
-	videoTransmitterCmd := &cobra.Command{Use: "video-transmitters", Aliases: []string{"videotransmitters", "vtx", "vtxs"}}
+	videoTransmitterCmd := &cobra.Command{Use: "video-transmitters", Aliases: []string{"videotransmitters", "vtx", "vtxs", "video-transmitter"}}
 	videoTransmitterListCmd := &cobra.Command{
 		Use: "list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -1970,14 +1977,15 @@ func newRootCmd() *cobra.Command {
 	})
 	videoTransmitterCmd.AddCommand(videoTransmitterGetCmd)
 
-	rootCmd.AddCommand(videoTransmitterCmd)
+	componentsCmd.AddCommand(videoTransmitterCmd)
 
 	// --- EVALUATOR ---
 	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, targetURL)
 	evalCmd := &cobra.Command{
-		Use:   "evaluate [build-id]",
-		Short: "Run physics estimation and compatibility checks on a build",
-		Args:  cobra.ExactArgs(1),
+		Use:     "evaluate [build-id]",
+		Aliases: []string{"eval"},
+		Short:   "Run physics estimation and compatibility checks on a build",
+		Args:    cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			if len(args) != 0 {
 				return nil, cobra.ShellCompDirectiveNoFileComp
@@ -2013,7 +2021,7 @@ func newRootCmd() *cobra.Command {
 		},
 	}
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
-	rootCmd.AddCommand(evalCmd)
+	buildCmd.AddCommand(evalCmd)
 
 	// --- CUSTOM COMPLETION ---
 	completionCmd := &cobra.Command{

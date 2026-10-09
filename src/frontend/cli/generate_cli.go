@@ -85,55 +85,62 @@ var domains = []DomainName{
 	{
 		Singular: "Antenna",
 		Plural:   "Antennas",
+		Aliases:  []string{"antenna"},
 	},
 	{
 		Singular: "Battery",
 		Plural:   "Batteries",
+		Aliases:  []string{"battery"},
 	},
 	{
 		Singular: "Build",
 		Plural:   "Builds",
+		Aliases:  []string{"build"},
 	},
 	{
 		Singular: "Camera",
 		Plural:   "Cameras",
+		Aliases:  []string{"camera"},
 	},
 	{
 		Singular: "Electronic Speed Controller",
 		Plural:   "Electronic Speed Controllers",
-		Aliases:  []string{"escs", "esc"},
+		Aliases:  []string{"escs", "esc", "electronic-speed-controller"},
 	},
 	{
 		Singular: "Flight Controller",
 		Plural:   "Flight Controllers",
-		Aliases:  []string{"flightcontrollers", "fc", "fcs"},
+		Aliases:  []string{"flightcontrollers", "fc", "fcs", "flight-controller"},
 	},
 	{
 		Singular: "Frame",
 		Plural:   "Frames",
+		Aliases:  []string{"frame"},
 	},
 	{
 		Singular: "GPS Receiver",
 		Plural:   "GPS Receivers",
-		Aliases:  []string{"gpsreceivers", "gps"},
+		Aliases:  []string{"gpsreceivers", "gps", "gps-receiver"},
 	},
 	{
 		Singular: "Motor",
 		Plural:   "Motors",
+		Aliases:  []string{"motor"},
 	},
 	{
 		Singular: "Propeller",
 		Plural:   "Propellers",
+		Aliases:  []string{"propeller", "props", "prop"},
 	},
 	{
 		Singular: "Receiver",
 		Plural:   "Receivers",
-		Aliases:  []string{"rx", "rxs"},
+		Aliases:  []string{"rx", "rxs", "receiver"},
 	},
 	{
 		Singular: "Video Transmitter",
 		Plural:   "Video Transmitters",
-		Aliases:  []string{"videotransmitters", "vtx", "vtxs"},
+		Aliases:  []string{"videotransmitters", "vtx", "vtxs", "video-transmitter"},
 	},
 }
 
@@ -194,6 +201,13 @@ func newRootCmd() *cobra.Command {
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		cmd.SilenceUsage = true
 	}
+
+	componentsCmd := &cobra.Command{
+		Use:     "components",
+		Aliases: []string{"component"},
+		Short:   "Hardware component collections",
+	}
+	rootCmd.AddCommand(componentsCmd)
 `)
 
 	for _, d := range domains {
@@ -369,7 +383,11 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t})\n")
 		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n\n", cmdVar, getCmdVar)
 
-		fmt.Fprintf(f, "\trootCmd.AddCommand(%s)\n", cmdVar)
+		if d.Singular == "Build" {
+			fmt.Fprintf(f, "\trootCmd.AddCommand(%s)\n", cmdVar)
+		} else {
+			fmt.Fprintf(f, "\tcomponentsCmd.AddCommand(%s)\n", cmdVar)
+		}
 	}
 
 	fmt.Fprintln(f, `
@@ -377,6 +395,7 @@ func newRootCmd() *cobra.Command {
 	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, targetURL)
 	evalCmd := &cobra.Command{
 		Use: "evaluate [build-id]",
+		Aliases: []string{"eval"},
 		Short: "Run physics estimation and compatibility checks on a build",
 		Args: cobra.ExactArgs(1),
 		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -406,7 +425,7 @@ func newRootCmd() *cobra.Command {
 		},
 	}
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
-	rootCmd.AddCommand(evalCmd)
+	buildCmd.AddCommand(evalCmd)
 
 	// --- CUSTOM COMPLETION ---
 	completionCmd := &cobra.Command{
