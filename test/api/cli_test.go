@@ -39,17 +39,18 @@ func resolveQSPath(t *testing.T) string {
 }
 
 func TestCLI_ListFrames(t *testing.T) {
+	apiUrl := getAPIURL()
 	// Fail if we can't reach the sandbox
 	client := &http.Client{Timeout: 2 * time.Second}
-	_, err := client.Get("http://127.0.0.1:8080")
+	_, err := client.Get(apiUrl)
 	if err != nil {
-		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
 	qsPath := resolveQSPath(t)
 
 	cmd := exec.Command(qsPath, "frames", "list", "--json")
-	cmd.Env = append(cmd.Env, "QS_API_URL=http://127.0.0.1:8080")
+	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -73,16 +74,17 @@ func TestCLI_ListFrames(t *testing.T) {
 }
 
 func TestCLI_ListBuilds(t *testing.T) {
+	apiUrl := getAPIURL()
 	client := &http.Client{Timeout: 2 * time.Second}
-	_, err := client.Get("http://127.0.0.1:8080")
+	_, err := client.Get(apiUrl)
 	if err != nil {
-		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
 	qsPath := resolveQSPath(t)
 
 	cmd := exec.Command(qsPath, "builds", "list", "--json")
-	cmd.Env = append(cmd.Env, "QS_API_URL=http://127.0.0.1:8080")
+	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr

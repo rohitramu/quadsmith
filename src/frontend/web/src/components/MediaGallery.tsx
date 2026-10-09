@@ -1,4 +1,3 @@
-import React from "react";
 import { MediaType, type Media } from "../gen/quadsmith/media_pb";
 import { getYouTubeEmbedUrl } from "../lib/format";
 import { ExternalLink, Film, Image as ImageIcon } from "lucide-react";

@@ -33,6 +33,8 @@ build: generate
 	@echo "--- Generating shell completions to bin/ ---"
 	@./bin/qs completion bash > bin/completion.bash || true
 	@./bin/qs completion zsh > bin/completion.zsh || true
+	@echo "--- Building Web UI ---"
+	@cd src/frontend/web && npm run build
 	@$(MAKE) --no-print-directory warn-breaking
 
 sandbox: build
@@ -81,6 +83,7 @@ test: generate
 	@$(MAKE) --no-print-directory warn-breaking
 	@echo "--- Running Web UI Tests ---"
 	@cd src/frontend/web && npm test
+	@$(MAKE) --no-print-directory test-e2e
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 
 breaking-change: generate
@@ -91,7 +94,7 @@ test-breaking: breaking-change
 
 test-e2e: build
 	@echo "--- Running E2E Sandbox Tests ---"
-	@go test -v ./test/...
+	@./test/run_sandbox_tests.sh
 
 clean:
 	@echo "--- Cleaning Workspace ---"

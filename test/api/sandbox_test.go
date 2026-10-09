@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
@@ -11,17 +12,25 @@ import (
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 )
 
+func getAPIURL() string {
+	if url := os.Getenv("QS_API_URL"); url != "" {
+		return url
+	}
+	return "http://127.0.0.1:8080"
+}
+
 func TestSandboxBuilds(t *testing.T) {
+	apiUrl := getAPIURL()
 	// Fail if we can't reach the sandbox
 	client := &http.Client{Timeout: 2 * time.Second}
-	_, err := client.Get("http://127.0.0.1:8080")
+	_, err := client.Get(apiUrl)
 	if err != nil {
-		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
 	buildClient := quadsmithconnect.NewBuildServiceClient(
 		http.DefaultClient,
-		"http://127.0.0.1:8080",
+		apiUrl,
 	)
 
 	ctx := context.Background()
@@ -40,15 +49,16 @@ func TestSandboxBuilds(t *testing.T) {
 }
 
 func TestSandboxFrames(t *testing.T) {
+	apiUrl := getAPIURL()
 	client := &http.Client{Timeout: 2 * time.Second}
-	_, err := client.Get("http://127.0.0.1:8080")
+	_, err := client.Get(apiUrl)
 	if err != nil {
-		t.Fatalf("Sandbox not running at 127.0.0.1:8080: %v", err)
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
 	frameClient := quadsmithconnect.NewFrameServiceClient(
 		http.DefaultClient,
-		"http://127.0.0.1:8080",
+		apiUrl,
 	)
 
 	ctx := context.Background()
