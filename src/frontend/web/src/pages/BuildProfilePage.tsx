@@ -270,115 +270,114 @@ export function BuildProfilePage() {
       {/* BUILD EVALUATION SECTION                                      */}
       {/* ============================================================ */}
       <section className="mb-10 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-200 dark:border-zinc-800">
-          <div>
-            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-              <Gauge className="text-blue-600 dark:text-blue-400" size={22} />
-              <span>Build Evaluation & Performance</span>
-              {isFetchingEvaluation && (
-                <span
-                  role="status"
-                  aria-label="Updating evaluation"
-                  className="inline-flex items-center gap-1 text-xs font-normal text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200/60 dark:border-blue-800/60 px-2 py-0.5 rounded-full"
-                >
-                  <RefreshCw size={11} className="animate-spin" />
-                  <span>Updating...</span>
+        <div className="mb-6 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+            <Gauge className="text-blue-600 dark:text-blue-400" size={22} />
+            <span>Build Evaluation & Performance</span>
+            {isFetchingEvaluation && (
+              <span
+                role="status"
+                aria-label="Updating evaluation"
+                className="inline-flex items-center gap-1 text-xs font-normal text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200/60 dark:border-blue-800/60 px-2 py-0.5 rounded-full"
+              >
+                <RefreshCw size={11} className="animate-spin" />
+                <span>Updating...</span>
+              </span>
+            )}
+          </h2>
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+            Automated aerodynamic and electrical physics estimation calculated by Quadsmith
+            Evaluator.
+          </p>
+        </div>
+
+        {/* Runtime Flight Parameters: Battery & Payload */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          {/* Battery Selector */}
+          <div className="bg-white dark:bg-zinc-950 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs flex flex-col justify-between">
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                <Zap size={13} className="text-amber-500" />
+                Battery
+              </span>
+              {electricalLimits ? (
+                <span className="text-[10px] text-zinc-400 font-mono">
+                  {electricalLimits.minVoltage && electricalLimits.maxVoltage
+                    ? `${electricalLimits.minVoltage.toFixed(1)}–${electricalLimits.maxVoltage.toFixed(1)}V`
+                    : ""}
+                  {electricalLimits.maxCurrentA
+                    ? `, ≥${electricalLimits.maxCurrentA.toFixed(0)}A`
+                    : ""}
                 </span>
-              )}
-            </h2>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
-              Automated aerodynamic and electrical physics estimation calculated by Quadsmith
-              Evaluator.
-            </p>
-          </div>
-
-          {/* Runtime Flight Parameters: Battery & Payload */}
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
-            {/* Battery Selector */}
-            <div className="bg-white dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs min-w-[270px] max-w-sm">
-              <div className="flex items-center justify-between text-xs mb-1.5">
-                <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                  <Zap size={13} className="text-amber-500" />
-                  Battery
-                </span>
-                {electricalLimits ? (
-                  <span className="text-[10px] text-zinc-400 font-mono">
-                    {electricalLimits.minVoltage && electricalLimits.maxVoltage
-                      ? `${electricalLimits.minVoltage.toFixed(1)}–${electricalLimits.maxVoltage.toFixed(1)}V`
-                      : ""}
-                    {electricalLimits.maxCurrentA
-                      ? `, ≥${electricalLimits.maxCurrentA.toFixed(0)}A`
-                      : ""}
-                  </span>
-                ) : null}
-              </div>
-
-              <div className="flex items-center gap-1.5 my-1.5">
-                <select
-                  value={selectedBatteryId}
-                  onChange={(e) => setSelectedBatteryId(e.target.value)}
-                  aria-label="Select battery"
-                  className="flex-1 min-w-0 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 truncate cursor-pointer shadow-xs"
-                >
-                  {compatibleBatteries.length === 0 ? (
-                    <option value="" disabled>
-                      {isLoadingBatteries
-                        ? "Loading compatible batteries..."
-                        : "No compatible batteries"}
-                    </option>
-                  ) : (
-                    compatibleBatteries.map((b) => (
-                      <option key={b.id || b.uuid} value={b.id || b.uuid}>
-                        {b.name} ({b.weightG ? `${b.weightG}g` : ""}
-                        {b.cellCountS ? `, ${b.cellCountS}S` : ""}
-                        {b.capacityMah ? `, ${b.capacityMah}mAh` : ""})
-                      </option>
-                    ))
-                  )}
-                </select>
-
-                <button
-                  type="button"
-                  onClick={() => setIsBatteryModalOpen(true)}
-                  title="Browse all compatible batteries"
-                  aria-label="Browse all compatible batteries"
-                  className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
-                >
-                  <Search size={12} className="text-zinc-400" />
-                  <span>Browse</span>
-                </button>
-              </div>
-
-              {activeBattery && (
-                <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
-                  <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono">
-                    {activeBattery.weightG}g
-                  </span>
-                  <span>•</span>
-                  <span>
-                    {activeBattery.cellCountS}S {activeBattery.chemistry}
-                  </span>
-                  {activeBattery.maxCurrentA ? (
-                    <>
-                      <span>•</span>
-                      <span>Max {activeBattery.maxCurrentA.toFixed(0)}A</span>
-                    </>
-                  ) : null}
-                </div>
-              )}
+              ) : null}
             </div>
 
-            {/* Interactive Payload Weight Text Box */}
-            <div className="bg-white dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs min-w-[260px]">
-              <div className="flex items-center justify-between text-xs mb-1.5">
-                <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                  <Sliders size={13} className="text-blue-500" />
-                  Payload Simulator
+            <div className="flex items-center gap-1.5 my-1.5">
+              <select
+                value={selectedBatteryId}
+                onChange={(e) => setSelectedBatteryId(e.target.value)}
+                aria-label="Select battery"
+                className="flex-1 min-w-0 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 truncate cursor-pointer shadow-xs"
+              >
+                {compatibleBatteries.length === 0 ? (
+                  <option value="" disabled>
+                    {isLoadingBatteries
+                      ? "Loading compatible batteries..."
+                      : "No compatible batteries"}
+                  </option>
+                ) : (
+                  compatibleBatteries.map((b) => (
+                    <option key={b.id || b.uuid} value={b.id || b.uuid}>
+                      {b.name} ({b.weightG ? `${b.weightG}g` : ""}
+                      {b.cellCountS ? `, ${b.cellCountS}S` : ""}
+                      {b.capacityMah ? `, ${b.capacityMah}mAh` : ""})
+                    </option>
+                  ))
+                )}
+              </select>
+
+              <button
+                type="button"
+                onClick={() => setIsBatteryModalOpen(true)}
+                title="Browse all compatible batteries"
+                aria-label="Browse all compatible batteries"
+                className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+              >
+                <Search size={12} className="text-zinc-400" />
+                <span>Browse</span>
+              </button>
+            </div>
+
+            {activeBattery && (
+              <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
+                <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono">
+                  {activeBattery.weightG}g
                 </span>
-                <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                  +{payloadWeightG}g
+                <span>•</span>
+                <span>
+                  {activeBattery.cellCountS}S {activeBattery.chemistry}
                 </span>
+                {activeBattery.maxCurrentA ? (
+                  <>
+                    <span>•</span>
+                    <span>Max {activeBattery.maxCurrentA.toFixed(0)}A</span>
+                  </>
+                ) : null}
               </div>
+            )}
+          </div>
+
+          {/* Interactive Payload Weight Text Box */}
+          <div className="bg-white dark:bg-zinc-950 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs flex flex-col justify-between">
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                <Sliders size={13} className="text-blue-500" />
+                Payload
+              </span>
+              <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                +{payloadWeightG}g
+              </span>
+            </div>
               <div className="flex items-center gap-1.5 my-1.5">
                 <button
                   type="button"
@@ -466,7 +465,6 @@ export function BuildProfilePage() {
               </div>
             </div>
           </div>
-        </div>
 
         {/* Evaluation Metrics Cards */}
         {isLoadingEvaluation && !evaluation ? (

@@ -124,7 +124,7 @@ describe("BuildProfilePage Component", () => {
   it("allows interactive payload weight simulation with text box input and presets", async () => {
     const { user } = renderBuildProfile();
 
-    expect(await screen.findByText("Payload Simulator")).toBeInTheDocument();
+    expect(await screen.findByText("Payload")).toBeInTheDocument();
 
     const payloadInput = screen.getByRole("textbox", {
       name: /payload weight in grams/i,
