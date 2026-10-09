@@ -17,6 +17,7 @@ import { getAntenna } from "../gen/quadsmith/antenna-AntennaService_connectquery
 import { getGpsReceiver } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
 import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
 import { MediaGallery } from "../components/MediaGallery";
+import { getTwrDescription } from "../lib/format";
 import {
   ChevronRight,
   Gauge,
@@ -398,11 +399,7 @@ export function BuildProfilePage() {
                     <span className="text-sm font-normal text-zinc-500 ml-1">: 1</span>
                   </div>
                   <div className="text-[11px] text-zinc-500 mt-1">
-                    {evaluation.thrustToWeightRatio >= 5
-                      ? "Freestyle & Racing"
-                      : evaluation.thrustToWeightRatio >= 3
-                        ? "Agile Sport"
-                        : "Cruiser"}
+                    {getTwrDescription(evaluation.thrustToWeightRatio)}
                   </div>
                 </div>
               </div>

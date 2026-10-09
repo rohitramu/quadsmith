@@ -45,6 +45,7 @@ describe("BuildProfilePage Component", () => {
 
     expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
     expect(screen.getByText("6.4")).toBeInTheDocument(); // 3645 / 565.5 ~ 6.4
+    expect(screen.getByText("Freestyle Acro")).toBeInTheDocument();
 
     expect(screen.getByText("Max Acceleration")).toBeInTheDocument();
     expect(screen.getByText("53.4")).toBeInTheDocument();

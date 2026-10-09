@@ -61,3 +61,16 @@ export function getYouTubeEmbedUrl(url?: string | null): string | null {
   }
   return null;
 }
+
+/**
+ * Returns human-readable flight discipline/handling description for a given thrust-to-weight ratio.
+ */
+export function getTwrDescription(twr: number): string {
+  if (twr >= 8.0) return "Competition Racing";
+  if (twr >= 5.5) return "Freestyle Acro";
+  if (twr >= 4.0) return "Sport & Toothpick";
+  if (twr >= 2.8) return "Long Range Cruiser";
+  if (twr >= 1.8) return "Cinelifter & Heavy Payload";
+  if (twr >= 1.0) return "Sluggish / Underpowered";
+  return "Cannot Take Off";
+}
