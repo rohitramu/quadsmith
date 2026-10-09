@@ -421,7 +421,7 @@ func newRootCmd() *cobra.Command {
 			eRes, err := evalClient.EvaluateBuild(context.Background(), connect.NewRequest(eReq))
 			if err != nil { return fmt.Errorf("evaluation failed: %w", err) }
 			
-			return printOutput(cmd.OutOrStdout(), eRes.Msg, nil)
+			return printGetOutput(cmd.OutOrStdout(), eRes.Msg, nil)
 		},
 	}
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")

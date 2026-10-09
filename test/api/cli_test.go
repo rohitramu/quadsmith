@@ -113,6 +113,21 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 
 	qsPath := resolveQSPath(t)
 
+	// 1. Test default YAML output
+	cmdYAML := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch")
+	cmdYAML.Env = append(cmdYAML.Env, "QS_API_URL="+apiUrl)
+	var stdoutYAML, stderrYAML bytes.Buffer
+	cmdYAML.Stdout = &stdoutYAML
+	cmdYAML.Stderr = &stderrYAML
+	if err := cmdYAML.Run(); err != nil {
+		t.Fatalf("CLI builds evaluate failed: %v\nStderr: %s", err, stderrYAML.String())
+	}
+	outputYAML := stdoutYAML.String()
+	if !strings.Contains(outputYAML, "thrust_to_weight_ratio:") {
+		t.Errorf("Expected YAML output with 'thrust_to_weight_ratio:', got:\n%s", outputYAML)
+	}
+
+	// 2. Test --json flag
 	cmd := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--json")
 	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
 	var stdout, stderr bytes.Buffer

@@ -696,6 +696,61 @@ func TestEvaluate_Success(t *testing.T) {
 	}
 }
 
+func TestEvaluate_DefaultYAML(t *testing.T) {
+	mockBuild := &mockBuildService{
+		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {
+			if req.Msg.Id == "build-1" {
+				return connect.NewResponse(&pb.Build{
+					Id:   "build-1",
+					Name: "Freestyle 5 inch",
+				}), nil
+			}
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("build not found"))
+		},
+	}
+
+	mockEval := &mockEvaluatorService{
+		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+			return connect.NewResponse(&pb.EvaluateBuildResponse{
+				TotalWeightG:        350.5,
+				ThrustToWeightRatio: 7.2,
+				SystemMessages: []*pb.SystemMessage{
+					{
+						Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+						Message:  "High KV for battery voltage",
+					},
+				},
+			}), nil
+		},
+	}
+
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"builds", "evaluate", "build-1"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var res map[string]interface{}
+	if err := yaml.Unmarshal(outBuf.Bytes(), &res); err != nil {
+		t.Fatalf("expected valid YAML by default, got: %v\nOutput:\n%s", err, outBuf.String())
+	}
+
+	if res["thrust_to_weight_ratio"] != float64(7.2) {
+		t.Errorf("expected thrust_to_weight_ratio: 7.2, got: %v", res["thrust_to_weight_ratio"])
+	}
+	if res["system_messages"] == nil {
+		t.Errorf("expected system_messages in output: %+v", res)
+	}
+}
+
 func TestEvaluate_AliasEval(t *testing.T) {
 	mockBuild := &mockBuildService{
 		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {

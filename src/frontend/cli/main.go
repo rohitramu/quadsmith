@@ -2017,7 +2017,7 @@ func newRootCmd() *cobra.Command {
 				return fmt.Errorf("evaluation failed: %w", err)
 			}
 
-			return printOutput(cmd.OutOrStdout(), eRes.Msg, nil)
+			return printGetOutput(cmd.OutOrStdout(), eRes.Msg, nil)
 		},
 	}
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
