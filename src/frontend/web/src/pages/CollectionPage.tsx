@@ -25,6 +25,8 @@ import {
   type ColumnConfig,
 } from "../lib/hardwareCollections";
 import { CollectionBadge } from "../components/CollectionBadge";
+import { CollectionIcon } from "../components/CollectionIcon";
+import { getCollectionColor } from "../lib/collectionColors";
 import { ProductHoverCard } from "../components/ProductHoverCard";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
@@ -557,7 +559,14 @@ function CollectionTableView({
       </nav>
 
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{collection.name}</h1>
+        <div className="flex items-center gap-3">
+          <CollectionIcon
+            collection={collection.id}
+            size={32}
+            className={`${collection.color?.textClass || getCollectionColor(collection.id).textClass} shrink-0`}
+          />
+          <h1 className="text-3xl font-bold">{collection.name}</h1>
+        </div>
       </div>
 
       {/* Smart Filter Input above the table */}
@@ -769,6 +778,14 @@ export function CollectionPage() {
             size="md"
           />
         </nav>
+        <div className="flex items-center gap-3 mb-6">
+          <CollectionIcon
+            collection={collectionId}
+            size={32}
+            className={`${getCollectionColor(collectionId).textClass} shrink-0`}
+          />
+          <h1 className="text-3xl font-bold capitalize">{collectionId?.replace(/[-_]/g, " ")}</h1>
+        </div>
         <p className="text-zinc-500">
           Implementation for {collectionId?.replace(/[-_]/g, " ")} coming soon.
         </p>

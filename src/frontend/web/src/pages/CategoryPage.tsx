@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { Cpu } from "lucide-react";
 import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionIcon } from "../components/CollectionIcon";
@@ -20,7 +21,12 @@ export function CategoryPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6 capitalize">{categoryId}</h1>
+      <div className="flex items-center gap-3 mb-6">
+        {categoryId === "hardware" && (
+          <Cpu size={32} className="text-zinc-600 dark:text-zinc-400 shrink-0" aria-hidden="true" />
+        )}
+        <h1 className="text-3xl font-bold capitalize">{categoryId}</h1>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {collections.map((c) => {
           const colColor = c.color || getCollectionColor(c.id);

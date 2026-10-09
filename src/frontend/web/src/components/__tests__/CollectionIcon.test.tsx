@@ -1,17 +1,20 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
-import { CollectionIcon, getCollectionIconComponent } from "../CollectionIcon";
+import {
+  CollectionIcon,
+  getCollectionIconComponent,
+  DroneFrame,
+  Propeller,
+} from "../CollectionIcon";
 import {
   Antenna,
   Battery,
   Camera,
-  Compass,
+  Satellite,
   Cpu,
-  Layers,
   Radio,
   Rocket,
   Tv,
-  Wind,
   Wrench,
   Zap,
   Box,
@@ -28,12 +31,12 @@ describe("CollectionIcon Component", () => {
     expect(getCollectionIconComponent("esc")).toBe(Zap);
     expect(getCollectionIconComponent("flight-controllers")).toBe(Cpu);
     expect(getCollectionIconComponent("fc")).toBe(Cpu);
-    expect(getCollectionIconComponent("frames")).toBe(Layers);
-    expect(getCollectionIconComponent("gps-receivers")).toBe(Compass);
-    expect(getCollectionIconComponent("gps")).toBe(Compass);
+    expect(getCollectionIconComponent("frames")).toBe(DroneFrame);
+    expect(getCollectionIconComponent("gps-receivers")).toBe(Satellite);
+    expect(getCollectionIconComponent("gps")).toBe(Satellite);
     expect(getCollectionIconComponent("motors")).toBe(Rocket);
-    expect(getCollectionIconComponent("propellers")).toBe(Wind);
-    expect(getCollectionIconComponent("props")).toBe(Wind);
+    expect(getCollectionIconComponent("propellers")).toBe(Propeller);
+    expect(getCollectionIconComponent("props")).toBe(Propeller);
     expect(getCollectionIconComponent("receivers")).toBe(Radio);
     expect(getCollectionIconComponent("rx")).toBe(Radio);
     expect(getCollectionIconComponent("video-transmitters")).toBe(Tv);
