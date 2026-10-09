@@ -141,6 +141,8 @@ export const mockBattery1: Battery = create(BatterySchema, {
   description: "High discharge 6S battery pack for freestyle drones.",
 });
 
+export const mockBatteries: Battery[] = [mockBattery1];
+
 export const mockESC1: ElectronicSpeedController = create(ElectronicSpeedControllerSchema, {
   uuid: "018f0000-0000-7000-0000-000000000040",
   id: "speedybee-50a-4in1",

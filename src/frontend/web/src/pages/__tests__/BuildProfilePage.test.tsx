@@ -221,4 +221,34 @@ describe("BuildProfilePage Component", () => {
     expect(screen.getByText("Bando Basher Flight & Durability Test")).toBeInTheDocument();
     expect(screen.getByTitle("Bando Basher Flight & Durability Test")).toBeInTheDocument();
   });
+
+  it("shows an error and does not ask to choose a battery when no compatible batteries exist in database", async () => {
+    renderWithProviders(
+      <Routes>
+        <Route path="/builds/:buildId" element={<BuildProfilePage />} />
+      </Routes>,
+      {
+        route: `/builds/bando-basher-5-inch`,
+        transportOptions: {
+          batteries: [],
+          defaultBatteryId: "",
+        },
+      },
+    );
+
+    // Should display the error alert
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(screen.getByText(/no compatible batteries found/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/no batteries in the database match the electrical requirements/i),
+    ).toBeInTheDocument();
+
+    // Should NOT ask user to choose a battery: no battery selector, no browse button, no payload simulator
+    expect(screen.queryByRole("combobox", { name: /select battery/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /browse all compatible batteries/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/choose a battery/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole("textbox", { name: /payload/i })).not.toBeInTheDocument();
+  });
 });

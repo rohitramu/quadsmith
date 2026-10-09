@@ -2041,7 +2041,7 @@ func newRootCmd() *cobra.Command {
 					return fmt.Errorf("failed to determine electrical limits for build: %w", err)
 				}
 				if lRes.Msg == nil || lRes.Msg.DefaultBatteryId == "" {
-					return fmt.Errorf("no compatible battery found for build; specify one using --battery")
+					return fmt.Errorf("no compatible battery found in database for build")
 				}
 				battery = lRes.Msg.DefaultBatteryId
 			}

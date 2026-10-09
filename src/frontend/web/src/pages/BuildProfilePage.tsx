@@ -141,7 +141,11 @@ export function BuildProfilePage() {
     error: buildError,
   } = useQuery(getBuild, { id: buildId || "" }, { enabled: !!buildId });
 
-  const { data: electricalLimits } = useQuery(
+  const {
+    data: electricalLimits,
+    isLoading: isLoadingLimits,
+    error: limitsError,
+  } = useQuery(
     getBuildElectricalLimits,
     { build, buildId: build?.id || buildId },
     { enabled: !!build },
@@ -151,7 +155,11 @@ export function BuildProfilePage() {
     return buildBatteryCelFilter(electricalLimits);
   }, [electricalLimits]);
 
-  const { data: batteryResponse, isLoading: isLoadingBatteries } = useQuery(
+  const {
+    data: batteryResponse,
+    isLoading: isLoadingBatteries,
+    error: batteryError,
+  } = useQuery(
     listBatteries,
     {
       filter: batteryFilter,
@@ -161,6 +169,11 @@ export function BuildProfilePage() {
     { enabled: !!electricalLimits },
   );
   const compatibleBatteries = batteryResponse?.batteries || [];
+
+  // Reset selected battery when changing builds
+  useEffect(() => {
+    setSelectedBatteryId("");
+  }, [buildId]);
 
   // Lightest compatible battery selected by default
   useEffect(() => {
@@ -172,6 +185,11 @@ export function BuildProfilePage() {
       }
     }
   }, [electricalLimits, compatibleBatteries, selectedBatteryId]);
+
+  const isBatteryLoading = isLoadingLimits || (!!electricalLimits && isLoadingBatteries);
+  const isBatteryLoaded = !isLoadingLimits && !isLoadingBatteries && !!electricalLimits;
+  const hasNoCompatibleBatteries =
+    isBatteryLoaded && (compatibleBatteries.length === 0 || !electricalLimits.defaultBatteryId);
 
   const activeBattery = useMemo(() => {
     return compatibleBatteries.find(
@@ -291,394 +309,442 @@ export function BuildProfilePage() {
           </p>
         </div>
 
-        {/* Runtime Flight Parameters: Battery & Payload */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-          {/* Battery Selector */}
-          <div className="bg-white dark:bg-zinc-950 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs flex flex-col justify-between">
-            <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                <Zap size={13} className="text-amber-500" />
-                Battery
-              </span>
-              {electricalLimits ? (
-                <span className="text-[10px] text-zinc-400 font-mono">
-                  {electricalLimits.minVoltage && electricalLimits.maxVoltage
-                    ? `${electricalLimits.minVoltage.toFixed(1)}–${electricalLimits.maxVoltage.toFixed(1)}V`
-                    : ""}
-                  {electricalLimits.maxCurrentA
-                    ? `, ≥${electricalLimits.maxCurrentA.toFixed(0)}A`
-                    : ""}
-                </span>
-              ) : null}
-            </div>
-
-            <div className="flex items-center gap-1.5 my-1.5">
-              <select
-                value={selectedBatteryId}
-                onChange={(e) => setSelectedBatteryId(e.target.value)}
-                aria-label="Select battery"
-                className="flex-1 min-w-0 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 truncate cursor-pointer shadow-xs"
-              >
-                {compatibleBatteries.length === 0 ? (
-                  <option value="" disabled>
-                    {isLoadingBatteries
-                      ? "Loading compatible batteries..."
-                      : "No compatible batteries"}
-                  </option>
-                ) : (
-                  compatibleBatteries.map((b) => (
-                    <option key={b.id || b.uuid} value={b.id || b.uuid}>
-                      {b.name} ({b.weightG ? `${b.weightG}g` : ""}
-                      {b.cellCountS ? `, ${b.cellCountS}S` : ""}
-                      {b.capacityMah ? `, ${b.capacityMah}mAh` : ""})
-                    </option>
-                  ))
-                )}
-              </select>
-
-              <button
-                type="button"
-                onClick={() => setIsBatteryModalOpen(true)}
-                title="Browse all compatible batteries"
-                aria-label="Browse all compatible batteries"
-                className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
-              >
-                <Search size={12} className="text-zinc-400" />
-                <span>Browse</span>
-              </button>
-            </div>
-
-            {activeBattery && (
-              <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
-                <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono">
-                  {activeBattery.weightG}g
-                </span>
-                <span>•</span>
-                <span>
-                  {activeBattery.cellCountS}S {activeBattery.chemistry}
-                </span>
-                {activeBattery.maxCurrentA ? (
-                  <>
-                    <span>•</span>
-                    <span>Max {activeBattery.maxCurrentA.toFixed(0)}A</span>
-                  </>
-                ) : null}
-              </div>
-            )}
+        {limitsError || batteryError ? (
+          <div
+            role="alert"
+            className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm"
+          >
+            Failed to load electrical limits: {limitsError?.message || batteryError?.message}
           </div>
-
-          {/* Interactive Payload Weight Text Box */}
-          <div className="bg-white dark:bg-zinc-950 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs flex flex-col justify-between">
-            <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                <Sliders size={13} className="text-blue-500" />
-                Payload
-              </span>
-              <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                +{payloadWeightG}g
-              </span>
-            </div>
-              <div className="flex items-center gap-1.5 my-1.5">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const current = Math.max(0, parseFloat(payloadInput) || 0);
-                    const next = Math.max(0, Math.round(current - 10));
-                    setPayloadInput(String(next));
-                  }}
-                  disabled={payloadWeightG <= 0}
-                  title="Remove 10g"
-                  aria-label="Remove 10 grams"
-                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
-                >
-                  <Minus size={14} />
-                </button>
-
-                <div className="relative flex-1 flex items-center">
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={payloadInput}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      if (val === "" || /^\d*\.?\d*$/.test(val)) {
-                        setPayloadInput(val);
-                      }
-                    }}
-                    placeholder="0"
-                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 pr-7 text-sm font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs text-center"
-                    aria-label="Payload weight in grams"
-                  />
-                  <span className="absolute right-2.5 text-xs text-zinc-400 font-mono pointer-events-none select-none">
-                    g
-                  </span>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    const current = Math.max(0, parseFloat(payloadInput) || 0);
-                    const next = Math.round(current + 10);
-                    setPayloadInput(String(next));
-                  }}
-                  title="Add 10g"
-                  aria-label="Add 10 grams"
-                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
-                >
-                  <Plus size={14} />
-                </button>
-              </div>
-              <div className="flex gap-1 mt-2 text-[10px]">
-                <button
-                  type="button"
-                  onClick={() => setPayloadInput("0")}
-                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                    payloadWeightG === 0
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                  }`}
-                >
-                  Bare (0g)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPayloadInput("16")}
-                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                    payloadWeightG === 16
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                  }`}
-                >
-                  Thumb (+16g)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPayloadInput("133")}
-                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                    payloadWeightG === 133
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                  }`}
-                >
-                  GoPro (+133g)
-                </button>
-              </div>
+        ) : hasNoCompatibleBatteries ? (
+          <div
+            role="alert"
+            className="p-5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-300 flex items-start gap-3.5"
+          >
+            <AlertTriangle className="text-red-600 dark:text-red-400 shrink-0 mt-0.5" size={20} />
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-red-900 dark:text-red-200">
+                No Compatible Batteries Found
+              </h3>
+              <p className="text-xs sm:text-sm mt-1 text-red-700 dark:text-red-300/90 leading-relaxed">
+                No batteries in the database match the electrical requirements for this build
+                {electricalLimits?.minVoltage && electricalLimits?.maxVoltage
+                  ? ` (${electricalLimits.minVoltage.toFixed(1)}–${electricalLimits.maxVoltage.toFixed(1)}V${
+                      electricalLimits.maxCurrentA
+                        ? `, ≥${electricalLimits.maxCurrentA.toFixed(0)}A`
+                        : ""
+                    })`
+                  : ""}
+                . Build evaluation cannot be calculated without a compatible battery.
+              </p>
             </div>
           </div>
-
-        {/* Evaluation Metrics Cards */}
-        {isLoadingEvaluation && !evaluation ? (
+        ) : isBatteryLoading ? (
           <div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 animate-pulse">
+              <div className="h-24 bg-zinc-200/70 dark:bg-zinc-800/70 rounded-xl" />
+              <div className="h-24 bg-zinc-200/70 dark:bg-zinc-800/70 rounded-xl" />
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 animate-pulse">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div
-                  key={i}
-                  className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between animate-pulse"
-                >
-                  <div className="h-3.5 bg-zinc-200 dark:bg-zinc-800 rounded w-24" />
-                  <div>
-                    <div className="h-7 bg-zinc-200 dark:bg-zinc-800 rounded w-16 mb-2" />
-                    <div className="h-3 bg-zinc-100 dark:bg-zinc-800/60 rounded w-28" />
-                  </div>
-                </div>
+                <div key={i} className="h-28 bg-zinc-200/70 dark:bg-zinc-800/70 rounded-xl" />
               ))}
             </div>
-            <div className="h-11 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 animate-pulse" />
           </div>
-        ) : evalError ? (
-          <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm">
-            Evaluation error: {evalError.message}
-          </div>
-        ) : evaluation ? (
-          <div
-            className={`transition-opacity duration-150 ${
-              isFetchingEvaluation ? "opacity-75" : "opacity-100"
-            }`}
-          >
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-              {/* Metric 1: AUW Total Weight */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
-                  <Weight size={14} />
-                  <span>All-Up Weight</span>
+        ) : (
+          <>
+            {/* Runtime Flight Parameters: Battery & Payload */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              {/* Battery Selector */}
+              <div className="bg-white dark:bg-zinc-950 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs mb-1.5">
+                  <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                    <Zap size={13} className="text-amber-500" />
+                    Battery
+                  </span>
+                  {electricalLimits ? (
+                    <span className="text-[10px] text-zinc-400 font-mono">
+                      {electricalLimits.minVoltage && electricalLimits.maxVoltage
+                        ? `${electricalLimits.minVoltage.toFixed(1)}–${electricalLimits.maxVoltage.toFixed(1)}V`
+                        : ""}
+                      {electricalLimits.maxCurrentA
+                        ? `, ≥${electricalLimits.maxCurrentA.toFixed(0)}A`
+                        : ""}
+                    </span>
+                  ) : null}
                 </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                    {Math.round(evaluation.buildWeightG || evaluation.totalWeightG)}
-                    <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
-                  </div>
-                  <div className="text-[11px] text-zinc-500 mt-1">
-                    {payloadWeightG > 0
-                      ? `Includes +${payloadWeightG}g payload`
-                      : "Quadcopter + LiPo"}
-                  </div>
-                </div>
-              </div>
 
-              {/* Metric 2: Thrust-to-Weight Ratio */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
-                  <Gauge size={14} />
-                  <span>Thrust / Weight</span>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-emerald-600 dark:text-emerald-400">
-                    {evaluation.thrustToWeightRatio.toFixed(1)}
-                    <span className="text-sm font-normal text-zinc-500 ml-1">: 1</span>
-                  </div>
-                  <div className="text-[11px] text-zinc-500 mt-1">
-                    {getTwrDescription(evaluation.thrustToWeightRatio)}
-                  </div>
-                </div>
-              </div>
-
-              {/* Metric 3: Max Acceleration */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
-                  <Rocket size={14} />
-                  <span>Max Acceleration</span>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                    {evaluation.maxAccelerationMps2.toFixed(1)}
-                    <span className="text-sm font-normal text-zinc-500 ml-1">m/s²</span>
-                  </div>
-                  <div className="text-[11px] text-zinc-500 mt-1">
-                    {evaluation.maxAccelerationMps2 > 0
-                      ? `~${(evaluation.maxAccelerationMps2 / 9.80665).toFixed(1)} G vertical punchout`
-                      : "No positive climb"}
-                  </div>
-                </div>
-              </div>
-
-              {/* Metric 4: Top Speed */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
-                  <Wind size={14} />
-                  <span>Top Speed</span>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                    {Math.round(evaluation.topSpeedKmh)}
-                    <span className="text-sm font-normal text-zinc-500 ml-1">km/h</span>
-                  </div>
-                  <div className="text-[11px] text-zinc-500 mt-1">
-                    {evaluation.topSpeedKmh > 0
-                      ? `~${Math.round(evaluation.topSpeedKmh * 0.621371)} mph terminal`
-                      : "Insufficient forward thrust"}
-                  </div>
-                </div>
-              </div>
-
-              {/* Metric 5: Hover Throttle */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
-                  <Zap size={14} />
-                  <span>Hover Throttle</span>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                    {evaluation.hoverThrottlePercent.toFixed(1)}
-                    <span className="text-sm font-normal text-zinc-500 ml-1">%</span>
-                  </div>
-                  {/* Progress bar */}
-                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-300 ${
-                        evaluation.hoverThrottlePercent > 50
-                          ? "bg-red-500"
-                          : evaluation.hoverThrottlePercent > 35
-                            ? "bg-amber-500"
-                            : "bg-emerald-500"
-                      }`}
-                      style={{
-                        width: `${Math.min(100, evaluation.hoverThrottlePercent)}%`,
-                      }}
-                    />
-                  </div>
-                  <div
-                    className="text-[11px] text-zinc-500 mt-1"
-                    title="Average propeller RPM at hover assuming sea-level air pressure (1.225 kg/m³), no wind, and horizontal stability"
+                <div className="flex items-center gap-1.5 my-1.5">
+                  <select
+                    value={selectedBatteryId}
+                    onChange={(e) => setSelectedBatteryId(e.target.value)}
+                    aria-label="Select battery"
+                    className="flex-1 min-w-0 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 truncate cursor-pointer shadow-xs"
                   >
-                    {evaluation.hoverThrottlePercent <= 100 && evaluation.hoverRpm > 0
-                      ? `~${evaluation.hoverRpm.toLocaleString()} prop RPM`
-                      : "Cannot achieve hover"}
-                  </div>
+                    {compatibleBatteries.length === 0 ? (
+                      <option value="" disabled>
+                        {isLoadingBatteries
+                          ? "Loading compatible batteries..."
+                          : "No compatible batteries"}
+                      </option>
+                    ) : (
+                      compatibleBatteries.map((b) => (
+                        <option key={b.id || b.uuid} value={b.id || b.uuid}>
+                          {b.name} ({b.weightG ? `${b.weightG}g` : ""}
+                          {b.cellCountS ? `, ${b.cellCountS}S` : ""}
+                          {b.capacityMah ? `, ${b.capacityMah}mAh` : ""})
+                        </option>
+                      ))
+                    )}
+                  </select>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsBatteryModalOpen(true)}
+                    title="Browse all compatible batteries"
+                    aria-label="Browse all compatible batteries"
+                    className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+                  >
+                    <Search size={12} className="text-zinc-400" />
+                    <span>Browse</span>
+                  </button>
                 </div>
+
+                {activeBattery && (
+                  <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
+                    <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono">
+                      {activeBattery.weightG}g
+                    </span>
+                    <span>•</span>
+                    <span>
+                      {activeBattery.cellCountS}S {activeBattery.chemistry}
+                    </span>
+                    {activeBattery.maxCurrentA ? (
+                      <>
+                        <span>•</span>
+                        <span>Max {activeBattery.maxCurrentA.toFixed(0)}A</span>
+                      </>
+                    ) : null}
+                  </div>
+                )}
               </div>
 
-              {/* Metric 6: Estimated Flight Time */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
-                  <Clock size={14} />
-                  <span>Est. Flight Time</span>
+              {/* Interactive Payload Weight Text Box */}
+              <div className="bg-white dark:bg-zinc-950 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs flex flex-col justify-between">
+                <div className="flex items-center justify-between text-xs mb-1.5">
+                  <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                    <Sliders size={13} className="text-blue-500" />
+                    Payload
+                  </span>
+                  <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                    +{payloadWeightG}g
+                  </span>
                 </div>
-                <div>
-                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
-                    {evaluation.minFlightTimeMin > 0 && evaluation.maxFlightTimeMin > 0
-                      ? `${evaluation.minFlightTimeMin.toFixed(1)} – ${evaluation.maxFlightTimeMin.toFixed(1)}`
-                      : evaluation.maxFlightTimeMin > 0
-                        ? `~${evaluation.maxFlightTimeMin.toFixed(1)}`
-                        : "—"}
-                    <span className="text-sm font-normal text-zinc-500 ml-1">min</span>
+                <div className="flex items-center gap-1.5 my-1.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const current = Math.max(0, parseFloat(payloadInput) || 0);
+                      const next = Math.max(0, Math.round(current - 10));
+                      setPayloadInput(String(next));
+                    }}
+                    disabled={payloadWeightG <= 0}
+                    title="Remove 10g"
+                    aria-label="Remove 10 grams"
+                    className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
+                  >
+                    <Minus size={14} />
+                  </button>
+
+                  <div className="relative flex-1 flex items-center">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={payloadInput}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === "" || /^\d*\.?\d*$/.test(val)) {
+                          setPayloadInput(val);
+                        }
+                      }}
+                      placeholder="0"
+                      className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 pr-7 text-sm font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs text-center"
+                      aria-label="Payload weight in grams"
+                    />
+                    <span className="absolute right-2.5 text-xs text-zinc-400 font-mono pointer-events-none select-none">
+                      g
+                    </span>
                   </div>
-                  <div className="text-[11px] text-zinc-500 mt-1">
-                    Varies with throttle management
-                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const current = Math.max(0, parseFloat(payloadInput) || 0);
+                      const next = Math.round(current + 10);
+                      setPayloadInput(String(next));
+                    }}
+                    title="Add 10g"
+                    aria-label="Add 10 grams"
+                    className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+                <div className="flex gap-1 mt-2 text-[10px]">
+                  <button
+                    type="button"
+                    onClick={() => setPayloadInput("0")}
+                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                      payloadWeightG === 0
+                        ? "bg-blue-600 text-white"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                    }`}
+                  >
+                    Bare (0g)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPayloadInput("16")}
+                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                      payloadWeightG === 16
+                        ? "bg-blue-600 text-white"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                    }`}
+                  >
+                    Thumb (+16g)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPayloadInput("133")}
+                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                      payloadWeightG === 133
+                        ? "bg-blue-600 text-white"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                    }`}
+                  >
+                    GoPro (+133g)
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Diagnostic Alerts / Compatibility Checks */}
-            {(() => {
-              const errors = evaluation.systemMessages.filter(
-                (m) => m.severity === SystemMessageSeverity.ERROR,
-              );
-              const warnings = evaluation.systemMessages.filter(
-                (m) => m.severity === SystemMessageSeverity.WARNING,
-              );
-
-              return (
-                <>
-                  {errors.length > 0 && (
-                    <div className="mb-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 flex items-start gap-3">
-                      <AlertOctagon size={20} className="shrink-0 mt-0.5 text-red-600" />
+            {/* Evaluation Metrics Cards */}
+            {isLoadingEvaluation && !evaluation ? (
+              <div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div
+                      key={i}
+                      className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between animate-pulse"
+                    >
+                      <div className="h-3.5 bg-zinc-200 dark:bg-zinc-800 rounded w-24" />
                       <div>
-                        <div className="font-bold text-sm">Compatibility Issues Detected</div>
-                        <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
-                          {errors.map((err, i) => (
-                            <li key={i}>{err.message}</li>
-                          ))}
-                        </ul>
+                        <div className="h-7 bg-zinc-200 dark:bg-zinc-800 rounded w-16 mb-2" />
+                        <div className="h-3 bg-zinc-100 dark:bg-zinc-800/60 rounded w-28" />
                       </div>
                     </div>
-                  )}
-
-                  {warnings.length > 0 && (
-                    <div className="mb-3 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 flex items-start gap-3">
-                      <AlertTriangle size={20} className="shrink-0 mt-0.5 text-amber-600" />
-                      <div>
-                        <div className="font-bold text-sm">Evaluation Warnings</div>
-                        <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
-                          {warnings.map((warn, i) => (
-                            <li key={i}>{warn.message}</li>
-                          ))}
-                        </ul>
+                  ))}
+                </div>
+                <div className="h-11 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 animate-pulse" />
+              </div>
+            ) : evalError ? (
+              <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm">
+                Evaluation error: {evalError.message}
+              </div>
+            ) : evaluation ? (
+              <div
+                className={`transition-opacity duration-150 ${
+                  isFetchingEvaluation ? "opacity-75" : "opacity-100"
+                }`}
+              >
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                  {/* Metric 1: AUW Total Weight */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                      <Weight size={14} />
+                      <span>All-Up Weight</span>
+                    </div>
+                    <div>
+                      <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                        {Math.round(evaluation.buildWeightG || evaluation.totalWeightG)}
+                        <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-1">
+                        {payloadWeightG > 0
+                          ? `Includes +${payloadWeightG}g payload`
+                          : "Quadcopter + LiPo"}
                       </div>
                     </div>
-                  )}
+                  </div>
 
-                  {errors.length === 0 && warnings.length === 0 && (
-                    <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center gap-2.5 text-xs font-medium">
-                      <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-                      <span>All evaluated components are fully compatible and flight-ready.</span>
+                  {/* Metric 2: Thrust-to-Weight Ratio */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                      <Gauge size={14} />
+                      <span>Thrust / Weight</span>
                     </div>
-                  )}
-                </>
-              );
-            })()}
-          </div>
-        ) : null}
+                    <div>
+                      <div className="text-2xl sm:text-3xl font-bold mt-1 text-emerald-600 dark:text-emerald-400">
+                        {evaluation.thrustToWeightRatio.toFixed(1)}
+                        <span className="text-sm font-normal text-zinc-500 ml-1">: 1</span>
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-1">
+                        {getTwrDescription(evaluation.thrustToWeightRatio)}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metric 3: Max Acceleration */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                      <Rocket size={14} />
+                      <span>Max Acceleration</span>
+                    </div>
+                    <div>
+                      <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                        {evaluation.maxAccelerationMps2.toFixed(1)}
+                        <span className="text-sm font-normal text-zinc-500 ml-1">m/s²</span>
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-1">
+                        {evaluation.maxAccelerationMps2 > 0
+                          ? `~${(evaluation.maxAccelerationMps2 / 9.80665).toFixed(1)} G vertical punchout`
+                          : "No positive climb"}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metric 4: Top Speed */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                      <Wind size={14} />
+                      <span>Top Speed</span>
+                    </div>
+                    <div>
+                      <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                        {Math.round(evaluation.topSpeedKmh)}
+                        <span className="text-sm font-normal text-zinc-500 ml-1">km/h</span>
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-1">
+                        {evaluation.topSpeedKmh > 0
+                          ? `~${Math.round(evaluation.topSpeedKmh * 0.621371)} mph terminal`
+                          : "Insufficient forward thrust"}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metric 5: Hover Throttle */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                      <Zap size={14} />
+                      <span>Hover Throttle</span>
+                    </div>
+                    <div>
+                      <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                        {evaluation.hoverThrottlePercent.toFixed(1)}
+                        <span className="text-sm font-normal text-zinc-500 ml-1">%</span>
+                      </div>
+                      {/* Progress bar */}
+                      <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-300 ${
+                            evaluation.hoverThrottlePercent > 50
+                              ? "bg-red-500"
+                              : evaluation.hoverThrottlePercent > 35
+                                ? "bg-amber-500"
+                                : "bg-emerald-500"
+                          }`}
+                          style={{
+                            width: `${Math.min(100, evaluation.hoverThrottlePercent)}%`,
+                          }}
+                        />
+                      </div>
+                      <div
+                        className="text-[11px] text-zinc-500 mt-1"
+                        title="Average propeller RPM at hover assuming sea-level air pressure (1.225 kg/m³), no wind, and horizontal stability"
+                      >
+                        {evaluation.hoverThrottlePercent <= 100 && evaluation.hoverRpm > 0
+                          ? `~${evaluation.hoverRpm.toLocaleString()} prop RPM`
+                          : "Cannot achieve hover"}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Metric 6: Estimated Flight Time */}
+                  <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                      <Clock size={14} />
+                      <span>Est. Flight Time</span>
+                    </div>
+                    <div>
+                      <div className="text-xl sm:text-2xl lg:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
+                        {evaluation.minFlightTimeMin > 0 && evaluation.maxFlightTimeMin > 0
+                          ? `${evaluation.minFlightTimeMin.toFixed(1)} – ${evaluation.maxFlightTimeMin.toFixed(1)}`
+                          : evaluation.maxFlightTimeMin > 0
+                            ? `~${evaluation.maxFlightTimeMin.toFixed(1)}`
+                            : "—"}
+                        <span className="text-sm font-normal text-zinc-500 ml-1">min</span>
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-1">
+                        Varies with throttle management
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Diagnostic Alerts / Compatibility Checks */}
+                {(() => {
+                  const errors = evaluation.systemMessages.filter(
+                    (m) => m.severity === SystemMessageSeverity.ERROR,
+                  );
+                  const warnings = evaluation.systemMessages.filter(
+                    (m) => m.severity === SystemMessageSeverity.WARNING,
+                  );
+
+                  return (
+                    <>
+                      {errors.length > 0 && (
+                        <div className="mb-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 flex items-start gap-3">
+                          <AlertOctagon size={20} className="shrink-0 mt-0.5 text-red-600" />
+                          <div>
+                            <div className="font-bold text-sm">Compatibility Issues Detected</div>
+                            <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
+                              {errors.map((err, i) => (
+                                <li key={i}>{err.message}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+
+                      {warnings.length > 0 && (
+                        <div className="mb-3 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 flex items-start gap-3">
+                          <AlertTriangle size={20} className="shrink-0 mt-0.5 text-amber-600" />
+                          <div>
+                            <div className="font-bold text-sm">Evaluation Warnings</div>
+                            <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
+                              {warnings.map((warn, i) => (
+                                <li key={i}>{warn.message}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+
+                      {errors.length === 0 && warnings.length === 0 && (
+                        <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center gap-2.5 text-xs font-medium">
+                          <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                          <span>
+                            All evaluated components are fully compatible and flight-ready.
+                          </span>
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
+              </div>
+            ) : null}
+          </>
+        )}
       </section>
 
       {/* ============================================================ */}

@@ -919,8 +919,8 @@ func TestEvaluate_NoCompatibleBatteryError(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error when no compatible battery found, but got none")
 	}
-	if !strings.Contains(err.Error(), "no compatible battery found for build; specify one using --battery") {
-		t.Errorf("expected 'no compatible battery found' error, got: %v", err)
+	if !strings.Contains(err.Error(), "no compatible battery found in database for build") {
+		t.Errorf("expected 'no compatible battery found in database' error, got: %v", err)
 	}
 }
 

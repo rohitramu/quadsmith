@@ -28,6 +28,7 @@ import {
   mockGps1,
   mockBuilds,
   mockEvaluation1,
+  mockBatteries,
 } from "./fixtures";
 
 export interface MockTransportOptions {
@@ -35,6 +36,8 @@ export interface MockTransportOptions {
   frames?: typeof mockFrames;
   flightControllers?: typeof mockFlightControllers;
   builds?: typeof mockBuilds;
+  batteries?: typeof mockBatteries;
+  defaultBatteryId?: string;
   nextPageToken?: string;
   simulateError?: boolean;
 }
@@ -45,6 +48,8 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     frames = mockFrames,
     flightControllers = mockFlightControllers,
     builds = mockBuilds,
+    batteries = mockBatteries,
+    defaultBatteryId = batteries.length > 0 ? batteries[0].id : "",
     nextPageToken = "",
     simulateError = false,
   } = options;
@@ -246,17 +251,19 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           minVoltage: 14.8,
           maxVoltage: 25.2,
           maxCurrentA: 39.4,
-          defaultBatteryId: mockBattery1.id,
+          defaultBatteryId:
+            options.defaultBatteryId !== undefined ? options.defaultBatteryId : defaultBatteryId,
           buildId: req.build?.id || req.buildId || "",
         };
       },
     });
 
     service(BatteryService, {
-      listBatteries: () => ({ batteries: [mockBattery1], nextPageToken: "" }),
+      listBatteries: () => ({ batteries, nextPageToken: "" }),
       getBattery: (req) => {
-        if (req.id === mockBattery1.id || req.id === mockBattery1.uuid) {
-          return mockBattery1;
+        const found = batteries.find((b) => b.id === req.id || b.uuid === req.id);
+        if (found) {
+          return found;
         }
         throw new ConnectError("Battery not found", Code.NotFound);
       },
