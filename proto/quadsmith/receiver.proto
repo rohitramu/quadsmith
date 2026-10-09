@@ -20,7 +20,6 @@ message Receiver {
   option (quadsmith.sql.table) = {name: "receivers"};
   option (quadsmith.collection_path) = "components/hardware/receivers";
   option (quadsmith.frontend) = {
-    path: "components/hardware/receivers"
     default_columns: [
       "manufacturer",
       "name",

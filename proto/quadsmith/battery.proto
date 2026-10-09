@@ -20,7 +20,6 @@ message Battery {
   option (quadsmith.sql.table) = {name: "batteries"};
   option (quadsmith.collection_path) = "components/hardware/batteries";
   option (quadsmith.frontend) = {
-    path: "components/hardware/batteries"
     default_columns: [
       "manufacturer",
       "name",

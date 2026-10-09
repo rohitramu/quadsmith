@@ -59,11 +59,6 @@ func (d DomainName) Path() string {
 				return strings.Trim(p, "/")
 			}
 		}
-		if proto.HasExtension(opts, pb.E_Frontend) {
-			if front, ok := proto.GetExtension(opts, pb.E_Frontend).(*pb.FrontendOptions); ok && front != nil && front.Path != "" {
-				return strings.Trim(front.Path, "/")
-			}
-		}
 	}
 	return d.CLI()
 }
@@ -598,11 +593,6 @@ func GetCollectionPath(m proto.Message) string {
 	if proto.HasExtension(opts, pb.E_CollectionPath) {
 		if p, ok := proto.GetExtension(opts, pb.E_CollectionPath).(string); ok && p != "" {
 			return strings.Trim(p, "/")
-		}
-	}
-	if proto.HasExtension(opts, pb.E_Frontend) {
-		if front, ok := proto.GetExtension(opts, pb.E_Frontend).(*pb.FrontendOptions); ok && front != nil && front.Path != "" {
-			return strings.Trim(front.Path, "/")
 		}
 	}
 	return ""

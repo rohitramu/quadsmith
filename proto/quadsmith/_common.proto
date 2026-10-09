@@ -26,9 +26,8 @@ message FrontendOptions {
   // The default columns to display in CLI tables and UI collection listings.
   repeated string default_columns = 1;
 
-  // The collection path (e.g., "components/hardware/motors" or "builds").
-  // The UI's URL paths and the CLI's subcommand structure align with this.
-  string path = 2;
+  reserved 2;
+  reserved "path";
 }
 
 // ---------------------------------------------------------

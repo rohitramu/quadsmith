@@ -356,7 +356,7 @@ var File_propeller_proto protoreflect.FileDescriptor
 const file_propeller_proto_rawDesc = "" +
 	"\n" +
 	"\x0fpropeller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x91\x05\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xf1\x04\n" +
 	"\tPropeller\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -372,12 +372,12 @@ const file_propeller_proto_rawDesc = "" +
 	" \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\f \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\r \x03(\v2\x10.quadsmith.MediaR\x05media:\xa4\x01\x8a\xb5\x18S\n" +
+	"\x05media\x18\r \x03(\v2\x10.quadsmith.MediaR\x05media:\x84\x01\x8a\xb5\x183\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\vdiameter_mm\n" +
 	"\bpitch_mm\n" +
-	"\x06blades\x12\x1ecomponents/hardware/propellers\x92\xb5\x18\x17\n" +
+	"\x06blades\x92\xb5\x18\x17\n" +
 	"\tPropeller\x12\n" +
 	"Propellers\x9a\xb5\x18\x1ecomponents/hardware/propellers\xc2\xf3\x18\f\n" +
 	"\n" +

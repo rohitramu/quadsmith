@@ -80,11 +80,8 @@ type FrontendOptions struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The default columns to display in CLI tables and UI collection listings.
 	DefaultColumns []string `protobuf:"bytes,1,rep,name=default_columns,json=defaultColumns,proto3" json:"default_columns,omitempty"`
-	// The collection path (e.g., "components/hardware/motors" or "builds").
-	// The UI's URL paths and the CLI's subcommand structure align with this.
-	Path          string `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *FrontendOptions) Reset() {
@@ -122,13 +119,6 @@ func (x *FrontendOptions) GetDefaultColumns() []string {
 		return x.DefaultColumns
 	}
 	return nil
-}
-
-func (x *FrontendOptions) GetPath() string {
-	if x != nil {
-		return x.Path
-	}
-	return ""
 }
 
 var file___common_proto_extTypes = []protoimpl.ExtensionInfo{
@@ -181,10 +171,9 @@ const file___common_proto_rawDesc = "" +
 	"\r_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"A\n" +
 	"\vNameOptions\x12\x1a\n" +
 	"\bsingular\x18\x01 \x01(\tR\bsingular\x12\x16\n" +
-	"\x06plural\x18\x02 \x01(\tR\x06plural\"N\n" +
+	"\x06plural\x18\x02 \x01(\tR\x06plural\"F\n" +
 	"\x0fFrontendOptions\x12'\n" +
-	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumns\x12\x12\n" +
-	"\x04path\x18\x02 \x01(\tR\x04path:Y\n" +
+	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumnsJ\x04\b\x02\x10\x03R\x04path:Y\n" +
 	"\bfrontend\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2\x1a.quadsmith.FrontendOptionsR\bfrontend:M\n" +
 	"\x04name\x12\x1f.google.protobuf.MessageOptions\x18҆\x03 \x01(\v2\x16.quadsmith.NameOptionsR\x04name:J\n" +
 	"\x0fcollection_path\x12\x1f.google.protobuf.MessageOptions\x18ӆ\x03 \x01(\tR\x0ecollectionPathB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"

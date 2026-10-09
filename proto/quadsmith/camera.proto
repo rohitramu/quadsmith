@@ -20,12 +20,10 @@ message Camera {
   option (quadsmith.sql.table) = {name: "cameras"};
   option (quadsmith.collection_path) = "components/hardware/cameras";
   option (quadsmith.frontend) = {
-    path: "components/hardware/cameras"
     default_columns: [
       "manufacturer",
       "name",
       "protocol",
-      "sensor_size",
       "width_mm"
     ]
   };

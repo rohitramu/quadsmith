@@ -43,10 +43,7 @@ import {
   getVideoTransmitter,
 } from "../gen/quadsmith/video_transmitter-VideoTransmitterService_connectquery";
 import { getOption } from "@bufbuild/protobuf";
-import {
-  frontend as frontendOpt,
-  collection_path as collectionPathOpt,
-} from "../gen/quadsmith/_common_pb";
+import { collection_path as collectionPathOpt } from "../gen/quadsmith/_common_pb";
 
 export interface ColumnConfig {
   id: string;
@@ -1890,10 +1887,6 @@ export function getCollectionPath(collection: HardwareCollectionDef): string {
     const directPath = getOption(collection.schema, collectionPathOpt);
     if (directPath) {
       return directPath.replace(/^\/+|\/+$/g, "");
-    }
-    const opts = getOption(collection.schema, frontendOpt);
-    if (opts?.path) {
-      return opts.path.replace(/^\/+|\/+$/g, "");
     }
   } catch {
     // fallback

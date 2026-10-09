@@ -21,7 +21,6 @@ message Motor {
   option (quadsmith.sql.table) = {name: "motors"};
   option (quadsmith.collection_path) = "components/hardware/motors";
   option (quadsmith.frontend) = {
-    path: "components/hardware/motors"
     default_columns: [
       "manufacturer",
       "name",

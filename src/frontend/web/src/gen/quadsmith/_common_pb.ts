@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file__common: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg1fY29tbW9uLnByb3RvEglxdWFkc21pdGgiLwoLTmFtZU9wdGlvbnMSEAoIc2luZ3VsYXIYASABKAkSDgoGcGx1cmFsGAIgASgJIjgKD0Zyb250ZW5kT3B0aW9ucxIXCg9kZWZhdWx0X2NvbHVtbnMYASADKAkSDAoEcGF0aBgCIAEoCTpZCghmcm9udGVuZBIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgASgLMhoucXVhZHNtaXRoLkZyb250ZW5kT3B0aW9uc1IIZnJvbnRlbmQ6TQoEbmFtZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjShgMgASgLMhYucXVhZHNtaXRoLk5hbWVPcHRpb25zUgRuYW1lOkoKD2NvbGxlY3Rpb25fcGF0aBIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjThgMgASgJUg5jb2xsZWN0aW9uUGF0aEIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "Cg1fY29tbW9uLnByb3RvEglxdWFkc21pdGgiLwoLTmFtZU9wdGlvbnMSEAoIc2luZ3VsYXIYASABKAkSDgoGcGx1cmFsGAIgASgJIjYKD0Zyb250ZW5kT3B0aW9ucxIXCg9kZWZhdWx0X2NvbHVtbnMYASADKAlKBAgCEANSBHBhdGg6WQoIZnJvbnRlbmQSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0YYDIAEoCzIaLnF1YWRzbWl0aC5Gcm9udGVuZE9wdGlvbnNSCGZyb250ZW5kOk0KBG5hbWUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0oYDIAEoCzIWLnF1YWRzbWl0aC5OYW1lT3B0aW9uc1IEbmFtZTpKCg9jb2xsZWN0aW9uX3BhdGgSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY04YDIAEoCVIOY29sbGVjdGlvblBhdGhCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
     [file_google_protobuf_descriptor],
   );
 
@@ -55,14 +55,6 @@ export type FrontendOptions = Message<"quadsmith.FrontendOptions"> & {
    * @generated from field: repeated string default_columns = 1;
    */
   defaultColumns: string[];
-
-  /**
-   * The collection path (e.g., "components/hardware/motors" or "builds").
-   * The UI's URL paths and the CLI's subcommand structure align with this.
-   *
-   * @generated from field: string path = 2;
-   */
-  path: string;
 };
 
 /**

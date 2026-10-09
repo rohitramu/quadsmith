@@ -2136,11 +2136,6 @@ func GetCollectionPath(m proto.Message) string {
 			return strings.Trim(p, "/")
 		}
 	}
-	if proto.HasExtension(opts, pb.E_Frontend) {
-		if front, ok := proto.GetExtension(opts, pb.E_Frontend).(*pb.FrontendOptions); ok && front != nil && front.Path != "" {
-			return strings.Trim(front.Path, "/")
-		}
-	}
 	return ""
 }
 

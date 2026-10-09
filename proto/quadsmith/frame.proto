@@ -20,7 +20,6 @@ message Frame {
   option (quadsmith.sql.table) = {name: "frames"};
   option (quadsmith.collection_path) = "components/hardware/frames";
   option (quadsmith.frontend) = {
-    path: "components/hardware/frames"
     default_columns: [
       "manufacturer",
       "name",

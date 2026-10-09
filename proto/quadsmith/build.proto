@@ -20,7 +20,6 @@ message Build {
   option (quadsmith.sql.table) = {name: "builds"};
   option (quadsmith.collection_path) = "builds";
   option (quadsmith.frontend) = {
-    path: "builds"
     default_columns: [
       "id",
       "name"
