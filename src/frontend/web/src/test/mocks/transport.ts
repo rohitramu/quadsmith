@@ -11,13 +11,30 @@ import { ReceiverService } from "../../gen/quadsmith/receiver_pb";
 import { VideoTransmitterService } from "../../gen/quadsmith/video_transmitter_pb";
 import { AntennaService } from "../../gen/quadsmith/antenna_pb";
 import { GpsReceiverService } from "../../gen/quadsmith/gps_receiver_pb";
+import { BuildService } from "../../gen/quadsmith/build_pb";
+import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
 
-import { mockMotors, mockFrames, mockFlightControllers } from "./fixtures";
+import {
+  mockMotors,
+  mockFrames,
+  mockFlightControllers,
+  mockBattery1,
+  mockESC1,
+  mockPropeller1,
+  mockCamera1,
+  mockVTX1,
+  mockReceiver1,
+  mockAntenna1,
+  mockGps1,
+  mockBuilds,
+  mockEvaluation1,
+} from "./fixtures";
 
 export interface MockTransportOptions {
   motors?: typeof mockMotors;
   frames?: typeof mockFrames;
   flightControllers?: typeof mockFlightControllers;
+  builds?: typeof mockBuilds;
   nextPageToken?: string;
   simulateError?: boolean;
 }
@@ -27,6 +44,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     motors = mockMotors,
     frames = mockFrames,
     flightControllers = mockFlightControllers,
+    builds = mockBuilds,
     nextPageToken = "",
     simulateError = false,
   } = options;
@@ -105,64 +123,167 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       },
     });
 
+    service(BuildService, {
+      listBuilds(req) {
+        if (simulateError) {
+          throw new ConnectError("Failed to fetch builds", Code.Internal);
+        }
+        let list = [...builds];
+        if (req.filter) {
+          const lower = req.filter.toLowerCase();
+          list = list.filter(
+            (b) =>
+              b.name.toLowerCase().includes(lower) ||
+              b.id.toLowerCase().includes(lower) ||
+              b.description.toLowerCase().includes(lower),
+          );
+        }
+        const pageSize = req.pageSize || 20;
+        let pToken = "";
+        let returnList = list;
+        if (req.pageToken) {
+          // simple offset simulation
+          const offset = parseInt(req.pageToken, 10) || 0;
+          returnList = list.slice(offset, offset + pageSize);
+          if (offset + pageSize < list.length) {
+            pToken = String(offset + pageSize);
+          }
+        } else {
+          returnList = list.slice(0, pageSize);
+          if (list.length > pageSize) {
+            pToken = String(pageSize);
+          } else if (nextPageToken) {
+            pToken = nextPageToken;
+          }
+        }
+        return {
+          builds: returnList,
+          nextPageToken: pToken,
+        };
+      },
+      getBuild(req) {
+        if (simulateError) {
+          throw new ConnectError("Failed to fetch build", Code.Internal);
+        }
+        const item = builds.find((b) => b.id === req.id || b.uuid === req.id);
+        if (!item) {
+          throw new ConnectError(`Build with ID '${req.id}' not found`, Code.NotFound);
+        }
+        return item;
+      },
+    });
+
+    service(EvaluatorService, {
+      evaluateBuild(req) {
+        if (simulateError) {
+          throw new ConnectError("Evaluation failed", Code.Internal);
+        }
+        const payload = req.payloadWeightG || 0;
+        const baseWeight = mockEvaluation1.totalWeightG;
+        const totalWeight = baseWeight + payload;
+        const twr = totalWeight > 0 ? 3000 / totalWeight : 0;
+        const hover = twr > 0 ? (1 / twr) * 100 : 0;
+        const warnings: string[] = [];
+        const errors: string[] = [];
+        if (hover > 50) {
+          warnings.push("Drone will be very sluggish (Hover throttle > 50%)");
+        }
+        if (hover > 100) {
+          errors.push("Drone is too heavy to take off (Hover throttle > 100%)");
+        }
+        return {
+          totalWeightG: totalWeight,
+          thrustToWeightRatio: parseFloat(twr.toFixed(2)),
+          hoverThrottlePercent: parseFloat(hover.toFixed(1)),
+          estimatedFlightTimeMin: parseFloat(Math.max(1, 6 - payload / 50).toFixed(1)),
+          warnings,
+          errors,
+        };
+      },
+    });
+
     service(BatteryService, {
-      listBatteries: () => ({ batteries: [], nextPageToken: "" }),
-      getBattery: () => {
+      listBatteries: () => ({ batteries: [mockBattery1], nextPageToken: "" }),
+      getBattery: (req) => {
+        if (req.id === mockBattery1.id || req.id === mockBattery1.uuid) {
+          return mockBattery1;
+        }
         throw new ConnectError("Battery not found", Code.NotFound);
       },
     });
 
     service(CameraService, {
-      listCameras: () => ({ cameras: [], nextPageToken: "" }),
-      getCamera: () => {
+      listCameras: () => ({ cameras: [mockCamera1], nextPageToken: "" }),
+      getCamera: (req) => {
+        if (req.id === mockCamera1.id || req.id === mockCamera1.uuid) {
+          return mockCamera1;
+        }
         throw new ConnectError("Camera not found", Code.NotFound);
       },
     });
 
     service(ElectronicSpeedControllerService, {
       listElectronicSpeedControllers: () => ({
-        electronicSpeedControllers: [],
+        electronicSpeedControllers: [mockESC1],
         nextPageToken: "",
       }),
-      getElectronicSpeedController: () => {
+      getElectronicSpeedController: (req) => {
+        if (req.id === mockESC1.id || req.id === mockESC1.uuid) {
+          return mockESC1;
+        }
         throw new ConnectError("ESC not found", Code.NotFound);
       },
     });
 
     service(PropellerService, {
-      listPropellers: () => ({ propellers: [], nextPageToken: "" }),
-      getPropeller: () => {
+      listPropellers: () => ({ propellers: [mockPropeller1], nextPageToken: "" }),
+      getPropeller: (req) => {
+        if (req.id === mockPropeller1.id || req.id === mockPropeller1.uuid) {
+          return mockPropeller1;
+        }
         throw new ConnectError("Propeller not found", Code.NotFound);
       },
     });
 
     service(ReceiverService, {
-      listReceivers: () => ({ receivers: [], nextPageToken: "" }),
-      getReceiver: () => {
+      listReceivers: () => ({ receivers: [mockReceiver1], nextPageToken: "" }),
+      getReceiver: (req) => {
+        if (req.id === mockReceiver1.id || req.id === mockReceiver1.uuid) {
+          return mockReceiver1;
+        }
         throw new ConnectError("Receiver not found", Code.NotFound);
       },
     });
 
     service(VideoTransmitterService, {
       listVideoTransmitters: () => ({
-        videoTransmitters: [],
+        videoTransmitters: [mockVTX1],
         nextPageToken: "",
       }),
-      getVideoTransmitter: () => {
+      getVideoTransmitter: (req) => {
+        if (req.id === mockVTX1.id || req.id === mockVTX1.uuid) {
+          return mockVTX1;
+        }
         throw new ConnectError("VTX not found", Code.NotFound);
       },
     });
 
     service(AntennaService, {
-      listAntennas: () => ({ antennas: [], nextPageToken: "" }),
-      getAntenna: () => {
+      listAntennas: () => ({ antennas: [mockAntenna1], nextPageToken: "" }),
+      getAntenna: (req) => {
+        if (req.id === mockAntenna1.id || req.id === mockAntenna1.uuid) {
+          return mockAntenna1;
+        }
         throw new ConnectError("Antenna not found", Code.NotFound);
       },
     });
 
     service(GpsReceiverService, {
-      listGpsReceivers: () => ({ gpsReceivers: [], nextPageToken: "" }),
-      getGpsReceiver: () => {
+      listGpsReceivers: () => ({ gpsReceivers: [mockGps1], nextPageToken: "" }),
+      getGpsReceiver: (req) => {
+        if (req.id === mockGps1.id || req.id === mockGps1.uuid) {
+          return mockGps1;
+        }
         throw new ConnectError("GPS receiver not found", Code.NotFound);
       },
     });

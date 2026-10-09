@@ -70,6 +70,26 @@ export function Layout() {
         {/* Sidebar */}
         <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex flex-col overflow-y-auto">
           <nav className="p-4">
+            <div className="mb-4">
+              <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+                Discover
+              </h2>
+              <ul className="space-y-1">
+                <li>
+                  <Link
+                    to="/"
+                    className={`block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-sm font-medium ${
+                      location.pathname === "/"
+                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400"
+                        : "text-zinc-700 dark:text-zinc-300"
+                    }`}
+                  >
+                    Builds Feed
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
             <div className="mb-6">
               <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
                 Components

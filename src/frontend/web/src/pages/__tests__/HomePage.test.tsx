@@ -18,7 +18,7 @@ describe("HomePage Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders Browse Hardware card linking to /components/hardware", () => {
+  it("renders Browse Hardware link pointing to /components/hardware", () => {
     renderWithProviders(<HomePage />);
 
     const browseHardwareLink = screen.getByRole("link", {
@@ -26,19 +26,33 @@ describe("HomePage Component", () => {
     });
     expect(browseHardwareLink).toBeInTheDocument();
     expect(browseHardwareLink).toHaveAttribute("href", "/components/hardware");
-    expect(
-      screen.getByText(/explore our extensive catalog of fpv drone components/i),
-    ).toBeInTheDocument();
   });
 
-  it("renders Build Planner placeholder card with coming soon message", () => {
+  it("renders Community & Curated Builds feed heading and loaded build cards", async () => {
     renderWithProviders(<HomePage />);
 
-    expect(screen.getByText("Build Planner (Coming Soon)")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        /design your dream drone and let quadsmith automatically check for component compatibility/i,
-      ),
+      screen.getByRole("heading", {
+        level: 2,
+        name: /community & curated builds/i,
+      }),
     ).toBeInTheDocument();
+
+    // Verify build cards are rendered from mock data
+    expect(await screen.findByText("Bando Basher 5 inch")).toBeInTheDocument();
+    expect(await screen.findByText("Long Range Explorer 7 inch")).toBeInTheDocument();
+
+    // Verify link to build profile
+    const bandoProfileLinks = screen.getAllByRole("link", {
+      name: /bando basher 5 inch/i,
+    });
+    expect(bandoProfileLinks.length).toBeGreaterThan(0);
+    expect(bandoProfileLinks[0]).toHaveAttribute("href", "/builds/bando-basher-5-inch");
+  });
+
+  it("displays end of feed caught up message when all builds have loaded", async () => {
+    renderWithProviders(<HomePage />);
+
+    expect(await screen.findByText(/you've caught up with all builds!/i)).toBeInTheDocument();
   });
 });

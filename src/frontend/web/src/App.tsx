@@ -8,6 +8,7 @@ import { CategoryPage } from "./pages/CategoryPage";
 import { CollectionPage } from "./pages/CollectionPage";
 import { ProductPage } from "./pages/ProductPage";
 import { HomePage } from "./pages/HomePage";
+import { BuildProfilePage } from "./pages/BuildProfilePage";
 
 const defaultQueryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ export function AppRoutes() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
+        <Route path="builds/:buildId" element={<BuildProfilePage />} />
         <Route path="components/:categoryId" element={<CategoryPage />} />
         <Route path="components/:categoryId/:collectionId" element={<CollectionPage />} />
         <Route path="components/:categoryId/:collectionId/:productId" element={<ProductPage />} />

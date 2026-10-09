@@ -64,5 +64,38 @@ describe("Full Application Navigation Flow", () => {
         name: "Welcome to Quadsmith",
       }),
     ).toBeInTheDocument();
+
+    // 11. Click build card in the feed to navigate to Build Profile page
+    const buildLink = await screen.findByRole("link", {
+      name: /bando basher 5 inch/i,
+    });
+    await user.click(buildLink);
+
+    // 12. Verify on Build Profile page with evaluation results
+    expect(
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "Bando Basher 5 inch",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", {
+        level: 2,
+        name: /build evaluation & performance/i,
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("All-Up Weight")).toBeInTheDocument();
+    expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
+
+    // 13. Click "Builds Feed" in sidebar to navigate back to home
+    const buildsFeedLink = screen.getByRole("link", { name: "Builds Feed" });
+    await user.click(buildsFeedLink);
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "Welcome to Quadsmith",
+      }),
+    ).toBeInTheDocument();
   });
 });

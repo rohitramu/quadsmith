@@ -1,0 +1,589 @@
+import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
+import { useQuery } from "@connectrpc/connect-query";
+import { getBuild } from "../gen/quadsmith/build-BuildService_connectquery";
+import { evaluateBuild } from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
+import { getFrame } from "../gen/quadsmith/frame-FrameService_connectquery";
+import { getMotor } from "../gen/quadsmith/motor-MotorService_connectquery";
+import { getBattery } from "../gen/quadsmith/battery-BatteryService_connectquery";
+import { getFlightController } from "../gen/quadsmith/flight_controller-FlightControllerService_connectquery";
+import { getElectronicSpeedController } from "../gen/quadsmith/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
+import { getPropeller } from "../gen/quadsmith/propeller-PropellerService_connectquery";
+import { getCamera } from "../gen/quadsmith/camera-CameraService_connectquery";
+import { getVideoTransmitter } from "../gen/quadsmith/video_transmitter-VideoTransmitterService_connectquery";
+import { getReceiver } from "../gen/quadsmith/receiver-ReceiverService_connectquery";
+import { getAntenna } from "../gen/quadsmith/antenna-AntennaService_connectquery";
+import { getGpsReceiver } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
+import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
+import {
+  ChevronRight,
+  Gauge,
+  Clock,
+  Weight,
+  ExternalLink,
+  AlertTriangle,
+  AlertOctagon,
+  CheckCircle2,
+  Sliders,
+  Layers,
+  Cpu,
+  Radio,
+  Camera as CameraIcon,
+  Compass,
+  Zap,
+} from "lucide-react";
+
+const LINK_TYPE_LABELS: Record<number, string> = {
+  [ReferenceLinkType.PURCHASE]: "Purchase",
+  [ReferenceLinkType.PRODUCT_PAGE]: "Official Product Page",
+  [ReferenceLinkType.DOCUMENTATION]: "Documentation",
+  [ReferenceLinkType.FORUM_POST]: "Forum Discussion",
+  [ReferenceLinkType.REVIEW]: "Review",
+  [ReferenceLinkType.OTHER]: "Other",
+  [ReferenceLinkType.UNSPECIFIED]: "Reference Link",
+};
+
+interface BomComponentProps {
+  label: string;
+  collectionId: string;
+  uuid: string;
+  queryMethod: any;
+  icon: React.ReactNode;
+  subtitle?: (item: any) => string;
+}
+
+function BomComponentCard({
+  label,
+  collectionId,
+  uuid,
+  queryMethod,
+  icon,
+  subtitle,
+}: BomComponentProps) {
+  const {
+    data: rawItem,
+    isLoading,
+    error,
+  } = useQuery(queryMethod, { id: uuid }, { enabled: !!uuid });
+  const item = rawItem as any;
+
+  if (!uuid) return null;
+
+  return (
+    <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500 shrink-0">
+          {icon}
+        </div>
+        <div className="min-w-0">
+          <div className="text-xs uppercase font-semibold text-zinc-400 dark:text-zinc-500">
+            {label}
+          </div>
+          {isLoading ? (
+            <div className="text-sm text-zinc-400 animate-pulse">Loading {label}...</div>
+          ) : error || !item ? (
+            <div className="text-sm font-mono text-zinc-600 dark:text-zinc-400 truncate max-w-xs">
+              {uuid}
+            </div>
+          ) : (
+            <div>
+              <Link
+                to={`/components/hardware/${collectionId}/${item.id || item.uuid}`}
+                className="text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
+              >
+                {item.name || item.id}
+              </Link>
+              {subtitle && <div className="text-xs text-zinc-500 truncate">{subtitle(item)}</div>}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {item && (
+        <Link
+          to={`/components/hardware/${collectionId}/${item.id || item.uuid}`}
+          className="text-xs text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 p-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0"
+          title={`View ${item.name || item.id} in catalog`}
+        >
+          <ExternalLink size={14} />
+        </Link>
+      )}
+    </div>
+  );
+}
+
+export function BuildProfilePage() {
+  const { buildId } = useParams<{ buildId: string }>();
+  const [payloadWeightG, setPayloadWeightG] = useState<number>(0);
+
+  const {
+    data: build,
+    isLoading: isLoadingBuild,
+    error: buildError,
+  } = useQuery(getBuild, { id: buildId || "" }, { enabled: !!buildId });
+
+  const {
+    data: evaluation,
+    isLoading: isEvaluating,
+    error: evalError,
+  } = useQuery(evaluateBuild, { build, payloadWeightG }, { enabled: !!build });
+
+  if (isLoadingBuild) {
+    return (
+      <div className="max-w-4xl mx-auto py-8">
+        <p className="text-zinc-500 animate-pulse">Loading build profile...</p>
+      </div>
+    );
+  }
+
+  if (buildError || !build) {
+    return (
+      <div className="max-w-4xl mx-auto py-8">
+        <h1 className="text-2xl font-bold text-red-500 mb-2">Build Not Found</h1>
+        <p className="text-zinc-500 mb-4">
+          Could not find a build profile for &quot;{buildId}&quot;.
+        </p>
+        <Link
+          to="/"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:underline"
+        >
+          ← Return to Builds Feed
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      {/* Breadcrumb Navigation */}
+      <nav
+        aria-label="Breadcrumb"
+        className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
+      >
+        <Link
+          to="/"
+          className="hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+        >
+          Home
+        </Link>
+        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
+        <Link
+          to="/"
+          className="hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+        >
+          Builds
+        </Link>
+        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
+        <span className="text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-md">
+          {build.name || build.id}
+        </span>
+      </nav>
+
+      {/* Build Profile Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-900/50">
+            @{build.id}
+          </span>
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+          {build.name}
+        </h1>
+        {build.description && (
+          <p className="mt-3 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
+            {build.description}
+          </p>
+        )}
+      </div>
+
+      {/* ============================================================ */}
+      {/* BUILD EVALUATION SECTION                                      */}
+      {/* ============================================================ */}
+      <section className="mb-10 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+          <div>
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <Gauge className="text-blue-600 dark:text-blue-400" size={22} />
+              <span>Build Evaluation & Performance</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Automated aerodynamic and electrical physics estimation calculated by Quadsmith
+              Evaluator.
+            </p>
+          </div>
+
+          {/* Interactive Payload Weight Slider */}
+          <div className="bg-white dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs min-w-[260px]">
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                <Sliders size={13} className="text-blue-500" />
+                Payload Simulator
+              </span>
+              <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                +{payloadWeightG}g
+              </span>
+            </div>
+            <input
+              type="range"
+              min={0}
+              max={300}
+              step={5}
+              value={payloadWeightG}
+              onChange={(e) => setPayloadWeightG(Number(e.target.value))}
+              className="w-full accent-blue-600 cursor-pointer"
+              aria-label="Simulate payload weight in grams"
+            />
+            <div className="flex gap-1 mt-2 text-[10px]">
+              <button
+                type="button"
+                onClick={() => setPayloadWeightG(0)}
+                className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+                  payloadWeightG === 0
+                    ? "bg-blue-600 text-white font-medium"
+                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                }`}
+              >
+                Bare (0g)
+              </button>
+              <button
+                type="button"
+                onClick={() => setPayloadWeightG(16)}
+                className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+                  payloadWeightG === 16
+                    ? "bg-blue-600 text-white font-medium"
+                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                }`}
+              >
+                Thumb (+16g)
+              </button>
+              <button
+                type="button"
+                onClick={() => setPayloadWeightG(133)}
+                className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+                  payloadWeightG === 133
+                    ? "bg-blue-600 text-white font-medium"
+                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                }`}
+              >
+                GoPro (+133g)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Evaluation Metrics Cards */}
+        {isEvaluating ? (
+          <div className="py-8 text-center text-sm text-zinc-500 animate-pulse">
+            Calculating build physics and performance metrics...
+          </div>
+        ) : evalError ? (
+          <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm">
+            Evaluation error: {evalError.message}
+          </div>
+        ) : evaluation ? (
+          <div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              {/* Metric 1: AUW Total Weight */}
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                  <Weight size={14} />
+                  <span>All-Up Weight</span>
+                </div>
+                <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                  {Math.round(evaluation.totalWeightG)}
+                  <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
+                </div>
+                <div className="text-[11px] text-zinc-500 mt-1">
+                  {payloadWeightG > 0
+                    ? `Includes +${payloadWeightG}g payload`
+                    : "Quadcopter + LiPo"}
+                </div>
+              </div>
+
+              {/* Metric 2: Thrust-to-Weight Ratio */}
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                  <Gauge size={14} />
+                  <span>Thrust / Weight</span>
+                </div>
+                <div className="text-2xl sm:text-3xl font-bold mt-1 text-emerald-600 dark:text-emerald-400">
+                  {evaluation.thrustToWeightRatio.toFixed(1)}
+                  <span className="text-sm font-normal text-zinc-500 ml-1">: 1</span>
+                </div>
+                <div className="text-[11px] text-zinc-500 mt-1">
+                  {evaluation.thrustToWeightRatio >= 5
+                    ? "Freestyle & Racing"
+                    : evaluation.thrustToWeightRatio >= 3
+                      ? "Agile Sport"
+                      : "Cruiser"}
+                </div>
+              </div>
+
+              {/* Metric 3: Hover Throttle */}
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                  <Zap size={14} />
+                  <span>Hover Throttle</span>
+                </div>
+                <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                  {evaluation.hoverThrottlePercent.toFixed(1)}
+                  <span className="text-sm font-normal text-zinc-500 ml-1">%</span>
+                </div>
+                {/* Progress bar */}
+                <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                  <div
+                    className={`h-full rounded-full ${
+                      evaluation.hoverThrottlePercent > 50
+                        ? "bg-red-500"
+                        : evaluation.hoverThrottlePercent > 35
+                          ? "bg-amber-500"
+                          : "bg-emerald-500"
+                    }`}
+                    style={{
+                      width: `${Math.min(100, evaluation.hoverThrottlePercent)}%`,
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Metric 4: Estimated Flight Time */}
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
+                  <Clock size={14} />
+                  <span>Est. Flight Time</span>
+                </div>
+                <div className="text-2xl sm:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
+                  ~{evaluation.estimatedFlightTimeMin.toFixed(1)}
+                  <span className="text-sm font-normal text-zinc-500 ml-1">min</span>
+                </div>
+                <div className="text-[11px] text-zinc-500 mt-1">Hover & cruise profile</div>
+              </div>
+            </div>
+
+            {/* Diagnostic Alerts / Compatibility Checks */}
+            {evaluation.errors.length > 0 && (
+              <div className="mb-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 flex items-start gap-3">
+                <AlertOctagon size={20} className="shrink-0 mt-0.5 text-red-600" />
+                <div>
+                  <div className="font-bold text-sm">Compatibility Issues Detected</div>
+                  <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
+                    {evaluation.errors.map((err, i) => (
+                      <li key={i}>{err}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {evaluation.warnings.length > 0 && (
+              <div className="mb-3 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 flex items-start gap-3">
+                <AlertTriangle size={20} className="shrink-0 mt-0.5 text-amber-600" />
+                <div>
+                  <div className="font-bold text-sm">Evaluation Warnings</div>
+                  <ul className="list-disc list-inside text-xs mt-1 space-y-0.5">
+                    {evaluation.warnings.map((warn, i) => (
+                      <li key={i}>{warn}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {evaluation.errors.length === 0 && evaluation.warnings.length === 0 && (
+              <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center gap-2.5 text-xs font-medium">
+                <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+                <span>All evaluated components are fully compatible and flight-ready.</span>
+              </div>
+            )}
+          </div>
+        ) : null}
+      </section>
+
+      {/* ============================================================ */}
+      {/* BILL OF MATERIALS (BOM) SECTION                              */}
+      {/* ============================================================ */}
+      <section className="mb-10">
+        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+          <Layers className="text-blue-600 dark:text-blue-400" size={22} />
+          <span>Bill of Materials (Hardware Components)</span>
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {/* Frame */}
+          <BomComponentCard
+            label="Frame"
+            collectionId="frames"
+            uuid={build.frameUuid}
+            queryMethod={getFrame}
+            icon={<Layers size={18} />}
+            subtitle={(item) =>
+              `${item.manufacturer} • ${item.wheelbaseMm ? `${item.wheelbaseMm}mm wheelbase` : ""}`
+            }
+          />
+
+          {/* Motors */}
+          <BomComponentCard
+            label="Motors (4x)"
+            collectionId="motors"
+            uuid={build.motorUuid}
+            queryMethod={getMotor}
+            icon={<Cpu size={18} />}
+            subtitle={(item) =>
+              `${item.manufacturer} • ${item.kv ? `${item.kv}KV` : ""} • ${item.weightG ? `${item.weightG}g each` : ""}`
+            }
+          />
+
+          {/* Primary Battery */}
+          <BomComponentCard
+            label="Primary Battery"
+            collectionId="batteries"
+            uuid={build.batteryUuid}
+            queryMethod={getBattery}
+            icon={<Zap size={18} />}
+            subtitle={(item) =>
+              `${item.manufacturer} • ${item.cellCountS}S • ${item.capacityMah}mAh`
+            }
+          />
+
+          {/* Flight Controller */}
+          <BomComponentCard
+            label="Flight Controller"
+            collectionId="flight_controllers"
+            uuid={build.flightControllerUuid}
+            queryMethod={getFlightController}
+            icon={<Cpu size={18} />}
+            subtitle={(item) => `${item.manufacturer} • ${item.processor || "FC Board"}`}
+          />
+
+          {/* Electronic Speed Controller */}
+          {build.electronicSpeedControllerUuids.map((escUuid, idx) => (
+            <BomComponentCard
+              key={escUuid + idx}
+              label={
+                build.electronicSpeedControllerUuids.length > 1
+                  ? `ESC #${idx + 1}`
+                  : "Electronic Speed Controller"
+              }
+              collectionId="electronic_speed_controllers"
+              uuid={escUuid}
+              queryMethod={getElectronicSpeedController}
+              icon={<Zap size={18} />}
+              subtitle={(item) =>
+                `${item.manufacturer} • ${item.motorCurrentMaxA}A • ${item.maxMotors}x motors`
+              }
+            />
+          ))}
+
+          {/* Propellers */}
+          <BomComponentCard
+            label="Propellers"
+            collectionId="propellers"
+            uuid={build.propellerUuid}
+            queryMethod={getPropeller}
+            icon={<Compass size={18} />}
+            subtitle={(item) =>
+              `${item.manufacturer} • ${item.blades ? `${item.blades}-blade` : "Props"}`
+            }
+          />
+
+          {/* Video Transmitter */}
+          <BomComponentCard
+            label="Video Transmitter (VTX)"
+            collectionId="video_transmitters"
+            uuid={build.videoTransmitterUuid}
+            queryMethod={getVideoTransmitter}
+            icon={<Radio size={18} />}
+            subtitle={(item) =>
+              `${item.manufacturer} • ${item.maxPowerMw ? `${item.maxPowerMw}mW` : ""} • ${item.protocol || ""}`
+            }
+          />
+
+          {/* Cameras */}
+          {build.cameraUuids.map((camUuid, idx) => (
+            <BomComponentCard
+              key={camUuid + idx}
+              label={build.cameraUuids.length > 1 ? `Camera #${idx + 1}` : "Camera"}
+              collectionId="cameras"
+              uuid={camUuid}
+              queryMethod={getCamera}
+              icon={<CameraIcon size={18} />}
+              subtitle={(item) => `${item.manufacturer} • ${item.sensor || "FPV Camera"}`}
+            />
+          ))}
+
+          {/* Receivers */}
+          {build.receiverUuids.map((rxUuid, idx) => (
+            <BomComponentCard
+              key={rxUuid + idx}
+              label={build.receiverUuids.length > 1 ? `Receiver #${idx + 1}` : "Receiver"}
+              collectionId="receivers"
+              uuid={rxUuid}
+              queryMethod={getReceiver}
+              icon={<Radio size={18} />}
+              subtitle={(item) => `${item.manufacturer} • ${item.protocol || "RC Link"}`}
+            />
+          ))}
+
+          {/* Antennas */}
+          {build.antennaUuids.map((antUuid, idx) => (
+            <BomComponentCard
+              key={antUuid + idx}
+              label={build.antennaUuids.length > 1 ? `Antenna #${idx + 1}` : "Antenna"}
+              collectionId="antennas"
+              uuid={antUuid}
+              queryMethod={getAntenna}
+              icon={<Radio size={18} />}
+              subtitle={(item) =>
+                `${item.manufacturer} • ${item.polarization || ""} ${item.frequencyBandMhz ? `${item.frequencyBandMhz}MHz` : ""}`
+              }
+            />
+          ))}
+
+          {/* Optional GPS Receiver */}
+          {build.gpsReceiverUuid && (
+            <BomComponentCard
+              label="GPS Receiver"
+              collectionId="gps_receivers"
+              uuid={build.gpsReceiverUuid}
+              queryMethod={getGpsReceiver}
+              icon={<Compass size={18} />}
+              subtitle={(item) => `${item.manufacturer} • ${item.protocol || "GNSS"}`}
+            />
+          )}
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* REFERENCE LINKS                                              */}
+      {/* ============================================================ */}
+      {build.referenceLinks && build.referenceLinks.length > 0 && (
+        <section className="mt-8 mb-12">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">
+            Reference Links & Documentation
+          </h2>
+          <div className="flex flex-col gap-2">
+            {build.referenceLinks.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-3.5 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-800 rounded-xl transition-colors group shadow-xs"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
+                    {LINK_TYPE_LABELS[link.type] || "Link"}
+                  </span>
+                  <span className="text-sm text-zinc-700 dark:text-zinc-300 font-mono truncate max-w-lg">
+                    {link.url}
+                  </span>
+                </div>
+                <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 ml-2" />
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}

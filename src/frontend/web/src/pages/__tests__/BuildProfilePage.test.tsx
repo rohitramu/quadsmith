@@ -1,0 +1,134 @@
+import { describe, it, expect } from "vitest";
+import { screen } from "@testing-library/react";
+import { renderWithProviders } from "../../test/test-utils";
+import { BuildProfilePage } from "../BuildProfilePage";
+import { Route, Routes } from "react-router-dom";
+
+describe("BuildProfilePage Component", () => {
+  function renderBuildProfile(buildId: string = "bando-basher-5-inch") {
+    return renderWithProviders(
+      <Routes>
+        <Route path="/builds/:buildId" element={<BuildProfilePage />} />
+      </Routes>,
+      { route: `/builds/${buildId}` },
+    );
+  }
+
+  it("renders breadcrumbs, build name, handle, and description", async () => {
+    renderBuildProfile();
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("@bando-basher-5-inch")).toBeInTheDocument();
+    expect(
+      screen.getByText(/durable 5-inch freestyle quadcopter built to withstand concrete hits/i),
+    ).toBeInTheDocument();
+
+    const breadcrumbs = screen.getByRole("navigation", { name: "Breadcrumb" });
+    expect(breadcrumbs).toBeInTheDocument();
+  });
+
+  it("renders build evaluation metrics dashboard and compatibility badge", async () => {
+    renderBuildProfile();
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 2,
+        name: /build evaluation & performance/i,
+      }),
+    ).toBeInTheDocument();
+
+    // Check AUW, TWR, Hover Throttle, Flight Time metrics
+    expect(await screen.findByText("All-Up Weight")).toBeInTheDocument();
+    expect(await screen.findByText("566")).toBeInTheDocument(); // 565.5 rounded to 566
+
+    expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
+    expect(screen.getByText("5.3")).toBeInTheDocument(); // 3000 / 565.5 ~ 5.3
+
+    expect(screen.getByText("Hover Throttle")).toBeInTheDocument();
+    expect(screen.getByText("Est. Flight Time")).toBeInTheDocument();
+
+    // All evaluated components are fully compatible and flight-ready
+    expect(
+      screen.getByText(/all evaluated components are fully compatible and flight-ready/i),
+    ).toBeInTheDocument();
+  });
+
+  it("renders Bill of Materials (BOM) with hardware components and product links", async () => {
+    renderBuildProfile();
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 2,
+        name: /bill of materials \(hardware components\)/i,
+      }),
+    ).toBeInTheDocument();
+
+    // Frame
+    expect(await screen.findByText("Master 5 V2")).toBeInTheDocument();
+    // Motor
+    expect(await screen.findByText("ECO II 2207")).toBeInTheDocument();
+    // Battery
+    expect(await screen.findByText("Black Series 1500mAh 6S 100C")).toBeInTheDocument();
+    // FC
+    expect(await screen.findByText("F405 V4 FC")).toBeInTheDocument();
+    // ESC
+    expect(await screen.findByText("SpeedyBee 50A 4-in-1 ESC")).toBeInTheDocument();
+    // Propeller
+    expect(await screen.findByText("Hurricane 51433")).toBeInTheDocument();
+    // Camera
+    expect(await screen.findByText("Ratel 2")).toBeInTheDocument();
+    // VTX
+    expect(await screen.findByText("Unify Pro32 Nano")).toBeInTheDocument();
+    // Receiver
+    expect(await screen.findByText("Crossfire Nano RX")).toBeInTheDocument();
+    // Antenna
+    expect(await screen.findByText("Lollipop 4 RHCP")).toBeInTheDocument();
+    // GPS
+    expect(await screen.findByText("M8Q-5883 GPS & Compass")).toBeInTheDocument();
+  });
+
+  it("allows interactive payload weight simulation with presets", async () => {
+    const { user } = renderBuildProfile();
+
+    expect(await screen.findByText("Payload Simulator")).toBeInTheDocument();
+
+    // Click GoPro preset (+133g)
+    const goProButton = screen.getByRole("button", { name: "GoPro (+133g)" });
+    await user.click(goProButton);
+
+    // AUW should update to include payload: 565.5 + 133 = 698.5 -> 699g
+    expect(await screen.findByText("699")).toBeInTheDocument();
+    expect(screen.getByText("+133g")).toBeInTheDocument();
+    expect(screen.getByText(/includes \+133g payload/i)).toBeInTheDocument();
+  });
+
+  it("renders reference documentation links", async () => {
+    renderBuildProfile();
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 2,
+        name: /reference links & documentation/i,
+      }),
+    ).toBeInTheDocument();
+
+    expect(screen.getByText("https://github.com/tbs-trappy/source_one")).toBeInTheDocument();
+  });
+
+  it("displays not found error when build does not exist", async () => {
+    renderBuildProfile("unknown-build-id");
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Build Not Found" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/could not find a build profile for "unknown-build-id"/i),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /return to builds feed/i })).toHaveAttribute(
+      "href",
+      "/",
+    );
+  });
+});

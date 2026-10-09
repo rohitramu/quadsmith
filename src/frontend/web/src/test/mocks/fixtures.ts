@@ -90,3 +90,177 @@ export const mockFC2: FlightController = create(FlightControllerSchema, {
 });
 
 export const mockFlightControllers: FlightController[] = [mockFC1, mockFC2];
+
+import { BatterySchema, type Battery } from "../../gen/quadsmith/battery_pb";
+import {
+  ElectronicSpeedControllerSchema,
+  type ElectronicSpeedController,
+} from "../../gen/quadsmith/electronic_speed_controller_pb";
+import { PropellerSchema, type Propeller } from "../../gen/quadsmith/propeller_pb";
+import { CameraSchema, type Camera } from "../../gen/quadsmith/camera_pb";
+import {
+  VideoTransmitterSchema,
+  type VideoTransmitter,
+} from "../../gen/quadsmith/video_transmitter_pb";
+import { ReceiverSchema, type Receiver } from "../../gen/quadsmith/receiver_pb";
+import { AntennaSchema, type Antenna } from "../../gen/quadsmith/antenna_pb";
+import { GpsReceiverSchema, type GpsReceiver } from "../../gen/quadsmith/gps_receiver_pb";
+import { BuildSchema, type Build } from "../../gen/quadsmith/build_pb";
+import {
+  EvaluateBuildResponseSchema,
+  type EvaluateBuildResponse,
+} from "../../gen/quadsmith/evaluator_pb";
+
+export const mockBattery1: Battery = create(BatterySchema, {
+  uuid: "018f0000-0000-7000-0000-000000000030",
+  id: "cnhl-black-series-1500-6s",
+  manufacturer: "CNHL",
+  name: "Black Series 1500mAh 6S 100C",
+  capacityMah: 1500,
+  cellCountS: 6,
+  weightG: 220,
+  chemistry: "LiPo",
+  connector: "XT60",
+  description: "High discharge 6S battery pack for freestyle drones.",
+});
+
+export const mockESC1: ElectronicSpeedController = create(ElectronicSpeedControllerSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000040",
+  id: "speedybee-50a-4in1",
+  manufacturer: "SpeedyBee",
+  name: "SpeedyBee 50A 4-in-1 ESC",
+  weightG: 14,
+  maxMotors: 4,
+  motorCurrentMaxA: 50,
+  motorCurrentBurstA: 60,
+  description: "Durable 50A 4-in-1 BLHeli_S electronic speed controller.",
+});
+
+export const mockPropeller1: Propeller = create(PropellerSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000050",
+  id: "gemfan-51433-3-blade",
+  manufacturer: "Gemfan",
+  name: "Hurricane 51433",
+  weightG: 3.8,
+  diameterMm: 129.5,
+  pitchMm: 109.2,
+  blades: 3,
+  description: "Crisp throttle response and durable polycarbonate construction.",
+});
+
+export const mockCamera1: Camera = create(CameraSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000060",
+  id: "caddx-ratel-2",
+  manufacturer: "Caddx",
+  name: "Ratel 2",
+  weightG: 5.9,
+  protocol: "Analog",
+  sensorSize: "1/1.8 Inch Starlight",
+  description: "Great low light micro FPV analog camera.",
+});
+
+export const mockVTX1: VideoTransmitter = create(VideoTransmitterSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000070",
+  id: "tbs-unify-pro32-nano",
+  manufacturer: "TBS",
+  name: "Unify Pro32 Nano",
+  weightG: 8.7,
+  maxPowerMw: 1000,
+  protocol: "SmartAudio",
+  inputVoltageMinV: 3,
+  inputVoltageMaxV: 13,
+  description: "Ultra-compact 5.8GHz video transmitter with up to 1W output power.",
+});
+
+export const mockReceiver1: Receiver = create(ReceiverSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000080",
+  id: "tbs-crossfire-nano-rx",
+  manufacturer: "TBS",
+  name: "Crossfire Nano RX",
+  weightG: 0.5,
+  protocol: "CRSF",
+  description: "Long-range CRSF telemetry receiver.",
+});
+
+export const mockAntenna1: Antenna = create(AntennaSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000090",
+  id: "foxeer-lollipop-4",
+  manufacturer: "Foxeer",
+  name: "Lollipop 4 RHCP",
+  weightG: 7.3,
+  frequencyBandMhz: 5800,
+  gainDbi: 2.6,
+  polarization: "RHCP",
+  connector: "SMA",
+  description: "Omnidirectional high-gain circular polarized antenna.",
+});
+
+export const mockGps1: GpsReceiver = create(GpsReceiverSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000095",
+  id: "matek-m8q-5883",
+  manufacturer: "Matek",
+  name: "M8Q-5883 GPS & Compass",
+  weightG: 11.3,
+  protocol: "UBLOX",
+  hasCompass: true,
+  description: "Compact GNSS module with QMC5883L digital compass.",
+});
+
+export const mockBuild1: Build = create(BuildSchema, {
+  uuid: "01923019-2131-4192-3192-391294812399",
+  id: "bando-basher-5-inch",
+  name: "Bando Basher 5 inch",
+  description:
+    "A durable 5-inch freestyle quadcopter built to withstand concrete hits in abandoned buildings, featuring the TBS Source One V5 frame, T-Motor F60 PRO V 1950KV motors, SpeedyBee F405 V4 stack, Caddx Ratel 2 camera, and CNHL 1500mAh 6S LiPo.",
+  frameUuid: mockFrame1.uuid,
+  motorUuid: mockMotor1.uuid,
+  batteryUuid: mockBattery1.uuid,
+  flightControllerUuid: mockFC1.uuid,
+  electronicSpeedControllerUuids: [mockESC1.uuid],
+  propellerUuid: mockPropeller1.uuid,
+  cameraUuids: [mockCamera1.uuid],
+  videoTransmitterUuid: mockVTX1.uuid,
+  receiverUuids: [mockReceiver1.uuid],
+  antennaUuids: [mockAntenna1.uuid],
+  gpsReceiverUuid: mockGps1.uuid,
+  referenceLinks: [
+    {
+      type: ReferenceLinkType.DOCUMENTATION,
+      url: "https://github.com/tbs-trappy/source_one",
+    },
+    {
+      type: ReferenceLinkType.PURCHASE,
+      url: "https://www.getfpv.com/tbs-source-one-v5-5-frame-kit.html",
+    },
+  ],
+});
+
+export const mockBuild2: Build = create(BuildSchema, {
+  uuid: "01923019-2131-4192-3192-391294812398",
+  id: "long-range-explorer",
+  name: "Long Range Explorer 7 inch",
+  description:
+    "A dedicated 7-inch mountain surfer and long-range cruiser engineered for 30+ minute endurance flights with Li-ion pack.",
+  frameUuid: mockFrame1.uuid,
+  motorUuid: mockMotor2.uuid,
+  batteryUuid: mockBattery1.uuid,
+  flightControllerUuid: mockFC1.uuid,
+  electronicSpeedControllerUuids: [mockESC1.uuid],
+  propellerUuid: mockPropeller1.uuid,
+  cameraUuids: [mockCamera1.uuid],
+  videoTransmitterUuid: mockVTX1.uuid,
+  receiverUuids: [mockReceiver1.uuid],
+  antennaUuids: [mockAntenna1.uuid],
+  referenceLinks: [],
+});
+
+export const mockBuilds: Build[] = [mockBuild1, mockBuild2];
+
+export const mockEvaluation1: EvaluateBuildResponse = create(EvaluateBuildResponseSchema, {
+  totalWeightG: 565.5,
+  thrustToWeightRatio: 5.4,
+  hoverThrottlePercent: 18.5,
+  estimatedFlightTimeMin: 5.2,
+  warnings: [],
+  errors: [],
+});
