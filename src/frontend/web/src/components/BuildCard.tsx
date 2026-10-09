@@ -27,7 +27,7 @@ export function BuildCard({ build }: BuildCardProps) {
   // Quick evaluation stats preview
   const { data: evaluation } = useQuery(
     evaluateBuild,
-    { build, payloadWeightG: 0 },
+    { build, buildId: build.id || build.uuid, payloadWeightG: 0 },
     { staleTime: 60_000 },
   );
 

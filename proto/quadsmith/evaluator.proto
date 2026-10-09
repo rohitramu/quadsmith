@@ -79,6 +79,7 @@ message GetBuildElectricalLimitsResponse {
   float max_current_a = 3;
   // Lightest compatible battery ID recommended for this build
   string default_battery_id = 4;
+  string build_id = 5;
 }
 
 service EvaluatorService {

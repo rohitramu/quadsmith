@@ -143,7 +143,7 @@ export function BuildProfilePage() {
 
   const { data: electricalLimits } = useQuery(
     getBuildElectricalLimits,
-    { build },
+    { build, buildId: build?.id || buildId },
     { enabled: !!build },
   );
 
@@ -188,6 +188,7 @@ export function BuildProfilePage() {
     evaluateBuild,
     {
       build,
+      buildId: build?.id || buildId,
       payloadWeightG,
       batteryId: selectedBatteryId,
     },

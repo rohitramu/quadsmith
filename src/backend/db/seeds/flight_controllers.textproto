@@ -1550,5 +1550,5 @@ flight_controllers: {
   }
 
   min_voltage: 3.0
-  max_voltage: 4.35
+  max_voltage: 8.7
 }

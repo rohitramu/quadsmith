@@ -417,9 +417,10 @@ func newRootCmd() *cobra.Command {
 			payload, _ := cmd.Flags().GetFloat32("payload")
 			battery, _ := cmd.Flags().GetString("battery")
 			eReq := &pb.EvaluateBuildRequest{
-				Build: bRes.Msg,
+				BuildId:        args[0],
+				Build:          bRes.Msg,
 				PayloadWeightG: payload,
-				BatteryId: battery,
+				BatteryId:      battery,
 			}
 			eRes, err := evalClient.EvaluateBuild(context.Background(), connect.NewRequest(eReq))
 			if err != nil { return fmt.Errorf("evaluation failed: %w", err) }
@@ -436,8 +437,19 @@ func newRootCmd() *cobra.Command {
 				BuildId: args[0],
 			}))
 			if err == nil && lRes.Msg != nil {
-				filter = fmt.Sprintf("min_voltage >= %.2f && max_voltage <= %.2f && max_current_a >= %.2f",
-					lRes.Msg.MinVoltage, lRes.Msg.MaxVoltage, lRes.Msg.MaxCurrentA)
+				var clauses []string
+				if lRes.Msg.MinVoltage > 0 {
+					clauses = append(clauses, fmt.Sprintf("min_voltage >= %.2f", lRes.Msg.MinVoltage))
+				}
+				if lRes.Msg.MaxVoltage > 0 {
+					clauses = append(clauses, fmt.Sprintf("max_voltage <= %.2f", lRes.Msg.MaxVoltage))
+				}
+				if lRes.Msg.MaxCurrentA > 0 {
+					clauses = append(clauses, fmt.Sprintf("max_current_a >= %.2f", lRes.Msg.MaxCurrentA))
+				}
+				if len(clauses) > 0 {
+					filter = strings.Join(clauses, " && ")
+				}
 			}
 		}
 		res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{

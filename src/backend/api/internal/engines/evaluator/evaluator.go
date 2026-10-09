@@ -21,12 +21,20 @@ func NewEvaluatorServiceHandler(db *pgxpool.Pool) *EvaluatorServiceHandler {
 
 func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
 	b := req.Msg.GetBuild()
-	if b == nil && req.Msg.GetBuildId() != "" {
-		fetched, err := pb.GetBuild(ctx, s.db, req.Msg.GetBuildId(), nil)
-		if err != nil {
-			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", req.Msg.GetBuildId()))
+	buildId := req.Msg.GetBuildId()
+	if b != nil && buildId == "" {
+		buildId = b.Id
+		if buildId == "" {
+			buildId = b.Uuid
 		}
-		b = fetched
+	}
+	if (b == nil || (b.FrameUuid == "" && b.MotorUuid == "")) && buildId != "" && s.db != nil {
+		fetched, err := pb.GetBuild(ctx, s.db, buildId, nil)
+		if err == nil && fetched != nil {
+			b = fetched
+		} else if b == nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
+		}
 	}
 	if b == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is required"))
@@ -69,6 +77,13 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	electrical, _ := s.CalculateElectricalLimits(ctx, b)
 	if electrical == nil {
 		electrical = &pb.GetBuildElectricalLimitsResponse{}
+	}
+
+	if electrical.MinVoltage > 0 && electrical.MaxVoltage > 0 && electrical.MinVoltage > electrical.MaxVoltage {
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+			Message:  fmt.Sprintf("Build electrical conflict: Minimum component voltage requirement (%.1fV) exceeds maximum component voltage rating (%.1fV)", electrical.MinVoltage, electrical.MaxVoltage),
+		})
 	}
 
 	// 3. Fetch Battery
@@ -228,12 +243,25 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	)
 	systemMessages = append(systemMessages, phys.SystemMessages...)
 
-	buildId := b.Id
-	if buildId == "" {
-		buildId = req.Msg.GetBuildId()
-	}
-	if buildId == "" {
+	if b.Id != "" {
+		buildId = b.Id
+	} else if buildId == "" {
 		buildId = b.Uuid
+	}
+	if b != nil {
+		if b.Id != "" {
+			buildId = b.Id
+		} else if buildId != "" && s.db != nil {
+			var canonicalId string
+			if err := s.db.QueryRow(ctx, `SELECT id FROM builds WHERE uuid::text = $1 OR id = $1`, buildId).Scan(&canonicalId); err == nil && canonicalId != "" {
+				buildId = canonicalId
+			}
+		} else if b.Uuid != "" && s.db != nil {
+			var canonicalId string
+			if err := s.db.QueryRow(ctx, `SELECT id FROM builds WHERE uuid::text = $1 OR id = $1`, b.Uuid).Scan(&canonicalId); err == nil && canonicalId != "" {
+				buildId = canonicalId
+			}
+		}
 	}
 
 	batteryId := ""
@@ -624,10 +652,17 @@ func CalculatePhysics(
 // and returns the lightest compatible battery.
 func (s *EvaluatorServiceHandler) GetBuildElectricalLimits(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
 	b := req.Msg.GetBuild()
-	if b == nil && req.Msg.GetBuildId() != "" {
-		fetched, err := pb.GetBuild(ctx, s.db, req.Msg.GetBuildId(), nil)
+	buildId := req.Msg.GetBuildId()
+	if b != nil && buildId == "" {
+		buildId = b.Id
+		if buildId == "" {
+			buildId = b.Uuid
+		}
+	}
+	if (b == nil || (b.FlightControllerUuid == "" && b.MotorUuid == "" && len(b.ElectronicSpeedControllerUuids) == 0)) && buildId != "" && s.db != nil {
+		fetched, err := pb.GetBuild(ctx, s.db, buildId, nil)
 		if err != nil {
-			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", req.Msg.GetBuildId()))
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
 		}
 		b = fetched
 	}
@@ -638,6 +673,20 @@ func (s *EvaluatorServiceHandler) GetBuildElectricalLimits(ctx context.Context, 
 	limits, err := s.CalculateElectricalLimits(ctx, b)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if b.Id != "" {
+		limits.BuildId = b.Id
+	} else if buildId != "" && s.db != nil {
+		var canonicalId string
+		if err := s.db.QueryRow(ctx, `SELECT id FROM builds WHERE uuid::text = $1 OR id = $1`, buildId).Scan(&canonicalId); err == nil && canonicalId != "" {
+			limits.BuildId = canonicalId
+		}
+	} else if b.Uuid != "" && s.db != nil {
+		var canonicalId string
+		if err := s.db.QueryRow(ctx, `SELECT id FROM builds WHERE uuid::text = $1 OR id = $1`, b.Uuid).Scan(&canonicalId); err == nil && canonicalId != "" {
+			limits.BuildId = canonicalId
+		}
 	}
 
 	return connect.NewResponse(limits), nil
@@ -719,10 +768,6 @@ func ComputeElectricalLimits(fc *pb.FlightController, escs []*pb.ElectronicSpeed
 		updateMaxV(motor.MaxVoltage)
 	}
 
-	if maxV > 0 && minV > 0 && maxV < minV {
-		maxV = minV
-	}
-
 	// Calculate max_current_a required by the build
 	var maxCurrentA float32 = 0
 	if motor != nil && motor.MaxCurrentA > 0 {
@@ -750,7 +795,7 @@ func ComputeElectricalLimits(fc *pb.FlightController, escs []*pb.ElectronicSpeed
 
 // FindLightestCompatibleBattery finds the lightest compatible battery in the database.
 func (s *EvaluatorServiceHandler) FindLightestCompatibleBattery(ctx context.Context, minV, maxV, maxA float32) string {
-	if s.db == nil {
+	if s.db == nil || (minV > 0 && maxV > 0 && minV > maxV) {
 		return ""
 	}
 

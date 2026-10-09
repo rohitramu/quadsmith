@@ -421,6 +421,7 @@ type GetBuildElectricalLimitsResponse struct {
 	MaxCurrentA float32                `protobuf:"fixed32,3,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
 	// Lightest compatible battery ID recommended for this build
 	DefaultBatteryId string `protobuf:"bytes,4,opt,name=default_battery_id,json=defaultBatteryId,proto3" json:"default_battery_id,omitempty"`
+	BuildId          string `protobuf:"bytes,5,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -483,6 +484,13 @@ func (x *GetBuildElectricalLimitsResponse) GetDefaultBatteryId() string {
 	return ""
 }
 
+func (x *GetBuildElectricalLimitsResponse) GetBuildId() string {
+	if x != nil {
+		return x.BuildId
+	}
+	return ""
+}
+
 var File_evaluator_proto protoreflect.FileDescriptor
 
 const file_evaluator_proto_rawDesc = "" +
@@ -519,14 +527,15 @@ const file_evaluator_proto_rawDesc = "" +
 	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentAJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\x19estimated_flight_time_minR\bwarningsR\x06errors\"d\n" +
 	"\x1fGetBuildElectricalLimitsRequest\x12&\n" +
 	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12\x19\n" +
-	"\bbuild_id\x18\x02 \x01(\tR\abuildId\"\xb6\x01\n" +
+	"\bbuild_id\x18\x02 \x01(\tR\abuildId\"\xd1\x01\n" +
 	" GetBuildElectricalLimitsResponse\x12\x1f\n" +
 	"\vmin_voltage\x18\x01 \x01(\x02R\n" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x02 \x01(\x02R\n" +
 	"maxVoltage\x12\"\n" +
 	"\rmax_current_a\x18\x03 \x01(\x02R\vmaxCurrentA\x12,\n" +
-	"\x12default_battery_id\x18\x04 \x01(\tR\x10defaultBatteryId*\xaa\x01\n" +
+	"\x12default_battery_id\x18\x04 \x01(\tR\x10defaultBatteryId\x12\x19\n" +
+	"\bbuild_id\x18\x05 \x01(\tR\abuildId*\xaa\x01\n" +
 	"\x15SystemMessageSeverity\x12'\n" +
 	"#SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cSYSTEM_MESSAGE_SEVERITY_INFO\x10\x01\x12#\n" +

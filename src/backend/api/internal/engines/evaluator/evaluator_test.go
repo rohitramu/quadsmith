@@ -562,4 +562,51 @@ func TestComputeElectricalLimits(t *testing.T) {
 			t.Errorf("Expected MaxCurrentA 0, got %.1f", limits.MaxCurrentA)
 		}
 	})
+
+	t.Run("Conflicting Voltage Hardware Spec", func(t *testing.T) {
+		fc := &pb.FlightController{
+			MinVoltage: 3.0,
+			MaxVoltage: 4.35,
+		}
+		motor := &pb.Motor{
+			MinVoltage:  6.0,
+			MaxVoltage:  17.4,
+			MaxCurrentA: 9.5,
+		}
+		limits := ComputeElectricalLimits(fc, nil, motor)
+		if limits.MinVoltage != 6.0 {
+			t.Errorf("Expected MinVoltage 6.0, got %.1f", limits.MinVoltage)
+		}
+		if limits.MaxVoltage != 4.35 {
+			t.Errorf("Expected MaxVoltage 4.35 (without clamping to minV), got %.1f", limits.MaxVoltage)
+		}
+	})
+
+	t.Run("Toothpick 1S-2S FC with 2S-4S ESC and Motor", func(t *testing.T) {
+		fc := &pb.FlightController{
+			MinVoltage: 3.0,
+			MaxVoltage: 8.7,
+		}
+		esc := &pb.ElectronicSpeedController{
+			MinVoltage:       6.0,
+			MaxVoltage:       17.4,
+			MaxMotors:        4,
+			MotorCurrentMaxA: 20.0,
+		}
+		motor := &pb.Motor{
+			MinVoltage:  6.0,
+			MaxVoltage:  17.4,
+			MaxCurrentA: 9.5,
+		}
+		limits := ComputeElectricalLimits(fc, []*pb.ElectronicSpeedController{esc}, motor)
+		if limits.MinVoltage != 6.0 {
+			t.Errorf("Expected MinVoltage 6.0, got %.1f", limits.MinVoltage)
+		}
+		if limits.MaxVoltage != 8.7 {
+			t.Errorf("Expected MaxVoltage 8.7, got %.1f", limits.MaxVoltage)
+		}
+		if limits.MaxCurrentA != 38.0 {
+			t.Errorf("Expected MaxCurrentA 38.0 (9.5A * 4), got %.1f", limits.MaxCurrentA)
+		}
+	})
 }
