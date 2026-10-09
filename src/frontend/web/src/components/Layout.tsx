@@ -8,6 +8,7 @@ import logoLight from "../assets/quadsmith-logo-light.svg";
 import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
+import { CollectionIcon } from "./CollectionIcon";
 
 export function Layout() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
@@ -188,9 +189,12 @@ export function Layout() {
                             />
                           ) : (
                             <div
-                              className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${colColor.iconBgClass}`}
+                              className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 ${colColor.textClass}`}
                             >
-                              <Search size={16} />
+                              <CollectionIcon
+                                collection={item.path || item.collectionName}
+                                size={16}
+                              />
                             </div>
                           )}
 
@@ -203,7 +207,6 @@ export function Layout() {
                                 collection={item.path || item.collectionName}
                                 label={item.collectionName}
                                 size="xs"
-                                withDot
                               />
                             </div>
 

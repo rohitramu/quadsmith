@@ -4,14 +4,16 @@ import { renderWithProviders } from "../../test/test-utils";
 import { CollectionBadge } from "../CollectionBadge";
 
 describe("CollectionBadge Component", () => {
-  it("renders collection name and styled badge with dot", () => {
-    renderWithProviders(<CollectionBadge collection="batteries" withDot />);
+  it("renders collection name and styled badge without dot", () => {
+    renderWithProviders(<CollectionBadge collection="batteries" />);
 
     const badge = screen.getByText("Batteries");
     expect(badge).toBeInTheDocument();
 
     const container = screen.getByTestId("collection-badge");
     expect(container).toHaveClass("bg-emerald-100");
+    // Ensure no child dot span exists
+    expect(container.children.length).toBe(1);
   });
 
   it("supports custom label", () => {

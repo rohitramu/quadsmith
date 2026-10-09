@@ -95,7 +95,7 @@ function BomComponentCard({
     <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
       <div className="flex items-center gap-3 min-w-0">
         <div
-          className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${colColor.iconBgClass}`}
+          className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 ${colColor.textClass}`}
         >
           {icon}
         </div>
@@ -252,9 +252,6 @@ export function BuildProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Builds Collection Trim Line */}
-      <div className={`h-1.5 w-24 rounded-full mb-4 ${buildColor.trimClass}`} />
-
       {/* Breadcrumb Navigation */}
       <nav
         aria-label="Breadcrumb"
@@ -286,7 +283,7 @@ export function BuildProfilePage() {
       {/* Build Profile Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
-          <CollectionBadge collection="builds" label="Build" size="sm" withDot />
+          <CollectionBadge collection="builds" label="Build" size="sm" />
           <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
             @{build.id}
           </span>

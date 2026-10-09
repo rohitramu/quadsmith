@@ -119,7 +119,7 @@ export function BuildCard({ build }: BuildCardProps) {
             <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
               <span>@{build.id}</span>
               <span>•</span>
-              <CollectionBadge collection="builds" label="Build" size="xs" withDot />
+              <CollectionBadge collection="builds" label="Build" size="xs" />
               <span>•</span>
               <span className="text-blue-600 dark:text-blue-400 font-sans font-medium">
                 {categoryTag}

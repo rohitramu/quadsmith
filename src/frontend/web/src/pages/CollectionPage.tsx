@@ -25,7 +25,6 @@ import {
   type ColumnConfig,
 } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
-import { CollectionBadge } from "../components/CollectionBadge";
 
 function ColumnHeader({
   title,
@@ -534,9 +533,6 @@ function CollectionTableView({
 
   return (
     <div>
-      {/* Collection Accent Trim Line */}
-      <div className={`h-1.5 w-24 rounded-full mb-4 ${collectionColor.trimClass}`} />
-
       <nav
         aria-label="Breadcrumb"
         className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
@@ -565,10 +561,7 @@ function CollectionTableView({
       </nav>
 
       <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold">{collection.name}</h1>
-          <CollectionBadge collection={collection.id} label={collection.name} size="sm" withDot />
-        </div>
+        <h1 className="text-3xl font-bold">{collection.name}</h1>
       </div>
 
       {/* Smart Filter Input above the table */}

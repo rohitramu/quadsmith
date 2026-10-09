@@ -14,7 +14,6 @@ export function CollectionBadge({
   collection,
   label,
   size = "xs",
-  withDot = false,
   to,
   className = "",
 }: CollectionBadgeProps) {
@@ -27,23 +26,11 @@ export function CollectionBadge({
     md: "text-sm px-2.5 py-1 rounded-lg",
   }[size];
 
-  const dotSizeClasses = {
-    xs: "w-1.5 h-1.5",
-    sm: "w-2 h-2",
-    md: "w-2.5 h-2.5",
-  }[size];
-
   const badgeContent = (
     <span
       data-testid="collection-badge"
-      className={`inline-flex items-center gap-1.5 font-medium border font-mono shrink-0 transition-colors ${color.badgeClass} ${sizeClasses} ${className}`}
+      className={`inline-flex items-center font-medium border font-mono shrink-0 transition-colors ${color.badgeClass} ${sizeClasses} ${className}`}
     >
-      {withDot && (
-        <span
-          className={`rounded-full shrink-0 ${color.dotClass} ${dotSizeClasses}`}
-          aria-hidden="true"
-        />
-      )}
       <span className="truncate">{displayText}</span>
     </span>
   );

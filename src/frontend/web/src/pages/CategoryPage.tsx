@@ -28,7 +28,7 @@ export function CategoryPage() {
                   <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors">
                     {c.name}
                   </h2>
-                  <CollectionBadge collection={c.id} size="xs" withDot />
+                  <CollectionBadge collection={c.id} size="xs" />
                 </div>
                 <p className="text-zinc-500 dark:text-zinc-400 text-sm">
                   Browse all {c.name.toLowerCase()}

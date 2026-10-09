@@ -41,9 +41,6 @@ function ProductDetailView({
 
   return (
     <div className="max-w-3xl">
-      {/* Collection Accent Trim Line */}
-      <div className={`h-1.5 w-24 rounded-full mb-4 ${collectionColor.trimClass}`} />
-
       <nav
         aria-label="Breadcrumb"
         className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
@@ -92,12 +89,7 @@ function ProductDetailView({
         <>
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-2">
-              <CollectionBadge
-                collection={collection.id}
-                label={collection.name}
-                size="sm"
-                withDot
-              />
+              <CollectionBadge collection={collection.id} label={collection.name} size="sm" />
             </div>
             <h1 className="text-3xl font-bold">{item.name || item.id}</h1>
             <p className="text-xl text-zinc-500 dark:text-zinc-400">
