@@ -153,7 +153,24 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 	if res.Msg.TotalWeightG <= 0 {
 		t.Errorf("expected positive total_weight_g, got: %v", res.Msg.TotalWeightG)
 	}
+	if res.Msg.BuildWeightG <= 0 || res.Msg.BuildWeightG != res.Msg.TotalWeightG {
+		t.Errorf("expected build_weight_g == total_weight_g, got build_weight_g=%v, total_weight_g=%v", res.Msg.BuildWeightG, res.Msg.TotalWeightG)
+	}
 	if res.Msg.ThrustToWeightRatio <= 0 {
 		t.Errorf("expected positive thrust_to_weight_ratio, got: %v", res.Msg.ThrustToWeightRatio)
+	}
+
+	// 5. Evaluate with payload and verify build weight includes the payload
+	resWithPayload, err := evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
+		BuildId:        "ultralight-toothpick",
+		BatteryId:      "betafpv-lava-1s-300mah-75c-lihv",
+		PayloadWeightG: 25.0,
+	}))
+	if err != nil {
+		t.Fatalf("EvaluateBuild with payload failed: %v", err)
+	}
+	diff := resWithPayload.Msg.BuildWeightG - res.Msg.BuildWeightG
+	if diff < 24.9 || diff > 25.1 {
+		t.Errorf("expected build weight to increase by 25g with payload, got diff=%.2f (before=%.2f, after=%.2f)", diff, res.Msg.BuildWeightG, resWithPayload.Msg.BuildWeightG)
 	}
 }

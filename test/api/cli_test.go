@@ -168,6 +168,9 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	if _, ok := eval["system_messages"]; !ok {
 		t.Errorf("Expected system_messages in evaluation response, got: %v", eval)
 	}
+	if eval["build_weight_g"] == nil || eval["build_weight_g"] != eval["total_weight_g"] {
+		t.Errorf("Expected build_weight_g == total_weight_g, got build_weight_g=%v, total_weight_g=%v", eval["build_weight_g"], eval["total_weight_g"])
+	}
 	t.Logf("CLI returned evaluation: %v", eval)
 
 	// 3. Test --payload and --battery flags

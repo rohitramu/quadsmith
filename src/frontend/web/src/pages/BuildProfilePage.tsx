@@ -506,7 +506,7 @@ export function BuildProfilePage() {
                 </div>
                 <div>
                   <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                    {Math.round(evaluation.totalWeightG)}
+                    {Math.round(evaluation.buildWeightG || evaluation.totalWeightG)}
                     <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
                   </div>
                   <div className="text-[11px] text-zinc-500 mt-1">

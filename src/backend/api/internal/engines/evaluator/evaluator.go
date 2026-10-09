@@ -292,6 +292,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		PayloadWeightG:       payloadWeight,
 		BatteryId:            evaluatedBatteryId,
 		TotalWeightG:         totalWeight,
+		BuildWeightG:         totalWeight,
 		ThrustToWeightRatio:  phys.ThrustToWeightRatio,
 		HoverThrottlePercent: phys.HoverThrottlePercent,
 		HoverRpm:             phys.HoverRpm,
