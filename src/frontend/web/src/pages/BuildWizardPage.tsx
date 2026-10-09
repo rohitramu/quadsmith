@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@connectrpc/connect-query";
 import { create } from "@bufbuild/protobuf";
-import { Search, X, ArrowLeft, Sparkles, AlertCircle, RotateCcw, Save } from "lucide-react";
+import { Search, X, ArrowLeft, Sparkles, AlertCircle, RotateCcw, Save, Check } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStageBar } from "../components/WizardStageBar";
 
@@ -656,12 +656,18 @@ export function BuildWizardPage() {
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                      1A. Frame Chassis <span className="text-red-500 text-xs">*Required</span>
+                      1A. Frame Chassis
                     </h3>
                   </div>
-                  <span className="text-xs text-zinc-500 font-mono">
-                    {selectedFrame ? selectedFrame.name : "None selected"}
-                  </span>
+                  {selectedFrame ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs font-semibold text-red-500 dark:text-red-400">
+                      Required
+                    </span>
+                  )}
                 </div>
 
                 {/* In-line Search Box */}
@@ -737,13 +743,18 @@ export function BuildWizardPage() {
                       1B. Motors{" "}
                       <span className="text-xs text-blue-600 dark:text-blue-400 font-mono font-semibold">
                         ({motorCount}x)
-                      </span>{" "}
-                      <span className="text-red-500 text-xs">*Required</span>
+                      </span>
                     </h3>
                   </div>
-                  <span className="text-xs text-zinc-500 font-mono">
-                    {selectedMotor ? `${selectedMotor.name} (${motorCount}x)` : "None selected"}
-                  </span>
+                  {selectedMotor ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs font-semibold text-red-500 dark:text-red-400">
+                      Required
+                    </span>
+                  )}
                 </div>
 
                 {/* In-line Search Box */}
@@ -821,13 +832,18 @@ export function BuildWizardPage() {
                       1C. Propellers{" "}
                       <span className="text-xs text-blue-600 dark:text-blue-400 font-mono font-semibold">
                         ({motorCount}x)
-                      </span>{" "}
-                      <span className="text-red-500 text-xs">*Required</span>
+                      </span>
                     </h3>
                   </div>
-                  <span className="text-xs text-zinc-500 font-mono">
-                    {selectedProp ? `${selectedProp.name} (${motorCount}x)` : "None selected"}
-                  </span>
+                  {selectedProp ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs font-semibold text-red-500 dark:text-red-400">
+                      Required
+                    </span>
+                  )}
                 </div>
 
                 {/* In-line Search Box */}
@@ -905,12 +921,18 @@ export function BuildWizardPage() {
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                      2A. Flight Controller <span className="text-red-500 text-xs">*Required</span>
+                      2A. Flight Controller
                     </h3>
                   </div>
-                  <span className="text-xs text-zinc-500 font-mono">
-                    {selectedFc ? selectedFc.name : "None selected"}
-                  </span>
+                  {selectedFc ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs font-semibold text-red-500 dark:text-red-400">
+                      Required
+                    </span>
+                  )}
                 </div>
 
                 <div className="relative">
@@ -989,23 +1011,23 @@ export function BuildWizardPage() {
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                      2B. Electronic Speed Controller (ESC){" "}
-                      {fcHasAdequateInternalEsc ? (
-                        <span className="text-emerald-600 dark:text-emerald-400 text-xs font-normal">
-                          (Optional — FC has in-built ESC)
-                        </span>
-                      ) : (
-                        <span className="text-red-500 text-xs">*Required</span>
-                      )}
+                      2B. Electronic Speed Controller (ESC)
                     </h3>
                   </div>
-                  <span className="text-xs text-zinc-500 font-mono">
-                    {useInternalEsc
-                      ? "Using In-built FC ESC"
-                      : selectedEsc
-                        ? selectedEsc.name
-                        : "None selected"}
-                  </span>
+                  {selectedEsc ||
+                  (fcHasAdequateInternalEsc && (useInternalEsc || noneSelections.esc)) ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : fcHasAdequateInternalEsc ? (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                      Optional
+                    </span>
+                  ) : (
+                    <span className="text-xs font-semibold text-red-500 dark:text-red-400">
+                      Required
+                    </span>
+                  )}
                 </div>
 
                 <div className="relative">
@@ -1116,13 +1138,18 @@ export function BuildWizardPage() {
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                      2C. Radio Control Receiver{" "}
-                      <span className="text-red-500 text-xs">*Required</span>
+                      2C. Radio Control Receiver
                     </h3>
                   </div>
-                  <span className="text-xs text-zinc-500 font-mono">
-                    {selectedRx ? selectedRx.name : "None selected"}
-                  </span>
+                  {selectedRx ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs font-semibold text-red-500 dark:text-red-400">
+                      Required
+                    </span>
+                  )}
                 </div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   Provides pilot command link directly to the Flight Controller via serial UART.
@@ -1213,16 +1240,17 @@ export function BuildWizardPage() {
               <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                    3A. Video Transmitter (VTX){" "}
-                    <span className="text-zinc-400 text-xs font-normal">(Optional)</span>
+                    3A. Video Transmitter (VTX)
                   </h3>
-                  <span className="text-xs font-mono text-zinc-500">
-                    {noneSelections.vtx
-                      ? "None (Skipped)"
-                      : selectedVtx
-                        ? selectedVtx.name
-                        : "Not selected"}
-                  </span>
+                  {selectedVtx || noneSelections.vtx ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                      Optional
+                    </span>
+                  )}
                 </div>
 
                 <div className="relative">
@@ -1296,16 +1324,17 @@ export function BuildWizardPage() {
               <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                    3B. FPV Camera{" "}
-                    <span className="text-zinc-400 text-xs font-normal">(Optional)</span>
+                    3B. FPV Camera
                   </h3>
-                  <span className="text-xs font-mono text-zinc-500">
-                    {noneSelections.camera
-                      ? "None (Skipped)"
-                      : selectedCam
-                        ? selectedCam.name
-                        : "Not selected"}
-                  </span>
+                  {selectedCam || noneSelections.camera ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                      Optional
+                    </span>
+                  )}
                 </div>
 
                 <div className="relative">
@@ -1380,16 +1409,17 @@ export function BuildWizardPage() {
               <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                    3C. Video Antenna{" "}
-                    <span className="text-zinc-400 text-xs font-normal">(Optional)</span>
+                    3C. Video Antenna
                   </h3>
-                  <span className="text-xs font-mono text-zinc-500">
-                    {noneSelections.antenna
-                      ? "None (Skipped)"
-                      : selectedAnt
-                        ? selectedAnt.name
-                        : "Not selected"}
-                  </span>
+                  {selectedAnt || noneSelections.antenna ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                      Optional
+                    </span>
+                  )}
                 </div>
 
                 <div className="relative">
@@ -1464,16 +1494,17 @@ export function BuildWizardPage() {
               <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                    3D. GPS Receiver & Compass{" "}
-                    <span className="text-zinc-400 text-xs font-normal">(Optional)</span>
+                    3D. GPS Receiver & Compass
                   </h3>
-                  <span className="text-xs font-mono text-zinc-500">
-                    {noneSelections.gps
-                      ? "None (Skipped)"
-                      : selectedGps
-                        ? selectedGps.name
-                        : "Not selected"}
-                  </span>
+                  {selectedGps || noneSelections.gps ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                      Optional
+                    </span>
+                  )}
                 </div>
 
                 <div className="relative">

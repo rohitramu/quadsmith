@@ -28,10 +28,13 @@ describe("BuildWizardPage Component", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/Interactive Build Wizard/i)).toBeInTheDocument();
 
-    // Stage 1 active, stages 2-4 locked
+    // Stage 1 active, stages 2-4 disabled
     expect(screen.getByText("Airframe & Propulsion")).toBeInTheDocument();
     expect(screen.getByText("0/3")).toBeInTheDocument();
-    expect(screen.getAllByText("Locked").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByRole("button", { name: /stage 2/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /stage 3/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /stage 4/i })).toBeDisabled();
+    expect(screen.getAllByText("Required").length).toBe(3);
 
     // Initial dry weight is 0.0g
     expect(screen.getByText("0.0g")).toBeInTheDocument();
@@ -117,7 +120,10 @@ describe("BuildWizardPage Component", () => {
 
     // Now In-built FC ESC card is clickable
     await user.click(screen.getByText("Use In-built FC ESC"));
-    expect(screen.getByText("Using In-built FC ESC")).toBeInTheDocument();
+    expect(
+      screen.getByText("Use In-built FC ESC").closest(".border-emerald-500"),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Selected").length).toBeGreaterThanOrEqual(1);
   });
 
   it("handles Stage 3 optional components and 'Set All to None'", async () => {

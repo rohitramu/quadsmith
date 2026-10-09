@@ -1,4 +1,4 @@
-import { Check, Lock } from "lucide-react";
+import { Check } from "lucide-react";
 
 export interface WizardStageBarProps {
   currentStage: number;
@@ -105,12 +105,7 @@ export function WizardStageBar({
                     <Check size={12} strokeWidth={3} />
                     <span>Done</span>
                   </span>
-                ) : !isUnlocked ? (
-                  <span className="flex items-center gap-1 text-[11px] font-bold text-zinc-400 dark:text-zinc-500">
-                    <Lock size={11} />
-                    <span>Locked</span>
-                  </span>
-                ) : (
+                ) : !isUnlocked ? null : (
                   <span
                     className={`text-[11px] font-bold ${
                       isActive ? "text-amber-500 dark:text-amber-400" : "text-zinc-400"
