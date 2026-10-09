@@ -23,7 +23,7 @@ export function CollectionBadge({
   const sizeClasses = {
     xs: "text-[10px] px-1.5 py-0.5 rounded-md",
     sm: "text-xs px-2 py-0.5 rounded-md",
-    md: "text-sm px-2.5 py-1 rounded-lg",
+    md: "text-sm px-2 py-0.5 rounded-md",
   }[size];
 
   const badgeContent = (

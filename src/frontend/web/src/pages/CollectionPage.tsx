@@ -546,7 +546,7 @@ function CollectionTableView({
           className="text-zinc-400 dark:text-zinc-500 shrink-0"
           aria-hidden="true"
         />
-        <CollectionBadge collection={collection.id} label={collection.name} size="xs" />
+        <CollectionBadge collection={collection.id} label={collection.name} size="md" />
       </nav>
 
       <div className="mb-6 flex items-center justify-between">
@@ -752,7 +752,7 @@ export function CollectionPage() {
           <CollectionBadge
             collection={collectionId}
             label={collectionId?.replace(/[-_]/g, " ")}
-            size="xs"
+            size="md"
           />
         </nav>
         <p className="text-zinc-500">

@@ -38,4 +38,13 @@ describe("CollectionBadge Component", () => {
     const container = screen.getByTestId("collection-badge");
     expect(container).toHaveClass("bg-slate-100");
   });
+
+  it("applies text-sm sizing classes for md size", () => {
+    renderWithProviders(<CollectionBadge collection="motors" size="md" />);
+
+    const container = screen.getByTestId("collection-badge");
+    expect(container).toHaveClass("text-sm");
+    expect(container).toHaveClass("px-2");
+    expect(container).toHaveClass("py-0.5");
+  });
 });

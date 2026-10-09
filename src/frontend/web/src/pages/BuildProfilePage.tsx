@@ -262,7 +262,7 @@ export function BuildProfilePage() {
           Home
         </Link>
         <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
-        <CollectionBadge collection="builds" label="Builds" size="xs" to="/" />
+        <CollectionBadge collection="builds" label="Builds" size="md" to="/" />
         <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
         <span className="text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-md">
           {build.name || build.id}
@@ -272,7 +272,6 @@ export function BuildProfilePage() {
       {/* Build Profile Header */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-2">
-          <CollectionBadge collection="builds" label="Build" size="sm" />
           <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
             @{build.id}
           </span>
