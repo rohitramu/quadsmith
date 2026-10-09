@@ -24,10 +24,11 @@ func TestEvaluatePhysics_5InchFreestyle(t *testing.T) {
 		CapacityMah: 1500,
 		WeightG:     255,
 	}
-	totalWeight := float32(581.0) // 5" AUW
+	baseWeight := float32(581.0) // 5" AUW bare
+	payloadWeight := float32(0.0)
 	maxEscAmps := float32(50.0)
 
-	twr, hover, flightTime, errs, warns := CalculatePhysics(motor, prop, battery, totalWeight, maxEscAmps)
+	twr, hover, flightTime, errs, warns := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, maxEscAmps)
 
 	if len(errs) > 0 {
 		t.Fatalf("Unexpected physics errors: %v", errs)
@@ -41,14 +42,56 @@ func TestEvaluatePhysics_5InchFreestyle(t *testing.T) {
 		t.Errorf("Expected 5-inch TWR between 8.0 and 12.0, got %.2f", twr)
 	}
 
-	// Hover throttle should follow aerodynamic quadratic curve ~28% - 36%
-	if hover < 28.0 || hover > 36.0 {
-		t.Errorf("Expected hover throttle between 28%% and 36%%, got %.1f%%", hover)
+	// Bare hover throttle should be in typical Betaflight 20% - 26% range
+	if hover < 20.0 || hover > 26.0 {
+		t.Errorf("Expected bare hover throttle between 20%% and 26%%, got %.1f%%", hover)
 	}
 
-	// Hover flight time should be plausible (> 10 min)
-	if flightTime < 10.0 || flightTime > 25.0 {
-		t.Errorf("Expected hover flight time between 10 and 25 min, got %.1f", flightTime)
+	// Mixed/cruising flight time should be realistic (5.5 to 8.5 min for 1500mAh 6S)
+	if flightTime < 5.5 || flightTime > 8.5 {
+		t.Errorf("Expected flight time between 5.5 and 8.5 min, got %.1f min", flightTime)
+	}
+}
+
+func TestEvaluatePhysics_PayloadScaling(t *testing.T) {
+	motor := &pb.Motor{
+		StatorDiameterMm: 22,
+		StatorHeightMm:   7.5,
+		Kv:               1950,
+		WeightG:          33.9,
+	}
+	prop := &pb.Propeller{
+		DiameterMm: 131.83,
+		PitchMm:    91.44,
+		Blades:     3,
+		WeightG:    4.2,
+	}
+	battery := &pb.Battery{
+		CellCountS:  6,
+		CapacityMah: 1500,
+		WeightG:     255,
+	}
+	baseWeight := float32(580.0)
+	maxEscAmps := float32(50.0)
+
+	// Evaluate at 0g payload
+	_, hover0, ft0, _, _ := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
+
+	// Evaluate with GoPro (+133g payload)
+	_, hoverGoPro, ftGoPro, _, _ := CalculatePhysics(motor, prop, battery, baseWeight, 133, maxEscAmps)
+
+	// Hover throttle should scale up visibly (at least +7 percentage points)
+	hoverDiff := hoverGoPro - hover0
+	if hoverDiff < 7.0 {
+		t.Errorf("Expected hover throttle to increase by at least 7%% with +133g payload, but only increased by %.1f%% (from %.1f%% to %.1f%%)",
+			hoverDiff, hover0, hoverGoPro)
+	}
+
+	// Flight time should decrease noticeably (at least -1.2 minutes)
+	ftDiff := ft0 - ftGoPro
+	if ftDiff < 1.2 {
+		t.Errorf("Expected flight time to decrease by at least 1.2 min with +133g payload, but decreased by %.1f min (from %.1f to %.1f)",
+			ftDiff, ft0, ftGoPro)
 	}
 }
 
@@ -70,10 +113,10 @@ func TestEvaluatePhysics_7InchLongRange(t *testing.T) {
 		CapacityMah: 3000,
 		WeightG:     390,
 	}
-	totalWeight := float32(850.0) // 7" long range AUW
+	baseWeight := float32(850.0) // 7" long range AUW
 	maxEscAmps := float32(50.0)
 
-	twr, hover, flightTime, errs, warns := CalculatePhysics(motor, prop, battery, totalWeight, maxEscAmps)
+	twr, hover, flightTime, errs, warns := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
 
 	if len(errs) > 0 {
 		t.Fatalf("Unexpected errors: %v", errs)
@@ -87,19 +130,18 @@ func TestEvaluatePhysics_7InchLongRange(t *testing.T) {
 		t.Errorf("Expected 7-inch TWR between 6.0 and 8.5, got %.2f", twr)
 	}
 
-	// Hover throttle should be ~34% - 41%
-	if hover < 34.0 || hover > 41.0 {
-		t.Errorf("Expected hover throttle between 34%% and 41%%, got %.1f%%", hover)
+	// Hover throttle should be ~24% - 32%
+	if hover < 24.0 || hover > 32.0 {
+		t.Errorf("Expected hover throttle between 24%% and 32%%, got %.1f%%", hover)
 	}
 
-	// Long range battery should provide 20+ min endurance
-	if flightTime < 20.0 {
-		t.Errorf("Expected long range flight time >= 20 min, got %.1f", flightTime)
+	// Long range battery should provide endurance flight time >= 9.5 min
+	if flightTime < 9.5 {
+		t.Errorf("Expected long range flight time >= 9.5 min, got %.1f", flightTime)
 	}
 }
 
 func TestEvaluatePhysics_OverloadedDrone(t *testing.T) {
-	// Tiny motor on 1S with huge payload
 	motor := &pb.Motor{
 		StatorDiameterMm: 11,
 		StatorHeightMm:   3.0,
@@ -114,9 +156,10 @@ func TestEvaluatePhysics_OverloadedDrone(t *testing.T) {
 		CellCountS:  1,
 		CapacityMah: 450,
 	}
-	totalWeight := float32(300.0) // severely overloaded (300g on 2" 1S)
+	baseWeight := float32(100.0)
+	payloadWeight := float32(200.0) // 300g on 2" 1S
 
-	twr, hover, _, errs, _ := CalculatePhysics(motor, prop, battery, totalWeight, 10.0)
+	twr, hover, _, errs, _ := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, 10.0)
 
 	if twr >= 1.0 {
 		t.Errorf("Expected TWR < 1.0 for overloaded drone, got %.2f", twr)
@@ -144,14 +187,12 @@ func TestEvaluatePhysics_SluggishWarning(t *testing.T) {
 		CellCountS:  6,
 		CapacityMah: 1500,
 	}
-	// Weight chosen to put TWR around 3:1 (Hover throttle ~57% > 50%)
-	totalWeight := float32(1800.0)
+	// Base weight 580g + 450g heavy payload -> triggers sluggish warning (> 50%)
+	baseWeight := float32(580.0)
+	payloadWeight := float32(450.0)
 
-	twr, hover, _, _, warns := CalculatePhysics(motor, prop, battery, totalWeight, 45.0)
+	_, hover, _, _, warns := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, 45.0)
 
-	if twr > 3.5 || twr < 2.5 {
-		t.Errorf("Expected TWR around 3:1, got %.2f", twr)
-	}
 	if hover <= 50.0 {
 		t.Errorf("Expected hover throttle > 50%%, got %.1f%%", hover)
 	}
@@ -168,7 +209,7 @@ func TestEvaluatePhysics_SluggishWarning(t *testing.T) {
 }
 
 func TestEvaluatePhysics_MissingInputs(t *testing.T) {
-	_, _, _, _, warns := CalculatePhysics(nil, nil, nil, 500, 40)
+	_, _, _, _, warns := CalculatePhysics(nil, nil, nil, 500, 0, 40)
 	if len(warns) == 0 {
 		t.Errorf("Expected missing components warning, got none")
 	}

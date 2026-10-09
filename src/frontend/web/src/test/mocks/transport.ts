@@ -183,7 +183,11 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const totalWeight = baseWeight + payload;
         const totalThrust = 5500; // Realistic 5" 6S total static thrust (4x 1375g)
         const twr = totalWeight > 0 ? totalThrust / totalWeight : 0;
-        const hover = twr > 0 ? Math.sqrt(1 / twr) * 100 : 0;
+        const safeBase = Math.max(1, baseWeight);
+        const baseTwr = totalThrust / safeBase;
+        const baseHover = Math.pow(1 / Math.max(0.1, baseTwr), 0.65) * 100;
+        const weightRatio = totalWeight / safeBase;
+        const hover = baseHover * Math.pow(weightRatio, 1.6);
         const warnings: string[] = [];
         const errors: string[] = [];
         if (hover > 50) {
@@ -192,11 +196,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (hover > 100) {
           errors.push("Drone is too heavy to take off (Hover throttle > 100%)");
         }
+        const flightTime = Math.max(1, 7.2 / Math.pow(weightRatio, 1.35));
         return {
           totalWeightG: totalWeight,
           thrustToWeightRatio: parseFloat(twr.toFixed(2)),
           hoverThrottlePercent: parseFloat(hover.toFixed(1)),
-          estimatedFlightTimeMin: parseFloat(Math.max(1, 16 - payload / 20).toFixed(1)),
+          estimatedFlightTimeMin: parseFloat(flightTime.toFixed(1)),
           warnings,
           errors,
         };

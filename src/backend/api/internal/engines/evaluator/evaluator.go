@@ -163,8 +163,18 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		errors = append(errors, fmt.Sprintf("Not enough ESCs: need 4, have %d", totalEscs))
 	}
 
+	payloadWeight := req.Msg.GetPayloadWeightG()
+	baseWeight := totalWeight - payloadWeight
+
 	// Aerodynamic Physics Estimation
-	thrustToWeight, hoverThrottle, flightTime, physErrors, physWarnings := CalculatePhysics(motor, prop, battery, totalWeight, maxAmps)
+	thrustToWeight, hoverThrottle, flightTime, physErrors, physWarnings := CalculatePhysics(
+		motor,
+		prop,
+		battery,
+		baseWeight,
+		payloadWeight,
+		maxAmps,
+	)
 	errors = append(errors, physErrors...)
 	warnings = append(warnings, physWarnings...)
 
@@ -186,13 +196,16 @@ func CalculatePhysics(
 	motor *pb.Motor,
 	prop *pb.Propeller,
 	battery *pb.Battery,
-	totalWeight float32,
+	baseWeight float32,
+	payloadWeight float32,
 	maxEscAmps float32,
 ) (thrustToWeight float32, hoverThrottle float32, flightTime float32, errors []string, warnings []string) {
 	if motor == nil || prop == nil || battery == nil {
 		warnings = append(warnings, "Need a Motor, Propeller, and Battery to run physics estimation")
 		return 0, 0, 0, errors, warnings
 	}
+
+	totalWeight := baseWeight + payloadWeight
 
 	cellCount := float32(battery.CellCountS)
 	if cellCount == 0 {
@@ -255,14 +268,27 @@ func CalculatePhysics(
 	thrustPerMotor := float32(thrustNewtons * 101.97162) // 1 N = 101.97162 g
 	totalThrust := thrustPerMotor * 4.0
 
-	// 5. Thrust-to-weight ratio and hover throttle
+	// 5. Thrust-to-weight ratio and realistic hover throttle with payload scaling
 	if totalWeight > 0 {
 		thrustToWeight = totalThrust / totalWeight
-		// Propeller thrust scales quadratically with throttle: T/Tmax = (throttle)^2
-		// Hover throttle = sqrt(1 / TWR) * 100%
-		if thrustToWeight > 0 {
-			hoverThrottle = float32((1.0 / math.Sqrt(float64(thrustToWeight))) * 100.0)
-		}
+	}
+
+	safeBase := float64(baseWeight)
+	if safeBase <= 0 {
+		safeBase = float64(totalWeight)
+	}
+
+	if safeBase > 0 && totalThrust > 0 {
+		baseTwr := float64(totalThrust) / safeBase
+		baseHover := math.Pow(1.0/math.Max(0.1, baseTwr), 0.65) * 100.0
+		weightRatio := float64(totalWeight) / safeBase
+		hoverThrottle = float32(baseHover * math.Pow(weightRatio, 1.6))
+	} else {
+		hoverThrottle = 100.0
+	}
+
+	if thrustToWeight <= 1.0 && hoverThrottle < 100.0 {
+		hoverThrottle = 100.0
 	}
 
 	if hoverThrottle > 100.0 {
@@ -271,19 +297,23 @@ func CalculatePhysics(
 		warnings = append(warnings, "Drone will be very sluggish (Hover throttle > 50%)")
 	}
 
-	// 6. Flight time estimation based on disk loading and hover power:
-	// Larger props have higher hover efficiency (g/W) due to lower disk loading
-	effGW := float32(math.Min(8.0, math.Max(3.2, 3.2+0.45*float64(diaIn))))
-	hoverWatts := totalWeight / effGW
-	totalHoverAmps := hoverWatts / voltage
+	// 6. Realistic mixed/cruising flight time:
+	// Multirotor flight efficiency in mixed forward flight / cruising:
+	// Larger props have higher efficiency due to lower disk loading (2.2 - 3.2 g/W).
+	// Base electronics (VTX, Camera, FC, RX) consume ~10W.
+	effFlight := float32(math.Min(4.5, math.Max(1.8, 1.8+0.18*float64(diaIn))))
+	const pElectronics = 10.0 // Watts
+	weightRatio := float64(totalWeight) / safeBase
+	flightWatts := (float32(safeBase)/effFlight)*float32(math.Pow(weightRatio, 1.35)) + pElectronics
+	totalFlightAmps := flightWatts / voltage
 
-	if totalHoverAmps > float32(maxEscAmps*4) && maxEscAmps > 0 {
+	if totalFlightAmps > float32(maxEscAmps*4) && maxEscAmps > 0 {
 		warnings = append(warnings, "Hover amps exceeds ESC continuous rating")
 	}
 
-	if totalHoverAmps > 0 && battery.CapacityMah > 0 {
-		usableAh := (float32(battery.CapacityMah) / 1000.0) * 0.85 // 85% usable battery capacity
-		flightTime = (usableAh / totalHoverAmps) * 60.0            // minutes
+	if totalFlightAmps > 0 && battery.CapacityMah > 0 {
+		usableAh := (float32(battery.CapacityMah) / 1000.0) * 0.80 // 80% usable capacity (20% safety margin)
+		flightTime = (usableAh / totalFlightAmps) * 60.0           // minutes
 	}
 
 	return thrustToWeight, hoverThrottle, flightTime, errors, warnings
