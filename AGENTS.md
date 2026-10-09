@@ -41,3 +41,10 @@ Do not make up names for implementation phases (e.g., "Phase 2") or dictate the 
 
 - Always run `make test` and ensure all tests pass whenever you make changes to the codebase. Do not consider a task complete or push code if there are failing tests.
 
+## UI Changes & Visual Previews
+
+Whenever committing changes that modify the UI (such as frontend web components, pages, layouts, or styling):
+- Create a self-contained HTML artifact (using embedded CSS and/or Tailwind) demonstrating the changed component, layout, or visual difference.
+- Save the artifact into the conversation artifact directory with `UserFacing: true`.
+- Embed and display the preview directly in the conversation using `<agent-embed src="file:///<artifact_path>"></agent-embed>` (or link to it for full-page views) so the user can visually verify the update.
+
