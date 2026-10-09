@@ -8,3 +8,8 @@ import { EvaluatorService } from "./evaluator_pb";
  * @generated from rpc quadsmith.EvaluatorService.EvaluateBuild
  */
 export const evaluateBuild = EvaluatorService.method.evaluateBuild;
+
+/**
+ * @generated from rpc quadsmith.EvaluatorService.GetBuildElectricalLimits
+ */
+export const getBuildElectricalLimits = EvaluatorService.method.getBuildElectricalLimits;

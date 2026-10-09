@@ -42,8 +42,8 @@ message Build {
   // The motor SKU used for this build (assumes 4x for a standard quad)
   string motor_uuid = 6 [(quadsmith.sql.column) = {references: "motors(uuid)"}];
 
-  // The primary battery recommended/used
-  string battery_uuid = 7 [(quadsmith.sql.column) = {references: "batteries(uuid)"}];
+  reserved 7;
+  reserved "battery_uuid";
 
   // -------------------------------------------------------
   // Electronics & Subsystems

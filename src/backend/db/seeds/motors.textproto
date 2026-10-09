@@ -28,6 +28,9 @@ motors: {
     url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     title: "Sub250 1404 Motor Overview and Thrust Testing"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -40,6 +43,9 @@ motors: {
   stator_height_mm: 3
   kv: 8000
   description: "Happymodel Happymodel EX1103 8000KV brushless motor with 8000 KV rating and 113 stator size, weighing 3.7g."
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -52,6 +58,9 @@ motors: {
   stator_height_mm: 2
   kv: 15500
   description: "Flywoo Flywoo ROBO 1002 15500KV brushless motor with 15500 KV rating and 102 stator size, weighing 2.5g."
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -68,6 +77,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-0802se-19500kv-micro-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -84,6 +96,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-2105-5-brushless-motor-2800kv-1"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -104,6 +119,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-2306-5-1900kv-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -120,6 +138,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-1102-18000kv-fpv-drone-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -136,6 +157,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-1404-2800kv-micro-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -152,6 +176,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-2004-3000kv-micro-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -164,6 +191,9 @@ motors: {
   stator_height_mm: 4
   kv: 3450
   description: "HGLRC HGLRC Specter 1804 3450KV brushless motor with 3450 KV rating and 184 stator size, weighing 13.3g."
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -180,6 +210,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-1303-5-2500kv-micro-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -192,6 +225,9 @@ motors: {
   stator_height_mm: 7.5
   kv: 2550
   description: "HGLRC HGLRC Aeolus 2207.5 2550KV brushless motor with 2550 KV rating and 228 stator size, weighing 37.0g."
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -208,6 +244,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-2306-5-2550kv-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -220,6 +259,9 @@ motors: {
   stator_height_mm: 6.5
   kv: 1250
   description: "HGLRC HGLRC Aeolus 2806.5 1250KV brushless motor with 1250 KV rating and 286 stator size, weighing 37.0g."
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -240,6 +282,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-1003-10000kv-micro-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -252,6 +297,9 @@ motors: {
   stator_height_mm: 3
   kv: 8000
   description: "T-Motor T-Motor M1103 8000KV brushless motor with 8000 KV rating and 113 stator size, weighing 4.6g."
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -272,6 +320,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-1404-2750kv-micro-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -284,6 +335,9 @@ motors: {
   stator_height_mm: 4
   kv: 3000
   description: "HGLRC HGLRC Specter 2004 3000KV brushless motor with 3000 KV rating and 204 stator size, weighing 16.6g."
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -296,6 +350,9 @@ motors: {
   stator_height_mm: 7.5
   kv: 1900
   description: "HGLRC HGLRC Specter 2207.5 1900KV brushless motor with 1900 KV rating and 228 stator size, weighing 37.0g."
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -312,6 +369,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-2806-5-1350kv-brushless-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -324,6 +384,9 @@ motors: {
   stator_height_mm: 5.5
   kv: 2650
   description: "WREKD WREKD Aeolus 2105.5 2650KV brushless motor with 2650 KV rating and 216 stator size, weighing 22.3g."
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -336,6 +399,9 @@ motors: {
   stator_height_mm: 5
   kv: 2450
   description: "RaceDayQuads RDQ Badass 2205 2450Kv Motor brushless motor with 2450 KV rating and 225 stator size, weighing 14.0g."
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -352,6 +418,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hyperlite-2207-5-e-series-racing-motor-combo-2522kv-4-pcs"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -364,6 +433,9 @@ motors: {
   stator_height_mm: 4
   kv: 2750
   description: "Flywoo NIN 1404 V2 2750KV Ultralight Motor"
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -384,6 +456,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-1102-brushless-motors-2026-4-pcs-21000kv"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -400,6 +475,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1103-brushless-motors-aquila20"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -420,6 +498,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-0802-brushless-motor-2026-4-pcs-choose-version"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -440,6 +521,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-0702-brushless-motor-2026-4-pcs-choose-version"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -460,6 +544,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-0702-ii-brushless-motor-set-30000kv-4-pcs"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -476,6 +563,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/2004-brushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -492,6 +582,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1505-3600kv-brushless-motors"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -508,6 +601,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1106-5000kv-brushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -524,6 +620,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1105-6000kv-motors-4-pcs"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -544,6 +643,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-series-1104-5500kv-brushless-motor-with-24mm-wire-with-connector-for-3s-and-4s-2-2-quads-1pc"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -564,6 +666,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-series-1506-brushless-motor-4200kv-1pc"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -584,6 +689,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-series-2006-brushless-motor-2400kv-1pc"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -600,6 +708,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1505-4600kv-brushless-motor"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -616,6 +727,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/snow-2306-brushless-motors"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -632,6 +746,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/2204-brushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -648,6 +765,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1505-3400kv-brushless-motors"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -664,6 +784,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1404-4500kv-brushless-motors"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -684,6 +807,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-0802-se-brushless-motor-set-2022-version-19500kv-4-pc"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -700,6 +826,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1606-brushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -720,6 +849,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-1805-brushless-motors-1550kv-1pc"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -736,6 +868,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1506-3000kv-brushless-motors"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -752,6 +887,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0705-15000kv-brushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -768,6 +906,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1204-5000kv-brushless-motors"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -784,6 +925,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/08028-12000kv-brushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -800,6 +944,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0603-brushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -816,6 +963,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/7x16mm-19000kv-brushed-motors-2cw-2ccw"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -832,6 +982,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0703-15000kv-brushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -848,6 +1001,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/8-5x20mm-16000kv-brushed-motors-2cw-2ccw"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -864,6 +1020,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/8x20mm-14000kv-brushed-motors-2cw-2ccw"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -880,6 +1039,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/7x20mm-coreless-brushed-motors-for-beta75"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -896,6 +1058,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-1303-6000kv-brushless-motors"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -912,6 +1077,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-129-2507-1800kv-3-6s-brushless-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -928,6 +1096,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-1203-motor"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -944,6 +1115,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-bling-2307-5-2400kv-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -960,6 +1134,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-bling-series-bling-1504-4000kv-brushless-fpv-drone-motor"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -976,6 +1153,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-bling-series-bling-1104-5000kv-brushless-fpv-drone-motor"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -992,6 +1172,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-2307-5-v3-seawater-brushless-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1008,6 +1191,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-2006-5-seawater-brushless-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1024,6 +1210,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-4320-brushless-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1040,6 +1229,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-3115-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1056,6 +1248,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-cineape35-2006-2030kv-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1072,6 +1267,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-seawater-proof-2307-5-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1088,6 +1286,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/tinyape-1103-8000kv-blushless-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -1104,6 +1305,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-2507-1850kv-brushless-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1120,6 +1324,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-flow-2808-1300kv-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1140,6 +1347,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-flow-motor-1404-4000kv-t-mount-set-of-4"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1160,6 +1370,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-bdr-brushed-motor-3-pack"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1180,6 +1393,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-bdr-plaid-edition-6mm-brushed-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1200,6 +1416,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-bdr-silver-edition-6mm-brushed-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1220,6 +1439,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-bdr-unicorn-edition-motors-6mm-brushed-motors"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1232,6 +1454,9 @@ motors: {
   stator_height_mm: 2
   kv: 15000
   description: "Hypetrain Hypetrain Dime V2 1002 Motor - Choose KV brushless motor with 15000 KV rating and 102 stator size, weighing 2.5g."
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1244,6 +1469,9 @@ motors: {
   stator_height_mm: 7
   kv: 2450
   description: "Hypetrain REVO 5 2207 2450KV Motor - Solder-Free"
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1256,6 +1484,9 @@ motors: {
   stator_height_mm: 6
   kv: 1990
   description: "Hypetrain Drib V3 2306 1990KV Motor - Solder-Free"
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1272,6 +1503,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/brotherhobby-tc-1404-motor-4800kv"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1284,6 +1518,9 @@ motors: {
   stator_height_mm: 5
   kv: 2004
   description: "Hypetrain Bubby 2205 2004KV Motor - Solder Free"
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1296,6 +1533,9 @@ motors: {
   stator_height_mm: 6
   kv: 2700
   description: "Hypetrain Let's Fly RC 2306 2700kv Motor Solder-Free"
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1308,6 +1548,9 @@ motors: {
   stator_height_mm: 6.5
   kv: 1985
   description: "Hypetrain PDEVX 2306.5 1985KV Motor - Solder-Free"
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1324,6 +1567,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/rcinpower-gts-v3-1002-22000kv-motor-choose-color"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1336,6 +1582,9 @@ motors: {
   stator_height_mm: 6
   kv: 2650
   description: "Hypetrain Drib V3 2306 2650KV Motor - Solder-Free"
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1348,6 +1597,9 @@ motors: {
   stator_height_mm: 6
   kv: 1850
   description: "Hypetrain Let's Fly RC 2306 1850kv Motor Solder-Free"
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1364,6 +1616,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/rcinpower-gts-v3-1002-14000kv-motor-choose-color"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1376,6 +1631,9 @@ motors: {
   stator_height_mm: 2
   kv: 29700
   description: "Hypetrain Hypetrain BB's 0802 29700KV Motor brushless motor with 29700 KV rating and 82 stator size, weighing 2.0g."
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 
 motors: {
@@ -1393,6 +1651,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/brotherhobby-avenger-2806-5-1300kv-1700kv-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1409,6 +1670,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my-3115-900kv-motor-brushless-motor-high-load-6s-10-inch"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1425,6 +1689,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my15-4215-400kv-motor-2-5w-vtx-long-range-fpv-drone"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1441,6 +1708,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my-3215-900kv-brushless-motor-high-load-6s-10-inch-fpv-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1457,6 +1727,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my10-3215-900kv-motor-2-5w-vtx-fpv-drone"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1473,6 +1746,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my5-freestyle-2306-5-motor-1-6w-vtx-fpv-drone"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1489,6 +1765,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-2812-1155kv-brushless-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1505,6 +1784,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1804-3500kv-brushless-motor"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1521,6 +1803,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1303-5-5500kv-brushless-motor"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1537,6 +1822,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-0802-21000kv-brushless-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1553,6 +1841,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/specter-1202-5-11000kv-brushless-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -1569,6 +1860,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-2004-1800kv-brushless-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1585,6 +1879,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1002-21000kv-brushless-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1601,6 +1898,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/specter-1003-10000kv-brushless-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -1617,6 +1917,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1404-2750kv-brushless-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1633,6 +1936,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-2806-5-1350kv-brushless-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1653,6 +1959,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-2306-5-1900kv-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1669,6 +1978,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/2808-1100kv-motor-for-roma-f7"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -1689,6 +2001,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-sword-2207-6s-fpv-motor-1850kv"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1705,6 +2020,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2004-1800kv-2900kv-fpv-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1721,6 +2039,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-1804-2450kv-3500kv-freestyle-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1737,6 +2058,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2806-5-fpv-long-range-motor-1"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1757,6 +2081,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flyfishrc-flash-1303-5-5500kv-micro-motor"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1777,6 +2104,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-2506-brushless-fpv-drone-motor-1550kv"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1797,6 +2127,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-2406-brushless-fpv-drone-motor-1800kv"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1817,6 +2150,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-1404-4500kv-motor"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1837,6 +2173,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-2306-replacement-motor-bell"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1853,6 +2192,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2306-5-1750kv-motor-black"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1873,6 +2215,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-2207-replacement-motor-bell"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1889,6 +2234,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2207-motor-black"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -1905,6 +2253,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1103-14000kv-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1921,6 +2272,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-0702-27000kv-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1937,6 +2291,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1804-2450kv-3450kv-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1957,6 +2314,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-1404-4500kv-for-2-5-tiny-whoops-and-3-freestyle-fpv-drone-motor-1-pc"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -1973,6 +2333,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1003-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -1989,6 +2352,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-m1-0803-16500kv-1-0mm-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -2005,6 +2371,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-m1-0803-19000kv-1-5-mm-shaft-brushless-motor-for-nanofly16-pack-of-1-4"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -2021,6 +2390,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1002-motor"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -2037,6 +2409,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-m1-0803-19000kv"
   }
+
+  min_voltage: 3.0
+  max_voltage: 4.35
 }
 motors: {
 
@@ -2053,6 +2428,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-cavity-series-motor-4012mm-1020kv"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -2069,6 +2447,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-16mm-motor-3700kv"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -2085,6 +2466,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-21mm-motor-m3-m5-prop-shaft"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -2101,6 +2485,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-5-motor-choose-options"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -2117,6 +2504,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-30mm-1450kv-7-8-6s-8s-motor"
   }
+
+  min_voltage: 18.0
+  max_voltage: 34.8
 }
 motors: {
 
@@ -2133,6 +2523,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-2203-motor-choose-kv"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -2149,6 +2542,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-1303-5000kv-motor-2mm-prop-shaft"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -2169,6 +2565,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/t-motor-f60-pro-v-motor-1750kv-1950kv-2020kv-2550kv.html"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -2189,6 +2588,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/t-motor-f60-pro-v-motor-1750kv-1950kv-2020kv-2550kv.html"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -2209,6 +2611,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/t-motor-pacer-v3-p2207-powerful-freestyle-motor-1750kv-1950kv-2080kv-2550kv.html"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -2229,6 +2634,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/iflight-xing2-2207-1855kv-motor"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -2253,6 +2661,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/iflight-xing2-2207-2755kv-motor"
   }
+
+  min_voltage: 9.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -2277,6 +2688,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/emax-eco-ii-2207-stator-motor-for-5-propeller-racing-and-freestyle-craft-1900kv"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -2297,6 +2711,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/rcinpower-wasp-major-22-6-6-6-1860kv-motor-gold"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }
 motors: {
 
@@ -2321,6 +2738,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-1103-11000kv-2s-brushless-motor-4pcs"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 motors: {
 
@@ -2341,6 +2761,9 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/flywoo-robo-rb-1202-5-5500kv-11500kv-fpv-motor-1-5mm-shaft.html"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 motors: {
 
@@ -2361,4 +2784,7 @@ motors: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/axisflying-c227-motor-1960kv.html"
   }
+
+  min_voltage: 14.8
+  max_voltage: 25.2
 }

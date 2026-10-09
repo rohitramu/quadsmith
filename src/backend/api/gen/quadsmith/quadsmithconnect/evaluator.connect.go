@@ -36,11 +36,15 @@ const (
 	// EvaluatorServiceEvaluateBuildProcedure is the fully-qualified name of the EvaluatorService's
 	// EvaluateBuild RPC.
 	EvaluatorServiceEvaluateBuildProcedure = "/quadsmith.EvaluatorService/EvaluateBuild"
+	// EvaluatorServiceGetBuildElectricalLimitsProcedure is the fully-qualified name of the
+	// EvaluatorService's GetBuildElectricalLimits RPC.
+	EvaluatorServiceGetBuildElectricalLimitsProcedure = "/quadsmith.EvaluatorService/GetBuildElectricalLimits"
 )
 
 // EvaluatorServiceClient is a client for the quadsmith.EvaluatorService service.
 type EvaluatorServiceClient interface {
 	EvaluateBuild(context.Context, *connect.Request[quadsmith.EvaluateBuildRequest]) (*connect.Response[quadsmith.EvaluateBuildResponse], error)
+	GetBuildElectricalLimits(context.Context, *connect.Request[quadsmith.GetBuildElectricalLimitsRequest]) (*connect.Response[quadsmith.GetBuildElectricalLimitsResponse], error)
 }
 
 // NewEvaluatorServiceClient constructs a client for the quadsmith.EvaluatorService service. By
@@ -60,12 +64,19 @@ func NewEvaluatorServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(evaluatorServiceMethods.ByName("EvaluateBuild")),
 			connect.WithClientOptions(opts...),
 		),
+		getBuildElectricalLimits: connect.NewClient[quadsmith.GetBuildElectricalLimitsRequest, quadsmith.GetBuildElectricalLimitsResponse](
+			httpClient,
+			baseURL+EvaluatorServiceGetBuildElectricalLimitsProcedure,
+			connect.WithSchema(evaluatorServiceMethods.ByName("GetBuildElectricalLimits")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // evaluatorServiceClient implements EvaluatorServiceClient.
 type evaluatorServiceClient struct {
-	evaluateBuild *connect.Client[quadsmith.EvaluateBuildRequest, quadsmith.EvaluateBuildResponse]
+	evaluateBuild            *connect.Client[quadsmith.EvaluateBuildRequest, quadsmith.EvaluateBuildResponse]
+	getBuildElectricalLimits *connect.Client[quadsmith.GetBuildElectricalLimitsRequest, quadsmith.GetBuildElectricalLimitsResponse]
 }
 
 // EvaluateBuild calls quadsmith.EvaluatorService.EvaluateBuild.
@@ -73,9 +84,15 @@ func (c *evaluatorServiceClient) EvaluateBuild(ctx context.Context, req *connect
 	return c.evaluateBuild.CallUnary(ctx, req)
 }
 
+// GetBuildElectricalLimits calls quadsmith.EvaluatorService.GetBuildElectricalLimits.
+func (c *evaluatorServiceClient) GetBuildElectricalLimits(ctx context.Context, req *connect.Request[quadsmith.GetBuildElectricalLimitsRequest]) (*connect.Response[quadsmith.GetBuildElectricalLimitsResponse], error) {
+	return c.getBuildElectricalLimits.CallUnary(ctx, req)
+}
+
 // EvaluatorServiceHandler is an implementation of the quadsmith.EvaluatorService service.
 type EvaluatorServiceHandler interface {
 	EvaluateBuild(context.Context, *connect.Request[quadsmith.EvaluateBuildRequest]) (*connect.Response[quadsmith.EvaluateBuildResponse], error)
+	GetBuildElectricalLimits(context.Context, *connect.Request[quadsmith.GetBuildElectricalLimitsRequest]) (*connect.Response[quadsmith.GetBuildElectricalLimitsResponse], error)
 }
 
 // NewEvaluatorServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -91,10 +108,18 @@ func NewEvaluatorServiceHandler(svc EvaluatorServiceHandler, opts ...connect.Han
 		connect.WithSchema(evaluatorServiceMethods.ByName("EvaluateBuild")),
 		connect.WithHandlerOptions(opts...),
 	)
+	evaluatorServiceGetBuildElectricalLimitsHandler := connect.NewUnaryHandler(
+		EvaluatorServiceGetBuildElectricalLimitsProcedure,
+		svc.GetBuildElectricalLimits,
+		connect.WithSchema(evaluatorServiceMethods.ByName("GetBuildElectricalLimits")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.EvaluatorService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case EvaluatorServiceEvaluateBuildProcedure:
 			evaluatorServiceEvaluateBuildHandler.ServeHTTP(w, r)
+		case EvaluatorServiceGetBuildElectricalLimitsProcedure:
+			evaluatorServiceGetBuildElectricalLimitsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -106,4 +131,8 @@ type UnimplementedEvaluatorServiceHandler struct{}
 
 func (UnimplementedEvaluatorServiceHandler) EvaluateBuild(context.Context, *connect.Request[quadsmith.EvaluateBuildRequest]) (*connect.Response[quadsmith.EvaluateBuildResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.EvaluatorService.EvaluateBuild is not implemented"))
+}
+
+func (UnimplementedEvaluatorServiceHandler) GetBuildElectricalLimits(context.Context, *connect.Request[quadsmith.GetBuildElectricalLimitsRequest]) (*connect.Response[quadsmith.GetBuildElectricalLimitsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.EvaluatorService.GetBuildElectricalLimits is not implemented"))
 }

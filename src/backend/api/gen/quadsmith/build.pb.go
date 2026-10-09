@@ -34,8 +34,6 @@ type Build struct {
 	FrameUuid string `protobuf:"bytes,5,opt,name=frame_uuid,json=frameUuid,proto3" json:"frame_uuid,omitempty"`
 	// The motor SKU used for this build (assumes 4x for a standard quad)
 	MotorUuid string `protobuf:"bytes,6,opt,name=motor_uuid,json=motorUuid,proto3" json:"motor_uuid,omitempty"`
-	// The primary battery recommended/used
-	BatteryUuid string `protobuf:"bytes,7,opt,name=battery_uuid,json=batteryUuid,proto3" json:"battery_uuid,omitempty"`
 	// The central Flight Controller (which may be an AIO board)
 	FlightControllerUuid string `protobuf:"bytes,8,opt,name=flight_controller_uuid,json=flightControllerUuid,proto3" json:"flight_controller_uuid,omitempty"`
 	// Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
@@ -127,13 +125,6 @@ func (x *Build) GetFrameUuid() string {
 func (x *Build) GetMotorUuid() string {
 	if x != nil {
 		return x.MotorUuid
-	}
-	return ""
-}
-
-func (x *Build) GetBatteryUuid() string {
-	if x != nil {
-		return x.BatteryUuid
 	}
 	return ""
 }
@@ -403,7 +394,7 @@ var File_build_proto protoreflect.FileDescriptor
 const file_build_proto_rawDesc = "" +
 	"\n" +
 	"\vbuild.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x85\b\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xdf\a\n" +
 	"\x05Build\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12\x12\n" +
@@ -412,8 +403,7 @@ const file_build_proto_rawDesc = "" +
 	"\n" +
 	"frame_uuid\x18\x05 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fframes(uuid)R\tframeUuid\x121\n" +
 	"\n" +
-	"motor_uuid\x18\x06 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fmotors(uuid)R\tmotorUuid\x128\n" +
-	"\fbattery_uuid\x18\a \x01(\tB\x15\xc2\xf3\x18\x11\x1a\x0fbatteries(uuid)R\vbatteryUuid\x12T\n" +
+	"motor_uuid\x18\x06 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fmotors(uuid)R\tmotorUuid\x12T\n" +
 	"\x16flight_controller_uuid\x18\b \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18flight_controllers(uuid)R\x14flightControllerUuid\x12I\n" +
 	"!electronic_speed_controller_uuids\x18\t \x03(\tR\x1eelectronicSpeedControllerUuids\x12%\n" +
 	"\x0ereceiver_uuids\x18\n" +
@@ -432,7 +422,7 @@ const file_build_proto_rawDesc = "" +
 	"\x05Build\x12\x06Builds\xc2\xf3\x18\b\n" +
 	"\x06buildsB\x14\n" +
 	"\x12_gps_receiver_uuidB\x18\n" +
-	"\x16_primary_display_image\";\n" +
+	"\x16_primary_display_imageJ\x04\b\a\x10\bR\fbattery_uuid\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +

@@ -219,8 +219,12 @@ type EvaluateBuildResponse struct {
 	BuildId        string  `protobuf:"bytes,13,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
 	PayloadWeightG float32 `protobuf:"fixed32,14,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
 	BatteryId      string  `protobuf:"bytes,15,opt,name=battery_id,json=batteryId,proto3" json:"battery_id,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Electrical limits determined by the build's FC, ESCs, and Motors
+	MinVoltage    float32 `protobuf:"fixed32,16,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
+	MaxVoltage    float32 `protobuf:"fixed32,17,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	MaxCurrentA   float32 `protobuf:"fixed32,18,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *EvaluateBuildResponse) Reset() {
@@ -337,6 +341,148 @@ func (x *EvaluateBuildResponse) GetBatteryId() string {
 	return ""
 }
 
+func (x *EvaluateBuildResponse) GetMinVoltage() float32 {
+	if x != nil {
+		return x.MinVoltage
+	}
+	return 0
+}
+
+func (x *EvaluateBuildResponse) GetMaxVoltage() float32 {
+	if x != nil {
+		return x.MaxVoltage
+	}
+	return 0
+}
+
+func (x *EvaluateBuildResponse) GetMaxCurrentA() float32 {
+	if x != nil {
+		return x.MaxCurrentA
+	}
+	return 0
+}
+
+type GetBuildElectricalLimitsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Build         *Build                 `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+	BuildId       string                 `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBuildElectricalLimitsRequest) Reset() {
+	*x = GetBuildElectricalLimitsRequest{}
+	mi := &file_evaluator_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBuildElectricalLimitsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBuildElectricalLimitsRequest) ProtoMessage() {}
+
+func (x *GetBuildElectricalLimitsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_evaluator_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBuildElectricalLimitsRequest.ProtoReflect.Descriptor instead.
+func (*GetBuildElectricalLimitsRequest) Descriptor() ([]byte, []int) {
+	return file_evaluator_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetBuildElectricalLimitsRequest) GetBuild() *Build {
+	if x != nil {
+		return x.Build
+	}
+	return nil
+}
+
+func (x *GetBuildElectricalLimitsRequest) GetBuildId() string {
+	if x != nil {
+		return x.BuildId
+	}
+	return ""
+}
+
+type GetBuildElectricalLimitsResponse struct {
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	MinVoltage  float32                `protobuf:"fixed32,1,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
+	MaxVoltage  float32                `protobuf:"fixed32,2,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	MaxCurrentA float32                `protobuf:"fixed32,3,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
+	// Lightest compatible battery ID recommended for this build
+	DefaultBatteryId string `protobuf:"bytes,4,opt,name=default_battery_id,json=defaultBatteryId,proto3" json:"default_battery_id,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *GetBuildElectricalLimitsResponse) Reset() {
+	*x = GetBuildElectricalLimitsResponse{}
+	mi := &file_evaluator_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBuildElectricalLimitsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBuildElectricalLimitsResponse) ProtoMessage() {}
+
+func (x *GetBuildElectricalLimitsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_evaluator_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBuildElectricalLimitsResponse.ProtoReflect.Descriptor instead.
+func (*GetBuildElectricalLimitsResponse) Descriptor() ([]byte, []int) {
+	return file_evaluator_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetBuildElectricalLimitsResponse) GetMinVoltage() float32 {
+	if x != nil {
+		return x.MinVoltage
+	}
+	return 0
+}
+
+func (x *GetBuildElectricalLimitsResponse) GetMaxVoltage() float32 {
+	if x != nil {
+		return x.MaxVoltage
+	}
+	return 0
+}
+
+func (x *GetBuildElectricalLimitsResponse) GetMaxCurrentA() float32 {
+	if x != nil {
+		return x.MaxCurrentA
+	}
+	return 0
+}
+
+func (x *GetBuildElectricalLimitsResponse) GetDefaultBatteryId() string {
+	if x != nil {
+		return x.DefaultBatteryId
+	}
+	return ""
+}
+
 var File_evaluator_proto protoreflect.FileDescriptor
 
 const file_evaluator_proto_rawDesc = "" +
@@ -350,7 +496,7 @@ const file_evaluator_proto_rawDesc = "" +
 	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
 	"\n" +
 	"battery_id\x18\x03 \x01(\tR\tbatteryId\x12\x19\n" +
-	"\bbuild_id\x18\x04 \x01(\tR\abuildId\"\xe1\x04\n" +
+	"\bbuild_id\x18\x04 \x01(\tR\abuildId\"\xc7\x05\n" +
 	"\x15EvaluateBuildResponse\x12$\n" +
 	"\x0etotal_weight_g\x18\x01 \x01(\x02R\ftotalWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
@@ -365,14 +511,30 @@ const file_evaluator_proto_rawDesc = "" +
 	"\bbuild_id\x18\r \x01(\tR\abuildId\x12(\n" +
 	"\x10payload_weight_g\x18\x0e \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
 	"\n" +
-	"battery_id\x18\x0f \x01(\tR\tbatteryIdJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\x19estimated_flight_time_minR\bwarningsR\x06errors*\xaa\x01\n" +
+	"battery_id\x18\x0f \x01(\tR\tbatteryId\x12\x1f\n" +
+	"\vmin_voltage\x18\x10 \x01(\x02R\n" +
+	"minVoltage\x12\x1f\n" +
+	"\vmax_voltage\x18\x11 \x01(\x02R\n" +
+	"maxVoltage\x12\"\n" +
+	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentAJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\x19estimated_flight_time_minR\bwarningsR\x06errors\"d\n" +
+	"\x1fGetBuildElectricalLimitsRequest\x12&\n" +
+	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12\x19\n" +
+	"\bbuild_id\x18\x02 \x01(\tR\abuildId\"\xb6\x01\n" +
+	" GetBuildElectricalLimitsResponse\x12\x1f\n" +
+	"\vmin_voltage\x18\x01 \x01(\x02R\n" +
+	"minVoltage\x12\x1f\n" +
+	"\vmax_voltage\x18\x02 \x01(\x02R\n" +
+	"maxVoltage\x12\"\n" +
+	"\rmax_current_a\x18\x03 \x01(\x02R\vmaxCurrentA\x12,\n" +
+	"\x12default_battery_id\x18\x04 \x01(\tR\x10defaultBatteryId*\xaa\x01\n" +
 	"\x15SystemMessageSeverity\x12'\n" +
 	"#SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cSYSTEM_MESSAGE_SEVERITY_INFO\x10\x01\x12#\n" +
 	"\x1fSYSTEM_MESSAGE_SEVERITY_WARNING\x10\x02\x12!\n" +
-	"\x1dSYSTEM_MESSAGE_SEVERITY_ERROR\x10\x032f\n" +
+	"\x1dSYSTEM_MESSAGE_SEVERITY_ERROR\x10\x032\xdb\x01\n" +
 	"\x10EvaluatorService\x12R\n" +
-	"\rEvaluateBuild\x12\x1f.quadsmith.EvaluateBuildRequest\x1a .quadsmith.EvaluateBuildResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\rEvaluateBuild\x12\x1f.quadsmith.EvaluateBuildRequest\x1a .quadsmith.EvaluateBuildResponse\x12s\n" +
+	"\x18GetBuildElectricalLimits\x12*.quadsmith.GetBuildElectricalLimitsRequest\x1a+.quadsmith.GetBuildElectricalLimitsResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_evaluator_proto_rawDescOnce sync.Once
@@ -387,25 +549,30 @@ func file_evaluator_proto_rawDescGZIP() []byte {
 }
 
 var file_evaluator_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_evaluator_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_evaluator_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_evaluator_proto_goTypes = []any{
-	(SystemMessageSeverity)(0),    // 0: quadsmith.SystemMessageSeverity
-	(*SystemMessage)(nil),         // 1: quadsmith.SystemMessage
-	(*EvaluateBuildRequest)(nil),  // 2: quadsmith.EvaluateBuildRequest
-	(*EvaluateBuildResponse)(nil), // 3: quadsmith.EvaluateBuildResponse
-	(*Build)(nil),                 // 4: quadsmith.Build
+	(SystemMessageSeverity)(0),               // 0: quadsmith.SystemMessageSeverity
+	(*SystemMessage)(nil),                    // 1: quadsmith.SystemMessage
+	(*EvaluateBuildRequest)(nil),             // 2: quadsmith.EvaluateBuildRequest
+	(*EvaluateBuildResponse)(nil),            // 3: quadsmith.EvaluateBuildResponse
+	(*GetBuildElectricalLimitsRequest)(nil),  // 4: quadsmith.GetBuildElectricalLimitsRequest
+	(*GetBuildElectricalLimitsResponse)(nil), // 5: quadsmith.GetBuildElectricalLimitsResponse
+	(*Build)(nil),                            // 6: quadsmith.Build
 }
 var file_evaluator_proto_depIdxs = []int32{
 	0, // 0: quadsmith.SystemMessage.severity:type_name -> quadsmith.SystemMessageSeverity
-	4, // 1: quadsmith.EvaluateBuildRequest.build:type_name -> quadsmith.Build
+	6, // 1: quadsmith.EvaluateBuildRequest.build:type_name -> quadsmith.Build
 	1, // 2: quadsmith.EvaluateBuildResponse.system_messages:type_name -> quadsmith.SystemMessage
-	2, // 3: quadsmith.EvaluatorService.EvaluateBuild:input_type -> quadsmith.EvaluateBuildRequest
-	3, // 4: quadsmith.EvaluatorService.EvaluateBuild:output_type -> quadsmith.EvaluateBuildResponse
-	4, // [4:5] is the sub-list for method output_type
-	3, // [3:4] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	6, // 3: quadsmith.GetBuildElectricalLimitsRequest.build:type_name -> quadsmith.Build
+	2, // 4: quadsmith.EvaluatorService.EvaluateBuild:input_type -> quadsmith.EvaluateBuildRequest
+	4, // 5: quadsmith.EvaluatorService.GetBuildElectricalLimits:input_type -> quadsmith.GetBuildElectricalLimitsRequest
+	3, // 6: quadsmith.EvaluatorService.EvaluateBuild:output_type -> quadsmith.EvaluateBuildResponse
+	5, // 7: quadsmith.EvaluatorService.GetBuildElectricalLimits:output_type -> quadsmith.GetBuildElectricalLimitsResponse
+	6, // [6:8] is the sub-list for method output_type
+	4, // [4:6] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_evaluator_proto_init() }
@@ -420,7 +587,7 @@ func file_evaluator_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_evaluator_proto_rawDesc), len(file_evaluator_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

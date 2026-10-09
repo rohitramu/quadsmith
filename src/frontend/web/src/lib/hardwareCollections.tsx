@@ -383,6 +383,24 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ["weight_g < 200.0", "weight_g <= 30.0"],
       },
       {
+        name: "min_voltage",
+        type: "number",
+        description: "Minimum operating/cutoff voltage (V)",
+        examples: ["min_voltage >= 19.8", "min_voltage >= 3.0"],
+      },
+      {
+        name: "max_voltage",
+        type: "number",
+        description: "Maximum fully-charged voltage (V)",
+        examples: ["max_voltage <= 25.2", "max_voltage <= 4.35"],
+      },
+      {
+        name: "max_current_a",
+        type: "number",
+        description: "Maximum continuous/safe current rating (A)",
+        examples: ["max_current_a >= 90.0", "max_current_a >= 20.0"],
+      },
+      {
         name: "description",
         type: "string",
         description: "Product description",
@@ -412,6 +430,21 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         id: "capacity_mah",
         title: "Capacity (mAh)",
         renderCell: (b) => (b.capacityMah ? `${b.capacityMah}` : "-"),
+      },
+      min_voltage: {
+        id: "min_voltage",
+        title: "Min Voltage (V)",
+        renderCell: (b) => (b.minVoltage ? `${b.minVoltage}V` : "-"),
+      },
+      max_voltage: {
+        id: "max_voltage",
+        title: "Max Voltage (V)",
+        renderCell: (b) => (b.maxVoltage ? `${b.maxVoltage}V` : "-"),
+      },
+      max_current_a: {
+        id: "max_current_a",
+        title: "Max Current (A)",
+        renderCell: (b) => (b.maxCurrentA ? `${b.maxCurrentA}A` : "-"),
       },
       chemistry: {
         id: "chemistry",
@@ -448,6 +481,14 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         label: "Capacity (mAh)",
         value: (b) => (b.capacityMah ? `${b.capacityMah}` : "-"),
+      },
+      {
+        label: "Operating Voltage Range",
+        value: (b) => (b.minVoltage && b.maxVoltage ? `${b.minVoltage}V – ${b.maxVoltage}V` : "-"),
+      },
+      {
+        label: "Max Continuous Current",
+        value: (b) => (b.maxCurrentA ? `${b.maxCurrentA}A` : "-"),
       },
       { label: "Chemistry", value: (b) => b.chemistry || "-" },
       { label: "Connector", value: (b) => b.connector || "-" },

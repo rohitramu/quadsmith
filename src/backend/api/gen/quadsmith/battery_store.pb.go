@@ -11,22 +11,22 @@ import (
 )
 
 func CreateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
-	query := `INSERT INTO batteries (uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	query := `INSERT INTO batteries (uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA)
 	return err
 }
 
 func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Battery, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media"
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a"}
 	}
 	query := `SELECT ` + colsStr + ` FROM batteries WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -60,6 +60,12 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "min_voltage":
+			scanArgs[i] = &m.MinVoltage
+		case "max_voltage":
+			scanArgs[i] = &m.MaxVoltage
+		case "max_current_a":
+			scanArgs[i] = &m.MaxCurrentA
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -77,8 +83,8 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 }
 
 func UpdateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
-	query := `UPDATE batteries SET manufacturer = $2, name = $3, weight_g = $4, capacity_mah = $5, cell_count_s = $6, chemistry = $7, connector = $8, description = $9, reference_links = $10, primary_display_image = $11, media = $12 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE batteries SET manufacturer = $2, name = $3, weight_g = $4, capacity_mah = $5, cell_count_s = $6, chemistry = $7, connector = $8, description = $9, reference_links = $10, primary_display_image = $11, media = $12, min_voltage = $13, max_voltage = $14, max_current_a = $15 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA)
 	return err
 }
 
@@ -89,17 +95,17 @@ func DeleteBattery(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Battery, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media"
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a"}
 	}
 	query := `SELECT ` + colsStr + ` FROM batteries`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -169,6 +175,12 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "min_voltage":
+				scanArgs[i] = &m.MinVoltage
+			case "max_voltage":
+				scanArgs[i] = &m.MaxVoltage
+			case "max_current_a":
+				scanArgs[i] = &m.MaxCurrentA
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

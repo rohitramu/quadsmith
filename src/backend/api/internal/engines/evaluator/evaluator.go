@@ -65,11 +65,17 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		}
 	}
 
+	// Calculate build electrical limits
+	electrical, _ := s.CalculateElectricalLimits(ctx, b)
+	if electrical == nil {
+		electrical = &pb.GetBuildElectricalLimitsResponse{}
+	}
+
 	// 3. Fetch Battery
 	var battery *pb.Battery
 	targetBat := req.Msg.GetBatteryId()
-	if targetBat == "" {
-		targetBat = b.BatteryUuid
+	if targetBat == "" && electrical.DefaultBatteryId != "" {
+		targetBat = electrical.DefaultBatteryId
 	}
 	if targetBat != "" {
 		bat, err := pb.GetBattery(ctx, s.db, targetBat, nil)
@@ -81,6 +87,26 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		} else {
 			battery = bat
 			baseWeight += battery.WeightG
+
+			// Voltage and current safety / compatibility checks
+			if electrical.MaxVoltage > 0 && battery.MaxVoltage > electrical.MaxVoltage {
+				systemMessages = append(systemMessages, &pb.SystemMessage{
+					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+					Message:  fmt.Sprintf("Battery max voltage (%.1fV) exceeds build component limit (%.1fV)", battery.MaxVoltage, electrical.MaxVoltage),
+				})
+			}
+			if electrical.MinVoltage > 0 && battery.MinVoltage < electrical.MinVoltage {
+				systemMessages = append(systemMessages, &pb.SystemMessage{
+					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+					Message:  fmt.Sprintf("Battery min voltage (%.1fV) is below build minimum operating voltage (%.1fV)", battery.MinVoltage, electrical.MinVoltage),
+				})
+			}
+			if electrical.MaxCurrentA > 0 && battery.MaxCurrentA > 0 && battery.MaxCurrentA < electrical.MaxCurrentA {
+				systemMessages = append(systemMessages, &pb.SystemMessage{
+					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+					Message:  fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA)", battery.MaxCurrentA, electrical.MaxCurrentA),
+				})
+			}
 		}
 	}
 
@@ -233,6 +259,9 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		MaxAccelerationMps2:  phys.MaxAccelerationMps2,
 		TopSpeedKmh:          phys.TopSpeedKmh,
 		SystemMessages:       systemMessages,
+		MinVoltage:           electrical.MinVoltage,
+		MaxVoltage:           electrical.MaxVoltage,
+		MaxCurrentA:          electrical.MaxCurrentA,
 	}
 
 	return connect.NewResponse(res), nil
@@ -581,4 +610,251 @@ func CalculatePhysics(
 		TopSpeedKmh:          topSpeedKmh,
 		SystemMessages:       systemMessages,
 	}
+}
+
+// GetBuildElectricalLimits calculates electrical limits (min/max voltage and max current)
+// and returns the lightest compatible battery.
+func (s *EvaluatorServiceHandler) GetBuildElectricalLimits(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+	b := req.Msg.GetBuild()
+	if b == nil && req.Msg.GetBuildId() != "" {
+		fetched, err := pb.GetBuild(ctx, s.db, req.Msg.GetBuildId(), nil)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", req.Msg.GetBuildId()))
+		}
+		b = fetched
+	}
+	if b == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is required"))
+	}
+
+	limits, err := s.CalculateElectricalLimits(ctx, b)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(limits), nil
+}
+
+// CalculateElectricalLimits queries referenced components and computes electrical constraints.
+func (s *EvaluatorServiceHandler) CalculateElectricalLimits(ctx context.Context, b *pb.Build) (*pb.GetBuildElectricalLimitsResponse, error) {
+	var fc *pb.FlightController
+	var escs []*pb.ElectronicSpeedController
+	var motor *pb.Motor
+
+	if b.FlightControllerUuid != "" && s.db != nil {
+		f, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
+		if err == nil {
+			fc = f
+			if fc.GetInternalElectronicSpeedControllerUuid() != "" {
+				esc, err := pb.GetElectronicSpeedController(ctx, s.db, fc.GetInternalElectronicSpeedControllerUuid(), nil)
+				if err == nil {
+					escs = append(escs, esc)
+				}
+			}
+		}
+	}
+
+	if s.db != nil {
+		for _, escUuid := range b.ElectronicSpeedControllerUuids {
+			esc, err := pb.GetElectronicSpeedController(ctx, s.db, escUuid, nil)
+			if err == nil {
+				escs = append(escs, esc)
+			}
+		}
+	}
+
+	if b.MotorUuid != "" && s.db != nil {
+		m, err := pb.GetMotor(ctx, s.db, b.MotorUuid, nil)
+		if err == nil {
+			motor = m
+		}
+	}
+
+	limits := ComputeElectricalLimits(fc, escs, motor)
+	limits.DefaultBatteryId = s.FindLightestCompatibleBattery(ctx, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+
+	return limits, nil
+}
+
+// ComputeElectricalLimits determines min_voltage, max_voltage, and max_current_a from hardware specs.
+func ComputeElectricalLimits(fc *pb.FlightController, escs []*pb.ElectronicSpeedController, motor *pb.Motor) *pb.GetBuildElectricalLimitsResponse {
+	var minV float32 = 0
+	var maxV float32 = 0
+
+	if fc != nil && fc.MinVoltage > minV {
+		minV = fc.MinVoltage
+	}
+	for _, esc := range escs {
+		if esc.MinVoltage > minV {
+			minV = esc.MinVoltage
+		}
+	}
+	if motor != nil && motor.MinVoltage > minV {
+		minV = motor.MinVoltage
+	}
+
+	updateMaxV := func(v float32) {
+		if v > 0 {
+			if maxV == 0 || v < maxV {
+				maxV = v
+			}
+		}
+	}
+
+	if fc != nil {
+		updateMaxV(fc.MaxVoltage)
+	}
+	for _, esc := range escs {
+		updateMaxV(esc.MaxVoltage)
+	}
+	if motor != nil {
+		updateMaxV(motor.MaxVoltage)
+	}
+
+	// Heuristic fallbacks if voltage constraints are unspecified
+	if motor != nil && motor.Kv > 0 {
+		if minV == 0 {
+			if motor.Kv >= 15000 {
+				minV = 3.0
+			} else if motor.Kv >= 8000 {
+				minV = 6.0
+			} else if motor.Kv >= 2400 {
+				minV = 13.2
+			} else {
+				minV = 19.8
+			}
+		}
+		if maxV == 0 {
+			if motor.Kv >= 15000 {
+				maxV = 4.35
+			} else if motor.Kv >= 8000 {
+				maxV = 8.7
+			} else if motor.Kv >= 2400 {
+				maxV = 16.8
+			} else {
+				maxV = 25.2
+			}
+		}
+	} else {
+		if minV == 0 {
+			minV = 13.2
+		}
+		if maxV == 0 {
+			maxV = 25.2
+		}
+	}
+
+	if maxV < minV && minV > 0 {
+		maxV = minV
+	}
+
+	// Calculate max_current_a required by the build
+	nominalVoltage := float32(3.7)
+	if maxV > 0 {
+		cells := float32(math.Max(1.0, math.Round(float64(maxV/4.2))))
+		nominalVoltage = cells * 3.7
+	}
+
+	var maxCurrentA float32 = 15.0
+	if motor != nil {
+		statorD := motor.StatorDiameterMm
+		statorH := motor.StatorHeightMm
+		statorVol := float32(math.Pi/4.0) * statorD * statorD * statorH
+		if statorVol <= 0 {
+			if motor.WeightG > 0 {
+				statorVol = motor.WeightG * 80.0
+			} else {
+				statorVol = 2600.0
+			}
+		}
+		pCont := float64(statorVol) * 0.12
+		if motor.WeightG > 0 {
+			pCont = math.Min(pCont, float64(motor.WeightG)*12.0)
+		}
+		pCont = math.Max(5.0, pCont)
+
+		if motor.Kv > 0 && nominalVoltage > 0 {
+			noLoadRpm := float64(motor.Kv) * float64(nominalVoltage)
+			kvFactor := math.Min(1.2, math.Max(0.4, noLoadRpm/45000.0))
+			pCont *= kvFactor
+		}
+
+		quadAmps := float32((pCont * 4.0) / float64(nominalVoltage))
+		maxCurrentA = float32(math.Round(float64(quadAmps)*10) / 10)
+	}
+
+	if len(escs) > 0 {
+		var escLimit float32 = 0
+		for _, esc := range escs {
+			if esc.MotorCurrentMaxA > 0 {
+				limit := esc.MotorCurrentMaxA * 4.0
+				if escLimit == 0 || limit < escLimit {
+					escLimit = limit
+				}
+			}
+		}
+		if escLimit > 0 && maxCurrentA > escLimit {
+			maxCurrentA = escLimit
+		}
+	}
+
+	if maxCurrentA < 5.0 {
+		maxCurrentA = 5.0
+	}
+
+	return &pb.GetBuildElectricalLimitsResponse{
+		MinVoltage:  float32(math.Round(float64(minV)*100) / 100),
+		MaxVoltage:  float32(math.Round(float64(maxV)*100) / 100),
+		MaxCurrentA: float32(math.Round(float64(maxCurrentA)*10) / 10),
+	}
+}
+
+// FindLightestCompatibleBattery finds the lightest compatible battery in the database.
+func (s *EvaluatorServiceHandler) FindLightestCompatibleBattery(ctx context.Context, minV, maxV, maxA float32) string {
+	if s.db == nil {
+		return ""
+	}
+
+	var batteryId string
+	// Full match: min_voltage >= minV, max_voltage <= maxV, max_current_a >= maxA
+	err := s.db.QueryRow(ctx, `
+		SELECT id FROM batteries
+		WHERE min_voltage >= $1 AND max_voltage <= $2 AND max_current_a >= $3
+		ORDER BY weight_g ASC, id ASC
+		LIMIT 1
+	`, minV, maxV, maxA).Scan(&batteryId)
+	if err == nil && batteryId != "" {
+		return batteryId
+	}
+
+	// Voltage match fallback
+	err = s.db.QueryRow(ctx, `
+		SELECT id FROM batteries
+		WHERE min_voltage >= $1 AND max_voltage <= $2
+		ORDER BY weight_g ASC, id ASC
+		LIMIT 1
+	`, minV, maxV).Scan(&batteryId)
+	if err == nil && batteryId != "" {
+		return batteryId
+	}
+
+	// Upper voltage ceiling fallback
+	err = s.db.QueryRow(ctx, `
+		SELECT id FROM batteries
+		WHERE max_voltage <= $1
+		ORDER BY weight_g ASC, id ASC
+		LIMIT 1
+	`, maxV).Scan(&batteryId)
+	if err == nil && batteryId != "" {
+		return batteryId
+	}
+
+	// Any battery fallback
+	_ = s.db.QueryRow(ctx, `
+		SELECT id FROM batteries
+		ORDER BY weight_g ASC, id ASC
+		LIMIT 1
+	`).Scan(&batteryId)
+
+	return batteryId
 }

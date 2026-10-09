@@ -135,6 +135,9 @@ export const mockBattery1: Battery = create(BatterySchema, {
   weightG: 220,
   chemistry: "LiPo",
   connector: "XT60",
+  minVoltage: 19.8,
+  maxVoltage: 25.2,
+  maxCurrentA: 150.0,
   description: "High discharge 6S battery pack for freestyle drones.",
 });
 
@@ -228,7 +231,6 @@ export const mockBuild1: Build = create(BuildSchema, {
     "A durable 5-inch freestyle quadcopter built to withstand concrete hits in abandoned buildings, featuring the TBS Source One V5 frame, T-Motor F60 PRO V 1950KV motors, SpeedyBee F405 V4 stack, Caddx Ratel 2 camera, and CNHL 1500mAh 6S LiPo.",
   frameUuid: mockFrame1.uuid,
   motorUuid: mockMotor1.uuid,
-  batteryUuid: mockBattery1.uuid,
   flightControllerUuid: mockFC1.uuid,
   electronicSpeedControllerUuids: [mockESC1.uuid],
   propellerUuid: mockPropeller1.uuid,
@@ -271,7 +273,6 @@ export const mockBuild2: Build = create(BuildSchema, {
     "A dedicated 7-inch mountain surfer and long-range cruiser engineered for 30+ minute endurance flights with Li-ion pack.",
   frameUuid: mockFrame1.uuid,
   motorUuid: mockMotor2.uuid,
-  batteryUuid: mockBattery1.uuid,
   flightControllerUuid: mockFC1.uuid,
   electronicSpeedControllerUuids: [mockESC1.uuid],
   propellerUuid: mockPropeller1.uuid,
@@ -297,4 +298,7 @@ export const mockEvaluation1: EvaluateBuildResponse = create(EvaluateBuildRespon
   buildId: "bando-basher-5-inch",
   payloadWeightG: 0,
   batteryId: "tattu-rline-v5-1400mah-6s",
+  minVoltage: 14.8,
+  maxVoltage: 25.2,
+  maxCurrentA: 39.4,
 });

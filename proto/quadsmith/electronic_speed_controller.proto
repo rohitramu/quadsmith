@@ -51,6 +51,12 @@ message ElectronicSpeedController {
   repeated ReferenceLink reference_links = 12;
   optional string primary_display_image = 13;
   repeated Media media = 14;
+
+  // Minimum operating input voltage (volts)
+  float min_voltage = 15;
+
+  // Maximum operating input voltage (volts)
+  float max_voltage = 16;
 }
 
 // ---------------------------------------------------------

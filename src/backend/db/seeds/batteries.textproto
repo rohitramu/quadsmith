@@ -14,6 +14,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1200mah-22-2v-150c-6s1p-lipo-battery-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 96.0
 }
 batteries: {
 
@@ -35,6 +39,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-1s-300mah-75c-bt2-0-battery-5pcs"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.2
+  max_current_a: 13.5
 }
 batteries: {
 
@@ -56,6 +64,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 20.2
 }
 batteries: {
 
@@ -73,6 +85,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-3s-11-1v-650mah-80c-lipo-battery-xt30"
   }
+
+  min_voltage: 9.9
+  max_voltage: 12.6
+  max_current_a: 52.0
 }
 batteries: {
 
@@ -86,6 +102,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Ovonic Ovonic 4S 1300mAh 100C 4S 1300mAh LiPo battery with XT60 connector, weighing 169.0g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 130.0
 }
 batteries: {
 
@@ -103,6 +123,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1400mah-22-2v-150c-6s1p-lipo-battery-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 112.0
 }
 batteries: {
 
@@ -116,6 +140,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "GNB GNB 8S 1100mAh 130C 8S 1100mAh LiPo battery with XT60 connector, weighing 230.0g."
+
+  min_voltage: 26.4
+  max_voltage: 33.6
+  max_current_a: 143.0
 }
 batteries: {
 
@@ -137,6 +165,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-3s-450mah-75c-xt30-battery-2pcs"
   }
+
+  min_voltage: 9.9
+  max_voltage: 12.6
+  max_current_a: 20.2
 }
 batteries: {
 
@@ -158,6 +190,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-4s-450mah-75c-xt30-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 20.2
 }
 batteries: {
 
@@ -175,6 +211,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-650mah-2s-7-6v-hv-95c-lipo-battery-long-pack-xt30"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 52.0
 }
 batteries: {
 
@@ -192,6 +232,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-6-0-1300mah-22-2v-160c-6s1p-lipo-battery-limited-edition-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 104.0
 }
 batteries: {
 
@@ -209,6 +253,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1550mah-6s-150c-22-2v-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -226,6 +274,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1050mah-8s-29-6v-150c-lipo-battery-pack-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 84.0
 }
 batteries: {
 
@@ -243,6 +295,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-6-0-1300mah-22-2v-160c-6s1p-lipo-battery-limited-edition-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 104.0
 }
 batteries: {
 
@@ -256,6 +312,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT30"
   description: "Ovonic Ovonic 3S 450mAh 3S 450mAh LiPo battery with XT30 connector, weighing 26.1g."
+
+  min_voltage: 9.9
+  max_voltage: 12.6
+  max_current_a: 20.2
 }
 batteries: {
 
@@ -269,6 +329,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT30"
   description: "Ovonic Ovonic 3S 850mAh 3S 850mAh LiPo battery with XT30 connector, weighing 80.0g."
+
+  min_voltage: 9.9
+  max_voltage: 12.6
+  max_current_a: 68.0
 }
 batteries: {
 
@@ -282,6 +346,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT30"
   description: "Ovonic Ovonic 4S 850mAh 4S 850mAh LiPo battery with XT30 connector, weighing 112.0g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 68.0
 }
 batteries: {
 
@@ -295,6 +363,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Ovonic Ovonic 4S 1550mAh 4S 1550mAh LiPo battery with XT60 connector, weighing 160.0g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -308,6 +380,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Ovonic Ovonic 6S 1000mAh 6S 1000mAh LiPo battery with XT60 connector, weighing 185.0g."
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 80.0
 }
 batteries: {
 
@@ -321,6 +397,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Ovonic Ovonic 6S 1200mAh 6S 1200mAh LiPo battery with XT60 connector, weighing 5.0g."
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 96.0
 }
 batteries: {
 
@@ -338,6 +418,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-380mah-90c-3-8v-hv-li-po-battery-for-whoop-micro-ph2-0-plastic-head"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.2
+  max_current_a: 17.1
 }
 batteries: {
 
@@ -355,6 +439,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-530mah-90c-3-8v-hv-li-po-battery-for-whoop-micro-a30-cabled"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.2
+  max_current_a: 42.4
 }
 batteries: {
 
@@ -372,6 +460,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-530mah-90c-3-8v-hv-li-po-battery-for-whoop-micro-a30-cabled"
   }
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 42.4
 }
 batteries: {
 
@@ -389,6 +481,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-3s-11-1v-650mah-80c-lipo-battery-xt30"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 52.0
 }
 batteries: {
 
@@ -406,6 +502,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1100mah-3s-11-1v-140c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 88.0
 }
 batteries: {
 
@@ -423,6 +523,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1100mah-3s-11-1v-140c-lipo-battery-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 88.0
 }
 batteries: {
 
@@ -440,6 +544,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-6s-22-8v-1300mah-160c-hv-lipo-battery-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 104.0
 }
 batteries: {
 
@@ -453,6 +561,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "BT2.0"
   description: "BETAFPV BetaFPV 2S 300mAh (Unverified) 2S 300mAh LiPo battery with BT2.0 connector, weighing 29.2g."
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 13.5
 }
 batteries: {
 
@@ -470,6 +582,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-2s-3s-4s-550mah-75c-battery-2pcs"
   }
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 44.0
 }
 batteries: {
 
@@ -487,6 +603,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-450mah-11-1v-75c-3s1p-lipo-battery-pack-with-xt30-plug-long"
   }
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 20.2
 }
 batteries: {
 
@@ -504,6 +624,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-850mah-2s-7-6v-hv-95c-lipo-battery-long-pack-with-xt30-plug"
   }
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 68.0
 }
 batteries: {
 
@@ -517,6 +641,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT30"
   description: "Ovonic Ovonic 2S 450mAh (Unverified) 2S 450mAh LiPo battery with XT30 connector, weighing 27.0g."
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 20.2
 }
 batteries: {
 
@@ -530,6 +658,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT30"
   description: "Ovonic Ovonic 2S 850mAh (Unverified) 2S 850mAh LiPo battery with XT30 connector, weighing 49.0g."
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 68.0
 }
 batteries: {
 
@@ -547,6 +679,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-lihv-6s-22-8v-380mah-90c-lipo-battery-xt30"
   }
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 17.1
 }
 batteries: {
 
@@ -564,6 +700,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-450mah-80c-3-8v-hv-li-po-battery-for-whoop-micro-ph2-0-plastic-head"
   }
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 20.2
 }
 batteries: {
 
@@ -577,6 +717,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT30"
   description: "BETAFPV BetaFPV 2S 850mAh (Unverified) 2S 850mAh LiPo battery with XT30 connector, weighing 38.0g."
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 68.0
 }
 batteries: {
 
@@ -594,6 +738,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1800mah-6s-22-2v-150c-lipo-battery-pack-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 144.0
 }
 batteries: {
 
@@ -607,6 +755,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Tattu Tattu R-Line 5S 1300mAh (Unverified) 5S 1300mAh LiPo battery with XT60 connector, weighing 20.0g."
+
+  min_voltage: 16.5
+  max_voltage: 21.0
+  max_current_a: 104.0
 }
 batteries: {
 
@@ -624,6 +776,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1550mah-6s-150c-22-2v-lipo-battery-xt60"
   }
+
+  min_voltage: 16.5
+  max_voltage: 21.0
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -637,6 +793,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Tattu Tattu R-Line 6S 1250mAh (Unverified) 6S 1250mAh LiPo battery with XT60 connector, weighing 20.0g."
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 100.0
 }
 batteries: {
 
@@ -654,6 +814,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1550mah-6s-150c-22-2v-lipo-battery-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -667,6 +831,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT30"
   description: "Ovonic Ovonic 2S 650mAh 2S 650mAh LiPo battery with XT30 connector, weighing 5.0g."
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 52.0
 }
 batteries: {
 
@@ -680,6 +848,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Ovonic Ovonic 3S 1300mAh 3S 1300mAh LiPo battery with XT60 connector, weighing 100.0g."
+
+  min_voltage: 9.9
+  max_voltage: 12.6
+  max_current_a: 104.0
 }
 batteries: {
 
@@ -693,6 +865,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Ovonic Ovonic 4S 1800mAh 4S 1800mAh LiPo battery with XT60 connector, weighing 209.0g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 144.0
 }
 batteries: {
 
@@ -706,6 +882,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Ovonic Ovonic 6S 1550mAh 6S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -723,6 +903,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-3s-11-1v-650mah-80c-lipo-battery-xt30"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.2
+  max_current_a: 52.0
 }
 batteries: {
 
@@ -740,6 +924,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-720mah-100c-3-8v-hv-li-po-battery-a30-cable"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.2
+  max_current_a: 57.6
 }
 batteries: {
 
@@ -757,6 +945,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-3s-11-1v-650mah-80c-lipo-battery-xt30"
   }
+
+  min_voltage: 6.6
+  max_voltage: 8.4
+  max_current_a: 52.0
 }
 batteries: {
 
@@ -774,6 +966,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1100mah-3s-11-1v-140c-lipo-battery-xt60"
   }
+
+  min_voltage: 9.9
+  max_voltage: 12.6
+  max_current_a: 88.0
 }
 batteries: {
 
@@ -791,6 +987,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1550mah-14-8v-4s-120c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -808,6 +1008,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1550mah-14-8v-4s-120c-lipo-battery-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -825,6 +1029,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1300mah-30-4v-8s-hv-120c-lipo-battery-xt60"
   }
+
+  min_voltage: 26.4
+  max_voltage: 33.6
+  max_current_a: 104.0
 }
 batteries: {
 
@@ -838,6 +1046,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Glacier Glacier 45C 1550mAh 4S LiPo 4S 1550mAh LiPo battery with XT60 connector, weighing 160.0g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 69.8
 }
 batteries: {
 
@@ -859,6 +1071,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-ii-3s-580mah-95c-xt30-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -880,6 +1096,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-ii-3s-580mah-95c-xt30-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -901,6 +1121,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-ii-3s-580mah-95c-xt30-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -922,6 +1146,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-aquila20-exclusive-battery-1100mah-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -939,6 +1167,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/600mah-2s-lipo-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -960,6 +1192,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-1s-260mah-80c-bt2-0-battery-5pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -981,6 +1217,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-7-4v-2s-550mah-75c-lihv-whoop-micro-battery-2-pack-bt3-0"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -998,6 +1238,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-2s-3s-4s-550mah-75c-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1019,6 +1263,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1036,6 +1284,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-550mah-75c-battery-4pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1057,6 +1309,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1078,6 +1334,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-1s-300mah-75c-bt2-0-battery-5pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1095,6 +1355,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-6s-1100mah-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1112,6 +1376,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-series-4s-850mah-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1129,6 +1397,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/bt3-0-450mah-2s-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1146,6 +1418,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/450mah-2s-45c-lipo-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 69.8
 }
 batteries: {
 
@@ -1163,6 +1439,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/bt2-0-ph2-0-1s-lipo-charger-adapter"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1184,6 +1464,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-bt2-0-battery-charger-and-voltage-tester"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1201,6 +1485,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/750mah-4s-95c-lipo-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 71.2
 }
 batteries: {
 
@@ -1218,6 +1506,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/copy-of-550mah-1s-lipo-hv-battery-2pcs"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.2
+  max_current_a: 44.0
 }
 batteries: {
 
@@ -1235,6 +1527,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1000mah-4s-75c-lipo-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 75.0
 }
 batteries: {
 
@@ -1256,6 +1552,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-7-4v-2s-550mah-75c-lihv-whoop-micro-battery-2-pack-bt3-0"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1273,6 +1573,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/850mah-4s-75c-lipo-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1290,6 +1594,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/bt2-0-260mah-1s-30c-battery-8pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 46.5
 }
 batteries: {
 
@@ -1307,6 +1615,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/ph-battery-charger-and-voltage-tester"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1324,6 +1636,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/bt2-0-300mah-1s-30c-battery-8pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 46.5
 }
 batteries: {
 
@@ -1345,6 +1661,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lipo-batteries-safety-handbag"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1362,6 +1682,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-3s-45c-lipo-battery-s-version-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 69.8
 }
 batteries: {
 
@@ -1379,6 +1703,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-3s-45c-lipo-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 69.8
 }
 batteries: {
 
@@ -1400,6 +1728,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1421,6 +1753,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -1438,6 +1774,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/350mah-2s-lipo-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 54.2
 }
 batteries: {
 
@@ -1455,6 +1795,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-1s-30c-hv-battery-8pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 46.5
 }
 batteries: {
 
@@ -1472,6 +1816,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/betafpv-1s-lipo-lihv-charger-board"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1489,6 +1837,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-2s-lipo-battery-2pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 69.8
 }
 batteries: {
 
@@ -1506,6 +1858,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-logo-battery-strap"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1523,6 +1879,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-protos-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1540,6 +1900,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-650mah-6s-22-2v-150c-fpv-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 232.5
 }
 batteries: {
 
@@ -1557,6 +1921,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-onelink-2s-3s-4s-battery-parallel-charger"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1574,6 +1942,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-onelink-4s-850mah-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1591,6 +1963,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-onelink-2s-500mah-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1608,6 +1984,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-onelink-3s-500mah-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1625,6 +2005,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/isdt-608pd-lipo-charger-dc-240w-10a-usb-c-140w-5a-smart-digital-charger"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1642,6 +2026,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-6s-8200mah-80c-22-2v-fpv-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1659,6 +2047,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-5s-4200mah-18-5v-80c-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 93.0
 }
 batteries: {
 
@@ -1676,6 +2068,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-3s-1150mah-60c-11-4v-fpv-drone-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 93.0
 }
 batteries: {
 
@@ -1693,6 +2089,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-6s-1300mah-waterproof-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1710,6 +2110,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-6s-650mah-120c-22-8v-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 186.0
 }
 batteries: {
 
@@ -1727,6 +2131,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-5s-3200mah-18-5v-110c-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 170.5
 }
 batteries: {
 
@@ -1744,6 +2152,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-6s-1300mah-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1761,6 +2173,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-500mah-3s-11-4v-100c-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -1778,6 +2194,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-500mah-2s-7-6v-100c-brushless-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -1795,6 +2215,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-4s-850mah-15-2v-brushless-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1812,6 +2236,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-1500mah-4s-14-8v-110c-brushless-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 170.5
 }
 batteries: {
 
@@ -1829,6 +2257,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-380mah-3s-11-4v-60c-fpv-drone-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 93.0
 }
 batteries: {
 
@@ -1850,6 +2282,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-nitro-nectar-nx69-550mah-1s-80c-hv-lipo-battery-2-x-batteries-99"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.2
+  max_current_a: 44.0
 }
 batteries: {
 
@@ -1871,6 +2307,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-nitro-nectar-nx69-300mah-1s-80c-hv-lipo-battery-4-x-batteries"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1888,6 +2328,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-21700-5000mah-li-ion-battery"
   }
+
+  min_voltage: 11.2
+  max_voltage: 16.8
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -1909,6 +2353,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-nectar-connector-ph2-0-clear-battery-lead-x5"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1930,6 +2378,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-small-battery-strap"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1943,6 +2395,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Upgrade Energy RED V4 4S1P 5000mAh Amprius SA124 Battery (XT60)"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1956,6 +2412,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Upgrade Energy RED V3 6S1P 5Ah Molicel P50B Battery (XT60)"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1969,6 +2429,10 @@ batteries: {
   chemistry: "Li-ion"
   connector: "XT60"
   description: "Upgrade Energy RED V3 6S1P 3Ah Molicel P30B Battery (XT60)"
+
+  min_voltage: 16.8
+  max_voltage: 25.2
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -1982,6 +2446,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Upgrade Energy RED V3 6S2P 6000 mAh Molicel P30B Battery"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -1995,6 +2463,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Upgrade Energy RED V3 4S1P 5000mAh Molicel P50B Battery (XT60)"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2008,6 +2480,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Upgrade Energy RED V3 6S1P 5000mAh Molicel P50B Long (XT60)"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2021,6 +2497,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Upgrade Energy RED V3 6S2P 10 Ah Molicel P30B Battery (XT60)"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2034,6 +2514,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Fat Shark Fat Shark Goggle Battery V2 4S 1550mAh LiPo battery with XT60 connector, weighing 235.8g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2047,6 +2531,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT90"
   description: "GNB GNB 4S 3500mAh Battery - XT90 4S 1550mAh LiPo battery with XT90 connector, weighing 63.0g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2060,6 +2548,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "Tattu R-Line V5.0 6S 1550mAh Battery - XT60 4S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2077,6 +2569,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/ethix-heated-deluxe-lipo-bag-v2"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2094,6 +2590,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/cnhl-650mah-4s-70c-ministar-fpv-lipo-for-2-3-quads-xt30"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 108.5
 }
 batteries: {
 
@@ -2111,6 +2611,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.3
+  max_current_a: 37.5
 }
 batteries: {
 
@@ -2124,6 +2628,10 @@ batteries: {
   chemistry: "LiHV"
   connector: "XT60"
   description: "4S 850mAh LiHV Battery with XT30 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2141,6 +2649,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-22-8v-6s-1300mah-120c-lihv-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 186.0
 }
 batteries: {
 
@@ -2158,6 +2670,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-3-8v-1s-300mah-80c-lihv-whoop-micro-battery-w-plastic-head-ph2-0"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2175,6 +2691,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-14-8v-4s-720mah-100c-lihv-battery-xt30"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -2192,6 +2712,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/cinemini-battery-strap"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2209,6 +2733,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/draft-vifly-toothstor-4-port-2s-balance-charger-with-storage-mode"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2226,6 +2754,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-7-4v-2s-550mah-75c-lihv-whoop-micro-battery-2-pack-bt3-0"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -2239,6 +2771,10 @@ batteries: {
   chemistry: "LiHV"
   connector: "XT60"
   description: "8S 8200mAh 65C LiHV Battery with XT90 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 100.8
 }
 batteries: {
 
@@ -2252,6 +2788,10 @@ batteries: {
   chemistry: "Li-ion"
   connector: "XT60"
   description: "Explorer 4S 30 Ah 18650 Li-Ion Battery with XT30 Connector"
+
+  min_voltage: 11.2
+  max_voltage: 16.8
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -2269,6 +2809,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1500mah-22-8v-6s-160c-hv-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2286,6 +2830,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-tough-battery-strap-v2-choose-length"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2303,6 +2851,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-22-2v-6s-1400mah-160c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 248.0
 }
 batteries: {
 
@@ -2320,6 +2872,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-5200mah-29-6v-8s1p-110c-long-range-cinelifter-lipo-battery-xt90"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 170.5
 }
 batteries: {
 
@@ -2333,6 +2889,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "6S 3500mAh 110C LiPo Battery with XT60 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 170.5
 }
 batteries: {
 
@@ -2346,6 +2906,10 @@ batteries: {
   chemistry: "LiHV"
   connector: "XT60"
   description: "Fat Shark 6 Port 1S LiPo/LiHV Charger for BT2.0 & PH2.0"
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2363,6 +2927,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/lets-fly-rc-micro-battery-strap-155mm"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2380,6 +2948,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-22-8v-6s-660mah-90c-lihv-micro-battery-long-type-xt30"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 139.5
 }
 batteries: {
 
@@ -2393,6 +2965,10 @@ batteries: {
   chemistry: "Li-ion"
   connector: "XT60"
   description: "Generic 3300mAh 18650 Li-Ion Battery 4S 1550mAh Li-ion battery with XT60 connector, weighing 46.7g."
+
+  min_voltage: 11.2
+  max_voltage: 16.8
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -2410,6 +2986,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/3-pack-cnhl-1350mah-22-2v-6s-150c-pizza-series-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 232.5
 }
 batteries: {
 
@@ -2423,6 +3003,10 @@ batteries: {
   chemistry: "Li-ion"
   connector: "XT60"
   description: "Hibatt 1300mAh 18350 Li-Ion Battery 2-Pack 4S 1550mAh Li-ion battery with XT60 connector, weighing 25.0g."
+
+  min_voltage: 11.2
+  max_voltage: 16.8
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -2444,6 +3028,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/radiomaster-3-7v-900mah-18350-li-ion-battery-for-zorro-2-pack"
   }
+
+  min_voltage: 11.2
+  max_voltage: 16.8
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -2457,6 +3045,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "R-Line Version 1.0 4S 850mAh 95C LiPo Battery with XT30 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 147.2
 }
 batteries: {
 
@@ -2470,6 +3062,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "MiniStar 6S 1000mAh 100C LiPo Battery with XT60 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -2487,6 +3083,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tattu-3-8v-1s-300mah-75c-hv-lipo-battery-5-pack-bt2-0"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -2504,6 +3104,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-lipo-battery-bag-2-with-cell-checker"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2517,6 +3121,10 @@ batteries: {
   chemistry: "LiHV"
   connector: "XT60"
   description: "1S 450mAh 80C LiHV Battery with PH2.0 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2534,6 +3142,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-ultra-black-series-1550mah-14-8v-4s-150c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 232.5
 }
 batteries: {
 
@@ -2551,6 +3163,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-ultra-black-series-1400mah-22-2v-6s-150c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 232.5
 }
 batteries: {
 
@@ -2568,6 +3184,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-ultra-black-series-1050mah-22-2v-6s-150c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 232.5
 }
 batteries: {
 
@@ -2585,6 +3205,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/lets-fly-rc-battery-strap-240mm"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2602,6 +3226,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-battery-strap-250mm"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2615,6 +3243,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "R-Line Version 4.0 6S 1550mAh 130C LiPo Battery with XT60 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 201.5
 }
 batteries: {
 
@@ -2632,6 +3264,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/vifly-whoopstor-1s-battery-charger"
   }
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2649,6 +3285,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/radiomaster-boxer-max-pyrodrone-edition-transmitter-w-ag01-hall-gimbals-6200mah-2s-lipo-elrs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2666,6 +3306,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/radiomaster-tx16s-21700-5000mah-2s-li-ion-battery"
   }
+
+  min_voltage: 11.2
+  max_voltage: 16.8
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -2683,6 +3327,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/3-pack-cnhl-1200mah-14-8v-4s-100c-speedy-pizza-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -2704,6 +3352,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/cnhl-speedy-pizza-14-8v-4s-1550mah-100c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -2725,6 +3377,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/3-pack-cnhl-black-series-v2-0-1300mah-14-8v-4s-130c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 201.5
 }
 batteries: {
 
@@ -2738,6 +3394,10 @@ batteries: {
   chemistry: "LiHV"
   connector: "XT60"
   description: "1S 450mAh 75C LiHV Battery with BT2.0 Connector (5pcs)"
+
+  min_voltage: 13.2
+  max_voltage: 17.4
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -2755,6 +3415,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-22-2v-6s-1100mah-120c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 186.0
 }
 batteries: {
 
@@ -2768,6 +3432,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "StoreSafe Smart LiPo Discharger - Choose Version"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2781,6 +3449,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT30"
   description: "LiPo Suction 2-6S Battery Discharger XT30 and XT60"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2798,6 +3470,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/replacement-2x18650-battery-tray-for-tx8-tx12-tx16"
   }
+
+  min_voltage: 11.2
+  max_voltage: 16.8
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -2815,6 +3491,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/pdevx-battery-strap-240mm"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2836,6 +3516,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/4-packs-cnhl-ministar-hv-450mah-3-8v-1s-70c-lipo-battery-with-ph2-0"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 108.5
 }
 batteries: {
 
@@ -2853,6 +3537,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-black-series-2000mah-14-8v-4s-100c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -2870,6 +3558,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/dji-avata-2-battery-charging-hub"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2887,6 +3579,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-450mah-11-1v-75c-3s1p-lipo-battery-pack-with-xt30-plug-long"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 116.2
 }
 batteries: {
 
@@ -2908,6 +3604,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/3-pack-cnhl-850mah-4s-70c-ministar-14-8v-li-po-fpv-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 108.5
 }
 batteries: {
 
@@ -2925,6 +3625,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-ministar-series-1300mah-22-2v-6s-120c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 186.0
 }
 batteries: {
 
@@ -2942,6 +3646,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-stan-black-series-1100mah-14-8v-4s-100c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -2959,6 +3667,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-battery-strap-210mm"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -2972,6 +3684,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "MiniStar 6S 1250mAh 70C LiPo Battery with XT60 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 108.5
 }
 batteries: {
 
@@ -2989,6 +3705,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tattu-r-line-version-4-0-22-2v-6s-1300mah-130c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 201.5
 }
 batteries: {
 
@@ -3006,6 +3726,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-4-0-1050mah-6s-130c-lipo-battery-pack"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 201.5
 }
 batteries: {
 
@@ -3019,6 +3743,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "R-Line Version 4.0 4S 1550mAh 130C LiPo Battery with XT60 Connector"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 201.5
 }
 batteries: {
 
@@ -3036,6 +3764,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-battery-strap-15-5cm"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3053,6 +3785,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 130.0
 }
 batteries: {
 
@@ -3070,6 +3806,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 150.0
 }
 batteries: {
 
@@ -3087,6 +3827,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 150.0
 }
 batteries: {
 
@@ -3104,6 +3848,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-lipo-battery-bag-2-with-cell-checker"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3121,6 +3869,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-3-0-1550mah-18-5v-120c-5s1p-lipo-battery-pack-with-xt60-plug"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 186.0
 }
 batteries: {
 
@@ -3138,6 +3890,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tattu-r-line-version-4-0-22-2v-6s-1300mah-130c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 201.5
 }
 batteries: {
 
@@ -3155,6 +3911,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-funfly-1550mah-100c-14-8v-4s1p-lipo-battery-pack-with-xt60-plug-for-practice"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -3172,6 +3932,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-funfly-14-8v-4s-1300mah-100c-lipo-battery-xt60"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -3185,6 +3949,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "FPV Elite Voltage Cell Meter Battery Capacity Tester 4S 1550mAh LiPo battery with XT60 connector, weighing 121.0g."
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3202,6 +3970,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-nblade-pro-7-inch-dji-o4pro-long-battery-life-freestyle-cinematic-fpv-drone"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3219,6 +3991,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-kevlar-battery-strap-15x250mm-20x250mm"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3236,6 +4012,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-thor-1s-charger-v2-racing-model-fpv-drone-lithium-battery-6-way-charging-board-charger"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3257,6 +4037,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-thor-pro-6-port-lipo-battery-balance-charging-board"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3274,6 +4058,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-kratos-fireproof-explosionproof-battery-safe-bag-lipo-charging-hand-bag"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3287,6 +4075,10 @@ batteries: {
   chemistry: "LiPo"
   connector: "XT60"
   description: "GEPRC 4S 530mAh 90/180C HV 3.8V/4.35V LiPo Battery"
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 279.0
 }
 batteries: {
 
@@ -3304,6 +4096,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-300mah-75-c-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3321,6 +4117,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-720mah-90c-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 139.5
 }
 batteries: {
 
@@ -3338,6 +4138,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/4s-720mah-100c-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 155.0
 }
 batteries: {
 
@@ -3355,6 +4159,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-2s-530mah-90c-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 139.5
 }
 batteries: {
 
@@ -3368,6 +4176,10 @@ batteries: {
   chemistry: "Li-ion"
   connector: "XT60"
   description: "RadioMaster 18650 Battery 3200mAh / 2500mAh 3.7V (2pcs) for TX16S / TX12/Pocket Radio Controller"
+
+  min_voltage: 11.2
+  max_voltage: 16.8
+  max_current_a: 45.0
 }
 batteries: {
 
@@ -3385,6 +4197,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-530mah-90c"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 139.5
 }
 batteries: {
 
@@ -3402,6 +4218,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-380mah-90c"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 139.5
 }
 batteries: {
 
@@ -3419,6 +4239,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/gnb-1250mah-4s-120c-240c-lipo-battery"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 186.0
 }
 batteries: {
 
@@ -3436,6 +4260,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-basic-battery-strap"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3453,6 +4281,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/xt60-battery-connector-prewired-male"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 124.0
 }
 batteries: {
 
@@ -3474,6 +4306,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/tattu-r-line-version-5-0-1400mah-6s1p150c-lipo-battery.html"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 210.0
 }
 batteries: {
 
@@ -3499,6 +4335,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tattu-r-line-version-5-0-22-2v-6s-1200mah-150c-lipo-battery-xt60"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 180.0
 }
 batteries: {
 
@@ -3520,6 +4360,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/3-pack-of-cnhl-black-series-22-2v-6s-1500mah-100c-lipo-battery-xt60-1"
   }
+
+  min_voltage: 19.8
+  max_voltage: 25.2
+  max_current_a: 150.0
 }
 batteries: {
 
@@ -3541,6 +4385,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/cnhl-650mah-4s-70c-ministar-fpv-lipo-for-2-3-quads-xt30"
   }
+
+  min_voltage: 13.2
+  max_voltage: 16.8
+  max_current_a: 45.5
 }
 batteries: {
 
@@ -3562,6 +4410,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/lava-1s-300mah-75c-battery-5pcs"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.3
+  max_current_a: 22.5
 }
 batteries: {
 
@@ -3583,6 +4435,10 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/lava-1s-450mah-75c-battery-4pcs"
   }
+
+  min_voltage: 3.3
+  max_voltage: 4.3
+  max_current_a: 33.8
 }
 batteries: {
 
@@ -3604,4 +4460,8 @@ batteries: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gnb-3000mah-6s-10c-li-ion-sony-vtc6-long-range-battery-xt60"
   }
+
+  min_voltage: 16.8
+  max_voltage: 25.2
+  max_current_a: 45.0
 }

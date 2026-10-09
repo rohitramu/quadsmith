@@ -46,8 +46,12 @@ type FlightController struct {
 	ReferenceLinks               []*ReferenceLink `protobuf:"bytes,13,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage          *string          `protobuf:"bytes,14,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media                        []*Media         `protobuf:"bytes,15,rep,name=media,proto3" json:"media,omitempty"`
-	unknownFields                protoimpl.UnknownFields
-	sizeCache                    protoimpl.SizeCache
+	// Minimum operating input voltage (volts)
+	MinVoltage float32 `protobuf:"fixed32,16,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
+	// Maximum operating input voltage (volts)
+	MaxVoltage    float32 `protobuf:"fixed32,17,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *FlightController) Reset() {
@@ -183,6 +187,20 @@ func (x *FlightController) GetMedia() []*Media {
 		return x.Media
 	}
 	return nil
+}
+
+func (x *FlightController) GetMinVoltage() float32 {
+	if x != nil {
+		return x.MinVoltage
+	}
+	return 0
+}
+
+func (x *FlightController) GetMaxVoltage() float32 {
+	if x != nil {
+		return x.MaxVoltage
+	}
+	return 0
 }
 
 // ---------------------------------------------------------
@@ -373,7 +391,7 @@ var File_flight_controller_proto protoreflect.FileDescriptor
 const file_flight_controller_proto_rawDesc = "" +
 	"\n" +
 	"\x17flight_controller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x8a\b\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xcc\b\n" +
 	"\x10FlightController\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -390,7 +408,11 @@ const file_flight_controller_proto_rawDesc = "" +
 	"\vdescription\x18\f \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\x0e \x01(\tH\x03R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\x0f \x03(\v2\x10.quadsmith.MediaR\x05media:v\x8a\xb5\x18/\n" +
+	"\x05media\x18\x0f \x03(\v2\x10.quadsmith.MediaR\x05media\x12\x1f\n" +
+	"\vmin_voltage\x18\x10 \x01(\x02R\n" +
+	"minVoltage\x12\x1f\n" +
+	"\vmax_voltage\x18\x11 \x01(\x02R\n" +
+	"maxVoltage:v\x8a\xb5\x18/\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tprocessor\n" +

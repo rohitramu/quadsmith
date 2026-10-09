@@ -11,22 +11,22 @@ import (
 )
 
 func CreateElectronicSpeedController(ctx context.Context, tx pgx.Tx, m *ElectronicSpeedController) error {
-	query := `INSERT INTO electronic_speed_controllers (uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+	query := `INSERT INTO electronic_speed_controllers (uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links, primary_display_image, media, min_voltage, max_voltage) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MotorCurrentMaxA, m.MotorCurrentBurstA, m.Firmware, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MotorCurrentMaxA, m.MotorCurrentBurstA, m.Firmware, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage)
 	return err
 }
 
 func GetElectronicSpeedController(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*ElectronicSpeedController, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links, primary_display_image, media"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links, primary_display_image, media, min_voltage, max_voltage"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage"}
 	}
 	query := `SELECT ` + colsStr + ` FROM electronic_speed_controllers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -62,6 +62,10 @@ func GetElectronicSpeedController(ctx context.Context, db *pgxpool.Pool, idOrUui
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "min_voltage":
+			scanArgs[i] = &m.MinVoltage
+		case "max_voltage":
+			scanArgs[i] = &m.MaxVoltage
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -79,8 +83,8 @@ func GetElectronicSpeedController(ctx context.Context, db *pgxpool.Pool, idOrUui
 }
 
 func UpdateElectronicSpeedController(ctx context.Context, tx pgx.Tx, m *ElectronicSpeedController) error {
-	query := `UPDATE electronic_speed_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, max_motors = $6, motor_current_max_a = $7, motor_current_burst_a = $8, firmware = $9, description = $10, reference_links = $11, primary_display_image = $12, media = $13 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MotorCurrentMaxA, m.MotorCurrentBurstA, m.Firmware, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE electronic_speed_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, max_motors = $6, motor_current_max_a = $7, motor_current_burst_a = $8, firmware = $9, description = $10, reference_links = $11, primary_display_image = $12, media = $13, min_voltage = $14, max_voltage = $15 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.MaxMotors, m.MotorCurrentMaxA, m.MotorCurrentBurstA, m.Firmware, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage)
 	return err
 }
 
@@ -91,17 +95,17 @@ func DeleteElectronicSpeedController(ctx context.Context, tx pgx.Tx, idOrUuid st
 }
 
 func ListElectronicSpeedControllers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*ElectronicSpeedController, error) {
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links, primary_display_image, media"
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, description, reference_links, primary_display_image, media, min_voltage, max_voltage"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage"}
 	}
 	query := `SELECT ` + colsStr + ` FROM electronic_speed_controllers`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "max_motors": true, "motor_current_max_a": true, "motor_current_burst_a": true, "firmware": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "max_motors": true, "motor_current_max_a": true, "motor_current_burst_a": true, "firmware": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -173,6 +177,10 @@ func ListElectronicSpeedControllers(ctx context.Context, db *pgxpool.Pool, cols 
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "min_voltage":
+				scanArgs[i] = &m.MinVoltage
+			case "max_voltage":
+				scanArgs[i] = &m.MaxVoltage
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

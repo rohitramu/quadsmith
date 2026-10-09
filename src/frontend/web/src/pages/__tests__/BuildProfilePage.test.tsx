@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildProfilePage } from "../BuildProfilePage";
 import { Route, Routes } from "react-router-dom";
@@ -81,8 +81,8 @@ describe("BuildProfilePage Component", () => {
     expect(await screen.findByText("Master 5 V2")).toBeInTheDocument();
     // Motor
     expect(await screen.findByText("ECO II 2207")).toBeInTheDocument();
-    // Battery
-    expect(await screen.findByText("Black Series 1500mAh 6S 100C")).toBeInTheDocument();
+    // Primary Battery is decoupled from BOM
+    expect(screen.queryByText("Primary Battery")).not.toBeInTheDocument();
     // FC
     expect(await screen.findByText("F405 V4 FC")).toBeInTheDocument();
     // ESC
@@ -99,6 +99,26 @@ describe("BuildProfilePage Component", () => {
     expect(await screen.findByText("Lollipop 4 RHCP")).toBeInTheDocument();
     // GPS
     expect(await screen.findByText("M8Q-5883 GPS & Compass")).toBeInTheDocument();
+  });
+
+  it("renders runtime battery selector with compatible batteries and allows modal exploration", async () => {
+    const { user } = renderBuildProfile();
+
+    // Verify battery combobox is present in runtime parameters
+    const batterySelect = await screen.findByRole("combobox", { name: /select battery/i });
+    expect(batterySelect).toBeInTheDocument();
+    await waitFor(() => {
+      expect(batterySelect).toHaveValue("cnhl-black-series-1500-6s");
+    });
+
+    // Click Browse button to open BatteryPickerModal
+    const browseBtn = screen.getByRole("button", { name: /browse all compatible batteries/i });
+    expect(browseBtn).toBeInTheDocument();
+    await user.click(browseBtn);
+
+    // Modal should be open with title and electrical limits
+    expect(screen.getByText("Choose Compatible Battery")).toBeInTheDocument();
+    expect(screen.getByText(/14.8v – 25.2v/i)).toBeInTheDocument();
   });
 
   it("allows interactive payload weight simulation with text box input and presets", async () => {

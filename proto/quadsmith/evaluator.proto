@@ -59,10 +59,29 @@ message EvaluateBuildResponse {
   float payload_weight_g = 14;
   string battery_id = 15;
 
+  // Electrical limits determined by the build's FC, ESCs, and Motors
+  float min_voltage = 16;
+  float max_voltage = 17;
+  float max_current_a = 18;
+
   reserved 4, 5, 6;
   reserved "estimated_flight_time_min", "warnings", "errors";
 }
 
+message GetBuildElectricalLimitsRequest {
+  Build build = 1;
+  string build_id = 2;
+}
+
+message GetBuildElectricalLimitsResponse {
+  float min_voltage = 1;
+  float max_voltage = 2;
+  float max_current_a = 3;
+  // Lightest compatible battery ID recommended for this build
+  string default_battery_id = 4;
+}
+
 service EvaluatorService {
   rpc EvaluateBuild(EvaluateBuildRequest) returns (EvaluateBuildResponse);
+  rpc GetBuildElectricalLimits(GetBuildElectricalLimitsRequest) returns (GetBuildElectricalLimitsResponse);
 }

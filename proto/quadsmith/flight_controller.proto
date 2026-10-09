@@ -60,6 +60,12 @@ message FlightController {
   repeated ReferenceLink reference_links = 13;
   optional string primary_display_image = 14;
   repeated Media media = 15;
+
+  // Minimum operating input voltage (volts)
+  float min_voltage = 16;
+
+  // Maximum operating input voltage (volts)
+  float max_voltage = 17;
 }
 
 // ---------------------------------------------------------

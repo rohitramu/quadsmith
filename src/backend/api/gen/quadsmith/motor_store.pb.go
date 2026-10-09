@@ -11,22 +11,22 @@ import (
 )
 
 func CreateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
-	query := `INSERT INTO motors (uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
+	query := `INSERT INTO motors (uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage)
 	return err
 }
 
 func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Motor, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media"
+	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage"}
 	}
 	query := `SELECT ` + colsStr + ` FROM motors WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -58,6 +58,10 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "min_voltage":
+			scanArgs[i] = &m.MinVoltage
+		case "max_voltage":
+			scanArgs[i] = &m.MaxVoltage
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -75,8 +79,8 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 }
 
 func UpdateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
-	query := `UPDATE motors SET manufacturer = $2, name = $3, weight_g = $4, stator_diameter_mm = $5, stator_height_mm = $6, kv = $7, description = $8, reference_links = $9, primary_display_image = $10, media = $11 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE motors SET manufacturer = $2, name = $3, weight_g = $4, stator_diameter_mm = $5, stator_height_mm = $6, kv = $7, description = $8, reference_links = $9, primary_display_image = $10, media = $11, min_voltage = $12, max_voltage = $13 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage)
 	return err
 }
 
@@ -87,17 +91,17 @@ func DeleteMotor(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Motor, error) {
-	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media"
+	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage"}
 	}
 	query := `SELECT ` + colsStr + ` FROM motors`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "stator_diameter_mm": true, "stator_height_mm": true, "kv": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "stator_diameter_mm": true, "stator_height_mm": true, "kv": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -165,6 +169,10 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "min_voltage":
+				scanArgs[i] = &m.MinVoltage
+			case "max_voltage":
+				scanArgs[i] = &m.MaxVoltage
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIncKFEV2YWx1YXRlQnVpbGRSZXF1ZXN0Eh8KBWJ1aWxkGAEgASgLMhAucXVhZHNtaXRoLkJ1aWxkEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAISEgoKYmF0dGVyeV9pZBgDIAEoCRIQCghidWlsZF9pZBgEIAEoCSKkAwoVRXZhbHVhdGVCdWlsZFJlc3BvbnNlEhYKDnRvdGFsX3dlaWdodF9nGAEgASgCEh4KFmhvdmVyX3Rocm90dGxlX3BlcmNlbnQYAiABKAISHgoWdGhydXN0X3RvX3dlaWdodF9yYXRpbxgDIAEoAhIbChNtaW5fZmxpZ2h0X3RpbWVfbWluGAcgASgCEhsKE21heF9mbGlnaHRfdGltZV9taW4YCCABKAISHQoVbWF4X2FjY2VsZXJhdGlvbl9tcHMyGAkgASgCEhUKDXRvcF9zcGVlZF9rbWgYCiABKAISEQoJaG92ZXJfcnBtGAsgASgNEjEKD3N5c3RlbV9tZXNzYWdlcxgMIAMoCzIYLnF1YWRzbWl0aC5TeXN0ZW1NZXNzYWdlEhAKCGJ1aWxkX2lkGA0gASgJEhgKEHBheWxvYWRfd2VpZ2h0X2cYDiABKAISEgoKYmF0dGVyeV9pZBgPIAEoCUoECAQQBUoECAUQBkoECAYQB1IZZXN0aW1hdGVkX2ZsaWdodF90aW1lX21pblIId2FybmluZ3NSBmVycm9ycyqqAQoVU3lzdGVtTWVzc2FnZVNldmVyaXR5EicKI1NZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX1VOU1BFQ0lGSUVEEAASIAocU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfSU5GTxABEiMKH1NZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX1dBUk5JTkcQAhIhCh1TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9FUlJPUhADMmYKEEV2YWx1YXRvclNlcnZpY2USUgoNRXZhbHVhdGVCdWlsZBIfLnF1YWRzbWl0aC5FdmFsdWF0ZUJ1aWxkUmVxdWVzdBogLnF1YWRzbWl0aC5FdmFsdWF0ZUJ1aWxkUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIncKFEV2YWx1YXRlQnVpbGRSZXF1ZXN0Eh8KBWJ1aWxkGAEgASgLMhAucXVhZHNtaXRoLkJ1aWxkEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAISEgoKYmF0dGVyeV9pZBgDIAEoCRIQCghidWlsZF9pZBgEIAEoCSLlAwoVRXZhbHVhdGVCdWlsZFJlc3BvbnNlEhYKDnRvdGFsX3dlaWdodF9nGAEgASgCEh4KFmhvdmVyX3Rocm90dGxlX3BlcmNlbnQYAiABKAISHgoWdGhydXN0X3RvX3dlaWdodF9yYXRpbxgDIAEoAhIbChNtaW5fZmxpZ2h0X3RpbWVfbWluGAcgASgCEhsKE21heF9mbGlnaHRfdGltZV9taW4YCCABKAISHQoVbWF4X2FjY2VsZXJhdGlvbl9tcHMyGAkgASgCEhUKDXRvcF9zcGVlZF9rbWgYCiABKAISEQoJaG92ZXJfcnBtGAsgASgNEjEKD3N5c3RlbV9tZXNzYWdlcxgMIAMoCzIYLnF1YWRzbWl0aC5TeXN0ZW1NZXNzYWdlEhAKCGJ1aWxkX2lkGA0gASgJEhgKEHBheWxvYWRfd2VpZ2h0X2cYDiABKAISEgoKYmF0dGVyeV9pZBgPIAEoCRITCgttaW5fdm9sdGFnZRgQIAEoAhITCgttYXhfdm9sdGFnZRgRIAEoAhIVCg1tYXhfY3VycmVudF9hGBIgASgCSgQIBBAFSgQIBRAGSgQIBhAHUhllc3RpbWF0ZWRfZmxpZ2h0X3RpbWVfbWluUgh3YXJuaW5nc1IGZXJyb3JzIlQKH0dldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QSHwoFYnVpbGQYASABKAsyEC5xdWFkc21pdGguQnVpbGQSEAoIYnVpbGRfaWQYAiABKAkifwogR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2USEwoLbWluX3ZvbHRhZ2UYASABKAISEwoLbWF4X3ZvbHRhZ2UYAiABKAISFQoNbWF4X2N1cnJlbnRfYRgDIAEoAhIaChJkZWZhdWx0X2JhdHRlcnlfaWQYBCABKAkqqgEKFVN5c3RlbU1lc3NhZ2VTZXZlcml0eRInCiNTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9VTlNQRUNJRklFRBAAEiAKHFNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0lORk8QARIjCh9TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9XQVJOSU5HEAISIQodU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfRVJST1IQAzLbAQoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZRJzChhHZXRCdWlsZEVsZWN0cmljYWxMaW1pdHMSKi5xdWFkc21pdGguR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBorLnF1YWRzbWl0aC5HZXRCdWlsZEVsZWN0cmljYWxMaW1pdHNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file_build],
   );
 
@@ -158,6 +158,23 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
    * @generated from field: string battery_id = 15;
    */
   batteryId: string;
+
+  /**
+   * Electrical limits determined by the build's FC, ESCs, and Motors
+   *
+   * @generated from field: float min_voltage = 16;
+   */
+  minVoltage: number;
+
+  /**
+   * @generated from field: float max_voltage = 17;
+   */
+  maxVoltage: number;
+
+  /**
+   * @generated from field: float max_current_a = 18;
+   */
+  maxCurrentA: number;
 };
 
 /**
@@ -167,6 +184,66 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
 export const EvaluateBuildResponseSchema: GenMessage<EvaluateBuildResponse> =
   /*@__PURE__*/
   messageDesc(file_evaluator, 2);
+
+/**
+ * @generated from message quadsmith.GetBuildElectricalLimitsRequest
+ */
+export type GetBuildElectricalLimitsRequest =
+  Message<"quadsmith.GetBuildElectricalLimitsRequest"> & {
+    /**
+     * @generated from field: quadsmith.Build build = 1;
+     */
+    build?: Build | undefined;
+
+    /**
+     * @generated from field: string build_id = 2;
+     */
+    buildId: string;
+  };
+
+/**
+ * Describes the message quadsmith.GetBuildElectricalLimitsRequest.
+ * Use `create(GetBuildElectricalLimitsRequestSchema)` to create a new message.
+ */
+export const GetBuildElectricalLimitsRequestSchema: GenMessage<GetBuildElectricalLimitsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_evaluator, 3);
+
+/**
+ * @generated from message quadsmith.GetBuildElectricalLimitsResponse
+ */
+export type GetBuildElectricalLimitsResponse =
+  Message<"quadsmith.GetBuildElectricalLimitsResponse"> & {
+    /**
+     * @generated from field: float min_voltage = 1;
+     */
+    minVoltage: number;
+
+    /**
+     * @generated from field: float max_voltage = 2;
+     */
+    maxVoltage: number;
+
+    /**
+     * @generated from field: float max_current_a = 3;
+     */
+    maxCurrentA: number;
+
+    /**
+     * Lightest compatible battery ID recommended for this build
+     *
+     * @generated from field: string default_battery_id = 4;
+     */
+    defaultBatteryId: string;
+  };
+
+/**
+ * Describes the message quadsmith.GetBuildElectricalLimitsResponse.
+ * Use `create(GetBuildElectricalLimitsResponseSchema)` to create a new message.
+ */
+export const GetBuildElectricalLimitsResponseSchema: GenMessage<GetBuildElectricalLimitsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_evaluator, 4);
 
 /**
  * @generated from enum quadsmith.SystemMessageSeverity
@@ -211,5 +288,13 @@ export const EvaluatorService: GenService<{
     methodKind: "unary";
     input: typeof EvaluateBuildRequestSchema;
     output: typeof EvaluateBuildResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.EvaluatorService.GetBuildElectricalLimits
+   */
+  getBuildElectricalLimits: {
+    methodKind: "unary";
+    input: typeof GetBuildElectricalLimitsRequestSchema;
+    output: typeof GetBuildElectricalLimitsResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_evaluator, 0);

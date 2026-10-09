@@ -14,6 +14,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-redfox-a3-f722-35a-45a-4in1-aio-flight-controller-for-2-to-3-5-inch-drones-choose-version"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -27,6 +30,9 @@ electronic_speed_controllers: {
   motor_current_burst_a: 25
   firmware: "BLHeli_32"
   description: "Caddx CaddxF4 AIO 20A 4-in-1 ESC running BLHeli_32 firmware, rated for 20A continuous and 25A burst, weighing 5.3g."
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -44,6 +50,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/happymodel-x12-5-in-1-f4-12a-whoop-aio-flight-controller-choose-receiver-option"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 electronic_speed_controllers: {
 
@@ -61,6 +70,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-zeus-48a-4in1-esc-3-6s-bl_s-with-heat-sink-30x30mm"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -78,6 +90,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-60a-4in1-esc-3-6s-bl32-128k-with-heat-sink-for-fpv-racing-drone-freestyle"
   }
+
+  min_voltage: 11.1
+  max_voltage: 34.0
 }
 electronic_speed_controllers: {
 
@@ -95,6 +110,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-blheli_32-12s-80a-waterproof-esc"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -112,6 +130,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-3-4s-f411-fc-4-in-1-30a-esc-stack"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -133,6 +154,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-betaflight-f4-fc-50a-2-6s-blheli_s-4in1-dshot600-esc-stack"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -154,6 +178,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-betaflight-f4-fc-50a-2-6s-blheli_s-4in1-dshot600-esc-stack"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -171,6 +198,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-infinity200-v2-4in1-esc"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -188,6 +218,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tbs-lucid-12s-90a-am32-esc-for-x-class-cinelifter-drone-airplane-wing-ndaa"
   }
+
+  min_voltage: 11.1
+  max_voltage: 34.0
 }
 electronic_speed_controllers: {
 
@@ -205,6 +238,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-goku-gn745-v3-aio-f7-fc-45a-2-6s-am32-4-in-1-esc-mpu6000-25x25"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -218,6 +254,9 @@ electronic_speed_controllers: {
   motor_current_burst_a: 60.000004
   firmware: "BLHeli_32"
   description: "FETtec FETtec SFOC 50A 2-8S 20x20 4in1 ESC 4-in-1 ESC running BLHeli_32 firmware, rated for 50A continuous and 60A burst, weighing 15.6g."
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -231,6 +270,9 @@ electronic_speed_controllers: {
   motor_current_burst_a: 30.000002
   firmware: "BLHeli_S"
   description: "Goku F405 HD V2 1-2S 25x25 AIO Flight Controller with 12A 8Bit ESC & ELRS"
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -248,6 +290,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://holybro.com/products/kakute-g4-aio-35a"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -269,6 +314,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-f760-box-3-6s-20x20-integrated-stack-combo-f722-fc-32bit-60a-4in1-esc"
   }
+
+  min_voltage: 11.1
+  max_voltage: 34.0
 }
 electronic_speed_controllers: {
 
@@ -286,6 +334,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-60a-4in1-6s-bl32-mini-v1-esc-fpv穿越机"
   }
+
+  min_voltage: 11.1
+  max_voltage: 34.0
 }
 electronic_speed_controllers: {
 
@@ -303,6 +354,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-60a-4in1-6s-8-bit-v2-esc-for-fpv-racing-drone"
   }
+
+  min_voltage: 11.1
+  max_voltage: 34.0
 }
 electronic_speed_controllers: {
 
@@ -320,6 +374,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-60a-4in1-mini-8s-bl32-v1-esc"
   }
+
+  min_voltage: 11.1
+  max_voltage: 34.0
 }
 electronic_speed_controllers: {
 
@@ -337,6 +394,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-h743-8s-mini-v1-fc"
   }
+
+  min_voltage: 11.1
+  max_voltage: 34.0
 }
 electronic_speed_controllers: {
 
@@ -354,6 +414,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/diatone-40a-brushless-motor-wire-extension-plate-for-rc-drone-fpv-racing-multi-rotor"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -371,6 +434,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mamba-f40_bls-dshot600-4in1-esc-40a-6s"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -388,6 +454,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-darwinfpv-whoop-stack-flight-controller-6s-45a-esc"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -406,6 +475,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f405-2-4s-aio-brushless-flight-controller-20a-blheli_32-v4"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -424,6 +496,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-2-3s-20a-aio-fc-v1"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -442,6 +517,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-2-6s-aio-brushless-flight-controller-35ablheli_32"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -460,6 +538,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-20a-aio-brushless-flight-controller"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -478,6 +559,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-20a-aio-brushless-flight-controller"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 electronic_speed_controllers: {
 
@@ -500,6 +584,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-f4-2-3s-20a-aio-fc-v1-elrs-2-4g-brushless-flight-controller"
   }
+
+  min_voltage: 3.0
+  max_voltage: 8.7
 }
 electronic_speed_controllers: {
 
@@ -518,6 +605,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-f435-45a-am32-aio"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -536,6 +626,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -558,6 +651,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-hulk-aio-f411-flight-controller-45a-3-6s-esc-elrs-2-4ghz-25x25mm"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -576,6 +672,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -594,6 +693,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-15a-elrs-aio-2-4s-4-in-1-aio-fc-for-fpv-drone"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }
 electronic_speed_controllers: {
 
@@ -616,6 +718,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-redfox-a3-f722-35a-45a-4in1-aio-flight-controller-for-2-to-3-5-inch-drones-choose-version"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -641,6 +746,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/speedybee-f405-v4-stack-f4-v4-fc-55a-blheli-s-esc-30x30.html"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -662,6 +770,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/t-motor-f55a-pro-ii-55a-3-6s-am32-4-in-1-esc-w-bec-30x30"
   }
+
+  min_voltage: 11.1
+  max_voltage: 26.0
 }
 electronic_speed_controllers: {
 
@@ -679,6 +790,9 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.foxeer.com/foxeer-reaper-f4-128k-65a-bl32-4in1-9-40v-esc-30-5-30-5mm-m3-g-420"
   }
+
+  min_voltage: 11.1
+  max_voltage: 34.0
 }
 electronic_speed_controllers: {
 
@@ -700,4 +814,7 @@ electronic_speed_controllers: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/f4-2-3s-20a-aio-fc-v1"
   }
+
+  min_voltage: 6.0
+  max_voltage: 17.4
 }

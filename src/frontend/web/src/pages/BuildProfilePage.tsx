@@ -1,12 +1,15 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { keepPreviousData } from "@tanstack/react-query";
 import { getBuild } from "../gen/quadsmith/build-BuildService_connectquery";
-import { evaluateBuild } from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
+import {
+  evaluateBuild,
+  getBuildElectricalLimits,
+} from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
 import { getFrame } from "../gen/quadsmith/frame-FrameService_connectquery";
 import { getMotor } from "../gen/quadsmith/motor-MotorService_connectquery";
-import { getBattery } from "../gen/quadsmith/battery-BatteryService_connectquery";
+import { listBatteries } from "../gen/quadsmith/battery-BatteryService_connectquery";
 import { getFlightController } from "../gen/quadsmith/flight_controller-FlightControllerService_connectquery";
 import { getElectronicSpeedController } from "../gen/quadsmith/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
 import { getPropeller } from "../gen/quadsmith/propeller-PropellerService_connectquery";
@@ -18,6 +21,8 @@ import { getGpsReceiver } from "../gen/quadsmith/gps_receiver-GpsReceiverService
 import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
 import { SystemMessageSeverity } from "../gen/quadsmith/evaluator_pb";
 import { MediaGallery } from "../components/MediaGallery";
+import { BatteryPickerModal } from "../components/BatteryPickerModal";
+import { buildBatteryCelFilter } from "../lib/batteryFilter";
 import { getTwrDescription } from "../lib/format";
 import {
   ChevronRight,
@@ -40,6 +45,7 @@ import {
   Plus,
   Minus,
   RefreshCw,
+  Search,
 } from "lucide-react";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
@@ -126,11 +132,52 @@ export function BuildProfilePage() {
   const [payloadInput, setPayloadInput] = useState<string>("0");
   const payloadWeightG = Math.max(0, parseFloat(payloadInput) || 0);
 
+  const [selectedBatteryId, setSelectedBatteryId] = useState<string>("");
+  const [isBatteryModalOpen, setIsBatteryModalOpen] = useState(false);
+
   const {
     data: build,
     isLoading: isLoadingBuild,
     error: buildError,
   } = useQuery(getBuild, { id: buildId || "" }, { enabled: !!buildId });
+
+  const { data: electricalLimits } = useQuery(
+    getBuildElectricalLimits,
+    { build },
+    { enabled: !!build },
+  );
+
+  const batteryFilter = useMemo(() => {
+    return buildBatteryCelFilter(electricalLimits);
+  }, [electricalLimits]);
+
+  const { data: batteryResponse, isLoading: isLoadingBatteries } = useQuery(
+    listBatteries,
+    {
+      filter: batteryFilter,
+      sort: ["weight_g"],
+      pageSize: 100,
+    },
+    { enabled: !!electricalLimits },
+  );
+  const compatibleBatteries = batteryResponse?.batteries || [];
+
+  // Lightest compatible battery selected by default
+  useEffect(() => {
+    if (!selectedBatteryId) {
+      if (electricalLimits?.defaultBatteryId) {
+        setSelectedBatteryId(electricalLimits.defaultBatteryId);
+      } else if (compatibleBatteries.length > 0) {
+        setSelectedBatteryId(compatibleBatteries[0].id || compatibleBatteries[0].uuid);
+      }
+    }
+  }, [electricalLimits, compatibleBatteries, selectedBatteryId]);
+
+  const activeBattery = useMemo(() => {
+    return compatibleBatteries.find(
+      (b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId,
+    );
+  }, [compatibleBatteries, selectedBatteryId]);
 
   const {
     data: evaluation,
@@ -139,7 +186,11 @@ export function BuildProfilePage() {
     error: evalError,
   } = useQuery(
     evaluateBuild,
-    { build, payloadWeightG },
+    {
+      build,
+      payloadWeightG,
+      batteryId: selectedBatteryId,
+    },
     {
       enabled: !!build,
       placeholderData: keepPreviousData,
@@ -240,101 +291,178 @@ export function BuildProfilePage() {
             </p>
           </div>
 
-          {/* Interactive Payload Weight Text Box */}
-          <div className="bg-white dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs min-w-[260px]">
-            <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-                <Sliders size={13} className="text-blue-500" />
-                Payload Simulator
-              </span>
-              <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                +{payloadWeightG}g
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5 my-1.5">
-              <button
-                type="button"
-                onClick={() => {
-                  const current = Math.max(0, parseFloat(payloadInput) || 0);
-                  const next = Math.max(0, Math.round(current - 10));
-                  setPayloadInput(String(next));
-                }}
-                disabled={payloadWeightG <= 0}
-                title="Remove 10g"
-                aria-label="Remove 10 grams"
-                className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
-              >
-                <Minus size={14} />
-              </button>
-
-              <div className="relative flex-1 flex items-center">
-                <input
-                  type="text"
-                  inputMode="decimal"
-                  value={payloadInput}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    if (val === "" || /^\d*\.?\d*$/.test(val)) {
-                      setPayloadInput(val);
-                    }
-                  }}
-                  placeholder="0"
-                  className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 pr-7 text-sm font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs text-center"
-                  aria-label="Payload weight in grams"
-                />
-                <span className="absolute right-2.5 text-xs text-zinc-400 font-mono pointer-events-none select-none">
-                  g
+          {/* Runtime Flight Parameters: Battery & Payload */}
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+            {/* Battery Selector */}
+            <div className="bg-white dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs min-w-[270px] max-w-sm">
+              <div className="flex items-center justify-between text-xs mb-1.5">
+                <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <Zap size={13} className="text-amber-500" />
+                  Battery
                 </span>
+                {electricalLimits ? (
+                  <span className="text-[10px] text-zinc-400 font-mono">
+                    {electricalLimits.minVoltage && electricalLimits.maxVoltage
+                      ? `${electricalLimits.minVoltage.toFixed(1)}–${electricalLimits.maxVoltage.toFixed(1)}V`
+                      : ""}
+                    {electricalLimits.maxCurrentA
+                      ? `, ≥${electricalLimits.maxCurrentA.toFixed(0)}A`
+                      : ""}
+                  </span>
+                ) : null}
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  const current = Math.max(0, parseFloat(payloadInput) || 0);
-                  const next = Math.round(current + 10);
-                  setPayloadInput(String(next));
-                }}
-                title="Add 10g"
-                aria-label="Add 10 grams"
-                className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
-              >
-                <Plus size={14} />
-              </button>
+              <div className="flex items-center gap-1.5 my-1.5">
+                <select
+                  value={selectedBatteryId}
+                  onChange={(e) => setSelectedBatteryId(e.target.value)}
+                  aria-label="Select battery"
+                  className="flex-1 min-w-0 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 truncate cursor-pointer shadow-xs"
+                >
+                  {compatibleBatteries.length === 0 ? (
+                    <option value="" disabled>
+                      {isLoadingBatteries
+                        ? "Loading compatible batteries..."
+                        : "No compatible batteries"}
+                    </option>
+                  ) : (
+                    compatibleBatteries.map((b) => (
+                      <option key={b.id || b.uuid} value={b.id || b.uuid}>
+                        {b.name} ({b.weightG ? `${b.weightG}g` : ""}
+                        {b.cellCountS ? `, ${b.cellCountS}S` : ""}
+                        {b.capacityMah ? `, ${b.capacityMah}mAh` : ""})
+                      </option>
+                    ))
+                  )}
+                </select>
+
+                <button
+                  type="button"
+                  onClick={() => setIsBatteryModalOpen(true)}
+                  title="Browse all compatible batteries"
+                  aria-label="Browse all compatible batteries"
+                  className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+                >
+                  <Search size={12} className="text-zinc-400" />
+                  <span>Browse</span>
+                </button>
+              </div>
+
+              {activeBattery && (
+                <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
+                  <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono">
+                    {activeBattery.weightG}g
+                  </span>
+                  <span>•</span>
+                  <span>
+                    {activeBattery.cellCountS}S {activeBattery.chemistry}
+                  </span>
+                  {activeBattery.maxCurrentA ? (
+                    <>
+                      <span>•</span>
+                      <span>Max {activeBattery.maxCurrentA.toFixed(0)}A</span>
+                    </>
+                  ) : null}
+                </div>
+              )}
             </div>
-            <div className="flex gap-1 mt-2 text-[10px]">
-              <button
-                type="button"
-                onClick={() => setPayloadInput("0")}
-                className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                  payloadWeightG === 0
-                    ? "bg-blue-600 text-white"
-                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                }`}
-              >
-                Bare (0g)
-              </button>
-              <button
-                type="button"
-                onClick={() => setPayloadInput("16")}
-                className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                  payloadWeightG === 16
-                    ? "bg-blue-600 text-white"
-                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                }`}
-              >
-                Thumb (+16g)
-              </button>
-              <button
-                type="button"
-                onClick={() => setPayloadInput("133")}
-                className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                  payloadWeightG === 133
-                    ? "bg-blue-600 text-white"
-                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                }`}
-              >
-                GoPro (+133g)
-              </button>
+
+            {/* Interactive Payload Weight Text Box */}
+            <div className="bg-white dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs min-w-[260px]">
+              <div className="flex items-center justify-between text-xs mb-1.5">
+                <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <Sliders size={13} className="text-blue-500" />
+                  Payload Simulator
+                </span>
+                <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                  +{payloadWeightG}g
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 my-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const current = Math.max(0, parseFloat(payloadInput) || 0);
+                    const next = Math.max(0, Math.round(current - 10));
+                    setPayloadInput(String(next));
+                  }}
+                  disabled={payloadWeightG <= 0}
+                  title="Remove 10g"
+                  aria-label="Remove 10 grams"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
+                >
+                  <Minus size={14} />
+                </button>
+
+                <div className="relative flex-1 flex items-center">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={payloadInput}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "" || /^\d*\.?\d*$/.test(val)) {
+                        setPayloadInput(val);
+                      }
+                    }}
+                    placeholder="0"
+                    className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 pr-7 text-sm font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs text-center"
+                    aria-label="Payload weight in grams"
+                  />
+                  <span className="absolute right-2.5 text-xs text-zinc-400 font-mono pointer-events-none select-none">
+                    g
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const current = Math.max(0, parseFloat(payloadInput) || 0);
+                    const next = Math.round(current + 10);
+                    setPayloadInput(String(next));
+                  }}
+                  title="Add 10g"
+                  aria-label="Add 10 grams"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
+                >
+                  <Plus size={14} />
+                </button>
+              </div>
+              <div className="flex gap-1 mt-2 text-[10px]">
+                <button
+                  type="button"
+                  onClick={() => setPayloadInput("0")}
+                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                    payloadWeightG === 0
+                      ? "bg-blue-600 text-white"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                  }`}
+                >
+                  Bare (0g)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPayloadInput("16")}
+                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                    payloadWeightG === 16
+                      ? "bg-blue-600 text-white"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                  }`}
+                >
+                  Thumb (+16g)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPayloadInput("133")}
+                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                    payloadWeightG === 133
+                      ? "bg-blue-600 text-white"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                  }`}
+                >
+                  GoPro (+133g)
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -588,18 +716,6 @@ export function BuildProfilePage() {
             }
           />
 
-          {/* Primary Battery */}
-          <BomComponentCard
-            label="Primary Battery"
-            collectionId="batteries"
-            uuid={build.batteryUuid}
-            queryMethod={getBattery}
-            icon={<Zap size={18} />}
-            subtitle={(item) =>
-              `${item.manufacturer} • ${item.cellCountS}S • ${item.capacityMah}mAh`
-            }
-          />
-
           {/* Flight Controller */}
           <BomComponentCard
             label="Flight Controller"
@@ -748,6 +864,17 @@ export function BuildProfilePage() {
           </div>
         </section>
       )}
+
+      {/* Battery Picker Explorer Modal */}
+      <BatteryPickerModal
+        isOpen={isBatteryModalOpen}
+        onClose={() => setIsBatteryModalOpen(false)}
+        selectedBatteryId={selectedBatteryId}
+        onSelectBattery={(id) => setSelectedBatteryId(id)}
+        limits={electricalLimits}
+        compatibleBatteries={compatibleBatteries}
+        isLoading={isLoadingBatteries}
+      />
     </div>
   );
 }

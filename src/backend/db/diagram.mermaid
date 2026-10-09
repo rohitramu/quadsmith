@@ -6,7 +6,6 @@ erDiagram
         TEXT description
         UUID frame_uuid FK
         UUID motor_uuid FK
-        UUID battery_uuid FK
         UUID flight_controller_uuid FK
         UUID_ARRAY electronic_speed_controller_uuids
         UUID_ARRAY receiver_uuids
@@ -33,6 +32,8 @@ erDiagram
         JSONB reference_links
         TEXT primary_display_image
         JSONB media
+        DECIMAL min_voltage
+        DECIMAL max_voltage
     }
 
     frames {
@@ -64,6 +65,9 @@ erDiagram
         JSONB reference_links
         TEXT primary_display_image
         JSONB media
+        DECIMAL min_voltage
+        DECIMAL max_voltage
+        DECIMAL max_current_a
     }
 
     flight_controllers {
@@ -82,6 +86,8 @@ erDiagram
         JSONB reference_links
         TEXT primary_display_image
         JSONB media
+        DECIMAL min_voltage
+        DECIMAL max_voltage
     }
 
     electronic_speed_controllers {
@@ -99,6 +105,8 @@ erDiagram
         JSONB reference_links
         TEXT primary_display_image
         JSONB media
+        DECIMAL min_voltage
+        DECIMAL max_voltage
     }
 
     receivers {
@@ -208,7 +216,6 @@ erDiagram
 
     builds ||--o| frames : has
     builds ||--o| motors : has
-    builds ||--o| batteries : has
     builds ||--o| flight_controllers : has
     builds ||--o| propellers : has
     builds ||--o| video_transmitters : has

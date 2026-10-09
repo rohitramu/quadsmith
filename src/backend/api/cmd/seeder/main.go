@@ -199,6 +199,12 @@ func main() {
 		}
 	}
 
+	// Clean up IEEE float precision artifacts on numeric columns
+	tx.Exec(ctx, "UPDATE batteries SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), max_current_a = ROUND(max_current_a, 2), weight_g = ROUND(weight_g, 2);")
+	tx.Exec(ctx, "UPDATE flight_controllers SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), weight_g = ROUND(weight_g, 2);")
+	tx.Exec(ctx, "UPDATE electronic_speed_controllers SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), weight_g = ROUND(weight_g, 2);")
+	tx.Exec(ctx, "UPDATE motors SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), weight_g = ROUND(weight_g, 2);")
+
 	if err := tx.Commit(ctx); err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to commit tx: %v\n", err)
 		os.Exit(1)

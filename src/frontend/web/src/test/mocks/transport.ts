@@ -229,7 +229,21 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           systemMessages,
           buildId: req.build?.id || "",
           payloadWeightG: payload,
-          batteryId: req.batteryId || req.build?.batteryUuid || "",
+          batteryId: req.batteryId || mockBattery1.id,
+          minVoltage: 14.8,
+          maxVoltage: 25.2,
+          maxCurrentA: 39.4,
+        };
+      },
+      getBuildElectricalLimits() {
+        if (simulateError) {
+          throw new ConnectError("Failed to fetch electrical limits", Code.Internal);
+        }
+        return {
+          minVoltage: 14.8,
+          maxVoltage: 25.2,
+          maxCurrentA: 39.4,
+          defaultBatteryId: mockBattery1.id,
         };
       },
     });

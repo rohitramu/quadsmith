@@ -59,7 +59,6 @@ export function BuildCard({ build }: BuildCardProps) {
   const componentCount = [
     build.frameUuid,
     build.motorUuid,
-    build.batteryUuid,
     build.flightControllerUuid,
     ...build.electronicSpeedControllerUuids,
     ...build.receiverUuids,
@@ -174,12 +173,6 @@ export function BuildCard({ build }: BuildCardProps) {
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-700/50">
                 <Cpu size={11} className="text-zinc-400" />
                 <span>4x Motors</span>
-              </span>
-            )}
-            {build.batteryUuid && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-700/50">
-                <Weight size={11} className="text-zinc-400" />
-                <span>Battery</span>
               </span>
             )}
             {build.flightControllerUuid && (

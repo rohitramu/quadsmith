@@ -34,7 +34,10 @@ CREATE TABLE IF NOT EXISTS batteries (
   description TEXT NOT NULL,
   reference_links JSONB,
   primary_display_image TEXT,
-  media JSONB
+  media JSONB,
+  min_voltage DECIMAL NOT NULL,
+  max_voltage DECIMAL NOT NULL,
+  max_current_a DECIMAL NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_batteries_manufacturer ON batteries (manufacturer);
@@ -49,7 +52,6 @@ CREATE TABLE IF NOT EXISTS builds (
   description TEXT NOT NULL,
   frame_uuid UUID NOT NULL,
   motor_uuid UUID NOT NULL,
-  battery_uuid UUID NOT NULL,
   flight_controller_uuid UUID NOT NULL,
   electronic_speed_controller_uuids UUID[],
   receiver_uuids UUID[],
@@ -98,7 +100,9 @@ CREATE TABLE IF NOT EXISTS electronic_speed_controllers (
   description TEXT NOT NULL,
   reference_links JSONB,
   primary_display_image TEXT,
-  media JSONB
+  media JSONB,
+  min_voltage DECIMAL NOT NULL,
+  max_voltage DECIMAL NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_electronic_speed_controllers_manufacturer ON electronic_speed_controllers (manufacturer);
@@ -119,7 +123,9 @@ CREATE TABLE IF NOT EXISTS flight_controllers (
   description TEXT NOT NULL,
   reference_links JSONB,
   primary_display_image TEXT,
-  media JSONB
+  media JSONB,
+  min_voltage DECIMAL NOT NULL,
+  max_voltage DECIMAL NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_flight_controllers_manufacturer ON flight_controllers (manufacturer);
@@ -179,7 +185,9 @@ CREATE TABLE IF NOT EXISTS motors (
   description TEXT NOT NULL,
   reference_links JSONB,
   primary_display_image TEXT,
-  media JSONB
+  media JSONB,
+  min_voltage DECIMAL NOT NULL,
+  max_voltage DECIMAL NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_motors_manufacturer ON motors (manufacturer);
@@ -256,9 +264,6 @@ ADD CONSTRAINT fk_builds_frame_uuid FOREIGN KEY (frame_uuid) REFERENCES frames (
 
 ALTER TABLE builds
 ADD CONSTRAINT fk_builds_motor_uuid FOREIGN KEY (motor_uuid) REFERENCES motors (uuid);
-
-ALTER TABLE builds
-ADD CONSTRAINT fk_builds_battery_uuid FOREIGN KEY (battery_uuid) REFERENCES batteries (uuid);
 
 ALTER TABLE builds
 ADD CONSTRAINT fk_builds_flight_controller_uuid FOREIGN KEY (flight_controller_uuid) REFERENCES flight_controllers (uuid);

@@ -44,6 +44,12 @@ message Motor {
   repeated ReferenceLink reference_links = 10;
   optional string primary_display_image = 11;
   repeated Media media = 12;
+
+  // Minimum operating voltage (volts)
+  float min_voltage = 13;
+
+  // Maximum operating voltage (volts)
+  float max_voltage = 14;
 }
 
 // ---------------------------------------------------------

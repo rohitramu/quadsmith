@@ -43,8 +43,14 @@ type Battery struct {
 	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,11,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string          `protobuf:"bytes,12,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,13,rep,name=media,proto3" json:"media,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// Minimum operating / cutoff voltage (volts)
+	MinVoltage float32 `protobuf:"fixed32,14,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
+	// Maximum fully charged voltage (volts)
+	MaxVoltage float32 `protobuf:"fixed32,15,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	// Maximum continuous discharge current rating (amperes)
+	MaxCurrentA   float32 `protobuf:"fixed32,16,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Battery) Reset() {
@@ -166,6 +172,27 @@ func (x *Battery) GetMedia() []*Media {
 		return x.Media
 	}
 	return nil
+}
+
+func (x *Battery) GetMinVoltage() float32 {
+	if x != nil {
+		return x.MinVoltage
+	}
+	return 0
+}
+
+func (x *Battery) GetMaxVoltage() float32 {
+	if x != nil {
+		return x.MaxVoltage
+	}
+	return 0
+}
+
+func (x *Battery) GetMaxCurrentA() float32 {
+	if x != nil {
+		return x.MaxCurrentA
+	}
+	return 0
 }
 
 // ---------------------------------------------------------
@@ -356,7 +383,7 @@ var File_battery_proto protoreflect.FileDescriptor
 const file_battery_proto_rawDesc = "" +
 	"\n" +
 	"\rbattery.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xde\x04\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xc4\x05\n" +
 	"\aBattery\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -372,7 +399,12 @@ const file_battery_proto_rawDesc = "" +
 	" \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\v \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\f \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\r \x03(\v2\x10.quadsmith.MediaR\x05media:[\x8a\xb5\x180\n" +
+	"\x05media\x18\r \x03(\v2\x10.quadsmith.MediaR\x05media\x12\x1f\n" +
+	"\vmin_voltage\x18\x0e \x01(\x02R\n" +
+	"minVoltage\x12\x1f\n" +
+	"\vmax_voltage\x18\x0f \x01(\x02R\n" +
+	"maxVoltage\x12\"\n" +
+	"\rmax_current_a\x18\x10 \x01(\x02R\vmaxCurrentA:[\x8a\xb5\x180\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fcell_count_s\n" +

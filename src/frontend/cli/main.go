@@ -2045,10 +2045,23 @@ func newRootCmd() *cobra.Command {
 			return printGetOutput(cmd.OutOrStdout(), eRes.Msg, nil)
 		},
 	}
-	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
-	evalCmd.Flags().String("battery", "", "Optional battery ID override")
+	evalCmd.Flags().Float32P("payload", "p", 0, "Payload weight in grams")
+	evalCmd.Flags().StringP("battery", "b", "", "Optional battery ID override")
 	evalCmd.RegisterFlagCompletionFunc("battery", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{PageSize: 100}))
+		var filter string
+		if len(args) > 0 && args[0] != "" {
+			lRes, err := evalClient.GetBuildElectricalLimits(context.Background(), connect.NewRequest(&pb.GetBuildElectricalLimitsRequest{
+				BuildId: args[0],
+			}))
+			if err == nil && lRes.Msg != nil {
+				filter = fmt.Sprintf("min_voltage >= %.2f && max_voltage <= %.2f && max_current_a >= %.2f",
+					lRes.Msg.MinVoltage, lRes.Msg.MaxVoltage, lRes.Msg.MaxCurrentA)
+			}
+		}
+		res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{
+			Filter:   filter,
+			PageSize: 100,
+		}))
 		if err != nil {
 			return nil, cobra.ShellCompDirectiveError
 		}
