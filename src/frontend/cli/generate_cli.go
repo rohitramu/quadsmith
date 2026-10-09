@@ -197,7 +197,6 @@ func newRootCmd() *cobra.Command {
 	rootCmd.CompletionOptions.DisableDescriptions = true
 
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
-	rootCmd.PersistentFlags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		cmd.SilenceUsage = true
 	}
@@ -283,11 +282,13 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\tif len(columns) == 0 {\n")
 		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", tsName)
 		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\tyamlOut, _ = cmd.Flags().GetBool(\"yaml\")\n")
 		fmt.Fprintf(f, "\t\t\terr := printOutput(cmd.OutOrStdout(), all, columns)\n")
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\treturn nil\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
+		fmt.Fprintf(f, "\t%s.Flags().BoolVar(&yamlOut, \"yaml\", false, \"Output format as YAML\")\n", listCmdVar)
 		fmt.Fprintf(f, "\t%s.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", listCmdVar)
 		fmt.Fprintf(f, "\t%s.Flags().Int32P(\"limit\", \"l\", 0, \"Maximum number of items to return\")\n", listCmdVar)
 		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"filter\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", listCmdVar)

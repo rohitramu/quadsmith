@@ -170,35 +170,21 @@ func TestGet_JSON(t *testing.T) {
 	}
 }
 
-func TestGet_YAML(t *testing.T) {
-	mock := &mockMotorService{
-		getMotorFunc: func(ctx context.Context, req *connect.Request[pb.GetMotorRequest]) (*connect.Response[pb.Motor], error) {
-			return connect.NewResponse(&pb.Motor{
-				Id:   "motor-yaml",
-				Name: "YAML Motor",
-				Kv:   18000,
-			}), nil
-		},
-	}
-	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
-	})
-
+func TestGet_NoYAMLFlag(t *testing.T) {
 	cmd := newRootCmd()
+	var errBuf bytes.Buffer
 	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "get", "motor-yaml", "--yaml"})
+	cmd.SetArgs([]string{"components", "motors", "get", "motor-1", "--yaml"})
 
-	if err := cmd.Execute(); err != nil {
-		t.Fatalf("unexpected error: %v", err)
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error when passing --yaml to get command, since YAML is default")
 	}
-
-	var res map[string]interface{}
-	if err := yaml.Unmarshal(outBuf.Bytes(), &res); err != nil {
-		t.Fatalf("failed to unmarshal YAML: %v", err)
-	}
-	if res["id"] != "motor-yaml" {
-		t.Errorf("expected motor-yaml, got: %+v", res)
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "unknown flag: --yaml") {
+		t.Errorf("expected 'unknown flag: --yaml', got: %s", combined)
 	}
 }
 
@@ -748,6 +734,24 @@ func TestEvaluate_DefaultYAML(t *testing.T) {
 	}
 	if res["system_messages"] == nil {
 		t.Errorf("expected system_messages in output: %+v", res)
+	}
+}
+
+func TestEvaluate_NoYAMLFlag(t *testing.T) {
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"builds", "evaluate", "build-1", "--yaml"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error when passing --yaml to evaluate command, since YAML is default")
+	}
+	combined := errBuf.String() + outBuf.String()
+	if !strings.Contains(combined, "unknown flag: --yaml") {
+		t.Errorf("expected 'unknown flag: --yaml', got: %s", combined)
 	}
 }
 

@@ -154,6 +154,17 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 		t.Errorf("Expected system_messages in evaluation response, got: %v", eval)
 	}
 	t.Logf("CLI returned evaluation: %v", eval)
+
+	// 3. Test that --yaml flag is NOT accepted since YAML is the default
+	cmdRejectYAML := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--yaml")
+	cmdRejectYAML.Env = append(cmdRejectYAML.Env, "QS_API_URL="+apiUrl)
+	var stderrReject bytes.Buffer
+	cmdRejectYAML.Stderr = &stderrReject
+	if err := cmdRejectYAML.Run(); err == nil {
+		t.Fatalf("Expected CLI builds evaluate --yaml to fail, but it succeeded")
+	} else if !strings.Contains(stderrReject.String(), "unknown flag: --yaml") {
+		t.Errorf("Expected 'unknown flag: --yaml', got: %s", stderrReject.String())
+	}
 }
 
 func TestCLI_BuildsGet(t *testing.T) {
@@ -195,5 +206,16 @@ func TestCLI_BuildsGet(t *testing.T) {
 	}
 	if resJSON["id"] != "bando-basher-5-inch" {
 		t.Errorf("Expected id == 'bando-basher-5-inch', got: %v", resJSON["id"])
+	}
+
+	// 3. Test that --yaml flag is NOT accepted since YAML is the default
+	cmdGetRejectYAML := exec.Command(qsPath, "builds", "get", "bando-basher-5-inch", "--yaml")
+	cmdGetRejectYAML.Env = append(cmdGetRejectYAML.Env, "QS_API_URL="+apiUrl)
+	var stderrGetReject bytes.Buffer
+	cmdGetRejectYAML.Stderr = &stderrGetReject
+	if err := cmdGetRejectYAML.Run(); err == nil {
+		t.Fatalf("Expected CLI builds get --yaml to fail, but it succeeded")
+	} else if !strings.Contains(stderrGetReject.String(), "unknown flag: --yaml") {
+		t.Errorf("Expected 'unknown flag: --yaml', got: %s", stderrGetReject.String())
 	}
 }

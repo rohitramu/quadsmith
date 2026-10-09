@@ -47,7 +47,6 @@ func newRootCmd() *cobra.Command {
 	rootCmd.CompletionOptions.DisableDescriptions = true
 
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
-	rootCmd.PersistentFlags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		cmd.SilenceUsage = true
 	}
@@ -104,6 +103,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Antenna{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -111,6 +111,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	antennaListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	antennaListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	antennaListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	antennaListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -264,6 +265,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Battery{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -271,6 +273,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	batteryListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	batteryListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	batteryListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	batteryListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -424,6 +427,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Build{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -431,6 +435,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	buildListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	buildListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	buildListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	buildListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -584,6 +589,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Camera{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -591,6 +597,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	cameraListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	cameraListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	cameraListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	cameraListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -744,6 +751,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.ElectronicSpeedController{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -751,6 +759,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	electronicSpeedControllerListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	electronicSpeedControllerListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	electronicSpeedControllerListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	electronicSpeedControllerListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -904,6 +913,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.FlightController{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -911,6 +921,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	flightControllerListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	flightControllerListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	flightControllerListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	flightControllerListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -1064,6 +1075,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Frame{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -1071,6 +1083,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	frameListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	frameListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	frameListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	frameListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -1224,6 +1237,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.GpsReceiver{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -1231,6 +1245,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	gpsReceiverListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	gpsReceiverListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	gpsReceiverListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	gpsReceiverListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -1384,6 +1399,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Motor{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -1391,6 +1407,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	motorListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	motorListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	motorListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	motorListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -1544,6 +1561,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Propeller{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -1551,6 +1569,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	propellerListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	propellerListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	propellerListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	propellerListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -1704,6 +1723,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.Receiver{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -1711,6 +1731,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	receiverListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	receiverListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	receiverListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	receiverListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -1864,6 +1885,7 @@ func newRootCmd() *cobra.Command {
 			if len(columns) == 0 {
 				columns = GetDefaultColumns(&pb.VideoTransmitter{})
 			}
+			yamlOut, _ = cmd.Flags().GetBool("yaml")
 			err := printOutput(cmd.OutOrStdout(), all, columns)
 			if err != nil {
 				return err
@@ -1871,6 +1893,7 @@ func newRootCmd() *cobra.Command {
 			return nil
 		},
 	}
+	videoTransmitterListCmd.Flags().BoolVar(&yamlOut, "yaml", false, "Output format as YAML")
 	videoTransmitterListCmd.Flags().StringP("filter", "f", "", "CEL filter string")
 	videoTransmitterListCmd.Flags().Int32P("limit", "l", 0, "Maximum number of items to return")
 	videoTransmitterListCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
