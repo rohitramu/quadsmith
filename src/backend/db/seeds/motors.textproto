@@ -31,6 +31,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 14.5
 }
 motors: {
 
@@ -46,6 +48,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 8.0
 }
 motors: {
 
@@ -61,6 +65,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 6.5
 }
 motors: {
 
@@ -80,6 +86,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -99,6 +107,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 30.0
 }
 motors: {
 
@@ -122,6 +132,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -141,6 +153,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 7.5
 }
 motors: {
 
@@ -160,6 +174,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 12.0
 }
 motors: {
 
@@ -179,6 +195,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 24.0
 }
 motors: {
 
@@ -194,6 +212,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 22.0
 }
 motors: {
 
@@ -213,6 +233,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 10.5
 }
 motors: {
 
@@ -228,6 +250,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 44.0
 }
 motors: {
 
@@ -247,6 +271,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 42.0
 }
 motors: {
 
@@ -262,6 +288,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 45.0
 }
 motors: {
 
@@ -285,6 +313,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 6.0
 }
 motors: {
 
@@ -300,6 +330,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -323,6 +355,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 15.0
 }
 motors: {
 
@@ -338,6 +372,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 26.0
 }
 motors: {
 
@@ -353,6 +389,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -372,6 +410,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 48.0
 }
 motors: {
 
@@ -387,6 +427,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 30.0
 }
 motors: {
 
@@ -402,6 +444,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 44.0
 }
 motors: {
 
@@ -421,6 +465,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 44.0
 }
 motors: {
 
@@ -436,6 +482,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 15.0
 }
 motors: {
 
@@ -459,6 +507,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -478,6 +528,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -501,6 +553,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -524,6 +578,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -547,6 +603,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -566,6 +624,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 26.0
 }
 motors: {
 
@@ -585,6 +645,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -604,6 +666,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -623,6 +687,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -646,6 +712,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -669,6 +737,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -692,6 +762,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 26.0
 }
 motors: {
 
@@ -711,6 +783,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -730,6 +804,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -749,6 +825,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 44.0
 }
 motors: {
 
@@ -768,6 +846,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -787,6 +867,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 15.0
 }
 motors: {
 
@@ -810,6 +892,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -829,6 +913,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -852,6 +938,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 23.0
 }
 motors: {
 
@@ -871,6 +959,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -890,6 +980,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -909,6 +1001,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 10.5
 }
 motors: {
 
@@ -928,6 +1022,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -947,6 +1043,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -966,6 +1064,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -985,6 +1085,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1004,6 +1106,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1023,6 +1127,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1042,6 +1148,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1061,6 +1169,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 12.0
 }
 motors: {
 
@@ -1080,6 +1190,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 42.0
 }
 motors: {
 
@@ -1099,6 +1211,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 10.5
 }
 motors: {
 
@@ -1118,6 +1232,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 44.0
 }
 motors: {
 
@@ -1137,6 +1253,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -1156,6 +1274,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -1175,6 +1295,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -1194,6 +1316,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 26.0
 }
 motors: {
 
@@ -1213,6 +1337,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 65.0
 }
 motors: {
 
@@ -1232,6 +1358,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 62.0
 }
 motors: {
 
@@ -1251,6 +1379,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 26.0
 }
 motors: {
 
@@ -1270,6 +1400,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -1289,6 +1421,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -1308,6 +1442,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 42.0
 }
 motors: {
 
@@ -1327,6 +1463,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 48.0
 }
 motors: {
 
@@ -1350,6 +1488,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 15.0
 }
 motors: {
 
@@ -1373,6 +1513,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1396,6 +1538,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1419,6 +1563,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1442,6 +1588,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1457,6 +1605,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 6.5
 }
 motors: {
 
@@ -1472,6 +1622,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 42.0
 }
 motors: {
 
@@ -1487,6 +1639,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -1506,6 +1660,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 15.0
 }
 motors: {
 
@@ -1521,6 +1677,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -1536,6 +1694,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 44.0
 }
 motors: {
 
@@ -1551,6 +1711,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 39.5
 }
 motors: {
 
@@ -1570,6 +1732,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 6.5
 }
 motors: {
 
@@ -1585,6 +1749,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 44.0
 }
 motors: {
 
@@ -1600,6 +1766,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -1619,6 +1787,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 6.5
 }
 motors: {
 
@@ -1634,6 +1804,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 
 motors: {
@@ -1654,6 +1826,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 45.0
 }
 motors: {
 
@@ -1673,6 +1847,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 65.0
 }
 motors: {
 
@@ -1692,6 +1868,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 65.0
 }
 motors: {
 
@@ -1711,6 +1889,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 65.0
 }
 motors: {
 
@@ -1730,6 +1910,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 65.0
 }
 motors: {
 
@@ -1749,6 +1931,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -1768,6 +1952,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 48.0
 }
 motors: {
 
@@ -1787,6 +1973,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 23.0
 }
 motors: {
 
@@ -1806,6 +1994,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 12.0
 }
 motors: {
 
@@ -1825,6 +2015,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -1844,6 +2036,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 10.0
 }
 motors: {
 
@@ -1863,6 +2057,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -1882,6 +2078,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 6.0
 }
 motors: {
 
@@ -1901,6 +2099,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 6.5
 }
 motors: {
 
@@ -1920,6 +2120,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 15.0
 }
 motors: {
 
@@ -1939,6 +2141,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 48.0
 }
 motors: {
 
@@ -1962,6 +2166,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -1981,6 +2187,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 48.0
 }
 motors: {
 
@@ -2004,6 +2212,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -2023,6 +2233,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 24.0
 }
 motors: {
 
@@ -2042,6 +2254,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 22.0
 }
 motors: {
 
@@ -2061,6 +2275,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 45.0
 }
 motors: {
 
@@ -2084,6 +2300,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 11.0
 }
 motors: {
 
@@ -2107,6 +2325,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 42.0
 }
 motors: {
 
@@ -2130,6 +2350,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 42.0
 }
 motors: {
 
@@ -2153,6 +2375,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 14.0
 }
 motors: {
 
@@ -2176,6 +2400,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 36.5
 }
 motors: {
 
@@ -2195,6 +2421,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 36.5
 }
 motors: {
 
@@ -2218,6 +2446,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -2237,6 +2467,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -2256,6 +2488,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -2275,6 +2509,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -2294,6 +2530,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 23.0
 }
 motors: {
 
@@ -2317,6 +2555,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 15.0
 }
 motors: {
 
@@ -2336,6 +2576,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 6.5
 }
 motors: {
 
@@ -2355,6 +2597,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -2374,6 +2618,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -2393,6 +2639,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 6.5
 }
 motors: {
 
@@ -2412,6 +2660,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 4.35
+
+  max_current_a: 4.5
 }
 motors: {
 
@@ -2431,6 +2681,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 65.0
 }
 motors: {
 
@@ -2450,6 +2702,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 20.0
 }
 motors: {
 
@@ -2469,6 +2723,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 30.0
 }
 motors: {
 
@@ -2488,6 +2744,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 42.0
 }
 motors: {
 
@@ -2507,6 +2765,8 @@ motors: {
 
   min_voltage: 18.0
   max_voltage: 34.8
+
+  max_current_a: 48.0
 }
 motors: {
 
@@ -2526,6 +2786,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 44.0
 }
 motors: {
 
@@ -2545,6 +2807,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 12.0
 }
 motors: {
 
@@ -2568,6 +2832,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.5
 }
 motors: {
 
@@ -2591,6 +2857,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 40.5
 }
 motors: {
 
@@ -2614,6 +2882,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 37.0
 }
 motors: {
 
@@ -2637,6 +2907,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 35.8
 }
 motors: {
 
@@ -2664,6 +2936,8 @@ motors: {
 
   min_voltage: 9.0
   max_voltage: 17.4
+
+  max_current_a: 42.0
 }
 motors: {
 
@@ -2691,6 +2965,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 36.2
 }
 motors: {
 
@@ -2714,6 +2990,8 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 38.0
 }
 motors: {
 
@@ -2741,6 +3019,8 @@ motors: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  max_current_a: 8.5
 }
 motors: {
 
@@ -2764,6 +3044,8 @@ motors: {
 
   min_voltage: 6.0
   max_voltage: 17.4
+
+  max_current_a: 9.5
 }
 motors: {
 
@@ -2787,4 +3069,6 @@ motors: {
 
   min_voltage: 14.8
   max_voltage: 25.2
+
+  max_current_a: 39.0
 }

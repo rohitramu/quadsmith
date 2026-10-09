@@ -39,10 +39,12 @@ type Motor struct {
 	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,10,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string          `protobuf:"bytes,11,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,12,rep,name=media,proto3" json:"media,omitempty"`
-	// Minimum operating voltage (volts)
+	// Minimum operating voltage (volts) - mandatory
 	MinVoltage float32 `protobuf:"fixed32,13,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
-	// Maximum operating voltage (volts)
-	MaxVoltage    float32 `protobuf:"fixed32,14,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	// Maximum operating voltage (volts) - mandatory
+	MaxVoltage float32 `protobuf:"fixed32,14,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	// Maximum continuous current rating (amperes) - mandatory
+	MaxCurrentA   float32 `protobuf:"fixed32,15,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -171,6 +173,13 @@ func (x *Motor) GetMinVoltage() float32 {
 func (x *Motor) GetMaxVoltage() float32 {
 	if x != nil {
 		return x.MaxVoltage
+	}
+	return 0
+}
+
+func (x *Motor) GetMaxCurrentA() float32 {
+	if x != nil {
+		return x.MaxCurrentA
 	}
 	return 0
 }
@@ -365,7 +374,7 @@ var File_motor_proto protoreflect.FileDescriptor
 const file_motor_proto_rawDesc = "" +
 	"\n" +
 	"\vmotor.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xf9\x04\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x9d\x05\n" +
 	"\x05Motor\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -383,7 +392,8 @@ const file_motor_proto_rawDesc = "" +
 	"\vmin_voltage\x18\r \x01(\x02R\n" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x0e \x01(\x02R\n" +
-	"maxVoltage:O\x8a\xb5\x18,\n" +
+	"maxVoltage\x12\"\n" +
+	"\rmax_current_a\x18\x0f \x01(\x02R\vmaxCurrentA:O\x8a\xb5\x18,\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\x12stator_diameter_mm\n" +

@@ -43,11 +43,11 @@ type Battery struct {
 	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,11,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string          `protobuf:"bytes,12,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,13,rep,name=media,proto3" json:"media,omitempty"`
-	// Minimum operating / cutoff voltage (volts)
+	// Minimum operating / cutoff voltage (volts) - mandatory
 	MinVoltage float32 `protobuf:"fixed32,14,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
-	// Maximum fully charged voltage (volts)
+	// Maximum fully charged voltage (volts) - mandatory
 	MaxVoltage float32 `protobuf:"fixed32,15,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
-	// Maximum continuous discharge current rating (amperes)
+	// Maximum continuous discharge current rating (amperes) - mandatory
 	MaxCurrentA   float32 `protobuf:"fixed32,16,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

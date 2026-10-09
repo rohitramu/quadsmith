@@ -484,6 +484,7 @@ func TestComputeElectricalLimits(t *testing.T) {
 			StatorDiameterMm: 22,
 			StatorHeightMm:   7.5,
 			WeightG:          33.9,
+			MaxCurrentA:      38.5,
 		}
 
 		limits := ComputeElectricalLimits(fc, []*pb.ElectronicSpeedController{esc}, motor)
@@ -493,8 +494,8 @@ func TestComputeElectricalLimits(t *testing.T) {
 		if limits.MaxVoltage != 25.2 {
 			t.Errorf("Expected MaxVoltage 25.2, got %.1f", limits.MaxVoltage)
 		}
-		if limits.MaxCurrentA < 20.0 || limits.MaxCurrentA > 150.0 {
-			t.Errorf("Expected MaxCurrentA between 20.0 and 150.0, got %.1f", limits.MaxCurrentA)
+		if limits.MaxCurrentA != 154.0 {
+			t.Errorf("Expected MaxCurrentA 154.0 (38.5A * 4), got %.1f", limits.MaxCurrentA)
 		}
 	})
 
@@ -515,6 +516,7 @@ func TestComputeElectricalLimits(t *testing.T) {
 			StatorDiameterMm: 11,
 			StatorHeightMm:   2.0,
 			WeightG:          3.0,
+			MaxCurrentA:      5.5,
 		}
 
 		limits := ComputeElectricalLimits(fc, []*pb.ElectronicSpeedController{esc}, motor)
@@ -524,24 +526,40 @@ func TestComputeElectricalLimits(t *testing.T) {
 		if limits.MaxVoltage != 4.35 {
 			t.Errorf("Expected MaxVoltage 4.35, got %.1f", limits.MaxVoltage)
 		}
-		if limits.MaxCurrentA < 5.0 || limits.MaxCurrentA > 30.0 {
-			t.Errorf("Expected MaxCurrentA between 5.0 and 30.0, got %.1f", limits.MaxCurrentA)
+		if limits.MaxCurrentA != 22.0 {
+			t.Errorf("Expected MaxCurrentA 22.0 (5.5A * 4), got %.1f", limits.MaxCurrentA)
 		}
 	})
 
-	t.Run("Fallback Heuristics", func(t *testing.T) {
-		// No explicit voltages, only motor KV
-		motor := &pb.Motor{
-			Kv:               2500, // 4S range
-			StatorDiameterMm: 22,
-			StatorHeightMm:   7,
+	t.Run("ESC Only Build (No Motor)", func(t *testing.T) {
+		esc := &pb.ElectronicSpeedController{
+			MinVoltage:       11.1,
+			MaxVoltage:       26.0,
+			MaxMotors:        4,
+			MotorCurrentMaxA: 45.0,
 		}
-		limits := ComputeElectricalLimits(nil, nil, motor)
-		if limits.MinVoltage != 13.2 {
-			t.Errorf("Expected MinVoltage 13.2 for 2500KV motor fallback, got %.1f", limits.MinVoltage)
+		limits := ComputeElectricalLimits(nil, []*pb.ElectronicSpeedController{esc}, nil)
+		if limits.MinVoltage != 11.1 {
+			t.Errorf("Expected MinVoltage 11.1, got %.1f", limits.MinVoltage)
 		}
-		if limits.MaxVoltage != 16.8 {
-			t.Errorf("Expected MaxVoltage 16.8 for 2500KV motor fallback, got %.1f", limits.MaxVoltage)
+		if limits.MaxVoltage != 26.0 {
+			t.Errorf("Expected MaxVoltage 26.0, got %.1f", limits.MaxVoltage)
+		}
+		if limits.MaxCurrentA != 180.0 {
+			t.Errorf("Expected MaxCurrentA 180.0 (45A * 4), got %.1f", limits.MaxCurrentA)
+		}
+	})
+
+	t.Run("Empty Hardware Spec", func(t *testing.T) {
+		limits := ComputeElectricalLimits(nil, nil, nil)
+		if limits.MinVoltage != 0 {
+			t.Errorf("Expected MinVoltage 0, got %.1f", limits.MinVoltage)
+		}
+		if limits.MaxVoltage != 0 {
+			t.Errorf("Expected MaxVoltage 0, got %.1f", limits.MaxVoltage)
+		}
+		if limits.MaxCurrentA != 0 {
+			t.Errorf("Expected MaxCurrentA 0, got %.1f", limits.MaxCurrentA)
 		}
 	})
 }

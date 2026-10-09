@@ -104,21 +104,21 @@ export type Battery = Message<"quadsmith.Battery"> & {
   media: Media[];
 
   /**
-   * Minimum operating / cutoff voltage (volts)
+   * Minimum operating / cutoff voltage (volts) - mandatory
    *
    * @generated from field: float min_voltage = 14;
    */
   minVoltage: number;
 
   /**
-   * Maximum fully charged voltage (volts)
+   * Maximum fully charged voltage (volts) - mandatory
    *
    * @generated from field: float max_voltage = 15;
    */
   maxVoltage: number;
 
   /**
-   * Maximum continuous discharge current rating (amperes)
+   * Maximum continuous discharge current rating (amperes) - mandatory
    *
    * @generated from field: float max_current_a = 16;
    */

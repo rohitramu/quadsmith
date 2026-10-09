@@ -45,11 +45,14 @@ message Motor {
   optional string primary_display_image = 11;
   repeated Media media = 12;
 
-  // Minimum operating voltage (volts)
+  // Minimum operating voltage (volts) - mandatory
   float min_voltage = 13;
 
-  // Maximum operating voltage (volts)
+  // Maximum operating voltage (volts) - mandatory
   float max_voltage = 14;
+
+  // Maximum continuous current rating (amperes) - mandatory
+  float max_current_a = 15;
 }
 
 // ---------------------------------------------------------

@@ -1328,6 +1328,24 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ["stator_height_mm == 7.0"],
       },
       {
+        name: "min_voltage",
+        type: "number",
+        description: "Minimum operating voltage (V)",
+        examples: ["min_voltage >= 14.8", "min_voltage >= 3.0"],
+      },
+      {
+        name: "max_voltage",
+        type: "number",
+        description: "Maximum operating voltage (V)",
+        examples: ["max_voltage <= 25.2", "max_voltage <= 4.35"],
+      },
+      {
+        name: "max_current_a",
+        type: "number",
+        description: "Maximum continuous current rating (A)",
+        examples: ["max_current_a <= 40.0", "max_current_a >= 30.0"],
+      },
+      {
         name: "description",
         type: "string",
         description: "Product description",
@@ -1366,6 +1384,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
           </span>
         ),
       },
+      max_current_a: {
+        id: "max_current_a",
+        title: "Max Current (A)",
+        renderCell: (m) => (m.maxCurrentA ? `${m.maxCurrentA}A` : "-"),
+      },
     },
     highlights: [
       { label: "KV", value: (m) => m.kv || "N/A" },
@@ -1395,6 +1418,15 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         label: "Stator Size",
         value: (m) => formatStatorSize(m.statorDiameterMm, m.statorHeightMm, "-"),
+      },
+      {
+        label: "Operating Voltage",
+        value: (m) =>
+          m.minVoltage || m.maxVoltage ? `${m.minVoltage || 0}V - ${m.maxVoltage || 0}V` : "-",
+      },
+      {
+        label: "Max Continuous Current (A)",
+        value: (m) => (m.maxCurrentA ? `${m.maxCurrentA}A` : "-"),
       },
       { label: "Weight (g)", value: (m) => (m.weightG ? `${m.weightG}` : "-") },
     ],

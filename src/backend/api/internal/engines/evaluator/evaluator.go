@@ -338,10 +338,18 @@ func CalculatePhysics(
 	}
 	totalWeight := baseWeight + payloadWeight
 
-	cellCount := float32(battery.CellCountS)
-	if cellCount == 0 {
-		cellCount = 4
+	if battery.CellCountS == 0 {
+		return PhysicsResult{
+			SystemMessages: []*pb.SystemMessage{
+				{
+					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+					Message:  "Battery cell count is required to run physics estimation",
+				},
+			},
+		}
 	}
+
+	cellCount := float32(battery.CellCountS)
 
 	// 1. Full-throttle burst voltage with realistic high-C sag and payload draw:
 	// A high-C LiPo cell delivers ~3.55V under 100% punchout on a bare quadcopter.
@@ -711,95 +719,26 @@ func ComputeElectricalLimits(fc *pb.FlightController, escs []*pb.ElectronicSpeed
 		updateMaxV(motor.MaxVoltage)
 	}
 
-	// Heuristic fallbacks if voltage constraints are unspecified
-	if motor != nil && motor.Kv > 0 {
-		if minV == 0 {
-			if motor.Kv >= 15000 {
-				minV = 3.0
-			} else if motor.Kv >= 8000 {
-				minV = 6.0
-			} else if motor.Kv >= 2400 {
-				minV = 13.2
-			} else {
-				minV = 19.8
-			}
-		}
-		if maxV == 0 {
-			if motor.Kv >= 15000 {
-				maxV = 4.35
-			} else if motor.Kv >= 8000 {
-				maxV = 8.7
-			} else if motor.Kv >= 2400 {
-				maxV = 16.8
-			} else {
-				maxV = 25.2
-			}
-		}
-	} else {
-		if minV == 0 {
-			minV = 13.2
-		}
-		if maxV == 0 {
-			maxV = 25.2
-		}
-	}
-
-	if maxV < minV && minV > 0 {
+	if maxV > 0 && minV > 0 && maxV < minV {
 		maxV = minV
 	}
 
 	// Calculate max_current_a required by the build
-	nominalVoltage := float32(3.7)
-	if maxV > 0 {
-		cells := float32(math.Max(1.0, math.Round(float64(maxV/4.2))))
-		nominalVoltage = cells * 3.7
-	}
-
-	var maxCurrentA float32 = 15.0
-	if motor != nil {
-		statorD := motor.StatorDiameterMm
-		statorH := motor.StatorHeightMm
-		statorVol := float32(math.Pi/4.0) * statorD * statorD * statorH
-		if statorVol <= 0 {
-			if motor.WeightG > 0 {
-				statorVol = motor.WeightG * 80.0
-			} else {
-				statorVol = 2600.0
-			}
-		}
-		pCont := float64(statorVol) * 0.12
-		if motor.WeightG > 0 {
-			pCont = math.Min(pCont, float64(motor.WeightG)*12.0)
-		}
-		pCont = math.Max(5.0, pCont)
-
-		if motor.Kv > 0 && nominalVoltage > 0 {
-			noLoadRpm := float64(motor.Kv) * float64(nominalVoltage)
-			kvFactor := math.Min(1.2, math.Max(0.4, noLoadRpm/45000.0))
-			pCont *= kvFactor
-		}
-
-		quadAmps := float32((pCont * 4.0) / float64(nominalVoltage))
-		maxCurrentA = float32(math.Round(float64(quadAmps)*10) / 10)
-	}
-
-	if len(escs) > 0 {
-		var escLimit float32 = 0
+	var maxCurrentA float32 = 0
+	if motor != nil && motor.MaxCurrentA > 0 {
+		maxCurrentA = motor.MaxCurrentA * 4.0
+	} else if len(escs) > 0 {
+		var escTotal float32 = 0
 		for _, esc := range escs {
 			if esc.MotorCurrentMaxA > 0 {
-				limit := esc.MotorCurrentMaxA * 4.0
-				if escLimit == 0 || limit < escLimit {
-					escLimit = limit
+				multiplier := float32(esc.MaxMotors)
+				if multiplier == 0 {
+					multiplier = 1.0
 				}
+				escTotal += esc.MotorCurrentMaxA * multiplier
 			}
 		}
-		if escLimit > 0 && maxCurrentA > escLimit {
-			maxCurrentA = escLimit
-		}
-	}
-
-	if maxCurrentA < 5.0 {
-		maxCurrentA = 5.0
+		maxCurrentA = escTotal
 	}
 
 	return &pb.GetBuildElectricalLimitsResponse{
@@ -816,45 +755,16 @@ func (s *EvaluatorServiceHandler) FindLightestCompatibleBattery(ctx context.Cont
 	}
 
 	var batteryId string
-	// Full match: min_voltage >= minV, max_voltage <= maxV, max_current_a >= maxA
+	// Strict match: min_voltage >= minV, max_voltage <= maxV, max_current_a >= maxA
 	err := s.db.QueryRow(ctx, `
 		SELECT id FROM batteries
 		WHERE min_voltage >= $1 AND max_voltage <= $2 AND max_current_a >= $3
 		ORDER BY weight_g ASC, id ASC
 		LIMIT 1
 	`, minV, maxV, maxA).Scan(&batteryId)
-	if err == nil && batteryId != "" {
-		return batteryId
+	if err != nil {
+		return ""
 	}
-
-	// Voltage match fallback
-	err = s.db.QueryRow(ctx, `
-		SELECT id FROM batteries
-		WHERE min_voltage >= $1 AND max_voltage <= $2
-		ORDER BY weight_g ASC, id ASC
-		LIMIT 1
-	`, minV, maxV).Scan(&batteryId)
-	if err == nil && batteryId != "" {
-		return batteryId
-	}
-
-	// Upper voltage ceiling fallback
-	err = s.db.QueryRow(ctx, `
-		SELECT id FROM batteries
-		WHERE max_voltage <= $1
-		ORDER BY weight_g ASC, id ASC
-		LIMIT 1
-	`, maxV).Scan(&batteryId)
-	if err == nil && batteryId != "" {
-		return batteryId
-	}
-
-	// Any battery fallback
-	_ = s.db.QueryRow(ctx, `
-		SELECT id FROM batteries
-		ORDER BY weight_g ASC, id ASC
-		LIMIT 1
-	`).Scan(&batteryId)
 
 	return batteryId
 }

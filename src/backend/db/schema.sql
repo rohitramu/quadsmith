@@ -187,7 +187,8 @@ CREATE TABLE IF NOT EXISTS motors (
   primary_display_image TEXT,
   media JSONB,
   min_voltage DECIMAL NOT NULL,
-  max_voltage DECIMAL NOT NULL
+  max_voltage DECIMAL NOT NULL,
+  max_current_a DECIMAL NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_motors_manufacturer ON motors (manufacturer);

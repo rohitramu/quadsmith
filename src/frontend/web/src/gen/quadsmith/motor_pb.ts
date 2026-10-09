@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_motor: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cgttb3Rvci5wcm90bxIJcXVhZHNtaXRoItsDCgVNb3RvchIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIMCgRuYW1lGAQgASgJEhAKCHdlaWdodF9nGAUgASgCEhoKEnN0YXRvcl9kaWFtZXRlcl9tbRgGIAEoAhIYChBzdGF0b3JfaGVpZ2h0X21tGAcgASgCEhIKAmt2GAggASgNQgbC8xgCKAESEwoLZGVzY3JpcHRpb24YCSABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGAogAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbmsSIgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAsgASgJSACIAQESHwoFbWVkaWEYDCADKAsyEC5xdWFkc21pdGguTWVkaWESEwoLbWluX3ZvbHRhZ2UYDSABKAISEwoLbWF4X3ZvbHRhZ2UYDiABKAI6T4q1GCwKDG1hbnVmYWN0dXJlcgoEbmFtZQoSc3RhdG9yX2RpYW1ldGVyX21tCgJrdpK1GA8KBU1vdG9yEgZNb3RvcnPC8xgICgZtb3RvcnNCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSIuCg9HZXRNb3RvclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJpChFMaXN0TW90b3JzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIk8KEkxpc3RNb3RvcnNSZXNwb25zZRIgCgZtb3RvcnMYASADKAsyEC5xdWFkc21pdGguTW90b3ISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMpMBCgxNb3RvclNlcnZpY2USOAoIR2V0TW90b3ISGi5xdWFkc21pdGguR2V0TW90b3JSZXF1ZXN0GhAucXVhZHNtaXRoLk1vdG9yEkkKCkxpc3RNb3RvcnMSHC5xdWFkc21pdGguTGlzdE1vdG9yc1JlcXVlc3QaHS5xdWFkc21pdGguTGlzdE1vdG9yc1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "Cgttb3Rvci5wcm90bxIJcXVhZHNtaXRoIvIDCgVNb3RvchIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIMCgRuYW1lGAQgASgJEhAKCHdlaWdodF9nGAUgASgCEhoKEnN0YXRvcl9kaWFtZXRlcl9tbRgGIAEoAhIYChBzdGF0b3JfaGVpZ2h0X21tGAcgASgCEhIKAmt2GAggASgNQgbC8xgCKAESEwoLZGVzY3JpcHRpb24YCSABKAkSMQoPcmVmZXJlbmNlX2xpbmtzGAogAygLMhgucXVhZHNtaXRoLlJlZmVyZW5jZUxpbmsSIgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAsgASgJSACIAQESHwoFbWVkaWEYDCADKAsyEC5xdWFkc21pdGguTWVkaWESEwoLbWluX3ZvbHRhZ2UYDSABKAISEwoLbWF4X3ZvbHRhZ2UYDiABKAISFQoNbWF4X2N1cnJlbnRfYRgPIAEoAjpPirUYLAoMbWFudWZhY3R1cmVyCgRuYW1lChJzdGF0b3JfZGlhbWV0ZXJfbW0KAmt2krUYDwoFTW90b3ISBk1vdG9yc8LzGAgKBm1vdG9yc0IYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlIi4KD0dldE1vdG9yUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImkKEUxpc3RNb3RvcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiTwoSTGlzdE1vdG9yc1Jlc3BvbnNlEiAKBm1vdG9ycxgBIAMoCzIQLnF1YWRzbWl0aC5Nb3RvchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkykwEKDE1vdG9yU2VydmljZRI4CghHZXRNb3RvchIaLnF1YWRzbWl0aC5HZXRNb3RvclJlcXVlc3QaEC5xdWFkc21pdGguTW90b3ISSQoKTGlzdE1vdG9ycxIcLnF1YWRzbWl0aC5MaXN0TW90b3JzUmVxdWVzdBodLnF1YWRzbWl0aC5MaXN0TW90b3JzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
     [file__common, file__sql, file_media, file_reference_link],
   );
 
@@ -93,18 +93,25 @@ export type Motor = Message<"quadsmith.Motor"> & {
   media: Media[];
 
   /**
-   * Minimum operating voltage (volts)
+   * Minimum operating voltage (volts) - mandatory
    *
    * @generated from field: float min_voltage = 13;
    */
   minVoltage: number;
 
   /**
-   * Maximum operating voltage (volts)
+   * Maximum operating voltage (volts) - mandatory
    *
    * @generated from field: float max_voltage = 14;
    */
   maxVoltage: number;
+
+  /**
+   * Maximum continuous current rating (amperes) - mandatory
+   *
+   * @generated from field: float max_current_a = 15;
+   */
+  maxCurrentA: number;
 };
 
 /**

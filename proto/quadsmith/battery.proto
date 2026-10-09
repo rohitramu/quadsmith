@@ -52,13 +52,13 @@ message Battery {
   optional string primary_display_image = 12;
   repeated Media media = 13;
 
-  // Minimum operating / cutoff voltage (volts)
+  // Minimum operating / cutoff voltage (volts) - mandatory
   float min_voltage = 14;
 
-  // Maximum fully charged voltage (volts)
+  // Maximum fully charged voltage (volts) - mandatory
   float max_voltage = 15;
 
-  // Maximum continuous discharge current rating (amperes)
+  // Maximum continuous discharge current rating (amperes) - mandatory
   float max_current_a = 16;
 }
 
