@@ -17,6 +17,7 @@ message Motor {
   option (quadsmith.sql.table) = {name: "motors"};
   option (quadsmith.collection_path) = "components/hardware/motors";
   option (quadsmith.frontend) = {
+    color_code: "#ef4444"
     default_columns: [
       "manufacturer",
       "name",

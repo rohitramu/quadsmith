@@ -16,6 +16,7 @@ message GpsReceiver {
   option (quadsmith.sql.table) = {name: "gps_receivers"};
   option (quadsmith.collection_path) = "components/hardware/gps-receivers";
   option (quadsmith.frontend) = {
+    color_code: "#14b8a6"
     default_columns: [
       "manufacturer",
       "name",

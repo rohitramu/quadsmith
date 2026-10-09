@@ -16,6 +16,7 @@ message Frame {
   option (quadsmith.sql.table) = {name: "frames"};
   option (quadsmith.collection_path) = "components/hardware/frames";
   option (quadsmith.frontend) = {
+    color_code: "#06b6d4"
     default_columns: [
       "manufacturer",
       "name",

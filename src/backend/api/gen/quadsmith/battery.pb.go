@@ -383,7 +383,7 @@ var File_battery_proto protoreflect.FileDescriptor
 const file_battery_proto_rawDesc = "" +
 	"\n" +
 	"\rbattery.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xcd\x05\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xd6\x05\n" +
 	"\aBattery\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -404,11 +404,11 @@ const file_battery_proto_rawDesc = "" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x0f \x01(\x02R\n" +
 	"maxVoltage\x12\"\n" +
-	"\rmax_current_a\x18\x10 \x01(\x02R\vmaxCurrentA:d\x8a\xb5\x180\n" +
+	"\rmax_current_a\x18\x10 \x01(\x02R\vmaxCurrentA:m\x8a\xb5\x189\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fcell_count_s\n" +
-	"\fcapacity_mah\x9a\xb5\x18\x1dcomponents/hardware/batteries\xc2\xf3\x18\v\n" +
+	"\fcapacity_mah\x1a\a#10b981\x9a\xb5\x18\x1dcomponents/hardware/batteries\xc2\xf3\x18\v\n" +
 	"\tbatteriesB\x18\n" +
 	"\x16_primary_display_image\"=\n" +
 	"\x11GetBatteryRequest\x12\x0e\n" +

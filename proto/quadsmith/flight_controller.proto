@@ -16,6 +16,7 @@ message FlightController {
   option (quadsmith.sql.table) = {name: "flight_controllers"};
   option (quadsmith.collection_path) = "components/hardware/flight-controllers";
   option (quadsmith.frontend) = {
+    color_code: "#3b82f6"
     default_columns: [
       "manufacturer",
       "name",

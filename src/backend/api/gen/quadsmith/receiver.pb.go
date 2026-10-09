@@ -363,7 +363,7 @@ var File_receiver_proto protoreflect.FileDescriptor
 const file_receiver_proto_rawDesc = "" +
 	"\n" +
 	"\x0ereceiver.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xb6\x05\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xbf\x05\n" +
 	"\bReceiver\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -379,12 +379,12 @@ const file_receiver_proto_rawDesc = "" +
 	"\vdescription\x18\v \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\f \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\r \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\x0e \x03(\v2\x10.quadsmith.MediaR\x05media:u\x8a\xb5\x18A\n" +
+	"\x05media\x18\x0e \x03(\v2\x10.quadsmith.MediaR\x05media:~\x8a\xb5\x18J\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +
 	"\x12frequency_band_mhz\n" +
-	"\rhas_telemetry\x9a\xb5\x18\x1dcomponents/hardware/receivers\xc2\xf3\x18\v\n" +
+	"\rhas_telemetry\x1a\a#a855f7\x9a\xb5\x18\x1dcomponents/hardware/receivers\xc2\xf3\x18\v\n" +
 	"\treceiversB\x18\n" +
 	"\x16_primary_display_image\">\n" +
 	"\x12GetReceiverRequest\x12\x0e\n" +

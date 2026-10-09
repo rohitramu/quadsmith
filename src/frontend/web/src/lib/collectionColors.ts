@@ -1,3 +1,20 @@
+import { getOption } from "@bufbuild/protobuf";
+import { frontend } from "../gen/quadsmith/_common_pb";
+
+// Protobuf Schemas for Collections
+import { AntennaSchema } from "../gen/quadsmith/antenna_pb";
+import { BatterySchema } from "../gen/quadsmith/battery_pb";
+import { BuildSchema } from "../gen/quadsmith/build_pb";
+import { CameraSchema } from "../gen/quadsmith/camera_pb";
+import { ElectronicSpeedControllerSchema } from "../gen/quadsmith/electronic_speed_controller_pb";
+import { FlightControllerSchema } from "../gen/quadsmith/flight_controller_pb";
+import { FrameSchema } from "../gen/quadsmith/frame_pb";
+import { GpsReceiverSchema } from "../gen/quadsmith/gps_receiver_pb";
+import { MotorSchema } from "../gen/quadsmith/motor_pb";
+import { PropellerSchema } from "../gen/quadsmith/propeller_pb";
+import { ReceiverSchema } from "../gen/quadsmith/receiver_pb";
+import { VideoTransmitterSchema } from "../gen/quadsmith/video_transmitter_pb";
+
 export interface CollectionColorDef {
   id: string;
   name: string;
@@ -13,10 +30,10 @@ export interface CollectionColorDef {
   hoverBorderClass: string;
 }
 
-export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
-  antennas: {
-    id: "antennas",
-    name: "Antennas",
+export type ColorStylePreset = Omit<CollectionColorDef, "id" | "name">;
+
+export const COLOR_PRESETS_BY_HEX: Record<string, ColorStylePreset> = {
+  "#f59e0b": {
     colorName: "amber",
     hex: "#f59e0b",
     badgeClass:
@@ -29,9 +46,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300",
     hoverBorderClass: "hover:border-amber-500",
   },
-  batteries: {
-    id: "batteries",
-    name: "Batteries",
+  "#10b981": {
     colorName: "emerald",
     hex: "#10b981",
     badgeClass:
@@ -44,9 +59,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300",
     hoverBorderClass: "hover:border-emerald-500",
   },
-  builds: {
-    id: "builds",
-    name: "Builds",
+  "#6366f1": {
     colorName: "indigo",
     hex: "#6366f1",
     badgeClass:
@@ -59,9 +72,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-indigo-100 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300",
     hoverBorderClass: "hover:border-indigo-500",
   },
-  cameras: {
-    id: "cameras",
-    name: "Cameras",
+  "#f43f5e": {
     colorName: "rose",
     hex: "#f43f5e",
     badgeClass:
@@ -74,9 +85,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300",
     hoverBorderClass: "hover:border-rose-500",
   },
-  "electronic-speed-controllers": {
-    id: "electronic-speed-controllers",
-    name: "Electronic Speed Controllers",
+  "#f97316": {
     colorName: "orange",
     hex: "#f97316",
     badgeClass:
@@ -89,9 +98,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-orange-100 text-orange-700 dark:bg-orange-950/60 dark:text-orange-300",
     hoverBorderClass: "hover:border-orange-500",
   },
-  "flight-controllers": {
-    id: "flight-controllers",
-    name: "Flight Controllers",
+  "#3b82f6": {
     colorName: "blue",
     hex: "#3b82f6",
     badgeClass:
@@ -104,9 +111,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300",
     hoverBorderClass: "hover:border-blue-500",
   },
-  frames: {
-    id: "frames",
-    name: "Frames",
+  "#06b6d4": {
     colorName: "cyan",
     hex: "#06b6d4",
     badgeClass:
@@ -119,9 +124,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-cyan-100 text-cyan-700 dark:bg-cyan-950/60 dark:text-cyan-300",
     hoverBorderClass: "hover:border-cyan-500",
   },
-  "gps-receivers": {
-    id: "gps-receivers",
-    name: "GPS Receivers",
+  "#14b8a6": {
     colorName: "teal",
     hex: "#14b8a6",
     badgeClass:
@@ -134,9 +137,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-teal-100 text-teal-700 dark:bg-teal-950/60 dark:text-teal-300",
     hoverBorderClass: "hover:border-teal-500",
   },
-  motors: {
-    id: "motors",
-    name: "Motors",
+  "#ef4444": {
     colorName: "red",
     hex: "#ef4444",
     badgeClass:
@@ -149,9 +150,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300",
     hoverBorderClass: "hover:border-red-500",
   },
-  propellers: {
-    id: "propellers",
-    name: "Propellers",
+  "#0ea5e9": {
     colorName: "sky",
     hex: "#0ea5e9",
     badgeClass:
@@ -164,9 +163,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-sky-100 text-sky-700 dark:bg-sky-950/60 dark:text-sky-300",
     hoverBorderClass: "hover:border-sky-500",
   },
-  receivers: {
-    id: "receivers",
-    name: "Receivers",
+  "#a855f7": {
     colorName: "purple",
     hex: "#a855f7",
     badgeClass:
@@ -179,9 +176,7 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300",
     hoverBorderClass: "hover:border-purple-500",
   },
-  "video-transmitters": {
-    id: "video-transmitters",
-    name: "Video Transmitters",
+  "#d946ef": {
     colorName: "fuchsia",
     hex: "#d946ef",
     badgeClass:
@@ -194,23 +189,122 @@ export const COLLECTION_COLORS: Record<string, CollectionColorDef> = {
     iconBgClass: "bg-fuchsia-100 text-fuchsia-700 dark:bg-fuchsia-950/60 dark:text-fuchsia-300",
     hoverBorderClass: "hover:border-fuchsia-500",
   },
+  "#64748b": {
+    colorName: "slate",
+    hex: "#64748b",
+    badgeClass:
+      "bg-slate-100 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700",
+    trimClass: "bg-slate-500",
+    dotClass: "bg-slate-500",
+    borderTopClass: "border-t-slate-500",
+    borderLeftClass: "border-l-slate-500",
+    textClass: "text-slate-600 dark:text-slate-400",
+    iconBgClass: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
+    hoverBorderClass: "hover:border-slate-500",
+  },
 };
 
 export const DEFAULT_COLLECTION_COLOR: CollectionColorDef = {
   id: "default",
   name: "Collection",
-  colorName: "slate",
-  hex: "#64748b",
-  badgeClass:
-    "bg-slate-100 text-slate-800 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700",
-  trimClass: "bg-slate-500",
-  dotClass: "bg-slate-500",
-  borderTopClass: "border-t-slate-500",
-  borderLeftClass: "border-l-slate-500",
-  textClass: "text-slate-600 dark:text-slate-400",
-  iconBgClass: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
-  hoverBorderClass: "hover:border-slate-500",
+  ...COLOR_PRESETS_BY_HEX["#64748b"],
 };
+
+/**
+ * Resolves a CollectionColorDef by hex code or color code string.
+ * Falls back to the default slate color if the code is empty, null, or unrecognized.
+ */
+export function getCollectionColorByCode(
+  hexOrColorCode?: string | null,
+  id: string = "default",
+  name: string = "Collection",
+): CollectionColorDef {
+  let normalizedHex = (hexOrColorCode ?? "").trim().toLowerCase();
+  if (normalizedHex && !normalizedHex.startsWith("#")) {
+    normalizedHex = "#" + normalizedHex;
+  }
+  const preset = COLOR_PRESETS_BY_HEX[normalizedHex] || COLOR_PRESETS_BY_HEX["#64748b"];
+  return {
+    id,
+    name,
+    colorName: preset.colorName,
+    hex: preset.hex,
+    badgeClass: preset.badgeClass,
+    trimClass: preset.trimClass,
+    dotClass: preset.dotClass,
+    borderTopClass: preset.borderTopClass,
+    borderLeftClass: preset.borderLeftClass,
+    textClass: preset.textClass,
+    iconBgClass: preset.iconBgClass,
+    hoverBorderClass: preset.hoverBorderClass,
+  };
+}
+
+/**
+ * Extracts the frontend color_code option directly from a protobuf schema
+ * and returns the corresponding CollectionColorDef.
+ * If unset or missing, returns the default slate color.
+ */
+export function getCollectionColorFromSchema(
+  schema: any,
+  id: string = "default",
+  name: string = "Collection",
+): CollectionColorDef {
+  if (!schema) {
+    return { ...DEFAULT_COLLECTION_COLOR, id, name };
+  }
+  try {
+    const fe = getOption(schema, frontend);
+    if (fe?.colorCode) {
+      return getCollectionColorByCode(fe.colorCode, id, name);
+    }
+  } catch {
+    // fallback
+  }
+  return { ...DEFAULT_COLLECTION_COLOR, id, name };
+}
+
+const SCHEMA_COLLECTIONS: { id: string; name: string; schema: any }[] = [
+  { id: "antennas", name: "Antennas", schema: AntennaSchema },
+  { id: "batteries", name: "Batteries", schema: BatterySchema },
+  { id: "builds", name: "Builds", schema: BuildSchema },
+  { id: "cameras", name: "Cameras", schema: CameraSchema },
+  {
+    id: "electronic-speed-controllers",
+    name: "Electronic Speed Controllers",
+    schema: ElectronicSpeedControllerSchema,
+  },
+  {
+    id: "flight-controllers",
+    name: "Flight Controllers",
+    schema: FlightControllerSchema,
+  },
+  { id: "frames", name: "Frames", schema: FrameSchema },
+  {
+    id: "gps-receivers",
+    name: "GPS Receivers",
+    schema: GpsReceiverSchema,
+  },
+  { id: "motors", name: "Motors", schema: MotorSchema },
+  { id: "propellers", name: "Propellers", schema: PropellerSchema },
+  { id: "receivers", name: "Receivers", schema: ReceiverSchema },
+  {
+    id: "video-transmitters",
+    name: "Video Transmitters",
+    schema: VideoTransmitterSchema,
+  },
+];
+
+/**
+ * Map of canonical collection IDs to color definitions,
+ * initialized directly from protobuf schema options as the source of truth.
+ */
+export const COLLECTION_COLORS: Record<string, CollectionColorDef> = Object.fromEntries(
+  SCHEMA_COLLECTIONS.map(({ id, name, schema }) => [
+    id,
+    getCollectionColorFromSchema(schema, id, name),
+  ]),
+);
 
 /**
  * Normalizes any collection path, alias, plural, or singular identifier into a canonical key.

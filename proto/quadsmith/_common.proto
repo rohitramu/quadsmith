@@ -16,6 +16,9 @@ message FrontendOptions {
 
   reserved 2;
   reserved "path";
+
+  // The primary color code for this resource collection (e.g., hex code "#10b981").
+  string color_code = 3;
 }
 
 // ---------------------------------------------------------

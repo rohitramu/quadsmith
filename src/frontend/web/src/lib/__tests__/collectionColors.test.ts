@@ -1,8 +1,14 @@
 import { describe, it, expect } from "vitest";
+import { getOption } from "@bufbuild/protobuf";
+import { frontend } from "../../gen/quadsmith/_common_pb";
+import { BatterySchema } from "../../gen/quadsmith/battery_pb";
+import { BuildSchema } from "../../gen/quadsmith/build_pb";
 import {
   COLLECTION_COLORS,
   DEFAULT_COLLECTION_COLOR,
   getCollectionColor,
+  getCollectionColorByCode,
+  getCollectionColorFromSchema,
   normalizeCollectionKey,
 } from "../collectionColors";
 import { HARDWARE_COLLECTIONS } from "../hardwareCollections";
@@ -42,6 +48,33 @@ describe("collectionColors module", () => {
     expect(colorNameSet.size).toBe(12);
   });
 
+  it("extracts colors directly from proto schema options as the source of truth", () => {
+    // BatterySchema defines color_code: "#10b981" in battery.proto
+    const batteryProtoColor = getOption(BatterySchema, frontend)?.colorCode;
+    expect(batteryProtoColor).toBe("#10b981");
+
+    const batteryColor = getCollectionColorFromSchema(BatterySchema, "batteries", "Batteries");
+    expect(batteryColor.hex).toBe("#10b981");
+    expect(batteryColor.colorName).toBe("emerald");
+    expect(batteryColor.trimClass).toBe("bg-emerald-500");
+
+    // BuildSchema defines color_code: "#6366f1" in build.proto
+    const buildProtoColor = getOption(BuildSchema, frontend)?.colorCode;
+    expect(buildProtoColor).toBe("#6366f1");
+
+    const buildColor = getCollectionColorFromSchema(BuildSchema, "builds", "Builds");
+    expect(buildColor.hex).toBe("#6366f1");
+    expect(buildColor.colorName).toBe("indigo");
+
+    // Verify all HARDWARE_COLLECTIONS derive their color from their proto schema
+    for (const col of HARDWARE_COLLECTIONS) {
+      const protoColor = getOption(col.schema, frontend)?.colorCode;
+      expect(protoColor).toBeDefined();
+      expect(col.color?.hex).toBe(protoColor);
+      expect(COLLECTION_COLORS[col.id].hex).toBe(protoColor);
+    }
+  });
+
   it("assigns colors to every item in HARDWARE_COLLECTIONS", () => {
     for (const col of HARDWARE_COLLECTIONS) {
       expect(col.color).toBeDefined();
@@ -74,14 +107,34 @@ describe("collectionColors module", () => {
     expect(getCollectionColor("builds").id).toBe("builds");
   });
 
-  it("falls back gracefully for unknown or empty collection paths", () => {
+  it("falls back gracefully to default grey for unknown, missing, or empty color codes", () => {
     const fallbackEmpty = getCollectionColor("");
     expect(fallbackEmpty.id).toBe(DEFAULT_COLLECTION_COLOR.id);
+    expect(fallbackEmpty.hex).toBe("#64748b");
+    expect(fallbackEmpty.colorName).toBe("slate");
 
     const fallbackNull = getCollectionColor(null);
     expect(fallbackNull.id).toBe(DEFAULT_COLLECTION_COLOR.id);
+    expect(fallbackNull.hex).toBe("#64748b");
 
     const fallbackUnknown = getCollectionColor("unknown-resource");
     expect(fallbackUnknown.id).toBe(DEFAULT_COLLECTION_COLOR.id);
+    expect(fallbackUnknown.hex).toBe("#64748b");
+
+    // Testing getCollectionColorByCode
+    expect(getCollectionColorByCode("").hex).toBe("#64748b");
+    expect(getCollectionColorByCode(null).hex).toBe("#64748b");
+    expect(getCollectionColorByCode(undefined).hex).toBe("#64748b");
+    expect(getCollectionColorByCode("#999999").hex).toBe("#64748b");
+
+    // Case-insensitivity and prefix handling
+    expect(getCollectionColorByCode("#10B981").colorName).toBe("emerald");
+    expect(getCollectionColorByCode("10b981").colorName).toBe("emerald");
+
+    // Schema without frontend color option falls back to slate/grey
+    const dummySchemaWithoutColor = { name: "MockMessage" };
+    const colorFromEmptySchema = getCollectionColorFromSchema(dummySchemaWithoutColor);
+    expect(colorFromEmptySchema.hex).toBe("#64748b");
+    expect(colorFromEmptySchema.colorName).toBe("slate");
   });
 });

@@ -16,6 +16,7 @@ message Camera {
   option (quadsmith.sql.table) = {name: "cameras"};
   option (quadsmith.collection_path) = "components/hardware/cameras";
   option (quadsmith.frontend) = {
+    color_code: "#f43f5e"
     default_columns: [
       "manufacturer",
       "name",

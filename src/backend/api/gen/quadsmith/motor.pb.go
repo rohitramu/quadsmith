@@ -374,7 +374,7 @@ var File_motor_proto protoreflect.FileDescriptor
 const file_motor_proto_rawDesc = "" +
 	"\n" +
 	"\vmotor.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xa8\x05\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xb1\x05\n" +
 	"\x05Motor\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -393,11 +393,11 @@ const file_motor_proto_rawDesc = "" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x0e \x01(\x02R\n" +
 	"maxVoltage\x12\"\n" +
-	"\rmax_current_a\x18\x0f \x01(\x02R\vmaxCurrentA:Z\x8a\xb5\x18,\n" +
+	"\rmax_current_a\x18\x0f \x01(\x02R\vmaxCurrentA:c\x8a\xb5\x185\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\x12stator_diameter_mm\n" +
-	"\x02kv\x9a\xb5\x18\x1acomponents/hardware/motors\xc2\xf3\x18\b\n" +
+	"\x02kv\x1a\a#ef4444\x9a\xb5\x18\x1acomponents/hardware/motors\xc2\xf3\x18\b\n" +
 	"\x06motorsB\x18\n" +
 	"\x16_primary_display_image\";\n" +
 	"\x0fGetMotorRequest\x12\x0e\n" +

@@ -16,6 +16,7 @@ message Receiver {
   option (quadsmith.sql.table) = {name: "receivers"};
   option (quadsmith.collection_path) = "components/hardware/receivers";
   option (quadsmith.frontend) = {
+    color_code: "#a855f7"
     default_columns: [
       "manufacturer",
       "name",

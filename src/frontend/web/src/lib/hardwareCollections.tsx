@@ -1,7 +1,7 @@
 import React from "react";
 import { formatStatorSize } from "./format";
 import type { FieldDef } from "../components/SmartFilterInput";
-import { getCollectionColor, type CollectionColorDef } from "./collectionColors";
+import { getCollectionColorFromSchema, type CollectionColorDef } from "./collectionColors";
 
 // Protobuf Schemas
 import { AntennaSchema } from "../gen/quadsmith/antenna_pb";
@@ -1886,10 +1886,15 @@ export function getCollectionPath(collection: HardwareCollectionDef): string {
 
 for (const col of HARDWARE_COLLECTIONS) {
   col.path = getCollectionPath(col);
-  col.color = getCollectionColor(col.id);
+  col.color = getCollectionColorFromSchema(col.schema, col.id, col.name);
 }
 
-export { getCollectionColor, type CollectionColorDef } from "./collectionColors";
+export {
+  getCollectionColor,
+  getCollectionColorByCode,
+  getCollectionColorFromSchema,
+  type CollectionColorDef,
+} from "./collectionColors";
 
 export function getHardwareCollection(collectionId?: string): HardwareCollectionDef | undefined {
   if (!collectionId) return undefined;

@@ -16,6 +16,7 @@ message ElectronicSpeedController {
   option (quadsmith.sql.table) = {name: "electronic_speed_controllers"};
   option (quadsmith.collection_path) = "components/hardware/electronic-speed-controllers";
   option (quadsmith.frontend) = {
+    color_code: "#f97316"
     default_columns: [
       "manufacturer",
       "name",

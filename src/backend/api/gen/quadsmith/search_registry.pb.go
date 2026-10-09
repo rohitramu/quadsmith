@@ -9,6 +9,7 @@ type SearchCollectionDef struct {
 	TableName       string
 	DisplayName     string
 	MessageName     string
+	ColorCode       string
 	HasManufacturer bool
 	DefaultColumns  []string
 	Columns         []string
@@ -24,6 +25,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "builds",
 		DisplayName:     "Builds",
 		MessageName:     "Build",
+		ColorCode:       "#6366f1",
 		HasManufacturer: false,
 		DefaultColumns: []string{
 			"id",
@@ -59,6 +61,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "antennas",
 		DisplayName:     "Antennas",
 		MessageName:     "Antenna",
+		ColorCode:       "#f59e0b",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -96,6 +99,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "batteries",
 		DisplayName:     "Batteries",
 		MessageName:     "Battery",
+		ColorCode:       "#10b981",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -132,6 +136,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "cameras",
 		DisplayName:     "Cameras",
 		MessageName:     "Camera",
+		ColorCode:       "#f43f5e",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -170,6 +175,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "electronic_speed_controllers",
 		DisplayName:     "ElectronicSpeedControllers",
 		MessageName:     "ElectronicSpeedController",
+		ColorCode:       "#f97316",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -211,6 +217,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "flight_controllers",
 		DisplayName:     "FlightControllers",
 		MessageName:     "FlightController",
+		ColorCode:       "#3b82f6",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -249,6 +256,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "frames",
 		DisplayName:     "Frames",
 		MessageName:     "Frame",
+		ColorCode:       "#06b6d4",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -284,6 +292,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "gps_receivers",
 		DisplayName:     "GpsReceivers",
 		MessageName:     "GpsReceiver",
+		ColorCode:       "#14b8a6",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -320,6 +329,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "motors",
 		DisplayName:     "Motors",
 		MessageName:     "Motor",
+		ColorCode:       "#ef4444",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -355,6 +365,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "propellers",
 		DisplayName:     "Propellers",
 		MessageName:     "Propeller",
+		ColorCode:       "#0ea5e9",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -391,6 +402,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "receivers",
 		DisplayName:     "Receivers",
 		MessageName:     "Receiver",
+		ColorCode:       "#a855f7",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -430,6 +442,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "video_transmitters",
 		DisplayName:     "VideoTransmitters",
 		MessageName:     "VideoTransmitter",
+		ColorCode:       "#d946ef",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",

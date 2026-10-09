@@ -391,7 +391,7 @@ var File_flight_controller_proto protoreflect.FileDescriptor
 const file_flight_controller_proto_rawDesc = "" +
 	"\n" +
 	"\x17flight_controller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xcb\b\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xd4\b\n" +
 	"\x10FlightController\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -412,12 +412,12 @@ const file_flight_controller_proto_rawDesc = "" +
 	"\vmin_voltage\x18\x10 \x01(\x02R\n" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x11 \x01(\x02R\n" +
-	"maxVoltage:u\x8a\xb5\x18/\n" +
+	"maxVoltage:~\x8a\xb5\x188\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tprocessor\n" +
 	"\x04gyro\n" +
-	"\bweight_g\x9a\xb5\x18&components/hardware/flight-controllers\xc2\xf3\x18\x14\n" +
+	"\bweight_g\x1a\a#3b82f6\x9a\xb5\x18&components/hardware/flight-controllers\xc2\xf3\x18\x14\n" +
 	"\x12flight_controllersB,\n" +
 	"*_internal_electronic_speed_controller_uuidB\x19\n" +
 	"\x17_internal_receiver_uuidB\"\n" +

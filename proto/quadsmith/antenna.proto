@@ -16,6 +16,7 @@ message Antenna {
   option (quadsmith.sql.table) = {name: "antennas"};
   option (quadsmith.collection_path) = "components/hardware/antennas";
   option (quadsmith.frontend) = {
+    color_code: "#f59e0b"
     default_columns: [
       "manufacturer",
       "name",

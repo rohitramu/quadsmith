@@ -16,6 +16,7 @@ message VideoTransmitter {
   option (quadsmith.sql.table) = {name: "video_transmitters"};
   option (quadsmith.collection_path) = "components/hardware/video-transmitters";
   option (quadsmith.frontend) = {
+    color_code: "#d946ef"
     default_columns: [
       "manufacturer",
       "name",

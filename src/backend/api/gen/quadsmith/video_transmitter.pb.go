@@ -372,7 +372,7 @@ var File_video_transmitter_proto protoreflect.FileDescriptor
 const file_video_transmitter_proto_rawDesc = "" +
 	"\n" +
 	"\x17video_transmitter.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xf2\x05\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xfc\x05\n" +
 	"\x10VideoTransmitter\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -390,12 +390,12 @@ const file_video_transmitter_proto_rawDesc = "" +
 	"\vdescription\x18\f \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\x0e \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\x0f \x03(\v2\x10.quadsmith.MediaR\x05media:|\x8a\xb5\x186\n" +
+	"\x05media\x18\x0f \x03(\v2\x10.quadsmith.MediaR\x05media:\x85\x01\x8a\xb5\x18?\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +
 	"\fmax_power_mw\n" +
-	"\bweight_g\x9a\xb5\x18&components/hardware/video-transmitters\xc2\xf3\x18\x14\n" +
+	"\bweight_g\x1a\a#d946ef\x9a\xb5\x18&components/hardware/video-transmitters\xc2\xf3\x18\x14\n" +
 	"\x12video_transmittersB\x18\n" +
 	"\x16_primary_display_image\"F\n" +
 	"\x1aGetVideoTransmitterRequest\x12\x0e\n" +
