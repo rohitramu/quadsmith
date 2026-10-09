@@ -136,6 +136,12 @@ describe("BuildProfilePage Component", () => {
     await user.click(bareButton);
     expect(payloadInput).toHaveValue("0");
     expect(minusButton).toBeDisabled();
+
+    // Verify metric cards remain continuously mounted and present without layout collapse
+    expect(screen.getByText("All-Up Weight")).toBeInTheDocument();
+    expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
+    expect(screen.getByText("Hover Throttle")).toBeInTheDocument();
+    expect(screen.getByText("Est. Flight Time")).toBeInTheDocument();
   });
 
   it("renders reference documentation links", async () => {

@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@connectrpc/connect-query";
+import { keepPreviousData } from "@tanstack/react-query";
 import { getBuild } from "../gen/quadsmith/build-BuildService_connectquery";
 import { evaluateBuild } from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
 import { getFrame } from "../gen/quadsmith/frame-FrameService_connectquery";
@@ -33,6 +34,7 @@ import {
   Zap,
   Plus,
   Minus,
+  RefreshCw,
 } from "lucide-react";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
@@ -127,9 +129,17 @@ export function BuildProfilePage() {
 
   const {
     data: evaluation,
-    isLoading: isEvaluating,
+    isLoading: isLoadingEvaluation,
+    isFetching: isFetchingEvaluation,
     error: evalError,
-  } = useQuery(evaluateBuild, { build, payloadWeightG }, { enabled: !!build });
+  } = useQuery(
+    evaluateBuild,
+    { build, payloadWeightG },
+    {
+      enabled: !!build,
+      placeholderData: keepPreviousData,
+    },
+  );
 
   if (isLoadingBuild) {
     return (
@@ -208,6 +218,16 @@ export function BuildProfilePage() {
             <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
               <Gauge className="text-blue-600 dark:text-blue-400" size={22} />
               <span>Build Evaluation & Performance</span>
+              {isFetchingEvaluation && (
+                <span
+                  role="status"
+                  aria-label="Updating evaluation"
+                  className="inline-flex items-center gap-1 text-xs font-normal text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200/60 dark:border-blue-800/60 px-2 py-0.5 rounded-full"
+                >
+                  <RefreshCw size={11} className="animate-spin" />
+                  <span>Updating...</span>
+                </span>
+              )}
             </h2>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
               Automated aerodynamic and electrical physics estimation calculated by Quadsmith
@@ -280,9 +300,9 @@ export function BuildProfilePage() {
               <button
                 type="button"
                 onClick={() => setPayloadInput("0")}
-                className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+                className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                   payloadWeightG === 0
-                    ? "bg-blue-600 text-white font-medium"
+                    ? "bg-blue-600 text-white"
                     : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 }`}
               >
@@ -291,9 +311,9 @@ export function BuildProfilePage() {
               <button
                 type="button"
                 onClick={() => setPayloadInput("16")}
-                className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+                className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                   payloadWeightG === 16
-                    ? "bg-blue-600 text-white font-medium"
+                    ? "bg-blue-600 text-white"
                     : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 }`}
               >
@@ -302,9 +322,9 @@ export function BuildProfilePage() {
               <button
                 type="button"
                 onClick={() => setPayloadInput("133")}
-                className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+                className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                   payloadWeightG === 133
-                    ? "bg-blue-600 text-white font-medium"
+                    ? "bg-blue-600 text-white"
                     : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 }`}
               >
@@ -315,91 +335,117 @@ export function BuildProfilePage() {
         </div>
 
         {/* Evaluation Metrics Cards */}
-        {isEvaluating ? (
-          <div className="py-8 text-center text-sm text-zinc-500 animate-pulse">
-            Calculating build physics and performance metrics...
+        {isLoadingEvaluation && !evaluation ? (
+          <div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between animate-pulse"
+                >
+                  <div className="h-3.5 bg-zinc-200 dark:bg-zinc-800 rounded w-24" />
+                  <div>
+                    <div className="h-7 bg-zinc-200 dark:bg-zinc-800 rounded w-16 mb-2" />
+                    <div className="h-3 bg-zinc-100 dark:bg-zinc-800/60 rounded w-28" />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="h-11 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 animate-pulse" />
           </div>
         ) : evalError ? (
           <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm">
             Evaluation error: {evalError.message}
           </div>
         ) : evaluation ? (
-          <div>
+          <div
+            className={`transition-opacity duration-150 ${
+              isFetchingEvaluation ? "opacity-75" : "opacity-100"
+            }`}
+          >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               {/* Metric 1: AUW Total Weight */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                 <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                   <Weight size={14} />
                   <span>All-Up Weight</span>
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                  {Math.round(evaluation.totalWeightG)}
-                  <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
-                </div>
-                <div className="text-[11px] text-zinc-500 mt-1">
-                  {payloadWeightG > 0
-                    ? `Includes +${payloadWeightG}g payload`
-                    : "Quadcopter + LiPo"}
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                    {Math.round(evaluation.totalWeightG)}
+                    <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
+                  </div>
+                  <div className="text-[11px] text-zinc-500 mt-1">
+                    {payloadWeightG > 0
+                      ? `Includes +${payloadWeightG}g payload`
+                      : "Quadcopter + LiPo"}
+                  </div>
                 </div>
               </div>
 
               {/* Metric 2: Thrust-to-Weight Ratio */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                 <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                   <Gauge size={14} />
                   <span>Thrust / Weight</span>
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold mt-1 text-emerald-600 dark:text-emerald-400">
-                  {evaluation.thrustToWeightRatio.toFixed(1)}
-                  <span className="text-sm font-normal text-zinc-500 ml-1">: 1</span>
-                </div>
-                <div className="text-[11px] text-zinc-500 mt-1">
-                  {evaluation.thrustToWeightRatio >= 5
-                    ? "Freestyle & Racing"
-                    : evaluation.thrustToWeightRatio >= 3
-                      ? "Agile Sport"
-                      : "Cruiser"}
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-emerald-600 dark:text-emerald-400">
+                    {evaluation.thrustToWeightRatio.toFixed(1)}
+                    <span className="text-sm font-normal text-zinc-500 ml-1">: 1</span>
+                  </div>
+                  <div className="text-[11px] text-zinc-500 mt-1">
+                    {evaluation.thrustToWeightRatio >= 5
+                      ? "Freestyle & Racing"
+                      : evaluation.thrustToWeightRatio >= 3
+                        ? "Agile Sport"
+                        : "Cruiser"}
+                  </div>
                 </div>
               </div>
 
               {/* Metric 3: Hover Throttle */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                 <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                   <Zap size={14} />
                   <span>Hover Throttle</span>
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                  {evaluation.hoverThrottlePercent.toFixed(1)}
-                  <span className="text-sm font-normal text-zinc-500 ml-1">%</span>
-                </div>
-                {/* Progress bar */}
-                <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${
-                      evaluation.hoverThrottlePercent > 50
-                        ? "bg-red-500"
-                        : evaluation.hoverThrottlePercent > 35
-                          ? "bg-amber-500"
-                          : "bg-emerald-500"
-                    }`}
-                    style={{
-                      width: `${Math.min(100, evaluation.hoverThrottlePercent)}%`,
-                    }}
-                  />
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                    {evaluation.hoverThrottlePercent.toFixed(1)}
+                    <span className="text-sm font-normal text-zinc-500 ml-1">%</span>
+                  </div>
+                  {/* Progress bar */}
+                  <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-300 ${
+                        evaluation.hoverThrottlePercent > 50
+                          ? "bg-red-500"
+                          : evaluation.hoverThrottlePercent > 35
+                            ? "bg-amber-500"
+                            : "bg-emerald-500"
+                      }`}
+                      style={{
+                        width: `${Math.min(100, evaluation.hoverThrottlePercent)}%`,
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Metric 4: Estimated Flight Time */}
-              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                 <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                   <Clock size={14} />
                   <span>Est. Flight Time</span>
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
-                  ~{evaluation.estimatedFlightTimeMin.toFixed(1)}
-                  <span className="text-sm font-normal text-zinc-500 ml-1">min</span>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
+                    ~{evaluation.estimatedFlightTimeMin.toFixed(1)}
+                    <span className="text-sm font-normal text-zinc-500 ml-1">min</span>
+                  </div>
+                  <div className="text-[11px] text-zinc-500 mt-1">Hover & cruise profile</div>
                 </div>
-                <div className="text-[11px] text-zinc-500 mt-1">Hover & cruise profile</div>
               </div>
             </div>
 
