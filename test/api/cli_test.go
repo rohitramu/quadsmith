@@ -131,5 +131,8 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	if _, ok := eval["thrust_to_weight_ratio"]; !ok {
 		t.Errorf("Expected thrust_to_weight_ratio in evaluation response, got: %v", eval)
 	}
+	if _, ok := eval["hover_rpm"]; !ok {
+		t.Errorf("Expected hover_rpm in evaluation response, got: %v", eval)
+	}
 	t.Logf("CLI returned evaluation: %v", eval)
 }

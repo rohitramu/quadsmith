@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJRChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZBIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCIqQCChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFgoOdG90YWxfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEiEKGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW4YBCABKAISEAoId2FybmluZ3MYBSADKAkSDgoGZXJyb3JzGAYgAygJEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAhIdChVtYXhfYWNjZWxlcmF0aW9uX21wczIYCSABKAISFQoNdG9wX3NwZWVkX2ttaBgKIAEoAjJmChBFdmFsdWF0b3JTZXJ2aWNlElIKDUV2YWx1YXRlQnVpbGQSHy5xdWFkc21pdGguRXZhbHVhdGVCdWlsZFJlcXVlc3QaIC5xdWFkc21pdGguRXZhbHVhdGVCdWlsZFJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJRChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZBIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCIrcCChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFgoOdG90YWxfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEiEKGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW4YBCABKAISEAoId2FybmluZ3MYBSADKAkSDgoGZXJyb3JzGAYgAygJEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAhIdChVtYXhfYWNjZWxlcmF0aW9uX21wczIYCSABKAISFQoNdG9wX3NwZWVkX2ttaBgKIAEoAhIRCglob3Zlcl9ycG0YCyABKA0yZgoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file_build],
   );
 
@@ -109,6 +109,13 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
    * @generated from field: float top_speed_kmh = 10;
    */
   topSpeedKmh: number;
+
+  /**
+   * Average propeller RPM at hover under standard conditions (sea-level, no wind)
+   *
+   * @generated from field: uint32 hover_rpm = 11;
+   */
+  hoverRpm: number;
 };
 
 /**

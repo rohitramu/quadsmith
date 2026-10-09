@@ -468,6 +468,14 @@ export function BuildProfilePage() {
                       }}
                     />
                   </div>
+                  <div
+                    className="text-[11px] text-zinc-500 mt-1"
+                    title="Average propeller RPM at hover assuming sea-level air pressure (1.225 kg/m³), no wind, and horizontal stability"
+                  >
+                    {evaluation.hoverThrottlePercent <= 100 && evaluation.hoverRpm > 0
+                      ? `~${evaluation.hoverRpm.toLocaleString()} prop RPM`
+                      : "Cannot achieve hover"}
+                  </div>
                 </div>
               </div>
 

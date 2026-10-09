@@ -167,7 +167,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	totalWeight := baseWeight + payloadWeight
 
 	// Aerodynamic Physics Estimation
-	thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, maxAccelerationMps2, topSpeedKmh, physErrors, physWarnings := CalculatePhysics(
+	thrustToWeight, hoverThrottle, hoverRpm, flightTime, minFlightTime, maxFlightTime, maxAccelerationMps2, topSpeedKmh, physErrors, physWarnings := CalculatePhysics(
 		motor,
 		prop,
 		battery,
@@ -182,6 +182,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		TotalWeightG:           totalWeight,
 		ThrustToWeightRatio:    thrustToWeight,
 		HoverThrottlePercent:   hoverThrottle,
+		HoverRpm:               hoverRpm,
 		EstimatedFlightTimeMin: flightTime,
 		MinFlightTimeMin:       minFlightTime,
 		MaxFlightTimeMin:       maxFlightTime,
@@ -195,8 +196,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 }
 
 // CalculatePhysics computes aerodynamic static thrust, thrust-to-weight ratio,
-// hover throttle percentage, estimated flight time range (min, max, and mixed),
-// max vertical acceleration, and terminal top speed.
+// hover throttle percentage, hover propeller RPM, estimated flight time range
+// (min, max, and mixed), max vertical acceleration, and terminal top speed.
 func CalculatePhysics(
 	motor *pb.Motor,
 	prop *pb.Propeller,
@@ -207,6 +208,7 @@ func CalculatePhysics(
 ) (
 	thrustToWeight float32,
 	hoverThrottle float32,
+	hoverRpm uint32,
 	flightTime float32,
 	minFlightTime float32,
 	maxFlightTime float32,
@@ -217,7 +219,7 @@ func CalculatePhysics(
 ) {
 	if motor == nil || prop == nil || battery == nil {
 		warnings = append(warnings, "Need a Motor, Propeller, and Battery to run physics estimation")
-		return 0, 0, 0, 0, 0, 0, 0, errors, warnings
+		return 0, 0, 0, 0, 0, 0, 0, 0, errors, warnings
 	}
 
 	safeBase := float64(baseWeight)
@@ -324,6 +326,20 @@ func CalculatePhysics(
 		warnings = append(warnings, "Drone will be very sluggish (Hover throttle > 50%)")
 	}
 
+	// Average propeller RPM at hover:
+	// Assumes zero wind, perfect horizontal stability, sea-level air density (rho = 1.225 kg/m^3),
+	// and standard humidity. Since static thrust scales with RPM^2 (T = k * RPM^2), at steady hover
+	// where T_hover = TotalWeight:
+	// (RPM_hover / RPM_loaded)^2 = T_hover / T_total = 1 / TWR
+	// => RPM_hover = RPM_loaded / sqrt(TWR)
+	// (Equivalently: n_hover = sqrt(T_raw_hover_N / (Ct * rho * D^4)))
+	if thrustToWeight >= 1.0 && totalWeight > 0 {
+		rpm := float64(loadedRpm) / math.Sqrt(float64(thrustToWeight))
+		if rpm > 0 && !math.IsNaN(rpm) && !math.IsInf(rpm, 0) {
+			hoverRpm = uint32(math.Round(rpm))
+		}
+	}
+
 	// 8. Realistic flight time range across flight styles:
 	// Multirotor flight efficiency in forward flight / cruising:
 	// Larger props have higher efficiency due to lower disk loading (1.8 - 3.2 g/W).
@@ -386,5 +402,5 @@ func CalculatePhysics(
 		}
 	}
 
-	return thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, maxAccelerationMps2, topSpeedKmh, errors, warnings
+	return thrustToWeight, hoverThrottle, hoverRpm, flightTime, minFlightTime, maxFlightTime, maxAccelerationMps2, topSpeedKmh, errors, warnings
 }

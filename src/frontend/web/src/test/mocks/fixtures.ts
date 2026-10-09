@@ -293,6 +293,7 @@ export const mockEvaluation1: EvaluateBuildResponse = create(EvaluateBuildRespon
   maxFlightTimeMin: 7.2,
   maxAccelerationMps2: 53.4,
   topSpeedKmh: 172.5,
+  hoverRpm: 11463,
   warnings: [],
   errors: [],
 });

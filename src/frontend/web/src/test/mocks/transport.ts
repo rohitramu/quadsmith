@@ -211,11 +211,13 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const topSpeedKmh = parseFloat(
           (Math.sqrt(Math.max(0, fwdThrustN / denom)) * 3.6).toFixed(1),
         );
+        const hoverRpm = twr >= 1.0 ? Math.round(29000 / Math.sqrt(twr)) : 0;
 
         return {
           totalWeightG: totalWeight,
           thrustToWeightRatio: parseFloat(twr.toFixed(2)),
           hoverThrottlePercent: parseFloat(hover.toFixed(1)),
+          hoverRpm,
           estimatedFlightTimeMin: flightTime,
           minFlightTimeMin: minFlightTime,
           maxFlightTimeMin: maxFlightTime,

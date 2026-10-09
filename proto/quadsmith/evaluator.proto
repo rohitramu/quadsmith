@@ -36,6 +36,9 @@ message EvaluateBuildResponse {
 
   // Estimated terminal forward top speed in km/h (drag and pitch speed limited)
   float top_speed_kmh = 10;
+
+  // Average propeller RPM at hover under standard conditions (sea-level, no wind)
+  uint32 hover_rpm = 11;
 }
 
 service EvaluatorService {
