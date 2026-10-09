@@ -67,6 +67,7 @@ export interface HardwareCollectionDef {
   path?: string;
   aliases?: string[];
   name: string;
+  description?: string;
   schema: any;
   listQuery: any;
   getQuery: any;
@@ -154,6 +155,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "antennas",
     name: "Antennas",
+    description:
+      "Omnidirectional and directional antennas for 5.8GHz video feeds and 2.4GHz/915MHz control links.",
     schema: AntennaSchema,
     listQuery: listAntennas,
     getQuery: getAntenna,
@@ -324,6 +327,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "batteries",
     name: "Batteries",
+    description:
+      "LiPo and Li-ion battery packs with calibrated cell counts, capacities, and discharge ratings.",
     schema: BatterySchema,
     listQuery: listBatteries,
     getQuery: getBattery,
@@ -505,6 +510,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "cameras",
     name: "Cameras",
+    description:
+      "FPV and HD recording cameras across analog and digital systems with varying sensor sizes and lens FOVs.",
     schema: CameraSchema,
     listQuery: listCameras,
     getQuery: getCamera,
@@ -650,6 +657,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     id: "electronic-speed-controllers",
     aliases: ["electronic_speed_controllers", "escs"],
     name: "Electronic Speed Controllers",
+    description:
+      "4-in-1 and discrete ESC power systems delivering regulated current to brushless motors.",
     schema: ElectronicSpeedControllerSchema,
     listQuery: listElectronicSpeedControllers,
     getQuery: getElectronicSpeedController,
@@ -824,6 +833,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     id: "flight-controllers",
     aliases: ["flight_controllers", "fcs"],
     name: "Flight Controllers",
+    description:
+      "Central processing units and gyro flight computers powering autonomous stabilization and pilot commands.",
     schema: FlightControllerSchema,
     listQuery: listFlightControllers,
     getQuery: getFlightController,
@@ -964,6 +975,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "frames",
     name: "Frames",
+    description:
+      "Carbon fiber airframes, unibody plates, and modular arm geometries built for durability and flight dynamics.",
     schema: FrameSchema,
     listQuery: listFrames,
     getQuery: getFrame,
@@ -1099,6 +1112,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     id: "gps-receivers",
     aliases: ["gps_receivers", "gps"],
     name: "GPS Receivers",
+    description:
+      "Positioning modules and digital compasses for telemetry tracking, rescue modes, and return-to-home.",
     schema: GpsReceiverSchema,
     listQuery: listGpsReceivers,
     getQuery: getGpsReceiver,
@@ -1269,6 +1284,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "motors",
     name: "Motors",
+    description:
+      "Brushless motors rated by stator dimensions and KV for micro whoops, cinematic rigs, and freestyle quads.",
     schema: MotorSchema,
     listQuery: listMotors,
     getQuery: getMotor,
@@ -1432,6 +1449,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "propellers",
     name: "Propellers",
+    description:
+      "Twin, tri, and multi-blade props engineered for thrust efficiency, responsive pitch, and top speed.",
     schema: PropellerSchema,
     listQuery: listPropellers,
     getQuery: getPropeller,
@@ -1582,6 +1601,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "receivers",
     name: "Receivers",
+    description:
+      "Radio control receivers supporting ExpressLRS, TBS Crossfire, and 2.4GHz/900MHz communication protocols.",
     schema: ReceiverSchema,
     listQuery: listReceivers,
     getQuery: getReceiver,
@@ -1716,6 +1737,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     id: "video-transmitters",
     aliases: ["video_transmitters", "vtxs", "vtx"],
     name: "Video Transmitters",
+    description:
+      "Analog and HD digital VTX modules transmitting low-latency video feeds to pilot goggles.",
     schema: VideoTransmitterSchema,
     listQuery: listVideoTransmitters,
     getQuery: getVideoTransmitter,

@@ -27,7 +27,9 @@ describe("CategoryPage Component", () => {
       expect(heading).toBeInTheDocument();
       const cardLink = heading.closest("a");
       expect(cardLink).toHaveAttribute("href", `/components/hardware/${collection.id}`);
-      expect(screen.getByText(`Browse all ${collection.name.toLowerCase()}`)).toBeInTheDocument();
+      if (collection.description) {
+        expect(screen.getByText(collection.description)).toBeInTheDocument();
+      }
     }
   });
 

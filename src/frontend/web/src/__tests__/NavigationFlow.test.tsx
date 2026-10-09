@@ -19,7 +19,8 @@ describe("Full Application Navigation Flow", () => {
     expect(await screen.findByRole("heading", { level: 1, name: "hardware" })).toBeInTheDocument();
 
     // 4. Click "Motors" card to navigate to /components/hardware/motors
-    const motorsCard = screen.getByRole("link", { name: /browse all motors/i });
+    const motorsHeading = screen.getByRole("heading", { level: 2, name: "Motors" });
+    const motorsCard = motorsHeading.closest("a")!;
     await user.click(motorsCard);
 
     // 5. Verify on Collection Page (/components/hardware/motors)

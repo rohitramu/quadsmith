@@ -1,7 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
-import { CollectionBadge } from "../components/CollectionBadge";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
 export function CategoryPage() {
@@ -34,14 +33,13 @@ export function CategoryPage() {
               <div className={`absolute top-0 left-0 right-0 h-1.5 ${colColor.trimClass}`} />
 
               <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="mb-2">
                   <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors">
                     {c.name}
                   </h2>
-                  <CollectionBadge collection={c.id} size="xs" />
                 </div>
-                <p className="text-zinc-500 dark:text-zinc-400 text-sm">
-                  Browse all {c.name.toLowerCase()}
+                <p className="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
+                  {c.description || `Browse all ${c.name.toLowerCase()}`}
                 </p>
               </div>
             </Link>
