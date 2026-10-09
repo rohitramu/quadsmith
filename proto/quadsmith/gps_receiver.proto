@@ -13,10 +13,6 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message GpsReceiver {
-  option (quadsmith.name) = {
-    singular: "GPS Receiver"
-    plural: "GPS Receivers"
-  };
   option (quadsmith.sql.table) = {name: "gps_receivers"};
   option (quadsmith.collection_path) = "components/hardware/gps-receivers";
   option (quadsmith.frontend) = {

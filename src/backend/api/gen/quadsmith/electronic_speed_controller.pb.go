@@ -381,7 +381,7 @@ var File_electronic_speed_controller_proto protoreflect.FileDescriptor
 const file_electronic_speed_controller_proto_rawDesc = "" +
 	"\n" +
 	"!electronic_speed_controller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xee\x06\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xaf\x06\n" +
 	"\x19ElectronicSpeedController\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -402,14 +402,13 @@ const file_electronic_speed_controller_proto_rawDesc = "" +
 	"\vmin_voltage\x18\x0f \x01(\x02R\n" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x10 \x01(\x02R\n" +
-	"maxVoltage:\xd8\x01\x8a\xb5\x18?\n" +
+	"maxVoltage:\x99\x01\x8a\xb5\x18?\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\x13motor_current_max_a\n" +
 	"\n" +
 	"max_motors\n" +
-	"\bfirmware\x92\xb5\x18;\n" +
-	"\x1bElectronic Speed Controller\x12\x1cElectronic Speed Controllers\x9a\xb5\x180components/hardware/electronic-speed-controllers\xc2\xf3\x18\x1e\n" +
+	"\bfirmware\x9a\xb5\x180components/hardware/electronic-speed-controllers\xc2\xf3\x18\x1e\n" +
 	"\x1celectronic_speed_controllersB\x18\n" +
 	"\x16_primary_display_image\"O\n" +
 	"#GetElectronicSpeedControllerRequest\x12\x0e\n" +

@@ -13,10 +13,6 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message Motor {
-  option (quadsmith.name) = {
-    singular: "Motor"
-    plural: "Motors"
-  };
   // This tells the Go generator to create a 'motors' table for this message
   option (quadsmith.sql.table) = {name: "motors"};
   option (quadsmith.collection_path) = "components/hardware/motors";

@@ -22,60 +22,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type NameOptions struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Title case with spaces (e.g., "Video Transmitter")
-	Singular string `protobuf:"bytes,1,opt,name=singular,proto3" json:"singular,omitempty"`
-	// Title case with spaces (e.g., "Video Transmitters")
-	Plural        string `protobuf:"bytes,2,opt,name=plural,proto3" json:"plural,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *NameOptions) Reset() {
-	*x = NameOptions{}
-	mi := &file___common_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *NameOptions) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*NameOptions) ProtoMessage() {}
-
-func (x *NameOptions) ProtoReflect() protoreflect.Message {
-	mi := &file___common_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use NameOptions.ProtoReflect.Descriptor instead.
-func (*NameOptions) Descriptor() ([]byte, []int) {
-	return file___common_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *NameOptions) GetSingular() string {
-	if x != nil {
-		return x.Singular
-	}
-	return ""
-}
-
-func (x *NameOptions) GetPlural() string {
-	if x != nil {
-		return x.Plural
-	}
-	return ""
-}
-
 type FrontendOptions struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The default columns to display in CLI tables and UI collection listings.
@@ -86,7 +32,7 @@ type FrontendOptions struct {
 
 func (x *FrontendOptions) Reset() {
 	*x = FrontendOptions{}
-	mi := &file___common_proto_msgTypes[1]
+	mi := &file___common_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -98,7 +44,7 @@ func (x *FrontendOptions) String() string {
 func (*FrontendOptions) ProtoMessage() {}
 
 func (x *FrontendOptions) ProtoReflect() protoreflect.Message {
-	mi := &file___common_proto_msgTypes[1]
+	mi := &file___common_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -111,7 +57,7 @@ func (x *FrontendOptions) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FrontendOptions.ProtoReflect.Descriptor instead.
 func (*FrontendOptions) Descriptor() ([]byte, []int) {
-	return file___common_proto_rawDescGZIP(), []int{1}
+	return file___common_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *FrontendOptions) GetDefaultColumns() []string {
@@ -132,14 +78,6 @@ var file___common_proto_extTypes = []protoimpl.ExtensionInfo{
 	},
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
-		ExtensionType: (*NameOptions)(nil),
-		Field:         50002,
-		Name:          "quadsmith.name",
-		Tag:           "bytes,50002,opt,name=name",
-		Filename:      "_common.proto",
-	},
-	{
-		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
 		ExtensionType: (*string)(nil),
 		Field:         50003,
 		Name:          "quadsmith.collection_path",
@@ -154,28 +92,20 @@ var (
 	//
 	// optional quadsmith.FrontendOptions frontend = 50001;
 	E_Frontend = &file___common_proto_extTypes[0]
-	// Human-readable entity names for UI, CLI, and code generators.
-	//
-	// optional quadsmith.NameOptions name = 50002;
-	E_Name = &file___common_proto_extTypes[1]
 	// Direct collection path option (e.g., "components/hardware/motors" or "builds").
 	//
 	// optional string collection_path = 50003;
-	E_CollectionPath = &file___common_proto_extTypes[2]
+	E_CollectionPath = &file___common_proto_extTypes[1]
 )
 
 var File___common_proto protoreflect.FileDescriptor
 
 const file___common_proto_rawDesc = "" +
 	"\n" +
-	"\r_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"A\n" +
-	"\vNameOptions\x12\x1a\n" +
-	"\bsingular\x18\x01 \x01(\tR\bsingular\x12\x16\n" +
-	"\x06plural\x18\x02 \x01(\tR\x06plural\"F\n" +
+	"\r_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"F\n" +
 	"\x0fFrontendOptions\x12'\n" +
 	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumnsJ\x04\b\x02\x10\x03R\x04path:Y\n" +
-	"\bfrontend\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2\x1a.quadsmith.FrontendOptionsR\bfrontend:M\n" +
-	"\x04name\x12\x1f.google.protobuf.MessageOptions\x18҆\x03 \x01(\v2\x16.quadsmith.NameOptionsR\x04name:J\n" +
+	"\bfrontend\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2\x1a.quadsmith.FrontendOptionsR\bfrontend:J\n" +
 	"\x0fcollection_path\x12\x1f.google.protobuf.MessageOptions\x18ӆ\x03 \x01(\tR\x0ecollectionPathB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
@@ -190,22 +120,19 @@ func file___common_proto_rawDescGZIP() []byte {
 	return file___common_proto_rawDescData
 }
 
-var file___common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file___common_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file___common_proto_goTypes = []any{
-	(*NameOptions)(nil),                 // 0: quadsmith.NameOptions
-	(*FrontendOptions)(nil),             // 1: quadsmith.FrontendOptions
-	(*descriptorpb.MessageOptions)(nil), // 2: google.protobuf.MessageOptions
+	(*FrontendOptions)(nil),             // 0: quadsmith.FrontendOptions
+	(*descriptorpb.MessageOptions)(nil), // 1: google.protobuf.MessageOptions
 }
 var file___common_proto_depIdxs = []int32{
-	2, // 0: quadsmith.frontend:extendee -> google.protobuf.MessageOptions
-	2, // 1: quadsmith.name:extendee -> google.protobuf.MessageOptions
-	2, // 2: quadsmith.collection_path:extendee -> google.protobuf.MessageOptions
-	1, // 3: quadsmith.frontend:type_name -> quadsmith.FrontendOptions
-	0, // 4: quadsmith.name:type_name -> quadsmith.NameOptions
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	3, // [3:5] is the sub-list for extension type_name
-	0, // [0:3] is the sub-list for extension extendee
+	1, // 0: quadsmith.frontend:extendee -> google.protobuf.MessageOptions
+	1, // 1: quadsmith.collection_path:extendee -> google.protobuf.MessageOptions
+	0, // 2: quadsmith.frontend:type_name -> quadsmith.FrontendOptions
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	2, // [2:3] is the sub-list for extension type_name
+	0, // [0:2] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -220,8 +147,8 @@ func file___common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file___common_proto_rawDesc), len(file___common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
-			NumExtensions: 3,
+			NumMessages:   1,
+			NumExtensions: 2,
 			NumServices:   0,
 		},
 		GoTypes:           file___common_proto_goTypes,

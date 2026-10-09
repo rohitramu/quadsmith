@@ -13,70 +13,56 @@ import (
 	pb "quadsmith/api/gen/quadsmith"
 )
 
-type DomainName struct {
-	Singular string
-	Plural   string
-	Aliases  []string
+type Domain struct {
+	Message proto.Message
+	Aliases []string
 }
 
-func (d DomainName) ProtoMessage() proto.Message {
-	switch d.Singular {
-	case "Antenna":
-		return &pb.Antenna{}
-	case "Battery":
-		return &pb.Battery{}
-	case "Build":
-		return &pb.Build{}
-	case "Camera":
-		return &pb.Camera{}
-	case "Electronic Speed Controller":
-		return &pb.ElectronicSpeedController{}
-	case "Flight Controller":
-		return &pb.FlightController{}
-	case "Frame":
-		return &pb.Frame{}
-	case "GPS Receiver":
-		return &pb.GpsReceiver{}
-	case "Motor":
-		return &pb.Motor{}
-	case "Propeller":
-		return &pb.Propeller{}
-	case "Receiver":
-		return &pb.Receiver{}
-	case "Video Transmitter":
-		return &pb.VideoTransmitter{}
-	default:
-		return nil
+func (d Domain) MessageName() string {
+	return string(d.Message.ProtoReflect().Descriptor().Name())
+}
+
+func (d Domain) PluralName() string {
+	name := d.MessageName()
+	if strings.HasSuffix(name, "y") {
+		return strings.TrimSuffix(name, "y") + "ies"
 	}
+	return name + "s"
 }
 
-func (d DomainName) Path() string {
-	m := d.ProtoMessage()
-	if m != nil {
-		opts := m.ProtoReflect().Descriptor().Options()
-		if proto.HasExtension(opts, pb.E_CollectionPath) {
-			if p, ok := proto.GetExtension(opts, pb.E_CollectionPath).(string); ok && p != "" {
-				return strings.Trim(p, "/")
-			}
+func (d Domain) Path() string {
+	opts := d.Message.ProtoReflect().Descriptor().Options()
+	if proto.HasExtension(opts, pb.E_CollectionPath) {
+		if p, ok := proto.GetExtension(opts, pb.E_CollectionPath).(string); ok && p != "" {
+			return strings.Trim(p, "/")
 		}
 	}
-	return d.CLI()
+	return strings.ToLower(d.PluralName())
 }
 
-func toSnakeCase(s string) string {
-	words := strings.Fields(s)
-	for i, w := range words {
-		words[i] = strings.ToLower(w)
-	}
-	return strings.Join(words, "_")
+func (d Domain) CLI() string {
+	parts := strings.Split(d.Path(), "/")
+	return parts[len(parts)-1]
 }
 
-func toKebabCase(s string) string {
-	words := strings.Fields(s)
-	for i, w := range words {
-		words[i] = strings.ToLower(w)
-	}
-	return strings.Join(words, "-")
+func (d Domain) ClientVar() string {
+	name := d.MessageName()
+	return strings.ToLower(name[:1]) + name[1:] + "Client"
+}
+
+func (d Domain) CmdVar() string {
+	name := d.MessageName()
+	return strings.ToLower(name[:1]) + name[1:] + "Cmd"
+}
+
+func (d Domain) ListCmdVar() string {
+	name := d.MessageName()
+	return strings.ToLower(name[:1]) + name[1:] + "ListCmd"
+}
+
+func (d Domain) GetCmdVar() string {
+	name := d.MessageName()
+	return strings.ToLower(name[:1]) + name[1:] + "GetCmd"
 }
 
 func toCamelCase(s string) string {
@@ -94,101 +80,54 @@ func toCamelCase(s string) string {
 	return sb.String()
 }
 
-func toPascalCase(s string) string {
-	words := strings.Fields(s)
-	var sb strings.Builder
-	for _, w := range words {
-		if len(w) > 0 {
-			sb.WriteString(strings.ToUpper(w[:1]) + strings.ToLower(w[1:]))
-		}
-	}
-	return sb.String()
-}
-
-func (d DomainName) SQL() string {
-	return toSnakeCase(d.Plural)
-}
-
-func (d DomainName) CLI() string {
-	return toKebabCase(d.Plural)
-}
-
-func (d DomainName) API() string {
-	return toKebabCase(d.Plural)
-}
-
-func (d DomainName) Go() string {
-	return toCamelCase(d.Singular)
-}
-
-func (d DomainName) TypeScript() string {
-	return toPascalCase(d.Singular)
-}
-
-func (d DomainName) TypeScriptPlural() string {
-	return toPascalCase(d.Plural)
-}
-
-var domains = []DomainName{
+var domains = []Domain{
 	{
-		Singular: "Antenna",
-		Plural:   "Antennas",
-		Aliases:  []string{"antenna"},
+		Message: &pb.Antenna{},
+		Aliases: []string{"antenna"},
 	},
 	{
-		Singular: "Battery",
-		Plural:   "Batteries",
-		Aliases:  []string{"battery"},
+		Message: &pb.Battery{},
+		Aliases: []string{"battery"},
 	},
 	{
-		Singular: "Build",
-		Plural:   "Builds",
-		Aliases:  []string{"build"},
+		Message: &pb.Build{},
+		Aliases: []string{"build"},
 	},
 	{
-		Singular: "Camera",
-		Plural:   "Cameras",
-		Aliases:  []string{"camera"},
+		Message: &pb.Camera{},
+		Aliases: []string{"camera"},
 	},
 	{
-		Singular: "Electronic Speed Controller",
-		Plural:   "Electronic Speed Controllers",
-		Aliases:  []string{"escs", "esc", "electronic-speed-controller"},
+		Message: &pb.ElectronicSpeedController{},
+		Aliases: []string{"escs", "esc", "electronic-speed-controller"},
 	},
 	{
-		Singular: "Flight Controller",
-		Plural:   "Flight Controllers",
-		Aliases:  []string{"flightcontrollers", "fc", "fcs", "flight-controller"},
+		Message: &pb.FlightController{},
+		Aliases: []string{"flightcontrollers", "fc", "fcs", "flight-controller"},
 	},
 	{
-		Singular: "Frame",
-		Plural:   "Frames",
-		Aliases:  []string{"frame"},
+		Message: &pb.Frame{},
+		Aliases: []string{"frame"},
 	},
 	{
-		Singular: "GPS Receiver",
-		Plural:   "GPS Receivers",
-		Aliases:  []string{"gpsreceivers", "gps", "gps-receiver"},
+		Message: &pb.GpsReceiver{},
+		Aliases: []string{"gpsreceivers", "gps", "gps-receiver"},
 	},
 	{
-		Singular: "Motor",
-		Plural:   "Motors",
-		Aliases:  []string{"motor"},
+		Message: &pb.Motor{},
+		Aliases: []string{"motor"},
 	},
 	{
-		Singular: "Propeller",
-		Plural:   "Propellers",
-		Aliases:  []string{"propeller", "props", "prop"},
+		Message: &pb.Propeller{},
+		Aliases: []string{"propeller", "props", "prop"},
 	},
 	{
-		Singular: "Receiver",
-		Plural:   "Receivers",
-		Aliases:  []string{"rx", "rxs", "receiver"},
+		Message: &pb.Receiver{},
+		Aliases: []string{"rx", "rxs", "receiver"},
 	},
 	{
-		Singular: "Video Transmitter",
-		Plural:   "Video Transmitters",
-		Aliases:  []string{"videotransmitters", "vtx", "vtxs", "video-transmitter"},
+		Message: &pb.VideoTransmitter{},
+		Aliases: []string{"videotransmitters", "vtx", "vtxs", "video-transmitter"},
 	},
 }
 
@@ -282,13 +221,13 @@ func newRootCmd() *cobra.Command {
 	}
 
 	for _, d := range domains {
-		clientVar := d.Go() + "Client"
-		cmdVar := d.Go() + "Cmd"
-		listCmdVar := d.Go() + "ListCmd"
-		getCmdVar := d.Go() + "GetCmd"
-		tsName := d.TypeScript()
-		tsPlural := d.TypeScriptPlural()
-		legacyAlias := strings.ToLower(tsPlural)
+		clientVar := d.ClientVar()
+		cmdVar := d.CmdVar()
+		listCmdVar := d.ListCmdVar()
+		getCmdVar := d.GetCmdVar()
+		msgName := d.MessageName()
+		pluralName := d.PluralName()
+		legacyAlias := strings.ToLower(pluralName)
 		aliasMap := make(map[string]bool)
 		var aliasList []string
 		if d.CLI() != legacyAlias {
@@ -306,8 +245,8 @@ func newRootCmd() *cobra.Command {
 		prefix := strings.Join(parts[:len(parts)-1], "/")
 		parentVar := createdCmds[prefix]
 
-		fmt.Fprintf(f, "\n\t// --- %s ---\n", d.Plural)
-		fmt.Fprintf(f, "\t%s := quadsmithconnect.New%sServiceClient(http.DefaultClient, targetURL)\n", clientVar, tsName)
+		fmt.Fprintf(f, "\n\t// --- %s ---\n", pluralName)
+		fmt.Fprintf(f, "\t%s := quadsmithconnect.New%sServiceClient(http.DefaultClient, targetURL)\n", clientVar, msgName)
 		if len(aliasList) > 0 {
 			quoted := make([]string, len(aliasList))
 			for i, a := range aliasList {
@@ -329,7 +268,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\t\tcmd.SilenceUsage = false\n")
 		fmt.Fprintf(f, "\t\t\t\treturn fmt.Errorf(\"limit cannot be negative\")\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\tvar all []*pb.%s\n", tsName)
+		fmt.Fprintf(f, "\t\t\tvar all []*pb.%s\n", msgName)
 		fmt.Fprintf(f, "\t\t\tvar currentToken string\n")
 		fmt.Fprintf(f, "\t\t\tfor {\n")
 		fmt.Fprintf(f, "\t\t\t\tpageSize := int32(100)\n")
@@ -342,10 +281,10 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\t\t\t\tpageSize = remaining\n")
 		fmt.Fprintf(f, "\t\t\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\t\t}\n")
-		fmt.Fprintf(f, "\t\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}\n", tsPlural)
-		fmt.Fprintf(f, "\t\t\t\tres, err := %s.List%s(context.Background(), connect.NewRequest(req))\n", clientVar, tsPlural)
+		fmt.Fprintf(f, "\t\t\t\treq := &pb.List%sRequest{Filter: filter, Columns: columns, Sort: sortOpts, PageSize: pageSize, PageToken: currentToken}\n", pluralName)
+		fmt.Fprintf(f, "\t\t\t\tres, err := %s.List%s(context.Background(), connect.NewRequest(req))\n", clientVar, pluralName)
 		fmt.Fprintf(f, "\t\t\t\tif err != nil { return err }\n")
-		fmt.Fprintf(f, "\t\t\t\tall = append(all, res.Msg.%s...)\n", tsPlural)
+		fmt.Fprintf(f, "\t\t\t\tall = append(all, res.Msg.%s...)\n", pluralName)
 		fmt.Fprintf(f, "\t\t\t\tif limit > 0 && int32(len(all)) >= limit {\n")
 		fmt.Fprintf(f, "\t\t\t\t\tall = all[:limit]\n")
 		fmt.Fprintf(f, "\t\t\t\t\tbreak\n")
@@ -356,7 +295,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t\t\tcurrentToken = res.Msg.NextPageToken\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\tif len(columns) == 0 {\n")
-		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", tsName)
+		fmt.Fprintf(f, "\t\t\t\tcolumns = GetDefaultColumns(&pb.%s{})\n", msgName)
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\tyamlOut, _ = cmd.Flags().GetBool(\"yaml\")\n")
 		fmt.Fprintf(f, "\t\t\terr := printOutput(cmd.OutOrStdout(), all, columns)\n")
@@ -368,7 +307,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t%s.Flags().StringP(\"filter\", \"f\", \"\", \"CEL filter string\")\n", listCmdVar)
 		fmt.Fprintf(f, "\t%s.Flags().Int32P(\"limit\", \"l\", 0, \"Maximum number of items to return\")\n", listCmdVar)
 		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"filter\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", listCmdVar)
-		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", tsName)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", msgName)
 		fmt.Fprintf(f, "\t\tre := regexp.MustCompile(`([a-zA-Z_]+)$`)\n")
 		fmt.Fprintf(f, "\t\tmatch := re.FindStringSubmatch(toComplete)\n")
 		fmt.Fprintf(f, "\t\tprefix := \"\"\n")
@@ -388,7 +327,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t%s.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", listCmdVar)
 		fmt.Fprintf(f, "\t%s.Flags().StringSliceP(\"sort\", \"s\", nil, \"Columns to sort by (e.g. ^kv)\")\n", listCmdVar)
 		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", listCmdVar)
-		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", tsName)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", msgName)
 		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
 		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[s] = true }\n")
@@ -402,7 +341,7 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t})\n")
 
 		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"sort\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", listCmdVar)
-		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", tsName)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", msgName)
 		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"sort\")\n")
 		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
 		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[strings.TrimPrefix(s, \"^\")] = true }\n")
@@ -428,25 +367,25 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\tArgs: cobra.ExactArgs(1),\n")
 		fmt.Fprintf(f, "\t\tValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n")
 		fmt.Fprintf(f, "\t\t\tif len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }\n")
-		fmt.Fprintf(f, "\t\t\tres, err := %s.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{PageSize: 100}))\n", clientVar, tsPlural, tsPlural)
+		fmt.Fprintf(f, "\t\t\tres, err := %s.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{PageSize: 100}))\n", clientVar, pluralName, pluralName)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return nil, cobra.ShellCompDirectiveError }\n")
 		fmt.Fprintf(f, "\t\t\tvar comps []string\n")
-		fmt.Fprintf(f, "\t\t\tfor _, item := range res.Msg.%s {\n", tsPlural)
+		fmt.Fprintf(f, "\t\t\tfor _, item := range res.Msg.%s {\n", pluralName)
 		fmt.Fprintf(f, "\t\t\t\tcomps = append(comps, item.Id)\n")
 		fmt.Fprintf(f, "\t\t\t}\n")
 		fmt.Fprintf(f, "\t\t\treturn comps, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
 		fmt.Fprintf(f, "\t\t\tcolumns, _ := cmd.Flags().GetStringSlice(\"column\")\n")
-		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0], Columns: columns}\n", tsName)
-		fmt.Fprintf(f, "\t\t\tres, err := %s.Get%s(context.Background(), connect.NewRequest(req))\n", clientVar, tsName)
+		fmt.Fprintf(f, "\t\t\treq := &pb.Get%sRequest{Id: args[0], Columns: columns}\n", msgName)
+		fmt.Fprintf(f, "\t\t\tres, err := %s.Get%s(context.Background(), connect.NewRequest(req))\n", clientVar, msgName)
 		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
 		fmt.Fprintf(f, "\t\t\treturn printGetOutput(cmd.OutOrStdout(), res.Msg, columns)\n")
 		fmt.Fprintf(f, "\t\t},\n")
 		fmt.Fprintf(f, "\t}\n")
 		fmt.Fprintf(f, "\t%s.Flags().StringSliceP(\"column\", \"c\", nil, \"Columns to select\")\n", getCmdVar)
 		fmt.Fprintf(f, "\t%s.RegisterFlagCompletionFunc(\"column\", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n", getCmdVar)
-		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", tsName)
+		fmt.Fprintf(f, "\t\tcols := GetColumns(&pb.%s{})\n", msgName)
 		fmt.Fprintf(f, "\t\tselected, _ := cmd.Flags().GetStringSlice(\"column\")\n")
 		fmt.Fprintf(f, "\t\tselectedMap := make(map[string]bool)\n")
 		fmt.Fprintf(f, "\t\tfor _, s := range selected { selectedMap[s] = true }\n")

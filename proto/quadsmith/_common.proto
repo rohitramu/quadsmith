@@ -7,18 +7,6 @@ import "google/protobuf/descriptor.proto";
 option go_package = "quadsmith/api/gen/quadsmith";
 
 // ---------------------------------------------------------
-// Entity Naming Options
-// ---------------------------------------------------------
-
-message NameOptions {
-  // Title case with spaces (e.g., "Video Transmitter")
-  string singular = 1;
-
-  // Title case with spaces (e.g., "Video Transmitters")
-  string plural = 2;
-}
-
-// ---------------------------------------------------------
 // Frontend Options
 // ---------------------------------------------------------
 
@@ -37,9 +25,6 @@ message FrontendOptions {
 extend google.protobuf.MessageOptions {
   // Frontend configuration for UI and CLI listings.
   FrontendOptions frontend = 50001;
-
-  // Human-readable entity names for UI, CLI, and code generators.
-  NameOptions name = 50002;
 
   // Direct collection path option (e.g., "components/hardware/motors" or "builds").
   string collection_path = 50003;

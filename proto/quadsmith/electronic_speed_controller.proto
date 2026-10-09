@@ -13,10 +13,6 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message ElectronicSpeedController {
-  option (quadsmith.name) = {
-    singular: "Electronic Speed Controller"
-    plural: "Electronic Speed Controllers"
-  };
   option (quadsmith.sql.table) = {name: "electronic_speed_controllers"};
   option (quadsmith.collection_path) = "components/hardware/electronic-speed-controllers";
   option (quadsmith.frontend) = {

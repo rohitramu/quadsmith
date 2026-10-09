@@ -66,7 +66,6 @@ export interface HardwareCollectionDef {
   path?: string;
   aliases?: string[];
   name: string;
-  singular: string;
   schema: any;
   listQuery: any;
   getQuery: any;
@@ -153,7 +152,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "antennas",
     name: "Antennas",
-    singular: "Antenna",
     schema: AntennaSchema,
     listQuery: listAntennas,
     getQuery: getAntenna,
@@ -324,7 +322,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "batteries",
     name: "Batteries",
-    singular: "Battery",
     schema: BatterySchema,
     listQuery: listBatteries,
     getQuery: getBattery,
@@ -506,7 +503,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "cameras",
     name: "Cameras",
-    singular: "Camera",
     schema: CameraSchema,
     listQuery: listCameras,
     getQuery: getCamera,
@@ -652,7 +648,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     id: "electronic-speed-controllers",
     aliases: ["electronic_speed_controllers", "escs"],
     name: "Electronic Speed Controllers",
-    singular: "Electronic Speed Controller",
     schema: ElectronicSpeedControllerSchema,
     listQuery: listElectronicSpeedControllers,
     getQuery: getElectronicSpeedController,
@@ -827,7 +822,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     id: "flight-controllers",
     aliases: ["flight_controllers", "fcs"],
     name: "Flight Controllers",
-    singular: "Flight Controller",
     schema: FlightControllerSchema,
     listQuery: listFlightControllers,
     getQuery: getFlightController,
@@ -968,7 +962,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "frames",
     name: "Frames",
-    singular: "Frame",
     schema: FrameSchema,
     listQuery: listFrames,
     getQuery: getFrame,
@@ -1104,7 +1097,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     id: "gps-receivers",
     aliases: ["gps_receivers", "gps"],
     name: "GPS Receivers",
-    singular: "GPS Receiver",
     schema: GpsReceiverSchema,
     listQuery: listGpsReceivers,
     getQuery: getGpsReceiver,
@@ -1275,7 +1267,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "motors",
     name: "Motors",
-    singular: "Motor",
     schema: MotorSchema,
     listQuery: listMotors,
     getQuery: getMotor,
@@ -1439,7 +1430,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "propellers",
     name: "Propellers",
-    singular: "Propeller",
     schema: PropellerSchema,
     listQuery: listPropellers,
     getQuery: getPropeller,
@@ -1590,7 +1580,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   {
     id: "receivers",
     name: "Receivers",
-    singular: "Receiver",
     schema: ReceiverSchema,
     listQuery: listReceivers,
     getQuery: getReceiver,
@@ -1725,7 +1714,6 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     id: "video-transmitters",
     aliases: ["video_transmitters", "vtxs", "vtx"],
     name: "Video Transmitters",
-    singular: "Video Transmitter",
     schema: VideoTransmitterSchema,
     listQuery: listVideoTransmitters,
     getQuery: getVideoTransmitter,
@@ -1909,7 +1897,9 @@ export function getHardwareCollection(collectionId?: string): HardwareCollection
     (c) =>
       c.id === normalized ||
       c.id === kebab ||
-      c.singular.toLowerCase() === normalized ||
+      c.id === normalized + "s" ||
+      c.id === kebab + "s" ||
+      c.schema?.name?.toLowerCase() === normalized ||
       getCollectionPath(c) === normalized ||
       getCollectionPath(c).endsWith("/" + normalized) ||
       c.aliases?.includes(normalized) ||

@@ -14,36 +14,9 @@ import type { Message } from "@bufbuild/protobuf";
 export const file__common: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg1fY29tbW9uLnByb3RvEglxdWFkc21pdGgiLwoLTmFtZU9wdGlvbnMSEAoIc2luZ3VsYXIYASABKAkSDgoGcGx1cmFsGAIgASgJIjYKD0Zyb250ZW5kT3B0aW9ucxIXCg9kZWZhdWx0X2NvbHVtbnMYASADKAlKBAgCEANSBHBhdGg6WQoIZnJvbnRlbmQSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0YYDIAEoCzIaLnF1YWRzbWl0aC5Gcm9udGVuZE9wdGlvbnNSCGZyb250ZW5kOk0KBG5hbWUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0oYDIAEoCzIWLnF1YWRzbWl0aC5OYW1lT3B0aW9uc1IEbmFtZTpKCg9jb2xsZWN0aW9uX3BhdGgSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY04YDIAEoCVIOY29sbGVjdGlvblBhdGhCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "Cg1fY29tbW9uLnByb3RvEglxdWFkc21pdGgiNgoPRnJvbnRlbmRPcHRpb25zEhcKD2RlZmF1bHRfY29sdW1ucxgBIAMoCUoECAIQA1IEcGF0aDpZCghmcm9udGVuZBIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgASgLMhoucXVhZHNtaXRoLkZyb250ZW5kT3B0aW9uc1IIZnJvbnRlbmQ6SgoPY29sbGVjdGlvbl9wYXRoEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGNOGAyABKAlSDmNvbGxlY3Rpb25QYXRoQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
     [file_google_protobuf_descriptor],
   );
-
-/**
- * @generated from message quadsmith.NameOptions
- */
-export type NameOptions = Message<"quadsmith.NameOptions"> & {
-  /**
-   * Title case with spaces (e.g., "Video Transmitter")
-   *
-   * @generated from field: string singular = 1;
-   */
-  singular: string;
-
-  /**
-   * Title case with spaces (e.g., "Video Transmitters")
-   *
-   * @generated from field: string plural = 2;
-   */
-  plural: string;
-};
-
-/**
- * Describes the message quadsmith.NameOptions.
- * Use `create(NameOptionsSchema)` to create a new message.
- */
-export const NameOptionsSchema: GenMessage<NameOptions> =
-  /*@__PURE__*/
-  messageDesc(file__common, 0);
 
 /**
  * @generated from message quadsmith.FrontendOptions
@@ -63,7 +36,7 @@ export type FrontendOptions = Message<"quadsmith.FrontendOptions"> & {
  */
 export const FrontendOptionsSchema: GenMessage<FrontendOptions> =
   /*@__PURE__*/
-  messageDesc(file__common, 1);
+  messageDesc(file__common, 0);
 
 /**
  * Frontend configuration for UI and CLI listings.
@@ -75,19 +48,10 @@ export const frontend: GenExtension<MessageOptions, FrontendOptions> =
   extDesc(file__common, 0);
 
 /**
- * Human-readable entity names for UI, CLI, and code generators.
- *
- * @generated from extension: quadsmith.NameOptions name = 50002;
- */
-export const name: GenExtension<MessageOptions, NameOptions> =
-  /*@__PURE__*/
-  extDesc(file__common, 1);
-
-/**
  * Direct collection path option (e.g., "components/hardware/motors" or "builds").
  *
  * @generated from extension: string collection_path = 50003;
  */
 export const collection_path: GenExtension<MessageOptions, string> =
   /*@__PURE__*/
-  extDesc(file__common, 2);
+  extDesc(file__common, 1);

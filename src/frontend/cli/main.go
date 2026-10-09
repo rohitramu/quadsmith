@@ -709,7 +709,7 @@ func newRootCmd() *cobra.Command {
 	cameraCmd.AddCommand(cameraGetCmd)
 	componentsHardwareCmd.AddCommand(cameraCmd)
 
-	// --- Electronic Speed Controllers ---
+	// --- ElectronicSpeedControllers ---
 	electronicSpeedControllerClient := quadsmithconnect.NewElectronicSpeedControllerServiceClient(http.DefaultClient, targetURL)
 	electronicSpeedControllerCmd := &cobra.Command{Use: "electronic-speed-controllers", Aliases: []string{"electronicspeedcontrollers", "escs", "esc", "electronic-speed-controller"}}
 	electronicSpeedControllerListCmd := &cobra.Command{
@@ -870,7 +870,7 @@ func newRootCmd() *cobra.Command {
 	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerGetCmd)
 	componentsHardwareCmd.AddCommand(electronicSpeedControllerCmd)
 
-	// --- Flight Controllers ---
+	// --- FlightControllers ---
 	flightControllerClient := quadsmithconnect.NewFlightControllerServiceClient(http.DefaultClient, targetURL)
 	flightControllerCmd := &cobra.Command{Use: "flight-controllers", Aliases: []string{"flightcontrollers", "fc", "fcs", "flight-controller"}}
 	flightControllerListCmd := &cobra.Command{
@@ -1192,7 +1192,7 @@ func newRootCmd() *cobra.Command {
 	frameCmd.AddCommand(frameGetCmd)
 	componentsHardwareCmd.AddCommand(frameCmd)
 
-	// --- GPS Receivers ---
+	// --- GpsReceivers ---
 	gpsReceiverClient := quadsmithconnect.NewGpsReceiverServiceClient(http.DefaultClient, targetURL)
 	gpsReceiverCmd := &cobra.Command{Use: "gps-receivers", Aliases: []string{"gpsreceivers", "gps", "gps-receiver"}}
 	gpsReceiverListCmd := &cobra.Command{
@@ -1836,7 +1836,7 @@ func newRootCmd() *cobra.Command {
 	receiverCmd.AddCommand(receiverGetCmd)
 	componentsHardwareCmd.AddCommand(receiverCmd)
 
-	// --- Video Transmitters ---
+	// --- VideoTransmitters ---
 	videoTransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(http.DefaultClient, targetURL)
 	videoTransmitterCmd := &cobra.Command{Use: "video-transmitters", Aliases: []string{"videotransmitters", "vtx", "vtxs", "video-transmitter"}}
 	videoTransmitterListCmd := &cobra.Command{

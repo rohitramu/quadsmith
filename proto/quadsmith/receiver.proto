@@ -13,10 +13,6 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message Receiver {
-  option (quadsmith.name) = {
-    singular: "Receiver"
-    plural: "Receivers"
-  };
   option (quadsmith.sql.table) = {name: "receivers"};
   option (quadsmith.collection_path) = "components/hardware/receivers";
   option (quadsmith.frontend) = {

@@ -13,10 +13,6 @@ option go_package = "quadsmith/api/gen/quadsmith";
 // Domain Model
 // ---------------------------------------------------------
 message VideoTransmitter {
-  option (quadsmith.name) = {
-    singular: "Video Transmitter"
-    plural: "Video Transmitters"
-  };
   option (quadsmith.sql.table) = {name: "video_transmitters"};
   option (quadsmith.collection_path) = "components/hardware/video-transmitters";
   option (quadsmith.frontend) = {

@@ -394,7 +394,7 @@ var File_build_proto protoreflect.FileDescriptor
 const file_build_proto_rawDesc = "" +
 	"\n" +
 	"\vbuild.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xe9\a\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xd6\a\n" +
 	"\x05Build\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12\x12\n" +
@@ -415,11 +415,10 @@ const file_build_proto_rawDesc = "" +
 	"\x11gps_receiver_uuid\x18\x0f \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12A\n" +
 	"\x0freference_links\x18\x10 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\x11 \x01(\tH\x01R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\x12 \x03(\v2\x10.quadsmith.MediaR\x05media:7\x8a\xb5\x18\n" +
+	"\x05media\x18\x12 \x03(\v2\x10.quadsmith.MediaR\x05media:$\x8a\xb5\x18\n" +
 	"\n" +
 	"\x02id\n" +
-	"\x04name\x92\xb5\x18\x0f\n" +
-	"\x05Build\x12\x06Builds\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
+	"\x04name\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
 	"\x06buildsB\x14\n" +
 	"\x12_gps_receiver_uuidB\x18\n" +
 	"\x16_primary_display_imageJ\x04\b\a\x10\bR\fbattery_uuid\";\n" +
