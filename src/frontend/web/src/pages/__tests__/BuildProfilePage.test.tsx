@@ -49,7 +49,7 @@ describe("BuildProfilePage Component", () => {
     expect(screen.getByText("Hover Throttle")).toBeInTheDocument();
     expect(screen.getByText("Est. Flight Time")).toBeInTheDocument();
     expect(screen.getByText("3.8 – 7.2")).toBeInTheDocument();
-    expect(screen.getByText(/depends on flight style/i)).toBeInTheDocument();
+    expect(screen.getByText(/varies with throttle management/i)).toBeInTheDocument();
 
     // All evaluated components are fully compatible and flight-ready
     expect(
