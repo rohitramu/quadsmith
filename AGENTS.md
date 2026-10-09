@@ -47,4 +47,6 @@ Whenever committing changes that modify the UI (such as frontend web components,
 - Create a self-contained HTML artifact (using embedded CSS and/or Tailwind) demonstrating the changed component, layout, or visual difference.
 - Save the artifact into the conversation artifact directory with `UserFacing: true`.
 - Embed and display the preview directly in the conversation using `<agent-embed src="file:///<artifact_path>"></agent-embed>` (or link to it for full-page views) so the user can visually verify the update.
+- **Fidelity & Implementation Alignment**: Previews must match the real implementation as closely as possible. Do not include mock UI elements, decorative sections, or controls in the preview that will not be built into the final codebase.
+- **Visual Plan & Specification**: Treat HTML previews as a visual plan and implementation guide alongside any planning document. The final frontend implementation must faithfully mirror the layout, components, data fields, and styling shown in the approved preview.
 
