@@ -16,46 +16,44 @@ is_sandbox_ready() {
 }
 
 CONTAINER_NAME="quadsmith-sandbox-test-run"
-STARTED_CONTAINER=0
 
 cleanup() {
-    if [ "$STARTED_CONTAINER" -eq 1 ]; then
-        echo "--- Stopping test sandbox container ---"
-        docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
-    fi
+    echo "--- Stopping test sandbox container ---"
+    docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT INT TERM
 
-if is_sandbox_ready; then
-    echo "--- Found running sandbox at ${API_URL} ---"
-else
-    echo "--- Building Sandbox Docker Image ---"
-    docker build -t quadsmith-sandbox -f test/Dockerfile .
+echo "--- Stopping any existing sandbox instance ---"
+docker rm -f "$CONTAINER_NAME" quadsmith-sandbox-run test-pg >/dev/null 2>&1 || true
 
-    echo "--- Starting temporary Sandbox container on port ${PORT} (DB: ${DB_PORT}) ---"
-    docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
-    docker run -d --name "$CONTAINER_NAME" \
-        -e PORT="$PORT" \
-        -p "${PORT}":"${PORT}" \
-        -p "${DB_PORT}":5432 \
-        quadsmith-sandbox
-
-    STARTED_CONTAINER=1
-
-    echo "--- Waiting for Sandbox to become healthy ---"
-    MAX_RETRIES=40
-    COUNT=0
-    until is_sandbox_ready; do
-        sleep 1
-        COUNT=$((COUNT + 1))
-        if [ "$COUNT" -ge "$MAX_RETRIES" ]; then
-            echo "Error: Sandbox failed to become ready after ${MAX_RETRIES} seconds."
-            docker logs "$CONTAINER_NAME" | tail -n 50
-            exit 1
-        fi
-    done
-    echo "--- Sandbox is ready! ---"
+RUNNING_SANDBOX_CONTAINERS=$(docker ps -q --filter ancestor=quadsmith-sandbox 2>/dev/null || true)
+if [ -n "$RUNNING_SANDBOX_CONTAINERS" ]; then
+    docker rm -f $RUNNING_SANDBOX_CONTAINERS >/dev/null 2>&1 || true
 fi
+
+echo "--- Building Sandbox Docker Image ---"
+docker build -t quadsmith-sandbox -f test/Dockerfile .
+
+echo "--- Starting fresh Sandbox container on port ${PORT} (DB: ${DB_PORT}) ---"
+docker run -d --name "$CONTAINER_NAME" \
+    -e PORT="$PORT" \
+    -p "${PORT}":"${PORT}" \
+    -p "${DB_PORT}":5432 \
+    quadsmith-sandbox
+
+echo "--- Waiting for Sandbox to become healthy ---"
+MAX_RETRIES=40
+COUNT=0
+until is_sandbox_ready; do
+    sleep 1
+    COUNT=$((COUNT + 1))
+    if [ "$COUNT" -ge "$MAX_RETRIES" ]; then
+        echo "Error: Sandbox failed to become ready after ${MAX_RETRIES} seconds."
+        docker logs "$CONTAINER_NAME" | tail -n 50
+        exit 1
+    fi
+done
+echo "--- Sandbox is ready! ---"
 
 echo "--- Running Sandbox Tests ---"
 export QS_API_URL="${API_URL}"
