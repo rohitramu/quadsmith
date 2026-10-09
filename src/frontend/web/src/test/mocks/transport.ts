@@ -187,7 +187,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           throw new ConnectError("battery_id is required", Code.InvalidArgument);
         }
         const payload = req.payloadWeightG || 0;
-        const baseWeight = mockEvaluation1.totalWeightG;
+        const baseWeight = mockEvaluation1.allUpWeightG;
         const safeBase = Math.max(1, baseWeight);
         const totalWeight = baseWeight + payload;
         const payloadRatio = Math.min(1.2, payload / safeBase);
@@ -226,7 +226,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const hoverRpm = twr >= 1.0 ? Math.round(29000 / Math.sqrt(twr)) : 0;
 
         return {
-          totalWeightG: totalWeight,
+          allUpWeightG: totalWeight,
           thrustToWeightRatio: parseFloat(twr.toFixed(2)),
           hoverThrottlePercent: parseFloat(hover.toFixed(1)),
           hoverRpm,

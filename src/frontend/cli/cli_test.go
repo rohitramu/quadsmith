@@ -656,7 +656,7 @@ func TestEvaluate_Success(t *testing.T) {
 				BuildId:              req.Msg.Build.Id,
 				PayloadWeightG:       req.Msg.PayloadWeightG,
 				BatteryId:            req.Msg.BatteryId,
-				TotalWeightG:         350.5,
+				AllUpWeightG:         350.5,
 				HoverThrottlePercent: 28.4,
 				ThrustToWeightRatio:  7.2,
 				MinFlightTimeMin:     4.5,
@@ -731,7 +731,7 @@ func TestEvaluate_DefaultYAML(t *testing.T) {
 				BuildId:             req.Msg.Build.Id,
 				PayloadWeightG:      req.Msg.PayloadWeightG,
 				BatteryId:           req.Msg.BatteryId,
-				TotalWeightG:        350.5,
+				AllUpWeightG:        350.5,
 				ThrustToWeightRatio: 7.2,
 				SystemMessages: []*pb.SystemMessage{
 					{
@@ -795,7 +795,7 @@ func TestEvaluate_WithBatteryOverride(t *testing.T) {
 				BuildId:        req.Msg.Build.Id,
 				PayloadWeightG: req.Msg.PayloadWeightG,
 				BatteryId:      req.Msg.BatteryId,
-				TotalWeightG:   320.0,
+				AllUpWeightG:   320.0,
 			}), nil
 		},
 	}
@@ -865,7 +865,7 @@ func TestEvaluate_AliasEval(t *testing.T) {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery_id is required"))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				TotalWeightG: 350.5,
+				AllUpWeightG: 350.5,
 			}), nil
 		},
 	}
@@ -948,7 +948,7 @@ func TestEvaluate_AutoSelectLightestBattery(t *testing.T) {
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
 				BuildId:      req.Msg.Build.Id,
 				BatteryId:    req.Msg.BatteryId,
-				TotalWeightG: 350.5,
+				AllUpWeightG: 350.5,
 			}), nil
 		},
 	}

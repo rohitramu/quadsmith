@@ -32,7 +32,8 @@ message EvaluateBuildRequest {
 }
 
 message EvaluateBuildResponse {
-  float total_weight_g = 1;
+  // Total build weight (All-Up Weight) in grams, including the build components, battery, and payload
+  float all_up_weight_g = 1;
   float hover_throttle_percent = 2;
   float thrust_to_weight_ratio = 3;
 
@@ -64,11 +65,8 @@ message EvaluateBuildResponse {
   float max_voltage = 17;
   float max_current_a = 18;
 
-  // Total build weight (All-Up Weight) in grams, including the build components, battery, and payload
-  float build_weight_g = 19;
-
-  reserved 4, 5, 6;
-  reserved "estimated_flight_time_min", "warnings", "errors";
+  reserved 4, 5, 6, 19;
+  reserved "estimated_flight_time_min", "warnings", "errors", "build_weight_g", "total_weight_g";
 }
 
 message GetBuildElectricalLimitsRequest {

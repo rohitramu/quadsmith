@@ -198,10 +198,11 @@ func (x *EvaluateBuildRequest) GetBuildId() string {
 }
 
 type EvaluateBuildResponse struct {
-	state                protoimpl.MessageState `protogen:"open.v1"`
-	TotalWeightG         float32                `protobuf:"fixed32,1,opt,name=total_weight_g,json=totalWeightG,proto3" json:"total_weight_g,omitempty"`
-	HoverThrottlePercent float32                `protobuf:"fixed32,2,opt,name=hover_throttle_percent,json=hoverThrottlePercent,proto3" json:"hover_throttle_percent,omitempty"`
-	ThrustToWeightRatio  float32                `protobuf:"fixed32,3,opt,name=thrust_to_weight_ratio,json=thrustToWeightRatio,proto3" json:"thrust_to_weight_ratio,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Total build weight (All-Up Weight) in grams, including the build components, battery, and payload
+	AllUpWeightG         float32 `protobuf:"fixed32,1,opt,name=all_up_weight_g,json=allUpWeightG,proto3" json:"all_up_weight_g,omitempty"`
+	HoverThrottlePercent float32 `protobuf:"fixed32,2,opt,name=hover_throttle_percent,json=hoverThrottlePercent,proto3" json:"hover_throttle_percent,omitempty"`
+	ThrustToWeightRatio  float32 `protobuf:"fixed32,3,opt,name=thrust_to_weight_ratio,json=thrustToWeightRatio,proto3" json:"thrust_to_weight_ratio,omitempty"`
 	// Flight time range (minutes) based on flight aggression:
 	// min_flight_time_min: Aggressive freestyle / acro / sustained punchouts
 	// max_flight_time_min: Gentle cruising / cinematic forward flight
@@ -220,11 +221,9 @@ type EvaluateBuildResponse struct {
 	PayloadWeightG float32 `protobuf:"fixed32,14,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
 	BatteryId      string  `protobuf:"bytes,15,opt,name=battery_id,json=batteryId,proto3" json:"battery_id,omitempty"`
 	// Electrical limits determined by the build's FC, ESCs, and Motors
-	MinVoltage  float32 `protobuf:"fixed32,16,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
-	MaxVoltage  float32 `protobuf:"fixed32,17,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
-	MaxCurrentA float32 `protobuf:"fixed32,18,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
-	// Total build weight (All-Up Weight) in grams, including the build components, battery, and payload
-	BuildWeightG  float32 `protobuf:"fixed32,19,opt,name=build_weight_g,json=buildWeightG,proto3" json:"build_weight_g,omitempty"`
+	MinVoltage    float32 `protobuf:"fixed32,16,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
+	MaxVoltage    float32 `protobuf:"fixed32,17,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	MaxCurrentA   float32 `protobuf:"fixed32,18,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -259,9 +258,9 @@ func (*EvaluateBuildResponse) Descriptor() ([]byte, []int) {
 	return file_evaluator_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *EvaluateBuildResponse) GetTotalWeightG() float32 {
+func (x *EvaluateBuildResponse) GetAllUpWeightG() float32 {
 	if x != nil {
-		return x.TotalWeightG
+		return x.AllUpWeightG
 	}
 	return 0
 }
@@ -360,13 +359,6 @@ func (x *EvaluateBuildResponse) GetMaxVoltage() float32 {
 func (x *EvaluateBuildResponse) GetMaxCurrentA() float32 {
 	if x != nil {
 		return x.MaxCurrentA
-	}
-	return 0
-}
-
-func (x *EvaluateBuildResponse) GetBuildWeightG() float32 {
-	if x != nil {
-		return x.BuildWeightG
 	}
 	return 0
 }
@@ -513,9 +505,9 @@ const file_evaluator_proto_rawDesc = "" +
 	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
 	"\n" +
 	"battery_id\x18\x03 \x01(\tR\tbatteryId\x12\x19\n" +
-	"\bbuild_id\x18\x04 \x01(\tR\abuildId\"\xed\x05\n" +
-	"\x15EvaluateBuildResponse\x12$\n" +
-	"\x0etotal_weight_g\x18\x01 \x01(\x02R\ftotalWeightG\x124\n" +
+	"\bbuild_id\x18\x04 \x01(\tR\abuildId\"\xee\x05\n" +
+	"\x15EvaluateBuildResponse\x12%\n" +
+	"\x0fall_up_weight_g\x18\x01 \x01(\x02R\fallUpWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
 	"\x16thrust_to_weight_ratio\x18\x03 \x01(\x02R\x13thrustToWeightRatio\x12-\n" +
 	"\x13min_flight_time_min\x18\a \x01(\x02R\x10minFlightTimeMin\x12-\n" +
@@ -533,8 +525,7 @@ const file_evaluator_proto_rawDesc = "" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x11 \x01(\x02R\n" +
 	"maxVoltage\x12\"\n" +
-	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentA\x12$\n" +
-	"\x0ebuild_weight_g\x18\x13 \x01(\x02R\fbuildWeightGJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\x19estimated_flight_time_minR\bwarningsR\x06errors\"d\n" +
+	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentAJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aJ\x04\b\x13\x10\x14R\x19estimated_flight_time_minR\bwarningsR\x06errorsR\x0ebuild_weight_gR\x0etotal_weight_g\"d\n" +
 	"\x1fGetBuildElectricalLimitsRequest\x12&\n" +
 	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12\x19\n" +
 	"\bbuild_id\x18\x02 \x01(\tR\abuildId\"\xd1\x01\n" +
