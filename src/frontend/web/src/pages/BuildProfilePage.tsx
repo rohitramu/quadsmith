@@ -25,6 +25,8 @@ import { BatteryPickerModal } from "../components/BatteryPickerModal";
 import { buildBatteryCelFilter } from "../lib/batteryFilter";
 import { getTwrDescription } from "../lib/format";
 import { getHardwareCollection, getCollectionPath } from "../lib/hardwareCollections";
+import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionBadge } from "../components/CollectionBadge";
 import {
   ChevronRight,
   Gauge,
@@ -87,16 +89,22 @@ function BomComponentCard({
 
   const col = getHardwareCollection(collectionId);
   const targetPath = col ? getCollectionPath(col) : `components/hardware/${collectionId}`;
+  const colColor = col?.color || getCollectionColor(collectionId);
 
   return (
     <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500 shrink-0">
+        <div
+          className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${colColor.iconBgClass}`}
+        >
           {icon}
         </div>
         <div className="min-w-0">
-          <div className="text-xs uppercase font-semibold text-zinc-400 dark:text-zinc-500">
-            {label}
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className="text-xs uppercase font-semibold text-zinc-400 dark:text-zinc-500">
+              {label}
+            </span>
+            <CollectionBadge collection={collectionId} size="xs" />
           </div>
           {isLoading ? (
             <div className="text-sm text-zinc-400 animate-pulse">Loading {label}...</div>
@@ -240,8 +248,13 @@ export function BuildProfilePage() {
     );
   }
 
+  const buildColor = getCollectionColor("builds");
+
   return (
     <div className="max-w-4xl mx-auto">
+      {/* Builds Collection Trim Line */}
+      <div className={`h-1.5 w-24 rounded-full mb-4 ${buildColor.trimClass}`} />
+
       {/* Breadcrumb Navigation */}
       <nav
         aria-label="Breadcrumb"
@@ -256,8 +269,12 @@ export function BuildProfilePage() {
         <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
         <Link
           to="/"
-          className="hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+          className="hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors flex items-center gap-1.5"
         >
+          <span
+            className={`w-2 h-2 rounded-full shrink-0 ${buildColor.dotClass}`}
+            aria-hidden="true"
+          />
           Builds
         </Link>
         <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
@@ -268,8 +285,9 @@ export function BuildProfilePage() {
 
       {/* Build Profile Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-900/50">
+        <div className="flex items-center gap-2 mb-2">
+          <CollectionBadge collection="builds" label="Build" size="sm" withDot />
+          <span className="text-xs font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
             @{build.id}
           </span>
         </div>

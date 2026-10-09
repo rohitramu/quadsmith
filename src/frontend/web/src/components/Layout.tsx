@@ -6,6 +6,8 @@ import { search } from "../gen/quadsmith/search-SearchService_connectquery";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
+import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionBadge } from "./CollectionBadge";
 
 export function Layout() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
@@ -158,6 +160,7 @@ export function Layout() {
                 <ul className="py-1 divide-y divide-zinc-100 dark:divide-zinc-800/50">
                   {searchResults.map((item, idx) => {
                     const isSelected = idx === selectedIndex;
+                    const colColor = getCollectionColor(item.path || item.collectionName);
                     const details: string[] = [];
                     if (item.metadata["manufacturer"]) details.push(item.metadata["manufacturer"]);
                     if (item.metadata["cell_count_s"])
@@ -184,7 +187,9 @@ export function Layout() {
                               className="w-9 h-9 object-cover rounded-lg border border-zinc-200 dark:border-zinc-800 shrink-0"
                             />
                           ) : (
-                            <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0 text-zinc-400">
+                            <div
+                              className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${colColor.iconBgClass}`}
+                            >
                               <Search size={16} />
                             </div>
                           )}
@@ -194,9 +199,12 @@ export function Layout() {
                               <span className="font-medium text-xs sm:text-sm truncate">
                                 {item.name}
                               </span>
-                              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono shrink-0">
-                                {item.collectionName}
-                              </span>
+                              <CollectionBadge
+                                collection={item.path || item.collectionName}
+                                label={item.collectionName}
+                                size="xs"
+                                withDot
+                              />
                             </div>
 
                             {details.length > 0 ? (
@@ -244,13 +252,17 @@ export function Layout() {
                 <li>
                   <Link
                     to="/"
-                    className={`block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-sm font-medium ${
+                    className={`flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-sm font-medium ${
                       location.pathname === "/"
                         ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400"
                         : "text-zinc-700 dark:text-zinc-300"
                     }`}
                   >
-                    Builds Feed
+                    <span
+                      className={`w-2 h-2 rounded-full shrink-0 ${getCollectionColor("builds").dotClass}`}
+                      aria-hidden="true"
+                    />
+                    <span>Builds Feed</span>
                   </Link>
                 </li>
               </ul>
@@ -284,16 +296,23 @@ export function Layout() {
                   </div>
                   {expandedMenu === "hardware" && (
                     <ul className="pl-6 mt-1 space-y-1">
-                      {HARDWARE_COLLECTIONS.map((c) => (
-                        <li key={c.id}>
-                          <Link
-                            to={`/${getCollectionPath(c)}`}
-                            className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
-                          >
-                            {c.name}
-                          </Link>
-                        </li>
-                      ))}
+                      {HARDWARE_COLLECTIONS.map((c) => {
+                        const colColor = getCollectionColor(c.id);
+                        return (
+                          <li key={c.id}>
+                            <Link
+                              to={`/${getCollectionPath(c)}`}
+                              className="flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full shrink-0 ${colColor.dotClass}`}
+                                aria-hidden="true"
+                              />
+                              <span>{c.name}</span>
+                            </Link>
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </li>

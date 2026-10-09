@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import type { Battery } from "../gen/quadsmith/battery_pb";
 import { X, Search, Zap, Weight, Gauge, Check, ArrowUpDown, Filter } from "lucide-react";
+import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionBadge } from "./CollectionBadge";
 
 export interface BatteryPickerModalProps {
   isOpen: boolean;
@@ -99,14 +101,18 @@ export function BatteryPickerModal({
       }}
       className="backdrop:bg-black/60 backdrop:backdrop-blur-xs fixed inset-0 m-auto max-w-2xl w-[92vw] max-h-[85vh] p-0 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden flex flex-col z-50 text-zinc-900 dark:text-zinc-100"
     >
+      {/* Battery Collection Trim Line */}
+      <div className={`h-1.5 w-full shrink-0 ${getCollectionColor("batteries").trimClass}`} />
+
       {/* Header */}
       <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-3">
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400">
+            <div className={`p-1.5 rounded-lg ${getCollectionColor("batteries").iconBgClass}`}>
               <Zap size={18} />
             </div>
             <h2 className="text-lg font-bold truncate">Choose Compatible Battery</h2>
+            <CollectionBadge collection="batteries" size="xs" withDot />
           </div>
           {limits && (
             <div className="flex items-center gap-2 mt-1 text-xs text-zinc-500 dark:text-zinc-400 flex-wrap">

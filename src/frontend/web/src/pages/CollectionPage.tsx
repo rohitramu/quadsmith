@@ -24,6 +24,8 @@ import {
   type HardwareCollectionDef,
   type ColumnConfig,
 } from "../lib/hardwareCollections";
+import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionBadge } from "../components/CollectionBadge";
 
 function ColumnHeader({
   title,
@@ -528,8 +530,13 @@ function CollectionTableView({
   );
   const hasPrevPage = pageIndex > 0;
 
+  const collectionColor = collection.color || getCollectionColor(collection.id);
+
   return (
     <div>
+      {/* Collection Accent Trim Line */}
+      <div className={`h-1.5 w-24 rounded-full mb-4 ${collectionColor.trimClass}`} />
+
       <nav
         aria-label="Breadcrumb"
         className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
@@ -546,15 +553,22 @@ function CollectionTableView({
           aria-hidden="true"
         />
         <span
-          className="text-zinc-900 dark:text-zinc-100 font-medium capitalize"
+          className="text-zinc-900 dark:text-zinc-100 font-medium capitalize flex items-center gap-1.5"
           aria-current="page"
         >
+          <span
+            className={`w-2 h-2 rounded-full shrink-0 ${collectionColor.dotClass}`}
+            aria-hidden="true"
+          />
           {collection.name}
         </span>
       </nav>
 
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{collection.name}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-bold">{collection.name}</h1>
+          <CollectionBadge collection={collection.id} label={collection.name} size="sm" withDot />
+        </div>
       </div>
 
       {/* Smart Filter Input above the table */}

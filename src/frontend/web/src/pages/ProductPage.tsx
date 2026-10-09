@@ -7,6 +7,8 @@ import {
   getCollectionPath,
   type HardwareCollectionDef,
 } from "../lib/hardwareCollections";
+import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionBadge } from "../components/CollectionBadge";
 import { MediaGallery } from "../components/MediaGallery";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
@@ -35,9 +37,13 @@ function ProductDetailView({
   );
 
   const item = data as any;
+  const collectionColor = collection.color || getCollectionColor(collection.id);
 
   return (
     <div className="max-w-3xl">
+      {/* Collection Accent Trim Line */}
+      <div className={`h-1.5 w-24 rounded-full mb-4 ${collectionColor.trimClass}`} />
+
       <nav
         aria-label="Breadcrumb"
         className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
@@ -55,8 +61,12 @@ function ProductDetailView({
         />
         <Link
           to={`/${getCollectionPath(collection)}`}
-          className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+          className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors flex items-center gap-1.5"
         >
+          <span
+            className={`w-2 h-2 rounded-full shrink-0 ${collectionColor.dotClass}`}
+            aria-hidden="true"
+          />
           {collection.name}
         </Link>
         <ChevronRight
@@ -81,6 +91,14 @@ function ProductDetailView({
       ) : (
         <>
           <div className="mb-8">
+            <div className="flex items-center gap-2 mb-2">
+              <CollectionBadge
+                collection={collection.id}
+                label={collection.name}
+                size="sm"
+                withDot
+              />
+            </div>
             <h1 className="text-3xl font-bold">{item.name || item.id}</h1>
             <p className="text-xl text-zinc-500 dark:text-zinc-400">
               {item.manufacturer || "Unknown Manufacturer"}

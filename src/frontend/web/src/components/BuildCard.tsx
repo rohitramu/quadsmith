@@ -19,6 +19,8 @@ import {
   Compass,
 } from "lucide-react";
 import { useState } from "react";
+import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionBadge } from "./CollectionBadge";
 
 export interface BuildCardProps {
   build: Build;
@@ -86,8 +88,13 @@ export function BuildCard({ build }: BuildCardProps) {
     build.gpsReceiverUuid,
   ].filter(Boolean).length;
 
+  const buildColor = getCollectionColor("builds");
+
   return (
     <article className="group relative flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200">
+      {/* Card top trim line */}
+      <div className={`h-1 w-full ${buildColor.trimClass}`} />
+
       {/* Header bar: Avatar, Title, Handle */}
       <div className="p-4 sm:p-5 pb-3 flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
@@ -111,6 +118,8 @@ export function BuildCard({ build }: BuildCardProps) {
             </Link>
             <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
               <span>@{build.id}</span>
+              <span>•</span>
+              <CollectionBadge collection="builds" label="Build" size="xs" withDot />
               <span>•</span>
               <span className="text-blue-600 dark:text-blue-400 font-sans font-medium">
                 {categoryTag}
