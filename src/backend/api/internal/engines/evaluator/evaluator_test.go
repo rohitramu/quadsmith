@@ -28,52 +28,52 @@ func TestEvaluatePhysics_5InchFreestyle(t *testing.T) {
 	payloadWeight := float32(0.0)
 	maxEscAmps := float32(50.0)
 
-	twr, hover, hoverRpm, flightTime, minFlightTime, maxFlightTime, maxAccel, topSpeed, errs, warns := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, maxEscAmps)
+	res := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, maxEscAmps)
 
-	if len(errs) > 0 {
-		t.Fatalf("Unexpected physics errors: %v", errs)
+	if len(res.Errors) > 0 {
+		t.Fatalf("Unexpected physics errors: %v", res.Errors)
 	}
-	if len(warns) > 0 {
-		t.Fatalf("Unexpected physics warnings: %v", warns)
+	if len(res.Warnings) > 0 {
+		t.Fatalf("Unexpected physics warnings: %v", res.Warnings)
 	}
 
 	// 5-inch 6S freestyle drone should have realistic TWR between 5.5:1 and 7.5:1
-	if twr < 5.5 || twr > 7.5 {
-		t.Errorf("Expected 5-inch TWR between 5.5 and 7.5, got %.2f", twr)
+	if res.ThrustToWeightRatio < 5.5 || res.ThrustToWeightRatio > 7.5 {
+		t.Errorf("Expected 5-inch TWR between 5.5 and 7.5, got %.2f", res.ThrustToWeightRatio)
 	}
 
 	// Bare hover throttle should be in typical Betaflight 20% - 26% range
-	if hover < 20.0 || hover > 26.0 {
-		t.Errorf("Expected bare hover throttle between 20%% and 26%%, got %.1f%%", hover)
+	if res.HoverThrottlePercent < 20.0 || res.HoverThrottlePercent > 26.0 {
+		t.Errorf("Expected bare hover throttle between 20%% and 26%%, got %.1f%%", res.HoverThrottlePercent)
 	}
 
 	// 5-inch 6S hover RPM should be between 10,000 and 14,000 RPM
-	if hoverRpm < 10000 || hoverRpm > 14000 {
-		t.Errorf("Expected 5-inch hover RPM between 10,000 and 14,000, got %d", hoverRpm)
+	if res.HoverRpm < 10000 || res.HoverRpm > 14000 {
+		t.Errorf("Expected 5-inch hover RPM between 10,000 and 14,000, got %d", res.HoverRpm)
 	}
 
 	// Max vertical acceleration: (TWR - 1.0) * 9.8 m/s^2 -> ~44 to 64 m/s^2 (~4.5G - 6.5G punchout)
-	if maxAccel < 44.0 || maxAccel > 64.0 {
-		t.Errorf("Expected max acceleration between 44.0 and 64.0 m/s^2, got %.1f m/s^2", maxAccel)
+	if res.MaxAccelerationMps2 < 44.0 || res.MaxAccelerationMps2 > 64.0 {
+		t.Errorf("Expected max acceleration between 44.0 and 64.0 m/s^2, got %.1f m/s^2", res.MaxAccelerationMps2)
 	}
 
 	// Terminal top speed in forward flight: ~140 to 180 km/h
-	if topSpeed < 140.0 || topSpeed > 180.0 {
-		t.Errorf("Expected top speed between 140.0 and 180.0 km/h, got %.1f km/h", topSpeed)
+	if res.TopSpeedKmh < 140.0 || res.TopSpeedKmh > 180.0 {
+		t.Errorf("Expected top speed between 140.0 and 180.0 km/h, got %.1f km/h", res.TopSpeedKmh)
 	}
 
 	// Flight time range should be realistic:
 	// Aggressive freestyle: 3.0 to 4.8 min
-	if minFlightTime < 3.0 || minFlightTime > 4.8 {
-		t.Errorf("Expected min flight time between 3.0 and 4.8 min, got %.1f min", minFlightTime)
+	if res.MinFlightTimeMin < 3.0 || res.MinFlightTimeMin > 4.8 {
+		t.Errorf("Expected min flight time between 3.0 and 4.8 min, got %.1f min", res.MinFlightTimeMin)
 	}
 	// Smooth cruising: 6.0 to 8.5 min
-	if maxFlightTime < 6.0 || maxFlightTime > 8.5 {
-		t.Errorf("Expected max flight time between 6.0 and 8.5 min, got %.1f min", maxFlightTime)
+	if res.MaxFlightTimeMin < 6.0 || res.MaxFlightTimeMin > 8.5 {
+		t.Errorf("Expected max flight time between 6.0 and 8.5 min, got %.1f min", res.MaxFlightTimeMin)
 	}
-	if minFlightTime >= flightTime || flightTime >= maxFlightTime {
+	if res.MinFlightTimeMin >= res.EstimatedFlightTimeMin || res.EstimatedFlightTimeMin >= res.MaxFlightTimeMin {
 		t.Errorf("Expected minFlightTime (%.1f) < flightTime (%.1f) < maxFlightTime (%.1f)",
-			minFlightTime, flightTime, maxFlightTime)
+			res.MinFlightTimeMin, res.EstimatedFlightTimeMin, res.MaxFlightTimeMin)
 	}
 }
 
@@ -99,47 +99,47 @@ func TestEvaluatePhysics_PayloadScaling(t *testing.T) {
 	maxEscAmps := float32(50.0)
 
 	// Evaluate at 0g payload
-	twr0, hover0, rpm0, _, min0, max0, accel0, speed0, _, _ := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
+	res0 := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
 
 	// Evaluate with GoPro (+133g payload)
-	twrGoPro, hoverGoPro, rpmGoPro, _, minGoPro, maxGoPro, accelGoPro, speedGoPro, _, _ := CalculatePhysics(motor, prop, battery, baseWeight, 133, maxEscAmps)
+	resGoPro := CalculatePhysics(motor, prop, battery, baseWeight, 133, maxEscAmps)
 
 	// Thrust-to-weight ratio should scale down noticeably (at least 1.0 point drop)
-	twrDiff := twr0 - twrGoPro
+	twrDiff := res0.ThrustToWeightRatio - resGoPro.ThrustToWeightRatio
 	if twrDiff < 1.0 {
 		t.Errorf("Expected TWR to scale down by at least 1.0 with +133g payload, but only decreased by %.2f (from %.2f to %.2f)",
-			twrDiff, twr0, twrGoPro)
+			twrDiff, res0.ThrustToWeightRatio, resGoPro.ThrustToWeightRatio)
 	}
 
 	// Max vertical acceleration should scale down significantly (at least 8 m/s^2 drop)
-	accelDiff := accel0 - accelGoPro
+	accelDiff := res0.MaxAccelerationMps2 - resGoPro.MaxAccelerationMps2
 	if accelDiff < 8.0 {
-		t.Errorf("Expected max acceleration to decrease by at least 8 m/s^2 with +133g payload, got %.1f to %.1f", accel0, accelGoPro)
+		t.Errorf("Expected max acceleration to decrease by at least 8 m/s^2 with +133g payload, got %.1f to %.1f", res0.MaxAccelerationMps2, resGoPro.MaxAccelerationMps2)
 	}
 
 	// Forward top speed should decrease slightly due to extra camera drag
-	if speedGoPro >= speed0 {
-		t.Errorf("Expected top speed with payload (%.1f km/h) to be lower than bare (%.1f km/h)", speedGoPro, speed0)
+	if resGoPro.TopSpeedKmh >= res0.TopSpeedKmh {
+		t.Errorf("Expected top speed with payload (%.1f km/h) to be lower than bare (%.1f km/h)", resGoPro.TopSpeedKmh, res0.TopSpeedKmh)
 	}
 
 	// Hover throttle should scale up visibly (at least +6 percentage points)
-	hoverDiff := hoverGoPro - hover0
+	hoverDiff := resGoPro.HoverThrottlePercent - res0.HoverThrottlePercent
 	if hoverDiff < 6.0 {
 		t.Errorf("Expected hover throttle to increase by at least 6%% with +133g payload, but only increased by %.1f%% (from %.1f%% to %.1f%%)",
-			hoverDiff, hover0, hoverGoPro)
+			hoverDiff, res0.HoverThrottlePercent, resGoPro.HoverThrottlePercent)
 	}
 
 	// Hover RPM must increase with payload to generate additional lift
-	if rpmGoPro <= rpm0 {
-		t.Errorf("Expected hover RPM with payload (%d) to be higher than bare (%d)", rpmGoPro, rpm0)
+	if resGoPro.HoverRpm <= res0.HoverRpm {
+		t.Errorf("Expected hover RPM with payload (%d) to be higher than bare (%d)", resGoPro.HoverRpm, res0.HoverRpm)
 	}
 
 	// Flight time range should decrease noticeably
-	if min0-minGoPro < 0.6 {
-		t.Errorf("Expected min flight time to decrease by at least 0.6 min with +133g payload, got %.1f to %.1f", min0, minGoPro)
+	if res0.MinFlightTimeMin-resGoPro.MinFlightTimeMin < 0.6 {
+		t.Errorf("Expected min flight time to decrease by at least 0.6 min with +133g payload, got %.1f to %.1f", res0.MinFlightTimeMin, resGoPro.MinFlightTimeMin)
 	}
-	if max0-maxGoPro < 1.2 {
-		t.Errorf("Expected max flight time to decrease by at least 1.2 min with +133g payload, got %.1f to %.1f", max0, maxGoPro)
+	if res0.MaxFlightTimeMin-resGoPro.MaxFlightTimeMin < 1.2 {
+		t.Errorf("Expected max flight time to decrease by at least 1.2 min with +133g payload, got %.1f to %.1f", res0.MaxFlightTimeMin, resGoPro.MaxFlightTimeMin)
 	}
 }
 
@@ -168,55 +168,55 @@ func TestEvaluatePhysics_ToothpickPayloadConsistency(t *testing.T) {
 	maxEscAmps := float32(12.0)
 
 	// 1. Bare toothpick should hover comfortably
-	twr0, hover0, rpm0, _, _, _, _, _, errs0, _ := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
-	if twr0 <= 3.5 {
-		t.Errorf("Expected bare toothpick TWR > 3.5, got %.2f", twr0)
+	res0 := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
+	if res0.ThrustToWeightRatio <= 3.5 {
+		t.Errorf("Expected bare toothpick TWR > 3.5, got %.2f", res0.ThrustToWeightRatio)
 	}
-	if hover0 >= 40.0 {
-		t.Errorf("Expected bare toothpick hover < 40%%, got %.1f%%", hover0)
+	if res0.HoverThrottlePercent >= 40.0 {
+		t.Errorf("Expected bare toothpick hover < 40%%, got %.1f%%", res0.HoverThrottlePercent)
 	}
-	if rpm0 < 13000 || rpm0 > 22000 {
-		t.Errorf("Expected bare toothpick hover RPM between 13,000 and 22,000, got %d", rpm0)
+	if res0.HoverRpm < 13000 || res0.HoverRpm > 22000 {
+		t.Errorf("Expected bare toothpick hover RPM between 13,000 and 22,000, got %d", res0.HoverRpm)
 	}
-	if len(errs0) > 0 {
-		t.Errorf("Unexpected errors for bare toothpick: %v", errs0)
+	if len(res0.Errors) > 0 {
+		t.Errorf("Unexpected errors for bare toothpick: %v", res0.Errors)
 	}
 
 	// 2. Toothpick with +200g heavy payload (TWR ~1.8 > 1.0)
 	// Must NOT exceed 100% hover throttle because TWR is still > 1.0
-	twr200, hover200, rpm200, _, _, _, _, _, errs200, warns200 := CalculatePhysics(motor, prop, battery, baseWeight, 200, maxEscAmps)
-	if twr200 <= 1.0 {
-		t.Errorf("Expected TWR > 1.0 with +200g payload, got %.2f", twr200)
+	res200 := CalculatePhysics(motor, prop, battery, baseWeight, 200, maxEscAmps)
+	if res200.ThrustToWeightRatio <= 1.0 {
+		t.Errorf("Expected TWR > 1.0 with +200g payload, got %.2f", res200.ThrustToWeightRatio)
 	}
-	if hover200 >= 100.0 {
-		t.Errorf("Hover throttle must be < 100%% when TWR > 1.0, got %.1f%% (TWR=%.2f)", hover200, twr200)
+	if res200.HoverThrottlePercent >= 100.0 {
+		t.Errorf("Hover throttle must be < 100%% when TWR > 1.0, got %.1f%% (TWR=%.2f)", res200.HoverThrottlePercent, res200.ThrustToWeightRatio)
 	}
-	if rpm200 <= rpm0 {
-		t.Errorf("Expected hover RPM with 200g payload (%d) > bare (%d)", rpm200, rpm0)
+	if res200.HoverRpm <= res0.HoverRpm {
+		t.Errorf("Expected hover RPM with 200g payload (%d) > bare (%d)", res200.HoverRpm, res0.HoverRpm)
 	}
-	if len(errs200) > 0 {
-		t.Errorf("Expected no 'too heavy to take off' error when TWR > 1.0, got: %v", errs200)
+	if len(res200.Errors) > 0 {
+		t.Errorf("Expected no 'too heavy to take off' error when TWR > 1.0, got: %v", res200.Errors)
 	}
-	if len(warns200) == 0 {
+	if len(res200.Warnings) == 0 {
 		t.Errorf("Expected sluggish warning for +200g payload on 139g toothpick, got none")
 	}
 
 	// 3. Severely overloaded toothpick (+550g payload, total ~689g)
 	// TWR < 1.0, must exceed 100% hover throttle and report takeoff error
-	twrOver, hoverOver, rpmOver, _, _, _, accelOver, _, errsOver, _ := CalculatePhysics(motor, prop, battery, baseWeight, 550, maxEscAmps)
-	if twrOver >= 1.0 {
-		t.Errorf("Expected TWR < 1.0 for +550g payload on toothpick, got %.2f", twrOver)
+	resOver := CalculatePhysics(motor, prop, battery, baseWeight, 550, maxEscAmps)
+	if resOver.ThrustToWeightRatio >= 1.0 {
+		t.Errorf("Expected TWR < 1.0 for +550g payload on toothpick, got %.2f", resOver.ThrustToWeightRatio)
 	}
-	if rpmOver != 0 {
-		t.Errorf("Expected hover RPM = 0 for overloaded drone, got %d", rpmOver)
+	if resOver.HoverRpm != 0 {
+		t.Errorf("Expected hover RPM = 0 for overloaded drone, got %d", resOver.HoverRpm)
 	}
-	if accelOver != 0.0 {
-		t.Errorf("Expected max acceleration = 0 for overloaded drone, got %.1f", accelOver)
+	if resOver.MaxAccelerationMps2 != 0.0 {
+		t.Errorf("Expected max acceleration = 0 for overloaded drone, got %.1f", resOver.MaxAccelerationMps2)
 	}
-	if hoverOver < 100.0 {
-		t.Errorf("Hover throttle must be >= 100%% when TWR < 1.0, got %.1f%%", hoverOver)
+	if resOver.HoverThrottlePercent < 100.0 {
+		t.Errorf("Hover throttle must be >= 100%% when TWR < 1.0, got %.1f%%", resOver.HoverThrottlePercent)
 	}
-	if len(errsOver) == 0 {
+	if len(resOver.Errors) == 0 {
 		t.Errorf("Expected takeoff error for overloaded toothpick, got none")
 	}
 }
@@ -242,46 +242,46 @@ func TestEvaluatePhysics_7InchLongRange(t *testing.T) {
 	baseWeight := float32(850.0) // 7" long range AUW
 	maxEscAmps := float32(50.0)
 
-	twr, hover, hoverRpm, flightTime, minFlightTime, maxFlightTime, maxAccel, topSpeed, errs, warns := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
+	res := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
 
-	if len(errs) > 0 {
-		t.Fatalf("Unexpected errors: %v", errs)
+	if len(res.Errors) > 0 {
+		t.Fatalf("Unexpected errors: %v", res.Errors)
 	}
-	if len(warns) > 0 {
-		t.Fatalf("Unexpected warnings: %v", warns)
+	if len(res.Warnings) > 0 {
+		t.Fatalf("Unexpected warnings: %v", res.Warnings)
 	}
 
 	// 7-inch cruiser should have TWR ~3.8 - 5.5
-	if twr < 3.8 || twr > 5.5 {
-		t.Errorf("Expected 7-inch TWR between 3.8 and 5.5, got %.2f", twr)
+	if res.ThrustToWeightRatio < 3.8 || res.ThrustToWeightRatio > 5.5 {
+		t.Errorf("Expected 7-inch TWR between 3.8 and 5.5, got %.2f", res.ThrustToWeightRatio)
 	}
 
 	// 7-inch cruiser hover RPM should be between 5,000 and 8,500 RPM
-	if hoverRpm < 5000 || hoverRpm > 8500 {
-		t.Errorf("Expected 7-inch hover RPM between 5,000 and 8,500, got %d", hoverRpm)
+	if res.HoverRpm < 5000 || res.HoverRpm > 8500 {
+		t.Errorf("Expected 7-inch hover RPM between 5,000 and 8,500, got %d", res.HoverRpm)
 	}
 
 	// Max vertical acceleration: ~25.0 to 45.0 m/s^2 (~2.5G - 4.5G)
-	if maxAccel < 25.0 || maxAccel > 45.0 {
-		t.Errorf("Expected 7-inch max acceleration between 25.0 and 45.0 m/s^2, got %.1f m/s^2", maxAccel)
+	if res.MaxAccelerationMps2 < 25.0 || res.MaxAccelerationMps2 > 45.0 {
+		t.Errorf("Expected 7-inch max acceleration between 25.0 and 45.0 m/s^2, got %.1f m/s^2", res.MaxAccelerationMps2)
 	}
 
 	// Terminal top speed: ~95 to 135 km/h
-	if topSpeed < 95.0 || topSpeed > 135.0 {
-		t.Errorf("Expected 7-inch top speed between 95.0 and 135.0 km/h, got %.1f km/h", topSpeed)
+	if res.TopSpeedKmh < 95.0 || res.TopSpeedKmh > 135.0 {
+		t.Errorf("Expected 7-inch top speed between 95.0 and 135.0 km/h, got %.1f km/h", res.TopSpeedKmh)
 	}
 
 	// Hover throttle should be ~25% - 35%
-	if hover < 25.0 || hover > 35.0 {
-		t.Errorf("Expected hover throttle between 25%% and 35%%, got %.1f%%", hover)
+	if res.HoverThrottlePercent < 25.0 || res.HoverThrottlePercent > 35.0 {
+		t.Errorf("Expected hover throttle between 25%% and 35%%, got %.1f%%", res.HoverThrottlePercent)
 	}
 
 	// Long range battery should provide endurance flight time >= 9.5 min
-	if maxFlightTime < 9.5 {
-		t.Errorf("Expected long range max flight time >= 9.5 min, got %.1f", maxFlightTime)
+	if res.MaxFlightTimeMin < 9.5 {
+		t.Errorf("Expected long range max flight time >= 9.5 min, got %.1f", res.MaxFlightTimeMin)
 	}
-	if minFlightTime >= flightTime || flightTime >= maxFlightTime {
-		t.Errorf("Expected min < mid < max for 7-inch, got %.1f < %.1f < %.1f", minFlightTime, flightTime, maxFlightTime)
+	if res.MinFlightTimeMin >= res.EstimatedFlightTimeMin || res.EstimatedFlightTimeMin >= res.MaxFlightTimeMin {
+		t.Errorf("Expected min < mid < max for 7-inch, got %.1f < %.1f < %.1f", res.MinFlightTimeMin, res.EstimatedFlightTimeMin, res.MaxFlightTimeMin)
 	}
 }
 
@@ -303,21 +303,21 @@ func TestEvaluatePhysics_OverloadedDrone(t *testing.T) {
 	baseWeight := float32(100.0)
 	payloadWeight := float32(200.0) // 300g on 2" 1S
 
-	twr, hover, rpm, _, _, _, accel, _, errs, _ := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, 10.0)
+	res := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, 10.0)
 
-	if twr >= 1.0 {
-		t.Errorf("Expected TWR < 1.0 for overloaded drone, got %.2f", twr)
+	if res.ThrustToWeightRatio >= 1.0 {
+		t.Errorf("Expected TWR < 1.0 for overloaded drone, got %.2f", res.ThrustToWeightRatio)
 	}
-	if rpm != 0 {
-		t.Errorf("Expected hover RPM = 0 for overloaded drone, got %d", rpm)
+	if res.HoverRpm != 0 {
+		t.Errorf("Expected hover RPM = 0 for overloaded drone, got %d", res.HoverRpm)
 	}
-	if accel != 0.0 {
-		t.Errorf("Expected max acceleration 0 for overloaded drone, got %.1f", accel)
+	if res.MaxAccelerationMps2 != 0.0 {
+		t.Errorf("Expected max acceleration 0 for overloaded drone, got %.1f", res.MaxAccelerationMps2)
 	}
-	if hover < 100.0 {
-		t.Errorf("Expected hover throttle >= 100%% for overloaded drone, got %.1f%%", hover)
+	if res.HoverThrottlePercent < 100.0 {
+		t.Errorf("Expected hover throttle >= 100%% for overloaded drone, got %.1f%%", res.HoverThrottlePercent)
 	}
-	if len(errs) == 0 {
+	if len(res.Errors) == 0 {
 		t.Errorf("Expected 'too heavy to take off' error, got none")
 	}
 }
@@ -341,26 +341,26 @@ func TestEvaluatePhysics_SluggishWarning(t *testing.T) {
 	baseWeight := float32(580.0)
 	payloadWeight := float32(450.0)
 
-	_, hover, _, _, _, _, _, _, _, warns := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, 45.0)
+	res := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, 45.0)
 
-	if hover <= 50.0 {
-		t.Errorf("Expected hover throttle > 50%%, got %.1f%%", hover)
+	if res.HoverThrottlePercent <= 50.0 {
+		t.Errorf("Expected hover throttle > 50%%, got %.1f%%", res.HoverThrottlePercent)
 	}
 	foundSluggish := false
-	for _, w := range warns {
+	for _, w := range res.Warnings {
 		if w == "Drone will be very sluggish (Hover throttle > 50%)" {
 			foundSluggish = true
 			break
 		}
 	}
 	if !foundSluggish {
-		t.Errorf("Expected sluggish warning, got %v", warns)
+		t.Errorf("Expected sluggish warning, got %v", res.Warnings)
 	}
 }
 
 func TestEvaluatePhysics_MissingInputs(t *testing.T) {
-	_, _, _, _, _, _, _, _, _, warns := CalculatePhysics(nil, nil, nil, 500, 0, 40)
-	if len(warns) == 0 {
+	res := CalculatePhysics(nil, nil, nil, 500, 0, 40)
+	if len(res.Warnings) == 0 {
 		t.Errorf("Expected missing components warning, got none")
 	}
 }

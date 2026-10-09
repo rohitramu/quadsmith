@@ -167,7 +167,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	totalWeight := baseWeight + payloadWeight
 
 	// Aerodynamic Physics Estimation
-	thrustToWeight, hoverThrottle, hoverRpm, flightTime, minFlightTime, maxFlightTime, maxAccelerationMps2, topSpeedKmh, physErrors, physWarnings := CalculatePhysics(
+	phys := CalculatePhysics(
 		motor,
 		prop,
 		battery,
@@ -175,24 +175,38 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		payloadWeight,
 		maxAmps,
 	)
-	errors = append(errors, physErrors...)
-	warnings = append(warnings, physWarnings...)
+	errors = append(errors, phys.Errors...)
+	warnings = append(warnings, phys.Warnings...)
 
 	res := &pb.EvaluateBuildResponse{
 		TotalWeightG:           totalWeight,
-		ThrustToWeightRatio:    thrustToWeight,
-		HoverThrottlePercent:   hoverThrottle,
-		HoverRpm:               hoverRpm,
-		EstimatedFlightTimeMin: flightTime,
-		MinFlightTimeMin:       minFlightTime,
-		MaxFlightTimeMin:       maxFlightTime,
-		MaxAccelerationMps2:    maxAccelerationMps2,
-		TopSpeedKmh:            topSpeedKmh,
+		ThrustToWeightRatio:    phys.ThrustToWeightRatio,
+		HoverThrottlePercent:   phys.HoverThrottlePercent,
+		HoverRpm:               phys.HoverRpm,
+		EstimatedFlightTimeMin: phys.EstimatedFlightTimeMin,
+		MinFlightTimeMin:       phys.MinFlightTimeMin,
+		MaxFlightTimeMin:       phys.MaxFlightTimeMin,
+		MaxAccelerationMps2:    phys.MaxAccelerationMps2,
+		TopSpeedKmh:            phys.TopSpeedKmh,
 		Warnings:               warnings,
 		Errors:                 errors,
 	}
 
 	return connect.NewResponse(res), nil
+}
+
+// PhysicsResult contains the calculated aerodynamic, electrical, and flight performance metrics.
+type PhysicsResult struct {
+	ThrustToWeightRatio    float32
+	HoverThrottlePercent   float32
+	HoverRpm               uint32
+	EstimatedFlightTimeMin float32
+	MinFlightTimeMin       float32
+	MaxFlightTimeMin       float32
+	MaxAccelerationMps2    float32
+	TopSpeedKmh            float32
+	Errors                 []string
+	Warnings               []string
 }
 
 // CalculatePhysics computes aerodynamic static thrust, thrust-to-weight ratio,
@@ -205,22 +219,25 @@ func CalculatePhysics(
 	baseWeight float32,
 	payloadWeight float32,
 	maxEscAmps float32,
-) (
-	thrustToWeight float32,
-	hoverThrottle float32,
-	hoverRpm uint32,
-	flightTime float32,
-	minFlightTime float32,
-	maxFlightTime float32,
-	maxAccelerationMps2 float32,
-	topSpeedKmh float32,
-	errors []string,
-	warnings []string,
-) {
+) PhysicsResult {
 	if motor == nil || prop == nil || battery == nil {
-		warnings = append(warnings, "Need a Motor, Propeller, and Battery to run physics estimation")
-		return 0, 0, 0, 0, 0, 0, 0, 0, errors, warnings
+		return PhysicsResult{
+			Warnings: []string{"Need a Motor, Propeller, and Battery to run physics estimation"},
+		}
 	}
+
+	var (
+		thrustToWeight      float32
+		hoverThrottle       float32
+		hoverRpm            uint32
+		flightTime          float32
+		minFlightTime       float32
+		maxFlightTime       float32
+		maxAccelerationMps2 float32
+		topSpeedKmh         float32
+		errors              []string
+		warnings            []string
+	)
 
 	safeBase := float64(baseWeight)
 	if safeBase <= 0 {
@@ -402,5 +419,16 @@ func CalculatePhysics(
 		}
 	}
 
-	return thrustToWeight, hoverThrottle, hoverRpm, flightTime, minFlightTime, maxFlightTime, maxAccelerationMps2, topSpeedKmh, errors, warnings
+	return PhysicsResult{
+		ThrustToWeightRatio:    thrustToWeight,
+		HoverThrottlePercent:   hoverThrottle,
+		HoverRpm:               hoverRpm,
+		EstimatedFlightTimeMin: flightTime,
+		MinFlightTimeMin:       minFlightTime,
+		MaxFlightTimeMin:       maxFlightTime,
+		MaxAccelerationMps2:    maxAccelerationMps2,
+		TopSpeedKmh:            topSpeedKmh,
+		Errors:                 errors,
+		Warnings:               warnings,
+	}
 }
