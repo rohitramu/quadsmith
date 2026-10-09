@@ -1,5 +1,4 @@
 builds: {
-
   uuid: "01923019-2131-4192-3192-391294812399"
   id: "bando-basher-5-inch"
   name: "Bando Basher 5 inch"
@@ -22,20 +21,8 @@ builds: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/tbs-source-one-v5-5-frame-kit.html"
   }
-  primary_display_image: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1200&q=80"
-  media: {
-    type: MEDIA_TYPE_IMAGE
-    url: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1200&q=80"
-    title: "Bando Basher 5 inch Freestyle Frame"
-  }
-  media: {
-    type: MEDIA_TYPE_YOUTUBE
-    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    title: "Bando Basher Flight & Durability Test"
-  }
 }
 builds: {
-
   uuid: "01923019-2131-4192-3192-391294812398"
   id: "long-range-explorer"
   name: "Long Range Explorer 7 inch"
@@ -62,20 +49,8 @@ builds: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/tbs-crossfire-nano-rx-special-edition.html"
   }
-  primary_display_image: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=80"
-  media: {
-    type: MEDIA_TYPE_IMAGE
-    url: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1200&q=80"
-    title: "Long Range Explorer Mountain Surfer"
-  }
-  media: {
-    type: MEDIA_TYPE_YOUTUBE
-    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    title: "Mountain Long Range Flight & Telemetry"
-  }
 }
 builds: {
-
   uuid: "01923019-2131-4192-3192-391294812397"
   id: "ultralight-toothpick"
   name: "Ultralight Toothpick 3 inch"
@@ -98,20 +73,8 @@ builds: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
   }
-  primary_display_image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=1200&q=80"
-  media: {
-    type: MEDIA_TYPE_IMAGE
-    url: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=1200&q=80"
-    title: "Ultralight Toothpick Park Setup"
-  }
-  media: {
-    type: MEDIA_TYPE_YOUTUBE
-    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    title: "Toothpick Park Freestyle Flight"
-  }
 }
 builds: {
-
   uuid: "01923019-2131-4192-3192-391294812396"
   id: "cinewhoop-pavo20-pro"
   name: "CineWhoop Pavo20 Pro"
@@ -134,20 +97,8 @@ builds: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/pavo20-pro-brushless-whoop-frame"
   }
-  primary_display_image: "https://images.unsplash.com/photo-1506947411487-a56738267384?auto=format&fit=crop&w=1200&q=80"
-  media: {
-    type: MEDIA_TYPE_IMAGE
-    url: "https://images.unsplash.com/photo-1506947411487-a56738267384?auto=format&fit=crop&w=1200&q=80"
-    title: "CineWhoop Pavo20 Pro Ducted Rig"
-  }
-  media: {
-    type: MEDIA_TYPE_YOUTUBE
-    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    title: "Cinematic Indoor FPV Walkthrough"
-  }
 }
 builds: {
-
   uuid: "01923019-2131-4192-3192-391294812395"
   id: "pro-freestyle-5-inch"
   name: "Pro Freestyle 5 inch"
@@ -169,16 +120,5 @@ builds: {
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/speedybee-mario-5-dc-o4-advanced-version-5-fpv-freestyle-frame"
-  }
-  primary_display_image: "https://images.unsplash.com/photo-1533518463841-d62e1fc91373?auto=format&fit=crop&w=1200&q=80"
-  media: {
-    type: MEDIA_TYPE_IMAGE
-    url: "https://images.unsplash.com/photo-1533518463841-d62e1fc91373?auto=format&fit=crop&w=1200&q=80"
-    title: "Pro Freestyle 5 inch Pro Setup"
-  }
-  media: {
-    type: MEDIA_TYPE_YOUTUBE
-    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-    title: "Freestyle Competition Run & Line Analysis"
   }
 }
