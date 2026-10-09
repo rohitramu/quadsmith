@@ -21,7 +21,7 @@ message GpsReceiver {
       "manufacturer",
       "name",
       "chipset",
-      "has_compass"
+      "compass"
     ]
   };
 
@@ -41,11 +41,8 @@ message GpsReceiver {
   // Primary communication protocol (e.g., "UBLOX", "NMEA")
   string protocol = 8 [(quadsmith.sql.column) = {create_index: true}];
 
-  // Whether the unit has an integrated magnetic compass / magnetometer
-  optional bool has_compass = 9;
-
-  // Compass chip model (e.g., "QMC5883L", "IST8310")
-  optional string compass_chip = 10;
+  // Integrated magnetic compass chip model (e.g., "QMC5883L", "IST8310")
+  optional string compass = 9;
 
   // Minimum operating input voltage
   float input_voltage_min_v = 11;

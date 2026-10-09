@@ -221,7 +221,7 @@ export const mockGps1: GpsReceiver = create(GpsReceiverSchema, {
   name: "M8Q-5883 GPS & Compass",
   weightG: 11.3,
   protocol: "UBLOX",
-  hasCompass: true,
+  compass: "QMC5883L",
   description: "Compact GNSS module with QMC5883L digital compass.",
 });
 

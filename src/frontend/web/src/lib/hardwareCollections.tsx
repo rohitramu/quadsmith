@@ -1119,7 +1119,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     getQuery: getGpsReceiver,
     getDataList: (res, includeInternal = false) =>
       (res?.gpsReceivers ?? []).filter((item: any) => includeInternal || !item.isInternalOnly),
-    defaultColumnIds: ["manufacturer", "name", "chipset", "has_compass"],
+    defaultColumnIds: ["manufacturer", "name", "chipset", "compass"],
     fields: [
       {
         name: "is_internal_only",
@@ -1164,16 +1164,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ['protocol == "UBLOX"', 'protocol == "NMEA"'],
       },
       {
-        name: "has_compass",
-        type: "boolean",
-        description: "Integrated magnetic compass",
-        examples: ["has_compass == true", "has_compass == false"],
-      },
-      {
-        name: "compass_chip",
+        name: "compass",
         type: "string",
         description: "Magnetometer / Compass chip model",
-        examples: ['compass_chip == "QMC5883L"'],
+        examples: ['compass.contains("5883")', 'compass == "QMC5883L"', 'compass == "IST8310"'],
       },
       {
         name: "input_voltage_min_v",
@@ -1202,7 +1196,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     ],
     presets: [
       { label: "u-blox M10 Chipset", query: 'chipset.contains("M10")' },
-      { label: "Has Integrated Compass", query: "has_compass == true" },
+      { label: "Has Integrated Compass", query: 'compass != ""' },
       { label: "UBLOX Protocol", query: 'protocol == "UBLOX"' },
       { label: "Under 5g", query: "weight_g < 5.0" },
       { label: "Matek Systems", query: 'manufacturer.contains("Matek")' },
@@ -1219,15 +1213,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Protocol",
         renderCell: (g) => g.protocol || "-",
       },
-      has_compass: {
-        id: "has_compass",
+      compass: {
+        id: "compass",
         title: "Compass",
-        renderCell: (g) => (g.hasCompass === true ? "Yes" : g.hasCompass === false ? "No" : "-"),
-      },
-      compass_chip: {
-        id: "compass_chip",
-        title: "Compass Chip",
-        renderCell: (g) => g.compassChip || "-",
+        renderCell: (g) => g.compass || "-",
       },
       voltage_range: {
         id: "voltage_range",
@@ -1242,7 +1231,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Chipset", value: (g) => g.chipset || "N/A" },
       {
         label: "Compass",
-        value: (g) => (g.hasCompass ? (g.compassChip ? `Yes (${g.compassChip})` : "Yes") : "No"),
+        value: (g) => g.compass || "None",
       },
       { label: "Protocol", value: (g) => g.protocol || "N/A" },
       {
@@ -1261,10 +1250,9 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Chipset", value: (g) => g.chipset || "-" },
       { label: "Protocol", value: (g) => g.protocol || "-" },
       {
-        label: "Integrated Compass",
-        value: (g) => (g.hasCompass ? "Yes" : "No"),
+        label: "Compass",
+        value: (g) => g.compass || "None",
       },
-      { label: "Compass Chip", value: (g) => g.compassChip || "-" },
       {
         label: "Min Input Voltage (V)",
         value: (g) => (g.inputVoltageMinV ? `${g.inputVoltageMinV}` : "-"),

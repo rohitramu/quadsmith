@@ -36,10 +36,8 @@ type GpsReceiver struct {
 	Chipset string `protobuf:"bytes,7,opt,name=chipset,proto3" json:"chipset,omitempty"`
 	// Primary communication protocol (e.g., "UBLOX", "NMEA")
 	Protocol string `protobuf:"bytes,8,opt,name=protocol,proto3" json:"protocol,omitempty"`
-	// Whether the unit has an integrated magnetic compass / magnetometer
-	HasCompass *bool `protobuf:"varint,9,opt,name=has_compass,json=hasCompass,proto3,oneof" json:"has_compass,omitempty"`
-	// Compass chip model (e.g., "QMC5883L", "IST8310")
-	CompassChip *string `protobuf:"bytes,10,opt,name=compass_chip,json=compassChip,proto3,oneof" json:"compass_chip,omitempty"`
+	// Integrated magnetic compass chip model (e.g., "QMC5883L", "IST8310")
+	Compass *string `protobuf:"bytes,9,opt,name=compass,proto3,oneof" json:"compass,omitempty"`
 	// Minimum operating input voltage
 	InputVoltageMinV float32 `protobuf:"fixed32,11,opt,name=input_voltage_min_v,json=inputVoltageMinV,proto3" json:"input_voltage_min_v,omitempty"`
 	// Maximum operating input voltage
@@ -138,16 +136,9 @@ func (x *GpsReceiver) GetProtocol() string {
 	return ""
 }
 
-func (x *GpsReceiver) GetHasCompass() bool {
-	if x != nil && x.HasCompass != nil {
-		return *x.HasCompass
-	}
-	return false
-}
-
-func (x *GpsReceiver) GetCompassChip() string {
-	if x != nil && x.CompassChip != nil {
-		return *x.CompassChip
+func (x *GpsReceiver) GetCompass() string {
+	if x != nil && x.Compass != nil {
+		return *x.Compass
 	}
 	return ""
 }
@@ -382,7 +373,7 @@ var File_gps_receiver_proto protoreflect.FileDescriptor
 const file_gps_receiver_proto_rawDesc = "" +
 	"\n" +
 	"\x12gps_receiver.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xa2\x06\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xda\x05\n" +
 	"\vGpsReceiver\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -391,24 +382,21 @@ const file_gps_receiver_proto_rawDesc = "" +
 	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
 	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x18\n" +
 	"\achipset\x18\a \x01(\tR\achipset\x12\"\n" +
-	"\bprotocol\x18\b \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12$\n" +
-	"\vhas_compass\x18\t \x01(\bH\x00R\n" +
-	"hasCompass\x88\x01\x01\x12&\n" +
-	"\fcompass_chip\x18\n" +
-	" \x01(\tH\x01R\vcompassChip\x88\x01\x01\x12-\n" +
+	"\bprotocol\x18\b \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12\x1d\n" +
+	"\acompass\x18\t \x01(\tH\x00R\acompass\x88\x01\x01\x12-\n" +
 	"\x13input_voltage_min_v\x18\v \x01(\x02R\x10inputVoltageMinV\x12-\n" +
 	"\x13input_voltage_max_v\x18\f \x01(\x02R\x10inputVoltageMaxV\x12 \n" +
 	"\vdescription\x18\r \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\x0e \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
-	"\x15primary_display_image\x18\x0f \x01(\tH\x02R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\x10 \x03(\v2\x10.quadsmith.MediaR\x05media:o\x8a\xb5\x183\n" +
+	"\x15primary_display_image\x18\x0f \x01(\tH\x01R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
+	"\x05media\x18\x10 \x03(\v2\x10.quadsmith.MediaR\x05media:k\x8a\xb5\x18/\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\achipset\n" +
-	"\vhas_compass\x1a\a#10b981\x9a\xb5\x18!components/hardware/gps-receivers\xc2\xf3\x18\x0f\n" +
-	"\rgps_receiversB\x0e\n" +
-	"\f_has_compassB\x0f\n" +
-	"\r_compass_chipB\x18\n" +
+	"\acompass\x1a\a#10b981\x9a\xb5\x18!components/hardware/gps-receivers\xc2\xf3\x18\x0f\n" +
+	"\rgps_receiversB\n" +
+	"\n" +
+	"\b_compassB\x18\n" +
 	"\x16_primary_display_image\"A\n" +
 	"\x15GetGpsReceiverRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +

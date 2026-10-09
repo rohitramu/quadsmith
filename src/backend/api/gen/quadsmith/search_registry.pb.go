@@ -298,7 +298,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"manufacturer",
 			"name",
 			"chipset",
-			"has_compass",
+			"compass",
 		},
 		Columns: []string{
 			"uuid",
@@ -309,8 +309,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"weight_g",
 			"chipset",
 			"protocol",
-			"has_compass",
-			"compass_chip",
+			"compass",
 			"input_voltage_min_v",
 			"input_voltage_max_v",
 			"description",
