@@ -61,7 +61,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "antennas",
 		DisplayName:     "Antennas",
 		MessageName:     "Antenna",
-		ColorCode:       "#f59e0b",
+		ColorCode:       "#eab308",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -99,7 +99,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "batteries",
 		DisplayName:     "Batteries",
 		MessageName:     "Battery",
-		ColorCode:       "#10b981",
+		ColorCode:       "#84cc16",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -136,7 +136,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "cameras",
 		DisplayName:     "Cameras",
 		MessageName:     "Camera",
-		ColorCode:       "#f43f5e",
+		ColorCode:       "#06b6d4",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -256,7 +256,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "frames",
 		DisplayName:     "Frames",
 		MessageName:     "Frame",
-		ColorCode:       "#06b6d4",
+		ColorCode:       "#64748b",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -292,7 +292,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "gps_receivers",
 		DisplayName:     "GpsReceivers",
 		MessageName:     "GpsReceiver",
-		ColorCode:       "#14b8a6",
+		ColorCode:       "#10b981",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -365,7 +365,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "propellers",
 		DisplayName:     "Propellers",
 		MessageName:     "Propeller",
-		ColorCode:       "#0ea5e9",
+		ColorCode:       "#14b8a6",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -442,7 +442,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "video_transmitters",
 		DisplayName:     "VideoTransmitters",
 		MessageName:     "VideoTransmitter",
-		ColorCode:       "#d946ef",
+		ColorCode:       "#ec4899",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",

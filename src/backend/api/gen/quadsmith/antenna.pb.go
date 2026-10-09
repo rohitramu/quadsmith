@@ -396,7 +396,7 @@ const file_antenna_proto_rawDesc = "" +
 	"\tconnector\n" +
 	"\fpolarization\n" +
 	"\x12frequency_band_mhz\n" +
-	"\bgain_dbi\x1a\a#f59e0b\x9a\xb5\x18\x1ccomponents/hardware/antennas\xc2\xf3\x18\n" +
+	"\bgain_dbi\x1a\a#eab308\x9a\xb5\x18\x1ccomponents/hardware/antennas\xc2\xf3\x18\n" +
 	"\n" +
 	"\bantennasB\x18\n" +
 	"\x16_primary_display_image\"=\n" +

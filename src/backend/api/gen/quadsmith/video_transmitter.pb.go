@@ -395,7 +395,7 @@ const file_video_transmitter_proto_rawDesc = "" +
 	"\x04name\n" +
 	"\bprotocol\n" +
 	"\fmax_power_mw\n" +
-	"\bweight_g\x1a\a#d946ef\x9a\xb5\x18&components/hardware/video-transmitters\xc2\xf3\x18\x14\n" +
+	"\bweight_g\x1a\a#ec4899\x9a\xb5\x18&components/hardware/video-transmitters\xc2\xf3\x18\x14\n" +
 	"\x12video_transmittersB\x18\n" +
 	"\x16_primary_display_image\"F\n" +
 	"\x1aGetVideoTransmitterRequest\x12\x0e\n" +

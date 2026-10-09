@@ -377,7 +377,7 @@ const file_propeller_proto_rawDesc = "" +
 	"\x04name\n" +
 	"\vdiameter_mm\n" +
 	"\bpitch_mm\n" +
-	"\x06blades\x1a\a#0ea5e9\x9a\xb5\x18\x1ecomponents/hardware/propellers\xc2\xf3\x18\f\n" +
+	"\x06blades\x1a\a#14b8a6\x9a\xb5\x18\x1ecomponents/hardware/propellers\xc2\xf3\x18\f\n" +
 	"\n" +
 	"propellersB\x18\n" +
 	"\x16_primary_display_image\"?\n" +

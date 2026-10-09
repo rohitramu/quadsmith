@@ -11,7 +11,7 @@ describe("CollectionBadge Component", () => {
     expect(badge).toBeInTheDocument();
 
     const container = screen.getByTestId("collection-badge");
-    expect(container).toHaveClass("bg-emerald-100");
+    expect(container).toHaveClass("bg-lime-100");
     // Ensure no child dot span exists
     expect(container.children.length).toBe(1);
   });

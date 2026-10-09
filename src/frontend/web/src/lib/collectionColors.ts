@@ -33,6 +33,45 @@ export interface CollectionColorDef {
 export type ColorStylePreset = Omit<CollectionColorDef, "id" | "name">;
 
 export const COLOR_PRESETS_BY_HEX: Record<string, ColorStylePreset> = {
+  "#eab308": {
+    colorName: "yellow",
+    hex: "#eab308",
+    badgeClass:
+      "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-950/60 dark:text-yellow-300 dark:border-yellow-800/80",
+    trimClass: "bg-yellow-500",
+    dotClass: "bg-yellow-500",
+    borderTopClass: "border-t-yellow-500",
+    borderLeftClass: "border-l-yellow-500",
+    textClass: "text-yellow-600 dark:text-yellow-400",
+    iconBgClass: "bg-yellow-100 text-yellow-700 dark:bg-yellow-950/60 dark:text-yellow-300",
+    hoverBorderClass: "hover:border-yellow-500",
+  },
+  "#84cc16": {
+    colorName: "lime",
+    hex: "#84cc16",
+    badgeClass:
+      "bg-lime-100 text-lime-800 border-lime-300 dark:bg-lime-950/60 dark:text-lime-300 dark:border-lime-800/80",
+    trimClass: "bg-lime-500",
+    dotClass: "bg-lime-500",
+    borderTopClass: "border-t-lime-500",
+    borderLeftClass: "border-l-lime-500",
+    textClass: "text-lime-600 dark:text-lime-400",
+    iconBgClass: "bg-lime-100 text-lime-700 dark:bg-lime-950/60 dark:text-lime-300",
+    hoverBorderClass: "hover:border-lime-500",
+  },
+  "#ec4899": {
+    colorName: "pink",
+    hex: "#ec4899",
+    badgeClass:
+      "bg-pink-100 text-pink-800 border-pink-300 dark:bg-pink-950/60 dark:text-pink-300 dark:border-pink-800/80",
+    trimClass: "bg-pink-500",
+    dotClass: "bg-pink-500",
+    borderTopClass: "border-t-pink-500",
+    borderLeftClass: "border-l-pink-500",
+    textClass: "text-pink-600 dark:text-pink-400",
+    iconBgClass: "bg-pink-100 text-pink-700 dark:bg-pink-950/60 dark:text-pink-300",
+    hoverBorderClass: "hover:border-pink-500",
+  },
   "#f59e0b": {
     colorName: "amber",
     hex: "#f59e0b",

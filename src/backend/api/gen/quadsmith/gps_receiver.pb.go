@@ -405,7 +405,7 @@ const file_gps_receiver_proto_rawDesc = "" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\achipset\n" +
-	"\vhas_compass\x1a\a#14b8a6\x9a\xb5\x18!components/hardware/gps-receivers\xc2\xf3\x18\x0f\n" +
+	"\vhas_compass\x1a\a#10b981\x9a\xb5\x18!components/hardware/gps-receivers\xc2\xf3\x18\x0f\n" +
 	"\rgps_receiversB\x0e\n" +
 	"\f_has_compassB\x0f\n" +
 	"\r_compass_chipB\x18\n" +

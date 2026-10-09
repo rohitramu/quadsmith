@@ -49,14 +49,14 @@ describe("collectionColors module", () => {
   });
 
   it("extracts colors directly from proto schema options as the source of truth", () => {
-    // BatterySchema defines color_code: "#10b981" in battery.proto
+    // BatterySchema defines color_code: "#84cc16" in battery.proto
     const batteryProtoColor = getOption(BatterySchema, frontend)?.colorCode;
-    expect(batteryProtoColor).toBe("#10b981");
+    expect(batteryProtoColor).toBe("#84cc16");
 
     const batteryColor = getCollectionColorFromSchema(BatterySchema, "batteries", "Batteries");
-    expect(batteryColor.hex).toBe("#10b981");
-    expect(batteryColor.colorName).toBe("emerald");
-    expect(batteryColor.trimClass).toBe("bg-emerald-500");
+    expect(batteryColor.hex).toBe("#84cc16");
+    expect(batteryColor.colorName).toBe("lime");
+    expect(batteryColor.trimClass).toBe("bg-lime-500");
 
     // BuildSchema defines color_code: "#6366f1" in build.proto
     const buildProtoColor = getOption(BuildSchema, frontend)?.colorCode;

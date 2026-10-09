@@ -365,7 +365,7 @@ const file_frame_proto_rawDesc = "" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fwheelbase_mm\n" +
-	"\bgeometry\x1a\a#06b6d4\x9a\xb5\x18\x1acomponents/hardware/frames\xc2\xf3\x18\b\n" +
+	"\bgeometry\x1a\a#64748b\x9a\xb5\x18\x1acomponents/hardware/frames\xc2\xf3\x18\b\n" +
 	"\x06framesB\x18\n" +
 	"\x16_primary_display_image\";\n" +
 	"\x0fGetFrameRequest\x12\x0e\n" +

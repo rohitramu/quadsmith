@@ -408,7 +408,7 @@ const file_battery_proto_rawDesc = "" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fcell_count_s\n" +
-	"\fcapacity_mah\x1a\a#10b981\x9a\xb5\x18\x1dcomponents/hardware/batteries\xc2\xf3\x18\v\n" +
+	"\fcapacity_mah\x1a\a#84cc16\x9a\xb5\x18\x1dcomponents/hardware/batteries\xc2\xf3\x18\v\n" +
 	"\tbatteriesB\x18\n" +
 	"\x16_primary_display_image\"=\n" +
 	"\x11GetBatteryRequest\x12\x0e\n" +

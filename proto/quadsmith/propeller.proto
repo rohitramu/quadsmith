@@ -16,7 +16,7 @@ message Propeller {
   option (quadsmith.sql.table) = {name: "propellers"};
   option (quadsmith.collection_path) = "components/hardware/propellers";
   option (quadsmith.frontend) = {
-    color_code: "#0ea5e9"
+    color_code: "#14b8a6"
     default_columns: [
       "manufacturer",
       "name",

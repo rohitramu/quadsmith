@@ -386,7 +386,7 @@ const file_camera_proto_rawDesc = "" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +
-	"\bwidth_mm\x1a\a#f43f5e\x9a\xb5\x18\x1bcomponents/hardware/cameras\xc2\xf3\x18\t\n" +
+	"\bwidth_mm\x1a\a#06b6d4\x9a\xb5\x18\x1bcomponents/hardware/cameras\xc2\xf3\x18\t\n" +
 	"\acamerasB\x18\n" +
 	"\x16_primary_display_image\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +
