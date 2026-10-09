@@ -37,9 +37,9 @@ func TestEvaluatePhysics_5InchFreestyle(t *testing.T) {
 		t.Fatalf("Unexpected physics warnings: %v", warns)
 	}
 
-	// 5-inch 6S freestyle drone should have realistic TWR between 8:1 and 12:1
-	if twr < 8.0 || twr > 12.0 {
-		t.Errorf("Expected 5-inch TWR between 8.0 and 12.0, got %.2f", twr)
+	// 5-inch 6S freestyle drone should have realistic TWR between 5.5:1 and 7.5:1
+	if twr < 5.5 || twr > 7.5 {
+		t.Errorf("Expected 5-inch TWR between 5.5 and 7.5, got %.2f", twr)
 	}
 
 	// Bare hover throttle should be in typical Betaflight 20% - 26% range
@@ -84,10 +84,17 @@ func TestEvaluatePhysics_PayloadScaling(t *testing.T) {
 	maxEscAmps := float32(50.0)
 
 	// Evaluate at 0g payload
-	_, hover0, _, min0, max0, _, _ := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
+	twr0, hover0, _, min0, max0, _, _ := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
 
 	// Evaluate with GoPro (+133g payload)
-	_, hoverGoPro, _, minGoPro, maxGoPro, _, _ := CalculatePhysics(motor, prop, battery, baseWeight, 133, maxEscAmps)
+	twrGoPro, hoverGoPro, _, minGoPro, maxGoPro, _, _ := CalculatePhysics(motor, prop, battery, baseWeight, 133, maxEscAmps)
+
+	// Thrust-to-weight ratio should scale down noticeably (at least 1.0 point drop)
+	twrDiff := twr0 - twrGoPro
+	if twrDiff < 1.0 {
+		t.Errorf("Expected TWR to scale down by at least 1.0 with +133g payload, but only decreased by %.2f (from %.2f to %.2f)",
+			twrDiff, twr0, twrGoPro)
+	}
 
 	// Hover throttle should scale up visibly (at least +7 percentage points)
 	hoverDiff := hoverGoPro - hover0
@@ -135,14 +142,14 @@ func TestEvaluatePhysics_7InchLongRange(t *testing.T) {
 		t.Fatalf("Unexpected warnings: %v", warns)
 	}
 
-	// 7-inch cruiser should have TWR ~6.0 - 8.5
-	if twr < 6.0 || twr > 8.5 {
-		t.Errorf("Expected 7-inch TWR between 6.0 and 8.5, got %.2f", twr)
+	// 7-inch cruiser should have TWR ~3.8 - 5.5
+	if twr < 3.8 || twr > 5.5 {
+		t.Errorf("Expected 7-inch TWR between 3.8 and 5.5, got %.2f", twr)
 	}
 
-	// Hover throttle should be ~24% - 32%
-	if hover < 24.0 || hover > 32.0 {
-		t.Errorf("Expected hover throttle between 24%% and 32%%, got %.1f%%", hover)
+	// Hover throttle should be ~25% - 35%
+	if hover < 25.0 || hover > 35.0 {
+		t.Errorf("Expected hover throttle between 25%% and 35%%, got %.1f%%", hover)
 	}
 
 	// Long range battery should provide endurance flight time >= 9.5 min

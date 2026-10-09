@@ -25,7 +25,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is required"))
 	}
 
-	totalWeight := req.Msg.GetPayloadWeightG()
+	var baseWeight float32 = 0
 	var errors []string
 	var warnings []string
 
@@ -37,7 +37,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 			errors = append(errors, fmt.Sprintf("Frame not found: %s", b.FrameUuid))
 		} else {
 			frame = f
-			totalWeight += frame.WeightG
+			baseWeight += frame.WeightG
 		}
 	}
 
@@ -49,7 +49,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 			errors = append(errors, fmt.Sprintf("Motor not found: %s", b.MotorUuid))
 		} else {
 			motor = m
-			totalWeight += (motor.WeightG * 4) // Quadcopter = 4 motors
+			baseWeight += (motor.WeightG * 4) // Quadcopter = 4 motors
 		}
 	}
 
@@ -61,7 +61,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 			errors = append(errors, fmt.Sprintf("Battery not found: %s", b.BatteryUuid))
 		} else {
 			battery = bat
-			totalWeight += battery.WeightG
+			baseWeight += battery.WeightG
 		}
 	}
 
@@ -73,7 +73,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 			errors = append(errors, fmt.Sprintf("Propeller not found: %s", b.PropellerUuid))
 		} else {
 			prop = p
-			totalWeight += (prop.WeightG * 4) // Quadcopter = 4 props
+			baseWeight += (prop.WeightG * 4) // Quadcopter = 4 props
 		}
 	}
 
@@ -83,7 +83,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	for _, id := range b.ElectronicSpeedControllerUuids {
 		esc, err := pb.GetElectronicSpeedController(ctx, s.db, id, nil)
 		if err == nil {
-			totalWeight += esc.WeightG
+			baseWeight += esc.WeightG
 			totalEscs += esc.MaxMotors
 			if esc.MotorCurrentMaxA > maxAmps {
 				maxAmps = esc.MotorCurrentMaxA
@@ -95,7 +95,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	if b.FlightControllerUuid != "" {
 		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
 		if err == nil {
-			totalWeight += fc.WeightG
+			baseWeight += fc.WeightG
 			if fc.GetInternalElectronicSpeedControllerUuid() != "" {
 				esc, err := pb.GetElectronicSpeedController(ctx, s.db, fc.GetInternalElectronicSpeedControllerUuid(), nil)
 				if err == nil {
@@ -112,14 +112,14 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	if b.VideoTransmitterUuid != "" {
 		videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, b.VideoTransmitterUuid, nil)
 		if err == nil {
-			totalWeight += videoTransmitter.WeightG
+			baseWeight += videoTransmitter.WeightG
 		}
 	} else if b.FlightControllerUuid != "" {
 		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
 		if err == nil && fc.GetInternalVideoTransmitterUuid() != "" {
 			videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, fc.GetInternalVideoTransmitterUuid(), nil)
 			if err == nil {
-				totalWeight += videoTransmitter.WeightG
+				baseWeight += videoTransmitter.WeightG
 			}
 		}
 	}
@@ -128,7 +128,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	for _, cid := range b.CameraUuids {
 		cam, err := pb.GetCamera(ctx, s.db, cid, nil)
 		if err == nil {
-			totalWeight += cam.WeightG
+			baseWeight += cam.WeightG
 		}
 	}
 
@@ -136,7 +136,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	for _, rid := range b.ReceiverUuids {
 		rx, err := pb.GetReceiver(ctx, s.db, rid, nil)
 		if err == nil {
-			totalWeight += rx.WeightG
+			baseWeight += rx.WeightG
 		}
 	}
 
@@ -144,7 +144,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	for _, aid := range b.AntennaUuids {
 		ant, err := pb.GetAntenna(ctx, s.db, aid, nil)
 		if err == nil {
-			totalWeight += ant.WeightG
+			baseWeight += ant.WeightG
 		}
 	}
 
@@ -152,7 +152,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	if b.GetGpsReceiverUuid() != "" {
 		gps, err := pb.GetGpsReceiver(ctx, s.db, b.GetGpsReceiverUuid(), nil)
 		if err == nil {
-			totalWeight += gps.WeightG
+			baseWeight += gps.WeightG
 		}
 	}
 
@@ -164,7 +164,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	payloadWeight := req.Msg.GetPayloadWeightG()
-	baseWeight := totalWeight - payloadWeight
+	totalWeight := baseWeight + payloadWeight
 
 	// Aerodynamic Physics Estimation
 	thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, physErrors, physWarnings := CalculatePhysics(
@@ -207,14 +207,23 @@ func CalculatePhysics(
 		return 0, 0, 0, 0, 0, errors, warnings
 	}
 
+	safeBase := float64(baseWeight)
+	if safeBase <= 0 {
+		safeBase = float64(baseWeight + payloadWeight)
+	}
 	totalWeight := baseWeight + payloadWeight
 
 	cellCount := float32(battery.CellCountS)
 	if cellCount == 0 {
 		cellCount = 4
 	}
-	// Nominal loaded voltage under moderate load (~3.7V per cell for LiPo)
-	voltage := cellCount * 3.7
+
+	// 1. Full-throttle burst voltage with realistic high-C sag and payload draw:
+	// A high-C LiPo cell delivers ~3.55V under 100% punchout on a bare quadcopter.
+	// Additional payload increases baseline drain and raises internal resistance sag down to ~3.40V.
+	payloadRatio := float32(math.Min(1.2, float64(payloadWeight)/math.Max(1.0, safeBase)))
+	burstCellVoltage := float32(3.55) - 0.12*payloadRatio
+	voltage := cellCount * burstCellVoltage
 
 	propDiaMm := prop.DiameterMm
 	if propDiaMm <= 0 {
@@ -232,15 +241,16 @@ func CalculatePhysics(
 	diaIn := propDiaMm / 25.4
 	pitchIn := propPitchMm / 25.4
 
-	// 1. Non-dimensional thrust coefficient Ct based on momentum and blade element theory:
-	// Ct_2blade = 0.045 + 0.090 * (P / D)
-	// Blade solidity scaling: (blades / 2)^0.45
+	// 2. Non-dimensional thrust coefficient Ct based on momentum and blade element theory:
+	// Low Reynolds number multirotor blade element theory:
+	// Ct_2blade = 0.046 + 0.072 * (P / D)
+	// Multi-blade solidity factor: (blades / 2)^0.38
 	pOverD := pitchIn / diaIn
-	ct2Blade := 0.045 + 0.090*pOverD
-	bladeFactor := float32(math.Pow(float64(propBlades)/2.0, 0.45))
+	ct2Blade := 0.046 + 0.072*pOverD
+	bladeFactor := float32(math.Pow(float64(propBlades)/2.0, 0.38))
 	ct := ct2Blade * bladeFactor
 
-	// 2. Motor stator volume (mm^3) as proxy for torque capability
+	// 3. Motor stator volume (mm^3) as proxy for torque capability
 	statorD := motor.StatorDiameterMm
 	statorH := motor.StatorHeightMm
 	statorVol := float32(math.Pi/4.0) * statorD * statorD * statorH
@@ -253,38 +263,41 @@ func CalculatePhysics(
 		}
 	}
 
-	// 3. Propeller aerodynamic torque demand scale: D^4 * P * sqrt(blades / 2)
+	// 4. Propeller aerodynamic torque demand scale: D^4 * P * sqrt(blades / 2)
 	propTorqueScale := math.Pow(float64(diaIn), 4) * float64(pitchIn) * math.Sqrt(float64(propBlades)/2.0)
 	torqueRatio := float64(statorVol) / math.Max(1.0, propTorqueScale)
 
-	// Full-throttle loaded RPM: well-matched motor reaches ~76% of no-load (Kv * V)
-	rpmLoadFactor := 0.76 * math.Min(1.08, math.Max(0.60, math.Pow(torqueRatio/1.08, 0.15)))
+	// Full-throttle loaded RPM under static bollard condition (J = 0):
+	// Aerodynamic torque limits motor to ~72% of no-load (Kv * V)
+	rpmLoadFactor := 0.72 * math.Min(1.05, math.Max(0.55, math.Pow(torqueRatio/1.0, 0.15)))
 	loadedRpm := float32(float64(float32(motor.Kv)*voltage) * rpmLoadFactor)
 
-	// 4. Static thrust (momentum / blade element theory):
+	// 5. Static thrust in open air (momentum / blade element theory):
 	// T = Ct * rho * n^2 * D^4
 	const rho = 1.225 // kg/m^3 standard sea-level air density
 	dM := float64(propDiaMm) / 1000.0
 	n := float64(loadedRpm) / 60.0
 	thrustNewtons := float64(ct) * rho * (n * n) * math.Pow(dM, 4)
-	thrustPerMotor := float32(thrustNewtons * 101.97162) // 1 N = 101.97162 g
-	totalThrust := thrustPerMotor * 4.0
+	rawThrustPerMotor := float32(thrustNewtons * 101.97162) // 1 N = 101.97162 g
 
-	// 5. Thrust-to-weight ratio and realistic hover throttle with payload scaling
+	// 6. Airframe installation loss (arm shadow / frame obstruction) & payload aerodynamic blockage:
+	// Multirotor arm blockage and prop wash impingement reduce net thrust by ~14% vs isolated test bench.
+	// Additional payload (cameras, mounts) adds inflow/outflow aerodynamic blockage.
+	const frameEfficiency = 0.86
+	payloadObstruction := float32(1.0 / (1.0 + 0.08*float64(payloadRatio)))
+	installedThrustPerMotor := rawThrustPerMotor * frameEfficiency * payloadObstruction
+	totalThrust := installedThrustPerMotor * 4.0
+
+	// 7. Thrust-to-weight ratio and realistic hover throttle with payload scaling
 	if totalWeight > 0 {
 		thrustToWeight = totalThrust / totalWeight
 	}
 
-	safeBase := float64(baseWeight)
-	if safeBase <= 0 {
-		safeBase = float64(totalWeight)
-	}
-
 	if safeBase > 0 && totalThrust > 0 {
-		baseTwr := float64(totalThrust) / safeBase
-		baseHover := math.Pow(1.0/math.Max(0.1, baseTwr), 0.65) * 100.0
+		baseTwr := float64(rawThrustPerMotor*frameEfficiency*4.0) / safeBase
+		baseHover := math.Pow(1.0/math.Max(0.1, baseTwr), 0.78) * 100.0
 		weightRatio := float64(totalWeight) / safeBase
-		hoverThrottle = float32(baseHover * math.Pow(weightRatio, 1.6))
+		hoverThrottle = float32(baseHover * math.Pow(weightRatio, 1.5))
 	} else {
 		hoverThrottle = 100.0
 	}
@@ -299,15 +312,16 @@ func CalculatePhysics(
 		warnings = append(warnings, "Drone will be very sluggish (Hover throttle > 50%)")
 	}
 
-	// 6. Realistic flight time range across flight styles:
+	// 8. Realistic flight time range across flight styles:
 	// Multirotor flight efficiency in forward flight / cruising:
 	// Larger props have higher efficiency due to lower disk loading (1.8 - 3.2 g/W).
 	// Base electronics (VTX, Camera, FC, RX) consume ~10W.
 	effFlight := float32(math.Min(4.5, math.Max(1.8, 1.8+0.18*float64(diaIn))))
 	const pElectronics = 10.0 // Watts
 	weightRatio := float64(totalWeight) / safeBase
+	nominalVoltage := cellCount * 3.7
 	cruiseWatts := (float32(safeBase)/effFlight)*float32(math.Pow(weightRatio, 1.35)) + pElectronics
-	totalCruiseAmps := cruiseWatts / voltage
+	totalCruiseAmps := cruiseWatts / nominalVoltage
 
 	if totalCruiseAmps > float32(maxEscAmps*4) && maxEscAmps > 0 {
 		warnings = append(warnings, "Cruise amps exceeds ESC continuous rating")
@@ -320,7 +334,7 @@ func CalculatePhysics(
 		// Aggressive freestyle / acro / sustained punchouts:
 		// High throttle bursts, dynamic braking, and PID stabilization draw ~1.9x cruise power
 		aggressiveWatts := cruiseWatts * 1.9
-		aggressiveAmps := aggressiveWatts / voltage
+		aggressiveAmps := aggressiveWatts / nominalVoltage
 		minFlightTime = (usableAh / aggressiveAmps) * 60.0 // minutes (aggressive freestyle)
 
 		// Mixed / moderate flight profile (average between aggressive and cruise)
