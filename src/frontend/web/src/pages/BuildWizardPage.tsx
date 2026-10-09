@@ -25,7 +25,7 @@ import {
   getBuildElectricalLimits,
 } from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
 import { checkCompatibility } from "../gen/quadsmith/compatibility-CompatibilityService_connectquery";
-import { createBuild } from "../gen/quadsmith/build-BuildService_connectquery";
+import { createBuild, listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
 
 // Protobuf types
 import { BuildSchema, type Build } from "../gen/quadsmith/build_pb";
@@ -94,8 +94,12 @@ export function BuildWizardPage() {
       "Interactive Quadsmith build configurator. Design your custom FPV drone, check hardware compatibility, and simulate real-time physics telemetry.",
   });
 
-  // Current active stage (1 to 4)
-  const [activeStage, setActiveStage] = useState<number>(1);
+  // Current active stage (0 to 4)
+  const [activeStage, setActiveStage] = useState<number>(0);
+
+  // Stage 0: Template Selection state
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
+  const [searchTemplate, setSearchTemplate] = useState<string>("");
 
   // Selected Parts (Initial State: 0 parts selected)
   const [selectedFrame, setSelectedFrame] = useState<Frame | null>(null);
@@ -163,6 +167,7 @@ export function BuildWizardPage() {
   const { data: antsData } = useQuery(listAntennas, { pageSize: 100 });
   const { data: gpsData } = useQuery(listGpsReceivers, { pageSize: 100 });
   const { data: batteriesData } = useQuery(listBatteries, { pageSize: 100 });
+  const { data: buildsData } = useQuery(listBuilds, { pageSize: 50 });
 
   const frames = useMemo(() => framesData?.frames ?? [], [framesData]);
   const motors = useMemo(() => motorsData?.motors ?? [], [motorsData]);
@@ -175,6 +180,7 @@ export function BuildWizardPage() {
   const ants = useMemo(() => antsData?.antennas ?? [], [antsData]);
   const gpsList = useMemo(() => gpsData?.gpsReceivers ?? [], [gpsData]);
   const batteries = useMemo(() => batteriesData?.batteries ?? [], [batteriesData]);
+  const templateBuilds = useMemo(() => buildsData?.builds ?? [], [buildsData]);
 
   // Dynamic motor and propeller quantity determined by selected Frame (Option 2)
   const motorCount = selectedFrame?.motorCount || 4;
@@ -296,6 +302,7 @@ export function BuildWizardPage() {
   }, [fcHasIntegratedVtx, useIntegratedVtx]);
 
   // Stage completion checks
+  const stage0Complete = true;
   const stage1Complete = !!(selectedFrame && selectedMotor && selectedProp);
   const stage2Complete = !!(
     selectedFc &&
@@ -310,7 +317,7 @@ export function BuildWizardPage() {
 
   // Unlocked stages based on gating logic
   const unlockedStages = useMemo(() => {
-    const list = [1];
+    const list = [0, 1];
     if (stage1Complete) list.push(2);
     if (stage1Complete && stage2Complete) {
       list.push(3);
@@ -479,6 +486,14 @@ export function BuildWizardPage() {
   const { mutateAsync: saveBuildMutation, isPending: isSaving } = useMutation(createBuild);
 
   // Filtered component catalogs based on search inputs
+  const filteredTemplates = useMemo(() => {
+    if (!searchTemplate.trim()) return templateBuilds;
+    const q = searchTemplate.toLowerCase();
+    return templateBuilds.filter(
+      (b) => b.name.toLowerCase().includes(q) || b.description.toLowerCase().includes(q),
+    );
+  }, [templateBuilds, searchTemplate]);
+
   const filteredFrames = useMemo(() => {
     if (!searchFrame.trim()) return frames;
     const q = searchFrame.toLowerCase();
@@ -619,92 +634,107 @@ export function BuildWizardPage() {
     setSelectedVtxAnt(null);
   };
 
-  // Quick Preset Loader (5" Freestyle)
-  const loadFreestylePreset = () => {
-    if (frames.length > 0) setSelectedFrame(frames[0]);
-    if (motors.length > 0) setSelectedMotor(motors[0]);
-    if (props.length > 0) setSelectedProp(props[0]);
-    if (fcs.length > 0) setSelectedFc(fcs[0]);
-    if (escs.length > 0) {
-      setSelectedEsc(escs[0]);
-      setUseIntegratedEsc(false);
-    }
-    if (rxs.length > 0) {
-      setSelectedRx(rxs[0]);
-      setUseIntegratedRx(false);
-    }
-    const rxAnt = ants.find(isRxAntenna) || ants[0];
-    if (rxAnt) {
-      setSelectedRxAnt(rxAnt);
-      setRxAntCount(1);
-      setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
-    }
-    if (gpsList.length > 0) {
-      setSelectedGps(gpsList[0]);
-      setNoneSelections((prev) => ({ ...prev, gps: false }));
-    }
-    if (vtxs.length > 0) {
-      setSelectedVtx(vtxs[0]);
-      setUseIntegratedVtx(false);
-      setNoneSelections((prev) => ({ ...prev, vtx: false }));
-    }
-    if (cams.length > 0) {
-      setSelectedCam(cams[0]);
-      setNoneSelections((prev) => ({ ...prev, camera: false }));
-    }
-    const vtxAnt = ants.find(isVtxAntenna) || ants[0];
-    if (vtxAnt) {
-      setSelectedVtxAnt(vtxAnt);
-      setVtxAntCount(1);
-      setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
-    }
-    setBuildName("5-Inch Freestyle Build");
-  };
+  // Apply build template
+  const applyTemplate = (build: Build) => {
+    setSelectedTemplateId(build.id || build.uuid);
+    setBuildName(build.name || "Custom Build");
+    if (build.description) setBuildDesc(build.description);
 
-  // Quick Preset Loader (3" Toothpick)
-  const loadToothpickPreset = () => {
-    if (frames.length > 1) setSelectedFrame(frames[1]);
-    else if (frames.length > 0) setSelectedFrame(frames[0]);
-
-    if (motors.length > 1) setSelectedMotor(motors[1]);
-    else if (motors.length > 0) setSelectedMotor(motors[0]);
-
-    if (props.length > 0) setSelectedProp(props[0]);
-
-    // Use AIO FC if available
-    const aioFc = fcs.find((fc) => fc.name.toLowerCase().includes("aio")) || fcs[0];
-    if (aioFc) {
-      setSelectedFc(aioFc);
+    // Frame
+    if (build.frameUuid) {
+      const f = frames.find((x) => x.uuid === build.frameUuid);
+      if (f) setSelectedFrame(f);
+    }
+    // Motor
+    if (build.motorUuid) {
+      const m = motors.find((x) => x.uuid === build.motorUuid);
+      if (m) setSelectedMotor(m);
+    }
+    // Propeller
+    if (build.propellerUuid) {
+      const p = props.find((x) => x.uuid === build.propellerUuid);
+      if (p) setSelectedProp(p);
+    }
+    // Flight Controller
+    let matchedFc: FlightController | null = null;
+    if (build.flightControllerUuid) {
+      const fc = fcs.find((x) => x.uuid === build.flightControllerUuid);
+      if (fc) {
+        matchedFc = fc;
+        setSelectedFc(fc);
+      }
+    }
+    // ESC
+    if (build.electronicSpeedControllerUuids && build.electronicSpeedControllerUuids.length > 0) {
+      const esc = escs.find((x) => build.electronicSpeedControllerUuids.includes(x.uuid));
+      if (esc) {
+        setSelectedEsc(esc);
+        setUseIntegratedEsc(false);
+        setNoneSelections((prev) => ({ ...prev, esc: false }));
+      }
+    } else if (matchedFc) {
       setUseIntegratedEsc(true);
       setSelectedEsc(null);
+      setNoneSelections((prev) => ({ ...prev, esc: false }));
     }
-    if (rxs.length > 0) {
-      setSelectedRx(rxs[0]);
-      setUseIntegratedRx(false);
+    // Receiver
+    if (build.receiverUuids && build.receiverUuids.length > 0) {
+      const rx = rxs.find((x) => build.receiverUuids.includes(x.uuid));
+      if (rx) {
+        setSelectedRx(rx);
+        setUseIntegratedRx(false);
+      }
+    } else if (matchedFc) {
+      setUseIntegratedRx(true);
+      setSelectedRx(null);
     }
-    setUseIntegratedVtx(false);
-
-    // Toothpick: lightweight LOS / micro
-    setNoneSelections({
-      esc: true,
-      rxAntenna: true,
-      gps: true,
-      vtx: true,
-      camera: true,
-      vtxAntenna: true,
-    });
-    setSelectedRxAnt(null);
-    setRxAntCount(1);
-    setSelectedGps(null);
-    setSelectedVtx(null);
-    setSelectedCam(null);
-    setSelectedVtxAnt(null);
-    setVtxAntCount(1);
-    setBuildName("3-Inch Ultralight Toothpick");
+    // Antennas
+    if (build.antennaUuids && build.antennaUuids.length > 0) {
+      const rxAnt = ants.find((a) => build.antennaUuids.includes(a.uuid) && isRxAntenna(a));
+      if (rxAnt) {
+        setSelectedRxAnt(rxAnt);
+        const count = build.antennaUuids.filter((u) => u === rxAnt.uuid).length;
+        setRxAntCount(count > 1 ? 2 : 1);
+        setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
+      }
+      const vtxAnt = ants.find((a) => build.antennaUuids.includes(a.uuid) && isVtxAntenna(a));
+      if (vtxAnt) {
+        setSelectedVtxAnt(vtxAnt);
+        const count = build.antennaUuids.filter((u) => u === vtxAnt.uuid).length;
+        setVtxAntCount(count > 1 ? 2 : 1);
+        setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
+      }
+    }
+    // GPS
+    if (build.gpsReceiverUuid) {
+      const gps = gpsList.find((x) => x.uuid === build.gpsReceiverUuid);
+      if (gps) {
+        setSelectedGps(gps);
+        setNoneSelections((prev) => ({ ...prev, gps: false }));
+      }
+    }
+    // VTX
+    if (build.videoTransmitterUuid) {
+      const vtx = vtxs.find((x) => x.uuid === build.videoTransmitterUuid);
+      if (vtx) {
+        setSelectedVtx(vtx);
+        setUseIntegratedVtx(false);
+        setNoneSelections((prev) => ({ ...prev, vtx: false }));
+      }
+    }
+    // Camera
+    if (build.cameraUuids && build.cameraUuids.length > 0) {
+      const cam = cams.find((x) => build.cameraUuids.includes(x.uuid));
+      if (cam) {
+        setSelectedCam(cam);
+        setNoneSelections((prev) => ({ ...prev, camera: false }));
+      }
+    }
   };
 
-  // Reset all selections to zero
-  const resetWizard = () => {
+  // Select Scratch (blank canvas)
+  const selectScratch = () => {
+    setSelectedTemplateId(null);
     setSelectedFrame(null);
     setSelectedMotor(null);
     setSelectedProp(null);
@@ -722,10 +752,16 @@ export function BuildWizardPage() {
     setSelectedVtxAnt(null);
     setVtxAntCount(1);
     setNoneSelections({});
+  };
+
+  // Reset all selections to zero and return to Stage 0
+  const resetWizard = () => {
+    selectScratch();
+    setSearchTemplate("");
     setSelectedBatteryId("");
     setPayloadWeightG(0);
     setPayloadInput("0");
-    setActiveStage(1);
+    setActiveStage(0);
     setBuildName("My Custom Quadcopter");
     setBuildDesc("Custom build configured via the Quadsmith Build Wizard.");
   };
@@ -792,18 +828,19 @@ export function BuildWizardPage() {
 
   // Navigation between stages
   const handleNextStage = () => {
-    if (activeStage === 1 && stage1Complete) setActiveStage(2);
+    if (activeStage === 0) setActiveStage(1);
+    else if (activeStage === 1 && stage1Complete) setActiveStage(2);
     else if (activeStage === 2 && stage2Complete) setActiveStage(3);
     else if (activeStage === 3) setActiveStage(4);
   };
 
   const handlePrevStage = () => {
-    if (activeStage > 1) setActiveStage((prev) => prev - 1);
+    if (activeStage > 0) setActiveStage((prev) => prev - 1);
   };
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      {/* Top Banner & Presets */}
+      {/* Top Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -819,49 +856,26 @@ export function BuildWizardPage() {
             Design Custom Drone
           </h1>
           <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Select parts sequentially. Flight electronics include FC, ESC, and Receiver. Test flight
-            physics and battery options in the Live Evaluator on the right.
+            Select parts sequentially. Flight electronics include FC, ESC, RX, Antenna &amp; GPS.
+            Video includes VTX, Camera &amp; Antenna. Test flight physics and battery options in the
+            Live Evaluator on the right.
           </p>
-        </div>
-
-        {/* Quick Presets */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={loadFreestylePreset}
-            className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-colors shadow-xs"
-          >
-            ⚡ 5" Freestyle Preset
-          </button>
-          <button
-            type="button"
-            onClick={loadToothpickPreset}
-            className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-colors shadow-xs"
-          >
-            🪶 3" Toothpick Preset
-          </button>
-          <button
-            type="button"
-            onClick={resetWizard}
-            className="px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 text-xs font-medium transition-colors"
-          >
-            <RotateCcw size={13} className="inline mr-1" />
-            Clear All
-          </button>
         </div>
       </div>
 
-      {/* 4-Stage Stepper Navigation */}
+      {/* 5-Stage Stepper Navigation */}
       <WizardStageBar
         currentStage={activeStage}
         unlockedStages={unlockedStages}
         stageCompletion={{
+          0: stage0Complete,
           1: stage1Complete,
           2: stage2Complete,
           3: stage3Complete,
           4: stage4Complete,
         }}
         stageProgressText={{
+          0: selectedTemplateId ? "Template ✓" : "Scratch ✓",
           1: `${(selectedFrame ? 1 : 0) + (selectedMotor ? 1 : 0) + (selectedProp ? 1 : 0)}/3`,
           2: `${(selectedFc ? 1 : 0) + (selectedRx || useIntegratedRx ? 1 : 0) + (selectedEsc || useIntegratedEsc || noneSelections.esc ? 1 : 0)}/3`,
           3: "Optional",
@@ -874,6 +888,197 @@ export function BuildWizardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column (Stage Contents) */}
         <div className="lg:col-span-8 space-y-5">
+          {/* Stage 0 Banner */}
+          {activeStage === 0 && (
+            <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/20 text-blue-900 dark:text-blue-300 flex items-start gap-3 text-xs">
+              <Sparkles size={16} className="text-blue-500 mt-0.5 shrink-0" />
+              <div>
+                <span className="font-bold">
+                  {selectedTemplateId
+                    ? `Stage 0: Template Selected — ${templateBuilds.find((b) => (b.id || b.uuid) === selectedTemplateId)?.name || "Template"}`
+                    : "Stage 0: Starting from Scratch (Blank Canvas)"}
+                </span>
+                <p className="opacity-90 mt-0.5">
+                  {selectedTemplateId
+                    ? "All compatible components pre-populated across all stages. You can customize them in Stages 1-3 or review now."
+                    : "You are designing from a clean slate. Click Next to establish your airframe & propulsion in Stage 1."}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* STAGE 0: Template Selection */}
+          {activeStage === 0 && (
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      Choose Starting Baseline
+                    </h3>
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                      Stage 0
+                    </span>
+                  </div>
+                  <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                    {selectedTemplateId
+                      ? `Template: ${templateBuilds.find((b) => (b.id || b.uuid) === selectedTemplateId)?.name || "Selected"}`
+                      : "Start from Scratch"}
+                  </span>
+                </div>
+
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Select whether you want to build from a blank slate or begin from a proven
+                  existing quadcopter build. You can freely customize or swap any part in the
+                  following stages.
+                </p>
+
+                {/* Search Input */}
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchTemplate}
+                    onChange={(e) => setSearchTemplate(e.target.value)}
+                    placeholder="Filter templates by build name, frame, style, or specs..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchTemplate && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchTemplate("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                {/* Scrollable Templates List with Limited Height */}
+                <div className="overflow-y-auto max-h-72 sm:max-h-80 space-y-2.5 pr-1.5 focus:outline-none">
+                  {/* Option 1: Start from Scratch (Always First) */}
+                  {(!searchTemplate ||
+                    "start from scratch blank canvas full custom".includes(
+                      searchTemplate.toLowerCase(),
+                    )) && (
+                    <div
+                      onClick={selectScratch}
+                      className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                        !selectedTemplateId
+                          ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                      }`}
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                            Start from Scratch
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
+                            Blank Canvas
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
+                            Full Custom
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Design your build from the ground up. Hand-pick each frame, motor, prop,
+                          electronic, and video component.
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                        <span
+                          className={`text-[10px] uppercase font-bold tracking-wide px-2.5 py-1 rounded ${
+                            !selectedTemplateId
+                              ? "bg-blue-600 text-white"
+                              : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                          }`}
+                        >
+                          {!selectedTemplateId ? "Selected (Default)" : "Select Scratch"}
+                        </span>
+                        <div className="w-4 h-4 rounded-full border border-blue-500 flex items-center justify-center">
+                          {!selectedTemplateId && (
+                            <div className="w-2 h-2 rounded-full bg-blue-500" />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Existing Builds as Templates */}
+                  {filteredTemplates.map((template) => {
+                    const isSelected = selectedTemplateId === (template.id || template.uuid);
+                    const frameObj = frames.find((f) => f.uuid === template.frameUuid);
+                    const motorObj = motors.find((m) => m.uuid === template.motorUuid);
+                    const fcObj = fcs.find((f) => f.uuid === template.flightControllerUuid);
+
+                    const summaryParts = [frameObj?.name, motorObj?.name, fcObj?.name].filter(
+                      Boolean,
+                    );
+
+                    return (
+                      <div
+                        key={template.id || template.uuid}
+                        onClick={() => applyTemplate(template)}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {template.name}
+                            </span>
+                            {frameObj?.geometry && (
+                              <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 shrink-0">
+                                {frameObj.geometry}
+                              </span>
+                            )}
+                          </div>
+                          {summaryParts.length > 0 && (
+                            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 truncate">
+                              {summaryParts.join(" • ")}
+                            </div>
+                          )}
+                          {template.description && (
+                            <div className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-0.5 line-clamp-1">
+                              {template.description}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                          <span
+                            className={`text-[10px] uppercase font-bold tracking-wide px-2.5 py-1 rounded ${
+                              isSelected
+                                ? "bg-blue-600 text-white"
+                                : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                            }`}
+                          >
+                            {isSelected ? "Template Active" : "Use Template"}
+                          </span>
+                          <div className="w-4 h-4 rounded-full border border-blue-500 flex items-center justify-center">
+                            {isSelected && <div className="w-2 h-2 rounded-full bg-blue-500" />}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {filteredTemplates.length === 0 && searchTemplate && (
+                    <p className="text-xs text-zinc-400 italic py-2 text-center">
+                      No templates matching "{searchTemplate}".
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
           {/* Stage Gating Banner */}
           {activeStage === 1 && !stage1Complete && (
             <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300 flex items-start gap-3 text-xs">
@@ -2496,7 +2701,7 @@ export function BuildWizardPage() {
           <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-3">
             <button
               type="button"
-              disabled={activeStage === 1}
+              disabled={activeStage === 0}
               onClick={handlePrevStage}
               className="w-full sm:w-auto px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
@@ -2514,11 +2719,13 @@ export function BuildWizardPage() {
                 className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-xs transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <span>
-                  {activeStage === 1
-                    ? "Next: Flight Electronics →"
-                    : activeStage === 2
-                      ? "Next: Video →"
-                      : "Next: Review & Save →"}
+                  {activeStage === 0
+                    ? "Next: Airframe & Propulsion →"
+                    : activeStage === 1
+                      ? "Next: Flight Electronics →"
+                      : activeStage === 2
+                        ? "Next: Video →"
+                        : "Next: Review & Save →"}
                 </span>
               </button>
             )}
@@ -2527,6 +2734,42 @@ export function BuildWizardPage() {
 
         {/* Right Column: Live Build Evaluator */}
         <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-4">
+          {/* Prominent Reset Wizard Action Bar (Distinguished from Live Evaluation) */}
+          <div className="p-3 rounded-2xl border border-red-500/30 bg-gradient-to-r from-red-50 dark:from-red-950/40 via-white dark:via-zinc-900/80 to-zinc-50 dark:to-zinc-900/90 shadow-xs flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-8 h-8 rounded-xl bg-red-100 dark:bg-red-500/20 border border-red-200 dark:border-red-500/30 flex items-center justify-center shrink-0 text-red-600 dark:text-red-400">
+                <RotateCcw size={16} />
+              </div>
+              <div className="min-w-0">
+                <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                  Reset Wizard
+                </div>
+                <div className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                  Clear all selections &amp; return to Stage 0
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={resetWizard}
+              className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 active:scale-95 text-white text-xs font-bold transition-all shadow-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
+              title="Clear all fields and return to Stage 0"
+            >
+              <RotateCcw size={13} />
+              <span>Reset</span>
+            </button>
+          </div>
+
+          {/* Distinct Live Evaluation Section Header */}
+          <div className="flex items-center justify-between px-1 pt-1">
+            <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              Live Evaluation
+            </span>
+            <span className="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
+              Real-time Telemetry
+            </span>
+          </div>
+
           <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white dark:from-zinc-900 to-zinc-50 dark:to-zinc-950 p-4 space-y-4 shadow-lg">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5">

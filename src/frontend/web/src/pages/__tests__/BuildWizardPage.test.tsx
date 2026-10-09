@@ -19,7 +19,7 @@ describe("BuildWizardPage Component", () => {
     );
   }
 
-  it("renders with initial empty state: 0 parts selected, 0.0g dry weight, Stage 1 active", async () => {
+  it("renders with initial empty state: Stage 0 active, Start from Scratch default", async () => {
     renderWizard();
 
     // Check title & banner
@@ -28,13 +28,17 @@ describe("BuildWizardPage Component", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/Interactive Build Wizard/i)).toBeInTheDocument();
 
-    // Stage 1 active, stages 2-4 disabled
-    expect(screen.getByText("Airframe & Propulsion")).toBeInTheDocument();
-    expect(screen.getByText("0/3")).toBeInTheDocument();
+    // Stage 0 active, Stage 1 unlocked (0/3), stages 2-4 disabled
+    expect(screen.getByText("Template Selection")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /stage 1/i })).toBeEnabled();
     expect(screen.getByRole("button", { name: /stage 2/i })).toBeDisabled();
     expect(screen.getByRole("button", { name: /stage 3/i })).toBeDisabled();
     expect(screen.getByRole("button", { name: /stage 4/i })).toBeDisabled();
-    expect(screen.getAllByText("Required").length).toBe(3);
+
+    // Stage 0 baseline options
+    expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
+    expect(screen.getAllByText("Start from Scratch").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Selected (Default)")).toBeInTheDocument();
 
     // Initial dry weight is 0.0g
     expect(screen.getByText("0.0g")).toBeInTheDocument();
@@ -43,6 +47,9 @@ describe("BuildWizardPage Component", () => {
   it("allows searching for frames and filtering products in real time", async () => {
     const user = userEvent.setup();
     renderWizard();
+
+    // Advance to Stage 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
     const searchInput = await screen.findByPlaceholderText(
       /Search frames by name, brand, geometry/i,
@@ -65,6 +72,9 @@ describe("BuildWizardPage Component", () => {
   it("allows selecting Stage 1 parts, dynamically updates motor count, and unlocks Stage 2", async () => {
     const user = userEvent.setup();
     renderWizard();
+
+    // Advance to Stage 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
     // 1A. Select Frame
     const frameCard = await screen.findByText("Master 5 V2");
@@ -95,6 +105,9 @@ describe("BuildWizardPage Component", () => {
   it("handles conditional ESC and Receiver selection: standalone FC requires separate components, AIO FC allows integrated components with rich specs", async () => {
     const user = userEvent.setup();
     renderWizard();
+
+    // Advance to Stage 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
     // Select Stage 1 parts
     await user.click(await screen.findByText("Master 5 V2"));
@@ -146,6 +159,9 @@ describe("BuildWizardPage Component", () => {
   it("handles Stage 2 RX antenna & GPS and Stage 3 Video optional components with 'Set All to None'", async () => {
     const user = userEvent.setup();
     renderWizard();
+
+    // Advance to Stage 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
     // Complete Stage 1
     await user.click(await screen.findByText("Master 5 V2"));
@@ -230,19 +246,23 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("+0g")).toBeInTheDocument();
   });
 
-  it("allows reviewing BOM in Stage 4 and saving the build to PostgreSQL", async () => {
+  it("allows selecting a template in Stage 0, reviewing BOM in Stage 4, and saving the build to PostgreSQL", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Use 5" Freestyle preset to quickly populate all parts
-    const presetBtn = await screen.findByRole("button", { name: /5" Freestyle Preset/i });
-    await user.click(presetBtn);
+    // In Stage 0, select "Bando Basher 5 inch" template
+    const templateCard = await screen.findByText("Bando Basher 5 inch");
+    await user.click(templateCard);
+
+    // Template should be active and Stages 1-4 unlocked
+    expect(screen.getByText("Template Active")).toBeInTheDocument();
 
     // Navigate to Stage 4 (Review & Save)
-    const stage4Tab = screen.getByRole("button", { name: /Review & Save/i });
+    const stage4Tab = screen.getByRole("button", { name: /Stage 4/i });
+    expect(stage4Tab).toBeEnabled();
     await user.click(stage4Tab);
 
-    // Check BOM items
+    // Check BOM items populated from template
     expect(await screen.findByText(/Bill of Materials \(BOM\)/i)).toBeInTheDocument();
     expect(screen.getByText(/Motors: ECO II 2207 \(4x\)/i)).toBeInTheDocument();
     expect(screen.getByText(/Flight Controller: F405 V4 FC/i)).toBeInTheDocument();
@@ -253,5 +273,28 @@ describe("BuildWizardPage Component", () => {
 
     // Should navigate to saved build profile
     expect(await screen.findByTestId("build-profile-page")).toBeInTheDocument();
+  });
+
+  it("resets all wizard selections and returns to Stage 0 on Reset button click", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Select template in Stage 0
+    const templateCard = await screen.findByText("Bando Basher 5 inch");
+    await user.click(templateCard);
+    expect(screen.getByText("Template Active")).toBeInTheDocument();
+
+    // Advance to Stage 1
+    await user.click(screen.getByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    expect(screen.getByText("1A. Frame Chassis")).toBeInTheDocument();
+
+    // Click Reset button in the Reset Wizard card
+    const resetBtn = screen.getByRole("button", { name: /Reset/i });
+    await user.click(resetBtn);
+
+    // Should return to Stage 0 with Start from Scratch selected
+    expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
+    expect(screen.getByText("Selected (Default)")).toBeInTheDocument();
+    expect(screen.getByText("0.0g")).toBeInTheDocument();
   });
 });

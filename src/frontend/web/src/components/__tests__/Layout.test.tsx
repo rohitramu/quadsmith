@@ -52,7 +52,11 @@ describe("Layout Component", () => {
     renderWithProviders(<Layout />, { route: "/" });
 
     // Sidebar links
-    expect(screen.getByRole("link", { name: "Builds" })).toHaveAttribute("href", "/");
+    expect(screen.queryByRole("link", { name: "Builds" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Build Wizard/i })).toHaveAttribute(
+      "href",
+      "/builds/new",
+    );
     expect(screen.getByRole("link", { name: "Hardware" })).toHaveAttribute(
       "href",
       "/components/hardware",

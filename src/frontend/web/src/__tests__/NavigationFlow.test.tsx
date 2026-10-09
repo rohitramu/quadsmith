@@ -88,15 +88,26 @@ describe("Full Application Navigation Flow", () => {
     expect(await screen.findByText("All-Up Weight")).toBeInTheDocument();
     expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
 
-    // 13. Click "Builds" in sidebar to navigate back to home
-    const sidebar = screen.getByRole("complementary");
-    const buildsLink = within(sidebar).getByRole("link", { name: "Builds" });
-    await user.click(buildsLink);
+    // 13. Click Quadsmith logo to navigate back to Home Page
+    const homeLogoLink = screen.getByAltText("Quadsmith").closest("a");
+    await user.click(homeLogoLink!);
 
     expect(
       await screen.findByRole("heading", {
         level: 1,
         name: "Welcome to Quadsmith",
+      }),
+    ).toBeInTheDocument();
+
+    // 14. Click "Build Wizard" in sidebar to navigate to /builds/new
+    const sidebar = screen.getByRole("complementary");
+    const wizardLink = within(sidebar).getByRole("link", { name: /Build Wizard/i });
+    await user.click(wizardLink);
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "Design Custom Drone",
       }),
     ).toBeInTheDocument();
   });

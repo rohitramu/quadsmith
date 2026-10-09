@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { Moon, Sun, Search, ChevronDown, ChevronRight, X, Loader2 } from "lucide-react";
+import { Moon, Sun, Search, ChevronDown, ChevronRight, X, Loader2, Wand2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { search } from "../gen/quadsmith/search-SearchService_connectquery";
@@ -255,18 +255,6 @@ export function Layout() {
               <ul className="space-y-1">
                 <li>
                   <Link
-                    to="/"
-                    className={`block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
-                      location.pathname === "/" || location.pathname === "/builds"
-                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
-                        : "text-zinc-700 dark:text-zinc-300"
-                    }`}
-                  >
-                    Builds
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     to="/builds/new"
                     className={`flex items-center justify-between px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
                       location.pathname === "/builds/new"
@@ -274,7 +262,17 @@ export function Layout() {
                         : "text-zinc-700 dark:text-zinc-300"
                     }`}
                   >
-                    <span>Build Wizard</span>
+                    <div className="flex items-center gap-2.5">
+                      <Wand2
+                        size={16}
+                        className={
+                          location.pathname === "/builds/new"
+                            ? "text-blue-600 dark:text-blue-400"
+                            : "text-zinc-500"
+                        }
+                      />
+                      <span>Build Wizard</span>
+                    </div>
                     <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider">
                       New
                     </span>

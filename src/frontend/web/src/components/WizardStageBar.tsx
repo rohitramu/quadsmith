@@ -4,12 +4,14 @@ export interface WizardStageBarProps {
   currentStage: number;
   unlockedStages: number[];
   stageCompletion: {
+    0: boolean;
     1: boolean;
     2: boolean;
     3: boolean;
     4: boolean;
   };
   stageProgressText: {
+    0: string;
     1: string;
     2: string;
     3: string;
@@ -20,14 +22,19 @@ export interface WizardStageBarProps {
 
 const STAGES = [
   {
+    stage: 0,
+    title: "Template Selection",
+    subtitle: "Scratch or Template",
+  },
+  {
     stage: 1,
     title: "Airframe & Propulsion",
-    subtitle: "Frame, Motors, Props (Required)",
+    subtitle: "Frame, Motors, Props",
   },
   {
     stage: 2,
     title: "Flight Electronics",
-    subtitle: "FC, ESC, RX, Antenna & GPS",
+    subtitle: "FC, ESC, RX, GPS",
   },
   {
     stage: 3,
@@ -50,12 +57,12 @@ export function WizardStageBar({
 }: WizardStageBarProps) {
   return (
     <nav aria-label="Build Stages" className="w-full">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
         {STAGES.map((s) => {
           const isActive = currentStage === s.stage;
           const isUnlocked = unlockedStages.includes(s.stage);
-          const isComplete = stageCompletion[s.stage as 1 | 2 | 3 | 4];
-          const progress = stageProgressText[s.stage as 1 | 2 | 3 | 4];
+          const isComplete = stageCompletion[s.stage as 0 | 1 | 2 | 3 | 4];
+          const progress = stageProgressText[s.stage as 0 | 1 | 2 | 3 | 4];
 
           let borderClass = "border-zinc-200 dark:border-zinc-800";
           let bgClass = "bg-white dark:bg-zinc-900";
