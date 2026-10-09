@@ -191,13 +191,18 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const gamma = 0.68 + 0.1 * twrFactor;
         const hover = twr > 0 ? Math.pow(1.0 / twr, gamma) * 100 : 100;
         const weightRatio = totalWeight / safeBase;
-        const warnings: string[] = [];
-        const errors: string[] = [];
+        const systemMessages: any[] = [];
         if (hover > 50) {
-          warnings.push("Drone will be very sluggish (Hover throttle > 50%)");
+          systemMessages.push({
+            severity: 2, // WARNING
+            message: "Drone will be very sluggish (Hover throttle > 50%)",
+          });
         }
         if (hover > 100) {
-          errors.push("Drone is too heavy to take off (Hover throttle > 100%)");
+          systemMessages.push({
+            severity: 3, // ERROR
+            message: "Drone is too heavy to take off (Hover throttle > 100%)",
+          });
         }
         const maxFlightTime = parseFloat(Math.max(1, 7.2 / Math.pow(weightRatio, 1.35)).toFixed(1));
         const minFlightTime = parseFloat((maxFlightTime / 1.9).toFixed(1));
@@ -223,8 +228,10 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           maxFlightTimeMin: maxFlightTime,
           maxAccelerationMps2,
           topSpeedKmh,
-          warnings,
-          errors,
+          systemMessages,
+          buildId: req.build?.id || "",
+          payloadWeightG: payload,
+          batteryId: req.batteryId || req.build?.batteryUuid || "",
         };
       },
     });

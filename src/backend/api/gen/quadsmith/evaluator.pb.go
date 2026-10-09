@@ -131,8 +131,12 @@ type EvaluateBuildRequest struct {
 	// UUIDs/IDs to fetch the actual components for evaluation.
 	Build          *Build  `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
 	PayloadWeightG float32 `protobuf:"fixed32,2,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Optional battery ID or UUID override. If omitted, the build's battery is used.
+	BatteryId string `protobuf:"bytes,3,opt,name=battery_id,json=batteryId,proto3" json:"battery_id,omitempty"`
+	// Optional build ID or UUID. If build is omitted, the backend fetches this build.
+	BuildId       string `protobuf:"bytes,4,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *EvaluateBuildRequest) Reset() {
@@ -179,6 +183,20 @@ func (x *EvaluateBuildRequest) GetPayloadWeightG() float32 {
 	return 0
 }
 
+func (x *EvaluateBuildRequest) GetBatteryId() string {
+	if x != nil {
+		return x.BatteryId
+	}
+	return ""
+}
+
+func (x *EvaluateBuildRequest) GetBuildId() string {
+	if x != nil {
+		return x.BuildId
+	}
+	return ""
+}
+
 type EvaluateBuildResponse struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
 	TotalWeightG           float32                `protobuf:"fixed32,1,opt,name=total_weight_g,json=totalWeightG,proto3" json:"total_weight_g,omitempty"`
@@ -198,6 +216,10 @@ type EvaluateBuildResponse struct {
 	HoverRpm uint32 `protobuf:"varint,11,opt,name=hover_rpm,json=hoverRpm,proto3" json:"hover_rpm,omitempty"`
 	// System diagnostic messages (errors, warnings, and informational notices)
 	SystemMessages []*SystemMessage `protobuf:"bytes,12,rep,name=system_messages,json=systemMessages,proto3" json:"system_messages,omitempty"`
+	// Evaluated input parameters
+	BuildId        string  `protobuf:"bytes,13,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	PayloadWeightG float32 `protobuf:"fixed32,14,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
+	BatteryId      string  `protobuf:"bytes,15,opt,name=battery_id,json=batteryId,proto3" json:"battery_id,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -302,6 +324,27 @@ func (x *EvaluateBuildResponse) GetSystemMessages() []*SystemMessage {
 	return nil
 }
 
+func (x *EvaluateBuildResponse) GetBuildId() string {
+	if x != nil {
+		return x.BuildId
+	}
+	return ""
+}
+
+func (x *EvaluateBuildResponse) GetPayloadWeightG() float32 {
+	if x != nil {
+		return x.PayloadWeightG
+	}
+	return 0
+}
+
+func (x *EvaluateBuildResponse) GetBatteryId() string {
+	if x != nil {
+		return x.BatteryId
+	}
+	return ""
+}
+
 var File_evaluator_proto protoreflect.FileDescriptor
 
 const file_evaluator_proto_rawDesc = "" +
@@ -309,10 +352,13 @@ const file_evaluator_proto_rawDesc = "" +
 	"\x0fevaluator.proto\x12\tquadsmith\x1a\vbuild.proto\"g\n" +
 	"\rSystemMessage\x12<\n" +
 	"\bseverity\x18\x01 \x01(\x0e2 .quadsmith.SystemMessageSeverityR\bseverity\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"h\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xa2\x01\n" +
 	"\x14EvaluateBuildRequest\x12&\n" +
 	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12(\n" +
-	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\x97\x04\n" +
+	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
+	"\n" +
+	"battery_id\x18\x03 \x01(\tR\tbatteryId\x12\x19\n" +
+	"\bbuild_id\x18\x04 \x01(\tR\abuildId\"\xfb\x04\n" +
 	"\x15EvaluateBuildResponse\x12$\n" +
 	"\x0etotal_weight_g\x18\x01 \x01(\x02R\ftotalWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
@@ -324,7 +370,11 @@ const file_evaluator_proto_rawDesc = "" +
 	"\rtop_speed_kmh\x18\n" +
 	" \x01(\x02R\vtopSpeedKmh\x12\x1b\n" +
 	"\thover_rpm\x18\v \x01(\rR\bhoverRpm\x12A\n" +
-	"\x0fsystem_messages\x18\f \x03(\v2\x18.quadsmith.SystemMessageR\x0esystemMessagesJ\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\bwarningsR\x06errors*\xaa\x01\n" +
+	"\x0fsystem_messages\x18\f \x03(\v2\x18.quadsmith.SystemMessageR\x0esystemMessages\x12\x19\n" +
+	"\bbuild_id\x18\r \x01(\tR\abuildId\x12(\n" +
+	"\x10payload_weight_g\x18\x0e \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
+	"\n" +
+	"battery_id\x18\x0f \x01(\tR\tbatteryIdJ\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\bwarningsR\x06errors*\xaa\x01\n" +
 	"\x15SystemMessageSeverity\x12'\n" +
 	"#SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cSYSTEM_MESSAGE_SEVERITY_INFO\x10\x01\x12#\n" +

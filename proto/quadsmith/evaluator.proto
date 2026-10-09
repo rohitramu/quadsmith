@@ -23,6 +23,12 @@ message EvaluateBuildRequest {
   // UUIDs/IDs to fetch the actual components for evaluation.
   Build build = 1;
   float payload_weight_g = 2;
+
+  // Optional battery ID or UUID override. If omitted, the build's battery is used.
+  string battery_id = 3;
+
+  // Optional build ID or UUID. If build is omitted, the backend fetches this build.
+  string build_id = 4;
 }
 
 message EvaluateBuildResponse {
@@ -48,6 +54,11 @@ message EvaluateBuildResponse {
 
   // System diagnostic messages (errors, warnings, and informational notices)
   repeated SystemMessage system_messages = 12;
+
+  // Evaluated input parameters
+  string build_id = 13;
+  float payload_weight_g = 14;
+  string battery_id = 15;
 
   reserved 5, 6;
   reserved "warnings", "errors";

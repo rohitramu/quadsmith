@@ -21,6 +21,13 @@ func NewEvaluatorServiceHandler(db *pgxpool.Pool) *EvaluatorServiceHandler {
 
 func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
 	b := req.Msg.GetBuild()
+	if b == nil && req.Msg.GetBuildId() != "" {
+		fetched, err := pb.GetBuild(ctx, s.db, req.Msg.GetBuildId(), nil)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", req.Msg.GetBuildId()))
+		}
+		b = fetched
+	}
 	if b == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is required"))
 	}
@@ -60,12 +67,16 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 
 	// 3. Fetch Battery
 	var battery *pb.Battery
-	if b.BatteryUuid != "" {
-		bat, err := pb.GetBattery(ctx, s.db, b.BatteryUuid, nil)
+	targetBat := req.Msg.GetBatteryId()
+	if targetBat == "" {
+		targetBat = b.BatteryUuid
+	}
+	if targetBat != "" {
+		bat, err := pb.GetBattery(ctx, s.db, targetBat, nil)
 		if err != nil {
 			systemMessages = append(systemMessages, &pb.SystemMessage{
 				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-				Message:  fmt.Sprintf("Battery not found: %s", b.BatteryUuid),
+				Message:  fmt.Sprintf("Battery not found: %s", targetBat),
 			})
 		} else {
 			battery = bat
@@ -191,7 +202,28 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	)
 	systemMessages = append(systemMessages, phys.SystemMessages...)
 
+	buildId := b.Id
+	if buildId == "" {
+		buildId = req.Msg.GetBuildId()
+	}
+	if buildId == "" {
+		buildId = b.Uuid
+	}
+
+	batteryId := ""
+	if battery != nil {
+		batteryId = battery.Id
+		if batteryId == "" {
+			batteryId = battery.Uuid
+		}
+	} else if targetBat != "" {
+		batteryId = targetBat
+	}
+
 	res := &pb.EvaluateBuildResponse{
+		BuildId:                buildId,
+		PayloadWeightG:         payloadWeight,
+		BatteryId:              batteryId,
 		TotalWeightG:           totalWeight,
 		ThrustToWeightRatio:    phys.ThrustToWeightRatio,
 		HoverThrottlePercent:   phys.HoverThrottlePercent,

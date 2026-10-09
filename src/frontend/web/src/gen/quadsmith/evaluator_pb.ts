@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIlEKFEV2YWx1YXRlQnVpbGRSZXF1ZXN0Eh8KBWJ1aWxkGAEgASgLMhAucXVhZHNtaXRoLkJ1aWxkEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAIi5gIKFUV2YWx1YXRlQnVpbGRSZXNwb25zZRIWCg50b3RhbF93ZWlnaHRfZxgBIAEoAhIeChZob3Zlcl90aHJvdHRsZV9wZXJjZW50GAIgASgCEh4KFnRocnVzdF90b193ZWlnaHRfcmF0aW8YAyABKAISIQoZZXN0aW1hdGVkX2ZsaWdodF90aW1lX21pbhgEIAEoAhIbChNtaW5fZmxpZ2h0X3RpbWVfbWluGAcgASgCEhsKE21heF9mbGlnaHRfdGltZV9taW4YCCABKAISHQoVbWF4X2FjY2VsZXJhdGlvbl9tcHMyGAkgASgCEhUKDXRvcF9zcGVlZF9rbWgYCiABKAISEQoJaG92ZXJfcnBtGAsgASgNEjEKD3N5c3RlbV9tZXNzYWdlcxgMIAMoCzIYLnF1YWRzbWl0aC5TeXN0ZW1NZXNzYWdlSgQIBRAGSgQIBhAHUgh3YXJuaW5nc1IGZXJyb3JzKqoBChVTeXN0ZW1NZXNzYWdlU2V2ZXJpdHkSJwojU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfVU5TUEVDSUZJRUQQABIgChxTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9JTkZPEAESIwofU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfV0FSTklORxACEiEKHVNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0VSUk9SEAMyZgoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIncKFEV2YWx1YXRlQnVpbGRSZXF1ZXN0Eh8KBWJ1aWxkGAEgASgLMhAucXVhZHNtaXRoLkJ1aWxkEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAISEgoKYmF0dGVyeV9pZBgDIAEoCRIQCghidWlsZF9pZBgEIAEoCSKmAwoVRXZhbHVhdGVCdWlsZFJlc3BvbnNlEhYKDnRvdGFsX3dlaWdodF9nGAEgASgCEh4KFmhvdmVyX3Rocm90dGxlX3BlcmNlbnQYAiABKAISHgoWdGhydXN0X3RvX3dlaWdodF9yYXRpbxgDIAEoAhIhChllc3RpbWF0ZWRfZmxpZ2h0X3RpbWVfbWluGAQgASgCEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAhIdChVtYXhfYWNjZWxlcmF0aW9uX21wczIYCSABKAISFQoNdG9wX3NwZWVkX2ttaBgKIAEoAhIRCglob3Zlcl9ycG0YCyABKA0SMQoPc3lzdGVtX21lc3NhZ2VzGAwgAygLMhgucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2USEAoIYnVpbGRfaWQYDSABKAkSGAoQcGF5bG9hZF93ZWlnaHRfZxgOIAEoAhISCgpiYXR0ZXJ5X2lkGA8gASgJSgQIBRAGSgQIBhAHUgh3YXJuaW5nc1IGZXJyb3JzKqoBChVTeXN0ZW1NZXNzYWdlU2V2ZXJpdHkSJwojU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfVU5TUEVDSUZJRUQQABIgChxTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9JTkZPEAESIwofU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfV0FSTklORxACEiEKHVNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0VSUk9SEAMyZgoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file_build],
   );
 
@@ -57,6 +57,20 @@ export type EvaluateBuildRequest = Message<"quadsmith.EvaluateBuildRequest"> & {
    * @generated from field: float payload_weight_g = 2;
    */
   payloadWeightG: number;
+
+  /**
+   * Optional battery ID or UUID override. If omitted, the build's battery is used.
+   *
+   * @generated from field: string battery_id = 3;
+   */
+  batteryId: string;
+
+  /**
+   * Optional build ID or UUID. If build is omitted, the backend fetches this build.
+   *
+   * @generated from field: string build_id = 4;
+   */
+  buildId: string;
 };
 
 /**
@@ -132,6 +146,23 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
    * @generated from field: repeated quadsmith.SystemMessage system_messages = 12;
    */
   systemMessages: SystemMessage[];
+
+  /**
+   * Evaluated input parameters
+   *
+   * @generated from field: string build_id = 13;
+   */
+  buildId: string;
+
+  /**
+   * @generated from field: float payload_weight_g = 14;
+   */
+  payloadWeightG: number;
+
+  /**
+   * @generated from field: string battery_id = 15;
+   */
+  batteryId: string;
 };
 
 /**

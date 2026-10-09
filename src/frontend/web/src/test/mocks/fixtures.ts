@@ -295,4 +295,7 @@ export const mockEvaluation1: EvaluateBuildResponse = create(EvaluateBuildRespon
   topSpeedKmh: 172.5,
   hoverRpm: 11463,
   systemMessages: [],
+  buildId: "bando-basher-5-inch",
+  payloadWeightG: 0,
+  batteryId: "tattu-rline-v5-1400mah-6s",
 });

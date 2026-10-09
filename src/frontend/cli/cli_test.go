@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -644,6 +645,9 @@ func TestEvaluate_Success(t *testing.T) {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("mismatched build"))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
+				BuildId:                req.Msg.Build.Id,
+				PayloadWeightG:         req.Msg.PayloadWeightG,
+				BatteryId:              "battery-1",
 				TotalWeightG:           350.5,
 				HoverThrottlePercent:   28.4,
 				ThrustToWeightRatio:    7.2,
@@ -677,6 +681,15 @@ func TestEvaluate_Success(t *testing.T) {
 		t.Fatalf("failed to unmarshal JSON: %v\nOutput: %s", err, outBuf.String())
 	}
 
+	if res["build_id"] != "build-1" {
+		t.Errorf("expected build_id: 'build-1', got: %v", res["build_id"])
+	}
+	if res["payload_weight_g"] != float64(30) {
+		t.Errorf("expected payload_weight_g: 30, got: %v", res["payload_weight_g"])
+	}
+	if res["battery_id"] != "battery-1" {
+		t.Errorf("expected battery_id: 'battery-1', got: %v", res["battery_id"])
+	}
 	if res["system_messages"] == nil {
 		t.Errorf("expected system_messages in output: %+v", res)
 	}
@@ -698,6 +711,9 @@ func TestEvaluate_DefaultYAML(t *testing.T) {
 	mockEval := &mockEvaluatorService{
 		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
+				BuildId:             req.Msg.Build.Id,
+				PayloadWeightG:      req.Msg.PayloadWeightG,
+				BatteryId:           "default-battery-id",
 				TotalWeightG:        350.5,
 				ThrustToWeightRatio: 7.2,
 				SystemMessages: []*pb.SystemMessage{
@@ -729,11 +745,64 @@ func TestEvaluate_DefaultYAML(t *testing.T) {
 		t.Fatalf("expected valid YAML by default, got: %v\nOutput:\n%s", err, outBuf.String())
 	}
 
+	if res["build_id"] != "build-1" {
+		t.Errorf("expected build_id: 'build-1', got: %v", res["build_id"])
+	}
+	if res["battery_id"] != "default-battery-id" {
+		t.Errorf("expected battery_id: 'default-battery-id', got: %v", res["battery_id"])
+	}
 	if res["thrust_to_weight_ratio"] != float64(7.2) {
 		t.Errorf("expected thrust_to_weight_ratio: 7.2, got: %v", res["thrust_to_weight_ratio"])
 	}
 	if res["system_messages"] == nil {
 		t.Errorf("expected system_messages in output: %+v", res)
+	}
+}
+
+func TestEvaluate_WithBatteryOverride(t *testing.T) {
+	mockBuild := &mockBuildService{
+		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {
+			return connect.NewResponse(&pb.Build{
+				Id:   "build-1",
+				Name: "Freestyle 5 inch",
+			}), nil
+		},
+	}
+
+	mockEval := &mockEvaluatorService{
+		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+			if req.Msg.BatteryId != "custom-bat" {
+				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("expected custom-bat, got %s", req.Msg.BatteryId))
+			}
+			return connect.NewResponse(&pb.EvaluateBuildResponse{
+				BuildId:        req.Msg.Build.Id,
+				PayloadWeightG: req.Msg.PayloadWeightG,
+				BatteryId:      req.Msg.BatteryId,
+				TotalWeightG:   320.0,
+			}), nil
+		},
+	}
+
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"builds", "evaluate", "build-1", "--battery", "custom-bat", "--json"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var res map[string]interface{}
+	if err := json.Unmarshal(outBuf.Bytes(), &res); err != nil {
+		t.Fatalf("failed to unmarshal JSON: %v", err)
+	}
+	if res["battery_id"] != "custom-bat" {
+		t.Errorf("expected battery_id: 'custom-bat', got: %v", res["battery_id"])
 	}
 }
 

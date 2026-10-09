@@ -126,6 +126,12 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	if !strings.Contains(outputYAML, "thrust_to_weight_ratio:") {
 		t.Errorf("Expected YAML output with 'thrust_to_weight_ratio:', got:\n%s", outputYAML)
 	}
+	if !strings.Contains(outputYAML, "build_id: bando-basher-5-inch") {
+		t.Errorf("Expected YAML output with 'build_id: bando-basher-5-inch', got:\n%s", outputYAML)
+	}
+	if !strings.Contains(outputYAML, "battery_id:") {
+		t.Errorf("Expected YAML output with 'battery_id:', got:\n%s", outputYAML)
+	}
 
 	// 2. Test --json flag
 	cmd := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--json")
@@ -144,6 +150,15 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 		t.Fatalf("Failed to parse CLI JSON output: %v\nOutput: %s", err, stdout.String())
 	}
 
+	if eval["build_id"] != "bando-basher-5-inch" {
+		t.Errorf("Expected build_id == 'bando-basher-5-inch', got: %v", eval["build_id"])
+	}
+	if eval["payload_weight_g"] != float64(0) {
+		t.Errorf("Expected payload_weight_g == 0, got: %v", eval["payload_weight_g"])
+	}
+	if batId, ok := eval["battery_id"].(string); !ok || batId == "" {
+		t.Errorf("Expected non-empty battery_id in evaluation response, got: %v", eval["battery_id"])
+	}
 	if _, ok := eval["thrust_to_weight_ratio"]; !ok {
 		t.Errorf("Expected thrust_to_weight_ratio in evaluation response, got: %v", eval)
 	}
@@ -155,7 +170,27 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	}
 	t.Logf("CLI returned evaluation: %v", eval)
 
-	// 3. Test that --yaml flag is NOT accepted since YAML is the default
+	// 3. Test --payload and --battery flags
+	cmdCustom := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--payload", "75", "--battery", "cnhl-black-ops-1300mah-6s", "--json")
+	cmdCustom.Env = append(cmdCustom.Env, "QS_API_URL="+apiUrl)
+	var stdoutCustom, stderrCustom bytes.Buffer
+	cmdCustom.Stdout = &stdoutCustom
+	cmdCustom.Stderr = &stderrCustom
+	if err := cmdCustom.Run(); err != nil {
+		t.Fatalf("CLI evaluate with custom payload/battery failed: %v\nStderr: %s", err, stderrCustom.String())
+	}
+	var evalCustom map[string]interface{}
+	if err := json.Unmarshal(stdoutCustom.Bytes(), &evalCustom); err != nil {
+		t.Fatalf("Failed to parse JSON output: %v", err)
+	}
+	if evalCustom["payload_weight_g"] != float64(75) {
+		t.Errorf("Expected payload_weight_g == 75, got: %v", evalCustom["payload_weight_g"])
+	}
+	if evalCustom["battery_id"] != "cnhl-black-ops-1300mah-6s" {
+		t.Errorf("Expected battery_id == 'cnhl-black-ops-1300mah-6s', got: %v", evalCustom["battery_id"])
+	}
+
+	// 4. Test that --yaml flag is NOT accepted since YAML is the default
 	cmdRejectYAML := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--yaml")
 	cmdRejectYAML.Env = append(cmdRejectYAML.Env, "QS_API_URL="+apiUrl)
 	var stderrReject bytes.Buffer

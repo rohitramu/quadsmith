@@ -2031,9 +2031,11 @@ func newRootCmd() *cobra.Command {
 			}
 
 			payload, _ := cmd.Flags().GetFloat32("payload")
+			battery, _ := cmd.Flags().GetString("battery")
 			eReq := &pb.EvaluateBuildRequest{
 				Build:          bRes.Msg,
 				PayloadWeightG: payload,
+				BatteryId:      battery,
 			}
 			eRes, err := evalClient.EvaluateBuild(context.Background(), connect.NewRequest(eReq))
 			if err != nil {
@@ -2044,6 +2046,20 @@ func newRootCmd() *cobra.Command {
 		},
 	}
 	evalCmd.Flags().Float32("payload", 0, "Payload weight in grams")
+	evalCmd.Flags().String("battery", "", "Optional battery ID override")
+	evalCmd.RegisterFlagCompletionFunc("battery", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{PageSize: 100}))
+		if err != nil {
+			return nil, cobra.ShellCompDirectiveError
+		}
+		var comps []string
+		for _, item := range res.Msg.Batteries {
+			if strings.HasPrefix(item.Id, toComplete) {
+				comps = append(comps, item.Id)
+			}
+		}
+		return comps, cobra.ShellCompDirectiveNoFileComp
+	})
 	buildCmd.AddCommand(evalCmd)
 
 	// --- CUSTOM COMPLETION ---
