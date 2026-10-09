@@ -435,7 +435,7 @@ func TestCLI_Pagination(t *testing.T) {
 	qsPath := resolveQSPath(t)
 
 	// 1. List with --limit, --filter, --sort
-	cmd := exec.Command(qsPath, "components", "motors", "list", "--json", "--limit", "5", "--filter", `manufacturer == "BETAFPV"`, "--sort", "^kv")
+	cmd := exec.Command(qsPath, "components", "hardware", "motors", "list", "--json", "--limit", "5", "--filter", `manufacturer == "BETAFPV"`, "--sort", "^kv")
 	cmd.Env = append(cmd.Env, "QS_API_URL="+srv.URL)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout

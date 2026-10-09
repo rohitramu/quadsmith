@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file__common: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg1fY29tbW9uLnByb3RvEglxdWFkc21pdGgiLwoLTmFtZU9wdGlvbnMSEAoIc2luZ3VsYXIYASABKAkSDgoGcGx1cmFsGAIgASgJIioKD0Zyb250ZW5kT3B0aW9ucxIXCg9kZWZhdWx0X2NvbHVtbnMYASADKAk6WQoIZnJvbnRlbmQSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0YYDIAEoCzIaLnF1YWRzbWl0aC5Gcm9udGVuZE9wdGlvbnNSCGZyb250ZW5kOk0KBG5hbWUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0oYDIAEoCzIWLnF1YWRzbWl0aC5OYW1lT3B0aW9uc1IEbmFtZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "Cg1fY29tbW9uLnByb3RvEglxdWFkc21pdGgiLwoLTmFtZU9wdGlvbnMSEAoIc2luZ3VsYXIYASABKAkSDgoGcGx1cmFsGAIgASgJIjgKD0Zyb250ZW5kT3B0aW9ucxIXCg9kZWZhdWx0X2NvbHVtbnMYASADKAkSDAoEcGF0aBgCIAEoCTpZCghmcm9udGVuZBIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgASgLMhoucXVhZHNtaXRoLkZyb250ZW5kT3B0aW9uc1IIZnJvbnRlbmQ6TQoEbmFtZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjShgMgASgLMhYucXVhZHNtaXRoLk5hbWVPcHRpb25zUgRuYW1lOkoKD2NvbGxlY3Rpb25fcGF0aBIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjThgMgASgJUg5jb2xsZWN0aW9uUGF0aEIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file_google_protobuf_descriptor],
   );
 
@@ -55,6 +55,14 @@ export type FrontendOptions = Message<"quadsmith.FrontendOptions"> & {
    * @generated from field: repeated string default_columns = 1;
    */
   defaultColumns: string[];
+
+  /**
+   * The collection path (e.g., "components/hardware/motors" or "builds").
+   * The UI's URL paths and the CLI's subcommand structure align with this.
+   *
+   * @generated from field: string path = 2;
+   */
+  path: string;
 };
 
 /**
@@ -82,3 +90,12 @@ export const frontend: GenExtension<MessageOptions, FrontendOptions> =
 export const name: GenExtension<MessageOptions, NameOptions> =
   /*@__PURE__*/
   extDesc(file__common, 1);
+
+/**
+ * Direct collection path option (e.g., "components/hardware/motors" or "builds").
+ *
+ * @generated from extension: string collection_path = 50003;
+ */
+export const collection_path: GenExtension<MessageOptions, string> =
+  /*@__PURE__*/
+  extDesc(file__common, 2);

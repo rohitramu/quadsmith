@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { HARDWARE_COLLECTIONS } from "../lib/hardwareCollections";
+import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 
 export function CategoryPage() {
   const { categoryId } = useParams();
@@ -13,7 +13,7 @@ export function CategoryPage() {
         {collections.map((c) => (
           <Link
             key={c.id}
-            to={`/components/${categoryId}/${c.id}`}
+            to={`/${getCollectionPath(c)}`}
             className="block p-6 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:border-blue-500 transition-colors bg-zinc-50 dark:bg-zinc-900 group"
           >
             <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">

@@ -142,7 +142,7 @@ func TestSilenceUsage_OnConnectionError(t *testing.T) {
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list"})
 
 	err := cmd.Execute()
 	if err == nil {
@@ -161,7 +161,7 @@ func TestSilenceUsage_OnMissingArgs(t *testing.T) {
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "get"}) // requires 1 arg
+	cmd.SetArgs([]string{"components", "hardware", "motors", "get"}) // requires 1 arg
 
 	err := cmd.Execute()
 	if err == nil {
@@ -180,7 +180,7 @@ func TestSilenceUsage_OnUnknownFlag(t *testing.T) {
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--nonexistent-flag"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--nonexistent-flag"})
 
 	err := cmd.Execute()
 	if err == nil {
@@ -199,7 +199,7 @@ func TestList_LimitNegative(t *testing.T) {
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--limit", "-1"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--limit", "-1"})
 
 	err := cmd.Execute()
 	if err == nil {
@@ -241,7 +241,7 @@ func TestList_LimitApplied(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "-l", "3"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "-l", "3"})
 
 	err := cmd.Execute()
 	if err != nil {
@@ -279,7 +279,7 @@ func TestList_LimitJSON(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--json", "--limit", "2"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--json", "--limit", "2"})
 
 	err := cmd.Execute()
 	if err != nil {
@@ -301,7 +301,7 @@ func TestList_RemovedPageTokenFlag(t *testing.T) {
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--page-token", "some-token"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--page-token", "some-token"})
 
 	err := cmd.Execute()
 	if err == nil {
@@ -320,7 +320,7 @@ func TestList_RemovedPageSizeFlag(t *testing.T) {
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--page-size", "10"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--page-size", "10"})
 
 	err := cmd.Execute()
 	if err == nil {
@@ -366,7 +366,7 @@ func TestList_AutoPaging(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--json"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--json"})
 
 	err := cmd.Execute()
 	if err != nil {
@@ -387,7 +387,7 @@ func TestCompletion_NoFlagDescriptions(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"__complete", "components", "motors", "list", "-"})
+	cmd.SetArgs([]string{"__complete", "components", "hardware", "motors", "list", "-"})
 
 	err := cmd.Execute()
 	if err != nil {

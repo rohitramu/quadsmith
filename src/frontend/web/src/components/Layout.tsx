@@ -3,7 +3,7 @@ import { Moon, Sun, Search, ChevronDown, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
-import { HARDWARE_COLLECTIONS } from "../lib/hardwareCollections";
+import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 
 export function Layout() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
@@ -121,7 +121,7 @@ export function Layout() {
                       {HARDWARE_COLLECTIONS.map((c) => (
                         <li key={c.id}>
                           <Link
-                            to={`/components/hardware/${c.id}`}
+                            to={`/${getCollectionPath(c)}`}
                             className="block px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
                           >
                             {c.name}

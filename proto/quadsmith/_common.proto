@@ -25,6 +25,10 @@ message NameOptions {
 message FrontendOptions {
   // The default columns to display in CLI tables and UI collection listings.
   repeated string default_columns = 1;
+
+  // The collection path (e.g., "components/hardware/motors" or "builds").
+  // The UI's URL paths and the CLI's subcommand structure align with this.
+  string path = 2;
 }
 
 // ---------------------------------------------------------
@@ -37,4 +41,7 @@ extend google.protobuf.MessageOptions {
 
   // Human-readable entity names for UI, CLI, and code generators.
   NameOptions name = 50002;
+
+  // Direct collection path option (e.g., "components/hardware/motors" or "builds").
+  string collection_path = 50003;
 }

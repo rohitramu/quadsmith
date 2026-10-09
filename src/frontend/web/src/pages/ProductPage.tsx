@@ -2,7 +2,11 @@ import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
 import { ExternalLink, ChevronRight } from "lucide-react";
-import { getHardwareCollection, type HardwareCollectionDef } from "../lib/hardwareCollections";
+import {
+  getHardwareCollection,
+  getCollectionPath,
+  type HardwareCollectionDef,
+} from "../lib/hardwareCollections";
 import { MediaGallery } from "../components/MediaGallery";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
@@ -50,7 +54,7 @@ function ProductDetailView({
           aria-hidden="true"
         />
         <Link
-          to={`/components/${categoryId}/${collection.id}`}
+          to={`/${getCollectionPath(collection)}`}
           className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
         >
           {collection.name}

@@ -24,6 +24,7 @@ import { MediaGallery } from "../components/MediaGallery";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
 import { buildBatteryCelFilter } from "../lib/batteryFilter";
 import { getTwrDescription } from "../lib/format";
+import { getHardwareCollection, getCollectionPath } from "../lib/hardwareCollections";
 import {
   ChevronRight,
   Gauge,
@@ -84,6 +85,9 @@ function BomComponentCard({
 
   if (!uuid) return null;
 
+  const col = getHardwareCollection(collectionId);
+  const targetPath = col ? getCollectionPath(col) : `components/hardware/${collectionId}`;
+
   return (
     <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
       <div className="flex items-center gap-3 min-w-0">
@@ -103,7 +107,7 @@ function BomComponentCard({
           ) : (
             <div>
               <Link
-                to={`/components/hardware/${collectionId}/${item.id || item.uuid}`}
+                to={`/${targetPath}/${item.id || item.uuid}`}
                 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
               >
                 {item.name || item.id}
@@ -116,7 +120,7 @@ function BomComponentCard({
 
       {item && (
         <Link
-          to={`/components/hardware/${collectionId}/${item.id || item.uuid}`}
+          to={`/${targetPath}/${item.id || item.uuid}`}
           className="text-xs text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 p-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0"
           title={`View ${item.name || item.id} in catalog`}
         >

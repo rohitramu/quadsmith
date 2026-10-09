@@ -18,7 +18,9 @@ message ElectronicSpeedController {
     plural: "Electronic Speed Controllers"
   };
   option (quadsmith.sql.table) = {name: "electronic_speed_controllers"};
+  option (quadsmith.collection_path) = "components/hardware/electronic-speed-controllers";
   option (quadsmith.frontend) = {
+    path: "components/hardware/electronic-speed-controllers"
     default_columns: [
       "manufacturer",
       "name",

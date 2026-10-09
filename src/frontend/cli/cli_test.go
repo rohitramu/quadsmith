@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"connectrpc.com/connect"
+	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
 	pb "quadsmith/api/gen/quadsmith"
@@ -37,7 +38,7 @@ func TestList_YAML(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--yaml"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--yaml"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -70,7 +71,7 @@ func TestList_EmptySlice_JSON(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--json"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--json"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -97,7 +98,7 @@ func TestList_EmptySlice_YAML(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "--yaml"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "--yaml"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -124,7 +125,7 @@ func TestList_EmptySlice_Table(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -156,7 +157,7 @@ func TestGet_JSON(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "get", "motor-1", "--json"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "get", "motor-1", "--json"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -177,7 +178,7 @@ func TestGet_NoYAMLFlag(t *testing.T) {
 	var outBuf bytes.Buffer
 	cmd.SetErr(&errBuf)
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "get", "motor-1", "--yaml"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "get", "motor-1", "--yaml"})
 
 	err := cmd.Execute()
 	if err == nil {
@@ -205,7 +206,7 @@ func TestGet_DefaultYAML(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "get", "motor-table"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "get", "motor-table"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -295,7 +296,27 @@ func TestCommandAliases(t *testing.T) {
 		})
 	}
 
-	// Component collection aliases under components
+	// Intermediate commands under components
+	hardwareTests := []struct {
+		alias    string
+		expected string
+	}{
+		{"hardware", "hardware"},
+		{"hw", "hardware"},
+	}
+	for _, tt := range hardwareTests {
+		t.Run("components/"+tt.alias, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{"components", tt.alias})
+			if err != nil {
+				t.Fatalf("failed to find components alias %q: %v", tt.alias, err)
+			}
+			if cmd.Name() != tt.expected {
+				t.Errorf("components alias %q resolved to %q, want %q", tt.alias, cmd.Name(), tt.expected)
+			}
+		})
+	}
+
+	// Component collection aliases under components/hardware
 	componentTests := []struct {
 		alias        string
 		expectedRoot string
@@ -332,8 +353,8 @@ func TestCommandAliases(t *testing.T) {
 	}
 
 	for _, tt := range componentTests {
-		t.Run("components/"+tt.alias, func(t *testing.T) {
-			cmd, _, err := rootCmd.Find([]string{"components", tt.alias})
+		t.Run("components/hardware/"+tt.alias, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{"components", "hardware", tt.alias})
 			if err != nil {
 				t.Fatalf("failed to find command for alias %q: %v", tt.alias, err)
 			}
@@ -364,7 +385,7 @@ func TestDomainSubcommands(t *testing.T) {
 		}
 	})
 
-	// Verify components subcommand and its 11 component collections
+	// Verify components subcommand and its 11 component collections under hardware
 	componentCollections := []string{
 		"antennas",
 		"batteries",
@@ -380,10 +401,10 @@ func TestDomainSubcommands(t *testing.T) {
 	}
 
 	for _, c := range componentCollections {
-		t.Run("components/"+c, func(t *testing.T) {
-			cmd, _, err := rootCmd.Find([]string{"components", c})
+		t.Run("components/hardware/"+c, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find([]string{"components", "hardware", c})
 			if err != nil {
-				t.Fatalf("could not find component collection components/%s: %v", c, err)
+				t.Fatalf("could not find component collection components/hardware/%s: %v", c, err)
 			}
 
 			subcommands := make(map[string]bool)
@@ -392,10 +413,10 @@ func TestDomainSubcommands(t *testing.T) {
 			}
 
 			if !subcommands["list"] {
-				t.Errorf("components/%s missing 'list' subcommand", c)
+				t.Errorf("components/hardware/%s missing 'list' subcommand", c)
 			}
 			if !subcommands["get"] {
-				t.Errorf("components/%s missing 'get' subcommand", c)
+				t.Errorf("components/hardware/%s missing 'get' subcommand", c)
 			}
 		})
 	}
@@ -469,7 +490,7 @@ func TestList_CustomColumns(t *testing.T) {
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"components", "motors", "list", "-c", "id,kv"})
+	cmd.SetArgs([]string{"components", "hardware", "motors", "list", "-c", "id,kv"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -493,7 +514,7 @@ func TestList_CustomColumns(t *testing.T) {
 
 func TestCompletion_ColumnFlag(t *testing.T) {
 	rootCmd := newRootCmd()
-	cmd, _, err := rootCmd.Find([]string{"components", "motors", "list"})
+	cmd, _, err := rootCmd.Find([]string{"components", "hardware", "motors", "list"})
 	if err != nil {
 		t.Fatalf("failed to find motors list: %v", err)
 	}
@@ -528,7 +549,7 @@ func TestCompletion_ColumnFlag(t *testing.T) {
 
 func TestCompletion_SortFlag(t *testing.T) {
 	rootCmd := newRootCmd()
-	cmd, _, err := rootCmd.Find([]string{"components", "motors", "list"})
+	cmd, _, err := rootCmd.Find([]string{"components", "hardware", "motors", "list"})
 	if err != nil {
 		t.Fatalf("failed to find motors list: %v", err)
 	}
@@ -563,7 +584,7 @@ func TestCompletion_SortFlag(t *testing.T) {
 
 func TestCompletion_FilterFlag(t *testing.T) {
 	rootCmd := newRootCmd()
-	cmd, _, err := rootCmd.Find([]string{"components", "motors", "list"})
+	cmd, _, err := rootCmd.Find([]string{"components", "hardware", "motors", "list"})
 	if err != nil {
 		t.Fatalf("failed to find motors list: %v", err)
 	}
@@ -603,7 +624,7 @@ func TestCompletion_GetValidArgs(t *testing.T) {
 	})
 
 	rootCmd := newRootCmd()
-	cmd, _, err := rootCmd.Find([]string{"components", "motors", "get"})
+	cmd, _, err := rootCmd.Find([]string{"components", "hardware", "motors", "get"})
 	if err != nil {
 		t.Fatalf("failed to find motors get: %v", err)
 	}
@@ -1018,5 +1039,35 @@ func TestEvaluate_BuildNotFound(t *testing.T) {
 
 	if !strings.Contains(err.Error(), "build not found") {
 		t.Errorf("expected 'build not found' error, got: %v", err)
+	}
+}
+
+func TestGetCollectionPath(t *testing.T) {
+	cases := []struct {
+		msg          proto.Message
+		expectedPath string
+	}{
+		{&pb.Antenna{}, "components/hardware/antennas"},
+		{&pb.Battery{}, "components/hardware/batteries"},
+		{&pb.Build{}, "builds"},
+		{&pb.Camera{}, "components/hardware/cameras"},
+		{&pb.ElectronicSpeedController{}, "components/hardware/electronic-speed-controllers"},
+		{&pb.FlightController{}, "components/hardware/flight-controllers"},
+		{&pb.Frame{}, "components/hardware/frames"},
+		{&pb.GpsReceiver{}, "components/hardware/gps-receivers"},
+		{&pb.Motor{}, "components/hardware/motors"},
+		{&pb.Propeller{}, "components/hardware/propellers"},
+		{&pb.Receiver{}, "components/hardware/receivers"},
+		{&pb.VideoTransmitter{}, "components/hardware/video-transmitters"},
+	}
+
+	for _, tc := range cases {
+		name := string(tc.msg.ProtoReflect().Descriptor().Name())
+		t.Run(name, func(t *testing.T) {
+			path := GetCollectionPath(tc.msg)
+			if path != tc.expectedPath {
+				t.Errorf("GetCollectionPath(%s) = %q, want %q", name, path, tc.expectedPath)
+			}
+		})
 	}
 }

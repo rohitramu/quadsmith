@@ -18,7 +18,9 @@ message VideoTransmitter {
     plural: "Video Transmitters"
   };
   option (quadsmith.sql.table) = {name: "video_transmitters"};
+  option (quadsmith.collection_path) = "components/hardware/video-transmitters";
   option (quadsmith.frontend) = {
+    path: "components/hardware/video-transmitters"
     default_columns: [
       "manufacturer",
       "name",

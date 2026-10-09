@@ -50,7 +50,7 @@ func TestCLI_ListFrames(t *testing.T) {
 
 	qsPath := resolveQSPath(t)
 
-	cmd := exec.Command(qsPath, "components", "frames", "list", "--json")
+	cmd := exec.Command(qsPath, "components", "hardware", "frames", "list", "--json")
 	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout

@@ -7,12 +7,65 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"google.golang.org/protobuf/proto"
+
+	pb "quadsmith/api/gen/quadsmith"
 )
 
 type DomainName struct {
 	Singular string
 	Plural   string
 	Aliases  []string
+}
+
+func (d DomainName) ProtoMessage() proto.Message {
+	switch d.Singular {
+	case "Antenna":
+		return &pb.Antenna{}
+	case "Battery":
+		return &pb.Battery{}
+	case "Build":
+		return &pb.Build{}
+	case "Camera":
+		return &pb.Camera{}
+	case "Electronic Speed Controller":
+		return &pb.ElectronicSpeedController{}
+	case "Flight Controller":
+		return &pb.FlightController{}
+	case "Frame":
+		return &pb.Frame{}
+	case "GPS Receiver":
+		return &pb.GpsReceiver{}
+	case "Motor":
+		return &pb.Motor{}
+	case "Propeller":
+		return &pb.Propeller{}
+	case "Receiver":
+		return &pb.Receiver{}
+	case "Video Transmitter":
+		return &pb.VideoTransmitter{}
+	default:
+		return nil
+	}
+}
+
+func (d DomainName) Path() string {
+	m := d.ProtoMessage()
+	if m != nil {
+		opts := m.ProtoReflect().Descriptor().Options()
+		if proto.HasExtension(opts, pb.E_CollectionPath) {
+			if p, ok := proto.GetExtension(opts, pb.E_CollectionPath).(string); ok && p != "" {
+				return strings.Trim(p, "/")
+			}
+		}
+		if proto.HasExtension(opts, pb.E_Frontend) {
+			if front, ok := proto.GetExtension(opts, pb.E_Frontend).(*pb.FrontendOptions); ok && front != nil && front.Path != "" {
+				return strings.Trim(front.Path, "/")
+			}
+		}
+	}
+	return d.CLI()
 }
 
 func toSnakeCase(s string) string {
@@ -200,14 +253,38 @@ func newRootCmd() *cobra.Command {
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		cmd.SilenceUsage = true
 	}
-
-	componentsCmd := &cobra.Command{
-		Use:     "components",
-		Aliases: []string{"component"},
-		Short:   "Hardware component collections",
-	}
-	rootCmd.AddCommand(componentsCmd)
 `)
+
+	createdCmds := make(map[string]string)
+	createdCmds[""] = "rootCmd"
+
+	for _, d := range domains {
+		path := d.Path()
+		parts := strings.Split(path, "/")
+		prefixParts := parts[:len(parts)-1]
+		currentPath := ""
+		parentVar := "rootCmd"
+		for _, part := range prefixParts {
+			if currentPath == "" {
+				currentPath = part
+			} else {
+				currentPath += "/" + part
+			}
+			if _, exists := createdCmds[currentPath]; !exists {
+				varName := toCamelCase(strings.ReplaceAll(currentPath, "/", " ")) + "Cmd"
+				if part == "components" {
+					fmt.Fprintf(f, "\t%s := &cobra.Command{\n\t\tUse: %q,\n\t\tAliases: []string{\"component\"},\n\t\tShort: \"Hardware and software component collections\",\n\t}\n\t%s.AddCommand(%s)\n\n", varName, part, parentVar, varName)
+				} else if part == "hardware" {
+					fmt.Fprintf(f, "\t%s := &cobra.Command{\n\t\tUse: %q,\n\t\tAliases: []string{\"hw\"},\n\t\tShort: \"Hardware component collections\",\n\t}\n\t%s.AddCommand(%s)\n\n", varName, part, parentVar, varName)
+				} else {
+					title := strings.ToUpper(part[:1]) + part[1:]
+					fmt.Fprintf(f, "\t%s := &cobra.Command{\n\t\tUse: %q,\n\t\tShort: %q,\n\t}\n\t%s.AddCommand(%s)\n\n", varName, part, title+" collections", parentVar, varName)
+				}
+				createdCmds[currentPath] = varName
+			}
+			parentVar = createdCmds[currentPath]
+		}
+	}
 
 	for _, d := range domains {
 		clientVar := d.Go() + "Client"
@@ -229,6 +306,10 @@ func newRootCmd() *cobra.Command {
 				aliasList = append(aliasList, a)
 			}
 		}
+
+		parts := strings.Split(d.Path(), "/")
+		prefix := strings.Join(parts[:len(parts)-1], "/")
+		parentVar := createdCmds[prefix]
 
 		fmt.Fprintf(f, "\n\t// --- %s ---\n", d.Plural)
 		fmt.Fprintf(f, "\t%s := quadsmithconnect.New%sServiceClient(http.DefaultClient, targetURL)\n", clientVar, tsName)
@@ -382,13 +463,8 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\t}\n")
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
-		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n\n", cmdVar, getCmdVar)
-
-		if d.Singular == "Build" {
-			fmt.Fprintf(f, "\trootCmd.AddCommand(%s)\n", cmdVar)
-		} else {
-			fmt.Fprintf(f, "\tcomponentsCmd.AddCommand(%s)\n", cmdVar)
-		}
+		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n", cmdVar, getCmdVar)
+		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n", parentVar, cmdVar)
 	}
 
 	fmt.Fprintln(f, `
@@ -516,6 +592,21 @@ func main() {
 	}
 }
 
+
+func GetCollectionPath(m proto.Message) string {
+	opts := m.ProtoReflect().Descriptor().Options()
+	if proto.HasExtension(opts, pb.E_CollectionPath) {
+		if p, ok := proto.GetExtension(opts, pb.E_CollectionPath).(string); ok && p != "" {
+			return strings.Trim(p, "/")
+		}
+	}
+	if proto.HasExtension(opts, pb.E_Frontend) {
+		if front, ok := proto.GetExtension(opts, pb.E_Frontend).(*pb.FrontendOptions); ok && front != nil && front.Path != "" {
+			return strings.Trim(front.Path, "/")
+		}
+	}
+	return ""
+}
 
 func GetDefaultColumns(m proto.Message) []string {
 	opts := m.ProtoReflect().Descriptor().Options()

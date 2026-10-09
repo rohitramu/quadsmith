@@ -18,7 +18,9 @@ message Antenna {
     plural: "Antennas"
   };
   option (quadsmith.sql.table) = {name: "antennas"};
+  option (quadsmith.collection_path) = "components/hardware/antennas";
   option (quadsmith.frontend) = {
+    path: "components/hardware/antennas"
     default_columns: [
       "manufacturer",
       "name",

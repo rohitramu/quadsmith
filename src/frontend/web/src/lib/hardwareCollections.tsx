@@ -42,6 +42,11 @@ import {
   listVideoTransmitters,
   getVideoTransmitter,
 } from "../gen/quadsmith/video_transmitter-VideoTransmitterService_connectquery";
+import { getOption } from "@bufbuild/protobuf";
+import {
+  frontend as frontendOpt,
+  collection_path as collectionPathOpt,
+} from "../gen/quadsmith/_common_pb";
 
 export interface ColumnConfig {
   id: string;
@@ -61,6 +66,7 @@ export interface TechnicalSpec {
 
 export interface HardwareCollectionDef {
   id: string;
+  path?: string;
   aliases?: string[];
   name: string;
   singular: string;
@@ -1876,14 +1882,43 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
   },
 ];
 
+export function getCollectionPath(collection: HardwareCollectionDef): string {
+  if (collection.path) {
+    return collection.path.replace(/^\/+|\/+$/g, "");
+  }
+  try {
+    const directPath = getOption(collection.schema, collectionPathOpt);
+    if (directPath) {
+      return directPath.replace(/^\/+|\/+$/g, "");
+    }
+    const opts = getOption(collection.schema, frontendOpt);
+    if (opts?.path) {
+      return opts.path.replace(/^\/+|\/+$/g, "");
+    }
+  } catch {
+    // fallback
+  }
+  return `components/hardware/${collection.id}`;
+}
+
+for (const col of HARDWARE_COLLECTIONS) {
+  col.path = getCollectionPath(col);
+}
+
 export function getHardwareCollection(collectionId?: string): HardwareCollectionDef | undefined {
   if (!collectionId) return undefined;
-  const normalized = collectionId.toLowerCase().trim();
+  const normalized = collectionId
+    .toLowerCase()
+    .trim()
+    .replace(/^\/+|\/+$/g, "");
   const kebab = normalized.replace(/_/g, "-");
   return HARDWARE_COLLECTIONS.find(
     (c) =>
       c.id === normalized ||
       c.id === kebab ||
+      c.singular.toLowerCase() === normalized ||
+      getCollectionPath(c) === normalized ||
+      getCollectionPath(c).endsWith("/" + normalized) ||
       c.aliases?.includes(normalized) ||
       c.aliases?.includes(kebab),
   );

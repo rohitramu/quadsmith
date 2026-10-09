@@ -54,9 +54,16 @@ func newRootCmd() *cobra.Command {
 	componentsCmd := &cobra.Command{
 		Use:     "components",
 		Aliases: []string{"component"},
-		Short:   "Hardware component collections",
+		Short:   "Hardware and software component collections",
 	}
 	rootCmd.AddCommand(componentsCmd)
+
+	componentsHardwareCmd := &cobra.Command{
+		Use:     "hardware",
+		Aliases: []string{"hw"},
+		Short:   "Hardware component collections",
+	}
+	componentsCmd.AddCommand(componentsHardwareCmd)
 
 	// --- Antennas ---
 	antennaClient := quadsmithconnect.NewAntennaServiceClient(http.DefaultClient, targetURL)
@@ -217,8 +224,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	antennaCmd.AddCommand(antennaGetCmd)
-
-	componentsCmd.AddCommand(antennaCmd)
+	componentsHardwareCmd.AddCommand(antennaCmd)
 
 	// --- Batteries ---
 	batteryClient := quadsmithconnect.NewBatteryServiceClient(http.DefaultClient, targetURL)
@@ -379,8 +385,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	batteryCmd.AddCommand(batteryGetCmd)
-
-	componentsCmd.AddCommand(batteryCmd)
+	componentsHardwareCmd.AddCommand(batteryCmd)
 
 	// --- Builds ---
 	buildClient := quadsmithconnect.NewBuildServiceClient(http.DefaultClient, targetURL)
@@ -541,7 +546,6 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	buildCmd.AddCommand(buildGetCmd)
-
 	rootCmd.AddCommand(buildCmd)
 
 	// --- Cameras ---
@@ -703,8 +707,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	cameraCmd.AddCommand(cameraGetCmd)
-
-	componentsCmd.AddCommand(cameraCmd)
+	componentsHardwareCmd.AddCommand(cameraCmd)
 
 	// --- Electronic Speed Controllers ---
 	electronicSpeedControllerClient := quadsmithconnect.NewElectronicSpeedControllerServiceClient(http.DefaultClient, targetURL)
@@ -865,8 +868,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerGetCmd)
-
-	componentsCmd.AddCommand(electronicSpeedControllerCmd)
+	componentsHardwareCmd.AddCommand(electronicSpeedControllerCmd)
 
 	// --- Flight Controllers ---
 	flightControllerClient := quadsmithconnect.NewFlightControllerServiceClient(http.DefaultClient, targetURL)
@@ -1027,8 +1029,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	flightControllerCmd.AddCommand(flightControllerGetCmd)
-
-	componentsCmd.AddCommand(flightControllerCmd)
+	componentsHardwareCmd.AddCommand(flightControllerCmd)
 
 	// --- Frames ---
 	frameClient := quadsmithconnect.NewFrameServiceClient(http.DefaultClient, targetURL)
@@ -1189,8 +1190,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	frameCmd.AddCommand(frameGetCmd)
-
-	componentsCmd.AddCommand(frameCmd)
+	componentsHardwareCmd.AddCommand(frameCmd)
 
 	// --- GPS Receivers ---
 	gpsReceiverClient := quadsmithconnect.NewGpsReceiverServiceClient(http.DefaultClient, targetURL)
@@ -1351,8 +1351,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	gpsReceiverCmd.AddCommand(gpsReceiverGetCmd)
-
-	componentsCmd.AddCommand(gpsReceiverCmd)
+	componentsHardwareCmd.AddCommand(gpsReceiverCmd)
 
 	// --- Motors ---
 	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, targetURL)
@@ -1513,8 +1512,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	motorCmd.AddCommand(motorGetCmd)
-
-	componentsCmd.AddCommand(motorCmd)
+	componentsHardwareCmd.AddCommand(motorCmd)
 
 	// --- Propellers ---
 	propellerClient := quadsmithconnect.NewPropellerServiceClient(http.DefaultClient, targetURL)
@@ -1675,8 +1673,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	propellerCmd.AddCommand(propellerGetCmd)
-
-	componentsCmd.AddCommand(propellerCmd)
+	componentsHardwareCmd.AddCommand(propellerCmd)
 
 	// --- Receivers ---
 	receiverClient := quadsmithconnect.NewReceiverServiceClient(http.DefaultClient, targetURL)
@@ -1837,8 +1834,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	receiverCmd.AddCommand(receiverGetCmd)
-
-	componentsCmd.AddCommand(receiverCmd)
+	componentsHardwareCmd.AddCommand(receiverCmd)
 
 	// --- Video Transmitters ---
 	videoTransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(http.DefaultClient, targetURL)
@@ -1999,8 +1995,7 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	videoTransmitterCmd.AddCommand(videoTransmitterGetCmd)
-
-	componentsCmd.AddCommand(videoTransmitterCmd)
+	componentsHardwareCmd.AddCommand(videoTransmitterCmd)
 
 	// --- EVALUATOR ---
 	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, targetURL)
@@ -2132,6 +2127,21 @@ func main() {
 	if err := newRootCmd().Execute(); err != nil {
 		os.Exit(1)
 	}
+}
+
+func GetCollectionPath(m proto.Message) string {
+	opts := m.ProtoReflect().Descriptor().Options()
+	if proto.HasExtension(opts, pb.E_CollectionPath) {
+		if p, ok := proto.GetExtension(opts, pb.E_CollectionPath).(string); ok && p != "" {
+			return strings.Trim(p, "/")
+		}
+	}
+	if proto.HasExtension(opts, pb.E_Frontend) {
+		if front, ok := proto.GetExtension(opts, pb.E_Frontend).(*pb.FrontendOptions); ok && front != nil && front.Path != "" {
+			return strings.Trim(front.Path, "/")
+		}
+	}
+	return ""
 }
 
 func GetDefaultColumns(m proto.Message) []string {

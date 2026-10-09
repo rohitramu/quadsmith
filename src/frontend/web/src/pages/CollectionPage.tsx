@@ -20,6 +20,7 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { SmartFilterInput } from "../components/SmartFilterInput";
 import {
   getHardwareCollection,
+  getCollectionPath,
   type HardwareCollectionDef,
   type ColumnConfig,
 } from "../lib/hardwareCollections";
@@ -641,7 +642,7 @@ function CollectionTableView({
                       <td key={col.id} className="px-4 py-3">
                         {idx === 0 && (
                           <Link
-                            to={`/components/${categoryId}/${collection.id}/${item.id}`}
+                            to={`/${getCollectionPath(collection)}/${item.id}`}
                             className="absolute inset-0 z-10"
                             aria-label={`View ${item.name || item.id}`}
                           />

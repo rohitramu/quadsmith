@@ -18,7 +18,9 @@ message Propeller {
     plural: "Propellers"
   };
   option (quadsmith.sql.table) = {name: "propellers"};
+  option (quadsmith.collection_path) = "components/hardware/propellers";
   option (quadsmith.frontend) = {
+    path: "components/hardware/propellers"
     default_columns: [
       "manufacturer",
       "name",
