@@ -63,6 +63,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Frames {
+			if v.MotorCount == 0 {
+				v.MotorCount = 4
+			}
 			if err := pb.CreateFrame(ctx, tx, v); err != nil {
 				panic(err)
 			}

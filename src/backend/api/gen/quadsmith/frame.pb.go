@@ -41,8 +41,10 @@ type Frame struct {
 	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,10,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string          `protobuf:"bytes,11,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,12,rep,name=media,proto3" json:"media,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// Number of motors configured by this frame (e.g., 4 for standard quadcopters, 8 for coaxial X8 cinelifters)
+	MotorCount    uint32 `protobuf:"varint,13,opt,name=motor_count,json=motorCount,proto3" json:"motor_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Frame) Reset() {
@@ -157,6 +159,13 @@ func (x *Frame) GetMedia() []*Media {
 		return x.Media
 	}
 	return nil
+}
+
+func (x *Frame) GetMotorCount() uint32 {
+	if x != nil {
+		return x.MotorCount
+	}
+	return 0
 }
 
 // ---------------------------------------------------------
@@ -347,7 +356,7 @@ var File_frame_proto protoreflect.FileDescriptor
 const file_frame_proto_rawDesc = "" +
 	"\n" +
 	"\vframe.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xc3\x04\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xed\x04\n" +
 	"\x05Frame\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -361,7 +370,9 @@ const file_frame_proto_rawDesc = "" +
 	"\x0freference_links\x18\n" +
 	" \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\v \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\f \x03(\v2\x10.quadsmith.MediaR\x05media:c\x8a\xb5\x185\n" +
+	"\x05media\x18\f \x03(\v2\x10.quadsmith.MediaR\x05media\x12(\n" +
+	"\vmotor_count\x18\r \x01(\rB\a\xc2\xf3\x18\x03:\x014R\n" +
+	"motorCount:c\x8a\xb5\x185\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fwheelbase_mm\n" +

@@ -96,10 +96,15 @@ message ListBuildsResponse {
   string next_page_token = 2;
 }
 
+message CreateBuildRequest {
+  Build build = 1;
+}
+
 // ---------------------------------------------------------
 // gRPC Service
 // ---------------------------------------------------------
 service BuildService {
   rpc GetBuild(GetBuildRequest) returns (Build);
   rpc ListBuilds(ListBuildsRequest) returns (ListBuildsResponse);
+  rpc CreateBuild(CreateBuildRequest) returns (Build);
 }

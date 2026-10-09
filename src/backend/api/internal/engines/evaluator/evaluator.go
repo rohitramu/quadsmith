@@ -21,20 +21,29 @@ func NewEvaluatorServiceHandler(db *pgxpool.Pool) *EvaluatorServiceHandler {
 }
 
 func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
-	buildId := strings.TrimSpace(req.Msg.GetBuildId())
-	if buildId == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build_id is required"))
-	}
 	var b *pb.Build
-	if s.db != nil {
-		fetched, err := pb.GetBuild(ctx, s.db, buildId, nil)
-		if err != nil || fetched == nil {
+	var evaluatedBuildId string
+
+	if req.Msg.GetBuild() != nil {
+		b = req.Msg.GetBuild()
+		evaluatedBuildId = b.Id
+		if evaluatedBuildId == "" {
+			evaluatedBuildId = b.Uuid
+		}
+	} else if buildId := strings.TrimSpace(req.Msg.GetBuildId()); buildId != "" {
+		evaluatedBuildId = buildId
+		if s.db != nil {
+			fetched, err := pb.GetBuild(ctx, s.db, buildId, nil)
+			if err != nil || fetched == nil {
+				return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
+			}
+			b = fetched
+		}
+		if b == nil {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
 		}
-		b = fetched
-	}
-	if b == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
+	} else {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("either build or build_id must be provided"))
 	}
 
 	// Validate required fields in the request
@@ -44,8 +53,14 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	// Validate required components in the build
-	if err := ValidateBuildComponents(b); err != nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	if req.Msg.GetBuild() == nil {
+		if err := ValidateBuildComponents(b); err != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
+	} else {
+		if strings.TrimSpace(b.FrameUuid) == "" || strings.TrimSpace(b.MotorUuid) == "" || strings.TrimSpace(b.PropellerUuid) == "" {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("evaluating a build draft requires at least frame, motor, and propeller"))
+		}
 	}
 
 	var baseWeight float32 = 0
@@ -69,12 +84,16 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 
 	// 2. Fetch Frame
 	var frame *pb.Frame
-	if s.db != nil {
+	var motorCount uint32 = 4
+	if s.db != nil && b.FrameUuid != "" {
 		f, err := pb.GetFrame(ctx, s.db, b.FrameUuid, nil)
 		if err != nil || f == nil {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("frame not found: %s", b.FrameUuid))
 		}
 		frame = f
+		if frame.MotorCount > 0 {
+			motorCount = frame.MotorCount
+		}
 	}
 	if frame != nil {
 		baseWeight += frame.WeightG
@@ -82,7 +101,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 
 	// 3. Fetch Motor
 	var motor *pb.Motor
-	if s.db != nil {
+	if s.db != nil && b.MotorUuid != "" {
 		m, err := pb.GetMotor(ctx, s.db, b.MotorUuid, nil)
 		if err != nil || m == nil {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("motor not found: %s", b.MotorUuid))
@@ -90,12 +109,12 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		motor = m
 	}
 	if motor != nil {
-		baseWeight += (motor.WeightG * 4) // Quadcopter = 4 motors
+		baseWeight += (motor.WeightG * float32(motorCount))
 	}
 
 	// 4. Fetch Propeller
 	var prop *pb.Propeller
-	if s.db != nil {
+	if s.db != nil && b.PropellerUuid != "" {
 		p, err := pb.GetPropeller(ctx, s.db, b.PropellerUuid, nil)
 		if err != nil || p == nil {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("propeller not found: %s", b.PropellerUuid))
@@ -103,12 +122,12 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		prop = p
 	}
 	if prop != nil {
-		baseWeight += (prop.WeightG * 4) // Quadcopter = 4 props
+		baseWeight += (prop.WeightG * float32(motorCount))
 	}
 
 	// 5. Fetch Flight Controller
 	var fc *pb.FlightController
-	if s.db != nil {
+	if s.db != nil && b.FlightControllerUuid != "" {
 		f, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
 		if err != nil || f == nil {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("flight controller not found: %s", b.FlightControllerUuid))
@@ -150,12 +169,21 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		}
 	}
 
-	if totalEscs < 4 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required ESCs (quadcopter requires at least 4 ESC channels, found %d)", totalEscs))
+	if req.Msg.GetBuild() == nil {
+		if totalEscs < motorCount {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required ESCs (multirotor frame requires at least %d ESC channels, found %d)", motorCount, totalEscs))
+		}
+	} else {
+		if (len(b.ElectronicSpeedControllerUuids) > 0 || (fc != nil && fc.GetInternalElectronicSpeedControllerUuid() != "")) && totalEscs < motorCount {
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+				Message:  fmt.Sprintf("Insufficient ESC channels: Frame requires %d ESC channels, but only %d configured", motorCount, totalEscs),
+			})
+		}
 	}
 
 	// 7. Calculate build electrical limits & compatibility checks
-	electrical := ComputeElectricalLimits(fc, escs, motor)
+	electrical := ComputeElectricalLimits(fc, escs, motor, motorCount)
 	if electrical.MinVoltage > 0 && electrical.MaxVoltage > 0 && electrical.MinVoltage > electrical.MaxVoltage {
 		systemMessages = append(systemMessages, &pb.SystemMessage{
 			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
@@ -246,14 +274,11 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		baseWeight,
 		payloadWeight,
 		maxAmps,
+		motorCount,
 	)
 	systemMessages = append(systemMessages, phys.SystemMessages...)
 
-	if b.Id != "" {
-		buildId = b.Id
-	} else if b.Uuid != "" {
-		buildId = b.Uuid
-	}
+	buildId := evaluatedBuildId
 
 	evaluatedBatteryId := batteryId
 	if battery != nil {
@@ -327,7 +352,13 @@ func CalculatePhysics(
 	baseWeight float32,
 	payloadWeight float32,
 	maxEscAmps float32,
+	motorCounts ...uint32,
 ) PhysicsResult {
+	mc := uint32(4)
+	if len(motorCounts) > 0 && motorCounts[0] > 0 {
+		mc = motorCounts[0]
+	}
+
 	if motor == nil || prop == nil || battery == nil {
 		return PhysicsResult{
 			SystemMessages: []*pb.SystemMessage{
@@ -478,7 +509,7 @@ func CalculatePhysics(
 	const frameEfficiency = 0.86
 	payloadObstruction := float32(1.0 / (1.0 + 0.08*float64(payloadRatio)))
 	installedThrustPerMotor := rawThrustPerMotor * frameEfficiency * payloadObstruction
-	totalThrust := installedThrustPerMotor * 4.0
+	totalThrust := installedThrustPerMotor * float32(mc)
 
 	// 7. Thrust-to-weight ratio and realistic hover throttle directly coupled to TWR:
 	if totalWeight > 0 {
@@ -534,7 +565,7 @@ func CalculatePhysics(
 	cruiseWatts := (float32(safeBase)/effFlight)*float32(math.Pow(weightRatio, 1.35)) + pElectronics
 	totalCruiseAmps := cruiseWatts / nominalVoltage
 
-	if totalCruiseAmps > float32(maxEscAmps*4) && maxEscAmps > 0 {
+	if totalCruiseAmps > float32(maxEscAmps*float32(mc)) && maxEscAmps > 0 {
 		systemMessages = append(systemMessages, &pb.SystemMessage{
 			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
 			Message:  "Cruise amps exceeds ESC continuous rating",
@@ -641,20 +672,29 @@ func CalculatePhysics(
 // GetBuildElectricalLimits calculates electrical limits (min/max voltage and max current)
 // and returns the lightest compatible battery.
 func (s *EvaluatorServiceHandler) GetBuildElectricalLimits(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
-	buildId := strings.TrimSpace(req.Msg.GetBuildId())
-	if buildId == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build_id is required"))
-	}
 	var b *pb.Build
-	if s.db != nil {
-		fetched, err := pb.GetBuild(ctx, s.db, buildId, nil)
-		if err != nil || fetched == nil {
+	var evaluatedBuildId string
+
+	if req.Msg.GetBuild() != nil {
+		b = req.Msg.GetBuild()
+		evaluatedBuildId = b.Id
+		if evaluatedBuildId == "" {
+			evaluatedBuildId = b.Uuid
+		}
+	} else if buildId := strings.TrimSpace(req.Msg.GetBuildId()); buildId != "" {
+		evaluatedBuildId = buildId
+		if s.db != nil {
+			fetched, err := pb.GetBuild(ctx, s.db, buildId, nil)
+			if err != nil || fetched == nil {
+				return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
+			}
+			b = fetched
+		}
+		if b == nil {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
 		}
-		b = fetched
-	}
-	if b == nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
+	} else {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("either build or build_id must be provided"))
 	}
 
 	limits, err := s.CalculateElectricalLimits(ctx, b)
@@ -662,14 +702,7 @@ func (s *EvaluatorServiceHandler) GetBuildElectricalLimits(ctx context.Context, 
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if b.Id != "" {
-		limits.BuildId = b.Id
-	} else if b.Uuid != "" {
-		limits.BuildId = b.Uuid
-	} else {
-		limits.BuildId = buildId
-	}
-
+	limits.BuildId = evaluatedBuildId
 	return connect.NewResponse(limits), nil
 }
 
@@ -678,6 +711,13 @@ func (s *EvaluatorServiceHandler) CalculateElectricalLimits(ctx context.Context,
 	var fc *pb.FlightController
 	var escs []*pb.ElectronicSpeedController
 	var motor *pb.Motor
+	var motorCount uint32 = 4
+
+	if b.FrameUuid != "" && s.db != nil {
+		if f, err := pb.GetFrame(ctx, s.db, b.FrameUuid, []string{"motor_count"}); err == nil && f != nil && f.MotorCount > 0 {
+			motorCount = f.MotorCount
+		}
+	}
 
 	if b.FlightControllerUuid != "" && s.db != nil {
 		f, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
@@ -708,14 +748,19 @@ func (s *EvaluatorServiceHandler) CalculateElectricalLimits(ctx context.Context,
 		}
 	}
 
-	limits := ComputeElectricalLimits(fc, escs, motor)
+	limits := ComputeElectricalLimits(fc, escs, motor, motorCount)
 	limits.DefaultBatteryId = s.FindLightestCompatibleBattery(ctx, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
 
 	return limits, nil
 }
 
 // ComputeElectricalLimits determines min_voltage, max_voltage, and max_current_a from hardware specs.
-func ComputeElectricalLimits(fc *pb.FlightController, escs []*pb.ElectronicSpeedController, motor *pb.Motor) *pb.GetBuildElectricalLimitsResponse {
+func ComputeElectricalLimits(fc *pb.FlightController, escs []*pb.ElectronicSpeedController, motor *pb.Motor, motorCounts ...uint32) *pb.GetBuildElectricalLimitsResponse {
+	mc := uint32(4)
+	if len(motorCounts) > 0 && motorCounts[0] > 0 {
+		mc = motorCounts[0]
+	}
+
 	var minV float32 = 0
 	var maxV float32 = 0
 
@@ -752,7 +797,7 @@ func ComputeElectricalLimits(fc *pb.FlightController, escs []*pb.ElectronicSpeed
 	// Calculate max_current_a required by the build
 	var maxCurrentA float32 = 0
 	if motor != nil && motor.MaxCurrentA > 0 {
-		maxCurrentA = motor.MaxCurrentA * 4.0
+		maxCurrentA = motor.MaxCurrentA * float32(mc)
 	} else if len(escs) > 0 {
 		var escTotal float32 = 0
 		for _, esc := range escs {

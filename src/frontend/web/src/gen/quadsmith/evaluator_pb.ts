@@ -4,6 +4,8 @@
 
 import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { Build } from "./build_pb";
+import { file_build } from "./build_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -12,7 +14,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJImMKFEV2YWx1YXRlQnVpbGRSZXF1ZXN0EhAKCGJ1aWxkX2lkGAEgASgJEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAISEgoKYmF0dGVyeV9pZBgDIAEoCUoECAQQBVIFYnVpbGQijAQKFUV2YWx1YXRlQnVpbGRSZXNwb25zZRIXCg9hbGxfdXBfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAhIdChVtYXhfYWNjZWxlcmF0aW9uX21wczIYCSABKAISFQoNdG9wX3NwZWVkX2ttaBgKIAEoAhIRCglob3Zlcl9ycG0YCyABKA0SMQoPc3lzdGVtX21lc3NhZ2VzGAwgAygLMhgucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2USEAoIYnVpbGRfaWQYDSABKAkSGAoQcGF5bG9hZF93ZWlnaHRfZxgOIAEoAhISCgpiYXR0ZXJ5X2lkGA8gASgJEhMKC21pbl92b2x0YWdlGBAgASgCEhMKC21heF92b2x0YWdlGBEgASgCEhUKDW1heF9jdXJyZW50X2EYEiABKAJKBAgEEAVKBAgFEAZKBAgGEAdKBAgTEBRSGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW5SCHdhcm5pbmdzUgZlcnJvcnNSDmJ1aWxkX3dlaWdodF9nUg50b3RhbF93ZWlnaHRfZyJACh9HZXRCdWlsZEVsZWN0cmljYWxMaW1pdHNSZXF1ZXN0EhAKCGJ1aWxkX2lkGAEgASgJSgQIAhADUgVidWlsZCKRAQogR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2USEwoLbWluX3ZvbHRhZ2UYASABKAISEwoLbWF4X3ZvbHRhZ2UYAiABKAISFQoNbWF4X2N1cnJlbnRfYRgDIAEoAhIaChJkZWZhdWx0X2JhdHRlcnlfaWQYBCABKAkSEAoIYnVpbGRfaWQYBSABKAkqqgEKFVN5c3RlbU1lc3NhZ2VTZXZlcml0eRInCiNTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9VTlNQRUNJRklFRBAAEiAKHFNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0lORk8QARIjCh9TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9XQVJOSU5HEAISIQodU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfRVJST1IQAzLbAQoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZRJzChhHZXRCdWlsZEVsZWN0cmljYWxMaW1pdHMSKi5xdWFkc21pdGguR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBorLnF1YWRzbWl0aC5HZXRCdWlsZEVsZWN0cmljYWxMaW1pdHNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIosBChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBISCghidWlsZF9pZBgBIAEoCUgAEiEKBWJ1aWxkGAQgASgLMhAucXVhZHNtaXRoLkJ1aWxkSAASGAoQcGF5bG9hZF93ZWlnaHRfZxgCIAEoAhISCgpiYXR0ZXJ5X2lkGAMgASgJQg4KDGJ1aWxkX3NvdXJjZSKMBAoVRXZhbHVhdGVCdWlsZFJlc3BvbnNlEhcKD2FsbF91cF93ZWlnaHRfZxgBIAEoAhIeChZob3Zlcl90aHJvdHRsZV9wZXJjZW50GAIgASgCEh4KFnRocnVzdF90b193ZWlnaHRfcmF0aW8YAyABKAISGwoTbWluX2ZsaWdodF90aW1lX21pbhgHIAEoAhIbChNtYXhfZmxpZ2h0X3RpbWVfbWluGAggASgCEh0KFW1heF9hY2NlbGVyYXRpb25fbXBzMhgJIAEoAhIVCg10b3Bfc3BlZWRfa21oGAogASgCEhEKCWhvdmVyX3JwbRgLIAEoDRIxCg9zeXN0ZW1fbWVzc2FnZXMYDCADKAsyGC5xdWFkc21pdGguU3lzdGVtTWVzc2FnZRIQCghidWlsZF9pZBgNIAEoCRIYChBwYXlsb2FkX3dlaWdodF9nGA4gASgCEhIKCmJhdHRlcnlfaWQYDyABKAkSEwoLbWluX3ZvbHRhZ2UYECABKAISEwoLbWF4X3ZvbHRhZ2UYESABKAISFQoNbWF4X2N1cnJlbnRfYRgSIAEoAkoECAQQBUoECAUQBkoECAYQB0oECBMQFFIZZXN0aW1hdGVkX2ZsaWdodF90aW1lX21pblIId2FybmluZ3NSBmVycm9yc1IOYnVpbGRfd2VpZ2h0X2dSDnRvdGFsX3dlaWdodF9nImgKH0dldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QSEgoIYnVpbGRfaWQYASABKAlIABIhCgVidWlsZBgCIAEoCzIQLnF1YWRzbWl0aC5CdWlsZEgAQg4KDGJ1aWxkX3NvdXJjZSKRAQogR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2USEwoLbWluX3ZvbHRhZ2UYASABKAISEwoLbWF4X3ZvbHRhZ2UYAiABKAISFQoNbWF4X2N1cnJlbnRfYRgDIAEoAhIaChJkZWZhdWx0X2JhdHRlcnlfaWQYBCABKAkSEAoIYnVpbGRfaWQYBSABKAkqqgEKFVN5c3RlbU1lc3NhZ2VTZXZlcml0eRInCiNTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9VTlNQRUNJRklFRBAAEiAKHFNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0lORk8QARIjCh9TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9XQVJOSU5HEAISIQodU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfRVJST1IQAzLbAQoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZRJzChhHZXRCdWlsZEVsZWN0cmljYWxMaW1pdHMSKi5xdWFkc21pdGguR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBorLnF1YWRzbWl0aC5HZXRCdWlsZEVsZWN0cmljYWxMaW1pdHNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    [file_build],
   );
 
 /**
@@ -43,11 +46,28 @@ export const SystemMessageSchema: GenMessage<SystemMessage> =
  */
 export type EvaluateBuildRequest = Message<"quadsmith.EvaluateBuildRequest"> & {
   /**
-   * Required build ID or UUID to evaluate.
-   *
-   * @generated from field: string build_id = 1;
+   * @generated from oneof quadsmith.EvaluateBuildRequest.build_source
    */
-  buildId: string;
+  buildSource:
+    | {
+        /**
+         * Required build ID or UUID to evaluate.
+         *
+         * @generated from field: string build_id = 1;
+         */
+        value: string;
+        case: "buildId";
+      }
+    | {
+        /**
+         * In-memory Build object to evaluate draft without saving to database.
+         *
+         * @generated from field: quadsmith.Build build = 4;
+         */
+        value: Build;
+        case: "build";
+      }
+    | { case: undefined; value?: undefined };
 
   /**
    * @generated from field: float payload_weight_g = 2;
@@ -182,11 +202,28 @@ export const EvaluateBuildResponseSchema: GenMessage<EvaluateBuildResponse> =
 export type GetBuildElectricalLimitsRequest =
   Message<"quadsmith.GetBuildElectricalLimitsRequest"> & {
     /**
-     * Required build ID or UUID.
-     *
-     * @generated from field: string build_id = 1;
+     * @generated from oneof quadsmith.GetBuildElectricalLimitsRequest.build_source
      */
-    buildId: string;
+    buildSource:
+      | {
+          /**
+           * Required build ID or UUID.
+           *
+           * @generated from field: string build_id = 1;
+           */
+          value: string;
+          case: "buildId";
+        }
+      | {
+          /**
+           * In-memory Build object.
+           *
+           * @generated from field: quadsmith.Build build = 2;
+           */
+          value: Build;
+          case: "build";
+        }
+      | { case: undefined; value?: undefined };
   };
 
 /**

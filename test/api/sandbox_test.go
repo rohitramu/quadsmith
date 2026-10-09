@@ -93,7 +93,7 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 
 	// 1. Missing battery_id should return InvalidArgument
 	_, err = evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
-		BuildId: "ultralight-toothpick",
+		BuildSource: &pb.EvaluateBuildRequest_BuildId{BuildId: "ultralight-toothpick"},
 	}))
 	if err == nil {
 		t.Fatal("expected error when battery_id is missing, got nil")
@@ -107,8 +107,8 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 
 	// 2. Non-existent battery should return NotFound
 	_, err = evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
-		BuildId:   "ultralight-toothpick",
-		BatteryId: "non-existent-battery",
+		BuildSource: &pb.EvaluateBuildRequest_BuildId{BuildId: "ultralight-toothpick"},
+		BatteryId:   "non-existent-battery",
 	}))
 	if err == nil {
 		t.Fatal("expected error when battery does not exist, got nil")
@@ -127,14 +127,14 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 	if connect.CodeOf(err) != connect.CodeInvalidArgument {
 		t.Errorf("expected CodeInvalidArgument, got %v: %v", connect.CodeOf(err), err)
 	}
-	if !strings.Contains(err.Error(), "build_id is required") {
-		t.Errorf("expected 'build_id is required' error, got: %v", err)
+	if !strings.Contains(err.Error(), "either build or build_id must be provided") && !strings.Contains(err.Error(), "build_id is required") {
+		t.Errorf("expected build source error, got: %v", err)
 	}
 
 	// 4. Non-existent build should return NotFound
 	_, err = evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
-		BuildId:   "non-existent-build",
-		BatteryId: "betafpv-lava-1s-300mah-75c-lihv",
+		BuildSource: &pb.EvaluateBuildRequest_BuildId{BuildId: "non-existent-build"},
+		BatteryId:   "betafpv-lava-1s-300mah-75c-lihv",
 	}))
 	if err == nil {
 		t.Fatal("expected error when build does not exist, got nil")
@@ -145,8 +145,8 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 
 	// 5. Valid build with battery evaluates successfully
 	res, err := evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
-		BuildId:   "ultralight-toothpick",
-		BatteryId: "betafpv-lava-1s-300mah-75c-lihv",
+		BuildSource: &pb.EvaluateBuildRequest_BuildId{BuildId: "ultralight-toothpick"},
+		BatteryId:   "betafpv-lava-1s-300mah-75c-lihv",
 	}))
 	if err != nil {
 		t.Fatalf("EvaluateBuild failed: %v", err)
@@ -166,7 +166,7 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 
 	// 6. Evaluate with payload and verify all-up weight includes the payload
 	resWithPayload, err := evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
-		BuildId:        "ultralight-toothpick",
+		BuildSource:    &pb.EvaluateBuildRequest_BuildId{BuildId: "ultralight-toothpick"},
 		BatteryId:      "betafpv-lava-1s-300mah-75c-lihv",
 		PayloadWeightG: 25.0,
 	}))
@@ -176,5 +176,23 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 	diff := resWithPayload.Msg.AllUpWeightG - res.Msg.AllUpWeightG
 	if diff < 24.9 || diff > 25.1 {
 		t.Errorf("expected all-up weight to increase by 25g with payload, got diff=%.2f (before=%.2f, after=%.2f)", diff, res.Msg.AllUpWeightG, resWithPayload.Msg.AllUpWeightG)
+	}
+
+	// 7. Evaluate in-memory draft Build object
+	resDraft, err := evalClient.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
+		BuildSource: &pb.EvaluateBuildRequest_Build{
+			Build: &pb.Build{
+				FrameUuid:     "01923019-3008-7001-8001-000000000001",
+				MotorUuid:     "01923019-3001-7001-8001-000000000001",
+				PropellerUuid: "bac19aec-99fc-43d4-b96d-d1feb30e6b6e",
+			},
+		},
+		BatteryId: "betafpv-lava-1s-300mah-75c-lihv",
+	}))
+	if err != nil {
+		t.Fatalf("EvaluateBuild with in-memory draft build failed: %v", err)
+	}
+	if resDraft.Msg.AllUpWeightG <= 0 {
+		t.Errorf("expected positive all-up weight for in-memory draft, got: %v", resDraft.Msg.AllUpWeightG)
 	}
 }

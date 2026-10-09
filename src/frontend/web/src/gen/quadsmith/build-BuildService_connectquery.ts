@@ -13,3 +13,8 @@ export const getBuild = BuildService.method.getBuild;
  * @generated from rpc quadsmith.BuildService.ListBuilds
  */
 export const listBuilds = BuildService.method.listBuilds;
+
+/**
+ * @generated from rpc quadsmith.BuildService.CreateBuild
+ */
+export const createBuild = BuildService.method.createBuild;

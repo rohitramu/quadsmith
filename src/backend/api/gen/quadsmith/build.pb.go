@@ -389,6 +389,50 @@ func (x *ListBuildsResponse) GetNextPageToken() string {
 	return ""
 }
 
+type CreateBuildRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Build         *Build                 `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateBuildRequest) Reset() {
+	*x = CreateBuildRequest{}
+	mi := &file_build_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateBuildRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBuildRequest) ProtoMessage() {}
+
+func (x *CreateBuildRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_build_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBuildRequest.ProtoReflect.Descriptor instead.
+func (*CreateBuildRequest) Descriptor() ([]byte, []int) {
+	return file_build_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CreateBuildRequest) GetBuild() *Build {
+	if x != nil {
+		return x.Build
+	}
+	return nil
+}
+
 var File_build_proto protoreflect.FileDescriptor
 
 const file_build_proto_rawDesc = "" +
@@ -433,11 +477,14 @@ const file_build_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"f\n" +
 	"\x12ListBuildsResponse\x12(\n" +
 	"\x06builds\x18\x01 \x03(\v2\x10.quadsmith.BuildR\x06builds\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\x93\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"<\n" +
+	"\x12CreateBuildRequest\x12&\n" +
+	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build2\xd3\x01\n" +
 	"\fBuildService\x128\n" +
 	"\bGetBuild\x12\x1a.quadsmith.GetBuildRequest\x1a\x10.quadsmith.Build\x12I\n" +
 	"\n" +
-	"ListBuilds\x12\x1c.quadsmith.ListBuildsRequest\x1a\x1d.quadsmith.ListBuildsResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"ListBuilds\x12\x1c.quadsmith.ListBuildsRequest\x1a\x1d.quadsmith.ListBuildsResponse\x12>\n" +
+	"\vCreateBuild\x12\x1d.quadsmith.CreateBuildRequest\x1a\x10.quadsmith.BuildB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_build_proto_rawDescOnce sync.Once
@@ -451,28 +498,32 @@ func file_build_proto_rawDescGZIP() []byte {
 	return file_build_proto_rawDescData
 }
 
-var file_build_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_build_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_build_proto_goTypes = []any{
 	(*Build)(nil),              // 0: quadsmith.Build
 	(*GetBuildRequest)(nil),    // 1: quadsmith.GetBuildRequest
 	(*ListBuildsRequest)(nil),  // 2: quadsmith.ListBuildsRequest
 	(*ListBuildsResponse)(nil), // 3: quadsmith.ListBuildsResponse
-	(*ReferenceLink)(nil),      // 4: quadsmith.ReferenceLink
-	(*Media)(nil),              // 5: quadsmith.Media
+	(*CreateBuildRequest)(nil), // 4: quadsmith.CreateBuildRequest
+	(*ReferenceLink)(nil),      // 5: quadsmith.ReferenceLink
+	(*Media)(nil),              // 6: quadsmith.Media
 }
 var file_build_proto_depIdxs = []int32{
-	4, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
-	5, // 1: quadsmith.Build.media:type_name -> quadsmith.Media
+	5, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
+	6, // 1: quadsmith.Build.media:type_name -> quadsmith.Media
 	0, // 2: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
-	1, // 3: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
-	2, // 4: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
-	0, // 5: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
-	3, // 6: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0, // 3: quadsmith.CreateBuildRequest.build:type_name -> quadsmith.Build
+	1, // 4: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
+	2, // 5: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
+	4, // 6: quadsmith.BuildService.CreateBuild:input_type -> quadsmith.CreateBuildRequest
+	0, // 7: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
+	3, // 8: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
+	0, // 9: quadsmith.BuildService.CreateBuild:output_type -> quadsmith.Build
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_build_proto_init() }
@@ -491,7 +542,7 @@ func file_build_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_build_proto_rawDesc), len(file_build_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

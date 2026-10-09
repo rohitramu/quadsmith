@@ -164,7 +164,11 @@ export function BuildProfilePage() {
     data: electricalLimits,
     isLoading: isLoadingLimits,
     error: limitsError,
-  } = useQuery(getBuildElectricalLimits, { buildId: build?.id || buildId }, { enabled: !!build });
+  } = useQuery(
+    getBuildElectricalLimits,
+    { buildSource: { case: "buildId", value: build?.id || buildId || "" } },
+    { enabled: !!build },
+  );
 
   const batteryFilter = useMemo(() => {
     return buildBatteryCelFilter(electricalLimits);
@@ -220,7 +224,7 @@ export function BuildProfilePage() {
   } = useQuery(
     evaluateBuild,
     {
-      buildId: build?.id || buildId,
+      buildSource: { case: "buildId", value: build?.id || buildId || "" },
       payloadWeightG,
       batteryId: selectedBatteryId,
     },

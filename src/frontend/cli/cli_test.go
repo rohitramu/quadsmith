@@ -670,11 +670,11 @@ func TestEvaluate_Success(t *testing.T) {
 			if req.Msg.BatteryId == "" {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery_id is required"))
 			}
-			if req.Msg.BuildId != "build-1" {
+			if req.Msg.GetBuildId() != "build-1" {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("mismatched build"))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:              req.Msg.BuildId,
+				BuildId:              req.Msg.GetBuildId(),
 				PayloadWeightG:       req.Msg.PayloadWeightG,
 				BatteryId:            req.Msg.BatteryId,
 				AllUpWeightG:         350.5,
@@ -749,7 +749,7 @@ func TestEvaluate_DefaultYAML(t *testing.T) {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery_id is required"))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:             req.Msg.BuildId,
+				BuildId:             req.Msg.GetBuildId(),
 				PayloadWeightG:      req.Msg.PayloadWeightG,
 				BatteryId:           req.Msg.BatteryId,
 				AllUpWeightG:        350.5,
@@ -813,7 +813,7 @@ func TestEvaluate_WithBatteryOverride(t *testing.T) {
 				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("expected custom-bat, got %s", req.Msg.BatteryId))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:        req.Msg.BuildId,
+				BuildId:        req.Msg.GetBuildId(),
 				PayloadWeightG: req.Msg.PayloadWeightG,
 				BatteryId:      req.Msg.BatteryId,
 				AllUpWeightG:   320.0,
@@ -967,7 +967,7 @@ func TestEvaluate_AutoSelectLightestBattery(t *testing.T) {
 		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
 			evaluatedBattery = req.Msg.BatteryId
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:      req.Msg.BuildId,
+				BuildId:      req.Msg.GetBuildId(),
 				BatteryId:    req.Msg.BatteryId,
 				AllUpWeightG: 350.5,
 			}), nil

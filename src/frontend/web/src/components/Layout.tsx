@@ -256,12 +256,27 @@ export function Layout() {
                   <Link
                     to="/"
                     className={`block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
-                      location.pathname === "/"
-                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400"
+                      location.pathname === "/" || location.pathname === "/builds"
+                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
                         : "text-zinc-700 dark:text-zinc-300"
                     }`}
                   >
                     Builds
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/builds/new"
+                    className={`flex items-center justify-between px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
+                      location.pathname === "/builds/new"
+                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
+                        : "text-zinc-700 dark:text-zinc-300"
+                    }`}
+                  >
+                    <span>Build Wizard</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider">
+                      New
+                    </span>
                   </Link>
                 </li>
               </ul>

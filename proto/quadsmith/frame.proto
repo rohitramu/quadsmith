@@ -46,6 +46,9 @@ message Frame {
   repeated ReferenceLink reference_links = 10;
   optional string primary_display_image = 11;
   repeated Media media = 12;
+
+  // Number of motors configured by this frame (e.g., 4 for standard quadcopters, 8 for coaxial X8 cinelifters)
+  uint32 motor_count = 13 [(quadsmith.sql.column) = {default_value: "4"}];
 }
 
 // ---------------------------------------------------------

@@ -2024,7 +2024,9 @@ func newRootCmd() *cobra.Command {
 			battery, _ := cmd.Flags().GetString("battery")
 			if battery == "" {
 				lRes, err := evalClient.GetBuildElectricalLimits(context.Background(), connect.NewRequest(&pb.GetBuildElectricalLimitsRequest{
-					BuildId: buildId,
+					BuildSource: &pb.GetBuildElectricalLimitsRequest_BuildId{
+						BuildId: buildId,
+					},
 				}))
 				if err != nil {
 					return fmt.Errorf("failed to determine electrical limits for build: %w", err)
@@ -2035,7 +2037,9 @@ func newRootCmd() *cobra.Command {
 				battery = lRes.Msg.DefaultBatteryId
 			}
 			eReq := &pb.EvaluateBuildRequest{
-				BuildId:        buildId,
+				BuildSource: &pb.EvaluateBuildRequest_BuildId{
+					BuildId: buildId,
+				},
 				PayloadWeightG: payload,
 				BatteryId:      battery,
 			}
@@ -2053,7 +2057,9 @@ func newRootCmd() *cobra.Command {
 		var filter string
 		if len(args) > 0 && args[0] != "" {
 			lRes, err := evalClient.GetBuildElectricalLimits(context.Background(), connect.NewRequest(&pb.GetBuildElectricalLimitsRequest{
-				BuildId: args[0],
+				BuildSource: &pb.GetBuildElectricalLimitsRequest_BuildId{
+					BuildId: args[0],
+				},
 			}))
 			if err == nil && lRes.Msg != nil {
 				var clauses []string

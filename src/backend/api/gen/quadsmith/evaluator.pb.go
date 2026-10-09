@@ -127,9 +127,12 @@ func (x *SystemMessage) GetMessage() string {
 
 type EvaluateBuildRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Required build ID or UUID to evaluate.
-	BuildId        string  `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
-	PayloadWeightG float32 `protobuf:"fixed32,2,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
+	// Types that are valid to be assigned to BuildSource:
+	//
+	//	*EvaluateBuildRequest_BuildId
+	//	*EvaluateBuildRequest_Build
+	BuildSource    isEvaluateBuildRequest_BuildSource `protobuf_oneof:"build_source"`
+	PayloadWeightG float32                            `protobuf:"fixed32,2,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
 	// Required battery ID or UUID to evaluate the build with.
 	BatteryId     string `protobuf:"bytes,3,opt,name=battery_id,json=batteryId,proto3" json:"battery_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -166,11 +169,29 @@ func (*EvaluateBuildRequest) Descriptor() ([]byte, []int) {
 	return file_evaluator_proto_rawDescGZIP(), []int{1}
 }
 
+func (x *EvaluateBuildRequest) GetBuildSource() isEvaluateBuildRequest_BuildSource {
+	if x != nil {
+		return x.BuildSource
+	}
+	return nil
+}
+
 func (x *EvaluateBuildRequest) GetBuildId() string {
 	if x != nil {
-		return x.BuildId
+		if x, ok := x.BuildSource.(*EvaluateBuildRequest_BuildId); ok {
+			return x.BuildId
+		}
 	}
 	return ""
+}
+
+func (x *EvaluateBuildRequest) GetBuild() *Build {
+	if x != nil {
+		if x, ok := x.BuildSource.(*EvaluateBuildRequest_Build); ok {
+			return x.Build
+		}
+	}
+	return nil
 }
 
 func (x *EvaluateBuildRequest) GetPayloadWeightG() float32 {
@@ -186,6 +207,24 @@ func (x *EvaluateBuildRequest) GetBatteryId() string {
 	}
 	return ""
 }
+
+type isEvaluateBuildRequest_BuildSource interface {
+	isEvaluateBuildRequest_BuildSource()
+}
+
+type EvaluateBuildRequest_BuildId struct {
+	// Required build ID or UUID to evaluate.
+	BuildId string `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3,oneof"`
+}
+
+type EvaluateBuildRequest_Build struct {
+	// In-memory Build object to evaluate draft without saving to database.
+	Build *Build `protobuf:"bytes,4,opt,name=build,proto3,oneof"`
+}
+
+func (*EvaluateBuildRequest_BuildId) isEvaluateBuildRequest_BuildSource() {}
+
+func (*EvaluateBuildRequest_Build) isEvaluateBuildRequest_BuildSource() {}
 
 type EvaluateBuildResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -355,8 +394,11 @@ func (x *EvaluateBuildResponse) GetMaxCurrentA() float32 {
 
 type GetBuildElectricalLimitsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Required build ID or UUID.
-	BuildId       string `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	// Types that are valid to be assigned to BuildSource:
+	//
+	//	*GetBuildElectricalLimitsRequest_BuildId
+	//	*GetBuildElectricalLimitsRequest_Build
+	BuildSource   isGetBuildElectricalLimitsRequest_BuildSource `protobuf_oneof:"build_source"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -391,12 +433,48 @@ func (*GetBuildElectricalLimitsRequest) Descriptor() ([]byte, []int) {
 	return file_evaluator_proto_rawDescGZIP(), []int{3}
 }
 
+func (x *GetBuildElectricalLimitsRequest) GetBuildSource() isGetBuildElectricalLimitsRequest_BuildSource {
+	if x != nil {
+		return x.BuildSource
+	}
+	return nil
+}
+
 func (x *GetBuildElectricalLimitsRequest) GetBuildId() string {
 	if x != nil {
-		return x.BuildId
+		if x, ok := x.BuildSource.(*GetBuildElectricalLimitsRequest_BuildId); ok {
+			return x.BuildId
+		}
 	}
 	return ""
 }
+
+func (x *GetBuildElectricalLimitsRequest) GetBuild() *Build {
+	if x != nil {
+		if x, ok := x.BuildSource.(*GetBuildElectricalLimitsRequest_Build); ok {
+			return x.Build
+		}
+	}
+	return nil
+}
+
+type isGetBuildElectricalLimitsRequest_BuildSource interface {
+	isGetBuildElectricalLimitsRequest_BuildSource()
+}
+
+type GetBuildElectricalLimitsRequest_BuildId struct {
+	// Required build ID or UUID.
+	BuildId string `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3,oneof"`
+}
+
+type GetBuildElectricalLimitsRequest_Build struct {
+	// In-memory Build object.
+	Build *Build `protobuf:"bytes,2,opt,name=build,proto3,oneof"`
+}
+
+func (*GetBuildElectricalLimitsRequest_BuildId) isGetBuildElectricalLimitsRequest_BuildSource() {}
+
+func (*GetBuildElectricalLimitsRequest_Build) isGetBuildElectricalLimitsRequest_BuildSource() {}
 
 type GetBuildElectricalLimitsResponse struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
@@ -479,15 +557,17 @@ var File_evaluator_proto protoreflect.FileDescriptor
 
 const file_evaluator_proto_rawDesc = "" +
 	"\n" +
-	"\x0fevaluator.proto\x12\tquadsmith\"g\n" +
+	"\x0fevaluator.proto\x12\tquadsmith\x1a\vbuild.proto\"g\n" +
 	"\rSystemMessage\x12<\n" +
 	"\bseverity\x18\x01 \x01(\x0e2 .quadsmith.SystemMessageSeverityR\bseverity\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\x87\x01\n" +
-	"\x14EvaluateBuildRequest\x12\x19\n" +
-	"\bbuild_id\x18\x01 \x01(\tR\abuildId\x12(\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xb6\x01\n" +
+	"\x14EvaluateBuildRequest\x12\x1b\n" +
+	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x12(\n" +
+	"\x05build\x18\x04 \x01(\v2\x10.quadsmith.BuildH\x00R\x05build\x12(\n" +
 	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
 	"\n" +
-	"battery_id\x18\x03 \x01(\tR\tbatteryIdJ\x04\b\x04\x10\x05R\x05build\"\xee\x05\n" +
+	"battery_id\x18\x03 \x01(\tR\tbatteryIdB\x0e\n" +
+	"\fbuild_source\"\xee\x05\n" +
 	"\x15EvaluateBuildResponse\x12%\n" +
 	"\x0fall_up_weight_g\x18\x01 \x01(\x02R\fallUpWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
@@ -507,9 +587,11 @@ const file_evaluator_proto_rawDesc = "" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x11 \x01(\x02R\n" +
 	"maxVoltage\x12\"\n" +
-	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentAJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aJ\x04\b\x13\x10\x14R\x19estimated_flight_time_minR\bwarningsR\x06errorsR\x0ebuild_weight_gR\x0etotal_weight_g\"I\n" +
-	"\x1fGetBuildElectricalLimitsRequest\x12\x19\n" +
-	"\bbuild_id\x18\x01 \x01(\tR\abuildIdJ\x04\b\x02\x10\x03R\x05build\"\xd1\x01\n" +
+	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentAJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aJ\x04\b\x13\x10\x14R\x19estimated_flight_time_minR\bwarningsR\x06errorsR\x0ebuild_weight_gR\x0etotal_weight_g\"x\n" +
+	"\x1fGetBuildElectricalLimitsRequest\x12\x1b\n" +
+	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x12(\n" +
+	"\x05build\x18\x02 \x01(\v2\x10.quadsmith.BuildH\x00R\x05buildB\x0e\n" +
+	"\fbuild_source\"\xd1\x01\n" +
 	" GetBuildElectricalLimitsResponse\x12\x1f\n" +
 	"\vmin_voltage\x18\x01 \x01(\x02R\n" +
 	"minVoltage\x12\x1f\n" +
@@ -548,25 +630,37 @@ var file_evaluator_proto_goTypes = []any{
 	(*EvaluateBuildResponse)(nil),            // 3: quadsmith.EvaluateBuildResponse
 	(*GetBuildElectricalLimitsRequest)(nil),  // 4: quadsmith.GetBuildElectricalLimitsRequest
 	(*GetBuildElectricalLimitsResponse)(nil), // 5: quadsmith.GetBuildElectricalLimitsResponse
+	(*Build)(nil),                            // 6: quadsmith.Build
 }
 var file_evaluator_proto_depIdxs = []int32{
 	0, // 0: quadsmith.SystemMessage.severity:type_name -> quadsmith.SystemMessageSeverity
-	1, // 1: quadsmith.EvaluateBuildResponse.system_messages:type_name -> quadsmith.SystemMessage
-	2, // 2: quadsmith.EvaluatorService.EvaluateBuild:input_type -> quadsmith.EvaluateBuildRequest
-	4, // 3: quadsmith.EvaluatorService.GetBuildElectricalLimits:input_type -> quadsmith.GetBuildElectricalLimitsRequest
-	3, // 4: quadsmith.EvaluatorService.EvaluateBuild:output_type -> quadsmith.EvaluateBuildResponse
-	5, // 5: quadsmith.EvaluatorService.GetBuildElectricalLimits:output_type -> quadsmith.GetBuildElectricalLimitsResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	6, // 1: quadsmith.EvaluateBuildRequest.build:type_name -> quadsmith.Build
+	1, // 2: quadsmith.EvaluateBuildResponse.system_messages:type_name -> quadsmith.SystemMessage
+	6, // 3: quadsmith.GetBuildElectricalLimitsRequest.build:type_name -> quadsmith.Build
+	2, // 4: quadsmith.EvaluatorService.EvaluateBuild:input_type -> quadsmith.EvaluateBuildRequest
+	4, // 5: quadsmith.EvaluatorService.GetBuildElectricalLimits:input_type -> quadsmith.GetBuildElectricalLimitsRequest
+	3, // 6: quadsmith.EvaluatorService.EvaluateBuild:output_type -> quadsmith.EvaluateBuildResponse
+	5, // 7: quadsmith.EvaluatorService.GetBuildElectricalLimits:output_type -> quadsmith.GetBuildElectricalLimitsResponse
+	6, // [6:8] is the sub-list for method output_type
+	4, // [4:6] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_evaluator_proto_init() }
 func file_evaluator_proto_init() {
 	if File_evaluator_proto != nil {
 		return
+	}
+	file_build_proto_init()
+	file_evaluator_proto_msgTypes[1].OneofWrappers = []any{
+		(*EvaluateBuildRequest_BuildId)(nil),
+		(*EvaluateBuildRequest_Build)(nil),
+	}
+	file_evaluator_proto_msgTypes[3].OneofWrappers = []any{
+		(*GetBuildElectricalLimitsRequest_BuildId)(nil),
+		(*GetBuildElectricalLimitsRequest_Build)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

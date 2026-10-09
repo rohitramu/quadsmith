@@ -618,21 +618,25 @@ func TestEvaluateBuild_Validation(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("Missing build_id", func(t *testing.T) {
-		_, err := s.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{}))
+		_, err := s.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
+			BatteryId: "battery-1",
+		}))
 		if err == nil {
 			t.Fatal("expected error for missing build_id, got nil")
 		}
 		if connect.CodeOf(err) != connect.CodeInvalidArgument {
 			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
 		}
-		if !strings.Contains(err.Error(), "build_id is required") {
-			t.Errorf("expected 'build_id is required', got: %v", err)
+		if !strings.Contains(err.Error(), "either build or build_id must be provided") {
+			t.Errorf("expected 'either build or build_id must be provided', got: %v", err)
 		}
 	})
 
 	t.Run("Build not found", func(t *testing.T) {
 		_, err := s.EvaluateBuild(ctx, connect.NewRequest(&pb.EvaluateBuildRequest{
-			BuildId:   "non-existent-build",
+			BuildSource: &pb.EvaluateBuildRequest_BuildId{
+				BuildId: "non-existent-build",
+			},
 			BatteryId: "battery-1",
 		}))
 		if err == nil {
@@ -659,14 +663,16 @@ func TestGetBuildElectricalLimits_Validation(t *testing.T) {
 		if connect.CodeOf(err) != connect.CodeInvalidArgument {
 			t.Errorf("expected InvalidArgument, got %v", connect.CodeOf(err))
 		}
-		if !strings.Contains(err.Error(), "build_id is required") {
-			t.Errorf("expected 'build_id is required', got: %v", err)
+		if !strings.Contains(err.Error(), "either build or build_id must be provided") {
+			t.Errorf("expected 'either build or build_id must be provided', got: %v", err)
 		}
 	})
 
 	t.Run("Build not found", func(t *testing.T) {
 		_, err := s.GetBuildElectricalLimits(ctx, connect.NewRequest(&pb.GetBuildElectricalLimitsRequest{
-			BuildId: "non-existent-build",
+			BuildSource: &pb.GetBuildElectricalLimitsRequest_BuildId{
+				BuildId: "non-existent-build",
+			},
 		}))
 		if err == nil {
 			t.Fatal("expected error for non-existent build, got nil")

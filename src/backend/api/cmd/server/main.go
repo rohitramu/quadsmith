@@ -14,6 +14,7 @@ import (
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	"quadsmith/api/internal/engines/compatibility"
 	"quadsmith/api/internal/engines/evaluator"
 	"quadsmith/api/internal/engines/linkpreview"
 	"quadsmith/api/internal/engines/search"
@@ -70,6 +71,9 @@ func main() {
 
 	path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler := quadsmithconnect.NewLinkPreviewServiceHandler(linkpreview.NewLinkPreviewServiceHandler())
 	mux.Handle(path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler)
+
+	path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler := quadsmithconnect.NewCompatibilityServiceHandler(compatibility.NewCompatibilityServiceHandler(pool))
+	mux.Handle(path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler)
 
 	// Serve the React SPA for any unmatched paths
 	staticDir := os.Getenv("STATIC_DIR")

@@ -1,0 +1,1973 @@
+import { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation } from "@connectrpc/connect-query";
+import { create } from "@bufbuild/protobuf";
+import { Search, X, ArrowLeft, Sparkles, AlertCircle, RotateCcw, Save } from "lucide-react";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
+import { WizardStageBar } from "../components/WizardStageBar";
+
+// ConnectQuery hooks for component listing
+import { listFrames } from "../gen/quadsmith/frame-FrameService_connectquery";
+import { listMotors } from "../gen/quadsmith/motor-MotorService_connectquery";
+import { listPropellers } from "../gen/quadsmith/propeller-PropellerService_connectquery";
+import { listFlightControllers } from "../gen/quadsmith/flight_controller-FlightControllerService_connectquery";
+import { listElectronicSpeedControllers } from "../gen/quadsmith/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
+import { listReceivers } from "../gen/quadsmith/receiver-ReceiverService_connectquery";
+import { listVideoTransmitters } from "../gen/quadsmith/video_transmitter-VideoTransmitterService_connectquery";
+import { listCameras } from "../gen/quadsmith/camera-CameraService_connectquery";
+import { listAntennas } from "../gen/quadsmith/antenna-AntennaService_connectquery";
+import { listGpsReceivers } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
+import { listBatteries } from "../gen/quadsmith/battery-BatteryService_connectquery";
+
+// ConnectQuery hooks for evaluator & compatibility
+import {
+  evaluateBuild,
+  getBuildElectricalLimits,
+} from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
+import { checkCompatibility } from "../gen/quadsmith/compatibility-CompatibilityService_connectquery";
+import { createBuild } from "../gen/quadsmith/build-BuildService_connectquery";
+
+// Protobuf types
+import { BuildSchema, type Build } from "../gen/quadsmith/build_pb";
+import type { Frame } from "../gen/quadsmith/frame_pb";
+import type { Motor } from "../gen/quadsmith/motor_pb";
+import type { Propeller } from "../gen/quadsmith/propeller_pb";
+import type { FlightController } from "../gen/quadsmith/flight_controller_pb";
+import type { ElectronicSpeedController } from "../gen/quadsmith/electronic_speed_controller_pb";
+import type { Receiver } from "../gen/quadsmith/receiver_pb";
+import type { VideoTransmitter } from "../gen/quadsmith/video_transmitter_pb";
+import type { Camera } from "../gen/quadsmith/camera_pb";
+import type { Antenna } from "../gen/quadsmith/antenna_pb";
+import type { GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
+
+export function BuildWizardPage() {
+  const navigate = useNavigate();
+
+  useDocumentMeta({
+    title: "Build Wizard — Design Custom Quadcopter | Quadsmith",
+    description:
+      "Interactive Quadsmith build configurator. Design your custom FPV drone, check hardware compatibility, and simulate real-time physics telemetry.",
+  });
+
+  // Current active stage (1 to 4)
+  const [activeStage, setActiveStage] = useState<number>(1);
+
+  // Selected Parts (Initial State: 0 parts selected)
+  const [selectedFrame, setSelectedFrame] = useState<Frame | null>(null);
+  const [selectedMotor, setSelectedMotor] = useState<Motor | null>(null);
+  const [selectedProp, setSelectedProp] = useState<Propeller | null>(null);
+  const [selectedFc, setSelectedFc] = useState<FlightController | null>(null);
+  const [selectedEsc, setSelectedEsc] = useState<ElectronicSpeedController | null>(null);
+  const [useInternalEsc, setUseInternalEsc] = useState<boolean>(false);
+  const [selectedRx, setSelectedRx] = useState<Receiver | null>(null);
+  const [selectedVtx, setSelectedVtx] = useState<VideoTransmitter | null>(null);
+  const [selectedCam, setSelectedCam] = useState<Camera | null>(null);
+  const [selectedAnt, setSelectedAnt] = useState<Antenna | null>(null);
+  const [selectedGps, setSelectedGps] = useState<GpsReceiver | null>(null);
+
+  // Explicit "None" flags for optional parts
+  const [noneSelections, setNoneSelections] = useState<{
+    esc?: boolean;
+    vtx?: boolean;
+    camera?: boolean;
+    antenna?: boolean;
+    gps?: boolean;
+  }>({});
+
+  // Search filter strings for all 10 component selectors
+  const [searchFrame, setSearchFrame] = useState("");
+  const [searchMotor, setSearchMotor] = useState("");
+  const [searchProp, setSearchProp] = useState("");
+  const [searchFc, setSearchFc] = useState("");
+  const [searchEsc, setSearchEsc] = useState("");
+  const [searchRx, setSearchRx] = useState("");
+  const [searchVtx, setSearchVtx] = useState("");
+  const [searchCam, setSearchCam] = useState("");
+  const [searchAnt, setSearchAnt] = useState("");
+  const [searchGps, setSearchGps] = useState("");
+
+  // Evaluator Sidebar runtime parameters
+  const [selectedBatteryId, setSelectedBatteryId] = useState<string>("");
+  const [payloadWeightG, setPayloadWeightG] = useState<number>(0);
+  const [payloadInput, setPayloadInput] = useState<string>("0");
+
+  // Review & Save fields
+  const [buildName, setBuildName] = useState("My Custom Quadcopter");
+  const [buildDesc, setBuildDesc] = useState(
+    "Custom build configured via the Quadsmith Build Wizard.",
+  );
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  // Fetch component catalogs
+  const { data: framesData } = useQuery(listFrames, { pageSize: 100 });
+  const { data: motorsData } = useQuery(listMotors, { pageSize: 100 });
+  const { data: propsData } = useQuery(listPropellers, { pageSize: 100 });
+  const { data: fcsData } = useQuery(listFlightControllers, { pageSize: 100 });
+  const { data: escsData } = useQuery(listElectronicSpeedControllers, { pageSize: 100 });
+  const { data: rxsData } = useQuery(listReceivers, { pageSize: 100 });
+  const { data: vtxsData } = useQuery(listVideoTransmitters, { pageSize: 100 });
+  const { data: camsData } = useQuery(listCameras, { pageSize: 100 });
+  const { data: antsData } = useQuery(listAntennas, { pageSize: 100 });
+  const { data: gpsData } = useQuery(listGpsReceivers, { pageSize: 100 });
+  const { data: batteriesData } = useQuery(listBatteries, { pageSize: 100 });
+
+  const frames = useMemo(() => framesData?.frames ?? [], [framesData]);
+  const motors = useMemo(() => motorsData?.motors ?? [], [motorsData]);
+  const props = useMemo(() => propsData?.propellers ?? [], [propsData]);
+  const fcs = useMemo(() => fcsData?.flightControllers ?? [], [fcsData]);
+  const escs = useMemo(() => escsData?.electronicSpeedControllers ?? [], [escsData]);
+  const rxs = useMemo(() => rxsData?.receivers ?? [], [rxsData]);
+  const vtxs = useMemo(() => vtxsData?.videoTransmitters ?? [], [vtxsData]);
+  const cams = useMemo(() => camsData?.cameras ?? [], [camsData]);
+  const ants = useMemo(() => antsData?.antennas ?? [], [antsData]);
+  const gpsList = useMemo(() => gpsData?.gpsReceivers ?? [], [gpsData]);
+  const batteries = useMemo(() => batteriesData?.batteries ?? [], [batteriesData]);
+
+  // Dynamic motor and propeller quantity determined by selected Frame (Option 2)
+  const motorCount = selectedFrame?.motorCount || 4;
+
+  // Does the flight controller have an in-built ESC with sufficient drivers?
+  // Note: If FC has an internal ESC with enough channels for the frame's motorCount, external ESC is optional.
+  const fcHasAdequateInternalEsc = useMemo(() => {
+    if (!selectedFc) return false;
+    // Check if internalElectronicSpeedControllerUuid or internal electronic speed controller is present
+    // Also consider if fc.name contains AIO or Whoop board
+    const nameLower = selectedFc.name.toLowerCase();
+    const isAIO =
+      nameLower.includes("aio") ||
+      nameLower.includes("whoop") ||
+      nameLower.includes("12a") ||
+      nameLower.includes("20a");
+    return (
+      isAIO ||
+      !!(selectedFc as unknown as { internalElectronicSpeedController?: { maxMotors?: number } })
+        .internalElectronicSpeedController?.maxMotors
+    );
+  }, [selectedFc]);
+
+  // If FC changes to one without adequate internal ESC, reset useInternalEsc
+  useEffect(() => {
+    if (useInternalEsc && !fcHasAdequateInternalEsc) {
+      setUseInternalEsc(false);
+    }
+  }, [fcHasAdequateInternalEsc, useInternalEsc]);
+
+  // Stage completion checks
+  const stage1Complete = !!(selectedFrame && selectedMotor && selectedProp);
+  const stage2Complete = !!(
+    selectedFc &&
+    selectedRx &&
+    (useInternalEsc || noneSelections.esc || selectedEsc)
+  );
+  const stage3Complete =
+    (!!selectedVtx || !!noneSelections.vtx) &&
+    (!!selectedCam || !!noneSelections.camera) &&
+    (!!selectedAnt || !!noneSelections.antenna) &&
+    (!!selectedGps || !!noneSelections.gps);
+  const stage4Complete = stage1Complete && stage2Complete && buildName.trim().length > 0;
+
+  // Unlocked stages based on gating logic
+  const unlockedStages = useMemo(() => {
+    const list = [1];
+    if (stage1Complete) list.push(2);
+    if (stage1Complete && stage2Complete) {
+      list.push(3);
+      list.push(4);
+    }
+    return list;
+  }, [stage1Complete, stage2Complete]);
+
+  // Dry weight calculation (with dynamic motor & prop quantities)
+  const dryWeightG = useMemo(() => {
+    let weight = 0;
+    if (selectedFrame) weight += selectedFrame.weightG || 0;
+    if (selectedMotor) weight += (selectedMotor.weightG || 0) * motorCount;
+    if (selectedProp) weight += (selectedProp.weightG || 0) * motorCount;
+    if (selectedFc) weight += selectedFc.weightG || 0;
+    if (selectedEsc && !useInternalEsc) weight += selectedEsc.weightG || 0;
+    if (selectedRx) weight += selectedRx.weightG || 0;
+    if (selectedVtx && !noneSelections.vtx) weight += selectedVtx.weightG || 0;
+    if (selectedCam && !noneSelections.camera) weight += selectedCam.weightG || 0;
+    if (selectedAnt && !noneSelections.antenna) weight += selectedAnt.weightG || 0;
+    if (selectedGps && !noneSelections.gps) weight += selectedGps.weightG || 0;
+    return parseFloat(weight.toFixed(1));
+  }, [
+    selectedFrame,
+    selectedMotor,
+    selectedProp,
+    selectedFc,
+    selectedEsc,
+    useInternalEsc,
+    selectedRx,
+    selectedVtx,
+    selectedCam,
+    selectedAnt,
+    selectedGps,
+    noneSelections,
+    motorCount,
+  ]);
+
+  // Construct draft Build object for live evaluation
+  const draftBuild = useMemo<Build | null>(() => {
+    if (!selectedFrame || !selectedMotor) return null;
+    return create(BuildSchema, {
+      id: "draft-wizard-build",
+      name: buildName || "Draft Build",
+      description: buildDesc || "",
+      frameUuid: selectedFrame.uuid,
+      motorUuid: selectedMotor.uuid,
+      propellerUuid: selectedProp ? selectedProp.uuid : "",
+      flightControllerUuid: selectedFc ? selectedFc.uuid : "",
+      electronicSpeedControllerUuids:
+        useInternalEsc || noneSelections.esc || !selectedEsc ? [] : [selectedEsc.uuid],
+      receiverUuids: selectedRx ? [selectedRx.uuid] : [],
+      antennaUuids: selectedAnt && !noneSelections.antenna ? [selectedAnt.uuid] : [],
+      cameraUuids: selectedCam && !noneSelections.camera ? [selectedCam.uuid] : [],
+      videoTransmitterUuid: selectedVtx && !noneSelections.vtx ? selectedVtx.uuid : "",
+      gpsReceiverUuid: selectedGps && !noneSelections.gps ? selectedGps.uuid : undefined,
+      referenceLinks: [],
+      media: [],
+    });
+  }, [
+    selectedFrame,
+    selectedMotor,
+    selectedProp,
+    selectedFc,
+    selectedEsc,
+    useInternalEsc,
+    selectedRx,
+    selectedVtx,
+    selectedCam,
+    selectedAnt,
+    selectedGps,
+    noneSelections,
+    buildName,
+    buildDesc,
+  ]);
+
+  // Evaluator queries
+  const { data: electricalLimits } = useQuery(
+    getBuildElectricalLimits,
+    { buildSource: { case: "build", value: draftBuild! } },
+    { enabled: !!draftBuild },
+  );
+
+  // Auto-select lightest compatible battery when limits arrive or batteries change
+  useEffect(() => {
+    if (!selectedBatteryId && batteries.length > 0) {
+      if (electricalLimits?.defaultBatteryId) {
+        setSelectedBatteryId(electricalLimits.defaultBatteryId);
+      } else {
+        setSelectedBatteryId(batteries[0].id || batteries[0].uuid);
+      }
+    }
+  }, [electricalLimits, batteries, selectedBatteryId]);
+
+  const activeBattery = useMemo(() => {
+    return batteries.find((b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId);
+  }, [batteries, selectedBatteryId]);
+
+  const { data: evaluation } = useQuery(
+    evaluateBuild,
+    {
+      buildSource: { case: "build", value: draftBuild! },
+      payloadWeightG,
+      batteryId: selectedBatteryId,
+    },
+    {
+      enabled: !!draftBuild && !!selectedBatteryId,
+    },
+  );
+
+  const { data: compatibilityData } = useQuery(
+    checkCompatibility,
+    { build: draftBuild! },
+    { enabled: !!draftBuild },
+  );
+
+  // Mutation for creating the build
+  const { mutateAsync: saveBuildMutation, isPending: isSaving } = useMutation(createBuild);
+
+  // Filtered component catalogs based on search inputs
+  const filteredFrames = useMemo(() => {
+    if (!searchFrame.trim()) return frames;
+    const q = searchFrame.toLowerCase();
+    return frames.filter(
+      (f) => f.name.toLowerCase().includes(q) || f.manufacturer.toLowerCase().includes(q),
+    );
+  }, [frames, searchFrame]);
+
+  const filteredMotors = useMemo(() => {
+    if (!searchMotor.trim()) return motors;
+    const q = searchMotor.toLowerCase();
+    return motors.filter(
+      (m) =>
+        m.name.toLowerCase().includes(q) ||
+        m.manufacturer.toLowerCase().includes(q) ||
+        String(m.kv).includes(q),
+    );
+  }, [motors, searchMotor]);
+
+  const filteredProps = useMemo(() => {
+    if (!searchProp.trim()) return props;
+    const q = searchProp.toLowerCase();
+    return props.filter(
+      (p) => p.name.toLowerCase().includes(q) || p.manufacturer.toLowerCase().includes(q),
+    );
+  }, [props, searchProp]);
+
+  const filteredFcs = useMemo(() => {
+    if (!searchFc.trim()) return fcs;
+    const q = searchFc.toLowerCase();
+    return fcs.filter(
+      (fc) => fc.name.toLowerCase().includes(q) || fc.manufacturer.toLowerCase().includes(q),
+    );
+  }, [fcs, searchFc]);
+
+  const filteredEscs = useMemo(() => {
+    if (!searchEsc.trim()) return escs;
+    const q = searchEsc.toLowerCase();
+    return escs.filter(
+      (esc) => esc.name.toLowerCase().includes(q) || esc.manufacturer.toLowerCase().includes(q),
+    );
+  }, [escs, searchEsc]);
+
+  const filteredRxs = useMemo(() => {
+    if (!searchRx.trim()) return rxs;
+    const q = searchRx.toLowerCase();
+    return rxs.filter(
+      (rx) =>
+        rx.name.toLowerCase().includes(q) ||
+        rx.manufacturer.toLowerCase().includes(q) ||
+        rx.protocol.toLowerCase().includes(q),
+    );
+  }, [rxs, searchRx]);
+
+  const filteredVtxs = useMemo(() => {
+    if (!searchVtx.trim()) return vtxs;
+    const q = searchVtx.toLowerCase();
+    return vtxs.filter(
+      (v) => v.name.toLowerCase().includes(q) || v.manufacturer.toLowerCase().includes(q),
+    );
+  }, [vtxs, searchVtx]);
+
+  const filteredCams = useMemo(() => {
+    if (!searchCam.trim()) return cams;
+    const q = searchCam.toLowerCase();
+    return cams.filter(
+      (c) => c.name.toLowerCase().includes(q) || c.manufacturer.toLowerCase().includes(q),
+    );
+  }, [cams, searchCam]);
+
+  const filteredAnts = useMemo(() => {
+    if (!searchAnt.trim()) return ants;
+    const q = searchAnt.toLowerCase();
+    return ants.filter(
+      (a) => a.name.toLowerCase().includes(q) || a.manufacturer.toLowerCase().includes(q),
+    );
+  }, [ants, searchAnt]);
+
+  const filteredGps = useMemo(() => {
+    if (!searchGps.trim()) return gpsList;
+    const q = searchGps.toLowerCase();
+    return gpsList.filter(
+      (g) => g.name.toLowerCase().includes(q) || g.manufacturer.toLowerCase().includes(q),
+    );
+  }, [gpsList, searchGps]);
+
+  // Payload Handlers
+  const handlePayloadInput = (val: string) => {
+    setPayloadInput(val);
+    const parsed = parseFloat(val);
+    if (!isNaN(parsed) && parsed >= 0) {
+      setPayloadWeightG(parsed);
+    }
+  };
+
+  const adjustPayload = (delta: number) => {
+    const next = Math.max(0, payloadWeightG + delta);
+    setPayloadWeightG(next);
+    setPayloadInput(String(next));
+  };
+
+  const setPresetPayload = (weight: number) => {
+    setPayloadWeightG(weight);
+    setPayloadInput(String(weight));
+  };
+
+  // Skip All Stage 3 (Vision & Navigation)
+  const skipAllStage3 = () => {
+    setNoneSelections((prev) => ({
+      ...prev,
+      vtx: true,
+      camera: true,
+      antenna: true,
+      gps: true,
+    }));
+    setSelectedVtx(null);
+    setSelectedCam(null);
+    setSelectedAnt(null);
+    setSelectedGps(null);
+  };
+
+  // Quick Preset Loader (5" Freestyle)
+  const loadFreestylePreset = () => {
+    if (frames.length > 0) setSelectedFrame(frames[0]);
+    if (motors.length > 0) setSelectedMotor(motors[0]);
+    if (props.length > 0) setSelectedProp(props[0]);
+    if (fcs.length > 0) setSelectedFc(fcs[0]);
+    if (escs.length > 0) {
+      setSelectedEsc(escs[0]);
+      setUseInternalEsc(false);
+    }
+    if (rxs.length > 0) setSelectedRx(rxs[0]);
+    if (vtxs.length > 0) {
+      setSelectedVtx(vtxs[0]);
+      setNoneSelections((prev) => ({ ...prev, vtx: false }));
+    }
+    if (cams.length > 0) {
+      setSelectedCam(cams[0]);
+      setNoneSelections((prev) => ({ ...prev, camera: false }));
+    }
+    if (ants.length > 0) {
+      setSelectedAnt(ants[0]);
+      setNoneSelections((prev) => ({ ...prev, antenna: false }));
+    }
+    if (gpsList.length > 0) {
+      setSelectedGps(gpsList[0]);
+      setNoneSelections((prev) => ({ ...prev, gps: false }));
+    }
+    setBuildName("5-Inch Freestyle Build");
+  };
+
+  // Quick Preset Loader (3" Toothpick)
+  const loadToothpickPreset = () => {
+    if (frames.length > 1) setSelectedFrame(frames[1]);
+    else if (frames.length > 0) setSelectedFrame(frames[0]);
+
+    if (motors.length > 1) setSelectedMotor(motors[1]);
+    else if (motors.length > 0) setSelectedMotor(motors[0]);
+
+    if (props.length > 0) setSelectedProp(props[0]);
+
+    // Use AIO FC if available
+    const aioFc = fcs.find((fc) => fc.name.toLowerCase().includes("aio")) || fcs[0];
+    if (aioFc) {
+      setSelectedFc(aioFc);
+      setUseInternalEsc(true);
+      setSelectedEsc(null);
+    }
+    if (rxs.length > 0) setSelectedRx(rxs[0]);
+
+    // Toothpick: lightweight LOS / micro
+    setNoneSelections({
+      esc: true,
+      vtx: true,
+      camera: true,
+      antenna: true,
+      gps: true,
+    });
+    setSelectedVtx(null);
+    setSelectedCam(null);
+    setSelectedAnt(null);
+    setSelectedGps(null);
+    setBuildName("3-Inch Ultralight Toothpick");
+  };
+
+  // Reset all selections to zero
+  const resetWizard = () => {
+    setSelectedFrame(null);
+    setSelectedMotor(null);
+    setSelectedProp(null);
+    setSelectedFc(null);
+    setSelectedEsc(null);
+    setUseInternalEsc(false);
+    setSelectedRx(null);
+    setSelectedVtx(null);
+    setSelectedCam(null);
+    setSelectedAnt(null);
+    setSelectedGps(null);
+    setNoneSelections({});
+    setActiveStage(1);
+    setBuildName("My Custom Quadcopter");
+    setBuildDesc("Custom build configured via the Quadsmith Build Wizard.");
+  };
+
+  // Save Build to PostgreSQL via CreateBuild RPC
+  const handleSaveBuild = async () => {
+    if (!stage1Complete || !stage2Complete) {
+      setSaveError("Please complete required components in Stages 1 and 2 before saving.");
+      return;
+    }
+    if (!buildName.trim()) {
+      setSaveError("Build name is required.");
+      return;
+    }
+
+    try {
+      setSaveError(null);
+      const newBuild = create(BuildSchema, {
+        name: buildName.trim(),
+        description: buildDesc.trim(),
+        frameUuid: selectedFrame!.uuid,
+        motorUuid: selectedMotor!.uuid,
+        propellerUuid: selectedProp!.uuid,
+        flightControllerUuid: selectedFc!.uuid,
+        electronicSpeedControllerUuids:
+          useInternalEsc || noneSelections.esc || !selectedEsc ? [] : [selectedEsc.uuid],
+        receiverUuids: selectedRx ? [selectedRx.uuid] : [],
+        cameraUuids: selectedCam && !noneSelections.camera ? [selectedCam.uuid] : [],
+        antennaUuids: selectedAnt && !noneSelections.antenna ? [selectedAnt.uuid] : [],
+        videoTransmitterUuid: selectedVtx && !noneSelections.vtx ? selectedVtx.uuid : "",
+        gpsReceiverUuid: selectedGps && !noneSelections.gps ? selectedGps.uuid : undefined,
+      });
+
+      const res = await saveBuildMutation({ build: newBuild });
+      if (res && (res.id || res.uuid)) {
+        navigate(`/builds/${res.id || res.uuid}`);
+      }
+    } catch (err: unknown) {
+      setSaveError(err instanceof Error ? err.message : "Failed to save build to database");
+    }
+  };
+
+  // Navigation between stages
+  const handleNextStage = () => {
+    if (activeStage === 1 && stage1Complete) setActiveStage(2);
+    else if (activeStage === 2 && stage2Complete) setActiveStage(3);
+    else if (activeStage === 3) setActiveStage(4);
+  };
+
+  const handlePrevStage = () => {
+    if (activeStage > 1) setActiveStage((prev) => prev - 1);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto space-y-6">
+      {/* Top Banner & Presets */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+              <Sparkles size={14} />
+              Interactive Build Wizard
+            </span>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              • Stage {activeStage} of 4
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+            Design Custom Drone
+          </h1>
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+            Select parts sequentially. Flight electronics include FC, ESC, and Receiver. Test flight
+            physics and battery options in the Live Evaluator on the right.
+          </p>
+        </div>
+
+        {/* Quick Presets */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={loadFreestylePreset}
+            className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-colors shadow-xs"
+          >
+            ⚡ 5" Freestyle Preset
+          </button>
+          <button
+            type="button"
+            onClick={loadToothpickPreset}
+            className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300 transition-colors shadow-xs"
+          >
+            🪶 3" Toothpick Preset
+          </button>
+          <button
+            type="button"
+            onClick={resetWizard}
+            className="px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 text-xs font-medium transition-colors"
+          >
+            <RotateCcw size={13} className="inline mr-1" />
+            Clear All
+          </button>
+        </div>
+      </div>
+
+      {/* 4-Stage Stepper Navigation */}
+      <WizardStageBar
+        currentStage={activeStage}
+        unlockedStages={unlockedStages}
+        stageCompletion={{
+          1: stage1Complete,
+          2: stage2Complete,
+          3: stage3Complete,
+          4: stage4Complete,
+        }}
+        stageProgressText={{
+          1: `${(selectedFrame ? 1 : 0) + (selectedMotor ? 1 : 0) + (selectedProp ? 1 : 0)}/3`,
+          2: `${(selectedFc ? 1 : 0) + (selectedRx ? 1 : 0) + (selectedEsc || useInternalEsc || noneSelections.esc ? 1 : 0)}/3`,
+          3: "Optional",
+          4: "Finalize",
+        }}
+        onSelectStage={(stage) => setActiveStage(stage)}
+      />
+
+      {/* Main Workspace: Left 8 Cols (Stage Workarea) + Right 4 Cols (Live Evaluator) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column (Stage Contents) */}
+        <div className="lg:col-span-8 space-y-5">
+          {/* Stage Gating Banner */}
+          {activeStage === 1 && !stage1Complete && (
+            <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300 flex items-start gap-3 text-xs">
+              <AlertCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
+              <div>
+                <span className="font-bold">
+                  Stage 1 Incomplete: Select Frame, Motors, and Propellers to establish propulsion
+                  base
+                </span>
+                <p className="opacity-90 mt-0.5">
+                  The Frame sets prop clearance and stack mounting. Motors & Props set thrust and
+                  ESC current requirements for Stage 2.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {activeStage === 2 && !stage2Complete && (
+            <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300 flex items-start gap-3 text-xs">
+              <AlertCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
+              <div>
+                <span className="font-bold">
+                  Stage 2 Incomplete: Flight Controller, ESC, and Radio Receiver are required
+                </span>
+                <p className="opacity-90 mt-0.5">
+                  External ESC is optional only if your flight controller has an in-built ESC with
+                  enough motor drivers.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* STAGE 1: Airframe & Propulsion */}
+          {activeStage === 1 && (
+            <div className="space-y-6">
+              {/* 1A. Frame Chassis */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      1A. Frame Chassis <span className="text-red-500 text-xs">*Required</span>
+                    </h3>
+                  </div>
+                  <span className="text-xs text-zinc-500 font-mono">
+                    {selectedFrame ? selectedFrame.name : "None selected"}
+                  </span>
+                </div>
+
+                {/* In-line Search Box */}
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchFrame}
+                    onChange={(e) => setSearchFrame(e.target.value)}
+                    placeholder="Search frames by name, brand, geometry..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchFrame && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchFrame("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                {/* Products Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {filteredFrames.map((f) => {
+                    const isSelected = selectedFrame?.uuid === f.uuid || selectedFrame?.id === f.id;
+                    return (
+                      <div
+                        key={f.uuid || f.id}
+                        onClick={() => setSelectedFrame(f)}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                            {f.name}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
+                            {f.motorCount || 4}x Motors
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: {f.weightG}g • {f.geometry || "Standard"}
+                        </div>
+                        <div className="text-[11px] text-blue-600 dark:text-blue-400 font-mono mt-1">
+                          Max Prop:{" "}
+                          {f.maxPropSizeMm ? `${(f.maxPropSizeMm / 25.4).toFixed(1)}"` : '5.1"'}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {filteredFrames.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible frames matching your search.
+                  </p>
+                )}
+              </div>
+
+              {/* 1B. Motors */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      1B. Motors{" "}
+                      <span className="text-xs text-blue-600 dark:text-blue-400 font-mono font-semibold">
+                        ({motorCount}x)
+                      </span>{" "}
+                      <span className="text-red-500 text-xs">*Required</span>
+                    </h3>
+                  </div>
+                  <span className="text-xs text-zinc-500 font-mono">
+                    {selectedMotor ? `${selectedMotor.name} (${motorCount}x)` : "None selected"}
+                  </span>
+                </div>
+
+                {/* In-line Search Box */}
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchMotor}
+                    onChange={(e) => setSearchMotor(e.target.value)}
+                    placeholder="Search motors by KV, stator size, manufacturer..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchMotor && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchMotor("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {filteredMotors.map((m) => {
+                    const isSelected = selectedMotor?.uuid === m.uuid || selectedMotor?.id === m.id;
+                    return (
+                      <div
+                        key={m.uuid || m.id}
+                        onClick={() => setSelectedMotor(m)}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                            {m.name}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                            {m.kv} KV
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: {m.weightG}g ea ({((m.weightG || 0) * motorCount).toFixed(1)}g
+                          total)
+                        </div>
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                          {m.manufacturer} •{" "}
+                          {m.statorDiameterMm
+                            ? `${m.statorDiameterMm}${m.statorHeightMm || ""}`
+                            : "Brushless"}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {filteredMotors.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible motors matching your search.
+                  </p>
+                )}
+              </div>
+
+              {/* 1C. Propellers */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      1C. Propellers{" "}
+                      <span className="text-xs text-blue-600 dark:text-blue-400 font-mono font-semibold">
+                        ({motorCount}x)
+                      </span>{" "}
+                      <span className="text-red-500 text-xs">*Required</span>
+                    </h3>
+                  </div>
+                  <span className="text-xs text-zinc-500 font-mono">
+                    {selectedProp ? `${selectedProp.name} (${motorCount}x)` : "None selected"}
+                  </span>
+                </div>
+
+                {/* In-line Search Box */}
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchProp}
+                    onChange={(e) => setSearchProp(e.target.value)}
+                    placeholder="Search propellers by size, pitch, manufacturer..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchProp && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchProp("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {filteredProps.map((p) => {
+                    const isSelected = selectedProp?.uuid === p.uuid || selectedProp?.id === p.id;
+                    const diam = p.diameterMm ? (p.diameterMm / 25.4).toFixed(1) : "5.0";
+                    return (
+                      <div
+                        key={p.uuid || p.id}
+                        onClick={() => setSelectedProp(p)}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                            {p.name}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                            {diam}"
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: {p.weightG}g ea ({((p.weightG || 0) * motorCount).toFixed(1)}g
+                          total)
+                        </div>
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                          {p.blades || 3}-Blade • {p.manufacturer}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {filteredProps.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible propellers matching your search.
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* STAGE 2: Flight Electronics & Power (FC, ESC, Receiver) */}
+          {activeStage === 2 && (
+            <div className="space-y-6">
+              {/* 2A. Flight Controller */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      2A. Flight Controller <span className="text-red-500 text-xs">*Required</span>
+                    </h3>
+                  </div>
+                  <span className="text-xs text-zinc-500 font-mono">
+                    {selectedFc ? selectedFc.name : "None selected"}
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchFc}
+                    onChange={(e) => setSearchFc(e.target.value)}
+                    placeholder="Search flight controllers by MCU, gyro, mounting pattern..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchFc && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchFc("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {filteredFcs.map((fc) => {
+                    const isSelected = selectedFc?.uuid === fc.uuid || selectedFc?.id === fc.id;
+                    const isAio =
+                      fc.name.toLowerCase().includes("aio") ||
+                      fc.name.toLowerCase().includes("whoop");
+                    return (
+                      <div
+                        key={fc.uuid || fc.id}
+                        onClick={() => setSelectedFc(fc)}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                            {fc.name}
+                          </span>
+                          <span
+                            className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${
+                              isAio
+                                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                                : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20"
+                            }`}
+                          >
+                            {isAio ? "AIO (ESC Built-in)" : "Standalone FC"}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: {fc.weightG}g • {fc.processor || "MCU"}
+                        </div>
+                        <div className="text-[11px] text-zinc-400 font-mono mt-1">
+                          {isAio ? "✓ Built-in ESC (external optional)" : "Requires separate ESC"}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {filteredFcs.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible flight controllers matching your search.
+                  </p>
+                )}
+              </div>
+
+              {/* 2B. Electronic Speed Controller (ESC) - Conditional Logic */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      2B. Electronic Speed Controller (ESC){" "}
+                      {fcHasAdequateInternalEsc ? (
+                        <span className="text-emerald-600 dark:text-emerald-400 text-xs font-normal">
+                          (Optional — FC has in-built ESC)
+                        </span>
+                      ) : (
+                        <span className="text-red-500 text-xs">*Required</span>
+                      )}
+                    </h3>
+                  </div>
+                  <span className="text-xs text-zinc-500 font-mono">
+                    {useInternalEsc
+                      ? "Using In-built FC ESC"
+                      : selectedEsc
+                        ? selectedEsc.name
+                        : "None selected"}
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchEsc}
+                    onChange={(e) => setSearchEsc(e.target.value)}
+                    placeholder="Search ESCs by current rating, protocol, mounting pattern..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchEsc && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchEsc("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {/* Option Card: In-built FC ESC (Enabled only if FC has adequate ESC) */}
+                  <div
+                    onClick={() => {
+                      if (fcHasAdequateInternalEsc) {
+                        setUseInternalEsc(true);
+                        setSelectedEsc(null);
+                        setNoneSelections((prev) => ({ ...prev, esc: true }));
+                      }
+                    }}
+                    className={`p-3.5 rounded-xl border transition-all ${
+                      !fcHasAdequateInternalEsc
+                        ? "opacity-40 cursor-not-allowed border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                        : useInternalEsc
+                          ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30 ring-1 ring-emerald-500 cursor-pointer"
+                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 cursor-pointer"
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                        Use In-built FC ESC
+                      </span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                        Integrated
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                      Uses FC drivers (0g added)
+                    </div>
+                    <div className="text-[11px] font-mono mt-1 text-zinc-500">
+                      {fcHasAdequateInternalEsc
+                        ? "✓ Available on selected FC"
+                        : "Requires AIO FC with internal ESC"}
+                    </div>
+                  </div>
+
+                  {filteredEscs.map((esc) => {
+                    const isSelected =
+                      !useInternalEsc &&
+                      (selectedEsc?.uuid === esc.uuid || selectedEsc?.id === esc.id);
+                    return (
+                      <div
+                        key={esc.uuid || esc.id}
+                        onClick={() => {
+                          setSelectedEsc(esc);
+                          setUseInternalEsc(false);
+                          setNoneSelections((prev) => ({ ...prev, esc: false }));
+                        }}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                            {esc.name}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                            {esc.motorCurrentMaxA || 50}A
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: {esc.weightG}g • {esc.maxMotors || 4}x Motors
+                        </div>
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                          {esc.manufacturer} • 4-in-1
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {filteredEscs.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible ESCs matching your search.
+                  </p>
+                )}
+              </div>
+
+              {/* 2C. Radio Receiver */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      2C. Radio Control Receiver{" "}
+                      <span className="text-red-500 text-xs">*Required</span>
+                    </h3>
+                  </div>
+                  <span className="text-xs text-zinc-500 font-mono">
+                    {selectedRx ? selectedRx.name : "None selected"}
+                  </span>
+                </div>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Provides pilot command link directly to the Flight Controller via serial UART.
+                </p>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchRx}
+                    onChange={(e) => setSearchRx(e.target.value)}
+                    placeholder="Search receivers by protocol (ELRS, Crossfire), brand..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchRx && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchRx("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {filteredRxs.map((rx) => {
+                    const isSelected = selectedRx?.uuid === rx.uuid || selectedRx?.id === rx.id;
+                    return (
+                      <div
+                        key={rx.uuid || rx.id}
+                        onClick={() => setSelectedRx(rx)}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                            {rx.name}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            {rx.protocol || "Serial"}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: {rx.weightG}g • {rx.manufacturer}
+                        </div>
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                          Requires 1x FC UART
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {filteredRxs.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible receivers matching your search.
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* STAGE 3: Vision & Navigation (All Optional) */}
+          {activeStage === 3 && (
+            <div className="space-y-6">
+              {/* Optional Notice & Skip All Button */}
+              <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/20 text-blue-900 dark:text-blue-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <span>
+                  ℹ️ All components in Stage 3 are optional. You can select parts or choose "None"
+                  for each.
+                </span>
+                <button
+                  type="button"
+                  onClick={skipAllStage3}
+                  className="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] transition-colors shrink-0"
+                >
+                  Set All to None (Line-of-Sight)
+                </button>
+              </div>
+
+              {/* 3A. Video Transmitter (VTX) */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                    3A. Video Transmitter (VTX){" "}
+                    <span className="text-zinc-400 text-xs font-normal">(Optional)</span>
+                  </h3>
+                  <span className="text-xs font-mono text-zinc-500">
+                    {noneSelections.vtx
+                      ? "None (Skipped)"
+                      : selectedVtx
+                        ? selectedVtx.name
+                        : "Not selected"}
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchVtx}
+                    onChange={(e) => setSearchVtx(e.target.value)}
+                    placeholder="Search VTX by power, brand, analog/digital..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchVtx && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchVtx("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  {/* Explicit None Card */}
+                  <div
+                    onClick={() => {
+                      setSelectedVtx(null);
+                      setNoneSelections((prev) => ({ ...prev, vtx: true }));
+                    }}
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                      noneSelections.vtx
+                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                    }`}
+                  >
+                    <div className="font-bold text-zinc-900 dark:text-zinc-200">No VTX (None)</div>
+                    <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
+                  </div>
+
+                  {filteredVtxs.map((v) => {
+                    const isSelected =
+                      !noneSelections.vtx &&
+                      (selectedVtx?.uuid === v.uuid || selectedVtx?.id === v.id);
+                    return (
+                      <div
+                        key={v.uuid || v.id}
+                        onClick={() => {
+                          setSelectedVtx(v);
+                          setNoneSelections((prev) => ({ ...prev, vtx: false }));
+                        }}
+                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                        }`}
+                      >
+                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{v.name}</div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                          {v.protocol || "5.8GHz"} • {v.weightG}g
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 3B. Camera */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                    3B. FPV Camera{" "}
+                    <span className="text-zinc-400 text-xs font-normal">(Optional)</span>
+                  </h3>
+                  <span className="text-xs font-mono text-zinc-500">
+                    {noneSelections.camera
+                      ? "None (Skipped)"
+                      : selectedCam
+                        ? selectedCam.name
+                        : "Not selected"}
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchCam}
+                    onChange={(e) => setSearchCam(e.target.value)}
+                    placeholder="Search camera by sensor, size, brand..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchCam && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchCam("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  <div
+                    onClick={() => {
+                      setSelectedCam(null);
+                      setNoneSelections((prev) => ({ ...prev, camera: true }));
+                    }}
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                      noneSelections.camera
+                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                    }`}
+                  >
+                    <div className="font-bold text-zinc-900 dark:text-zinc-200">
+                      No Camera (None)
+                    </div>
+                    <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
+                  </div>
+
+                  {filteredCams.map((c) => {
+                    const isSelected =
+                      !noneSelections.camera &&
+                      (selectedCam?.uuid === c.uuid || selectedCam?.id === c.id);
+                    return (
+                      <div
+                        key={c.uuid || c.id}
+                        onClick={() => {
+                          setSelectedCam(c);
+                          setNoneSelections((prev) => ({ ...prev, camera: false }));
+                        }}
+                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                        }`}
+                      >
+                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{c.name}</div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                          {c.protocol || "Analog"} • {c.weightG}g
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 3C. Video Antenna */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                    3C. Video Antenna{" "}
+                    <span className="text-zinc-400 text-xs font-normal">(Optional)</span>
+                  </h3>
+                  <span className="text-xs font-mono text-zinc-500">
+                    {noneSelections.antenna
+                      ? "None (Skipped)"
+                      : selectedAnt
+                        ? selectedAnt.name
+                        : "Not selected"}
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchAnt}
+                    onChange={(e) => setSearchAnt(e.target.value)}
+                    placeholder="Search antennas by connector, polarization, brand..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchAnt && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchAnt("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  <div
+                    onClick={() => {
+                      setSelectedAnt(null);
+                      setNoneSelections((prev) => ({ ...prev, antenna: true }));
+                    }}
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                      noneSelections.antenna
+                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                    }`}
+                  >
+                    <div className="font-bold text-zinc-900 dark:text-zinc-200">
+                      No Antenna (None)
+                    </div>
+                    <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
+                  </div>
+
+                  {filteredAnts.map((a) => {
+                    const isSelected =
+                      !noneSelections.antenna &&
+                      (selectedAnt?.uuid === a.uuid || selectedAnt?.id === a.id);
+                    return (
+                      <div
+                        key={a.uuid || a.id}
+                        onClick={() => {
+                          setSelectedAnt(a);
+                          setNoneSelections((prev) => ({ ...prev, antenna: false }));
+                        }}
+                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                        }`}
+                      >
+                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{a.name}</div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                          {a.polarization || "RHCP"} • {a.weightG}g
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 3D. GPS Receiver */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                    3D. GPS Receiver & Compass{" "}
+                    <span className="text-zinc-400 text-xs font-normal">(Optional)</span>
+                  </h3>
+                  <span className="text-xs font-mono text-zinc-500">
+                    {noneSelections.gps
+                      ? "None (Skipped)"
+                      : selectedGps
+                        ? selectedGps.name
+                        : "Not selected"}
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchGps}
+                    onChange={(e) => setSearchGps(e.target.value)}
+                    placeholder="Search GPS by chipset, compass, brand..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchGps && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchGps("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  <div
+                    onClick={() => {
+                      setSelectedGps(null);
+                      setNoneSelections((prev) => ({ ...prev, gps: true }));
+                    }}
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                      noneSelections.gps
+                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                    }`}
+                  >
+                    <div className="font-bold text-zinc-900 dark:text-zinc-200">No GPS (None)</div>
+                    <div className="text-[11px] text-zinc-500 mt-0.5">
+                      Saves weight & frees 1 UART
+                    </div>
+                  </div>
+
+                  {filteredGps.map((g) => {
+                    const isSelected =
+                      !noneSelections.gps &&
+                      (selectedGps?.uuid === g.uuid || selectedGps?.id === g.id);
+                    return (
+                      <div
+                        key={g.uuid || g.id}
+                        onClick={() => {
+                          setSelectedGps(g);
+                          setNoneSelections((prev) => ({ ...prev, gps: false }));
+                        }}
+                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                        }`}
+                      >
+                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{g.name}</div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                          {g.protocol || "UBLOX"} • {g.weightG}g
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* STAGE 4: Review & Finalize (BOM & Save) */}
+          {activeStage === 4 && (
+            <div className="p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-5">
+              <div>
+                <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100">
+                  Review & Save Build
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  Verify your Bill of Materials, provide a title and description, and save to the
+                  database.
+                </p>
+              </div>
+
+              {saveError && (
+                <div className="p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-600 dark:text-red-400 text-xs">
+                  {saveError}
+                </div>
+              )}
+
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Build Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={buildName}
+                    onChange={(e) => setBuildName(e.target.value)}
+                    placeholder="e.g. My Freestyle 5-Inch"
+                    className="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-sm font-semibold text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                    Description
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={buildDesc}
+                    onChange={(e) => setBuildDesc(e.target.value)}
+                    placeholder="Short description of this build setup..."
+                    className="w-full px-3.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
+              {/* Bill of Materials (BOM) Table */}
+              <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden text-xs">
+                <div className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800/80 border-b border-zinc-200 dark:border-zinc-800 flex justify-between font-bold text-zinc-700 dark:text-zinc-300">
+                  <span>Bill of Materials (BOM)</span>
+                  <span>
+                    Dry Weight:{" "}
+                    <strong className="text-blue-600 dark:text-blue-400">
+                      {dryWeightG.toFixed(1)}g
+                    </strong>
+                  </span>
+                </div>
+                <div className="divide-y divide-zinc-200 dark:divide-zinc-800/60 p-2">
+                  {selectedFrame && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        Frame: {selectedFrame.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedFrame.weightG}g</span>
+                    </div>
+                  )}
+                  {selectedMotor && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        Motors: {selectedMotor.name} ({motorCount}x)
+                      </span>
+                      <span className="text-zinc-500 font-mono">
+                        {((selectedMotor.weightG || 0) * motorCount).toFixed(1)}g
+                      </span>
+                    </div>
+                  )}
+                  {selectedProp && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        Propellers: {selectedProp.name} ({motorCount}x)
+                      </span>
+                      <span className="text-zinc-500 font-mono">
+                        {((selectedProp.weightG || 0) * motorCount).toFixed(1)}g
+                      </span>
+                    </div>
+                  )}
+                  {selectedFc && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        Flight Controller: {selectedFc.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedFc.weightG}g</span>
+                    </div>
+                  )}
+                  {useInternalEsc ? (
+                    <div className="py-1.5 px-2 flex justify-between text-zinc-500">
+                      <span>ESC: Using In-built FC ESC</span>
+                      <span className="font-mono">0g</span>
+                    </div>
+                  ) : selectedEsc ? (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        ESC: {selectedEsc.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedEsc.weightG}g</span>
+                    </div>
+                  ) : null}
+                  {selectedRx && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        Receiver: {selectedRx.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedRx.weightG}g</span>
+                    </div>
+                  )}
+                  {selectedVtx && !noneSelections.vtx && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        VTX: {selectedVtx.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedVtx.weightG}g</span>
+                    </div>
+                  )}
+                  {selectedCam && !noneSelections.camera && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        Camera: {selectedCam.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedCam.weightG}g</span>
+                    </div>
+                  )}
+                  {selectedAnt && !noneSelections.antenna && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        Antenna: {selectedAnt.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedAnt.weightG}g</span>
+                    </div>
+                  )}
+                  {selectedGps && !noneSelections.gps && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        GPS: {selectedGps.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedGps.weightG}g</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Save Button */}
+              <button
+                type="button"
+                onClick={handleSaveBuild}
+                disabled={isSaving}
+                className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                <Save size={16} />
+                <span>
+                  {isSaving ? "Saving to Database..." : "Create & Save Build to Database"}
+                </span>
+              </button>
+            </div>
+          )}
+
+          {/* Bottom Stage Navigation Controls */}
+          <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <button
+              type="button"
+              disabled={activeStage === 1}
+              onClick={handlePrevStage}
+              className="w-full sm:w-auto px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              <ArrowLeft size={14} className="inline mr-1" />
+              Previous Stage
+            </button>
+
+            {activeStage < 4 && (
+              <button
+                type="button"
+                onClick={handleNextStage}
+                disabled={
+                  (activeStage === 1 && !stage1Complete) || (activeStage === 2 && !stage2Complete)
+                }
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-xs transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <span>
+                  {activeStage === 1
+                    ? "Next: Flight Electronics →"
+                    : activeStage === 2
+                      ? "Next: Vision & Navigation →"
+                      : "Next: Review & Save →"}
+                </span>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column: Live Build Evaluator */}
+        <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-4">
+          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white dark:from-zinc-900 to-zinc-50 dark:to-zinc-950 p-4 space-y-4 shadow-lg">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+                  Live Build Evaluator
+                </h3>
+              </div>
+              <span className="text-[11px] font-mono text-zinc-400">Physics Engine</span>
+            </div>
+
+            {/* Test Battery Selection */}
+            <div className="space-y-1.5 text-xs">
+              <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
+                Test Battery (Runtime Parameter)
+              </label>
+              <select
+                value={selectedBatteryId}
+                onChange={(e) => setSelectedBatteryId(e.target.value)}
+                className="w-full px-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono"
+              >
+                {batteries.map((b) => (
+                  <option key={b.id || b.uuid} value={b.id || b.uuid}>
+                    {b.name} ({b.weightG}g)
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Runtime Payload Textbox with +/- and Quick Presets */}
+            <div className="bg-zinc-50 dark:bg-zinc-900/60 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                  Payload Simulation
+                </span>
+                <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                  +{payloadWeightG}g
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => adjustPayload(-10)}
+                  disabled={payloadWeightG <= 0}
+                  aria-label="Remove 10g"
+                  title="Remove 10g"
+                  className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
+                >
+                  -
+                </button>
+                <div className="relative flex-1 flex items-center">
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={payloadInput}
+                    onChange={(e) => handlePayloadInput(e.target.value)}
+                    placeholder="0"
+                    className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1 pr-6 text-xs font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 text-center"
+                  />
+                  <span className="absolute right-2 text-xs text-zinc-400 font-mono pointer-events-none select-none">
+                    g
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => adjustPayload(10)}
+                  aria-label="Add 10g"
+                  title="Add 10g"
+                  className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
+                >
+                  +
+                </button>
+              </div>
+              <div className="flex gap-1 text-[10px]">
+                <button
+                  type="button"
+                  onClick={() => setPresetPayload(0)}
+                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                    payloadWeightG === 0
+                      ? "bg-blue-600 text-white"
+                      : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                  }`}
+                >
+                  Bare (0g)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPresetPayload(16)}
+                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                    payloadWeightG === 16
+                      ? "bg-blue-600 text-white"
+                      : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                  }`}
+                >
+                  Thumb (+16g)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPresetPayload(133)}
+                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                    payloadWeightG === 133
+                      ? "bg-blue-600 text-white"
+                      : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                  }`}
+                >
+                  GoPro (+133g)
+                </button>
+              </div>
+            </div>
+
+            {/* TWR Hero Metric */}
+            <div className="text-center p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
+              <div className="text-[11px] uppercase font-semibold text-zinc-500">
+                Estimated Thrust-to-Weight
+              </div>
+              <div className="text-3xl font-extrabold text-blue-600 dark:text-blue-400 mt-1">
+                {evaluation ? `${evaluation.thrustToWeightRatio.toFixed(2)} : 1` : "-- : 1"}
+              </div>
+              <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                {evaluation
+                  ? evaluation.thrustToWeightRatio >= 5
+                    ? "🚀 Extreme Punchout"
+                    : evaluation.thrustToWeightRatio >= 3
+                      ? "⚡ Agile Freestyle"
+                      : "Cruiser / Sluggish"
+                  : "Select Propulsion Parts"}
+              </span>
+            </div>
+
+            {/* Telemetry Metrics Grid */}
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
+                <span className="text-zinc-500">Dry Weight</span>
+                <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                  {dryWeightG.toFixed(1)}g
+                </div>
+              </div>
+              <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
+                <span className="text-zinc-500">All-Up Weight</span>
+                <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                  {evaluation
+                    ? `${evaluation.allUpWeightG.toFixed(1)}g`
+                    : activeBattery
+                      ? `${(dryWeightG + (activeBattery.weightG || 0) + payloadWeightG).toFixed(1)}g`
+                      : `${dryWeightG}g`}
+                </div>
+              </div>
+              <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
+                <span className="text-zinc-500">Hover Throttle</span>
+                <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
+                  {evaluation ? `${evaluation.hoverThrottlePercent.toFixed(1)}%` : "--%"}
+                </div>
+              </div>
+              <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
+                <span className="text-zinc-500">Flight Time</span>
+                <div className="text-sm font-bold text-amber-600 dark:text-amber-400 font-mono mt-0.5">
+                  {evaluation
+                    ? `${evaluation.minFlightTimeMin.toFixed(1)} - ${evaluation.maxFlightTimeMin.toFixed(1)}m`
+                    : "-- min"}
+                </div>
+              </div>
+            </div>
+
+            {/* Compatibility Rule Checklist */}
+            <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 space-y-1.5 text-[11px]">
+              <div className="font-bold text-zinc-700 dark:text-zinc-300 flex justify-between">
+                <span>Rule Engine Checks</span>
+                <span className="text-zinc-500">
+                  {draftBuild ? "Evaluated" : "Pending Stage 1"}
+                </span>
+              </div>
+              <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
+                <span>Prop vs Frame Size</span>
+                <span
+                  className={
+                    selectedFrame && selectedProp
+                      ? "text-emerald-600 dark:text-emerald-400 font-bold"
+                      : "text-zinc-400"
+                  }
+                >
+                  {selectedFrame && selectedProp ? "✓ Compatible" : "--"}
+                </span>
+              </div>
+              <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
+                <span>ESC Amperage Rating</span>
+                <span
+                  className={
+                    selectedEsc || useInternalEsc
+                      ? "text-emerald-600 dark:text-emerald-400 font-bold"
+                      : "text-zinc-400"
+                  }
+                >
+                  {selectedEsc || useInternalEsc ? "✓ Sufficient" : "--"}
+                </span>
+              </div>
+              <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
+                <span>Stack Mounting Fit</span>
+                <span
+                  className={
+                    selectedFc
+                      ? "text-emerald-600 dark:text-emerald-400 font-bold"
+                      : "text-zinc-400"
+                  }
+                >
+                  {selectedFc ? "✓ Fits frame" : "--"}
+                </span>
+              </div>
+              {compatibilityData?.messages && compatibilityData.messages.length > 0 && (
+                <div className="pt-1 border-t border-zinc-200 dark:border-zinc-800 space-y-1">
+                  {compatibilityData.messages.map((m, idx) => (
+                    <div key={idx} className="text-amber-600 dark:text-amber-400 text-[10px]">
+                      ⚠️ {m.message}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

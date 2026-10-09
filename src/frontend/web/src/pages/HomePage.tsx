@@ -71,9 +71,14 @@ export function HomePage() {
             <span>Browse Hardware</span>
             <ArrowRight size={14} />
           </Link>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-400 text-xs sm:text-sm">
-            <span>Build Planner (Coming Soon)</span>
-          </div>
+          <Link
+            to="/builds/new"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 font-medium text-xs sm:text-sm shadow-xs transition-colors"
+          >
+            <Sparkles size={16} className="text-blue-600 dark:text-blue-400" />
+            <span>Build Wizard</span>
+            <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
 

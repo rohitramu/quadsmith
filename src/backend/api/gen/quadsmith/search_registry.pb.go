@@ -277,6 +277,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"motor_count",
 		},
 	},
 	{

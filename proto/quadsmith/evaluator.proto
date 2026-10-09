@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package quadsmith;
 
+import "build.proto";
+
 option go_package = "quadsmith/api/gen/quadsmith";
 
 enum SystemMessageSeverity {
@@ -17,15 +19,16 @@ message SystemMessage {
 }
 
 message EvaluateBuildRequest {
-  // Required build ID or UUID to evaluate.
-  string build_id = 1;
+  oneof build_source {
+    // Required build ID or UUID to evaluate.
+    string build_id = 1;
+    // In-memory Build object to evaluate draft without saving to database.
+    Build build = 4;
+  }
   float payload_weight_g = 2;
 
   // Required battery ID or UUID to evaluate the build with.
   string battery_id = 3;
-
-  reserved 4;
-  reserved "build";
 }
 
 message EvaluateBuildResponse {
@@ -67,11 +70,12 @@ message EvaluateBuildResponse {
 }
 
 message GetBuildElectricalLimitsRequest {
-  // Required build ID or UUID.
-  string build_id = 1;
-
-  reserved 2;
-  reserved "build";
+  oneof build_source {
+    // Required build ID or UUID.
+    string build_id = 1;
+    // In-memory Build object.
+    Build build = 2;
+  }
 }
 
 message GetBuildElectricalLimitsResponse {

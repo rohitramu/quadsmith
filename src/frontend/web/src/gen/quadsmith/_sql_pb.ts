@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file__sql: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cgpfc3FsLnByb3RvEg1xdWFkc21pdGguc3FsIhwKDFRhYmxlT3B0aW9ucxIMCgRuYW1lGAEgASgJIocBCg1Db2x1bW5PcHRpb25zEgwKBG5hbWUYASABKAkSFgoOaXNfcHJpbWFyeV9rZXkYAiABKAgSEgoKcmVmZXJlbmNlcxgDIAEoCRIRCglpc191bmlxdWUYBCABKAgSFAoMY3JlYXRlX2luZGV4GAUgASgIEhMKC2NvbHVtbl90eXBlGAYgASgJOlQKBXRhYmxlEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGLiOAyABKAsyGy5xdWFkc21pdGguc3FsLlRhYmxlT3B0aW9uc1IFdGFibGU6VQoGY29sdW1uEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi4jgMgASgLMhwucXVhZHNtaXRoLnNxbC5Db2x1bW5PcHRpb25zUgZjb2x1bW5CHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "Cgpfc3FsLnByb3RvEg1xdWFkc21pdGguc3FsIhwKDFRhYmxlT3B0aW9ucxIMCgRuYW1lGAEgASgJIp4BCg1Db2x1bW5PcHRpb25zEgwKBG5hbWUYASABKAkSFgoOaXNfcHJpbWFyeV9rZXkYAiABKAgSEgoKcmVmZXJlbmNlcxgDIAEoCRIRCglpc191bmlxdWUYBCABKAgSFAoMY3JlYXRlX2luZGV4GAUgASgIEhMKC2NvbHVtbl90eXBlGAYgASgJEhUKDWRlZmF1bHRfdmFsdWUYByABKAk6VAoFdGFibGUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMYuI4DIAEoCzIbLnF1YWRzbWl0aC5zcWwuVGFibGVPcHRpb25zUgV0YWJsZTpVCgZjb2x1bW4SHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLiOAyABKAsyHC5xdWFkc21pdGguc3FsLkNvbHVtbk9wdGlvbnNSBmNvbHVtbkIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file_google_protobuf_descriptor],
   );
 
@@ -86,6 +86,13 @@ export type ColumnOptions = Message<"quadsmith.sql.ColumnOptions"> & {
    * @generated from field: string column_type = 6;
    */
   columnType: string;
+
+  /**
+   * Default value expression for the column (e.g., "4", "'pending'", "NOW()").
+   *
+   * @generated from field: string default_value = 7;
+   */
+  defaultValue: string;
 };
 
 /**

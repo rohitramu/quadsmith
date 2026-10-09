@@ -82,6 +82,10 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 			colType += " UNIQUE"
 		}
 
+		if colOpt != nil && colOpt.DefaultValue != "" {
+			colType += " DEFAULT " + colOpt.DefaultValue
+		}
+
 		if !field.Desc.IsList() && !field.Desc.HasPresence() {
 			colType += " NOT NULL"
 		}

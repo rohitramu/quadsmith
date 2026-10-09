@@ -9,6 +9,7 @@ import { CollectionPage } from "./pages/CollectionPage";
 import { ProductPage } from "./pages/ProductPage";
 import { HomePage } from "./pages/HomePage";
 import { BuildProfilePage } from "./pages/BuildProfilePage";
+import { BuildWizardPage } from "./pages/BuildWizardPage";
 
 const defaultQueryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ export function AppRoutes() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="builds" element={<HomePage />} />
+        <Route path="builds/new" element={<BuildWizardPage />} />
         <Route path="builds/:buildId" element={<BuildProfilePage />} />
         <Route path="components/:categoryId" element={<CategoryPage />} />
         <Route path="components/:categoryId/:collectionId" element={<CollectionPage />} />

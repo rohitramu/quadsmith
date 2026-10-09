@@ -37,12 +37,16 @@ const (
 	BuildServiceGetBuildProcedure = "/quadsmith.BuildService/GetBuild"
 	// BuildServiceListBuildsProcedure is the fully-qualified name of the BuildService's ListBuilds RPC.
 	BuildServiceListBuildsProcedure = "/quadsmith.BuildService/ListBuilds"
+	// BuildServiceCreateBuildProcedure is the fully-qualified name of the BuildService's CreateBuild
+	// RPC.
+	BuildServiceCreateBuildProcedure = "/quadsmith.BuildService/CreateBuild"
 )
 
 // BuildServiceClient is a client for the quadsmith.BuildService service.
 type BuildServiceClient interface {
 	GetBuild(context.Context, *connect.Request[quadsmith.GetBuildRequest]) (*connect.Response[quadsmith.Build], error)
 	ListBuilds(context.Context, *connect.Request[quadsmith.ListBuildsRequest]) (*connect.Response[quadsmith.ListBuildsResponse], error)
+	CreateBuild(context.Context, *connect.Request[quadsmith.CreateBuildRequest]) (*connect.Response[quadsmith.Build], error)
 }
 
 // NewBuildServiceClient constructs a client for the quadsmith.BuildService service. By default, it
@@ -68,13 +72,20 @@ func NewBuildServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(buildServiceMethods.ByName("ListBuilds")),
 			connect.WithClientOptions(opts...),
 		),
+		createBuild: connect.NewClient[quadsmith.CreateBuildRequest, quadsmith.Build](
+			httpClient,
+			baseURL+BuildServiceCreateBuildProcedure,
+			connect.WithSchema(buildServiceMethods.ByName("CreateBuild")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // buildServiceClient implements BuildServiceClient.
 type buildServiceClient struct {
-	getBuild   *connect.Client[quadsmith.GetBuildRequest, quadsmith.Build]
-	listBuilds *connect.Client[quadsmith.ListBuildsRequest, quadsmith.ListBuildsResponse]
+	getBuild    *connect.Client[quadsmith.GetBuildRequest, quadsmith.Build]
+	listBuilds  *connect.Client[quadsmith.ListBuildsRequest, quadsmith.ListBuildsResponse]
+	createBuild *connect.Client[quadsmith.CreateBuildRequest, quadsmith.Build]
 }
 
 // GetBuild calls quadsmith.BuildService.GetBuild.
@@ -87,10 +98,16 @@ func (c *buildServiceClient) ListBuilds(ctx context.Context, req *connect.Reques
 	return c.listBuilds.CallUnary(ctx, req)
 }
 
+// CreateBuild calls quadsmith.BuildService.CreateBuild.
+func (c *buildServiceClient) CreateBuild(ctx context.Context, req *connect.Request[quadsmith.CreateBuildRequest]) (*connect.Response[quadsmith.Build], error) {
+	return c.createBuild.CallUnary(ctx, req)
+}
+
 // BuildServiceHandler is an implementation of the quadsmith.BuildService service.
 type BuildServiceHandler interface {
 	GetBuild(context.Context, *connect.Request[quadsmith.GetBuildRequest]) (*connect.Response[quadsmith.Build], error)
 	ListBuilds(context.Context, *connect.Request[quadsmith.ListBuildsRequest]) (*connect.Response[quadsmith.ListBuildsResponse], error)
+	CreateBuild(context.Context, *connect.Request[quadsmith.CreateBuildRequest]) (*connect.Response[quadsmith.Build], error)
 }
 
 // NewBuildServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -112,12 +129,20 @@ func NewBuildServiceHandler(svc BuildServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(buildServiceMethods.ByName("ListBuilds")),
 		connect.WithHandlerOptions(opts...),
 	)
+	buildServiceCreateBuildHandler := connect.NewUnaryHandler(
+		BuildServiceCreateBuildProcedure,
+		svc.CreateBuild,
+		connect.WithSchema(buildServiceMethods.ByName("CreateBuild")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.BuildService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case BuildServiceGetBuildProcedure:
 			buildServiceGetBuildHandler.ServeHTTP(w, r)
 		case BuildServiceListBuildsProcedure:
 			buildServiceListBuildsHandler.ServeHTTP(w, r)
+		case BuildServiceCreateBuildProcedure:
+			buildServiceCreateBuildHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -133,4 +158,8 @@ func (UnimplementedBuildServiceHandler) GetBuild(context.Context, *connect.Reque
 
 func (UnimplementedBuildServiceHandler) ListBuilds(context.Context, *connect.Request[quadsmith.ListBuildsRequest]) (*connect.Response[quadsmith.ListBuildsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.BuildService.ListBuilds is not implemented"))
+}
+
+func (UnimplementedBuildServiceHandler) CreateBuild(context.Context, *connect.Request[quadsmith.CreateBuildRequest]) (*connect.Response[quadsmith.Build], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.BuildService.CreateBuild is not implemented"))
 }

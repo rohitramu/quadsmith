@@ -143,7 +143,8 @@ CREATE TABLE IF NOT EXISTS frames (
   description TEXT NOT NULL,
   reference_links JSONB,
   primary_display_image TEXT,
-  media JSONB
+  media JSONB,
+  motor_count INTEGER DEFAULT 4 NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_frames_manufacturer ON frames (manufacturer);

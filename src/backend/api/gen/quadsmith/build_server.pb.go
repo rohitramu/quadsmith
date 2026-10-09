@@ -4,9 +4,15 @@ package quadsmith
 import (
 	"connectrpc.com/connect"
 	"context"
+	"crypto/rand"
+	"errors"
+	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"quadsmith/api/internal/cel2sql"
 	"quadsmith/api/internal/pagination"
+	"regexp"
+	"strings"
+	"time"
 )
 
 type BuildServiceHandler struct {
@@ -63,4 +69,116 @@ func (s *BuildServiceHandler) ListBuilds(ctx context.Context, req *connect.Reque
 		NextPageToken: nextPageToken,
 	}
 	return connect.NewResponse(res), nil
+}
+
+// CreateBuild creates and persists a new build record
+func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Request[CreateBuildRequest]) (*connect.Response[Build], error) {
+	b := req.Msg.GetBuild()
+	if b == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("build object is required"))
+	}
+
+	// 1. Assign UUID v7 if empty
+	if b.Uuid == "" {
+		var randBytes [16]byte
+		if _, err := rand.Read(randBytes[:]); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate uuid: %w", err))
+		}
+		ms := time.Now().UnixMilli()
+		randBytes[0] = byte(ms >> 40)
+		randBytes[1] = byte(ms >> 32)
+		randBytes[2] = byte(ms >> 24)
+		randBytes[3] = byte(ms >> 16)
+		randBytes[4] = byte(ms >> 8)
+		randBytes[5] = byte(ms)
+		randBytes[6] = (randBytes[6] & 0x0f) | 0x70 // UUID v7
+		randBytes[8] = (randBytes[8] & 0x3f) | 0x80 // RFC 4122
+		b.Uuid = fmt.Sprintf("%08x-%04x-%04x-%04x-%012x", randBytes[0:4], randBytes[4:6], randBytes[6:8], randBytes[8:10], randBytes[10:16])
+	}
+
+	// 2. Generate unique slug if empty
+	if b.Id == "" {
+		reg := regexp.MustCompile("[^a-z0-9]+")
+		slug := strings.Trim(reg.ReplaceAllString(strings.ToLower(b.Name), "-"), "-")
+		if slug == "" {
+			slug = "build-" + b.Uuid[:8]
+		}
+		b.Id = slug
+	}
+
+	// 3. Translate any foreign key human-readable IDs to UUIDs (per AGENTS.md rule)
+	if b.FrameUuid != "" {
+		if m, err := GetFrame(ctx, s.db, b.FrameUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.FrameUuid = m.Uuid
+		}
+	}
+	if b.MotorUuid != "" {
+		if m, err := GetMotor(ctx, s.db, b.MotorUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.MotorUuid = m.Uuid
+		}
+	}
+	if b.PropellerUuid != "" {
+		if m, err := GetPropeller(ctx, s.db, b.PropellerUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.PropellerUuid = m.Uuid
+		}
+	}
+	if b.FlightControllerUuid != "" {
+		if m, err := GetFlightController(ctx, s.db, b.FlightControllerUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.FlightControllerUuid = m.Uuid
+		}
+	}
+	if b.VideoTransmitterUuid != "" {
+		if m, err := GetVideoTransmitter(ctx, s.db, b.VideoTransmitterUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.VideoTransmitterUuid = m.Uuid
+		}
+	}
+	if b.GpsReceiverUuid != nil && *b.GpsReceiverUuid != "" {
+		if m, err := GetGpsReceiver(ctx, s.db, *b.GpsReceiverUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			*b.GpsReceiverUuid = m.Uuid
+		}
+	}
+	for i, idOrUuid := range b.ElectronicSpeedControllerUuids {
+		if idOrUuid != "" {
+			if m, err := GetElectronicSpeedController(ctx, s.db, idOrUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+				b.ElectronicSpeedControllerUuids[i] = m.Uuid
+			}
+		}
+	}
+	for i, idOrUuid := range b.ReceiverUuids {
+		if idOrUuid != "" {
+			if m, err := GetReceiver(ctx, s.db, idOrUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+				b.ReceiverUuids[i] = m.Uuid
+			}
+		}
+	}
+	for i, idOrUuid := range b.AntennaUuids {
+		if idOrUuid != "" {
+			if m, err := GetAntenna(ctx, s.db, idOrUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+				b.AntennaUuids[i] = m.Uuid
+			}
+		}
+	}
+	for i, idOrUuid := range b.CameraUuids {
+		if idOrUuid != "" {
+			if m, err := GetCamera(ctx, s.db, idOrUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+				b.CameraUuids[i] = m.Uuid
+			}
+		}
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer tx.Rollback(ctx)
+
+	if err := CreateBuild(ctx, tx, b); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save build: %w", err))
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(b), nil
 }

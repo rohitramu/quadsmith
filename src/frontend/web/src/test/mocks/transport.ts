@@ -11,8 +11,9 @@ import { ReceiverService } from "../../gen/quadsmith/receiver_pb";
 import { VideoTransmitterService } from "../../gen/quadsmith/video_transmitter_pb";
 import { AntennaService } from "../../gen/quadsmith/antenna_pb";
 import { GpsReceiverService } from "../../gen/quadsmith/gps_receiver_pb";
-import { BuildService } from "../../gen/quadsmith/build_pb";
+import { BuildService, type Build } from "../../gen/quadsmith/build_pb";
 import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
+import { CompatibilityService } from "../../gen/quadsmith/compatibility_pb";
 import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
 
 import {
@@ -177,6 +178,24 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         }
         return item;
       },
+      createBuild(req) {
+        if (simulateError) {
+          throw new ConnectError("Failed to create build", Code.Internal);
+        }
+        if (!req.build || !req.build.name) {
+          throw new ConnectError("Build name is required", Code.InvalidArgument);
+        }
+        const b = req.build;
+        const newBuild = {
+          ...b,
+          id: b.id || b.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          uuid:
+            b.uuid ||
+            `01912345-${Math.random().toString(16).substring(2, 6)}-7000-8000-${Math.random().toString(16).substring(2, 14)}`,
+        } as unknown as Build;
+        builds.push(newBuild);
+        return newBuild;
+      },
     });
 
     service(EvaluatorService, {
@@ -225,6 +244,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           (Math.sqrt(Math.max(0, fwdThrustN / denom)) * 3.6).toFixed(1),
         );
         const hoverRpm = twr >= 1.0 ? Math.round(29000 / Math.sqrt(twr)) : 0;
+        const bId =
+          req.buildSource?.case === "buildId"
+            ? req.buildSource.value
+            : req.buildSource?.case === "build"
+              ? req.buildSource.value.id
+              : "";
 
         return {
           allUpWeightG: totalWeight,
@@ -236,7 +261,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           maxAccelerationMps2,
           topSpeedKmh,
           systemMessages,
-          buildId: req.buildId || "",
+          buildId: bId,
           payloadWeightG: payload,
           batteryId: req.batteryId || mockBattery1.id,
           minVoltage: 14.8,
@@ -248,13 +273,27 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (simulateError) {
           throw new ConnectError("Failed to fetch electrical limits", Code.Internal);
         }
+        const bId =
+          req.buildSource?.case === "buildId"
+            ? req.buildSource.value
+            : req.buildSource?.case === "build"
+              ? req.buildSource.value.id
+              : "";
         return {
           minVoltage: 14.8,
           maxVoltage: 25.2,
           maxCurrentA: 39.4,
           defaultBatteryId:
             options.defaultBatteryId !== undefined ? options.defaultBatteryId : defaultBatteryId,
-          buildId: req.buildId || "",
+          buildId: bId,
+        };
+      },
+    });
+
+    service(CompatibilityService, {
+      checkCompatibility(_req) {
+        return {
+          messages: [],
         };
       },
     });
