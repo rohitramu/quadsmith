@@ -114,7 +114,8 @@ function BomComponentCard({
 
 export function BuildProfilePage() {
   const { buildId } = useParams<{ buildId: string }>();
-  const [payloadWeightG, setPayloadWeightG] = useState<number>(0);
+  const [payloadInput, setPayloadInput] = useState<string>("0");
+  const payloadWeightG = Math.max(0, parseFloat(payloadInput) || 0);
 
   const {
     data: build,
@@ -212,7 +213,7 @@ export function BuildProfilePage() {
             </p>
           </div>
 
-          {/* Interactive Payload Weight Slider */}
+          {/* Interactive Payload Weight Text Box */}
           <div className="bg-white dark:bg-zinc-950 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs min-w-[260px]">
             <div className="flex items-center justify-between text-xs mb-1.5">
               <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
@@ -223,20 +224,29 @@ export function BuildProfilePage() {
                 +{payloadWeightG}g
               </span>
             </div>
-            <input
-              type="range"
-              min={0}
-              max={300}
-              step={5}
-              value={payloadWeightG}
-              onChange={(e) => setPayloadWeightG(Number(e.target.value))}
-              className="w-full accent-blue-600 cursor-pointer"
-              aria-label="Simulate payload weight in grams"
-            />
+            <div className="relative flex items-center my-1.5">
+              <input
+                type="text"
+                inputMode="decimal"
+                value={payloadInput}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === "" || /^\d*\.?\d*$/.test(val)) {
+                    setPayloadInput(val);
+                  }
+                }}
+                placeholder="0"
+                className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 pr-8 text-sm font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs"
+                aria-label="Payload weight in grams"
+              />
+              <span className="absolute right-3 text-xs text-zinc-400 font-mono pointer-events-none select-none">
+                g
+              </span>
+            </div>
             <div className="flex gap-1 mt-2 text-[10px]">
               <button
                 type="button"
-                onClick={() => setPayloadWeightG(0)}
+                onClick={() => setPayloadInput("0")}
                 className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
                   payloadWeightG === 0
                     ? "bg-blue-600 text-white font-medium"
@@ -247,7 +257,7 @@ export function BuildProfilePage() {
               </button>
               <button
                 type="button"
-                onClick={() => setPayloadWeightG(16)}
+                onClick={() => setPayloadInput("16")}
                 className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
                   payloadWeightG === 16
                     ? "bg-blue-600 text-white font-medium"
@@ -258,7 +268,7 @@ export function BuildProfilePage() {
               </button>
               <button
                 type="button"
-                onClick={() => setPayloadWeightG(133)}
+                onClick={() => setPayloadInput("133")}
                 className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
                   payloadWeightG === 133
                     ? "bg-blue-600 text-white font-medium"

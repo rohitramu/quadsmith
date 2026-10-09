@@ -89,15 +89,31 @@ describe("BuildProfilePage Component", () => {
     expect(await screen.findByText("M8Q-5883 GPS & Compass")).toBeInTheDocument();
   });
 
-  it("allows interactive payload weight simulation with presets", async () => {
+  it("allows interactive payload weight simulation with text box input and presets", async () => {
     const { user } = renderBuildProfile();
 
     expect(await screen.findByText("Payload Simulator")).toBeInTheDocument();
 
-    // Click GoPro preset (+133g)
+    const payloadInput = screen.getByRole("textbox", {
+      name: /payload weight in grams/i,
+    });
+    expect(payloadInput).toBeInTheDocument();
+    expect(payloadInput).toHaveValue("0");
+
+    // Type a custom payload weight into the text box (e.g. 50g)
+    await user.clear(payloadInput);
+    await user.type(payloadInput, "50");
+    expect(payloadInput).toHaveValue("50");
+
+    // AUW should update: 565.5 + 50 = 615.5 -> 616g
+    expect(await screen.findByText("616")).toBeInTheDocument();
+    expect(screen.getByText("+50g")).toBeInTheDocument();
+
+    // Click GoPro preset (+133g) to verify preset buttons update text box
     const goProButton = screen.getByRole("button", { name: "GoPro (+133g)" });
     await user.click(goProButton);
 
+    expect(payloadInput).toHaveValue("133");
     // AUW should update to include payload: 565.5 + 133 = 698.5 -> 699g
     expect(await screen.findByText("699")).toBeInTheDocument();
     expect(screen.getByText("+133g")).toBeInTheDocument();
