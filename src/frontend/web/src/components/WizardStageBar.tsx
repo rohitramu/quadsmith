@@ -32,7 +32,7 @@ const STAGES = [
   {
     stage: 3,
     title: "Video",
-    subtitle: "VTX, Camera & Antenna (Optional)",
+    subtitle: "VTX, Camera & Antenna",
   },
   {
     stage: 4,

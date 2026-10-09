@@ -953,34 +953,38 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                {/* Products Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {/* Products List */}
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {filteredFrames.map((f) => {
                     const isSelected = selectedFrame?.uuid === f.uuid || selectedFrame?.id === f.id;
+                    const propSize = f.maxPropSizeMm
+                      ? `${(f.maxPropSizeMm / 25.4).toFixed(1)}"`
+                      : '5.1"';
                     return (
                       <div
                         key={f.uuid || f.id}
                         onClick={() => setSelectedFrame(f)}
-                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                             : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="flex justify-between items-start">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                            {f.name}
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
-                            {f.motorCount || 4}x Motors
-                          </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {f.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 shrink-0">
+                              {f.motorCount || 4}x Motors
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {f.manufacturer} • Weight: {f.weightG}g • {f.geometry || "Standard"}
+                          </div>
                         </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: {f.weightG}g • {f.geometry || "Standard"}
-                        </div>
-                        <div className="text-[11px] text-blue-600 dark:text-blue-400 font-mono mt-1">
-                          Max Prop:{" "}
-                          {f.maxPropSizeMm ? `${(f.maxPropSizeMm / 25.4).toFixed(1)}"` : '5.1"'}
+                        <div className="text-[11px] text-blue-600 dark:text-blue-400 font-mono shrink-0">
+                          Max Prop: {propSize}
                         </div>
                       </div>
                     );
@@ -1040,33 +1044,34 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {filteredMotors.map((m) => {
                     const isSelected = selectedMotor?.uuid === m.uuid || selectedMotor?.id === m.id;
                     return (
                       <div
                         key={m.uuid || m.id}
                         onClick={() => setSelectedMotor(m)}
-                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                             : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="flex justify-between items-start">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                            {m.name}
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                            {m.kv} KV
-                          </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {m.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
+                              {m.kv} KV
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {m.manufacturer} • Weight: {m.weightG}g ea (
+                            {((m.weightG || 0) * motorCount).toFixed(1)}g total)
+                          </div>
                         </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: {m.weightG}g ea ({((m.weightG || 0) * motorCount).toFixed(1)}g
-                          total)
-                        </div>
-                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
-                          {m.manufacturer} •{" "}
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
                           {m.statorDiameterMm
                             ? `${m.statorDiameterMm}${m.statorHeightMm || ""}`
                             : "Brushless"}
@@ -1129,7 +1134,7 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {filteredProps.map((p) => {
                     const isSelected = selectedProp?.uuid === p.uuid || selectedProp?.id === p.id;
                     const diam = p.diameterMm ? (p.diameterMm / 25.4).toFixed(1) : "5.0";
@@ -1137,26 +1142,28 @@ export function BuildWizardPage() {
                       <div
                         key={p.uuid || p.id}
                         onClick={() => setSelectedProp(p)}
-                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                             : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="flex justify-between items-start">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                            {p.name}
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                            {diam}"
-                          </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {p.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                              {diam}"
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {p.manufacturer} • Weight: {p.weightG}g ea (
+                            {((p.weightG || 0) * motorCount).toFixed(1)}g total)
+                          </div>
                         </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: {p.weightG}g ea ({((p.weightG || 0) * motorCount).toFixed(1)}g
-                          total)
-                        </div>
-                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
-                          {p.blades || 3}-Blade • {p.manufacturer}
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
+                          {p.blades || 3}-Blade
                         </div>
                       </div>
                     );
@@ -1217,7 +1224,7 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {filteredFcs.map((fc) => {
                     const isSelected = selectedFc?.uuid === fc.uuid || selectedFc?.id === fc.id;
                     const isAio =
@@ -1237,30 +1244,32 @@ export function BuildWizardPage() {
                       <div
                         key={fc.uuid || fc.id}
                         onClick={() => setSelectedFc(fc)}
-                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                             : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="flex justify-between items-start">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                            {fc.name}
-                          </span>
-                          <span
-                            className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${
-                              isAio
-                                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
-                                : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20"
-                            }`}
-                          >
-                            {isAio ? "AIO (Integrated ESC)" : "Standalone FC"}
-                          </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {fc.name}
+                            </span>
+                            <span
+                              className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border shrink-0 ${
+                                isAio
+                                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                                  : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20"
+                              }`}
+                            >
+                              {isAio ? "AIO (Integrated ESC)" : "Standalone FC"}
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {fc.manufacturer} • Weight: {fc.weightG}g • {fc.processor || "MCU"}
+                          </div>
                         </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: {fc.weightG}g • {fc.processor || "MCU"}
-                        </div>
-                        <div className="text-[11px] text-zinc-400 font-mono mt-1">
+                        <div className="text-[11px] text-zinc-400 font-mono shrink-0">
                           {isAio
                             ? `✓ Integrated ESC${hasRx ? " + RX" : ""}${hasVtx ? " + VTX" : ""} (external optional)`
                             : "Requires separate ESC"}
@@ -1329,7 +1338,7 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {/* Option Card: Integrated FC ESC (Enabled only if FC has adequate ESC) */}
                   <div
                     onClick={() => {
@@ -1339,7 +1348,7 @@ export function BuildWizardPage() {
                         setNoneSelections((prev) => ({ ...prev, esc: true }));
                       }
                     }}
-                    className={`p-3.5 rounded-xl border transition-all ${
+                    className={`p-3 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       !fcHasAdequateIntegratedEsc
                         ? "opacity-40 cursor-not-allowed border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
                         : useIntegratedEsc
@@ -1347,49 +1356,38 @@ export function BuildWizardPage() {
                           : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 cursor-pointer"
                     }`}
                   >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100 truncate">
                           Use Integrated FC ESC
-                        </div>
-                        <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                          {integratedEsc
-                            ? integratedEsc.name
-                            : selectedFc
-                              ? `Integrated into ${selectedFc.name}`
-                              : "Requires FC selection"}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1">
+                        </span>
                         {integratedEsc && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shrink-0">
                             {integratedEsc.motorCurrentMaxA || 20}A
                           </span>
                         )}
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
                           Integrated
                         </span>
                       </div>
-                    </div>
-                    {integratedEsc ? (
-                      <>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: 0g (FC integrated) • {integratedEsc.maxMotors || 4}x Motors •{" "}
-                          {integratedEsc.firmware || "BLHeli_S"}
-                        </div>
-                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
-                          {integratedEsc.manufacturer || selectedFc?.manufacturer} •{" "}
-                          {integratedEsc.motorCurrentMaxA || 20}A Continuous
-                        </div>
-                        <div className="mt-2 text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
-                          ✓ Available on selected FC
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-[11px] font-mono mt-2 text-zinc-500">
-                        Requires AIO FC with integrated ESC
+                      <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        {integratedEsc
+                          ? integratedEsc.name
+                          : selectedFc
+                            ? `Integrated into ${selectedFc.name}`
+                            : "Requires FC selection"}
                       </div>
-                    )}
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        {integratedEsc
+                          ? `Weight: 0g (FC integrated) • ${integratedEsc.maxMotors || 4}x Motors • ${integratedEsc.firmware || "BLHeli_S"}`
+                          : "Uses FC drivers (0g added)"}
+                      </div>
+                    </div>
+                    <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
+                      {fcHasAdequateIntegratedEsc
+                        ? "✓ Available on selected FC"
+                        : "Requires AIO FC with integrated ESC"}
+                    </div>
                   </div>
 
                   {filteredEscs.map((esc) => {
@@ -1404,25 +1402,28 @@ export function BuildWizardPage() {
                           setUseIntegratedEsc(false);
                           setNoneSelections((prev) => ({ ...prev, esc: false }));
                         }}
-                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                             : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="flex justify-between items-start">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                            {esc.name}
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-                            {esc.motorCurrentMaxA || 50}A
-                          </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {esc.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shrink-0">
+                              {esc.motorCurrentMaxA || 50}A
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {esc.manufacturer} • Weight: {esc.weightG}g • {esc.maxMotors || 4}x
+                            Motors
+                          </div>
                         </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: {esc.weightG}g • {esc.maxMotors || 4}x Motors
-                        </div>
-                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
-                          {esc.manufacturer} • 4-in-1
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
+                          4-in-1 ESC
                         </div>
                       </div>
                     );
@@ -1487,7 +1488,7 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {/* Option Card: Integrated FC Receiver */}
                   <div
                     onClick={() => {
@@ -1496,7 +1497,7 @@ export function BuildWizardPage() {
                         setSelectedRx(integratedRx);
                       }
                     }}
-                    className={`p-3.5 rounded-xl border transition-all ${
+                    className={`p-3 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       !fcHasIntegratedRx
                         ? "opacity-40 cursor-not-allowed border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
                         : useIntegratedRx
@@ -1504,47 +1505,38 @@ export function BuildWizardPage() {
                           : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 cursor-pointer"
                     }`}
                   >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="font-bold text-xs text-zinc-900 dark:text-zinc-100">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100 truncate">
                           Use Integrated FC Receiver
-                        </div>
-                        <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                          {integratedRx
-                            ? integratedRx.name
-                            : selectedFc
-                              ? `Integrated into ${selectedFc.name}`
-                              : "Requires FC selection"}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1">
+                        </span>
                         {integratedRx && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
                             {integratedRx.protocol || "ExpressLRS"}
                           </span>
                         )}
-                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
                           Integrated
                         </span>
                       </div>
-                    </div>
-                    {integratedRx ? (
-                      <>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: 0g (FC integrated) •{" "}
-                          {formatFrequencyBand(integratedRx.frequencyBandMhz)} •{" "}
-                          {integratedRx.hasTelemetry ? "Telemetry" : "Non-telemetry"}
-                        </div>
-                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
-                          {integratedRx.manufacturer || selectedFc?.manufacturer} • Internal
-                          SPI/UART (0x UART used)
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-[11px] font-mono mt-2 text-zinc-500">
-                        Requires FC with integrated receiver
+                      <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        {integratedRx
+                          ? integratedRx.name
+                          : selectedFc
+                            ? `Integrated into ${selectedFc.name}`
+                            : "Requires FC selection"}
                       </div>
-                    )}
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        {integratedRx
+                          ? `Weight: 0g (FC integrated) • ${formatFrequencyBand(integratedRx.frequencyBandMhz)} • ${integratedRx.hasTelemetry ? "Telemetry" : "Non-telemetry"}`
+                          : "Built-in receiver link"}
+                      </div>
+                    </div>
+                    <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
+                      {fcHasIntegratedRx
+                        ? "✓ Internal SPI/UART (0x UART used)"
+                        : "Requires FC with integrated receiver"}
+                    </div>
                   </div>
 
                   {filteredRxs.map((rx) => {
@@ -1558,25 +1550,27 @@ export function BuildWizardPage() {
                           setSelectedRx(rx);
                           setUseIntegratedRx(false);
                         }}
-                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                             : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="flex justify-between items-start">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                            {rx.name}
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                            {rx.protocol || "Serial"}
-                          </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {rx.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
+                              {rx.protocol || "Serial"}
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {rx.manufacturer} • Weight: {rx.weightG}g •{" "}
+                            {formatFrequencyBand(rx.frequencyBandMhz)}
+                          </div>
                         </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: {rx.weightG}g • {formatFrequencyBand(rx.frequencyBandMhz)} •{" "}
-                          {rx.manufacturer}
-                        </div>
-                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
                           Requires 1x FC UART
                         </div>
                       </div>
@@ -1681,25 +1675,28 @@ export function BuildWizardPage() {
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {/* Explicit None Card */}
                   <div
                     onClick={() => {
                       setSelectedRxAnt(null);
                       setNoneSelections((prev) => ({ ...prev, rxAntenna: true }));
                     }}
-                    className={`p-3.5 rounded-xl border cursor-pointer text-xs transition-all ${
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.rxAntenna
                         ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                         : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
                     }`}
                   >
-                    <div className="font-bold text-zinc-900 dark:text-zinc-200">
-                      No External Antenna (None)
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-zinc-900 dark:text-zinc-200">
+                        No External Antenna (None)
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5">
+                        Built-in ceramic antenna or saves weight (0g)
+                      </div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 mt-0.5">
-                      Built-in ceramic antenna or saves weight (0g)
-                    </div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0g</div>
                   </div>
 
                   {filteredRxAnts.map((a) => {
@@ -1713,26 +1710,29 @@ export function BuildWizardPage() {
                           setSelectedRxAnt(a);
                           setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
                         }}
-                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                             : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="flex justify-between items-start">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                            {a.name}
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                            {formatFrequencyBand(a.frequencyBandMhz)}
-                          </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {a.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
+                              {formatFrequencyBand(a.frequencyBandMhz)}
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {a.manufacturer} • Weight:{" "}
+                            {((a.weightG || 0) * (isSelected ? rxAntCount : 1)).toFixed(1)}g{" "}
+                            {isSelected && rxAntCount > 1 ? `(${rxAntCount}x ${a.weightG}g)` : ""} •{" "}
+                            {a.polarization || "Linear"}
+                          </div>
                         </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Weight: {((a.weightG || 0) * (isSelected ? rxAntCount : 1)).toFixed(1)}g{" "}
-                          {isSelected && rxAntCount > 1 ? `(${rxAntCount}x ${a.weightG}g)` : ""} •{" "}
-                          {a.polarization || "Linear"}
-                        </div>
-                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
                           Connector: {a.connector || "U.FL"}
                         </div>
                       </div>
@@ -1793,22 +1793,27 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   <div
                     onClick={() => {
                       setSelectedGps(null);
                       setNoneSelections((prev) => ({ ...prev, gps: true }));
                     }}
-                    className={`p-3.5 rounded-xl border cursor-pointer text-xs transition-all ${
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.gps
                         ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                         : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
                     }`}
                   >
-                    <div className="font-bold text-zinc-900 dark:text-zinc-200">No GPS (None)</div>
-                    <div className="text-[11px] text-zinc-500 mt-0.5">
-                      Saves weight & frees 1 UART
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-zinc-900 dark:text-zinc-200">
+                        No GPS (None)
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5">
+                        Saves weight & frees 1 UART
+                      </div>
                     </div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0g</div>
                   </div>
 
                   {filteredGps.map((g) => {
@@ -1822,15 +1827,28 @@ export function BuildWizardPage() {
                           setSelectedGps(g);
                           setNoneSelections((prev) => ({ ...prev, gps: false }));
                         }}
-                        className={`p-3.5 rounded-xl border cursor-pointer text-xs transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                             : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
                         }`}
                       >
-                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{g.name}</div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                          {g.protocol || "UBLOX"} • {g.weightG}g
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-bold text-zinc-900 dark:text-zinc-200">
+                              {g.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shrink-0">
+                              {g.protocol || "UBLOX"}
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {g.manufacturer} • Weight: {g.weightG}g •{" "}
+                            {g.compass ? "Compass included" : "No compass"}
+                          </div>
+                        </div>
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
+                          1x FC UART
                         </div>
                       </div>
                     );
@@ -1898,7 +1916,7 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {/* Explicit None Card */}
                   <div
                     onClick={() => {
@@ -1906,14 +1924,19 @@ export function BuildWizardPage() {
                       setUseIntegratedVtx(false);
                       setNoneSelections((prev) => ({ ...prev, vtx: true }));
                     }}
-                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.vtx
                         ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                         : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
                     }`}
                   >
-                    <div className="font-bold text-zinc-900 dark:text-zinc-200">No VTX (None)</div>
-                    <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-zinc-900 dark:text-zinc-200">
+                        No VTX (None)
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
+                    </div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0g</div>
                   </div>
 
                   {/* Option Card: Integrated FC VTX (if FC integrates VTX) */}
@@ -1924,35 +1947,32 @@ export function BuildWizardPage() {
                         setSelectedVtx(integratedVtx);
                         setNoneSelections((prev) => ({ ...prev, vtx: false }));
                       }}
-                      className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                      className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                         useIntegratedVtx
                           ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30 ring-1 ring-emerald-500"
                           : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
                       }`}
                     >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <div className="font-bold text-zinc-900 dark:text-zinc-100">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                             {integratedVtx?.name || "Use Integrated FC VTX"}
-                          </div>
-                          <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            Integrated into {selectedFc?.name}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20">
-                            {integratedVtx?.maxPowerMw || 400}mW
                           </span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
                             Integrated
                           </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20 shrink-0">
+                            {integratedVtx?.maxPowerMw || 400}mW
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                          {integratedVtx?.manufacturer || selectedFc?.manufacturer} • Integrated
+                          into {selectedFc?.name} • Weight: 0g (FC integrated) •{" "}
+                          {integratedVtx?.protocol || "Analog"}
                         </div>
                       </div>
-                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                        Weight: 0g (FC integrated) • {integratedVtx?.protocol || "Analog"}
-                      </div>
-                      <div className="text-[11px] text-pink-600 dark:text-pink-400 font-mono mt-1">
-                        {integratedVtx?.manufacturer || selectedFc?.manufacturer} • On-board VTX
+                      <div className="text-[11px] text-pink-600 dark:text-pink-400 font-mono shrink-0">
+                        On-board VTX
                       </div>
                     </div>
                   )}
@@ -1970,20 +1990,40 @@ export function BuildWizardPage() {
                           setUseIntegratedVtx(false);
                           setNoneSelections((prev) => ({ ...prev, vtx: false }));
                         }}
-                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{v.name}</div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                          {v.protocol || "5.8GHz"} • {v.weightG}g
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {v.name}
+                            </span>
+                            {v.maxPowerMw && (
+                              <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20 shrink-0">
+                                {v.maxPowerMw}mW
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {v.manufacturer} • Protocol: {v.protocol || "5.8GHz"} • Weight:{" "}
+                            {v.weightG}g
+                          </div>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 font-mono shrink-0">
+                          {v.weightG}g
                         </div>
                       </div>
                     );
                   })}
                 </div>
+                {filteredVtxs.length === 0 && !fcHasIntegratedVtx && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible VTX products matching your search.
+                  </p>
+                )}
               </div>
 
               {/* 3B. Camera */}
@@ -2026,22 +2066,25 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   <div
                     onClick={() => {
                       setSelectedCam(null);
                       setNoneSelections((prev) => ({ ...prev, camera: true }));
                     }}
-                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.camera
                         ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                         : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
                     }`}
                   >
-                    <div className="font-bold text-zinc-900 dark:text-zinc-200">
-                      No Camera (None)
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-zinc-900 dark:text-zinc-200">
+                        No Camera (None)
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0g</div>
                   </div>
 
                   {filteredCams.map((c) => {
@@ -2055,20 +2098,37 @@ export function BuildWizardPage() {
                           setSelectedCam(c);
                           setNoneSelections((prev) => ({ ...prev, camera: false }));
                         }}
-                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{c.name}</div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                          {c.protocol || "Analog"} • {c.weightG}g
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {c.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20 shrink-0">
+                              {c.protocol || "Analog"}
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {c.manufacturer} • Weight: {c.weightG}g
+                          </div>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 font-mono shrink-0">
+                          {c.weightG}g
                         </div>
                       </div>
                     );
                   })}
                 </div>
+                {filteredCams.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible cameras matching your search.
+                  </p>
+                )}
               </div>
 
               {/* 3C. Video Transmitter Antenna(s) */}
@@ -2159,22 +2219,25 @@ export function BuildWizardPage() {
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   <div
                     onClick={() => {
                       setSelectedVtxAnt(null);
                       setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
                     }}
-                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.vtxAntenna
                         ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                         : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
                     }`}
                   >
-                    <div className="font-bold text-zinc-900 dark:text-zinc-200">
-                      No Antenna (None)
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-zinc-900 dark:text-zinc-200">
+                        No Antenna (None)
+                      </div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0g</div>
                   </div>
 
                   {filteredVtxAnts.map((a) => {
@@ -2188,22 +2251,39 @@ export function BuildWizardPage() {
                           setSelectedVtxAnt(a);
                           setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
                         }}
-                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
+                        className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
-                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{a.name}</div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                          {a.polarization || "RHCP"} •{" "}
-                          {((a.weightG || 0) * (isSelected ? vtxAntCount : 1)).toFixed(1)}g{" "}
-                          {isSelected && vtxAntCount > 1 ? `(${vtxAntCount}x ${a.weightG}g)` : ""}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                              {a.name}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20 shrink-0">
+                              {a.polarization || "RHCP"}
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                            {a.manufacturer} • Weight:{" "}
+                            {((a.weightG || 0) * (isSelected ? vtxAntCount : 1)).toFixed(1)}g{" "}
+                            {isSelected && vtxAntCount > 1 ? `(${vtxAntCount}x ${a.weightG}g)` : ""}
+                          </div>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 font-mono shrink-0">
+                          {((a.weightG || 0) * (isSelected ? vtxAntCount : 1)).toFixed(1)}g
                         </div>
                       </div>
                     );
                   })}
                 </div>
+                {filteredVtxAnts.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible VTX antennas matching your search.
+                  </p>
+                )}
               </div>
             </div>
           )}
