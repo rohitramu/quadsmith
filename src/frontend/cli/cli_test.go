@@ -645,13 +645,14 @@ func TestEvaluate_Success(t *testing.T) {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("mismatched build"))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
-				BuildId:                req.Msg.Build.Id,
-				PayloadWeightG:         req.Msg.PayloadWeightG,
-				BatteryId:              "battery-1",
-				TotalWeightG:           350.5,
-				HoverThrottlePercent:   28.4,
-				ThrustToWeightRatio:    7.2,
-				EstimatedFlightTimeMin: 6.5,
+				BuildId:              req.Msg.Build.Id,
+				PayloadWeightG:       req.Msg.PayloadWeightG,
+				BatteryId:            "battery-1",
+				TotalWeightG:         350.5,
+				HoverThrottlePercent: 28.4,
+				ThrustToWeightRatio:  7.2,
+				MinFlightTimeMin:     4.5,
+				MaxFlightTimeMin:     8.5,
 				SystemMessages: []*pb.SystemMessage{
 					{
 						Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,

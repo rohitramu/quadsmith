@@ -206,7 +206,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         }
         const maxFlightTime = parseFloat(Math.max(1, 7.2 / Math.pow(weightRatio, 1.35)).toFixed(1));
         const minFlightTime = parseFloat((maxFlightTime / 1.9).toFixed(1));
-        const flightTime = parseFloat(((minFlightTime + maxFlightTime) / 2).toFixed(1));
 
         const maxAccelerationMps2 = parseFloat(Math.max(0, (twr - 1.0) * 9.80665).toFixed(1));
         const fwdThrustN = (totalThrust * 0.95) / 101.97162;
@@ -223,7 +222,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           thrustToWeightRatio: parseFloat(twr.toFixed(2)),
           hoverThrottlePercent: parseFloat(hover.toFixed(1)),
           hoverRpm,
-          estimatedFlightTimeMin: flightTime,
           minFlightTimeMin: minFlightTime,
           maxFlightTimeMin: maxFlightTime,
           maxAccelerationMps2,

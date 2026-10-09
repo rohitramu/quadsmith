@@ -221,19 +221,18 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	}
 
 	res := &pb.EvaluateBuildResponse{
-		BuildId:                buildId,
-		PayloadWeightG:         payloadWeight,
-		BatteryId:              batteryId,
-		TotalWeightG:           totalWeight,
-		ThrustToWeightRatio:    phys.ThrustToWeightRatio,
-		HoverThrottlePercent:   phys.HoverThrottlePercent,
-		HoverRpm:               phys.HoverRpm,
-		EstimatedFlightTimeMin: phys.EstimatedFlightTimeMin,
-		MinFlightTimeMin:       phys.MinFlightTimeMin,
-		MaxFlightTimeMin:       phys.MaxFlightTimeMin,
-		MaxAccelerationMps2:    phys.MaxAccelerationMps2,
-		TopSpeedKmh:            phys.TopSpeedKmh,
-		SystemMessages:         systemMessages,
+		BuildId:              buildId,
+		PayloadWeightG:       payloadWeight,
+		BatteryId:            batteryId,
+		TotalWeightG:         totalWeight,
+		ThrustToWeightRatio:  phys.ThrustToWeightRatio,
+		HoverThrottlePercent: phys.HoverThrottlePercent,
+		HoverRpm:             phys.HoverRpm,
+		MinFlightTimeMin:     phys.MinFlightTimeMin,
+		MaxFlightTimeMin:     phys.MaxFlightTimeMin,
+		MaxAccelerationMps2:  phys.MaxAccelerationMps2,
+		TopSpeedKmh:          phys.TopSpeedKmh,
+		SystemMessages:       systemMessages,
 	}
 
 	return connect.NewResponse(res), nil
@@ -241,15 +240,14 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 
 // PhysicsResult contains the calculated aerodynamic, electrical, and flight performance metrics.
 type PhysicsResult struct {
-	ThrustToWeightRatio    float32
-	HoverThrottlePercent   float32
-	HoverRpm               uint32
-	EstimatedFlightTimeMin float32
-	MinFlightTimeMin       float32
-	MaxFlightTimeMin       float32
-	MaxAccelerationMps2    float32
-	TopSpeedKmh            float32
-	SystemMessages         []*pb.SystemMessage
+	ThrustToWeightRatio  float32
+	HoverThrottlePercent float32
+	HoverRpm             uint32
+	MinFlightTimeMin     float32
+	MaxFlightTimeMin     float32
+	MaxAccelerationMps2  float32
+	TopSpeedKmh          float32
+	SystemMessages       []*pb.SystemMessage
 }
 
 func (r PhysicsResult) Errors() []string {
@@ -298,7 +296,6 @@ func CalculatePhysics(
 		thrustToWeight      float32
 		hoverThrottle       float32
 		hoverRpm            uint32
-		flightTime          float32
 		minFlightTime       float32
 		maxFlightTime       float32
 		maxAccelerationMps2 float32
@@ -498,9 +495,6 @@ func CalculatePhysics(
 		aggressiveWatts := cruiseWatts * 1.9
 		aggressiveAmps := aggressiveWatts / nominalVoltage
 		minFlightTime = (usableAh / aggressiveAmps) * 60.0 // minutes (aggressive freestyle)
-
-		// Mixed / moderate flight profile (average between aggressive and cruise)
-		flightTime = (minFlightTime + maxFlightTime) / 2.0
 	}
 
 	// 9. Maximum vertical punchout acceleration (m/s^2):
@@ -578,14 +572,13 @@ func CalculatePhysics(
 	}
 
 	return PhysicsResult{
-		ThrustToWeightRatio:    thrustToWeight,
-		HoverThrottlePercent:   hoverThrottle,
-		HoverRpm:               hoverRpm,
-		EstimatedFlightTimeMin: flightTime,
-		MinFlightTimeMin:       minFlightTime,
-		MaxFlightTimeMin:       maxFlightTime,
-		MaxAccelerationMps2:    maxAccelerationMps2,
-		TopSpeedKmh:            topSpeedKmh,
-		SystemMessages:         systemMessages,
+		ThrustToWeightRatio:  thrustToWeight,
+		HoverThrottlePercent: hoverThrottle,
+		HoverRpm:             hoverRpm,
+		MinFlightTimeMin:     minFlightTime,
+		MaxFlightTimeMin:     maxFlightTime,
+		MaxAccelerationMps2:  maxAccelerationMps2,
+		TopSpeedKmh:          topSpeedKmh,
+		SystemMessages:       systemMessages,
 	}
 }

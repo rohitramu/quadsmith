@@ -35,7 +35,6 @@ message EvaluateBuildResponse {
   float total_weight_g = 1;
   float hover_throttle_percent = 2;
   float thrust_to_weight_ratio = 3;
-  float estimated_flight_time_min = 4;
 
   // Flight time range (minutes) based on flight aggression:
   // min_flight_time_min: Aggressive freestyle / acro / sustained punchouts
@@ -60,8 +59,8 @@ message EvaluateBuildResponse {
   float payload_weight_g = 14;
   string battery_id = 15;
 
-  reserved 5, 6;
-  reserved "warnings", "errors";
+  reserved 4, 5, 6;
+  reserved "estimated_flight_time_min", "warnings", "errors";
 }
 
 service EvaluatorService {

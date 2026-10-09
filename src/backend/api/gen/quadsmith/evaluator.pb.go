@@ -198,11 +198,10 @@ func (x *EvaluateBuildRequest) GetBuildId() string {
 }
 
 type EvaluateBuildResponse struct {
-	state                  protoimpl.MessageState `protogen:"open.v1"`
-	TotalWeightG           float32                `protobuf:"fixed32,1,opt,name=total_weight_g,json=totalWeightG,proto3" json:"total_weight_g,omitempty"`
-	HoverThrottlePercent   float32                `protobuf:"fixed32,2,opt,name=hover_throttle_percent,json=hoverThrottlePercent,proto3" json:"hover_throttle_percent,omitempty"`
-	ThrustToWeightRatio    float32                `protobuf:"fixed32,3,opt,name=thrust_to_weight_ratio,json=thrustToWeightRatio,proto3" json:"thrust_to_weight_ratio,omitempty"`
-	EstimatedFlightTimeMin float32                `protobuf:"fixed32,4,opt,name=estimated_flight_time_min,json=estimatedFlightTimeMin,proto3" json:"estimated_flight_time_min,omitempty"`
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	TotalWeightG         float32                `protobuf:"fixed32,1,opt,name=total_weight_g,json=totalWeightG,proto3" json:"total_weight_g,omitempty"`
+	HoverThrottlePercent float32                `protobuf:"fixed32,2,opt,name=hover_throttle_percent,json=hoverThrottlePercent,proto3" json:"hover_throttle_percent,omitempty"`
+	ThrustToWeightRatio  float32                `protobuf:"fixed32,3,opt,name=thrust_to_weight_ratio,json=thrustToWeightRatio,proto3" json:"thrust_to_weight_ratio,omitempty"`
 	// Flight time range (minutes) based on flight aggression:
 	// min_flight_time_min: Aggressive freestyle / acro / sustained punchouts
 	// max_flight_time_min: Gentle cruising / cinematic forward flight
@@ -271,13 +270,6 @@ func (x *EvaluateBuildResponse) GetHoverThrottlePercent() float32 {
 func (x *EvaluateBuildResponse) GetThrustToWeightRatio() float32 {
 	if x != nil {
 		return x.ThrustToWeightRatio
-	}
-	return 0
-}
-
-func (x *EvaluateBuildResponse) GetEstimatedFlightTimeMin() float32 {
-	if x != nil {
-		return x.EstimatedFlightTimeMin
 	}
 	return 0
 }
@@ -358,12 +350,11 @@ const file_evaluator_proto_rawDesc = "" +
 	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
 	"\n" +
 	"battery_id\x18\x03 \x01(\tR\tbatteryId\x12\x19\n" +
-	"\bbuild_id\x18\x04 \x01(\tR\abuildId\"\xfb\x04\n" +
+	"\bbuild_id\x18\x04 \x01(\tR\abuildId\"\xe1\x04\n" +
 	"\x15EvaluateBuildResponse\x12$\n" +
 	"\x0etotal_weight_g\x18\x01 \x01(\x02R\ftotalWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
-	"\x16thrust_to_weight_ratio\x18\x03 \x01(\x02R\x13thrustToWeightRatio\x129\n" +
-	"\x19estimated_flight_time_min\x18\x04 \x01(\x02R\x16estimatedFlightTimeMin\x12-\n" +
+	"\x16thrust_to_weight_ratio\x18\x03 \x01(\x02R\x13thrustToWeightRatio\x12-\n" +
 	"\x13min_flight_time_min\x18\a \x01(\x02R\x10minFlightTimeMin\x12-\n" +
 	"\x13max_flight_time_min\x18\b \x01(\x02R\x10maxFlightTimeMin\x122\n" +
 	"\x15max_acceleration_mps2\x18\t \x01(\x02R\x13maxAccelerationMps2\x12\"\n" +
@@ -374,7 +365,7 @@ const file_evaluator_proto_rawDesc = "" +
 	"\bbuild_id\x18\r \x01(\tR\abuildId\x12(\n" +
 	"\x10payload_weight_g\x18\x0e \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
 	"\n" +
-	"battery_id\x18\x0f \x01(\tR\tbatteryIdJ\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\bwarningsR\x06errors*\xaa\x01\n" +
+	"battery_id\x18\x0f \x01(\tR\tbatteryIdJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aR\x19estimated_flight_time_minR\bwarningsR\x06errors*\xaa\x01\n" +
 	"\x15SystemMessageSeverity\x12'\n" +
 	"#SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cSYSTEM_MESSAGE_SEVERITY_INFO\x10\x01\x12#\n" +

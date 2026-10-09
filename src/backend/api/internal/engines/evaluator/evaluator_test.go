@@ -72,9 +72,9 @@ func TestEvaluatePhysics_5InchFreestyle(t *testing.T) {
 	if res.MaxFlightTimeMin < 6.0 || res.MaxFlightTimeMin > 8.5 {
 		t.Errorf("Expected max flight time between 6.0 and 8.5 min, got %.1f min", res.MaxFlightTimeMin)
 	}
-	if res.MinFlightTimeMin >= res.EstimatedFlightTimeMin || res.EstimatedFlightTimeMin >= res.MaxFlightTimeMin {
-		t.Errorf("Expected minFlightTime (%.1f) < flightTime (%.1f) < maxFlightTime (%.1f)",
-			res.MinFlightTimeMin, res.EstimatedFlightTimeMin, res.MaxFlightTimeMin)
+	if res.MinFlightTimeMin >= res.MaxFlightTimeMin {
+		t.Errorf("Expected minFlightTime (%.1f) < maxFlightTime (%.1f)",
+			res.MinFlightTimeMin, res.MaxFlightTimeMin)
 	}
 }
 
@@ -281,8 +281,8 @@ func TestEvaluatePhysics_7InchLongRange(t *testing.T) {
 	if res.MaxFlightTimeMin < 9.5 {
 		t.Errorf("Expected long range max flight time >= 9.5 min, got %.1f", res.MaxFlightTimeMin)
 	}
-	if res.MinFlightTimeMin >= res.EstimatedFlightTimeMin || res.EstimatedFlightTimeMin >= res.MaxFlightTimeMin {
-		t.Errorf("Expected min < mid < max for 7-inch, got %.1f < %.1f < %.1f", res.MinFlightTimeMin, res.EstimatedFlightTimeMin, res.MaxFlightTimeMin)
+	if res.MinFlightTimeMin >= res.MaxFlightTimeMin {
+		t.Errorf("Expected minFlightTime (%.1f) < maxFlightTime (%.1f) for 7-inch", res.MinFlightTimeMin, res.MaxFlightTimeMin)
 	}
 }
 
