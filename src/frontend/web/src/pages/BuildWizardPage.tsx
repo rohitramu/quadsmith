@@ -55,6 +55,36 @@ export function formatFrequencyBand(mhz?: number): string {
   return `${mhz} MHz`;
 }
 
+export function isRxAntenna(a: Antenna): boolean {
+  if (a.isInternalOnly) return false;
+  if (a.frequencyBandMhz > 0 && a.frequencyBandMhz <= 3000) return true;
+  const nameLower = a.name.toLowerCase();
+  return (
+    nameLower.includes("t-antenna") ||
+    nameLower.includes("dipole") ||
+    nameLower.includes("moxon") ||
+    nameLower.includes("rx") ||
+    nameLower.includes("2.4") ||
+    nameLower.includes("915") ||
+    nameLower.includes("868")
+  );
+}
+
+export function isVtxAntenna(a: Antenna): boolean {
+  if (a.isInternalOnly) return false;
+  if (a.frequencyBandMhz >= 4000) return true;
+  const nameLower = a.name.toLowerCase();
+  return (
+    nameLower.includes("rhcp") ||
+    nameLower.includes("lhcp") ||
+    nameLower.includes("5.8") ||
+    nameLower.includes("vtx") ||
+    nameLower.includes("lollipop") ||
+    nameLower.includes("axii") ||
+    nameLower.includes("singularity")
+  );
+}
+
 export function BuildWizardPage() {
   const navigate = useNavigate();
 
@@ -76,32 +106,38 @@ export function BuildWizardPage() {
   const [useIntegratedEsc, setUseIntegratedEsc] = useState<boolean>(false);
   const [selectedRx, setSelectedRx] = useState<Receiver | null>(null);
   const [useIntegratedRx, setUseIntegratedRx] = useState<boolean>(false);
+  const [selectedRxAnt, setSelectedRxAnt] = useState<Antenna | null>(null);
+  const [rxAntCount, setRxAntCount] = useState<number>(1);
+  const [selectedGps, setSelectedGps] = useState<GpsReceiver | null>(null);
+
   const [selectedVtx, setSelectedVtx] = useState<VideoTransmitter | null>(null);
   const [useIntegratedVtx, setUseIntegratedVtx] = useState<boolean>(false);
   const [selectedCam, setSelectedCam] = useState<Camera | null>(null);
-  const [selectedAnt, setSelectedAnt] = useState<Antenna | null>(null);
-  const [selectedGps, setSelectedGps] = useState<GpsReceiver | null>(null);
+  const [selectedVtxAnt, setSelectedVtxAnt] = useState<Antenna | null>(null);
+  const [vtxAntCount, setVtxAntCount] = useState<number>(1);
 
   // Explicit "None" flags for optional parts
   const [noneSelections, setNoneSelections] = useState<{
     esc?: boolean;
+    rxAntenna?: boolean;
+    gps?: boolean;
     vtx?: boolean;
     camera?: boolean;
-    antenna?: boolean;
-    gps?: boolean;
+    vtxAntenna?: boolean;
   }>({});
 
-  // Search filter strings for all 10 component selectors
+  // Search filter strings for component selectors
   const [searchFrame, setSearchFrame] = useState("");
   const [searchMotor, setSearchMotor] = useState("");
   const [searchProp, setSearchProp] = useState("");
   const [searchFc, setSearchFc] = useState("");
   const [searchEsc, setSearchEsc] = useState("");
   const [searchRx, setSearchRx] = useState("");
+  const [searchRxAnt, setSearchRxAnt] = useState("");
+  const [searchGps, setSearchGps] = useState("");
   const [searchVtx, setSearchVtx] = useState("");
   const [searchCam, setSearchCam] = useState("");
-  const [searchAnt, setSearchAnt] = useState("");
-  const [searchGps, setSearchGps] = useState("");
+  const [searchVtxAnt, setSearchVtxAnt] = useState("");
 
   // Evaluator Sidebar runtime parameters
   const [selectedBatteryId, setSelectedBatteryId] = useState<string>("");
@@ -269,8 +305,7 @@ export function BuildWizardPage() {
   const stage3Complete =
     (!!selectedVtx || !!useIntegratedVtx || !!noneSelections.vtx) &&
     (!!selectedCam || !!noneSelections.camera) &&
-    (!!selectedAnt || !!noneSelections.antenna) &&
-    (!!selectedGps || !!noneSelections.gps);
+    (!!selectedVtxAnt || !!noneSelections.vtxAntenna);
   const stage4Complete = stage1Complete && stage2Complete && buildName.trim().length > 0;
 
   // Unlocked stages based on gating logic
@@ -284,7 +319,7 @@ export function BuildWizardPage() {
     return list;
   }, [stage1Complete, stage2Complete]);
 
-  // Dry weight calculation (with dynamic motor & prop quantities)
+  // Dry weight calculation (with dynamic motor, prop, and antenna quantities)
   const dryWeightG = useMemo(() => {
     let weight = 0;
     if (selectedFrame) weight += selectedFrame.weightG || 0;
@@ -297,12 +332,19 @@ export function BuildWizardPage() {
     if (selectedRx && !useIntegratedRx) {
       weight += selectedRx.weightG || 0;
     }
+    if (selectedRxAnt && !noneSelections.rxAntenna) {
+      weight += (selectedRxAnt.weightG || 0) * rxAntCount;
+    }
+    if (selectedGps && !noneSelections.gps) {
+      weight += selectedGps.weightG || 0;
+    }
     if (selectedVtx && !useIntegratedVtx && !noneSelections.vtx) {
       weight += selectedVtx.weightG || 0;
     }
     if (selectedCam && !noneSelections.camera) weight += selectedCam.weightG || 0;
-    if (selectedAnt && !noneSelections.antenna) weight += selectedAnt.weightG || 0;
-    if (selectedGps && !noneSelections.gps) weight += selectedGps.weightG || 0;
+    if (selectedVtxAnt && !noneSelections.vtxAntenna) {
+      weight += (selectedVtxAnt.weightG || 0) * vtxAntCount;
+    }
     return parseFloat(weight.toFixed(1));
   }, [
     selectedFrame,
@@ -313,11 +355,14 @@ export function BuildWizardPage() {
     useIntegratedEsc,
     selectedRx,
     useIntegratedRx,
+    selectedRxAnt,
+    rxAntCount,
+    selectedGps,
     selectedVtx,
     useIntegratedVtx,
     selectedCam,
-    selectedAnt,
-    selectedGps,
+    selectedVtxAnt,
+    vtxAntCount,
     noneSelections,
     motorCount,
   ]);
@@ -325,6 +370,19 @@ export function BuildWizardPage() {
   // Construct draft Build object for live evaluation
   const draftBuild = useMemo<Build | null>(() => {
     if (!selectedFrame || !selectedMotor) return null;
+
+    const antennaUuids: string[] = [];
+    if (selectedRxAnt && !noneSelections.rxAntenna) {
+      for (let i = 0; i < rxAntCount; i++) {
+        antennaUuids.push(selectedRxAnt.uuid);
+      }
+    }
+    if (selectedVtxAnt && !noneSelections.vtxAntenna) {
+      for (let i = 0; i < vtxAntCount; i++) {
+        antennaUuids.push(selectedVtxAnt.uuid);
+      }
+    }
+
     return create(BuildSchema, {
       id: "draft-wizard-build",
       name: buildName || "Draft Build",
@@ -342,7 +400,7 @@ export function BuildWizardPage() {
         : selectedRx
           ? [selectedRx.uuid]
           : [],
-      antennaUuids: selectedAnt && !noneSelections.antenna ? [selectedAnt.uuid] : [],
+      antennaUuids,
       cameraUuids: selectedCam && !noneSelections.camera ? [selectedCam.uuid] : [],
       videoTransmitterUuid: useIntegratedVtx
         ? integratedVtx?.uuid || ""
@@ -363,12 +421,15 @@ export function BuildWizardPage() {
     selectedRx,
     useIntegratedRx,
     integratedRx,
+    selectedRxAnt,
+    rxAntCount,
+    selectedGps,
     selectedVtx,
     useIntegratedVtx,
     integratedVtx,
     selectedCam,
-    selectedAnt,
-    selectedGps,
+    selectedVtxAnt,
+    vtxAntCount,
     noneSelections,
     buildName,
     buildDesc,
@@ -491,13 +552,31 @@ export function BuildWizardPage() {
     );
   }, [cams, searchCam]);
 
-  const filteredAnts = useMemo(() => {
-    if (!searchAnt.trim()) return ants;
-    const q = searchAnt.toLowerCase();
-    return ants.filter(
-      (a) => a.name.toLowerCase().includes(q) || a.manufacturer.toLowerCase().includes(q),
+  const filteredRxAnts = useMemo(() => {
+    const rxAnts = ants.filter(isRxAntenna);
+    if (!searchRxAnt.trim()) return rxAnts;
+    const q = searchRxAnt.toLowerCase();
+    return rxAnts.filter(
+      (a) =>
+        a.name.toLowerCase().includes(q) ||
+        a.manufacturer.toLowerCase().includes(q) ||
+        a.connector.toLowerCase().includes(q) ||
+        a.polarization.toLowerCase().includes(q),
     );
-  }, [ants, searchAnt]);
+  }, [ants, searchRxAnt]);
+
+  const filteredVtxAnts = useMemo(() => {
+    const vtxAnts = ants.filter(isVtxAntenna);
+    if (!searchVtxAnt.trim()) return vtxAnts;
+    const q = searchVtxAnt.toLowerCase();
+    return vtxAnts.filter(
+      (a) =>
+        a.name.toLowerCase().includes(q) ||
+        a.manufacturer.toLowerCase().includes(q) ||
+        a.connector.toLowerCase().includes(q) ||
+        a.polarization.toLowerCase().includes(q),
+    );
+  }, [ants, searchVtxAnt]);
 
   const filteredGps = useMemo(() => {
     if (!searchGps.trim()) return gpsList;
@@ -527,19 +606,17 @@ export function BuildWizardPage() {
     setPayloadInput(String(weight));
   };
 
-  // Skip All Stage 3 (Vision & Navigation)
+  // Skip All Stage 3 (Video)
   const skipAllStage3 = () => {
     setNoneSelections((prev) => ({
       ...prev,
       vtx: true,
       camera: true,
-      antenna: true,
-      gps: true,
+      vtxAntenna: true,
     }));
     setSelectedVtx(null);
     setSelectedCam(null);
-    setSelectedAnt(null);
-    setSelectedGps(null);
+    setSelectedVtxAnt(null);
   };
 
   // Quick Preset Loader (5" Freestyle)
@@ -556,6 +633,16 @@ export function BuildWizardPage() {
       setSelectedRx(rxs[0]);
       setUseIntegratedRx(false);
     }
+    const rxAnt = ants.find(isRxAntenna) || ants[0];
+    if (rxAnt) {
+      setSelectedRxAnt(rxAnt);
+      setRxAntCount(1);
+      setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
+    }
+    if (gpsList.length > 0) {
+      setSelectedGps(gpsList[0]);
+      setNoneSelections((prev) => ({ ...prev, gps: false }));
+    }
     if (vtxs.length > 0) {
       setSelectedVtx(vtxs[0]);
       setUseIntegratedVtx(false);
@@ -565,13 +652,11 @@ export function BuildWizardPage() {
       setSelectedCam(cams[0]);
       setNoneSelections((prev) => ({ ...prev, camera: false }));
     }
-    if (ants.length > 0) {
-      setSelectedAnt(ants[0]);
-      setNoneSelections((prev) => ({ ...prev, antenna: false }));
-    }
-    if (gpsList.length > 0) {
-      setSelectedGps(gpsList[0]);
-      setNoneSelections((prev) => ({ ...prev, gps: false }));
+    const vtxAnt = ants.find(isVtxAntenna) || ants[0];
+    if (vtxAnt) {
+      setSelectedVtxAnt(vtxAnt);
+      setVtxAntCount(1);
+      setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
     }
     setBuildName("5-Inch Freestyle Build");
   };
@@ -602,15 +687,19 @@ export function BuildWizardPage() {
     // Toothpick: lightweight LOS / micro
     setNoneSelections({
       esc: true,
+      rxAntenna: true,
+      gps: true,
       vtx: true,
       camera: true,
-      antenna: true,
-      gps: true,
+      vtxAntenna: true,
     });
+    setSelectedRxAnt(null);
+    setRxAntCount(1);
+    setSelectedGps(null);
     setSelectedVtx(null);
     setSelectedCam(null);
-    setSelectedAnt(null);
-    setSelectedGps(null);
+    setSelectedVtxAnt(null);
+    setVtxAntCount(1);
     setBuildName("3-Inch Ultralight Toothpick");
   };
 
@@ -624,11 +713,14 @@ export function BuildWizardPage() {
     setUseIntegratedEsc(false);
     setSelectedRx(null);
     setUseIntegratedRx(false);
+    setSelectedRxAnt(null);
+    setRxAntCount(1);
+    setSelectedGps(null);
     setSelectedVtx(null);
     setUseIntegratedVtx(false);
     setSelectedCam(null);
-    setSelectedAnt(null);
-    setSelectedGps(null);
+    setSelectedVtxAnt(null);
+    setVtxAntCount(1);
     setNoneSelections({});
     setSelectedBatteryId("");
     setPayloadWeightG(0);
@@ -651,6 +743,18 @@ export function BuildWizardPage() {
 
     try {
       setSaveError(null);
+      const antennaUuids: string[] = [];
+      if (selectedRxAnt && !noneSelections.rxAntenna) {
+        for (let i = 0; i < rxAntCount; i++) {
+          antennaUuids.push(selectedRxAnt.uuid);
+        }
+      }
+      if (selectedVtxAnt && !noneSelections.vtxAntenna) {
+        for (let i = 0; i < vtxAntCount; i++) {
+          antennaUuids.push(selectedVtxAnt.uuid);
+        }
+      }
+
       const newBuild = create(BuildSchema, {
         name: buildName.trim(),
         description: buildDesc.trim(),
@@ -668,7 +772,7 @@ export function BuildWizardPage() {
             ? [selectedRx.uuid]
             : [],
         cameraUuids: selectedCam && !noneSelections.camera ? [selectedCam.uuid] : [],
-        antennaUuids: selectedAnt && !noneSelections.antenna ? [selectedAnt.uuid] : [],
+        antennaUuids,
         videoTransmitterUuid: useIntegratedVtx
           ? integratedVtx?.uuid || ""
           : selectedVtx && !noneSelections.vtx
@@ -1485,22 +1589,270 @@ export function BuildWizardPage() {
                   </p>
                 )}
               </div>
+
+              {/* 2D. Radio Receiver Antenna(s) */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      2D. Radio Receiver Antenna(s)
+                    </h3>
+                  </div>
+                  {selectedRxAnt && !noneSelections.rxAntenna ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} />{" "}
+                      {rxAntCount > 1 ? "2x Selected (Diversity)" : "Selected"}
+                    </span>
+                  ) : noneSelections.rxAntenna ? (
+                    <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> None
+                    </span>
+                  ) : (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                      Optional
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Receives pilot control link signals. Supports a single antenna or dual diversity
+                  antennas.
+                </p>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchRxAnt}
+                    onChange={(e) => setSearchRxAnt(e.target.value)}
+                    placeholder="Search RX antennas by connector, polarization, brand..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchRxAnt && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchRxAnt("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                {selectedRxAnt && !noneSelections.rxAntenna && (
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                        Antenna Quantity:
+                      </span>
+                      <span className="text-zinc-500 dark:text-zinc-400">
+                        {rxAntCount === 1
+                          ? "Single Antenna (Standard RX)"
+                          : "Dual Antennas (True Diversity / 90° mounting)"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 bg-white dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-2xs">
+                      <button
+                        type="button"
+                        onClick={() => setRxAntCount(1)}
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                          rxAntCount === 1
+                            ? "bg-blue-600 text-white shadow-xs"
+                            : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                        }`}
+                      >
+                        1x Single
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setRxAntCount(2)}
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                          rxAntCount === 2
+                            ? "bg-blue-600 text-white shadow-xs"
+                            : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                        }`}
+                      >
+                        2x Diversity
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {/* Explicit None Card */}
+                  <div
+                    onClick={() => {
+                      setSelectedRxAnt(null);
+                      setNoneSelections((prev) => ({ ...prev, rxAntenna: true }));
+                    }}
+                    className={`p-3.5 rounded-xl border cursor-pointer text-xs transition-all ${
+                      noneSelections.rxAntenna
+                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                    }`}
+                  >
+                    <div className="font-bold text-zinc-900 dark:text-zinc-200">
+                      No External Antenna (None)
+                    </div>
+                    <div className="text-[11px] text-zinc-500 mt-0.5">
+                      Built-in ceramic antenna or saves weight (0g)
+                    </div>
+                  </div>
+
+                  {filteredRxAnts.map((a) => {
+                    const isSelected =
+                      !noneSelections.rxAntenna &&
+                      (selectedRxAnt?.uuid === a.uuid || selectedRxAnt?.id === a.id);
+                    return (
+                      <div
+                        key={a.uuid || a.id}
+                        onClick={() => {
+                          setSelectedRxAnt(a);
+                          setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
+                        }}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+                            {a.name}
+                          </span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            {formatFrequencyBand(a.frequencyBandMhz)}
+                          </span>
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                          Weight: {((a.weightG || 0) * (isSelected ? rxAntCount : 1)).toFixed(1)}g{" "}
+                          {isSelected && rxAntCount > 1 ? `(${rxAntCount}x ${a.weightG}g)` : ""} •{" "}
+                          {a.polarization || "Linear"}
+                        </div>
+                        <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono mt-1">
+                          Connector: {a.connector || "U.FL"}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {filteredRxAnts.length === 0 && (
+                  <p className="text-xs text-zinc-400 italic py-2 text-center">
+                    No compatible RX antennas matching your search.
+                  </p>
+                )}
+              </div>
+
+              {/* 2E. GPS Receiver & Compass */}
+              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
+                    <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                      2E. GPS Receiver & Compass
+                    </h3>
+                  </div>
+                  {selectedGps || noneSelections.gps ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> Selected
+                    </span>
+                  ) : (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                      Optional
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Enables satellite positioning, return-to-home (RTH), speed, and rescue
+                  capabilities.
+                </p>
+
+                <div className="relative">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+                  <input
+                    type="text"
+                    value={searchGps}
+                    onChange={(e) => setSearchGps(e.target.value)}
+                    placeholder="Search GPS by chipset, compass, brand..."
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                  {searchGps && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchGps("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <div
+                    onClick={() => {
+                      setSelectedGps(null);
+                      setNoneSelections((prev) => ({ ...prev, gps: true }));
+                    }}
+                    className={`p-3.5 rounded-xl border cursor-pointer text-xs transition-all ${
+                      noneSelections.gps
+                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                    }`}
+                  >
+                    <div className="font-bold text-zinc-900 dark:text-zinc-200">No GPS (None)</div>
+                    <div className="text-[11px] text-zinc-500 mt-0.5">
+                      Saves weight & frees 1 UART
+                    </div>
+                  </div>
+
+                  {filteredGps.map((g) => {
+                    const isSelected =
+                      !noneSelections.gps &&
+                      (selectedGps?.uuid === g.uuid || selectedGps?.id === g.id);
+                    return (
+                      <div
+                        key={g.uuid || g.id}
+                        onClick={() => {
+                          setSelectedGps(g);
+                          setNoneSelections((prev) => ({ ...prev, gps: false }));
+                        }}
+                        className={`p-3.5 rounded-xl border cursor-pointer text-xs transition-all ${
+                          isSelected
+                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
+                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                        }`}
+                      >
+                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{g.name}</div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                          {g.protocol || "UBLOX"} • {g.weightG}g
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           )}
 
-          {/* STAGE 3: Vision & Navigation (All Optional) */}
+          {/* STAGE 3: Video (All Optional) */}
           {activeStage === 3 && (
             <div className="space-y-6">
               {/* Optional Notice & Skip All Button */}
               <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/20 text-blue-900 dark:text-blue-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <span>
-                  ℹ️ All components in Stage 3 are optional. You can select parts or choose "None"
-                  for each.
+                  ℹ️ All video components in Stage 3 are optional. Configure an FPV video system or
+                  choose "None" for line-of-sight flying.
                 </span>
                 <button
                   type="button"
                   onClick={skipAllStage3}
-                  className="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] transition-colors shrink-0"
+                  className="px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-[11px] transition-colors shrink-0 cursor-pointer"
                 >
                   Set All to None (Line-of-Sight)
                 </button>
@@ -1719,15 +2071,20 @@ export function BuildWizardPage() {
                 </div>
               </div>
 
-              {/* 3C. Video Antenna */}
+              {/* 3C. Video Transmitter Antenna(s) */}
               <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                    3C. Video Antenna
+                    3C. Video Transmitter Antenna(s)
                   </h3>
-                  {selectedAnt || noneSelections.antenna ? (
+                  {selectedVtxAnt && !noneSelections.vtxAntenna ? (
                     <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                      <Check size={12} strokeWidth={2.5} /> Selected
+                      <Check size={12} strokeWidth={2.5} />{" "}
+                      {vtxAntCount > 1 ? "2x Selected (Dual)" : "Selected"}
+                    </span>
+                  ) : noneSelections.vtxAntenna ? (
+                    <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> None
                     </span>
                   ) : (
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
@@ -1735,6 +2092,10 @@ export function BuildWizardPage() {
                     </span>
                   )}
                 </div>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Transmits video signal to FPV goggles. Supports single antenna or dual antenna
+                  setups (e.g. DJI O3 / diversity).
+                </p>
 
                 <div className="relative">
                   <Search
@@ -1743,15 +2104,15 @@ export function BuildWizardPage() {
                   />
                   <input
                     type="text"
-                    value={searchAnt}
-                    onChange={(e) => setSearchAnt(e.target.value)}
-                    placeholder="Search antennas by connector, polarization, brand..."
+                    value={searchVtxAnt}
+                    onChange={(e) => setSearchVtxAnt(e.target.value)}
+                    placeholder="Search VTX antennas by connector, polarization, brand..."
                     className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
-                  {searchAnt && (
+                  {searchVtxAnt && (
                     <button
                       type="button"
-                      onClick={() => setSearchAnt("")}
+                      onClick={() => setSearchVtxAnt("")}
                       className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
                     >
                       <X size={13} />
@@ -1759,14 +2120,53 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
+                {selectedVtxAnt && !noneSelections.vtxAntenna && (
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                        Antenna Quantity:
+                      </span>
+                      <span className="text-zinc-500 dark:text-zinc-400">
+                        {vtxAntCount === 1
+                          ? "Single Antenna (Standard VTX)"
+                          : "Dual Antennas (e.g. DJI O3 / Diversity)"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 bg-white dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-2xs">
+                      <button
+                        type="button"
+                        onClick={() => setVtxAntCount(1)}
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                          vtxAntCount === 1
+                            ? "bg-blue-600 text-white shadow-xs"
+                            : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                        }`}
+                      >
+                        1x Single
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setVtxAntCount(2)}
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                          vtxAntCount === 2
+                            ? "bg-blue-600 text-white shadow-xs"
+                            : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                        }`}
+                      >
+                        2x Dual
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                   <div
                     onClick={() => {
-                      setSelectedAnt(null);
-                      setNoneSelections((prev) => ({ ...prev, antenna: true }));
+                      setSelectedVtxAnt(null);
+                      setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
                     }}
                     className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
-                      noneSelections.antenna
+                      noneSelections.vtxAntenna
                         ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
                         : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
                     }`}
@@ -1777,16 +2177,16 @@ export function BuildWizardPage() {
                     <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0g)</div>
                   </div>
 
-                  {filteredAnts.map((a) => {
+                  {filteredVtxAnts.map((a) => {
                     const isSelected =
-                      !noneSelections.antenna &&
-                      (selectedAnt?.uuid === a.uuid || selectedAnt?.id === a.id);
+                      !noneSelections.vtxAntenna &&
+                      (selectedVtxAnt?.uuid === a.uuid || selectedVtxAnt?.id === a.id);
                     return (
                       <div
                         key={a.uuid || a.id}
                         onClick={() => {
-                          setSelectedAnt(a);
-                          setNoneSelections((prev) => ({ ...prev, antenna: false }));
+                          setSelectedVtxAnt(a);
+                          setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
                         }}
                         className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
                           isSelected
@@ -1796,92 +2196,9 @@ export function BuildWizardPage() {
                       >
                         <div className="font-bold text-zinc-900 dark:text-zinc-200">{a.name}</div>
                         <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                          {a.polarization || "RHCP"} • {a.weightG}g
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 3D. GPS Receiver */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                    3D. GPS Receiver & Compass
-                  </h3>
-                  {selectedGps || noneSelections.gps ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                      <Check size={12} strokeWidth={2.5} /> Selected
-                    </span>
-                  ) : (
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-                      Optional
-                    </span>
-                  )}
-                </div>
-
-                <div className="relative">
-                  <Search
-                    size={14}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
-                  />
-                  <input
-                    type="text"
-                    value={searchGps}
-                    onChange={(e) => setSearchGps(e.target.value)}
-                    placeholder="Search GPS by chipset, compass, brand..."
-                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  />
-                  {searchGps && (
-                    <button
-                      type="button"
-                      onClick={() => setSearchGps("")}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
-                    >
-                      <X size={13} />
-                    </button>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                  <div
-                    onClick={() => {
-                      setSelectedGps(null);
-                      setNoneSelections((prev) => ({ ...prev, gps: true }));
-                    }}
-                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
-                      noneSelections.gps
-                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
-                    }`}
-                  >
-                    <div className="font-bold text-zinc-900 dark:text-zinc-200">No GPS (None)</div>
-                    <div className="text-[11px] text-zinc-500 mt-0.5">
-                      Saves weight & frees 1 UART
-                    </div>
-                  </div>
-
-                  {filteredGps.map((g) => {
-                    const isSelected =
-                      !noneSelections.gps &&
-                      (selectedGps?.uuid === g.uuid || selectedGps?.id === g.id);
-                    return (
-                      <div
-                        key={g.uuid || g.id}
-                        onClick={() => {
-                          setSelectedGps(g);
-                          setNoneSelections((prev) => ({ ...prev, gps: false }));
-                        }}
-                        className={`p-3 rounded-xl border cursor-pointer text-xs transition-all ${
-                          isSelected
-                            ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
-                        }`}
-                      >
-                        <div className="font-bold text-zinc-900 dark:text-zinc-200">{g.name}</div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                          {g.protocol || "UBLOX"} • {g.weightG}g
+                          {a.polarization || "RHCP"} •{" "}
+                          {((a.weightG || 0) * (isSelected ? vtxAntCount : 1)).toFixed(1)}g{" "}
+                          {isSelected && vtxAntCount > 1 ? `(${vtxAntCount}x ${a.weightG}g)` : ""}
                         </div>
                       </div>
                     );
@@ -2023,6 +2340,24 @@ export function BuildWizardPage() {
                       <span className="text-zinc-500 font-mono">{selectedRx.weightG}g</span>
                     </div>
                   ) : null}
+                  {selectedRxAnt && !noneSelections.rxAntenna && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        RX Antenna: {selectedRxAnt.name} ({rxAntCount}x)
+                      </span>
+                      <span className="text-zinc-500 font-mono">
+                        {((selectedRxAnt.weightG || 0) * rxAntCount).toFixed(1)}g
+                      </span>
+                    </div>
+                  )}
+                  {selectedGps && !noneSelections.gps && (
+                    <div className="py-1.5 px-2 flex justify-between">
+                      <span className="text-zinc-700 dark:text-zinc-300">
+                        GPS: {selectedGps.name}
+                      </span>
+                      <span className="text-zinc-500 font-mono">{selectedGps.weightG}g</span>
+                    </div>
+                  )}
                   {useIntegratedVtx ? (
                     <div className="py-1.5 px-2 flex justify-between text-zinc-500">
                       <span>
@@ -2049,20 +2384,14 @@ export function BuildWizardPage() {
                       <span className="text-zinc-500 font-mono">{selectedCam.weightG}g</span>
                     </div>
                   )}
-                  {selectedAnt && !noneSelections.antenna && (
+                  {selectedVtxAnt && !noneSelections.vtxAntenna && (
                     <div className="py-1.5 px-2 flex justify-between">
                       <span className="text-zinc-700 dark:text-zinc-300">
-                        Antenna: {selectedAnt.name}
+                        VTX Antenna: {selectedVtxAnt.name} ({vtxAntCount}x)
                       </span>
-                      <span className="text-zinc-500 font-mono">{selectedAnt.weightG}g</span>
-                    </div>
-                  )}
-                  {selectedGps && !noneSelections.gps && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        GPS: {selectedGps.name}
+                      <span className="text-zinc-500 font-mono">
+                        {((selectedVtxAnt.weightG || 0) * vtxAntCount).toFixed(1)}g
                       </span>
-                      <span className="text-zinc-500 font-mono">{selectedGps.weightG}g</span>
                     </div>
                   )}
                 </div>
@@ -2108,7 +2437,7 @@ export function BuildWizardPage() {
                   {activeStage === 1
                     ? "Next: Flight Electronics →"
                     : activeStage === 2
-                      ? "Next: Vision & Navigation →"
+                      ? "Next: Video →"
                       : "Next: Review & Save →"}
                 </span>
               </button>

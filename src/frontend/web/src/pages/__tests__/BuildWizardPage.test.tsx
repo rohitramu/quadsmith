@@ -143,7 +143,7 @@ describe("BuildWizardPage Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("handles Stage 3 optional components and 'Set All to None'", async () => {
+  it("handles Stage 2 RX antenna & GPS and Stage 3 Video optional components with 'Set All to None'", async () => {
     const user = userEvent.setup();
     renderWizard();
 
@@ -153,25 +153,55 @@ describe("BuildWizardPage Component", () => {
     await user.click(await screen.findByText("Hurricane 51433"));
     await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
 
-    // Complete Stage 2
-    await user.click(await screen.findByText("F405 V4 FC"));
-    await user.click(await screen.findByText("SpeedyBee 50A 4-in-1 ESC"));
-    await user.click(await screen.findByText("Crossfire Nano RX"));
+    // Verify Stage 2 sections: 2A FC, 2B ESC, 2C RX, 2D RX Antenna, 2E GPS
+    expect(await screen.findByText("2A. Flight Controller")).toBeInTheDocument();
+    expect(screen.getByText("2B. Electronic Speed Controller (ESC)")).toBeInTheDocument();
+    expect(screen.getByText("2C. Radio Control Receiver")).toBeInTheDocument();
+    expect(screen.getByText("2D. Radio Receiver Antenna(s)")).toBeInTheDocument();
+    expect(screen.getByText("2E. GPS Receiver & Compass")).toBeInTheDocument();
 
-    // Advance to Stage 3
-    const nextBtn = screen.getByRole("button", { name: /Next: Vision & Navigation/i });
+    // Select Stage 2 components
+    await user.click(screen.getByText("F405 V4 FC"));
+    await user.click(screen.getByText("SpeedyBee 50A 4-in-1 ESC"));
+    await user.click(screen.getByText("Crossfire Nano RX"));
+
+    // Select RX Antenna & test diversity toggle
+    const rxAntCard = screen.getByText("RadioMaster T-Antenna 2.4GHz");
+    await user.click(rxAntCard);
+    expect(screen.getByText("Antenna Quantity:")).toBeInTheDocument();
+    const divBtn = screen.getByRole("button", { name: /2x Diversity/i });
+    await user.click(divBtn);
+    expect(screen.getByText(/2x Selected \(Diversity\)/i)).toBeInTheDocument();
+
+    // Select GPS in Stage 2
+    const gpsCard = await screen.findByText(/M8Q-5883/i);
+    await user.click(gpsCard);
+
+    // Advance to Stage 3 (Video)
+    const nextBtn = screen.getByRole("button", { name: /Next: Video/i });
     expect(nextBtn).toBeEnabled();
     await user.click(nextBtn);
 
-    expect(await screen.findByText(/All components in Stage 3 are optional/i)).toBeInTheDocument();
-    expect(screen.getByText("3D. GPS Receiver & Compass")).toBeInTheDocument();
+    // Verify Stage 3 Video sections: 3A VTX, 3B Camera, 3C Video Transmitter Antenna(s)
+    expect(
+      await screen.findByText(/All video components in Stage 3 are optional/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText("3A. Video Transmitter (VTX)")).toBeInTheDocument();
+    expect(screen.getByText("3B. FPV Camera")).toBeInTheDocument();
+    expect(screen.getByText("3C. Video Transmitter Antenna(s)")).toBeInTheDocument();
 
-    // Click "Set All to None"
+    // Test VTX Antenna selection & dual toggle
+    const vtxAntCard = await screen.findByText(/Lollipop 4/i);
+    await user.click(vtxAntCard);
+    expect(screen.getByRole("button", { name: /2x Dual/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /2x Dual/i }));
+    expect(screen.getByText(/2x Selected \(Dual\)/i)).toBeInTheDocument();
+
+    // Click "Set All to None (Line-of-Sight)"
     const skipAllBtn = screen.getByRole("button", { name: /Set All to None/i });
     await user.click(skipAllBtn);
 
-    // Verify explicit None selections
-    expect(screen.getByText("No GPS (None)")).toBeInTheDocument();
+    // Verify explicit None selections in Stage 3
     expect(screen.getByText("No VTX (None)")).toBeInTheDocument();
     expect(screen.getByText("No Camera (None)")).toBeInTheDocument();
     expect(screen.getByText("No Antenna (None)")).toBeInTheDocument();
