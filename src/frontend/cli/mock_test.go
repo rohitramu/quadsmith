@@ -53,7 +53,8 @@ func (m *mockBuildService) GetBuild(ctx context.Context, req *connect.Request[pb
 
 type mockEvaluatorService struct {
 	quadsmithconnect.UnimplementedEvaluatorServiceHandler
-	evaluateBuildFunc func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error)
+	evaluateBuildFunc            func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error)
+	getBuildElectricalLimitsFunc func(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error)
 }
 
 func (m *mockEvaluatorService) EvaluateBuild(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
@@ -61,6 +62,13 @@ func (m *mockEvaluatorService) EvaluateBuild(ctx context.Context, req *connect.R
 		return m.evaluateBuildFunc(ctx, req)
 	}
 	return m.UnimplementedEvaluatorServiceHandler.EvaluateBuild(ctx, req)
+}
+
+func (m *mockEvaluatorService) GetBuildElectricalLimits(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+	if m.getBuildElectricalLimitsFunc != nil {
+		return m.getBuildElectricalLimitsFunc(ctx, req)
+	}
+	return m.UnimplementedEvaluatorServiceHandler.GetBuildElectricalLimits(ctx, req)
 }
 
 func setupMockServer(t *testing.T, registerHandlers ...func(*http.ServeMux)) *httptest.Server {

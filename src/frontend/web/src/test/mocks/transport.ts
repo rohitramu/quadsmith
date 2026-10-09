@@ -178,6 +178,9 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (simulateError) {
           throw new ConnectError("Evaluation failed", Code.Internal);
         }
+        if (!req.batteryId) {
+          throw new ConnectError("battery_id is required", Code.InvalidArgument);
+        }
         const payload = req.payloadWeightG || 0;
         const baseWeight = mockEvaluation1.totalWeightG;
         const safeBase = Math.max(1, baseWeight);

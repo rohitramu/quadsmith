@@ -416,6 +416,19 @@ func newRootCmd() *cobra.Command {
 			
 			payload, _ := cmd.Flags().GetFloat32("payload")
 			battery, _ := cmd.Flags().GetString("battery")
+			if battery == "" {
+				lRes, err := evalClient.GetBuildElectricalLimits(context.Background(), connect.NewRequest(&pb.GetBuildElectricalLimitsRequest{
+					Build:   bRes.Msg,
+					BuildId: args[0],
+				}))
+				if err != nil {
+					return fmt.Errorf("failed to determine electrical limits for build: %w", err)
+				}
+				if lRes.Msg == nil || lRes.Msg.DefaultBatteryId == "" {
+					return fmt.Errorf("no compatible battery found for build; specify one using --battery")
+				}
+				battery = lRes.Msg.DefaultBatteryId
+			}
 			eReq := &pb.EvaluateBuildRequest{
 				BuildId:        args[0],
 				Build:          bRes.Msg,
@@ -429,7 +442,7 @@ func newRootCmd() *cobra.Command {
 		},
 	}
 	evalCmd.Flags().Float32P("payload", "p", 0, "Payload weight in grams")
-	evalCmd.Flags().StringP("battery", "b", "", "Optional battery ID override")
+	evalCmd.Flags().StringP("battery", "b", "", "Battery ID or UUID (defaults to lightest compatible battery)")
 	evalCmd.RegisterFlagCompletionFunc("battery", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		var filter string
 		if len(args) > 0 && args[0] != "" {

@@ -193,7 +193,7 @@ export function BuildProfilePage() {
       batteryId: selectedBatteryId,
     },
     {
-      enabled: !!build,
+      enabled: !!build && !!selectedBatteryId,
       placeholderData: keepPreviousData,
     },
   );

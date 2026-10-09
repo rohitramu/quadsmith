@@ -59,7 +59,7 @@ export type EvaluateBuildRequest = Message<"quadsmith.EvaluateBuildRequest"> & {
   payloadWeightG: number;
 
   /**
-   * Optional battery ID or UUID override. If omitted, the build's battery is used.
+   * Required battery ID or UUID to evaluate the build with.
    *
    * @generated from field: string battery_id = 3;
    */

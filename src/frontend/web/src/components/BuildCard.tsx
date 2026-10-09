@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
-import { evaluateBuild } from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
+import {
+  evaluateBuild,
+  getBuildElectricalLimits,
+} from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
 import type { Build } from "../gen/quadsmith/build_pb";
 import {
   Gauge,
@@ -24,11 +27,26 @@ export interface BuildCardProps {
 export function BuildCard({ build }: BuildCardProps) {
   const [copied, setCopied] = useState(false);
 
+  // Fetch electrical limits to determine default lightest compatible battery
+  const { data: electricalLimits } = useQuery(
+    getBuildElectricalLimits,
+    { build, buildId: build.id || build.uuid },
+    { staleTime: 60_000 },
+  );
+
   // Quick evaluation stats preview
   const { data: evaluation } = useQuery(
     evaluateBuild,
-    { build, buildId: build.id || build.uuid, payloadWeightG: 0 },
-    { staleTime: 60_000 },
+    {
+      build,
+      buildId: build.id || build.uuid,
+      payloadWeightG: 0,
+      batteryId: electricalLimits?.defaultBatteryId || "",
+    },
+    {
+      enabled: !!electricalLimits?.defaultBatteryId,
+      staleTime: 60_000,
+    },
   );
 
   const handleShare = async (e: React.MouseEvent) => {

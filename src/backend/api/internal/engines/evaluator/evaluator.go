@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"strings"
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -40,45 +41,134 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is required"))
 	}
 
+	// Validate required fields in the request
+	batteryId := strings.TrimSpace(req.Msg.GetBatteryId())
+	if batteryId == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("battery_id is required"))
+	}
+
+	// Validate required components in the build
+	if strings.TrimSpace(b.FrameUuid) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required frame"))
+	}
+	if strings.TrimSpace(b.MotorUuid) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required motor"))
+	}
+	if strings.TrimSpace(b.PropellerUuid) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required propeller"))
+	}
+	if strings.TrimSpace(b.FlightControllerUuid) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required flight controller"))
+	}
+
 	var baseWeight float32 = 0
 	var systemMessages []*pb.SystemMessage
 
-	// 1. Fetch Frame
+	// 1. Fetch Battery
+	var battery *pb.Battery
+	if s.db != nil {
+		bat, err := pb.GetBattery(ctx, s.db, batteryId, nil)
+		if err != nil || bat == nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("battery not found: %s", batteryId))
+		}
+		battery = bat
+	}
+	if battery != nil {
+		if battery.CellCountS == 0 {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("battery is missing required cell count"))
+		}
+		baseWeight += battery.WeightG
+	}
+
+	// 2. Fetch Frame
 	var frame *pb.Frame
-	if b.FrameUuid != "" {
+	if s.db != nil {
 		f, err := pb.GetFrame(ctx, s.db, b.FrameUuid, nil)
-		if err != nil {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-				Message:  fmt.Sprintf("Frame not found: %s", b.FrameUuid),
-			})
-		} else {
-			frame = f
-			baseWeight += frame.WeightG
+		if err != nil || f == nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("frame not found: %s", b.FrameUuid))
 		}
+		frame = f
+	}
+	if frame != nil {
+		baseWeight += frame.WeightG
 	}
 
-	// 2. Fetch Motor
+	// 3. Fetch Motor
 	var motor *pb.Motor
-	if b.MotorUuid != "" {
+	if s.db != nil {
 		m, err := pb.GetMotor(ctx, s.db, b.MotorUuid, nil)
-		if err != nil {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-				Message:  fmt.Sprintf("Motor not found: %s", b.MotorUuid),
-			})
-		} else {
-			motor = m
-			baseWeight += (motor.WeightG * 4) // Quadcopter = 4 motors
+		if err != nil || m == nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("motor not found: %s", b.MotorUuid))
+		}
+		motor = m
+	}
+	if motor != nil {
+		baseWeight += (motor.WeightG * 4) // Quadcopter = 4 motors
+	}
+
+	// 4. Fetch Propeller
+	var prop *pb.Propeller
+	if s.db != nil {
+		p, err := pb.GetPropeller(ctx, s.db, b.PropellerUuid, nil)
+		if err != nil || p == nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("propeller not found: %s", b.PropellerUuid))
+		}
+		prop = p
+	}
+	if prop != nil {
+		baseWeight += (prop.WeightG * 4) // Quadcopter = 4 props
+	}
+
+	// 5. Fetch Flight Controller
+	var fc *pb.FlightController
+	if s.db != nil {
+		f, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
+		if err != nil || f == nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("flight controller not found: %s", b.FlightControllerUuid))
+		}
+		fc = f
+	}
+	if fc != nil {
+		baseWeight += fc.WeightG
+	}
+
+	// 6. Fetch Electronic Speed Controllers
+	var totalEscs uint32 = 0
+	var maxAmps float32 = 0
+	var escs []*pb.ElectronicSpeedController
+	if s.db != nil {
+		for _, id := range b.ElectronicSpeedControllerUuids {
+			esc, err := pb.GetElectronicSpeedController(ctx, s.db, id, nil)
+			if err != nil || esc == nil {
+				return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("electronic speed controller not found: %s", id))
+			}
+			baseWeight += esc.WeightG
+			totalEscs += esc.MaxMotors
+			if esc.MotorCurrentMaxA > maxAmps {
+				maxAmps = esc.MotorCurrentMaxA
+			}
+			escs = append(escs, esc)
+		}
+
+		if fc != nil && fc.GetInternalElectronicSpeedControllerUuid() != "" {
+			esc, err := pb.GetElectronicSpeedController(ctx, s.db, fc.GetInternalElectronicSpeedControllerUuid(), nil)
+			if err != nil || esc == nil {
+				return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("internal electronic speed controller not found: %s", fc.GetInternalElectronicSpeedControllerUuid()))
+			}
+			totalEscs += esc.MaxMotors
+			if esc.MotorCurrentMaxA > maxAmps {
+				maxAmps = esc.MotorCurrentMaxA
+			}
+			escs = append(escs, esc)
 		}
 	}
 
-	// Calculate build electrical limits
-	electrical, _ := s.CalculateElectricalLimits(ctx, b)
-	if electrical == nil {
-		electrical = &pb.GetBuildElectricalLimitsResponse{}
+	if totalEscs < 4 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required ESCs (quadcopter requires at least 4 ESC channels, found %d)", totalEscs))
 	}
 
+	// 7. Calculate build electrical limits & compatibility checks
+	electrical := ComputeElectricalLimits(fc, escs, motor)
 	if electrical.MinVoltage > 0 && electrical.MaxVoltage > 0 && electrical.MinVoltage > electrical.MaxVoltage {
 		systemMessages = append(systemMessages, &pb.SystemMessage{
 			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
@@ -86,150 +176,79 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		})
 	}
 
-	// 3. Fetch Battery
-	var battery *pb.Battery
-	targetBat := req.Msg.GetBatteryId()
-	if targetBat == "" && electrical.DefaultBatteryId != "" {
-		targetBat = electrical.DefaultBatteryId
-	}
-	if targetBat != "" {
-		bat, err := pb.GetBattery(ctx, s.db, targetBat, nil)
-		if err != nil {
+	if battery != nil {
+		// Voltage and current safety / compatibility checks
+		if electrical.MaxVoltage > 0 && battery.MaxVoltage > electrical.MaxVoltage {
 			systemMessages = append(systemMessages, &pb.SystemMessage{
 				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-				Message:  fmt.Sprintf("Battery not found: %s", targetBat),
+				Message:  fmt.Sprintf("Battery max voltage (%.1fV) exceeds build component limit (%.1fV)", battery.MaxVoltage, electrical.MaxVoltage),
 			})
-		} else {
-			battery = bat
-			baseWeight += battery.WeightG
-
-			// Voltage and current safety / compatibility checks
-			if electrical.MaxVoltage > 0 && battery.MaxVoltage > electrical.MaxVoltage {
-				systemMessages = append(systemMessages, &pb.SystemMessage{
-					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-					Message:  fmt.Sprintf("Battery max voltage (%.1fV) exceeds build component limit (%.1fV)", battery.MaxVoltage, electrical.MaxVoltage),
-				})
-			}
-			if electrical.MinVoltage > 0 && battery.MinVoltage < electrical.MinVoltage {
-				systemMessages = append(systemMessages, &pb.SystemMessage{
-					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-					Message:  fmt.Sprintf("Battery min voltage (%.1fV) is below build minimum operating voltage (%.1fV)", battery.MinVoltage, electrical.MinVoltage),
-				})
-			}
-			if electrical.MaxCurrentA > 0 && battery.MaxCurrentA > 0 && battery.MaxCurrentA < electrical.MaxCurrentA {
-				systemMessages = append(systemMessages, &pb.SystemMessage{
-					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-					Message:  fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA)", battery.MaxCurrentA, electrical.MaxCurrentA),
-				})
-			}
 		}
-	}
-
-	// 4. Fetch Propeller
-	var prop *pb.Propeller
-	if b.PropellerUuid != "" {
-		p, err := pb.GetPropeller(ctx, s.db, b.PropellerUuid, nil)
-		if err != nil {
+		if electrical.MinVoltage > 0 && battery.MinVoltage < electrical.MinVoltage {
 			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-				Message:  fmt.Sprintf("Propeller not found: %s", b.PropellerUuid),
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+				Message:  fmt.Sprintf("Battery min voltage (%.1fV) is below build minimum operating voltage (%.1fV)", battery.MinVoltage, electrical.MinVoltage),
 			})
-		} else {
-			prop = p
-			baseWeight += (prop.WeightG * 4) // Quadcopter = 4 props
+		}
+		if electrical.MaxCurrentA > 0 && battery.MaxCurrentA > 0 && battery.MaxCurrentA < electrical.MaxCurrentA {
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+				Message:  fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA)", battery.MaxCurrentA, electrical.MaxCurrentA),
+			})
 		}
 	}
 
-	// 5. Fetch Electronic Speed Controllers
-	var totalEscs uint32 = 0
-	var maxAmps float32 = 0
-	for _, id := range b.ElectronicSpeedControllerUuids {
-		esc, err := pb.GetElectronicSpeedController(ctx, s.db, id, nil)
-		if err == nil {
-			baseWeight += esc.WeightG
-			totalEscs += esc.MaxMotors
-			if esc.MotorCurrentMaxA > maxAmps {
-				maxAmps = esc.MotorCurrentMaxA
-			}
-		}
-	}
-
-	// 6. Fetch Flight Controller (and Internal Electronic Speed Controller)
-	if b.FlightControllerUuid != "" {
-		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
-		if err == nil {
-			baseWeight += fc.WeightG
-			if fc.GetInternalElectronicSpeedControllerUuid() != "" {
-				esc, err := pb.GetElectronicSpeedController(ctx, s.db, fc.GetInternalElectronicSpeedControllerUuid(), nil)
-				if err == nil {
-					totalEscs += esc.MaxMotors
-					if esc.MotorCurrentMaxA > maxAmps {
-						maxAmps = esc.MotorCurrentMaxA
-					}
-				}
-			}
-		}
-	}
-
-	// 7. Fetch Video Transmitter (Standalone or Internal to FC)
-	if b.VideoTransmitterUuid != "" {
+	// 8. Fetch Video Transmitter (Standalone or Internal to FC)
+	if b.VideoTransmitterUuid != "" && s.db != nil {
 		videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, b.VideoTransmitterUuid, nil)
-		if err == nil {
+		if err == nil && videoTransmitter != nil {
 			baseWeight += videoTransmitter.WeightG
 		}
-	} else if b.FlightControllerUuid != "" {
-		fc, err := pb.GetFlightController(ctx, s.db, b.FlightControllerUuid, nil)
-		if err == nil && fc.GetInternalVideoTransmitterUuid() != "" {
-			videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, fc.GetInternalVideoTransmitterUuid(), nil)
-			if err == nil {
-				baseWeight += videoTransmitter.WeightG
+	} else if fc != nil && fc.GetInternalVideoTransmitterUuid() != "" && s.db != nil {
+		videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, fc.GetInternalVideoTransmitterUuid(), nil)
+		if err == nil && videoTransmitter != nil {
+			baseWeight += videoTransmitter.WeightG
+		}
+	}
+
+	// 9. Fetch Cameras
+	if s.db != nil {
+		for _, cid := range b.CameraUuids {
+			cam, err := pb.GetCamera(ctx, s.db, cid, nil)
+			if err == nil && cam != nil {
+				baseWeight += cam.WeightG
 			}
 		}
-	}
 
-	// 8. Fetch Cameras
-	for _, cid := range b.CameraUuids {
-		cam, err := pb.GetCamera(ctx, s.db, cid, nil)
-		if err == nil {
-			baseWeight += cam.WeightG
+		// 10. Fetch Receivers
+		for _, rid := range b.ReceiverUuids {
+			rx, err := pb.GetReceiver(ctx, s.db, rid, nil)
+			if err == nil && rx != nil {
+				baseWeight += rx.WeightG
+			}
 		}
-	}
 
-	// 9. Fetch Receivers
-	for _, rid := range b.ReceiverUuids {
-		rx, err := pb.GetReceiver(ctx, s.db, rid, nil)
-		if err == nil {
-			baseWeight += rx.WeightG
+		// 11. Fetch Antennas
+		for _, aid := range b.AntennaUuids {
+			ant, err := pb.GetAntenna(ctx, s.db, aid, nil)
+			if err == nil && ant != nil {
+				baseWeight += ant.WeightG
+			}
 		}
-	}
 
-	// 10. Fetch Antennas
-	for _, aid := range b.AntennaUuids {
-		ant, err := pb.GetAntenna(ctx, s.db, aid, nil)
-		if err == nil {
-			baseWeight += ant.WeightG
+		// 12. Fetch GPS Receiver
+		if b.GetGpsReceiverUuid() != "" {
+			gps, err := pb.GetGpsReceiver(ctx, s.db, b.GetGpsReceiverUuid(), nil)
+			if err == nil && gps != nil {
+				baseWeight += gps.WeightG
+			}
 		}
-	}
-
-	// 11. Fetch GPS Receiver
-	if b.GetGpsReceiverUuid() != "" {
-		gps, err := pb.GetGpsReceiver(ctx, s.db, b.GetGpsReceiverUuid(), nil)
-		if err == nil {
-			baseWeight += gps.WeightG
-		}
-	}
-
-	// System Validation
-	// TODO: Implement mechanical compatibility checks (e.g. Flight Controller mounting hole spacing vs Frame mounts).
-	// TODO: Implement electrical compatibility checks (e.g. Battery Voltage vs FC max voltage, Receiver protocol vs FC UARTs).
-	if totalEscs < 4 && totalEscs > 0 {
-		systemMessages = append(systemMessages, &pb.SystemMessage{
-			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-			Message:  fmt.Sprintf("Not enough ESCs: need 4, have %d", totalEscs),
-		})
 	}
 
 	payloadWeight := req.Msg.GetPayloadWeightG()
+	if payloadWeight < 0 {
+		payloadWeight = 0
+	}
 	totalWeight := baseWeight + payloadWeight
 
 	// Aerodynamic Physics Estimation
@@ -243,11 +262,6 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	)
 	systemMessages = append(systemMessages, phys.SystemMessages...)
 
-	if b.Id != "" {
-		buildId = b.Id
-	} else if buildId == "" {
-		buildId = b.Uuid
-	}
 	if b != nil {
 		if b.Id != "" {
 			buildId = b.Id
@@ -264,20 +278,19 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		}
 	}
 
-	batteryId := ""
+	evaluatedBatteryId := batteryId
 	if battery != nil {
-		batteryId = battery.Id
-		if batteryId == "" {
-			batteryId = battery.Uuid
+		if battery.Id != "" {
+			evaluatedBatteryId = battery.Id
+		} else if battery.Uuid != "" {
+			evaluatedBatteryId = battery.Uuid
 		}
-	} else if targetBat != "" {
-		batteryId = targetBat
 	}
 
 	res := &pb.EvaluateBuildResponse{
 		BuildId:              buildId,
 		PayloadWeightG:       payloadWeight,
-		BatteryId:            batteryId,
+		BatteryId:            evaluatedBatteryId,
 		TotalWeightG:         totalWeight,
 		ThrustToWeightRatio:  phys.ThrustToWeightRatio,
 		HoverThrottlePercent: phys.HoverThrottlePercent,

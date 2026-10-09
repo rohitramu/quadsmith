@@ -131,7 +131,7 @@ type EvaluateBuildRequest struct {
 	// UUIDs/IDs to fetch the actual components for evaluation.
 	Build          *Build  `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
 	PayloadWeightG float32 `protobuf:"fixed32,2,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
-	// Optional battery ID or UUID override. If omitted, the build's battery is used.
+	// Required battery ID or UUID to evaluate the build with.
 	BatteryId string `protobuf:"bytes,3,opt,name=battery_id,json=batteryId,proto3" json:"battery_id,omitempty"`
 	// Optional build ID or UUID. If build is omitted, the backend fetches this build.
 	BuildId       string `protobuf:"bytes,4,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`

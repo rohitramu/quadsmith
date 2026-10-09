@@ -640,14 +640,22 @@ func TestEvaluate_Success(t *testing.T) {
 	}
 
 	mockEval := &mockEvaluatorService{
+		getBuildElectricalLimitsFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+			return connect.NewResponse(&pb.GetBuildElectricalLimitsResponse{
+				DefaultBatteryId: "battery-1",
+			}), nil
+		},
 		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+			if req.Msg.BatteryId == "" {
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery_id is required"))
+			}
 			if req.Msg.Build.Id != "build-1" {
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("mismatched build"))
 			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
 				BuildId:              req.Msg.Build.Id,
 				PayloadWeightG:       req.Msg.PayloadWeightG,
-				BatteryId:            "battery-1",
+				BatteryId:            req.Msg.BatteryId,
 				TotalWeightG:         350.5,
 				HoverThrottlePercent: 28.4,
 				ThrustToWeightRatio:  7.2,
@@ -710,11 +718,19 @@ func TestEvaluate_DefaultYAML(t *testing.T) {
 	}
 
 	mockEval := &mockEvaluatorService{
+		getBuildElectricalLimitsFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+			return connect.NewResponse(&pb.GetBuildElectricalLimitsResponse{
+				DefaultBatteryId: "default-battery-id",
+			}), nil
+		},
 		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+			if req.Msg.BatteryId == "" {
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery_id is required"))
+			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
 				BuildId:             req.Msg.Build.Id,
 				PayloadWeightG:      req.Msg.PayloadWeightG,
-				BatteryId:           "default-battery-id",
+				BatteryId:           req.Msg.BatteryId,
 				TotalWeightG:        350.5,
 				ThrustToWeightRatio: 7.2,
 				SystemMessages: []*pb.SystemMessage{
@@ -839,7 +855,15 @@ func TestEvaluate_AliasEval(t *testing.T) {
 	}
 
 	mockEval := &mockEvaluatorService{
+		getBuildElectricalLimitsFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+			return connect.NewResponse(&pb.GetBuildElectricalLimitsResponse{
+				DefaultBatteryId: "battery-1",
+			}), nil
+		},
 		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+			if req.Msg.BatteryId == "" {
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery_id is required"))
+			}
 			return connect.NewResponse(&pb.EvaluateBuildResponse{
 				TotalWeightG: 350.5,
 			}), nil
@@ -858,6 +882,96 @@ func TestEvaluate_AliasEval(t *testing.T) {
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestEvaluate_NoCompatibleBatteryError(t *testing.T) {
+	mockBuild := &mockBuildService{
+		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {
+			return connect.NewResponse(&pb.Build{
+				Id:   "build-1",
+				Name: "Freestyle 5 inch",
+			}), nil
+		},
+	}
+
+	mockEval := &mockEvaluatorService{
+		getBuildElectricalLimitsFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+			return connect.NewResponse(&pb.GetBuildElectricalLimitsResponse{
+				DefaultBatteryId: "", // No compatible battery found
+			}), nil
+		},
+	}
+
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+	})
+
+	cmd := newRootCmd()
+	var errBuf bytes.Buffer
+	var outBuf bytes.Buffer
+	cmd.SetErr(&errBuf)
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"builds", "evaluate", "build-1"})
+
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error when no compatible battery found, but got none")
+	}
+	if !strings.Contains(err.Error(), "no compatible battery found for build; specify one using --battery") {
+		t.Errorf("expected 'no compatible battery found' error, got: %v", err)
+	}
+}
+
+func TestEvaluate_AutoSelectLightestBattery(t *testing.T) {
+	mockBuild := &mockBuildService{
+		getBuildFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error) {
+			return connect.NewResponse(&pb.Build{
+				Id:   "build-1",
+				Name: "Freestyle 5 inch",
+			}), nil
+		},
+	}
+
+	limitsCalled := false
+	var evaluatedBattery string
+	mockEval := &mockEvaluatorService{
+		getBuildElectricalLimitsFunc: func(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+			limitsCalled = true
+			return connect.NewResponse(&pb.GetBuildElectricalLimitsResponse{
+				DefaultBatteryId: "lightest-compatible-battery",
+			}), nil
+		},
+		evaluateBuildFunc: func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+			evaluatedBattery = req.Msg.BatteryId
+			return connect.NewResponse(&pb.EvaluateBuildResponse{
+				BuildId:      req.Msg.Build.Id,
+				BatteryId:    req.Msg.BatteryId,
+				TotalWeightG: 350.5,
+			}), nil
+		},
+	}
+
+	setupMockServer(t, func(mux *http.ServeMux) {
+		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+	})
+
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"builds", "evaluate", "build-1", "--json"})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if !limitsCalled {
+		t.Errorf("expected GetBuildElectricalLimits to be called when --battery is omitted")
+	}
+	if evaluatedBattery != "lightest-compatible-battery" {
+		t.Errorf("expected evaluatedBattery to be 'lightest-compatible-battery', got: %s", evaluatedBattery)
 	}
 }
 

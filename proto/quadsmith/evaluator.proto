@@ -24,7 +24,7 @@ message EvaluateBuildRequest {
   Build build = 1;
   float payload_weight_g = 2;
 
-  // Optional battery ID or UUID override. If omitted, the build's battery is used.
+  // Required battery ID or UUID to evaluate the build with.
   string battery_id = 3;
 
   // Optional build ID or UUID. If build is omitted, the backend fetches this build.

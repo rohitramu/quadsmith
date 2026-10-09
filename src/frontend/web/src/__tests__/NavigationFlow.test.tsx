@@ -84,7 +84,7 @@ describe("Full Application Navigation Flow", () => {
         name: /build evaluation & performance/i,
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText("All-Up Weight")).toBeInTheDocument();
+    expect(await screen.findByText("All-Up Weight")).toBeInTheDocument();
     expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
 
     // 13. Click "Builds Feed" in sidebar to navigate back to home

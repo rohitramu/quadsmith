@@ -171,7 +171,7 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	t.Logf("CLI returned evaluation: %v", eval)
 
 	// 3. Test --payload and --battery flags
-	cmdCustom := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--payload", "75", "--battery", "cnhl-black-ops-1300mah-6s", "--json")
+	cmdCustom := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--payload", "75", "--battery", "tattu-r-line-v5-1400mah-6s-150c", "--json")
 	cmdCustom.Env = append(cmdCustom.Env, "QS_API_URL="+apiUrl)
 	var stdoutCustom, stderrCustom bytes.Buffer
 	cmdCustom.Stdout = &stdoutCustom
@@ -186,8 +186,8 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	if evalCustom["payload_weight_g"] != float64(75) {
 		t.Errorf("Expected payload_weight_g == 75, got: %v", evalCustom["payload_weight_g"])
 	}
-	if evalCustom["battery_id"] != "cnhl-black-ops-1300mah-6s" {
-		t.Errorf("Expected battery_id == 'cnhl-black-ops-1300mah-6s', got: %v", evalCustom["battery_id"])
+	if evalCustom["battery_id"] != "tattu-r-line-v5-1400mah-6s-150c" {
+		t.Errorf("Expected battery_id == 'tattu-r-line-v5-1400mah-6s-150c', got: %v", evalCustom["battery_id"])
 	}
 
 	// 4. Test that --yaml flag is NOT accepted since YAML is the default
@@ -199,6 +199,26 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 		t.Fatalf("Expected CLI builds evaluate --yaml to fail, but it succeeded")
 	} else if !strings.Contains(stderrReject.String(), "unknown flag: --yaml") {
 		t.Errorf("Expected 'unknown flag: --yaml', got: %s", stderrReject.String())
+	}
+
+	// 5. Test ultralight-toothpick auto-selects lightest compatible battery
+	cmdToothpick := exec.Command(qsPath, "builds", "evaluate", "ultralight-toothpick", "--json")
+	cmdToothpick.Env = append(cmdToothpick.Env, "QS_API_URL="+apiUrl)
+	var stdoutTP, stderrTP bytes.Buffer
+	cmdToothpick.Stdout = &stdoutTP
+	cmdToothpick.Stderr = &stderrTP
+	if err := cmdToothpick.Run(); err != nil {
+		t.Fatalf("CLI evaluate ultralight-toothpick failed: %v\nStderr: %s", err, stderrTP.String())
+	}
+	var evalTP map[string]interface{}
+	if err := json.Unmarshal(stdoutTP.Bytes(), &evalTP); err != nil {
+		t.Fatalf("Failed to parse JSON output: %v", err)
+	}
+	if evalTP["build_id"] != "ultralight-toothpick" {
+		t.Errorf("Expected build_id == 'ultralight-toothpick', got: %v", evalTP["build_id"])
+	}
+	if batId, ok := evalTP["battery_id"].(string); !ok || batId == "" {
+		t.Errorf("Expected auto-selected battery_id for ultralight-toothpick, got: %v", evalTP["battery_id"])
 	}
 }
 
