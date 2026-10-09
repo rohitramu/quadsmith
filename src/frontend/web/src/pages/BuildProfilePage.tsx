@@ -248,8 +248,6 @@ export function BuildProfilePage() {
     );
   }
 
-  const buildColor = getCollectionColor("builds");
-
   return (
     <div className="max-w-4xl mx-auto">
       {/* Breadcrumb Navigation */}
@@ -264,16 +262,7 @@ export function BuildProfilePage() {
           Home
         </Link>
         <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
-        <Link
-          to="/"
-          className="hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors flex items-center gap-1.5"
-        >
-          <span
-            className={`w-2 h-2 rounded-full shrink-0 ${buildColor.dotClass}`}
-            aria-hidden="true"
-          />
-          Builds
-        </Link>
+        <CollectionBadge collection="builds" label="Builds" size="xs" to="/" />
         <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
         <span className="text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-md">
           {build.name || build.id}

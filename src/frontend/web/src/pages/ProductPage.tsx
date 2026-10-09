@@ -7,7 +7,6 @@ import {
   getCollectionPath,
   type HardwareCollectionDef,
 } from "../lib/hardwareCollections";
-import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "../components/CollectionBadge";
 import { MediaGallery } from "../components/MediaGallery";
 
@@ -37,7 +36,6 @@ function ProductDetailView({
   );
 
   const item = data as any;
-  const collectionColor = collection.color || getCollectionColor(collection.id);
 
   return (
     <div className="max-w-3xl">
@@ -56,16 +54,12 @@ function ProductDetailView({
           className="text-zinc-400 dark:text-zinc-500 shrink-0"
           aria-hidden="true"
         />
-        <Link
+        <CollectionBadge
+          collection={collection.id}
+          label={collection.name}
+          size="xs"
           to={`/${getCollectionPath(collection)}`}
-          className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors flex items-center gap-1.5"
-        >
-          <span
-            className={`w-2 h-2 rounded-full shrink-0 ${collectionColor.dotClass}`}
-            aria-hidden="true"
-          />
-          {collection.name}
-        </Link>
+        />
         <ChevronRight
           size={14}
           className="text-zinc-400 dark:text-zinc-500 shrink-0"

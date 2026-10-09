@@ -24,7 +24,7 @@ import {
   type HardwareCollectionDef,
   type ColumnConfig,
 } from "../lib/hardwareCollections";
-import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionBadge } from "../components/CollectionBadge";
 
 function ColumnHeader({
   title,
@@ -529,8 +529,6 @@ function CollectionTableView({
   );
   const hasPrevPage = pageIndex > 0;
 
-  const collectionColor = collection.color || getCollectionColor(collection.id);
-
   return (
     <div>
       <nav
@@ -548,16 +546,7 @@ function CollectionTableView({
           className="text-zinc-400 dark:text-zinc-500 shrink-0"
           aria-hidden="true"
         />
-        <span
-          className="text-zinc-900 dark:text-zinc-100 font-medium capitalize flex items-center gap-1.5"
-          aria-current="page"
-        >
-          <span
-            className={`w-2 h-2 rounded-full shrink-0 ${collectionColor.dotClass}`}
-            aria-hidden="true"
-          />
-          {collection.name}
-        </span>
+        <CollectionBadge collection={collection.id} label={collection.name} size="xs" />
       </nav>
 
       <div className="mb-6 flex items-center justify-between">
@@ -760,12 +749,11 @@ export function CollectionPage() {
             className="text-zinc-400 dark:text-zinc-500 shrink-0"
             aria-hidden="true"
           />
-          <span
-            className="text-zinc-900 dark:text-zinc-100 font-medium capitalize"
-            aria-current="page"
-          >
-            {collectionId?.replace(/[-_]/g, " ")}
-          </span>
+          <CollectionBadge
+            collection={collectionId}
+            label={collectionId?.replace(/[-_]/g, " ")}
+            size="xs"
+          />
         </nav>
         <p className="text-zinc-500">
           Implementation for {collectionId?.replace(/[-_]/g, " ")} coming soon.
