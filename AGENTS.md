@@ -12,7 +12,8 @@ Always check the manufacturer's official website and official spec sheets as the
 
 ## Project Planning
 
-Do not make up names for implementation phases (e.g., "Phase 2") or dictate the roadmap structure without consulting the user first.
+- Do not make up names for implementation phases (e.g., "Phase 2") or dictate the roadmap structure without consulting the user first.
+- **No Implementation Without Explicit Instruction**: Never modify codebase files, schemas, or tests to implement anything discussed in a plan or demonstrated in a preview unless the user explicitly instructs you to proceed with implementation. All iterations during planning and preview review must remain strictly confined to the plan or preview artifacts.
 
 ## Database & Schema Maintenance
 
@@ -49,4 +50,5 @@ Whenever committing changes that modify the UI (such as frontend web components,
 - Embed and display the preview directly in the conversation using `<agent-embed src="file:///<artifact_path>"></agent-embed>` (or link to it for full-page views) so the user can visually verify the update.
 - **Fidelity & Implementation Alignment**: Previews must match the real implementation as closely as possible. Do not include mock UI elements, decorative sections, or controls in the preview that will not be built into the final codebase.
 - **Visual Plan & Specification**: Treat HTML previews as a visual plan and implementation guide alongside any planning document. The final frontend implementation must faithfully mirror the layout, components, data fields, and styling shown in the approved preview.
+- **Design Iteration vs. Implementation**: Iterating on previews with the user is strictly design-phase work. Do not modify or push any application source code while iterating on previews. Wait for explicit user approval before translating approved previews into codebase changes.
 
