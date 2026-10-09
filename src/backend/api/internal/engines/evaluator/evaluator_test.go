@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"strings"
 	"testing"
 
 	pb "quadsmith/api/gen/quadsmith"
@@ -362,5 +363,105 @@ func TestEvaluatePhysics_MissingInputs(t *testing.T) {
 	res := CalculatePhysics(nil, nil, nil, 500, 0, 40)
 	if len(res.Warnings) == 0 {
 		t.Errorf("Expected missing components warning, got none")
+	}
+}
+
+func TestEvaluatePhysics_ToothpickExtremeOverload(t *testing.T) {
+	// Flywoo ROBO 1202.5 5500KV motor
+	motor := &pb.Motor{
+		StatorDiameterMm: 12,
+		StatorHeightMm:   2.5,
+		Kv:               5500,
+		WeightG:          4.2,
+	}
+	// 3-inch propeller
+	prop := &pb.Propeller{
+		DiameterMm: 76.2,
+		PitchMm:    76.2,
+		Blades:     3,
+		WeightG:    1.5,
+	}
+	// 4S 650mAh LiPo battery
+	battery := &pb.Battery{
+		CellCountS:  4,
+		CapacityMah: 650,
+		WeightG:     65.0,
+	}
+	baseWeight := float32(139.0)     // Toothpick AUW bare
+	payloadWeight := float32(1300.0) // Massive +1300g payload (Total: 1439g)
+	maxEscAmps := float32(12.0)
+
+	res := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, maxEscAmps)
+
+	// Motors must saturate on shaft power limit (~90W) rather than reporting unphysical 53,000+ RPM hover.
+	// TWR should be ~0.40 (< 1.0)
+	if res.ThrustToWeightRatio >= 1.0 {
+		t.Errorf("Expected TWR < 1.0 for 1439g payload on 1202.5 toothpick, got %.2f", res.ThrustToWeightRatio)
+	}
+
+	// Cannot hover: hover RPM must be 0
+	if res.HoverRpm != 0 {
+		t.Errorf("Expected hover RPM = 0 for overloaded toothpick, got %d (should not report unphysical RPM)", res.HoverRpm)
+	}
+
+	// Hover throttle must exceed 100%
+	if res.HoverThrottlePercent <= 100.0 {
+		t.Errorf("Expected hover throttle > 100%%, got %.1f%%", res.HoverThrottlePercent)
+	}
+
+	// Must report takeoff error
+	foundTakeoffError := false
+	for _, e := range res.Errors {
+		if e == "Drone is too heavy to take off (Hover throttle > 100%)" {
+			foundTakeoffError = true
+			break
+		}
+	}
+	if !foundTakeoffError {
+		t.Errorf("Expected takeoff error, got %v", res.Errors)
+	}
+
+	// Max acceleration and top speed must be 0
+	if res.MaxAccelerationMps2 != 0.0 {
+		t.Errorf("Expected max acceleration 0.0 m/s^2, got %.1f", res.MaxAccelerationMps2)
+	}
+	if res.TopSpeedKmh != 0.0 {
+		t.Errorf("Expected top speed 0.0 km/h, got %.1f", res.TopSpeedKmh)
+	}
+}
+
+func TestEvaluatePhysics_ElectricalWarnings(t *testing.T) {
+	// Undersized 5A ESC on a 5-inch 6S freestyle drone drawing ~32A burst
+	motor := &pb.Motor{
+		StatorDiameterMm: 22,
+		StatorHeightMm:   7.5,
+		Kv:               1950,
+		WeightG:          33.9,
+	}
+	prop := &pb.Propeller{
+		DiameterMm: 131.83,
+		PitchMm:    91.44,
+		Blades:     3,
+		WeightG:    4.2,
+	}
+	battery := &pb.Battery{
+		CellCountS:  6,
+		CapacityMah: 1500,
+		WeightG:     255,
+	}
+	baseWeight := float32(581.0)
+	maxEscAmps := float32(5.0) // Extremely undersized ESC
+
+	res := CalculatePhysics(motor, prop, battery, baseWeight, 0, maxEscAmps)
+
+	foundEscWarning := false
+	for _, w := range res.Warnings {
+		if strings.Contains(w, "exceeds ESC burst rating") {
+			foundEscWarning = true
+			break
+		}
+	}
+	if !foundEscWarning {
+		t.Errorf("Expected ESC burst overload warning for 5A ESC on 5-inch build, got warnings: %v", res.Warnings)
 	}
 }

@@ -295,19 +295,60 @@ func CalculatePhysics(
 		}
 	}
 
+	// Motor maximum burst mechanical shaft power (Watts):
+	// Brushless multirotor outrunners produce ~25-30 W per gram of motor weight,
+	// or ~0.30-0.35 W per mm^3 of stator volume.
+	motorMaxPowerWatts := float64(statorVol) * 0.32
+	if motor.WeightG > 0 {
+		motorMaxPowerWatts = math.Min(motorMaxPowerWatts, float64(motor.WeightG)*30.0)
+	}
+	if motorMaxPowerWatts < 10.0 {
+		motorMaxPowerWatts = 10.0
+	}
+
 	// 4. Propeller aerodynamic torque demand scale: D^4 * P * sqrt(blades / 2)
 	propTorqueScale := math.Pow(float64(diaIn), 4) * float64(pitchIn) * math.Sqrt(float64(propBlades)/2.0)
 	torqueRatio := float64(statorVol) / math.Max(1.0, propTorqueScale)
+
+	// Aerodynamic power coefficient Cp:
+	// Cp ≈ Ct * (P / D) * 1.15 (clamped to realistic minimum)
+	cp := float64(ct) * float64(pOverD) * 1.15
+	if cp < 0.04 {
+		cp = 0.04
+	}
+
+	// Maximum RPM allowed by motor mechanical shaft power capacity:
+	// P_aero = Cp * rho * n^3 * D^5  =>  n_power = (P_max / (Cp * rho * D^5))^(1/3)
+	const rho = 1.225 // kg/m^3 standard sea-level air density
+	dM := float64(propDiaMm) / 1000.0
+	pFactor := cp * rho * math.Pow(dM, 5)
+	var maxRpmByPower float64
+	if pFactor > 0 {
+		maxNByPower := math.Pow(motorMaxPowerWatts/pFactor, 1.0/3.0)
+		maxRpmByPower = maxNByPower * 60.0
+	}
+
+	// Maximum RPM allowed by propeller tip speed compressibility limit:
+	// Around Mach 0.70 (~240 m/s) at sea level, transonic compressibility drag divergence
+	// causes drag to spike exponentially, capping physical prop speed.
+	const maxTipSpeedMps = 240.0
+	maxRpmByTip := (maxTipSpeedMps / (math.Pi * dM)) * 60.0
 
 	// Full-throttle loaded RPM under static bollard condition (J = 0):
 	// Aerodynamic torque limits motor to ~72% of no-load (Kv * V)
 	rpmLoadFactor := 0.72 * math.Min(1.05, math.Max(0.55, math.Pow(torqueRatio/1.0, 0.15)))
 	loadedRpm := float32(float64(float32(motor.Kv)*voltage) * rpmLoadFactor)
 
+	// Cap loaded RPM by motor shaft power and propeller tip speed
+	if maxRpmByPower > 0 && float64(loadedRpm) > maxRpmByPower {
+		loadedRpm = float32(maxRpmByPower)
+	}
+	if float64(loadedRpm) > maxRpmByTip {
+		loadedRpm = float32(maxRpmByTip)
+	}
+
 	// 5. Static thrust in open air (momentum / blade element theory):
 	// T = Ct * rho * n^2 * D^4
-	const rho = 1.225 // kg/m^3 standard sea-level air density
-	dM := float64(propDiaMm) / 1000.0
 	n := float64(loadedRpm) / 60.0
 	thrustNewtons := float64(ct) * rho * (n * n) * math.Pow(dM, 4)
 	rawThrustPerMotor := float32(thrustNewtons * 101.97162) // 1 N = 101.97162 g
@@ -400,8 +441,14 @@ func CalculatePhysics(
 	// In forward flight, propeller aerodynamic inflow unloads the motor to ~86% Kv*V.
 	// Equilibrium forward velocity balances thrust against frontal parasitic drag and induced drag:
 	// T_fwd = 0.5 * rho * CdA * V^2 + T_fwd * (V / V_pitch)^2
-	if totalThrust > 0 && propPitchMm > 0 {
+	if totalThrust > 0 && propPitchMm > 0 && thrustToWeight >= 1.0 {
 		loadedRpmFwd := float64(motor.Kv) * float64(voltage) * 0.86
+		if maxRpmByPower > 0 && loadedRpmFwd > maxRpmByPower*1.15 {
+			loadedRpmFwd = maxRpmByPower * 1.15
+		}
+		if loadedRpmFwd > maxRpmByTip {
+			loadedRpmFwd = maxRpmByTip
+		}
 		pitchSpeedMps := (loadedRpmFwd / 60.0) * (float64(propPitchMm) / 1000.0)
 
 		cdABase := 0.005 + 0.0012*float64(diaIn)
@@ -416,6 +463,32 @@ func CalculatePhysics(
 				vMps := math.Sqrt(forwardThrustN / denom)
 				topSpeedKmh = float32(vMps * 3.6)
 			}
+		}
+	}
+
+	// 11. Electrical and thermal safety checks:
+	// Burst mechanical power at full throttle:
+	nBurst := float64(loadedRpm) / 60.0
+	pMechBurst := cp * rho * (nBurst * nBurst * nBurst) * math.Pow(dM, 5)
+	pElecBurst := pMechBurst / 0.75 // ~75% motor efficiency at burst
+	burstAmpsPerMotor := pElecBurst / float64(voltage)
+
+	if maxEscAmps > 0 && burstAmpsPerMotor > float64(maxEscAmps)*1.25 {
+		warnings = append(warnings, fmt.Sprintf("Full-throttle current (%.1fA/motor) exceeds ESC burst rating (%.1fA)", burstAmpsPerMotor, float64(maxEscAmps)*1.25))
+	}
+
+	if thrustToWeight >= 1.0 && hoverRpm > 0 {
+		nHover := float64(hoverRpm) / 60.0
+		pMechHover := cp * rho * (nHover * nHover * nHover) * math.Pow(dM, 5)
+		pElecHover := pMechHover / 0.80 // ~80% motor efficiency at hover
+		hoverAmpsPerMotor := pElecHover / float64(nominalVoltage)
+
+		if maxEscAmps > 0 && hoverAmpsPerMotor > float64(maxEscAmps) {
+			warnings = append(warnings, fmt.Sprintf("Hover current (%.1fA/motor) exceeds ESC continuous rating (%.1fA)", hoverAmpsPerMotor, maxEscAmps))
+		}
+
+		if motor.WeightG > 0 && pElecHover > float64(motor.WeightG)*20.0 {
+			warnings = append(warnings, fmt.Sprintf("Hover power (%.1fW/motor) exceeds motor thermal dissipation limit (%.1fW)", pElecHover, float64(motor.WeightG)*20.0))
 		}
 	}
 
