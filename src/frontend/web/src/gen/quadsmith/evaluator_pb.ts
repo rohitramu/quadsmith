@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJRChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZBIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCIrQBChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFgoOdG90YWxfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEiEKGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW4YBCABKAISEAoId2FybmluZ3MYBSADKAkSDgoGZXJyb3JzGAYgAygJMmYKEEV2YWx1YXRvclNlcnZpY2USUgoNRXZhbHVhdGVCdWlsZBIfLnF1YWRzbWl0aC5FdmFsdWF0ZUJ1aWxkUmVxdWVzdBogLnF1YWRzbWl0aC5FdmFsdWF0ZUJ1aWxkUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJRChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZBIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCIu4BChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFgoOdG90YWxfd2VpZ2h0X2cYASABKAISHgoWaG92ZXJfdGhyb3R0bGVfcGVyY2VudBgCIAEoAhIeChZ0aHJ1c3RfdG9fd2VpZ2h0X3JhdGlvGAMgASgCEiEKGWVzdGltYXRlZF9mbGlnaHRfdGltZV9taW4YBCABKAISEAoId2FybmluZ3MYBSADKAkSDgoGZXJyb3JzGAYgAygJEhsKE21pbl9mbGlnaHRfdGltZV9taW4YByABKAISGwoTbWF4X2ZsaWdodF90aW1lX21pbhgIIAEoAjJmChBFdmFsdWF0b3JTZXJ2aWNlElIKDUV2YWx1YXRlQnVpbGQSHy5xdWFkc21pdGguRXZhbHVhdGVCdWlsZFJlcXVlc3QaIC5xdWFkc21pdGguRXZhbHVhdGVCdWlsZFJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
     [file_build],
   );
 
@@ -81,6 +81,20 @@ export type EvaluateBuildResponse = Message<"quadsmith.EvaluateBuildResponse"> &
    * @generated from field: repeated string errors = 6;
    */
   errors: string[];
+
+  /**
+   * Flight time range (minutes) based on flight aggression:
+   * min_flight_time_min: Aggressive freestyle / acro / sustained punchouts
+   * max_flight_time_min: Gentle cruising / cinematic forward flight
+   *
+   * @generated from field: float min_flight_time_min = 7;
+   */
+  minFlightTimeMin: number;
+
+  /**
+   * @generated from field: float max_flight_time_min = 8;
+   */
+  maxFlightTimeMin: number;
 };
 
 /**

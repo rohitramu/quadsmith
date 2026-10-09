@@ -24,6 +24,12 @@ message EvaluateBuildResponse {
 
   // Blocking compatibility issues (e.g. "ESC is 4S max but Battery is 6S")
   repeated string errors = 6;
+
+  // Flight time range (minutes) based on flight aggression:
+  // min_flight_time_min: Aggressive freestyle / acro / sustained punchouts
+  // max_flight_time_min: Gentle cruising / cinematic forward flight
+  float min_flight_time_min = 7;
+  float max_flight_time_min = 8;
 }
 
 service EvaluatorService {

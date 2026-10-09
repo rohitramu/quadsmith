@@ -189,12 +189,15 @@ export function BuildCard({ build }: BuildCardProps) {
                 <Gauge size={13} />
                 {evaluation.thrustToWeightRatio.toFixed(1)}:1 TWR
               </span>
-              {evaluation.estimatedFlightTimeMin > 0 && (
+              {(evaluation.estimatedFlightTimeMin > 0 || evaluation.maxFlightTimeMin > 0) && (
                 <span
                   className="flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400"
-                  title="Estimated Flight Time"
+                  title="Estimated Flight Time (Freestyle to Cruise)"
                 >
-                  <Clock size={13} />~{evaluation.estimatedFlightTimeMin.toFixed(1)}m
+                  <Clock size={13} />
+                  {evaluation.minFlightTimeMin > 0 && evaluation.maxFlightTimeMin > 0
+                    ? `${evaluation.minFlightTimeMin.toFixed(1)}–${evaluation.maxFlightTimeMin.toFixed(1)}m`
+                    : `~${evaluation.estimatedFlightTimeMin.toFixed(1)}m`}
                 </span>
               )}
             </div>

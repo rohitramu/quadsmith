@@ -440,11 +440,13 @@ export function BuildProfilePage() {
                   <span>Est. Flight Time</span>
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
-                    ~{evaluation.estimatedFlightTimeMin.toFixed(1)}
+                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
+                    {evaluation.minFlightTimeMin > 0 && evaluation.maxFlightTimeMin > 0
+                      ? `${evaluation.minFlightTimeMin.toFixed(1)} – ${evaluation.maxFlightTimeMin.toFixed(1)}`
+                      : `~${evaluation.estimatedFlightTimeMin.toFixed(1)}`}
                     <span className="text-sm font-normal text-zinc-500 ml-1">min</span>
                   </div>
-                  <div className="text-[11px] text-zinc-500 mt-1">Hover & cruise profile</div>
+                  <div className="text-[11px] text-zinc-500 mt-1">Aggressive to smooth cruise</div>
                 </div>
               </div>
             </div>

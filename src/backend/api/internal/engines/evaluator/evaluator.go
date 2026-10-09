@@ -167,7 +167,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	baseWeight := totalWeight - payloadWeight
 
 	// Aerodynamic Physics Estimation
-	thrustToWeight, hoverThrottle, flightTime, physErrors, physWarnings := CalculatePhysics(
+	thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, physErrors, physWarnings := CalculatePhysics(
 		motor,
 		prop,
 		battery,
@@ -183,6 +183,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		ThrustToWeightRatio:    thrustToWeight,
 		HoverThrottlePercent:   hoverThrottle,
 		EstimatedFlightTimeMin: flightTime,
+		MinFlightTimeMin:       minFlightTime,
+		MaxFlightTimeMin:       maxFlightTime,
 		Warnings:               warnings,
 		Errors:                 errors,
 	}
@@ -191,7 +193,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 }
 
 // CalculatePhysics computes aerodynamic static thrust, thrust-to-weight ratio,
-// quadratic hover throttle percentage, and estimated flight time.
+// hover throttle percentage, and estimated flight time range (min, max, and mixed).
 func CalculatePhysics(
 	motor *pb.Motor,
 	prop *pb.Propeller,
@@ -199,10 +201,10 @@ func CalculatePhysics(
 	baseWeight float32,
 	payloadWeight float32,
 	maxEscAmps float32,
-) (thrustToWeight float32, hoverThrottle float32, flightTime float32, errors []string, warnings []string) {
+) (thrustToWeight float32, hoverThrottle float32, flightTime float32, minFlightTime float32, maxFlightTime float32, errors []string, warnings []string) {
 	if motor == nil || prop == nil || battery == nil {
 		warnings = append(warnings, "Need a Motor, Propeller, and Battery to run physics estimation")
-		return 0, 0, 0, errors, warnings
+		return 0, 0, 0, 0, 0, errors, warnings
 	}
 
 	totalWeight := baseWeight + payloadWeight
@@ -297,24 +299,33 @@ func CalculatePhysics(
 		warnings = append(warnings, "Drone will be very sluggish (Hover throttle > 50%)")
 	}
 
-	// 6. Realistic mixed/cruising flight time:
-	// Multirotor flight efficiency in mixed forward flight / cruising:
-	// Larger props have higher efficiency due to lower disk loading (2.2 - 3.2 g/W).
+	// 6. Realistic flight time range across flight styles:
+	// Multirotor flight efficiency in forward flight / cruising:
+	// Larger props have higher efficiency due to lower disk loading (1.8 - 3.2 g/W).
 	// Base electronics (VTX, Camera, FC, RX) consume ~10W.
 	effFlight := float32(math.Min(4.5, math.Max(1.8, 1.8+0.18*float64(diaIn))))
 	const pElectronics = 10.0 // Watts
 	weightRatio := float64(totalWeight) / safeBase
-	flightWatts := (float32(safeBase)/effFlight)*float32(math.Pow(weightRatio, 1.35)) + pElectronics
-	totalFlightAmps := flightWatts / voltage
+	cruiseWatts := (float32(safeBase)/effFlight)*float32(math.Pow(weightRatio, 1.35)) + pElectronics
+	totalCruiseAmps := cruiseWatts / voltage
 
-	if totalFlightAmps > float32(maxEscAmps*4) && maxEscAmps > 0 {
-		warnings = append(warnings, "Hover amps exceeds ESC continuous rating")
+	if totalCruiseAmps > float32(maxEscAmps*4) && maxEscAmps > 0 {
+		warnings = append(warnings, "Cruise amps exceeds ESC continuous rating")
 	}
 
-	if totalFlightAmps > 0 && battery.CapacityMah > 0 {
+	if totalCruiseAmps > 0 && battery.CapacityMah > 0 {
 		usableAh := (float32(battery.CapacityMah) / 1000.0) * 0.80 // 80% usable capacity (20% safety margin)
-		flightTime = (usableAh / totalFlightAmps) * 60.0           // minutes
+		maxFlightTime = (usableAh / totalCruiseAmps) * 60.0        // minutes (smooth cruise / cinematic)
+
+		// Aggressive freestyle / acro / sustained punchouts:
+		// High throttle bursts, dynamic braking, and PID stabilization draw ~1.9x cruise power
+		aggressiveWatts := cruiseWatts * 1.9
+		aggressiveAmps := aggressiveWatts / voltage
+		minFlightTime = (usableAh / aggressiveAmps) * 60.0 // minutes (aggressive freestyle)
+
+		// Mixed / moderate flight profile (average between aggressive and cruise)
+		flightTime = (minFlightTime + maxFlightTime) / 2.0
 	}
 
-	return thrustToWeight, hoverThrottle, flightTime, errors, warnings
+	return thrustToWeight, hoverThrottle, flightTime, minFlightTime, maxFlightTime, errors, warnings
 }

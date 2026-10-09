@@ -260,7 +260,9 @@ export const mockEvaluation1: EvaluateBuildResponse = create(EvaluateBuildRespon
   totalWeightG: 565.5,
   thrustToWeightRatio: 9.7,
   hoverThrottlePercent: 22.7,
-  estimatedFlightTimeMin: 7.2,
+  estimatedFlightTimeMin: 5.5,
+  minFlightTimeMin: 3.8,
+  maxFlightTimeMin: 7.2,
   warnings: [],
   errors: [],
 });

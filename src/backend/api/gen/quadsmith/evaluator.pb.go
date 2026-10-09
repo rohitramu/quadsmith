@@ -84,9 +84,14 @@ type EvaluateBuildResponse struct {
 	// Non-blocking issues (e.g. "Motors might overheat on 6S")
 	Warnings []string `protobuf:"bytes,5,rep,name=warnings,proto3" json:"warnings,omitempty"`
 	// Blocking compatibility issues (e.g. "ESC is 4S max but Battery is 6S")
-	Errors        []string `protobuf:"bytes,6,rep,name=errors,proto3" json:"errors,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Errors []string `protobuf:"bytes,6,rep,name=errors,proto3" json:"errors,omitempty"`
+	// Flight time range (minutes) based on flight aggression:
+	// min_flight_time_min: Aggressive freestyle / acro / sustained punchouts
+	// max_flight_time_min: Gentle cruising / cinematic forward flight
+	MinFlightTimeMin float32 `protobuf:"fixed32,7,opt,name=min_flight_time_min,json=minFlightTimeMin,proto3" json:"min_flight_time_min,omitempty"`
+	MaxFlightTimeMin float32 `protobuf:"fixed32,8,opt,name=max_flight_time_min,json=maxFlightTimeMin,proto3" json:"max_flight_time_min,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *EvaluateBuildResponse) Reset() {
@@ -161,6 +166,20 @@ func (x *EvaluateBuildResponse) GetErrors() []string {
 	return nil
 }
 
+func (x *EvaluateBuildResponse) GetMinFlightTimeMin() float32 {
+	if x != nil {
+		return x.MinFlightTimeMin
+	}
+	return 0
+}
+
+func (x *EvaluateBuildResponse) GetMaxFlightTimeMin() float32 {
+	if x != nil {
+		return x.MaxFlightTimeMin
+	}
+	return 0
+}
+
 var File_evaluator_proto protoreflect.FileDescriptor
 
 const file_evaluator_proto_rawDesc = "" +
@@ -168,14 +187,16 @@ const file_evaluator_proto_rawDesc = "" +
 	"\x0fevaluator.proto\x12\tquadsmith\x1a\vbuild.proto\"h\n" +
 	"\x14EvaluateBuildRequest\x12&\n" +
 	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12(\n" +
-	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\x97\x02\n" +
+	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\xf5\x02\n" +
 	"\x15EvaluateBuildResponse\x12$\n" +
 	"\x0etotal_weight_g\x18\x01 \x01(\x02R\ftotalWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
 	"\x16thrust_to_weight_ratio\x18\x03 \x01(\x02R\x13thrustToWeightRatio\x129\n" +
 	"\x19estimated_flight_time_min\x18\x04 \x01(\x02R\x16estimatedFlightTimeMin\x12\x1a\n" +
 	"\bwarnings\x18\x05 \x03(\tR\bwarnings\x12\x16\n" +
-	"\x06errors\x18\x06 \x03(\tR\x06errors2f\n" +
+	"\x06errors\x18\x06 \x03(\tR\x06errors\x12-\n" +
+	"\x13min_flight_time_min\x18\a \x01(\x02R\x10minFlightTimeMin\x12-\n" +
+	"\x13max_flight_time_min\x18\b \x01(\x02R\x10maxFlightTimeMin2f\n" +
 	"\x10EvaluatorService\x12R\n" +
 	"\rEvaluateBuild\x12\x1f.quadsmith.EvaluateBuildRequest\x1a .quadsmith.EvaluateBuildResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 

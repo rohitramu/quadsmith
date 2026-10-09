@@ -196,12 +196,16 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (hover > 100) {
           errors.push("Drone is too heavy to take off (Hover throttle > 100%)");
         }
-        const flightTime = Math.max(1, 7.2 / Math.pow(weightRatio, 1.35));
+        const maxFlightTime = parseFloat(Math.max(1, 7.2 / Math.pow(weightRatio, 1.35)).toFixed(1));
+        const minFlightTime = parseFloat((maxFlightTime / 1.9).toFixed(1));
+        const flightTime = parseFloat(((minFlightTime + maxFlightTime) / 2).toFixed(1));
         return {
           totalWeightG: totalWeight,
           thrustToWeightRatio: parseFloat(twr.toFixed(2)),
           hoverThrottlePercent: parseFloat(hover.toFixed(1)),
-          estimatedFlightTimeMin: parseFloat(flightTime.toFixed(1)),
+          estimatedFlightTimeMin: flightTime,
+          minFlightTimeMin: minFlightTime,
+          maxFlightTimeMin: maxFlightTime,
           warnings,
           errors,
         };
