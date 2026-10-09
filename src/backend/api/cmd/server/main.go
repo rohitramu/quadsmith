@@ -15,6 +15,7 @@ import (
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 	"quadsmith/api/internal/engines/evaluator"
+	"quadsmith/api/internal/engines/linkpreview"
 	"quadsmith/api/internal/engines/search"
 	"quadsmith/api/internal/static"
 )
@@ -67,12 +68,15 @@ func main() {
 	path_NewSearchServiceHandler, h_NewSearchServiceHandler := quadsmithconnect.NewSearchServiceHandler(search.NewSearchServiceHandler(pool))
 	mux.Handle(path_NewSearchServiceHandler, h_NewSearchServiceHandler)
 
+	path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler := quadsmithconnect.NewLinkPreviewServiceHandler(linkpreview.NewLinkPreviewServiceHandler())
+	mux.Handle(path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler)
+
 	// Serve the React SPA for any unmatched paths
 	staticDir := os.Getenv("STATIC_DIR")
 	if staticDir == "" {
 		staticDir = "/app/web/dist"
 	}
-	mux.Handle("/", static.ServeSPA(staticDir))
+	mux.Handle("/", static.ServeSPA(staticDir, pool))
 
 	// TODO: Add HTTP middleware for CORS to allow frontend applications to call this API.
 	// TODO: Add Authentication/Authorization interceptors to secure write operations (Create/Update/Delete).

@@ -4,8 +4,16 @@ import { listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
 import { BuildCard } from "../components/BuildCard";
 import { useMemo, useRef, useEffect } from "react";
 import { Sparkles, Layers, RefreshCw, CheckCircle, ArrowRight } from "lucide-react";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
 export function HomePage() {
+  useDocumentMeta({
+    title: "Quadsmith — FPV Drone Component Platform",
+    description:
+      "Open-source FPV drone engineering platform. Calculate thrust-to-weight, simulate flight times, check hardware compatibility, and explore quadcopter builds.",
+    image: "/og-default.png",
+  });
+
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage, error, refetch } =

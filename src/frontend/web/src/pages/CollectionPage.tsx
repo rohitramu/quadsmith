@@ -25,6 +25,8 @@ import {
   type ColumnConfig,
 } from "../lib/hardwareCollections";
 import { CollectionBadge } from "../components/CollectionBadge";
+import { ProductHoverCard } from "../components/ProductHoverCard";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
 function ColumnHeader({
   title,
@@ -372,6 +374,11 @@ function CollectionTableView({
     };
   }, [searchParams, collection.columns]);
 
+  useDocumentMeta({
+    title: `${collection.name} Catalog — Quadsmith`,
+    description: `Browse, filter, and compare ${collection.name} specifications, weights, and compatibility on Quadsmith.`,
+  });
+
   const [pageSize, setPageSize] = useState<number>(20);
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [tokenHistory, setTokenHistory] = useState<string[]>([""]);
@@ -643,7 +650,13 @@ function CollectionTableView({
                             aria-label={`View ${item.name || item.id}`}
                           />
                         )}
-                        {col.renderCell(item)}
+                        {col.id === "name" ? (
+                          <ProductHoverCard collectionId={collection.id} item={item}>
+                            <div className="relative z-20 inline-block">{col.renderCell(item)}</div>
+                          </ProductHoverCard>
+                        ) : (
+                          col.renderCell(item)
+                        )}
                       </td>
                     ))}
                   </tr>

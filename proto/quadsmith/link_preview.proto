@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package quadsmith;
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// GetLinkPreviewRequest specifies the target URL to unfurl.
+message GetLinkPreviewRequest {
+  string url = 1;
+}
+
+// GetLinkPreviewResponse contains extracted Open Graph and HTML metadata.
+message GetLinkPreviewResponse {
+  string url = 1;
+  string title = 2;
+  string description = 3;
+  string image = 4;
+  string site_name = 5;
+  string favicon = 6;
+}
+
+// LinkPreviewService provides server-side URL unfurling and Open Graph extraction.
+service LinkPreviewService {
+  rpc GetLinkPreview(GetLinkPreviewRequest) returns (GetLinkPreviewResponse);
+}

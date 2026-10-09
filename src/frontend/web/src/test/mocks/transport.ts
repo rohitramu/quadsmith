@@ -13,6 +13,7 @@ import { AntennaService } from "../../gen/quadsmith/antenna_pb";
 import { GpsReceiverService } from "../../gen/quadsmith/gps_receiver_pb";
 import { BuildService } from "../../gen/quadsmith/build_pb";
 import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
+import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
 
 import {
   mockMotors,
@@ -342,6 +343,19 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           return mockGps1;
         }
         throw new ConnectError("GPS receiver not found", Code.NotFound);
+      },
+    });
+
+    service(LinkPreviewService, {
+      getLinkPreview: (req) => {
+        return {
+          url: req.url,
+          title: `Preview for ${req.url}`,
+          description: "A simulated mock link preview description.",
+          image: "https://quadsmith.net/mock-preview.jpg",
+          siteName: "example.com",
+          favicon: "https://example.com/favicon.ico",
+        };
       },
     });
   });

@@ -1,7 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
-import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
-import { ExternalLink, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import {
   getHardwareCollection,
   getCollectionPath,
@@ -9,17 +8,9 @@ import {
 } from "../lib/hardwareCollections";
 import { CollectionBadge } from "../components/CollectionBadge";
 import { MediaGallery } from "../components/MediaGallery";
+import { SocialLinkPreviewCard } from "../components/SocialLinkPreviewCard";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { formatProductTitle } from "../lib/format";
-
-const LINK_TYPE_LABELS: Record<number, string> = {
-  [ReferenceLinkType.PURCHASE]: "Purchase",
-  [ReferenceLinkType.PRODUCT_PAGE]: "Official Product Page",
-  [ReferenceLinkType.DOCUMENTATION]: "Documentation",
-  [ReferenceLinkType.FORUM_POST]: "Forum Discussion",
-  [ReferenceLinkType.REVIEW]: "Review",
-  [ReferenceLinkType.OTHER]: "Other",
-  [ReferenceLinkType.UNSPECIFIED]: "Reference Link",
-};
 
 function ProductDetailView({
   categoryId,
@@ -37,6 +28,17 @@ function ProductDetailView({
   );
 
   const item = data as any;
+
+  useDocumentMeta({
+    title: item
+      ? `${item.manufacturer ? item.manufacturer + " " : ""}${item.name || item.id} — Quadsmith`
+      : `${collection.name} — Quadsmith`,
+    description:
+      item?.description ||
+      `Explore ${collection.name} hardware specifications and compatibility on Quadsmith.`,
+    image: item?.primaryDisplayImage || "/og-default.png",
+    type: "article",
+  });
 
   return (
     <div className="max-w-3xl">
@@ -145,25 +147,9 @@ function ProductDetailView({
               <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
                 Reference Links
               </h2>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2.5">
                 {item.referenceLinks.map((link: any, idx: number) => (
-                  <a
-                    key={idx}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg transition-colors group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="px-2 py-0.5 text-xs font-medium rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 shrink-0">
-                        {LINK_TYPE_LABELS[link.type] || "Link"}
-                      </span>
-                      <span className="text-sm text-zinc-700 dark:text-zinc-300 font-mono truncate max-w-lg">
-                        {link.url}
-                      </span>
-                    </div>
-                    <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 shrink-0 ml-2" />
-                  </a>
+                  <SocialLinkPreviewCard key={idx} link={link} />
                 ))}
               </div>
             </div>

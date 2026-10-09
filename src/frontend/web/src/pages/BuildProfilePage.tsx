@@ -18,7 +18,6 @@ import { getVideoTransmitter } from "../gen/quadsmith/video_transmitter-VideoTra
 import { getReceiver } from "../gen/quadsmith/receiver-ReceiverService_connectquery";
 import { getAntenna } from "../gen/quadsmith/antenna-AntennaService_connectquery";
 import { getGpsReceiver } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
-import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
 import { SystemMessageSeverity } from "../gen/quadsmith/evaluator_pb";
 import { MediaGallery } from "../components/MediaGallery";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
@@ -27,6 +26,9 @@ import { getTwrDescription } from "../lib/format";
 import { getHardwareCollection, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "../components/CollectionBadge";
+import { SocialLinkPreviewCard } from "../components/SocialLinkPreviewCard";
+import { ProductHoverCard } from "../components/ProductHoverCard";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import {
   ChevronRight,
   Gauge,
@@ -50,16 +52,6 @@ import {
   RefreshCw,
   Search,
 } from "lucide-react";
-
-const LINK_TYPE_LABELS: Record<number, string> = {
-  [ReferenceLinkType.PURCHASE]: "Purchase",
-  [ReferenceLinkType.PRODUCT_PAGE]: "Official Product Page",
-  [ReferenceLinkType.DOCUMENTATION]: "Documentation",
-  [ReferenceLinkType.FORUM_POST]: "Forum Discussion",
-  [ReferenceLinkType.REVIEW]: "Review",
-  [ReferenceLinkType.OTHER]: "Other",
-  [ReferenceLinkType.UNSPECIFIED]: "Reference Link",
-};
 
 interface BomComponentProps {
   label: string;
@@ -114,12 +106,18 @@ function BomComponentCard({
             </div>
           ) : (
             <div>
-              <Link
-                to={`/${targetPath}/${item.id || item.uuid}`}
-                className="text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
+              <ProductHoverCard
+                collectionId={collectionId}
+                item={item}
+                productId={item.id || item.uuid}
               >
-                {item.name || item.id}
-              </Link>
+                <Link
+                  to={`/${targetPath}/${item.id || item.uuid}`}
+                  className="text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
+                >
+                  {item.name || item.id}
+                </Link>
+              </ProductHoverCard>
               {subtitle && <div className="text-xs text-zinc-500 truncate">{subtitle(item)}</div>}
             </div>
           )}
@@ -152,6 +150,15 @@ export function BuildProfilePage() {
     isLoading: isLoadingBuild,
     error: buildError,
   } = useQuery(getBuild, { id: buildId || "" }, { enabled: !!buildId });
+
+  useDocumentMeta({
+    title: build ? `${build.name} — FPV Drone Build — Quadsmith` : "Build Profile — Quadsmith",
+    description:
+      build?.description ||
+      "Explore custom FPV drone build specifications, flight times, and component compatibility on Quadsmith.",
+    image: build?.primaryDisplayImage || "/og-default.png",
+    type: "article",
+  });
 
   const {
     data: electricalLimits,
@@ -908,25 +915,9 @@ export function BuildProfilePage() {
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">
             Reference Links & Documentation
           </h2>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2.5">
             {build.referenceLinks.map((link, idx) => (
-              <a
-                key={idx}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-3.5 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-800 rounded-xl transition-colors group shadow-xs"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
-                    {LINK_TYPE_LABELS[link.type] || "Link"}
-                  </span>
-                  <span className="text-sm text-zinc-700 dark:text-zinc-300 font-mono truncate max-w-lg">
-                    {link.url}
-                  </span>
-                </div>
-                <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 ml-2" />
-              </a>
+              <SocialLinkPreviewCard key={idx} link={link} />
             ))}
           </div>
         </section>

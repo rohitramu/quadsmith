@@ -2,9 +2,19 @@ import { useParams, Link } from "react-router-dom";
 import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "../components/CollectionBadge";
+import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
 export function CategoryPage() {
   const { categoryId } = useParams();
+
+  const formattedCat = categoryId
+    ? categoryId.charAt(0).toUpperCase() + categoryId.slice(1)
+    : "Hardware";
+
+  useDocumentMeta({
+    title: `${formattedCat} Components — Quadsmith`,
+    description: `Explore and compare ${formattedCat.toLowerCase()} drone components and hardware on Quadsmith.`,
+  });
 
   const collections = categoryId === "hardware" ? HARDWARE_COLLECTIONS : [];
 
