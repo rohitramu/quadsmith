@@ -74,3 +74,43 @@ export function getTwrDescription(twr: number): string {
   if (twr >= 1.0) return "Sluggish / Underpowered";
   return "Cannot Take Off";
 }
+
+/**
+ * Formats a product's display title including manufacturer if available, like "<manufacturer> - <product_name>".
+ * Strips redundant manufacturer prefix if the product name already begins with it.
+ *
+ * Examples:
+ *   ("EMAX", "ECO II 2207") -> "EMAX - ECO II 2207"
+ *   ("Sub250", "Sub250 1404 4500KV") -> "Sub250 - 1404 4500KV"
+ *   ("Foxeer", "Foxeer") -> "Foxeer"
+ *   (null, "ECO II 2207") -> "ECO II 2207"
+ */
+export function formatProductTitle(
+  manufacturer?: string | null,
+  name?: string | null,
+  fallback: string = "",
+): string {
+  const rawName = (name || fallback || "").trim();
+  const mfg = (manufacturer || "").trim();
+
+  if (!mfg) {
+    return rawName;
+  }
+
+  if (!rawName) {
+    return mfg;
+  }
+
+  let cleanName = rawName;
+  if (rawName.toLowerCase().startsWith(mfg.toLowerCase())) {
+    const rest = rawName
+      .slice(mfg.length)
+      .replace(/^[\s\-:]+/, "")
+      .trim();
+    if (rest) {
+      cleanName = rest;
+    }
+  }
+
+  return cleanName.toLowerCase() === mfg.toLowerCase() ? mfg : `${mfg} - ${cleanName}`;
+}

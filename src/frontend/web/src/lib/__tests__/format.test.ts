@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { formatStatorSize, getYouTubeEmbedUrl, getTwrDescription } from "../format";
+import {
+  formatStatorSize,
+  getYouTubeEmbedUrl,
+  getTwrDescription,
+  formatProductTitle,
+} from "../format";
 
 describe("formatStatorSize", () => {
   it("formats integer stator dimensions as 4 digits", () => {
@@ -90,5 +95,33 @@ describe("getTwrDescription", () => {
     expect(getTwrDescription(0.99)).toBe("Cannot Take Off");
     expect(getTwrDescription(0.5)).toBe("Cannot Take Off");
     expect(getTwrDescription(0)).toBe("Cannot Take Off");
+  });
+});
+
+describe("formatProductTitle", () => {
+  it("formats manufacturer and product name with hyphen", () => {
+    expect(formatProductTitle("EMAX", "ECO II 2207")).toBe("EMAX - ECO II 2207");
+  });
+
+  it("strips redundant manufacturer prefix from product name", () => {
+    expect(formatProductTitle("Sub250", "Sub250 1404 4500KV")).toBe("Sub250 - 1404 4500KV");
+    expect(formatProductTitle("Walksnail", "Walksnail Moonlight Camera")).toBe(
+      "Walksnail - Moonlight Camera",
+    );
+    expect(formatProductTitle("TBS", "TBS - Triumph Pro")).toBe("TBS - Triumph Pro");
+  });
+
+  it("handles identical manufacturer and product name without duplication", () => {
+    expect(formatProductTitle("Foxeer", "Foxeer")).toBe("Foxeer");
+  });
+
+  it("falls back to product name if manufacturer is missing or empty", () => {
+    expect(formatProductTitle(null, "Custom Frame")).toBe("Custom Frame");
+    expect(formatProductTitle("", "Custom Frame")).toBe("Custom Frame");
+  });
+
+  it("falls back to fallback string if name is missing", () => {
+    expect(formatProductTitle(null, null, "fallback-id")).toBe("fallback-id");
+    expect(formatProductTitle("EMAX", null, "eco-ii-2207")).toBe("EMAX - eco-ii-2207");
   });
 });

@@ -25,6 +25,9 @@ describe("ProductPage Component", () => {
       expect(screen.getByRole("heading", { level: 1, name: "ECO II 2207" })).toBeInTheDocument();
     });
 
+    // Verify breadcrumb product name includes manufacturer
+    expect(screen.getByText("EMAX - ECO II 2207")).toBeInTheDocument();
+
     // Manufacturer
     expect(screen.getByText("EMAX")).toBeInTheDocument();
 

@@ -9,6 +9,7 @@ import {
 } from "../lib/hardwareCollections";
 import { CollectionBadge } from "../components/CollectionBadge";
 import { MediaGallery } from "../components/MediaGallery";
+import { formatProductTitle } from "../lib/format";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
   [ReferenceLinkType.PURCHASE]: "Purchase",
@@ -69,7 +70,7 @@ function ProductDetailView({
           className="text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-md"
           aria-current="page"
         >
-          {item?.name || item?.id || productId}
+          {formatProductTitle(item?.manufacturer, item?.name || item?.id, productId)}
         </span>
       </nav>
 
