@@ -29,8 +29,6 @@ export interface AuthContextType {
     cooldownSeconds: number;
     message: string;
     isExistingAccount?: boolean;
-    existingUserHandle?: string;
-    existingBuildCount?: number;
   }>;
   verifyAddEmailOtp: (
     email: string,
@@ -228,8 +226,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       cooldownSeconds: res.cooldownSeconds || 60,
       message: res.message || "Verification code sent to your email",
       isExistingAccount: res.isExistingAccount || false,
-      existingUserHandle: res.existingUserHandle || "",
-      existingBuildCount: res.existingBuildCount || 0,
     };
   };
 

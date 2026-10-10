@@ -461,23 +461,21 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 	}
 
 	// Check if this email is registered to ANOTHER account
-	var otherUserUUID, otherHandle string
+	var otherUserUUID string
 	err = s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id
+		SELECT u.uuid
 		FROM users u
 		WHERE LOWER(u.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
 		UNION
-		SELECT u.uuid, u.id
+		SELECT u.uuid
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherHandle)
+		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID)
 
 	var isExistingAccount bool
-	var existingBuildCount int
 	if err == nil && otherUserUUID != "" {
 		isExistingAccount = true
-		_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, otherUserUUID).Scan(&existingBuildCount)
 	}
 
 	// Rate limit per IP
@@ -527,12 +525,10 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 	fmt.Printf("=======================================================\n\n")
 
 	return connect.NewResponse(&pb.SendEmailOtpResponse{
-		Success:            true,
-		Message:            "Verification code sent to email",
-		CooldownSeconds:    60,
-		IsExistingAccount:  isExistingAccount,
-		ExistingUserHandle: otherHandle,
-		ExistingBuildCount: int32(existingBuildCount),
+		Success:           true,
+		Message:           "Verification code sent to email",
+		CooldownSeconds:   60,
+		IsExistingAccount: isExistingAccount,
 	}), nil
 }
 

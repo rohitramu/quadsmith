@@ -226,8 +226,8 @@ export function AccountSettingsPage() {
         // Email belongs to an existing Quadsmith account!
         // Bring up the Merge Modal for ownership check
         setMergeEmail(newEmail.trim());
-        setMergeOtherHandle(res.existingUserHandle || "pilot");
-        setMergeOtherBuildCount(res.existingBuildCount || 0);
+        setMergeOtherHandle("");
+        setMergeOtherBuildCount(0);
         setMergeOtherBuildNames([]);
         setMergeOtherEmails([]);
         setMergeOtherOauthProviders([]);
@@ -856,7 +856,7 @@ export function AccountSettingsPage() {
                   </h3>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
                     {mergeModalStep === "ownership"
-                      ? `Ownership check for @${mergeOtherHandle}`
+                      ? "Enter the verification code sent to your email to continue"
                       : mergeModalStep === "summary"
                         ? `Consolidate @${mergeOtherHandle} into @${user?.id}`
                         : "Consolidation complete"}
@@ -890,11 +890,8 @@ export function AccountSettingsPage() {
                     <strong className="font-mono text-zinc-900 dark:text-zinc-100">
                       {mergeEmail}
                     </strong>{" "}
-                    is already associated with Quadsmith account{" "}
-                    <strong className="text-purple-700 dark:text-purple-300">
-                      @{mergeOtherHandle}
-                    </strong>
-                    . Before merging, please verify ownership of this account.
+                    is already associated with an existing Quadsmith account. To merge that account
+                    into your profile, please verify ownership of the email address.
                   </p>
                 </div>
 

@@ -123,7 +123,11 @@ describe("AccountSettingsPage Component", () => {
       expect(screen.getByText("Verify Account Ownership")).toBeInTheDocument();
       expect(screen.getByText("Existing Account Detected")).toBeInTheDocument();
       expect(screen.getByText("Two Ways to Verify:")).toBeInTheDocument();
-      expect(screen.getByText(/ownership check for @old_racer/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/enter the verification code sent to your email to continue/i),
+      ).toBeInTheDocument();
+      // Crucial: ensure @old_racer is NOT leaked before ownership is verified
+      expect(screen.queryByText(/old_racer/i)).not.toBeInTheDocument();
     });
 
     // Enter verification code into segmented OTP inputs

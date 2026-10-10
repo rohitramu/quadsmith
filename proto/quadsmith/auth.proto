@@ -22,8 +22,7 @@ message SendEmailOtpResponse {
   string message = 2;
   int32 cooldown_seconds = 3;
   bool is_existing_account = 4;
-  string existing_user_handle = 5;
-  int32 existing_build_count = 6;
+  reserved 5, 6;
 }
 
 message VerifyEmailOtpRequest {

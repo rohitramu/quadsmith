@@ -67,15 +67,13 @@ func (x *SendEmailOtpRequest) GetEmail() string {
 }
 
 type SendEmailOtpResponse struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	Success            bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Message            string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	CooldownSeconds    int32                  `protobuf:"varint,3,opt,name=cooldown_seconds,json=cooldownSeconds,proto3" json:"cooldown_seconds,omitempty"`
-	IsExistingAccount  bool                   `protobuf:"varint,4,opt,name=is_existing_account,json=isExistingAccount,proto3" json:"is_existing_account,omitempty"`
-	ExistingUserHandle string                 `protobuf:"bytes,5,opt,name=existing_user_handle,json=existingUserHandle,proto3" json:"existing_user_handle,omitempty"`
-	ExistingBuildCount int32                  `protobuf:"varint,6,opt,name=existing_build_count,json=existingBuildCount,proto3" json:"existing_build_count,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Success           bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message           string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	CooldownSeconds   int32                  `protobuf:"varint,3,opt,name=cooldown_seconds,json=cooldownSeconds,proto3" json:"cooldown_seconds,omitempty"`
+	IsExistingAccount bool                   `protobuf:"varint,4,opt,name=is_existing_account,json=isExistingAccount,proto3" json:"is_existing_account,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *SendEmailOtpResponse) Reset() {
@@ -134,20 +132,6 @@ func (x *SendEmailOtpResponse) GetIsExistingAccount() bool {
 		return x.IsExistingAccount
 	}
 	return false
-}
-
-func (x *SendEmailOtpResponse) GetExistingUserHandle() string {
-	if x != nil {
-		return x.ExistingUserHandle
-	}
-	return ""
-}
-
-func (x *SendEmailOtpResponse) GetExistingBuildCount() int32 {
-	if x != nil {
-		return x.ExistingBuildCount
-	}
-	return 0
 }
 
 type VerifyEmailOtpRequest struct {
@@ -1223,14 +1207,12 @@ const file_auth_proto_rawDesc = "" +
 	"_sql.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\n" +
 	"user.proto\"+\n" +
 	"\x13SendEmailOtpRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"\x89\x02\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"\xb1\x01\n" +
 	"\x14SendEmailOtpResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12)\n" +
 	"\x10cooldown_seconds\x18\x03 \x01(\x05R\x0fcooldownSeconds\x12.\n" +
-	"\x13is_existing_account\x18\x04 \x01(\bR\x11isExistingAccount\x120\n" +
-	"\x14existing_user_handle\x18\x05 \x01(\tR\x12existingUserHandle\x120\n" +
-	"\x14existing_build_count\x18\x06 \x01(\x05R\x12existingBuildCount\"A\n" +
+	"\x13is_existing_account\x18\x04 \x01(\bR\x11isExistingAccountJ\x04\b\x05\x10\x06J\x04\b\x06\x10\a\"A\n" +
 	"\x15VerifyEmailOtpRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\".\n" +

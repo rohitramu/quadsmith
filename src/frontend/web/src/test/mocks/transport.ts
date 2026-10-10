@@ -527,8 +527,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           message: `Verification code sent to ${req.email}`,
           cooldownSeconds: 60,
           isExistingAccount: isExisting,
-          existingUserHandle: isExisting ? "old_racer" : "",
-          existingBuildCount: isExisting ? 4 : 0,
         });
       },
       verifyAddEmailOtp: (req) => {
