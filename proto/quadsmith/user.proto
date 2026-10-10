@@ -18,40 +18,11 @@ message User {
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   // Public pilot handle (e.g. "fpv_pilot")
-  //
-  // ============================================================================
-  // REGEX FEATURE LIMITATIONS IN PROTOBUF (RE2 ENGINE):
-  // ============================================================================
-  // Protobuf validation frameworks (such as protovalidate, protoc-gen-validate,
-  // and Google CEL / RE2) enforce strict limitations on regular expressions:
-  //
-  // 1. NO LOOKAROUND ASSERTIONS:
-  //    Lookahead assertions ((?=...), (?!...)) and lookbehind assertions
-  //    ((?<=...), (?<!...)) are strictly forbidden by RE2. Lookarounds require
-  //    arbitrary backtracking which has exponential O(2^n) worst-case time complexity,
-  //    exposing servers to Regular Expression Denial of Service (ReDoS) attacks.
-  //    RE2 guarantees linear O(n) execution time relative to input length.
-  //
-  // 2. NO BACKREFERENCES:
-  //    Constructs like \1, \2 are unsupported because they make matching NP-complete.
-  //
-  // 3. NO POSSESSIVE QUANTIFIERS:
-  //    Tokens like *+, ++, ?+, {n,m}+ are unsupported.
-  //
-  // Because PCRE negative lookaheads like `(?!.*quad_?smith)`, `(?!admin$)`, and
-  // `(?!.*__)` cannot be compiled into an RE2 pattern in Protobuf:
-  //
-  // - The structural regex `pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"` validates:
-  //   * Starts with a lowercase letter [a-z]
-  //   * Contains only lowercase letters, digits, and underscores
-  //   * Ends with an alphanumeric character [a-z0-9] (no trailing underscore)
-  //   * Length between 3 and 20 characters
-  //
-  // - Exact-match exclusions are declared via `not_in: ["admin", "root"]`.
-  //
-  // - Substring and consecutive symbol exclusions are declared via
-  //   `not_contains: ["__", "quadsmith", "quad_smith"]`.
-  // ============================================================================
+  // Enforces handle constraints via declarative rules defined in _validate.proto:
+  // - Starts with [a-z], ends with [a-z0-9], allows [a-z0-9_], length 3-20.
+  // - Rejects reserved handles ("admin", "root") via `not_in`.
+  // - Rejects consecutive underscores ("__") and reserved brands ("quadsmith", "quad_smith") via `not_contains`.
+  // (See `_validate.proto` for comprehensive documentation on RE2 regex restrictions and ReDoS guarantees).
   string id = 2 [
     (quadsmith.sql.column) = {
       is_unique: true

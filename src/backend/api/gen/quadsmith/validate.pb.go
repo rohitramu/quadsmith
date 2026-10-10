@@ -29,12 +29,52 @@ type StringRules struct {
 	// Maximum length in characters (Unicode code points)
 	MaxLen int32 `protobuf:"varint,2,opt,name=max_len,json=maxLen,proto3" json:"max_len,omitempty"`
 	// Regular expression pattern matching against Google RE2 syntax.
-	// NOTE: Lookahead assertions (?=...), (?!...) and lookbehind assertions (?<=...), (?<!...)
-	// are NOT supported by RE2 due to exponential backtracking / ReDoS safety guarantees.
+	//
+	// ============================================================================
+	// REGEX FEATURE RESTRICTIONS IN PROTOBUF VALIDATION (RE2 SYNTAX):
+	// ============================================================================
+	//
+	// 1. DISALLOWED FEATURES:
+	//    - No Lookaround Assertions: Positive lookahead (?=...), negative lookahead (?!...),
+	//      positive lookbehind (?<=...), and negative lookbehind (?<!...) are FORBIDDEN.
+	//    - No Backreferences: Backreferences like \1, \2 are FORBIDDEN.
+	//    - No Possessive Quantifiers: Quantifiers like *+, ++, ?+, {n,m}+ are FORBIDDEN.
+	//
+	// 2. WHY WE HAVE THESE REGEX RESTRICTIONS:
+	//
+	//    A. ReDoS (Regular Expression Denial of Service) Prevention:
+	//       Traditional regex engines (Perl, PCRE, JavaScript, Python) rely on Recursive
+	//       Backtracking NFAs. When patterns contain nested quantifiers or lookarounds,
+	//       pathological or adversarial input strings trigger exponential backtracking
+	//       (O(2^n) time complexity). An attacker can craft a 20-30 character string that
+	//       locks a CPU core at 100% indefinitely, starving the server and crashing the API.
+	//
+	//    B. Guaranteed Linear-Time Matching (O(n)):
+	//       Google's RE2 engine uses Thompson's NFA/DFA automata algorithms. Matching time
+	//       is mathematically guaranteed to scale strictly linearly with the length of
+	//       the input string (O(n)), regardless of pattern complexity or adversarial input.
+	//       Memory consumption is also bounded (O(m) where m is pattern size).
+	//
+	//    C. Cross-Language Determinism & Portability:
+	//       Protobuf messages are evaluated across polyglot stacks (Go backend, TypeScript web UI,
+	//       CLI tools, potential Rust/Python services). Different languages have wildly different
+	//       regex engines (e.g. Go's regexp package only supports RE2; Rust's regex crate uses
+	//       finite automata; browsers use ECMAScript RegExp). Advanced PCRE features behave
+	//       inconsistently across platforms. By restricting patterns to the RE2 subset, Protobuf
+	//       guarantees identical validation semantics across all client and server runtimes.
+	//
+	//    D. Separation of Concerns (Structure vs Logic):
+	//       Regular expressions are best suited for syntactic character shape and token boundaries.
+	//       Exclusion logic (e.g. reserved words, forbidden substrings) is more readable,
+	//       maintainable, and performant when expressed declaratively via dedicated fields
+	//       (`not_in`, `not_contains`) rather than dense, fragile lookahead chains.
+	// ============================================================================
 	Pattern string `protobuf:"bytes,3,opt,name=pattern,proto3" json:"pattern,omitempty"`
-	// Exact strings that are forbidden (e.g. reserved handles like "admin", "root")
+	// Exact strings that are forbidden (e.g. reserved handles like "admin", "root").
+	// Used instead of negative lookahead assertions (e.g. `(?!admin$)`) which are unsupported in RE2.
 	NotIn []string `protobuf:"bytes,4,rep,name=not_in,json=notIn,proto3" json:"not_in,omitempty"`
-	// Substrings that must not appear anywhere in the value (e.g. "quadsmith", "__")
+	// Substrings that must not appear anywhere in the value (e.g. "quadsmith", "__").
+	// Used instead of negative lookahead wildcard assertions (e.g. `(?!.*quadsmith)`) which are unsupported in RE2.
 	NotContains   []string `protobuf:"bytes,5,rep,name=not_contains,json=notContains,proto3" json:"not_contains,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
