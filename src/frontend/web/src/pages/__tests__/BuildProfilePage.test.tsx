@@ -14,13 +14,13 @@ describe("BuildProfilePage Component", () => {
     );
   }
 
-  it("renders breadcrumbs, build name, handle, and description", async () => {
+  it("renders breadcrumbs, build name, and description without build ID handle", async () => {
     renderBuildProfile();
 
     expect(
       await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("@bando-basher-5-inch")).toBeInTheDocument();
+    expect(screen.queryByText("@bando-basher-5-inch")).not.toBeInTheDocument();
     expect(
       screen.getByText(/durable 5-inch freestyle quadcopter built to withstand concrete hits/i),
     ).toBeInTheDocument();
