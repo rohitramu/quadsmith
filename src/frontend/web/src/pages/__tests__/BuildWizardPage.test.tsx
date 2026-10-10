@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildWizardPage } from "../BuildWizardPage";
@@ -258,8 +258,16 @@ describe("BuildWizardPage Component", () => {
     // Template should be active and Stages 1-4 unlocked
     expect(screen.getByText("Template Active")).toBeInTheDocument();
 
+    // All stages 0 to 4 in the stage bar should become marked as Done
+    const stageNav = screen.getByRole("navigation", { name: "Build Stages" });
+    const stageTabs = within(stageNav).getAllByRole("button");
+    expect(stageTabs).toHaveLength(5);
+    for (const tab of stageTabs) {
+      expect(tab).toHaveTextContent("Done");
+    }
+
     // Navigate to Stage 4 (Review & Save)
-    const stage4Tab = screen.getByRole("button", { name: /Stage 4/i });
+    const stage4Tab = within(stageNav).getByRole("button", { name: /Stage 4/i });
     expect(stage4Tab).toBeEnabled();
     await user.click(stage4Tab);
 
@@ -299,7 +307,7 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("0.0g")).toBeInTheDocument();
   });
 
-  it("displays WASM dynamic CEL filter when WASM engine is active and allows toggling compatible parts", async () => {
+  it("displays dynamic CEL filter when physics engine is active and allows toggling compatible parts", async () => {
     vi.spyOn(wasmEngine, "getIsReady").mockReturnValue(true);
     vi.spyOn(wasmEngine, "generateCelFilter").mockImplementation((target: string) => {
       if (target === "propellers") return "diameter_mm <= 130.0";
@@ -318,7 +326,7 @@ describe("BuildWizardPage Component", () => {
     // Check that the dynamic CEL filter banner is rendered for propellers (in Step 1C and Sidebar)
     const filterElements = await screen.findAllByText("diameter_mm <= 130.0");
     expect(filterElements.length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText("WASM Filter:")).toBeInTheDocument();
+    expect(screen.getByText("Compatibility Filter:")).toBeInTheDocument();
 
     // Toggle off Compatible Only
     const compatibleCheckbox = screen.getByLabelText("Compatible Only");

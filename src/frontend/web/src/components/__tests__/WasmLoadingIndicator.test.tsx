@@ -13,12 +13,12 @@ describe("WasmLoadingIndicator Component", () => {
     render(<WasmLoadingIndicator progress={mockProgress} />);
 
     expect(screen.getByText("Live Build Evaluator")).toBeInTheDocument();
-    expect(screen.getByText("Initializing WebAssembly Core")).toBeInTheDocument();
+    expect(screen.getByText("Loading physics engine...")).toBeInTheDocument();
     expect(screen.getByText("> 3s Delayed")).toBeInTheDocument();
     expect(screen.getByText("Downloading Physics Engine")).toBeInTheDocument();
     expect(screen.getByText("63%")).toBeInTheDocument();
     expect(screen.getByText(/10.00 MB \/ 16.00 MB/)).toBeInTheDocument();
-    expect(screen.getByText("quadsmith-engine.wasm")).toBeInTheDocument();
+    expect(screen.getByText("Physics Engine Core")).toBeInTheDocument();
   });
 
   it("handles null progress gracefully with zero defaults", () => {

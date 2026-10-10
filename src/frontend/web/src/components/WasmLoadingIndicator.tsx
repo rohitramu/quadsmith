@@ -29,7 +29,7 @@ export function WasmLoadingIndicator({ progress, className = "" }: WasmLoadingIn
               Live Build Evaluator
             </h3>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-              Initializing WebAssembly Core
+              Loading physics engine...
             </p>
           </div>
         </div>
@@ -62,7 +62,7 @@ export function WasmLoadingIndicator({ progress, className = "" }: WasmLoadingIn
           <span>
             {loadedMb} MB / {totalMb} MB
           </span>
-          <span className="text-zinc-400 dark:text-zinc-500">quadsmith-engine.wasm</span>
+          <span className="text-zinc-400 dark:text-zinc-500">Physics Engine Core</span>
         </div>
       </div>
 

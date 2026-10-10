@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "@connectrpc/connect-query";
+import { useQuery, useMutation, useTransport } from "@connectrpc/connect-query";
+import { createClient } from "@connectrpc/connect";
 import { create } from "@bufbuild/protobuf";
 import { Search, X, ArrowLeft, Sparkles, AlertCircle, RotateCcw, Save, Check } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
@@ -34,24 +35,29 @@ import {
 } from "../gen/quadsmith/evaluator_pb";
 import { CheckComponentsCompatibilityRequestSchema } from "../gen/quadsmith/compatibility_pb";
 
-// Protobuf types
+// Protobuf types & services
 import { BuildSchema, type Build } from "../gen/quadsmith/build_pb";
-import type { Frame } from "../gen/quadsmith/frame_pb";
-import type { Motor } from "../gen/quadsmith/motor_pb";
-import type { Propeller } from "../gen/quadsmith/propeller_pb";
-import type { FlightController } from "../gen/quadsmith/flight_controller_pb";
+import { FrameService, type Frame } from "../gen/quadsmith/frame_pb";
+import { MotorService, type Motor } from "../gen/quadsmith/motor_pb";
+import { PropellerService, type Propeller } from "../gen/quadsmith/propeller_pb";
 import {
+  FlightControllerService,
+  type FlightController,
+} from "../gen/quadsmith/flight_controller_pb";
+import {
+  ElectronicSpeedControllerService,
   ElectronicSpeedControllerSchema,
   type ElectronicSpeedController,
 } from "../gen/quadsmith/electronic_speed_controller_pb";
-import { ReceiverSchema, type Receiver } from "../gen/quadsmith/receiver_pb";
+import { ReceiverService, ReceiverSchema, type Receiver } from "../gen/quadsmith/receiver_pb";
 import {
+  VideoTransmitterService,
   VideoTransmitterSchema,
   type VideoTransmitter,
 } from "../gen/quadsmith/video_transmitter_pb";
-import type { Camera } from "../gen/quadsmith/camera_pb";
-import type { Antenna } from "../gen/quadsmith/antenna_pb";
-import type { GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
+import { CameraService, type Camera } from "../gen/quadsmith/camera_pb";
+import { AntennaService, type Antenna } from "../gen/quadsmith/antenna_pb";
+import { GpsReceiverService, type GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
 
 export function formatFrequencyBand(mhz?: number): string {
   if (!mhz) return "2.4 GHz";
@@ -94,6 +100,7 @@ export function isVtxAntenna(a: Antenna): boolean {
 
 export function BuildWizardPage() {
   const navigate = useNavigate();
+  const transport = useTransport();
 
   useDocumentMeta({
     title: "Build Wizard — Design Custom Quadcopter | Quadsmith",
@@ -369,22 +376,27 @@ export function BuildWizardPage() {
     }
   }, [fcHasIntegratedVtx, useIntegratedVtx]);
 
-  // Stage completion checks
+  // Stage completion checks (when template is selected, all stages are complete)
   const stage0Complete = true;
-  const stage1Complete = !!(selectedFrame && selectedMotor && selectedProp);
-  const stage2Complete = !!(
-    selectedFc &&
-    (selectedRx || useIntegratedRx) &&
-    (useIntegratedEsc || noneSelections.esc || selectedEsc)
-  );
+  const stage1Complete = !!selectedTemplateId || !!(selectedFrame && selectedMotor && selectedProp);
+  const stage2Complete =
+    !!selectedTemplateId ||
+    !!(
+      selectedFc &&
+      (selectedRx || useIntegratedRx) &&
+      (useIntegratedEsc || noneSelections.esc || selectedEsc)
+    );
   const stage3Complete =
-    (!!selectedVtx || !!useIntegratedVtx || !!noneSelections.vtx) &&
-    (!!selectedCam || !!noneSelections.camera) &&
-    (!!selectedVtxAnt || !!noneSelections.vtxAntenna);
-  const stage4Complete = stage1Complete && stage2Complete && buildName.trim().length > 0;
+    !!selectedTemplateId ||
+    ((!!selectedVtx || !!useIntegratedVtx || !!noneSelections.vtx) &&
+      (!!selectedCam || !!noneSelections.camera) &&
+      (!!selectedVtxAnt || !!noneSelections.vtxAntenna));
+  const stage4Complete =
+    !!selectedTemplateId || (stage1Complete && stage2Complete && buildName.trim().length > 0);
 
   // Unlocked stages based on gating logic
   const unlockedStages = useMemo(() => {
+    if (selectedTemplateId) return [0, 1, 2, 3, 4];
     const list = [0, 1];
     if (stage1Complete) list.push(2);
     if (stage1Complete && stage2Complete) {
@@ -392,7 +404,7 @@ export function BuildWizardPage() {
       list.push(4);
     }
     return list;
-  }, [stage1Complete, stage2Complete]);
+  }, [selectedTemplateId, stage1Complete, stage2Complete]);
 
   // Dry weight calculation (with dynamic motor, prop, and antenna quantities)
   const dryWeightG = useMemo(() => {
@@ -843,38 +855,77 @@ export function BuildWizardPage() {
   };
 
   // Apply build template
-  const applyTemplate = (build: Build) => {
+  const applyTemplate = async (build: Build) => {
     setSelectedTemplateId(build.id || build.uuid);
     setBuildName(build.name || "Custom Build");
     if (build.description) setBuildDesc(build.description);
 
     // Frame
-    if (build.frameUuid) {
-      const f = frames.find((x) => x.uuid === build.frameUuid);
-      if (f) setSelectedFrame(f);
+    let f = build.frameUuid ? frames.find((x) => x.uuid === build.frameUuid) : null;
+    if (!f && build.frameUuid) {
+      try {
+        const client = createClient(FrameService, transport);
+        f = await client.getFrame({ id: build.frameUuid });
+      } catch (e) {
+        console.error("Failed to fetch template frame:", e);
+      }
     }
+    if (f) setSelectedFrame(f);
+
     // Motor
-    if (build.motorUuid) {
-      const m = motors.find((x) => x.uuid === build.motorUuid);
-      if (m) setSelectedMotor(m);
+    let m = build.motorUuid ? motors.find((x) => x.uuid === build.motorUuid) : null;
+    if (!m && build.motorUuid) {
+      try {
+        const client = createClient(MotorService, transport);
+        m = await client.getMotor({ id: build.motorUuid });
+      } catch (e) {
+        console.error("Failed to fetch template motor:", e);
+      }
     }
+    if (m) setSelectedMotor(m);
+
     // Propeller
-    if (build.propellerUuid) {
-      const p = props.find((x) => x.uuid === build.propellerUuid);
-      if (p) setSelectedProp(p);
+    let p = build.propellerUuid ? props.find((x) => x.uuid === build.propellerUuid) : null;
+    if (!p && build.propellerUuid) {
+      try {
+        const client = createClient(PropellerService, transport);
+        p = await client.getPropeller({ id: build.propellerUuid });
+      } catch (e) {
+        console.error("Failed to fetch template propeller:", e);
+      }
     }
+    if (p) setSelectedProp(p);
+
     // Flight Controller
     let matchedFc: FlightController | null = null;
     if (build.flightControllerUuid) {
-      const fc = fcs.find((x) => x.uuid === build.flightControllerUuid);
+      let fc = fcs.find((x) => x.uuid === build.flightControllerUuid);
+      if (!fc) {
+        try {
+          const client = createClient(FlightControllerService, transport);
+          fc = await client.getFlightController({ id: build.flightControllerUuid });
+        } catch (e) {
+          console.error("Failed to fetch template FC:", e);
+        }
+      }
       if (fc) {
         matchedFc = fc;
         setSelectedFc(fc);
       }
     }
+
     // ESC
     if (build.electronicSpeedControllerUuids && build.electronicSpeedControllerUuids.length > 0) {
-      const esc = escs.find((x) => build.electronicSpeedControllerUuids.includes(x.uuid));
+      const targetEscUuid = build.electronicSpeedControllerUuids[0];
+      let esc = escs.find((x) => x.uuid === targetEscUuid);
+      if (!esc) {
+        try {
+          const client = createClient(ElectronicSpeedControllerService, transport);
+          esc = await client.getElectronicSpeedController({ id: targetEscUuid });
+        } catch (e) {
+          console.error("Failed to fetch template ESC:", e);
+        }
+      }
       if (esc) {
         setSelectedEsc(esc);
         setUseIntegratedEsc(false);
@@ -885,9 +936,19 @@ export function BuildWizardPage() {
       setSelectedEsc(null);
       setNoneSelections((prev) => ({ ...prev, esc: false }));
     }
+
     // Receiver
     if (build.receiverUuids && build.receiverUuids.length > 0) {
-      const rx = rxs.find((x) => build.receiverUuids.includes(x.uuid));
+      const targetRxUuid = build.receiverUuids[0];
+      let rx = rxs.find((x) => x.uuid === targetRxUuid);
+      if (!rx) {
+        try {
+          const client = createClient(ReceiverService, transport);
+          rx = await client.getReceiver({ id: targetRxUuid });
+        } catch (e) {
+          console.error("Failed to fetch template RX:", e);
+        }
+      }
       if (rx) {
         setSelectedRx(rx);
         setUseIntegratedRx(false);
@@ -896,47 +957,103 @@ export function BuildWizardPage() {
       setUseIntegratedRx(true);
       setSelectedRx(null);
     }
+
     // Antennas
     if (build.antennaUuids && build.antennaUuids.length > 0) {
-      const rxAnt = ants.find((a) => build.antennaUuids.includes(a.uuid) && isRxAntenna(a));
+      const fetchedAnts: Antenna[] = [];
+      for (const u of build.antennaUuids) {
+        let a = ants.find((x) => x.uuid === u);
+        if (!a) {
+          try {
+            const client = createClient(AntennaService, transport);
+            a = await client.getAntenna({ id: u });
+          } catch (e) {
+            console.error("Failed to fetch template antenna:", e);
+          }
+        }
+        if (a) fetchedAnts.push(a);
+      }
+
+      const rxAnt = fetchedAnts.find(isRxAntenna);
       if (rxAnt) {
         setSelectedRxAnt(rxAnt);
         const count = build.antennaUuids.filter((u) => u === rxAnt.uuid).length;
         setRxAntCount(count > 1 ? 2 : 1);
         setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
+      } else {
+        setNoneSelections((prev) => ({ ...prev, rxAntenna: true }));
       }
-      const vtxAnt = ants.find((a) => build.antennaUuids.includes(a.uuid) && isVtxAntenna(a));
+
+      const vtxAnt = fetchedAnts.find(isVtxAntenna);
       if (vtxAnt) {
         setSelectedVtxAnt(vtxAnt);
         const count = build.antennaUuids.filter((u) => u === vtxAnt.uuid).length;
         setVtxAntCount(count > 1 ? 2 : 1);
         setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
+      } else {
+        setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
       }
+    } else {
+      setNoneSelections((prev) => ({ ...prev, rxAntenna: true, vtxAntenna: true }));
     }
+
     // GPS
     if (build.gpsReceiverUuid) {
-      const gps = gpsList.find((x) => x.uuid === build.gpsReceiverUuid);
+      let gps = gpsList.find((x) => x.uuid === build.gpsReceiverUuid);
+      if (!gps) {
+        try {
+          const client = createClient(GpsReceiverService, transport);
+          gps = await client.getGpsReceiver({ id: build.gpsReceiverUuid });
+        } catch (e) {
+          console.error("Failed to fetch template GPS:", e);
+        }
+      }
       if (gps) {
         setSelectedGps(gps);
         setNoneSelections((prev) => ({ ...prev, gps: false }));
       }
+    } else {
+      setNoneSelections((prev) => ({ ...prev, gps: true }));
     }
+
     // VTX
     if (build.videoTransmitterUuid) {
-      const vtx = vtxs.find((x) => x.uuid === build.videoTransmitterUuid);
+      let vtx = vtxs.find((x) => x.uuid === build.videoTransmitterUuid);
+      if (!vtx) {
+        try {
+          const client = createClient(VideoTransmitterService, transport);
+          vtx = await client.getVideoTransmitter({ id: build.videoTransmitterUuid });
+        } catch (e) {
+          console.error("Failed to fetch template VTX:", e);
+        }
+      }
       if (vtx) {
         setSelectedVtx(vtx);
         setUseIntegratedVtx(false);
         setNoneSelections((prev) => ({ ...prev, vtx: false }));
       }
+    } else {
+      setNoneSelections((prev) => ({ ...prev, vtx: true }));
     }
+
     // Camera
     if (build.cameraUuids && build.cameraUuids.length > 0) {
-      const cam = cams.find((x) => build.cameraUuids.includes(x.uuid));
+      const targetCamUuid = build.cameraUuids[0];
+      let cam = cams.find((x) => x.uuid === targetCamUuid);
+      if (!cam) {
+        try {
+          const client = createClient(CameraService, transport);
+          cam = await client.getCamera({ id: targetCamUuid });
+        } catch (e) {
+          console.error("Failed to fetch template camera:", e);
+        }
+      }
       if (cam) {
         setSelectedCam(cam);
         setNoneSelections((prev) => ({ ...prev, camera: false }));
       }
+    } else {
+      setNoneSelections((prev) => ({ ...prev, camera: true }));
     }
   };
 
@@ -1552,7 +1669,7 @@ export function BuildWizardPage() {
                   <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                        WASM Filter:
+                        Compatibility Filter:
                       </span>
                       <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
                         {propCelFilter}
@@ -1779,7 +1896,7 @@ export function BuildWizardPage() {
                   <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                        WASM Filter:
+                        Compatibility Filter:
                       </span>
                       <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
                         {escCelFilter}
@@ -2380,7 +2497,7 @@ export function BuildWizardPage() {
                   <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                        WASM Filter:
+                        Compatibility Filter:
                       </span>
                       <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
                         {vtxCelFilter}
@@ -2553,7 +2670,7 @@ export function BuildWizardPage() {
                   <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                        WASM Filter:
+                        Compatibility Filter:
                       </span>
                       <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
                         {camCelFilter}
@@ -3085,7 +3202,7 @@ export function BuildWizardPage() {
               </div>
               {isWasmReady ? (
                 <span className="text-[10px] font-mono font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  WASM (0ms)
+                  Physics Engine (0ms)
                 </span>
               ) : (
                 <span className="text-[11px] font-mono text-zinc-400">Physics Engine</span>
@@ -3299,12 +3416,12 @@ export function BuildWizardPage() {
               )}
             </div>
 
-            {/* Live WASM Tier 1 Dynamic CEL Filter Display */}
+            {/* Live Dynamic Compatibility Filter Display */}
             {isWasmReady && (
               <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 space-y-1.5 text-[11px]">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-[10px]">
-                    WASM Tier 1 Dynamic CEL
+                    Dynamic Compatibility Filter
                   </span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
                     {activeStage === 1
