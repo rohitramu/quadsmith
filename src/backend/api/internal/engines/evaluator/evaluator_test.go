@@ -45,9 +45,9 @@ func TestEvaluatePhysics_5InchFreestyle(t *testing.T) {
 		t.Errorf("Expected 5-inch TWR between 5.5 and 7.5, got %.2f", res.ThrustToWeightRatio)
 	}
 
-	// Bare hover throttle with linear throttle (no expo) should be in 35% - 45% range (sqrt(1/TWR))
-	if res.HoverThrottlePercent < 35.0 || res.HoverThrottlePercent > 45.0 {
-		t.Errorf("Expected bare hover throttle between 35%% and 45%%, got %.1f%%", res.HoverThrottlePercent)
+	// Bare hover throttle accounting for powertrain physics (torque loading & voltage sag) in 27% - 35% range
+	if res.HoverThrottlePercent < 27.0 || res.HoverThrottlePercent > 35.0 {
+		t.Errorf("Expected bare hover throttle between 27%% and 35%%, got %.1f%%", res.HoverThrottlePercent)
 	}
 
 	// 5-inch 6S hover RPM should be between 10,000 and 14,000 RPM
@@ -274,9 +274,9 @@ func TestEvaluatePhysics_7InchLongRange(t *testing.T) {
 		t.Errorf("Expected 7-inch top speed between 95.0 and 135.0 km/h, got %.1f km/h", res.TopSpeedKmh)
 	}
 
-	// Hover throttle should be ~40% - 50%
-	if res.HoverThrottlePercent < 40.0 || res.HoverThrottlePercent > 50.0 {
-		t.Errorf("Expected hover throttle between 40%% and 50%%, got %.1f%%", res.HoverThrottlePercent)
+	// Hover throttle should be ~28% - 38%
+	if res.HoverThrottlePercent < 28.0 || res.HoverThrottlePercent > 38.0 {
+		t.Errorf("Expected hover throttle between 28%% and 38%%, got %.1f%%", res.HoverThrottlePercent)
 	}
 
 	// Long range battery should provide endurance flight time >= 9.5 min

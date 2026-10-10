@@ -670,14 +670,34 @@ func CalculatePhysics(
 	}
 
 	if thrustToWeight > 0 {
-		// Aerodynamic hover throttle position:
-		// Assuming Betaflight rate settings are setup to have a linear throttle (no expo):
-		// The throttle stick input maps 1:1 to motor output (duty cycle / RPM).
-		// Since static aerodynamic thrust scales with RPM^2 (T = k * RPM^2), at steady hover
-		// where T_hover = TotalWeight:
-		// (Throttle_hover / 100%)^2 = T_hover / T_total = 1 / TWR
-		// => Throttle_hover = sqrt(1 / TWR) * 100%
-		hoverThrottle = float32(math.Sqrt(1.0/float64(thrustToWeight)) * 100.0)
+		// Aerodynamic & Electromechanical hover throttle position:
+		// Even with linear rate settings in Betaflight (throttle_expo = 0), commanded duty cycle u
+		// does not map linearly to propeller RPM due to aerodynamic torque drag, motor winding resistance,
+		// and dynamic battery voltage sag under load:
+		// 1. Aerodynamic thrust scales with RPM^2: T = Ct * rho * n^2 * D^4.
+		//    Steady hover requires T_hover / T_total = 1 / TWR => RPM_hover / RPM_loaded = 1 / sqrt(TWR).
+		// 2. Motor electrical equation: V_motor = RPM/Kv + I*Rm.
+		//    Propeller torque drag Q = Cp * rho * n^2 * D^5 scales with RPM^2, so motor current
+		//    scales with thrust: I_hover / I_full = 1 / TWR.
+		//    The motor back-EMF fraction is rpmLoadFactor (~0.72), and the resistive winding drop
+		//    fraction is (1.0 - rpmLoadFactor).
+		// 3. Battery voltage sag under load: At hover, current is only (1 / TWR) of burst current.
+		//    Battery cell voltage at hover is higher than burst punchout voltage:
+		//    V_hover_cell = V_nominal - (V_nominal - burstCellVoltage) * (1 / TWR).
+		//    The voltage ratio K_voltage = burstCellVoltage / V_hover_cell accounts for reduced sag.
+		// Combining these gives the exact throttle duty cycle required to maintain hover RPM:
+		// u_hover = K_voltage * [ rpmLoadFactor * (1 / sqrt(TWR)) + (1 - rpmLoadFactor) * (1 / TWR) ]
+		invTwr := 1.0 / float64(thrustToWeight)
+		sqrtInvTwr := math.Sqrt(invTwr)
+
+		// Battery voltage at hover accounting for lower current drain vs 100% burst:
+		const nominalCellV = 3.85
+		hoverCellVoltage := nominalCellV - (nominalCellV-float64(burstCellVoltage))*math.Min(1.0, invTwr)
+		voltageRatio := float64(burstCellVoltage) / hoverCellVoltage
+
+		// Throttle duty cycle required to achieve hover RPM:
+		dutyCycle := voltageRatio * (rpmLoadFactor*sqrtInvTwr + (1.0-rpmLoadFactor)*invTwr)
+		hoverThrottle = float32(dutyCycle * 100.0)
 	} else {
 		hoverThrottle = 100.0
 	}

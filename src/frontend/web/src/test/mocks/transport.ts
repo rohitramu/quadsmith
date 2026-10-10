@@ -247,7 +247,17 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const payloadObs = 1.0 / (1.0 + 0.08 * payloadRatio);
         const totalThrust = baseThrust * payloadObs;
         const twr = totalWeight > 0 ? totalThrust / totalWeight : 0;
-        const hover = twr > 0 ? Math.sqrt(1.0 / twr) * 100 : 100;
+        const invTwr = twr > 0 ? 1.0 / twr : 1.0;
+        const sqrtInvTwr = Math.sqrt(invTwr);
+        const rpmLoadFactor = 0.72;
+        const nominalCellV = 3.85;
+        const burstCellVoltage = 3.55 - 0.12 * payloadRatio;
+        const hoverCellVoltage =
+          nominalCellV - (nominalCellV - burstCellVoltage) * Math.min(1.0, invTwr);
+        const voltageRatio = burstCellVoltage / hoverCellVoltage;
+        const dutyCycle =
+          voltageRatio * (rpmLoadFactor * sqrtInvTwr + (1.0 - rpmLoadFactor) * invTwr);
+        const hover = twr > 0 ? dutyCycle * 100 : 100;
         const weightRatio = totalWeight / safeBase;
         const systemMessages: any[] = [];
         if (hover > 50) {
