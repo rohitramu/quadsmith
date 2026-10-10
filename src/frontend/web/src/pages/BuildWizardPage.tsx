@@ -7,7 +7,6 @@ import {
   Search,
   X,
   ArrowLeft,
-  Sparkles,
   AlertCircle,
   RotateCcw,
   Save,
@@ -1402,25 +1401,6 @@ export function BuildWizardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column (Step Contents) */}
         <div className="lg:col-span-8 space-y-5">
-          {/* Step 0 Banner */}
-          {activeStep === 0 && (
-            <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/20 text-blue-900 dark:text-blue-300 flex items-start gap-3 text-xs">
-              <Sparkles size={16} className="text-blue-500 mt-0.5 shrink-0" />
-              <div>
-                <span className="font-bold">
-                  {selectedTemplateId
-                    ? `Step 0: Template Selected — ${templateBuilds.find((b) => (b.id || b.uuid) === selectedTemplateId)?.name || "Template"}`
-                    : "Step 0: Choose a Starting Baseline"}
-                </span>
-                <p className="opacity-90 mt-0.5">
-                  {selectedTemplateId
-                    ? "All compatible components pre-populated across all steps. You can customize them in Steps 1-3 or review now."
-                    : "Select a baseline build below to pre-populate components, or click Next to build custom."}
-                </p>
-              </div>
-            </div>
-          )}
-
           {/* STEP 0: Template Selection */}
           {activeStep === 0 && (
             <div className="space-y-4">

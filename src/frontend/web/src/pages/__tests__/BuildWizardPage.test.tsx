@@ -44,6 +44,7 @@ describe("BuildWizardPage Component", () => {
     expect(headingContainer?.querySelector("svg")).toHaveClass("text-[#FF6D00]");
     expect(screen.queryByText(/Interactive Build Wizard/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/• (Stage|Step)/i)).not.toBeInTheDocument();
+    expect(screen.queryByText("Step 0: Choose a Starting Baseline")).not.toBeInTheDocument();
 
     // Step 0 active, Step 1 unlocked (0/3), steps 2-4 disabled
     expect(screen.getByText("Template Selection")).toBeInTheDocument();
