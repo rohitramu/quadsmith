@@ -43,7 +43,8 @@ describe("Full Application Navigation Flow", () => {
     expect(screen.getAllByText("1900").length).toBeGreaterThan(0);
 
     // 8. Click "Motors" in breadcrumbs to navigate back to collection table
-    const motorsBreadcrumb = screen.getByRole("link", { name: "Motors" });
+    const breadcrumbNav = screen.getByRole("navigation", { name: "Breadcrumb" });
+    const motorsBreadcrumb = within(breadcrumbNav).getByRole("link", { name: "Motors" });
     await user.click(motorsBreadcrumb);
 
     expect(await screen.findByRole("heading", { level: 1, name: "Motors" })).toBeInTheDocument();

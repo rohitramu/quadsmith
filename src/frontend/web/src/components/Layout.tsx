@@ -1,15 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Moon,
-  Sun,
-  Search,
-  ChevronDown,
-  ChevronRight,
-  X,
-  Loader2,
-  Wand2,
-  Layers,
-} from "lucide-react";
+import { Moon, Sun, Search, X, Loader2, Wand2, Layers } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { search } from "../gen/quadsmith/search-SearchService_connectquery";
@@ -25,10 +15,6 @@ export function Layout() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const location = useLocation();
   const navigate = useNavigate();
-  const [expandedMenu, setExpandedMenu] = useState<string | null>(() => {
-    if (location.pathname.includes("/components/hardware")) return "hardware";
-    return null;
-  });
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -91,10 +77,6 @@ export function Layout() {
     } else if (e.key === "Escape") {
       setIsSearchOpen(false);
     }
-  };
-
-  const toggleMenu = (menu: string) => {
-    setExpandedMenu(expandedMenu === menu ? null : menu);
   };
 
   useEffect(() => {
@@ -243,17 +225,6 @@ export function Layout() {
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-2 w-64">
-          <Link
-            to="/builds"
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors flex items-center gap-1.5 ${
-              location.pathname === "/builds"
-                ? "bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800"
-                : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            }`}
-          >
-            <Layers size={14} />
-            <span>Builds</span>
-          </Link>
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -327,53 +298,49 @@ export function Layout() {
               </h2>
               <ul className="space-y-1">
                 <li>
-                  <div className="flex items-center justify-between rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800">
-                    <Link to="/components/hardware" className="flex-1 px-3 py-2">
-                      Hardware
-                    </Link>
-                    <button
-                      onClick={() => toggleMenu("hardware")}
-                      aria-label={
-                        expandedMenu === "hardware"
-                          ? "Collapse Hardware menu"
-                          : "Expand Hardware menu"
-                      }
-                      className="p-2 mr-1 rounded-md hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-500"
-                    >
-                      {expandedMenu === "hardware" ? (
-                        <ChevronDown size={16} />
-                      ) : (
-                        <ChevronRight size={16} />
-                      )}
-                    </button>
-                  </div>
-                  {expandedMenu === "hardware" && (
-                    <ul className="pl-6 mt-1 space-y-1">
-                      {HARDWARE_COLLECTIONS.map((c) => {
-                        const colColor = getCollectionColor(c.id);
-                        return (
-                          <li key={c.id}>
-                            <Link
-                              to={`/${getCollectionPath(c)}`}
-                              className="flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
-                            >
-                              <CollectionIcon
-                                collection={c.id}
-                                size={15}
-                                className={`${colColor.textClass} shrink-0`}
-                              />
-                              <span>{c.name}</span>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
+                  <Link
+                    to="/components/hardware"
+                    className={`block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 font-medium ${
+                      location.pathname === "/components/hardware"
+                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400"
+                        : "text-zinc-800 dark:text-zinc-200"
+                    }`}
+                  >
+                    Hardware
+                  </Link>
+                  <ul className="pl-6 mt-1 space-y-1">
+                    {HARDWARE_COLLECTIONS.map((c) => {
+                      const colColor = getCollectionColor(c.id);
+                      return (
+                        <li key={c.id}>
+                          <Link
+                            to={`/${getCollectionPath(c)}`}
+                            className={`flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
+                              location.pathname.startsWith(`/${getCollectionPath(c)}`)
+                                ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
+                                : "text-zinc-600 dark:text-zinc-400"
+                            }`}
+                          >
+                            <CollectionIcon
+                              collection={c.id}
+                              size={15}
+                              className={`${colColor.textClass} shrink-0`}
+                            />
+                            <span>{c.name}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </li>
                 <li>
                   <Link
                     to="/components/software"
-                    className="block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                    className={`block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 font-medium ${
+                      location.pathname === "/components/software"
+                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400"
+                        : "text-zinc-800 dark:text-zinc-200"
+                    }`}
                   >
                     Software
                   </Link>
@@ -381,7 +348,11 @@ export function Layout() {
                 <li>
                   <Link
                     to="/components/gear"
-                    className="block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                    className={`block px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 font-medium ${
+                      location.pathname === "/components/gear"
+                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400"
+                        : "text-zinc-800 dark:text-zinc-200"
+                    }`}
                   >
                     Gear
                   </Link>

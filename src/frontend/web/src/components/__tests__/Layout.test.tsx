@@ -48,12 +48,12 @@ describe("Layout Component", () => {
     expect(localStorage.getItem("theme")).toBe("dark");
   });
 
-  it("renders sidebar navigation links", () => {
+  it("renders sidebar navigation links with hardware collections permanently expanded", () => {
     renderWithProviders(<Layout />, { route: "/" });
 
-    // Sidebar and navbar links
+    // Sidebar and navbar links: exactly 1 Builds link in the sidebar (none in top navbar)
     const buildsLinks = screen.getAllByRole("link", { name: "Builds" });
-    expect(buildsLinks.length).toBeGreaterThanOrEqual(1);
+    expect(buildsLinks).toHaveLength(1);
     expect(buildsLinks[0]).toHaveAttribute("href", "/builds");
 
     const wizardLink = screen.getByRole("link", { name: /Build Wizard/i });
@@ -68,22 +68,14 @@ describe("Layout Component", () => {
       "/components/software",
     );
     expect(screen.getByRole("link", { name: "Gear" })).toHaveAttribute("href", "/components/gear");
-  });
 
-  it("expands and collapses hardware collection sub-links on toggle button click", async () => {
-    const { user } = renderWithProviders(<Layout />, { route: "/" });
+    // No expand/collapse toggle buttons
+    expect(screen.queryByRole("button", { name: /Expand Hardware menu/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /Collapse Hardware menu/i }),
+    ).not.toBeInTheDocument();
 
-    // Initially on "/", hardware submenu is collapsed
-    expect(screen.queryByRole("link", { name: "Motors" })).not.toBeInTheDocument();
-
-    const chevronButton = screen.getByRole("button", {
-      name: "Expand Hardware menu",
-    });
-
-    // Click to expand
-    await user.click(chevronButton);
-
-    // All hardware collections should now be visible with icons instead of dots
+    // All hardware collections are permanently visible on initial render with icons
     for (const collection of HARDWARE_COLLECTIONS) {
       const link = screen.getByRole("link", { name: collection.name });
       expect(link).toBeInTheDocument();
@@ -91,17 +83,5 @@ describe("Layout Component", () => {
       expect(link.querySelector("svg")).toBeInTheDocument();
       expect(link.querySelector(".rounded-full")).not.toBeInTheDocument();
     }
-
-    // Click again to collapse
-    await user.click(chevronButton);
-    expect(screen.queryByRole("link", { name: "Motors" })).not.toBeInTheDocument();
-  });
-
-  it("auto-expands hardware submenu when navigating to a hardware route", () => {
-    renderWithProviders(<Layout />, { route: "/components/hardware" });
-
-    // Submenu should be auto-expanded
-    expect(screen.getByRole("link", { name: "Motors" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Frames" })).toBeInTheDocument();
   });
 });
