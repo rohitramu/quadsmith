@@ -40,12 +40,15 @@ describe("collectionColors module", () => {
       expect(COLLECTION_COLORS[key].dotClass).toContain("bg-");
     }
 
-    // Ensure all 12 collections have unique hex codes and color names
-    const hexSet = new Set(Object.values(COLLECTION_COLORS).map((c) => c.hex));
-    expect(hexSet.size).toBe(12);
+    // Ensure all 11 hardware collections have unique hex codes
+    const hardwareHexSet = new Set(HARDWARE_COLLECTIONS.map((c) => c.color?.hex));
+    expect(hardwareHexSet.size).toBe(11);
 
-    const colorNameSet = new Set(Object.values(COLLECTION_COLORS).map((c) => c.colorName));
-    expect(colorNameSet.size).toBe(12);
+    // Builds shares the blue theme (#3b82f6) with flight controllers
+    expect(COLLECTION_COLORS["builds"].hex).toBe("#3b82f6");
+    expect(COLLECTION_COLORS["flight-controllers"].hex).toBe("#3b82f6");
+    const allHexSet = new Set(Object.values(COLLECTION_COLORS).map((c) => c.hex));
+    expect(allHexSet.size).toBe(11);
   });
 
   it("extracts colors directly from proto schema options as the source of truth", () => {
@@ -58,13 +61,14 @@ describe("collectionColors module", () => {
     expect(batteryColor.colorName).toBe("lime");
     expect(batteryColor.trimClass).toBe("bg-lime-500");
 
-    // BuildSchema defines color_code: "#6366f1" in build.proto
+    // BuildSchema defines color_code: "#3b82f6" in build.proto
     const buildProtoColor = getOption(BuildSchema, frontend)?.colorCode;
-    expect(buildProtoColor).toBe("#6366f1");
+    expect(buildProtoColor).toBe("#3b82f6");
 
     const buildColor = getCollectionColorFromSchema(BuildSchema, "builds", "Builds");
-    expect(buildColor.hex).toBe("#6366f1");
-    expect(buildColor.colorName).toBe("indigo");
+    expect(buildColor.hex).toBe("#3b82f6");
+    expect(buildColor.colorName).toBe("blue");
+    expect(buildColor.textClass).toBe("text-blue-600 dark:text-blue-400");
 
     // Verify all HARDWARE_COLLECTIONS derive their color from their proto schema
     for (const col of HARDWARE_COLLECTIONS) {
@@ -105,6 +109,10 @@ describe("collectionColors module", () => {
     expect(getCollectionColor("prop").id).toBe("propellers");
     expect(getCollectionColor("build").id).toBe("builds");
     expect(getCollectionColor("builds").id).toBe("builds");
+    expect(getCollectionColor("build-wizard").id).toBe("builds");
+    expect(getCollectionColor("build-wizard").hex).toBe("#3b82f6");
+    expect(getCollectionColor("build-wizard").textClass).toBe("text-blue-600 dark:text-blue-400");
+    expect(getCollectionColor("builds/new").id).toBe("builds");
   });
 
   it("falls back gracefully to default grey for unknown, missing, or empty color codes", () => {

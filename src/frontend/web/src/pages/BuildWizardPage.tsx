@@ -75,6 +75,7 @@ import { CameraService, type Camera } from "../gen/quadsmith/camera_pb";
 import { AntennaService, type Antenna } from "../gen/quadsmith/antenna_pb";
 import { GpsReceiverService, type GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
+import { getCollectionColor } from "../lib/collectionColors";
 
 export function getVtxAntennaCount(vtx: VideoTransmitter | null | undefined): number {
   if (!vtx) return 1;
@@ -230,6 +231,9 @@ export function BuildWizardPage() {
     description:
       "Interactive Quadsmith build configurator. Design your custom FPV drone, check hardware compatibility, and simulate real-time physics telemetry.",
   });
+
+  // Collection color derived from Build message proto options
+  const buildColor = getCollectionColor("builds");
 
   // Current active stage (0 to 4)
   const [activeStage, setActiveStage] = useState<number>(0);
@@ -1360,7 +1364,7 @@ export function BuildWizardPage() {
           <div className="flex items-center gap-3">
             <Wand2
               size={32}
-              className="text-blue-600 dark:text-blue-400 shrink-0 w-7 h-7 sm:w-8 sm:h-8"
+              className={`${buildColor.textClass} shrink-0 w-7 h-7 sm:w-8 sm:h-8`}
               aria-hidden="true"
             />
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">

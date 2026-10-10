@@ -16,7 +16,7 @@ message Build {
   option (quadsmith.sql.table) = {name: "builds"};
   option (quadsmith.collection_path) = "builds";
   option (quadsmith.frontend) = {
-    color_code: "#6366f1"
+    color_code: "#3b82f6"
     default_columns: [
       "id",
       "name"

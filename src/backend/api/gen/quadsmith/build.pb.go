@@ -461,7 +461,7 @@ const file_build_proto_rawDesc = "" +
 	"\x15primary_display_image\x18\x11 \x01(\tH\x01R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
 	"\x05media\x18\x12 \x03(\v2\x10.quadsmith.MediaR\x05media:-\x8a\xb5\x18\x13\n" +
 	"\x02id\n" +
-	"\x04name\x1a\a#6366f1\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
+	"\x04name\x1a\a#3b82f6\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
 	"\x06buildsB\x14\n" +
 	"\x12_gps_receiver_uuidB\x18\n" +
 	"\x16_primary_display_imageJ\x04\b\a\x10\bR\fbattery_uuid\";\n" +

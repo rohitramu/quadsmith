@@ -25,7 +25,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "builds",
 		DisplayName:     "Builds",
 		MessageName:     "Build",
-		ColorCode:       "#6366f1",
+		ColorCode:       "#3b82f6",
 		HasManufacturer: false,
 		DefaultColumns: []string{
 			"id",

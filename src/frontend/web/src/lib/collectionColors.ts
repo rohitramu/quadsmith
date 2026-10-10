@@ -392,6 +392,11 @@ export function normalizeCollectionKey(raw?: string | null): string {
   // Strip leading and trailing slashes
   clean = clean.replace(/^\/+|\/+$/g, "");
 
+  // Special route aliases before splitting
+  if (clean === "builds/new" || clean.startsWith("builds/new/")) {
+    return "builds";
+  }
+
   // If it's a full path, take the last segment (e.g. components/hardware/batteries -> batteries)
   if (clean.includes("/")) {
     const parts = clean.split("/");
@@ -413,6 +418,9 @@ export function normalizeCollectionKey(raw?: string | null): string {
 
     case "build":
     case "builds":
+    case "build-wizard":
+    case "buildwizard":
+    case "builds/new":
       return "builds";
 
     case "camera":
