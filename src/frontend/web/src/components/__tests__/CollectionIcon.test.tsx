@@ -18,6 +18,7 @@ import {
   Wrench,
   Zap,
   Box,
+  Hammer,
 } from "lucide-react";
 
 describe("CollectionIcon Component", () => {
@@ -41,6 +42,8 @@ describe("CollectionIcon Component", () => {
     expect(getCollectionIconComponent("rx")).toBe(Radio);
     expect(getCollectionIconComponent("video-transmitters")).toBe(Tv);
     expect(getCollectionIconComponent("vtx")).toBe(Tv);
+    expect(getCollectionIconComponent("the-forge")).toBe(Hammer);
+    expect(getCollectionIconComponent("forge")).toBe(Hammer);
     expect(getCollectionIconComponent("unknown")).toBe(Box);
     expect(getCollectionIconComponent(null)).toBe(Box);
   });

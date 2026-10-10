@@ -15,7 +15,7 @@ import {
   Lock,
   Gauge,
   AlertTriangle,
-  Wand2,
+  Hammer,
 } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStageBar } from "../components/WizardStageBar";
@@ -227,13 +227,13 @@ export function BuildWizardPage() {
   const transport = useTransport();
 
   useDocumentMeta({
-    title: "Build Wizard — Design Custom Quadcopter | Quadsmith",
+    title: "The Forge — Design Custom Quadcopter | Quadsmith",
     description:
       "Interactive Quadsmith build configurator. Design your custom FPV drone, check hardware compatibility, and simulate real-time physics telemetry.",
   });
 
-  // Collection color derived from Build message proto options
-  const buildColor = getCollectionColor("builds");
+  // Dedicated fiery molten orange color decoupled from Build message proto options
+  const forgeColor = getCollectionColor("the-forge");
 
   // Current active stage (0 to 4)
   const [activeStage, setActiveStage] = useState<number>(0);
@@ -302,9 +302,7 @@ export function BuildWizardPage() {
 
   // Review & Save fields
   const [buildName, setBuildName] = useState("My Custom Quadcopter");
-  const [buildDesc, setBuildDesc] = useState(
-    "Custom build configured via the Quadsmith Build Wizard.",
-  );
+  const [buildDesc, setBuildDesc] = useState("Custom build configured via Quadsmith: The Forge.");
   const [saveError, setSaveError] = useState<string | null>(null);
 
   // WASM Engine Integration
@@ -1281,7 +1279,7 @@ export function BuildWizardPage() {
     setPayloadInput("0");
     setActiveStage(0);
     setBuildName("My Custom Quadcopter");
-    setBuildDesc("Custom build configured via the Quadsmith Build Wizard.");
+    setBuildDesc("Custom build configured via Quadsmith: The Forge.");
   };
 
   // Save Build to PostgreSQL via CreateBuild RPC
@@ -1362,13 +1360,13 @@ export function BuildWizardPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
         <div>
           <div className="flex items-center gap-3">
-            <Wand2
+            <Hammer
               size={32}
-              className={`${buildColor.textClass} shrink-0 w-7 h-7 sm:w-8 sm:h-8`}
+              className={`${forgeColor.textClass} shrink-0 w-7 h-7 sm:w-8 sm:h-8`}
               aria-hidden="true"
             />
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
-              Build Wizard
+              The Forge
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">

@@ -10,6 +10,7 @@ import {
   Wrench,
   Zap,
   Box,
+  Hammer,
   type LucideProps,
 } from "lucide-react";
 import { normalizeCollectionKey } from "../lib/collectionColors";
@@ -162,6 +163,9 @@ export function getCollectionIconComponent(collectionKey?: string | null): IconC
       return Radio;
     case "video-transmitters":
       return Tv;
+    case "the-forge":
+    case "forge":
+      return Hammer;
     default:
       return Box;
   }

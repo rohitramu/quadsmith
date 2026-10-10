@@ -54,11 +54,11 @@ describe("Layout Component", () => {
     // Builds link is removed altogether from sidebar and top navbar
     expect(screen.queryByRole("link", { name: "Builds" })).not.toBeInTheDocument();
 
-    const wizardLink = screen.getByRole("link", { name: /Build Wizard/i });
+    const wizardLink = screen.getByRole("link", { name: /The Forge/i });
     expect(wizardLink).toHaveAttribute("href", "/builds/new");
     const wizardIcon = wizardLink.querySelector("svg");
     expect(wizardIcon).toBeInTheDocument();
-    expect(wizardIcon).toHaveClass("text-blue-600");
+    expect(wizardIcon).toHaveClass("text-[#FF6D00]");
     expect(screen.queryByText("New")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Hardware" })).toHaveAttribute(
       "href",

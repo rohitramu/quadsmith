@@ -100,15 +100,15 @@ describe("Full Application Navigation Flow", () => {
       }),
     ).toBeInTheDocument();
 
-    // 14. Click "Build Wizard" in sidebar to navigate to /builds/new
+    // 14. Click "The Forge" in sidebar to navigate to /builds/new
     const sidebar = screen.getByRole("complementary");
-    const wizardLink = within(sidebar).getByRole("link", { name: /Build Wizard/i });
+    const wizardLink = within(sidebar).getByRole("link", { name: /The Forge/i });
     await user.click(wizardLink);
 
     expect(
       await screen.findByRole("heading", {
         level: 1,
-        name: "Build Wizard",
+        name: "The Forge",
       }),
     ).toBeInTheDocument();
   });

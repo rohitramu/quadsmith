@@ -37,11 +37,11 @@ describe("BuildWizardPage Component", () => {
     renderWizard();
 
     // Check title & banner
-    const heading = await screen.findByRole("heading", { level: 1, name: "Build Wizard" });
+    const heading = await screen.findByRole("heading", { level: 1, name: "The Forge" });
     expect(heading).toBeInTheDocument();
     const headingContainer = heading.parentElement;
     expect(headingContainer?.querySelector("svg")).toBeInTheDocument();
-    expect(headingContainer?.querySelector("svg")).toHaveClass("text-blue-600");
+    expect(headingContainer?.querySelector("svg")).toHaveClass("text-[#FF6D00]");
     expect(screen.queryByText(/Interactive Build Wizard/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/• Stage/i)).not.toBeInTheDocument();
 

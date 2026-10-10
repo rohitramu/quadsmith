@@ -28,6 +28,19 @@ describe("HomePage Component", () => {
     expect(browseHardwareLink).toHaveAttribute("href", "/components/hardware");
   });
 
+  it("renders The Forge link pointing to /builds/new with hammer icon in fiery orange", () => {
+    renderWithProviders(<HomePage />);
+
+    const forgeLink = screen.getByRole("link", {
+      name: /the forge/i,
+    });
+    expect(forgeLink).toBeInTheDocument();
+    expect(forgeLink).toHaveAttribute("href", "/builds/new");
+    const icon = forgeLink.querySelector("svg");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("text-[#FF6D00]");
+  });
+
   it("renders Community & Curated Builds feed heading and loaded build cards", async () => {
     renderWithProviders(<HomePage />);
 

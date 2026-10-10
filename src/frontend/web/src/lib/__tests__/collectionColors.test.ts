@@ -109,10 +109,17 @@ describe("collectionColors module", () => {
     expect(getCollectionColor("prop").id).toBe("propellers");
     expect(getCollectionColor("build").id).toBe("builds");
     expect(getCollectionColor("builds").id).toBe("builds");
-    expect(getCollectionColor("build-wizard").id).toBe("builds");
-    expect(getCollectionColor("build-wizard").hex).toBe("#3b82f6");
-    expect(getCollectionColor("build-wizard").textClass).toBe("text-blue-600 dark:text-blue-400");
-    expect(getCollectionColor("builds/new").id).toBe("builds");
+    expect(getCollectionColor("builds").hex).toBe("#3b82f6");
+    expect(getCollectionColor("builds").textClass).toBe("text-blue-600 dark:text-blue-400");
+    expect(getCollectionColor("the-forge").id).toBe("the-forge");
+    expect(getCollectionColor("the-forge").hex).toBe("#FF6D00");
+    expect(getCollectionColor("the-forge").textClass).toBe("text-[#FF6D00] dark:text-[#FF6D00]");
+    expect(getCollectionColor("forge").id).toBe("the-forge");
+    expect(getCollectionColor("build-wizard").id).toBe("the-forge");
+    expect(getCollectionColor("build-wizard").hex).toBe("#FF6D00");
+    expect(getCollectionColor("build-wizard").textClass).toBe("text-[#FF6D00] dark:text-[#FF6D00]");
+    expect(getCollectionColor("builds/new").id).toBe("the-forge");
+    expect(getCollectionColor("builds/new").hex).toBe("#FF6D00");
   });
 
   it("falls back gracefully to default grey for unknown, missing, or empty color codes", () => {

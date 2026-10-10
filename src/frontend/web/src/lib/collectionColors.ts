@@ -138,6 +138,19 @@ export const COLOR_PRESETS_BY_HEX: Record<string, ColorStylePreset> = {
     iconBgClass: "bg-orange-100 text-orange-700 dark:bg-orange-950/60 dark:text-orange-300",
     hoverBorderClass: "hover:border-orange-500",
   },
+  "#ff6d00": {
+    colorName: "fiery-orange",
+    hex: "#FF6D00",
+    badgeClass:
+      "bg-orange-100 text-orange-900 border-orange-300 dark:bg-orange-950/60 dark:text-orange-300 dark:border-orange-800/80",
+    trimClass: "bg-[#FF6D00]",
+    dotClass: "bg-[#FF6D00]",
+    borderTopClass: "border-t-[#FF6D00]",
+    borderLeftClass: "border-l-[#FF6D00]",
+    textClass: "text-[#FF6D00] dark:text-[#FF6D00]",
+    iconBgClass: "bg-orange-100 text-[#FF6D00] dark:bg-orange-950/60 dark:text-[#FF6D00]",
+    hoverBorderClass: "hover:border-[#FF6D00]",
+  },
   "#3b82f6": {
     colorName: "blue",
     hex: "#3b82f6",
@@ -394,7 +407,7 @@ export function normalizeCollectionKey(raw?: string | null): string {
 
   // Special route aliases before splitting
   if (clean === "builds/new" || clean.startsWith("builds/new/")) {
-    return "builds";
+    return "the-forge";
   }
 
   // If it's a full path, take the last segment (e.g. components/hardware/batteries -> batteries)
@@ -416,11 +429,16 @@ export function normalizeCollectionKey(raw?: string | null): string {
     case "batteries":
       return "batteries";
 
-    case "build":
-    case "builds":
+    case "forge":
+    case "the-forge":
+    case "theforge":
     case "build-wizard":
     case "buildwizard":
     case "builds/new":
+      return "the-forge";
+
+    case "build":
+    case "builds":
       return "builds";
 
     case "camera":
@@ -494,6 +512,14 @@ export function normalizeCollectionKey(raw?: string | null): string {
  */
 export function getCollectionColor(rawKey?: string | null): CollectionColorDef {
   const normalized = normalizeCollectionKey(rawKey);
+  if (normalized === "the-forge" || normalized === "forge") {
+    return {
+      id: "the-forge",
+      name: "The Forge",
+      shortName: "Forge",
+      ...COLOR_PRESETS_BY_HEX["#ff6d00"],
+    };
+  }
   if (normalized === "transmitters") {
     return {
       id: "transmitters",

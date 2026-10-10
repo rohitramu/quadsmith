@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { Moon, Sun, Search, X, Loader2, Wand2 } from "lucide-react";
+import { Moon, Sun, Search, X, Loader2, Hammer } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { search } from "../gen/quadsmith/search-SearchService_connectquery";
@@ -247,19 +247,19 @@ export function Layout() {
               <ul className="space-y-1">
                 <li>
                   {(() => {
-                    const buildColor = getCollectionColor("builds");
+                    const forgeColor = getCollectionColor("the-forge");
                     return (
                       <Link
                         to="/builds/new"
                         className={`flex items-center justify-between px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
                           location.pathname === "/builds/new"
-                            ? `bg-zinc-200/70 dark:bg-zinc-800 ${buildColor.textClass} font-medium`
+                            ? `bg-zinc-200/70 dark:bg-zinc-800 ${forgeColor.textClass} font-medium`
                             : "text-zinc-700 dark:text-zinc-300"
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <Wand2 size={16} className={`${buildColor.textClass} shrink-0`} />
-                          <span>Build Wizard</span>
+                          <Hammer size={16} className={`${forgeColor.textClass} shrink-0`} />
+                          <span>The Forge</span>
                         </div>
                       </Link>
                     );
