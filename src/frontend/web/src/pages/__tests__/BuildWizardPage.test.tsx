@@ -43,7 +43,7 @@ describe("BuildWizardPage Component", () => {
     expect(headingContainer?.querySelector("svg")).toBeInTheDocument();
     expect(headingContainer?.querySelector("svg")).toHaveClass("text-[#FF6D00]");
     expect(screen.queryByText(/Interactive Build Wizard/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/• Stage/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/• (Stage|Step)/i)).not.toBeInTheDocument();
 
     // Step 0 active, Step 1 unlocked (0/3), steps 2-4 disabled
     expect(screen.getByText("Template Selection")).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByRole("button", { name: /step 3/i })).toBeDisabled();
     expect(screen.getByRole("button", { name: /step 4/i })).toBeDisabled();
 
-    // Stage 0 baseline options
+    // Step 0 baseline options
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
     expect(screen.queryByText("Start from Scratch")).not.toBeInTheDocument();
     // Initial dry weight is 0.0g across evaluator and selected parts list
@@ -67,7 +67,7 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Stage 1
+    // Advance to Step 1
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
     const searchInput = await screen.findByPlaceholderText(
@@ -88,11 +88,11 @@ describe("BuildWizardPage Component", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("allows selecting Stage 1 parts, dynamically updates motor count, and unlocks Stage 2", async () => {
+  it("allows selecting Step 1 parts, dynamically updates motor count, and unlocks Step 2", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Stage 1
+    // Advance to Step 1
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
     // 1A. Select Frame
@@ -116,7 +116,7 @@ describe("BuildWizardPage Component", () => {
     const nextBtn = screen.getByRole("button", { name: /Next: Flight Electronics/i });
     expect(nextBtn).toBeEnabled();
 
-    // Advance to Stage 2
+    // Advance to Step 2
     await user.click(nextBtn);
     expect(await screen.findByText("2A. Flight Controller")).toBeInTheDocument();
   });
@@ -125,15 +125,15 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Stage 1
+    // Advance to Step 1
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
-    // Select Stage 1 parts
+    // Select Step 1 parts
     await user.click(await screen.findByText("Master 5 V2"));
     await user.click(await screen.findByText("ECO II 2207"));
     await user.click(await screen.findByText("Hurricane 51433"));
 
-    // Go to Stage 2
+    // Go to Step 2
     await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
 
     // Select standalone FC (F405 V4)
@@ -175,27 +175,27 @@ describe("BuildWizardPage Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("handles Stage 2 RX antenna & GPS and Stage 3 Video optional components with 'Set All to None'", async () => {
+  it("handles Step 2 RX antenna & GPS and Step 3 Video optional components with 'Set All to None'", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Stage 1
+    // Advance to Step 1
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
-    // Complete Stage 1
+    // Complete Step 1
     await user.click(await screen.findByText("Master 5 V2"));
     await user.click(await screen.findByText("ECO II 2207"));
     await user.click(await screen.findByText("Hurricane 51433"));
     await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
 
-    // Verify Stage 2 sections: 2A FC, 2B ESC, 2C RX, 2D RX Antenna, 2E GPS
+    // Verify Step 2 sections: 2A FC, 2B ESC, 2C RX, 2D RX Antenna, 2E GPS
     expect(await screen.findByText("2A. Flight Controller")).toBeInTheDocument();
     expect(screen.getByText("2B. Electronic Speed Controller (ESC)")).toBeInTheDocument();
     expect(screen.getByText("2C. Radio Control Receiver")).toBeInTheDocument();
     expect(screen.getByText("2D. Radio Receiver Antenna(s)")).toBeInTheDocument();
     expect(screen.getByText("2E. GPS Receiver & Compass")).toBeInTheDocument();
 
-    // Select Stage 2 components
+    // Select Step 2 components
     await user.click(screen.getByText("F405 V4 FC"));
     await user.click(screen.getByText("SpeedyBee 50A 4-in-1 ESC"));
     await user.click(screen.getByText("Crossfire Nano RX"));
@@ -208,16 +208,16 @@ describe("BuildWizardPage Component", () => {
     await user.click(divBtn);
     expect(screen.getByText(/2x Selected \(Diversity\)/i)).toBeInTheDocument();
 
-    // Select GPS in Stage 2
+    // Select GPS in Step 2
     const gpsCard = await screen.findByText(/M8Q-5883/i);
     await user.click(gpsCard);
 
-    // Advance to Stage 3 (Video)
+    // Advance to Step 3 (Video)
     const nextBtn = screen.getByRole("button", { name: /Next: Video/i });
     expect(nextBtn).toBeEnabled();
     await user.click(nextBtn);
 
-    // Verify Stage 3 Video sections: 3A VTX, 3B Camera, 3C Video Transmitter Antenna(s)
+    // Verify Step 3 Video sections: 3A VTX, 3B Camera, 3C Video Transmitter Antenna(s)
     expect(
       await screen.findByText(/All video components in Step 3 are optional/i),
     ).toBeInTheDocument();
@@ -235,7 +235,7 @@ describe("BuildWizardPage Component", () => {
     const skipAllBtn = screen.getByRole("button", { name: /Set All to None/i });
     await user.click(skipAllBtn);
 
-    // Verify explicit None selections in Stage 3
+    // Verify explicit None selections in Step 3
     expect(screen.getByText("No VTX (None)")).toBeInTheDocument();
     expect(screen.getByText("No Camera (None)")).toBeInTheDocument();
     expect(screen.getByText("No Antenna (None)")).toBeInTheDocument();
@@ -264,29 +264,29 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("+0g")).toBeInTheDocument();
   });
 
-  it("allows selecting a template in Stage 0, reviewing BOM in Stage 4, and saving the build to PostgreSQL", async () => {
+  it("allows selecting a template in Step 0, reviewing BOM in Step 4, and saving the build to PostgreSQL", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // In Stage 0, select "Bando Basher 5 inch" template
+    // In Step 0, select "Bando Basher 5 inch" template
     const templateCard = await screen.findByText("Bando Basher 5 inch");
     await user.click(templateCard);
 
-    // Template should be active and Stages 1-4 unlocked
+    // Template should be active and Steps 1-4 unlocked
     expect(screen.getByText("Template Active")).toBeInTheDocument();
 
-    // All stages 0 to 4 in the stage bar should become marked as Done
-    const stageNav = screen.getByRole("navigation", { name: "Build Steps" });
-    const stageTabs = within(stageNav).getAllByRole("button");
-    expect(stageTabs).toHaveLength(5);
-    for (const tab of stageTabs) {
+    // All steps 0 to 4 in the step bar should become marked as Done
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const stepTabs = within(stepNav).getAllByRole("button");
+    expect(stepTabs).toHaveLength(5);
+    for (const tab of stepTabs) {
       expect(tab).toHaveTextContent("Done");
     }
 
     // Navigate to Step 4 (Review & Save)
-    const stage4Tab = within(stageNav).getByRole("button", { name: /Step 4/i });
-    expect(stage4Tab).toBeEnabled();
-    await user.click(stage4Tab);
+    const step4Tab = within(stepNav).getByRole("button", { name: /Step 4/i });
+    expect(step4Tab).toBeEnabled();
+    await user.click(step4Tab);
 
     // Check BOM items populated from template
     expect(await screen.findByText(/Bill of Materials \(BOM\)/i)).toBeInTheDocument();
@@ -311,14 +311,14 @@ describe("BuildWizardPage Component", () => {
       },
     });
 
-    // Select template in Stage 0
+    // Select template in Step 0
     const templateCards = await screen.findAllByText("Bando Basher 5 inch");
     await user.click(templateCards[0]);
 
     // Navigate to Step 4 (Review & Save)
-    const stageNav = screen.getByRole("navigation", { name: "Build Steps" });
-    const stage4Tab = within(stageNav).getByRole("button", { name: /Step 4/i });
-    await user.click(stage4Tab);
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const step4Tab = within(stepNav).getByRole("button", { name: /Step 4/i });
+    await user.click(step4Tab);
 
     // Change build name to one that generates -copy1
     const nameInput = screen.getByPlaceholderText(/e\.g\. My Freestyle 5-Inch/i);
@@ -334,16 +334,16 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByTestId("saved-build-id")).toHaveTextContent("bando-basher-5-inch-copy2");
   });
 
-  it("resets all wizard selections and returns to Stage 0 on Reset button click", async () => {
+  it("resets all wizard selections and returns to Step 0 on Reset button click", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Select template in Stage 0
+    // Select template in Step 0
     const templateCard = await screen.findByText("Bando Basher 5 inch");
     await user.click(templateCard);
     expect(screen.getByText("Template Active")).toBeInTheDocument();
 
-    // Advance to Stage 1
+    // Advance to Step 1
     await user.click(screen.getByRole("button", { name: /Next: Airframe & Propulsion/i }));
     expect(screen.getByText("1A. Frame Chassis")).toBeInTheDocument();
 
@@ -352,7 +352,7 @@ describe("BuildWizardPage Component", () => {
     const resetBtn = screen.getByRole("button", { name: /Reset/i });
     await user.click(resetBtn);
 
-    // Should return to Stage 0 baseline selection
+    // Should return to Step 0 baseline selection
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
     expect(screen.getAllByText("0.0g").length).toBeGreaterThanOrEqual(1);
   });
@@ -367,7 +367,7 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Stage 1
+    // Advance to Step 1
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
     // Select Frame (Master 5 V2 - 130mm max prop size)
@@ -505,20 +505,20 @@ describe("BuildWizardPage Component", () => {
       const user = userEvent.setup();
       renderWizard();
 
-      // Advance to Stage 1 and select Frame, Motor, Prop
+      // Advance to Step 1 and select Frame, Motor, Prop
       await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
       await user.click(await screen.findByText("Master 5 V2"));
       await user.click(await screen.findByText("ECO II 2207"));
       await user.click(await screen.findByText("Hurricane 51433"));
 
-      // Advance to Stage 2
+      // Advance to Step 2
       await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
 
       // Select FC and ESC
       await user.click(screen.getByText("F405 V4 FC"));
       await user.click(screen.getByText("SpeedyBee 50A 4-in-1 ESC"));
 
-      // 1. Initial State in Stage 2 before RX is selected:
+      // 1. Initial State in Step 2 before RX is selected:
       // "No External Antenna (None)" should be locked
       const noneAntCard = screen
         .getByText("No External Antenna (None)")
@@ -576,7 +576,7 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Stage 1
+    // Advance to Step 1
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
 
     // Mock scrollIntoView

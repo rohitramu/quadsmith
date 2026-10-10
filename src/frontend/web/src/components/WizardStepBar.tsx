@@ -1,68 +1,68 @@
 import { Check } from "lucide-react";
 
-export interface WizardStageBarProps {
-  currentStage: number;
-  unlockedStages: number[];
-  stageCompletion: {
+export interface WizardStepBarProps {
+  currentStep: number;
+  unlockedSteps: number[];
+  stepCompletion: {
     0: boolean;
     1: boolean;
     2: boolean;
     3: boolean;
     4: boolean;
   };
-  stageProgressText: {
+  stepProgressText: {
     0: string;
     1: string;
     2: string;
     3: string;
     4: string;
   };
-  onSelectStage: (stage: number) => void;
+  onSelectStep: (step: number) => void;
 }
 
-const STAGES = [
+const STEPS = [
   {
-    stage: 0,
+    step: 0,
     title: "Template Selection",
     subtitle: "Scratch or Template",
   },
   {
-    stage: 1,
+    step: 1,
     title: "Airframe & Propulsion",
     subtitle: "Frame, Motors, Props",
   },
   {
-    stage: 2,
+    step: 2,
     title: "Flight Electronics",
     subtitle: "FC, ESC, RX, GPS",
   },
   {
-    stage: 3,
+    step: 3,
     title: "Video",
     subtitle: "VTX, Camera & Antenna",
   },
   {
-    stage: 4,
+    step: 4,
     title: "Review & Save",
     subtitle: "BOM & Database Save",
   },
 ];
 
-export function WizardStageBar({
-  currentStage,
-  unlockedStages,
-  stageCompletion,
-  stageProgressText,
-  onSelectStage,
-}: WizardStageBarProps) {
+export function WizardStepBar({
+  currentStep,
+  unlockedSteps,
+  stepCompletion,
+  stepProgressText,
+  onSelectStep,
+}: WizardStepBarProps) {
   return (
     <nav aria-label="Build Steps" className="w-full">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
-        {STAGES.map((s) => {
-          const isActive = currentStage === s.stage;
-          const isUnlocked = unlockedStages.includes(s.stage);
-          const isComplete = stageCompletion[s.stage as 0 | 1 | 2 | 3 | 4];
-          const progress = stageProgressText[s.stage as 0 | 1 | 2 | 3 | 4];
+        {STEPS.map((s) => {
+          const isActive = currentStep === s.step;
+          const isUnlocked = unlockedSteps.includes(s.step);
+          const isComplete = stepCompletion[s.step as 0 | 1 | 2 | 3 | 4];
+          const progress = stepProgressText[s.step as 0 | 1 | 2 | 3 | 4];
 
           let borderClass = "border-zinc-200 dark:border-zinc-800";
           let bgClass = "bg-white dark:bg-zinc-900";
@@ -86,11 +86,11 @@ export function WizardStageBar({
 
           return (
             <button
-              key={s.stage}
+              key={s.step}
               type="button"
               disabled={!isUnlocked}
               onClick={() => {
-                if (isUnlocked) onSelectStage(s.stage);
+                if (isUnlocked) onSelectStep(s.step);
               }}
               className={`text-left p-3.5 rounded-xl border transition-all relative ${borderClass} ${bgClass} ${cursorClass}`}
             >
@@ -104,7 +104,7 @@ export function WizardStageBar({
                         : "text-zinc-400 dark:text-zinc-500"
                   }`}
                 >
-                  Step {s.stage}
+                  Step {s.step}
                 </span>
 
                 {isComplete ? (
