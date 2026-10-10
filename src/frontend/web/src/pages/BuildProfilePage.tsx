@@ -26,7 +26,7 @@ import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/fo
 import { getHardwareCollection, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "../components/CollectionBadge";
-import { SocialLinkPreviewCard } from "../components/SocialLinkPreviewCard";
+import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { ProductHoverCard } from "../components/ProductHoverCard";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
@@ -888,11 +888,7 @@ export function BuildProfilePage() {
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">
             Reference Links & Documentation
           </h2>
-          <div className="flex flex-col gap-2.5">
-            {build.referenceLinks.map((link, idx) => (
-              <SocialLinkPreviewCard key={idx} link={link} />
-            ))}
-          </div>
+          <ReferenceLinksList links={build.referenceLinks} />
         </section>
       )}
 

@@ -3,6 +3,8 @@ import { screen, waitFor } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import {
   SocialLinkPreviewCard,
+  ReferenceLinksList,
+  consolidateReferenceLinks,
   validateReferenceLink,
   validateReferenceLinks,
 } from "../SocialLinkPreviewCard";
@@ -143,6 +145,73 @@ describe("SocialLinkPreviewCard", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Review")).toBeInTheDocument();
+    });
+  });
+
+  describe("consolidateReferenceLinks", () => {
+    it("merges multiple link entries with the same URL into a single link with multiple types", () => {
+      const rawLinks = [
+        {
+          types: [ReferenceLinkType.PRODUCT_PAGE],
+          url: "https://example.com/quad-frame",
+        },
+        {
+          types: [ReferenceLinkType.PURCHASE],
+          url: "https://example.com/quad-frame/",
+        },
+      ];
+
+      const consolidated = consolidateReferenceLinks(rawLinks);
+      expect(consolidated).toHaveLength(1);
+      expect(consolidated[0].url).toBe("https://example.com/quad-frame");
+      expect(consolidated[0].types).toEqual([
+        ReferenceLinkType.PRODUCT_PAGE,
+        ReferenceLinkType.PURCHASE,
+      ]);
+    });
+
+    it("keeps distinct URLs separate", () => {
+      const rawLinks = [
+        {
+          types: [ReferenceLinkType.PRODUCT_PAGE],
+          url: "https://example.com/product",
+        },
+        {
+          types: [ReferenceLinkType.DOCUMENTATION],
+          url: "https://docs.example.com",
+        },
+      ];
+
+      const consolidated = consolidateReferenceLinks(rawLinks);
+      expect(consolidated).toHaveLength(2);
+    });
+  });
+
+  describe("ReferenceLinksList", () => {
+    it("renders multiple chips on a single card instead of splitting same-URL links into separate cards", async () => {
+      const rawLinks = [
+        {
+          types: [ReferenceLinkType.PRODUCT_PAGE],
+          url: "https://example.com/pavo20",
+        },
+        {
+          types: [ReferenceLinkType.PURCHASE],
+          url: "https://example.com/pavo20",
+        },
+      ];
+
+      renderWithProviders(<ReferenceLinksList links={rawLinks} />);
+
+      await waitFor(() => {
+        // Both chips are rendered
+        expect(screen.getByText("Official Product Page")).toBeInTheDocument();
+        expect(screen.getByText("Purchase")).toBeInTheDocument();
+      });
+
+      // Crucially, only ONE link card (<a> element) is rendered, NOT two!
+      const cards = screen.getAllByRole("link");
+      expect(cards).toHaveLength(1);
+      expect(cards[0]).toHaveAttribute("href", "https://example.com/pavo20");
     });
   });
 });

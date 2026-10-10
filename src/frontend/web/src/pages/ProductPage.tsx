@@ -8,7 +8,7 @@ import {
 } from "../lib/hardwareCollections";
 import { CollectionBadge } from "../components/CollectionBadge";
 import { MediaGallery } from "../components/MediaGallery";
-import { SocialLinkPreviewCard } from "../components/SocialLinkPreviewCard";
+import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { formatProductTitle } from "../lib/format";
 
@@ -147,11 +147,7 @@ function ProductDetailView({
               <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
                 Reference Links
               </h2>
-              <div className="flex flex-col gap-2.5">
-                {item.referenceLinks.map((link: any, idx: number) => (
-                  <SocialLinkPreviewCard key={idx} link={link} />
-                ))}
-              </div>
+              <ReferenceLinksList links={item.referenceLinks} />
             </div>
           )}
         </>

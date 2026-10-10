@@ -76,6 +76,65 @@ export function validateReferenceLinks(
   }
 }
 
+export function consolidateReferenceLinks<
+  T extends {
+    url?: string;
+    types?: (ReferenceLinkType | number)[];
+    type?: ReferenceLinkType | number;
+  },
+>(links?: T[] | null): T[] {
+  if (!links || links.length === 0) return [];
+
+  const map = new Map<string, T>();
+
+  for (const link of links) {
+    if (!link || !link.url) continue;
+    const normUrl = link.url.trim().replace(/\/+$/, "").toLowerCase();
+
+    const rawTypes: number[] = [];
+    if (Array.isArray(link.types)) {
+      rawTypes.push(...link.types);
+    }
+    if (link.type !== undefined && link.type !== null) {
+      rawTypes.push(link.type);
+    }
+    const validTypes = rawTypes.filter((t) => t !== ReferenceLinkType.UNSPECIFIED && t !== 0);
+
+    const existing = map.get(normUrl);
+    if (!existing) {
+      map.set(normUrl, {
+        ...link,
+        types: validTypes,
+      });
+    } else {
+      const existingTypes = Array.isArray(existing.types) ? existing.types : [];
+      const merged = Array.from(new Set([...existingTypes, ...validTypes]));
+      existing.types = merged;
+    }
+  }
+
+  return Array.from(map.values());
+}
+
+export function ReferenceLinksList({
+  links,
+  className = "",
+}: {
+  links?: any[] | null;
+  className?: string;
+}) {
+  const consolidated = consolidateReferenceLinks(links);
+  if (!consolidated || consolidated.length === 0) return null;
+
+  return (
+    <div className={`flex flex-col gap-2.5 ${className}`}>
+      {consolidated.map((link, idx) => (
+        <SocialLinkPreviewCard key={link.url || idx} link={link} />
+      ))}
+    </div>
+  );
+}
+
 export interface SocialLinkPreviewCardProps {
   link:
     | ReferenceLink
@@ -111,13 +170,17 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
   }
 
   const rawLink = link as { types?: number[]; type?: number };
-  const rawList = Array.isArray(rawLink.types)
-    ? rawLink.types
-    : rawLink.type !== undefined && rawLink.type !== null
-      ? [rawLink.type]
-      : [];
+  const rawList: number[] = [];
+  if (Array.isArray(rawLink.types)) {
+    rawList.push(...rawLink.types);
+  }
+  if (rawLink.type !== undefined && rawLink.type !== null) {
+    rawList.push(rawLink.type);
+  }
 
-  const linkTypes: number[] = rawList.filter((t) => t !== ReferenceLinkType.UNSPECIFIED && t !== 0);
+  const linkTypes: number[] = Array.from(
+    new Set(rawList.filter((t) => t !== ReferenceLinkType.UNSPECIFIED && t !== 0)),
+  );
   const isInferredOther = linkTypes.length === 0;
 
   const title = preview?.title || hostname;
@@ -148,13 +211,13 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
       {/* Main Content Info */}
       <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0">
         <div>
-          {/* Header Row: Badge, Site Favicon/Host, External Icon */}
+          {/* Header Row: Badge Chips, Site Favicon/Host, External Icon */}
           <div className="flex items-center justify-between gap-2 mb-1.5">
             <div className="flex items-center gap-2 min-w-0">
               <div className="flex flex-wrap items-center gap-1.5 shrink-0">
                 {isInferredOther ? (
                   <span
-                    className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${OTHER_STYLE} shrink-0`}
+                    className={`inline-flex items-center px-2.5 py-0.5 text-xs font-semibold rounded-full border ${OTHER_STYLE} shrink-0`}
                   >
                     {OTHER_LABEL}
                   </span>
@@ -165,7 +228,7 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
                     return (
                       <span
                         key={idx}
-                        className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${badgeStyle} shrink-0`}
+                        className={`inline-flex items-center px-2.5 py-0.5 text-xs font-semibold rounded-full border ${badgeStyle} shrink-0`}
                       >
                         {label}
                       </span>
