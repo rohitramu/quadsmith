@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "antenna.proto";
+import "battery.proto";
+import "camera.proto";
+import "electronic_speed_controller.proto";
+import "flight_controller.proto";
+import "frame.proto";
+import "gps_receiver.proto";
+import "motor.proto";
+import "propeller.proto";
+import "receiver.proto";
+import "video_transmitter.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+message AssembledComponents {
+  Frame frame = 1;
+  Motor motor = 2;
+  Battery battery = 3;
+  FlightController flight_controller = 4;
+  Propeller propeller = 5;
+  repeated ElectronicSpeedController electronic_speed_controllers = 6;
+  repeated Receiver receivers = 7;
+  repeated Antenna antennas = 8;
+  repeated Camera cameras = 9;
+  VideoTransmitter video_transmitter = 10;
+  GpsReceiver gps_receiver = 11;
+}

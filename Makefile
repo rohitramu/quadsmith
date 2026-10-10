@@ -33,6 +33,9 @@ build: generate
 	@echo "--- Generating shell completions to bin/ ---"
 	@./bin/qs completion bash > bin/completion.bash || true
 	@./bin/qs completion zsh > bin/completion.zsh || true
+	@echo "--- Building WebAssembly Core Engine ---"
+	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/public/wasm_exec.js
+	@GOOS=js GOARCH=wasm go build -mod=vendor -o src/frontend/web/public/quadsmith-engine.wasm ./src/backend/api/cmd/wasm/main.go
 	@echo "--- Building Web UI ---"
 	@cd src/frontend/web && npm run build
 	@$(MAKE) --no-print-directory warn-breaking

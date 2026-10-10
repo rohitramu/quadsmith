@@ -19,13 +19,20 @@ import { listAntennas } from "../gen/quadsmith/antenna-AntennaService_connectque
 import { listGpsReceivers } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
 import { listBatteries } from "../gen/quadsmith/battery-BatteryService_connectquery";
 
-// ConnectQuery hooks for evaluator & compatibility
 import {
   evaluateBuild,
   getBuildElectricalLimits,
 } from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
 import { checkCompatibility } from "../gen/quadsmith/compatibility-CompatibilityService_connectquery";
 import { createBuild, listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
+import { wasmEngine, useWasmEngine } from "../lib/wasmEngine";
+import { WasmLoadingIndicator } from "../components/WasmLoadingIndicator";
+import { AssembledComponentsSchema } from "../gen/quadsmith/components_pb";
+import {
+  EvaluateComponentsRequestSchema,
+  GetComponentsElectricalLimitsRequestSchema,
+} from "../gen/quadsmith/evaluator_pb";
+import { CheckComponentsCompatibilityRequestSchema } from "../gen/quadsmith/compatibility_pb";
 
 // Protobuf types
 import { BuildSchema, type Build } from "../gen/quadsmith/build_pb";
@@ -442,12 +449,143 @@ export function BuildWizardPage() {
     buildDesc,
   ]);
 
-  // Evaluator queries
-  const { data: electricalLimits } = useQuery(
+  // Active Battery
+  const activeBattery = useMemo(() => {
+    return batteries.find((b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId);
+  }, [batteries, selectedBatteryId]);
+
+  // WASM Engine Integration
+  const {
+    isReady: isWasmReady,
+    isDelayed: isWasmDelayed,
+    progress: wasmProgress,
+  } = useWasmEngine();
+
+  // Construct AssembledComponents for WASM
+  const assembledComponents = useMemo(() => {
+    return create(AssembledComponentsSchema, {
+      frame: selectedFrame || undefined,
+      motor: selectedMotor || undefined,
+      propeller: selectedProp || undefined,
+      battery: activeBattery || undefined,
+      flightController: selectedFc || undefined,
+      electronicSpeedControllers:
+        selectedEsc && !useIntegratedEsc && !noneSelections.esc
+          ? [selectedEsc]
+          : integratedEsc
+            ? [integratedEsc]
+            : [],
+      videoTransmitter: useIntegratedVtx
+        ? integratedVtx || undefined
+        : selectedVtx && !noneSelections.vtx
+          ? selectedVtx
+          : undefined,
+      cameras: selectedCam && !noneSelections.camera ? [selectedCam] : [],
+      receivers: useIntegratedRx
+        ? integratedRx
+          ? [integratedRx]
+          : []
+        : selectedRx
+          ? [selectedRx]
+          : [],
+      antennas: [
+        ...(selectedRxAnt && !noneSelections.rxAntenna
+          ? Array(rxAntCount).fill(selectedRxAnt)
+          : []),
+        ...(selectedVtxAnt && !noneSelections.vtxAntenna
+          ? Array(vtxAntCount).fill(selectedVtxAnt)
+          : []),
+      ],
+      gpsReceiver: selectedGps && !noneSelections.gps ? selectedGps : undefined,
+    });
+  }, [
+    selectedFrame,
+    selectedMotor,
+    selectedProp,
+    activeBattery,
+    selectedFc,
+    selectedEsc,
+    useIntegratedEsc,
+    integratedEsc,
+    selectedVtx,
+    useIntegratedVtx,
+    integratedVtx,
+    selectedCam,
+    selectedRx,
+    useIntegratedRx,
+    integratedRx,
+    selectedRxAnt,
+    rxAntCount,
+    selectedVtxAnt,
+    vtxAntCount,
+    selectedGps,
+    noneSelections,
+  ]);
+
+  // WASM Real-Time Evaluations
+  const wasmEvaluation = useMemo(() => {
+    if (!isWasmReady || !selectedFrame || !selectedMotor || !selectedProp || !activeBattery) {
+      return null;
+    }
+    try {
+      return wasmEngine.evaluateComponents(
+        create(EvaluateComponentsRequestSchema, {
+          components: assembledComponents,
+          payloadWeightG,
+        }),
+      );
+    } catch {
+      return null;
+    }
+  }, [
+    isWasmReady,
+    assembledComponents,
+    payloadWeightG,
+    selectedFrame,
+    selectedMotor,
+    selectedProp,
+    activeBattery,
+  ]);
+
+  const wasmElectricalLimits = useMemo(() => {
+    if (!isWasmReady || (!selectedFc && !selectedMotor && !selectedEsc)) {
+      return null;
+    }
+    try {
+      return wasmEngine.computeElectricalLimits(
+        create(GetComponentsElectricalLimitsRequestSchema, {
+          components: assembledComponents,
+          candidateBatteries: batteries,
+        }),
+      );
+    } catch {
+      return null;
+    }
+  }, [isWasmReady, assembledComponents, batteries, selectedFc, selectedMotor, selectedEsc]);
+
+  const wasmCompatibility = useMemo(() => {
+    if (!isWasmReady || !selectedFrame) {
+      return null;
+    }
+    try {
+      return wasmEngine.checkCompatibility(
+        create(CheckComponentsCompatibilityRequestSchema, {
+          components: assembledComponents,
+        }),
+      );
+    } catch {
+      return null;
+    }
+  }, [isWasmReady, assembledComponents, selectedFrame]);
+
+  // Evaluator queries (fallback if WASM is not yet ready)
+  const { data: queryElectricalLimits } = useQuery(
     getBuildElectricalLimits,
     { buildSource: { case: "build", value: draftBuild! } },
-    { enabled: !!draftBuild },
+    { enabled: !!draftBuild && !wasmElectricalLimits },
   );
+
+  const electricalLimits = wasmElectricalLimits || queryElectricalLimits;
 
   // Auto-select lightest compatible battery when limits arrive or batteries change
   useEffect(() => {
@@ -460,11 +598,7 @@ export function BuildWizardPage() {
     }
   }, [electricalLimits, batteries, selectedBatteryId]);
 
-  const activeBattery = useMemo(() => {
-    return batteries.find((b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId);
-  }, [batteries, selectedBatteryId]);
-
-  const { data: evaluation } = useQuery(
+  const { data: queryEvaluation } = useQuery(
     evaluateBuild,
     {
       buildSource: { case: "build", value: draftBuild! },
@@ -472,15 +606,19 @@ export function BuildWizardPage() {
       batteryId: selectedBatteryId,
     },
     {
-      enabled: !!draftBuild && !!selectedBatteryId,
+      enabled: !!draftBuild && !!selectedBatteryId && !wasmEvaluation,
     },
   );
 
-  const { data: compatibilityData } = useQuery(
+  const evaluation = wasmEvaluation || queryEvaluation;
+
+  const { data: queryCompatibilityData } = useQuery(
     checkCompatibility,
     { build: draftBuild! },
-    { enabled: !!draftBuild },
+    { enabled: !!draftBuild && !wasmCompatibility },
   );
+
+  const compatibilityData = wasmCompatibility || queryCompatibilityData;
 
   // Mutation for creating the build
   const { mutateAsync: saveBuildMutation, isPending: isSaving } = useMutation(createBuild);
@@ -2770,6 +2908,10 @@ export function BuildWizardPage() {
             </span>
           </div>
 
+          {isWasmDelayed && !isWasmReady && (
+            <WasmLoadingIndicator progress={wasmProgress} className="mb-2" />
+          )}
+
           <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white dark:from-zinc-900 to-zinc-50 dark:to-zinc-950 p-4 space-y-4 shadow-lg">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
@@ -2779,7 +2921,13 @@ export function BuildWizardPage() {
                   Live Build Evaluator
                 </h3>
               </div>
-              <span className="text-[11px] font-mono text-zinc-400">Physics Engine</span>
+              {isWasmReady ? (
+                <span className="text-[10px] font-mono font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                  WASM (0ms)
+                </span>
+              ) : (
+                <span className="text-[11px] font-mono text-zinc-400">Physics Engine</span>
+              )}
             </div>
 
             {/* Test Battery Selection */}

@@ -65,6 +65,146 @@ func (x *CheckCompatibilityRequest) GetBuild() *Build {
 	return nil
 }
 
+type CheckComponentsCompatibilityRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Components    *AssembledComponents   `protobuf:"bytes,1,opt,name=components,proto3" json:"components,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckComponentsCompatibilityRequest) Reset() {
+	*x = CheckComponentsCompatibilityRequest{}
+	mi := &file_compatibility_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckComponentsCompatibilityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckComponentsCompatibilityRequest) ProtoMessage() {}
+
+func (x *CheckComponentsCompatibilityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_compatibility_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckComponentsCompatibilityRequest.ProtoReflect.Descriptor instead.
+func (*CheckComponentsCompatibilityRequest) Descriptor() ([]byte, []int) {
+	return file_compatibility_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CheckComponentsCompatibilityRequest) GetComponents() *AssembledComponents {
+	if x != nil {
+		return x.Components
+	}
+	return nil
+}
+
+type GenerateCelFilterRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TargetCollection string                 `protobuf:"bytes,1,opt,name=target_collection,json=targetCollection,proto3" json:"target_collection,omitempty"`
+	Components       *AssembledComponents   `protobuf:"bytes,2,opt,name=components,proto3" json:"components,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *GenerateCelFilterRequest) Reset() {
+	*x = GenerateCelFilterRequest{}
+	mi := &file_compatibility_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateCelFilterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateCelFilterRequest) ProtoMessage() {}
+
+func (x *GenerateCelFilterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_compatibility_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateCelFilterRequest.ProtoReflect.Descriptor instead.
+func (*GenerateCelFilterRequest) Descriptor() ([]byte, []int) {
+	return file_compatibility_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GenerateCelFilterRequest) GetTargetCollection() string {
+	if x != nil {
+		return x.TargetCollection
+	}
+	return ""
+}
+
+func (x *GenerateCelFilterRequest) GetComponents() *AssembledComponents {
+	if x != nil {
+		return x.Components
+	}
+	return nil
+}
+
+type GenerateCelFilterResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GenerateCelFilterResponse) Reset() {
+	*x = GenerateCelFilterResponse{}
+	mi := &file_compatibility_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GenerateCelFilterResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GenerateCelFilterResponse) ProtoMessage() {}
+
+func (x *GenerateCelFilterResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_compatibility_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GenerateCelFilterResponse.ProtoReflect.Descriptor instead.
+func (*GenerateCelFilterResponse) Descriptor() ([]byte, []int) {
+	return file_compatibility_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GenerateCelFilterResponse) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
 type CheckCompatibilityResponse struct {
 	state         protoimpl.MessageState  `protogen:"open.v1"`
 	Messages      []*CompatibilityMessage `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
@@ -74,7 +214,7 @@ type CheckCompatibilityResponse struct {
 
 func (x *CheckCompatibilityResponse) Reset() {
 	*x = CheckCompatibilityResponse{}
-	mi := &file_compatibility_proto_msgTypes[1]
+	mi := &file_compatibility_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -86,7 +226,7 @@ func (x *CheckCompatibilityResponse) String() string {
 func (*CheckCompatibilityResponse) ProtoMessage() {}
 
 func (x *CheckCompatibilityResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_compatibility_proto_msgTypes[1]
+	mi := &file_compatibility_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -99,7 +239,7 @@ func (x *CheckCompatibilityResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckCompatibilityResponse.ProtoReflect.Descriptor instead.
 func (*CheckCompatibilityResponse) Descriptor() ([]byte, []int) {
-	return file_compatibility_proto_rawDescGZIP(), []int{1}
+	return file_compatibility_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CheckCompatibilityResponse) GetMessages() []*CompatibilityMessage {
@@ -123,7 +263,7 @@ type CompatibilityMessage struct {
 
 func (x *CompatibilityMessage) Reset() {
 	*x = CompatibilityMessage{}
-	mi := &file_compatibility_proto_msgTypes[2]
+	mi := &file_compatibility_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -135,7 +275,7 @@ func (x *CompatibilityMessage) String() string {
 func (*CompatibilityMessage) ProtoMessage() {}
 
 func (x *CompatibilityMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_compatibility_proto_msgTypes[2]
+	mi := &file_compatibility_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -148,7 +288,7 @@ func (x *CompatibilityMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompatibilityMessage.ProtoReflect.Descriptor instead.
 func (*CompatibilityMessage) Descriptor() ([]byte, []int) {
-	return file_compatibility_proto_rawDescGZIP(), []int{2}
+	return file_compatibility_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CompatibilityMessage) GetCheckerName() string {
@@ -197,9 +337,20 @@ var File_compatibility_proto protoreflect.FileDescriptor
 
 const file_compatibility_proto_rawDesc = "" +
 	"\n" +
-	"\x13compatibility.proto\x12\fquadsmith.v1\x1a\vbuild.proto\"C\n" +
+	"\x13compatibility.proto\x12\fquadsmith.v1\x1a\vbuild.proto\x1a\x10components.proto\"C\n" +
 	"\x19CheckCompatibilityRequest\x12&\n" +
-	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\"\\\n" +
+	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\"e\n" +
+	"#CheckComponentsCompatibilityRequest\x12>\n" +
+	"\n" +
+	"components\x18\x01 \x01(\v2\x1e.quadsmith.AssembledComponentsR\n" +
+	"components\"\x87\x01\n" +
+	"\x18GenerateCelFilterRequest\x12+\n" +
+	"\x11target_collection\x18\x01 \x01(\tR\x10targetCollection\x12>\n" +
+	"\n" +
+	"components\x18\x02 \x01(\v2\x1e.quadsmith.AssembledComponentsR\n" +
+	"components\"3\n" +
+	"\x19GenerateCelFilterResponse\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\"\\\n" +
 	"\x1aCheckCompatibilityResponse\x12>\n" +
 	"\bmessages\x18\x01 \x03(\v2\".quadsmith.v1.CompatibilityMessageR\bmessages\"\xdf\x01\n" +
 	"\x14CompatibilityMessage\x12!\n" +
@@ -212,9 +363,11 @@ const file_compatibility_proto_rawDesc = "" +
 	"\amessage\x18\x05 \x01(\tR\amessage\x12\x1e\n" +
 	"\n" +
 	"resolution\x18\x06 \x01(\tR\n" +
-	"resolution2\x81\x01\n" +
+	"resolution2\xe8\x02\n" +
 	"\x14CompatibilityService\x12i\n" +
-	"\x12CheckCompatibility\x12'.quadsmith.v1.CheckCompatibilityRequest\x1a(.quadsmith.v1.CheckCompatibilityResponse\"\x00B\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\x12CheckCompatibility\x12'.quadsmith.v1.CheckCompatibilityRequest\x1a(.quadsmith.v1.CheckCompatibilityResponse\"\x00\x12}\n" +
+	"\x1cCheckComponentsCompatibility\x121.quadsmith.v1.CheckComponentsCompatibilityRequest\x1a(.quadsmith.v1.CheckCompatibilityResponse\"\x00\x12f\n" +
+	"\x11GenerateCelFilter\x12&.quadsmith.v1.GenerateCelFilterRequest\x1a'.quadsmith.v1.GenerateCelFilterResponse\"\x00B\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_compatibility_proto_rawDescOnce sync.Once
@@ -228,23 +381,33 @@ func file_compatibility_proto_rawDescGZIP() []byte {
 	return file_compatibility_proto_rawDescData
 }
 
-var file_compatibility_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_compatibility_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_compatibility_proto_goTypes = []any{
-	(*CheckCompatibilityRequest)(nil),  // 0: quadsmith.v1.CheckCompatibilityRequest
-	(*CheckCompatibilityResponse)(nil), // 1: quadsmith.v1.CheckCompatibilityResponse
-	(*CompatibilityMessage)(nil),       // 2: quadsmith.v1.CompatibilityMessage
-	(*Build)(nil),                      // 3: quadsmith.Build
+	(*CheckCompatibilityRequest)(nil),           // 0: quadsmith.v1.CheckCompatibilityRequest
+	(*CheckComponentsCompatibilityRequest)(nil), // 1: quadsmith.v1.CheckComponentsCompatibilityRequest
+	(*GenerateCelFilterRequest)(nil),            // 2: quadsmith.v1.GenerateCelFilterRequest
+	(*GenerateCelFilterResponse)(nil),           // 3: quadsmith.v1.GenerateCelFilterResponse
+	(*CheckCompatibilityResponse)(nil),          // 4: quadsmith.v1.CheckCompatibilityResponse
+	(*CompatibilityMessage)(nil),                // 5: quadsmith.v1.CompatibilityMessage
+	(*Build)(nil),                               // 6: quadsmith.Build
+	(*AssembledComponents)(nil),                 // 7: quadsmith.AssembledComponents
 }
 var file_compatibility_proto_depIdxs = []int32{
-	3, // 0: quadsmith.v1.CheckCompatibilityRequest.build:type_name -> quadsmith.Build
-	2, // 1: quadsmith.v1.CheckCompatibilityResponse.messages:type_name -> quadsmith.v1.CompatibilityMessage
-	0, // 2: quadsmith.v1.CompatibilityService.CheckCompatibility:input_type -> quadsmith.v1.CheckCompatibilityRequest
-	1, // 3: quadsmith.v1.CompatibilityService.CheckCompatibility:output_type -> quadsmith.v1.CheckCompatibilityResponse
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	6, // 0: quadsmith.v1.CheckCompatibilityRequest.build:type_name -> quadsmith.Build
+	7, // 1: quadsmith.v1.CheckComponentsCompatibilityRequest.components:type_name -> quadsmith.AssembledComponents
+	7, // 2: quadsmith.v1.GenerateCelFilterRequest.components:type_name -> quadsmith.AssembledComponents
+	5, // 3: quadsmith.v1.CheckCompatibilityResponse.messages:type_name -> quadsmith.v1.CompatibilityMessage
+	0, // 4: quadsmith.v1.CompatibilityService.CheckCompatibility:input_type -> quadsmith.v1.CheckCompatibilityRequest
+	1, // 5: quadsmith.v1.CompatibilityService.CheckComponentsCompatibility:input_type -> quadsmith.v1.CheckComponentsCompatibilityRequest
+	2, // 6: quadsmith.v1.CompatibilityService.GenerateCelFilter:input_type -> quadsmith.v1.GenerateCelFilterRequest
+	4, // 7: quadsmith.v1.CompatibilityService.CheckCompatibility:output_type -> quadsmith.v1.CheckCompatibilityResponse
+	4, // 8: quadsmith.v1.CompatibilityService.CheckComponentsCompatibility:output_type -> quadsmith.v1.CheckCompatibilityResponse
+	3, // 9: quadsmith.v1.CompatibilityService.GenerateCelFilter:output_type -> quadsmith.v1.GenerateCelFilterResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_compatibility_proto_init() }
@@ -253,13 +416,14 @@ func file_compatibility_proto_init() {
 		return
 	}
 	file_build_proto_init()
+	file_components_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_compatibility_proto_rawDesc), len(file_compatibility_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

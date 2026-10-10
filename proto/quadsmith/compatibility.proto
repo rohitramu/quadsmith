@@ -3,11 +3,25 @@ syntax = "proto3";
 package quadsmith.v1;
 
 import "build.proto";
+import "components.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 
 message CheckCompatibilityRequest {
   Build build = 1;
+}
+
+message CheckComponentsCompatibilityRequest {
+  AssembledComponents components = 1;
+}
+
+message GenerateCelFilterRequest {
+  string target_collection = 1;
+  AssembledComponents components = 2;
+}
+
+message GenerateCelFilterResponse {
+  string filter = 1;
 }
 
 message CheckCompatibilityResponse {
@@ -25,4 +39,6 @@ message CompatibilityMessage {
 
 service CompatibilityService {
   rpc CheckCompatibility(CheckCompatibilityRequest) returns (CheckCompatibilityResponse) {}
+  rpc CheckComponentsCompatibility(CheckComponentsCompatibilityRequest) returns (CheckCompatibilityResponse) {}
+  rpc GenerateCelFilter(GenerateCelFilterRequest) returns (GenerateCelFilterResponse) {}
 }

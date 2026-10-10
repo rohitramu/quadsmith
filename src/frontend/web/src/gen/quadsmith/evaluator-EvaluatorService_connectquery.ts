@@ -13,3 +13,13 @@ export const evaluateBuild = EvaluatorService.method.evaluateBuild;
  * @generated from rpc quadsmith.EvaluatorService.GetBuildElectricalLimits
  */
 export const getBuildElectricalLimits = EvaluatorService.method.getBuildElectricalLimits;
+
+/**
+ * @generated from rpc quadsmith.EvaluatorService.EvaluateComponents
+ */
+export const evaluateComponents = EvaluatorService.method.evaluateComponents;
+
+/**
+ * @generated from rpc quadsmith.EvaluatorService.GetComponentsElectricalLimits
+ */
+export const getComponentsElectricalLimits = EvaluatorService.method.getComponentsElectricalLimits;

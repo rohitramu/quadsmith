@@ -82,3 +82,21 @@ func (s *CompatibilityServiceHandler) CheckCompatibility(ctx context.Context, re
 		Messages: messages,
 	}), nil
 }
+
+func (s *CompatibilityServiceHandler) CheckComponentsCompatibility(ctx context.Context, req *connect.Request[pb.CheckComponentsCompatibilityRequest]) (*connect.Response[pb.CheckCompatibilityResponse], error) {
+	comps := req.Msg.GetComponents()
+	if comps == nil {
+		comps = &pb.AssembledComponents{}
+	}
+	messages := CheckCompatibility(comps)
+	return connect.NewResponse(&pb.CheckCompatibilityResponse{
+		Messages: messages,
+	}), nil
+}
+
+func (s *CompatibilityServiceHandler) GenerateCelFilter(ctx context.Context, req *connect.Request[pb.GenerateCelFilterRequest]) (*connect.Response[pb.GenerateCelFilterResponse], error) {
+	filter := GenerateCelFilter(req.Msg.GetTargetCollection(), req.Msg.GetComponents())
+	return connect.NewResponse(&pb.GenerateCelFilterResponse{
+		Filter: filter,
+	}), nil
+}

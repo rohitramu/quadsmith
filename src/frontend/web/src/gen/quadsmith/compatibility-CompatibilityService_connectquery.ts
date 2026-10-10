@@ -8,3 +8,14 @@ import { CompatibilityService } from "./compatibility_pb";
  * @generated from rpc quadsmith.v1.CompatibilityService.CheckCompatibility
  */
 export const checkCompatibility = CompatibilityService.method.checkCompatibility;
+
+/**
+ * @generated from rpc quadsmith.v1.CompatibilityService.CheckComponentsCompatibility
+ */
+export const checkComponentsCompatibility =
+  CompatibilityService.method.checkComponentsCompatibility;
+
+/**
+ * @generated from rpc quadsmith.v1.CompatibilityService.GenerateCelFilter
+ */
+export const generateCelFilter = CompatibilityService.method.generateCelFilter;

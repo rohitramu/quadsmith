@@ -36,11 +36,19 @@ const (
 	// CompatibilityServiceCheckCompatibilityProcedure is the fully-qualified name of the
 	// CompatibilityService's CheckCompatibility RPC.
 	CompatibilityServiceCheckCompatibilityProcedure = "/quadsmith.v1.CompatibilityService/CheckCompatibility"
+	// CompatibilityServiceCheckComponentsCompatibilityProcedure is the fully-qualified name of the
+	// CompatibilityService's CheckComponentsCompatibility RPC.
+	CompatibilityServiceCheckComponentsCompatibilityProcedure = "/quadsmith.v1.CompatibilityService/CheckComponentsCompatibility"
+	// CompatibilityServiceGenerateCelFilterProcedure is the fully-qualified name of the
+	// CompatibilityService's GenerateCelFilter RPC.
+	CompatibilityServiceGenerateCelFilterProcedure = "/quadsmith.v1.CompatibilityService/GenerateCelFilter"
 )
 
 // CompatibilityServiceClient is a client for the quadsmith.v1.CompatibilityService service.
 type CompatibilityServiceClient interface {
 	CheckCompatibility(context.Context, *connect.Request[quadsmith.CheckCompatibilityRequest]) (*connect.Response[quadsmith.CheckCompatibilityResponse], error)
+	CheckComponentsCompatibility(context.Context, *connect.Request[quadsmith.CheckComponentsCompatibilityRequest]) (*connect.Response[quadsmith.CheckCompatibilityResponse], error)
+	GenerateCelFilter(context.Context, *connect.Request[quadsmith.GenerateCelFilterRequest]) (*connect.Response[quadsmith.GenerateCelFilterResponse], error)
 }
 
 // NewCompatibilityServiceClient constructs a client for the quadsmith.v1.CompatibilityService
@@ -60,12 +68,26 @@ func NewCompatibilityServiceClient(httpClient connect.HTTPClient, baseURL string
 			connect.WithSchema(compatibilityServiceMethods.ByName("CheckCompatibility")),
 			connect.WithClientOptions(opts...),
 		),
+		checkComponentsCompatibility: connect.NewClient[quadsmith.CheckComponentsCompatibilityRequest, quadsmith.CheckCompatibilityResponse](
+			httpClient,
+			baseURL+CompatibilityServiceCheckComponentsCompatibilityProcedure,
+			connect.WithSchema(compatibilityServiceMethods.ByName("CheckComponentsCompatibility")),
+			connect.WithClientOptions(opts...),
+		),
+		generateCelFilter: connect.NewClient[quadsmith.GenerateCelFilterRequest, quadsmith.GenerateCelFilterResponse](
+			httpClient,
+			baseURL+CompatibilityServiceGenerateCelFilterProcedure,
+			connect.WithSchema(compatibilityServiceMethods.ByName("GenerateCelFilter")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // compatibilityServiceClient implements CompatibilityServiceClient.
 type compatibilityServiceClient struct {
-	checkCompatibility *connect.Client[quadsmith.CheckCompatibilityRequest, quadsmith.CheckCompatibilityResponse]
+	checkCompatibility           *connect.Client[quadsmith.CheckCompatibilityRequest, quadsmith.CheckCompatibilityResponse]
+	checkComponentsCompatibility *connect.Client[quadsmith.CheckComponentsCompatibilityRequest, quadsmith.CheckCompatibilityResponse]
+	generateCelFilter            *connect.Client[quadsmith.GenerateCelFilterRequest, quadsmith.GenerateCelFilterResponse]
 }
 
 // CheckCompatibility calls quadsmith.v1.CompatibilityService.CheckCompatibility.
@@ -73,10 +95,23 @@ func (c *compatibilityServiceClient) CheckCompatibility(ctx context.Context, req
 	return c.checkCompatibility.CallUnary(ctx, req)
 }
 
+// CheckComponentsCompatibility calls
+// quadsmith.v1.CompatibilityService.CheckComponentsCompatibility.
+func (c *compatibilityServiceClient) CheckComponentsCompatibility(ctx context.Context, req *connect.Request[quadsmith.CheckComponentsCompatibilityRequest]) (*connect.Response[quadsmith.CheckCompatibilityResponse], error) {
+	return c.checkComponentsCompatibility.CallUnary(ctx, req)
+}
+
+// GenerateCelFilter calls quadsmith.v1.CompatibilityService.GenerateCelFilter.
+func (c *compatibilityServiceClient) GenerateCelFilter(ctx context.Context, req *connect.Request[quadsmith.GenerateCelFilterRequest]) (*connect.Response[quadsmith.GenerateCelFilterResponse], error) {
+	return c.generateCelFilter.CallUnary(ctx, req)
+}
+
 // CompatibilityServiceHandler is an implementation of the quadsmith.v1.CompatibilityService
 // service.
 type CompatibilityServiceHandler interface {
 	CheckCompatibility(context.Context, *connect.Request[quadsmith.CheckCompatibilityRequest]) (*connect.Response[quadsmith.CheckCompatibilityResponse], error)
+	CheckComponentsCompatibility(context.Context, *connect.Request[quadsmith.CheckComponentsCompatibilityRequest]) (*connect.Response[quadsmith.CheckCompatibilityResponse], error)
+	GenerateCelFilter(context.Context, *connect.Request[quadsmith.GenerateCelFilterRequest]) (*connect.Response[quadsmith.GenerateCelFilterResponse], error)
 }
 
 // NewCompatibilityServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -92,10 +127,26 @@ func NewCompatibilityServiceHandler(svc CompatibilityServiceHandler, opts ...con
 		connect.WithSchema(compatibilityServiceMethods.ByName("CheckCompatibility")),
 		connect.WithHandlerOptions(opts...),
 	)
+	compatibilityServiceCheckComponentsCompatibilityHandler := connect.NewUnaryHandler(
+		CompatibilityServiceCheckComponentsCompatibilityProcedure,
+		svc.CheckComponentsCompatibility,
+		connect.WithSchema(compatibilityServiceMethods.ByName("CheckComponentsCompatibility")),
+		connect.WithHandlerOptions(opts...),
+	)
+	compatibilityServiceGenerateCelFilterHandler := connect.NewUnaryHandler(
+		CompatibilityServiceGenerateCelFilterProcedure,
+		svc.GenerateCelFilter,
+		connect.WithSchema(compatibilityServiceMethods.ByName("GenerateCelFilter")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.v1.CompatibilityService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CompatibilityServiceCheckCompatibilityProcedure:
 			compatibilityServiceCheckCompatibilityHandler.ServeHTTP(w, r)
+		case CompatibilityServiceCheckComponentsCompatibilityProcedure:
+			compatibilityServiceCheckComponentsCompatibilityHandler.ServeHTTP(w, r)
+		case CompatibilityServiceGenerateCelFilterProcedure:
+			compatibilityServiceGenerateCelFilterHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -107,4 +158,12 @@ type UnimplementedCompatibilityServiceHandler struct{}
 
 func (UnimplementedCompatibilityServiceHandler) CheckCompatibility(context.Context, *connect.Request[quadsmith.CheckCompatibilityRequest]) (*connect.Response[quadsmith.CheckCompatibilityResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.v1.CompatibilityService.CheckCompatibility is not implemented"))
+}
+
+func (UnimplementedCompatibilityServiceHandler) CheckComponentsCompatibility(context.Context, *connect.Request[quadsmith.CheckComponentsCompatibilityRequest]) (*connect.Response[quadsmith.CheckCompatibilityResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.v1.CompatibilityService.CheckComponentsCompatibility is not implemented"))
+}
+
+func (UnimplementedCompatibilityServiceHandler) GenerateCelFilter(context.Context, *connect.Request[quadsmith.GenerateCelFilterRequest]) (*connect.Response[quadsmith.GenerateCelFilterResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.v1.CompatibilityService.GenerateCelFilter is not implemented"))
 }

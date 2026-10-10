@@ -754,3 +754,100 @@ func TestValidateBuildComponents(t *testing.T) {
 		}
 	})
 }
+
+func TestEvaluateComponentsDirect(t *testing.T) {
+	comps := &pb.AssembledComponents{
+		Frame: &pb.Frame{
+			WeightG:       125.0,
+			MotorCount:    4,
+			MaxPropSizeMm: 130.0,
+		},
+		Motor: &pb.Motor{
+			WeightG:          33.9,
+			StatorDiameterMm: 22,
+			StatorHeightMm:   7.5,
+			Kv:               1950,
+			MaxCurrentA:      35.0,
+			MinVoltage:       14.8,
+			MaxVoltage:       25.2,
+		},
+		Propeller: &pb.Propeller{
+			WeightG:    4.2,
+			DiameterMm: 127.0,
+			PitchMm:    90.0,
+			Blades:     3,
+		},
+		FlightController: &pb.FlightController{
+			WeightG:    8.5,
+			MinVoltage: 14.8,
+			MaxVoltage: 25.2,
+		},
+		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+			{
+				WeightG:          12.0,
+				MaxMotors:        4,
+				MotorCurrentMaxA: 45.0,
+				MinVoltage:       14.8,
+				MaxVoltage:       25.2,
+			},
+		},
+		Battery: &pb.Battery{
+			Id:          "test-bat-6s",
+			WeightG:     220.0,
+			CellCountS:  6,
+			CapacityMah: 1300,
+			MinVoltage:  18.0,
+			MaxVoltage:  25.2,
+			MaxCurrentA: 150.0,
+		},
+	}
+
+	res, err := EvaluateComponentsDirect(comps, 120.0) // 120g payload
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if res.AllUpWeightG <= 0 {
+		t.Errorf("expected positive AUW, got %.1f", res.AllUpWeightG)
+	}
+	if res.ThrustToWeightRatio <= 1.0 {
+		t.Errorf("expected TWR > 1.0, got %.2f", res.ThrustToWeightRatio)
+	}
+	if res.HoverThrottlePercent <= 0 || res.HoverThrottlePercent > 100 {
+		t.Errorf("expected hover throttle in 1..100, got %.1f", res.HoverThrottlePercent)
+	}
+	if res.BatteryId != "test-bat-6s" {
+		t.Errorf("expected batteryId 'test-bat-6s', got %q", res.BatteryId)
+	}
+}
+
+func TestFindLightestCompatibleBatteryFromList(t *testing.T) {
+	batteries := []*pb.Battery{
+		{
+			Id:          "heavy-6s",
+			WeightG:     300.0,
+			MinVoltage:  18.0,
+			MaxVoltage:  25.2,
+			MaxCurrentA: 160.0,
+		},
+		{
+			Id:          "light-6s",
+			WeightG:     180.0,
+			MinVoltage:  18.0,
+			MaxVoltage:  25.2,
+			MaxCurrentA: 140.0,
+		},
+		{
+			Id:          "incompatible-4s",
+			WeightG:     150.0,
+			MinVoltage:  12.0,
+			MaxVoltage:  16.8, // lower max voltage than required
+			MaxCurrentA: 100.0,
+		},
+	}
+
+	best := FindLightestCompatibleBatteryFromList(batteries, 14.8, 25.2, 120.0)
+	if best != "light-6s" {
+		t.Errorf("expected 'light-6s', got %q", best)
+	}
+}

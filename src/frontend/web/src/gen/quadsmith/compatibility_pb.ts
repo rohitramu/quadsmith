@@ -6,6 +6,8 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Build } from "./build_pb";
 import { file_build } from "./build_pb";
+import type { AssembledComponents } from "./components_pb";
+import { file_components } from "./components_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -14,8 +16,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_compatibility: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChNjb21wYXRpYmlsaXR5LnByb3RvEgxxdWFkc21pdGgudjEiPAoZQ2hlY2tDb21wYXRpYmlsaXR5UmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZCJSChpDaGVja0NvbXBhdGliaWxpdHlSZXNwb25zZRI0CghtZXNzYWdlcxgBIAMoCzIiLnF1YWRzbWl0aC52MS5Db21wYXRpYmlsaXR5TWVzc2FnZSKUAQoUQ29tcGF0aWJpbGl0eU1lc3NhZ2USFAoMY2hlY2tlcl9uYW1lGAEgASgJEhIKCmNvbXBvbmVudHMYAiABKAkSFgoOc2V2ZXJpdHlfbGV2ZWwYAyABKAUSFQoNc2V2ZXJpdHlfbmFtZRgEIAEoCRIPCgdtZXNzYWdlGAUgASgJEhIKCnJlc29sdXRpb24YBiABKAkygQEKFENvbXBhdGliaWxpdHlTZXJ2aWNlEmkKEkNoZWNrQ29tcGF0aWJpbGl0eRInLnF1YWRzbWl0aC52MS5DaGVja0NvbXBhdGliaWxpdHlSZXF1ZXN0GigucXVhZHNtaXRoLnYxLkNoZWNrQ29tcGF0aWJpbGl0eVJlc3BvbnNlIgBCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
-    [file_build],
+    "ChNjb21wYXRpYmlsaXR5LnByb3RvEgxxdWFkc21pdGgudjEiPAoZQ2hlY2tDb21wYXRpYmlsaXR5UmVxdWVzdBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZCJZCiNDaGVja0NvbXBvbmVudHNDb21wYXRpYmlsaXR5UmVxdWVzdBIyCgpjb21wb25lbnRzGAEgASgLMh4ucXVhZHNtaXRoLkFzc2VtYmxlZENvbXBvbmVudHMiaQoYR2VuZXJhdGVDZWxGaWx0ZXJSZXF1ZXN0EhkKEXRhcmdldF9jb2xsZWN0aW9uGAEgASgJEjIKCmNvbXBvbmVudHMYAiABKAsyHi5xdWFkc21pdGguQXNzZW1ibGVkQ29tcG9uZW50cyIrChlHZW5lcmF0ZUNlbEZpbHRlclJlc3BvbnNlEg4KBmZpbHRlchgBIAEoCSJSChpDaGVja0NvbXBhdGliaWxpdHlSZXNwb25zZRI0CghtZXNzYWdlcxgBIAMoCzIiLnF1YWRzbWl0aC52MS5Db21wYXRpYmlsaXR5TWVzc2FnZSKUAQoUQ29tcGF0aWJpbGl0eU1lc3NhZ2USFAoMY2hlY2tlcl9uYW1lGAEgASgJEhIKCmNvbXBvbmVudHMYAiABKAkSFgoOc2V2ZXJpdHlfbGV2ZWwYAyABKAUSFQoNc2V2ZXJpdHlfbmFtZRgEIAEoCRIPCgdtZXNzYWdlGAUgASgJEhIKCnJlc29sdXRpb24YBiABKAky6AIKFENvbXBhdGliaWxpdHlTZXJ2aWNlEmkKEkNoZWNrQ29tcGF0aWJpbGl0eRInLnF1YWRzbWl0aC52MS5DaGVja0NvbXBhdGliaWxpdHlSZXF1ZXN0GigucXVhZHNtaXRoLnYxLkNoZWNrQ29tcGF0aWJpbGl0eVJlc3BvbnNlIgASfQocQ2hlY2tDb21wb25lbnRzQ29tcGF0aWJpbGl0eRIxLnF1YWRzbWl0aC52MS5DaGVja0NvbXBvbmVudHNDb21wYXRpYmlsaXR5UmVxdWVzdBooLnF1YWRzbWl0aC52MS5DaGVja0NvbXBhdGliaWxpdHlSZXNwb25zZSIAEmYKEUdlbmVyYXRlQ2VsRmlsdGVyEiYucXVhZHNtaXRoLnYxLkdlbmVyYXRlQ2VsRmlsdGVyUmVxdWVzdBonLnF1YWRzbWl0aC52MS5HZW5lcmF0ZUNlbEZpbHRlclJlc3BvbnNlIgBCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    [file_build, file_components],
   );
 
 /**
@@ -37,6 +39,66 @@ export const CheckCompatibilityRequestSchema: GenMessage<CheckCompatibilityReque
   messageDesc(file_compatibility, 0);
 
 /**
+ * @generated from message quadsmith.v1.CheckComponentsCompatibilityRequest
+ */
+export type CheckComponentsCompatibilityRequest =
+  Message<"quadsmith.v1.CheckComponentsCompatibilityRequest"> & {
+    /**
+     * @generated from field: quadsmith.AssembledComponents components = 1;
+     */
+    components?: AssembledComponents | undefined;
+  };
+
+/**
+ * Describes the message quadsmith.v1.CheckComponentsCompatibilityRequest.
+ * Use `create(CheckComponentsCompatibilityRequestSchema)` to create a new message.
+ */
+export const CheckComponentsCompatibilityRequestSchema: GenMessage<CheckComponentsCompatibilityRequest> =
+  /*@__PURE__*/
+  messageDesc(file_compatibility, 1);
+
+/**
+ * @generated from message quadsmith.v1.GenerateCelFilterRequest
+ */
+export type GenerateCelFilterRequest = Message<"quadsmith.v1.GenerateCelFilterRequest"> & {
+  /**
+   * @generated from field: string target_collection = 1;
+   */
+  targetCollection: string;
+
+  /**
+   * @generated from field: quadsmith.AssembledComponents components = 2;
+   */
+  components?: AssembledComponents | undefined;
+};
+
+/**
+ * Describes the message quadsmith.v1.GenerateCelFilterRequest.
+ * Use `create(GenerateCelFilterRequestSchema)` to create a new message.
+ */
+export const GenerateCelFilterRequestSchema: GenMessage<GenerateCelFilterRequest> =
+  /*@__PURE__*/
+  messageDesc(file_compatibility, 2);
+
+/**
+ * @generated from message quadsmith.v1.GenerateCelFilterResponse
+ */
+export type GenerateCelFilterResponse = Message<"quadsmith.v1.GenerateCelFilterResponse"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+};
+
+/**
+ * Describes the message quadsmith.v1.GenerateCelFilterResponse.
+ * Use `create(GenerateCelFilterResponseSchema)` to create a new message.
+ */
+export const GenerateCelFilterResponseSchema: GenMessage<GenerateCelFilterResponse> =
+  /*@__PURE__*/
+  messageDesc(file_compatibility, 3);
+
+/**
  * @generated from message quadsmith.v1.CheckCompatibilityResponse
  */
 export type CheckCompatibilityResponse = Message<"quadsmith.v1.CheckCompatibilityResponse"> & {
@@ -52,7 +114,7 @@ export type CheckCompatibilityResponse = Message<"quadsmith.v1.CheckCompatibilit
  */
 export const CheckCompatibilityResponseSchema: GenMessage<CheckCompatibilityResponse> =
   /*@__PURE__*/
-  messageDesc(file_compatibility, 1);
+  messageDesc(file_compatibility, 4);
 
 /**
  * @generated from message quadsmith.v1.CompatibilityMessage
@@ -97,7 +159,7 @@ export type CompatibilityMessage = Message<"quadsmith.v1.CompatibilityMessage"> 
  */
 export const CompatibilityMessageSchema: GenMessage<CompatibilityMessage> =
   /*@__PURE__*/
-  messageDesc(file_compatibility, 2);
+  messageDesc(file_compatibility, 5);
 
 /**
  * @generated from service quadsmith.v1.CompatibilityService
@@ -110,5 +172,21 @@ export const CompatibilityService: GenService<{
     methodKind: "unary";
     input: typeof CheckCompatibilityRequestSchema;
     output: typeof CheckCompatibilityResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.v1.CompatibilityService.CheckComponentsCompatibility
+   */
+  checkComponentsCompatibility: {
+    methodKind: "unary";
+    input: typeof CheckComponentsCompatibilityRequestSchema;
+    output: typeof CheckCompatibilityResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.v1.CompatibilityService.GenerateCelFilter
+   */
+  generateCelFilter: {
+    methodKind: "unary";
+    input: typeof GenerateCelFilterRequestSchema;
+    output: typeof GenerateCelFilterResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_compatibility, 0);

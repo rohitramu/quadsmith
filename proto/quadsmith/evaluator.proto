@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package quadsmith;
 
+import "battery.proto";
 import "build.proto";
+import "components.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 
@@ -87,7 +89,19 @@ message GetBuildElectricalLimitsResponse {
   string build_id = 5;
 }
 
+message EvaluateComponentsRequest {
+  AssembledComponents components = 1;
+  float payload_weight_g = 2;
+}
+
+message GetComponentsElectricalLimitsRequest {
+  AssembledComponents components = 1;
+  repeated Battery candidate_batteries = 2;
+}
+
 service EvaluatorService {
   rpc EvaluateBuild(EvaluateBuildRequest) returns (EvaluateBuildResponse);
   rpc GetBuildElectricalLimits(GetBuildElectricalLimitsRequest) returns (GetBuildElectricalLimitsResponse);
+  rpc EvaluateComponents(EvaluateComponentsRequest) returns (EvaluateBuildResponse);
+  rpc GetComponentsElectricalLimits(GetComponentsElectricalLimitsRequest) returns (GetBuildElectricalLimitsResponse);
 }

@@ -310,6 +310,159 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 	return connect.NewResponse(res), nil
 }
 
+func (s *EvaluatorServiceHandler) EvaluateComponents(ctx context.Context, req *connect.Request[pb.EvaluateComponentsRequest]) (*connect.Response[pb.EvaluateBuildResponse], error) {
+	if req.Msg.GetComponents() == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("components is required"))
+	}
+	res, err := EvaluateComponentsDirect(req.Msg.GetComponents(), req.Msg.GetPayloadWeightG())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+	return connect.NewResponse(res), nil
+}
+
+// EvaluateComponentsDirect performs physics and electrical evaluation directly on an in-memory AssembledComponents.
+func EvaluateComponentsDirect(comps *pb.AssembledComponents, payloadWeight float32) (*pb.EvaluateBuildResponse, error) {
+	if comps == nil {
+		return nil, fmt.Errorf("components cannot be nil")
+	}
+
+	battery := comps.Battery
+	frame := comps.Frame
+	motor := comps.Motor
+	prop := comps.Propeller
+	fc := comps.FlightController
+	escs := comps.ElectronicSpeedControllers
+
+	var motorCount uint32 = 4
+	if frame != nil && frame.MotorCount > 0 {
+		motorCount = frame.MotorCount
+	}
+
+	var baseWeight float32 = 0
+	var systemMessages []*pb.SystemMessage
+
+	if battery != nil {
+		baseWeight += battery.WeightG
+	}
+	if frame != nil {
+		baseWeight += frame.WeightG
+	}
+	if motor != nil {
+		baseWeight += (motor.WeightG * float32(motorCount))
+	}
+	if prop != nil {
+		baseWeight += (prop.WeightG * float32(motorCount))
+	}
+	if fc != nil {
+		baseWeight += fc.WeightG
+	}
+
+	var totalEscs uint32 = 0
+	var maxAmps float32 = 0
+	for _, esc := range escs {
+		if esc != nil {
+			baseWeight += esc.WeightG
+			totalEscs += esc.MaxMotors
+			if esc.MotorCurrentMaxA > maxAmps {
+				maxAmps = esc.MotorCurrentMaxA
+			}
+		}
+	}
+
+	if comps.VideoTransmitter != nil {
+		baseWeight += comps.VideoTransmitter.WeightG
+	}
+	for _, cam := range comps.Cameras {
+		if cam != nil {
+			baseWeight += cam.WeightG
+		}
+	}
+	for _, rx := range comps.Receivers {
+		if rx != nil {
+			baseWeight += rx.WeightG
+		}
+	}
+	for _, ant := range comps.Antennas {
+		if ant != nil {
+			baseWeight += ant.WeightG
+		}
+	}
+	if comps.GpsReceiver != nil {
+		baseWeight += comps.GpsReceiver.WeightG
+	}
+
+	if (len(escs) > 0 || (fc != nil && fc.GetInternalElectronicSpeedControllerUuid() != "")) && totalEscs < motorCount {
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+			Message:  fmt.Sprintf("Insufficient ESC channels: Frame requires %d ESC channels, but only %d configured", motorCount, totalEscs),
+		})
+	}
+
+	electrical := ComputeElectricalLimits(fc, escs, motor, motorCount)
+	if electrical.MinVoltage > 0 && electrical.MaxVoltage > 0 && electrical.MinVoltage > electrical.MaxVoltage {
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+			Message:  fmt.Sprintf("Build electrical conflict: Minimum component voltage requirement (%.1fV) exceeds maximum component voltage rating (%.1fV)", electrical.MinVoltage, electrical.MaxVoltage),
+		})
+	}
+
+	if battery != nil {
+		if electrical.MaxVoltage > 0 && battery.MaxVoltage > electrical.MaxVoltage {
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
+				Message:  fmt.Sprintf("Battery max voltage (%.1fV) exceeds build component limit (%.1fV)", battery.MaxVoltage, electrical.MaxVoltage),
+			})
+		}
+		if electrical.MinVoltage > 0 && battery.MinVoltage < electrical.MinVoltage {
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+				Message:  fmt.Sprintf("Battery min voltage (%.1fV) is below build minimum operating voltage (%.1fV)", battery.MinVoltage, electrical.MinVoltage),
+			})
+		}
+		if electrical.MaxCurrentA > 0 && battery.MaxCurrentA > 0 && battery.MaxCurrentA < electrical.MaxCurrentA {
+			systemMessages = append(systemMessages, &pb.SystemMessage{
+				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+				Message:  fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA)", battery.MaxCurrentA, electrical.MaxCurrentA),
+			})
+		}
+	}
+
+	if payloadWeight < 0 {
+		payloadWeight = 0
+	}
+	totalWeight := baseWeight + payloadWeight
+
+	phys := CalculatePhysics(motor, prop, battery, baseWeight, payloadWeight, maxAmps, motorCount)
+	systemMessages = append(systemMessages, phys.SystemMessages...)
+
+	batteryId := ""
+	if battery != nil {
+		if battery.Id != "" {
+			batteryId = battery.Id
+		} else {
+			batteryId = battery.Uuid
+		}
+	}
+
+	return &pb.EvaluateBuildResponse{
+		PayloadWeightG:       payloadWeight,
+		BatteryId:            batteryId,
+		AllUpWeightG:         totalWeight,
+		ThrustToWeightRatio:  phys.ThrustToWeightRatio,
+		HoverThrottlePercent: phys.HoverThrottlePercent,
+		HoverRpm:             phys.HoverRpm,
+		MinFlightTimeMin:     phys.MinFlightTimeMin,
+		MaxFlightTimeMin:     phys.MaxFlightTimeMin,
+		MaxAccelerationMps2:  phys.MaxAccelerationMps2,
+		TopSpeedKmh:          phys.TopSpeedKmh,
+		SystemMessages:       systemMessages,
+		MinVoltage:           electrical.MinVoltage,
+		MaxVoltage:           electrical.MaxVoltage,
+		MaxCurrentA:          electrical.MaxCurrentA,
+	}, nil
+}
+
 // PhysicsResult contains the calculated aerodynamic, electrical, and flight performance metrics.
 type PhysicsResult struct {
 	ThrustToWeightRatio  float32
@@ -704,6 +857,59 @@ func (s *EvaluatorServiceHandler) GetBuildElectricalLimits(ctx context.Context, 
 
 	limits.BuildId = evaluatedBuildId
 	return connect.NewResponse(limits), nil
+}
+
+func (s *EvaluatorServiceHandler) GetComponentsElectricalLimits(ctx context.Context, req *connect.Request[pb.GetComponentsElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error) {
+	comps := req.Msg.GetComponents()
+	if comps == nil {
+		return connect.NewResponse(&pb.GetBuildElectricalLimitsResponse{}), nil
+	}
+	motorCount := uint32(4)
+	if comps.Frame != nil && comps.Frame.MotorCount > 0 {
+		motorCount = comps.Frame.MotorCount
+	}
+	limits := ComputeElectricalLimits(comps.FlightController, comps.ElectronicSpeedControllers, comps.Motor, motorCount)
+	if len(req.Msg.GetCandidateBatteries()) > 0 {
+		limits.DefaultBatteryId = FindLightestCompatibleBatteryFromList(req.Msg.GetCandidateBatteries(), limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+	} else if s.db != nil {
+		limits.DefaultBatteryId = s.FindLightestCompatibleBattery(ctx, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+	}
+	return connect.NewResponse(limits), nil
+}
+
+// FindLightestCompatibleBatteryFromList finds the lightest compatible battery from a candidate slice in memory.
+func FindLightestCompatibleBatteryFromList(batteries []*pb.Battery, minV, maxV, maxA float32) string {
+	if minV > 0 && maxV > 0 && minV > maxV {
+		return ""
+	}
+
+	var bestId string
+	var minWeight float32 = -1
+
+	for _, b := range batteries {
+		if b == nil {
+			continue
+		}
+		if minV > 0 && b.MinVoltage < minV {
+			continue
+		}
+		if maxV > 0 && b.MaxVoltage > maxV {
+			continue
+		}
+		if maxA > 0 && b.MaxCurrentA < maxA {
+			continue
+		}
+		if minWeight < 0 || b.WeightG < minWeight || (b.WeightG == minWeight && b.Id < bestId) {
+			minWeight = b.WeightG
+			if b.Id != "" {
+				bestId = b.Id
+			} else {
+				bestId = b.Uuid
+			}
+		}
+	}
+
+	return bestId
 }
 
 // CalculateElectricalLimits queries referenced components and computes electrical constraints.

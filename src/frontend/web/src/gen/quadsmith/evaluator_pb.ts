@@ -4,8 +4,12 @@
 
 import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { Battery } from "./battery_pb";
+import { file_battery } from "./battery_pb";
 import type { Build } from "./build_pb";
 import { file_build } from "./build_pb";
+import type { AssembledComponents } from "./components_pb";
+import { file_components } from "./components_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -14,8 +18,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIosBChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBISCghidWlsZF9pZBgBIAEoCUgAEiEKBWJ1aWxkGAQgASgLMhAucXVhZHNtaXRoLkJ1aWxkSAASGAoQcGF5bG9hZF93ZWlnaHRfZxgCIAEoAhISCgpiYXR0ZXJ5X2lkGAMgASgJQg4KDGJ1aWxkX3NvdXJjZSKMBAoVRXZhbHVhdGVCdWlsZFJlc3BvbnNlEhcKD2FsbF91cF93ZWlnaHRfZxgBIAEoAhIeChZob3Zlcl90aHJvdHRsZV9wZXJjZW50GAIgASgCEh4KFnRocnVzdF90b193ZWlnaHRfcmF0aW8YAyABKAISGwoTbWluX2ZsaWdodF90aW1lX21pbhgHIAEoAhIbChNtYXhfZmxpZ2h0X3RpbWVfbWluGAggASgCEh0KFW1heF9hY2NlbGVyYXRpb25fbXBzMhgJIAEoAhIVCg10b3Bfc3BlZWRfa21oGAogASgCEhEKCWhvdmVyX3JwbRgLIAEoDRIxCg9zeXN0ZW1fbWVzc2FnZXMYDCADKAsyGC5xdWFkc21pdGguU3lzdGVtTWVzc2FnZRIQCghidWlsZF9pZBgNIAEoCRIYChBwYXlsb2FkX3dlaWdodF9nGA4gASgCEhIKCmJhdHRlcnlfaWQYDyABKAkSEwoLbWluX3ZvbHRhZ2UYECABKAISEwoLbWF4X3ZvbHRhZ2UYESABKAISFQoNbWF4X2N1cnJlbnRfYRgSIAEoAkoECAQQBUoECAUQBkoECAYQB0oECBMQFFIZZXN0aW1hdGVkX2ZsaWdodF90aW1lX21pblIId2FybmluZ3NSBmVycm9yc1IOYnVpbGRfd2VpZ2h0X2dSDnRvdGFsX3dlaWdodF9nImgKH0dldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QSEgoIYnVpbGRfaWQYASABKAlIABIhCgVidWlsZBgCIAEoCzIQLnF1YWRzbWl0aC5CdWlsZEgAQg4KDGJ1aWxkX3NvdXJjZSKRAQogR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2USEwoLbWluX3ZvbHRhZ2UYASABKAISEwoLbWF4X3ZvbHRhZ2UYAiABKAISFQoNbWF4X2N1cnJlbnRfYRgDIAEoAhIaChJkZWZhdWx0X2JhdHRlcnlfaWQYBCABKAkSEAoIYnVpbGRfaWQYBSABKAkqqgEKFVN5c3RlbU1lc3NhZ2VTZXZlcml0eRInCiNTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9VTlNQRUNJRklFRBAAEiAKHFNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0lORk8QARIjCh9TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9XQVJOSU5HEAISIQodU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfRVJST1IQAzLbAQoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZRJzChhHZXRCdWlsZEVsZWN0cmljYWxMaW1pdHMSKi5xdWFkc21pdGguR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBorLnF1YWRzbWl0aC5HZXRCdWlsZEVsZWN0cmljYWxMaW1pdHNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
-    [file_build],
+    "Cg9ldmFsdWF0b3IucHJvdG8SCXF1YWRzbWl0aCJUCg1TeXN0ZW1NZXNzYWdlEjIKCHNldmVyaXR5GAEgASgOMiAucXVhZHNtaXRoLlN5c3RlbU1lc3NhZ2VTZXZlcml0eRIPCgdtZXNzYWdlGAIgASgJIosBChRFdmFsdWF0ZUJ1aWxkUmVxdWVzdBISCghidWlsZF9pZBgBIAEoCUgAEiEKBWJ1aWxkGAQgASgLMhAucXVhZHNtaXRoLkJ1aWxkSAASGAoQcGF5bG9hZF93ZWlnaHRfZxgCIAEoAhISCgpiYXR0ZXJ5X2lkGAMgASgJQg4KDGJ1aWxkX3NvdXJjZSKMBAoVRXZhbHVhdGVCdWlsZFJlc3BvbnNlEhcKD2FsbF91cF93ZWlnaHRfZxgBIAEoAhIeChZob3Zlcl90aHJvdHRsZV9wZXJjZW50GAIgASgCEh4KFnRocnVzdF90b193ZWlnaHRfcmF0aW8YAyABKAISGwoTbWluX2ZsaWdodF90aW1lX21pbhgHIAEoAhIbChNtYXhfZmxpZ2h0X3RpbWVfbWluGAggASgCEh0KFW1heF9hY2NlbGVyYXRpb25fbXBzMhgJIAEoAhIVCg10b3Bfc3BlZWRfa21oGAogASgCEhEKCWhvdmVyX3JwbRgLIAEoDRIxCg9zeXN0ZW1fbWVzc2FnZXMYDCADKAsyGC5xdWFkc21pdGguU3lzdGVtTWVzc2FnZRIQCghidWlsZF9pZBgNIAEoCRIYChBwYXlsb2FkX3dlaWdodF9nGA4gASgCEhIKCmJhdHRlcnlfaWQYDyABKAkSEwoLbWluX3ZvbHRhZ2UYECABKAISEwoLbWF4X3ZvbHRhZ2UYESABKAISFQoNbWF4X2N1cnJlbnRfYRgSIAEoAkoECAQQBUoECAUQBkoECAYQB0oECBMQFFIZZXN0aW1hdGVkX2ZsaWdodF90aW1lX21pblIId2FybmluZ3NSBmVycm9yc1IOYnVpbGRfd2VpZ2h0X2dSDnRvdGFsX3dlaWdodF9nImgKH0dldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QSEgoIYnVpbGRfaWQYASABKAlIABIhCgVidWlsZBgCIAEoCzIQLnF1YWRzbWl0aC5CdWlsZEgAQg4KDGJ1aWxkX3NvdXJjZSKRAQogR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2USEwoLbWluX3ZvbHRhZ2UYASABKAISEwoLbWF4X3ZvbHRhZ2UYAiABKAISFQoNbWF4X2N1cnJlbnRfYRgDIAEoAhIaChJkZWZhdWx0X2JhdHRlcnlfaWQYBCABKAkSEAoIYnVpbGRfaWQYBSABKAkiaQoZRXZhbHVhdGVDb21wb25lbnRzUmVxdWVzdBIyCgpjb21wb25lbnRzGAEgASgLMh4ucXVhZHNtaXRoLkFzc2VtYmxlZENvbXBvbmVudHMSGAoQcGF5bG9hZF93ZWlnaHRfZxgCIAEoAiKLAQokR2V0Q29tcG9uZW50c0VsZWN0cmljYWxMaW1pdHNSZXF1ZXN0EjIKCmNvbXBvbmVudHMYASABKAsyHi5xdWFkc21pdGguQXNzZW1ibGVkQ29tcG9uZW50cxIvChNjYW5kaWRhdGVfYmF0dGVyaWVzGAIgAygLMhIucXVhZHNtaXRoLkJhdHRlcnkqqgEKFVN5c3RlbU1lc3NhZ2VTZXZlcml0eRInCiNTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9VTlNQRUNJRklFRBAAEiAKHFNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0lORk8QARIjCh9TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9XQVJOSU5HEAISIQodU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfRVJST1IQAzK4AwoQRXZhbHVhdG9yU2VydmljZRJSCg1FdmFsdWF0ZUJ1aWxkEh8ucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXF1ZXN0GiAucXVhZHNtaXRoLkV2YWx1YXRlQnVpbGRSZXNwb25zZRJzChhHZXRCdWlsZEVsZWN0cmljYWxMaW1pdHMSKi5xdWFkc21pdGguR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBorLnF1YWRzbWl0aC5HZXRCdWlsZEVsZWN0cmljYWxMaW1pdHNSZXNwb25zZRJcChJFdmFsdWF0ZUNvbXBvbmVudHMSJC5xdWFkc21pdGguRXZhbHVhdGVDb21wb25lbnRzUmVxdWVzdBogLnF1YWRzbWl0aC5FdmFsdWF0ZUJ1aWxkUmVzcG9uc2USfQodR2V0Q29tcG9uZW50c0VsZWN0cmljYWxMaW1pdHMSLy5xdWFkc21pdGguR2V0Q29tcG9uZW50c0VsZWN0cmljYWxMaW1pdHNSZXF1ZXN0GisucXVhZHNtaXRoLkdldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1Jlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    [file_battery, file_build, file_components],
   );
 
 /**
@@ -276,6 +280,53 @@ export const GetBuildElectricalLimitsResponseSchema: GenMessage<GetBuildElectric
   messageDesc(file_evaluator, 4);
 
 /**
+ * @generated from message quadsmith.EvaluateComponentsRequest
+ */
+export type EvaluateComponentsRequest = Message<"quadsmith.EvaluateComponentsRequest"> & {
+  /**
+   * @generated from field: quadsmith.AssembledComponents components = 1;
+   */
+  components?: AssembledComponents | undefined;
+
+  /**
+   * @generated from field: float payload_weight_g = 2;
+   */
+  payloadWeightG: number;
+};
+
+/**
+ * Describes the message quadsmith.EvaluateComponentsRequest.
+ * Use `create(EvaluateComponentsRequestSchema)` to create a new message.
+ */
+export const EvaluateComponentsRequestSchema: GenMessage<EvaluateComponentsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_evaluator, 5);
+
+/**
+ * @generated from message quadsmith.GetComponentsElectricalLimitsRequest
+ */
+export type GetComponentsElectricalLimitsRequest =
+  Message<"quadsmith.GetComponentsElectricalLimitsRequest"> & {
+    /**
+     * @generated from field: quadsmith.AssembledComponents components = 1;
+     */
+    components?: AssembledComponents | undefined;
+
+    /**
+     * @generated from field: repeated quadsmith.Battery candidate_batteries = 2;
+     */
+    candidateBatteries: Battery[];
+  };
+
+/**
+ * Describes the message quadsmith.GetComponentsElectricalLimitsRequest.
+ * Use `create(GetComponentsElectricalLimitsRequestSchema)` to create a new message.
+ */
+export const GetComponentsElectricalLimitsRequestSchema: GenMessage<GetComponentsElectricalLimitsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_evaluator, 6);
+
+/**
  * @generated from enum quadsmith.SystemMessageSeverity
  */
 export enum SystemMessageSeverity {
@@ -325,6 +376,22 @@ export const EvaluatorService: GenService<{
   getBuildElectricalLimits: {
     methodKind: "unary";
     input: typeof GetBuildElectricalLimitsRequestSchema;
+    output: typeof GetBuildElectricalLimitsResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.EvaluatorService.EvaluateComponents
+   */
+  evaluateComponents: {
+    methodKind: "unary";
+    input: typeof EvaluateComponentsRequestSchema;
+    output: typeof EvaluateBuildResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.EvaluatorService.GetComponentsElectricalLimits
+   */
+  getComponentsElectricalLimits: {
+    methodKind: "unary";
+    input: typeof GetComponentsElectricalLimitsRequestSchema;
     output: typeof GetBuildElectricalLimitsResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_evaluator, 0);
