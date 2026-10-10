@@ -211,10 +211,23 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
       {/* Main Content Info */}
       <div className="flex-1 p-3.5 flex flex-col justify-between min-w-0">
         <div>
-          {/* Header Row: Badge Chips, Site Favicon/Host, External Icon */}
+          {/* Header Row: Site Favicon/Host, Badge Chips, External Icon */}
           <div className="flex items-center justify-between gap-2 mb-1.5">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+            <div className="flex flex-wrap items-center gap-2 min-w-0">
+              <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 shrink-0 font-medium">
+                {preview?.favicon && !faviconError ? (
+                  <img
+                    src={preview.favicon}
+                    alt=""
+                    onError={() => setFaviconError(true)}
+                    className="w-3.5 h-3.5 rounded-xs shrink-0"
+                  />
+                ) : (
+                  <Globe className="w-3.5 h-3.5 shrink-0 text-zinc-400" />
+                )}
+                <span className="truncate max-w-[160px] sm:max-w-xs">{siteName}</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5">
                 {isInferredOther ? (
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 text-xs font-semibold rounded-full border ${OTHER_STYLE} shrink-0`}
@@ -235,19 +248,6 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
                     );
                   })
                 )}
-              </div>
-              <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 truncate">
-                {preview?.favicon && !faviconError ? (
-                  <img
-                    src={preview.favicon}
-                    alt=""
-                    onError={() => setFaviconError(true)}
-                    className="w-3.5 h-3.5 rounded-xs shrink-0"
-                  />
-                ) : (
-                  <Globe className="w-3.5 h-3.5 shrink-0 text-zinc-400" />
-                )}
-                <span className="truncate font-medium">{siteName}</span>
               </div>
             </div>
             <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors" />
