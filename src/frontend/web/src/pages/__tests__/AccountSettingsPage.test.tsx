@@ -122,18 +122,21 @@ describe("AccountSettingsPage Component", () => {
     await waitFor(() => {
       expect(screen.getByText("Existing Account Detected")).toBeInTheDocument();
       expect(screen.getByText("Account Merge Instructions")).toBeInTheDocument();
+      expect(screen.getByText("Two Ways to Confirm:")).toBeInTheDocument();
       expect(screen.getByText(/merge @old_racer into your account/i)).toBeInTheDocument();
       expect(
         screen.getByText(/drone builds and configurations will be permanently transferred/i),
       ).toBeInTheDocument();
     });
 
-    // Enter verification code
-    const codeInput = screen.getByPlaceholderText("123456");
-    fireEvent.change(codeInput, { target: { value: "123456" } });
+    // Enter verification code into segmented OTP inputs
+    const firstDigit = screen.getByLabelText("Digit 1");
+    expect(firstDigit).toBeInTheDocument();
+    fireEvent.change(firstDigit, { target: { value: "123456" } });
 
     // Confirm & Merge
     const confirmBtn = screen.getByRole("button", { name: /confirm & merge accounts/i });
+    expect(confirmBtn).not.toBeDisabled();
     fireEvent.click(confirmBtn);
 
     // Success state in modal
@@ -148,6 +151,26 @@ describe("AccountSettingsPage Component", () => {
     fireEvent.click(doneBtn);
 
     // Modal closes and email is in the list
+    await waitFor(() => {
+      expect(screen.queryByText(/accounts merged successfully!/i)).not.toBeInTheDocument();
+      expect(screen.getByText("old.racer@fpv.org")).toBeInTheDocument();
+    });
+  });
+
+  it("automatically authorizes merge when arriving with merge_token in URL", async () => {
+    renderApp("/account?merge_token=valid-mock-token");
+
+    // Success state in modal triggered via magic link
+    await waitFor(() => {
+      expect(screen.getByText(/accounts merged successfully!/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/all 4 builds from @old_racer have been reassigned to your account/i),
+      ).toBeInTheDocument();
+    });
+
+    const doneBtn = screen.getByRole("button", { name: /done/i });
+    fireEvent.click(doneBtn);
+
     await waitFor(() => {
       expect(screen.queryByText(/accounts merged successfully!/i)).not.toBeInTheDocument();
       expect(screen.getByText("old.racer@fpv.org")).toBeInTheDocument();

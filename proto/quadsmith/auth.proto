@@ -82,6 +82,7 @@ message SendAddEmailOtpRequest {
 message VerifyAddEmailOtpRequest {
   string email = 1;
   string code = 2;
+  string token = 3;
 }
 
 message VerifyAddEmailOtpResponse {
@@ -95,6 +96,7 @@ message VerifyAddEmailOtpResponse {
 message MergeAccountRequest {
   string email = 1;
   string code = 2;
+  string token = 3;
 }
 
 message MergeAccountResponse {

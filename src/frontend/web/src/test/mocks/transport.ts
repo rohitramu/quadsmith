@@ -532,13 +532,13 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         });
       },
       verifyAddEmailOtp: (req) => {
-        if (req.code !== "123456") {
+        if (req.code !== "123456" && !req.token) {
           throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
         }
         const newEmail = create(UserEmailSchema, {
           uuid: `mock-email-uuid-${userEmails.length + 1}`,
           userUuid: mockUser.uuid,
-          email: req.email,
+          email: req.email || "pilot@example.com",
           isPrimary: false,
         });
         userEmails.push(newEmail);
@@ -549,13 +549,13 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         };
       },
       mergeAccount: (req) => {
-        if (req.code !== "123456") {
+        if (req.code !== "123456" && !req.token) {
           throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
         }
         const mergedEmail = create(UserEmailSchema, {
           uuid: `mock-email-uuid-${userEmails.length + 1}`,
           userUuid: mockUser.uuid,
-          email: req.email,
+          email: req.email || "old.racer@fpv.org",
           isPrimary: false,
         });
         userEmails.push(mergedEmail);

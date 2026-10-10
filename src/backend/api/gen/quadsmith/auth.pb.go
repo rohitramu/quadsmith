@@ -738,6 +738,7 @@ type VerifyAddEmailOtpRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -782,6 +783,13 @@ func (x *VerifyAddEmailOtpRequest) GetEmail() string {
 func (x *VerifyAddEmailOtpRequest) GetCode() string {
 	if x != nil {
 		return x.Code
+	}
+	return ""
+}
+
+func (x *VerifyAddEmailOtpRequest) GetToken() string {
+	if x != nil {
+		return x.Token
 	}
 	return ""
 }
@@ -866,6 +874,7 @@ type MergeAccountRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -910,6 +919,13 @@ func (x *MergeAccountRequest) GetEmail() string {
 func (x *MergeAccountRequest) GetCode() string {
 	if x != nil {
 		return x.Code
+	}
+	return ""
+}
+
+func (x *MergeAccountRequest) GetToken() string {
+	if x != nil {
+		return x.Token
 	}
 	return ""
 }
@@ -1226,19 +1242,21 @@ const file_auth_proto_rawDesc = "" +
 	"\x16ListUserEmailsResponse\x12,\n" +
 	"\x06emails\x18\x01 \x03(\v2\x14.quadsmith.UserEmailR\x06emails\".\n" +
 	"\x16SendAddEmailOtpRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"D\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"Z\n" +
 	"\x18VerifyAddEmailOtpRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\"\xce\x01\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\"\xce\x01\n" +
 	"\x19VerifyAddEmailOtpResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
 	"\x0emerge_required\x18\x03 \x01(\bR\rmergeRequired\x12*\n" +
 	"\x11other_user_handle\x18\x04 \x01(\tR\x0fotherUserHandle\x12*\n" +
-	"\x11other_build_count\x18\x05 \x01(\x05R\x0fotherBuildCount\"?\n" +
+	"\x11other_build_count\x18\x05 \x01(\x05R\x0fotherBuildCount\"U\n" +
 	"\x13MergeAccountRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\"\xa7\x01\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\"\xa7\x01\n" +
 	"\x14MergeAccountResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x126\n" +

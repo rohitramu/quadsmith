@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   User as UserIcon,
   LogOut,
@@ -13,6 +13,7 @@ import {
   X,
   Trash2,
   AlertCircle,
+  CheckCircle2,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
@@ -32,6 +33,9 @@ export function AccountSettingsPage() {
     removeUserEmail,
   } = useAuth();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const mergeToken = searchParams.get("merge_token");
+  const addEmailToken = searchParams.get("add_email_token");
 
   useEffect(() => {
     refreshEmails();
@@ -60,11 +64,91 @@ export function AccountSettingsPage() {
   const [mergeEmail, setMergeEmail] = useState("");
   const [mergeOtherHandle, setMergeOtherHandle] = useState("");
   const [mergeOtherBuildCount, setMergeOtherBuildCount] = useState<number>(0);
-  const [mergeCode, setMergeCode] = useState("");
+  const [mergeOtpDigits, setMergeOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
   const [isExecutingMerge, setIsExecutingMerge] = useState(false);
   const [mergeError, setMergeError] = useState<string | null>(null);
   const [mergeSuccess, setMergeSuccess] = useState(false);
   const [transferredBuilds, setTransferredBuilds] = useState<number>(0);
+
+  const mergeOtpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Magic link auto-merge or auto-add-email
+  useEffect(() => {
+    if (mergeToken) {
+      let isMounted = true;
+      async function handleMagicMerge() {
+        setIsExecutingMerge(true);
+        setMergeError(null);
+        setIsMergeModalOpen(true);
+        try {
+          const res = await mergeAccount("", undefined, mergeToken);
+          if (!isMounted) return;
+          setTransferredBuilds(res.transferredBuildCount || 0);
+          setMergeOtherHandle(res.mergedHandle || "pilot");
+          setMergeSuccess(true);
+          await refreshEmails();
+          searchParams.delete("merge_token");
+          setSearchParams(searchParams, { replace: true });
+        } catch (err: unknown) {
+          if (!isMounted) return;
+          if (err instanceof Error) {
+            setMergeError(err.message);
+          } else {
+            setMergeError("Failed to authorize merge with magic link.");
+          }
+        } finally {
+          if (isMounted) {
+            setIsExecutingMerge(false);
+          }
+        }
+      }
+      handleMagicMerge();
+      return () => {
+        isMounted = false;
+      };
+    } else if (addEmailToken) {
+      let isMounted = true;
+      async function handleMagicAddEmail() {
+        try {
+          const res = await verifyAddEmailOtp("", undefined, addEmailToken);
+          if (!isMounted) return;
+          if (res.mergeRequired) {
+            setMergeEmail(res.otherUserHandle ? `account @${res.otherUserHandle}` : "");
+            setMergeOtherHandle(res.otherUserHandle || "pilot");
+            setMergeOtherBuildCount(res.otherBuildCount || 0);
+            setIsMergeModalOpen(true);
+          } else {
+            setAddEmailSuccess(
+              "Email verified and added to your account successfully via magic link.",
+            );
+            setTimeout(() => setAddEmailSuccess(null), 4000);
+            await refreshEmails();
+          }
+          searchParams.delete("add_email_token");
+          setSearchParams(searchParams, { replace: true });
+        } catch (err: unknown) {
+          if (!isMounted) return;
+          if (err instanceof Error) {
+            setEmailActionError(err.message);
+          } else {
+            setEmailActionError("Failed to verify email magic link.");
+          }
+        }
+      }
+      handleMagicAddEmail();
+      return () => {
+        isMounted = false;
+      };
+    }
+  }, [
+    mergeToken,
+    addEmailToken,
+    mergeAccount,
+    verifyAddEmailOtp,
+    refreshEmails,
+    searchParams,
+    setSearchParams,
+  ]);
 
   // Email Action feedback
   const [emailActionLoading, setEmailActionLoading] = useState<string | null>(null);
@@ -121,11 +205,12 @@ export function AccountSettingsPage() {
         setMergeEmail(newEmail.trim());
         setMergeOtherHandle(res.existingUserHandle || "pilot");
         setMergeOtherBuildCount(res.existingBuildCount || 0);
-        setMergeCode("");
+        setMergeOtpDigits(["", "", "", "", "", ""]);
         setMergeError(null);
         setMergeSuccess(false);
         setIsMergeModalOpen(true);
         setIsAddEmailOpen(false);
+        setTimeout(() => mergeOtpInputRefs.current[0]?.focus(), 100);
       } else {
         setAddOtpSent(true);
       }
@@ -154,7 +239,15 @@ export function AccountSettingsPage() {
         setMergeEmail(newEmail.trim());
         setMergeOtherHandle(res.otherUserHandle || "pilot");
         setMergeOtherBuildCount(res.otherBuildCount || 0);
-        setMergeCode(addOtpCode.trim());
+        const digits = ["", "", "", "", "", ""];
+        addOtpCode
+          .trim()
+          .slice(0, 6)
+          .split("")
+          .forEach((c, i) => {
+            digits[i] = c;
+          });
+        setMergeOtpDigits(digits);
         setMergeError(null);
         setMergeSuccess(false);
         setIsMergeModalOpen(true);
@@ -175,6 +268,38 @@ export function AccountSettingsPage() {
       }
     } finally {
       setIsVerifyingAddOtp(false);
+    }
+  };
+
+  const handleMergeOtpChange = (index: number, value: string) => {
+    const clean = value.replace(/\D/g, "");
+    if (!clean && value !== "") return;
+
+    const newDigits = [...mergeOtpDigits];
+    if (clean.length > 1) {
+      // Pasted multi-character string
+      const chars = clean.slice(0, 6).split("");
+      chars.forEach((c, i) => {
+        newDigits[i] = c;
+      });
+      setMergeOtpDigits(newDigits);
+      const nextIndex = Math.min(chars.length, 5);
+      mergeOtpInputRefs.current[nextIndex]?.focus();
+      return;
+    }
+
+    newDigits[index] = clean;
+    setMergeOtpDigits(newDigits);
+
+    // Auto-advance
+    if (clean && index < 5) {
+      mergeOtpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleMergeKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !mergeOtpDigits[index] && index > 0) {
+      mergeOtpInputRefs.current[index - 1]?.focus();
     }
   };
 
@@ -221,14 +346,15 @@ export function AccountSettingsPage() {
 
   // Handle Execute Merge
   const handleExecuteMerge = async () => {
-    if (!mergeCode.trim() || mergeCode.trim().length !== 6) {
-      setMergeError("Please enter a valid 6-digit verification code");
+    const code = mergeOtpDigits.join("");
+    if (code.length !== 6) {
+      setMergeError("Please enter all 6 digits of the verification code");
       return;
     }
     setIsExecutingMerge(true);
     setMergeError(null);
     try {
-      const res = await mergeAccount(mergeEmail.trim(), mergeCode.trim());
+      const res = await mergeAccount(mergeEmail.trim(), code);
       setTransferredBuilds(res.transferredBuildCount || 0);
       setMergeSuccess(true);
       await refreshEmails();
@@ -729,47 +855,84 @@ export function AccountSettingsPage() {
                   </ul>
                 </div>
 
-                {/* Confirmation & Code Entry */}
-                <div className="space-y-2">
-                  <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                    Confirmation Code
-                  </label>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                    To confirm this action and authorize the merge, enter the 6-digit verification
-                    code sent to{" "}
-                    <strong className="font-mono text-zinc-700 dark:text-zinc-300">
-                      {mergeEmail}
-                    </strong>
-                    :
-                  </p>
-                  <input
-                    type="text"
-                    maxLength={6}
-                    placeholder="123456"
-                    value={mergeCode}
-                    onChange={(e) => setMergeCode(e.target.value.replace(/\D/g, ""))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-center font-mono tracking-widest text-sm font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
+                {/* Dual-path instructions */}
+                <div className="p-3.5 rounded-xl border border-purple-500/20 bg-purple-500/10 text-zinc-700 dark:text-zinc-300 text-xs space-y-1.5">
+                  <div className="flex items-center gap-1.5 font-semibold text-purple-600 dark:text-purple-400">
+                    <CheckCircle2 size={14} />
+                    <span>Two Ways to Confirm:</span>
+                  </div>
+                  <ul className="list-disc list-inside space-y-1 text-[11px] text-zinc-600 dark:text-zinc-400">
+                    <li>
+                      Enter the <strong>6-digit code</strong> sent to your email below.
+                    </li>
+                    <li>
+                      Or click the <strong>1-click Magic Link</strong> in the email to authorize the
+                      merge instantly.
+                    </li>
+                  </ul>
+                </div>
+
+                {/* 6 Digit Segmented Inputs */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                      Verification Code (3-min expiry)
+                    </label>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2">
+                    {mergeOtpDigits.map((digit, index) => (
+                      <input
+                        key={index}
+                        ref={(el) => {
+                          mergeOtpInputRefs.current[index] = el;
+                        }}
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={1}
+                        aria-label={`Digit ${index + 1}`}
+                        value={digit}
+                        disabled={isExecutingMerge}
+                        onChange={(e) => handleMergeOtpChange(index, e.target.value)}
+                        onKeyDown={(e) => handleMergeKeyDown(index, e)}
+                        className="w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none transition border-zinc-300 dark:border-zinc-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
+                      />
+                    ))}
+                  </div>
                 </div>
 
                 {/* Footer Buttons */}
-                <div className="flex gap-2.5 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsMergeModalOpen(false)}
-                    className="flex-1 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleExecuteMerge}
-                    disabled={isExecutingMerge || mergeCode.length !== 6}
-                    className="flex-2 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm"
-                  >
-                    {isExecutingMerge && <Loader2 size={13} className="animate-spin" />}
-                    <span>Confirm & Merge Accounts</span>
-                  </button>
+                <div className="space-y-2.5 pt-2">
+                  <div className="flex gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => setIsMergeModalOpen(false)}
+                      className="flex-1 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleExecuteMerge}
+                      disabled={isExecutingMerge || mergeOtpDigits.join("").length !== 6}
+                      className="flex-2 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm"
+                    >
+                      {isExecutingMerge && <Loader2 size={13} className="animate-spin" />}
+                      <span>Confirm & Merge Accounts</span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs pt-1">
+                    <span className="text-zinc-400 text-[11px]">Didn't receive the email?</span>
+                    <button
+                      type="button"
+                      onClick={() => handleSendAddCode()}
+                      disabled={isSendingAddOtp || isExecutingMerge}
+                      className="text-purple-600 dark:text-purple-400 hover:underline font-medium disabled:opacity-50"
+                    >
+                      Resend code
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (

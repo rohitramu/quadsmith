@@ -34,7 +34,8 @@ export interface AuthContextType {
   }>;
   verifyAddEmailOtp: (
     email: string,
-    code: string,
+    code?: string | null,
+    token?: string | null,
   ) => Promise<{
     success: boolean;
     message: string;
@@ -44,7 +45,8 @@ export interface AuthContextType {
   }>;
   mergeAccount: (
     email: string,
-    code: string,
+    code?: string | null,
+    token?: string | null,
   ) => Promise<{
     success: boolean;
     message: string;
@@ -228,14 +230,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   };
 
-  const verifyAddEmailOtp = async (email: string, code: string) => {
-    const res = await authClient.verifyAddEmailOtp({ email, code });
+  const verifyAddEmailOtp = async (email: string, code?: string | null, token?: string | null) => {
+    const res = await authClient.verifyAddEmailOtp({
+      email,
+      code: code || "",
+      token: token || "",
+    });
     await refreshEmails();
     return res;
   };
 
-  const mergeAccount = async (email: string, code: string) => {
-    const res = await authClient.mergeAccount({ email, code });
+  const mergeAccount = async (email: string, code?: string | null, token?: string | null) => {
+    const res = await authClient.mergeAccount({
+      email,
+      code: code || "",
+      token: token || "",
+    });
     await refreshEmails();
     try {
       const currentUser = await authClient.getCurrentUser({});
