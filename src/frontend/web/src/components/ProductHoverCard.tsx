@@ -7,7 +7,6 @@ import {
   getCollectionPath,
   getCollectionColor,
 } from "../lib/hardwareCollections";
-import { BUILD_COLLECTION } from "../lib/buildCollection";
 import { CollectionBadge } from "./CollectionBadge";
 import { CollectionIcon } from "./CollectionIcon";
 import { ExternalLink } from "lucide-react";
@@ -51,8 +50,7 @@ function ProductHoverCardPresenter({
   const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const collection =
-    collectionId === "builds" ? BUILD_COLLECTION : getHardwareCollection(collectionId);
+  const collection = getHardwareCollection(collectionId);
   const colColor = collection?.color || getCollectionColor(collectionId);
 
   const updatePosition = useCallback(() => {
@@ -266,8 +264,7 @@ function ProductHoverCardFetcher({
   className,
   as,
 }: ProductHoverCardProps) {
-  const collection =
-    collectionId === "builds" ? BUILD_COLLECTION : getHardwareCollection(collectionId);
+  const collection = getHardwareCollection(collectionId);
 
   if (!collection?.getQuery || !productId) {
     const Component = (as || "div") as React.ElementType;

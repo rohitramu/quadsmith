@@ -51,10 +51,8 @@ describe("Layout Component", () => {
   it("renders sidebar navigation links with hardware collections permanently expanded", () => {
     renderWithProviders(<Layout />, { route: "/" });
 
-    // Sidebar and navbar links: exactly 1 Builds link in the sidebar (none in top navbar)
-    const buildsLinks = screen.getAllByRole("link", { name: "Builds" });
-    expect(buildsLinks).toHaveLength(1);
-    expect(buildsLinks[0]).toHaveAttribute("href", "/builds");
+    // Builds link is removed altogether from sidebar and top navbar
+    expect(screen.queryByRole("link", { name: "Builds" })).not.toBeInTheDocument();
 
     const wizardLink = screen.getByRole("link", { name: /Build Wizard/i });
     expect(wizardLink).toHaveAttribute("href", "/builds/new");

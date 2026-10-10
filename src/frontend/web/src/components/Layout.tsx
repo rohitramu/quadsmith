@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { Moon, Sun, Search, X, Loader2, Wand2, Layers } from "lucide-react";
+import { Moon, Sun, Search, X, Loader2, Wand2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { search } from "../gen/quadsmith/search-SearchService_connectquery";
@@ -245,28 +245,6 @@ export function Layout() {
                 Discover
               </h2>
               <ul className="space-y-1">
-                <li>
-                  <Link
-                    to="/builds"
-                    className={`flex items-center justify-between px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
-                      location.pathname === "/builds"
-                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
-                        : "text-zinc-700 dark:text-zinc-300"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Layers
-                        size={16}
-                        className={
-                          location.pathname === "/builds"
-                            ? "text-blue-600 dark:text-blue-400"
-                            : "text-zinc-500"
-                        }
-                      />
-                      <span>Builds</span>
-                    </div>
-                  </Link>
-                </li>
                 <li>
                   <Link
                     to="/builds/new"

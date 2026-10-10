@@ -545,10 +545,10 @@ export function CollectionTableView({
         className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
       >
         <Link
-          to={categoryId && categoryId !== "builds" ? `/components/${categoryId}` : "/"}
+          to={categoryId ? `/components/${categoryId}` : "/"}
           className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
         >
-          {categoryId && categoryId !== "builds" ? categoryId : "Home"}
+          {categoryId || "Home"}
         </Link>
         <ChevronRight
           size={14}
@@ -594,10 +594,10 @@ export function CollectionTableView({
                     <span className="font-medium text-zinc-700 dark:text-zinc-300">
                       {startItem}–{endItem}
                     </span>{" "}
-                    {collection.id === "builds" ? "builds" : "components"}
+                    components
                   </>
                 ) : (
-                  `0 ${collection.id === "builds" ? "builds" : "components"} found`
+                  "0 components found"
                 )}
               </span>
               {isFetching && !isLoading && (

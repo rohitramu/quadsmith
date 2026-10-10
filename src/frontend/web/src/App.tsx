@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TransportProvider } from "@connectrpc/connect-query";
 import type { Transport } from "@connectrpc/connect";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { transport as defaultTransport } from "./lib/api";
 import { Layout } from "./components/Layout";
 import { CategoryPage } from "./pages/CategoryPage";
@@ -10,7 +10,6 @@ import { ProductPage } from "./pages/ProductPage";
 import { HomePage } from "./pages/HomePage";
 import { BuildProfilePage } from "./pages/BuildProfilePage";
 import { BuildWizardPage } from "./pages/BuildWizardPage";
-import { BuildsPage } from "./pages/BuildsPage";
 
 const defaultQueryClient = new QueryClient();
 
@@ -19,7 +18,7 @@ export function AppRoutes() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="builds" element={<BuildsPage />} />
+        <Route path="builds" element={<Navigate to="/" replace />} />
         <Route path="builds/new" element={<BuildWizardPage />} />
         <Route path="builds/:buildId" element={<BuildProfilePage />} />
         <Route path="components/:categoryId" element={<CategoryPage />} />
