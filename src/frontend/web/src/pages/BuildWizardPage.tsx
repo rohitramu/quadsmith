@@ -6,6 +6,7 @@ import { create } from "@bufbuild/protobuf";
 import { Search, X, ArrowLeft, Sparkles, AlertCircle, RotateCcw, Save, Check } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStageBar } from "../components/WizardStageBar";
+import { CollectionIcon } from "../components/CollectionIcon";
 
 // ConnectQuery hooks for component listing
 import { listFrames } from "../gen/quadsmith/frame-FrameService_connectquery";
@@ -452,6 +453,44 @@ export function BuildWizardPage() {
     vtxAntCount,
     noneSelections,
     motorCount,
+  ]);
+
+  // Count of currently selected component slots (out of 11)
+  const selectedPartsCount = useMemo(() => {
+    let count = 0;
+    if (selectedFrame) count++;
+    if (selectedMotor) count++;
+    if (selectedProp) count++;
+    if (selectedFc) count++;
+    if (selectedEsc || useIntegratedEsc || noneSelections.esc) count++;
+    if (selectedRx || useIntegratedRx) count++;
+    if (selectedRxAnt || noneSelections.rxAntenna) count++;
+    if (selectedVtx || useIntegratedVtx || noneSelections.vtx) count++;
+    if (selectedCam || noneSelections.camera) count++;
+    if (selectedVtxAnt || noneSelections.vtxAntenna) count++;
+    if (selectedGps || noneSelections.gps) count++;
+    return count;
+  }, [
+    selectedFrame,
+    selectedMotor,
+    selectedProp,
+    selectedFc,
+    selectedEsc,
+    useIntegratedEsc,
+    noneSelections.esc,
+    selectedRx,
+    useIntegratedRx,
+    selectedRxAnt,
+    noneSelections.rxAntenna,
+    selectedVtx,
+    useIntegratedVtx,
+    noneSelections.vtx,
+    selectedCam,
+    noneSelections.camera,
+    selectedVtxAnt,
+    noneSelections.vtxAntenna,
+    selectedGps,
+    noneSelections.gps,
   ]);
 
   // Construct draft Build object for live evaluation
@@ -3444,6 +3483,422 @@ export function BuildWizardPage() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Selected Parts List under Build Evaluator */}
+          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-md overflow-hidden">
+            {/* Header */}
+            <div className="p-3 bg-zinc-50 dark:bg-zinc-800/60 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+                  Selected Parts
+                </h4>
+              </div>
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                {selectedPartsCount} / 11 Parts
+              </span>
+            </div>
+
+            {/* List */}
+            <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60 max-h-[380px] overflow-y-auto text-xs">
+              {/* Frame */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(1)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 1: Frame selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="frames"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Frame
+                    </div>
+                    <div
+                      className={`truncate ${selectedFrame ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {selectedFrame ? selectedFrame.name : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {selectedFrame ? `${selectedFrame.weightG}g` : "—"}
+                </div>
+              </button>
+
+              {/* Motors */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(1)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 1: Motor selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="motors"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Motors ({motorCount}x)
+                    </div>
+                    <div
+                      className={`truncate ${selectedMotor ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {selectedMotor ? selectedMotor.name : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {selectedMotor
+                    ? `${((selectedMotor.weightG || 0) * motorCount).toFixed(1)}g`
+                    : "—"}
+                </div>
+              </button>
+
+              {/* Propellers */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(1)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 1: Propeller selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="propellers"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Propellers ({motorCount}x)
+                    </div>
+                    <div
+                      className={`truncate ${selectedProp ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {selectedProp ? selectedProp.name : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {selectedProp ? `${((selectedProp.weightG || 0) * motorCount).toFixed(1)}g` : "—"}
+                </div>
+              </button>
+
+              {/* Flight Controller */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(2)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 2: Flight Controller selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="flight-controllers"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Flight Controller
+                    </div>
+                    <div
+                      className={`truncate ${selectedFc ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {selectedFc ? selectedFc.name : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {selectedFc ? `${selectedFc.weightG}g` : "—"}
+                </div>
+              </button>
+
+              {/* ESC */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(2)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 2: ESC selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="electronic-speed-controllers"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Speed Controller (ESC)
+                    </div>
+                    <div
+                      className={`truncate ${useIntegratedEsc || selectedEsc ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {useIntegratedEsc
+                        ? integratedEsc
+                          ? `${integratedEsc.name} (Integrated)`
+                          : "Integrated FC ESC"
+                        : selectedEsc
+                          ? selectedEsc.name
+                          : noneSelections.esc
+                            ? "None (Omitted)"
+                            : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {useIntegratedEsc ? "0g" : selectedEsc ? `${selectedEsc.weightG}g` : "—"}
+                </div>
+              </button>
+
+              {/* Receiver (RX) */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(2)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 2: Receiver selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="receivers"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Receiver (RX)
+                    </div>
+                    <div
+                      className={`truncate ${useIntegratedRx || selectedRx ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {useIntegratedRx
+                        ? integratedRx
+                          ? `${integratedRx.name} (Integrated)`
+                          : "Integrated FC Receiver"
+                        : selectedRx
+                          ? `${selectedRx.name} (${selectedRx.protocol})`
+                          : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {useIntegratedRx ? "0g" : selectedRx ? `${selectedRx.weightG}g` : "—"}
+                </div>
+              </button>
+
+              {/* RX Antenna */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(2)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 2: RX Antenna selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="antennas"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      RX Antenna {selectedRxAnt ? `(${rxAntCount}x)` : ""}
+                    </div>
+                    <div
+                      className={`truncate ${selectedRxAnt ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {selectedRxAnt
+                        ? selectedRxAnt.name
+                        : noneSelections.rxAntenna
+                          ? "None (Omitted)"
+                          : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {selectedRxAnt && !noneSelections.rxAntenna
+                    ? `${((selectedRxAnt.weightG || 0) * rxAntCount).toFixed(1)}g`
+                    : "—"}
+                </div>
+              </button>
+
+              {/* Video Transmitter (VTX) */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(3)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 3: Video Transmitter selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="video-transmitters"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Video Transmitter (VTX)
+                    </div>
+                    <div
+                      className={`truncate ${useIntegratedVtx || selectedVtx ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {useIntegratedVtx
+                        ? integratedVtx
+                          ? `${integratedVtx.name} (Integrated)`
+                          : "Integrated FC VTX"
+                        : selectedVtx && !noneSelections.vtx
+                          ? selectedVtx.name
+                          : noneSelections.vtx
+                            ? "None (Omitted)"
+                            : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {useIntegratedVtx
+                    ? "0g"
+                    : selectedVtx && !noneSelections.vtx
+                      ? `${selectedVtx.weightG}g`
+                      : "—"}
+                </div>
+              </button>
+
+              {/* Camera */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(3)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 3: Camera selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="cameras"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      Camera
+                    </div>
+                    <div
+                      className={`truncate ${selectedCam && !noneSelections.camera ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {selectedCam && !noneSelections.camera
+                        ? selectedCam.name
+                        : noneSelections.camera
+                          ? "None (Omitted)"
+                          : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {selectedCam && !noneSelections.camera ? `${selectedCam.weightG}g` : "—"}
+                </div>
+              </button>
+
+              {/* VTX Antenna */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(3)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 3: VTX Antenna selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="antennas"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      VTX Antenna {selectedVtxAnt ? `(${vtxAntCount}x)` : ""}
+                    </div>
+                    <div
+                      className={`truncate ${selectedVtxAnt && !noneSelections.vtxAntenna ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {selectedVtxAnt && !noneSelections.vtxAntenna
+                        ? selectedVtxAnt.name
+                        : noneSelections.vtxAntenna
+                          ? "None (Omitted)"
+                          : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {selectedVtxAnt && !noneSelections.vtxAntenna
+                    ? `${((selectedVtxAnt.weightG || 0) * vtxAntCount).toFixed(1)}g`
+                    : "—"}
+                </div>
+              </button>
+
+              {/* GPS */}
+              <button
+                type="button"
+                onClick={() => setActiveStage(3)}
+                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
+                title="Go to Stage 3: GPS selection"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                    <CollectionIcon
+                      collection="gps-receivers"
+                      size={13}
+                      className="text-zinc-500 dark:text-zinc-400"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      GPS Receiver
+                    </div>
+                    <div
+                      className={`truncate ${selectedGps && !noneSelections.gps ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                    >
+                      {selectedGps && !noneSelections.gps
+                        ? selectedGps.name
+                        : noneSelections.gps
+                          ? "None (Omitted)"
+                          : "Not selected yet"}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                  {selectedGps && !noneSelections.gps ? `${selectedGps.weightG}g` : "—"}
+                </div>
+              </button>
+            </div>
+
+            {/* Footer: BOM Total Dry Weight */}
+            <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs">
+              <span className="text-zinc-500 font-medium">BOM Total Dry Weight:</span>
+              <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400 text-sm">
+                {dryWeightG.toFixed(1)}g
+              </span>
+            </div>
           </div>
         </div>
       </div>

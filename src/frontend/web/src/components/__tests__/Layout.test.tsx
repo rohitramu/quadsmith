@@ -51,12 +51,14 @@ describe("Layout Component", () => {
   it("renders sidebar navigation links", () => {
     renderWithProviders(<Layout />, { route: "/" });
 
-    // Sidebar links
-    expect(screen.queryByRole("link", { name: "Builds" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Build Wizard/i })).toHaveAttribute(
-      "href",
-      "/builds/new",
-    );
+    // Sidebar and navbar links
+    const buildsLinks = screen.getAllByRole("link", { name: "Builds" });
+    expect(buildsLinks.length).toBeGreaterThanOrEqual(1);
+    expect(buildsLinks[0]).toHaveAttribute("href", "/builds");
+
+    const wizardLink = screen.getByRole("link", { name: /Build Wizard/i });
+    expect(wizardLink).toHaveAttribute("href", "/builds/new");
+    expect(screen.queryByText("New")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Hardware" })).toHaveAttribute(
       "href",
       "/components/hardware",

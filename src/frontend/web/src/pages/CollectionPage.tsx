@@ -317,7 +317,7 @@ function ColumnSelector({
   );
 }
 
-function CollectionTableView({
+export function CollectionTableView({
   categoryId,
   collection,
 }: {
@@ -545,10 +545,10 @@ function CollectionTableView({
         className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
       >
         <Link
-          to={`/components/${categoryId}`}
+          to={categoryId && categoryId !== "builds" ? `/components/${categoryId}` : "/"}
           className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
         >
-          {categoryId}
+          {categoryId && categoryId !== "builds" ? categoryId : "Home"}
         </Link>
         <ChevronRight
           size={14}
@@ -594,10 +594,10 @@ function CollectionTableView({
                     <span className="font-medium text-zinc-700 dark:text-zinc-300">
                       {startItem}–{endItem}
                     </span>{" "}
-                    components
+                    {collection.id === "builds" ? "builds" : "components"}
                   </>
                 ) : (
-                  "0 components found"
+                  `0 ${collection.id === "builds" ? "builds" : "components"} found`
                 )}
               </span>
               {isFetching && !isLoading && (

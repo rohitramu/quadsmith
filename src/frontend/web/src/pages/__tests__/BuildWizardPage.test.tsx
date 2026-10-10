@@ -47,10 +47,12 @@ describe("BuildWizardPage Component", () => {
     // Stage 0 baseline options
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
     expect(screen.getAllByText("Start from Scratch").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText("Selected (Default)")).toBeInTheDocument();
+    // Initial dry weight is 0.0g across evaluator and selected parts list
+    expect(screen.getAllByText("0.0g").length).toBeGreaterThanOrEqual(1);
 
-    // Initial dry weight is 0.0g
-    expect(screen.getByText("0.0g")).toBeInTheDocument();
+    // Selected Parts section under Evaluator
+    expect(screen.getByText("Selected Parts")).toBeInTheDocument();
+    expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
   });
 
   it("allows searching for frames and filtering products in real time", async () => {
@@ -345,7 +347,7 @@ describe("BuildWizardPage Component", () => {
     // Should return to Stage 0 with Start from Scratch selected
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
     expect(screen.getByText("Selected (Default)")).toBeInTheDocument();
-    expect(screen.getByText("0.0g")).toBeInTheDocument();
+    expect(screen.getAllByText("0.0g").length).toBeGreaterThanOrEqual(1);
   });
 
   it("displays dynamic CEL filter when physics engine is active and allows toggling compatible parts", async () => {
@@ -374,5 +376,40 @@ describe("BuildWizardPage Component", () => {
     expect(compatibleCheckbox).toBeChecked();
     await user.click(compatibleCheckbox);
     expect(compatibleCheckbox).not.toBeChecked();
+  });
+
+  it("renders the selected parts list under the build evaluator and updates when components are selected", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Verify Selected Parts card under Evaluator
+    expect(screen.getByText("Selected Parts")).toBeInTheDocument();
+    expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
+    expect(screen.getByText("BOM Total Dry Weight:")).toBeInTheDocument();
+
+    // Verify all 11 component slots exist in the list
+    expect(screen.getByTitle("Go to Stage 1: Frame selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 1: Motor selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 1: Propeller selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 2: Flight Controller selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 2: ESC selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 2: Receiver selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 2: RX Antenna selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 3: Video Transmitter selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 3: Camera selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 3: VTX Antenna selection")).toBeInTheDocument();
+    expect(screen.getByTitle("Go to Stage 3: GPS selection")).toBeInTheDocument();
+
+    // Advance to Stage 1 and select a frame
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await user.click(await screen.findByText("Master 5 V2"));
+
+    // Verify frame is now listed in Selected Parts
+    expect(screen.getByText("1 / 11 Parts")).toBeInTheDocument();
+
+    // Clicking on Flight Controller in the parts list jumps to Stage 2
+    const fcPartButton = screen.getByTitle("Go to Stage 2: Flight Controller selection");
+    await user.click(fcPartButton);
+    expect(screen.getByText("2A. Flight Controller")).toBeInTheDocument();
   });
 });

@@ -1,5 +1,15 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { Moon, Sun, Search, ChevronDown, ChevronRight, X, Loader2, Wand2 } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  Search,
+  ChevronDown,
+  ChevronRight,
+  X,
+  Loader2,
+  Wand2,
+  Layers,
+} from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { search } from "../gen/quadsmith/search-SearchService_connectquery";
@@ -232,7 +242,18 @@ export function Layout() {
         </div>
 
         {/* Actions */}
-        <div className="flex justify-end w-64">
+        <div className="flex items-center justify-end gap-2 w-64">
+          <Link
+            to="/builds"
+            className={`px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors flex items-center gap-1.5 ${
+              location.pathname === "/builds"
+                ? "bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800"
+                : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+            }`}
+          >
+            <Layers size={14} />
+            <span>Builds</span>
+          </Link>
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -255,6 +276,28 @@ export function Layout() {
               <ul className="space-y-1">
                 <li>
                   <Link
+                    to="/builds"
+                    className={`flex items-center justify-between px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
+                      location.pathname === "/builds"
+                        ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
+                        : "text-zinc-700 dark:text-zinc-300"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Layers
+                        size={16}
+                        className={
+                          location.pathname === "/builds"
+                            ? "text-blue-600 dark:text-blue-400"
+                            : "text-zinc-500"
+                        }
+                      />
+                      <span>Builds</span>
+                    </div>
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     to="/builds/new"
                     className={`flex items-center justify-between px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
                       location.pathname === "/builds/new"
@@ -273,9 +316,6 @@ export function Layout() {
                       />
                       <span>Build Wizard</span>
                     </div>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider">
-                      New
-                    </span>
                   </Link>
                 </li>
               </ul>

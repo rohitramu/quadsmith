@@ -7,6 +7,7 @@ import {
   getCollectionPath,
   getCollectionColor,
 } from "../lib/hardwareCollections";
+import { BUILD_COLLECTION } from "../lib/buildCollection";
 import { CollectionBadge } from "./CollectionBadge";
 import { CollectionIcon } from "./CollectionIcon";
 import { ExternalLink } from "lucide-react";
@@ -20,14 +21,23 @@ export interface ProductHoverCardProps {
   as?: React.ElementType;
 }
 
-export function ProductHoverCard({
+interface ProductHoverCardPresenterProps {
+  collectionId: string;
+  product?: any;
+  productId?: string;
+  children: React.ReactNode;
+  className?: string;
+  as?: React.ElementType;
+}
+
+function ProductHoverCardPresenter({
   collectionId,
-  item: propItem,
+  product,
   productId,
   children,
   className = "",
   as,
-}: ProductHoverCardProps) {
+}: ProductHoverCardPresenterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number; placeAbove: boolean }>({
     top: 0,
@@ -41,18 +51,9 @@ export function ProductHoverCard({
   const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const collection = getHardwareCollection(collectionId);
+  const collection =
+    collectionId === "builds" ? BUILD_COLLECTION : getHardwareCollection(collectionId);
   const colColor = collection?.color || getCollectionColor(collectionId);
-
-  // If item wasn't passed directly, fetch it using collection.getQuery
-  const shouldFetch = !propItem && !!productId && !!collection?.getQuery;
-  const { data: fetchedItem } = useQuery(
-    collection?.getQuery,
-    { id: productId },
-    { enabled: shouldFetch, staleTime: 60_000 },
-  );
-
-  const product = propItem || fetchedItem;
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current) return;
@@ -233,4 +234,62 @@ export function ProductHoverCard({
         )}
     </Component>
   );
+}
+
+function ProductHoverCardWithQuery({
+  collectionId,
+  productId,
+  getQuery,
+  children,
+  className,
+  as,
+}: ProductHoverCardProps & { getQuery: any }) {
+  const { data: fetchedItem } = useQuery(getQuery, { id: productId }, { staleTime: 60_000 });
+
+  return (
+    <ProductHoverCardPresenter
+      collectionId={collectionId}
+      product={fetchedItem}
+      productId={productId}
+      className={className}
+      as={as}
+    >
+      {children}
+    </ProductHoverCardPresenter>
+  );
+}
+
+function ProductHoverCardFetcher({
+  collectionId,
+  productId,
+  children,
+  className,
+  as,
+}: ProductHoverCardProps) {
+  const collection =
+    collectionId === "builds" ? BUILD_COLLECTION : getHardwareCollection(collectionId);
+
+  if (!collection?.getQuery || !productId) {
+    const Component = (as || "div") as React.ElementType;
+    return <Component className={className}>{children}</Component>;
+  }
+
+  return (
+    <ProductHoverCardWithQuery
+      collectionId={collectionId}
+      productId={productId}
+      getQuery={collection.getQuery}
+      className={className}
+      as={as}
+    >
+      {children}
+    </ProductHoverCardWithQuery>
+  );
+}
+
+export function ProductHoverCard(props: ProductHoverCardProps) {
+  if (props.item) {
+    return <ProductHoverCardPresenter {...props} product={props.item} />;
+  }
+  return <ProductHoverCardFetcher {...props} />;
 }
