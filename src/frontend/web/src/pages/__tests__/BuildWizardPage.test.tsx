@@ -387,29 +387,42 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
     expect(screen.getByText("BOM Total Dry Weight:")).toBeInTheDocument();
 
-    // Verify all 11 component slots exist in the list
-    expect(screen.getByTitle("Go to Stage 1: Frame selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 1: Motor selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 1: Propeller selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 2: Flight Controller selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 2: ESC selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 2: Receiver selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 2: RX Antenna selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 3: Video Transmitter selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 3: Camera selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 3: VTX Antenna selection")).toBeInTheDocument();
-    expect(screen.getByTitle("Go to Stage 3: GPS selection")).toBeInTheDocument();
+    // Verify Stage 1 items are unlocked initially
+    expect(screen.getByTitle("Go to Stage 1: Frame selection")).toBeEnabled();
+    expect(screen.getByTitle("Go to Stage 1: Motor selection")).toBeEnabled();
+    expect(screen.getByTitle("Go to Stage 1: Propeller selection")).toBeEnabled();
 
-    // Advance to Stage 1 and select a frame
+    // Verify Stage 2 & 3 items are locked initially with disabled buttons
+    const fcPartButton = screen.getByTitle(
+      "Stage 2 is locked: Flight Controller (Complete Stage 1 first)",
+    );
+    expect(fcPartButton).toBeDisabled();
+    expect(
+      screen.getByTitle("Stage 2 is locked: Speed Controller (ESC) (Complete Stage 1 first)"),
+    ).toBeDisabled();
+    expect(
+      screen.getByTitle("Stage 3 is locked: Video Transmitter (VTX) (Complete Stages 1 & 2 first)"),
+    ).toBeDisabled();
+
+    // Clicking locked Flight Controller button does NOT navigate to Stage 2
+    await user.click(fcPartButton);
+    expect(screen.queryByText("2A. Flight Controller")).not.toBeInTheDocument();
+
+    // Advance to Stage 1 and select Frame, Motor, and Propeller to complete Stage 1
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
     await user.click(await screen.findByText("Master 5 V2"));
+    await user.click(await screen.findByText("ECO II 2207"));
+    await user.click(await screen.findByText("Hurricane 51433"));
 
-    // Verify frame is now listed in Selected Parts
-    expect(screen.getByText("1 / 11 Parts")).toBeInTheDocument();
+    // Verify 3 / 11 parts are now selected and Stage 1 is complete
+    expect(screen.getByText("3 / 11 Parts")).toBeInTheDocument();
 
-    // Clicking on Flight Controller in the parts list jumps to Stage 2
-    const fcPartButton = screen.getByTitle("Go to Stage 2: Flight Controller selection");
-    await user.click(fcPartButton);
+    // Now Stage 2 is unlocked in the Selected Parts list
+    const unlockedFcButton = screen.getByTitle("Go to Stage 2: Flight Controller selection");
+    expect(unlockedFcButton).toBeEnabled();
+
+    // Clicking on Flight Controller now successfully navigates to Stage 2
+    await user.click(unlockedFcButton);
     expect(screen.getByText("2A. Flight Controller")).toBeInTheDocument();
   });
 });

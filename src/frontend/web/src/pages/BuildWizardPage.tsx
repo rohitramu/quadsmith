@@ -3,7 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
 import { create } from "@bufbuild/protobuf";
-import { Search, X, ArrowLeft, Sparkles, AlertCircle, RotateCcw, Save, Check } from "lucide-react";
+import {
+  Search,
+  X,
+  ArrowLeft,
+  Sparkles,
+  AlertCircle,
+  RotateCcw,
+  Save,
+  Check,
+  Lock,
+} from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStageBar } from "../components/WizardStageBar";
 import { CollectionIcon } from "../components/CollectionIcon";
@@ -406,6 +416,10 @@ export function BuildWizardPage() {
     }
     return list;
   }, [selectedTemplateId, stage1Complete, stage2Complete]);
+
+  const isStage1Unlocked = unlockedStages.includes(1);
+  const isStage2Unlocked = unlockedStages.includes(2);
+  const isStage3Unlocked = unlockedStages.includes(3);
 
   // Dry weight calculation (with dynamic motor, prop, and antenna quantities)
   const dryWeightG = useMemo(() => {
@@ -3505,9 +3519,16 @@ export function BuildWizardPage() {
               {/* Frame */}
               <button
                 type="button"
-                onClick={() => setActiveStage(1)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 1: Frame selection"
+                disabled={!isStage1Unlocked}
+                onClick={() => {
+                  if (isStage1Unlocked) setActiveStage(1);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage1Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={isStage1Unlocked ? "Go to Stage 1: Frame selection" : "Stage 1 is locked"}
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3518,8 +3539,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      Frame
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>Frame</span>
+                      {!isStage1Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${selectedFrame ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3536,9 +3563,16 @@ export function BuildWizardPage() {
               {/* Motors */}
               <button
                 type="button"
-                onClick={() => setActiveStage(1)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 1: Motor selection"
+                disabled={!isStage1Unlocked}
+                onClick={() => {
+                  if (isStage1Unlocked) setActiveStage(1);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage1Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={isStage1Unlocked ? "Go to Stage 1: Motor selection" : "Stage 1 is locked"}
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3549,8 +3583,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      Motors ({motorCount}x)
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>Motors ({motorCount}x)</span>
+                      {!isStage1Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${selectedMotor ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3569,9 +3609,18 @@ export function BuildWizardPage() {
               {/* Propellers */}
               <button
                 type="button"
-                onClick={() => setActiveStage(1)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 1: Propeller selection"
+                disabled={!isStage1Unlocked}
+                onClick={() => {
+                  if (isStage1Unlocked) setActiveStage(1);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage1Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage1Unlocked ? "Go to Stage 1: Propeller selection" : "Stage 1 is locked"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3582,8 +3631,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      Propellers ({motorCount}x)
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>Propellers ({motorCount}x)</span>
+                      {!isStage1Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${selectedProp ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3600,9 +3655,20 @@ export function BuildWizardPage() {
               {/* Flight Controller */}
               <button
                 type="button"
-                onClick={() => setActiveStage(2)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 2: Flight Controller selection"
+                disabled={!isStage2Unlocked}
+                onClick={() => {
+                  if (isStage2Unlocked) setActiveStage(2);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage2Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage2Unlocked
+                    ? "Go to Stage 2: Flight Controller selection"
+                    : "Stage 2 is locked: Flight Controller (Complete Stage 1 first)"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3613,8 +3679,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      Flight Controller
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>Flight Controller</span>
+                      {!isStage2Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${selectedFc ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3631,9 +3703,20 @@ export function BuildWizardPage() {
               {/* ESC */}
               <button
                 type="button"
-                onClick={() => setActiveStage(2)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 2: ESC selection"
+                disabled={!isStage2Unlocked}
+                onClick={() => {
+                  if (isStage2Unlocked) setActiveStage(2);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage2Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage2Unlocked
+                    ? "Go to Stage 2: ESC selection"
+                    : "Stage 2 is locked: Speed Controller (ESC) (Complete Stage 1 first)"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3644,8 +3727,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      Speed Controller (ESC)
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>Speed Controller (ESC)</span>
+                      {!isStage2Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${useIntegratedEsc || selectedEsc ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3670,9 +3759,20 @@ export function BuildWizardPage() {
               {/* Receiver (RX) */}
               <button
                 type="button"
-                onClick={() => setActiveStage(2)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 2: Receiver selection"
+                disabled={!isStage2Unlocked}
+                onClick={() => {
+                  if (isStage2Unlocked) setActiveStage(2);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage2Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage2Unlocked
+                    ? "Go to Stage 2: Receiver selection"
+                    : "Stage 2 is locked: Receiver (RX) (Complete Stage 1 first)"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3683,8 +3783,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      Receiver (RX)
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>Receiver (RX)</span>
+                      {!isStage2Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${useIntegratedRx || selectedRx ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3707,9 +3813,20 @@ export function BuildWizardPage() {
               {/* RX Antenna */}
               <button
                 type="button"
-                onClick={() => setActiveStage(2)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 2: RX Antenna selection"
+                disabled={!isStage2Unlocked}
+                onClick={() => {
+                  if (isStage2Unlocked) setActiveStage(2);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage2Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage2Unlocked
+                    ? "Go to Stage 2: RX Antenna selection"
+                    : "Stage 2 is locked: RX Antenna (Complete Stage 1 first)"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3720,8 +3837,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      RX Antenna {selectedRxAnt ? `(${rxAntCount}x)` : ""}
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>RX Antenna {selectedRxAnt ? `(${rxAntCount}x)` : ""}</span>
+                      {!isStage2Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${selectedRxAnt ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3744,9 +3867,20 @@ export function BuildWizardPage() {
               {/* Video Transmitter (VTX) */}
               <button
                 type="button"
-                onClick={() => setActiveStage(3)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 3: Video Transmitter selection"
+                disabled={!isStage3Unlocked}
+                onClick={() => {
+                  if (isStage3Unlocked) setActiveStage(3);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage3Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage3Unlocked
+                    ? "Go to Stage 3: Video Transmitter selection"
+                    : "Stage 3 is locked: Video Transmitter (VTX) (Complete Stages 1 & 2 first)"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3757,8 +3891,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      Video Transmitter (VTX)
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>Video Transmitter (VTX)</span>
+                      {!isStage3Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${useIntegratedVtx || selectedVtx ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3787,9 +3927,20 @@ export function BuildWizardPage() {
               {/* Camera */}
               <button
                 type="button"
-                onClick={() => setActiveStage(3)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 3: Camera selection"
+                disabled={!isStage3Unlocked}
+                onClick={() => {
+                  if (isStage3Unlocked) setActiveStage(3);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage3Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage3Unlocked
+                    ? "Go to Stage 3: Camera selection"
+                    : "Stage 3 is locked: Camera (Complete Stages 1 & 2 first)"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3800,8 +3951,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      Camera
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>Camera</span>
+                      {!isStage3Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${selectedCam && !noneSelections.camera ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3822,9 +3979,20 @@ export function BuildWizardPage() {
               {/* VTX Antenna */}
               <button
                 type="button"
-                onClick={() => setActiveStage(3)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 3: VTX Antenna selection"
+                disabled={!isStage3Unlocked}
+                onClick={() => {
+                  if (isStage3Unlocked) setActiveStage(3);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage3Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage3Unlocked
+                    ? "Go to Stage 3: VTX Antenna selection"
+                    : "Stage 3 is locked: VTX Antenna (Complete Stages 1 & 2 first)"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3835,8 +4003,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      VTX Antenna {selectedVtxAnt ? `(${vtxAntCount}x)` : ""}
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>VTX Antenna {selectedVtxAnt ? `(${vtxAntCount}x)` : ""}</span>
+                      {!isStage3Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${selectedVtxAnt && !noneSelections.vtxAntenna ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
@@ -3859,9 +4033,20 @@ export function BuildWizardPage() {
               {/* GPS */}
               <button
                 type="button"
-                onClick={() => setActiveStage(3)}
-                className="w-full text-left p-2.5 flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors cursor-pointer group"
-                title="Go to Stage 3: GPS selection"
+                disabled={!isStage3Unlocked}
+                onClick={() => {
+                  if (isStage3Unlocked) setActiveStage(3);
+                }}
+                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                  isStage3Unlocked
+                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                }`}
+                title={
+                  isStage3Unlocked
+                    ? "Go to Stage 3: GPS selection"
+                    : "Stage 3 is locked: GPS Receiver (Complete Stages 1 & 2 first)"
+                }
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3872,8 +4057,14 @@ export function BuildWizardPage() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      GPS Receiver
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                      <span>GPS Receiver</span>
+                      {!isStage3Unlocked && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                          <Lock size={10} />
+                          Locked
+                        </span>
+                      )}
                     </div>
                     <div
                       className={`truncate ${selectedGps && !noneSelections.gps ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
