@@ -41,7 +41,8 @@ Always check the manufacturer's official website and official spec sheets as the
 
 ## Testing
 
-- Always run `make test` and ensure all tests pass whenever you make changes to the codebase. Do not consider a task complete or push code if there are failing tests.
+- Always run `make test` and ensure all tests pass whenever you make changes to functional code, schemas, or tests. Do not consider a task complete or push code if there are failing tests.
+- You do not need to run the test suite if system behavior has not changed (e.g., when only updating `AGENTS.md` or documentation).
 
 ## UI Changes & Visual Previews
 
