@@ -85,4 +85,14 @@ describe("Layout Component", () => {
       expect(link.querySelector(".rounded-full")).not.toBeInTheDocument();
     }
   });
+
+  it("styles The Forge link with blue active text when selected, while keeping the fiery orange icon", () => {
+    renderWithProviders(<Layout />, { route: "/builds/new" });
+
+    const forgeLink = screen.getByRole("link", { name: /The Forge/i });
+    expect(forgeLink).toHaveClass("text-blue-600");
+    expect(forgeLink).toHaveClass("dark:text-blue-400");
+    const forgeIcon = forgeLink.querySelector("svg");
+    expect(forgeIcon).toHaveClass("text-[#FF6D00]");
+  });
 });

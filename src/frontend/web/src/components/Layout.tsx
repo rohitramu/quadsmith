@@ -253,7 +253,7 @@ export function Layout() {
                         to="/builds/new"
                         className={`flex items-center justify-between px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
                           location.pathname === "/builds/new"
-                            ? `bg-zinc-200/70 dark:bg-zinc-800 ${forgeColor.textClass} font-medium`
+                            ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
                             : "text-zinc-700 dark:text-zinc-300"
                         }`}
                       >
