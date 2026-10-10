@@ -9,9 +9,10 @@ import (
 
 func TestValidateReferenceLinks(t *testing.T) {
 	tests := []struct {
-		name    string
-		links   []*pb.ReferenceLink
-		wantErr bool
+		name      string
+		links     []*pb.ReferenceLink
+		wantErr   bool
+		wantErrIs error
 	}{
 		{
 			name:    "nil links slice is valid",
@@ -69,7 +70,52 @@ func TestValidateReferenceLinks(t *testing.T) {
 					Url: "https://example.com/docs",
 				},
 			},
-			wantErr: true,
+			wantErr:   true,
+			wantErrIs: ErrUnspecifiedReferenceLinkType,
+		},
+		{
+			name: "multiple links with distinct URLs are valid",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PRODUCT_PAGE},
+					Url:   "https://example.com/product",
+				},
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PURCHASE},
+					Url:   "https://example.com/store/item",
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "duplicate URLs across multiple links return error",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PRODUCT_PAGE},
+					Url:   "https://example.com/product",
+				},
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PURCHASE},
+					Url:   "https://example.com/product",
+				},
+			},
+			wantErr:   true,
+			wantErrIs: ErrDuplicateReferenceLinkURL,
+		},
+		{
+			name: "duplicate URLs with trailing slash variation return error",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_DOCUMENTATION},
+					Url:   "https://example.com/docs/",
+				},
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_FORUM_POST},
+					Url:   "https://example.com/docs",
+				},
+			},
+			wantErr:   true,
+			wantErrIs: ErrDuplicateReferenceLinkURL,
 		},
 	}
 
@@ -79,8 +125,8 @@ func TestValidateReferenceLinks(t *testing.T) {
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ValidateReferenceLinks() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			if tt.wantErr && !errors.Is(err, ErrUnspecifiedReferenceLinkType) {
-				t.Errorf("expected ErrUnspecifiedReferenceLinkType, got: %v", err)
+			if tt.wantErrIs != nil && !errors.Is(err, tt.wantErrIs) {
+				t.Errorf("expected %v, got: %v", tt.wantErrIs, err)
 			}
 		})
 	}

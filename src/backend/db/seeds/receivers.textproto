@@ -12,15 +12,12 @@ receivers: {
   description: "TBS TBS Crossfire Nano RX TBS Crossfire (CRSF) receiver operating at 2400 MHz with telemetry support, weighing 0.50g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
   }
   reference_links: {
     types: REFERENCE_LINK_TYPE_DOCUMENTATION
     url: "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
-  }
-  reference_links: {
-    types: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.team-blacksheep.com/products/prod:crossfire_nano_rx"
   }
   reference_links: {
     types: REFERENCE_LINK_TYPE_PURCHASE

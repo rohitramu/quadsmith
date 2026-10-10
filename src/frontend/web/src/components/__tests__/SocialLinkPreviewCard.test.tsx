@@ -1,7 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
-import { SocialLinkPreviewCard, validateReferenceLink } from "../SocialLinkPreviewCard";
+import {
+  SocialLinkPreviewCard,
+  validateReferenceLink,
+  validateReferenceLinks,
+} from "../SocialLinkPreviewCard";
 import { ReferenceLinkType } from "../../gen/quadsmith/reference_link_pb";
 
 describe("SocialLinkPreviewCard", () => {
@@ -97,6 +101,36 @@ describe("SocialLinkPreviewCard", () => {
     expect(() => validateReferenceLink(link)).toThrow(
       "ReferenceLinkType.UNSPECIFIED is not permitted",
     );
+  });
+
+  it("throws validation error on duplicate reference link URLs", () => {
+    const links = [
+      {
+        types: [ReferenceLinkType.PRODUCT_PAGE],
+        url: "https://example.com/product",
+      },
+      {
+        types: [ReferenceLinkType.PURCHASE],
+        url: "https://example.com/product/",
+      },
+    ];
+
+    expect(() => validateReferenceLinks(links)).toThrow("Duplicate reference link URL");
+  });
+
+  it("permits multiple links when URLs are distinct", () => {
+    const links = [
+      {
+        types: [ReferenceLinkType.PRODUCT_PAGE],
+        url: "https://example.com/product",
+      },
+      {
+        types: [ReferenceLinkType.PURCHASE],
+        url: "https://example.com/store/item",
+      },
+    ];
+
+    expect(() => validateReferenceLinks(links)).not.toThrow();
   });
 
   it("gracefully falls back when legacy type field is provided", async () => {

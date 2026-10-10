@@ -50,6 +50,32 @@ export function validateReferenceLink(link: {
   }
 }
 
+export function validateReferenceLinks(
+  links?: Array<{
+    types?: (ReferenceLinkType | number)[];
+    type?: ReferenceLinkType | number;
+    url?: string;
+  } | null>,
+) {
+  if (!links) return;
+  const seen = new Set<string>();
+  for (const link of links) {
+    if (!link) continue;
+    validateReferenceLink(link);
+    if (link.url) {
+      const norm = link.url.trim().replace(/\/+$/, "");
+      if (norm) {
+        if (seen.has(norm)) {
+          throw new Error(
+            `Duplicate reference link URL "${link.url}" is not permitted. Combine categories into the types array of a single link.`,
+          );
+        }
+        seen.add(norm);
+      }
+    }
+  }
+}
+
 export interface SocialLinkPreviewCardProps {
   link:
     | ReferenceLink

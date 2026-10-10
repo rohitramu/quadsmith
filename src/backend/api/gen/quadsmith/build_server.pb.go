@@ -80,6 +80,7 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 	}
 
 	// Validate reference links
+	seenURLs := make(map[string]int)
 	for i, link := range b.ReferenceLinks {
 		if link == nil {
 			continue
@@ -88,6 +89,13 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 			if t == ReferenceLinkType_REFERENCE_LINK_TYPE_UNSPECIFIED {
 				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("reference link %d: REFERENCE_LINK_TYPE_UNSPECIFIED is not permitted; omit categories or provide an empty types array for 'Other'", i))
 			}
+		}
+		normURL := strings.TrimRight(strings.TrimSpace(link.Url), "/")
+		if normURL != "" {
+			if prevIdx, exists := seenURLs[normURL]; exists {
+				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("reference link %d duplicates URL from link %d (%s): duplicate reference link URL is not permitted; combine categories into the types array of a single link", i, prevIdx, link.Url))
+			}
+			seenURLs[normURL] = i
 		}
 	}
 
