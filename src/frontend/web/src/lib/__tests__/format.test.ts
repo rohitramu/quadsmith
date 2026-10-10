@@ -81,22 +81,19 @@ describe("getTwrDescription", () => {
     expect(getTwrDescription(3.9)).toBe("Long Range Cruiser");
   });
 
-  it("classifies sluggish (1.8 <= TWR < 2.8)", () => {
-    expect(getTwrDescription(1.8)).toBe("Sluggish");
-    expect(getTwrDescription(2.2)).toBe("Sluggish");
-    expect(getTwrDescription(2.7)).toBe("Sluggish");
+  it("classifies underpowered (1.8 <= TWR < 2.8)", () => {
+    expect(getTwrDescription(1.8)).toBe("Underpowered");
+    expect(getTwrDescription(2.2)).toBe("Underpowered");
+    expect(getTwrDescription(2.7)).toBe("Underpowered");
   });
 
-  it("classifies underpowered (1.0 <= TWR < 1.8)", () => {
-    expect(getTwrDescription(1.0)).toBe("Underpowered");
-    expect(getTwrDescription(1.4)).toBe("Underpowered");
-    expect(getTwrDescription(1.79)).toBe("Underpowered");
-  });
-
-  it("classifies cannot take off (TWR < 1.0)", () => {
-    expect(getTwrDescription(0.99)).toBe("Cannot Take Off");
-    expect(getTwrDescription(0.5)).toBe("Cannot Take Off");
-    expect(getTwrDescription(0)).toBe("Cannot Take Off");
+  it("classifies unflyable (TWR < 1.8)", () => {
+    expect(getTwrDescription(1.79)).toBe("Unflyable");
+    expect(getTwrDescription(1.4)).toBe("Unflyable");
+    expect(getTwrDescription(1.0)).toBe("Unflyable");
+    expect(getTwrDescription(0.99)).toBe("Unflyable");
+    expect(getTwrDescription(0.5)).toBe("Unflyable");
+    expect(getTwrDescription(0)).toBe("Unflyable");
   });
 });
 
@@ -149,17 +146,16 @@ describe("getTwrColor", () => {
     expect(getTwrColor(3.2).badge).toContain("bg-sky");
   });
 
-  it("assigns amber for sluggish (1.8 - 2.7)", () => {
+  it("assigns amber for underpowered (1.8 - 2.7)", () => {
     expect(getTwrColor(2.2).text).toContain("text-amber");
     expect(getTwrColor(2.2).badge).toContain("bg-amber");
   });
 
-  it("assigns orange for underpowered (1.0 - 1.79)", () => {
-    expect(getTwrColor(1.4).text).toContain("text-orange");
-    expect(getTwrColor(1.4).badge).toContain("bg-orange");
-  });
-
-  it("assigns rose red for cannot take off (< 1.0)", () => {
+  it("assigns rose red for unflyable (< 1.8)", () => {
+    expect(getTwrColor(1.79).text).toContain("text-rose");
+    expect(getTwrColor(1.79).badge).toContain("bg-rose");
+    expect(getTwrColor(1.4).text).toContain("text-rose");
+    expect(getTwrColor(1.4).badge).toContain("bg-rose");
     expect(getTwrColor(0.8).text).toContain("text-rose");
     expect(getTwrColor(0.8).badge).toContain("bg-rose");
   });

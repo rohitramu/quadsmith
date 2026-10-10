@@ -70,9 +70,8 @@ export function getTwrDescription(twr: number): string {
   if (twr >= 5.5) return "Freestyle Acro";
   if (twr >= 4.0) return "Sport & Toothpick";
   if (twr >= 2.8) return "Long Range Cruiser";
-  if (twr >= 1.8) return "Sluggish";
-  if (twr >= 1.0) return "Underpowered";
-  return "Cannot Take Off";
+  if (twr >= 1.8) return "Underpowered";
+  return "Unflyable";
 }
 
 /**
@@ -115,13 +114,6 @@ export function getTwrColor(twr: number): {
       text: "text-amber-600 dark:text-amber-400",
       badge:
         "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400 border-amber-200 dark:border-amber-800/50",
-    };
-  }
-  if (twr >= 1.0) {
-    return {
-      text: "text-orange-600 dark:text-orange-400",
-      badge:
-        "bg-orange-100 text-orange-700 dark:bg-orange-950/60 dark:text-orange-400 border-orange-200 dark:border-orange-800/50",
     };
   }
   return {
