@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
 	"reflect"
 	"regexp"
@@ -50,6 +49,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		cmd.SilenceUsage = true
 	}
+	httpClient := newCLIHTTPClient()
 
 	componentsCmd := &cobra.Command{
 		Use:     "components",
@@ -66,7 +66,7 @@ func newRootCmd() *cobra.Command {
 	componentsCmd.AddCommand(componentsHardwareCmd)
 
 	// --- Antennas ---
-	antennaClient := quadsmithconnect.NewAntennaServiceClient(http.DefaultClient, targetURL)
+	antennaClient := quadsmithconnect.NewAntennaServiceClient(httpClient, targetURL)
 	antennaCmd := &cobra.Command{Use: "antennas", Aliases: []string{"antenna"}}
 	antennaListCmd := &cobra.Command{
 		Use: "list",
@@ -227,7 +227,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(antennaCmd)
 
 	// --- Batteries ---
-	batteryClient := quadsmithconnect.NewBatteryServiceClient(http.DefaultClient, targetURL)
+	batteryClient := quadsmithconnect.NewBatteryServiceClient(httpClient, targetURL)
 	batteryCmd := &cobra.Command{Use: "batteries", Aliases: []string{"battery"}}
 	batteryListCmd := &cobra.Command{
 		Use: "list",
@@ -388,7 +388,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(batteryCmd)
 
 	// --- Builds ---
-	buildClient := quadsmithconnect.NewBuildServiceClient(http.DefaultClient, targetURL)
+	buildClient := quadsmithconnect.NewBuildServiceClient(httpClient, targetURL)
 	buildCmd := &cobra.Command{Use: "builds", Aliases: []string{"build"}}
 	buildListCmd := &cobra.Command{
 		Use: "list",
@@ -549,7 +549,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(buildCmd)
 
 	// --- Cameras ---
-	cameraClient := quadsmithconnect.NewCameraServiceClient(http.DefaultClient, targetURL)
+	cameraClient := quadsmithconnect.NewCameraServiceClient(httpClient, targetURL)
 	cameraCmd := &cobra.Command{Use: "cameras", Aliases: []string{"camera"}}
 	cameraListCmd := &cobra.Command{
 		Use: "list",
@@ -710,7 +710,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(cameraCmd)
 
 	// --- ElectronicSpeedControllers ---
-	electronicSpeedControllerClient := quadsmithconnect.NewElectronicSpeedControllerServiceClient(http.DefaultClient, targetURL)
+	electronicSpeedControllerClient := quadsmithconnect.NewElectronicSpeedControllerServiceClient(httpClient, targetURL)
 	electronicSpeedControllerCmd := &cobra.Command{Use: "electronic-speed-controllers", Aliases: []string{"electronicspeedcontrollers", "escs", "esc", "electronic-speed-controller"}}
 	electronicSpeedControllerListCmd := &cobra.Command{
 		Use: "list",
@@ -871,7 +871,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(electronicSpeedControllerCmd)
 
 	// --- FlightControllers ---
-	flightControllerClient := quadsmithconnect.NewFlightControllerServiceClient(http.DefaultClient, targetURL)
+	flightControllerClient := quadsmithconnect.NewFlightControllerServiceClient(httpClient, targetURL)
 	flightControllerCmd := &cobra.Command{Use: "flight-controllers", Aliases: []string{"flightcontrollers", "fc", "fcs", "flight-controller"}}
 	flightControllerListCmd := &cobra.Command{
 		Use: "list",
@@ -1032,7 +1032,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(flightControllerCmd)
 
 	// --- Frames ---
-	frameClient := quadsmithconnect.NewFrameServiceClient(http.DefaultClient, targetURL)
+	frameClient := quadsmithconnect.NewFrameServiceClient(httpClient, targetURL)
 	frameCmd := &cobra.Command{Use: "frames", Aliases: []string{"frame"}}
 	frameListCmd := &cobra.Command{
 		Use: "list",
@@ -1193,7 +1193,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(frameCmd)
 
 	// --- GpsReceivers ---
-	gpsReceiverClient := quadsmithconnect.NewGpsReceiverServiceClient(http.DefaultClient, targetURL)
+	gpsReceiverClient := quadsmithconnect.NewGpsReceiverServiceClient(httpClient, targetURL)
 	gpsReceiverCmd := &cobra.Command{Use: "gps-receivers", Aliases: []string{"gpsreceivers", "gps", "gps-receiver"}}
 	gpsReceiverListCmd := &cobra.Command{
 		Use: "list",
@@ -1354,7 +1354,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(gpsReceiverCmd)
 
 	// --- Motors ---
-	motorClient := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, targetURL)
+	motorClient := quadsmithconnect.NewMotorServiceClient(httpClient, targetURL)
 	motorCmd := &cobra.Command{Use: "motors", Aliases: []string{"motor"}}
 	motorListCmd := &cobra.Command{
 		Use: "list",
@@ -1515,7 +1515,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(motorCmd)
 
 	// --- Propellers ---
-	propellerClient := quadsmithconnect.NewPropellerServiceClient(http.DefaultClient, targetURL)
+	propellerClient := quadsmithconnect.NewPropellerServiceClient(httpClient, targetURL)
 	propellerCmd := &cobra.Command{Use: "propellers", Aliases: []string{"propeller", "props", "prop"}}
 	propellerListCmd := &cobra.Command{
 		Use: "list",
@@ -1676,7 +1676,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(propellerCmd)
 
 	// --- Receivers ---
-	receiverClient := quadsmithconnect.NewReceiverServiceClient(http.DefaultClient, targetURL)
+	receiverClient := quadsmithconnect.NewReceiverServiceClient(httpClient, targetURL)
 	receiverCmd := &cobra.Command{Use: "receivers", Aliases: []string{"rx", "rxs", "receiver"}}
 	receiverListCmd := &cobra.Command{
 		Use: "list",
@@ -1837,7 +1837,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(receiverCmd)
 
 	// --- VideoTransmitters ---
-	videoTransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(http.DefaultClient, targetURL)
+	videoTransmitterClient := quadsmithconnect.NewVideoTransmitterServiceClient(httpClient, targetURL)
 	videoTransmitterCmd := &cobra.Command{Use: "video-transmitters", Aliases: []string{"videotransmitters", "vtx", "vtxs", "video-transmitter"}}
 	videoTransmitterListCmd := &cobra.Command{
 		Use: "list",
@@ -1998,7 +1998,7 @@ func newRootCmd() *cobra.Command {
 	componentsHardwareCmd.AddCommand(videoTransmitterCmd)
 
 	// --- EVALUATOR ---
-	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, targetURL)
+	evalClient := quadsmithconnect.NewEvaluatorServiceClient(httpClient, targetURL)
 	evalCmd := &cobra.Command{
 		Use:     "evaluate [build-id]",
 		Aliases: []string{"eval"},
@@ -2127,7 +2127,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(completionCmd)
 
 	// --- SEARCH ---
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, targetURL)
+	searchClient := quadsmithconnect.NewSearchServiceClient(httpClient, targetURL)
 	searchCmd := &cobra.Command{
 		Use:   "search [query]",
 		Short: "Fuzzy text completion search across collections",
@@ -2230,6 +2230,8 @@ func newRootCmd() *cobra.Command {
 	searchCmd.Flags().StringP("filter", "f", "", "CEL filter expression for single collection path")
 	searchCmd.Flags().Int32P("limit", "n", 10, "Maximum number of results to return")
 	rootCmd.AddCommand(searchCmd)
+
+	initAuthCommands(rootCmd, targetURL, httpClient)
 
 	return rootCmd
 }

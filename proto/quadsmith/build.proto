@@ -73,6 +73,8 @@ message Build {
   repeated ReferenceLink reference_links = 16;
   optional string primary_display_image = 17;
   repeated Media media = 18;
+  optional string user_uuid = 19 [(quadsmith.sql.column) = {references: "users(uuid)"}];
+  optional string author_handle = 20;
 }
 
 // ---------------------------------------------------------

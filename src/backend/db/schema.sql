@@ -20,6 +20,90 @@ CREATE TABLE IF NOT EXISTS antennas (
 
 CREATE INDEX IF NOT EXISTS idx_antennas_manufacturer ON antennas (manufacturer);
 
+CREATE TABLE IF NOT EXISTS users (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  role TEXT DEFAULT 'USER' NOT NULL,
+  email_verified_at TIMESTAMPTZ,
+  last_renamed_at TIMESTAMPTZ,
+  deleted_at TIMESTAMPTZ,
+  banned_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ,
+  updated_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_id ON users (id);
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
+
+CREATE TABLE IF NOT EXISTS user_profiles (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_uuid UUID UNIQUE NOT NULL,
+  display_name TEXT NOT NULL,
+  avatar_url TEXT NOT NULL,
+  bio TEXT NOT NULL,
+  updated_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_profiles_user_uuid ON user_profiles (user_uuid);
+
+CREATE TABLE IF NOT EXISTS refresh_tokens (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_uuid UUID NOT NULL,
+  token_hash TEXT UNIQUE NOT NULL,
+  expires_at TIMESTAMPTZ,
+  last_used_at TIMESTAMPTZ,
+  device_hint TEXT NOT NULL,
+  created_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_uuid ON refresh_tokens (user_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_token_hash ON refresh_tokens (token_hash);
+
+CREATE TABLE IF NOT EXISTS email_otps (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  email TEXT NOT NULL,
+  code_hash TEXT NOT NULL,
+  expires_at TIMESTAMPTZ,
+  used_at TIMESTAMPTZ,
+  failed_attempts INTEGER DEFAULT 0 NOT NULL,
+  created_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_email_otps_email ON email_otps (email);
+
+CREATE TABLE IF NOT EXISTS handle_histories (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_uuid UUID NOT NULL,
+  old_handle TEXT NOT NULL,
+  renamed_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_handle_histories_user_uuid ON handle_histories (user_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_handle_histories_old_handle ON handle_histories (old_handle);
+
+CREATE TABLE IF NOT EXISTS oauth_accounts (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_uuid UUID NOT NULL,
+  provider TEXT NOT NULL,
+  provider_account_id TEXT NOT NULL,
+  access_token TEXT NOT NULL,
+  refresh_token TEXT NOT NULL,
+  token_expires_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_oauth_accounts_user_uuid ON oauth_accounts (user_uuid);
+
 CREATE TABLE IF NOT EXISTS batteries (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
@@ -62,7 +146,9 @@ CREATE TABLE IF NOT EXISTS builds (
   gps_receiver_uuid UUID,
   reference_links JSONB,
   primary_display_image TEXT,
-  media JSONB
+  media JSONB,
+  user_uuid UUID,
+  author_handle TEXT
 );
 
 CREATE TABLE IF NOT EXISTS cameras (
@@ -260,6 +346,18 @@ CREATE INDEX IF NOT EXISTS idx_video_transmitters_manufacturer ON video_transmit
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_protocol ON video_transmitters (protocol);
 
 -- Foreign Keys
+ALTER TABLE user_profiles
+ADD CONSTRAINT fk_user_profiles_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE refresh_tokens
+ADD CONSTRAINT fk_refresh_tokens_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE handle_histories
+ADD CONSTRAINT fk_handle_histories_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE oauth_accounts
+ADD CONSTRAINT fk_oauth_accounts_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
 ALTER TABLE builds
 ADD CONSTRAINT fk_builds_frame_uuid FOREIGN KEY (frame_uuid) REFERENCES frames (uuid);
 
@@ -277,6 +375,9 @@ ADD CONSTRAINT fk_builds_video_transmitter_uuid FOREIGN KEY (video_transmitter_u
 
 ALTER TABLE builds
 ADD CONSTRAINT fk_builds_gps_receiver_uuid FOREIGN KEY (gps_receiver_uuid) REFERENCES gps_receivers (uuid);
+
+ALTER TABLE builds
+ADD CONSTRAINT fk_builds_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE flight_controllers
 ADD CONSTRAINT fk_flight_controllers_internal_electronic_speed_controller_uuid FOREIGN KEY (internal_electronic_speed_controller_uuid) REFERENCES electronic_speed_controllers (uuid);

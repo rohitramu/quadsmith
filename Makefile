@@ -29,7 +29,7 @@ build: generate
 	@go build -mod=vendor -o bin/server ./src/backend/api/cmd/server/main.go
 
 	@echo "--- Generating and building CLI to bin/qs ---"
-	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go && go build -mod=vendor -o ../../../bin/qs main.go
+	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go && go build -mod=vendor -o ../../../bin/qs .
 	@echo "--- Generating shell completions to bin/ ---"
 	@./bin/qs completion bash > bin/completion.bash || true
 	@./bin/qs completion zsh > bin/completion.zsh || true

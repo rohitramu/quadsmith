@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"html"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	"quadsmith/api/pkg/auth"
 )
 
 // PageMeta defines the Open Graph, Twitter, and SEO metadata for a page.
@@ -31,7 +34,35 @@ const (
 var (
 	titleTagRegex = regexp.MustCompile(`(?i)<title[^>]*>.*?</title>`)
 	headTagRegex  = regexp.MustCompile(`(?i)</head>`)
+	crawlerRegex  = regexp.MustCompile(`(?i)(bot|crawler|spider|crawling|facebookexternalhit|facebot|slackbot|telegrambot|whatsapp|twitterbot|discordbot|applebot|pinterest|linkedinbot)`)
 )
+
+// IsSocialCrawler detects if a request is coming from a social media crawler
+func IsSocialCrawler(userAgent string) bool {
+	return crawlerRegex.MatchString(userAgent)
+}
+
+func isAuthenticated(r *http.Request, pool *pgxpool.Pool) bool {
+	authHeader := r.Header.Get("Authorization")
+	if strings.HasPrefix(strings.ToLower(authHeader), "bearer ") {
+		tokenStr := strings.TrimSpace(authHeader[7:])
+		if claims, err := auth.VerifyAccessToken(tokenStr); err == nil && claims != nil {
+			return true
+		}
+	}
+	if c, err := r.Cookie("qs_session"); err == nil && c.Value != "" && pool != nil {
+		tokenHash := auth.HashToken(c.Value)
+		var exists bool
+		_ = pool.QueryRow(r.Context(), `
+			SELECT EXISTS(
+				SELECT 1 FROM refresh_tokens r
+				JOIN users u ON u.uuid = r.user_uuid
+				WHERE r.token_hash = $1 AND r.expires_at > NOW() AND u.deleted_at IS NULL
+			)`, tokenHash).Scan(&exists)
+		return exists
+	}
+	return false
+}
 
 // Collection table mapping from collection slug to SQL table name.
 var collectionTableMap = map[string]string{
@@ -62,6 +93,17 @@ func ServeSPA(dir string, pool *pgxpool.Pool) http.HandlerFunc {
 		if err == nil && !info.IsDir() {
 			// Static asset exists on disk (JS, CSS, images, etc.)
 			http.FileServer(http.Dir(dir)).ServeHTTP(w, r)
+			return
+		}
+
+		// Allow /login and /login/* without authentication
+		isLoginRoute := strings.HasPrefix(r.URL.Path, "/login")
+		isCrawler := IsSocialCrawler(r.UserAgent())
+
+		// If unauthenticated browser visit to protected route, redirect to /login
+		if !isLoginRoute && !isCrawler && !isAuthenticated(r, pool) {
+			target := "/login?redirect=" + url.QueryEscape(r.RequestURI)
+			http.Redirect(w, r, target, http.StatusFound)
 			return
 		}
 
@@ -100,6 +142,33 @@ func ResolvePageMeta(ctx context.Context, pool *pgxpool.Pool, path string) PageM
 	}
 
 	parts := strings.Split(trimmed, "/")
+
+	// Route: /users/:id
+	if len(parts) == 2 && parts[0] == "users" && pool != nil {
+		userId := parts[1]
+		var handle, displayName, bio string
+		var avatarUrl *string
+
+		err := pool.QueryRow(ctx, `
+			SELECT u.id, COALESCE(p.display_name, u.id), COALESCE(p.bio, ''), p.avatar_url
+			FROM users u
+			LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
+			WHERE (u.id = $1 OR u.uuid::text = $1) AND u.deleted_at IS NULL
+			LIMIT 1`, userId).Scan(&handle, &displayName, &bio, &avatarUrl)
+		if err == nil {
+			meta.Title = fmt.Sprintf("%s (@%s) — Pilot Profile — Quadsmith", displayName, handle)
+			if strings.TrimSpace(bio) != "" {
+				meta.Description = bio
+			} else {
+				meta.Description = fmt.Sprintf("View FPV drone builds and pilot stats for %s (@%s) on Quadsmith.", displayName, handle)
+			}
+			if avatarUrl != nil && strings.TrimSpace(*avatarUrl) != "" {
+				meta.Image = *avatarUrl
+			}
+			meta.Type = "profile"
+			return meta
+		}
+	}
 
 	// Route: /builds/:buildId
 	if len(parts) == 2 && parts[0] == "builds" && pool != nil {

@@ -3,7 +3,12 @@ import { TransportProvider } from "@connectrpc/connect-query";
 import type { Transport } from "@connectrpc/connect";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { transport as defaultTransport } from "./lib/api";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Layout } from "./components/Layout";
+import { LoginPage } from "./pages/LoginPage";
+import { AccountSettingsPage } from "./pages/AccountSettingsPage";
+import { UserProfilePage } from "./pages/UserProfilePage";
 import { CategoryPage } from "./pages/CategoryPage";
 import { CollectionPage } from "./pages/CollectionPage";
 import { ProductPage } from "./pages/ProductPage";
@@ -16,15 +21,26 @@ const defaultQueryClient = new QueryClient();
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="builds" element={<Navigate to="/" replace />} />
-        <Route path="builds/new" element={<BuildWizardPage />} />
-        <Route path="builds/:buildId" element={<BuildProfilePage />} />
-        <Route path="components/:categoryId" element={<CategoryPage />} />
-        <Route path="components/:categoryId/:collectionId" element={<CollectionPage />} />
-        <Route path="components/:categoryId/:collectionId/:productId" element={<ProductPage />} />
+      {/* Standalone Login Route (No Navbar / Top Bar) */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login/verify" element={<LoginPage />} />
+
+      {/* Protected Routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="account" element={<AccountSettingsPage />} />
+          <Route path="users/:id" element={<UserProfilePage />} />
+          <Route path="builds" element={<Navigate to="/" replace />} />
+          <Route path="builds/new" element={<BuildWizardPage />} />
+          <Route path="builds/:buildId" element={<BuildProfilePage />} />
+          <Route path="components/:categoryId" element={<CategoryPage />} />
+          <Route path="components/:categoryId/:collectionId" element={<CollectionPage />} />
+          <Route path="components/:categoryId/:collectionId/:productId" element={<ProductPage />} />
+        </Route>
       </Route>
+
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
@@ -41,9 +57,11 @@ export function App({
   return (
     <TransportProvider transport={transport}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </AuthProvider>
       </QueryClientProvider>
     </TransportProvider>
   );

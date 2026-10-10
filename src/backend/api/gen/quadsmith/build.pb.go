@@ -53,6 +53,8 @@ type Build struct {
 	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,16,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string          `protobuf:"bytes,17,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,18,rep,name=media,proto3" json:"media,omitempty"`
+	UserUuid            *string          `protobuf:"bytes,19,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
+	AuthorHandle        *string          `protobuf:"bytes,20,opt,name=author_handle,json=authorHandle,proto3,oneof" json:"author_handle,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -204,6 +206,20 @@ func (x *Build) GetMedia() []*Media {
 		return x.Media
 	}
 	return nil
+}
+
+func (x *Build) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
+	}
+	return ""
+}
+
+func (x *Build) GetAuthorHandle() string {
+	if x != nil && x.AuthorHandle != nil {
+		return *x.AuthorHandle
+	}
+	return ""
 }
 
 // ---------------------------------------------------------
@@ -438,7 +454,7 @@ var File_build_proto protoreflect.FileDescriptor
 const file_build_proto_rawDesc = "" +
 	"\n" +
 	"\vbuild.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xdf\a\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xde\b\n" +
 	"\x05Build\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12\x12\n" +
@@ -459,12 +475,17 @@ const file_build_proto_rawDesc = "" +
 	"\x11gps_receiver_uuid\x18\x0f \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12A\n" +
 	"\x0freference_links\x18\x10 \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\x11 \x01(\tH\x01R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\x12 \x03(\v2\x10.quadsmith.MediaR\x05media:-\x8a\xb5\x18\x13\n" +
+	"\x05media\x18\x12 \x03(\v2\x10.quadsmith.MediaR\x05media\x123\n" +
+	"\tuser_uuid\x18\x13 \x01(\tB\x11\xc2\xf3\x18\r\x1a\vusers(uuid)H\x02R\buserUuid\x88\x01\x01\x12(\n" +
+	"\rauthor_handle\x18\x14 \x01(\tH\x03R\fauthorHandle\x88\x01\x01:-\x8a\xb5\x18\x13\n" +
 	"\x02id\n" +
 	"\x04name\x1a\a#3b82f6\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
 	"\x06buildsB\x14\n" +
 	"\x12_gps_receiver_uuidB\x18\n" +
-	"\x16_primary_display_imageJ\x04\b\a\x10\bR\fbattery_uuid\";\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x10\n" +
+	"\x0e_author_handleJ\x04\b\a\x10\bR\fbattery_uuid\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +

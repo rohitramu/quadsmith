@@ -10,8 +10,11 @@ import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
 import { CollectionIcon } from "./CollectionIcon";
 import { EllipsisHint } from "./EllipsisHint";
+import { useAuth } from "../context/AuthContext";
+import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
 export function Layout() {
+  const { user, profile } = useAuth();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const location = useLocation();
   const navigate = useNavigate();
@@ -224,7 +227,7 @@ export function Layout() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-2 w-64">
+        <div className="flex items-center justify-end gap-3 w-64">
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -232,6 +235,30 @@ export function Layout() {
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
+
+          {/* Rightmost Account Button */}
+          {user && (
+            <Link
+              to="/account"
+              aria-label="Account Settings"
+              title={`Account Settings (@${user.id})`}
+              className="flex items-center justify-center transition-transform hover:scale-105 shrink-0"
+            >
+              {profile?.avatarUrl ? (
+                <img
+                  src={profile.avatarUrl}
+                  alt={profile.displayName || user.id}
+                  className="w-8 h-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 shadow-2xs"
+                />
+              ) : (
+                <div
+                  className={`w-8 h-8 rounded-full border flex items-center justify-center font-bold text-xs shadow-2xs ${getAvatarPalette(user.uuid).badgeClass}`}
+                >
+                  {getInitial(profile?.displayName || user.id)}
+                </div>
+              )}
+            </Link>
+          )}
         </div>
       </header>
 

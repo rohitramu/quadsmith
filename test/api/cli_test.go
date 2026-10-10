@@ -39,6 +39,18 @@ func resolveQSPath(t *testing.T) string {
 	return ""
 }
 
+func newQSCommand(t *testing.T, args ...string) *exec.Cmd {
+	t.Helper()
+	qsPath := resolveQSPath(t)
+	apiUrl := getAPIURL()
+	cmd := exec.Command(qsPath, args...)
+	cmd.Env = append(cmd.Environ(), "QS_API_URL="+apiUrl)
+	if testAccessToken != "" {
+		cmd.Env = append(cmd.Env, "QS_ACCESS_TOKEN="+testAccessToken)
+	}
+	return cmd
+}
+
 func TestCLI_ListFrames(t *testing.T) {
 	apiUrl := getAPIURL()
 	// Fail if we can't reach the sandbox
@@ -48,10 +60,7 @@ func TestCLI_ListFrames(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	qsPath := resolveQSPath(t)
-
-	cmd := exec.Command(qsPath, "components", "hardware", "frames", "list", "--json")
-	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
+	cmd := newQSCommand(t, "components", "hardware", "frames", "list", "--json")
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -82,10 +91,7 @@ func TestCLI_ListBuilds(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	qsPath := resolveQSPath(t)
-
-	cmd := exec.Command(qsPath, "builds", "list", "--json")
-	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
+	cmd := newQSCommand(t, "builds", "list", "--json")
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -111,11 +117,8 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	qsPath := resolveQSPath(t)
-
 	// 1. Test default YAML output
-	cmdYAML := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch")
-	cmdYAML.Env = append(cmdYAML.Env, "QS_API_URL="+apiUrl)
+	cmdYAML := newQSCommand(t, "builds", "evaluate", "bando-basher-5-inch")
 	var stdoutYAML, stderrYAML bytes.Buffer
 	cmdYAML.Stdout = &stdoutYAML
 	cmdYAML.Stderr = &stderrYAML
@@ -134,8 +137,7 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	}
 
 	// 2. Test --json flag
-	cmd := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--json")
-	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
+	cmd := newQSCommand(t, "builds", "evaluate", "bando-basher-5-inch", "--json")
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -174,8 +176,7 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	t.Logf("CLI returned evaluation: %v", eval)
 
 	// 3. Test --payload and --battery flags
-	cmdCustom := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--payload", "75", "--battery", "tattu-r-line-v5-1400mah-6s-150c", "--json")
-	cmdCustom.Env = append(cmdCustom.Env, "QS_API_URL="+apiUrl)
+	cmdCustom := newQSCommand(t, "builds", "evaluate", "bando-basher-5-inch", "--payload", "75", "--battery", "tattu-r-line-v5-1400mah-6s-150c", "--json")
 	var stdoutCustom, stderrCustom bytes.Buffer
 	cmdCustom.Stdout = &stdoutCustom
 	cmdCustom.Stderr = &stderrCustom
@@ -194,8 +195,7 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	}
 
 	// 4. Test that --yaml flag is NOT accepted since YAML is the default
-	cmdRejectYAML := exec.Command(qsPath, "builds", "evaluate", "bando-basher-5-inch", "--yaml")
-	cmdRejectYAML.Env = append(cmdRejectYAML.Env, "QS_API_URL="+apiUrl)
+	cmdRejectYAML := newQSCommand(t, "builds", "evaluate", "bando-basher-5-inch", "--yaml")
 	var stderrReject bytes.Buffer
 	cmdRejectYAML.Stderr = &stderrReject
 	if err := cmdRejectYAML.Run(); err == nil {
@@ -205,8 +205,7 @@ func TestCLI_BuildsEvaluate(t *testing.T) {
 	}
 
 	// 5. Test ultralight-toothpick auto-selects lightest compatible battery
-	cmdToothpick := exec.Command(qsPath, "builds", "evaluate", "ultralight-toothpick", "--json")
-	cmdToothpick.Env = append(cmdToothpick.Env, "QS_API_URL="+apiUrl)
+	cmdToothpick := newQSCommand(t, "builds", "evaluate", "ultralight-toothpick", "--json")
 	var stdoutTP, stderrTP bytes.Buffer
 	cmdToothpick.Stdout = &stdoutTP
 	cmdToothpick.Stderr = &stderrTP
@@ -233,11 +232,8 @@ func TestCLI_BuildsGet(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	qsPath := resolveQSPath(t)
-
 	// 1. Test YAML output by default
-	cmdYAML := exec.Command(qsPath, "builds", "get", "bando-basher-5-inch")
-	cmdYAML.Env = append(cmdYAML.Env, "QS_API_URL="+apiUrl)
+	cmdYAML := newQSCommand(t, "builds", "get", "bando-basher-5-inch")
 	var stdoutYAML, stderrYAML bytes.Buffer
 	cmdYAML.Stdout = &stdoutYAML
 	cmdYAML.Stderr = &stderrYAML
@@ -250,8 +246,7 @@ func TestCLI_BuildsGet(t *testing.T) {
 	}
 
 	// 2. Test --json flag
-	cmdJSON := exec.Command(qsPath, "builds", "get", "bando-basher-5-inch", "--json")
-	cmdJSON.Env = append(cmdJSON.Env, "QS_API_URL="+apiUrl)
+	cmdJSON := newQSCommand(t, "builds", "get", "bando-basher-5-inch", "--json")
 	var stdoutJSON, stderrJSON bytes.Buffer
 	cmdJSON.Stdout = &stdoutJSON
 	cmdJSON.Stderr = &stderrJSON
@@ -267,8 +262,7 @@ func TestCLI_BuildsGet(t *testing.T) {
 	}
 
 	// 3. Test that --yaml flag is NOT accepted since YAML is the default
-	cmdGetRejectYAML := exec.Command(qsPath, "builds", "get", "bando-basher-5-inch", "--yaml")
-	cmdGetRejectYAML.Env = append(cmdGetRejectYAML.Env, "QS_API_URL="+apiUrl)
+	cmdGetRejectYAML := newQSCommand(t, "builds", "get", "bando-basher-5-inch", "--yaml")
 	var stderrGetReject bytes.Buffer
 	cmdGetRejectYAML.Stderr = &stderrGetReject
 	if err := cmdGetRejectYAML.Run(); err == nil {
@@ -279,12 +273,8 @@ func TestCLI_BuildsGet(t *testing.T) {
 }
 
 func TestCLI_Search(t *testing.T) {
-	apiUrl := getAPIURL()
-	qsPath := resolveQSPath(t)
-
 	// 1. Basic search table output
-	cmd := exec.Command(qsPath, "search", "tattu")
-	cmd.Env = append(cmd.Env, "QS_API_URL="+apiUrl)
+	cmd := newQSCommand(t, "search", "tattu")
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -301,8 +291,7 @@ func TestCLI_Search(t *testing.T) {
 	}
 
 	// 2. Search with --selector and --json
-	cmdJSON := exec.Command(qsPath, "search", "tattu", "--selector", "batteries:cell_count_s == 6", "--json")
-	cmdJSON.Env = append(cmdJSON.Env, "QS_API_URL="+apiUrl)
+	cmdJSON := newQSCommand(t, "search", "tattu", "--selector", "batteries:cell_count_s == 6", "--json")
 	var stdoutJSON, stderrJSON bytes.Buffer
 	cmdJSON.Stdout = &stdoutJSON
 	cmdJSON.Stderr = &stderrJSON
@@ -317,5 +306,20 @@ func TestCLI_Search(t *testing.T) {
 	results, ok := res["results"].([]interface{})
 	if !ok || len(results) == 0 {
 		t.Fatalf("Expected results array in search response, got: %v", res)
+	}
+}
+
+func TestCLI_Whoami(t *testing.T) {
+	cmd := newQSCommand(t, "whoami")
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("CLI whoami failed: %v\nStderr: %s", err, stderr.String())
+	}
+	outStr := stdout.String()
+	if !strings.Contains(outStr, "Pilot Handle: @test_pilot") {
+		t.Errorf("Expected 'Pilot Handle: @test_pilot' in whoami output, got:\n%s", outStr)
 	}
 }

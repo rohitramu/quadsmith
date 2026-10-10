@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"quadsmith/api/pkg/auth"
 )
 
 func TestInjectMetaTags(t *testing.T) {
@@ -71,7 +73,7 @@ func TestResolvePageMeta_Fallbacks(t *testing.T) {
 	}
 }
 
-func TestServeSPA_ServesInjectedIndex(t *testing.T) {
+func TestServeSPA_RedirectsUnauthenticated(t *testing.T) {
 	tempDir, err := os.MkdirTemp("", "static_test_*")
 	if err != nil {
 		t.Fatalf("Failed to create temp dir: %v", err)
@@ -90,8 +92,38 @@ func TestServeSPA_ServesInjectedIndex(t *testing.T) {
 
 	handler.ServeHTTP(rec, req)
 
+	if rec.Code != http.StatusFound {
+		t.Fatalf("Expected status 302 redirect for unauthenticated browser visit, got %d", rec.Code)
+	}
+
+	location := rec.Header().Get("Location")
+	if location != "/login?redirect=%2Fcomponents%2Fpropulsion%2Fmotors" {
+		t.Errorf("Expected redirect to login with query param, got %q", location)
+	}
+}
+
+func TestServeSPA_ServesInjectedIndex_Crawler(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "static_test_*")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	indexHTML := `<!doctype html><html><head><title>Old</title></head><body>App</body></html>`
+	if err := os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(indexHTML), 0644); err != nil {
+		t.Fatalf("Failed to write index.html: %v", err)
+	}
+
+	handler := ServeSPA(tempDir, nil)
+
+	req := httptest.NewRequest(http.MethodGet, "/components/propulsion/motors", nil)
+	req.Header.Set("User-Agent", "Twitterbot/1.0")
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
 	if rec.Code != http.StatusOK {
-		t.Errorf("Expected status 200, got %d", rec.Code)
+		t.Fatalf("Expected status 200 for crawler, got %d", rec.Code)
 	}
 
 	contentType := rec.Header().Get("Content-Type")
@@ -102,5 +134,69 @@ func TestServeSPA_ServesInjectedIndex(t *testing.T) {
 	body := rec.Body.String()
 	if !strings.Contains(body, "Motors Catalog — Quadsmith") {
 		t.Errorf("Expected injected title in response, got %s", body)
+	}
+}
+
+func TestServeSPA_ServesInjectedIndex_Authenticated(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "static_test_*")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	indexHTML := `<!doctype html><html><head><title>Old</title></head><body>App</body></html>`
+	if err := os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(indexHTML), 0644); err != nil {
+		t.Fatalf("Failed to write index.html: %v", err)
+	}
+
+	handler := ServeSPA(tempDir, nil)
+
+	token, err := auth.SignAccessToken("018f0000-0000-7000-8000-000000000001", "fpv_pilot", "pilot@example.com", "user", "session-1")
+	if err != nil {
+		t.Fatalf("Failed to sign access token: %v", err)
+	}
+
+	req := httptest.NewRequest(http.MethodGet, "/components/propulsion/motors", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("Expected status 200 for authenticated user, got %d", rec.Code)
+	}
+
+	contentType := rec.Header().Get("Content-Type")
+	if !strings.Contains(contentType, "text/html") {
+		t.Errorf("Expected text/html content type, got %q", contentType)
+	}
+
+	body := rec.Body.String()
+	if !strings.Contains(body, "Motors Catalog — Quadsmith") {
+		t.Errorf("Expected injected title in response, got %s", body)
+	}
+}
+
+func TestServeSPA_ServesLogin_Unauthenticated(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "static_test_*")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	indexHTML := `<!doctype html><html><head><title>Old</title></head><body>App</body></html>`
+	if err := os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(indexHTML), 0644); err != nil {
+		t.Fatalf("Failed to write index.html: %v", err)
+	}
+
+	handler := ServeSPA(tempDir, nil)
+
+	req := httptest.NewRequest(http.MethodGet, "/login", nil)
+	rec := httptest.NewRecorder()
+
+	handler.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("Expected status 200 for /login without auth, got %d", rec.Code)
 	}
 }

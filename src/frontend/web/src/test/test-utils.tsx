@@ -7,6 +7,7 @@ import type { Transport } from "@connectrpc/connect";
 import { MemoryRouter } from "react-router-dom";
 import { createMockTransport, type MockTransportOptions } from "./mocks/transport";
 import { AppRoutes } from "../App";
+import { AuthProvider } from "../context/AuthContext";
 
 export function createTestQueryClient() {
   return new QueryClient({
@@ -40,11 +41,19 @@ export function renderWithProviders(
     ...renderOptions
   } = options;
 
+  if (options.transportOptions?.isAuthenticated === false) {
+    localStorage.removeItem("qs_access_token");
+  } else {
+    localStorage.setItem("qs_access_token", "mock-jwt-token");
+  }
+
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
       <TransportProvider transport={transport}>
         <QueryClientProvider client={queryClient}>
-          <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+          <AuthProvider>
+            <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
+          </AuthProvider>
         </QueryClientProvider>
       </TransportProvider>
     );

@@ -38,7 +38,7 @@ func getTableName(msg *protogen.Message) string {
 func generateFile(gen *protogen.Plugin, file *protogen.File) {
 	hasTables := false
 	for _, msg := range file.Messages {
-		if getTableName(msg) != "" {
+		if getTableName(msg) != "" && getCollectionPath(msg) != "" {
 			hasTables = true
 			break
 		}
@@ -80,7 +80,7 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 	g.P()
 
 	for _, msg := range file.Messages {
-		if getTableName(msg) == "" {
+		if getTableName(msg) == "" || getCollectionPath(msg) == "" {
 			continue
 		}
 

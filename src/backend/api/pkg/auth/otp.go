@@ -1,0 +1,149 @@
+package auth
+
+import (
+	"context"
+	"crypto/hmac"
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
+	"fmt"
+	"math/big"
+	"sync"
+	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+)
+
+const (
+	OtpTTL            = 3 * time.Minute
+	MagicLinkTTL      = 15 * time.Minute
+	EmailCooldown     = 60 * time.Second
+	MaxOtpAttempts    = 3
+	MaxIPFailures     = 5
+	IPLockoutDuration = 15 * time.Minute
+)
+
+// GenerateOTP generates a cryptographically random 6-digit numeric OTP and its verification hash
+func GenerateOTP() (code string, hash string, err error) {
+	n, err := rand.Int(rand.Reader, big.NewInt(1000000))
+	if err != nil {
+		return "", "", err
+	}
+	code = fmt.Sprintf("%06d", n.Int64())
+	hash = HashOTP(code)
+	return code, hash, nil
+}
+
+// HashOTP hashes the 6-digit code with a server secret to prevent tampering
+func HashOTP(code string) string {
+	mac := hmac.New(sha256.New, getJWTSecret())
+	mac.Write([]byte("otp:" + code))
+	return hex.EncodeToString(mac.Sum(nil))
+}
+
+// VerifyOTP verifies a candidate code against the stored hash
+func VerifyOTP(code, hash string) bool {
+	expectedHash := HashOTP(code)
+	return hmac.Equal([]byte(expectedHash), []byte(hash))
+}
+
+// GenerateMagicLinkToken generates a secure 32-byte single-use magic link token and its hash
+func GenerateMagicLinkToken() (token string, hash string, err error) {
+	rawBytes := make([]byte, 32)
+	if _, err := rand.Read(rawBytes); err != nil {
+		return "", "", err
+	}
+	token = hex.EncodeToString(rawBytes)
+	hash = HashToken(token)
+	return token, hash, nil
+}
+
+// ---------------------------------------------------------
+// IP-Bound Rate Limiting & DoS Prevention
+// ---------------------------------------------------------
+
+type ipAttemptTracker struct {
+	mu       sync.Mutex
+	failures map[string][]time.Time
+}
+
+var globalIPTracker = &ipAttemptTracker{
+	failures: make(map[string][]time.Time),
+}
+
+// CheckIPRateLimit checks if an IP has exceeded the failure limit
+func CheckIPRateLimit(ip string) error {
+	if ip == "" || ip == "127.0.0.1" || ip == "::1" || ip == "localhost" {
+		return nil
+	}
+
+	globalIPTracker.mu.Lock()
+	defer globalIPTracker.mu.Unlock()
+
+	now := time.Now()
+	cutoff := now.Add(-IPLockoutDuration)
+
+	timestamps := globalIPTracker.failures[ip]
+	valid := make([]time.Time, 0, len(timestamps))
+	for _, t := range timestamps {
+		if t.After(cutoff) {
+			valid = append(valid, t)
+		}
+	}
+	globalIPTracker.failures[ip] = valid
+
+	if len(valid) >= MaxIPFailures {
+		return errors.New("too many failed verification attempts from this IP. Please wait 15 minutes before trying again")
+	}
+
+	return nil
+}
+
+// RecordIPFailure logs a failed attempt for an IP
+func RecordIPFailure(ip string) {
+	if ip == "" {
+		return
+	}
+	globalIPTracker.mu.Lock()
+	defer globalIPTracker.mu.Unlock()
+
+	now := time.Now()
+	globalIPTracker.failures[ip] = append(globalIPTracker.failures[ip], now)
+}
+
+// RecordIPSuccess clears failure records for an IP upon successful sign-in
+func RecordIPSuccess(ip string) {
+	if ip == "" {
+		return
+	}
+	globalIPTracker.mu.Lock()
+	defer globalIPTracker.mu.Unlock()
+	delete(globalIPTracker.failures, ip)
+}
+
+// ---------------------------------------------------------
+// Email Send Cooldown
+// ---------------------------------------------------------
+
+// CheckEmailCooldown verifies whether an email was sent within the 60-second cooldown window
+func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (int32, error) {
+	var createdAt time.Time
+	query := `SELECT created_at FROM email_otps WHERE email = $1 ORDER BY created_at DESC LIMIT 1`
+	err := db.QueryRow(ctx, query, email).Scan(&createdAt)
+	if err != nil {
+		// No previous OTPs sent for this email
+		return 0, nil
+	}
+
+	elapsed := time.Since(createdAt)
+	if elapsed < EmailCooldown {
+		remaining := int32((EmailCooldown - elapsed).Seconds())
+		if remaining < 1 {
+			remaining = 1
+		}
+		return remaining, nil
+	}
+
+	return 0, nil
+}

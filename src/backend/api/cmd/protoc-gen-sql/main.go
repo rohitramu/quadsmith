@@ -76,7 +76,12 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 		if colOpt != nil && colOpt.Name != "" {
 			colName = colOpt.Name
 		}
-		colType := sqlDataType(field.Desc)
+		colType := ""
+		if colOpt != nil && colOpt.ColumnType != "" {
+			colType = colOpt.ColumnType
+		} else {
+			colType = sqlDataType(field.Desc)
+		}
 
 		if colOpt != nil && colOpt.IsUnique {
 			colType += " UNIQUE"
@@ -145,6 +150,9 @@ func sqlDataType(desc protoreflect.FieldDescriptor) string {
 	}
 	switch kind {
 	case protoreflect.MessageKind:
+		if desc.Message() != nil && desc.Message().FullName() == "google.protobuf.Timestamp" {
+			return "TIMESTAMPTZ"
+		}
 		return "JSONB"
 	case protoreflect.StringKind:
 		return "TEXT"

@@ -368,3 +368,20 @@ export const mockEvaluation1: EvaluateBuildResponse = create(EvaluateBuildRespon
   maxVoltage: 25.2,
   maxCurrentA: 39.4,
 });
+
+export const mockUser: any = {
+  $typeName: "quadsmith.User",
+  uuid: "018f0000-0000-7000-0000-000000000099",
+  id: "fpv_pilot",
+  email: "alex@quadsmith.dev",
+  role: "USER",
+};
+
+export const mockProfile: any = {
+  $typeName: "quadsmith.UserProfile",
+  uuid: "018f0000-0000-7000-0000-000000000098",
+  userUuid: "018f0000-0000-7000-0000-000000000099",
+  displayName: "Alex Rivera",
+  avatarUrl: "",
+  bio: "Freestyle FPV pilot & frame builder.",
+};

@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "_common.proto";
+import "_sql.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// User & Profile Models
+// ---------------------------------------------------------
+
+message User {
+  option (quadsmith.sql.table) = {name: "users"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {
+    is_unique: true
+    create_index: true
+  }]; // Public pilot handle (e.g. "fpv_pilot")
+  string email = 3 [(quadsmith.sql.column) = {
+    is_unique: true
+    create_index: true
+  }]; // Verified email (private)
+  string role = 4 [(quadsmith.sql.column) = {default_value: "'USER'"}]; // "USER", "ADMIN"
+
+  google.protobuf.Timestamp email_verified_at = 5;
+  google.protobuf.Timestamp last_renamed_at = 6;
+  google.protobuf.Timestamp deleted_at = 7;
+  google.protobuf.Timestamp banned_at = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+message UserProfile {
+  option (quadsmith.sql.table) = {name: "user_profiles"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string user_uuid = 2 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    is_unique: true
+    create_index: true
+  }];
+  string display_name = 3;
+  string avatar_url = 4;
+  string bio = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message PublicUserProfile {
+  string id = 1; // Public pilot handle (or UUID fallback)
+  string display_name = 2;
+  string avatar_url = 3;
+  string bio = 4;
+  google.protobuf.Timestamp created_at = 5;
+  int32 build_count = 6;
+}
+
+message RefreshToken {
+  option (quadsmith.sql.table) = {name: "refresh_tokens"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string user_uuid = 2 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  string token_hash = 3 [(quadsmith.sql.column) = {
+    is_unique: true
+    create_index: true
+  }];
+  google.protobuf.Timestamp expires_at = 4;
+  google.protobuf.Timestamp last_used_at = 5;
+  string device_hint = 6;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message EmailOtp {
+  option (quadsmith.sql.table) = {name: "email_otps"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string email = 2 [(quadsmith.sql.column) = {create_index: true}];
+  string code_hash = 3;
+  google.protobuf.Timestamp expires_at = 4;
+  google.protobuf.Timestamp used_at = 5;
+  int32 failed_attempts = 6 [(quadsmith.sql.column) = {default_value: "0"}];
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message HandleHistory {
+  option (quadsmith.sql.table) = {name: "handle_histories"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string user_uuid = 2 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  string old_handle = 3 [(quadsmith.sql.column) = {create_index: true}];
+  google.protobuf.Timestamp renamed_at = 4;
+}
+
+message OAuthAccount {
+  option (quadsmith.sql.table) = {name: "oauth_accounts"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string user_uuid = 2 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  string provider = 3; // "google", "github"
+  string provider_account_id = 4;
+  string access_token = 5;
+  string refresh_token = 6;
+  google.protobuf.Timestamp token_expires_at = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+// ---------------------------------------------------------
+// User Service
+// ---------------------------------------------------------
+
+message GetUserRequest {
+  string id = 1; // Can be handle or UUID
+}
+
+message GetPublicProfileRequest {
+  string id = 1; // Can be handle or UUID
+}
+
+message CheckHandleAvailableRequest {
+  string handle = 1;
+}
+
+message CheckHandleAvailableResponse {
+  bool available = 1;
+  string message = 2;
+}
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc GetPublicProfile(GetPublicProfileRequest) returns (PublicUserProfile);
+  rpc CheckHandleAvailable(CheckHandleAvailableRequest) returns (CheckHandleAvailableResponse);
+}

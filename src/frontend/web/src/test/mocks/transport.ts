@@ -16,6 +16,8 @@ import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
 import { CompatibilityService } from "../../gen/quadsmith/compatibility_pb";
 import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
 import { SearchService } from "../../gen/quadsmith/search_pb";
+import { AuthService } from "../../gen/quadsmith/auth_pb";
+import { UserService } from "../../gen/quadsmith/user_pb";
 
 import {
   mockMotors,
@@ -23,6 +25,8 @@ import {
   mockFlightControllers,
   mockBattery1,
   mockESCs,
+  mockUser,
+  mockProfile,
   mockPropeller1,
   mockCamera1,
   mockVTX1,
@@ -43,6 +47,7 @@ export interface MockTransportOptions {
   defaultBatteryId?: string;
   nextPageToken?: string;
   simulateError?: boolean;
+  isAuthenticated?: boolean;
 }
 
 export function createMockTransport(options: MockTransportOptions = {}) {
@@ -55,6 +60,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     defaultBatteryId = batteries.length > 0 ? batteries[0].id : "",
     nextPageToken = "",
     simulateError = false,
+    isAuthenticated = true,
   } = options;
 
   return createRouterTransport(({ service }) => {
@@ -464,6 +470,62 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           }));
         return { results };
       },
+    });
+
+    service(AuthService, {
+      sendEmailOtp: () => ({ success: true, message: "Code sent", cooldownSeconds: 60 }),
+      verifyEmailOtp: () => ({
+        accessToken: "mock-jwt-token",
+        refreshToken: "mock-refresh-token",
+        user: mockUser,
+        profile: mockProfile,
+      }),
+      verifyMagicLink: () => ({
+        accessToken: "mock-jwt-token",
+        refreshToken: "mock-refresh-token",
+        user: mockUser,
+        profile: mockProfile,
+      }),
+      refreshToken: () => {
+        if (!isAuthenticated) {
+          throw new ConnectError("Unauthenticated", Code.Unauthenticated);
+        }
+        return {
+          accessToken: "mock-jwt-token",
+          refreshToken: "mock-refresh-token",
+          user: mockUser,
+          profile: mockProfile,
+        };
+      },
+      getCurrentUser: () => {
+        if (!isAuthenticated) {
+          throw new ConnectError("Unauthenticated", Code.Unauthenticated);
+        }
+        return mockUser;
+      },
+      updateProfile: (req) => ({
+        ...mockProfile,
+        displayName: req.displayName ?? mockProfile.displayName,
+        avatarUrl: req.avatarUrl ?? mockProfile.avatarUrl,
+        bio: req.bio ?? mockProfile.bio,
+      }),
+      logout: () => ({ success: true }),
+    });
+
+    service(UserService, {
+      getUser: () => mockUser,
+      getPublicProfile: (req) => ({
+        id: req.id || mockUser.id,
+        displayName: mockProfile.displayName,
+        avatarUrl: mockProfile.avatarUrl,
+        bio: mockProfile.bio,
+        createdAt: mockUser.createdAt,
+        buildCount: 3,
+      }),
+      checkHandleAvailable: (req) => ({
+        available: req.handle !== "taken",
+        message: req.handle === "taken" ? "Handle taken" : "Handle available",
+      }),
     });
   });
 }

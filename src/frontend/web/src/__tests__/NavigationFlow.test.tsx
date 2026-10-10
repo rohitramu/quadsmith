@@ -8,7 +8,7 @@ describe("Full Application Navigation Flow", () => {
 
     // 1. Initial State: Home Page
     expect(
-      screen.getByRole("heading", { level: 1, name: "Welcome to Quadsmith" }),
+      await screen.findByRole("heading", { level: 1, name: "Welcome to Quadsmith" }),
     ).toBeInTheDocument();
 
     // 2. Click "Browse Hardware" card to navigate to /components/hardware

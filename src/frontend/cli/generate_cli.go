@@ -142,7 +142,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
 		"reflect"
 	"regexp"
@@ -187,6 +186,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		cmd.SilenceUsage = true
 	}
+	httpClient := newCLIHTTPClient()
 `)
 
 	createdCmds := make(map[string]string)
@@ -246,7 +246,7 @@ func newRootCmd() *cobra.Command {
 		parentVar := createdCmds[prefix]
 
 		fmt.Fprintf(f, "\n\t// --- %s ---\n", pluralName)
-		fmt.Fprintf(f, "\t%s := quadsmithconnect.New%sServiceClient(http.DefaultClient, targetURL)\n", clientVar, msgName)
+		fmt.Fprintf(f, "\t%s := quadsmithconnect.New%sServiceClient(httpClient, targetURL)\n", clientVar, msgName)
 		if len(aliasList) > 0 {
 			quoted := make([]string, len(aliasList))
 			for i, a := range aliasList {
@@ -403,7 +403,7 @@ func newRootCmd() *cobra.Command {
 
 	fmt.Fprintln(f, `
 	// --- EVALUATOR ---
-	evalClient := quadsmithconnect.NewEvaluatorServiceClient(http.DefaultClient, targetURL)
+	evalClient := quadsmithconnect.NewEvaluatorServiceClient(httpClient, targetURL)
 	evalCmd := &cobra.Command{
 		Use: "evaluate [build-id]",
 		Aliases: []string{"eval"},
@@ -524,7 +524,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(completionCmd)
 
 	// --- SEARCH ---
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, targetURL)
+	searchClient := quadsmithconnect.NewSearchServiceClient(httpClient, targetURL)
 	searchCmd := &cobra.Command{
 		Use:   "search [query]",
 		Short: "Fuzzy text completion search across collections",
@@ -627,6 +627,8 @@ func newRootCmd() *cobra.Command {
 	searchCmd.Flags().StringP("filter", "f", "", "CEL filter expression for single collection path")
 	searchCmd.Flags().Int32P("limit", "n", 10, "Maximum number of results to return")
 	rootCmd.AddCommand(searchCmd)
+
+	initAuthCommands(rootCmd, targetURL, httpClient)
 
 	return rootCmd
 }
