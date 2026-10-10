@@ -15,6 +15,6 @@ enum ReferenceLinkType {
 }
 
 message ReferenceLink {
-  ReferenceLinkType type = 1;
+  repeated ReferenceLinkType types = 1;
   string url = 2;
 }

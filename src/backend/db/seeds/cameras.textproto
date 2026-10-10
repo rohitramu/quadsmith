@@ -11,7 +11,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "Walksnail Walksnail Moonlight Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Walksnail Avatar protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.caddxfpv.com/products/walksnail-moonlight-kit"
   }
 }
@@ -41,7 +41,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "DJI DJI O4 Wide Camera FPV camera featuring a 1/3\" CMOS sensor, 20mm width mounting pattern, and 2.1mm lens (DJI O4 Lite protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor65-pro-ii-o4-hd-1s-70mm-brushless-whoop-quadcopter-with-dji-o4-wide-air-unit-choose-receiver"
   }
 }
@@ -58,7 +58,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "DJI DJI O4 Pro Camera FPV camera featuring a 1/3\" CMOS sensor, 25mm width mounting pattern, and 2.1mm lens (DJI O4 Pro protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/iflight-bob57-o4-cinematic-6s-hd-bnf-w-dji-o4-air-unit-pro-choose-receiver"
   }
 }
@@ -75,15 +75,15 @@ cameras: {
   lens_size_mm: 2.1
   description: "Renowned starlight low-light HDR micro camera with 1200TVL resolution, super low latency, and crystal clear night performance."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/ratel-2-1-1-8inch-starlight-sensor-freestyle-fpv-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/caddx-ratel-2-micro-starlight-1200tvl-low-latency-fpv-camera.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/caddxfpv-ratel-2-starlight-low-latency-micro-size-freestyle-fpv-camera"
   }
 }
@@ -100,11 +100,11 @@ cameras: {
   lens_size_mm: 1.8
   description: "BETAFPV C04 FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/c04-fpv-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-c04-camera-and-vtx-module-cetus-v2"
   }
 }
@@ -121,11 +121,11 @@ cameras: {
   lens_size_mm: 1.8
   description: "BETAFPV Air Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/air-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-air-camera-16-9-analog-fpv-camera"
   }
 }
@@ -142,7 +142,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "Caddx Baby Ratel 14mm Nano 1200TVL 1.8mm FPV Camera"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/caddx-baby-ratel-camera"
   }
 }
@@ -159,7 +159,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "Caddx Ratel 19mm Micro Starlight 1200TVL HDR Low-Light FPV Camera"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/caddx-ratel-camera"
   }
 }
@@ -176,7 +176,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "BETAFPV Caddx Baby Turtle Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/caddx-baby-turtle-camera"
   }
 }
@@ -193,7 +193,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "BETAFPV Customized Runcam Split 3 Nano Camera FPV camera featuring a 1/2.7\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/customized-runcam-split-3-nano-camera"
   }
 }
@@ -210,7 +210,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "BETAFPV Customized Caddx Kangaroo Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/customized-caddx-kangaroo-camera"
   }
 }
@@ -227,7 +227,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "BETAFPV BETAPFV Customized EOSV2 FPV Camera NTSC FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/betapfv-customized-eos2-micro-fpv-camera-ntsc-1200tvl-black"
   }
 }
@@ -244,7 +244,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "CADDXFPV CADDXFPV Ratel Ultra Analog Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-ratel-ultra-analog-camera"
   }
 }
@@ -261,7 +261,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "CADDXFPV CADDXFPV Ratel Pro Analog Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-ratel-pro-analog-camera"
   }
 }
@@ -278,7 +278,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "CADDXFPV Ant Lite Analog Camera  (FPV Cycle Edition)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-ant-lite-4-3-fpvcycle-edition"
   }
 }
@@ -295,7 +295,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "DarwinFPV DarwinFPV Caddx Ant  Micro FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-caddx-ant-micro-fpv-camera"
   }
 }
@@ -312,7 +312,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "DarwinFPV RunCam Thumb FPV camera featuring a 1/2.3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/runcam-thumb"
   }
 }
@@ -329,11 +329,11 @@ cameras: {
   lens_size_mm: 1.8
   description: "DarwinFPV Cement Ultra Durable FPV Drone Camera"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-fpv-drone-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-cement-ultra-durable-fpv-drone-camera"
   }
 }
@@ -350,7 +350,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "DarwinFPV NANO 1 Mini Action FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/nano-1-mini-sports-camera"
   }
 }
@@ -367,7 +367,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "DarwinFPV Darwin 129 Professional Customized Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin129-camera"
   }
 }
@@ -384,7 +384,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "NewBeeDrone NewBeeDrone Whoop Training Camera x3 FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-whoop-training-camera-x3"
   }
 }
@@ -401,7 +401,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "NewBeeDrone BeeEye V2 FPV Camera 10×10 – Ultra-Light 800 TVL"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-beeeye-v2-fpv-camera-10x10"
   }
 }
@@ -431,11 +431,11 @@ cameras: {
   lens_size_mm: 2.1
   description: "NewBeeDrone NewBeeDrone BeeEye FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-beeeye-fpv-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-beeeye-fpv-camera"
   }
 }
@@ -491,7 +491,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "Caddx Baby Ratel 2 Camera - Black FPV camera featuring a 1/1.8\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/caddx-baby-ratel-2-1200tvl-cmos-4-3-16-9-ntsc-pal-fpv-camera-1-8mm-black"
   }
 }
@@ -547,7 +547,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "HGLRC L-series cameras low latency night vision for FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-l-series-cameras-low-latency-night-vision-for-fpv-drone"
   }
 }
@@ -564,7 +564,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "Sub250 Caddx  Camera for Whoopfly16 Nimble65 FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/caddx-camera-for-whoopfly16"
   }
 }
@@ -581,11 +581,11 @@ cameras: {
   lens_size_mm: 2.1
   description: "Caddx Caddx Walnut FPV Action Camera FPV camera featuring a 1/2.3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddx-walnut-action-camera-magnetic-charging-part"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/caddx-walnut-fpv-action-camera-choose-version"
   }
 }
@@ -602,7 +602,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "sub250 Caddx Ant Analog Camera for Nanofly16 FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/caddx-ant-analog-camera"
   }
 }
@@ -619,7 +619,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "Caddx Ant Lite 4:3 FPV Camera - FPVCycle Edition"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/caddx-ant-lite-4-3-fpv-camera-fpvcycle-edition"
   }
 }
@@ -637,7 +637,7 @@ cameras: {
   lens_size_mm: 2.1
   description: "H01 AIO Camera 5.8G 25mW VTX (Internal Camera)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/h01-fpv-aio-camera-5-8g-40ch-25mw-transmitter"
   }
 }
@@ -655,11 +655,11 @@ cameras: {
   lens_size_mm: 1.8
   description: "Walksnail Avatar HD Nano Camera  V3 (Internal Camera)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-nano-camera-v3"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/happymodel-bnf-moblite7-1s-75mm-brushless-whoop-spi-elrs-2-4ghz"
   }
 }
@@ -677,11 +677,11 @@ cameras: {
   lens_size_mm: 1.8
   description: "Walksnail Avatar HD Camera V2 (Internal Camera)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-camera-v2"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-bnf-firefly-fr16-nano-baby-hd-v2-0-1s-1-6-micro-quad-w-walksnail-avatar-mini-1s-lite-avatar-lite-cam-elrs-2-4-ghz"
   }
 }
@@ -699,11 +699,11 @@ cameras: {
   lens_size_mm: 1.8
   description: "Avatar HD Moonlight Camera with Cable (Internal Camera)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-l-with-moonlight-kit-and-gm3"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/walksnail-avatar-hd-moonlight-camera-module"
   }
 }
@@ -721,11 +721,11 @@ cameras: {
   lens_size_mm: 1.8
   description: "Avatar HD Lite Camera with Cable (Internal Camera)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-mini-1s-lite-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-camera-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
@@ -743,11 +743,11 @@ cameras: {
   lens_size_mm: 2.1
   description: "Avatar HD Pro Camera with Cable (Internal Camera)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/pre-order-walksnail-avatar-hd-pro-camera-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
@@ -765,11 +765,11 @@ cameras: {
   lens_size_mm: 2.1
   description: "Avatar HD Camera V2 with Cable (Internal Camera)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-camera-v2"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/caddx-gm1-gimbal-pitch-120-for-19mm-fpv-camera-compatible-with-avatar-hd-goggles"
   }
 }
@@ -786,15 +786,15 @@ cameras: {
   lens_size_mm: 1.8
   description: "Ultra-compact, lightweight 14x14mm nano camera engineered for whoops and toothpicks, with 1200TVL Global WDR."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddx-ant-analog-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/caddx-ant-4-3-black-nano-fpv-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/caddx-ant-lite-nano-1200tvl-cmos-pal-ntsc-fpv-camera-choose-your-version"
   }
 }
@@ -811,11 +811,11 @@ cameras: {
   lens_size_mm: 1.7
   description: "Race-proven 1000TVL micro analog camera featuring switchable 4:3 / 16:9 aspect ratio and multi-mode day/night presets."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.foxeer.com/foxeer-predator-v5-micro-camera-g-297"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/foxeer-micro-predator-5-m8-lens-4ms-latency-super-wdr-19-19mm"
   }
 }
@@ -832,11 +832,11 @@ cameras: {
   lens_size_mm: 1.7
   description: "14x14mm nano version of the legendary Predator 5 with low latency, super WDR, and switchable aspect ratio."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.foxeer.com/foxeer-predator-5-nano-five33-edition-hv-flip-ntsc-g-405"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/foxeer-predator-5-nano-1000tvl-4-3-16-9-pal-ntsc-fpv-camera-1-7mm-five33-edition"
   }
 }
@@ -853,11 +853,11 @@ cameras: {
   lens_size_mm: 2.1
   description: "Premium freestyle camera with large 1/2-inch image sensor, f/2.0 aperture lens, and vivid natural color reproduction."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://shop.runcam.com/runcam-phoenix-2/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/runcam-phoenix-2-spv5-fpv-camera"
   }
 }
@@ -874,19 +874,19 @@ cameras: {
   lens_size_mm: 2
   description: "Original DJI O3 4K/60fps camera module with 155-degree ultra-wide field of view and RockSteady EIS support."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.dji.com/o3-air-unit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
     url: "https://www.dji.com/o3-air-unit/downloads"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://store.dji.com/product/dji-o3-air-unit-camera-module"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/dji-o3-air-unit-fpv-camera-module"
   }
 }
@@ -903,15 +903,12 @@ cameras: {
   lens_size_mm: 2.1
   description: "Flagship digital HD camera featuring Sony Starvis II sensor for incredible low-light night flight and true 1080p video clarity."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-camera"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://caddxfpv.com/products/walksnail-avatar-hd-pro-camera"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-gt2-kit-dual-antennas-with-avatar-pro-camera-1080p-and-gt2-vtx-2w-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
 }
@@ -928,7 +925,7 @@ cameras: {
   lens_size_mm: 1.8
   description: "Zero-latency digital camera with custom high-sensitivity sensor offering 720p 60fps feed and sharp image definition."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hd-zero.com/product-page/nano-v2-hdzero-camera"
   }
 }

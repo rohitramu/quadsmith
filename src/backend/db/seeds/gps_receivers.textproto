@@ -12,11 +12,11 @@ gps_receivers: {
   input_voltage_max_v: 9.0
   description: "High-precision GNSS positioning module with integrated QMC5883L magnetic compass and 18x18mm ceramic patch antenna, powered by u-blox MAX-M10S."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.mateksys.com/?portfolio=m10-5883"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/mateksys-m10-5883-gnss-compass.html"
   }
 }
@@ -33,15 +33,15 @@ gps_receivers: {
   input_voltage_max_v: 5.0
   description: "Ultra-lightweight 2.5g micro GPS module engineered for toothpick and sub-250g quads, powered by 10th-generation M10050 GNSS chip."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flywoo.net/products/goku-gm10-nano-v3-gps"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/flywoo-goku-gm10-nano-v3-gps-module.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-goku-gm10-nano-v3-1-gps-module"
   }
 }
@@ -59,15 +59,15 @@ gps_receivers: {
   input_voltage_max_v: 5.0
   description: "Compact 18x18mm FPV GPS module featuring 10th-gen M10050 GNSS chip, integrated QMC5883L compass, and high-sensitivity ceramic patch antenna."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flywoo.net/products/goku-gm10-mini-v3-gps"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/flywoo-goku-gm10-mini-v3-gps-w-compass.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-goku-gm10-mini-v3-micro-gps-w-compass-10th-gen"
   }
 }
@@ -85,15 +85,15 @@ gps_receivers: {
   input_voltage_max_v: 5.0
   description: "Larger 25x25mm long-range GPS unit with high-gain active antenna and integrated QMC5883L compass for maximum satellite lock speed."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flywoo.net/products/goku-gm10-pro-v3-gps-w-compass"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/flywoo-goku-gm10-pro-v3-gps-module-w-compass.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-goku-gm10-pro-v3-gps-w-compass"
   }
 }
@@ -111,19 +111,19 @@ gps_receivers: {
   input_voltage_max_v: 5.2
   description: "Multi-constellation GNSS module equipped with high-gain 25x25mm active ceramic antenna, IST8310 digital compass, and MAX2659 LNA amplifier."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://holybro.com/products/micro-m10-gps"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/holybro-micro-m10-gps-w-case.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://holybro.com/products/m10-gps"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/holybro-kakuteh743-wing-3-8s-fixed-wing-flight-controller-micro-m10-gps-set"
   }
 }
@@ -141,15 +141,15 @@ gps_receivers: {
   input_voltage_max_v: 5.0
   description: "Compact 21x21mm 10th-generation M10 GNSS module with onboard QMC5883L compass and multi-constellation concurrent satellite support."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/m100-5883-gps"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/hglrc-m100-5883-gps-module.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-m100-5883-gps-module-10th-gen"
   }
 }

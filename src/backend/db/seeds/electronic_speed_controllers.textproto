@@ -11,7 +11,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "Redfox Redfox A3 F722 45A AIO 4-in-1 ESC running BLHeli_32 firmware, rated for 45A continuous and 55A burst, weighing 8.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-redfox-a3-f722-35a-45a-4in1-aio-flight-controller-for-2-to-3-5-inch-drones-choose-version"
   }
 
@@ -47,7 +47,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "Happymodel Happymodel X12 5-IN-1 AIO 4-in-1 ESC running BLHeli_32 firmware, rated for 12A continuous and 15A burst, weighing 5.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/happymodel-x12-5-in-1-f4-12a-whoop-aio-flight-controller-choose-receiver-option"
   }
 
@@ -67,7 +67,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "HGLRC HGLRC Zeus 48A 4-in-1 ESC running BLHeli_32 firmware, rated for 48A continuous and 55A burst, weighing 18.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-zeus-48a-4in1-esc-3-6s-bl_s-with-heat-sink-30x30mm"
   }
 
@@ -87,7 +87,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "HGLRC HGLRC Specter 60A 4-in-1 ESC 4-in-1 ESC running BLHeli_32 firmware, rated for 60A continuous and 65A burst, weighing 14.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-60a-4in1-esc-3-6s-bl32-128k-with-heat-sink-for-fpv-racing-drone-freestyle"
   }
 
@@ -107,7 +107,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "DarwinFPV 'Cement' Ultra-Durable BLHeli_32 AM32 12S 8S 80A Waterproof  ESC"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-cement-ultra-durable-blheli_32-12s-80a-waterproof-esc"
   }
 
@@ -127,7 +127,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "DarwinFPV 3-6S F411 FC 4 IN 1 30A ESC Stack"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-3-4s-f411-fc-4-in-1-30a-esc-stack"
   }
 
@@ -147,11 +147,11 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "DarwinFPV Betaflight F4 FC 50A  DSHOT600 ESC Stack"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-betaflight-f4-fc-50a-dshot600-esc-stack"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-betaflight-f4-fc-50a-2-6s-blheli_s-4in1-dshot600-esc-stack"
   }
 
@@ -171,11 +171,11 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "DarwinFPV fpv ESC flight controller Betaflight F4 FC 30A 2-6S BLHeli_32 4in1 Dshot1200"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-fpv-esc-flight-controller-betaflight-f4-fc-30a-2-6s-blheli_32-4in1-dshot1200"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-betaflight-f4-fc-50a-2-6s-blheli_s-4in1-dshot600-esc-stack"
   }
 
@@ -195,7 +195,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "NewBeeDrone NewBeeDrone Infinity200 V2 4IN1 ESC 55A 4-in-1 ESC running BLHeli_32 firmware, rated for 55A continuous and 66A burst, weighing 15.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-infinity200-v2-4in1-esc"
   }
 
@@ -215,7 +215,7 @@ electronic_speed_controllers: {
   firmware: "AM32"
   description: "Team Black Sheep Lucid 90A 12S AM32 ESC - NDAA 4-in-1 ESC running AM32 firmware, rated for 90A continuous and 108A burst, weighing 19.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tbs-lucid-12s-90a-am32-esc-for-x-class-cinelifter-drone-airplane-wing-ndaa"
   }
 
@@ -235,7 +235,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Goku GN745 V3 2-6S 25x25 AIO Flight Controller with 45A 32bit ESC - AM32"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-goku-gn745-v3-aio-f7-fc-45a-2-6s-am32-4-in-1-esc-mpu6000-25x25"
   }
 
@@ -287,7 +287,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Kakute G4 25x25 AIO Flight Controller with 35A 32Bit AM32 ESC"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://holybro.com/products/kakute-g4-aio-35a"
   }
 
@@ -307,11 +307,11 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "HGLRC SPECTER 60A 4in1 ESC 3-6S BL32 128K with Heat Sink for FPV Racing Drone Freestyle"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-60a-4in1-esc-3-6s-bl32-128k-with-heat-sink-for-fpv-racing-drone-freestyle"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-f760-box-3-6s-20x20-integrated-stack-combo-f722-fc-32bit-60a-4in1-esc"
   }
 
@@ -331,7 +331,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "HGLRC 60A 4IN1 6S BL32 MINI V1 ESC FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-60a-4in1-6s-bl32-mini-v1-esc-fpv穿越机"
   }
 
@@ -351,7 +351,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "HGLRC 60A 4IN1 6S 8-bit V2 ESC For FPV Racing Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-60a-4in1-6s-8-bit-v2-esc-for-fpv-racing-drone"
   }
 
@@ -371,7 +371,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "HGLRC 60A 4IN1 MINI 8S 32-bit V1 ESC for racing"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-60a-4in1-mini-8s-bl32-v1-esc"
   }
 
@@ -391,7 +391,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "HGLRC H743 8S MINI V1 FC 60A 4IN1 6S BLS MINI ESC"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-h743-8s-mini-v1-fc"
   }
 
@@ -411,7 +411,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "DIATONE ESC Power Distribution Board 3-6S for RC Drone FPV Racing"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/diatone-40a-brushless-motor-wire-extension-plate-for-rc-drone-fpv-racing-multi-rotor"
   }
 
@@ -431,7 +431,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Diatone MAMBA F40_BLS Dshot600 4IN1 ESC 40A 6S 4-in-1 ESC running BLHeli_S firmware, rated for 40A continuous and 48A burst, weighing 6.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mamba-f40_bls-dshot600-4in1-esc-40a-6s"
   }
 
@@ -451,7 +451,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "FPVCycle DarwinFPV Whoop Stack Flight Controller + 6S 45A ESC"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-darwinfpv-whoop-stack-flight-controller-6s-45a-esc"
   }
 
@@ -472,7 +472,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4 (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f405-2-4s-aio-brushless-flight-controller-20a-blheli_32-v4"
   }
 
@@ -493,7 +493,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "BETAFPV F4 2-3S 20A AIO FC V1 (Internal ESC) 4-in-1 ESC running BLHeli_S firmware, rated for 20A continuous and 24A burst, weighing 5.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-2-3s-20a-aio-fc-v1"
   }
 
@@ -514,7 +514,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32) (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-2-6s-aio-brushless-flight-controller-35ablheli_32"
   }
 
@@ -535,7 +535,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S) (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-20a-aio-brushless-flight-controller"
   }
 
@@ -556,7 +556,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S) (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-20a-aio-brushless-flight-controller"
   }
 
@@ -577,11 +577,11 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S) (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-20a-aio-brushless-flight-controller"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-f4-2-3s-20a-aio-fc-v1-elrs-2-4g-brushless-flight-controller"
   }
 
@@ -602,7 +602,7 @@ electronic_speed_controllers: {
   firmware: "AM32"
   description: "DarwinFPV F435 45A AM32 AIO (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-f435-45a-am32-aio"
   }
 
@@ -623,7 +623,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
   }
 
@@ -644,11 +644,11 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "DarwinFPV HULK 45A 3-6S AIO (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-hulk-45a-3-6s-aio"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-hulk-aio-f411-flight-controller-45a-3-6s-esc-elrs-2-4ghz-25x25mm"
   }
 
@@ -669,7 +669,7 @@ electronic_speed_controllers: {
   firmware: "Bluejay"
   description: "DarwinFPV ELRS3.0 F411 15A Bluejay AIO (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
   }
 
@@ -690,7 +690,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-15a-elrs-aio-2-4s-4-in-1-aio-fc-for-fpv-drone"
   }
 
@@ -711,11 +711,11 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Redfox A3 F722 35A/45A AIO Flight Controller for DollyFly25 (Internal ESC)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/redfox-a3-f722-35a-45a-aio-fc"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-redfox-a3-f722-35a-45a-4in1-aio-flight-controller-for-2-to-3-5-inch-drones-choose-version"
   }
 
@@ -735,15 +735,15 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Robust 55A 30x30 4-in-1 ESC with onboard CNC heat sink, Japanese Rubycon filter capacitors, and TVS transient voltage suppression."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.speedybee.com/speedybee-f405-v4-bls-55a-30x30-fc-esc-stack/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
     url: "https://www.speedybee.com/f405-v4-55a-stack-download/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/speedybee-f405-v4-stack-f4-v4-fc-55a-blheli-s-esc-30x30.html"
   }
 
@@ -763,11 +763,11 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "Premium BLHeli_32 racing ESC with ultra-low resistance MOSFETs, 128K PWM support, ESC telemetry, and integrated current sensor."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://tmotorhobby.com/goods-821-T-Motor+F55A+Pro+II+55A+3-6s+BLHeli32+4-in-1+ESC+w+BEC.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/t-motor-f55a-pro-ii-55a-3-6s-am32-4-in-1-esc-w-bec-30x30"
   }
 
@@ -787,7 +787,7 @@ electronic_speed_controllers: {
   firmware: "BLHeli_32"
   description: "High-performance 30x30 65A ESC featuring STM32F4 MCU, multi-layer high TG copper PCB, and smooth DShot2400 capability."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.foxeer.com/foxeer-reaper-f4-128k-65a-bl32-4in1-9-40v-esc-30-5-30-5mm-m3-g-420"
   }
 
@@ -807,11 +807,8 @@ electronic_speed_controllers: {
   firmware: "BLHeli_S"
   description: "Lightweight 20x20mm 4-in-1 ESC engineered for 2-4S micro quads, toothpicks, and lightweight 3-inch drones."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/f4-2-3s-20a-aio-fc-v1"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/f4-2-3s-20a-aio-fc-v1"
   }
 

@@ -10,7 +10,7 @@ frames: {
   geometry: "Deadcat"
   description: "ImpulseRC ImpulseRC Apex EVO 5\" Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 138.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/impulserc-apex-evo-5-hd-freestyle-frame-kit"
   }
   primary_display_image: "https://cdn.shopify.com/s/files/1/1285/4651/products/apex-evo-5-hd-front.jpg"
@@ -37,7 +37,7 @@ frames: {
   geometry: "True-X"
   description: "iFlight iFlight AOS 5 V5 True-X drone frame with 228.0mm wheelbase, supporting up to 132.1mm props, weighing 120.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/iflight-aos-5-v5-5-frame-replacement-arm-1-pc"
   }
 }
@@ -53,11 +53,11 @@ frames: {
   geometry: "Deadcat"
   description: "FlyFishRC FlyFishRC Volador II VX5 Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-ii-vx5-o4-pro-fpv-freestyle-t700-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-volador-ii-vx5-o4-fpv-freestyle-t700-frame-kit-choose-color"
   }
 }
@@ -73,11 +73,11 @@ frames: {
   geometry: "True-X"
   description: "Caddx Caddx Gofilm 20 Frame True-X drone frame with 94.0mm wheelbase, supporting up to 51.0mm props, weighing 38.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-gofilm-20-only"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/caddx-gofilm-20-frame-kit"
   }
 }
@@ -93,7 +93,7 @@ frames: {
   geometry: "True-X"
   description: "Happymodel Happymodel Mobula8 Frame True-X drone frame with 80.0mm wheelbase, supporting up to 51.0mm props, weighing 7.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/happymodel-mobula8-o4-2s-digital-hd-85mm-micro-fpv-whoop-drone-elrs-2-4"
   }
 }
@@ -109,11 +109,11 @@ frames: {
   geometry: "True-X"
   description: "BETAFPV BetaFPV Meteor75 Pro Frame True-X drone frame with 80.8mm wheelbase, supporting up to 45.0mm props, weighing 7.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/meteor75-pro-ii-brushless-whoop-quadcopter"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor75-pro-ii-hd-1s-80mm-brushless-whoop-quadcopter-pnp-without-vtx-choose-receiver"
   }
 }
@@ -129,11 +129,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV BetaFPV Pavo35 Brushless Whoop Frame Whoop drone frame with 148.0mm wheelbase, supporting up to 88.9mm props, weighing 113.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo35-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo35-brushless-3-5-whoop-quadcopter-duct-only"
   }
 }
@@ -149,11 +149,11 @@ frames: {
   geometry: "True X"
   description: "DarwinFPV DarwinFPV BabyApe Pro V2 Frame True X drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-babyape-pro-pro-v2-fpv-drone-complete-set-of-screws"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/darwinfpv-baby-ape-pro-v2-3-quad-choose-version"
   }
 }
@@ -169,11 +169,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Meteor75 Pro II Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/meteor75-pro-ii-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor75-pro-ii-brushless-whoop-frame-choose-color"
   }
 }
@@ -189,11 +189,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Meteor65 Pro II Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/meteor65-pro-ii-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor65-pro-ii-brushless-whoop-frame-choose-color"
   }
 }
@@ -209,7 +209,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Aquila20 Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/aquila20-brushless-whoop-frame"
   }
 }
@@ -225,11 +225,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Air65 Champion Brushless Whoop Frame Whoop drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/air65-champion-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-air65-champion-brushless-whoop-frame-2-pcs-choose-color"
   }
 }
@@ -245,11 +245,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo20 Pro II Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo20-pro-ii-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo20-pro-ii-hd-brushless-whoop-duct-only-choose-color"
   }
 }
@@ -265,11 +265,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo Pico II Brushless Whoop Frame Whoop drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo-pico-ii-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo-pico-ii-brushless-whoop-frame-kit-choose-color"
   }
 }
@@ -285,11 +285,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Air75 II Brushless Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/air75-ii-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-air75-ii-brushless-whoop-frame-choose-color"
   }
 }
@@ -305,11 +305,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Air65 II Brushless Whoop Frame Whoop drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/air65-ii-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-air65-ii-brushless-whoop-frame-choose-color"
   }
 }
@@ -325,11 +325,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo20 Pro Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo20-pro-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo20-pro-ii-hd-brushless-whoop-duct-only-choose-color"
   }
 }
@@ -345,11 +345,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo Femto Brushless Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 8.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo-femto-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo-femto-brushless-whoop-frame-with-o4-air-unit-bracket-choose-color"
   }
 }
@@ -365,7 +365,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV X-Knight Carbon Fiber Frame Kit True X drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/x-knight-4inch-fpv-racing-carbon-fiber-frame-kit"
   }
 }
@@ -381,11 +381,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo25 Frame Kit Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo25-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-pavo25-v2-brusless-whoop-frame-grey"
   }
 }
@@ -401,11 +401,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Air75 Brushless Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/air75-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-air75-brushless-whoop-frame-choose-color"
   }
 }
@@ -421,11 +421,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo35 Brushless Whoop Frame Whoop drone frame with 148.0mm wheelbase, supporting up to 88.9mm props, weighing 113.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo35-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo35-brushless-3-5-whoop-quadcopter-duct-only"
   }
 }
@@ -441,7 +441,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo25 V2 Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo25-v2-brushless-whoop-frame"
   }
 }
@@ -457,11 +457,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo20 Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo20-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo20-pro-ii-hd-brushless-whoop-duct-only-choose-color"
   }
 }
@@ -477,11 +477,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo Pico Brushless Whoop Frame Whoop drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo-pico-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo-pico-ii-brushless-whoop-frame-kit-choose-color"
   }
 }
@@ -497,11 +497,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Air65 Brushless Whoop Frame Whoop drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/air65-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-air65-champion-brushless-whoop-frame-2-pcs-choose-color"
   }
 }
@@ -517,11 +517,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Meteor75 Pro Brushless Whoop Frame Whoop drone frame with 80.8mm wheelbase, supporting up to 40.0mm props, weighing 7.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/meteor75-pro-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor75-pro-ii-hd-1s-80mm-brushless-whoop-quadcopter-pnp-without-vtx-choose-receiver"
   }
 }
@@ -537,11 +537,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Meteor85 Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/meteor85-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-meteor85-brushless-whoop-frame-choose-color"
   }
 }
@@ -557,11 +557,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Cetus X Brushless Whoop Frame Whoop drone frame with 95.0mm wheelbase, supporting up to 50.8mm props, weighing 55.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/cetus-x-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-cetus-x-2s-brushless-whoop-quadcopter-w-cetus-flight-controller-and-frsky-d8-receiver"
   }
 }
@@ -577,7 +577,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Cetus Pro Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/cetus-pro-brushless-whoop-frame"
   }
 }
@@ -593,7 +593,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo360 Frame Kit Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo360-frame-kit"
   }
 }
@@ -609,7 +609,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo30 Pro Frame Kit Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo30-pro-frame-kit"
   }
 }
@@ -625,11 +625,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Meteor65 Pro Brushless Whoop Frame Whoop drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 3.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/meteor65-pro-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor65-pro-brushless-whoop-frame-choose-color"
   }
 }
@@ -645,11 +645,11 @@ frames: {
   geometry: "True X"
   description: "BETAFPV X-Knight 35 Frame Kit True X drone frame with 155.0mm wheelbase, supporting up to 101.6mm props, weighing 142.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/x-knight-35-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-x-knight-35-fpv-quadcopter-1"
   }
 }
@@ -665,11 +665,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Pavo30 Frame Kit Whoop drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo30-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo30-3-cinewhoop-hd-drone-vista-polar"
   }
 }
@@ -685,7 +685,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV Beta95X V3 Frame Kit True X drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta95x-v3-frame-kit"
   }
 }
@@ -701,11 +701,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Meteor75 Micro Brushless Whoop Frame Whoop drone frame with 80.8mm wheelbase, supporting up to 40.0mm props, weighing 7.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/meteor75-micro-brushless-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor75-pro-micro-brushless-whoop-frame-choose-color"
   }
 }
@@ -721,7 +721,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Beta75X V2 Micro Brushless Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta75x-v2-whoop-frame"
   }
 }
@@ -737,7 +737,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV X-Knight Carbon Fiber 5'' Frame V2 Kit True X drone frame with 200.0mm wheelbase, supporting up to 129.5mm props, weighing 142.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/x-knight-carbon-fiber-5-frame-v2-kit"
   }
 }
@@ -753,7 +753,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV TWIGLET 2.5'' Frame Kit True X drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/twiglet-2-5-frame-kit"
   }
 }
@@ -769,7 +769,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV TWIG XL 3 Frame Kit True X drone frame with 153.0mm wheelbase, supporting up to 88.9mm props, weighing 138.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/twig-xl-3-toothpick-frame"
   }
 }
@@ -785,7 +785,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV Beta95X Frame Kit True X drone frame with 80.0mm wheelbase, supporting up to 40.0mm props, weighing 19.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta95x-frame-kit"
   }
 }
@@ -801,7 +801,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Beta75 Pro Micro Brushless Whoop Frame Whoop drone frame with 80.8mm wheelbase, supporting up to 40.0mm props, weighing 7.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta75-pro-micro-brushless-whoop-frame"
   }
 }
@@ -817,7 +817,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Meteor65 Micro Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/meteor65-micro-brushless-whoop-frame"
   }
 }
@@ -833,7 +833,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV HX115 T700 Carbon Fiber Frame True X drone frame with 148.0mm wheelbase, supporting up to 88.9mm props, weighing 113.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/hx115-carbon-fiber-frame"
   }
 }
@@ -849,7 +849,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV HX100 Carbon Fiber Frame True X drone frame with 367.0mm wheelbase, supporting up to 177.8mm props, weighing 200.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/hx100-carbon-fiber-frame"
   }
 }
@@ -865,7 +865,7 @@ frames: {
   geometry: "True X"
   description: "Stiffener Brace of Carbon Fiber for Beta85X Frame (2 PCS)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/frame-stiffener-brace-of-carbon-fiber-for-beta85x"
   }
 }
@@ -881,7 +881,7 @@ frames: {
   geometry: "True X"
   description: "BETAFPV Beta85X 4S 4K Frame Kit (Upgrade) True X drone frame with 85.0mm wheelbase, supporting up to 50.8mm props, weighing 10.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta85x-4k-frame-kit"
   }
 }
@@ -897,7 +897,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Beta75 Pro 2 Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta75-pro-2-frame"
   }
 }
@@ -913,7 +913,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Beta65X / Beta65 Pro 2 Micro Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta65x-2s-whoop-frame"
   }
 }
@@ -929,11 +929,11 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Beta75X Whoop Frame Whoop drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta75x-2s-whoop-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-beta75x-v2-whoop-frame-black"
   }
 }
@@ -949,7 +949,7 @@ frames: {
   geometry: "Whoop"
   description: "BETAFPV Beta65 Pro Micro Brushless Whoop Frame Whoop drone frame with 70.0mm wheelbase, supporting up to 31.0mm props, weighing 4.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta65-pro-micro-brushless-whoop-frame"
   }
 }
@@ -965,11 +965,11 @@ frames: {
   geometry: "True X"
   description: "CADDX FPV Protos Drone Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 104.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/protos-drone-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/caddx-protos-hd-fpv-drone-fly-more-combo-ready-to-fly-with-controller-and-goggles"
   }
 }
@@ -985,11 +985,11 @@ frames: {
   geometry: "True X"
   description: "CADDXFPV CADDXFPV Gofilm 20 Frame True X drone frame with 94.0mm wheelbase, supporting up to 50.8mm props, weighing 38.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-gofilm-20-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/caddxfpv-gofilm20"
   }
 }
@@ -1005,7 +1005,7 @@ frames: {
   geometry: "True X"
   description: "DarwinFPV Baby BabyApe V4 Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/baby-babyape-v4-frame"
   }
 }
@@ -1021,7 +1021,7 @@ frames: {
   geometry: "Deadcat"
   description: "DarwinFPV DarwinFPV ApeStyle X5 Drone Frame Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-apestyle-x5-drone-frame"
   }
 }
@@ -1037,7 +1037,7 @@ frames: {
   geometry: "Deadcat"
   description: "DarwinFPV Toruk15  Long Range FPV Drone Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-toruk15-long-range-fpv-drone-frame"
   }
 }
@@ -1053,7 +1053,7 @@ frames: {
   geometry: "Wide-X"
   description: "BabyApe Ⅲ Pro 3.5 Inch Freestyle FPV Drone Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/babyape-ⅲ-pro-3-5-inch-freestyle-fpv-drone-frame"
   }
 }
@@ -1069,7 +1069,7 @@ frames: {
   geometry: "Wide-X"
   description: "BabyApe Ⅲ 3 Inch Freestyle FPV Drone Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/babyape-ⅲ-3-inch-freestyle-fpv-drone-frame"
   }
 }
@@ -1085,7 +1085,7 @@ frames: {
   geometry: "Squashed-X"
   description: "DarwinFPV BabyApe Ⅲ Mini 2 Inch Freestyle Frame Squashed-X drone frame with 160.0mm wheelbase, supporting up to 50.0mm props, weighing 70.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/babyape-ⅲ-mini-2-inch-freestyle-frame"
   }
 }
@@ -1101,7 +1101,7 @@ frames: {
   geometry: "True X"
   description: "DarwinFPV DarwinFPV HULK III Mini Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-hulk-iii-mini-frame"
   }
 }
@@ -1117,7 +1117,7 @@ frames: {
   geometry: "Deadcat"
   description: "DarwinFPV DarwinFPV X10 Long Range FPV Drone Frame Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 186.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-x10-long-range-fpv-drone-frame"
   }
 }
@@ -1133,11 +1133,11 @@ frames: {
   geometry: "True X"
   description: "DarwinFPV DarwinFPV FoldApe4 Analog Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-foldape4-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-foldape4-4-folding-long-range-analog-bnf-fpv-drone-elrs-2-4g"
   }
 }
@@ -1153,7 +1153,7 @@ frames: {
   geometry: "True-X"
   description: "DarwinFPV DARWIN X9 Quadcopter Frame True-X drone frame with 363.0mm wheelbase, supporting up to 177.8mm props, weighing 287.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-x9-quadcopter-frame"
   }
 }
@@ -1169,7 +1169,7 @@ frames: {
   geometry: "True X"
   description: "DARWIN HULK Ⅱ Waterproof  FPV Drone Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-hulk-ⅱ-frame"
   }
 }
@@ -1185,7 +1185,7 @@ frames: {
   geometry: "Wide-X"
   description: "DarwinFPV BabyApe Ⅱ 3.5 inch FPV Drone Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-babyape-ⅱ-3-5-inch-fpv-drone-frame"
   }
 }
@@ -1201,7 +1201,7 @@ frames: {
   geometry: "Whoop"
   description: "DarwinFPV Darwin CineApe 25 Whoop Frame Whoop drone frame with 112.0mm wheelbase, supporting up to 76.2mm props, weighing 47.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-cineape-25-whoop-frame"
   }
 }
@@ -1217,7 +1217,7 @@ frames: {
   geometry: "True X"
   description: "DarwinFPV Baby BabyApe V2 Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/baby-baby-ape-v2-frame"
   }
 }
@@ -1233,7 +1233,7 @@ frames: {
   geometry: "True X"
   description: "DarwinFPV DarwinFPV HULK Waterproof Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-hulk-waterproof-frame"
   }
 }
@@ -1249,11 +1249,11 @@ frames: {
   geometry: "Squashed-X"
   description: "DarwinFPV Darwin TinyApe Freestyle Frame Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-tinyapee-freestyle-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-tinyape-freestyle-2-5-fpv-drone-pnp"
   }
 }
@@ -1269,11 +1269,11 @@ frames: {
   geometry: "True-X"
   description: "DarwinFPV Darwin Baby Ape 3'' Quadcopter Frame True-X drone frame with 143.0mm wheelbase, supporting up to 88.9mm props, weighing 74.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-baby-ape-3-quadcopter-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/darwinfpv-baby-ape-pro-v3-3-quadcopter-w-caddx-ant"
   }
 }
@@ -1289,7 +1289,7 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone Cockroach 65mm Brushed LiteAF Racing Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-cockroach-65mm-brushed-liteaf-racing-frame"
   }
 }
@@ -1305,11 +1305,11 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone Cockroach 75mm Brushless LiteAF Racing Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-cockroach-75mm-brushless-liteaf-racing-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-cockroach-75mm-brushless-liteaf-racing-frame-choose-color"
   }
 }
@@ -1325,11 +1325,11 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone NewBeeDrone LionBee 3inch Frame True X drone frame with 75.0mm wheelbase, supporting up to 76.0mm props, weighing 3.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-lionbee-3inch-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-lionbee-3inch-long-range-1s-analog-elrs-2-4ghz-bnf-aio-developer-kit"
   }
 }
@@ -1345,7 +1345,7 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone X weBLEEDfpv Cockroach 65mm LiteAF RED Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/cockroach-liteaf-red-frame"
   }
 }
@@ -1361,7 +1361,7 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone StingerBee HD O4 Pro 3” Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/stingerbee-hd-o4-pro-3-frame"
   }
 }
@@ -1377,7 +1377,7 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone NewBeeDrone SavageBee Pusher Frame Kit True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 3.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-savagebee-frame-kit"
   }
 }
@@ -1393,7 +1393,7 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone Cockroach 65mm Brushless LiteAF Racing Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/cockroach-brushless-liteaf"
   }
 }
@@ -1409,7 +1409,7 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone Cockroach 65mm Frame 3D Printed Battery Mount"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-cockroach-65mm-frame-3d-printed-battery-mount"
   }
 }
@@ -1425,7 +1425,7 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone Cockroach 82 Brushless Super-Durable Frame (Plastic Part and Carbon Fiber & Accessory)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/cockroach-82-brushless-super-durable-frame"
   }
 }
@@ -1442,7 +1442,7 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone NewBeeDrone 75mm Cockroach75 Brushless Extreme-Durable Frame True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 3.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-75mm-cockroach75-brushless-extreme-durable-frame"
   }
 }
@@ -1458,11 +1458,11 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone Cockroach V3 65mm Brushless Ultra Light Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-cockroach-v3-65mm-brushless-ultra-light-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-cockroach-v3-65mm-brushless-ultra-light-frame"
   }
 }
@@ -1478,11 +1478,11 @@ frames: {
   geometry: "Wide-X"
   description: "NewBeeDrone Inertia 5 DC (Dead Cat Style) FPV Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-inertia-5-dcdead-cat-style-fpv-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-inertia-5-dc-dead-cat-style-fpv-frame"
   }
 }
@@ -1498,11 +1498,11 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone NewBeeDrone Mosquito XL Frame True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 3.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-mosquito-xl-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-mosquito-xl-frame"
   }
 }
@@ -1518,11 +1518,11 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone V2 65mm Cockroach Brushless Super-Durable Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-v2-65mm-cockroach-brushless-super-durable-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-v2-65mm-cockroach-brushless-super-durable-frame"
   }
 }
@@ -1538,11 +1538,11 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone NewBeeDrone Mosquito Frame True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 3.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-mosquito-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-mosquito-frame"
   }
 }
@@ -1558,11 +1558,11 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone NewBeeDrone 65mm Cockroach Brushless Super-Durable Frame True X drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-65mm-cockroach-brushless-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-65mm-cockroach-brushless-super-durable-frame"
   }
 }
@@ -1578,11 +1578,11 @@ frames: {
   geometry: "True X"
   description: "NewBeeDrone NewBeeDrone Cockroach Brushed Super-Durable Frame 65mm True X drone frame with 65.0mm wheelbase, supporting up to 31.0mm props, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-cockroach-brushed-super-durable-frame-65mm"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-cockroach-brushed-super-durable-frame-65mm"
   }
 }
@@ -1598,7 +1598,7 @@ frames: {
   geometry: "True-X"
   description: "Pirat Lil Matey2 3.5 Frame True-X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 58.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/pirat-lil-matey2-3-5-fpv-drone-replacement-arm-1-pc"
   }
 }
@@ -1614,7 +1614,7 @@ frames: {
   geometry: "True X"
   description: "ImpulseRC Echo 5 Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 121.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/impulserc-echo-5-clamp-cf-2-5mm"
   }
 }
@@ -1630,7 +1630,7 @@ frames: {
   geometry: "Squashed-X"
   description: "Rotor Riot TANQ S 3.5 Frame - By LetsFlyRC Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/tanq-s-3-5-frame-by-letsflyrc"
   }
 }
@@ -1646,7 +1646,7 @@ frames: {
   geometry: "Deadcat"
   description: "Rotor Riot TANQ 2 5 Racing Frame - By LetsFlyRC Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/tanq-2-5-racing-frame-by-letsflyrc"
   }
 }
@@ -1662,7 +1662,7 @@ frames: {
   geometry: "Deadcat"
   description: "Rotor Riot TANQ 2 5 Deadcat Frame - By LetsFlyRC Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 186.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/tanq-2-5-deadcat-frame-by-letsflyrc"
   }
 }
@@ -1678,7 +1678,7 @@ frames: {
   geometry: "Deadcat"
   description: "Rotor Riot TANQ 2 8 Deadcat Frame - By LetsFlyRC Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 186.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/tanq-2-8-deadcat-frame-by-letsflyrc"
   }
 }
@@ -1694,7 +1694,7 @@ frames: {
   geometry: "Deadcat"
   description: "Rotor Riot TANQ 2 5 Frame - By LetsFlyRC Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/tanq-2-5-frame-by-letsflyrc"
   }
 }
@@ -1710,7 +1710,7 @@ frames: {
   geometry: "Deadcat"
   description: "Rotor Riot CL2-XR 7 Deadcat Frame Deadcat drone frame with 288.0mm wheelbase, supporting up to 177.8mm props, weighing 185.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/cl2-xr-7-frame"
   }
 }
@@ -1726,7 +1726,7 @@ frames: {
   geometry: "Squashed-X"
   description: "Rotor Riot CL2-AIR 5 Frame Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/cl2-air-5-frame"
   }
 }
@@ -1742,7 +1742,7 @@ frames: {
   geometry: "True X"
   description: "Mobula7 V4 75mm Frame - 1S"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/happymodel-v4-75mm-whoop-frame-for-moblite7-mobula7-mobula7-1s-transparent-black"
   }
 }
@@ -1758,7 +1758,7 @@ frames: {
   geometry: "True X"
   description: "Mobula7 V3 75mm Frame - 2S"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/happymodel-mobula7-v3-frame-75mm-2s-whoop-frame-upgrade"
   }
 }
@@ -1774,7 +1774,7 @@ frames: {
   geometry: "True X"
   description: "Rotor Riot Skyliner MK3 5 Frame True X drone frame with 213.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/skyliner-mk3-5-frame"
   }
 }
@@ -1790,7 +1790,7 @@ frames: {
   geometry: "True X"
   description: "Rotor Riot SkyLite 3-3.5 Frame by Le Drib True X drone frame with 75.0mm wheelbase, supporting up to 40.0mm props, weighing 4.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/skylite-frame"
   }
 }
@@ -1806,7 +1806,7 @@ frames: {
   geometry: "True X"
   description: "Rotor Riot CL2 5 Frame True X drone frame with 189.0mm wheelbase, supporting up to 101.6mm props, weighing 52.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/cl2-5-frame"
   }
 }
@@ -1822,7 +1822,7 @@ frames: {
   geometry: "True X"
   description: "Rotor Riot Moxy 5 Frame True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 125.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/moxy-frame"
   }
 }
@@ -1838,7 +1838,7 @@ frames: {
   geometry: "True X"
   description: "HGLRC MY10 10-inch Long Range / Training Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my10-10-inch-long-range-training-frame"
   }
 }
@@ -1854,7 +1854,7 @@ frames: {
   geometry: "True X"
   description: "HGLRC HGLRC MY5 5-inch Freestyle /Training Frame True X drone frame with 210.0mm wheelbase, supporting up to 129.5mm props, weighing 120.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my5-5-inch-freestyle-training-frame"
   }
 }
@@ -1870,7 +1870,7 @@ frames: {
   geometry: "True X"
   description: "HGLRC Rekon8 PRO 8-inch long-range Frame Compatible With O4"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-rekon8-pro-8-inch-long-range-frame-compatible-with-o4"
   }
 }
@@ -1886,7 +1886,7 @@ frames: {
   geometry: "True X"
   description: "HGLRC Nblade MAX 5 inch True X / DC Freestyle Cinematic FPV Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-nblade-max-5-inch-ture-x-dc-freestyle-cinematic-fpv-frame"
   }
 }
@@ -1902,7 +1902,7 @@ frames: {
   geometry: "True X"
   description: "HGLRC MY10 10-inch Long-range & Payload FPV Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my10-10-inch-long-range-payload-fpv-frame"
   }
 }
@@ -1918,7 +1918,7 @@ frames: {
   geometry: "True X"
   description: "HGLRC MY7 7-inch Long-range & Train ing FPV Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my7-7-inch-long-range-train-ing-fpv-frame"
   }
 }
@@ -1934,7 +1934,7 @@ frames: {
   geometry: "True X"
   description: "HGLRC MY5 5-inch Freestyle & Training FPV Frame"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my5-5-inch-freestyle-training-frame"
   }
 }
@@ -1950,11 +1950,11 @@ frames: {
   geometry: "True-X"
   description: "HGLRC Wind5 Lite V2 Racing Frame (camouflage)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-wind5-lite-v2-racing-frame-camouflage"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-wind5-lite-v2-racing-frame-kit"
   }
 }
@@ -1970,7 +1970,7 @@ frames: {
   geometry: "True-X"
   description: "HGLRC HGLRC Rekon 5 Lite Frame True-X drone frame with 206.0mm wheelbase, supporting up to 129.5mm props, weighing 25.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-rekon-5-llite-frame"
   }
 }
@@ -1986,11 +1986,11 @@ frames: {
   geometry: "True-X"
   description: "HGLRC HGLRC Wind5 Lite V2 Frame Kit for racing True-X drone frame with 208.0mm wheelbase, supporting up to 129.5mm props, weighing 80.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-wind5-lite-v2-frame-kit-for-racing"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-wind5-lite-v2-racing-frame-kit"
   }
 }
@@ -2006,7 +2006,7 @@ frames: {
   geometry: "Whoop"
   description: "HGLRC HGLRC 2-inch Talon frame for cinewhoop Whoop drone frame with 100.0mm wheelbase, supporting up to 50.8mm props, weighing 53.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-2-inch-talon-frame-for-cinewhoop"
   }
 }
@@ -2022,7 +2022,7 @@ frames: {
   geometry: "True X"
   description: "Rekon Y6 5-inch frame compatible Analog/O3/O4/Moonlight Kit VTX long-range FPV frame/5MM arm kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/rekon-y6-5-inch-frame-compatible-analog-o3-moonlight-kit-vtx-long-range-fpv-frame-5mm-arm-kit"
   }
 }
@@ -2038,7 +2038,7 @@ frames: {
   geometry: "Whoop"
   description: "HGLRC Petrel 85Whoop Ultra-light Indoor Frame for FPV Racing Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-petrel-85whoop-ultra-light-indoor-frame-for-fpv-racing-drone"
   }
 }
@@ -2054,7 +2054,7 @@ frames: {
   geometry: "True X"
   description: "HGLRC Draknight 2-inch O4/Analog Frame Ultralight toothpicks/freestyle"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-draknight-2-inch-frame"
   }
 }
@@ -2070,11 +2070,11 @@ frames: {
   geometry: "Deadcat"
   description: "FlyFish RC Hunter 5 FPV Racing T700 Frame Kit Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 186.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/hunter-5-fpv-racing-t700-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-hunter-5-fpv-racing-t700-frame-kit-for-hdzero-nano-90"
   }
 }
@@ -2090,11 +2090,11 @@ frames: {
   geometry: "Deadcat"
   description: "Volador VD4 O4 Pro Deadcat FPV T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-vd4-o4-pro-deadcat-fpv-t700-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-volador-ii-vd4-o4-pro-4-deadcat-frame-replacement-rear-arm-pack-of-2"
   }
 }
@@ -2110,11 +2110,11 @@ frames: {
   geometry: "True-X"
   description: "FlyFishRC Tony 5 O4 Pro Sub250 FPV Freestyle Frame True-X drone frame with 215.0mm wheelbase, supporting up to 129.5mm props, weighing 248.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/tony-5-o4-pro-sub250-fpv-freestyle-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-tony-5-sub250-freestyle-5-fpv-frame-kit"
   }
 }
@@ -2130,11 +2130,11 @@ frames: {
   geometry: "Deadcat"
   description: "FlyFishRC Atlas 4 O4 Pro LR FPV Frame Deadcat drone frame with 183.0mm wheelbase, supporting up to 101.6mm props, weighing 127.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/atlas-4-o4-pro-lr-fpv-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flyfishrc-atlas-4-lr-frame-kit-o4-pro"
   }
 }
@@ -2150,7 +2150,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II 5-6inch Frame O4 Pro TPU Part Set"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-ii-5-6inch-frame-o4-pro-tpu-part-set"
   }
 }
@@ -2166,11 +2166,11 @@ frames: {
   geometry: "Squashed-X"
   description: "Volador VX3 VX3.5 O4 Pro Freestyle Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-vx3-vx3-5-o4-pro-freestyle-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flyfishrc-volador-vx3-5-3-5-o4-pro-freestyle-frame-kit-black"
   }
 }
@@ -2186,7 +2186,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II VX5 O4 Pro FPV Freestyle T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-ii-vx5-o4-pro-fpv-freestyle-t700-frame-kit"
   }
 }
@@ -2202,7 +2202,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II VD5 O4 Pro Deadcat FPV T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-ii-vd5-o4-pro-deadcat-fpv-t700-frame-kit"
   }
 }
@@ -2218,7 +2218,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II VX6 O4 Pro FPV Freestyle T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-ii-vx6-o4-pro-fpv-freestyle-t700-frame-kit"
   }
 }
@@ -2234,7 +2234,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II VD6 O4 Pro Deadcat FPV T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-ii-vd6-o4-pro-deadcat-fpv-t700-frame-kit"
   }
 }
@@ -2250,11 +2250,11 @@ frames: {
   geometry: "Squashed-X"
   description: "FlyFishRC FIFTY5 O4 Pro Freestyle FPV Frame Kit Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/fifty5-o4-pro-freestyle-fpv-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flyfishrc-fifty5-o4-pro-freestyle-frame-kit-black"
   }
 }
@@ -2270,11 +2270,11 @@ frames: {
   geometry: "Deadcat"
   description: "FlyFishRC Atlas 4 LR FPV Frame Deadcat drone frame with 183.0mm wheelbase, supporting up to 101.6mm props, weighing 127.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/atlas-4-lr-fpv-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flyfishrc-atlas-4-lr-frame-kit-o4-pro"
   }
 }
@@ -2290,11 +2290,11 @@ frames: {
   geometry: "True-X"
   description: "FlyFishRC Tony 5 Sub250 FPV Freestyle Frame True-X drone frame with 215.0mm wheelbase, supporting up to 129.5mm props, weighing 248.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/tony-5-sub250-fpv-freestyle-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-tony-5-sub250-freestyle-5-fpv-frame-kit"
   }
 }
@@ -2310,7 +2310,7 @@ frames: {
   geometry: "True-X"
   description: "FlyFishRC FIFTY5 O3 Freestyle FPV Frame Kit True-X drone frame with 255.0mm wheelbase, supporting up to 152.4mm props, weighing 127.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/fifty-5-freestyle-fpv-frame-kit"
   }
 }
@@ -2326,7 +2326,7 @@ frames: {
   geometry: "Squashed-X"
   description: "FlyFishRC Volador VX3 VX3.5 O3 Freestyle Frame Kit Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-vx3-3inch-vx3-5-3-5inch-o3-freestyle-frame-kit"
   }
 }
@@ -2342,11 +2342,11 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II VX5 O3 FPV Freestyle T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-ii-vx5-o3-fpv-freestyle-t700-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flyfishrc-volador-ii-vx5-o3-freestyle-frame-kit-choose-color"
   }
 }
@@ -2362,11 +2362,11 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II VD5 O3 Deadcat FPV T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/voladorⅱvd5-o3-deadcat-fpv-t700-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flyfishrc-volador-ii-vd5-5-lr-o3-deadcat-frame-kit-tropical-mix"
   }
 }
@@ -2382,7 +2382,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II VX6 O3 FPV Freestyle T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-ii-vx6-o3-fpv-freestyle-t700-frame-kit"
   }
 }
@@ -2398,7 +2398,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador II VD6 O3 Deadcat FPV T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/voladorⅱvd6-o3-deadcat-fpv-t700-frame-kit"
   }
 }
@@ -2414,7 +2414,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador VD5 Deadcat FPV LR T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-vd5-deadcat-fpv-lr-t700-frame-kit"
   }
 }
@@ -2430,7 +2430,7 @@ frames: {
   geometry: "Deadcat"
   description: "Volador VD6 Deadcat FPV LR T700 Frame Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-vd6-deadcat-fpv-lr-t700-frame-kit"
   }
 }
@@ -2446,11 +2446,11 @@ frames: {
   geometry: "Deadcat"
   description: "FlyFishRC Volador VX5 FPV Freestyle T700 Frame Kit Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 177.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-vx5-fpv-freestyle-t700-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-volador-ii-vx5-o4-fpv-freestyle-t700-frame-kit-choose-color"
   }
 }
@@ -2466,11 +2466,11 @@ frames: {
   geometry: "Deadcat"
   description: "FlyFishRC Volador VX6 FPV Freestyle T700 Frame Kit Deadcat drone frame with 268.0mm wheelbase, supporting up to 152.4mm props, weighing 188.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/volador-vx6-fpv-freestyle-t700-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-volador-ii-vx6-o4-fpv-freestyle-t700-frame-kit-choose-color"
   }
 }
@@ -2486,7 +2486,7 @@ frames: {
   geometry: "True-X"
   description: "sub250 DollyFly25 V2 O4 Pro Frame and Parts True-X drone frame with 215.0mm wheelbase, supporting up to 129.5mm props, weighing 248.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/dollyfly25-v2-1"
   }
 }
@@ -2502,7 +2502,7 @@ frames: {
   geometry: "True X"
   description: "Sub250 Sub250 DollyFly16 HD O4 Pro Frame Parts True X drone frame with 85.0mm wheelbase, supporting up to 50.8mm props, weighing 88.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-dollyfly16-hd-o4-pro-frame-parts"
   }
 }
@@ -2518,11 +2518,11 @@ frames: {
   geometry: "True X"
   description: "Sub250 DollyFly25 O3 Frame Kit and Frame Part"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-dollyfly25-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-dollyfly25-2-5-4s-cinewhoop-w-dji-o3-hd-camera-system-choose-rx-type"
   }
 }
@@ -2538,7 +2538,7 @@ frames: {
   geometry: "True X"
   description: "Sub250 Sub250 NF16 1.6 inch Frame for Nanofly16 True X drone frame with 77.0mm wheelbase, supporting up to 40.0mm props, weighing 8.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-nf16-frame"
   }
 }
@@ -2554,7 +2554,7 @@ frames: {
   geometry: "True X"
   description: "FPVCycle FPVCycle Cinesplore 2 Frame Kit True X drone frame with 100.0mm wheelbase, supporting up to 50.8mm props, weighing 53.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-cinesplore-2-frame-kit"
   }
 }
@@ -2570,7 +2570,7 @@ frames: {
   geometry: "True X"
   description: "FPVCycle Sonicare (X4) 5 Frame Kit True X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 121.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-sonicare-x5-frame-kit"
   }
 }
@@ -2586,7 +2586,7 @@ frames: {
   geometry: "True X"
   description: "FPVCycle FPVCycle CineGlide 7 Frame True X drone frame with 260.0mm wheelbase, supporting up to 152.4mm props, weighing 49.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-cineglide-7-frame"
   }
 }
@@ -2602,7 +2602,7 @@ frames: {
   geometry: "True-X"
   description: "FPVCycle FPVCycle ToothFairy 2 Frame True-X drone frame with 220.0mm wheelbase, supporting up to 129.5mm props, weighing 58.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-toothfairy-2-frame"
   }
 }
@@ -2618,7 +2618,7 @@ frames: {
   geometry: "True X"
   description: "FPVCycle FPVCycle CineSplore Frame True X drone frame with 167.0mm wheelbase, supporting up to 101.6mm props, weighing 201.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-cinesplore-frame"
   }
 }
@@ -2634,7 +2634,7 @@ frames: {
   geometry: "True X"
   description: "FPVCycle PowerPick Frame  (Choose 4” or 5”)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-powerpick-frame-choose-4-or-5"
   }
 }
@@ -2650,7 +2650,7 @@ frames: {
   geometry: "True X"
   description: "FPVCycle FPVCycle MOLAR - 5 Race Frame True X drone frame with 208.0mm wheelbase, supporting up to 129.5mm props, weighing 78.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-molar-5-race-frame"
   }
 }
@@ -2666,11 +2666,11 @@ frames: {
   geometry: "Squashed-X"
   description: "FPVCycle ToothPick 3 Frame - TP3 Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 17.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/kabab-toothpick-3-tp3-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/fpvcycle-toothpick-3-3-frame"
   }
 }
@@ -2686,7 +2686,7 @@ frames: {
   geometry: "True X"
   description: "FPVCycle BabyTooth Frame (CHOOSE THICKNESS)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-babytooth-frame-choose-your-thickness"
   }
 }
@@ -2702,11 +2702,11 @@ frames: {
   geometry: "Squashed-X"
   description: "FPVCycle FPVCycle Glide -  5 Frame Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 70.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/glide-5-frame-constructed-of-premium-materials"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/fpvcycle-glide-floss-5-frame"
   }
 }
@@ -2722,15 +2722,15 @@ frames: {
   geometry: "True X"
   description: "Popular open-source community collaborative freestyle frame designed by Team BlackSheep for durability, cheap spare arms, and easy maintenance."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
     url: "https://github.com/tbs-trappy/source_one"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/tbs-source-one-v5-5-frame-kit.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tbs-source-one-v5-5-freestyle-long-range-frame"
   }
 }
@@ -2746,11 +2746,11 @@ frames: {
   geometry: "Deadcat"
   description: "Aerodynamic 5-inch deadcat freestyle frame with zero props in view for DJI O3, injection-molded TPU protection, and dual 20x20/30x30 mounting."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.speedybee.com/mario-5-frame-download/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/speedybee-mario-5-dc-o4-advanced-version-5-fpv-freestyle-frame"
   }
 }
@@ -2766,11 +2766,11 @@ frames: {
   geometry: "Squashed X"
   description: "Flagship geometric frame with illuminated side panels, XT60 integrated plug, and CNC aluminum camera cage."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://shop.iflight.com/Evoque-F5-V2-Frame-Kit-Pro1887"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/iflight-nazgul-evoque-f5x-v2-squashed-x-geometry-fpv-drone-frame-kit"
   }
 }
@@ -2786,11 +2786,11 @@ frames: {
   geometry: "Squashed X"
   description: "High-rigidity freestyle frame with CNC 7075 aluminum camera plates and vibration-damped stack design."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://geprc.com/product/geprc-mark5-frame-kit/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/geprc-mark5-pro-5-frame"
   }
 }
@@ -2806,11 +2806,11 @@ frames: {
   geometry: "Deadcat"
   description: "Ultralight Sub-250g 4-inch micro long-range frame designed by Dave_C FPV with deadcat geometry for obstruction-free flight recording."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flywoo.net/products/explorer-lr-dji-frame-kit"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/flywoo-explorer-lr-4-o3-frame-kit.html"
   }
 }

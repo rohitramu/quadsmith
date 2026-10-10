@@ -13,15 +13,16 @@ builds: {
   camera_uuids: "01923019-3005-7001-8001-000000000001"
   video_transmitter_uuid: "01923019-3004-7001-8001-000000000008"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
     url: "https://github.com/tbs-trappy/source_one"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/tbs-source-one-v5-5-frame-kit.html"
   }
 }
 builds: {
+
   uuid: "01923019-2131-4192-3192-391294812398"
   id: "long-range-explorer"
   name: "Long Range Explorer 7 inch"
@@ -36,19 +37,20 @@ builds: {
   camera_uuids: "01923019-3005-7001-8001-000000000006"
   video_transmitter_uuid: "01923019-3004-7001-8001-000000000006"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/cl2-xr-7-frame"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
     url: "https://www.team-blacksheep.com/tbs-crossfire-manual.pdf"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/tbs-crossfire-nano-rx-special-edition.html"
   }
 }
 builds: {
+
   uuid: "01923019-2131-4192-3192-391294812397"
   id: "ultralight-toothpick"
   name: "Ultralight Toothpick 3 inch"
@@ -63,15 +65,13 @@ builds: {
   camera_uuids: "01923019-3005-7001-8001-000000000002"
   video_transmitter_uuid: "01923019-3004-7001-8001-000000000004"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
   }
 }
 builds: {
+
   uuid: "01923019-2131-4192-3192-391294812396"
   id: "cinewhoop-pavo20-pro"
   name: "CineWhoop Pavo20 Pro"
@@ -86,15 +86,13 @@ builds: {
   camera_uuids: "01923019-3005-7001-8001-000000000006"
   video_transmitter_uuid: "01923019-3004-7001-8001-000000000001"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/pavo20-pro-brushless-whoop-frame"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/pavo20-pro-brushless-whoop-frame"
   }
 }
 builds: {
+
   uuid: "01923019-2131-4192-3192-391294812395"
   id: "pro-freestyle-5-inch"
   name: "Pro Freestyle 5 inch"
@@ -109,11 +107,11 @@ builds: {
   camera_uuids: "01923019-3005-7001-8001-000000000007"
   video_transmitter_uuid: "01923019-3004-7001-8001-000000000002"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.speedybee.com/mario-5-frame-download/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/speedybee-mario-5-dc-o4-advanced-version-5-fpv-freestyle-frame"
   }
 }

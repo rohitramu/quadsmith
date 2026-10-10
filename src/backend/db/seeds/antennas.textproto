@@ -12,7 +12,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Lumenier Lumenier AXII 2 (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-duality-hd-2-4-5-8ghz-dual-band-antenna-for-dji-03-choose-version"
   }
 }
@@ -30,7 +30,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Lumenier Lumenier AXII 2 5.8GHz (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-duality-hd-2-4-5-8ghz-dual-band-antenna-for-dji-03-choose-version"
   }
 }
@@ -48,7 +48,7 @@ antennas: {
   gain_dbi: 2.2
   description: "TrueRC TrueRC Singularity 5.8GHz (RHCP) RHCP antenna with U.FL connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-singularity-5-8-stubby-for-dji-hd-goggles-black-4-pack-for-dji"
   }
 }
@@ -66,7 +66,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Foxeer Foxeer Lollipop 4 (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/foxeer-5-8g-lollipop-4-2-6dbi-omni-antenna-2pcs-ufl-85mm-lhcp-choose-color"
   }
 }
@@ -98,7 +98,7 @@ antennas: {
   gain_dbi: 2.2
   description: "TBS TBS Triumph Pro (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tbs-tango-2-crossfire-remote-transmitter-tx-tango-ii-ndaa"
   }
 }
@@ -116,7 +116,7 @@ antennas: {
   gain_dbi: 2
   description: "TBS TBS Immortal T V2 Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tbs-crossfire-immortal-t-antenna-v2-extra-extended"
   }
 }
@@ -134,7 +134,7 @@ antennas: {
   gain_dbi: 2
   description: "TBS TBS Diamond Antenna Linear antenna with SMA connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/black-diamond-universal-nd-filter-fits-tbs-jello-guard-mounts"
   }
 }
@@ -152,7 +152,7 @@ antennas: {
   gain_dbi: 2
   description: "RadioMaster Radiomaster 2.4GHz Moxon Linear antenna with RP-SMA connector and Linear polarization, operating at 2400 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/radiomaster-2-4ghz-moxon-directional-antenna"
   }
 }
@@ -170,7 +170,7 @@ antennas: {
   gain_dbi: 2.2
   description: "TrueRC TrueRC X-AIR 5.8 MK II (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-x-air-5-8-mk-ii-rhcp-rp-sma"
   }
 }
@@ -188,7 +188,7 @@ antennas: {
   gain_dbi: 8.5
   description: "Lumenier Lumenier AXII Patch Antenna (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 8.5 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-hd-5-8ghz-patch-antenna-rp-sma-rhcp"
   }
 }
@@ -206,7 +206,7 @@ antennas: {
   gain_dbi: 2.2
   description: "TrueRC TrueRC Matchstick 5.8GHz (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-matchstick-5-8ghz-rhcp-carbon-edition-rp-sma-200mm"
   }
 }
@@ -238,7 +238,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Lumenier Lumenier Micro AXII 2 5.8GHz (RHCP) RHCP antenna with U.FL connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-micro-axii-2-5-8ghz-antenna-regular-90-degree-mmcx-lhcp"
   }
 }
@@ -256,7 +256,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Lumenier Lumenier Double AXII 2 5.8GHz (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-double-axii-2-hd-long-range-5-8ghz-antenna-lhcp-rpsma"
   }
 }
@@ -274,7 +274,7 @@ antennas: {
   gain_dbi: 8.5
   description: "Lumenier Lumenier AXII Duo 5.8GHz Patch (RHCP) RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 8.5 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-duo-patch-antenna-5-8ghz-rhcp"
   }
 }
@@ -306,7 +306,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Lumenier Lumenier AXII 2 (LHCP) LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-duality-hd-2-4-5-8ghz-dual-band-antenna-for-dji-03-choose-version"
   }
 }
@@ -324,7 +324,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Lumenier Lumenier AXII 2 5.8GHz (LHCP) LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-duality-hd-2-4-5-8ghz-dual-band-antenna-for-dji-03-choose-version"
   }
 }
@@ -342,7 +342,7 @@ antennas: {
   gain_dbi: 2.2
   description: "TrueRC TrueRC Singularity 5.8GHz (LHCP) LHCP antenna with U.FL connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-singularity-5-8-stubby-for-dji-hd-goggles-black-4-pack-for-dji"
   }
 }
@@ -360,7 +360,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Foxeer Foxeer Lollipop 4 (LHCP) LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/foxeer-5-8g-lollipop-4-2-6dbi-omni-antenna-2pcs-ufl-85mm-lhcp-choose-color"
   }
 }
@@ -392,7 +392,7 @@ antennas: {
   gain_dbi: 8.5
   description: "Lumenier Lumenier AXII Patch Antenna (LHCP) LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 8.5 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-hd-5-8ghz-patch-antenna-rp-sma-rhcp"
   }
 }
@@ -410,7 +410,7 @@ antennas: {
   gain_dbi: 2.2
   description: "TrueRC TrueRC Matchstick 5.8GHz (LHCP) LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-matchstick-5-8ghz-lhcp-carbon-edition-rp-sma-200mm-choose-color"
   }
 }
@@ -428,7 +428,7 @@ antennas: {
   gain_dbi: 2.2
   description: "TrueRC TrueRC OCP 5.8GHz (LHCP) LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-x2-air-mk-ii-5-8ghz-patch-antenna-pair-w-ocp-omni-antenna-pair-for-hdzero-vrx4-lhcp"
   }
 }
@@ -460,7 +460,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Lumenier Lumenier Micro AXII 2 5.8GHz (LHCP) LHCP antenna with U.FL connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-micro-axii-2-5-8ghz-antenna-regular-90-degree-mmcx-lhcp"
   }
 }
@@ -478,7 +478,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Lumenier Lumenier Double AXII 2 5.8GHz (LHCP) LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-double-axii-2-hd-long-range-5-8ghz-antenna-lhcp-rpsma"
   }
 }
@@ -496,7 +496,7 @@ antennas: {
   gain_dbi: 8.5
   description: "Lumenier Lumenier AXII Duo 5.8GHz Patch (LHCP) LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 8.5 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-duo-patch-antenna-5-8ghz-rhcp"
   }
 }
@@ -528,7 +528,7 @@ antennas: {
   gain_dbi: 2
   description: "TBS TBS Tracer Immortal T Antenna Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tbs-tracer-immortal-t-antenna-extended"
   }
 }
@@ -546,7 +546,7 @@ antennas: {
   gain_dbi: 2
   description: "TBS TBS Tracer Monopole RX Antenna Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/team-blacksheep-tbs-tracer-monopole-rx-antenna-5pcs"
   }
 }
@@ -592,7 +592,7 @@ antennas: {
   gain_dbi: 2
   description: "TrueRC TrueRC BARDpole 2.4 Linear antenna with U.FL connector and Linear polarization, operating at 2400 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/truerc-bardpole-2-4ghz-rc-antenna-u-fl"
   }
 }
@@ -610,11 +610,11 @@ antennas: {
   gain_dbi: 2
   description: "BETAFPV BETAFPV 2.4GHz Dipole T-Antenna Linear antenna with U.FL connector and Linear polarization, operating at 2400 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/betafpv-t-antenna-for-receiver"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-2-4ghz-dipole-t-antenna-80mm"
   }
 }
@@ -632,7 +632,7 @@ antennas: {
   gain_dbi: 2
   description: "TBS Crossfire Immortal T V2 (Extra Extended)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tbs-crossfire-immortal-t-v2-extended-900mhz-120mm-u-fl-linear-antenna"
   }
 }
@@ -650,7 +650,7 @@ antennas: {
   gain_dbi: 2
   description: "RadioMaster RadioMaster Bandit Moxon Antenna Linear antenna with RP-SMA connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/bandit-moxon-antenna"
   }
 }
@@ -668,7 +668,7 @@ antennas: {
   gain_dbi: 2
   description: "RadioMaster RadioMaster Bandit T Antenna Linear antenna with RP-SMA connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/bandit-t-antenna"
   }
 }
@@ -686,7 +686,7 @@ antennas: {
   gain_dbi: 2
   description: "RadioMaster RadioMaster UFL 915/868MHz T Antenna Linear antenna with U.FL connector and Linear polarization, operating at 900 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/bandit-t-antenna"
   }
 }
@@ -704,11 +704,11 @@ antennas: {
   gain_dbi: 2
   description: "BETAFPV BETAFPV 900MHz Dipole T-Antenna Linear antenna with U.FL connector and Linear polarization, operating at 900 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/betafpv-t-antenna-for-receiver"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-915mhz-dipole-t-antenna-46mm-2pcs"
   }
 }
@@ -754,7 +754,7 @@ antennas: {
   gain_dbi: 2
   description: "TrueRC TrueRC BARDpole 915MHz Linear antenna with U.FL connector and Linear polarization, operating at 900 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-bardpole-915-mhz-sma"
   }
 }
@@ -786,11 +786,11 @@ antennas: {
   gain_dbi: 2
   description: "BETAFPV BETAFPV Dipole T Antenna Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/betafpv-t-antenna-for-receiver"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-915mhz-dipole-t-antenna-46mm-2pcs"
   }
 }
@@ -808,11 +808,11 @@ antennas: {
   gain_dbi: 2.2
   description: "CADDXFPV Walksnail Ascent HD Lite+ Antenna RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-ascent-hd-lite-antenna"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/caddx-curve-micro-16-drone-hd-w-walksnail-ascent-lite-1s"
   }
 }
@@ -830,11 +830,11 @@ antennas: {
   gain_dbi: 2.2
   description: "CADDXFPV Polar Antenna for Vista RHCP antenna with U.FL connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/polar-antenna"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/rekon-fpv-rekon4-fr-4-hd-digital-freestyle-quadcopter-w-caddx-polar-vista-digital-hd-system-4s"
   }
 }
@@ -852,7 +852,7 @@ antennas: {
   gain_dbi: 2.2
   description: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (LHCP)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-beebrain-clover-5-8ghz-antenna-lhcp"
   }
 }
@@ -870,7 +870,7 @@ antennas: {
   gain_dbi: 2.2
   description: "NewBeeDrone BeeBrain Clover 5.8GHz Antenna (RHCP)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-beebrain-clover-5-8ghz-antenna-lhcp"
   }
 }
@@ -888,11 +888,11 @@ antennas: {
   gain_dbi: 8.5
   description: "NewBeeDrone Honey Patch Antenna 5.8Ghz - LHCP"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-honey-patch-antenna-5-8ghz-lhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-honey-patch-antenna-5-8ghz-rhcp"
   }
 }
@@ -910,7 +910,7 @@ antennas: {
   gain_dbi: 8.5
   description: "NewBeeDrone Honey Patch Antenna 5.8Ghz - Linear"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-honey-patch-antenna-5-8ghz-lhcp"
   }
 }
@@ -928,7 +928,7 @@ antennas: {
   gain_dbi: 2.2
   description: "NewBeeDrone NewBeeDrone Honey Dipper 5.8G UFL Antenna RHCP antenna with U.FL connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-honey-dipper-5-8g-ufl-antenna"
   }
 }
@@ -946,11 +946,11 @@ antennas: {
   gain_dbi: 2.2
   description: "NewBeeDrone SMA antenna port 90 Degree with cable 10cm DIY package"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-sma-antenna-port-90-degree-with-cable-10cm-diy-package"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-sma-antenna-port-90-degree-with-cable-10cm-diy-package"
   }
 }
@@ -968,11 +968,11 @@ antennas: {
   gain_dbi: 2.2
   description: "NewBeeDrone NewBeeDrone Pagoda Antenna DIY Kit LHCP LHCP antenna with U.FL connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-pagoda-antenna-diy-kit-lhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-pagoda-antenna-diy-kit-lhcp"
   }
 }
@@ -990,7 +990,7 @@ antennas: {
   gain_dbi: 8.5
   description: "NewBeeDrone Honey Patch Antenna 5.8Ghz - RHCP"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-honey-patch-antenna-5-8ghz-lhcp"
   }
 }
@@ -1008,11 +1008,11 @@ antennas: {
   gain_dbi: 2.2
   description: "NewBeeDrone NewBeeDrone BeeTX 5.8Ghz Antenna RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-beetx-5-8ghz-antenna"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-beetx-5-8ghz-antenna"
   }
 }
@@ -1072,7 +1072,7 @@ antennas: {
   gain_dbi: 2
   description: "RadioMaster Bandit 915/868MHz T Antenna - RP-SMA Linear antenna with RP-SMA connector and Linear polarization, operating at 915 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/bandit-t-antenna"
   }
 }
@@ -1090,7 +1090,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Skylite / Skyliner MK3 SMA Antenna Mount - MJF TPU"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/skylite-skyliner-mk3-sma-antenna-mount-mjf-tpu"
   }
 }
@@ -1108,7 +1108,7 @@ antennas: {
   gain_dbi: 2.2
   description: "DJI DJI O4 Air Unit Pro Antenna RHCP antenna with U.FL connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/dji-o4-air-unit-pro-antenna"
   }
 }
@@ -1126,11 +1126,11 @@ antennas: {
   gain_dbi: 2
   description: "Dual Band 2.4GHz / SUB-G 900MHz Antenna - RP-SMA"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/dual-band-2-4ghz-sub-g-900mhz-antenna"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/radiomaster-xr1-nano-multi-frequency-elrs-2-4ghz-sub-g-900mhz-dual-band-receiver"
   }
 }
@@ -1176,7 +1176,7 @@ antennas: {
   gain_dbi: 8.5
   description: "Foxeer Echo 2 RHCP SMA Patch Antenna RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 8.5 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/foxeer-echo-2-5-8ghz-rpsma-patch-feeder-antenna-rhcp-black-1"
   }
 }
@@ -1194,7 +1194,7 @@ antennas: {
   gain_dbi: 2
   description: "Rotor Riot 5.8Ghz U.FL Light Dipole Antenna Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/5-8ghz-u-fl-light-dipole-antenna"
   }
 }
@@ -1240,7 +1240,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Matchstick 5.8GHz RHCP Carbon Antenna - Choose Version"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-matchstick-5-8ghz-lhcp-carbon-edition-rp-sma-200mm-choose-color"
   }
 }
@@ -1258,7 +1258,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Singularity RHCP Long Antenna with SMA Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/singularity-5-8-u-fl-rhcp"
   }
 }
@@ -1290,7 +1290,7 @@ antennas: {
   gain_dbi: 2
   description: "Rotor Riot 5.8GHz U.FL Dipole Whip Antenna - Linear Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/5-8ghz-linear-dipole-whip-antenna"
   }
 }
@@ -1308,11 +1308,11 @@ antennas: {
   gain_dbi: 2
   description: "RadioMaster 2.4GHz Moxon Antenna - RP-SMA Linear antenna with RP-SMA connector and Linear polarization, operating at 2400 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/2-4ghz-moxon-directional-antenna"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/radiomaster-2-4ghz-moxon-directional-antenna-rp-sma"
   }
 }
@@ -1330,11 +1330,11 @@ antennas: {
   gain_dbi: 2
   description: "RadioMaster 2.4GHz T Antenna - RP-SMA Linear antenna with RP-SMA connector and Linear polarization, operating at 2400 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/2-4ghz-t-antenna"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/radiomaster-2-4ghz-t-antenna-rp-sma"
   }
 }
@@ -1352,7 +1352,7 @@ antennas: {
   gain_dbi: 2.2
   description: "TrueRC X-Air MKII Antenna for DJI RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/truerc-x-air-mkii-5-8ghz-antenna-set-for-dji-goggles-2-lhcp"
   }
 }
@@ -1384,7 +1384,7 @@ antennas: {
   gain_dbi: 2
   description: "TrueRC D-Pole 5.8GHz U.FL Antenna - Linear Linear antenna with U.FL connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/truerc-d-pole-5-8ghz-u-fl-antenna-linear"
   }
 }
@@ -1444,7 +1444,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Singularity 5.8 Stubby LHCP Antenna for Dominator HD and DJI FPV Goggles - Choose Version"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-singularity-5-8-stubby-for-dji-hd-goggles-black-4-pack-for-dji"
   }
 }
@@ -1462,7 +1462,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Caddx Polar Antenna 10.5cm RHCP antenna with U.FL connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/polar-antenna"
   }
 }
@@ -1480,7 +1480,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Matchstick 5.8GHz LHCP Carbon Antenna - Choose Version"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-matchstick-5-8ghz-lhcp-carbon-edition-rp-sma-200mm-choose-color"
   }
 }
@@ -1498,7 +1498,7 @@ antennas: {
   gain_dbi: 2.2
   description: "HGLRC 5.8GHz Omnidirectional FPV Antenna – High Gain Long Range for FPV Drones, Compatible with SMA / IPEX / MMCX Connectors"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-5-8ghz-omnidirectional-fpv-antenna-high-gain-long-range-for-fpv-drones-compatible-with-sma-ipex-mmcx-connectors"
   }
 }
@@ -1516,7 +1516,7 @@ antennas: {
   gain_dbi: 2.2
   description: "HGLRC ‌HGLRC 5.8G Hammer Dual Antenna‌ RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-5-8g-hammer-dual-antenna"
   }
 }
@@ -1534,7 +1534,7 @@ antennas: {
   gain_dbi: 2.2
   description: "HGLRC Long Range Hammer Mini  RHCP/LHCP 2.5dBi Super Mini 5.8G Antenna For RC Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-long-range-hammer-mini-rhcp-lhcp-2-5dbi-super-mini-5-8g-antenna-for-rc-drone"
   }
 }
@@ -1552,7 +1552,7 @@ antennas: {
   gain_dbi: 2
   description: "HGLRC 5.8G ANGLE MMCX Linear 2dBi Omni Directional Antenna For RC Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-5-8g-angle-mmcx-linear-2dbi-omni-directional-antenna-for-rc-drone"
   }
 }
@@ -1570,7 +1570,7 @@ antennas: {
   gain_dbi: 2.2
   description: "HGLRC MMCX to SMA Antenna Pigtail Cable 10cm RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/10cm-sma-pigtail-w-mmcx-connector"
   }
 }
@@ -1588,7 +1588,7 @@ antennas: {
   gain_dbi: 2
   description: "80mm 5.8G MMCX Linear 2dBi Omni Directional Antenna For RC Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/80mm-5-8g-mmcx-j-linear-2dbi-fpv-omni-directional-antenna-for-rc-drone"
   }
 }
@@ -1606,7 +1606,7 @@ antennas: {
   gain_dbi: 2.2
   description: "70mm 5.8G 2dBi IPEX IPX Omni Directional Linear Brass FPV Antenna"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/70mm-5-8g-2dbi-u-fl-ipex-ipx-omni-directional-linear-brass-fpv-antenna"
   }
 }
@@ -1624,7 +1624,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Mamba Ultra Antenna  5.8G MMCX Bla LHCP 130mm(1/PCS)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mb5-8g-mmcx-bla-lhcp-130mm"
   }
 }
@@ -1642,11 +1642,11 @@ antennas: {
   gain_dbi: 2.2
   description: "Osprey 5.8Ghz 140mm ipex/UFL FPV Antenna - RHCP"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-140mm-ipex-ufl-fpv-antenna-rhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-osprey-5-8ghz-140mm-black-ipex-ufl-antenna-rhcp"
   }
 }
@@ -1664,7 +1664,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Osprey FLIP G2 Dual band Antenna For DJI Goggles 2"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-flip-g2-dual-band-antenna-for-dji-goggles-2"
   }
 }
@@ -1682,7 +1682,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Osprey 5.8Ghz 40mm ipex/UFL LHCP Stubby Antenna"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-40mm-ipex-ufl-lhcp-stubby-antenna"
   }
 }
@@ -1700,7 +1700,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Osprey 5.8Ghz 40mm ipex/UFL RHCP Stubby Antenna"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-40mm-ipex-ufl-rhcp-stubby-antenna"
   }
 }
@@ -1718,7 +1718,7 @@ antennas: {
   gain_dbi: 2.2
   description: "FlyFishRC Osprey 5.8Ghz 130mm SMA Antenna - LHCP LHCP antenna with SMA connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-130mm-sma-antenna-lhcp"
   }
 }
@@ -1736,11 +1736,11 @@ antennas: {
   gain_dbi: 2.2
   description: "FlyFishRC Osprey 5.8Ghz 90mm MMCX Antenna - RHCP RHCP antenna with MMCX connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-90mm-mmcx-antenna-rhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-osprey-5-8ghz-90mm-mmcx-90-degree-antenna-rhcp-90mm"
   }
 }
@@ -1758,7 +1758,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Osprey 5.8Ghz 140mm ipex/UFL FPV Antenna - LHCP"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-140mm-ipex-ufl-fpv-antenna-rhcp"
   }
 }
@@ -1776,11 +1776,11 @@ antennas: {
   gain_dbi: 2.2
   description: "Osprey 5.8Ghz 150mm RP-SMA Antenna - LHCP"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-150mm-rp-sma-antenna-lhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-osprey-5-8ghz-150mm-rp-sma-antenna-lhcp"
   }
 }
@@ -1798,11 +1798,11 @@ antennas: {
   gain_dbi: 2.2
   description: "FlyFish-RC Osprey 5.8Ghz 150mm SMA Antenna - RHCP RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-150mm-sma-antenna-rhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-osprey-5-8ghz-150mm-sma-antenna-rhcp"
   }
 }
@@ -1820,11 +1820,11 @@ antennas: {
   gain_dbi: 2.2
   description: "FlyFishRC Osprey 5.8Ghz 60mm RP-SMA Antenna - LHCP LHCP antenna with RP-SMA connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-60mm-rp-sma-antenna-lhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-osprey-5-8ghz-60mm-rp-sma-antenna-lhcp"
   }
 }
@@ -1842,11 +1842,11 @@ antennas: {
   gain_dbi: 2.2
   description: "FlyFishRC Osprey 5.8Ghz 60mm SMA Antenna - RHCP RHCP antenna with SMA connector and RHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-60mm-sma-antenna-rhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-osprey-5-8ghz-60mm-sma-antenna-rhcp"
   }
 }
@@ -1864,11 +1864,11 @@ antennas: {
   gain_dbi: 2.2
   description: "Osprey 5.8Ghz 90mm ipex/UFL FPV Antenna - LHCP"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-5-8ghz-90mm-ipex-antenna-lhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-osprey-5-8ghz-90mm-mmcx-90-degree-antenna-rhcp-90mm"
   }
 }
@@ -1886,7 +1886,7 @@ antennas: {
   gain_dbi: 2.2
   description: "FlyFishRC Osprey HD 5.8G LHCP Stubby Antennas LHCP antenna with U.FL connector and LHCP polarization, operating at 5800 MHz with 2.2 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-hd-5-8g-lhcp-stubby-antennas"
   }
 }
@@ -1904,7 +1904,7 @@ antennas: {
   gain_dbi: 8.5
   description: "FlyFishRC OSPREY HD LHCP Patch Antenna LHCP antenna with U.FL connector and LHCP polarization, operating at 5800 MHz with 8.5 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/osprey-hd-patch-visor-antenna"
   }
 }
@@ -1922,7 +1922,7 @@ antennas: {
   gain_dbi: 2.2
   description: "Tooth Fairy 2 Antenna Mount and GoPro Mount"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/toothfairy-2-antenna-and-gopro-mount-options"
   }
 }
@@ -1940,7 +1940,7 @@ antennas: {
   gain_dbi: 2
   description: "FPVCycle DJI Caddx Vista Short Antenna (80mm) Linear antenna with SMA connector and Linear polarization, operating at 5800 MHz with 2.0 dBi gain."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/dji-caddx-vista-stock-antenna-41mm"
   }
 }
@@ -1958,15 +1958,15 @@ antennas: {
   gain_dbi: 1.9
   description: "Benchmark omnidirectional 5.8GHz circular polarized antenna offering incredible axial ratio and radiation pattern smoothness in an indestructible housing."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://truerc.com/71964-singularity-58-sma"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/truerc-singularity-5-8-sma-long-antenna-rhcp.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-singularity-5-8-sma-long-antenna-rhcp"
   }
 }
@@ -1984,15 +1984,15 @@ antennas: {
   gain_dbi: 1.9
   description: "Ultralight 1.2g micro U.FL omnidirectional circular polarized antenna for whoops and micro long-range quads."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://truerc.com/71266-71224-core-58-ufl"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/singularity-5-8-u-fl-rhcp"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-singularity-5-8ghz-u-fl-lite-rhcp-72mm"
   }
 }
@@ -2010,15 +2010,12 @@ antennas: {
   gain_dbi: 2.2
   description: "High gain 2.2 dBi omni antenna with rugged ultrasonic welded polycarbonate housing and 5.3-6.2GHz ultra-wide bandwidth."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/lumenier-micro-axii-2-antenna-5-8ghz-sma.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://www.getfpv.com/lumenier-micro-axii-2-antenna-5-8ghz-sma.html"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/lumenier-axii-duality-hd-2-4-5-8ghz-dual-band-antenna-for-dji-03-choose-version"
   }
 }
@@ -2036,11 +2033,11 @@ antennas: {
   gain_dbi: 1.6
   description: "Compact form factor with nearly spherical coverage and welded ultrasonic housing designed by Team BlackSheep."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.team-blacksheep.com/products/prod:triumph_pro_sma"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tbs-triumph-pro-sma"
   }
 }
@@ -2058,7 +2055,7 @@ antennas: {
   gain_dbi: 2.6
   description: "High efficiency 2.6 dBi RHCP antenna with gold-plated internal PCB and robust impact-resistant body."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/foxeer-5-8g-lollipop-4-plus-2-6dbi-omni-antenna-2pcs-sma-100mm-rhcp-teal"
   }
 }
@@ -2076,11 +2073,11 @@ antennas: {
   gain_dbi: 2
   description: "Flexible T-style dipole receiver antenna with U.FL connector for ExpressLRS 2.4GHz receivers."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://radiomasterrc.com/products/2-4ghz-t-antenna"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/radiomaster-u-fl-2-4ghz-t-antenna-65mm.html"
   }
 }
@@ -2141,7 +2138,7 @@ antennas: {
   gain_dbi: 2
   description: "Flexible 915MHz long-range dipole T-antenna for TBS Crossfire and ExpressLRS 900MHz receivers."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.team-blacksheep.com/products/prod:stock_rx_antenna"
   }
 }
@@ -2159,7 +2156,7 @@ antennas: {
   gain_dbi: 2
   description: "Flexible 868MHz EU-frequency dipole T-antenna for long-range telemetry receivers."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.team-blacksheep.com/products/prod:stock_rx_antenna"
   }
 }
@@ -2219,7 +2216,7 @@ antennas: {
   gain_dbi: 2.5
   description: "Dual-feed 5.8GHz digital HD antenna for DJI O3 Air Unit, Walksnail Avatar, and HDZero video transmitters."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.dji.com/o3-air-unit"
   }
 }

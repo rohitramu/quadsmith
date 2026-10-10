@@ -33,7 +33,13 @@ const LINK_TYPE_STYLES: Record<number, string> = {
 };
 
 export interface SocialLinkPreviewCardProps {
-  link: ReferenceLink | { type: number; url: string };
+  link:
+    | ReferenceLink
+    | {
+        types?: ReferenceLinkType[] | number[];
+        type?: ReferenceLinkType | number;
+        url: string;
+      };
   className?: string;
 }
 
@@ -58,8 +64,13 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
     hostname = link.url;
   }
 
-  const typeLabel = LINK_TYPE_LABELS[link.type] || "Link";
-  const badgeStyle = LINK_TYPE_STYLES[link.type] || LINK_TYPE_STYLES[ReferenceLinkType.OTHER];
+  const rawLink = link as { types?: number[]; type?: number };
+  const linkTypes: number[] =
+    Array.isArray(rawLink.types) && rawLink.types.length > 0
+      ? rawLink.types
+      : rawLink.type !== undefined && rawLink.type !== null
+        ? [rawLink.type]
+        : [ReferenceLinkType.UNSPECIFIED];
 
   const title = preview?.title || hostname;
   const description = preview?.description;
@@ -92,11 +103,21 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
           {/* Header Row: Badge, Site Favicon/Host, External Icon */}
           <div className="flex items-center justify-between gap-2 mb-1.5">
             <div className="flex items-center gap-2 min-w-0">
-              <span
-                className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${badgeStyle} shrink-0`}
-              >
-                {typeLabel}
-              </span>
+              <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                {linkTypes.map((t, idx) => {
+                  const label = LINK_TYPE_LABELS[t] || "Link";
+                  const badgeStyle =
+                    LINK_TYPE_STYLES[t] || LINK_TYPE_STYLES[ReferenceLinkType.OTHER];
+                  return (
+                    <span
+                      key={idx}
+                      className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${badgeStyle} shrink-0`}
+                    >
+                      {label}
+                    </span>
+                  );
+                })}
+              </div>
               <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 truncate">
                 {preview?.favicon && !faviconError ? (
                   <img

@@ -20,11 +20,11 @@ export const mockMotor1: Motor = create(MotorSchema, {
   description: "Durable and affordable 2207 brushless motor for 5-inch freestyle quadcopters.",
   referenceLinks: [
     {
-      type: ReferenceLinkType.PURCHASE,
+      types: [ReferenceLinkType.PURCHASE],
       url: "https://store.example.com/emax-eco-ii",
     },
     {
-      type: ReferenceLinkType.PRODUCT_PAGE,
+      types: [ReferenceLinkType.PRODUCT_PAGE],
       url: "https://emax-usa.com/products/eco-ii-2207",
     },
   ],
@@ -71,7 +71,7 @@ export const mockFrame1: Frame = create(FrameSchema, {
     "Freestyle 5-inch frame featuring an innovative anti-vibration stack and CNC camera mount.",
   referenceLinks: [
     {
-      type: ReferenceLinkType.PRODUCT_PAGE,
+      types: [ReferenceLinkType.PRODUCT_PAGE],
       url: "https://speedybee.com/master-5-v2",
     },
   ],
@@ -307,11 +307,11 @@ export const mockBuild1: Build = create(BuildSchema, {
   gpsReceiverUuid: mockGps1.uuid,
   referenceLinks: [
     {
-      type: ReferenceLinkType.DOCUMENTATION,
+      types: [ReferenceLinkType.DOCUMENTATION],
       url: "https://github.com/tbs-trappy/source_one",
     },
     {
-      type: ReferenceLinkType.PURCHASE,
+      types: [ReferenceLinkType.PURCHASE],
       url: "https://www.getfpv.com/tbs-source-one-v5-5-frame-kit.html",
     },
   ],

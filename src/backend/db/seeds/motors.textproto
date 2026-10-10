@@ -10,11 +10,11 @@ motors: {
   kv: 4500
   description: "Sub250 Sub250 1404 4500KV brushless motor with 4500 KV rating and 144 stator size, weighing 10.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1404-4500kv-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-1404-4500kv-for-2-5-tiny-whoops-and-3-freestyle-fpv-drone-motor-1-pc"
   }
   primary_display_image: "https://sub250.com/cdn/shop/files/Sub25014044500kvmotor_1.jpg"
@@ -80,7 +80,7 @@ motors: {
   kv: 19500
   description: "BETAFPV BetaFPV 0802SE 19500KV brushless motor with 19500 KV rating and 82 stator size, weighing 1.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-0802se-19500kv-micro-motor"
   }
 
@@ -101,7 +101,7 @@ motors: {
   kv: 2800
   description: "HGLRC HGLRC Aeolus 2105.5 2800KV brushless motor with 2800 KV rating and 216 stator size, weighing 22.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-2105-5-brushless-motor-2800kv-1"
   }
 
@@ -122,11 +122,11 @@ motors: {
   kv: 1900
   description: "HGLRC HGLRC Specter 2306.5 1900KV brushless motor with 1900 KV rating and 236 stator size, weighing 34.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/specter-2306-5-1900kv"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-2306-5-1900kv-motor"
   }
 
@@ -147,7 +147,7 @@ motors: {
   kv: 18000
   description: "HGLRC HGLRC Aeolus 1102 18000KV brushless motor with 18000 KV rating and 112 stator size, weighing 3.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-1102-18000kv-fpv-drone-motor"
   }
 
@@ -168,7 +168,7 @@ motors: {
   kv: 2800
   description: "HGLRC HGLRC Aeolus 1404 2800KV brushless motor with 2800 KV rating and 144 stator size, weighing 11.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-1404-2800kv-micro-motor"
   }
 
@@ -189,7 +189,7 @@ motors: {
   kv: 3000
   description: "HGLRC HGLRC Aeolus 2004 3000KV brushless motor with 3000 KV rating and 204 stator size, weighing 15.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-2004-3000kv-micro-motor"
   }
 
@@ -227,7 +227,7 @@ motors: {
   kv: 2500
   description: "HGLRC HGLRC Aeolus 1303.5 2500KV brushless motor with 2500 KV rating and 134 stator size, weighing 6.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-1303-5-2500kv-micro-motor"
   }
 
@@ -265,7 +265,7 @@ motors: {
   kv: 2550
   description: "HGLRC HGLRC Aeolus 2306.5 2550KV brushless motor with 2550 KV rating and 236 stator size, weighing 37.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-aeolus-2306-5-2550kv-motor"
   }
 
@@ -303,11 +303,11 @@ motors: {
   kv: 10000
   description: "HGLRC HGLRC Specter 1003 10000KV brushless motor with 10000 KV rating and 103 stator size, weighing 3.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/specter-1003-10000kv-brushless-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-1003-10000kv-micro-motor"
   }
 
@@ -345,11 +345,11 @@ motors: {
   kv: 2750
   description: "HGLRC HGLRC Specter 1404 2750KV brushless motor with 2750 KV rating and 144 stator size, weighing 10.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1404-2750kv-brushless-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-1404-2750kv-micro-motor"
   }
 
@@ -404,7 +404,7 @@ motors: {
   kv: 1350
   description: "HGLRC HGLRC Specter 2806.5 1350KV brushless motor with 1350 KV rating and 286 stator size, weighing 47.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-2806-5-1350kv-brushless-motor"
   }
 
@@ -459,7 +459,7 @@ motors: {
   kv: 2522
   description: "Hyperlite Hyperlite 2207 2522KV Motor brushless motor with 2522 KV rating and 227 stator size, weighing 30.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hyperlite-2207-5-e-series-racing-motor-combo-2522kv-4-pcs"
   }
 
@@ -497,11 +497,11 @@ motors: {
   kv: 21000
   description: "BETAFPV 1102 Brushless Motors (2026) brushless motor with 21000 KV rating and 112 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1102-brushless-motors-2026"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-1102-brushless-motors-2026-4-pcs-21000kv"
   }
 
@@ -522,7 +522,7 @@ motors: {
   kv: 10500
   description: "BETAFPV 1103 Brushless Motors (For Aquila20) brushless motor with 10500 KV rating and 113 stator size, weighing 3.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1103-brushless-motors-aquila20"
   }
 
@@ -543,11 +543,11 @@ motors: {
   kv: 21000
   description: "BETAFPV 0802 Brushless Motors (2026) brushless motor with 21000 KV rating and 82 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0802-brushless-motors-2026"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-0802-brushless-motor-2026-4-pcs-choose-version"
   }
 
@@ -568,11 +568,11 @@ motors: {
   kv: 21000
   description: "BETAFPV 0702 Brushless Motors (2026) brushless motor with 21000 KV rating and 72 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0702-brushless-motors-2026"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-0702-brushless-motor-2026-4-pcs-choose-version"
   }
 
@@ -593,11 +593,11 @@ motors: {
   kv: 30000
   description: "BETAFPV 0702 II Brushless Motors brushless motor with 30000 KV rating and 72 stator size, weighing 1.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0702-ii-brushless-motors"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-0702-ii-brushless-motor-set-30000kv-4-pcs"
   }
 
@@ -618,7 +618,7 @@ motors: {
   kv: 21000
   description: "BETAFPV 2004 Brushless Motors brushless motor with 21000 KV rating and 204 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/2004-brushless-motors"
   }
 
@@ -639,7 +639,7 @@ motors: {
   kv: 3600
   description: "BETAFPV 1505 3600KV Brushless Motors brushless motor with 3600 KV rating and 155 stator size, weighing 13.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1505-3600kv-brushless-motors"
   }
 
@@ -660,7 +660,7 @@ motors: {
   kv: 21000
   description: "BETAFPV 1106 Brushless Motors brushless motor with 21000 KV rating and 116 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1106-5000kv-brushless-motors"
   }
 
@@ -681,7 +681,7 @@ motors: {
   kv: 21000
   description: "BETAFPV 1105 Brushless Motors brushless motor with 21000 KV rating and 115 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1105-6000kv-motors-4-pcs"
   }
 
@@ -702,11 +702,11 @@ motors: {
   kv: 7200
   description: "BETAFPV LAVA Series 1104 Brushless Motors brushless motor with 7200 KV rating and 114 stator size, weighing 5.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-series-1104-brushless-motors"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-series-1104-5500kv-brushless-motor-with-24mm-wire-with-connector-for-3s-and-4s-2-2-quads-1pc"
   }
 
@@ -727,11 +727,11 @@ motors: {
   kv: 4200
   description: "BETAFPV LAVA Series 1506 4200KV Brushless Motors brushless motor with 4200 KV rating and 156 stator size, weighing 13.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-series-1506-brushless-motors"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-series-1506-brushless-motor-4200kv-1pc"
   }
 
@@ -752,11 +752,11 @@ motors: {
   kv: 2400
   description: "BETAFPV LAVA Series 2006 Brushless Motors brushless motor with 2400 KV rating and 206 stator size, weighing 22.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-series-2006-brushless-motors"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-series-2006-brushless-motor-2400kv-1pc"
   }
 
@@ -777,7 +777,7 @@ motors: {
   kv: 4600
   description: "BETAFPV 1505 4600KV Brushless Motor brushless motor with 4600 KV rating and 155 stator size, weighing 13.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1505-4600kv-brushless-motor"
   }
 
@@ -798,7 +798,7 @@ motors: {
   kv: 1860
   description: "BETAFPV Snow 2306 Brushless Motors brushless motor with 1860 KV rating and 236 stator size, weighing 34.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/snow-2306-brushless-motors"
   }
 
@@ -819,7 +819,7 @@ motors: {
   kv: 21000
   description: "BETAFPV 2204 Brushless Motors brushless motor with 21000 KV rating and 224 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/2204-brushless-motors"
   }
 
@@ -840,7 +840,7 @@ motors: {
   kv: 3400
   description: "BETAFPV 1505 3400KV Brushless Motors brushless motor with 3400 KV rating and 155 stator size, weighing 12.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1505-3400kv-brushless-motors"
   }
 
@@ -861,7 +861,7 @@ motors: {
   kv: 4500
   description: "BETAFPV 1404 4500KV Brushless Motors brushless motor with 4500 KV rating and 144 stator size, weighing 8.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1404-4500kv-brushless-motors"
   }
 
@@ -882,11 +882,11 @@ motors: {
   kv: 21000
   description: "BETAFPV 0802SE Brushless Motors brushless motor with 21000 KV rating and 82 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0802se-22000kv-brushless-motors"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-0802-se-brushless-motor-set-2022-version-19500kv-4-pc"
   }
 
@@ -907,7 +907,7 @@ motors: {
   kv: 21000
   description: "BETAFPV 1606 Brushless Motors brushless motor with 21000 KV rating and 166 stator size, weighing 2.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1606-brushless-motors"
   }
 
@@ -928,11 +928,11 @@ motors: {
   kv: 1550
   description: "BETAFPV 1805 Brushless Motors brushless motor with 1550 KV rating and 185 stator size, weighing 16.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1805-brushless-motors"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-1805-brushless-motors-1550kv-1pc"
   }
 
@@ -953,7 +953,7 @@ motors: {
   kv: 3000
   description: "BETAFPV 1506 3000KV Brushless Motors brushless motor with 3000 KV rating and 156 stator size, weighing 13.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1506-3000kv-brushless-motors"
   }
 
@@ -974,7 +974,7 @@ motors: {
   kv: 15000
   description: "BETAFPV 0705 15000KV Brushless Motors brushless motor with 15000 KV rating and 75 stator size, weighing 2.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0705-15000kv-brushless-motors"
   }
 
@@ -995,7 +995,7 @@ motors: {
   kv: 5000
   description: "BETAFPV 1204 5000KV Brushless Motors brushless motor with 5000 KV rating and 124 stator size, weighing 6.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1204-5000kv-brushless-motors"
   }
 
@@ -1016,7 +1016,7 @@ motors: {
   kv: 12000
   description: "BETAFPV 08028 12000KV Brushless Motors brushless motor with 12000 KV rating and 83 stator size, weighing 2.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/08028-12000kv-brushless-motors"
   }
 
@@ -1037,7 +1037,7 @@ motors: {
   kv: 19000
   description: "BETAFPV 0603 1S Brushless Motors brushless motor with 19000 KV rating and 63 stator size, weighing 1.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0603-brushless-motors"
   }
 
@@ -1058,7 +1058,7 @@ motors: {
   kv: 17500
   description: "BETAFPV 7x16mm Brushed Motors (2CW+2CCW) brushless motor with 17500 KV rating and 716 stator size, weighing 3.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/7x16mm-19000kv-brushed-motors-2cw-2ccw"
   }
 
@@ -1079,7 +1079,7 @@ motors: {
   kv: 19000
   description: "BETAFPV 0703 1S Brushless Motors brushless motor with 19000 KV rating and 73 stator size, weighing 2.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/0703-15000kv-brushless-motors"
   }
 
@@ -1100,7 +1100,7 @@ motors: {
   kv: 16000
   description: "8.5x20mm 16000KV Brushed Motors (2CW+2CCW)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/8-5x20mm-16000kv-brushed-motors-2cw-2ccw"
   }
 
@@ -1121,7 +1121,7 @@ motors: {
   kv: 15000
   description: "BETAFPV 8x20mm 15000KV Brushed Motors (2CW+2CCW) brushless motor with 15000 KV rating and 820 stator size, weighing 3.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/8x20mm-14000kv-brushed-motors-2cw-2ccw"
   }
 
@@ -1142,7 +1142,7 @@ motors: {
   kv: 17500
   description: "BETAFPV 7x20mm 17500KV Brushed Motors (2CW+2CCW) brushless motor with 17500 KV rating and 720 stator size, weighing 3.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/7x20mm-coreless-brushed-motors-for-beta75"
   }
 
@@ -1163,7 +1163,7 @@ motors: {
   kv: 6000
   description: "CADDXFPV 1303 6000KV Brushless Motors (1pc)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-1303-6000kv-brushless-motors"
   }
 
@@ -1184,7 +1184,7 @@ motors: {
   kv: 1800
   description: "DarwinFPV Darwin 2507 1800KV Motor brushless motor with 1800 KV rating and 257 stator size, weighing 10.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-129-2507-1800kv-3-6s-brushless-motor"
   }
 
@@ -1205,7 +1205,7 @@ motors: {
   kv: 5000
   description: "DarwinFPV DarwinFPV 1203 5000KV Motor brushless motor with 5000 KV rating and 123 stator size, weighing 9.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-1203-motor"
   }
 
@@ -1226,7 +1226,7 @@ motors: {
   kv: 2400
   description: "DarwinFPV DarwinFPV Bling 2307.5 2400KV Motor brushless motor with 2400 KV rating and 238 stator size, weighing 10.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-bling-2307-5-2400kv-motor"
   }
 
@@ -1247,7 +1247,7 @@ motors: {
   kv: 4000
   description: "DarwinFPV Bling Series Bling 1504 4000KV Brushless FPV Drone Motor"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-bling-series-bling-1504-4000kv-brushless-fpv-drone-motor"
   }
 
@@ -1268,7 +1268,7 @@ motors: {
   kv: 5000
   description: "DarwinFPV Bling Series Bling 1104 5000KV Brushless FPV Drone Motor"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-bling-series-bling-1104-5000kv-brushless-fpv-drone-motor"
   }
 
@@ -1289,7 +1289,7 @@ motors: {
   kv: 1960
   description: "DarwinFPV DarwinFPV 2307.5 V3 SeaWater Brushless Motor brushless motor with 1960 KV rating and 238 stator size, weighing 36.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-2307-5-v3-seawater-brushless-motor"
   }
 
@@ -1310,7 +1310,7 @@ motors: {
   kv: 1000
   description: "DarwinFPV DarwinFPV 2006.5 SeaWater Brushless Motor brushless motor with 1000 KV rating and 206 stator size, weighing 10.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-2006-5-seawater-brushless-motor"
   }
 
@@ -1331,7 +1331,7 @@ motors: {
   kv: 15000
   description: "DarwinFPV DarwinFPV 4320 Brushless Motor brushless motor with 15000 KV rating and 4320 stator size, weighing 3.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-4320-brushless-motor"
   }
 
@@ -1352,7 +1352,7 @@ motors: {
   kv: 1000
   description: "DarwinFPV DarwinFPV 3115 Motor brushless motor with 1000 KV rating and 3115 stator size, weighing 36.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-3115-motor"
   }
 
@@ -1373,7 +1373,7 @@ motors: {
   kv: 2030
   description: "DarwinFPV DarwinFPV CineApe35 2006 2030KV 3400KV Motor brushless motor with 2030 KV rating and 206 stator size, weighing 23.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-cineape35-2006-2030kv-motor"
   }
 
@@ -1394,7 +1394,7 @@ motors: {
   kv: 1000
   description: "DarwinFPV Darwin Seawater-proof 2307.5 Motor brushless motor with 1000 KV rating and 238 stator size, weighing 10.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-seawater-proof-2307-5-motor"
   }
 
@@ -1415,7 +1415,7 @@ motors: {
   kv: 8000
   description: "DarwinFPV TinyApe 1103 8000KV Blushless Motors brushless motor with 8000 KV rating and 113 stator size, weighing 3.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/tinyape-1103-8000kv-blushless-motors"
   }
 
@@ -1436,7 +1436,7 @@ motors: {
   kv: 1850
   description: "DarwinFPV DarwinFPV 2507 1850KV Brushless Motor brushless motor with 1850 KV rating and 257 stator size, weighing 32.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-2507-1850kv-brushless-motor"
   }
 
@@ -1457,7 +1457,7 @@ motors: {
   kv: 1300
   description: "NewBeeDrone NewBeeDrone Flow 2808 1300KV Motor brushless motor with 1300 KV rating and 288 stator size, weighing 53.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-flow-2808-1300kv-motor"
   }
 
@@ -1478,11 +1478,11 @@ motors: {
   kv: 4000
   description: "NewBeeDrone FLOW Motor 1404 4000KV - T Mount (Set of 4)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-flow-motor-1404-4000kv-t-mount"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-flow-motor-1404-4000kv-t-mount-set-of-4"
   }
 
@@ -1503,11 +1503,11 @@ motors: {
   kv: 17500
   description: "NewBeeDrone NewBeeDrone BDR Brushed Motor 3 Pack brushless motor with 17500 KV rating and 615 stator size, weighing 1.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-bdr-brushed-motor-3-pack"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-bdr-brushed-motor-3-pack"
   }
 
@@ -1528,11 +1528,11 @@ motors: {
   kv: 17500
   description: "NewBeeDrone BDR PLAID Edition - 6mm Brushed Motor"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/bdr-plaid-edition-6mm-brushed-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-bdr-plaid-edition-6mm-brushed-motor"
   }
 
@@ -1553,11 +1553,11 @@ motors: {
   kv: 17500
   description: "NewBeeDrone BDR SILVER Edition - 6mm Brushed Motor"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-bdr-silver-edition-6mm-brushed-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-bdr-silver-edition-6mm-brushed-motor"
   }
 
@@ -1578,11 +1578,11 @@ motors: {
   kv: 17500
   description: "NewBeeDrone BDR Unicorn Edition Motors - 6mm Brushed Motors"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-bdr-unicorn-edition-motors-6mm-brushed-motors"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-bdr-unicorn-edition-motors-6mm-brushed-motors"
   }
 
@@ -1654,7 +1654,7 @@ motors: {
   kv: 4600
   description: "Brotherhobby TC 1404 4600KV Motor brushless motor with 4600 KV rating and 144 stator size, weighing 8.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/brotherhobby-tc-1404-motor-4800kv"
   }
 
@@ -1726,7 +1726,7 @@ motors: {
   kv: 22000
   description: "Rcinpower GTS-V3 1002 22000KV Motor brushless motor with 22000 KV rating and 102 stator size, weighing 2.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/rcinpower-gts-v3-1002-22000kv-motor-choose-color"
   }
 
@@ -1781,7 +1781,7 @@ motors: {
   kv: 14000
   description: "Rcinpower GTS-V3 1002 14000KV Motor brushless motor with 14000 KV rating and 102 stator size, weighing 2.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/rcinpower-gts-v3-1002-14000kv-motor-choose-color"
   }
 
@@ -1820,7 +1820,7 @@ motors: {
   kv: 1300
   description: "Brotherhobby Avenger 2806.5 1300KV Motor brushless motor with 1300 KV rating and 286 stator size, weighing 41.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/brotherhobby-avenger-2806-5-1300kv-1700kv-motor"
   }
 
@@ -1841,7 +1841,7 @@ motors: {
   kv: 900
   description: "HGLRC MY 3115 900KV Motor Brushless motor high load 6S 10-inch"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my-3115-900kv-motor-brushless-motor-high-load-6s-10-inch"
   }
 
@@ -1862,7 +1862,7 @@ motors: {
   kv: 400
   description: "HGLRC MY15 4215 400KV Motor 2.5W VTX ELRS 915MHz Long-Range FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my15-4215-400kv-motor-2-5w-vtx-long-range-fpv-drone"
   }
 
@@ -1883,7 +1883,7 @@ motors: {
   kv: 900
   description: "HGLRC MY 3215 900kV brushless motor high load 6S 10-inch FPV Motor"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my-3215-900kv-brushless-motor-high-load-6s-10-inch-fpv-motor"
   }
 
@@ -1904,7 +1904,7 @@ motors: {
   kv: 900
   description: "HGLRC MY10 3215 900KV Motor 2.5W VTX FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my10-3215-900kv-motor-2-5w-vtx-fpv-drone"
   }
 
@@ -1925,7 +1925,7 @@ motors: {
   kv: 1000
   description: "HGLRC MY5 freestyle 2306.5 motor 1.6w VTX FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-my5-freestyle-2306-5-motor-1-6w-vtx-fpv-drone"
   }
 
@@ -1946,7 +1946,7 @@ motors: {
   kv: 1155
   description: "HGLRC HGLRC SPECTER 2812 1155KV brushless motor brushless motor with 1155 KV rating and 2812 stator size, weighing 1.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-2812-1155kv-brushless-motor"
   }
 
@@ -1967,7 +1967,7 @@ motors: {
   kv: 3500
   description: "HGLRC HGLRC SPECTER 1804-2450/3500KV brushless motor brushless motor with 3500 KV rating and 184 stator size, weighing 13.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1804-3500kv-brushless-motor"
   }
 
@@ -1988,7 +1988,7 @@ motors: {
   kv: 5500
   description: "HGLRC HGLRC SPECTER 1303.5 5500KV brushless motor brushless motor with 5500 KV rating and 134 stator size, weighing 6.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1303-5-5500kv-brushless-motor"
   }
 
@@ -2009,7 +2009,7 @@ motors: {
   kv: 21000
   description: "HGLRC HGLRC SPECTER 0802 21000KV brushless motor brushless motor with 21000 KV rating and 82 stator size, weighing 2.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-0802-21000kv-brushless-motor"
   }
 
@@ -2030,7 +2030,7 @@ motors: {
   kv: 11000
   description: "HGLRC SPECTER 1202.5 11000KV brushless motor brushless motor with 11000 KV rating and 122 stator size, weighing 4.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/specter-1202-5-11000kv-brushless-motor"
   }
 
@@ -2051,7 +2051,7 @@ motors: {
   kv: 1800
   description: "HGLRC HGLRC SPECTER 2004 1800KV brushless motor brushless motor with 1800 KV rating and 204 stator size, weighing 15.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-2004-1800kv-brushless-motor"
   }
 
@@ -2072,7 +2072,7 @@ motors: {
   kv: 21000
   description: "HGLRC HGLRC SPECTER 1002 21000KV brushless motor brushless motor with 21000 KV rating and 102 stator size, weighing 2.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1002-21000kv-brushless-motor"
   }
 
@@ -2093,7 +2093,7 @@ motors: {
   kv: 10000
   description: "HGLRC HGLRC SPECTER 1003 10000KV brushless motor brushless motor with 10000 KV rating and 103 stator size, weighing 3.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/specter-1003-10000kv-brushless-motor"
   }
 
@@ -2114,7 +2114,7 @@ motors: {
   kv: 2750
   description: "HGLRC SPECTER 1404 2750KV/4800KV/5500KV 4-6S Brushless Motor for FPV Freestyle 2inch Cinewhoop 4inch Toothpick Drones"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-1404-2750kv-brushless-motor"
   }
 
@@ -2135,7 +2135,7 @@ motors: {
   kv: 1350
   description: "HGLRC HGLRC SPECTER 2806.5 1350KV brushless motor brushless motor with 1350 KV rating and 286 stator size, weighing 47.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-2806-5-1350kv-brushless-motor"
   }
 
@@ -2156,11 +2156,11 @@ motors: {
   kv: 1900
   description: "HGLRC HGLRC SPECTER 2306.5-1900KV brushless motor with 1900 KV rating and 236 stator size, weighing 34.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/specter-2306-5-1900kv"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-2306-5-1900kv-motor"
   }
 
@@ -2181,7 +2181,7 @@ motors: {
   kv: 1100
   description: "MAMBA  2808 1100KV Racing Motor For Roma F7"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/2808-1100kv-motor-for-roma-f7"
   }
 
@@ -2202,11 +2202,11 @@ motors: {
   kv: 1850
   description: "FlyFishRC Sword 2207 6S FPV Motor brushless motor with 1850 KV rating and 227 stator size, weighing 34.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/sword-2207-6s-fpv-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-sword-2207-6s-fpv-motor-1850kv"
   }
 
@@ -2227,7 +2227,7 @@ motors: {
   kv: 1800
   description: "FlyFishRC Flash 2004 1800KV 2900KV FPV Motor brushless motor with 1800 KV rating and 204 stator size, weighing 16.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2004-1800kv-2900kv-fpv-motor"
   }
 
@@ -2248,7 +2248,7 @@ motors: {
   kv: 2450
   description: "FlyFishRC Flash 1804 2450KV 3500KV Freestyle Motor brushless motor with 2450 KV rating and 184 stator size, weighing 14.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-1804-2450kv-3500kv-freestyle-motor"
   }
 
@@ -2269,7 +2269,7 @@ motors: {
   kv: 1750
   description: "FlyFishRC Flash 2806.5 FPV Long Range Motor -Black brushless motor with 1750 KV rating and 286 stator size, weighing 36.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2806-5-fpv-long-range-motor-1"
   }
 
@@ -2290,11 +2290,11 @@ motors: {
   kv: 5500
   description: "FlyFishRC Flash 1303.5 5500kv FPV Motor brushless motor with 5500 KV rating and 134 stator size, weighing 6.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-1303-5-5500kv-fpv-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flyfishrc-flash-1303-5-5500kv-micro-motor"
   }
 
@@ -2315,11 +2315,11 @@ motors: {
   kv: 1750
   description: "FlyFishRC Flash 2506 FPV Motor brushless motor with 1750 KV rating and 256 stator size, weighing 36.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2506-fpv-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-2506-brushless-fpv-drone-motor-1550kv"
   }
 
@@ -2340,11 +2340,11 @@ motors: {
   kv: 1950
   description: "FlyFish RC Flash 2406 FPV Motor brushless motor with 1950 KV rating and 246 stator size, weighing 35.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2406-fpv-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-2406-brushless-fpv-drone-motor-1800kv"
   }
 
@@ -2365,11 +2365,11 @@ motors: {
   kv: 4500
   description: "FlyFishRC Flash 1404 4500KV FPV Motor brushless motor with 4500 KV rating and 144 stator size, weighing 8.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-1404-4500kv-fpv-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-1404-4500kv-motor"
   }
 
@@ -2390,11 +2390,11 @@ motors: {
   kv: 1750
   description: "FlyFishRC Flash 2306 FPV Motor brushless motor with 1750 KV rating and 236 stator size, weighing 32.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2306-5-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-2306-replacement-motor-bell"
   }
 
@@ -2415,7 +2415,7 @@ motors: {
   kv: 1750
   description: "FlyFishRC Flash 2306 FPV Motor - Black brushless motor with 1750 KV rating and 236 stator size, weighing 32.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2306-5-1750kv-motor-black"
   }
 
@@ -2436,11 +2436,11 @@ motors: {
   kv: 1850
   description: "FlyFishRC Flash 2207 FPV Motor brushless motor with 1850 KV rating and 227 stator size, weighing 32.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2207-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-flash-2207-replacement-motor-bell"
   }
 
@@ -2461,7 +2461,7 @@ motors: {
   kv: 1850
   description: "FlyFishRC Flash 2207 FPV Motor-Black brushless motor with 1850 KV rating and 227 stator size, weighing 32.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/flash-2207-motor-black"
   }
 
@@ -2482,7 +2482,7 @@ motors: {
   kv: 14000
   description: "Sub250 1103 14000KV Motor Compatible with 1.6/2-inch FPV Drones"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1103-14000kv-motor"
   }
 
@@ -2503,7 +2503,7 @@ motors: {
   kv: 27000
   description: "SUB250 0702 27000kv  Motor Compatible with 1.2  / 1.4 / 1.6 Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-0702-27000kv-motor"
   }
 
@@ -2524,7 +2524,7 @@ motors: {
   kv: 2450
   description: "sub250 Sub250 1804 2450KV 3450KV Ultra-light Motor brushless motor with 2450 KV rating and 184 stator size, weighing 14.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1804-2450kv-3450kv-motor"
   }
 
@@ -2545,11 +2545,11 @@ motors: {
   kv: 4500
   description: "Sub250 1404 4500KV Motor for 2.5 / 3 inches Mini Whoops and 3 inches  Freestyle FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1404-4500kv-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-1404-4500kv-for-2-5-tiny-whoops-and-3-freestyle-fpv-drone-motor-1-pc"
   }
 
@@ -2570,7 +2570,7 @@ motors: {
   kv: 19000
   description: "Sub250 1003 Motor 1.5mm Shaft  for 1.6 -2 inches Mini FPV drones"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1003-motor"
   }
 
@@ -2591,7 +2591,7 @@ motors: {
   kv: 16500
   description: "Sub250 M1 0803 16500KV 1.0MM Motor for  1S 2S Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-m1-0803-16500kv-1-0mm-motor"
   }
 
@@ -2612,7 +2612,7 @@ motors: {
   kv: 19000
   description: "Sub250 M1 0803 19000KV 1.5 mm Shaft Brushless Motor for Nanofly16 (Pack of 1/4)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-m1-0803-19000kv-1-5-mm-shaft-brushless-motor-for-nanofly16-pack-of-1-4"
   }
 
@@ -2633,7 +2633,7 @@ motors: {
   kv: 14000
   description: "Sub250 M2 1002 Brushless Motor 1.5mm shaft Specially Designed for 1.6-2 inch FPV Drones"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1002-motor"
   }
 
@@ -2654,7 +2654,7 @@ motors: {
   kv: 19000
   description: "Sub250 M1 0803 19000KV 1.0mm Shaft Brushless Motor for Nanofly16 (Pack of 1/4)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-m1-0803-19000kv"
   }
 
@@ -2675,7 +2675,7 @@ motors: {
   kv: 7200
   description: "FPVCycle Cavity Series Motor 4012 - 1020kV - AI optimized design"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-cavity-series-motor-4012mm-1020kv"
   }
 
@@ -2696,7 +2696,7 @@ motors: {
   kv: 4100
   description: "FPVCycle FPVCycle 16mm Motor - 4100Kv brushless motor with 4100 KV rating and 166 stator size, weighing 13.7g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-16mm-motor-3700kv"
   }
 
@@ -2717,7 +2717,7 @@ motors: {
   kv: 1620
   description: "FPVCycle FPVCycle 21mm Motor - M3/M5 Prop Shaft brushless motor with 1620 KV rating and 216 stator size, weighing 16.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-21mm-motor-m3-m5-prop-shaft"
   }
 
@@ -2738,7 +2738,7 @@ motors: {
   kv: 1000
   description: "FPVCycle 25mm Motor - The Extra Smooth One"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-5-motor-choose-options"
   }
 
@@ -2759,7 +2759,7 @@ motors: {
   kv: 1300
   description: "FPVCycle FPVCycle 28mm 1300Kv - 7-8 Motor brushless motor with 1300 KV rating and 286 stator size, weighing 64.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-30mm-1450kv-7-8-6s-8s-motor"
   }
 
@@ -2780,7 +2780,7 @@ motors: {
   kv: 3450
   description: "FPVCycle 23mm Short Motor - THE Cinewhoop motor"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-2203-motor-choose-kv"
   }
 
@@ -2801,7 +2801,7 @@ motors: {
   kv: 5000
   description: "FPVCycle 13mm 5000kv, 6350kv Motor - 2mm prop shaft"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/fpvcycle-1303-5000kv-motor-2mm-prop-shaft"
   }
 
@@ -2822,11 +2822,11 @@ motors: {
   kv: 1950
   description: "Premium 5-inch freestyle and racing motor with high-temperature silver-core windings and titanium alloy shaft."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://tmotorhobby.com/goods-1183-TMOTOR+F60+Pro+V+22075+Brushless+Racing+Motor+-+1750KV1950KV2020KV2550KV.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/t-motor-f60-pro-v-motor-1750kv-1950kv-2020kv-2550kv.html"
   }
 
@@ -2847,11 +2847,11 @@ motors: {
   kv: 2020
   description: "High-power 6S FPV racing motor engineered for linear throttle response and extreme bursts."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://tmotorhobby.com/goods-1183-TMOTOR+F60+Pro+V+22075+Brushless+Racing+Motor+-+1750KV1950KV2020KV2550KV.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/t-motor-f60-pro-v-motor-1750kv-1950kv-2020kv-2550kv.html"
   }
 
@@ -2872,11 +2872,11 @@ motors: {
   kv: 1950
   description: "Smooth and efficient 6S freestyle motor featuring unibell construction."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://tmotorhobby.com/goods-1181-P2207+V3.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/t-motor-pacer-v3-p2207-powerful-freestyle-motor-1750kv-1950kv-2080kv-2550kv.html"
   }
 
@@ -2897,11 +2897,11 @@ motors: {
   kv: 1855
   description: "Flagship 6S freestyle motor with curved N52H magnets, NSK bearings, and an O-ring cushioned bearing design."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://shop.iflight.com/XING2-2207-4S-6S-FPV-Motor-Unibell-Black-for-Nazgul-Evoque-F5-pro1610"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/iflight-xing2-2207-1855kv-motor"
   }
 
@@ -2922,15 +2922,15 @@ motors: {
   kv: 2755
   description: "High-KV 4S variant of the XING2 2207 series for lightweight high-RPM freestyle builds."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://shop.iflight.com/XING2-2207-4S-6S-FPV-Motor-Unibell-Black-for-Nazgul-Evoque-F5-pro1610"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/iflight-xing2-2207-motor-1855kv-2755kv.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/iflight-xing2-2207-2755kv-motor"
   }
 
@@ -2951,15 +2951,15 @@ motors: {
   kv: 1900
   description: "Reliable and budget-friendly 6S brushless motor featuring durable aerospace aluminum bell and dual EZO bearings."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://shop.emax-usa.com/products/eco-ii-2207-brushless-motor-1700kv-1900kv-2400kv"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/emax-eco-ii-series-2207-motor-1700kv-1900kv-2400kv.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/emax-eco-ii-2207-stator-motor-for-5-propeller-racing-and-freestyle-craft-1900kv"
   }
 
@@ -2980,11 +2980,11 @@ motors: {
   kv: 1860
   description: "Ultra-lightweight premium racing motor with single-piece bell housing and Japanese NSK bearings."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/rcinpower-wasp-major-22-6-6-5-gold"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/rcinpower-wasp-major-22-6-6-6-1860kv-motor-gold"
   }
 
@@ -3005,15 +3005,12 @@ motors: {
   kv: 11000
   description: "High-efficiency micro brushless motor tailored for 2S whoop and toothpick quadcopters."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/1103-brushless-motors"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
-    url: "https://betafpv.com/products/1103-brushless-motors"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-1103-11000kv-2s-brushless-motor-4pcs"
   }
 
@@ -3034,11 +3031,8 @@ motors: {
   kv: 5500
   description: "Sub-250g ultralight micro motor engineered for 4S toothpick and micro long-range drones."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://www.getfpv.com/flywoo-robo-rb-1202-5-5500kv-11500kv-fpv-motor-1-5mm-shaft.html"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/flywoo-robo-rb-1202-5-5500kv-11500kv-fpv-motor-1-5mm-shaft.html"
   }
 
@@ -3059,11 +3053,11 @@ motors: {
   kv: 1960
   description: "BST (Bearing Shield Technology) dust and water-resistant 6S freestyle motor with high-temperature curved arc magnets."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.axisflying.com/products/c227-5-inch-c2207-1960kv-brushless-motor"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/axisflying-c227-motor-1960kv.html"
   }
 

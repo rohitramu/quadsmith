@@ -11,7 +11,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line Version 5.0 1200mAh 6S 6S 1200mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1200mah-22-2v-150c-6s1p-lipo-battery-xt60"
   }
 
@@ -32,11 +32,11 @@ batteries: {
   connector: "BT2.0"
   description: "BETAFPV BetaFPV Lava 1S 300mAh 1S 300mAh LiPo battery with BT2.0 connector, weighing 8.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-300mah-75c-battery-5pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-1s-300mah-75c-bt2-0-battery-5pcs"
   }
 
@@ -57,11 +57,11 @@ batteries: {
   connector: "XT30"
   description: "BETAFPV BetaFPV Lava 2S 450mAh 2S 450mAh LiPo battery with XT30 connector, weighing 26.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-2s-3s-4s-450mah-75c-battery-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
 
@@ -82,7 +82,7 @@ batteries: {
   connector: "XT30"
   description: "GNB GNB 3S 650mAh 80C 3S 650mAh LiPo battery with XT30 connector, weighing 62.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-3s-11-1v-650mah-80c-lipo-battery-xt30"
   }
 
@@ -120,7 +120,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line Version 5.0 1400mAh 6S 6S 1400mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1400mah-22-2v-150c-6s1p-lipo-battery-xt60"
   }
 
@@ -158,11 +158,11 @@ batteries: {
   connector: "XT30"
   description: "BETAFPV BetaFPV LAVA 3S 450mAh 3S 450mAh LiPo battery with XT30 connector, weighing 26.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-2s-3s-4s-450mah-75c-battery-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-3s-450mah-75c-xt30-battery-2pcs"
   }
 
@@ -183,11 +183,11 @@ batteries: {
   connector: "XT30"
   description: "BETAFPV BetaFPV LAVA 4S 450mAh 4S 450mAh LiPo battery with XT30 connector, weighing 26.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-2s-3s-4s-450mah-75c-battery-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-4s-450mah-75c-xt30-battery-2pcs"
   }
 
@@ -208,7 +208,7 @@ batteries: {
   connector: "XT30"
   description: "Tattu Tattu R-Line 4S 650mAh 4S 650mAh LiPo battery with XT30 connector, weighing 20.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-650mah-2s-7-6v-hv-95c-lipo-battery-long-pack-xt30"
   }
 
@@ -229,7 +229,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line 4S 1300mAh 4S 1300mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-6-0-1300mah-22-2v-160c-6s1p-lipo-battery-limited-edition-xt60"
   }
 
@@ -250,7 +250,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line 4S 1550mAh 4S 1550mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1550mah-6s-150c-22-2v-lipo-battery-xt60"
   }
 
@@ -271,7 +271,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line 6S 1050mAh 6S 1050mAh LiPo battery with XT60 connector, weighing 186.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1050mah-8s-29-6v-150c-lipo-battery-pack-xt60"
   }
 
@@ -292,7 +292,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line 6S 1300mAh 6S 1300mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-6-0-1300mah-22-2v-160c-6s1p-lipo-battery-limited-edition-xt60"
   }
 
@@ -415,7 +415,7 @@ batteries: {
   connector: "BT2.0"
   description: "GNB GNB 1S 380mAh 1S 380mAh LiPo battery with BT2.0 connector, weighing 10.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-380mah-90c-3-8v-hv-li-po-battery-for-whoop-micro-ph2-0-plastic-head"
   }
 
@@ -436,7 +436,7 @@ batteries: {
   connector: "BT2.0"
   description: "GNB GNB 1S 530mAh 1S 530mAh LiPo battery with BT2.0 connector, weighing 13.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-530mah-90c-3-8v-hv-li-po-battery-for-whoop-micro-a30-cabled"
   }
 
@@ -457,7 +457,7 @@ batteries: {
   connector: "XT30"
   description: "GNB GNB 2S 530mAh 2S 530mAh LiPo battery with XT30 connector, weighing 34.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-530mah-90c-3-8v-hv-li-po-battery-for-whoop-micro-a30-cabled"
   }
 
@@ -478,7 +478,7 @@ batteries: {
   connector: "XT30"
   description: "GNB GNB 4S 650mAh 4S 650mAh LiPo battery with XT30 connector, weighing 143.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-3s-11-1v-650mah-80c-lipo-battery-xt30"
   }
 
@@ -499,7 +499,7 @@ batteries: {
   connector: "XT60"
   description: "GNB GNB 4S 1100mAh 4S 1100mAh LiPo battery with XT60 connector, weighing 133.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1100mah-3s-11-1v-140c-lipo-battery-xt60"
   }
 
@@ -520,7 +520,7 @@ batteries: {
   connector: "XT60"
   description: "GNB GNB 6S 1100mAh 6S 1100mAh LiPo battery with XT60 connector, weighing 190.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1100mah-3s-11-1v-140c-lipo-battery-xt60"
   }
 
@@ -541,7 +541,7 @@ batteries: {
   connector: "XT60"
   description: "GNB GNB 6S 1300mAh 6S 1300mAh LiPo battery with XT60 connector, weighing 198.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-6s-22-8v-1300mah-160c-hv-lipo-battery-xt60"
   }
 
@@ -579,7 +579,7 @@ batteries: {
   connector: "XT30"
   description: "BETAFPV BetaFPV LAVA 2S 550mAh 2S 550mAh LiPo battery with XT30 connector, weighing 29.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-2s-3s-4s-550mah-75c-battery-2pcs"
   }
 
@@ -600,7 +600,7 @@ batteries: {
   connector: "XT30"
   description: "Tattu Tattu 2S 450mAh 2S 450mAh LiPo battery with XT30 connector, weighing 5.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-450mah-11-1v-75c-3s1p-lipo-battery-pack-with-xt30-plug-long"
   }
 
@@ -621,7 +621,7 @@ batteries: {
   connector: "XT30"
   description: "Tattu Tattu 2S 850mAh 2S 850mAh LiPo battery with XT30 connector, weighing 20.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-850mah-2s-7-6v-hv-95c-lipo-battery-long-pack-with-xt30-plug"
   }
 
@@ -676,7 +676,7 @@ batteries: {
   connector: "BT2.0"
   description: "GNB GNB 2S 380mAh 2S 380mAh LiPo battery with BT2.0 connector, weighing 7.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-lihv-6s-22-8v-380mah-90c-lipo-battery-xt30"
   }
 
@@ -697,7 +697,7 @@ batteries: {
   connector: "XT30"
   description: "GNB GNB 2S 450mAh 2S 450mAh LiPo battery with XT30 connector, weighing 28.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-450mah-80c-3-8v-hv-li-po-battery-for-whoop-micro-ph2-0-plastic-head"
   }
 
@@ -735,7 +735,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line 4S 1800mAh 4S 1800mAh LiPo battery with XT60 connector, weighing 5.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1800mah-6s-22-2v-150c-lipo-battery-pack-xt60"
   }
 
@@ -773,7 +773,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line 5S 1550mAh 5S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1550mah-6s-150c-22-2v-lipo-battery-xt60"
   }
 
@@ -811,7 +811,7 @@ batteries: {
   connector: "XT60"
   description: "Tattu Tattu R-Line 6S 1550mAh 6S 1550mAh LiPo battery with XT60 connector, weighing 20.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-5-0-1550mah-6s-150c-22-2v-lipo-battery-xt60"
   }
 
@@ -900,7 +900,7 @@ batteries: {
   connector: "BT2.0"
   description: "GNB GNB 1S 650mAh 1S 650mAh LiPo battery with BT2.0 connector, weighing 62.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-3s-11-1v-650mah-80c-lipo-battery-xt30"
   }
 
@@ -921,7 +921,7 @@ batteries: {
   connector: "BT2.0"
   description: "GNB GNB 1S 720mAh 1S 720mAh LiPo battery with BT2.0 connector, weighing 12.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1s-720mah-100c-3-8v-hv-li-po-battery-a30-cable"
   }
 
@@ -942,7 +942,7 @@ batteries: {
   connector: "XT30"
   description: "GNB GNB 2S 650mAh 2S 650mAh LiPo battery with XT30 connector, weighing 36.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-3s-11-1v-650mah-80c-lipo-battery-xt30"
   }
 
@@ -963,7 +963,7 @@ batteries: {
   connector: "XT60"
   description: "GNB GNB 3S 1100mAh 3S 1100mAh LiPo battery with XT60 connector, weighing 146.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1100mah-3s-11-1v-140c-lipo-battery-xt60"
   }
 
@@ -984,7 +984,7 @@ batteries: {
   connector: "XT60"
   description: "GNB GNB 4S 1550mAh 4S 1550mAh LiPo battery with XT60 connector, weighing 160.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1550mah-14-8v-4s-120c-lipo-battery-xt60"
   }
 
@@ -1005,7 +1005,7 @@ batteries: {
   connector: "XT60"
   description: "GNB GNB 6S 1550mAh 6S 1550mAh LiPo battery with XT60 connector, weighing 259.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1550mah-14-8v-4s-120c-lipo-battery-xt60"
   }
 
@@ -1026,7 +1026,7 @@ batteries: {
   connector: "XT60"
   description: "GNB GNB 8S 1300mAh 8S 1300mAh LiPo battery with XT60 connector, weighing 252.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1300mah-30-4v-8s-hv-120c-lipo-battery-xt60"
   }
 
@@ -1064,11 +1064,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA II 4S Battery 4S 580mAh LiHV battery with XT60 connector, weighing 58.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-ii-4s-battery"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-ii-3s-580mah-95c-xt30-battery-2pcs"
   }
 
@@ -1089,11 +1089,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA II 3S Battery 3S 580mAh LiHV battery with XT60 connector, weighing 44.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-ii-3s-battery"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-ii-3s-580mah-95c-xt30-battery-2pcs"
   }
 
@@ -1114,11 +1114,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA II 2S Battery 2S 450mAh LiHV battery with XT60 connector, weighing 26.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-ii-2s-battery"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-ii-3s-580mah-95c-xt30-battery-2pcs"
   }
 
@@ -1139,11 +1139,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV Aquila20 Exclusive Battery 2S 1100mAh LiHV battery with XT60 connector, weighing 58.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/aquila20-exclusive-battery-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-aquila20-exclusive-battery-1100mah-2pcs"
   }
 
@@ -1164,7 +1164,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 600mAh 2S Lipo Battery 2S 600mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/600mah-2s-lipo-battery-2pcs"
   }
 
@@ -1185,11 +1185,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA 1S 260mAh 80C Battery 1S 260mAh LiPo battery with XT60 connector, weighing 7.11g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-260mah-80c-battery-5pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-1s-260mah-80c-bt2-0-battery-5pcs"
   }
 
@@ -1210,11 +1210,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV BT3.0 550mAh 2S Battery 2S 550mAh LiHV battery with XT60 connector, weighing 29.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/bt3-0-550mah-2s-battery-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-7-4v-2s-550mah-75c-lihv-whoop-micro-battery-2-pack-bt3-0"
   }
 
@@ -1235,7 +1235,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA 2S/3S/4S 550mAh 75C Battery 2S 550mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-2s-3s-4s-550mah-75c-battery-2pcs"
   }
 
@@ -1256,11 +1256,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA 2S/3S/4S 450mAh 75C Battery 2S 450mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-2s-3s-4s-450mah-75c-battery-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
 
@@ -1281,7 +1281,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA 1S 550mAh 75C Battery 1S 550mAh LiPo battery with XT60 connector, weighing 12.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-550mah-75c-battery-4pcs"
   }
 
@@ -1302,11 +1302,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA 1S 450mAh 75C Battery 1S 450mAh LiPo battery with XT60 connector, weighing 12.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-450mah-75c-battery-4pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
 
@@ -1327,11 +1327,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA 1S 300mAh 75C Battery 1S 300mAh LiPo battery with XT60 connector, weighing 8.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-300mah-75c-battery-5pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-1s-300mah-75c-bt2-0-battery-5pcs"
   }
 
@@ -1352,7 +1352,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA 6S 1100mAh LiPo Battery 6S 1100mAh LiPo battery with XT60 connector, weighing 211.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-6s-1100mah-lipo-battery"
   }
 
@@ -1373,7 +1373,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV LAVA 4S 850mAh LiPo Battery 4S 850mAh LiPo battery with XT60 connector, weighing 110.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-series-4s-850mah-lipo-battery"
   }
 
@@ -1394,7 +1394,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV BT3.0 450mAh 2S Battery 2S 450mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/bt3-0-450mah-2s-battery-2pcs"
   }
 
@@ -1415,7 +1415,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 450mAh 2S 45C Lipo Battery 2S 450mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/450mah-2s-45c-lipo-battery-2pcs"
   }
 
@@ -1436,7 +1436,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 750mAh 4S 95C Lipo Battery 4S 750mAh LiPo battery with XT60 connector, weighing 81.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/750mah-4s-95c-lipo-battery-2pcs"
   }
 
@@ -1457,7 +1457,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 550mAh 1S Lipo HV Battery 1S 550mAh LiHV battery with XT60 connector, weighing 13.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/copy-of-550mah-1s-lipo-hv-battery-2pcs"
   }
 
@@ -1478,7 +1478,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 1000mAh 4S 75C Lipo Battery 4S 1000mAh LiPo battery with XT60 connector, weighing 120.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/1000mah-4s-75c-lipo-battery-2pcs"
   }
 
@@ -1499,11 +1499,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 550mAh 6S 75C Lipo Battery 6S 550mAh LiHV battery with XT60 connector, weighing 86.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/550mah-6s-75c-lipo-battery-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-7-4v-2s-550mah-75c-lihv-whoop-micro-battery-2-pack-bt3-0"
   }
 
@@ -1524,7 +1524,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 850mAh 3S/4S 75C Lipo Battery 3S 850mAh LiPo battery with XT60 connector, weighing 80.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/850mah-4s-75c-lipo-battery-2pcs"
   }
 
@@ -1545,7 +1545,7 @@ batteries: {
   connector: "BT2.0"
   description: "BETAFPV BT2.0 260mAh 1S 30C Battery 1S 260mAh LiPo battery with BT2.0 connector, weighing 7.11g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/bt2-0-260mah-1s-30c-battery-8pcs"
   }
 
@@ -1566,7 +1566,7 @@ batteries: {
   connector: "BT2.0"
   description: "BETAFPV BT2.0 300mAh 1S 30C Battery 1S 300mAh LiPo battery with BT2.0 connector, weighing 8.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/bt2-0-300mah-1s-30c-battery-8pcs"
   }
 
@@ -1587,7 +1587,7 @@ batteries: {
   connector: "XT60"
   description: "300mAh 3S 45C Lipo Battery S-Version (2PCS)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-3s-45c-lipo-battery-s-version-2pcs"
   }
 
@@ -1608,7 +1608,7 @@ batteries: {
   connector: "XT60"
   description: "300mAh 3S 45C Lipo Battery R-Version (2PCS)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-3s-45c-lipo-battery-2pcs"
   }
 
@@ -1629,11 +1629,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 450mAh 4S 75C Lipo Battery 4S 450mAh LiPo battery with XT60 connector, weighing 50.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/450mah-4s-75c-lipo-battery"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
 
@@ -1654,11 +1654,11 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 450mAh 3S 75C Lipo Battery 3S 450mAh LiPo battery with XT60 connector, weighing 26.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/450mah-3s-75c-lipo-battery-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-lava-2s-450mah-75c-xt30-battery-2pcs"
   }
 
@@ -1679,7 +1679,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 350mAh 2S 35C Lipo Battery 2S 350mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/350mah-2s-lipo-battery-2pcs"
   }
 
@@ -1700,7 +1700,7 @@ batteries: {
   connector: "PH2.0"
   description: "BETAFPV PH2.0 300mAh 1S 30C Battery 1S 300mAh LiPo battery with PH2.0 connector, weighing 8.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-1s-30c-hv-battery-8pcs"
   }
 
@@ -1721,7 +1721,7 @@ batteries: {
   connector: "XT60"
   description: "BETAFPV 300mAh 2S 45C Lipo Battery 2S 300mAh LiPo battery with XT60 connector, weighing 29.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/300mah-2s-lipo-battery-2pcs"
   }
 
@@ -1742,7 +1742,7 @@ batteries: {
   connector: "XT60"
   description: "CADDX CaddxFPV Protos 2S Battery 2S 550mAh LiHV battery with XT60 connector, weighing 32.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-protos-battery"
   }
 
@@ -1763,7 +1763,7 @@ batteries: {
   connector: "XT60"
   description: "CADDXFPV 650mAh 4S 14.8V 150C FPV Lipo Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-650mah-6s-22-2v-150c-fpv-lipo-battery"
   }
 
@@ -1784,7 +1784,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV DarwinFPV OneLink 4S 850mAh Lipo Battery 4S 850mAh LiPo battery with XT60 connector, weighing 98.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-onelink-4s-850mah-lipo-battery"
   }
 
@@ -1805,7 +1805,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV DarwinFPV OneLink 2S 500mAh Lipo Battery 2S 500mAh LiPo battery with XT60 connector, weighing 28.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-onelink-2s-500mah-lipo-battery"
   }
 
@@ -1826,7 +1826,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV DarwinFPV OneLink 3S 500mAh Lipo Battery 3S 500mAh LiPo battery with XT60 connector, weighing 42.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-onelink-3s-500mah-lipo-battery"
   }
 
@@ -1847,7 +1847,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 6S 8200mAh 80C 22.2V FPV Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-6s-8200mah-80c-22-2v-fpv-battery"
   }
 
@@ -1868,7 +1868,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 5S 4200mAh  18.5V 60C Lipo Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-5s-4200mah-18-5v-80c-lipo-battery"
   }
 
@@ -1889,7 +1889,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 3S 1150mAh 60C 11.4V FPV Drone Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-3s-1150mah-60c-11-4v-fpv-drone-battery"
   }
 
@@ -1910,7 +1910,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV DarwinFPV 6S 1300mAh Waterproof Lipo Battery 6S 1300mAh LiPo battery with XT60 connector, weighing 198.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-6s-1300mah-waterproof-lipo-battery"
   }
 
@@ -1931,7 +1931,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 6S 650mAh 120C 22.8v LiPo Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-6s-650mah-120c-22-8v-lipo-battery"
   }
 
@@ -1952,7 +1952,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 5S 3200mAh  18.5V 110C LiPo Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-5s-3200mah-18-5v-110c-lipo-battery"
   }
 
@@ -1973,7 +1973,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV DarwinFPV 6S 1300mAh Lipo Battery 6S 1300mAh LiPo battery with XT60 connector, weighing 198.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-6s-1300mah-battery"
   }
 
@@ -1994,7 +1994,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV DarwinFPV 3S 500mAh 11.4V 100C Battery 3S 500mAh LiHV battery with XT60 connector, weighing 45.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-500mah-3s-11-4v-100c-battery"
   }
 
@@ -2015,7 +2015,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 500mAh 2S 7.6V 100C FPV Drone Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-500mah-2s-7-6v-100c-brushless-battery"
   }
 
@@ -2036,7 +2036,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 4S 850mAh 15.2V Lipo FPV Drone Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-4s-850mah-15-2v-brushless-battery"
   }
 
@@ -2057,7 +2057,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 1500mAh 4S 14.8V 110C LiPo Battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-1500mah-4s-14-8v-110c-brushless-battery"
   }
 
@@ -2078,7 +2078,7 @@ batteries: {
   connector: "XT60"
   description: "DarwinFPV 380mAh 3S 11.4V 60C fpv drone battery"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-380mah-3s-11-4v-60c-fpv-drone-battery"
   }
 
@@ -2099,11 +2099,11 @@ batteries: {
   connector: "XT60"
   description: "NewBeeDrone Nitro Nectar NX69 550mAh 1S 80C HV LiPo Battery 2xBatteries"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-nitro-nectar-nx69-550mah-1s-80c-hv-lipo-battery-2xbatteries"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-nitro-nectar-nx69-550mah-1s-80c-hv-lipo-battery-2-x-batteries-99"
   }
 
@@ -2124,11 +2124,11 @@ batteries: {
   connector: "XT60"
   description: "NewBeeDrone Nitro Nectar NX69 300mAh 1S 80C HV LiPo Battery 4xBatteries"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-nitro-nectar-nx69-300mah-1s-hv-lipo-battery-4x-battery"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-nitro-nectar-nx69-300mah-1s-80c-hv-lipo-battery-4-x-batteries"
   }
 
@@ -2149,7 +2149,7 @@ batteries: {
   connector: "XT60"
   description: "NewBeeDrone 21700 5000mAh Li-ion Battery – XT30 & JST-XH Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-21700-5000mah-li-ion-battery"
   }
 
@@ -2340,7 +2340,7 @@ batteries: {
   connector: "XT60"
   description: "MiniStar 3S 650mAh 70C LiPo Battery with XT30 Connector (Copy)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/cnhl-650mah-4s-70c-ministar-fpv-lipo-for-2-3-quads-xt30"
   }
 
@@ -2361,7 +2361,7 @@ batteries: {
   connector: "BT2.0"
   description: "Rotor Riot Fuel Cell - 1S 500mAh 75C LiHV Battery with BT2.0 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
   }
 
@@ -2399,7 +2399,7 @@ batteries: {
   connector: "XT60"
   description: "6S 1300mAh 120C LiHV Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-22-8v-6s-1300mah-120c-lihv-battery-xt60"
   }
 
@@ -2420,7 +2420,7 @@ batteries: {
   connector: "XT60"
   description: "4S 300mAh 80C LiHV Battery with XT30 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-3-8v-1s-300mah-80c-lihv-whoop-micro-battery-w-plastic-head-ph2-0"
   }
 
@@ -2441,7 +2441,7 @@ batteries: {
   connector: "XT60"
   description: "4S 720mAh 100C LiHV Battery with XT30 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-14-8v-4s-720mah-100c-lihv-battery-xt30"
   }
 
@@ -2462,7 +2462,7 @@ batteries: {
   connector: "XT60"
   description: "2S 550mAh 75C LiHV Battery with BT3.0 Connector 2-Pack"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-7-4v-2s-550mah-75c-lihv-whoop-micro-battery-2-pack-bt3-0"
   }
 
@@ -2517,7 +2517,7 @@ batteries: {
   connector: "XT60"
   description: "GNB 6S 1500mAh HV Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-1500mah-22-8v-6s-160c-hv-lipo-battery-xt60"
   }
 
@@ -2538,7 +2538,7 @@ batteries: {
   connector: "XT60"
   description: "6S 1400mAh 160C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-22-2v-6s-1400mah-160c-lipo-battery-xt60"
   }
 
@@ -2559,7 +2559,7 @@ batteries: {
   connector: "XT60"
   description: "6S 5200mAh 110C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gaoneng-gnb-5200mah-29-6v-8s1p-110c-long-range-cinelifter-lipo-battery-xt90"
   }
 
@@ -2597,7 +2597,7 @@ batteries: {
   connector: "XT60"
   description: "4S 660mAh 90C LiHV Battery with XT30 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-22-8v-6s-660mah-90c-lihv-micro-battery-long-type-xt30"
   }
 
@@ -2635,7 +2635,7 @@ batteries: {
   connector: "XT60"
   description: "Pizza Series 6S 1350mAh 150C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/3-pack-cnhl-1350mah-22-2v-6s-150c-pizza-series-lipo-battery-xt60"
   }
 
@@ -2673,11 +2673,11 @@ batteries: {
   connector: "XT60"
   description: "RadioMaster 900mAh 18350 Li-Ion Battery 1S 900mAh Li-ion battery with XT60 connector, weighing 25.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.radiomasterrc.com/products/900mah-3-7v-li-ion-18350-cells-for-zorro-radio-controller-2pcs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/radiomaster-3-7v-900mah-18350-li-ion-battery-for-zorro-2-pack"
   }
 
@@ -2732,7 +2732,7 @@ batteries: {
   connector: "XT60"
   description: "1S 300mAh 75C LiHV Battery with BT2.0 Connector (5pcs)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tattu-3-8v-1s-300mah-75c-hv-lipo-battery-5-pack-bt2-0"
   }
 
@@ -2770,7 +2770,7 @@ batteries: {
   connector: "XT60"
   description: "Ultra Black 4S 1550mAh 150C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-ultra-black-series-1550mah-14-8v-4s-150c-lipo-battery-xt60"
   }
 
@@ -2791,7 +2791,7 @@ batteries: {
   connector: "XT60"
   description: "Ultra Black 6S 1400mAh 150C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-ultra-black-series-1400mah-22-2v-6s-150c-lipo-battery-xt60"
   }
 
@@ -2812,7 +2812,7 @@ batteries: {
   connector: "XT60"
   description: "Ultra Black 6S 1050mAh 150C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-ultra-black-series-1050mah-22-2v-6s-150c-lipo-battery-xt60"
   }
 
@@ -2850,7 +2850,7 @@ batteries: {
   connector: "XT60"
   description: "2S 6200mAh LiPo Transmitter Battery for Boxer & TX16S"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/radiomaster-boxer-max-pyrodrone-edition-transmitter-w-ag01-hall-gimbals-6200mah-2s-lipo-elrs"
   }
 
@@ -2871,7 +2871,7 @@ batteries: {
   connector: "XT60"
   description: "21700 5000mAh Li-Ion Transmitter Battery for TX16S & TX12S MKII"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/radiomaster-tx16s-21700-5000mah-2s-li-ion-battery"
   }
 
@@ -2892,7 +2892,7 @@ batteries: {
   connector: "XT60"
   description: "Speedy Pizza 6S 1200mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/3-pack-cnhl-1200mah-14-8v-4s-100c-speedy-pizza-lipo-battery-xt60"
   }
 
@@ -2913,11 +2913,11 @@ batteries: {
   connector: "XT60"
   description: "Speedy Pizza 4S 1550mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://chinahobbyline.com/products/cnhl-speedy-pizza-1550mah-14-8v-4s-lipo-battery-120c-with-xt60-plug"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/cnhl-speedy-pizza-14-8v-4s-1550mah-100c-lipo-battery-xt60"
   }
 
@@ -2938,11 +2938,11 @@ batteries: {
   connector: "XT60"
   description: "Black Series V2 6S 1300mAh 130C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://chinahobbyline.com/products/2-packs-cnhl-black-series-v2-0-1300mah-11-1v-3s-130c-lipo-battery-with-xt60-plug"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/3-pack-cnhl-black-series-v2-0-1300mah-14-8v-4s-130c-lipo-battery-xt60"
   }
 
@@ -2980,7 +2980,7 @@ batteries: {
   connector: "XT60"
   description: "6S 1100mAh 120C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/gaoneng-gnb-22-2v-6s-1100mah-120c-lipo-battery-xt60"
   }
 
@@ -3001,11 +3001,11 @@ batteries: {
   connector: "XT60"
   description: "MiniStar 3S 450mAh 70C LiPo Battery with XT30 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://chinahobbyline.com/products/cnhl-ministar-series-450mah-7-4v-2s-70c-lipo-battery-with-xt30-plug-4-packs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/4-packs-cnhl-ministar-hv-450mah-3-8v-1s-70c-lipo-battery-with-ph2-0"
   }
 
@@ -3026,7 +3026,7 @@ batteries: {
   connector: "XT60"
   description: "Black Series 6S 2000mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-black-series-2000mah-14-8v-4s-100c-lipo-battery-xt60"
   }
 
@@ -3047,7 +3047,7 @@ batteries: {
   connector: "XT60"
   description: "4S 450mAh 75C LiPo Battery with XT30 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-450mah-11-1v-75c-3s1p-lipo-battery-pack-with-xt30-plug-long"
   }
 
@@ -3068,11 +3068,11 @@ batteries: {
   connector: "XT60"
   description: "MiniStar 6S 850mAh 70C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://chinahobbyline.com/products/4-packs-cnhl-ministar-850mah-22-2v-6s-lipo-battery-70c-with-xt60-plug"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/3-pack-cnhl-850mah-4s-70c-ministar-14-8v-li-po-fpv-battery-xt60"
   }
 
@@ -3093,7 +3093,7 @@ batteries: {
   connector: "XT60"
   description: "MiniStar 4S 1300mAh 120C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-ministar-series-1300mah-22-2v-6s-120c-lipo-battery-xt60"
   }
 
@@ -3114,7 +3114,7 @@ batteries: {
   connector: "XT60"
   description: "Black Series 6S 1100mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/cnhl-stan-black-series-1100mah-14-8v-4s-100c-lipo-battery-xt60"
   }
 
@@ -3152,7 +3152,7 @@ batteries: {
   connector: "XT60"
   description: "R-Line Version 4.0 4S 1300mAh 130C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tattu-r-line-version-4-0-22-2v-6s-1300mah-130c-lipo-battery-xt60"
   }
 
@@ -3173,7 +3173,7 @@ batteries: {
   connector: "XT60"
   description: "R-Line Version 4.0 6S 1050mAh 130C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-4-0-1050mah-6s-130c-lipo-battery-pack"
   }
 
@@ -3211,7 +3211,7 @@ batteries: {
   connector: "XT60"
   description: "Rotor Riot Fuel Cell - 6S 1300mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
   }
 
@@ -3232,7 +3232,7 @@ batteries: {
   connector: "XT60"
   description: "Rotor Riot Fuel Cell - 4S 1500mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
   }
 
@@ -3253,7 +3253,7 @@ batteries: {
   connector: "XT60"
   description: "Rotor Riot Fuel Cell - 6S 1500mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-fuel-cell-1s-500mah-75c-lihv-battery-with-bt2-0-connector-3pcs"
   }
 
@@ -3274,7 +3274,7 @@ batteries: {
   connector: "XT60"
   description: "R-Line Version 3.0 5S 1550mAh 120C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-r-line-version-3-0-1550mah-18-5v-120c-5s1p-lipo-battery-pack-with-xt60-plug"
   }
 
@@ -3295,7 +3295,7 @@ batteries: {
   connector: "XT60"
   description: "R-Line Version 4.0 6S 1300mAh 130C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tattu-r-line-version-4-0-22-2v-6s-1300mah-130c-lipo-battery-xt60"
   }
 
@@ -3316,7 +3316,7 @@ batteries: {
   connector: "XT60"
   description: "FunFly 4S 1550mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-funfly-1550mah-100c-14-8v-4s1p-lipo-battery-pack-with-xt60-plug-for-practice"
   }
 
@@ -3337,7 +3337,7 @@ batteries: {
   connector: "XT60"
   description: "FunFly 4S 1300mAh 100C LiPo Battery with XT60 Connector"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tattu-funfly-14-8v-4s-1300mah-100c-lipo-battery-xt60"
   }
 
@@ -3375,7 +3375,7 @@ batteries: {
   connector: "XT60"
   description: "Sub250 Sub250 1S 300mAh 75 C Battery 1S 300mAh LiPo battery with XT60 connector, weighing 8.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-300mah-75-c-battery"
   }
 
@@ -3396,7 +3396,7 @@ batteries: {
   connector: "XT60"
   description: "Sub250 Sub250 1S 720mAh 90C Battery 1S 720mAh LiPo battery with XT60 connector, weighing 16.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-720mah-90c-battery"
   }
 
@@ -3417,7 +3417,7 @@ batteries: {
   connector: "XT60"
   description: "Sub250 4S 720mAh 100C Battery for Dollyfly25/Oasisfly25"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/4s-720mah-100c-battery"
   }
 
@@ -3438,7 +3438,7 @@ batteries: {
   connector: "XT60"
   description: "Sub250 Sub250 2S 530mAh 90C Battery 2S 530mAh LiPo battery with XT60 connector, weighing 31.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-2s-530mah-90c-battery"
   }
 
@@ -3476,7 +3476,7 @@ batteries: {
   connector: "A30"
   description: "Sub250 1S 530mAh 90C Battery  A30 for whoopfly16/ Nanofly20 （2PCS/6PCS of Pack）"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-530mah-90c"
   }
 
@@ -3497,7 +3497,7 @@ batteries: {
   connector: "XT60"
   description: "Sub250 1S 380mAh 90C  Battery for Nanofly16 (2pcs/6pcs)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-380mah-90c"
   }
 
@@ -3518,7 +3518,7 @@ batteries: {
   connector: "XT60"
   description: "FPVCycle GNB 4S 1250mAh 120C/240C LiPo Battery 4S 1250mAh LiPo battery with XT60 connector, weighing 180.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://fpvcycle.com/products/gnb-1250mah-4s-120c-240c-lipo-battery"
   }
 
@@ -3539,11 +3539,11 @@ batteries: {
   connector: "XT60"
   description: "Top-tier competition racing and freestyle LiPo battery with Alusi Technology for lower internal resistance, longer cycle life, and sustained 150C discharge."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://genstattu.com/tattu-r-line-version-5-0-1400mah-22-2v-150c-6s1p-lipo-battery-pack-with-xt60-plug/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/tattu-r-line-version-5-0-1400mah-6s1p150c-lipo-battery.html"
   }
 
@@ -3564,15 +3564,15 @@ batteries: {
   connector: "XT60"
   description: "Lightweight 6S competition battery offering the ultimate power-to-weight ratio for responsive 5-inch freestyle quads."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://genstattu.com/tattu-r-line-version-5-0-1200mah-22-2v-150c-6s1p-lipo-battery-pack-with-xt60-plug/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/tattu-r-line-version-5-0-1200mah-6s1p-150c-lipo-battery.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tattu-r-line-version-5-0-22-2v-6s-1200mah-150c-lipo-battery-xt60"
   }
 
@@ -3593,11 +3593,11 @@ batteries: {
   connector: "XT60"
   description: "Value-packed, high-capacity 6S battery with heavy-duty silicone leads and reliable 100C burst output for bando bashing and daily freestyle."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://chinahobbyline.com/products/2-packs-cnhl-black-series-v2-0-1500mah-22-2v-6s-130c-lipo-battery-with-xt60-plug"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/3-pack-of-cnhl-black-series-22-2v-6s-1500mah-100c-lipo-battery-xt60-1"
   }
 
@@ -3618,11 +3618,11 @@ batteries: {
   connector: "XT30"
   description: "Ideal power source for 3-inch cinewhoops, toothpicks, and lightweight micro long-range quadcopters."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://chinahobbyline.com/products/cnhl-ministar-series-650mah-14-8v-4s-70c-lipo-battery-with-xt30-plug"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/cnhl-650mah-4s-70c-ministar-fpv-lipo-for-2-3-quads-xt30"
   }
 
@@ -3643,11 +3643,8 @@ batteries: {
   connector: "BT2.0"
   description: "State-of-the-art Z-Folding process LiHV battery designed for 65mm micro whoops, delivering sustained high voltage and reduced sag."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/lava-1s-300mah-75c-battery-5pcs"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/lava-1s-300mah-75c-battery-5pcs"
   }
 
@@ -3668,11 +3665,8 @@ batteries: {
   connector: "BT2.0"
   description: "High-discharge Z-Folding 1S battery for 75mm micro whoops and 2-inch toothpicks requiring maximum flight time and punch."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/lava-1s-450mah-75c-battery-4pcs"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/lava-1s-450mah-75c-battery-4pcs"
   }
 
@@ -3693,11 +3687,11 @@ batteries: {
   connector: "XT60"
   description: "Long-range cruising Li-ion battery pack built with high-density 18650 cells for 7-inch mountain surfers and endurance flights."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.gaoneng.shop/products/gaoneng-gnb-6s-22.2v-3000mah-10c-xt60-li-ion-battery-made-with-sony-18650-vtc6"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/gnb-3000mah-6s-10c-li-ion-sony-vtc6-long-range-battery-xt60"
   }
 

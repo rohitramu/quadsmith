@@ -7,7 +7,7 @@ import { ReferenceLinkType } from "../../gen/quadsmith/reference_link_pb";
 describe("SocialLinkPreviewCard", () => {
   it("renders preview with mock transport data", async () => {
     const link = {
-      type: ReferenceLinkType.PURCHASE,
+      types: [ReferenceLinkType.PURCHASE],
       url: "https://pyrodrone.com/products/motor",
     };
 
@@ -27,7 +27,7 @@ describe("SocialLinkPreviewCard", () => {
 
   it("renders correct badge for documentation link", async () => {
     const link = {
-      type: ReferenceLinkType.DOCUMENTATION,
+      types: [ReferenceLinkType.DOCUMENTATION],
       url: "https://github.com/betaflight/betaflight",
     };
 
@@ -35,6 +35,33 @@ describe("SocialLinkPreviewCard", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Documentation")).toBeInTheDocument();
+    });
+  });
+
+  it("renders multiple badges when a link belongs to multiple categories", async () => {
+    const link = {
+      types: [ReferenceLinkType.PRODUCT_PAGE, ReferenceLinkType.PURCHASE],
+      url: "https://emax-usa.com/products/eco-ii-2207",
+    };
+
+    renderWithProviders(<SocialLinkPreviewCard link={link} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Official Product Page")).toBeInTheDocument();
+      expect(screen.getByText("Purchase")).toBeInTheDocument();
+    });
+  });
+
+  it("gracefully falls back when legacy type field is provided", async () => {
+    const link = {
+      type: ReferenceLinkType.REVIEW,
+      url: "https://youtube.com/watch?v=123",
+    };
+
+    renderWithProviders(<SocialLinkPreviewCard link={link} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Review")).toBeInTheDocument();
     });
   });
 });

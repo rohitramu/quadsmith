@@ -9,7 +9,7 @@ flight_controllers: {
   gyro: "MPU6000"
   description: "HGLRC HGLRC Zeus F722 flight controller powered by STM32F722RET6 MCU and MPU6000 gyro, weighing 9.1g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-zeus-f745-v2-stack-20x20-3-6s-f722-flight-controller-45a-blheli_s-4in1-esc"
   }
 
@@ -27,7 +27,7 @@ flight_controllers: {
   gyro: "MPU6000"
   description: "HGLRC HGLRC Zeus F722 Mini flight controller powered by STM32F722 MCU and MPU6000 gyro, weighing 5.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-dji-zeus-f722-mini-3-6s-f7-flight-controller-betaflight-emuflight-inav"
   }
 
@@ -45,7 +45,7 @@ flight_controllers: {
   gyro: "MPU6000"
   description: "HGLRC HGLRC Specter F405 V2 flight controller powered by STM32F405 MCU and MPU6000 gyro, weighing 29.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-specter-f460-hd-3-6s-30x30-stack-combo-f4-fc-8bit-60a-4in1-esc-mpu6000"
   }
 
@@ -63,7 +63,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "SpeedyBee SpeedyBee F405 V4 Flight Controller flight controller powered by STM32F405 MCU and ICM42688P gyro, weighing 9.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/speedybee-f405-v4-3-6s-30x30-flight-controller"
   }
 
@@ -81,7 +81,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "Air65 & Air75 Wisp Brushless Whoop Quadcopter (Limited Edition)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/air65-air75-wisp-brushless-whoop-quadcopter-limited-edition"
   }
 
@@ -100,7 +100,7 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "e68df4b5-a836-4299-b873-f3764a47cf40"
   description: "Toothpick F405 2-4S AIO Brushless Flight Controller 20A (BLHELI_32) V4"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f405-2-4s-aio-brushless-flight-controller-20a-blheli_32-v4"
   }
 
@@ -118,11 +118,11 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "BETAFPV Pavo20 Pocket flight controller powered by STM32F405 MCU and ICM42688P gyro, weighing 95.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo20-pocket"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-pavo20-pocket-brushless-2-whoop-quadcopter-dji-o3-ready-no-fpv-system"
   }
 
@@ -141,11 +141,11 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "b40f8cc2-b3b8-412b-8301-1e7cfc9274ad"
   description: "BETAFPV F4 2-3S 20A AIO FC V1 flight controller powered by STM32F405 MCU and BMI270 gyro with integrated ESC, weighing 5.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-2-3s-20a-aio-fc-v1"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-f4-2-3s-20a-aio-fc-v1-elrs-2-4g-brushless-flight-controller"
   }
 
@@ -163,7 +163,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "BETAFPV TWIG XL FPV Toothpick Quad flight controller powered by STM32F411 MCU and ICM42688P gyro, weighing 41.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/twig-xl-fpv-quad"
   }
 
@@ -181,7 +181,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "F405 4S 20A Toothpick Brushless Flight Controller V5 BLHeli_S (ICM42688)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f405-4s-20a-toothpick-brushless-flight-controller-v5-blheli_s-icm42688"
   }
 
@@ -199,7 +199,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "F411 4S 20A Toothpick Brushless Flight Controller V5 BLHeli_S (BMI270)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f411-4s-20a-toothpick-brushless-flight-controller-v5-blheli_s-bmi270"
   }
 
@@ -217,7 +217,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV Pavo25 Walksnail Whoop Kit flight controller powered by STM32F405 MCU and BMI270 gyro, weighing 113.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/pavo25-walksnail-whoop-kit"
   }
 
@@ -235,7 +235,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV HX115 LR Toothpick Drone flight controller powered by STM32F411 MCU and BMI270 gyro, weighing 3.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/hx115-lr-toothpick-drone"
   }
 
@@ -253,7 +253,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV HX115 SE Toothpick Drone flight controller powered by STM32F411 MCU and BMI270 gyro, weighing 3.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/hx115-se-fpv-quadcopter"
   }
 
@@ -271,11 +271,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV F4 1S AIO Brushless Flight Controller flight controller powered by STM32F411 MCU and BMI270 gyro, weighing 5.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-1s-aio-brushless-flight-controller"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-f4-2-3s-20a-aio-fc-v1-elrs-2-4g-brushless-flight-controller"
   }
 
@@ -294,7 +294,7 @@ flight_controllers: {
   internal_video_transmitter_uuid: "d4180e39-e175-4486-a43d-3c14aba2f6cc"
   description: "BETAFPV A02 25-800mW 5.8G VTX flight controller powered by STM32F722 MCU and BMI270 gyro with on-board VTX, weighing 0.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/a02-25-800mw-5-8g-vtx"
   }
 
@@ -313,7 +313,7 @@ flight_controllers: {
   internal_video_transmitter_uuid: "5474b621-c10f-4abb-9e0d-222871a9e109"
   description: "X-Knight 3'' Toothpick Quad  (HD Digital VTX)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/x-knight-3-toothpick-quad-hd-digital-vtx"
   }
 
@@ -332,7 +332,7 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "e62a5429-2a6e-4359-a10e-962af0ce9c64"
   description: "Toothpick F4 2-6S AIO Brushless Flight Controller 35A(BLHeli_32)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-2-6s-aio-brushless-flight-controller-35ablheli_32"
   }
 
@@ -350,7 +350,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV Beta95X Whoop Quad for Naked Camera flight controller powered by STM32F405 MCU and BMI270 gyro, weighing 54.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/beta95x-whoop-quadcopter-for-naked-camera"
   }
 
@@ -368,7 +368,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "BETAFPV TWIG ET5 5'' Toothpick Quad flight controller powered by STM32F405 MCU and ICM42688P gyro, weighing 169.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/twig-et5-5-toothpick-quad"
   }
 
@@ -386,7 +386,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "BETAFPV X-Knight 4'' FPV Toothpick Quad flight controller powered by STM32F411 MCU and ICM42688P gyro, weighing 142.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/x-knight-4inch-toothpick-quad"
   }
 
@@ -405,11 +405,11 @@ flight_controllers: {
   internal_video_transmitter_uuid: "664cefec-588c-44ff-ba71-a7885d925382"
   description: "Lite 2S Brushless Flight Controller (Silverware Firmware)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lite-2s-brushless-flight-controller-frsky"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/pre-order-betafpv-bnf-meteor75-pro-1s-brushless-whoop-w-hdzero-nano-lite-cam-bt2-0-choose-your-receiver"
   }
 
@@ -427,7 +427,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "BETAFPV HX100 SE FPV Quad flight controller powered by STM32F411 MCU and ICM42688P gyro, weighing 116.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/hx100-se-fpv-quad"
   }
 
@@ -445,7 +445,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "F405 2-4S AIO Brushless Flight Controller (BLHeli_S) V3"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f405-2-4s-aio-brushless-flight-controller-20a-blheli_32-v4"
   }
 
@@ -464,7 +464,7 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "e202fb6c-8280-4c56-a3f9-331cad62556a"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 20A(BLHeli_S)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-20a-aio-brushless-flight-controller"
   }
 
@@ -482,7 +482,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV HX115 115mm FPV Toothpick Quad flight controller powered by STM32F411 MCU and BMI270 gyro, weighing 3.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/hx115-fpv-racing-drone"
   }
 
@@ -500,7 +500,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "BETAFPV HX115 115mm HD Toothpick Quad flight controller powered by STM32F411 MCU and ICM42688P gyro, weighing 74.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/hx115-hd-micro-race-drone"
   }
 
@@ -518,7 +518,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV F4 1S Brushless Flight Controller V2.2 flight controller powered by STM32F411 MCU and BMI270 gyro, weighing 5.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-1s-brushless-flight-controller-v2-0-frsky-rx"
   }
 
@@ -536,11 +536,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV Lite 2S Brushless Flight Controller (BetaTest)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/betafpv-lite-2s-brushless-flight-controller"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/pre-order-betafpv-bnf-meteor75-pro-1s-brushless-whoop-w-hdzero-nano-lite-cam-bt2-0-choose-your-receiver"
   }
 
@@ -558,11 +558,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "F4 1S Brushless Flight Controller ( Frsky RX )"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-1s-brushless-flight-controller"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-f4-2-3s-20a-aio-fc-v1-elrs-2-4g-brushless-flight-controller"
   }
 
@@ -581,7 +581,7 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "9f72506f-e6d5-48f4-bd04-a335dce59347"
   description: "Toothpick F4 2-4S AIO Brushless Flight Controller 12A(BLHeli_S)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-20a-aio-brushless-flight-controller"
   }
 
@@ -599,7 +599,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "BETAFPV HX100 100mm FPV Quad flight controller powered by STM32F411 MCU and ICM42688P gyro, weighing 41.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/hx100-100mm-fpv-quad"
   }
 
@@ -618,7 +618,7 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "e191559a-e568-4b3b-91a1-ed8bd7b5ef76"
   description: "F4 2-4S AIO Brushless Flight Controller 12A V2 (BLHeli_S)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/toothpick-f4-20a-aio-brushless-flight-controller"
   }
 
@@ -636,11 +636,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "F4 1S Brushless Flight Controller (No RX+OSD)"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-1s-brushless-flight-controller-v2-0-frsky-rx"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-f4-2-3s-20a-aio-fc-v1-elrs-2-4g-brushless-flight-controller"
   }
 
@@ -658,7 +658,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV F4 1-2S AIO Brushless Flight Controller flight controller powered by STM32F411 MCU and BMI270 gyro, weighing 5.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-2s-aio-brushless-flight-controller-frsky-rx-osd-esc"
   }
 
@@ -676,7 +676,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "BETAFPV F405 Brushless Flight Controller flight controller powered by STM32F405 MCU and BMI270 gyro, weighing 5.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/f4-2s-brushless-flight-controller-and-esc"
   }
 
@@ -695,7 +695,7 @@ flight_controllers: {
   internal_video_transmitter_uuid: "5b576b3e-f5d8-4677-9bec-e4747f062d58"
   description: "[BETA TEST] Walksnail Neuxs AIO-1S Flight Controller & VTX"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/beta-test-walksnail-neuxs-aio-1s-flight-controller-vtx"
   }
 
@@ -713,7 +713,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "CADDXFPV CaddxFPV Protos FPV Drone RTF Kit flight controller powered by STM32F405 MCU and ICM42688P gyro, weighing 104.4g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-protos-fpv-drone-rtf-kit"
   }
 
@@ -731,11 +731,11 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "CADDXFPV CADDXFPV Gofilm 20 Only flight controller powered by STM32F405 MCU and ICM42688P gyro, weighing 38.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-gofilm-20-only"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/caddxfpv-gofilm20"
   }
 
@@ -754,7 +754,7 @@ flight_controllers: {
   internal_receiver_uuid: "74d7a534-ce02-404a-b488-b93449e52795"
   description: "CADDXFPV CADDXFPV F4_AIO_ELRS flight controller powered by STM32F405 MCU and BMI270 gyro with built-in receiver, weighing 5.3g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/cadx-caddxf4_aio_elrs"
   }
 
@@ -773,7 +773,7 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "03bdc3b2-f363-447b-8922-9046a04f1474"
   description: "DarwinFPV DarwinFPV F435 45A AM32 AIO flight controller powered by STM32F405 MCU and BMI270 gyro with integrated ESC, weighing 41.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-f435-45a-am32-aio"
   }
 
@@ -793,7 +793,7 @@ flight_controllers: {
   internal_receiver_uuid: "c2de593a-f739-4f6e-93c5-ad7e03de6e4f"
   description: "DarwinFPV F411 45A ELRS AIO CineApe35 Same AIO"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-f411-45a-elrs-aio-cineape35-same-aio"
   }
 
@@ -812,7 +812,7 @@ flight_controllers: {
   internal_video_transmitter_uuid: "78e53688-a6b6-44c3-b9a8-7fba74cea1ee"
   description: "TinyApe25 Walksnail Avatar HD Freestyle FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/tinyape25-walksnail-avatar-hd-freestyle-fpv-drone"
   }
 
@@ -831,11 +831,11 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "ee916b8e-e710-4d10-beae-5a80913b6047"
   description: "DarwinFPV DarwinFPV HULK 45A 3-6S AIO flight controller powered by STM32F411 MCU and BMI270 gyro with integrated ESC, weighing 41.5g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-hulk-45a-3-6s-aio"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-hulk-aio-f411-flight-controller-45a-3-6s-esc-elrs-2-4ghz-25x25mm"
   }
 
@@ -853,7 +853,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "DarwinFPV FPVCycle Whoop Stack Flight Controller 6S 45A Stack"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-fpvcycle-whoop-stack-flight-controller-6s-45a-esc"
   }
 
@@ -873,7 +873,7 @@ flight_controllers: {
   internal_receiver_uuid: "5ff7f57c-3e4f-4840-b0c0-71d8894982d6"
   description: "DarwinFPV DarwinFPV ELRS3.0 F411 15A Bluejay AIO flight controller powered by STM32F411 MCU and BMI270 gyro with integrated ESC, built-in receiver, weighing 5.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwin-elrs2-0-f411-15a-bluejay-aio"
   }
 
@@ -892,7 +892,7 @@ flight_controllers: {
   internal_receiver_uuid: "e8e4c3aa-e4d1-4bbe-b3c3-f05a66532330"
   description: "NewBeeDrone LionBee long range ELRS2.4 AIO FlightControl"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-lionbee-long-range-elrs2-4-aio-flightcontrol"
   }
 
@@ -910,11 +910,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "NewBeeDrone BeeBrain BLV5 AIO Flight Controller ELRS 2.4G"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-beebrain-blv5-aio-flight-controller-expresslrselrs-2-4g-1"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-beebrain-blv5-aio-flight-controller-elrs-2-4g"
   }
 
@@ -934,7 +934,7 @@ flight_controllers: {
   internal_video_transmitter_uuid: "f00bc2df-b9e6-4056-b784-c01e0a90ea4e"
   description: "NewBeeDrone BeeBrain Brushed V2.5 AIO Flight Controller ExpressLRS(ELRS)2.4g with 25-400mw VTX"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
   }
 
@@ -952,11 +952,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "NewBeeDrone NewBeeDrone VRDrone Flight Controller flight controller powered by STM32F411 MCU and BMI270 gyro, weighing 4.6g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-vrdrone-flight-controller"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-vrdrone-flight-controller"
   }
 
@@ -974,11 +974,11 @@ flight_controllers: {
   gyro: "MPU6000"
   description: "NewBeeDrone Infinity200 RS Racing Flight Controller | RaceSpec"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/infinity-200rs"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-infinity200-rs-racing-flight-controller-racespec"
   }
 
@@ -996,11 +996,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "NewBeeDrone Cricket200 V2 F7 Flight Controller Dual BMI270"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-cricket200-v2-f7-flight-controller-dual-bmi270"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-cricket200-v2-f7-flight-controller-dual-bmi270"
   }
 
@@ -1018,11 +1018,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "NewBeeDrone NewBeeDrone Infinity200 F4 Flight Controller flight controller powered by STM32F405 MCU and BMI270 gyro, weighing 5.8g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-infinity200-f4-flight-controller"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-infinity200-f4-flight-controller"
   }
 
@@ -1040,7 +1040,7 @@ flight_controllers: {
   gyro: "MPU6000"
   description: "Rotor Riot Brave F7 V2 Flight Controller - NDAA"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-brave-f7-flight-controller-made-in-usa"
   }
 
@@ -1060,7 +1060,7 @@ flight_controllers: {
   internal_video_transmitter_uuid: "571abb8a-eb6e-4ed9-aeb4-4d2ed7477e66"
   description: "GOKU F405 ERVT 1S 5A 5-in-1 400mw AIO - ELRS"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-goku-ervt-5-in-1-aio-f405-fc-1s-5a-esc-400mw-vtx-elrs-rx-osd"
   }
 
@@ -1078,7 +1078,7 @@ flight_controllers: {
   gyro: "MPU6000"
   description: "Rotor Riot Brave F7 Flight Controller Wiring Kit"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/rotor-riot-brave-f7-flight-controller-made-in-usa"
   }
 
@@ -1096,7 +1096,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "F722 V4 4-8S 30x30 Flight Controller with MPU6000 and Barometer"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/foxeer-f722-v4-x8-4-8s-30x30-dual-bec-barometer-flight-controller-mpu6000"
   }
 
@@ -1114,7 +1114,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "HGLRC F405 8S V2.1 Direct Plug FC Racing/ Freestyle FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-f405-8s-v2-1-direct-plug-fc-racing-freestyle-fpv-drone"
   }
 
@@ -1132,7 +1132,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "HGLRC H743 12S 42688 FC for 5-15 inch FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-h743-12s-42688-fc-for-5-15-inch-fpv-drone"
   }
 
@@ -1151,7 +1151,7 @@ flight_controllers: {
   internal_receiver_uuid: "4da8a069-d611-4376-b6d9-667996a4aa76"
   description: "HGLRC SPECTER F722 Lite ICM42688 gyro integrated ELRS 2.4G receiver flight controller"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-f722-lite-icm42688-gyro-integrated-elrs-2-4g-receiver-flight-control"
   }
 
@@ -1170,11 +1170,11 @@ flight_controllers: {
   internal_receiver_uuid: "1ee26f9f-4c6f-4301-b43b-cbc1dfa2dfa3"
   description: "HGLRC Wind5 Lite V2 Racing Drone Elrs2.4G version"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-wind5-lite-v2-racing-drone"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-wind5-lite-v2-racing-frame-kit"
   }
 
@@ -1192,7 +1192,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "HGLRC Rekon Y6 5-inch Long-Range FPV Drone flight controller powered by STM32F722 MCU and ICM42688P gyro, weighing 311.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/rekon-y6-5-inch-long-range-fpv-drone"
   }
 
@@ -1212,7 +1212,7 @@ flight_controllers: {
   internal_receiver_uuid: "ab61a221-d90d-4de9-917a-28a33599e037"
   description: "HGLRC SPECTER 15A ELRS AIO 2-4S 4-in-1 AIO FC for FPV drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-15a-elrs-aio-2-4s-4-in-1-aio-fc-for-fpv-drone"
   }
 
@@ -1230,7 +1230,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "HGLRC Draknight 2-inch toothpick O4 Fpv drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-draknight-2-inch-toothpick-fpv-drone"
   }
 
@@ -1248,7 +1248,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "Diatone Mamba F405MK2 V2 Flight Controller flight controller powered by STM32F405 MCU and ICM42688P gyro, weighing 9.0g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mamba-f405mk2-v2-fc-1"
   }
 
@@ -1266,7 +1266,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "MAMBA F405MK2 V2 Flight Controller F40MK2/F55 Stack 30MM/M3"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mamba-f405mk2-v2-fc-1"
   }
 
@@ -1284,7 +1284,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "Diatone MAMBA MK4 F722  Flight Controller 30mm/M3 flight controller powered by STM32F722 MCU and ICM42688P gyro, weighing 6.9g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mamba-mk4-f722-app-flight-controller"
   }
 
@@ -1302,11 +1302,11 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "MAMBA MK4 F722 MINI Flight Controller 20mm/M2"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mamba-mk4-f722-mini-fc"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/diatone-mamba-mk4-f722-mini-f40_128k-3-6s-20x20-stack-combo-f722-fc-40a-128k-32bit-4in1-esc"
   }
 
@@ -1324,7 +1324,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "WINNERS' CHOICE-MAMBA MK4 F722 MINI F40/Reactor 44A/66A MINI Flight Controller Stack 20mm/M2"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mb-mk4-f722-mini-fc"
   }
 
@@ -1342,7 +1342,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "Sub250 OasisFly35 DC HD O4 Pro GPS Freestyle Quadcopter"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-oasisfly35-dc-hd-o4-pro-gps-freestyle-quadcopter"
   }
 
@@ -1360,7 +1360,7 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "Sub250 DollyFly25 V2 HD O4 Pro GPS 2.5-inch 4S CineWhoop"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/dollyfly25-v2-hd-o4-pro-4s-gps-cinewhoop"
   }
 
@@ -1378,11 +1378,11 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "Sub250 DollyFly16 1.6-inch HD O4 Pro 2S Whoop FPV Drone"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-dollyfly16-1-6-inch-hd-o4-pro-2s-whoop-fpv-drone"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-dollyfly16-1-6-inch-hd-o4-pro-2s-whoop-fpv-drone-choose-receiver"
   }
 
@@ -1401,11 +1401,11 @@ flight_controllers: {
   internal_electronic_speed_controller_uuid: "b66c1ad5-ad66-4a63-a2e3-1e5a1a17e764"
   description: "Redfox A3 F722 35A/45A AIO Flight Controller for DollyFly25"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/redfox-a3-f722-35a-45a-aio-fc"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-redfox-a3-f722-35a-45a-4in1-aio-flight-controller-for-2-to-3-5-inch-drones-choose-version"
   }
 
@@ -1423,11 +1423,11 @@ flight_controllers: {
   gyro: "BMI270"
   description: "Sub250 Sub250 Whoopfly16 RTF Combo flight controller powered by STM32F411 MCU and BMI270 gyro, weighing 35.2g."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/whoopfly16-rtf-combo"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-whoopfly16-1-6-ultra-light-1s-tiny-whoop-rtf-combo-mode-2-left-throttle"
   }
 
@@ -1445,7 +1445,7 @@ flight_controllers: {
   gyro: "BMI270"
   description: "Sub250 Whoopfly16 Ultra-light Analog 1s Mini Whoop 75mm FPV Drone A30"
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/whoopfly16-analog-1s-tiny-whoop"
   }
 
@@ -1463,19 +1463,19 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "Feature-packed 30x30mm flight controller with onboard Bluetooth & Wi-Fi for wireless Betaflight tuning, 4-level battery LED indicator, and SD card blackbox slot."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.speedybee.com/speedybee-f405-v4-bls-55a-30x30-fc-esc-stack/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_DOCUMENTATION
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
     url: "https://www.speedybee.com/f405-v4-55a-stack-download/"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/speedybee-f405-v4-flight-controller-30x30.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/speedybee-f405-v4-bls-3-6s-30x30-stack-combo-f405-fc-8bit-55a-4in1-esc"
   }
 
@@ -1493,11 +1493,11 @@ flight_controllers: {
   gyro: "MPU6000"
   description: "Clean and durable 30x30 F7 flight controller featuring dual BECs (5V 2A / 10V 2A) and plug-and-play DJI HD digital port."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://tmotorhobby.com/goods-1083-T-MOTORHOBBY+Single-sided+Pacer+F7+FC.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/t-motor-pacer-f7-usb-c-flight-controller.html"
   }
 
@@ -1515,15 +1515,15 @@ flight_controllers: {
   gyro: "ICM42688P"
   description: "High-performance STM32H743 FC running at 480MHz, with 1MB RAM, 128MB flash blackbox, dual camera inputs, and integrated barometer."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://holybro.com/products/kakute-h7-v2"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/holybro-kakute-h7-v2-1-flight-controller.html"
   }
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://holybro.com/products/kakute-h7"
   }
 
@@ -1541,11 +1541,8 @@ flight_controllers: {
   gyro: "BMI270"
   description: "All-In-One flight controller designed for 1S whoop and toothpick quads, featuring integrated 12A continuous Bluejay ESC and ExpressLRS SPI receiver."
   reference_links: {
-    type: REFERENCE_LINK_TYPE_PRODUCT_PAGE
-    url: "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
-  }
-  reference_links: {
-    type: REFERENCE_LINK_TYPE_PURCHASE
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://betafpv.com/products/f4-1s-12a-aio-brushless-flight-controller-v3-0"
   }
 

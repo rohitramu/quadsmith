@@ -84,7 +84,7 @@ func (ReferenceLinkType) EnumDescriptor() ([]byte, []int) {
 
 type ReferenceLink struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Type          ReferenceLinkType      `protobuf:"varint,1,opt,name=type,proto3,enum=quadsmith.ReferenceLinkType" json:"type,omitempty"`
+	Types         []ReferenceLinkType    `protobuf:"varint,1,rep,packed,name=types,proto3,enum=quadsmith.ReferenceLinkType" json:"types,omitempty"`
 	Url           string                 `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -120,11 +120,11 @@ func (*ReferenceLink) Descriptor() ([]byte, []int) {
 	return file_reference_link_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ReferenceLink) GetType() ReferenceLinkType {
+func (x *ReferenceLink) GetTypes() []ReferenceLinkType {
 	if x != nil {
-		return x.Type
+		return x.Types
 	}
-	return ReferenceLinkType_REFERENCE_LINK_TYPE_UNSPECIFIED
+	return nil
 }
 
 func (x *ReferenceLink) GetUrl() string {
@@ -138,9 +138,9 @@ var File_reference_link_proto protoreflect.FileDescriptor
 
 const file_reference_link_proto_rawDesc = "" +
 	"\n" +
-	"\x14reference_link.proto\x12\tquadsmith\"S\n" +
-	"\rReferenceLink\x120\n" +
-	"\x04type\x18\x01 \x01(\x0e2\x1c.quadsmith.ReferenceLinkTypeR\x04type\x12\x10\n" +
+	"\x14reference_link.proto\x12\tquadsmith\"U\n" +
+	"\rReferenceLink\x122\n" +
+	"\x05types\x18\x01 \x03(\x0e2\x1c.quadsmith.ReferenceLinkTypeR\x05types\x12\x10\n" +
 	"\x03url\x18\x02 \x01(\tR\x03url*\x8a\x02\n" +
 	"\x11ReferenceLinkType\x12#\n" +
 	"\x1fREFERENCE_LINK_TYPE_UNSPECIFIED\x10\x00\x12 \n" +
@@ -170,7 +170,7 @@ var file_reference_link_proto_goTypes = []any{
 	(*ReferenceLink)(nil),  // 1: quadsmith.ReferenceLink
 }
 var file_reference_link_proto_depIdxs = []int32{
-	0, // 0: quadsmith.ReferenceLink.type:type_name -> quadsmith.ReferenceLinkType
+	0, // 0: quadsmith.ReferenceLink.types:type_name -> quadsmith.ReferenceLinkType
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
