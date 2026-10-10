@@ -25,6 +25,8 @@ all: build
 build: generate
 	@echo "--- Formatting textproto files with txtpbfmt ---"
 	@find src -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
+	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
+	@go run -mod=vendor ./src/backend/api/cmd/check-regex
 	@echo "--- Building all Go binaries to bin/ ---"
 	@go build -mod=vendor -o bin/server ./src/backend/api/cmd/server/main.go
 

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "check:regex": "vitest run src/__tests__/protoValidationRegex.test.ts",
+    "build": "tsc -b && vitest run src/__tests__/protoValidationRegex.test.ts && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
