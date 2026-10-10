@@ -56,7 +56,7 @@ export function WizardStageBar({
   onSelectStage,
 }: WizardStageBarProps) {
   return (
-    <nav aria-label="Build Stages" className="w-full">
+    <nav aria-label="Build Steps" className="w-full">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
         {STAGES.map((s) => {
           const isActive = currentStage === s.stage;
@@ -104,7 +104,7 @@ export function WizardStageBar({
                         : "text-zinc-400 dark:text-zinc-500"
                   }`}
                 >
-                  Stage {s.stage}
+                  Step {s.stage}
                 </span>
 
                 {isComplete ? (

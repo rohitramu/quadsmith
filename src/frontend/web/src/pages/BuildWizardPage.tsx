@@ -1285,7 +1285,7 @@ export function BuildWizardPage() {
   // Save Build to PostgreSQL via CreateBuild RPC
   const handleSaveBuild = async () => {
     if (!stage1Complete || !stage2Complete) {
-      setSaveError("Please complete required components in Stages 1 and 2 before saving.");
+      setSaveError("Please complete required components in Steps 1 and 2 before saving.");
       return;
     }
     if (!buildName.trim()) {
@@ -1377,7 +1377,7 @@ export function BuildWizardPage() {
         </div>
       </div>
 
-      {/* 5-Stage Stepper Navigation */}
+      {/* 5-Step Stepper Navigation */}
       <WizardStageBar
         currentStage={activeStage}
         unlockedStages={unlockedStages}
@@ -1398,30 +1398,30 @@ export function BuildWizardPage() {
         onSelectStage={(stage) => setActiveStage(stage)}
       />
 
-      {/* Main Workspace: Left 8 Cols (Stage Workarea) + Right 4 Cols (Live Evaluator) */}
+      {/* Main Workspace: Left 8 Cols (Step Workarea) + Right 4 Cols (Live Evaluator) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column (Stage Contents) */}
+        {/* Left Column (Step Contents) */}
         <div className="lg:col-span-8 space-y-5">
-          {/* Stage 0 Banner */}
+          {/* Step 0 Banner */}
           {activeStage === 0 && (
             <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/20 text-blue-900 dark:text-blue-300 flex items-start gap-3 text-xs">
               <Sparkles size={16} className="text-blue-500 mt-0.5 shrink-0" />
               <div>
                 <span className="font-bold">
                   {selectedTemplateId
-                    ? `Stage 0: Template Selected — ${templateBuilds.find((b) => (b.id || b.uuid) === selectedTemplateId)?.name || "Template"}`
-                    : "Stage 0: Choose a Starting Baseline"}
+                    ? `Step 0: Template Selected — ${templateBuilds.find((b) => (b.id || b.uuid) === selectedTemplateId)?.name || "Template"}`
+                    : "Step 0: Choose a Starting Baseline"}
                 </span>
                 <p className="opacity-90 mt-0.5">
                   {selectedTemplateId
-                    ? "All compatible components pre-populated across all stages. You can customize them in Stages 1-3 or review now."
+                    ? "All compatible components pre-populated across all steps. You can customize them in Steps 1-3 or review now."
                     : "Select a baseline build below to pre-populate components, or click Next to build custom."}
                 </p>
               </div>
             </div>
           )}
 
-          {/* STAGE 0: Template Selection */}
+          {/* STEP 0: Template Selection */}
           {activeStage === 0 && (
             <div className="space-y-4">
               <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
@@ -1441,7 +1441,7 @@ export function BuildWizardPage() {
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   Select whether you want to build from a blank slate or begin from a proven
                   existing quadcopter build. You can freely customize or swap any part in the
-                  following stages.
+                  following steps.
                 </p>
 
                 {/* Search Input */}
@@ -1540,18 +1540,18 @@ export function BuildWizardPage() {
               </div>
             </div>
           )}
-          {/* Stage Gating Banner */}
+          {/* Step Gating Banner */}
           {activeStage === 1 && !stage1Complete && (
             <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300 flex items-start gap-3 text-xs">
               <AlertCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
               <div>
                 <span className="font-bold">
-                  Stage 1 Incomplete: Select Frame, Motors, and Propellers to establish propulsion
+                  Step 1 Incomplete: Select Frame, Motors, and Propellers to establish propulsion
                   base
                 </span>
                 <p className="opacity-90 mt-0.5">
                   The Frame sets prop clearance and stack mounting. Motors & Props set thrust and
-                  ESC current requirements for Stage 2.
+                  ESC current requirements for Step 2.
                 </p>
               </div>
             </div>
@@ -1562,7 +1562,7 @@ export function BuildWizardPage() {
               <AlertCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
               <div>
                 <span className="font-bold">
-                  Stage 2 Incomplete: Flight Controller, ESC, and Radio Receiver are required
+                  Step 2 Incomplete: Flight Controller, ESC, and Radio Receiver are required
                 </span>
                 <p className="opacity-90 mt-0.5">
                   External ESC is optional only if your flight controller has an integrated ESC with
@@ -1572,7 +1572,7 @@ export function BuildWizardPage() {
             </div>
           )}
 
-          {/* STAGE 1: Airframe & Propulsion */}
+          {/* STEP 1: Airframe & Propulsion */}
           {activeStage === 1 && (
             <div className="space-y-6">
               {/* 1A. Frame Chassis */}
@@ -1885,7 +1885,7 @@ export function BuildWizardPage() {
             </div>
           )}
 
-          {/* STAGE 2: Flight Electronics & Power (FC, ESC, Receiver) */}
+          {/* STEP 2: Flight Electronics & Power (FC, ESC, Receiver) */}
           {activeStage === 2 && (
             <div className="space-y-6">
               {/* 2A. Flight Controller */}
@@ -2648,13 +2648,13 @@ export function BuildWizardPage() {
             </div>
           )}
 
-          {/* STAGE 3: Video (All Optional) */}
+          {/* STEP 3: Video (All Optional) */}
           {activeStage === 3 && (
             <div className="space-y-6">
               {/* Optional Notice & Skip All Button */}
               <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/20 text-blue-900 dark:text-blue-200 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <span>
-                  ℹ️ All video components in Stage 3 are optional. Configure an FPV video system or
+                  ℹ️ All video components in Step 3 are optional. Configure an FPV video system or
                   choose "None" for line-of-sight flying.
                 </span>
                 <button
@@ -3130,7 +3130,7 @@ export function BuildWizardPage() {
             </div>
           )}
 
-          {/* STAGE 4: Review & Finalize (BOM & Save) */}
+          {/* STEP 4: Review & Finalize (BOM & Save) */}
           {activeStage === 4 && (
             <div className="p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-5">
               <div>
@@ -3334,7 +3334,7 @@ export function BuildWizardPage() {
             </div>
           )}
 
-          {/* Bottom Stage Navigation Controls */}
+          {/* Bottom Step Navigation Controls */}
           <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-3">
             <button
               type="button"
@@ -3343,7 +3343,7 @@ export function BuildWizardPage() {
               className="w-full sm:w-auto px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               <ArrowLeft size={14} className="inline mr-1" />
-              Previous Stage
+              Previous Step
             </button>
 
             {activeStage < 4 && (
@@ -3380,7 +3380,7 @@ export function BuildWizardPage() {
               <div className="min-w-0">
                 <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">Start Over</div>
                 <div className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
-                  Clear all selections &amp; return to Stage 0
+                  Clear all selections &amp; return to Step 0
                 </div>
               </div>
             </div>
@@ -3388,7 +3388,7 @@ export function BuildWizardPage() {
               type="button"
               onClick={resetWizard}
               className="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 active:scale-95 text-white text-xs font-bold transition-all shadow-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
-              title="Clear all fields and return to Stage 0"
+              title="Clear all fields and return to Step 0"
             >
               <RotateCcw size={13} />
               <span>Reset</span>
@@ -3644,7 +3644,7 @@ export function BuildWizardPage() {
                       ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
                       : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
                   }`}
-                  title={isStage1Unlocked ? "Go to Stage 1: Frame selection" : "Stage 1 is locked"}
+                  title={isStage1Unlocked ? "Go to Step 1: Frame selection" : "Step 1 is locked"}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3690,7 +3690,7 @@ export function BuildWizardPage() {
                       ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
                       : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
                   }`}
-                  title={isStage1Unlocked ? "Go to Stage 1: Motor selection" : "Stage 1 is locked"}
+                  title={isStage1Unlocked ? "Go to Step 1: Motor selection" : "Step 1 is locked"}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
@@ -3739,7 +3739,7 @@ export function BuildWizardPage() {
                       : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
                   }`}
                   title={
-                    isStage1Unlocked ? "Go to Stage 1: Propeller selection" : "Stage 1 is locked"
+                    isStage1Unlocked ? "Go to Step 1: Propeller selection" : "Step 1 is locked"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -3790,8 +3790,8 @@ export function BuildWizardPage() {
                   }`}
                   title={
                     isStage2Unlocked
-                      ? "Go to Stage 2: Flight Controller selection"
-                      : "Stage 2 is locked: Flight Controller (Complete Stage 1 first)"
+                      ? "Go to Step 2: Flight Controller selection"
+                      : "Step 2 is locked: Flight Controller (Complete Step 1 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -3843,8 +3843,8 @@ export function BuildWizardPage() {
                   }`}
                   title={
                     isStage2Unlocked
-                      ? "Go to Stage 2: ESC selection"
-                      : "Stage 2 is locked: Speed Controller (ESC) (Complete Stage 1 first)"
+                      ? "Go to Step 2: ESC selection"
+                      : "Step 2 is locked: Speed Controller (ESC) (Complete Step 1 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -3904,8 +3904,8 @@ export function BuildWizardPage() {
                   }`}
                   title={
                     isStage2Unlocked
-                      ? "Go to Stage 2: Receiver selection"
-                      : "Stage 2 is locked: Receiver (RX) (Complete Stage 1 first)"
+                      ? "Go to Step 2: Receiver selection"
+                      : "Step 2 is locked: Receiver (RX) (Complete Step 1 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -3963,8 +3963,8 @@ export function BuildWizardPage() {
                   }`}
                   title={
                     isStage2Unlocked
-                      ? "Go to Stage 2: RX Antenna selection"
-                      : "Stage 2 is locked: RX Antenna (Complete Stage 1 first)"
+                      ? "Go to Step 2: RX Antenna selection"
+                      : "Step 2 is locked: RX Antenna (Complete Step 1 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -4022,8 +4022,8 @@ export function BuildWizardPage() {
                   }`}
                   title={
                     isStage3Unlocked
-                      ? "Go to Stage 3: Video Transmitter selection"
-                      : "Stage 3 is locked: Video Transmitter (VTX) (Complete Stages 1 & 2 first)"
+                      ? "Go to Step 3: Video Transmitter selection"
+                      : "Step 3 is locked: Video Transmitter (VTX) (Complete Steps 1 & 2 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -4087,8 +4087,8 @@ export function BuildWizardPage() {
                   }`}
                   title={
                     isStage3Unlocked
-                      ? "Go to Stage 3: Camera selection"
-                      : "Stage 3 is locked: Camera (Complete Stages 1 & 2 first)"
+                      ? "Go to Step 3: Camera selection"
+                      : "Step 3 is locked: Camera (Complete Steps 1 & 2 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -4144,8 +4144,8 @@ export function BuildWizardPage() {
                   }`}
                   title={
                     isStage3Unlocked
-                      ? "Go to Stage 3: VTX Antenna selection"
-                      : "Stage 3 is locked: VTX Antenna (Complete Stages 1 & 2 first)"
+                      ? "Go to Step 3: VTX Antenna selection"
+                      : "Step 3 is locked: VTX Antenna (Complete Steps 1 & 2 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -4203,8 +4203,8 @@ export function BuildWizardPage() {
                   }`}
                   title={
                     isStage3Unlocked
-                      ? "Go to Stage 3: GPS selection"
-                      : "Stage 3 is locked: GPS Receiver (Complete Stages 1 & 2 first)"
+                      ? "Go to Step 3: GPS selection"
+                      : "Step 3 is locked: GPS Receiver (Complete Steps 1 & 2 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">

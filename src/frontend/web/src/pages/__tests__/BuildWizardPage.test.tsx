@@ -33,7 +33,7 @@ describe("BuildWizardPage Component", () => {
     );
   }
 
-  it("renders with initial empty state: Stage 0 active with baseline options", async () => {
+  it("renders with initial empty state: Step 0 active with baseline options", async () => {
     renderWizard();
 
     // Check title & banner
@@ -45,12 +45,12 @@ describe("BuildWizardPage Component", () => {
     expect(screen.queryByText(/Interactive Build Wizard/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/• Stage/i)).not.toBeInTheDocument();
 
-    // Stage 0 active, Stage 1 unlocked (0/3), stages 2-4 disabled
+    // Step 0 active, Step 1 unlocked (0/3), steps 2-4 disabled
     expect(screen.getByText("Template Selection")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /stage 1/i })).toBeEnabled();
-    expect(screen.getByRole("button", { name: /stage 2/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /stage 3/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /stage 4/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /step 1/i })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /step 2/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /step 3/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /step 4/i })).toBeDisabled();
 
     // Stage 0 baseline options
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
@@ -219,7 +219,7 @@ describe("BuildWizardPage Component", () => {
 
     // Verify Stage 3 Video sections: 3A VTX, 3B Camera, 3C Video Transmitter Antenna(s)
     expect(
-      await screen.findByText(/All video components in Stage 3 are optional/i),
+      await screen.findByText(/All video components in Step 3 are optional/i),
     ).toBeInTheDocument();
     expect(screen.getByText("3A. Video Transmitter (VTX)")).toBeInTheDocument();
     expect(screen.getByText("3B. FPV Camera")).toBeInTheDocument();
@@ -276,15 +276,15 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("Template Active")).toBeInTheDocument();
 
     // All stages 0 to 4 in the stage bar should become marked as Done
-    const stageNav = screen.getByRole("navigation", { name: "Build Stages" });
+    const stageNav = screen.getByRole("navigation", { name: "Build Steps" });
     const stageTabs = within(stageNav).getAllByRole("button");
     expect(stageTabs).toHaveLength(5);
     for (const tab of stageTabs) {
       expect(tab).toHaveTextContent("Done");
     }
 
-    // Navigate to Stage 4 (Review & Save)
-    const stage4Tab = within(stageNav).getByRole("button", { name: /Stage 4/i });
+    // Navigate to Step 4 (Review & Save)
+    const stage4Tab = within(stageNav).getByRole("button", { name: /Step 4/i });
     expect(stage4Tab).toBeEnabled();
     await user.click(stage4Tab);
 
@@ -315,9 +315,9 @@ describe("BuildWizardPage Component", () => {
     const templateCards = await screen.findAllByText("Bando Basher 5 inch");
     await user.click(templateCards[0]);
 
-    // Navigate to Stage 4 (Review & Save)
-    const stageNav = screen.getByRole("navigation", { name: "Build Stages" });
-    const stage4Tab = within(stageNav).getByRole("button", { name: /Stage 4/i });
+    // Navigate to Step 4 (Review & Save)
+    const stageNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const stage4Tab = within(stageNav).getByRole("button", { name: /Step 4/i });
     await user.click(stage4Tab);
 
     // Change build name to one that generates -copy1
@@ -394,41 +394,41 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
     expect(screen.getByText("BOM Total Dry Weight:")).toBeInTheDocument();
 
-    // Verify Stage 1 items are unlocked initially
-    expect(screen.getByTitle("Go to Stage 1: Frame selection")).toBeEnabled();
-    expect(screen.getByTitle("Go to Stage 1: Motor selection")).toBeEnabled();
-    expect(screen.getByTitle("Go to Stage 1: Propeller selection")).toBeEnabled();
+    // Verify Step 1 items are unlocked initially
+    expect(screen.getByTitle("Go to Step 1: Frame selection")).toBeEnabled();
+    expect(screen.getByTitle("Go to Step 1: Motor selection")).toBeEnabled();
+    expect(screen.getByTitle("Go to Step 1: Propeller selection")).toBeEnabled();
 
-    // Verify Stage 2 & 3 items are locked initially with disabled buttons
+    // Verify Step 2 & 3 items are locked initially with disabled buttons
     const fcPartButton = screen.getByTitle(
-      "Stage 2 is locked: Flight Controller (Complete Stage 1 first)",
+      "Step 2 is locked: Flight Controller (Complete Step 1 first)",
     );
     expect(fcPartButton).toBeDisabled();
     expect(
-      screen.getByTitle("Stage 2 is locked: Speed Controller (ESC) (Complete Stage 1 first)"),
+      screen.getByTitle("Step 2 is locked: Speed Controller (ESC) (Complete Step 1 first)"),
     ).toBeDisabled();
     expect(
-      screen.getByTitle("Stage 3 is locked: Video Transmitter (VTX) (Complete Stages 1 & 2 first)"),
+      screen.getByTitle("Step 3 is locked: Video Transmitter (VTX) (Complete Steps 1 & 2 first)"),
     ).toBeDisabled();
 
-    // Clicking locked Flight Controller button does NOT navigate to Stage 2
+    // Clicking locked Flight Controller button does NOT navigate to Step 2
     await user.click(fcPartButton);
     expect(screen.queryByText("2A. Flight Controller")).not.toBeInTheDocument();
 
-    // Advance to Stage 1 and select Frame, Motor, and Propeller to complete Stage 1
+    // Advance to Step 1 and select Frame, Motor, and Propeller to complete Step 1
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
     await user.click(await screen.findByText("Master 5 V2"));
     await user.click(await screen.findByText("ECO II 2207"));
     await user.click(await screen.findByText("Hurricane 51433"));
 
-    // Verify 3 / 11 parts are now selected and Stage 1 is complete
+    // Verify 3 / 11 parts are now selected and Step 1 is complete
     expect(screen.getByText("3 / 11 Parts")).toBeInTheDocument();
 
-    // Now Stage 2 is unlocked in the Selected Parts list
-    const unlockedFcButton = screen.getByTitle("Go to Stage 2: Flight Controller selection");
+    // Now Step 2 is unlocked in the Selected Parts list
+    const unlockedFcButton = screen.getByTitle("Go to Step 2: Flight Controller selection");
     expect(unlockedFcButton).toBeEnabled();
 
-    // Clicking on Flight Controller now successfully navigates to Stage 2
+    // Clicking on Flight Controller now successfully navigates to Step 2
     await user.click(unlockedFcButton);
     expect(screen.getByText("2A. Flight Controller")).toBeInTheDocument();
   });
@@ -437,12 +437,12 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Stage 1 and select Frame
+    // Advance to Step 1 and select Frame
     await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
     await user.click(await screen.findByText("Master 5 V2"));
 
     // Find the Selected Parts list frame button
-    const frameBtn = screen.getByTitle("Go to Stage 1: Frame selection");
+    const frameBtn = screen.getByTitle("Go to Step 1: Frame selection");
     expect(frameBtn).toBeInTheDocument();
 
     // Find the hover trigger wrapper
