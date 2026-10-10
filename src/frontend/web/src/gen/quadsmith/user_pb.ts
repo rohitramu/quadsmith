@@ -6,6 +6,7 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file__common } from "./_common_pb";
 import { file__sql } from "./_sql_pb";
+import { file__validate } from "./_validate_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
@@ -16,8 +17,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_user: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cgp1c2VyLnByb3RvEglxdWFkc21pdGginwMKBFVzZXISFAoEdXVpZBgBIAEoCUIGwvMYAhABEhQKAmlkGAIgASgJQgjC8xgEIAEoARIXCgVlbWFpbBgDIAEoCUIIwvMYBCABKAESGgoEcm9sZRgEIAEoCUIMwvMYCDoGJ1VTRVInEjUKEWVtYWlsX3ZlcmlmaWVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIzCg9sYXN0X3JlbmFtZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmRlbGV0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi0KCWJhbm5lZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXA6C8LzGAcKBXVzZXJzIskBCgtVc2VyUHJvZmlsZRIUCgR1dWlkGAEgASgJQgbC8xgCEAESKAoJdXNlcl91dWlkGAIgASgJQhXC8xgRGgt1c2Vycyh1dWlkKSABKAESFAoMZGlzcGxheV9uYW1lGAMgASgJEhIKCmF2YXRhcl91cmwYBCABKAkSCwoDYmlvGAUgASgJEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wOhPC8xgPCg11c2VyX3Byb2ZpbGVzIvcBCglVc2VyRW1haWwSFAoEdXVpZBgBIAEoCUIGwvMYAhABEiYKCXVzZXJfdXVpZBgCIAEoCUITwvMYDxoLdXNlcnModXVpZCkoARIXCgVlbWFpbBgDIAEoCUIIwvMYBCABKAESHwoKaXNfcHJpbWFyeRgEIAEoCEILwvMYBzoFZmFsc2USLwoLdmVyaWZpZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmNyZWF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wOhHC8xgNCgt1c2VyX2VtYWlscyKbAQoRUHVibGljVXNlclByb2ZpbGUSCgoCaWQYASABKAkSFAoMZGlzcGxheV9uYW1lGAIgASgJEhIKCmF2YXRhcl91cmwYAyABKAkSCwoDYmlvGAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhMKC2J1aWxkX2NvdW50GAYgASgFIqcCCgxSZWZyZXNoVG9rZW4SFAoEdXVpZBgBIAEoCUIGwvMYAhABEiYKCXVzZXJfdXVpZBgCIAEoCUITwvMYDxoLdXNlcnModXVpZCkoARIcCgp0b2tlbl9oYXNoGAMgASgJQgjC8xgEIAEoARIuCgpleHBpcmVzX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIwCgxsYXN0X3VzZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhMKC2RldmljZV9oaW50GAYgASgJEi4KCmNyZWF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wOhTC8xgQCg5yZWZyZXNoX3Rva2VucyKLAgoIRW1haWxPdHASFAoEdXVpZBgBIAEoCUIGwvMYAhABEhUKBWVtYWlsGAIgASgJQgbC8xgCKAESEQoJY29kZV9oYXNoGAMgASgJEi4KCmV4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEisKB3VzZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiAKD2ZhaWxlZF9hdHRlbXB0cxgGIAEoBUIHwvMYAzoBMBIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDoQwvMYDAoKZW1haWxfb3RwcyKxAQoNSGFuZGxlSGlzdG9yeRIUCgR1dWlkGAEgASgJQgbC8xgCEAESJgoJdXNlcl91dWlkGAIgASgJQhPC8xgPGgt1c2Vycyh1dWlkKSgBEhoKCm9sZF9oYW5kbGUYAyABKAlCBsLzGAIoARIuCgpyZW5hbWVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDoWwvMYEgoQaGFuZGxlX2hpc3RvcmllcyKkAgoMT0F1dGhBY2NvdW50EhQKBHV1aWQYASABKAlCBsLzGAIQARImCgl1c2VyX3V1aWQYAiABKAlCE8LzGA8aC3VzZXJzKHV1aWQpKAESEAoIcHJvdmlkZXIYAyABKAkSGwoTcHJvdmlkZXJfYWNjb3VudF9pZBgEIAEoCRIUCgxhY2Nlc3NfdG9rZW4YBSABKAkSFQoNcmVmcmVzaF90b2tlbhgGIAEoCRI0ChB0b2tlbl9leHBpcmVzX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpjcmVhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDoUwvMYEAoOb2F1dGhfYWNjb3VudHMiHAoOR2V0VXNlclJlcXVlc3QSCgoCaWQYASABKAkiJQoXR2V0UHVibGljUHJvZmlsZVJlcXVlc3QSCgoCaWQYASABKAkiLQobQ2hlY2tIYW5kbGVBdmFpbGFibGVSZXF1ZXN0Eg4KBmhhbmRsZRgBIAEoCSJCChxDaGVja0hhbmRsZUF2YWlsYWJsZVJlc3BvbnNlEhEKCWF2YWlsYWJsZRgBIAEoCBIPCgdtZXNzYWdlGAIgASgJMoMCCgtVc2VyU2VydmljZRI1CgdHZXRVc2VyEhkucXVhZHNtaXRoLkdldFVzZXJSZXF1ZXN0Gg8ucXVhZHNtaXRoLlVzZXISVAoQR2V0UHVibGljUHJvZmlsZRIiLnF1YWRzbWl0aC5HZXRQdWJsaWNQcm9maWxlUmVxdWVzdBocLnF1YWRzbWl0aC5QdWJsaWNVc2VyUHJvZmlsZRJnChRDaGVja0hhbmRsZUF2YWlsYWJsZRImLnF1YWRzbWl0aC5DaGVja0hhbmRsZUF2YWlsYWJsZVJlcXVlc3QaJy5xdWFkc21pdGguQ2hlY2tIYW5kbGVBdmFpbGFibGVSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
-    [file__common, file__sql, file_google_protobuf_timestamp],
+    "Cgp1c2VyLnByb3RvEglxdWFkc21pdGgi8QMKBFVzZXISFAoEdXVpZBgBIAEoCUIGwvMYAhABEmYKAmlkGAIgASgJQlrC8xgEIAEoAYKyGU4KTAgDEBQaHl5bYS16XVthLXowLTlfXXsxLDE4fVthLXowLTldJCIFYWRtaW4iBHJvb3QqAl9fKglxdWFkc21pdGgqCnF1YWRfc21pdGgSFwoFZW1haWwYAyABKAlCCMLzGAQgASgBEhoKBHJvbGUYBCABKAlCDMLzGAg6BidVU0VSJxI1ChFlbWFpbF92ZXJpZmllZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMwoPbGFzdF9yZW5hbWVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpkZWxldGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBItCgliYW5uZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wOgvC8xgHCgV1c2VycyLJAQoLVXNlclByb2ZpbGUSFAoEdXVpZBgBIAEoCUIGwvMYAhABEigKCXVzZXJfdXVpZBgCIAEoCUIVwvMYERoLdXNlcnModXVpZCkgASgBEhQKDGRpc3BsYXlfbmFtZRgDIAEoCRISCgphdmF0YXJfdXJsGAQgASgJEgsKA2JpbxgFIAEoCRIuCgp1cGRhdGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDoTwvMYDwoNdXNlcl9wcm9maWxlcyL3AQoJVXNlckVtYWlsEhQKBHV1aWQYASABKAlCBsLzGAIQARImCgl1c2VyX3V1aWQYAiABKAlCE8LzGA8aC3VzZXJzKHV1aWQpKAESFwoFZW1haWwYAyABKAlCCMLzGAQgASgBEh8KCmlzX3ByaW1hcnkYBCABKAhCC8LzGAc6BWZhbHNlEi8KC3ZlcmlmaWVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpjcmVhdGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDoRwvMYDQoLdXNlcl9lbWFpbHMimwEKEVB1YmxpY1VzZXJQcm9maWxlEgoKAmlkGAEgASgJEhQKDGRpc3BsYXlfbmFtZRgCIAEoCRISCgphdmF0YXJfdXJsGAMgASgJEgsKA2JpbxgEIAEoCRIuCgpjcmVhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBITCgtidWlsZF9jb3VudBgGIAEoBSKnAgoMUmVmcmVzaFRva2VuEhQKBHV1aWQYASABKAlCBsLzGAIQARImCgl1c2VyX3V1aWQYAiABKAlCE8LzGA8aC3VzZXJzKHV1aWQpKAESHAoKdG9rZW5faGFzaBgDIAEoCUIIwvMYBCABKAESLgoKZXhwaXJlc19hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMAoMbGFzdF91c2VkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBITCgtkZXZpY2VfaGludBgGIAEoCRIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDoUwvMYEAoOcmVmcmVzaF90b2tlbnMiiwIKCEVtYWlsT3RwEhQKBHV1aWQYASABKAlCBsLzGAIQARIVCgVlbWFpbBgCIAEoCUIGwvMYAigBEhEKCWNvZGVfaGFzaBgDIAEoCRIuCgpleHBpcmVzX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIrCgd1c2VkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIgCg9mYWlsZWRfYXR0ZW1wdHMYBiABKAVCB8LzGAM6ATASLgoKY3JlYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXA6EMLzGAwKCmVtYWlsX290cHMisQEKDUhhbmRsZUhpc3RvcnkSFAoEdXVpZBgBIAEoCUIGwvMYAhABEiYKCXVzZXJfdXVpZBgCIAEoCUITwvMYDxoLdXNlcnModXVpZCkoARIaCgpvbGRfaGFuZGxlGAMgASgJQgbC8xgCKAESLgoKcmVuYW1lZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXA6FsLzGBIKEGhhbmRsZV9oaXN0b3JpZXMipAIKDE9BdXRoQWNjb3VudBIUCgR1dWlkGAEgASgJQgbC8xgCEAESJgoJdXNlcl91dWlkGAIgASgJQhPC8xgPGgt1c2Vycyh1dWlkKSgBEhAKCHByb3ZpZGVyGAMgASgJEhsKE3Byb3ZpZGVyX2FjY291bnRfaWQYBCABKAkSFAoMYWNjZXNzX3Rva2VuGAUgASgJEhUKDXJlZnJlc2hfdG9rZW4YBiABKAkSNAoQdG9rZW5fZXhwaXJlc19hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXA6FMLzGBAKDm9hdXRoX2FjY291bnRzIhwKDkdldFVzZXJSZXF1ZXN0EgoKAmlkGAEgASgJIiUKF0dldFB1YmxpY1Byb2ZpbGVSZXF1ZXN0EgoKAmlkGAEgASgJIoEBChtDaGVja0hhbmRsZUF2YWlsYWJsZVJlcXVlc3QSYgoGaGFuZGxlGAEgASgJQlKCshlOCkwIAxAUGh5eW2Etel1bYS16MC05X117MSwxOH1bYS16MC05XSQiBWFkbWluIgRyb290KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoIkIKHENoZWNrSGFuZGxlQXZhaWxhYmxlUmVzcG9uc2USEQoJYXZhaWxhYmxlGAEgASgIEg8KB21lc3NhZ2UYAiABKAkygwIKC1VzZXJTZXJ2aWNlEjUKB0dldFVzZXISGS5xdWFkc21pdGguR2V0VXNlclJlcXVlc3QaDy5xdWFkc21pdGguVXNlchJUChBHZXRQdWJsaWNQcm9maWxlEiIucXVhZHNtaXRoLkdldFB1YmxpY1Byb2ZpbGVSZXF1ZXN0GhwucXVhZHNtaXRoLlB1YmxpY1VzZXJQcm9maWxlEmcKFENoZWNrSGFuZGxlQXZhaWxhYmxlEiYucXVhZHNtaXRoLkNoZWNrSGFuZGxlQXZhaWxhYmxlUmVxdWVzdBonLnF1YWRzbWl0aC5DaGVja0hhbmRsZUF2YWlsYWJsZVJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    [file__common, file__sql, file__validate, file_google_protobuf_timestamp],
   );
 
 /**
@@ -31,6 +32,40 @@ export type User = Message<"quadsmith.User"> & {
 
   /**
    * Public pilot handle (e.g. "fpv_pilot")
+   *
+   * ============================================================================
+   * REGEX FEATURE LIMITATIONS IN PROTOBUF (RE2 ENGINE):
+   * ============================================================================
+   * Protobuf validation frameworks (such as protovalidate, protoc-gen-validate,
+   * and Google CEL / RE2) enforce strict limitations on regular expressions:
+   *
+   * 1. NO LOOKAROUND ASSERTIONS:
+   *    Lookahead assertions ((?=...), (?!...)) and lookbehind assertions
+   *    ((?<=...), (?<!...)) are strictly forbidden by RE2. Lookarounds require
+   *    arbitrary backtracking which has exponential O(2^n) worst-case time complexity,
+   *    exposing servers to Regular Expression Denial of Service (ReDoS) attacks.
+   *    RE2 guarantees linear O(n) execution time relative to input length.
+   *
+   * 2. NO BACKREFERENCES:
+   *    Constructs like \1, \2 are unsupported because they make matching NP-complete.
+   *
+   * 3. NO POSSESSIVE QUANTIFIERS:
+   *    Tokens like *+, ++, ?+, {n,m}+ are unsupported.
+   *
+   * Because PCRE negative lookaheads like `(?!.*quad_?smith)`, `(?!admin$)`, and
+   * `(?!.*__)` cannot be compiled into an RE2 pattern in Protobuf:
+   *
+   * - The structural regex `pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"` validates:
+   *   * Starts with a lowercase letter [a-z]
+   *   * Contains only lowercase letters, digits, and underscores
+   *   * Ends with an alphanumeric character [a-z0-9] (no trailing underscore)
+   *   * Length between 3 and 20 characters
+   *
+   * - Exact-match exclusions are declared via `not_in: ["admin", "root"]`.
+   *
+   * - Substring and consecutive symbol exclusions are declared via
+   *   `not_contains: ["__", "quadsmith", "quad_smith"]`.
+   * ============================================================================
    *
    * @generated from field: string id = 2;
    */

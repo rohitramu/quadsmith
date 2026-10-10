@@ -4,6 +4,7 @@ package quadsmith;
 
 import "_common.proto";
 import "_sql.proto";
+import "_validate.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
@@ -16,10 +17,61 @@ message User {
   option (quadsmith.sql.table) = {name: "users"};
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {
-    is_unique: true
-    create_index: true
-  }]; // Public pilot handle (e.g. "fpv_pilot")
+  // Public pilot handle (e.g. "fpv_pilot")
+  //
+  // ============================================================================
+  // REGEX FEATURE LIMITATIONS IN PROTOBUF (RE2 ENGINE):
+  // ============================================================================
+  // Protobuf validation frameworks (such as protovalidate, protoc-gen-validate,
+  // and Google CEL / RE2) enforce strict limitations on regular expressions:
+  //
+  // 1. NO LOOKAROUND ASSERTIONS:
+  //    Lookahead assertions ((?=...), (?!...)) and lookbehind assertions
+  //    ((?<=...), (?<!...)) are strictly forbidden by RE2. Lookarounds require
+  //    arbitrary backtracking which has exponential O(2^n) worst-case time complexity,
+  //    exposing servers to Regular Expression Denial of Service (ReDoS) attacks.
+  //    RE2 guarantees linear O(n) execution time relative to input length.
+  //
+  // 2. NO BACKREFERENCES:
+  //    Constructs like \1, \2 are unsupported because they make matching NP-complete.
+  //
+  // 3. NO POSSESSIVE QUANTIFIERS:
+  //    Tokens like *+, ++, ?+, {n,m}+ are unsupported.
+  //
+  // Because PCRE negative lookaheads like `(?!.*quad_?smith)`, `(?!admin$)`, and
+  // `(?!.*__)` cannot be compiled into an RE2 pattern in Protobuf:
+  //
+  // - The structural regex `pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"` validates:
+  //   * Starts with a lowercase letter [a-z]
+  //   * Contains only lowercase letters, digits, and underscores
+  //   * Ends with an alphanumeric character [a-z0-9] (no trailing underscore)
+  //   * Length between 3 and 20 characters
+  //
+  // - Exact-match exclusions are declared via `not_in: ["admin", "root"]`.
+  //
+  // - Substring and consecutive symbol exclusions are declared via
+  //   `not_contains: ["__", "quadsmith", "quad_smith"]`.
+  // ============================================================================
+  string id = 2 [
+    (quadsmith.sql.column) = {
+      is_unique: true
+      create_index: true
+    },
+    (quadsmith.validate.rules).string = {
+      min_len: 3
+      max_len: 20
+      pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
+      not_in: [
+        "admin",
+        "root"
+      ]
+      not_contains: [
+        "__",
+        "quadsmith",
+        "quad_smith"
+      ]
+    }
+  ];
   string email = 3 [(quadsmith.sql.column) = {
     is_unique: true
     create_index: true
@@ -146,7 +198,20 @@ message GetPublicProfileRequest {
 }
 
 message CheckHandleAvailableRequest {
-  string handle = 1;
+  string handle = 1 [(quadsmith.validate.rules).string = {
+    min_len: 3
+    max_len: 20
+    pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
+    not_in: [
+      "admin",
+      "root"
+    ]
+    not_contains: [
+      "__",
+      "quadsmith",
+      "quad_smith"
+    ]
+  }];
 }
 
 message CheckHandleAvailableResponse {

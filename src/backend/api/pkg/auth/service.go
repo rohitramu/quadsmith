@@ -1021,6 +1021,33 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 	return res, nil
 }
 
+var handleStructureRegex = regexp.MustCompile(`^[a-z][a-z0-9_]{1,18}[a-z0-9]$`)
+
+// ValidatePilotHandle validates a candidate pilot handle against the rules declared in user.proto.
+//
+// Rules enforced:
+// 1. Length between 3 and 20 characters.
+// 2. Starts with a lowercase letter, ends with an alphanumeric character.
+// 3. Contains only lowercase letters, digits, and underscores.
+// 4. Cannot contain consecutive underscores ("__").
+// 5. Cannot contain "quadsmith" or "quad_smith".
+// 6. Cannot equal reserved handles "admin" or "root".
+func ValidatePilotHandle(handle string) error {
+	if !handleStructureRegex.MatchString(handle) {
+		return errors.New("handle must be 3-20 characters, start with a letter, end with alphanumeric, and contain only lowercase letters, numbers, and underscores")
+	}
+	if strings.Contains(handle, "__") {
+		return errors.New("handle cannot contain consecutive underscores")
+	}
+	if strings.Contains(handle, "quadsmith") || strings.Contains(handle, "quad_smith") {
+		return errors.New("handle cannot contain 'quadsmith' or 'quad_smith'")
+	}
+	if handle == "admin" || handle == "root" {
+		return errors.New("reserved handle")
+	}
+	return nil
+}
+
 func (s *AuthService) generateUniqueHandle(ctx context.Context, email string) string {
 	parts := strings.Split(email, "@")
 	base := strings.ToLower(parts[0])
@@ -1029,12 +1056,25 @@ func (s *AuthService) generateUniqueHandle(ctx context.Context, email string) st
 	}
 	reg := regexp.MustCompile(`[^a-z0-9_]`)
 	cleaned := reg.ReplaceAllString(base, "_")
+	for strings.Contains(cleaned, "__") {
+		cleaned = strings.ReplaceAll(cleaned, "__", "_")
+	}
+	cleaned = strings.Trim(cleaned, "_")
+	cleaned = strings.ReplaceAll(cleaned, "quadsmith", "pilot")
+	cleaned = strings.ReplaceAll(cleaned, "quad_smith", "pilot")
+	if len(cleaned) == 0 || cleaned[0] < 'a' || cleaned[0] > 'z' {
+		cleaned = "pilot_" + cleaned
+	}
 	cleaned = strings.Trim(cleaned, "_")
 	if len(cleaned) < 3 {
 		cleaned = "pilot_" + cleaned
 	}
 	if len(cleaned) > 20 {
 		cleaned = cleaned[:20]
+		cleaned = strings.TrimRight(cleaned, "_")
+	}
+	if cleaned == "admin" || cleaned == "root" {
+		cleaned = "pilot_" + cleaned
 	}
 
 	candidate := cleaned
@@ -1048,7 +1088,13 @@ func (s *AuthService) generateUniqueHandle(ctx context.Context, email string) st
 			return candidate
 		}
 		counter++
-		candidate = fmt.Sprintf("%s_%d", cleaned, counter)
+		suffix := fmt.Sprintf("_%d", counter)
+		baseLen := 20 - len(suffix)
+		if len(cleaned) > baseLen {
+			candidate = cleaned[:baseLen] + suffix
+		} else {
+			candidate = cleaned + suffix
+		}
 	}
 }
 
@@ -1147,11 +1193,10 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 
 func (s *UserService) CheckHandleAvailable(ctx context.Context, req *connect.Request[pb.CheckHandleAvailableRequest]) (*connect.Response[pb.CheckHandleAvailableResponse], error) {
 	handle := strings.ToLower(strings.TrimSpace(req.Msg.GetHandle()))
-	matched, _ := regexp.MatchString(`^[a-z0-9_]{3,30}$`, handle)
-	if !matched {
+	if err := ValidatePilotHandle(handle); err != nil {
 		return connect.NewResponse(&pb.CheckHandleAvailableResponse{
 			Available: false,
-			Message:   "Handle must be 3-30 characters and contain only lowercase letters, numbers, and underscores",
+			Message:   err.Error(),
 		}), nil
 	}
 

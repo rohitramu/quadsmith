@@ -23,9 +23,44 @@ const (
 )
 
 type User struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Uuid            string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`       // Public pilot handle (e.g. "fpv_pilot")
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Uuid  string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	// Public pilot handle (e.g. "fpv_pilot")
+	//
+	// ============================================================================
+	// REGEX FEATURE LIMITATIONS IN PROTOBUF (RE2 ENGINE):
+	// ============================================================================
+	// Protobuf validation frameworks (such as protovalidate, protoc-gen-validate,
+	// and Google CEL / RE2) enforce strict limitations on regular expressions:
+	//
+	// 1. NO LOOKAROUND ASSERTIONS:
+	//    Lookahead assertions ((?=...), (?!...)) and lookbehind assertions
+	//    ((?<=...), (?<!...)) are strictly forbidden by RE2. Lookarounds require
+	//    arbitrary backtracking which has exponential O(2^n) worst-case time complexity,
+	//    exposing servers to Regular Expression Denial of Service (ReDoS) attacks.
+	//    RE2 guarantees linear O(n) execution time relative to input length.
+	//
+	// 2. NO BACKREFERENCES:
+	//    Constructs like \1, \2 are unsupported because they make matching NP-complete.
+	//
+	// 3. NO POSSESSIVE QUANTIFIERS:
+	//    Tokens like *+, ++, ?+, {n,m}+ are unsupported.
+	//
+	// Because PCRE negative lookaheads like `(?!.*quad_?smith)`, `(?!admin$)`, and
+	// `(?!.*__)` cannot be compiled into an RE2 pattern in Protobuf:
+	//
+	// - The structural regex `pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"` validates:
+	//   * Starts with a lowercase letter [a-z]
+	//   * Contains only lowercase letters, digits, and underscores
+	//   * Ends with an alphanumeric character [a-z0-9] (no trailing underscore)
+	//   * Length between 3 and 20 characters
+	//
+	// - Exact-match exclusions are declared via `not_in: ["admin", "root"]`.
+	//
+	// - Substring and consecutive symbol exclusions are declared via
+	//   `not_contains: ["__", "quadsmith", "quad_smith"]`.
+	// ============================================================================
+	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Email           string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // Verified email (private)
 	Role            string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // "USER", "ADMIN"
 	EmailVerifiedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=email_verified_at,json=emailVerifiedAt,proto3" json:"email_verified_at,omitempty"`
@@ -932,10 +967,12 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
 	"user.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x81\x04\n" +
+	"_sql.proto\x1a\x0f_validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd3\x04\n" +
 	"\x04User\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12j\n" +
+	"\x02id\x18\x02 \x01(\tBZ\xc2\xf3\x18\x04 \x01(\x01\x82\xb2\x19N\n" +
+	"L\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root*\x02__*\tquadsmith*\n" +
+	"quad_smithR\x02id\x12\x1e\n" +
 	"\x05email\x18\x03 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x05email\x12 \n" +
 	"\x04role\x18\x04 \x01(\tB\f\xc2\xf3\x18\b:\x06'USER'R\x04role\x12F\n" +
 	"\x11email_verified_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x0femailVerifiedAt\x12B\n" +
@@ -1028,9 +1065,11 @@ const file_user_proto_rawDesc = "" +
 	"\x0eGetUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\")\n" +
 	"\x17GetPublicProfileRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"5\n" +
-	"\x1bCheckHandleAvailableRequest\x12\x16\n" +
-	"\x06handle\x18\x01 \x01(\tR\x06handle\"V\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x89\x01\n" +
+	"\x1bCheckHandleAvailableRequest\x12j\n" +
+	"\x06handle\x18\x01 \x01(\tBR\x82\xb2\x19N\n" +
+	"L\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root*\x02__*\tquadsmith*\n" +
+	"quad_smithR\x06handle\"V\n" +
 	"\x1cCheckHandleAvailableResponse\x12\x1c\n" +
 	"\tavailable\x18\x01 \x01(\bR\tavailable\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage2\x83\x02\n" +
@@ -1107,6 +1146,7 @@ func file_user_proto_init() {
 	}
 	file___common_proto_init()
 	file___sql_proto_init()
+	file___validate_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

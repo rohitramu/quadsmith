@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package quadsmith.validate;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Validation Rules
+// ---------------------------------------------------------
+
+message StringRules {
+  // Minimum length in characters (Unicode code points)
+  int32 min_len = 1;
+
+  // Maximum length in characters (Unicode code points)
+  int32 max_len = 2;
+
+  // Regular expression pattern matching against Google RE2 syntax.
+  // NOTE: Lookahead assertions (?=...), (?!...) and lookbehind assertions (?<=...), (?<!...)
+  // are NOT supported by RE2 due to exponential backtracking / ReDoS safety guarantees.
+  string pattern = 3;
+
+  // Exact strings that are forbidden (e.g. reserved handles like "admin", "root")
+  repeated string not_in = 4;
+
+  // Substrings that must not appear anywhere in the value (e.g. "quadsmith", "__")
+  repeated string not_contains = 5;
+}
+
+message FieldRules {
+  StringRules string = 1;
+}
+
+// ---------------------------------------------------------
+// Custom Field Options
+// ---------------------------------------------------------
+
+extend google.protobuf.FieldOptions {
+  FieldRules rules = 52000;
+}
