@@ -222,5 +222,5 @@ export function formatProductTitle(
     }
   }
 
-  return cleanName.toLowerCase() === mfg.toLowerCase() ? mfg : `${mfg} - ${cleanName}`;
+  return cleanName.toLowerCase() === mfg.toLowerCase() ? mfg : `${mfg} ${cleanName}`;
 }

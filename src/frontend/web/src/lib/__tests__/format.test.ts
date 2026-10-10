@@ -101,16 +101,16 @@ describe("getTwrDescription", () => {
 });
 
 describe("formatProductTitle", () => {
-  it("formats manufacturer and product name with hyphen", () => {
-    expect(formatProductTitle("EMAX", "ECO II 2207")).toBe("EMAX - ECO II 2207");
+  it("formats manufacturer and product name with a space without dash", () => {
+    expect(formatProductTitle("EMAX", "ECO II 2207")).toBe("EMAX ECO II 2207");
   });
 
   it("strips redundant manufacturer prefix from product name", () => {
-    expect(formatProductTitle("Sub250", "Sub250 1404 4500KV")).toBe("Sub250 - 1404 4500KV");
+    expect(formatProductTitle("Sub250", "Sub250 1404 4500KV")).toBe("Sub250 1404 4500KV");
     expect(formatProductTitle("Walksnail", "Walksnail Moonlight Camera")).toBe(
-      "Walksnail - Moonlight Camera",
+      "Walksnail Moonlight Camera",
     );
-    expect(formatProductTitle("TBS", "TBS - Triumph Pro")).toBe("TBS - Triumph Pro");
+    expect(formatProductTitle("TBS", "TBS - Triumph Pro")).toBe("TBS Triumph Pro");
   });
 
   it("handles identical manufacturer and product name without duplication", () => {
@@ -124,7 +124,7 @@ describe("formatProductTitle", () => {
 
   it("falls back to fallback string if name is missing", () => {
     expect(formatProductTitle(null, null, "fallback-id")).toBe("fallback-id");
-    expect(formatProductTitle("EMAX", null, "eco-ii-2207")).toBe("EMAX - eco-ii-2207");
+    expect(formatProductTitle("EMAX", null, "eco-ii-2207")).toBe("EMAX eco-ii-2207");
   });
 });
 
