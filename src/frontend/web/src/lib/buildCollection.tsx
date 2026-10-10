@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import type { HardwareCollectionDef } from "./hardwareCollections";
 import { BuildSchema, type Build } from "../gen/quadsmith/build_pb";
 import { listBuilds, getBuild } from "../gen/quadsmith/build-BuildService_connectquery";
@@ -41,7 +40,6 @@ export const BUILD_COLLECTION: HardwareCollectionDef = {
     },
   ],
   presets: [
-    { label: "All Builds", query: "" },
     { label: '5" Freestyle', query: 'name.contains("5") || description.contains("5")' },
     { label: '7" Long Range', query: 'name.contains("7") || description.contains("7")' },
     {
@@ -58,14 +56,7 @@ export const BUILD_COLLECTION: HardwareCollectionDef = {
       id: "name",
       title: "Name",
       renderCell: (b: Build) => (
-        <div className="flex items-center gap-2">
-          <Link
-            to={`/builds/${b.id || b.uuid}`}
-            className="font-semibold text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            {b.name}
-          </Link>
-        </div>
+        <span className="font-medium text-zinc-900 dark:text-zinc-100">{b.name || b.id}</span>
       ),
     },
     id: {

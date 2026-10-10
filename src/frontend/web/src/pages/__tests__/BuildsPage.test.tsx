@@ -33,8 +33,9 @@ describe("BuildsPage Component", () => {
     expect(screen.getByText("Long Range Explorer 7 inch")).toBeInTheDocument();
 
     // Check row links to build profile page
-    const bandoLink = screen.getByRole("link", { name: "Bando Basher 5 inch" });
+    const bandoLink = screen.getByRole("link", { name: /view bando basher 5 inch/i });
     expect(bandoLink).toHaveAttribute("href", "/builds/bando-basher-5-inch");
+    expect(screen.queryByRole("button", { name: "All Builds" })).not.toBeInTheDocument();
   });
 
   it("handles sorting by clicking column headers", async () => {
