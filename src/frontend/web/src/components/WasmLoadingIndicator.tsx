@@ -26,7 +26,7 @@ export function WasmLoadingIndicator({ progress, className = "" }: WasmLoadingIn
           </div>
           <div>
             <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
-              Live Build Evaluator
+              Build Evaluator
             </h3>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
               Loading physics engine...

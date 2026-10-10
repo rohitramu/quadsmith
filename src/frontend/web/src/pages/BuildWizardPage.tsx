@@ -3317,7 +3317,7 @@ export function BuildWizardPage() {
           </div>
         </div>
 
-        {/* Right Column: Live Build Evaluator */}
+        {/* Right Column: Build Evaluator */}
         <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-4">
           {/* Prominent Reset Wizard Action Bar (Distinguished from Live Evaluation) */}
           <div className="p-3 rounded-2xl border border-red-500/30 bg-gradient-to-r from-red-50 dark:from-red-950/40 via-white dark:via-zinc-900/80 to-zinc-50 dark:to-zinc-900/90 shadow-xs flex items-center justify-between gap-3">
@@ -3365,16 +3365,9 @@ export function BuildWizardPage() {
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
                 <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
-                  Live Build Evaluator
+                  Build Evaluator
                 </h3>
               </div>
-              {isWasmReady ? (
-                <span className="text-[10px] font-mono font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  Physics Engine (0ms)
-                </span>
-              ) : (
-                <span className="text-[11px] font-mono text-zinc-400">Physics Engine</span>
-              )}
             </div>
 
             {/* Test Battery Selection */}
