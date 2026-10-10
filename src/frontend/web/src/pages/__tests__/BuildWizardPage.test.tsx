@@ -347,7 +347,8 @@ describe("BuildWizardPage Component", () => {
     await user.click(screen.getByRole("button", { name: /Next: Airframe & Propulsion/i }));
     expect(screen.getByText("1A. Frame Chassis")).toBeInTheDocument();
 
-    // Click Reset button in the Reset Wizard card
+    // Click Reset button in the Start Over card
+    expect(screen.getByText("Start Over")).toBeInTheDocument();
     const resetBtn = screen.getByRole("button", { name: /Reset/i });
     await user.click(resetBtn);
 

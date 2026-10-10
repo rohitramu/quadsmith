@@ -3373,16 +3373,14 @@ export function BuildWizardPage() {
 
         {/* Right Column: Build Evaluator */}
         <div className="lg:col-span-4 space-y-4 lg:sticky lg:top-4">
-          {/* Prominent Reset Wizard Action Bar (Distinguished from Live Evaluation) */}
+          {/* Prominent Start Over Action Bar (Distinguished from Live Evaluation) */}
           <div className="p-3 rounded-2xl border border-red-500/30 bg-gradient-to-r from-red-50 dark:from-red-950/40 via-white dark:via-zinc-900/80 to-zinc-50 dark:to-zinc-900/90 shadow-xs flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-8 h-8 rounded-xl bg-red-100 dark:bg-red-500/20 border border-red-200 dark:border-red-500/30 flex items-center justify-center shrink-0 text-red-600 dark:text-red-400">
                 <RotateCcw size={16} />
               </div>
               <div className="min-w-0">
-                <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                  Reset Wizard
-                </div>
+                <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">Start Over</div>
                 <div className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
                   Clear all selections &amp; return to Stage 0
                 </div>
