@@ -1,9 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor, within } from "@testing-library/react";
 import { renderApp } from "../../test/test-utils";
+import { mockUser } from "../../test/mocks/fixtures";
 
 describe("AccountSettingsPage Component", () => {
   beforeEach(() => {
+    mockUser.id = "fpv_pilot";
     localStorage.setItem("qs_access_token", "mock-jwt-token");
     vi.spyOn(window, "confirm").mockImplementation(() => true);
   });
@@ -207,6 +209,64 @@ describe("AccountSettingsPage Component", () => {
     await waitFor(() => {
       expect(screen.queryByText(/accounts merged successfully!/i)).not.toBeInTheDocument();
       expect(screen.getByText("old.racer@fpv.org")).toBeInTheDocument();
+    });
+  });
+
+  it("opens Change Pilot Handle modal, shows held archived handles, and allows 1-click reclaim", async () => {
+    renderApp("/account");
+
+    const changeHandleBtn = await screen.findByRole("button", { name: /change handle/i });
+    expect(changeHandleBtn).toBeInTheDocument();
+    fireEvent.click(changeHandleBtn);
+
+    // Modal opens
+    expect(
+      await screen.findByRole("heading", { name: /change pilot handle/i }),
+    ).toBeInTheDocument();
+    expect(await screen.findByText("Your Held Handles (30d Hold)")).toBeInTheDocument();
+    expect(screen.getByText("@old_racer")).toBeInTheDocument();
+    expect(screen.getByText("Reclaim Available")).toBeInTheDocument();
+
+    // Click Reclaim button
+    const reclaimBtn = screen.getByRole("button", { name: /^reclaim$/i });
+    expect(reclaimBtn).toBeInTheDocument();
+    expect(reclaimBtn).not.toBeDisabled();
+    fireEvent.click(reclaimBtn);
+
+    // Success notice appears
+    await waitFor(() => {
+      expect(screen.getByText(/changed to @old_racer/i)).toBeInTheDocument();
+    });
+  });
+
+  it("allows entering a new handle and submitting the change", async () => {
+    renderApp("/account");
+
+    const changeHandleBtn = await screen.findByRole("button", { name: /change handle/i });
+    fireEvent.click(changeHandleBtn);
+
+    expect(
+      await screen.findByRole("heading", { name: /change pilot handle/i }),
+    ).toBeInTheDocument();
+
+    const handleInput = screen.getByPlaceholderText("new_handle");
+    expect(handleInput).toBeInTheDocument();
+
+    // Type a new valid handle
+    fireEvent.change(handleInput, { target: { value: "aero_glide" } });
+
+    // Live availability check
+    await waitFor(() => {
+      expect(screen.getByText("✓ Available")).toBeInTheDocument();
+    });
+
+    const dialog = screen.getByRole("dialog", { name: /change pilot handle/i });
+    const submitBtn = within(dialog).getByRole("button", { name: /^change handle$/i });
+    expect(submitBtn).not.toBeDisabled();
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/changed to @aero_glide/i)).toBeInTheDocument();
     });
   });
 });

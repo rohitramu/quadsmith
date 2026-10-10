@@ -581,13 +581,15 @@ func (x *EmailOtp) GetCreatedAt() *timestamppb.Timestamp {
 }
 
 type HandleHistory struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	UserUuid      string                 `protobuf:"bytes,2,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	OldHandle     string                 `protobuf:"bytes,3,opt,name=old_handle,json=oldHandle,proto3" json:"old_handle,omitempty"`
-	RenamedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=renamed_at,json=renamedAt,proto3" json:"renamed_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	Uuid                 string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	UserUuid             string                 `protobuf:"bytes,2,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	OldHandle            string                 `protobuf:"bytes,3,opt,name=old_handle,json=oldHandle,proto3" json:"old_handle,omitempty"`
+	RenamedAt            *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=renamed_at,json=renamedAt,proto3" json:"renamed_at,omitempty"`
+	FirstArchivedAt      *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=first_archived_at,json=firstArchivedAt,proto3" json:"first_archived_at,omitempty"`
+	ReleaseWarningSentAt *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=release_warning_sent_at,json=releaseWarningSentAt,proto3" json:"release_warning_sent_at,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *HandleHistory) Reset() {
@@ -644,6 +646,20 @@ func (x *HandleHistory) GetOldHandle() string {
 func (x *HandleHistory) GetRenamedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.RenamedAt
+	}
+	return nil
+}
+
+func (x *HandleHistory) GetFirstArchivedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.FirstArchivedAt
+	}
+	return nil
+}
+
+func (x *HandleHistory) GetReleaseWarningSentAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ReleaseWarningSentAt
 	}
 	return nil
 }
@@ -1013,14 +1029,16 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x10\xc2\xf3\x18\f\n" +
 	"\n" +
-	"email_otps\"\xd7\x01\n" +
+	"email_otps\"\x81\x03\n" +
 	"\rHandleHistory\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
 	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12%\n" +
 	"\n" +
 	"old_handle\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\toldHandle\x129\n" +
 	"\n" +
-	"renamed_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\trenamedAt:\x16\xc2\xf3\x18\x12\n" +
+	"renamed_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\trenamedAt\x12U\n" +
+	"\x11first_archived_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\r\xc2\xf3\x18\t(\x01:\x05NOW()R\x0ffirstArchivedAt\x12Q\n" +
+	"\x17release_warning_sent_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x14releaseWarningSentAt:\x16\xc2\xf3\x18\x12\n" +
 	"\x10handle_histories\"\x87\x03\n" +
 	"\fOAuthAccount\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
@@ -1095,19 +1113,21 @@ var file_user_proto_depIdxs = []int32{
 	12, // 14: quadsmith.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
 	12, // 15: quadsmith.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
 	12, // 16: quadsmith.HandleHistory.renamed_at:type_name -> google.protobuf.Timestamp
-	12, // 17: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
-	12, // 18: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	8,  // 19: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
-	9,  // 20: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
-	10, // 21: quadsmith.UserService.CheckHandleAvailable:input_type -> quadsmith.CheckHandleAvailableRequest
-	0,  // 22: quadsmith.UserService.GetUser:output_type -> quadsmith.User
-	3,  // 23: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
-	11, // 24: quadsmith.UserService.CheckHandleAvailable:output_type -> quadsmith.CheckHandleAvailableResponse
-	22, // [22:25] is the sub-list for method output_type
-	19, // [19:22] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	12, // 17: quadsmith.HandleHistory.first_archived_at:type_name -> google.protobuf.Timestamp
+	12, // 18: quadsmith.HandleHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
+	12, // 19: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
+	12, // 20: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	8,  // 21: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
+	9,  // 22: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
+	10, // 23: quadsmith.UserService.CheckHandleAvailable:input_type -> quadsmith.CheckHandleAvailableRequest
+	0,  // 24: quadsmith.UserService.GetUser:output_type -> quadsmith.User
+	3,  // 25: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
+	11, // 26: quadsmith.UserService.CheckHandleAvailable:output_type -> quadsmith.CheckHandleAvailableResponse
+	24, // [24:27] is the sub-list for method output_type
+	21, // [21:24] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }

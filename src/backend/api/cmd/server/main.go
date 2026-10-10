@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -37,6 +38,9 @@ func main() {
 
 	// Ensure pg_trgm extension is available for fuzzy text completion search
 	_, _ = pool.Exec(context.Background(), "CREATE EXTENSION IF NOT EXISTS pg_trgm;")
+
+	// Start background worker for 7-day handle release warnings
+	auth.StartHandleReleaseWarningWorker(context.Background(), pool, 1*time.Hour)
 
 	mux := http.NewServeMux()
 

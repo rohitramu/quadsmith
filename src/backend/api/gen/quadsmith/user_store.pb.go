@@ -1173,7 +1173,7 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 }
 
 func CreateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error {
-	query := `INSERT INTO handle_histories (uuid, user_uuid, old_handle, renamed_at) VALUES ($1, $2, $3, $4)`
+	query := `INSERT INTO handle_histories (uuid, user_uuid, old_handle, renamed_at, first_archived_at, release_warning_sent_at) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -1189,16 +1189,26 @@ func CreateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error
 			return nil
 		}
 		return ts.AsTime()
-	}(m.RenamedAt))
+	}(m.RenamedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.FirstArchivedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.ReleaseWarningSentAt))
 	return err
 }
 
 func GetHandleHistory(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*HandleHistory, error) {
-	colsStr := "uuid, user_uuid, old_handle, renamed_at"
+	colsStr := "uuid, user_uuid, old_handle, renamed_at, first_archived_at, release_warning_sent_at"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "old_handle", "renamed_at"}
+		cols = []string{"uuid", "user_uuid", "old_handle", "renamed_at", "first_archived_at", "release_warning_sent_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM handle_histories WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -1226,6 +1236,22 @@ func GetHandleHistory(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 					m.RenamedAt = timestamppb.New(*v)
 				}
 			})
+		case "first_archived_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.FirstArchivedAt = timestamppb.New(*v)
+				}
+			})
+		case "release_warning_sent_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.ReleaseWarningSentAt = timestamppb.New(*v)
+				}
+			})
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -1243,7 +1269,7 @@ func GetHandleHistory(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 }
 
 func UpdateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error {
-	query := `UPDATE handle_histories SET user_uuid = $2, old_handle = $3, renamed_at = $4 WHERE uuid = $1`
+	query := `UPDATE handle_histories SET user_uuid = $2, old_handle = $3, renamed_at = $4, first_archived_at = $5, release_warning_sent_at = $6 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -1254,7 +1280,17 @@ func UpdateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error
 			return nil
 		}
 		return ts.AsTime()
-	}(m.RenamedAt))
+	}(m.RenamedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.FirstArchivedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.ReleaseWarningSentAt))
 	return err
 }
 
@@ -1265,17 +1301,17 @@ func DeleteHandleHistory(ctx context.Context, tx pgx.Tx, idOrUuid string) error 
 }
 
 func ListHandleHistories(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*HandleHistory, error) {
-	colsStr := "uuid, user_uuid, old_handle, renamed_at"
+	colsStr := "uuid, user_uuid, old_handle, renamed_at, first_archived_at, release_warning_sent_at"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "old_handle", "renamed_at"}
+		cols = []string{"uuid", "user_uuid", "old_handle", "renamed_at", "first_archived_at", "release_warning_sent_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM handle_histories`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "old_handle": true, "renamed_at": true}
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "old_handle": true, "renamed_at": true, "first_archived_at": true, "release_warning_sent_at": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -1337,6 +1373,22 @@ func ListHandleHistories(ctx context.Context, db *pgxpool.Pool, cols []string, s
 				scanAssigns = append(scanAssigns, func() {
 					if v != nil {
 						m.RenamedAt = timestamppb.New(*v)
+					}
+				})
+			case "first_archived_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.FirstArchivedAt = timestamppb.New(*v)
+					}
+				})
+			case "release_warning_sent_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.ReleaseWarningSentAt = timestamppb.New(*v)
 					}
 				})
 			default:

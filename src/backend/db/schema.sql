@@ -97,12 +97,16 @@ CREATE TABLE IF NOT EXISTS handle_histories (
   PRIMARY KEY (uuid),
   user_uuid UUID NOT NULL,
   old_handle TEXT NOT NULL,
-  renamed_at TIMESTAMPTZ
+  renamed_at TIMESTAMPTZ,
+  first_archived_at TIMESTAMPTZ DEFAULT NOW(),
+  release_warning_sent_at TIMESTAMPTZ
 );
 
 CREATE INDEX IF NOT EXISTS idx_handle_histories_user_uuid ON handle_histories (user_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_handle_histories_old_handle ON handle_histories (old_handle);
+
+CREATE INDEX IF NOT EXISTS idx_handle_histories_first_archived_at ON handle_histories (first_archived_at);
 
 CREATE TABLE IF NOT EXISTS oauth_accounts (
   uuid UUID NOT NULL,

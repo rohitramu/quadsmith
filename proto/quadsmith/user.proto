@@ -138,6 +138,11 @@ message HandleHistory {
   }];
   string old_handle = 3 [(quadsmith.sql.column) = {create_index: true}];
   google.protobuf.Timestamp renamed_at = 4;
+  google.protobuf.Timestamp first_archived_at = 5 [(quadsmith.sql.column) = {
+    default_value: "NOW()"
+    create_index: true
+  }];
+  google.protobuf.Timestamp release_warning_sent_at = 6;
 }
 
 message OAuthAccount {

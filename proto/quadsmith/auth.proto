@@ -4,6 +4,7 @@ package quadsmith;
 
 import "_common.proto";
 import "_sql.proto";
+import "_validate.proto";
 import "google/protobuf/timestamp.proto";
 import "user.proto";
 
@@ -125,6 +126,49 @@ message RemoveUserEmailResponse {
   string message = 2;
 }
 
+message ArchivedHandle {
+  string handle = 1;
+  google.protobuf.Timestamp first_archived_at = 2;
+  google.protobuf.Timestamp renamed_at = 3;
+  google.protobuf.Timestamp release_at = 4;
+  int32 days_remaining = 5;
+  bool can_reclaim_now = 6;
+  google.protobuf.Timestamp next_reclaim_allowed_at = 7;
+}
+
+message ChangeHandleRequest {
+  string new_handle = 1 [(quadsmith.validate.rules).string = {
+    min_len: 3
+    max_len: 20
+    pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
+    not_in: [
+      "admin",
+      "root"
+    ]
+    not_contains: [
+      "__",
+      "quadsmith",
+      "quad_smith"
+    ]
+  }];
+}
+
+message ChangeHandleResponse {
+  bool success = 1;
+  string message = 2;
+  User user = 3;
+  google.protobuf.Timestamp next_allowed_new_rename_at = 4;
+  google.protobuf.Timestamp next_allowed_archive_rename_at = 5;
+}
+
+message ListArchivedHandlesRequest {}
+
+message ListArchivedHandlesResponse {
+  repeated ArchivedHandle archived_handles = 1;
+  google.protobuf.Timestamp next_allowed_new_rename_at = 2;
+  google.protobuf.Timestamp next_allowed_archive_rename_at = 3;
+}
+
 // ---------------------------------------------------------
 // Authentication Service
 // ---------------------------------------------------------
@@ -144,4 +188,7 @@ service AuthService {
   rpc MergeAccount(MergeAccountRequest) returns (MergeAccountResponse);
   rpc SetPrimaryEmail(SetPrimaryEmailRequest) returns (SetPrimaryEmailResponse);
   rpc RemoveUserEmail(RemoveUserEmailRequest) returns (RemoveUserEmailResponse);
+
+  rpc ChangeHandle(ChangeHandleRequest) returns (ChangeHandleResponse);
+  rpc ListArchivedHandles(ListArchivedHandlesRequest) returns (ListArchivedHandlesResponse);
 }

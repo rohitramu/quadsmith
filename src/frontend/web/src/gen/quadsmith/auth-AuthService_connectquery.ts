@@ -68,3 +68,13 @@ export const setPrimaryEmail = AuthService.method.setPrimaryEmail;
  * @generated from rpc quadsmith.AuthService.RemoveUserEmail
  */
 export const removeUserEmail = AuthService.method.removeUserEmail;
+
+/**
+ * @generated from rpc quadsmith.AuthService.ChangeHandle
+ */
+export const changeHandle = AuthService.method.changeHandle;
+
+/**
+ * @generated from rpc quadsmith.AuthService.ListArchivedHandles
+ */
+export const listArchivedHandles = AuthService.method.listArchivedHandles;

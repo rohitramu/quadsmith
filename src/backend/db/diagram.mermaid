@@ -275,6 +275,8 @@ erDiagram
         UUID user_uuid FK
         TEXT old_handle
         TIMESTAMPTZ renamed_at
+        TIMESTAMPTZ first_archived_at
+        TIMESTAMPTZ release_warning_sent_at
     }
 
     oauth_accounts {

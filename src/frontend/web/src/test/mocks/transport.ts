@@ -17,7 +17,11 @@ import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
 import { CompatibilityService } from "../../gen/quadsmith/compatibility_pb";
 import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
 import { SearchService } from "../../gen/quadsmith/search_pb";
-import { AuthService, SendEmailOtpResponseSchema } from "../../gen/quadsmith/auth_pb";
+import {
+  AuthService,
+  SendEmailOtpResponseSchema,
+  ArchivedHandleSchema,
+} from "../../gen/quadsmith/auth_pb";
 import { UserService, UserEmailSchema } from "../../gen/quadsmith/user_pb";
 
 import {
@@ -611,6 +615,44 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         return {
           success: true,
           message: "Email removed",
+        };
+      },
+      listArchivedHandles: () => {
+        return {
+          archivedHandles: [
+            create(ArchivedHandleSchema, {
+              handle: "old_racer",
+              daysRemaining: 23,
+              canReclaimNow: true,
+              firstArchivedAt: {
+                seconds: BigInt(Math.floor((Date.now() - 7 * 24 * 3600 * 1000) / 1000)),
+                nanos: 0,
+              },
+              renamedAt: {
+                seconds: BigInt(Math.floor((Date.now() - 7 * 24 * 3600 * 1000) / 1000)),
+                nanos: 0,
+              },
+              releaseAt: {
+                seconds: BigInt(Math.floor((Date.now() + 23 * 24 * 3600 * 1000) / 1000)),
+                nanos: 0,
+              },
+            }),
+          ],
+          nextAllowedNewRenameAt: undefined,
+          nextAllowedArchiveRenameAt: undefined,
+        };
+      },
+      changeHandle: (req) => {
+        if (!req.newHandle || req.newHandle === "taken") {
+          throw new ConnectError("Handle is already taken", Code.AlreadyExists);
+        }
+        mockUser.id = req.newHandle;
+        return {
+          success: true,
+          message: `Your pilot handle has been changed to @${req.newHandle}`,
+          user: mockUser,
+          nextAllowedNewRenameAt: undefined,
+          nextAllowedArchiveRenameAt: undefined,
         };
       },
     });

@@ -19,6 +19,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import type { ArchivedHandle } from "../gen/quadsmith/auth_pb";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
 export function AccountSettingsPage() {
@@ -34,11 +35,28 @@ export function AccountSettingsPage() {
     mergeAccount,
     setPrimaryEmail,
     removeUserEmail,
+    changeHandle,
+    listArchivedHandles,
+    checkHandleAvailable,
   } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const mergeToken = searchParams.get("merge_token");
   const addEmailToken = searchParams.get("add_email_token");
+
+  // Change Handle Modal state
+  const [isChangeHandleOpen, setIsChangeHandleOpen] = useState(false);
+  const [archivedHandles, setArchivedHandles] = useState<ArchivedHandle[]>([]);
+  const [nextAllowedNewRenameAt, setNextAllowedNewRenameAt] = useState<Date | null>(null);
+  const [isLoadingArchived, setIsLoadingArchived] = useState(false);
+  const [newHandleInput, setNewHandleInput] = useState("");
+  const [handleAvailability, setHandleAvailability] = useState<{
+    status: "idle" | "checking" | "available" | "unavailable" | "error";
+    message: string;
+  }>({ status: "idle", message: "" });
+  const [isSubmittingHandle, setIsSubmittingHandle] = useState(false);
+  const [handleError, setHandleError] = useState<string | null>(null);
+  const [handleSuccess, setHandleSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     refreshEmails();
@@ -457,6 +475,139 @@ export function AccountSettingsPage() {
     });
   };
 
+  const formatTimestamp = (ts?: { seconds?: bigint }) => {
+    if (!ts || !ts.seconds) return "";
+    return new Date(Number(ts.seconds) * 1000).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  const openChangeHandleModal = async () => {
+    setIsChangeHandleOpen(true);
+    setNewHandleInput("");
+    setHandleError(null);
+    setHandleSuccess(null);
+    setHandleAvailability({ status: "idle", message: "" });
+    setIsLoadingArchived(true);
+    try {
+      const res = await listArchivedHandles();
+      setArchivedHandles(res.archivedHandles || []);
+      if (res.nextAllowedNewRenameAt?.seconds) {
+        setNextAllowedNewRenameAt(new Date(Number(res.nextAllowedNewRenameAt.seconds) * 1000));
+      } else {
+        setNextAllowedNewRenameAt(null);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setIsLoadingArchived(false);
+    }
+  };
+
+  useEffect(() => {
+    const trimmed = newHandleInput.trim().toLowerCase();
+    if (!trimmed) {
+      setHandleAvailability({ status: "idle", message: "" });
+      return;
+    }
+
+    if (trimmed === user?.id?.toLowerCase()) {
+      setHandleAvailability({ status: "unavailable", message: "This is your current handle" });
+      return;
+    }
+
+    // Client-side regex precheck
+    const regex = /^[a-z][a-z0-9_]{1,18}[a-z0-9]$/;
+    if (!regex.test(trimmed)) {
+      setHandleAvailability({
+        status: "unavailable",
+        message:
+          "3-20 characters: letters, numbers, and underscores (must start with letter and end with alphanumeric)",
+      });
+      return;
+    }
+    if (trimmed.includes("__")) {
+      setHandleAvailability({
+        status: "unavailable",
+        message: "Cannot contain consecutive underscores",
+      });
+      return;
+    }
+    if (trimmed.includes("quadsmith") || trimmed.includes("quad_smith")) {
+      setHandleAvailability({ status: "unavailable", message: "Cannot contain 'quadsmith'" });
+      return;
+    }
+
+    setHandleAvailability({ status: "checking", message: "Checking availability..." });
+    const timer = setTimeout(async () => {
+      try {
+        const res = await checkHandleAvailable(trimmed);
+        if (res.available) {
+          setHandleAvailability({
+            status: "available",
+            message: res.message || "Handle is available",
+          });
+        } else {
+          setHandleAvailability({
+            status: "unavailable",
+            message: res.message || "This handle is taken",
+          });
+        }
+      } catch {
+        setHandleAvailability({ status: "error", message: "Error checking handle availability" });
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [newHandleInput, user?.id, checkHandleAvailable]);
+
+  const handleReclaimHandle = async (targetHandle: string) => {
+    setIsSubmittingHandle(true);
+    setHandleError(null);
+    try {
+      const res = await changeHandle(targetHandle);
+      setHandleSuccess(res.message || `Pilot handle changed to @${targetHandle}`);
+      setTimeout(() => {
+        setIsChangeHandleOpen(false);
+        setHandleSuccess(null);
+      }, 1500);
+    } catch (err: unknown) {
+      setHandleError(err instanceof Error ? err.message : "Failed to reclaim handle");
+    } finally {
+      setIsSubmittingHandle(false);
+    }
+  };
+
+  const handleSubmitNewHandle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (handleAvailability.status !== "available" || !newHandleInput.trim()) return;
+
+    setIsSubmittingHandle(true);
+    setHandleError(null);
+    try {
+      const res = await changeHandle(newHandleInput.trim().toLowerCase());
+      setHandleSuccess(
+        res.message || `Pilot handle changed to @${newHandleInput.trim().toLowerCase()}`,
+      );
+      setTimeout(() => {
+        setIsChangeHandleOpen(false);
+        setHandleSuccess(null);
+      }, 1500);
+    } catch (err: unknown) {
+      setHandleError(err instanceof Error ? err.message : "Failed to change handle");
+    } finally {
+      setIsSubmittingHandle(false);
+    }
+  };
+
+  const isNewHandleOnCooldown =
+    nextAllowedNewRenameAt !== null && nextAllowedNewRenameAt.getTime() > Date.now();
+  const newHandleCooldownDays = nextAllowedNewRenameAt
+    ? Math.max(1, Math.ceil((nextAllowedNewRenameAt.getTime() - Date.now()) / (24 * 3600 * 1000)))
+    : 0;
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
       {/* Page Header */}
@@ -477,9 +628,19 @@ export function AccountSettingsPage() {
           )}
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Account Settings</h1>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono mt-0.5">
-              Pilot Handle: @{user?.id}
-            </p>
+            <div className="flex items-center gap-2 mt-0.5">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+                Pilot Handle:{" "}
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">@{user?.id}</span>
+              </p>
+              <button
+                type="button"
+                onClick={openChangeHandleModal}
+                className="px-2 py-0.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 rounded-md transition flex items-center gap-1 shadow-2xs cursor-pointer"
+              >
+                Change Handle
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1154,6 +1315,246 @@ export function AccountSettingsPage() {
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Change Pilot Handle Dialog */}
+      {isChangeHandleOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
+          <div
+            role="dialog"
+            aria-label="Change Pilot Handle"
+            className="max-w-lg w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl p-6 space-y-5 text-zinc-900 dark:text-zinc-100"
+          >
+            {/* Modal Header */}
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20">
+                  <UserIcon size={18} />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                    Change Pilot Handle
+                  </h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Current:{" "}
+                    <strong className="font-mono text-zinc-800 dark:text-zinc-200">
+                      @{user?.id}
+                    </strong>
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsChangeHandleOpen(false)}
+                className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1 rounded-lg transition cursor-pointer"
+                aria-label="Close"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Error Banner */}
+            {handleError && (
+              <div className="p-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs flex items-start gap-2">
+                <AlertCircle size={15} className="shrink-0 mt-0.5" />
+                <div className="leading-relaxed text-[11px]">{handleError}</div>
+              </div>
+            )}
+
+            {/* Success Banner */}
+            {handleSuccess && (
+              <div className="p-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs flex items-start gap-2">
+                <CheckCircle2 size={15} className="shrink-0 mt-0.5" />
+                <div className="leading-relaxed text-[11px] font-medium">{handleSuccess}</div>
+              </div>
+            )}
+
+            {/* Loading Archived Handles */}
+            {isLoadingArchived && (
+              <div className="flex items-center gap-2 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-xs text-zinc-500">
+                <Loader2 size={14} className="animate-spin text-blue-500" />
+                <span>Checking your held handles...</span>
+              </div>
+            )}
+
+            {/* SECTION A: Held Archived Handles (Relaxed Rules) */}
+            {archivedHandles.length > 0 && (
+              <div className="p-4 rounded-xl border border-purple-500/20 bg-purple-500/5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-bold text-purple-700 dark:text-purple-300 flex items-center gap-1.5">
+                    <span>Your Held Handles (30d Hold)</span>
+                  </div>
+                  <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono">
+                    {archivedHandles.length} {archivedHandles.length === 1 ? "handle" : "handles"}{" "}
+                    reserved
+                  </span>
+                </div>
+
+                {archivedHandles.map((item) => (
+                  <div
+                    key={item.handle}
+                    className="p-3 rounded-lg border border-purple-500/30 bg-zinc-50 dark:bg-zinc-950/80 flex items-center justify-between gap-3"
+                  >
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                          @{item.handle}
+                        </span>
+                        {item.canReclaimNow ? (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                            Reclaim Available
+                          </span>
+                        ) : (
+                          <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                            Cooldown: Available in {item.daysRemaining}d
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                        Held until{" "}
+                        <span className="text-zinc-700 dark:text-zinc-300 font-medium">
+                          {formatTimestamp(item.releaseAt)}
+                        </span>{" "}
+                        ({item.daysRemaining} days remaining before release)
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      disabled={!item.canReclaimNow || isSubmittingHandle}
+                      onClick={() => handleReclaimHandle(item.handle)}
+                      className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 disabled:pointer-events-none text-white text-xs font-semibold transition shrink-0 shadow-sm cursor-pointer"
+                    >
+                      {isSubmittingHandle ? (
+                        <Loader2 size={13} className="animate-spin" />
+                      ) : (
+                        "Reclaim"
+                      )}
+                    </button>
+                  </div>
+                ))}
+
+                <p className="text-[11px] text-purple-700 dark:text-purple-300/80 leading-relaxed">
+                  ⚡ <strong>Relaxed Reclaim:</strong> You can revert to your archived username
+                  within the 24-hour grace period, or every 7 days thereafter, without waiting for
+                  the normal 30-day cooldown.
+                </p>
+              </div>
+            )}
+
+            {/* SECTION B: Choose a Brand-New Handle */}
+            <form onSubmit={handleSubmitNewHandle} className="space-y-4">
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+                    Choose a Brand-New Handle
+                  </label>
+                  {!isNewHandleOnCooldown && (
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+                      ✓ Normal 30d cooldown ready
+                    </span>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <div className="flex items-center rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-3.5 py-2.5 focus-within:border-blue-500 transition">
+                    <span className="font-mono text-zinc-400 dark:text-zinc-500 text-xs mr-1 select-none">
+                      @
+                    </span>
+                    <input
+                      type="text"
+                      disabled={isNewHandleOnCooldown || isSubmittingHandle}
+                      value={newHandleInput}
+                      onChange={(e) => setNewHandleInput(e.target.value.toLowerCase().trim())}
+                      placeholder="new_handle"
+                      maxLength={20}
+                      className="bg-transparent text-xs font-mono text-zinc-900 dark:text-zinc-100 outline-none w-full disabled:opacity-50"
+                    />
+                    {handleAvailability.status === "checking" && (
+                      <Loader2 size={13} className="animate-spin text-zinc-400 shrink-0 ml-2" />
+                    )}
+                    {handleAvailability.status === "available" && (
+                      <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 shrink-0 ml-2">
+                        ✓ Available
+                      </span>
+                    )}
+                    {handleAvailability.status === "unavailable" && (
+                      <span className="text-[11px] font-medium text-rose-600 dark:text-rose-400 shrink-0 ml-2">
+                        {handleAvailability.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Validation / Guidelines */}
+                <div className="text-[11px] text-zinc-500 dark:text-zinc-400 space-y-1">
+                  <div>• 3-20 characters: lowercase letters, numbers, and single underscores.</div>
+                  <div>
+                    • Changing to a brand-new handle requires a <strong>30-day cooldown</strong>{" "}
+                    before you can change to another new handle.
+                  </div>
+                </div>
+
+                {/* Cooldown Warning Banner (if cooldown active) */}
+                {isNewHandleOnCooldown && (
+                  <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs flex items-start gap-2">
+                    <span className="shrink-0">⏳</span>
+                    <div className="leading-relaxed text-[11px]">
+                      <strong>Cooldown Active:</strong> You renamed your handle recently. You can
+                      choose a brand-new handle in{" "}
+                      <strong>
+                        {newHandleCooldownDays} day{newHandleCooldownDays === 1 ? "" : "s"}
+                      </strong>{" "}
+                      (
+                      {nextAllowedNewRenameAt?.toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                      ), or reclaim one of your held handles above.
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Hold Notice */}
+              <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-xs text-zinc-500 dark:text-zinc-400 flex items-start gap-2.5">
+                <span className="text-blue-500 text-base leading-none mt-0.5">ℹ</span>
+                <div className="text-[11px] leading-relaxed">
+                  Your current handle{" "}
+                  <strong className="text-zinc-800 dark:text-zinc-200">@{user?.id}</strong> will be
+                  reserved in your handle history for <strong>30 days</strong> and automatically
+                  redirect to your profile. An email alert will be sent 7 days before it is
+                  released.
+                </div>
+              </div>
+
+              {/* Footer Buttons */}
+              <div className="flex gap-2.5 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsChangeHandleOpen(false)}
+                  className="flex-1 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={
+                    isNewHandleOnCooldown ||
+                    handleAvailability.status !== "available" ||
+                    isSubmittingHandle ||
+                    !newHandleInput.trim()
+                  }
+                  className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold transition shrink-0 shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  {isSubmittingHandle && <Loader2 size={13} className="animate-spin" />}
+                  <span>Change Handle</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect, useCallback, use
 import { useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
 import { AuthService } from "../gen/quadsmith/auth_pb";
+import type { ChangeHandleResponse, ListArchivedHandlesResponse } from "../gen/quadsmith/auth_pb";
+import { UserService } from "../gen/quadsmith/user_pb";
 import type { User, UserProfile, UserEmail } from "../gen/quadsmith/user_pb";
 import { setAccessToken, getAccessToken } from "../lib/api";
 
@@ -56,6 +58,9 @@ export interface AuthContextType {
   }>;
   setPrimaryEmail: (email: string) => Promise<{ success: boolean; message: string }>;
   removeUserEmail: (email: string) => Promise<{ success: boolean; message: string }>;
+  changeHandle: (newHandle: string) => Promise<ChangeHandleResponse>;
+  listArchivedHandles: () => Promise<ListArchivedHandlesResponse>;
+  checkHandleAvailable: (handle: string) => Promise<{ available: boolean; message: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -267,6 +272,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return res;
   };
 
+  const userClient = useMemo(() => createClient(UserService, transport), [transport]);
+
+  const changeHandle = async (newHandle: string) => {
+    const res = await authClient.changeHandle({ newHandle });
+    if (res.user) {
+      setUser(res.user);
+    } else {
+      try {
+        const currentUser = await authClient.getCurrentUser({});
+        if (currentUser) setUser(currentUser);
+      } catch {
+        // ignore
+      }
+    }
+    return res;
+  };
+
+  const listArchivedHandles = async () => {
+    return await authClient.listArchivedHandles({});
+  };
+
+  const checkHandleAvailable = async (handle: string) => {
+    const res = await userClient.checkHandleAvailable({ handle });
+    return {
+      available: res.available,
+      message: res.message,
+    };
+  };
+
   const logout = async () => {
     try {
       await authClient.logout({});
@@ -300,6 +334,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         mergeAccount,
         setPrimaryEmail,
         removeUserEmail,
+        changeHandle,
+        listArchivedHandles,
+        checkHandleAvailable,
       }}
     >
       {children}
