@@ -99,7 +99,7 @@ export const DroneFrame: IconComponent = ({
 export const DroneFrameIcon = DroneFrame;
 
 /**
- * Custom FPV Brushless Motor (side-view outrunner motor) matching Lucide 24x24 icon grid.
+ * Custom FPV Brushless Motor (low-profile pancake outrunner) matching Lucide 24x24 icon grid.
  */
 export const Motor: IconComponent = ({ size = 24, className = "", strokeWidth = 2, ...props }) => (
   <svg
@@ -115,19 +115,20 @@ export const Motor: IconComponent = ({ size = 24, className = "", strokeWidth = 
     className={className}
     {...props}
   >
-    {/* Prop Shaft (M5 threaded motor shaft) */}
-    <line x1="12" y1="2" x2="12" y2="7" />
-    {/* Rotor Bell Housing (Chamfered outrunner bell) */}
-    <path d="M4 11 8 7h8l4 4v5H4z" />
-    {/* Bell Cooling Vents */}
-    <line x1="9" y1="11" x2="9" y2="14.5" />
-    <line x1="15" y1="11" x2="15" y2="14.5" />
-    {/* Stator Core */}
-    <path d="M6 16v3h12v-3" />
-    {/* Mounting Baseplate & Screws */}
-    <line x1="3" y1="20" x2="21" y2="20" />
-    <line x1="6.5" y1="20" x2="6.5" y2="22" />
-    <line x1="17.5" y1="20" x2="17.5" y2="22" />
+    {/* Prop Shaft with M5 thread notch */}
+    <line x1="12" y1="2" x2="12" y2="6.5" />
+    <line x1="10.5" y1="4" x2="13.5" y2="4" />
+    {/* Low-profile wide bell */}
+    <path d="M3.5 11 7 7.5h10l3.5 3.5v4H3.5z" />
+    {/* Horizontal bell cooling slit */}
+    <line x1="7" y1="11" x2="17" y2="11" />
+    {/* Stator core housing & copper windings */}
+    <path d="M5 15v3.5h14V15" />
+    <line x1="8.5" y1="15" x2="8.5" y2="18.5" />
+    <line x1="12" y1="15" x2="12" y2="18.5" />
+    <line x1="15.5" y1="15" x2="15.5" y2="18.5" />
+    {/* Baseplate */}
+    <line x1="2.5" y1="20.5" x2="21.5" y2="20.5" />
   </svg>
 );
 
