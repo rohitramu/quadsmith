@@ -247,9 +247,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const payloadObs = 1.0 / (1.0 + 0.08 * payloadRatio);
         const totalThrust = baseThrust * payloadObs;
         const twr = totalWeight > 0 ? totalThrust / totalWeight : 0;
-        const twrFactor = Math.min(1.0, Math.max(0.0, (twr - 1.0) / 5.0));
-        const gamma = 0.68 + 0.1 * twrFactor;
-        const hover = twr > 0 ? Math.pow(1.0 / twr, gamma) * 100 : 100;
+        const hover = twr > 0 ? Math.sqrt(1.0 / twr) * 100 : 100;
         const weightRatio = totalWeight / safeBase;
         const systemMessages: any[] = [];
         if (hover > 50) {

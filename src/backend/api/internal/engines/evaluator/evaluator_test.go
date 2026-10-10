@@ -45,9 +45,9 @@ func TestEvaluatePhysics_5InchFreestyle(t *testing.T) {
 		t.Errorf("Expected 5-inch TWR between 5.5 and 7.5, got %.2f", res.ThrustToWeightRatio)
 	}
 
-	// Bare hover throttle should be in typical Betaflight 20% - 26% range
-	if res.HoverThrottlePercent < 20.0 || res.HoverThrottlePercent > 26.0 {
-		t.Errorf("Expected bare hover throttle between 20%% and 26%%, got %.1f%%", res.HoverThrottlePercent)
+	// Bare hover throttle with linear throttle (no expo) should be in 35% - 45% range (sqrt(1/TWR))
+	if res.HoverThrottlePercent < 35.0 || res.HoverThrottlePercent > 45.0 {
+		t.Errorf("Expected bare hover throttle between 35%% and 45%%, got %.1f%%", res.HoverThrottlePercent)
 	}
 
 	// 5-inch 6S hover RPM should be between 10,000 and 14,000 RPM
@@ -125,10 +125,10 @@ func TestEvaluatePhysics_PayloadScaling(t *testing.T) {
 		t.Errorf("Expected top speed with payload (%.1f km/h) to be lower than bare (%.1f km/h)", resGoPro.TopSpeedKmh, res0.TopSpeedKmh)
 	}
 
-	// Hover throttle should scale up visibly (at least +6 percentage points)
+	// Hover throttle should scale up visibly (at least +4 percentage points)
 	hoverDiff := resGoPro.HoverThrottlePercent - res0.HoverThrottlePercent
-	if hoverDiff < 6.0 {
-		t.Errorf("Expected hover throttle to increase by at least 6%% with +133g payload, but only increased by %.1f%% (from %.1f%% to %.1f%%)",
+	if hoverDiff < 4.0 {
+		t.Errorf("Expected hover throttle to increase by at least 4%% with +133g payload, but only increased by %.1f%% (from %.1f%% to %.1f%%)",
 			hoverDiff, res0.HoverThrottlePercent, resGoPro.HoverThrottlePercent)
 	}
 
@@ -175,8 +175,8 @@ func TestEvaluatePhysics_ToothpickPayloadConsistency(t *testing.T) {
 	if res0.ThrustToWeightRatio <= 3.5 {
 		t.Errorf("Expected bare toothpick TWR > 3.5, got %.2f", res0.ThrustToWeightRatio)
 	}
-	if res0.HoverThrottlePercent >= 40.0 {
-		t.Errorf("Expected bare toothpick hover < 40%%, got %.1f%%", res0.HoverThrottlePercent)
+	if res0.HoverThrottlePercent >= 50.0 {
+		t.Errorf("Expected bare toothpick hover < 50%%, got %.1f%%", res0.HoverThrottlePercent)
 	}
 	if res0.HoverRpm < 13000 || res0.HoverRpm > 22000 {
 		t.Errorf("Expected bare toothpick hover RPM between 13,000 and 22,000, got %d", res0.HoverRpm)
@@ -274,9 +274,9 @@ func TestEvaluatePhysics_7InchLongRange(t *testing.T) {
 		t.Errorf("Expected 7-inch top speed between 95.0 and 135.0 km/h, got %.1f km/h", res.TopSpeedKmh)
 	}
 
-	// Hover throttle should be ~25% - 35%
-	if res.HoverThrottlePercent < 25.0 || res.HoverThrottlePercent > 35.0 {
-		t.Errorf("Expected hover throttle between 25%% and 35%%, got %.1f%%", res.HoverThrottlePercent)
+	// Hover throttle should be ~40% - 50%
+	if res.HoverThrottlePercent < 40.0 || res.HoverThrottlePercent > 50.0 {
+		t.Errorf("Expected hover throttle between 40%% and 50%%, got %.1f%%", res.HoverThrottlePercent)
 	}
 
 	// Long range battery should provide endurance flight time >= 9.5 min

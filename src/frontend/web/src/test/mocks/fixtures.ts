@@ -354,7 +354,7 @@ export const mockBuilds: Build[] = [mockBuild1, mockBuild2];
 export const mockEvaluation1: EvaluateBuildResponse = create(EvaluateBuildResponseSchema, {
   allUpWeightG: 565.5,
   thrustToWeightRatio: 6.4,
-  hoverThrottlePercent: 23.4,
+  hoverThrottlePercent: 39.5,
   minFlightTimeMin: 3.8,
   maxFlightTimeMin: 7.2,
   maxAccelerationMps2: 53.4,

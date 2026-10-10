@@ -671,12 +671,13 @@ func CalculatePhysics(
 
 	if thrustToWeight > 0 {
 		// Aerodynamic hover throttle position:
-		// Required thrust fraction is 1 / TWR. In multirotor flight dynamics and Betaflight,
-		// the throttle curve maps to (1 / TWR)^gamma, transitioning from gamma=0.68 near stall
-		// to gamma=0.78 at high TWR due to low disk loading.
-		twrFactor := float32(math.Min(1.0, math.Max(0.0, float64(thrustToWeight-1.0)/5.0)))
-		gamma := 0.68 + 0.10*twrFactor
-		hoverThrottle = float32(math.Pow(1.0/float64(thrustToWeight), float64(gamma)) * 100.0)
+		// Assuming Betaflight rate settings are setup to have a linear throttle (no expo):
+		// The throttle stick input maps 1:1 to motor output (duty cycle / RPM).
+		// Since static aerodynamic thrust scales with RPM^2 (T = k * RPM^2), at steady hover
+		// where T_hover = TotalWeight:
+		// (Throttle_hover / 100%)^2 = T_hover / T_total = 1 / TWR
+		// => Throttle_hover = sqrt(1 / TWR) * 100%
+		hoverThrottle = float32(math.Sqrt(1.0/float64(thrustToWeight)) * 100.0)
 	} else {
 		hoverThrottle = 100.0
 	}
