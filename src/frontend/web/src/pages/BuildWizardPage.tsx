@@ -13,11 +13,13 @@ import {
   Save,
   Check,
   Lock,
+  Gauge,
 } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStageBar } from "../components/WizardStageBar";
 import { CollectionIcon } from "../components/CollectionIcon";
 import { ProductHoverCard } from "../components/ProductHoverCard";
+import { BatteryCombobox } from "../components/BatteryCombobox";
 
 // ConnectQuery hooks for component listing
 import { listFrames } from "../gen/quadsmith/frame-FrameService_connectquery";
@@ -1344,7 +1346,7 @@ export function BuildWizardPage() {
           4: stage4Complete,
         }}
         stageProgressText={{
-          0: selectedTemplateId ? "Template ✓" : "Scratch ✓",
+          0: selectedTemplateId ? "Template ✓" : "Baseline ✓",
           1: `${(selectedFrame ? 1 : 0) + (selectedMotor ? 1 : 0) + (selectedProp ? 1 : 0)}/3`,
           2: `${(selectedFc ? 1 : 0) + (selectedRx || useIntegratedRx ? 1 : 0) + (selectedEsc || useIntegratedEsc || noneSelections.esc ? 1 : 0)}/3`,
           3: "Optional",
@@ -1365,12 +1367,12 @@ export function BuildWizardPage() {
                 <span className="font-bold">
                   {selectedTemplateId
                     ? `Stage 0: Template Selected — ${templateBuilds.find((b) => (b.id || b.uuid) === selectedTemplateId)?.name || "Template"}`
-                    : "Stage 0: Starting from Scratch (Blank Canvas)"}
+                    : "Stage 0: Choose a Starting Baseline"}
                 </span>
                 <p className="opacity-90 mt-0.5">
                   {selectedTemplateId
                     ? "All compatible components pre-populated across all stages. You can customize them in Stages 1-3 or review now."
-                    : "You are designing from a clean slate. Click Next to establish your airframe & propulsion in Stage 1."}
+                    : "Select a baseline build below to pre-populate components, or click Next to build custom."}
                 </p>
               </div>
             </div>
@@ -1382,7 +1384,6 @@ export function BuildWizardPage() {
               <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                       Choose Starting Baseline
                     </h3>
@@ -1393,7 +1394,7 @@ export function BuildWizardPage() {
                   <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
                     {selectedTemplateId
                       ? `Template: ${templateBuilds.find((b) => (b.id || b.uuid) === selectedTemplateId)?.name || "Selected"}`
-                      : "Start from Scratch"}
+                      : ""}
                   </span>
                 </div>
 
@@ -1429,55 +1430,6 @@ export function BuildWizardPage() {
 
                 {/* Scrollable Templates List with Limited Height */}
                 <div className="overflow-y-auto max-h-72 sm:max-h-80 space-y-2.5 pr-1.5 focus:outline-none">
-                  {/* Option 1: Start from Scratch (Always First) */}
-                  {(!searchTemplate ||
-                    "start from scratch blank canvas full custom".includes(
-                      searchTemplate.toLowerCase(),
-                    )) && (
-                    <div
-                      onClick={selectScratch}
-                      className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-                        !selectedTemplateId
-                          ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
-                      }`}
-                    >
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                            Start from Scratch
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
-                            Blank Canvas
-                          </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
-                            Full Custom
-                          </span>
-                        </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
-                          Design your build from the ground up. Hand-pick each frame, motor, prop,
-                          electronic, and video component.
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
-                        <span
-                          className={`text-[10px] uppercase font-bold tracking-wide px-2.5 py-1 rounded ${
-                            !selectedTemplateId
-                              ? "bg-blue-600 text-white"
-                              : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
-                          }`}
-                        >
-                          {!selectedTemplateId ? "Selected (Default)" : "Select Scratch"}
-                        </span>
-                        <div className="w-4 h-4 rounded-full border border-blue-500 flex items-center justify-center">
-                          {!selectedTemplateId && (
-                            <div className="w-2 h-2 rounded-full bg-blue-500" />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
                   {/* Existing Builds as Templates */}
                   {filteredTemplates.map((template) => {
                     const isSelected = selectedTemplateId === (template.id || template.uuid);
@@ -3361,13 +3313,17 @@ export function BuildWizardPage() {
 
           <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white dark:from-zinc-900 to-zinc-50 dark:to-zinc-950 p-4 space-y-4 shadow-lg">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
+            <div className="border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                <Gauge className="text-blue-600 dark:text-blue-400 shrink-0" size={16} />
                 <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
                   Build Evaluator
                 </h3>
               </div>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">
+                Calculated flight metrics are theoretical estimates based on analytical physics
+                models.
+              </p>
             </div>
 
             {/* Test Battery Selection */}
@@ -3375,17 +3331,12 @@ export function BuildWizardPage() {
               <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
                 Test Battery (Runtime Parameter)
               </label>
-              <select
-                value={selectedBatteryId}
-                onChange={(e) => setSelectedBatteryId(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 font-mono"
-              >
-                {batteries.map((b) => (
-                  <option key={b.id || b.uuid} value={b.id || b.uuid}>
-                    {b.name} ({b.weightG}g)
-                  </option>
-                ))}
-              </select>
+              <BatteryCombobox
+                selectedBatteryId={selectedBatteryId}
+                onSelectBattery={(id) => setSelectedBatteryId(id)}
+                batteries={batteries}
+                ariaLabel="Select test battery"
+              />
             </div>
 
             {/* Runtime Payload Textbox with +/- and Quick Presets */}
@@ -3530,18 +3481,39 @@ export function BuildWizardPage() {
                   {draftBuild ? "Evaluated" : "Pending Stage 1"}
                 </span>
               </div>
-              <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
-                <span>Prop vs Frame Size</span>
-                <span
-                  className={
-                    selectedFrame && selectedProp
-                      ? "text-emerald-600 dark:text-emerald-400 font-bold"
-                      : "text-zinc-400"
-                  }
-                >
-                  {selectedFrame && selectedProp ? "✓ Compatible" : "--"}
-                </span>
-              </div>
+              {(() => {
+                const isPropFrameIncompatible =
+                  (selectedFrame &&
+                    selectedProp &&
+                    selectedFrame.maxPropSizeMm > 0 &&
+                    selectedProp.diameterMm > selectedFrame.maxPropSizeMm) ||
+                  compatibilityData?.messages?.some(
+                    (m) =>
+                      m.checkerName === "PropellerFrameChecker" ||
+                      m.message.toLowerCase().includes("propeller diameter exceeds"),
+                  );
+
+                return (
+                  <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
+                    <span>Prop vs Frame Size</span>
+                    <span
+                      className={
+                        selectedFrame && selectedProp
+                          ? isPropFrameIncompatible
+                            ? "text-red-600 dark:text-red-400 font-bold"
+                            : "text-emerald-600 dark:text-emerald-400 font-bold"
+                          : "text-zinc-400"
+                      }
+                    >
+                      {selectedFrame && selectedProp
+                        ? isPropFrameIncompatible
+                          ? "✗ Incompatible"
+                          : "✓ Compatible"
+                        : "--"}
+                    </span>
+                  </div>
+                );
+              })()}
               <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                 <span>ESC Amperage Rating</span>
                 <span
@@ -3578,7 +3550,7 @@ export function BuildWizardPage() {
             </div>
 
             {/* Live Dynamic Compatibility Filter Display */}
-            {isWasmReady && (
+            {isWasmReady && (activeStage === 1 || activeStage === 2 || activeStage === 3) && (
               <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 space-y-1.5 text-[11px]">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-[10px]">
@@ -3589,9 +3561,7 @@ export function BuildWizardPage() {
                       ? "Propeller Target"
                       : activeStage === 2
                         ? "ESC Target"
-                        : activeStage === 3
-                          ? "Camera/VTX Target"
-                          : "Battery Target"}
+                        : "Camera/VTX Target"}
                   </span>
                 </div>
                 <div className="bg-zinc-100 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 font-mono text-[10px] text-indigo-600 dark:text-indigo-400 break-all select-all">
@@ -3599,7 +3569,6 @@ export function BuildWizardPage() {
                     {(activeStage === 1 && propCelFilter) ||
                       (activeStage === 2 && escCelFilter) ||
                       (activeStage === 3 && (camCelFilter || vtxCelFilter)) ||
-                      batteryCelFilter ||
                       "CEL engine active: all hardware compatible"}
                   </code>
                 </div>

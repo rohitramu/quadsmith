@@ -33,7 +33,7 @@ describe("BuildWizardPage Component", () => {
     );
   }
 
-  it("renders with initial empty state: Stage 0 active, Start from Scratch default", async () => {
+  it("renders with initial empty state: Stage 0 active with baseline options", async () => {
     renderWizard();
 
     // Check title & banner
@@ -51,7 +51,7 @@ describe("BuildWizardPage Component", () => {
 
     // Stage 0 baseline options
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
-    expect(screen.getAllByText("Start from Scratch").length).toBeGreaterThanOrEqual(1);
+    expect(screen.queryByText("Start from Scratch")).not.toBeInTheDocument();
     // Initial dry weight is 0.0g across evaluator and selected parts list
     expect(screen.getAllByText("0.0g").length).toBeGreaterThanOrEqual(1);
 
@@ -349,9 +349,8 @@ describe("BuildWizardPage Component", () => {
     const resetBtn = screen.getByRole("button", { name: /Reset/i });
     await user.click(resetBtn);
 
-    // Should return to Stage 0 with Start from Scratch selected
+    // Should return to Stage 0 baseline selection
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
-    expect(screen.getByText("Selected (Default)")).toBeInTheDocument();
     expect(screen.getAllByText("0.0g").length).toBeGreaterThanOrEqual(1);
   });
 

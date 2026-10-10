@@ -15,6 +15,7 @@ import { BuildService, type Build } from "../../gen/quadsmith/build_pb";
 import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
 import { CompatibilityService } from "../../gen/quadsmith/compatibility_pb";
 import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
+import { SearchService } from "../../gen/quadsmith/search_pb";
 
 import {
   mockMotors,
@@ -429,6 +430,31 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           siteName: "example.com",
           favicon: "https://example.com/favicon.ico",
         };
+      },
+    });
+
+    service(SearchService, {
+      search: (req) => {
+        const q = (req.query || "").toLowerCase();
+        const results = batteries
+          .filter(
+            (b) =>
+              !q ||
+              b.name.toLowerCase().includes(q) ||
+              b.id.toLowerCase().includes(q) ||
+              (b.manufacturer && b.manufacturer.toLowerCase().includes(q)),
+          )
+          .map((b) => ({
+            id: b.id,
+            uuid: b.uuid,
+            name: b.name,
+            path: "components/hardware/batteries",
+            collectionName: "Batteries",
+            description: b.description || "",
+            matchScore: 1.0,
+            metadata: {},
+          }));
+        return { results };
       },
     });
   });

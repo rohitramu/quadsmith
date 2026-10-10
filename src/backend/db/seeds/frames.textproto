@@ -6,7 +6,7 @@ frames: {
   name: "ImpulseRC Apex EVO 5\""
   weight_g: 138
   wheelbase_mm: 225
-  max_prop_size_mm: 129.54
+  max_prop_size_mm: 132.08
   geometry: "Deadcat"
   description: "ImpulseRC ImpulseRC Apex EVO 5\" Deadcat drone frame with 225.0mm wheelbase, supporting up to 129.5mm props, weighing 138.0g."
   reference_links: {
@@ -2718,7 +2718,7 @@ frames: {
   name: "TBS Source One V5 5-Inch Frame"
   weight_g: 125
   wheelbase_mm: 226
-  max_prop_size_mm: 129.54
+  max_prop_size_mm: 132.08
   geometry: "True X"
   description: "Popular open-source community collaborative freestyle frame designed by Team BlackSheep for durability, cheap spare arms, and easy maintenance."
   reference_links: {

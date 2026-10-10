@@ -61,10 +61,10 @@ describe("BuildProfilePage Component", () => {
     expect(screen.getByText("3.8 – 7.2")).toBeInTheDocument();
     expect(screen.getByText(/varies with throttle management/i)).toBeInTheDocument();
 
-    // All evaluated components are fully compatible and flight-ready
+    // Flight-ready banner is omitted unless system messages exist
     expect(
-      screen.getByText(/all evaluated components are fully compatible and flight-ready/i),
-    ).toBeInTheDocument();
+      screen.queryByText(/all evaluated components are fully compatible and flight-ready/i),
+    ).not.toBeInTheDocument();
   });
 
   it("renders Bill of Materials (BOM) with hardware components and product links", async () => {
@@ -108,7 +108,8 @@ describe("BuildProfilePage Component", () => {
     const batterySelect = await screen.findByRole("combobox", { name: /select battery/i });
     expect(batterySelect).toBeInTheDocument();
     await waitFor(() => {
-      expect(batterySelect).toHaveValue("cnhl-black-series-1500-6s");
+      expect(batterySelect).toHaveAttribute("data-battery-id", "cnhl-black-series-1500-6s");
+      expect(batterySelect).toHaveValue("Black Series 1500mAh 6S 100C (220g, 6S, 1500mAh)");
     });
 
     // Click Browse button to open BatteryPickerModal

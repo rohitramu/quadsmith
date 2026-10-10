@@ -28,6 +28,7 @@ import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "../components/CollectionBadge";
 import { SocialLinkPreviewCard } from "../components/SocialLinkPreviewCard";
 import { ProductHoverCard } from "../components/ProductHoverCard";
+import { BatteryCombobox } from "../components/BatteryCombobox";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import {
   ChevronRight,
@@ -37,7 +38,6 @@ import {
   ExternalLink,
   AlertTriangle,
   AlertOctagon,
-  CheckCircle2,
   Sliders,
   Layers,
   Cpu,
@@ -317,8 +317,7 @@ export function BuildProfilePage() {
             )}
           </h2>
           <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Automated aerodynamic and electrical physics estimation calculated by Quadsmith
-            Evaluator.
+            Calculated flight metrics are theoretical estimates based on analytical physics models.
           </p>
         </div>
 
@@ -388,28 +387,14 @@ export function BuildProfilePage() {
                 </div>
 
                 <div className="flex items-center gap-1.5 my-1.5">
-                  <select
-                    value={selectedBatteryId}
-                    onChange={(e) => setSelectedBatteryId(e.target.value)}
-                    aria-label="Select battery"
-                    className="flex-1 min-w-0 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 truncate cursor-pointer shadow-xs"
-                  >
-                    {compatibleBatteries.length === 0 ? (
-                      <option value="" disabled>
-                        {isLoadingBatteries
-                          ? "Loading compatible batteries..."
-                          : "No compatible batteries"}
-                      </option>
-                    ) : (
-                      compatibleBatteries.map((b) => (
-                        <option key={b.id || b.uuid} value={b.id || b.uuid}>
-                          {b.name} ({b.weightG ? `${b.weightG}g` : ""}
-                          {b.cellCountS ? `, ${b.cellCountS}S` : ""}
-                          {b.capacityMah ? `, ${b.capacityMah}mAh` : ""})
-                        </option>
-                      ))
-                    )}
-                  </select>
+                  <BatteryCombobox
+                    selectedBatteryId={selectedBatteryId}
+                    onSelectBattery={(id) => setSelectedBatteryId(id)}
+                    batteries={compatibleBatteries}
+                    isLoading={isLoadingBatteries}
+                    ariaLabel="Select battery"
+                    className="flex-1 min-w-0"
+                  />
 
                   <button
                     type="button"
@@ -740,15 +725,6 @@ export function BuildProfilePage() {
                               ))}
                             </ul>
                           </div>
-                        </div>
-                      )}
-
-                      {errors.length === 0 && warnings.length === 0 && (
-                        <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 flex items-center gap-2.5 text-xs font-medium">
-                          <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-                          <span>
-                            All evaluated components are fully compatible and flight-ready.
-                          </span>
                         </div>
                       )}
                     </>
