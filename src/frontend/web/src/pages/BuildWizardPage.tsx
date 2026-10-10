@@ -15,6 +15,7 @@ import {
   Lock,
   Gauge,
   AlertTriangle,
+  Wand2,
 } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStageBar } from "../components/WizardStageBar";
@@ -1356,9 +1357,16 @@ export function BuildWizardPage() {
       {/* Top Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Build Wizard
-          </h1>
+          <div className="flex items-center gap-3">
+            <Wand2
+              size={32}
+              className="text-blue-600 dark:text-blue-400 shrink-0 w-7 h-7 sm:w-8 sm:h-8"
+              aria-hidden="true"
+            />
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+              Build Wizard
+            </h1>
+          </div>
           <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
             Select parts sequentially. Flight electronics include FC, ESC, RX, Antenna &amp; GPS.
             Video includes VTX, Camera &amp; Antenna. Test flight physics and battery options in the

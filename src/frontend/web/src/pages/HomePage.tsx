@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@connectrpc/connect-query";
 import { listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
 import { BuildCard } from "../components/BuildCard";
 import { useMemo, useRef, useEffect } from "react";
-import { Sparkles, Layers, RefreshCw, CheckCircle, ArrowRight } from "lucide-react";
+import { Sparkles, Layers, RefreshCw, CheckCircle, ArrowRight, Wand2 } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
 export function HomePage() {
@@ -75,7 +75,7 @@ export function HomePage() {
             to="/builds/new"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 font-medium text-xs sm:text-sm shadow-xs transition-colors"
           >
-            <Sparkles size={16} className="text-blue-600 dark:text-blue-400" />
+            <Wand2 size={16} className="text-blue-600 dark:text-blue-400 shrink-0" />
             <span>Build Wizard</span>
             <ArrowRight size={14} />
           </Link>

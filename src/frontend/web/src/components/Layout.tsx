@@ -255,14 +255,7 @@ export function Layout() {
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
-                      <Wand2
-                        size={16}
-                        className={
-                          location.pathname === "/builds/new"
-                            ? "text-blue-600 dark:text-blue-400"
-                            : "text-zinc-500"
-                        }
-                      />
+                      <Wand2 size={16} className="text-blue-600 dark:text-blue-400 shrink-0" />
                       <span>Build Wizard</span>
                     </div>
                   </Link>

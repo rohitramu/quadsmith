@@ -56,6 +56,9 @@ describe("Layout Component", () => {
 
     const wizardLink = screen.getByRole("link", { name: /Build Wizard/i });
     expect(wizardLink).toHaveAttribute("href", "/builds/new");
+    const wizardIcon = wizardLink.querySelector("svg");
+    expect(wizardIcon).toBeInTheDocument();
+    expect(wizardIcon).toHaveClass("text-blue-600");
     expect(screen.queryByText("New")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Hardware" })).toHaveAttribute(
       "href",
