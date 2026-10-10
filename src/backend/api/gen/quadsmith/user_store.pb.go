@@ -1172,8 +1172,8 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 	return results, nil
 }
 
-func CreateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error {
-	query := `INSERT INTO handle_histories (uuid, user_uuid, old_handle, renamed_at, first_archived_at, release_warning_sent_at) VALUES ($1, $2, $3, $4, $5, $6)`
+func CreateUsernameHistory(ctx context.Context, tx pgx.Tx, m *UsernameHistory) error {
+	query := `INSERT INTO username_histories (uuid, user_uuid, old_username, renamed_at, first_archived_at, release_warning_sent_at) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -1184,7 +1184,7 @@ func CreateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error
 			return nil
 		}
 		return s
-	}(m.UserUuid), m.OldHandle, func(ts *timestamppb.Timestamp) interface{} {
+	}(m.UserUuid), m.OldUsername, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -1203,17 +1203,17 @@ func CreateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error
 	return err
 }
 
-func GetHandleHistory(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*HandleHistory, error) {
-	colsStr := "uuid, user_uuid, old_handle, renamed_at, first_archived_at, release_warning_sent_at"
+func GetUsernameHistory(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*UsernameHistory, error) {
+	colsStr := "uuid, user_uuid, old_username, renamed_at, first_archived_at, release_warning_sent_at"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "old_handle", "renamed_at", "first_archived_at", "release_warning_sent_at"}
+		cols = []string{"uuid", "user_uuid", "old_username", "renamed_at", "first_archived_at", "release_warning_sent_at"}
 	}
-	query := `SELECT ` + colsStr + ` FROM handle_histories WHERE uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM username_histories WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
-	m := &HandleHistory{}
+	m := &UsernameHistory{}
 	for i, col := range cols {
 		switch col {
 		case "uuid":
@@ -1226,8 +1226,8 @@ func GetHandleHistory(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 					m.UserUuid = *v
 				}
 			})
-		case "old_handle":
-			scanArgs[i] = &m.OldHandle
+		case "old_username":
+			scanArgs[i] = &m.OldUsername
 		case "renamed_at":
 			var v *time.Time
 			scanArgs[i] = &v
@@ -1268,14 +1268,14 @@ func GetHandleHistory(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 	return m, nil
 }
 
-func UpdateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error {
-	query := `UPDATE handle_histories SET user_uuid = $2, old_handle = $3, renamed_at = $4, first_archived_at = $5, release_warning_sent_at = $6 WHERE uuid = $1`
+func UpdateUsernameHistory(ctx context.Context, tx pgx.Tx, m *UsernameHistory) error {
+	query := `UPDATE username_histories SET user_uuid = $2, old_username = $3, renamed_at = $4, first_archived_at = $5, release_warning_sent_at = $6 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.UserUuid), m.OldHandle, func(ts *timestamppb.Timestamp) interface{} {
+	}(m.UserUuid), m.OldUsername, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -1294,24 +1294,24 @@ func UpdateHandleHistory(ctx context.Context, tx pgx.Tx, m *HandleHistory) error
 	return err
 }
 
-func DeleteHandleHistory(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM handle_histories WHERE uuid::text = $1`
+func DeleteUsernameHistory(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
+	query := `DELETE FROM username_histories WHERE uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
-func ListHandleHistories(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*HandleHistory, error) {
-	colsStr := "uuid, user_uuid, old_handle, renamed_at, first_archived_at, release_warning_sent_at"
+func ListUsernameHistories(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*UsernameHistory, error) {
+	colsStr := "uuid, user_uuid, old_username, renamed_at, first_archived_at, release_warning_sent_at"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "old_handle", "renamed_at", "first_archived_at", "release_warning_sent_at"}
+		cols = []string{"uuid", "user_uuid", "old_username", "renamed_at", "first_archived_at", "release_warning_sent_at"}
 	}
-	query := `SELECT ` + colsStr + ` FROM handle_histories`
+	query := `SELECT ` + colsStr + ` FROM username_histories`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "old_handle": true, "renamed_at": true, "first_archived_at": true, "release_warning_sent_at": true}
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "old_username": true, "renamed_at": true, "first_archived_at": true, "release_warning_sent_at": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -1348,11 +1348,11 @@ func ListHandleHistories(ctx context.Context, db *pgxpool.Pool, cols []string, s
 		return nil, err
 	}
 	defer rows.Close()
-	results := make([]*HandleHistory, 0)
+	results := make([]*UsernameHistory, 0)
 	for rows.Next() {
 		scanArgs := make([]interface{}, len(cols))
 		scanAssigns := make([]func(), 0, len(cols))
-		m := &HandleHistory{}
+		m := &UsernameHistory{}
 		for i, col := range cols {
 			switch col {
 			case "uuid":
@@ -1365,8 +1365,8 @@ func ListHandleHistories(ctx context.Context, db *pgxpool.Pool, cols []string, s
 						m.UserUuid = *v
 					}
 				})
-			case "old_handle":
-				scanArgs[i] = &m.OldHandle
+			case "old_username":
+				scanArgs[i] = &m.OldUsername
 			case "renamed_at":
 				var v *time.Time
 				scanArgs[i] = &v

@@ -168,7 +168,7 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 	// whoami
 	whoamiCmd := &cobra.Command{
 		Use:   "whoami",
-		Short: "Display the currently authenticated pilot account",
+		Short: "Display the currently authenticated user account",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cfg, err := loadCLIConfig()
 			hasToken := (err == nil && cfg.AccessToken != "") || os.Getenv("QS_ACCESS_TOKEN") != ""
@@ -183,7 +183,7 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 				return fmt.Errorf("failed to get user info (session may have expired, run 'qs login'): %w", err)
 			}
 
-			fmt.Printf("Pilot Handle: @%s\n", res.Msg.Id)
+			fmt.Printf("Username:     @%s\n", res.Msg.Id)
 			fmt.Printf("Email:        %s\n", res.Msg.Email)
 			fmt.Printf("Role:         %s\n", res.Msg.Role)
 			return nil
@@ -288,7 +288,7 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			}
 
 			if verifyRes.Msg.MergeRequired {
-				fmt.Printf("\n⚠️  Notice: This email is already associated with another account (@%s).\n", verifyRes.Msg.OtherUserHandle)
+				fmt.Printf("\n⚠️  Notice: This email is already associated with another account (@%s).\n", verifyRes.Msg.OtherUserUsername)
 				fmt.Printf("To merge that account's builds and data into your current account, run:\n")
 				fmt.Printf("  qs account merge %s\n\n", email)
 				return nil

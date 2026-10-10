@@ -38,16 +38,16 @@ const (
 	// UserServiceGetPublicProfileProcedure is the fully-qualified name of the UserService's
 	// GetPublicProfile RPC.
 	UserServiceGetPublicProfileProcedure = "/quadsmith.UserService/GetPublicProfile"
-	// UserServiceCheckHandleAvailableProcedure is the fully-qualified name of the UserService's
-	// CheckHandleAvailable RPC.
-	UserServiceCheckHandleAvailableProcedure = "/quadsmith.UserService/CheckHandleAvailable"
+	// UserServiceCheckUsernameAvailableProcedure is the fully-qualified name of the UserService's
+	// CheckUsernameAvailable RPC.
+	UserServiceCheckUsernameAvailableProcedure = "/quadsmith.UserService/CheckUsernameAvailable"
 )
 
 // UserServiceClient is a client for the quadsmith.UserService service.
 type UserServiceClient interface {
 	GetUser(context.Context, *connect.Request[quadsmith.GetUserRequest]) (*connect.Response[quadsmith.User], error)
 	GetPublicProfile(context.Context, *connect.Request[quadsmith.GetPublicProfileRequest]) (*connect.Response[quadsmith.PublicUserProfile], error)
-	CheckHandleAvailable(context.Context, *connect.Request[quadsmith.CheckHandleAvailableRequest]) (*connect.Response[quadsmith.CheckHandleAvailableResponse], error)
+	CheckUsernameAvailable(context.Context, *connect.Request[quadsmith.CheckUsernameAvailableRequest]) (*connect.Response[quadsmith.CheckUsernameAvailableResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the quadsmith.UserService service. By default, it
@@ -73,10 +73,10 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("GetPublicProfile")),
 			connect.WithClientOptions(opts...),
 		),
-		checkHandleAvailable: connect.NewClient[quadsmith.CheckHandleAvailableRequest, quadsmith.CheckHandleAvailableResponse](
+		checkUsernameAvailable: connect.NewClient[quadsmith.CheckUsernameAvailableRequest, quadsmith.CheckUsernameAvailableResponse](
 			httpClient,
-			baseURL+UserServiceCheckHandleAvailableProcedure,
-			connect.WithSchema(userServiceMethods.ByName("CheckHandleAvailable")),
+			baseURL+UserServiceCheckUsernameAvailableProcedure,
+			connect.WithSchema(userServiceMethods.ByName("CheckUsernameAvailable")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -84,9 +84,9 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	getUser              *connect.Client[quadsmith.GetUserRequest, quadsmith.User]
-	getPublicProfile     *connect.Client[quadsmith.GetPublicProfileRequest, quadsmith.PublicUserProfile]
-	checkHandleAvailable *connect.Client[quadsmith.CheckHandleAvailableRequest, quadsmith.CheckHandleAvailableResponse]
+	getUser                *connect.Client[quadsmith.GetUserRequest, quadsmith.User]
+	getPublicProfile       *connect.Client[quadsmith.GetPublicProfileRequest, quadsmith.PublicUserProfile]
+	checkUsernameAvailable *connect.Client[quadsmith.CheckUsernameAvailableRequest, quadsmith.CheckUsernameAvailableResponse]
 }
 
 // GetUser calls quadsmith.UserService.GetUser.
@@ -99,16 +99,16 @@ func (c *userServiceClient) GetPublicProfile(ctx context.Context, req *connect.R
 	return c.getPublicProfile.CallUnary(ctx, req)
 }
 
-// CheckHandleAvailable calls quadsmith.UserService.CheckHandleAvailable.
-func (c *userServiceClient) CheckHandleAvailable(ctx context.Context, req *connect.Request[quadsmith.CheckHandleAvailableRequest]) (*connect.Response[quadsmith.CheckHandleAvailableResponse], error) {
-	return c.checkHandleAvailable.CallUnary(ctx, req)
+// CheckUsernameAvailable calls quadsmith.UserService.CheckUsernameAvailable.
+func (c *userServiceClient) CheckUsernameAvailable(ctx context.Context, req *connect.Request[quadsmith.CheckUsernameAvailableRequest]) (*connect.Response[quadsmith.CheckUsernameAvailableResponse], error) {
+	return c.checkUsernameAvailable.CallUnary(ctx, req)
 }
 
 // UserServiceHandler is an implementation of the quadsmith.UserService service.
 type UserServiceHandler interface {
 	GetUser(context.Context, *connect.Request[quadsmith.GetUserRequest]) (*connect.Response[quadsmith.User], error)
 	GetPublicProfile(context.Context, *connect.Request[quadsmith.GetPublicProfileRequest]) (*connect.Response[quadsmith.PublicUserProfile], error)
-	CheckHandleAvailable(context.Context, *connect.Request[quadsmith.CheckHandleAvailableRequest]) (*connect.Response[quadsmith.CheckHandleAvailableResponse], error)
+	CheckUsernameAvailable(context.Context, *connect.Request[quadsmith.CheckUsernameAvailableRequest]) (*connect.Response[quadsmith.CheckUsernameAvailableResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -130,10 +130,10 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("GetPublicProfile")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceCheckHandleAvailableHandler := connect.NewUnaryHandler(
-		UserServiceCheckHandleAvailableProcedure,
-		svc.CheckHandleAvailable,
-		connect.WithSchema(userServiceMethods.ByName("CheckHandleAvailable")),
+	userServiceCheckUsernameAvailableHandler := connect.NewUnaryHandler(
+		UserServiceCheckUsernameAvailableProcedure,
+		svc.CheckUsernameAvailable,
+		connect.WithSchema(userServiceMethods.ByName("CheckUsernameAvailable")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/quadsmith.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -142,8 +142,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceGetUserHandler.ServeHTTP(w, r)
 		case UserServiceGetPublicProfileProcedure:
 			userServiceGetPublicProfileHandler.ServeHTTP(w, r)
-		case UserServiceCheckHandleAvailableProcedure:
-			userServiceCheckHandleAvailableHandler.ServeHTTP(w, r)
+		case UserServiceCheckUsernameAvailableProcedure:
+			userServiceCheckUsernameAvailableHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -161,6 +161,6 @@ func (UnimplementedUserServiceHandler) GetPublicProfile(context.Context, *connec
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.UserService.GetPublicProfile is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) CheckHandleAvailable(context.Context, *connect.Request[quadsmith.CheckHandleAvailableRequest]) (*connect.Response[quadsmith.CheckHandleAvailableResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.UserService.CheckHandleAvailable is not implemented"))
+func (UnimplementedUserServiceHandler) CheckUsernameAvailable(context.Context, *connect.Request[quadsmith.CheckUsernameAvailableRequest]) (*connect.Response[quadsmith.CheckUsernameAvailableResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.UserService.CheckUsernameAvailable is not implemented"))
 }

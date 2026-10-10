@@ -92,21 +92,21 @@ CREATE TABLE IF NOT EXISTS email_otps (
 
 CREATE INDEX IF NOT EXISTS idx_email_otps_email ON email_otps (email);
 
-CREATE TABLE IF NOT EXISTS handle_histories (
+CREATE TABLE IF NOT EXISTS username_histories (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
   user_uuid UUID NOT NULL,
-  old_handle TEXT NOT NULL,
+  old_username TEXT NOT NULL,
   renamed_at TIMESTAMPTZ,
   first_archived_at TIMESTAMPTZ DEFAULT NOW(),
   release_warning_sent_at TIMESTAMPTZ
 );
 
-CREATE INDEX IF NOT EXISTS idx_handle_histories_user_uuid ON handle_histories (user_uuid);
+CREATE INDEX IF NOT EXISTS idx_username_histories_user_uuid ON username_histories (user_uuid);
 
-CREATE INDEX IF NOT EXISTS idx_handle_histories_old_handle ON handle_histories (old_handle);
+CREATE INDEX IF NOT EXISTS idx_username_histories_old_username ON username_histories (old_username);
 
-CREATE INDEX IF NOT EXISTS idx_handle_histories_first_archived_at ON handle_histories (first_archived_at);
+CREATE INDEX IF NOT EXISTS idx_username_histories_first_archived_at ON username_histories (first_archived_at);
 
 CREATE TABLE IF NOT EXISTS oauth_accounts (
   uuid UUID NOT NULL,
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS builds (
   primary_display_image TEXT,
   media JSONB,
   user_uuid UUID,
-  author_handle TEXT
+  author_username TEXT
 );
 
 CREATE TABLE IF NOT EXISTS cameras (
@@ -373,8 +373,8 @@ ADD CONSTRAINT fk_user_emails_user_uuid FOREIGN KEY (user_uuid) REFERENCES users
 ALTER TABLE refresh_tokens
 ADD CONSTRAINT fk_refresh_tokens_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
-ALTER TABLE handle_histories
-ADD CONSTRAINT fk_handle_histories_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+ALTER TABLE username_histories
+ADD CONSTRAINT fk_username_histories_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE oauth_accounts
 ADD CONSTRAINT fk_oauth_accounts_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);

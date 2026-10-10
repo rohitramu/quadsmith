@@ -31,7 +31,7 @@ export function UserProfilePage() {
           if (err instanceof Error) {
             setErrorMsg(err.message);
           } else {
-            setErrorMsg("Pilot profile not found");
+            setErrorMsg("User profile not found");
           }
         }
       } finally {
@@ -61,9 +61,9 @@ export function UserProfilePage() {
         <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto">
           <AlertCircle size={24} />
         </div>
-        <h2 className="text-xl font-bold">Pilot Not Found</h2>
+        <h2 className="text-xl font-bold">User Not Found</h2>
         <p className="text-xs text-zinc-500">
-          {errorMsg || "The requested user handle does not exist."}
+          {errorMsg || "The requested username does not exist."}
         </p>
         <Link
           to="/"
@@ -80,7 +80,7 @@ export function UserProfilePage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
-      {/* Pilot Profile Header Card */}
+      {/* User Profile Header Card */}
       <div className="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
@@ -104,7 +104,7 @@ export function UserProfilePage() {
                 <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 pt-1">
                   <Calendar size={12} />
                   <span>
-                    Pilot since{" "}
+                    Member since{" "}
                     {new Date(Number(profile.createdAt.seconds) * 1000).toLocaleDateString(
                       undefined,
                       {
@@ -149,7 +149,7 @@ export function UserProfilePage() {
 
         {profile.buildCount === 0 ? (
           <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 text-zinc-400 space-y-2">
-            <p className="text-xs">This pilot hasn&apos;t published any custom builds yet.</p>
+            <p className="text-xs">This user hasn&apos;t published any custom builds yet.</p>
           </div>
         ) : (
           <div className="p-6 text-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 text-xs">

@@ -50,7 +50,7 @@ type jwtHeader struct {
 
 type JWTClaims struct {
 	UserUUID    string `json:"user_uuid"`
-	UserID      string `json:"user_id"` // Public pilot handle (e.g. "fpv_pilot")
+	UserID      string `json:"user_id"` // Public username (e.g. "fpv_pilot")
 	Email       string `json:"email"`
 	Role        string `json:"role"`
 	SessionUUID string `json:"session_uuid"`

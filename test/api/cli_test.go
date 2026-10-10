@@ -319,8 +319,8 @@ func TestCLI_Whoami(t *testing.T) {
 		t.Fatalf("CLI whoami failed: %v\nStderr: %s", err, stderr.String())
 	}
 	outStr := stdout.String()
-	if !strings.Contains(outStr, "Pilot Handle: @test_pilot") {
-		t.Errorf("Expected 'Pilot Handle: @test_pilot' in whoami output, got:\n%s", outStr)
+	if !strings.Contains(outStr, "Username:     @test_pilot") {
+		t.Errorf("Expected 'Username:     @test_pilot' in whoami output, got:\n%s", outStr)
 	}
 	if strings.Contains(outStr, "UUID:") {
 		t.Errorf("Expected no raw UUID in whoami output, got:\n%s", outStr)

@@ -19,7 +19,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import type { ArchivedHandle } from "../gen/quadsmith/auth_pb";
+import type { ArchivedUsername } from "../gen/quadsmith/auth_pb";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
 export function AccountSettingsPage() {
@@ -35,28 +35,28 @@ export function AccountSettingsPage() {
     mergeAccount,
     setPrimaryEmail,
     removeUserEmail,
-    changeHandle,
-    listArchivedHandles,
-    checkHandleAvailable,
+    changeUsername,
+    listArchivedUsernames,
+    checkUsernameAvailable,
   } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const mergeToken = searchParams.get("merge_token");
   const addEmailToken = searchParams.get("add_email_token");
 
-  // Change Handle Modal state
-  const [isChangeHandleOpen, setIsChangeHandleOpen] = useState(false);
-  const [archivedHandles, setArchivedHandles] = useState<ArchivedHandle[]>([]);
+  // Change Username Modal state
+  const [isChangeUsernameOpen, setIsChangeUsernameOpen] = useState(false);
+  const [archivedUsernames, setArchivedUsernames] = useState<ArchivedUsername[]>([]);
   const [nextAllowedNewRenameAt, setNextAllowedNewRenameAt] = useState<Date | null>(null);
   const [isLoadingArchived, setIsLoadingArchived] = useState(false);
-  const [newHandleInput, setNewHandleInput] = useState("");
-  const [handleAvailability, setHandleAvailability] = useState<{
+  const [newUsernameInput, setNewUsernameInput] = useState("");
+  const [usernameAvailability, setUsernameAvailability] = useState<{
     status: "idle" | "checking" | "available" | "unavailable" | "error";
     message: string;
   }>({ status: "idle", message: "" });
-  const [isSubmittingHandle, setIsSubmittingHandle] = useState(false);
-  const [handleError, setHandleError] = useState<string | null>(null);
-  const [handleSuccess, setHandleSuccess] = useState<string | null>(null);
+  const [isSubmittingUsername, setIsSubmittingUsername] = useState(false);
+  const [usernameError, setUsernameError] = useState<string | null>(null);
+  const [usernameSuccess, setUsernameSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     refreshEmails();
@@ -86,7 +86,7 @@ export function AccountSettingsPage() {
     "ownership",
   );
   const [mergeEmail, setMergeEmail] = useState("");
-  const [mergeOtherHandle, setMergeOtherHandle] = useState("");
+  const [mergeOtherUsername, setMergeOtherUsername] = useState("");
   const [mergeOtherBuildCount, setMergeOtherBuildCount] = useState<number>(0);
   const [mergeOtherBuildNames, setMergeOtherBuildNames] = useState<string[]>([]);
   const [mergeOtherEmails, setMergeOtherEmails] = useState<string[]>([]);
@@ -113,7 +113,7 @@ export function AccountSettingsPage() {
           const res = await verifyAddEmailOtp("", undefined, mergeToken);
           if (!isMounted) return;
           if (res.mergeRequired) {
-            setMergeOtherHandle(res.otherUserHandle || "pilot");
+            setMergeOtherUsername(res.otherUserUsername || "user");
             setMergeOtherBuildCount(res.otherBuildCount || 0);
             setMergeOtherBuildNames(res.otherBuildNames || []);
             setMergeOtherEmails(res.otherEmails || []);
@@ -158,7 +158,7 @@ export function AccountSettingsPage() {
           if (!isMounted) return;
           if (res.mergeRequired) {
             setMergeEmail(res.otherEmails?.[0] || "");
-            setMergeOtherHandle(res.otherUserHandle || "pilot");
+            setMergeOtherUsername(res.otherUserUsername || "user");
             setMergeOtherBuildCount(res.otherBuildCount || 0);
             setMergeOtherBuildNames(res.otherBuildNames || []);
             setMergeOtherEmails(res.otherEmails || []);
@@ -244,7 +244,7 @@ export function AccountSettingsPage() {
         // Email belongs to an existing Quadsmith account!
         // Bring up the Merge Modal for ownership check
         setMergeEmail(newEmail.trim());
-        setMergeOtherHandle("");
+        setMergeOtherUsername("");
         setMergeOtherBuildCount(0);
         setMergeOtherBuildNames([]);
         setMergeOtherEmails([]);
@@ -283,7 +283,7 @@ export function AccountSettingsPage() {
       const res = await verifyAddEmailOtp(newEmail.trim(), addOtpCode.trim());
       if (res.mergeRequired) {
         setMergeEmail(newEmail.trim());
-        setMergeOtherHandle(res.otherUserHandle || "pilot");
+        setMergeOtherUsername(res.otherUserUsername || "user");
         setMergeOtherBuildCount(res.otherBuildCount || 0);
         setMergeOtherBuildNames(res.otherBuildNames || []);
         setMergeOtherEmails(res.otherEmails || []);
@@ -358,7 +358,7 @@ export function AccountSettingsPage() {
     try {
       const res = await verifyAddEmailOtp(mergeEmail.trim(), code);
       if (res.mergeRequired) {
-        setMergeOtherHandle(res.otherUserHandle || "pilot");
+        setMergeOtherUsername(res.otherUserUsername || "user");
         setMergeOtherBuildCount(res.otherBuildCount || 0);
         setMergeOtherBuildNames(res.otherBuildNames || []);
         setMergeOtherEmails(res.otherEmails || []);
@@ -484,16 +484,16 @@ export function AccountSettingsPage() {
     });
   };
 
-  const openChangeHandleModal = async () => {
-    setIsChangeHandleOpen(true);
-    setNewHandleInput("");
-    setHandleError(null);
-    setHandleSuccess(null);
-    setHandleAvailability({ status: "idle", message: "" });
+  const openChangeUsernameModal = async () => {
+    setIsChangeUsernameOpen(true);
+    setNewUsernameInput("");
+    setUsernameError(null);
+    setUsernameSuccess(null);
+    setUsernameAvailability({ status: "idle", message: "" });
     setIsLoadingArchived(true);
     try {
-      const res = await listArchivedHandles();
-      setArchivedHandles(res.archivedHandles || []);
+      const res = await listArchivedUsernames();
+      setArchivedUsernames(res.archivedUsernames || []);
       if (res.nextAllowedNewRenameAt?.seconds) {
         setNextAllowedNewRenameAt(new Date(Number(res.nextAllowedNewRenameAt.seconds) * 1000));
       } else {
@@ -507,21 +507,21 @@ export function AccountSettingsPage() {
   };
 
   useEffect(() => {
-    const trimmed = newHandleInput.trim().toLowerCase();
+    const trimmed = newUsernameInput.trim().toLowerCase();
     if (!trimmed) {
-      setHandleAvailability({ status: "idle", message: "" });
+      setUsernameAvailability({ status: "idle", message: "" });
       return;
     }
 
     if (trimmed === user?.id?.toLowerCase()) {
-      setHandleAvailability({ status: "unavailable", message: "This is your current handle" });
+      setUsernameAvailability({ status: "unavailable", message: "This is your current username" });
       return;
     }
 
     // Client-side regex precheck
     const regex = /^[a-z][a-z0-9_]{1,18}[a-z0-9]$/;
     if (!regex.test(trimmed)) {
-      setHandleAvailability({
+      setUsernameAvailability({
         status: "unavailable",
         message:
           "3-20 characters: letters, numbers, and underscores (must start with letter and end with alphanumeric)",
@@ -529,82 +529,85 @@ export function AccountSettingsPage() {
       return;
     }
     if (trimmed.includes("__")) {
-      setHandleAvailability({
+      setUsernameAvailability({
         status: "unavailable",
         message: "Cannot contain consecutive underscores",
       });
       return;
     }
     if (trimmed.includes("quadsmith") || trimmed.includes("quad_smith")) {
-      setHandleAvailability({ status: "unavailable", message: "Cannot contain 'quadsmith'" });
+      setUsernameAvailability({ status: "unavailable", message: "Cannot contain 'quadsmith'" });
       return;
     }
 
-    setHandleAvailability({ status: "checking", message: "Checking availability..." });
+    setUsernameAvailability({ status: "checking", message: "Checking availability..." });
     const timer = setTimeout(async () => {
       try {
-        const res = await checkHandleAvailable(trimmed);
+        const res = await checkUsernameAvailable(trimmed);
         if (res.available) {
-          setHandleAvailability({
+          setUsernameAvailability({
             status: "available",
-            message: res.message || "Handle is available",
+            message: res.message || "Username is available",
           });
         } else {
-          setHandleAvailability({
+          setUsernameAvailability({
             status: "unavailable",
-            message: res.message || "This handle is taken",
+            message: res.message || "This username is taken",
           });
         }
       } catch {
-        setHandleAvailability({ status: "error", message: "Error checking handle availability" });
+        setUsernameAvailability({
+          status: "error",
+          message: "Error checking username availability",
+        });
       }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [newHandleInput, user?.id, checkHandleAvailable]);
+  }, [newUsernameInput, user?.id, checkUsernameAvailable]);
 
-  const handleReclaimHandle = async (targetHandle: string) => {
-    setIsSubmittingHandle(true);
-    setHandleError(null);
+  const handleReclaimUsername = async (targetUsername: string) => {
+    setIsSubmittingUsername(true);
+    setUsernameError(null);
     try {
-      const res = await changeHandle(targetHandle);
-      setHandleSuccess(res.message || `Pilot handle changed to @${targetHandle}`);
+      const res = await changeUsername(targetUsername);
+      setUsernameSuccess(res.message || `Username changed to @${targetUsername}`);
       setTimeout(() => {
-        setIsChangeHandleOpen(false);
-        setHandleSuccess(null);
+        setIsChangeUsernameOpen(false);
+        setUsernameSuccess(null);
       }, 1500);
     } catch (err: unknown) {
-      setHandleError(err instanceof Error ? err.message : "Failed to reclaim handle");
+      setUsernameError(err instanceof Error ? err.message : "Failed to reclaim username");
     } finally {
-      setIsSubmittingHandle(false);
+      setIsSubmittingUsername(false);
     }
   };
 
-  const handleSubmitNewHandle = async (e: React.FormEvent) => {
+  const handleSubmitNewUsername = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (handleAvailability.status !== "available" || !newHandleInput.trim()) return;
+    if (usernameAvailability.status !== "available" || !newUsernameInput.trim()) return;
 
-    setIsSubmittingHandle(true);
-    setHandleError(null);
+    setIsSubmittingUsername(true);
+    setUsernameError(null);
     try {
-      const res = await changeHandle(newHandleInput.trim().toLowerCase());
-      setHandleSuccess(
-        res.message || `Pilot handle changed to @${newHandleInput.trim().toLowerCase()}`,
+      const res = await changeUsername(newUsernameInput.trim().toLowerCase());
+      setUsernameSuccess(
+        res.message || `Username changed to @${newUsernameInput.trim().toLowerCase()}`,
       );
       setTimeout(() => {
-        setIsChangeHandleOpen(false);
-        setHandleSuccess(null);
+        setIsChangeUsernameOpen(false);
+        setUsernameSuccess(null);
       }, 1500);
     } catch (err: unknown) {
-      setHandleError(err instanceof Error ? err.message : "Failed to change handle");
+      setUsernameError(err instanceof Error ? err.message : "Failed to change username");
     } finally {
-      setIsSubmittingHandle(false);
+      setIsSubmittingUsername(false);
     }
   };
 
-  const isNewHandleOnCooldown =
+  const isNewUsernameOnCooldown =
     nextAllowedNewRenameAt !== null && nextAllowedNewRenameAt.getTime() > Date.now();
-  const newHandleCooldownDays = nextAllowedNewRenameAt
+  const newUsernameCooldownDays = nextAllowedNewRenameAt
     ? Math.max(1, Math.ceil((nextAllowedNewRenameAt.getTime() - Date.now()) / (24 * 3600 * 1000)))
     : 0;
 
@@ -630,15 +633,15 @@ export function AccountSettingsPage() {
             <h1 className="text-2xl font-bold tracking-tight">Account Settings</h1>
             <div className="flex items-center gap-2 mt-0.5">
               <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
-                Pilot Handle:{" "}
+                Username:{" "}
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">@{user?.id}</span>
               </p>
               <button
                 type="button"
-                onClick={openChangeHandleModal}
+                onClick={openChangeUsernameModal}
                 className="px-2 py-0.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 rounded-md transition flex items-center gap-1 shadow-2xs cursor-pointer"
               >
-                Change Handle
+                Change Username
               </button>
             </div>
           </div>
@@ -742,7 +745,7 @@ export function AccountSettingsPage() {
             <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="email"
-                placeholder="pilot.secondary@example.com"
+                placeholder="user.secondary@example.com"
                 value={newEmail}
                 disabled={addOtpSent}
                 onChange={(e) => setNewEmail(e.target.value)}
@@ -891,10 +894,10 @@ export function AccountSettingsPage() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Public Handle (id) */}
+          {/* Public Username (id) */}
           <div>
             <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Public Pilot Handle (<code className="font-mono text-blue-500">id</code>)
+              Public Username (<code className="font-mono text-blue-500">id</code>)
             </label>
             <div className="flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3.5 py-2.5 text-xs text-zinc-500 dark:text-zinc-400">
               <span className="font-mono mr-1">quadsmith.dev/users/</span>
@@ -903,7 +906,7 @@ export function AccountSettingsPage() {
               </span>
             </div>
             <p className="text-[11px] text-zinc-400 mt-1">
-              Your unique public handle across build logs and component submissions.
+              Your unique public username across build logs and component submissions.
             </p>
           </div>
 
@@ -953,16 +956,16 @@ export function AccountSettingsPage() {
             </p>
           </div>
 
-          {/* Bio / Pilot Notes */}
+          {/* Bio */}
           <div className="md:col-span-2">
             <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Bio / Pilot Notes
+              Bio
             </label>
             <textarea
               rows={3}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              placeholder="Tell other pilots about your flying style, favorite frames, and builds..."
+              placeholder="Tell other users about your flying style, favorite frames, and builds..."
               className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -1019,7 +1022,7 @@ export function AccountSettingsPage() {
                     {mergeModalStep === "ownership"
                       ? "Enter the verification code sent to your email to continue"
                       : mergeModalStep === "summary"
-                        ? `Consolidate @${mergeOtherHandle} into @${user?.id}`
+                        ? `Consolidate @${mergeOtherUsername} into @${user?.id}`
                         : "Consolidation complete"}
                   </p>
                 </div>
@@ -1147,7 +1150,7 @@ export function AccountSettingsPage() {
                     className="text-emerald-600 dark:text-emerald-400 shrink-0"
                   />
                   <span>
-                    Ownership verified for <strong>@{mergeOtherHandle}</strong>
+                    Ownership verified for <strong>@{mergeOtherUsername}</strong>
                   </span>
                 </div>
 
@@ -1166,13 +1169,13 @@ export function AccountSettingsPage() {
                       <div className="font-semibold text-zinc-900 dark:text-zinc-100">
                         Delete Username:{" "}
                         <span className="font-mono text-red-600 dark:text-red-400">
-                          @{mergeOtherHandle}
+                          @{mergeOtherUsername}
                         </span>
                       </div>
                       <div className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                        The handle{" "}
+                        The username{" "}
                         <strong className="text-zinc-700 dark:text-zinc-300">
-                          @{mergeOtherHandle}
+                          @{mergeOtherUsername}
                         </strong>{" "}
                         will be held for 30 days before being released. During this 30-day window,
                         existing profile links will automatically redirect to{" "}
@@ -1253,7 +1256,7 @@ export function AccountSettingsPage() {
                     <div className="text-[11px] leading-relaxed">
                       This action is permanent and cannot be undone. Once merged,{" "}
                       <strong className="text-zinc-900 dark:text-zinc-100">
-                        @{mergeOtherHandle}
+                        @{mergeOtherUsername}
                       </strong>{" "}
                       will be completely closed and cannot be restored.
                     </div>
@@ -1296,8 +1299,8 @@ export function AccountSettingsPage() {
                 </h4>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-sm mx-auto">
                   {transferredBuilds > 0
-                    ? `All ${transferredBuilds} builds from @${mergeOtherHandle} have been reassigned to your account, and `
-                    : `The account @${mergeOtherHandle} has been consolidated into your profile, and `}
+                    ? `All ${transferredBuilds} builds from @${mergeOtherUsername} have been reassigned to your account, and `
+                    : `The account @${mergeOtherUsername} has been consolidated into your profile, and `}
                   <span className="font-mono text-zinc-900 dark:text-zinc-200">{mergeEmail}</span>{" "}
                   has been added to your login emails.
                 </p>
@@ -1319,12 +1322,12 @@ export function AccountSettingsPage() {
         </div>
       )}
 
-      {/* Modal: Change Pilot Handle Dialog */}
-      {isChangeHandleOpen && (
+      {/* Modal: Change Username Dialog */}
+      {isChangeUsernameOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
           <div
             role="dialog"
-            aria-label="Change Pilot Handle"
+            aria-label="Change Username"
             className="max-w-lg w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl p-6 space-y-5 text-zinc-900 dark:text-zinc-100"
           >
             {/* Modal Header */}
@@ -1335,7 +1338,7 @@ export function AccountSettingsPage() {
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
-                    Change Pilot Handle
+                    Change Username
                   </h3>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
                     Current:{" "}
@@ -1347,7 +1350,7 @@ export function AccountSettingsPage() {
               </div>
               <button
                 type="button"
-                onClick={() => setIsChangeHandleOpen(false)}
+                onClick={() => setIsChangeUsernameOpen(false)}
                 className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1 rounded-lg transition cursor-pointer"
                 aria-label="Close"
               >
@@ -1356,51 +1359,51 @@ export function AccountSettingsPage() {
             </div>
 
             {/* Error Banner */}
-            {handleError && (
+            {usernameError && (
               <div className="p-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs flex items-start gap-2">
                 <AlertCircle size={15} className="shrink-0 mt-0.5" />
-                <div className="leading-relaxed text-[11px]">{handleError}</div>
+                <div className="leading-relaxed text-[11px]">{usernameError}</div>
               </div>
             )}
 
             {/* Success Banner */}
-            {handleSuccess && (
+            {usernameSuccess && (
               <div className="p-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs flex items-start gap-2">
                 <CheckCircle2 size={15} className="shrink-0 mt-0.5" />
-                <div className="leading-relaxed text-[11px] font-medium">{handleSuccess}</div>
+                <div className="leading-relaxed text-[11px] font-medium">{usernameSuccess}</div>
               </div>
             )}
 
-            {/* Loading Archived Handles */}
+            {/* Loading Archived Usernames */}
             {isLoadingArchived && (
               <div className="flex items-center gap-2 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-xs text-zinc-500">
                 <Loader2 size={14} className="animate-spin text-blue-500" />
-                <span>Checking your held handles...</span>
+                <span>Checking your held usernames...</span>
               </div>
             )}
 
-            {/* SECTION A: Held Archived Handles (Relaxed Rules) */}
-            {archivedHandles.length > 0 && (
+            {/* SECTION A: Held Archived Usernames (Relaxed Rules) */}
+            {archivedUsernames.length > 0 && (
               <div className="p-4 rounded-xl border border-purple-500/20 bg-purple-500/5 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="text-xs font-bold text-purple-700 dark:text-purple-300 flex items-center gap-1.5">
-                    <span>Your Held Handles (30d Hold)</span>
+                    <span>Your Held Usernames (30d Hold)</span>
                   </div>
                   <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono">
-                    {archivedHandles.length} {archivedHandles.length === 1 ? "handle" : "handles"}{" "}
-                    reserved
+                    {archivedUsernames.length}{" "}
+                    {archivedUsernames.length === 1 ? "username" : "usernames"} reserved
                   </span>
                 </div>
 
-                {archivedHandles.map((item) => (
+                {archivedUsernames.map((item) => (
                   <div
-                    key={item.handle}
+                    key={item.username}
                     className="p-3 rounded-lg border border-purple-500/30 bg-zinc-50 dark:bg-zinc-950/80 flex items-center justify-between gap-3"
                   >
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
                         <span className="font-mono font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                          @{item.handle}
+                          @{item.username}
                         </span>
                         {item.canReclaimNow ? (
                           <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
@@ -1423,11 +1426,11 @@ export function AccountSettingsPage() {
 
                     <button
                       type="button"
-                      disabled={!item.canReclaimNow || isSubmittingHandle}
-                      onClick={() => handleReclaimHandle(item.handle)}
+                      disabled={!item.canReclaimNow || isSubmittingUsername}
+                      onClick={() => handleReclaimUsername(item.username)}
                       className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 disabled:pointer-events-none text-white text-xs font-semibold transition shrink-0 shadow-sm cursor-pointer"
                     >
-                      {isSubmittingHandle ? (
+                      {isSubmittingUsername ? (
                         <Loader2 size={13} className="animate-spin" />
                       ) : (
                         "Reclaim"
@@ -1444,14 +1447,14 @@ export function AccountSettingsPage() {
               </div>
             )}
 
-            {/* SECTION B: Choose a Brand-New Handle */}
-            <form onSubmit={handleSubmitNewHandle} className="space-y-4">
+            {/* SECTION B: Choose a Brand-New Username */}
+            <form onSubmit={handleSubmitNewUsername} className="space-y-4">
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <label className="block text-xs font-semibold text-zinc-800 dark:text-zinc-200">
-                    Choose a Brand-New Handle
+                    Choose a Brand-New Username
                   </label>
-                  {!isNewHandleOnCooldown && (
+                  {!isNewUsernameOnCooldown && (
                     <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
                       ✓ Normal 30d cooldown ready
                     </span>
@@ -1465,24 +1468,24 @@ export function AccountSettingsPage() {
                     </span>
                     <input
                       type="text"
-                      disabled={isNewHandleOnCooldown || isSubmittingHandle}
-                      value={newHandleInput}
-                      onChange={(e) => setNewHandleInput(e.target.value.toLowerCase().trim())}
-                      placeholder="new_handle"
+                      disabled={isNewUsernameOnCooldown || isSubmittingUsername}
+                      value={newUsernameInput}
+                      onChange={(e) => setNewUsernameInput(e.target.value.toLowerCase().trim())}
+                      placeholder="new_username"
                       maxLength={20}
                       className="bg-transparent text-xs font-mono text-zinc-900 dark:text-zinc-100 outline-none w-full disabled:opacity-50"
                     />
-                    {handleAvailability.status === "checking" && (
+                    {usernameAvailability.status === "checking" && (
                       <Loader2 size={13} className="animate-spin text-zinc-400 shrink-0 ml-2" />
                     )}
-                    {handleAvailability.status === "available" && (
+                    {usernameAvailability.status === "available" && (
                       <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 shrink-0 ml-2">
                         ✓ Available
                       </span>
                     )}
-                    {handleAvailability.status === "unavailable" && (
+                    {usernameAvailability.status === "unavailable" && (
                       <span className="text-[11px] font-medium text-rose-600 dark:text-rose-400 shrink-0 ml-2">
-                        {handleAvailability.message}
+                        {usernameAvailability.message}
                       </span>
                     )}
                   </div>
@@ -1492,20 +1495,20 @@ export function AccountSettingsPage() {
                 <div className="text-[11px] text-zinc-500 dark:text-zinc-400 space-y-1">
                   <div>• 3-20 characters: lowercase letters, numbers, and single underscores.</div>
                   <div>
-                    • Changing to a brand-new handle requires a <strong>30-day cooldown</strong>{" "}
-                    before you can change to another new handle.
+                    • Changing to a brand-new username requires a <strong>30-day cooldown</strong>{" "}
+                    before you can change to another new username.
                   </div>
                 </div>
 
                 {/* Cooldown Warning Banner (if cooldown active) */}
-                {isNewHandleOnCooldown && (
+                {isNewUsernameOnCooldown && (
                   <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs flex items-start gap-2">
                     <span className="shrink-0">⏳</span>
                     <div className="leading-relaxed text-[11px]">
-                      <strong>Cooldown Active:</strong> You renamed your handle recently. You can
-                      choose a brand-new handle in{" "}
+                      <strong>Cooldown Active:</strong> You renamed your username recently. You can
+                      choose a brand-new username in{" "}
                       <strong>
-                        {newHandleCooldownDays} day{newHandleCooldownDays === 1 ? "" : "s"}
+                        {newUsernameCooldownDays} day{newUsernameCooldownDays === 1 ? "" : "s"}
                       </strong>{" "}
                       (
                       {nextAllowedNewRenameAt?.toLocaleDateString("en-US", {
@@ -1513,7 +1516,7 @@ export function AccountSettingsPage() {
                         day: "numeric",
                         year: "numeric",
                       })}
-                      ), or reclaim one of your held handles above.
+                      ), or reclaim one of your held usernames above.
                     </div>
                   </div>
                 )}
@@ -1523,9 +1526,9 @@ export function AccountSettingsPage() {
               <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-xs text-zinc-500 dark:text-zinc-400 flex items-start gap-2.5">
                 <span className="text-blue-500 text-base leading-none mt-0.5">ℹ</span>
                 <div className="text-[11px] leading-relaxed">
-                  Your current handle{" "}
+                  Your current username{" "}
                   <strong className="text-zinc-800 dark:text-zinc-200">@{user?.id}</strong> will be
-                  reserved in your handle history for <strong>30 days</strong> and automatically
+                  reserved in your username history for <strong>30 days</strong> and automatically
                   redirect to your profile. An email alert will be sent 7 days before it is
                   released.
                 </div>
@@ -1535,7 +1538,7 @@ export function AccountSettingsPage() {
               <div className="flex gap-2.5 pt-2">
                 <button
                   type="button"
-                  onClick={() => setIsChangeHandleOpen(false)}
+                  onClick={() => setIsChangeUsernameOpen(false)}
                   className="flex-1 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition cursor-pointer"
                 >
                   Cancel
@@ -1543,15 +1546,15 @@ export function AccountSettingsPage() {
                 <button
                   type="submit"
                   disabled={
-                    isNewHandleOnCooldown ||
-                    handleAvailability.status !== "available" ||
-                    isSubmittingHandle ||
-                    !newHandleInput.trim()
+                    isNewUsernameOnCooldown ||
+                    usernameAvailability.status !== "available" ||
+                    isSubmittingUsername ||
+                    !newUsernameInput.trim()
                   }
                   className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 active:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold transition shrink-0 shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  {isSubmittingHandle && <Loader2 size={13} className="animate-spin" />}
-                  <span>Change Handle</span>
+                  {isSubmittingUsername && <Loader2 size={13} className="animate-spin" />}
+                  <span>Change Username</span>
                 </button>
               </div>
             </form>

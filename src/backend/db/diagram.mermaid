@@ -18,7 +18,7 @@ erDiagram
         TEXT primary_display_image
         JSONB media
         UUID user_uuid FK
-        TEXT author_handle
+        TEXT author_username
     }
 
     motors {
@@ -270,10 +270,10 @@ erDiagram
         TIMESTAMPTZ created_at
     }
 
-    handle_histories {
+    username_histories {
         UUID uuid PK
         UUID user_uuid FK
-        TEXT old_handle
+        TEXT old_username
         TIMESTAMPTZ renamed_at
         TIMESTAMPTZ first_archived_at
         TIMESTAMPTZ release_warning_sent_at
@@ -302,7 +302,7 @@ erDiagram
     users ||--o| user_profiles : has
     users ||--o{ user_emails : has
     users ||--o{ refresh_tokens : has
-    users ||--o{ handle_histories : has
+    users ||--o{ username_histories : has
     users ||--o{ oauth_accounts : has
     users ||--o{ builds : authors
 

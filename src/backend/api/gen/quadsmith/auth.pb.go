@@ -783,7 +783,7 @@ type VerifyAddEmailOtpResponse struct {
 	Success             bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	Message             string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	MergeRequired       bool                   `protobuf:"varint,3,opt,name=merge_required,json=mergeRequired,proto3" json:"merge_required,omitempty"`
-	OtherUserHandle     string                 `protobuf:"bytes,4,opt,name=other_user_handle,json=otherUserHandle,proto3" json:"other_user_handle,omitempty"`
+	OtherUserUsername   string                 `protobuf:"bytes,4,opt,name=other_user_username,json=otherUserUsername,proto3" json:"other_user_username,omitempty"`
 	OtherBuildCount     int32                  `protobuf:"varint,5,opt,name=other_build_count,json=otherBuildCount,proto3" json:"other_build_count,omitempty"`
 	OtherBuildNames     []string               `protobuf:"bytes,6,rep,name=other_build_names,json=otherBuildNames,proto3" json:"other_build_names,omitempty"`
 	OtherEmails         []string               `protobuf:"bytes,7,rep,name=other_emails,json=otherEmails,proto3" json:"other_emails,omitempty"`
@@ -843,9 +843,9 @@ func (x *VerifyAddEmailOtpResponse) GetMergeRequired() bool {
 	return false
 }
 
-func (x *VerifyAddEmailOtpResponse) GetOtherUserHandle() string {
+func (x *VerifyAddEmailOtpResponse) GetOtherUserUsername() string {
 	if x != nil {
-		return x.OtherUserHandle
+		return x.OtherUserUsername
 	}
 	return ""
 }
@@ -943,7 +943,7 @@ type MergeAccountResponse struct {
 	Success               bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	Message               string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	TransferredBuildCount int32                  `protobuf:"varint,3,opt,name=transferred_build_count,json=transferredBuildCount,proto3" json:"transferred_build_count,omitempty"`
-	MergedHandle          string                 `protobuf:"bytes,4,opt,name=merged_handle,json=mergedHandle,proto3" json:"merged_handle,omitempty"`
+	MergedUsername        string                 `protobuf:"bytes,4,opt,name=merged_username,json=mergedUsername,proto3" json:"merged_username,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -999,9 +999,9 @@ func (x *MergeAccountResponse) GetTransferredBuildCount() int32 {
 	return 0
 }
 
-func (x *MergeAccountResponse) GetMergedHandle() string {
+func (x *MergeAccountResponse) GetMergedUsername() string {
 	if x != nil {
-		return x.MergedHandle
+		return x.MergedUsername
 	}
 	return ""
 }
@@ -1198,9 +1198,9 @@ func (x *RemoveUserEmailResponse) GetMessage() string {
 	return ""
 }
 
-type ArchivedHandle struct {
+type ArchivedUsername struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
-	Handle               string                 `protobuf:"bytes,1,opt,name=handle,proto3" json:"handle,omitempty"`
+	Username             string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	FirstArchivedAt      *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=first_archived_at,json=firstArchivedAt,proto3" json:"first_archived_at,omitempty"`
 	RenamedAt            *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=renamed_at,json=renamedAt,proto3" json:"renamed_at,omitempty"`
 	ReleaseAt            *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=release_at,json=releaseAt,proto3" json:"release_at,omitempty"`
@@ -1211,20 +1211,20 @@ type ArchivedHandle struct {
 	sizeCache            protoimpl.SizeCache
 }
 
-func (x *ArchivedHandle) Reset() {
-	*x = ArchivedHandle{}
+func (x *ArchivedUsername) Reset() {
+	*x = ArchivedUsername{}
 	mi := &file_auth_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ArchivedHandle) String() string {
+func (x *ArchivedUsername) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ArchivedHandle) ProtoMessage() {}
+func (*ArchivedUsername) ProtoMessage() {}
 
-func (x *ArchivedHandle) ProtoReflect() protoreflect.Message {
+func (x *ArchivedUsername) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1236,81 +1236,81 @@ func (x *ArchivedHandle) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ArchivedHandle.ProtoReflect.Descriptor instead.
-func (*ArchivedHandle) Descriptor() ([]byte, []int) {
+// Deprecated: Use ArchivedUsername.ProtoReflect.Descriptor instead.
+func (*ArchivedUsername) Descriptor() ([]byte, []int) {
 	return file_auth_proto_rawDescGZIP(), []int{22}
 }
 
-func (x *ArchivedHandle) GetHandle() string {
+func (x *ArchivedUsername) GetUsername() string {
 	if x != nil {
-		return x.Handle
+		return x.Username
 	}
 	return ""
 }
 
-func (x *ArchivedHandle) GetFirstArchivedAt() *timestamppb.Timestamp {
+func (x *ArchivedUsername) GetFirstArchivedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.FirstArchivedAt
 	}
 	return nil
 }
 
-func (x *ArchivedHandle) GetRenamedAt() *timestamppb.Timestamp {
+func (x *ArchivedUsername) GetRenamedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.RenamedAt
 	}
 	return nil
 }
 
-func (x *ArchivedHandle) GetReleaseAt() *timestamppb.Timestamp {
+func (x *ArchivedUsername) GetReleaseAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.ReleaseAt
 	}
 	return nil
 }
 
-func (x *ArchivedHandle) GetDaysRemaining() int32 {
+func (x *ArchivedUsername) GetDaysRemaining() int32 {
 	if x != nil {
 		return x.DaysRemaining
 	}
 	return 0
 }
 
-func (x *ArchivedHandle) GetCanReclaimNow() bool {
+func (x *ArchivedUsername) GetCanReclaimNow() bool {
 	if x != nil {
 		return x.CanReclaimNow
 	}
 	return false
 }
 
-func (x *ArchivedHandle) GetNextReclaimAllowedAt() *timestamppb.Timestamp {
+func (x *ArchivedUsername) GetNextReclaimAllowedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.NextReclaimAllowedAt
 	}
 	return nil
 }
 
-type ChangeHandleRequest struct {
+type ChangeUsernameRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	NewHandle     string                 `protobuf:"bytes,1,opt,name=new_handle,json=newHandle,proto3" json:"new_handle,omitempty"`
+	NewUsername   string                 `protobuf:"bytes,1,opt,name=new_username,json=newUsername,proto3" json:"new_username,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ChangeHandleRequest) Reset() {
-	*x = ChangeHandleRequest{}
+func (x *ChangeUsernameRequest) Reset() {
+	*x = ChangeUsernameRequest{}
 	mi := &file_auth_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ChangeHandleRequest) String() string {
+func (x *ChangeUsernameRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ChangeHandleRequest) ProtoMessage() {}
+func (*ChangeUsernameRequest) ProtoMessage() {}
 
-func (x *ChangeHandleRequest) ProtoReflect() protoreflect.Message {
+func (x *ChangeUsernameRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1322,19 +1322,19 @@ func (x *ChangeHandleRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ChangeHandleRequest.ProtoReflect.Descriptor instead.
-func (*ChangeHandleRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ChangeUsernameRequest.ProtoReflect.Descriptor instead.
+func (*ChangeUsernameRequest) Descriptor() ([]byte, []int) {
 	return file_auth_proto_rawDescGZIP(), []int{23}
 }
 
-func (x *ChangeHandleRequest) GetNewHandle() string {
+func (x *ChangeUsernameRequest) GetNewUsername() string {
 	if x != nil {
-		return x.NewHandle
+		return x.NewUsername
 	}
 	return ""
 }
 
-type ChangeHandleResponse struct {
+type ChangeUsernameResponse struct {
 	state                      protoimpl.MessageState `protogen:"open.v1"`
 	Success                    bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	Message                    string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
@@ -1345,20 +1345,20 @@ type ChangeHandleResponse struct {
 	sizeCache                  protoimpl.SizeCache
 }
 
-func (x *ChangeHandleResponse) Reset() {
-	*x = ChangeHandleResponse{}
+func (x *ChangeUsernameResponse) Reset() {
+	*x = ChangeUsernameResponse{}
 	mi := &file_auth_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ChangeHandleResponse) String() string {
+func (x *ChangeUsernameResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ChangeHandleResponse) ProtoMessage() {}
+func (*ChangeUsernameResponse) ProtoMessage() {}
 
-func (x *ChangeHandleResponse) ProtoReflect() protoreflect.Message {
+func (x *ChangeUsernameResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1370,66 +1370,66 @@ func (x *ChangeHandleResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ChangeHandleResponse.ProtoReflect.Descriptor instead.
-func (*ChangeHandleResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ChangeUsernameResponse.ProtoReflect.Descriptor instead.
+func (*ChangeUsernameResponse) Descriptor() ([]byte, []int) {
 	return file_auth_proto_rawDescGZIP(), []int{24}
 }
 
-func (x *ChangeHandleResponse) GetSuccess() bool {
+func (x *ChangeUsernameResponse) GetSuccess() bool {
 	if x != nil {
 		return x.Success
 	}
 	return false
 }
 
-func (x *ChangeHandleResponse) GetMessage() string {
+func (x *ChangeUsernameResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
 	return ""
 }
 
-func (x *ChangeHandleResponse) GetUser() *User {
+func (x *ChangeUsernameResponse) GetUser() *User {
 	if x != nil {
 		return x.User
 	}
 	return nil
 }
 
-func (x *ChangeHandleResponse) GetNextAllowedNewRenameAt() *timestamppb.Timestamp {
+func (x *ChangeUsernameResponse) GetNextAllowedNewRenameAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.NextAllowedNewRenameAt
 	}
 	return nil
 }
 
-func (x *ChangeHandleResponse) GetNextAllowedArchiveRenameAt() *timestamppb.Timestamp {
+func (x *ChangeUsernameResponse) GetNextAllowedArchiveRenameAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.NextAllowedArchiveRenameAt
 	}
 	return nil
 }
 
-type ListArchivedHandlesRequest struct {
+type ListArchivedUsernamesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListArchivedHandlesRequest) Reset() {
-	*x = ListArchivedHandlesRequest{}
+func (x *ListArchivedUsernamesRequest) Reset() {
+	*x = ListArchivedUsernamesRequest{}
 	mi := &file_auth_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListArchivedHandlesRequest) String() string {
+func (x *ListArchivedUsernamesRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListArchivedHandlesRequest) ProtoMessage() {}
+func (*ListArchivedUsernamesRequest) ProtoMessage() {}
 
-func (x *ListArchivedHandlesRequest) ProtoReflect() protoreflect.Message {
+func (x *ListArchivedUsernamesRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1441,34 +1441,34 @@ func (x *ListArchivedHandlesRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListArchivedHandlesRequest.ProtoReflect.Descriptor instead.
-func (*ListArchivedHandlesRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListArchivedUsernamesRequest.ProtoReflect.Descriptor instead.
+func (*ListArchivedUsernamesRequest) Descriptor() ([]byte, []int) {
 	return file_auth_proto_rawDescGZIP(), []int{25}
 }
 
-type ListArchivedHandlesResponse struct {
+type ListArchivedUsernamesResponse struct {
 	state                      protoimpl.MessageState `protogen:"open.v1"`
-	ArchivedHandles            []*ArchivedHandle      `protobuf:"bytes,1,rep,name=archived_handles,json=archivedHandles,proto3" json:"archived_handles,omitempty"`
+	ArchivedUsernames          []*ArchivedUsername    `protobuf:"bytes,1,rep,name=archived_usernames,json=archivedUsernames,proto3" json:"archived_usernames,omitempty"`
 	NextAllowedNewRenameAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=next_allowed_new_rename_at,json=nextAllowedNewRenameAt,proto3" json:"next_allowed_new_rename_at,omitempty"`
 	NextAllowedArchiveRenameAt *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=next_allowed_archive_rename_at,json=nextAllowedArchiveRenameAt,proto3" json:"next_allowed_archive_rename_at,omitempty"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
 
-func (x *ListArchivedHandlesResponse) Reset() {
-	*x = ListArchivedHandlesResponse{}
+func (x *ListArchivedUsernamesResponse) Reset() {
+	*x = ListArchivedUsernamesResponse{}
 	mi := &file_auth_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListArchivedHandlesResponse) String() string {
+func (x *ListArchivedUsernamesResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListArchivedHandlesResponse) ProtoMessage() {}
+func (*ListArchivedUsernamesResponse) ProtoMessage() {}
 
-func (x *ListArchivedHandlesResponse) ProtoReflect() protoreflect.Message {
+func (x *ListArchivedUsernamesResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1480,26 +1480,26 @@ func (x *ListArchivedHandlesResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListArchivedHandlesResponse.ProtoReflect.Descriptor instead.
-func (*ListArchivedHandlesResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListArchivedUsernamesResponse.ProtoReflect.Descriptor instead.
+func (*ListArchivedUsernamesResponse) Descriptor() ([]byte, []int) {
 	return file_auth_proto_rawDescGZIP(), []int{26}
 }
 
-func (x *ListArchivedHandlesResponse) GetArchivedHandles() []*ArchivedHandle {
+func (x *ListArchivedUsernamesResponse) GetArchivedUsernames() []*ArchivedUsername {
 	if x != nil {
-		return x.ArchivedHandles
+		return x.ArchivedUsernames
 	}
 	return nil
 }
 
-func (x *ListArchivedHandlesResponse) GetNextAllowedNewRenameAt() *timestamppb.Timestamp {
+func (x *ListArchivedUsernamesResponse) GetNextAllowedNewRenameAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.NextAllowedNewRenameAt
 	}
 	return nil
 }
 
-func (x *ListArchivedHandlesResponse) GetNextAllowedArchiveRenameAt() *timestamppb.Timestamp {
+func (x *ListArchivedUsernamesResponse) GetNextAllowedArchiveRenameAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.NextAllowedArchiveRenameAt
 	}
@@ -1560,12 +1560,12 @@ const file_auth_proto_rawDesc = "" +
 	"\x18VerifyAddEmailOtpRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
-	"\x05token\x18\x03 \x01(\tR\x05token\"\xd1\x02\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\"\xd5\x02\n" +
 	"\x19VerifyAddEmailOtpResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
-	"\x0emerge_required\x18\x03 \x01(\bR\rmergeRequired\x12*\n" +
-	"\x11other_user_handle\x18\x04 \x01(\tR\x0fotherUserHandle\x12*\n" +
+	"\x0emerge_required\x18\x03 \x01(\bR\rmergeRequired\x12.\n" +
+	"\x13other_user_username\x18\x04 \x01(\tR\x11otherUserUsername\x12*\n" +
 	"\x11other_build_count\x18\x05 \x01(\x05R\x0fotherBuildCount\x12*\n" +
 	"\x11other_build_names\x18\x06 \x03(\tR\x0fotherBuildNames\x12!\n" +
 	"\fother_emails\x18\a \x03(\tR\votherEmails\x122\n" +
@@ -1573,12 +1573,12 @@ const file_auth_proto_rawDesc = "" +
 	"\x13MergeAccountRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
-	"\x05token\x18\x03 \x01(\tR\x05token\"\xa7\x01\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\"\xab\x01\n" +
 	"\x14MergeAccountResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x126\n" +
-	"\x17transferred_build_count\x18\x03 \x01(\x05R\x15transferredBuildCount\x12#\n" +
-	"\rmerged_handle\x18\x04 \x01(\tR\fmergedHandle\".\n" +
+	"\x17transferred_build_count\x18\x03 \x01(\x05R\x15transferredBuildCount\x12'\n" +
+	"\x0fmerged_username\x18\x04 \x01(\tR\x0emergedUsername\".\n" +
 	"\x16SetPrimaryEmailRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\"M\n" +
 	"\x17SetPrimaryEmailResponse\x12\x18\n" +
@@ -1588,9 +1588,9 @@ const file_auth_proto_rawDesc = "" +
 	"\x05email\x18\x01 \x01(\tR\x05email\"M\n" +
 	"\x17RemoveUserEmailResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\x88\x03\n" +
-	"\x0eArchivedHandle\x12\x16\n" +
-	"\x06handle\x18\x01 \x01(\tR\x06handle\x12F\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\x8e\x03\n" +
+	"\x10ArchivedUsername\x12\x1a\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12F\n" +
 	"\x11first_archived_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0ffirstArchivedAt\x129\n" +
 	"\n" +
 	"renamed_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\trenamedAt\x129\n" +
@@ -1598,23 +1598,22 @@ const file_auth_proto_rawDesc = "" +
 	"release_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\treleaseAt\x12%\n" +
 	"\x0edays_remaining\x18\x05 \x01(\x05R\rdaysRemaining\x12&\n" +
 	"\x0fcan_reclaim_now\x18\x06 \x01(\bR\rcanReclaimNow\x12Q\n" +
-	"\x17next_reclaim_allowed_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x14nextReclaimAllowedAt\"\x88\x01\n" +
-	"\x13ChangeHandleRequest\x12q\n" +
-	"\n" +
-	"new_handle\x18\x01 \x01(\tBR\x82\xb2\x19N\n" +
+	"\x17next_reclaim_allowed_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x14nextReclaimAllowedAt\"\x8e\x01\n" +
+	"\x15ChangeUsernameRequest\x12u\n" +
+	"\fnew_username\x18\x01 \x01(\tBR\x82\xb2\x19N\n" +
 	"L\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root*\x02__*\tquadsmith*\n" +
-	"quad_smithR\tnewHandle\"\xa7\x02\n" +
-	"\x14ChangeHandleResponse\x12\x18\n" +
+	"quad_smithR\vnewUsername\"\xa9\x02\n" +
+	"\x16ChangeUsernameResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12#\n" +
 	"\x04user\x18\x03 \x01(\v2\x0f.quadsmith.UserR\x04user\x12V\n" +
 	"\x1anext_allowed_new_rename_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x16nextAllowedNewRenameAt\x12^\n" +
-	"\x1enext_allowed_archive_rename_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x1anextAllowedArchiveRenameAt\"\x1c\n" +
-	"\x1aListArchivedHandlesRequest\"\x9b\x02\n" +
-	"\x1bListArchivedHandlesResponse\x12D\n" +
-	"\x10archived_handles\x18\x01 \x03(\v2\x19.quadsmith.ArchivedHandleR\x0farchivedHandles\x12V\n" +
+	"\x1enext_allowed_archive_rename_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x1anextAllowedArchiveRenameAt\"\x1e\n" +
+	"\x1cListArchivedUsernamesRequest\"\xa3\x02\n" +
+	"\x1dListArchivedUsernamesResponse\x12J\n" +
+	"\x12archived_usernames\x18\x01 \x03(\v2\x1b.quadsmith.ArchivedUsernameR\x11archivedUsernames\x12V\n" +
 	"\x1anext_allowed_new_rename_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x16nextAllowedNewRenameAt\x12^\n" +
-	"\x1enext_allowed_archive_rename_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x1anextAllowedArchiveRenameAt2\xdb\t\n" +
+	"\x1enext_allowed_archive_rename_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x1anextAllowedArchiveRenameAt2\xe7\t\n" +
 	"\vAuthService\x12O\n" +
 	"\fSendEmailOtp\x12\x1e.quadsmith.SendEmailOtpRequest\x1a\x1f.quadsmith.SendEmailOtpResponse\x12K\n" +
 	"\x0eVerifyEmailOtp\x12 .quadsmith.VerifyEmailOtpRequest\x1a\x17.quadsmith.AuthResponse\x12M\n" +
@@ -1628,9 +1627,9 @@ const file_auth_proto_rawDesc = "" +
 	"\x11VerifyAddEmailOtp\x12#.quadsmith.VerifyAddEmailOtpRequest\x1a$.quadsmith.VerifyAddEmailOtpResponse\x12O\n" +
 	"\fMergeAccount\x12\x1e.quadsmith.MergeAccountRequest\x1a\x1f.quadsmith.MergeAccountResponse\x12X\n" +
 	"\x0fSetPrimaryEmail\x12!.quadsmith.SetPrimaryEmailRequest\x1a\".quadsmith.SetPrimaryEmailResponse\x12X\n" +
-	"\x0fRemoveUserEmail\x12!.quadsmith.RemoveUserEmailRequest\x1a\".quadsmith.RemoveUserEmailResponse\x12O\n" +
-	"\fChangeHandle\x12\x1e.quadsmith.ChangeHandleRequest\x1a\x1f.quadsmith.ChangeHandleResponse\x12d\n" +
-	"\x13ListArchivedHandles\x12%.quadsmith.ListArchivedHandlesRequest\x1a&.quadsmith.ListArchivedHandlesResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\x0fRemoveUserEmail\x12!.quadsmith.RemoveUserEmailRequest\x1a\".quadsmith.RemoveUserEmailResponse\x12U\n" +
+	"\x0eChangeUsername\x12 .quadsmith.ChangeUsernameRequest\x1a!.quadsmith.ChangeUsernameResponse\x12j\n" +
+	"\x15ListArchivedUsernames\x12'.quadsmith.ListArchivedUsernamesRequest\x1a(.quadsmith.ListArchivedUsernamesResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_auth_proto_rawDescOnce sync.Once
@@ -1646,52 +1645,52 @@ func file_auth_proto_rawDescGZIP() []byte {
 
 var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_auth_proto_goTypes = []any{
-	(*SendEmailOtpRequest)(nil),         // 0: quadsmith.SendEmailOtpRequest
-	(*SendEmailOtpResponse)(nil),        // 1: quadsmith.SendEmailOtpResponse
-	(*VerifyEmailOtpRequest)(nil),       // 2: quadsmith.VerifyEmailOtpRequest
-	(*VerifyMagicLinkRequest)(nil),      // 3: quadsmith.VerifyMagicLinkRequest
-	(*AuthResponse)(nil),                // 4: quadsmith.AuthResponse
-	(*OtpVerificationError)(nil),        // 5: quadsmith.OtpVerificationError
-	(*RefreshTokenRequest)(nil),         // 6: quadsmith.RefreshTokenRequest
-	(*GetCurrentUserRequest)(nil),       // 7: quadsmith.GetCurrentUserRequest
-	(*UpdateProfileRequest)(nil),        // 8: quadsmith.UpdateProfileRequest
-	(*LogoutRequest)(nil),               // 9: quadsmith.LogoutRequest
-	(*LogoutResponse)(nil),              // 10: quadsmith.LogoutResponse
-	(*ListUserEmailsRequest)(nil),       // 11: quadsmith.ListUserEmailsRequest
-	(*ListUserEmailsResponse)(nil),      // 12: quadsmith.ListUserEmailsResponse
-	(*SendAddEmailOtpRequest)(nil),      // 13: quadsmith.SendAddEmailOtpRequest
-	(*VerifyAddEmailOtpRequest)(nil),    // 14: quadsmith.VerifyAddEmailOtpRequest
-	(*VerifyAddEmailOtpResponse)(nil),   // 15: quadsmith.VerifyAddEmailOtpResponse
-	(*MergeAccountRequest)(nil),         // 16: quadsmith.MergeAccountRequest
-	(*MergeAccountResponse)(nil),        // 17: quadsmith.MergeAccountResponse
-	(*SetPrimaryEmailRequest)(nil),      // 18: quadsmith.SetPrimaryEmailRequest
-	(*SetPrimaryEmailResponse)(nil),     // 19: quadsmith.SetPrimaryEmailResponse
-	(*RemoveUserEmailRequest)(nil),      // 20: quadsmith.RemoveUserEmailRequest
-	(*RemoveUserEmailResponse)(nil),     // 21: quadsmith.RemoveUserEmailResponse
-	(*ArchivedHandle)(nil),              // 22: quadsmith.ArchivedHandle
-	(*ChangeHandleRequest)(nil),         // 23: quadsmith.ChangeHandleRequest
-	(*ChangeHandleResponse)(nil),        // 24: quadsmith.ChangeHandleResponse
-	(*ListArchivedHandlesRequest)(nil),  // 25: quadsmith.ListArchivedHandlesRequest
-	(*ListArchivedHandlesResponse)(nil), // 26: quadsmith.ListArchivedHandlesResponse
-	(*User)(nil),                        // 27: quadsmith.User
-	(*UserProfile)(nil),                 // 28: quadsmith.UserProfile
-	(*UserEmail)(nil),                   // 29: quadsmith.UserEmail
-	(*timestamppb.Timestamp)(nil),       // 30: google.protobuf.Timestamp
+	(*SendEmailOtpRequest)(nil),           // 0: quadsmith.SendEmailOtpRequest
+	(*SendEmailOtpResponse)(nil),          // 1: quadsmith.SendEmailOtpResponse
+	(*VerifyEmailOtpRequest)(nil),         // 2: quadsmith.VerifyEmailOtpRequest
+	(*VerifyMagicLinkRequest)(nil),        // 3: quadsmith.VerifyMagicLinkRequest
+	(*AuthResponse)(nil),                  // 4: quadsmith.AuthResponse
+	(*OtpVerificationError)(nil),          // 5: quadsmith.OtpVerificationError
+	(*RefreshTokenRequest)(nil),           // 6: quadsmith.RefreshTokenRequest
+	(*GetCurrentUserRequest)(nil),         // 7: quadsmith.GetCurrentUserRequest
+	(*UpdateProfileRequest)(nil),          // 8: quadsmith.UpdateProfileRequest
+	(*LogoutRequest)(nil),                 // 9: quadsmith.LogoutRequest
+	(*LogoutResponse)(nil),                // 10: quadsmith.LogoutResponse
+	(*ListUserEmailsRequest)(nil),         // 11: quadsmith.ListUserEmailsRequest
+	(*ListUserEmailsResponse)(nil),        // 12: quadsmith.ListUserEmailsResponse
+	(*SendAddEmailOtpRequest)(nil),        // 13: quadsmith.SendAddEmailOtpRequest
+	(*VerifyAddEmailOtpRequest)(nil),      // 14: quadsmith.VerifyAddEmailOtpRequest
+	(*VerifyAddEmailOtpResponse)(nil),     // 15: quadsmith.VerifyAddEmailOtpResponse
+	(*MergeAccountRequest)(nil),           // 16: quadsmith.MergeAccountRequest
+	(*MergeAccountResponse)(nil),          // 17: quadsmith.MergeAccountResponse
+	(*SetPrimaryEmailRequest)(nil),        // 18: quadsmith.SetPrimaryEmailRequest
+	(*SetPrimaryEmailResponse)(nil),       // 19: quadsmith.SetPrimaryEmailResponse
+	(*RemoveUserEmailRequest)(nil),        // 20: quadsmith.RemoveUserEmailRequest
+	(*RemoveUserEmailResponse)(nil),       // 21: quadsmith.RemoveUserEmailResponse
+	(*ArchivedUsername)(nil),              // 22: quadsmith.ArchivedUsername
+	(*ChangeUsernameRequest)(nil),         // 23: quadsmith.ChangeUsernameRequest
+	(*ChangeUsernameResponse)(nil),        // 24: quadsmith.ChangeUsernameResponse
+	(*ListArchivedUsernamesRequest)(nil),  // 25: quadsmith.ListArchivedUsernamesRequest
+	(*ListArchivedUsernamesResponse)(nil), // 26: quadsmith.ListArchivedUsernamesResponse
+	(*User)(nil),                          // 27: quadsmith.User
+	(*UserProfile)(nil),                   // 28: quadsmith.UserProfile
+	(*UserEmail)(nil),                     // 29: quadsmith.UserEmail
+	(*timestamppb.Timestamp)(nil),         // 30: google.protobuf.Timestamp
 }
 var file_auth_proto_depIdxs = []int32{
 	27, // 0: quadsmith.AuthResponse.user:type_name -> quadsmith.User
 	28, // 1: quadsmith.AuthResponse.profile:type_name -> quadsmith.UserProfile
 	29, // 2: quadsmith.ListUserEmailsResponse.emails:type_name -> quadsmith.UserEmail
-	30, // 3: quadsmith.ArchivedHandle.first_archived_at:type_name -> google.protobuf.Timestamp
-	30, // 4: quadsmith.ArchivedHandle.renamed_at:type_name -> google.protobuf.Timestamp
-	30, // 5: quadsmith.ArchivedHandle.release_at:type_name -> google.protobuf.Timestamp
-	30, // 6: quadsmith.ArchivedHandle.next_reclaim_allowed_at:type_name -> google.protobuf.Timestamp
-	27, // 7: quadsmith.ChangeHandleResponse.user:type_name -> quadsmith.User
-	30, // 8: quadsmith.ChangeHandleResponse.next_allowed_new_rename_at:type_name -> google.protobuf.Timestamp
-	30, // 9: quadsmith.ChangeHandleResponse.next_allowed_archive_rename_at:type_name -> google.protobuf.Timestamp
-	22, // 10: quadsmith.ListArchivedHandlesResponse.archived_handles:type_name -> quadsmith.ArchivedHandle
-	30, // 11: quadsmith.ListArchivedHandlesResponse.next_allowed_new_rename_at:type_name -> google.protobuf.Timestamp
-	30, // 12: quadsmith.ListArchivedHandlesResponse.next_allowed_archive_rename_at:type_name -> google.protobuf.Timestamp
+	30, // 3: quadsmith.ArchivedUsername.first_archived_at:type_name -> google.protobuf.Timestamp
+	30, // 4: quadsmith.ArchivedUsername.renamed_at:type_name -> google.protobuf.Timestamp
+	30, // 5: quadsmith.ArchivedUsername.release_at:type_name -> google.protobuf.Timestamp
+	30, // 6: quadsmith.ArchivedUsername.next_reclaim_allowed_at:type_name -> google.protobuf.Timestamp
+	27, // 7: quadsmith.ChangeUsernameResponse.user:type_name -> quadsmith.User
+	30, // 8: quadsmith.ChangeUsernameResponse.next_allowed_new_rename_at:type_name -> google.protobuf.Timestamp
+	30, // 9: quadsmith.ChangeUsernameResponse.next_allowed_archive_rename_at:type_name -> google.protobuf.Timestamp
+	22, // 10: quadsmith.ListArchivedUsernamesResponse.archived_usernames:type_name -> quadsmith.ArchivedUsername
+	30, // 11: quadsmith.ListArchivedUsernamesResponse.next_allowed_new_rename_at:type_name -> google.protobuf.Timestamp
+	30, // 12: quadsmith.ListArchivedUsernamesResponse.next_allowed_archive_rename_at:type_name -> google.protobuf.Timestamp
 	0,  // 13: quadsmith.AuthService.SendEmailOtp:input_type -> quadsmith.SendEmailOtpRequest
 	2,  // 14: quadsmith.AuthService.VerifyEmailOtp:input_type -> quadsmith.VerifyEmailOtpRequest
 	3,  // 15: quadsmith.AuthService.VerifyMagicLink:input_type -> quadsmith.VerifyMagicLinkRequest
@@ -1705,8 +1704,8 @@ var file_auth_proto_depIdxs = []int32{
 	16, // 23: quadsmith.AuthService.MergeAccount:input_type -> quadsmith.MergeAccountRequest
 	18, // 24: quadsmith.AuthService.SetPrimaryEmail:input_type -> quadsmith.SetPrimaryEmailRequest
 	20, // 25: quadsmith.AuthService.RemoveUserEmail:input_type -> quadsmith.RemoveUserEmailRequest
-	23, // 26: quadsmith.AuthService.ChangeHandle:input_type -> quadsmith.ChangeHandleRequest
-	25, // 27: quadsmith.AuthService.ListArchivedHandles:input_type -> quadsmith.ListArchivedHandlesRequest
+	23, // 26: quadsmith.AuthService.ChangeUsername:input_type -> quadsmith.ChangeUsernameRequest
+	25, // 27: quadsmith.AuthService.ListArchivedUsernames:input_type -> quadsmith.ListArchivedUsernamesRequest
 	1,  // 28: quadsmith.AuthService.SendEmailOtp:output_type -> quadsmith.SendEmailOtpResponse
 	4,  // 29: quadsmith.AuthService.VerifyEmailOtp:output_type -> quadsmith.AuthResponse
 	4,  // 30: quadsmith.AuthService.VerifyMagicLink:output_type -> quadsmith.AuthResponse
@@ -1720,8 +1719,8 @@ var file_auth_proto_depIdxs = []int32{
 	17, // 38: quadsmith.AuthService.MergeAccount:output_type -> quadsmith.MergeAccountResponse
 	19, // 39: quadsmith.AuthService.SetPrimaryEmail:output_type -> quadsmith.SetPrimaryEmailResponse
 	21, // 40: quadsmith.AuthService.RemoveUserEmail:output_type -> quadsmith.RemoveUserEmailResponse
-	24, // 41: quadsmith.AuthService.ChangeHandle:output_type -> quadsmith.ChangeHandleResponse
-	26, // 42: quadsmith.AuthService.ListArchivedHandles:output_type -> quadsmith.ListArchivedHandlesResponse
+	24, // 41: quadsmith.AuthService.ChangeUsername:output_type -> quadsmith.ChangeUsernameResponse
+	26, // 42: quadsmith.AuthService.ListArchivedUsernames:output_type -> quadsmith.ListArchivedUsernamesResponse
 	28, // [28:43] is the sub-list for method output_type
 	13, // [13:28] is the sub-list for method input_type
 	13, // [13:13] is the sub-list for extension type_name

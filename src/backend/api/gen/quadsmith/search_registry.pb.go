@@ -50,7 +50,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"primary_display_image",
 			"media",
 			"user_uuid",
-			"author_handle",
+			"author_username",
 		},
 	},
 	{

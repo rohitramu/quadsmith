@@ -74,7 +74,7 @@ message Build {
   optional string primary_display_image = 17;
   repeated Media media = 18;
   optional string user_uuid = 19 [(quadsmith.sql.column) = {references: "users(uuid)"}];
-  optional string author_handle = 20;
+  optional string author_username = 20;
 }
 
 // ---------------------------------------------------------

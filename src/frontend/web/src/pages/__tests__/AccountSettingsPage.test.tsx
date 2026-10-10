@@ -10,10 +10,10 @@ describe("AccountSettingsPage Component", () => {
     vi.spyOn(window, "confirm").mockImplementation(() => true);
   });
 
-  it("renders account settings with pilot handle, profile link, and logout button", async () => {
+  it("renders account settings with username, profile link, and logout button", async () => {
     renderApp("/account");
 
-    // Verify Heading & Handle
+    // Verify Heading & Username
     expect(await screen.findByRole("heading", { name: /account settings/i })).toBeInTheDocument();
     expect(screen.getAllByText(/@fpv_pilot/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/alex@quadsmith\.dev/i).length).toBeGreaterThan(0);
@@ -58,8 +58,8 @@ describe("AccountSettingsPage Component", () => {
     fireEvent.click(addEmailBtn);
 
     // Form inputs appear
-    expect(screen.getByPlaceholderText(/pilot\.secondary@example\.com/i)).toBeInTheDocument();
-    const emailInput = screen.getByPlaceholderText(/pilot\.secondary@example\.com/i);
+    expect(screen.getByPlaceholderText(/user\.secondary@example\.com/i)).toBeInTheDocument();
+    const emailInput = screen.getByPlaceholderText(/user\.secondary@example\.com/i);
     fireEvent.change(emailInput, { target: { value: "new.pilot@fpv.org" } });
 
     const sendCodeBtn = screen.getByRole("button", { name: /send code/i });
@@ -113,7 +113,7 @@ describe("AccountSettingsPage Component", () => {
     fireEvent.click(addEmailBtn);
 
     // Enter email of an existing account
-    const emailInput = screen.getByPlaceholderText(/pilot\.secondary@example\.com/i);
+    const emailInput = screen.getByPlaceholderText(/user\.secondary@example\.com/i);
     fireEvent.change(emailInput, { target: { value: "old.racer@fpv.org" } });
 
     // Click Send Code
@@ -212,18 +212,16 @@ describe("AccountSettingsPage Component", () => {
     });
   });
 
-  it("opens Change Pilot Handle modal, shows held archived handles, and allows 1-click reclaim", async () => {
+  it("opens Change Username modal, shows held archived usernames, and allows 1-click reclaim", async () => {
     renderApp("/account");
 
-    const changeHandleBtn = await screen.findByRole("button", { name: /change handle/i });
-    expect(changeHandleBtn).toBeInTheDocument();
-    fireEvent.click(changeHandleBtn);
+    const changeUsernameBtn = await screen.findByRole("button", { name: /change username/i });
+    expect(changeUsernameBtn).toBeInTheDocument();
+    fireEvent.click(changeUsernameBtn);
 
     // Modal opens
-    expect(
-      await screen.findByRole("heading", { name: /change pilot handle/i }),
-    ).toBeInTheDocument();
-    expect(await screen.findByText("Your Held Handles (30d Hold)")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /change username/i })).toBeInTheDocument();
+    expect(await screen.findByText("Your Held Usernames (30d Hold)")).toBeInTheDocument();
     expect(screen.getByText("@old_racer")).toBeInTheDocument();
     expect(screen.getByText("Reclaim Available")).toBeInTheDocument();
 
@@ -239,29 +237,27 @@ describe("AccountSettingsPage Component", () => {
     });
   });
 
-  it("allows entering a new handle and submitting the change", async () => {
+  it("allows entering a new username and submitting the change", async () => {
     renderApp("/account");
 
-    const changeHandleBtn = await screen.findByRole("button", { name: /change handle/i });
-    fireEvent.click(changeHandleBtn);
+    const changeUsernameBtn = await screen.findByRole("button", { name: /change username/i });
+    fireEvent.click(changeUsernameBtn);
 
-    expect(
-      await screen.findByRole("heading", { name: /change pilot handle/i }),
-    ).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /change username/i })).toBeInTheDocument();
 
-    const handleInput = screen.getByPlaceholderText("new_handle");
-    expect(handleInput).toBeInTheDocument();
+    const usernameInput = screen.getByPlaceholderText("new_username");
+    expect(usernameInput).toBeInTheDocument();
 
-    // Type a new valid handle
-    fireEvent.change(handleInput, { target: { value: "aero_glide" } });
+    // Type a new valid username
+    fireEvent.change(usernameInput, { target: { value: "aero_glide" } });
 
     // Live availability check
     await waitFor(() => {
       expect(screen.getByText("✓ Available")).toBeInTheDocument();
     });
 
-    const dialog = screen.getByRole("dialog", { name: /change pilot handle/i });
-    const submitBtn = within(dialog).getByRole("button", { name: /^change handle$/i });
+    const dialog = screen.getByRole("dialog", { name: /change username/i });
+    const submitBtn = within(dialog).getByRole("button", { name: /^change username$/i });
     expect(submitBtn).not.toBeDisabled();
     fireEvent.click(submitBtn);
 

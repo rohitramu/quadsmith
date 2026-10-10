@@ -2,7 +2,10 @@ import React, { createContext, useContext, useState, useEffect, useCallback, use
 import { useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
 import { AuthService } from "../gen/quadsmith/auth_pb";
-import type { ChangeHandleResponse, ListArchivedHandlesResponse } from "../gen/quadsmith/auth_pb";
+import type {
+  ChangeUsernameResponse,
+  ListArchivedUsernamesResponse,
+} from "../gen/quadsmith/auth_pb";
 import { UserService } from "../gen/quadsmith/user_pb";
 import type { User, UserProfile, UserEmail } from "../gen/quadsmith/user_pb";
 import { setAccessToken, getAccessToken } from "../lib/api";
@@ -40,7 +43,7 @@ export interface AuthContextType {
     success: boolean;
     message: string;
     mergeRequired: boolean;
-    otherUserHandle?: string;
+    otherUserUsername?: string;
     otherBuildCount?: number;
     otherBuildNames?: string[];
     otherEmails?: string[];
@@ -54,13 +57,13 @@ export interface AuthContextType {
     success: boolean;
     message: string;
     transferredBuildCount: number;
-    mergedHandle: string;
+    mergedUsername: string;
   }>;
   setPrimaryEmail: (email: string) => Promise<{ success: boolean; message: string }>;
   removeUserEmail: (email: string) => Promise<{ success: boolean; message: string }>;
-  changeHandle: (newHandle: string) => Promise<ChangeHandleResponse>;
-  listArchivedHandles: () => Promise<ListArchivedHandlesResponse>;
-  checkHandleAvailable: (handle: string) => Promise<{ available: boolean; message: string }>;
+  changeUsername: (newUsername: string) => Promise<ChangeUsernameResponse>;
+  listArchivedUsernames: () => Promise<ListArchivedUsernamesResponse>;
+  checkUsernameAvailable: (username: string) => Promise<{ available: boolean; message: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -274,8 +277,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const userClient = useMemo(() => createClient(UserService, transport), [transport]);
 
-  const changeHandle = async (newHandle: string) => {
-    const res = await authClient.changeHandle({ newHandle });
+  const changeUsername = async (newUsername: string) => {
+    const res = await authClient.changeUsername({ newUsername });
     if (res.user) {
       setUser(res.user);
     } else {
@@ -289,12 +292,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return res;
   };
 
-  const listArchivedHandles = async () => {
-    return await authClient.listArchivedHandles({});
+  const listArchivedUsernames = async () => {
+    return await authClient.listArchivedUsernames({});
   };
 
-  const checkHandleAvailable = async (handle: string) => {
-    const res = await userClient.checkHandleAvailable({ handle });
+  const checkUsernameAvailable = async (username: string) => {
+    const res = await userClient.checkUsernameAvailable({ username });
     return {
       available: res.available,
       message: res.message,
@@ -334,9 +337,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         mergeAccount,
         setPrimaryEmail,
         removeUserEmail,
-        changeHandle,
-        listArchivedHandles,
-        checkHandleAvailable,
+        changeUsername,
+        listArchivedUsernames,
+        checkUsernameAvailable,
       }}
     >
       {children}

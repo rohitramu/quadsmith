@@ -59,7 +59,7 @@ func TestMain(m *testing.M) {
 		if err := pool.Ping(ctx); err == nil {
 			_, _ = pool.Exec(ctx, `
 				INSERT INTO users (uuid, id, email, role, created_at, updated_at)
-				VALUES ($1, $2, $3, 'pilot', NOW(), NOW())
+				VALUES ($1, $2, $3, 'user', NOW(), NOW())
 				ON CONFLICT (uuid) DO NOTHING`,
 				"018f0000-0000-7000-8000-000000000001", "test_pilot", "pilot@example.com")
 			_, _ = pool.Exec(ctx, `

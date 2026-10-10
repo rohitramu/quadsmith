@@ -6,15 +6,15 @@ import (
 	"time"
 )
 
-func TestValidatePilotHandle(t *testing.T) {
+func TestValidateUsername(t *testing.T) {
 	tests := []struct {
-		handle  string
-		wantErr bool
-		desc    string
+		username string
+		wantErr  bool
+		desc     string
 	}{
 		{"fpv", false, "valid minimum length (3)"},
-		{"rotor_ninja", false, "valid handle with underscore"},
-		{"pilot_42", false, "valid handle ending with number"},
+		{"rotor_ninja", false, "valid username with underscore"},
+		{"user_42", false, "valid username ending with number"},
 		{"abcdefghijklmnopqrst", false, "valid maximum length (20)"},
 
 		// Length violations
@@ -22,12 +22,12 @@ func TestValidatePilotHandle(t *testing.T) {
 		{"abcdefghijklmnopqrstu", true, "too long (> 20)"},
 
 		// Boundary / character violations
-		{"1pilot", true, "starts with number"},
-		{"_pilot", true, "starts with underscore"},
-		{"pilot_", true, "ends with underscore"},
-		{"pilot-apex", true, "contains hyphen"},
-		{"pilot.apex", true, "contains dot"},
-		{"Pilot_Apex", true, "contains uppercase letters"},
+		{"1user", true, "starts with number"},
+		{"_user", true, "starts with underscore"},
+		{"user_", true, "ends with underscore"},
+		{"user-apex", true, "contains hyphen"},
+		{"user.apex", true, "contains dot"},
+		{"User_Apex", true, "contains uppercase letters"},
 
 		// Underscore repetition
 		{"rotor__ninja", true, "consecutive underscores"},
@@ -43,20 +43,20 @@ func TestValidatePilotHandle(t *testing.T) {
 		{"admin", true, "equals admin"},
 		{"root", true, "equals root"},
 		{"admin_fpv", false, "allowed prefix not equal to admin"},
-		{"root_pilot", false, "allowed prefix not equal to root"},
+		{"root_user", false, "allowed prefix not equal to root"},
 	}
 
 	for _, tt := range tests {
-		t.Run(tt.handle, func(t *testing.T) {
-			err := ValidatePilotHandle(tt.handle)
+		t.Run(tt.username, func(t *testing.T) {
+			err := ValidateUsername(tt.username)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ValidatePilotHandle(%q) error = %v, wantErr = %v (%s)", tt.handle, err, tt.wantErr, tt.desc)
+				t.Errorf("ValidateUsername(%q) error = %v, wantErr = %v (%s)", tt.username, err, tt.wantErr, tt.desc)
 			}
 		})
 	}
 }
 
-func TestHandleReclaimCooldownLogic(t *testing.T) {
+func TestUsernameReclaimCooldownLogic(t *testing.T) {
 	now := time.Now()
 
 	canReclaimArchived := func(lastRenamedAt time.Time, current time.Time) (bool, int) {
@@ -71,7 +71,7 @@ func TestHandleReclaimCooldownLogic(t *testing.T) {
 		return false, daysRemaining
 	}
 
-	canChangeToNewHandle := func(lastRenamedAt time.Time, current time.Time) (bool, int) {
+	canChangeToNewUsername := func(lastRenamedAt time.Time, current time.Time) (bool, int) {
 		elapsed := current.Sub(lastRenamedAt)
 		if elapsed >= 30*24*time.Hour {
 			return true, 0
@@ -113,20 +113,20 @@ func TestHandleReclaimCooldownLogic(t *testing.T) {
 		t.Errorf("expected reclaim allowed at 14 days elapsed, got canReclaim=%v, days=%d", canReclaim, days)
 	}
 
-	// 4. Brand-new handle cooldown (strictly 30 days)
-	canNew, newDays := canChangeToNewHandle(now.Add(-10*24*time.Hour), now)
+	// 4. Brand-new username cooldown (strictly 30 days)
+	canNew, newDays := canChangeToNewUsername(now.Add(-10*24*time.Hour), now)
 	if canNew || newDays != 20 {
-		t.Errorf("expected brand-new handle locked at 10 days, got canNew=%v, days=%d (expected 20)", canNew, newDays)
+		t.Errorf("expected brand-new username locked at 10 days, got canNew=%v, days=%d (expected 20)", canNew, newDays)
 	}
 
-	canNew, newDays = canChangeToNewHandle(now.Add(-29*24*time.Hour), now)
+	canNew, newDays = canChangeToNewUsername(now.Add(-29*24*time.Hour), now)
 	if canNew || newDays != 1 {
-		t.Errorf("expected brand-new handle locked at 29 days, got canNew=%v, days=%d (expected 1)", canNew, newDays)
+		t.Errorf("expected brand-new username locked at 29 days, got canNew=%v, days=%d (expected 1)", canNew, newDays)
 	}
 
-	canNew, newDays = canChangeToNewHandle(now.Add(-30*24*time.Hour), now)
+	canNew, newDays = canChangeToNewUsername(now.Add(-30*24*time.Hour), now)
 	if !canNew || newDays != 0 {
-		t.Errorf("expected brand-new handle allowed at 30 days, got canNew=%v, days=%d", canNew, newDays)
+		t.Errorf("expected brand-new username allowed at 30 days, got canNew=%v, days=%d", canNew, newDays)
 	}
 }
 

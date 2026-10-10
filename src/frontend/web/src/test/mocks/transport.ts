@@ -20,7 +20,7 @@ import { SearchService } from "../../gen/quadsmith/search_pb";
 import {
   AuthService,
   SendEmailOtpResponseSchema,
-  ArchivedHandleSchema,
+  ArchivedUsernameSchema,
 } from "../../gen/quadsmith/auth_pb";
 import { UserService, UserEmailSchema } from "../../gen/quadsmith/user_pb";
 
@@ -549,7 +549,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
             success: true,
             message: "Account merge required",
             mergeRequired: true,
-            otherUserHandle: "old_racer",
+            otherUserUsername: "old_racer",
             otherBuildCount: 4,
             otherBuildNames: [
               "Bando Basher 5-inch",
@@ -573,7 +573,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           success: true,
           message: "Email verified and added",
           mergeRequired: false,
-          otherUserHandle: "",
+          otherUserUsername: "",
           otherBuildCount: 0,
           otherBuildNames: [],
           otherEmails: [],
@@ -595,7 +595,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           success: true,
           message: "Accounts merged successfully",
           transferredBuildCount: 4,
-          mergedHandle: "old_racer",
+          mergedUsername: "old_racer",
         };
       },
       setPrimaryEmail: (req) => {
@@ -617,11 +617,11 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           message: "Email removed",
         };
       },
-      listArchivedHandles: () => {
+      listArchivedUsernames: () => {
         return {
-          archivedHandles: [
-            create(ArchivedHandleSchema, {
-              handle: "old_racer",
+          archivedUsernames: [
+            create(ArchivedUsernameSchema, {
+              username: "old_racer",
               daysRemaining: 23,
               canReclaimNow: true,
               firstArchivedAt: {
@@ -642,14 +642,14 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           nextAllowedArchiveRenameAt: undefined,
         };
       },
-      changeHandle: (req) => {
-        if (!req.newHandle || req.newHandle === "taken") {
-          throw new ConnectError("Handle is already taken", Code.AlreadyExists);
+      changeUsername: (req) => {
+        if (!req.newUsername || req.newUsername === "taken") {
+          throw new ConnectError("Username is already taken", Code.AlreadyExists);
         }
-        mockUser.id = req.newHandle;
+        mockUser.id = req.newUsername;
         return {
           success: true,
-          message: `Your pilot handle has been changed to @${req.newHandle}`,
+          message: `Your username has been changed to @${req.newUsername}`,
           user: mockUser,
           nextAllowedNewRenameAt: undefined,
           nextAllowedArchiveRenameAt: undefined,
@@ -667,9 +667,9 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         createdAt: mockUser.createdAt,
         buildCount: 3,
       }),
-      checkHandleAvailable: (req) => ({
-        available: req.handle !== "taken",
-        message: req.handle === "taken" ? "Handle taken" : "Handle available",
+      checkUsernameAvailable: (req) => ({
+        available: req.username !== "taken",
+        message: req.username === "taken" ? "Username taken" : "Username available",
       }),
     });
   });

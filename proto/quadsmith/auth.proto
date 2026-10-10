@@ -88,7 +88,7 @@ message VerifyAddEmailOtpResponse {
   bool success = 1;
   string message = 2;
   bool merge_required = 3;
-  string other_user_handle = 4;
+  string other_user_username = 4;
   int32 other_build_count = 5;
   repeated string other_build_names = 6;
   repeated string other_emails = 7;
@@ -105,7 +105,7 @@ message MergeAccountResponse {
   bool success = 1;
   string message = 2;
   int32 transferred_build_count = 3;
-  string merged_handle = 4;
+  string merged_username = 4;
 }
 
 message SetPrimaryEmailRequest {
@@ -126,8 +126,8 @@ message RemoveUserEmailResponse {
   string message = 2;
 }
 
-message ArchivedHandle {
-  string handle = 1;
+message ArchivedUsername {
+  string username = 1;
   google.protobuf.Timestamp first_archived_at = 2;
   google.protobuf.Timestamp renamed_at = 3;
   google.protobuf.Timestamp release_at = 4;
@@ -136,8 +136,8 @@ message ArchivedHandle {
   google.protobuf.Timestamp next_reclaim_allowed_at = 7;
 }
 
-message ChangeHandleRequest {
-  string new_handle = 1 [(quadsmith.validate.rules).string = {
+message ChangeUsernameRequest {
+  string new_username = 1 [(quadsmith.validate.rules).string = {
     min_len: 3
     max_len: 20
     pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
@@ -153,7 +153,7 @@ message ChangeHandleRequest {
   }];
 }
 
-message ChangeHandleResponse {
+message ChangeUsernameResponse {
   bool success = 1;
   string message = 2;
   User user = 3;
@@ -161,10 +161,10 @@ message ChangeHandleResponse {
   google.protobuf.Timestamp next_allowed_archive_rename_at = 5;
 }
 
-message ListArchivedHandlesRequest {}
+message ListArchivedUsernamesRequest {}
 
-message ListArchivedHandlesResponse {
-  repeated ArchivedHandle archived_handles = 1;
+message ListArchivedUsernamesResponse {
+  repeated ArchivedUsername archived_usernames = 1;
   google.protobuf.Timestamp next_allowed_new_rename_at = 2;
   google.protobuf.Timestamp next_allowed_archive_rename_at = 3;
 }
@@ -189,6 +189,6 @@ service AuthService {
   rpc SetPrimaryEmail(SetPrimaryEmailRequest) returns (SetPrimaryEmailResponse);
   rpc RemoveUserEmail(RemoveUserEmailRequest) returns (RemoveUserEmailResponse);
 
-  rpc ChangeHandle(ChangeHandleRequest) returns (ChangeHandleResponse);
-  rpc ListArchivedHandles(ListArchivedHandlesRequest) returns (ListArchivedHandlesResponse);
+  rpc ChangeUsername(ChangeUsernameRequest) returns (ChangeUsernameResponse);
+  rpc ListArchivedUsernames(ListArchivedUsernamesRequest) returns (ListArchivedUsernamesResponse);
 }

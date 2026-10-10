@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_auth: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CgphdXRoLnByb3RvEglxdWFkc21pdGgiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSJvChRTZW5kRW1haWxPdHBSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSGAoQY29vbGRvd25fc2Vjb25kcxgDIAEoBRIbChNpc19leGlzdGluZ19hY2NvdW50GAQgASgIIjQKFVZlcmlmeUVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJIicKFlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QSDQoFdG9rZW4YASABKAkigwEKDEF1dGhSZXNwb25zZRIUCgxhY2Nlc3NfdG9rZW4YASABKAkSFQoNcmVmcmVzaF90b2tlbhgCIAEoCRIdCgR1c2VyGAMgASgLMg8ucXVhZHNtaXRoLlVzZXISJwoHcHJvZmlsZRgEIAEoCzIWLnF1YWRzbWl0aC5Vc2VyUHJvZmlsZSJvChRPdHBWZXJpZmljYXRpb25FcnJvchIPCgdtZXNzYWdlGAEgASgJEhoKEnJlbWFpbmluZ19hdHRlbXB0cxgCIAEoBRIUCgxtYXhfYXR0ZW1wdHMYAyABKAUSFAoMaXNfZXhoYXVzdGVkGAQgASgIIiwKE1JlZnJlc2hUb2tlblJlcXVlc3QSFQoNcmVmcmVzaF90b2tlbhgBIAEoCSIXChVHZXRDdXJyZW50VXNlclJlcXVlc3QihAEKFFVwZGF0ZVByb2ZpbGVSZXF1ZXN0EhkKDGRpc3BsYXlfbmFtZRgBIAEoCUgAiAEBEhcKCmF2YXRhcl91cmwYAiABKAlIAYgBARIQCgNiaW8YAyABKAlIAogBAUIPCg1fZGlzcGxheV9uYW1lQg0KC19hdmF0YXJfdXJsQgYKBF9iaW8iPQoNTG9nb3V0UmVxdWVzdBIaCg1yZWZyZXNoX3Rva2VuGAEgASgJSACIAQFCEAoOX3JlZnJlc2hfdG9rZW4iIQoOTG9nb3V0UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCIXChVMaXN0VXNlckVtYWlsc1JlcXVlc3QiPgoWTGlzdFVzZXJFbWFpbHNSZXNwb25zZRIkCgZlbWFpbHMYASADKAsyFC5xdWFkc21pdGguVXNlckVtYWlsIicKFlNlbmRBZGRFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkiRgoYVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJEgwKBGNvZGUYAiABKAkSDQoFdG9rZW4YAyABKAki2wEKGVZlcmlmeUFkZEVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhYKDm1lcmdlX3JlcXVpcmVkGAMgASgIEhkKEW90aGVyX3VzZXJfaGFuZGxlGAQgASgJEhkKEW90aGVyX2J1aWxkX2NvdW50GAUgASgFEhkKEW90aGVyX2J1aWxkX25hbWVzGAYgAygJEhQKDG90aGVyX2VtYWlscxgHIAMoCRIdChVvdGhlcl9vYXV0aF9wcm92aWRlcnMYCCADKAkiQQoTTWVyZ2VBY2NvdW50UmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEg0KBXRva2VuGAMgASgJInAKFE1lcmdlQWNjb3VudFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIfChd0cmFuc2ZlcnJlZF9idWlsZF9jb3VudBgDIAEoBRIVCg1tZXJnZWRfaGFuZGxlGAQgASgJIicKFlNldFByaW1hcnlFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiOwoXU2V0UHJpbWFyeUVtYWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIicKFlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiOwoXUmVtb3ZlVXNlckVtYWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIqUCCg5BcmNoaXZlZEhhbmRsZRIOCgZoYW5kbGUYASABKAkSNQoRZmlyc3RfYXJjaGl2ZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnJlbmFtZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnJlbGVhc2VfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDmRheXNfcmVtYWluaW5nGAUgASgFEhcKD2Nhbl9yZWNsYWltX25vdxgGIAEoCBI7ChduZXh0X3JlY2xhaW1fYWxsb3dlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAifQoTQ2hhbmdlSGFuZGxlUmVxdWVzdBJmCgpuZXdfaGFuZGxlGAEgASgJQlKCshlOCkwIAxAUGh5eW2Etel1bYS16MC05X117MSwxOH1bYS16MC05XSQiBWFkbWluIgRyb290KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoItsBChRDaGFuZ2VIYW5kbGVSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSHQoEdXNlchgDIAEoCzIPLnF1YWRzbWl0aC5Vc2VyEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIhwKGkxpc3RBcmNoaXZlZEhhbmRsZXNSZXF1ZXN0ItYBChtMaXN0QXJjaGl2ZWRIYW5kbGVzUmVzcG9uc2USMwoQYXJjaGl2ZWRfaGFuZGxlcxgBIAMoCzIZLnF1YWRzbWl0aC5BcmNoaXZlZEhhbmRsZRI+ChpuZXh0X2FsbG93ZWRfbmV3X3JlbmFtZV9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASQgoebmV4dF9hbGxvd2VkX2FyY2hpdmVfcmVuYW1lX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcDLbCQoLQXV0aFNlcnZpY2USTwoMU2VuZEVtYWlsT3RwEh4ucXVhZHNtaXRoLlNlbmRFbWFpbE90cFJlcXVlc3QaHy5xdWFkc21pdGguU2VuZEVtYWlsT3RwUmVzcG9uc2USSwoOVmVyaWZ5RW1haWxPdHASIC5xdWFkc21pdGguVmVyaWZ5RW1haWxPdHBSZXF1ZXN0GhcucXVhZHNtaXRoLkF1dGhSZXNwb25zZRJNCg9WZXJpZnlNYWdpY0xpbmsSIS5xdWFkc21pdGguVmVyaWZ5TWFnaWNMaW5rUmVxdWVzdBoXLnF1YWRzbWl0aC5BdXRoUmVzcG9uc2USRwoMUmVmcmVzaFRva2VuEh4ucXVhZHNtaXRoLlJlZnJlc2hUb2tlblJlcXVlc3QaFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlEkMKDkdldEN1cnJlbnRVc2VyEiAucXVhZHNtaXRoLkdldEN1cnJlbnRVc2VyUmVxdWVzdBoPLnF1YWRzbWl0aC5Vc2VyEkgKDVVwZGF0ZVByb2ZpbGUSHy5xdWFkc21pdGguVXBkYXRlUHJvZmlsZVJlcXVlc3QaFi5xdWFkc21pdGguVXNlclByb2ZpbGUSPQoGTG9nb3V0EhgucXVhZHNtaXRoLkxvZ291dFJlcXVlc3QaGS5xdWFkc21pdGguTG9nb3V0UmVzcG9uc2USVQoOTGlzdFVzZXJFbWFpbHMSIC5xdWFkc21pdGguTGlzdFVzZXJFbWFpbHNSZXF1ZXN0GiEucXVhZHNtaXRoLkxpc3RVc2VyRW1haWxzUmVzcG9uc2USVQoPU2VuZEFkZEVtYWlsT3RwEiEucXVhZHNtaXRoLlNlbmRBZGRFbWFpbE90cFJlcXVlc3QaHy5xdWFkc21pdGguU2VuZEVtYWlsT3RwUmVzcG9uc2USXgoRVmVyaWZ5QWRkRW1haWxPdHASIy5xdWFkc21pdGguVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0GiQucXVhZHNtaXRoLlZlcmlmeUFkZEVtYWlsT3RwUmVzcG9uc2USTwoMTWVyZ2VBY2NvdW50Eh4ucXVhZHNtaXRoLk1lcmdlQWNjb3VudFJlcXVlc3QaHy5xdWFkc21pdGguTWVyZ2VBY2NvdW50UmVzcG9uc2USWAoPU2V0UHJpbWFyeUVtYWlsEiEucXVhZHNtaXRoLlNldFByaW1hcnlFbWFpbFJlcXVlc3QaIi5xdWFkc21pdGguU2V0UHJpbWFyeUVtYWlsUmVzcG9uc2USWAoPUmVtb3ZlVXNlckVtYWlsEiEucXVhZHNtaXRoLlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QaIi5xdWFkc21pdGguUmVtb3ZlVXNlckVtYWlsUmVzcG9uc2USTwoMQ2hhbmdlSGFuZGxlEh4ucXVhZHNtaXRoLkNoYW5nZUhhbmRsZVJlcXVlc3QaHy5xdWFkc21pdGguQ2hhbmdlSGFuZGxlUmVzcG9uc2USZAoTTGlzdEFyY2hpdmVkSGFuZGxlcxIlLnF1YWRzbWl0aC5MaXN0QXJjaGl2ZWRIYW5kbGVzUmVxdWVzdBomLnF1YWRzbWl0aC5MaXN0QXJjaGl2ZWRIYW5kbGVzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "CgphdXRoLnByb3RvEglxdWFkc21pdGgiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSJvChRTZW5kRW1haWxPdHBSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSGAoQY29vbGRvd25fc2Vjb25kcxgDIAEoBRIbChNpc19leGlzdGluZ19hY2NvdW50GAQgASgIIjQKFVZlcmlmeUVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJIicKFlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QSDQoFdG9rZW4YASABKAkigwEKDEF1dGhSZXNwb25zZRIUCgxhY2Nlc3NfdG9rZW4YASABKAkSFQoNcmVmcmVzaF90b2tlbhgCIAEoCRIdCgR1c2VyGAMgASgLMg8ucXVhZHNtaXRoLlVzZXISJwoHcHJvZmlsZRgEIAEoCzIWLnF1YWRzbWl0aC5Vc2VyUHJvZmlsZSJvChRPdHBWZXJpZmljYXRpb25FcnJvchIPCgdtZXNzYWdlGAEgASgJEhoKEnJlbWFpbmluZ19hdHRlbXB0cxgCIAEoBRIUCgxtYXhfYXR0ZW1wdHMYAyABKAUSFAoMaXNfZXhoYXVzdGVkGAQgASgIIiwKE1JlZnJlc2hUb2tlblJlcXVlc3QSFQoNcmVmcmVzaF90b2tlbhgBIAEoCSIXChVHZXRDdXJyZW50VXNlclJlcXVlc3QihAEKFFVwZGF0ZVByb2ZpbGVSZXF1ZXN0EhkKDGRpc3BsYXlfbmFtZRgBIAEoCUgAiAEBEhcKCmF2YXRhcl91cmwYAiABKAlIAYgBARIQCgNiaW8YAyABKAlIAogBAUIPCg1fZGlzcGxheV9uYW1lQg0KC19hdmF0YXJfdXJsQgYKBF9iaW8iPQoNTG9nb3V0UmVxdWVzdBIaCg1yZWZyZXNoX3Rva2VuGAEgASgJSACIAQFCEAoOX3JlZnJlc2hfdG9rZW4iIQoOTG9nb3V0UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCIXChVMaXN0VXNlckVtYWlsc1JlcXVlc3QiPgoWTGlzdFVzZXJFbWFpbHNSZXNwb25zZRIkCgZlbWFpbHMYASADKAsyFC5xdWFkc21pdGguVXNlckVtYWlsIicKFlNlbmRBZGRFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkiRgoYVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJEgwKBGNvZGUYAiABKAkSDQoFdG9rZW4YAyABKAki3QEKGVZlcmlmeUFkZEVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhYKDm1lcmdlX3JlcXVpcmVkGAMgASgIEhsKE290aGVyX3VzZXJfdXNlcm5hbWUYBCABKAkSGQoRb3RoZXJfYnVpbGRfY291bnQYBSABKAUSGQoRb3RoZXJfYnVpbGRfbmFtZXMYBiADKAkSFAoMb3RoZXJfZW1haWxzGAcgAygJEh0KFW90aGVyX29hdXRoX3Byb3ZpZGVycxgIIAMoCSJBChNNZXJnZUFjY291bnRSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJEgwKBGNvZGUYAiABKAkSDQoFdG9rZW4YAyABKAkicgoUTWVyZ2VBY2NvdW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh8KF3RyYW5zZmVycmVkX2J1aWxkX2NvdW50GAMgASgFEhcKD21lcmdlZF91c2VybmFtZRgEIAEoCSInChZTZXRQcmltYXJ5RW1haWxSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJIjsKF1NldFByaW1hcnlFbWFpbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSInChZSZW1vdmVVc2VyRW1haWxSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJIjsKF1JlbW92ZVVzZXJFbWFpbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSKpAgoQQXJjaGl2ZWRVc2VybmFtZRIQCgh1c2VybmFtZRgBIAEoCRI1ChFmaXJzdF9hcmNoaXZlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKcmVuYW1lZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKcmVsZWFzZV9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASFgoOZGF5c19yZW1haW5pbmcYBSABKAUSFwoPY2FuX3JlY2xhaW1fbm93GAYgASgIEjsKF25leHRfcmVjbGFpbV9hbGxvd2VkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCKBAQoVQ2hhbmdlVXNlcm5hbWVSZXF1ZXN0EmgKDG5ld191c2VybmFtZRgBIAEoCUJSgrIZTgpMCAMQFBoeXlthLXpdW2EtejAtOV9dezEsMTh9W2EtejAtOV0kIgVhZG1pbiIEcm9vdCoCX18qCXF1YWRzbWl0aCoKcXVhZF9zbWl0aCLdAQoWQ2hhbmdlVXNlcm5hbWVSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSHQoEdXNlchgDIAEoCzIPLnF1YWRzbWl0aC5Vc2VyEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIh4KHExpc3RBcmNoaXZlZFVzZXJuYW1lc1JlcXVlc3Qi3AEKHUxpc3RBcmNoaXZlZFVzZXJuYW1lc1Jlc3BvbnNlEjcKEmFyY2hpdmVkX3VzZXJuYW1lcxgBIAMoCzIbLnF1YWRzbWl0aC5BcmNoaXZlZFVzZXJuYW1lEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wMucJCgtBdXRoU2VydmljZRJPCgxTZW5kRW1haWxPdHASHi5xdWFkc21pdGguU2VuZEVtYWlsT3RwUmVxdWVzdBofLnF1YWRzbWl0aC5TZW5kRW1haWxPdHBSZXNwb25zZRJLCg5WZXJpZnlFbWFpbE90cBIgLnF1YWRzbWl0aC5WZXJpZnlFbWFpbE90cFJlcXVlc3QaFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlEk0KD1ZlcmlmeU1hZ2ljTGluaxIhLnF1YWRzbWl0aC5WZXJpZnlNYWdpY0xpbmtSZXF1ZXN0GhcucXVhZHNtaXRoLkF1dGhSZXNwb25zZRJHCgxSZWZyZXNoVG9rZW4SHi5xdWFkc21pdGguUmVmcmVzaFRva2VuUmVxdWVzdBoXLnF1YWRzbWl0aC5BdXRoUmVzcG9uc2USQwoOR2V0Q3VycmVudFVzZXISIC5xdWFkc21pdGguR2V0Q3VycmVudFVzZXJSZXF1ZXN0Gg8ucXVhZHNtaXRoLlVzZXISSAoNVXBkYXRlUHJvZmlsZRIfLnF1YWRzbWl0aC5VcGRhdGVQcm9maWxlUmVxdWVzdBoWLnF1YWRzbWl0aC5Vc2VyUHJvZmlsZRI9CgZMb2dvdXQSGC5xdWFkc21pdGguTG9nb3V0UmVxdWVzdBoZLnF1YWRzbWl0aC5Mb2dvdXRSZXNwb25zZRJVCg5MaXN0VXNlckVtYWlscxIgLnF1YWRzbWl0aC5MaXN0VXNlckVtYWlsc1JlcXVlc3QaIS5xdWFkc21pdGguTGlzdFVzZXJFbWFpbHNSZXNwb25zZRJVCg9TZW5kQWRkRW1haWxPdHASIS5xdWFkc21pdGguU2VuZEFkZEVtYWlsT3RwUmVxdWVzdBofLnF1YWRzbWl0aC5TZW5kRW1haWxPdHBSZXNwb25zZRJeChFWZXJpZnlBZGRFbWFpbE90cBIjLnF1YWRzbWl0aC5WZXJpZnlBZGRFbWFpbE90cFJlcXVlc3QaJC5xdWFkc21pdGguVmVyaWZ5QWRkRW1haWxPdHBSZXNwb25zZRJPCgxNZXJnZUFjY291bnQSHi5xdWFkc21pdGguTWVyZ2VBY2NvdW50UmVxdWVzdBofLnF1YWRzbWl0aC5NZXJnZUFjY291bnRSZXNwb25zZRJYCg9TZXRQcmltYXJ5RW1haWwSIS5xdWFkc21pdGguU2V0UHJpbWFyeUVtYWlsUmVxdWVzdBoiLnF1YWRzbWl0aC5TZXRQcmltYXJ5RW1haWxSZXNwb25zZRJYCg9SZW1vdmVVc2VyRW1haWwSIS5xdWFkc21pdGguUmVtb3ZlVXNlckVtYWlsUmVxdWVzdBoiLnF1YWRzbWl0aC5SZW1vdmVVc2VyRW1haWxSZXNwb25zZRJVCg5DaGFuZ2VVc2VybmFtZRIgLnF1YWRzbWl0aC5DaGFuZ2VVc2VybmFtZVJlcXVlc3QaIS5xdWFkc21pdGguQ2hhbmdlVXNlcm5hbWVSZXNwb25zZRJqChVMaXN0QXJjaGl2ZWRVc2VybmFtZXMSJy5xdWFkc21pdGguTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVxdWVzdBooLnF1YWRzbWl0aC5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file__common, file__sql, file__validate, file_google_protobuf_timestamp, file_user],
   );
 
@@ -371,9 +371,9 @@ export type VerifyAddEmailOtpResponse = Message<"quadsmith.VerifyAddEmailOtpResp
   mergeRequired: boolean;
 
   /**
-   * @generated from field: string other_user_handle = 4;
+   * @generated from field: string other_user_username = 4;
    */
-  otherUserHandle: string;
+  otherUserUsername: string;
 
   /**
    * @generated from field: int32 other_build_count = 5;
@@ -452,9 +452,9 @@ export type MergeAccountResponse = Message<"quadsmith.MergeAccountResponse"> & {
   transferredBuildCount: number;
 
   /**
-   * @generated from field: string merged_handle = 4;
+   * @generated from field: string merged_username = 4;
    */
-  mergedHandle: string;
+  mergedUsername: string;
 };
 
 /**
@@ -548,13 +548,13 @@ export const RemoveUserEmailResponseSchema: GenMessage<RemoveUserEmailResponse> 
   messageDesc(file_auth, 21);
 
 /**
- * @generated from message quadsmith.ArchivedHandle
+ * @generated from message quadsmith.ArchivedUsername
  */
-export type ArchivedHandle = Message<"quadsmith.ArchivedHandle"> & {
+export type ArchivedUsername = Message<"quadsmith.ArchivedUsername"> & {
   /**
-   * @generated from field: string handle = 1;
+   * @generated from field: string username = 1;
    */
-  handle: string;
+  username: string;
 
   /**
    * @generated from field: google.protobuf.Timestamp first_archived_at = 2;
@@ -588,35 +588,35 @@ export type ArchivedHandle = Message<"quadsmith.ArchivedHandle"> & {
 };
 
 /**
- * Describes the message quadsmith.ArchivedHandle.
- * Use `create(ArchivedHandleSchema)` to create a new message.
+ * Describes the message quadsmith.ArchivedUsername.
+ * Use `create(ArchivedUsernameSchema)` to create a new message.
  */
-export const ArchivedHandleSchema: GenMessage<ArchivedHandle> =
+export const ArchivedUsernameSchema: GenMessage<ArchivedUsername> =
   /*@__PURE__*/
   messageDesc(file_auth, 22);
 
 /**
- * @generated from message quadsmith.ChangeHandleRequest
+ * @generated from message quadsmith.ChangeUsernameRequest
  */
-export type ChangeHandleRequest = Message<"quadsmith.ChangeHandleRequest"> & {
+export type ChangeUsernameRequest = Message<"quadsmith.ChangeUsernameRequest"> & {
   /**
-   * @generated from field: string new_handle = 1;
+   * @generated from field: string new_username = 1;
    */
-  newHandle: string;
+  newUsername: string;
 };
 
 /**
- * Describes the message quadsmith.ChangeHandleRequest.
- * Use `create(ChangeHandleRequestSchema)` to create a new message.
+ * Describes the message quadsmith.ChangeUsernameRequest.
+ * Use `create(ChangeUsernameRequestSchema)` to create a new message.
  */
-export const ChangeHandleRequestSchema: GenMessage<ChangeHandleRequest> =
+export const ChangeUsernameRequestSchema: GenMessage<ChangeUsernameRequest> =
   /*@__PURE__*/
   messageDesc(file_auth, 23);
 
 /**
- * @generated from message quadsmith.ChangeHandleResponse
+ * @generated from message quadsmith.ChangeUsernameResponse
  */
-export type ChangeHandleResponse = Message<"quadsmith.ChangeHandleResponse"> & {
+export type ChangeUsernameResponse = Message<"quadsmith.ChangeUsernameResponse"> & {
   /**
    * @generated from field: bool success = 1;
    */
@@ -644,34 +644,34 @@ export type ChangeHandleResponse = Message<"quadsmith.ChangeHandleResponse"> & {
 };
 
 /**
- * Describes the message quadsmith.ChangeHandleResponse.
- * Use `create(ChangeHandleResponseSchema)` to create a new message.
+ * Describes the message quadsmith.ChangeUsernameResponse.
+ * Use `create(ChangeUsernameResponseSchema)` to create a new message.
  */
-export const ChangeHandleResponseSchema: GenMessage<ChangeHandleResponse> =
+export const ChangeUsernameResponseSchema: GenMessage<ChangeUsernameResponse> =
   /*@__PURE__*/
   messageDesc(file_auth, 24);
 
 /**
- * @generated from message quadsmith.ListArchivedHandlesRequest
+ * @generated from message quadsmith.ListArchivedUsernamesRequest
  */
-export type ListArchivedHandlesRequest = Message<"quadsmith.ListArchivedHandlesRequest"> & {};
+export type ListArchivedUsernamesRequest = Message<"quadsmith.ListArchivedUsernamesRequest"> & {};
 
 /**
- * Describes the message quadsmith.ListArchivedHandlesRequest.
- * Use `create(ListArchivedHandlesRequestSchema)` to create a new message.
+ * Describes the message quadsmith.ListArchivedUsernamesRequest.
+ * Use `create(ListArchivedUsernamesRequestSchema)` to create a new message.
  */
-export const ListArchivedHandlesRequestSchema: GenMessage<ListArchivedHandlesRequest> =
+export const ListArchivedUsernamesRequestSchema: GenMessage<ListArchivedUsernamesRequest> =
   /*@__PURE__*/
   messageDesc(file_auth, 25);
 
 /**
- * @generated from message quadsmith.ListArchivedHandlesResponse
+ * @generated from message quadsmith.ListArchivedUsernamesResponse
  */
-export type ListArchivedHandlesResponse = Message<"quadsmith.ListArchivedHandlesResponse"> & {
+export type ListArchivedUsernamesResponse = Message<"quadsmith.ListArchivedUsernamesResponse"> & {
   /**
-   * @generated from field: repeated quadsmith.ArchivedHandle archived_handles = 1;
+   * @generated from field: repeated quadsmith.ArchivedUsername archived_usernames = 1;
    */
-  archivedHandles: ArchivedHandle[];
+  archivedUsernames: ArchivedUsername[];
 
   /**
    * @generated from field: google.protobuf.Timestamp next_allowed_new_rename_at = 2;
@@ -685,10 +685,10 @@ export type ListArchivedHandlesResponse = Message<"quadsmith.ListArchivedHandles
 };
 
 /**
- * Describes the message quadsmith.ListArchivedHandlesResponse.
- * Use `create(ListArchivedHandlesResponseSchema)` to create a new message.
+ * Describes the message quadsmith.ListArchivedUsernamesResponse.
+ * Use `create(ListArchivedUsernamesResponseSchema)` to create a new message.
  */
-export const ListArchivedHandlesResponseSchema: GenMessage<ListArchivedHandlesResponse> =
+export const ListArchivedUsernamesResponseSchema: GenMessage<ListArchivedUsernamesResponse> =
   /*@__PURE__*/
   messageDesc(file_auth, 26);
 
@@ -801,19 +801,19 @@ export const AuthService: GenService<{
     output: typeof RemoveUserEmailResponseSchema;
   };
   /**
-   * @generated from rpc quadsmith.AuthService.ChangeHandle
+   * @generated from rpc quadsmith.AuthService.ChangeUsername
    */
-  changeHandle: {
+  changeUsername: {
     methodKind: "unary";
-    input: typeof ChangeHandleRequestSchema;
-    output: typeof ChangeHandleResponseSchema;
+    input: typeof ChangeUsernameRequestSchema;
+    output: typeof ChangeUsernameResponseSchema;
   };
   /**
-   * @generated from rpc quadsmith.AuthService.ListArchivedHandles
+   * @generated from rpc quadsmith.AuthService.ListArchivedUsernames
    */
-  listArchivedHandles: {
+  listArchivedUsernames: {
     methodKind: "unary";
-    input: typeof ListArchivedHandlesRequestSchema;
-    output: typeof ListArchivedHandlesResponseSchema;
+    input: typeof ListArchivedUsernamesRequestSchema;
+    output: typeof ListArchivedUsernamesResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_auth, 0);

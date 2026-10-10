@@ -15,6 +15,6 @@ export const getUser = UserService.method.getUser;
 export const getPublicProfile = UserService.method.getPublicProfile;
 
 /**
- * @generated from rpc quadsmith.UserService.CheckHandleAvailable
+ * @generated from rpc quadsmith.UserService.CheckUsernameAvailable
  */
-export const checkHandleAvailable = UserService.method.checkHandleAvailable;
+export const checkUsernameAvailable = UserService.method.checkUsernameAvailable;

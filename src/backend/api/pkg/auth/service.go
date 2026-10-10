@@ -239,17 +239,17 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 
 	// Fetch User
 	var user pb.User
-	var handle, email, role string
+	var username, email, role string
 	var emailVerifiedAt, lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
 		SELECT uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at
 		FROM users WHERE uuid = $1`, userUUID).Scan(
-		&user.Uuid, &handle, &email, &role,
+		&user.Uuid, &username, &email, &role,
 		&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	user.Id = handle
+	user.Id = username
 	user.Email = email
 	user.Role = role
 	if emailVerifiedAt != nil {
@@ -273,7 +273,7 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 		profile.UpdatedAt = timestamppb.New(*profileUpdatedAt)
 	}
 
-	accessToken, err := SignAccessToken(userUUID, handle, email, role, sessionUUID)
+	accessToken, err := SignAccessToken(userUUID, username, email, role, sessionUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -627,7 +627,7 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 	RecordIPSuccess(clientIP)
 
 	// Check if this email is registered to ANOTHER account
-	var otherUserUUID, otherHandle string
+	var otherUserUUID, otherUsername string
 	err = s.db.QueryRow(ctx, `
 		SELECT u.uuid, u.id
 		FROM users u
@@ -637,7 +637,7 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherHandle)
+		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherUsername)
 
 	if err == nil && otherUserUUID != "" {
 		// Another account was found! Merge required - do not mark OTP used yet so MergeAccount can complete it.
@@ -683,12 +683,12 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		return connect.NewResponse(&pb.VerifyAddEmailOtpResponse{
 			Success:             true,
 			MergeRequired:       true,
-			OtherUserHandle:     otherHandle,
+			OtherUserUsername:   otherUsername,
 			OtherBuildCount:     int32(buildCount),
 			OtherBuildNames:     buildNames,
 			OtherEmails:         otherEmails,
 			OtherOauthProviders: oauthProviders,
-			Message:             fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherHandle, buildCount),
+			Message:             fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherUsername, buildCount),
 		}), nil
 	}
 
@@ -778,7 +778,7 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
 
 	// Identify the other account
-	var otherUserUUID, otherHandle, otherEmail string
+	var otherUserUUID, otherUsername, otherEmail string
 	err = s.db.QueryRow(ctx, `
 		SELECT u.uuid, u.id, u.email
 		FROM users u
@@ -788,7 +788,7 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherHandle, &otherEmail)
+		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherUsername, &otherEmail)
 
 	if err != nil || otherUserUUID == "" {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("no other active account found for this email address to merge"))
@@ -808,7 +808,7 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 	// 2. Reassign builds to current user
 	_, err = tx.Exec(ctx, `
 		UPDATE builds
-		SET user_uuid = $1, author_handle = $2
+		SET user_uuid = $1, author_username = $2
 		WHERE user_uuid = $3`,
 		userCtx.UserUUID, userCtx.UserID, otherUserUUID)
 	if err != nil {
@@ -843,18 +843,18 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		WHERE user_uuid = $2`,
 		userCtx.UserUUID, otherUserUUID)
 
-	// 6. Transfer and record handle history
+	// 6. Transfer and record username history
 	_, _ = tx.Exec(ctx, `
-		UPDATE handle_histories
+		UPDATE username_histories
 		SET user_uuid = $1
 		WHERE user_uuid = $2`,
 		userCtx.UserUUID, otherUserUUID)
 
 	histUUID := NewUUIDv7()
 	_, _ = tx.Exec(ctx, `
-		INSERT INTO handle_histories (uuid, user_uuid, old_handle, renamed_at, first_archived_at)
+		INSERT INTO username_histories (uuid, user_uuid, old_username, renamed_at, first_archived_at)
 		VALUES ($1, $2, $3, NOW(), NOW())`,
-		histUUID, userCtx.UserUUID, otherHandle)
+		histUUID, userCtx.UserUUID, otherUsername)
 
 	// 7. Revoke other user's active sessions
 	_, _ = tx.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid = $1`, otherUserUUID)
@@ -874,9 +874,9 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 
 	return connect.NewResponse(&pb.MergeAccountResponse{
 		Success:               true,
-		Message:               fmt.Sprintf("Successfully merged @%s into your account. %d builds transferred.", otherHandle, buildCount),
+		Message:               fmt.Sprintf("Successfully merged @%s into your account. %d builds transferred.", otherUsername, buildCount),
 		TransferredBuildCount: int32(buildCount),
-		MergedHandle:          otherHandle,
+		MergedUsername:        otherUsername,
 	}), nil
 }
 
@@ -983,15 +983,15 @@ func (s *AuthService) RemoveUserEmail(ctx context.Context, req *connect.Request[
 	}), nil
 }
 
-func (s *AuthService) ListArchivedHandles(ctx context.Context, _ *connect.Request[pb.ListArchivedHandlesRequest]) (*connect.Response[pb.ListArchivedHandlesResponse], error) {
+func (s *AuthService) ListArchivedUsernames(ctx context.Context, _ *connect.Request[pb.ListArchivedUsernamesRequest]) (*connect.Response[pb.ListArchivedUsernamesResponse], error) {
 	userCtx := UserContextFromContext(ctx)
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
 
 	var lastRenamedAt *time.Time
-	var currentHandle string
-	err := s.db.QueryRow(ctx, `SELECT id, last_renamed_at FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentHandle, &lastRenamedAt)
+	var currentUsername string
+	err := s.db.QueryRow(ctx, `SELECT id, last_renamed_at FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentUsername, &lastRenamedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
 	}
@@ -1004,11 +1004,11 @@ func (s *AuthService) ListArchivedHandles(ctx context.Context, _ *connect.Reques
 
 	if lastRenamedAt != nil {
 		timeSinceRename := now.Sub(*lastRenamedAt)
-		// Brand-new handle cooldown: 30 days
+		// Brand-new username cooldown: 30 days
 		if timeSinceRename < 30*24*time.Hour {
 			nextAllowedNewRenameAt = timestamppb.New(lastRenamedAt.Add(30 * 24 * time.Hour))
 		}
-		// Archived handle reclaim rules:
+		// Archived username reclaim rules:
 		// Within 24 hours: instant reclaim allowed (grace period).
 		// Between 24 hours and 7 days: cooldown active.
 		// After 7 days: reclaim allowed.
@@ -1017,28 +1017,28 @@ func (s *AuthService) ListArchivedHandles(ctx context.Context, _ *connect.Reques
 		}
 	}
 
-	// Fetch active holds in handle_histories for this user (excluding their current active handle)
+	// Fetch active holds in username_histories for this user (excluding their current active username)
 	rows, err := s.db.Query(ctx, `
-		SELECT DISTINCT ON (LOWER(hh.old_handle))
-			hh.old_handle,
+		SELECT DISTINCT ON (LOWER(hh.old_username))
+			hh.old_username,
 			hh.renamed_at,
 			COALESCE(hh.first_archived_at, hh.renamed_at)
-		FROM handle_histories hh
+		FROM username_histories hh
 		WHERE hh.user_uuid = $1
-		  AND LOWER(hh.old_handle) != LOWER($2)
+		  AND LOWER(hh.old_username) != LOWER($2)
 		  AND COALESCE(hh.first_archived_at, hh.renamed_at) + INTERVAL '30 days' > NOW()
-		ORDER BY LOWER(hh.old_handle), hh.renamed_at DESC`,
-		userCtx.UserUUID, currentHandle)
+		ORDER BY LOWER(hh.old_username), hh.renamed_at DESC`,
+		userCtx.UserUUID, currentUsername)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	defer rows.Close()
 
-	var archivedList []*pb.ArchivedHandle
+	var archivedList []*pb.ArchivedUsername
 	for rows.Next() {
-		var handle string
+		var username string
 		var renamedAt, firstArchivedAt time.Time
-		if err := rows.Scan(&handle, &renamedAt, &firstArchivedAt); err != nil {
+		if err := rows.Scan(&username, &renamedAt, &firstArchivedAt); err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
 
@@ -1059,8 +1059,8 @@ func (s *AuthService) ListArchivedHandles(ctx context.Context, _ *connect.Reques
 			}
 		}
 
-		archivedList = append(archivedList, &pb.ArchivedHandle{
-			Handle:               handle,
+		archivedList = append(archivedList, &pb.ArchivedUsername{
+			Username:             username,
 			FirstArchivedAt:      timestamppb.New(firstArchivedAt),
 			RenamedAt:            timestamppb.New(renamedAt),
 			ReleaseAt:            timestamppb.New(releaseAt),
@@ -1070,51 +1070,51 @@ func (s *AuthService) ListArchivedHandles(ctx context.Context, _ *connect.Reques
 		})
 	}
 
-	return connect.NewResponse(&pb.ListArchivedHandlesResponse{
-		ArchivedHandles:            archivedList,
+	return connect.NewResponse(&pb.ListArchivedUsernamesResponse{
+		ArchivedUsernames:          archivedList,
 		NextAllowedNewRenameAt:     nextAllowedNewRenameAt,
 		NextAllowedArchiveRenameAt: nextAllowedArchiveRenameAt,
 	}), nil
 }
 
-func (s *AuthService) ChangeHandle(ctx context.Context, req *connect.Request[pb.ChangeHandleRequest]) (*connect.Response[pb.ChangeHandleResponse], error) {
+func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[pb.ChangeUsernameRequest]) (*connect.Response[pb.ChangeUsernameResponse], error) {
 	userCtx := UserContextFromContext(ctx)
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
 
-	newHandle := strings.ToLower(strings.TrimSpace(req.Msg.GetNewHandle()))
-	if err := ValidatePilotHandle(newHandle); err != nil {
+	newUsername := strings.ToLower(strings.TrimSpace(req.Msg.GetNewUsername()))
+	if err := ValidateUsername(newUsername); err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
-	var currentHandle string
+	var currentUsername string
 	var lastRenamedAt *time.Time
-	err := s.db.QueryRow(ctx, `SELECT id, last_renamed_at FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentHandle, &lastRenamedAt)
+	err := s.db.QueryRow(ctx, `SELECT id, last_renamed_at FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentUsername, &lastRenamedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
 	}
 
-	if strings.ToLower(currentHandle) == newHandle {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("new handle must be different from your current handle"))
+	if strings.ToLower(currentUsername) == newUsername {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("new username must be different from your current username"))
 	}
 
 	now := time.Now()
 
-	// Check if this new handle is owned by caller as an active archived handle
-	var isCallerArchivedHandle bool
+	// Check if this new username is owned by caller as an active archived username
+	var isCallerArchivedUsername bool
 	err = s.db.QueryRow(ctx, `
 		SELECT EXISTS(
-			SELECT 1 FROM handle_histories
+			SELECT 1 FROM username_histories
 			WHERE user_uuid = $1
-			  AND LOWER(old_handle) = $2
+			  AND LOWER(old_username) = $2
 			  AND COALESCE(first_archived_at, renamed_at) + INTERVAL '30 days' > NOW()
-		)`, userCtx.UserUUID, newHandle).Scan(&isCallerArchivedHandle)
+		)`, userCtx.UserUUID, newUsername).Scan(&isCallerArchivedUsername)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if isCallerArchivedHandle {
+	if isCallerArchivedUsername {
 		// Relaxed reclaim restrictions:
 		// 1. Instant revert within 24 hours of rename.
 		// 2. Cooldown of 7 days between renames if >24 hours has passed.
@@ -1123,45 +1123,45 @@ func (s *AuthService) ChangeHandle(ctx context.Context, req *connect.Request[pb.
 			if timeSinceRename >= 24*time.Hour && timeSinceRename < 7*24*time.Hour {
 				daysLeft := int(math.Ceil((7*24*time.Hour - timeSinceRename).Hours() / 24))
 				return nil, connect.NewError(connect.CodeFailedPrecondition,
-					fmt.Errorf("you can only reclaim this handle within 24 hours of renaming, or after a 7-day cooldown (available in %d day(s))", daysLeft))
+					fmt.Errorf("you can only reclaim this username within 24 hours of renaming, or after a 7-day cooldown (available in %d day(s))", daysLeft))
 			}
 		}
 	} else {
-		// Brand-new handle rules:
+		// Brand-new username rules:
 		// 1. Standard 30-day cooldown from last_renamed_at.
 		if lastRenamedAt != nil {
 			timeSinceRename := now.Sub(*lastRenamedAt)
 			if timeSinceRename < 30*24*time.Hour {
 				daysLeft := int(math.Ceil((30*24*time.Hour - timeSinceRename).Hours() / 24))
 				return nil, connect.NewError(connect.CodeFailedPrecondition,
-					fmt.Errorf("you can only change to a new handle once every 30 days (available in %d day(s))", daysLeft))
+					fmt.Errorf("you can only change to a new username once every 30 days (available in %d day(s))", daysLeft))
 			}
 		}
 
 		// 2. Check if taken by another active user
 		var activeExists bool
-		err = s.db.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL)`, newHandle).Scan(&activeExists)
+		err = s.db.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL)`, newUsername).Scan(&activeExists)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
 		if activeExists {
-			return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("this handle is already taken"))
+			return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("this username is already taken"))
 		}
 
-		// 3. Check if held by another user in handle_histories within 30 days
+		// 3. Check if held by another user in username_histories within 30 days
 		var heldByOther bool
 		err = s.db.QueryRow(ctx, `
 			SELECT EXISTS(
-				SELECT 1 FROM handle_histories
-				WHERE LOWER(old_handle) = $1
+				SELECT 1 FROM username_histories
+				WHERE LOWER(old_username) = $1
 				  AND user_uuid != $2
 				  AND COALESCE(first_archived_at, renamed_at) + INTERVAL '30 days' > NOW()
-			)`, newHandle, userCtx.UserUUID).Scan(&heldByOther)
+			)`, newUsername, userCtx.UserUUID).Scan(&heldByOther)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
 		if heldByOther {
-			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this handle is reserved by another user"))
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this username is reserved by another user"))
 		}
 	}
 
@@ -1172,28 +1172,28 @@ func (s *AuthService) ChangeHandle(ctx context.Context, req *connect.Request[pb.
 	}
 	defer tx.Rollback(ctx)
 
-	// 1. Update user handle and last_renamed_at
+	// 1. Update user username and last_renamed_at
 	_, err = tx.Exec(ctx, `
 		UPDATE users
 		SET id = $1, last_renamed_at = NOW(), updated_at = NOW()
 		WHERE uuid = $2`,
-		newHandle, userCtx.UserUUID)
+		newUsername, userCtx.UserUUID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update handle: %w", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update username: %w", err))
 	}
 
 	// 2. Anti-hoarding hold tracking:
-	// If currentHandle was previously archived by this user and its 30-day window hasn't expired,
+	// If currentUsername was previously archived by this user and its 30-day window hasn't expired,
 	// preserve its original first_archived_at. Otherwise, start a fresh 30-day hold from NOW().
 	var existingFirstArchivedAt *time.Time
 	_ = tx.QueryRow(ctx, `
 		SELECT COALESCE(first_archived_at, renamed_at)
-		FROM handle_histories
+		FROM username_histories
 		WHERE user_uuid = $1
-		  AND LOWER(old_handle) = LOWER($2)
+		  AND LOWER(old_username) = LOWER($2)
 		  AND COALESCE(first_archived_at, renamed_at) + INTERVAL '30 days' > NOW()
 		ORDER BY COALESCE(first_archived_at, renamed_at) ASC
-		LIMIT 1`, userCtx.UserUUID, currentHandle).Scan(&existingFirstArchivedAt)
+		LIMIT 1`, userCtx.UserUUID, currentUsername).Scan(&existingFirstArchivedAt)
 
 	firstArchivedAt := now
 	if existingFirstArchivedAt != nil {
@@ -1202,15 +1202,15 @@ func (s *AuthService) ChangeHandle(ctx context.Context, req *connect.Request[pb.
 
 	histUUID := NewUUIDv7()
 	_, err = tx.Exec(ctx, `
-		INSERT INTO handle_histories (uuid, user_uuid, old_handle, renamed_at, first_archived_at)
+		INSERT INTO username_histories (uuid, user_uuid, old_username, renamed_at, first_archived_at)
 		VALUES ($1, $2, $3, NOW(), $4)`,
-		histUUID, userCtx.UserUUID, currentHandle, firstArchivedAt)
+		histUUID, userCtx.UserUUID, currentUsername, firstArchivedAt)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to record handle history: %w", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to record username history: %w", err))
 	}
 
 	if err := tx.Commit(ctx); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to commit handle change: %w", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to commit username change: %w", err))
 	}
 
 	// Fetch updated user to return
@@ -1252,13 +1252,13 @@ func (s *AuthService) ChangeHandle(ctx context.Context, req *connect.Request[pb.
 		emails = append(emails, user.Email)
 	}
 	for _, em := range emails {
-		log.Printf("[SECURITY ALERT] To: %s | Pilot handle changed from @%s to @%s. Previous handle @%s is reserved for 30 days.",
-			em, currentHandle, newHandle, currentHandle)
+		log.Printf("[SECURITY ALERT] To: %s | Username changed from @%s to @%s. Previous username @%s is reserved for 30 days.",
+			em, currentUsername, newUsername, currentUsername)
 	}
 
-	return connect.NewResponse(&pb.ChangeHandleResponse{
+	return connect.NewResponse(&pb.ChangeUsernameResponse{
 		Success:                    true,
-		Message:                    fmt.Sprintf("Your pilot handle has been changed to @%s", newHandle),
+		Message:                    fmt.Sprintf("Your username has been changed to @%s", newUsername),
 		User:                       &user,
 		NextAllowedNewRenameAt:     timestamppb.New(now.Add(30 * 24 * time.Hour)),
 		NextAllowedArchiveRenameAt: timestamppb.New(now), // Immediately eligible for 24h grace revert
@@ -1303,7 +1303,7 @@ func extractClientIP(header http.Header) string {
 
 func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint string) (*connect.Response[pb.AuthResponse], error) {
 	var user pb.User
-	var userUUID, handle, role string
+	var userUUID, username, role string
 	var emailVerifiedAt, lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 
 	// 1. Try finding user via user_emails
@@ -1313,7 +1313,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND u.deleted_at IS NULL
 		LIMIT 1`, email).Scan(
-		&userUUID, &handle, &user.Email, &role,
+		&userUUID, &username, &user.Email, &role,
 		&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 
 	if errors.Is(err, pgx.ErrNoRows) {
@@ -1322,20 +1322,20 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 			SELECT uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at
 			FROM users
 			WHERE LOWER(email) = LOWER($1) AND deleted_at IS NULL`, email).Scan(
-			&userUUID, &handle, &user.Email, &role,
+			&userUUID, &username, &user.Email, &role,
 			&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	}
 
 	if errors.Is(err, pgx.ErrNoRows) {
 		userUUID = NewUUIDv7()
-		handle = s.generateUniqueHandle(ctx, email)
+		username = s.generateUniqueUsername(ctx, email)
 		role = "USER"
 		now := time.Now()
 
 		_, err = s.db.Exec(ctx, `
 			INSERT INTO users (uuid, id, email, role, email_verified_at, created_at, updated_at)
 			VALUES ($1, $2, $3, $4, $5, $5, $5)`,
-			userUUID, handle, email, role, now)
+			userUUID, username, email, role, now)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user: %w", err))
 		}
@@ -1344,7 +1344,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		_, err = s.db.Exec(ctx, `
 			INSERT INTO user_profiles (uuid, user_uuid, display_name, avatar_url, bio, updated_at)
 			VALUES ($1, $2, $3, '', '', $4)`,
-			profileUUID, userUUID, handle, now)
+			profileUUID, userUUID, username, now)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create profile: %w", err))
 		}
@@ -1357,7 +1357,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 			emailUUID, userUUID, email, now)
 
 		user.Uuid = userUUID
-		user.Id = handle
+		user.Id = username
 		user.Email = email
 		user.Role = role
 		user.EmailVerifiedAt = timestamppb.New(now)
@@ -1375,7 +1375,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 			emailUUID, userUUID, email)
 
 		user.Uuid = userUUID
-		user.Id = handle
+		user.Id = username
 		user.Role = role
 		if emailVerifiedAt == nil {
 			_, _ = s.db.Exec(ctx, `UPDATE users SET email_verified_at = NOW() WHERE uuid = $1`, userUUID)
@@ -1420,7 +1420,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save session: %w", err))
 	}
 
-	accessToken, err := SignAccessToken(userUUID, handle, email, role, sessionUUID)
+	accessToken, err := SignAccessToken(userUUID, username, email, role, sessionUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign access token: %w", err))
 	}
@@ -1445,9 +1445,9 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 	return res, nil
 }
 
-var handleStructureRegex = regexp.MustCompile(`^[a-z][a-z0-9_]{1,18}[a-z0-9]$`)
+var usernameStructureRegex = regexp.MustCompile(`^[a-z][a-z0-9_]{1,18}[a-z0-9]$`)
 
-// ValidatePilotHandle validates a candidate pilot handle against the rules declared in user.proto.
+// ValidateUsername validates a candidate username against the rules declared in user.proto.
 //
 // Rules enforced:
 // 1. Length between 3 and 20 characters.
@@ -1455,24 +1455,24 @@ var handleStructureRegex = regexp.MustCompile(`^[a-z][a-z0-9_]{1,18}[a-z0-9]$`)
 // 3. Contains only lowercase letters, digits, and underscores.
 // 4. Cannot contain consecutive underscores ("__").
 // 5. Cannot contain "quadsmith" or "quad_smith".
-// 6. Cannot equal reserved handles "admin" or "root".
-func ValidatePilotHandle(handle string) error {
-	if !handleStructureRegex.MatchString(handle) {
-		return errors.New("handle must be 3-20 characters, start with a letter, end with alphanumeric, and contain only lowercase letters, numbers, and underscores")
+// 6. Cannot equal reserved usernames "admin" or "root".
+func ValidateUsername(username string) error {
+	if !usernameStructureRegex.MatchString(username) {
+		return errors.New("username must be 3-20 characters, start with a letter, end with alphanumeric, and contain only lowercase letters, numbers, and underscores")
 	}
-	if strings.Contains(handle, "__") {
-		return errors.New("handle cannot contain consecutive underscores")
+	if strings.Contains(username, "__") {
+		return errors.New("username cannot contain consecutive underscores")
 	}
-	if strings.Contains(handle, "quadsmith") || strings.Contains(handle, "quad_smith") {
-		return errors.New("handle cannot contain 'quadsmith' or 'quad_smith'")
+	if strings.Contains(username, "quadsmith") || strings.Contains(username, "quad_smith") {
+		return errors.New("username cannot contain 'quadsmith' or 'quad_smith'")
 	}
-	if handle == "admin" || handle == "root" {
-		return errors.New("reserved handle")
+	if username == "admin" || username == "root" {
+		return errors.New("reserved username")
 	}
 	return nil
 }
 
-func (s *AuthService) generateUniqueHandle(ctx context.Context, email string) string {
+func (s *AuthService) generateUniqueUsername(ctx context.Context, email string) string {
 	parts := strings.Split(email, "@")
 	base := strings.ToLower(parts[0])
 	if idx := strings.Index(base, "+"); idx != -1 {
@@ -1484,21 +1484,21 @@ func (s *AuthService) generateUniqueHandle(ctx context.Context, email string) st
 		cleaned = strings.ReplaceAll(cleaned, "__", "_")
 	}
 	cleaned = strings.Trim(cleaned, "_")
-	cleaned = strings.ReplaceAll(cleaned, "quadsmith", "pilot")
-	cleaned = strings.ReplaceAll(cleaned, "quad_smith", "pilot")
+	cleaned = strings.ReplaceAll(cleaned, "quadsmith", "user")
+	cleaned = strings.ReplaceAll(cleaned, "quad_smith", "user")
 	if len(cleaned) == 0 || cleaned[0] < 'a' || cleaned[0] > 'z' {
-		cleaned = "pilot_" + cleaned
+		cleaned = "user_" + cleaned
 	}
 	cleaned = strings.Trim(cleaned, "_")
 	if len(cleaned) < 3 {
-		cleaned = "pilot_" + cleaned
+		cleaned = "user_" + cleaned
 	}
 	if len(cleaned) > 20 {
 		cleaned = cleaned[:20]
 		cleaned = strings.TrimRight(cleaned, "_")
 	}
 	if cleaned == "admin" || cleaned == "root" {
-		cleaned = "pilot_" + cleaned
+		cleaned = "user_" + cleaned
 	}
 
 	candidate := cleaned
@@ -1507,7 +1507,7 @@ func (s *AuthService) generateUniqueHandle(ctx context.Context, email string) st
 		var exists bool
 		err := s.db.QueryRow(ctx, `
 			SELECT EXISTS(SELECT 1 FROM users WHERE id = $1 AND deleted_at IS NULL)
-			OR EXISTS(SELECT 1 FROM handle_histories WHERE old_handle = $1 AND COALESCE(first_archived_at, renamed_at) >= NOW() - INTERVAL '30 days')`, candidate).Scan(&exists)
+			OR EXISTS(SELECT 1 FROM username_histories WHERE old_username = $1 AND COALESCE(first_archived_at, renamed_at) >= NOW() - INTERVAL '30 days')`, candidate).Scan(&exists)
 		if err != nil || !exists {
 			return candidate
 		}
@@ -1538,7 +1538,7 @@ func NewUserService(db *pgxpool.Pool) *UserService {
 func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUserRequest]) (*connect.Response[pb.User], error) {
 	id := req.Msg.GetId()
 	if id == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user id or handle required"))
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user id or username required"))
 	}
 
 	var user pb.User
@@ -1551,12 +1551,12 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 		&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			// Check if this was a recent handle within the 30-day hold window
+			// Check if this was a recent username within the 30-day hold window
 			err = s.db.QueryRow(ctx, `
 				SELECT u.uuid, u.id, u.email, u.role, u.email_verified_at, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
-				FROM handle_histories hh
+				FROM username_histories hh
 				JOIN users u ON u.uuid = hh.user_uuid
-				WHERE LOWER(hh.old_handle) = LOWER($1) AND u.deleted_at IS NULL AND COALESCE(hh.first_archived_at, hh.renamed_at) >= NOW() - INTERVAL '30 days'
+				WHERE LOWER(hh.old_username) = LOWER($1) AND u.deleted_at IS NULL AND COALESCE(hh.first_archived_at, hh.renamed_at) >= NOW() - INTERVAL '30 days'
 				ORDER BY hh.renamed_at DESC
 				LIMIT 1`, id).Scan(
 				&user.Uuid, &user.Id, &user.Email, &user.Role,
@@ -1589,10 +1589,10 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request[pb.GetPublicProfileRequest]) (*connect.Response[pb.PublicUserProfile], error) {
 	id := req.Msg.GetId()
 	if id == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user id or handle required"))
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user id or username required"))
 	}
 
-	var userUUID, handle string
+	var userUUID, username string
 	var createdAt *time.Time
 	var displayName, avatarUrl, bio *string
 
@@ -1601,21 +1601,21 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 		FROM users u
 		LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
 		WHERE (u.id = $1 OR u.uuid::text = $1) AND u.deleted_at IS NULL`, id).Scan(
-		&userUUID, &handle, &createdAt, &displayName, &avatarUrl, &bio)
+		&userUUID, &username, &createdAt, &displayName, &avatarUrl, &bio)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			// Check if this was a recent handle within the 30-day hold window
+			// Check if this was a recent username within the 30-day hold window
 			err = s.db.QueryRow(ctx, `
 				SELECT u.uuid, u.id, u.created_at, p.display_name, p.avatar_url, p.bio
-				FROM handle_histories hh
+				FROM username_histories hh
 				JOIN users u ON u.uuid = hh.user_uuid
 				LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
-				WHERE LOWER(hh.old_handle) = LOWER($1) AND u.deleted_at IS NULL AND COALESCE(hh.first_archived_at, hh.renamed_at) >= NOW() - INTERVAL '30 days'
+				WHERE LOWER(hh.old_username) = LOWER($1) AND u.deleted_at IS NULL AND COALESCE(hh.first_archived_at, hh.renamed_at) >= NOW() - INTERVAL '30 days'
 				ORDER BY hh.renamed_at DESC
-				LIMIT 1`, id).Scan(&userUUID, &handle, &createdAt, &displayName, &avatarUrl, &bio)
+				LIMIT 1`, id).Scan(&userUUID, &username, &createdAt, &displayName, &avatarUrl, &bio)
 			if err != nil {
 				if errors.Is(err, pgx.ErrNoRows) {
-					return nil, connect.NewError(connect.CodeNotFound, errors.New("pilot profile not found"))
+					return nil, connect.NewError(connect.CodeNotFound, errors.New("user profile not found"))
 				}
 				return nil, connect.NewError(connect.CodeInternal, err)
 			}
@@ -1628,13 +1628,13 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 	_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, userUUID).Scan(&buildCount)
 
 	pub := &pb.PublicUserProfile{
-		Id:         handle,
+		Id:         username,
 		BuildCount: buildCount,
 	}
 	if displayName != nil && *displayName != "" {
 		pub.DisplayName = *displayName
 	} else {
-		pub.DisplayName = handle
+		pub.DisplayName = username
 	}
 	if avatarUrl != nil {
 		pub.AvatarUrl = *avatarUrl
@@ -1649,10 +1649,10 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 	return connect.NewResponse(pub), nil
 }
 
-func (s *UserService) CheckHandleAvailable(ctx context.Context, req *connect.Request[pb.CheckHandleAvailableRequest]) (*connect.Response[pb.CheckHandleAvailableResponse], error) {
-	handle := strings.ToLower(strings.TrimSpace(req.Msg.GetHandle()))
-	if err := ValidatePilotHandle(handle); err != nil {
-		return connect.NewResponse(&pb.CheckHandleAvailableResponse{
+func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.Request[pb.CheckUsernameAvailableRequest]) (*connect.Response[pb.CheckUsernameAvailableResponse], error) {
+	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
+	if err := ValidateUsername(username); err != nil {
+		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
 			Message:   err.Error(),
 		}), nil
@@ -1660,49 +1660,49 @@ func (s *UserService) CheckHandleAvailable(ctx context.Context, req *connect.Req
 
 	userCtx := UserContextFromContext(ctx)
 
-	// Check if active user already has this handle
+	// Check if active user already has this username
 	var activeOwnerUUID string
-	err := s.db.QueryRow(ctx, `SELECT uuid FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL`, handle).Scan(&activeOwnerUUID)
+	err := s.db.QueryRow(ctx, `SELECT uuid FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL`, username).Scan(&activeOwnerUUID)
 	if err == nil {
 		if userCtx != nil && activeOwnerUUID == userCtx.UserUUID {
-			return connect.NewResponse(&pb.CheckHandleAvailableResponse{
+			return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 				Available: false,
-				Message:   "This is your current handle",
+				Message:   "This is your current username",
 			}), nil
 		}
-		return connect.NewResponse(&pb.CheckHandleAvailableResponse{
+		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
-			Message:   "This handle is already taken",
+			Message:   "This username is already taken",
 		}), nil
 	} else if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	// Check if held in handle_histories within 30-day window
+	// Check if held in username_histories within 30-day window
 	var historyOwnerUUID string
 	err = s.db.QueryRow(ctx, `
 		SELECT user_uuid
-		FROM handle_histories
-		WHERE LOWER(old_handle) = $1 AND COALESCE(first_archived_at, renamed_at) + INTERVAL '30 days' > NOW()
+		FROM username_histories
+		WHERE LOWER(old_username) = $1 AND COALESCE(first_archived_at, renamed_at) + INTERVAL '30 days' > NOW()
 		ORDER BY COALESCE(first_archived_at, renamed_at) DESC
-		LIMIT 1`, handle).Scan(&historyOwnerUUID)
+		LIMIT 1`, username).Scan(&historyOwnerUUID)
 	if err == nil {
 		if userCtx != nil && historyOwnerUUID == userCtx.UserUUID {
-			return connect.NewResponse(&pb.CheckHandleAvailableResponse{
+			return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 				Available: true,
-				Message:   "Your archived handle (available to reclaim)",
+				Message:   "Your archived username (available to reclaim)",
 			}), nil
 		}
-		return connect.NewResponse(&pb.CheckHandleAvailableResponse{
+		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
-			Message:   "This handle is reserved",
+			Message:   "This username is reserved",
 		}), nil
 	} else if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	return connect.NewResponse(&pb.CheckHandleAvailableResponse{
+	return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 		Available: true,
-		Message:   "Handle is available",
+		Message:   "Username is available",
 	}), nil
 }

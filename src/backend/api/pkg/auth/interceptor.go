@@ -11,11 +11,11 @@ import (
 )
 
 var publicProcedures = map[string]bool{
-	"/quadsmith.AuthService/SendEmailOtp":         true,
-	"/quadsmith.AuthService/VerifyEmailOtp":       true,
-	"/quadsmith.AuthService/VerifyMagicLink":      true,
-	"/quadsmith.AuthService/RefreshToken":         true,
-	"/quadsmith.UserService/CheckHandleAvailable": true,
+	"/quadsmith.AuthService/SendEmailOtp":           true,
+	"/quadsmith.AuthService/VerifyEmailOtp":         true,
+	"/quadsmith.AuthService/VerifyMagicLink":        true,
+	"/quadsmith.AuthService/RefreshToken":           true,
+	"/quadsmith.UserService/CheckUsernameAvailable": true,
 }
 
 // NewAuthInterceptor creates a ConnectRPC unary interceptor for authentication
@@ -43,17 +43,17 @@ func NewAuthInterceptor(pool *pgxpool.Pool) connect.UnaryInterceptorFunc {
 					reqHTTP := &http.Request{Header: header}
 					if c, err := reqHTTP.Cookie("qs_session"); err == nil && c.Value != "" {
 						tokenHash := HashToken(c.Value)
-						var sessionUUID, userUUID, handle, email, role string
+						var sessionUUID, userUUID, username, email, role string
 						err := pool.QueryRow(ctx, `
 							SELECT r.uuid, u.uuid, u.id, u.email, u.role
 							FROM refresh_tokens r
 							JOIN users u ON u.uuid = r.user_uuid
 							WHERE r.token_hash = $1 AND r.expires_at > NOW() AND u.deleted_at IS NULL
-							LIMIT 1`, tokenHash).Scan(&sessionUUID, &userUUID, &handle, &email, &role)
+							LIMIT 1`, tokenHash).Scan(&sessionUUID, &userUUID, &username, &email, &role)
 						if err == nil {
 							userCtx = &UserContext{
 								UserUUID:    userUUID,
-								UserID:      handle,
+								UserID:      username,
 								Email:       email,
 								Role:        role,
 								SessionUUID: sessionUUID,
