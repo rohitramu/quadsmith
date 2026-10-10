@@ -24,9 +24,14 @@ export interface AuthContextType {
   logout: () => Promise<void>;
   refreshSession: () => Promise<void>;
   refreshEmails: () => Promise<void>;
-  sendAddEmailOtp: (
-    email: string,
-  ) => Promise<{ success: boolean; cooldownSeconds: number; message: string }>;
+  sendAddEmailOtp: (email: string) => Promise<{
+    success: boolean;
+    cooldownSeconds: number;
+    message: string;
+    isExistingAccount?: boolean;
+    existingUserHandle?: string;
+    existingBuildCount?: number;
+  }>;
   verifyAddEmailOtp: (
     email: string,
     code: string,
@@ -217,6 +222,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       success: res.success,
       cooldownSeconds: res.cooldownSeconds || 60,
       message: res.message || "Verification code sent to your email",
+      isExistingAccount: res.isExistingAccount || false,
+      existingUserHandle: res.existingUserHandle || "",
+      existingBuildCount: res.existingBuildCount || 0,
     };
   };
 

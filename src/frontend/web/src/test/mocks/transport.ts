@@ -17,7 +17,7 @@ import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
 import { CompatibilityService } from "../../gen/quadsmith/compatibility_pb";
 import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
 import { SearchService } from "../../gen/quadsmith/search_pb";
-import { AuthService } from "../../gen/quadsmith/auth_pb";
+import { AuthService, SendEmailOtpResponseSchema } from "../../gen/quadsmith/auth_pb";
 import { UserService, UserEmailSchema } from "../../gen/quadsmith/user_pb";
 
 import {
@@ -517,11 +517,20 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       listUserEmails: () => ({
         emails: userEmails,
       }),
-      sendAddEmailOtp: (req) => ({
-        success: true,
-        message: `Verification code sent to ${req.email}`,
-        cooldownSeconds: 60,
-      }),
+      sendAddEmailOtp: (req) => {
+        const isExisting =
+          req.email.toLowerCase().includes("other") ||
+          req.email.toLowerCase().includes("old.racer") ||
+          req.email.toLowerCase().includes("existing");
+        return create(SendEmailOtpResponseSchema, {
+          success: true,
+          message: `Verification code sent to ${req.email}`,
+          cooldownSeconds: 60,
+          isExistingAccount: isExisting,
+          existingUserHandle: isExisting ? "old_racer" : "",
+          existingBuildCount: isExisting ? 4 : 0,
+        });
+      },
       verifyAddEmailOtp: (req) => {
         if (req.code !== "123456") {
           throw new ConnectError("Incorrect verification code", Code.InvalidArgument);

@@ -57,12 +57,13 @@ export function AccountSettingsPage() {
 
   // Merge Account Modal state
   const [isMergeModalOpen, setIsMergeModalOpen] = useState(false);
-  const [mergeStep, setMergeStep] = useState<1 | 2 | 3>(1);
   const [mergeEmail, setMergeEmail] = useState("");
+  const [mergeOtherHandle, setMergeOtherHandle] = useState("");
+  const [mergeOtherBuildCount, setMergeOtherBuildCount] = useState<number>(0);
   const [mergeCode, setMergeCode] = useState("");
-  const [isSendingMergeOtp, setIsSendingMergeOtp] = useState(false);
   const [isExecutingMerge, setIsExecutingMerge] = useState(false);
   const [mergeError, setMergeError] = useState<string | null>(null);
+  const [mergeSuccess, setMergeSuccess] = useState(false);
   const [transferredBuilds, setTransferredBuilds] = useState<number>(0);
 
   // Email Action feedback
@@ -113,8 +114,21 @@ export function AccountSettingsPage() {
     setIsSendingAddOtp(true);
     setAddEmailError(null);
     try {
-      await sendAddEmailOtp(newEmail.trim());
-      setAddOtpSent(true);
+      const res = await sendAddEmailOtp(newEmail.trim());
+      if (res.isExistingAccount) {
+        // Email belongs to an existing Quadsmith account!
+        // Bring up the Merge Confirmation Modal
+        setMergeEmail(newEmail.trim());
+        setMergeOtherHandle(res.existingUserHandle || "pilot");
+        setMergeOtherBuildCount(res.existingBuildCount || 0);
+        setMergeCode("");
+        setMergeError(null);
+        setMergeSuccess(false);
+        setIsMergeModalOpen(true);
+        setIsAddEmailOpen(false);
+      } else {
+        setAddOtpSent(true);
+      }
     } catch (err: unknown) {
       if (err instanceof Error) {
         setAddEmailError(err.message);
@@ -135,7 +149,18 @@ export function AccountSettingsPage() {
     setIsVerifyingAddOtp(true);
     setAddEmailError(null);
     try {
-      await verifyAddEmailOtp(newEmail.trim(), addOtpCode.trim());
+      const res = await verifyAddEmailOtp(newEmail.trim(), addOtpCode.trim());
+      if (res.mergeRequired) {
+        setMergeEmail(newEmail.trim());
+        setMergeOtherHandle(res.otherUserHandle || "pilot");
+        setMergeOtherBuildCount(res.otherBuildCount || 0);
+        setMergeCode(addOtpCode.trim());
+        setMergeError(null);
+        setMergeSuccess(false);
+        setIsMergeModalOpen(true);
+        setIsAddEmailOpen(false);
+        return;
+      }
       setAddEmailSuccess(`Successfully added ${newEmail.trim()} to your account.`);
       setTimeout(() => setAddEmailSuccess(null), 4000);
       setIsAddEmailOpen(false);
@@ -194,29 +219,7 @@ export function AccountSettingsPage() {
     }
   };
 
-  // Handle Merge Step 1 -> Send OTP
-  const handleStartMergeVerify = async () => {
-    if (!mergeEmail.trim()) {
-      setMergeError("Please enter an email address to merge");
-      return;
-    }
-    setIsSendingMergeOtp(true);
-    setMergeError(null);
-    try {
-      await sendAddEmailOtp(mergeEmail.trim());
-      setMergeStep(2);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setMergeError(err.message);
-      } else {
-        setMergeError("Failed to send verification code to other account email.");
-      }
-    } finally {
-      setIsSendingMergeOtp(false);
-    }
-  };
-
-  // Handle Merge Step 2 -> Execute Merge
+  // Handle Execute Merge
   const handleExecuteMerge = async () => {
     if (!mergeCode.trim() || mergeCode.trim().length !== 6) {
       setMergeError("Please enter a valid 6-digit verification code");
@@ -227,7 +230,8 @@ export function AccountSettingsPage() {
     try {
       const res = await mergeAccount(mergeEmail.trim(), mergeCode.trim());
       setTransferredBuilds(res.transferredBuildCount || 0);
-      setMergeStep(3);
+      setMergeSuccess(true);
+      await refreshEmails();
     } catch (err: unknown) {
       if (err instanceof Error) {
         setMergeError(err.message);
@@ -646,71 +650,11 @@ export function AccountSettingsPage() {
         </div>
       </form>
 
-      {/* Section 3: Account Merging */}
-      <section className="rounded-2xl border border-purple-500/20 bg-purple-500/5 p-6 space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-sm font-bold flex items-center gap-2 text-purple-700 dark:text-purple-300">
-              <ArrowRightLeft size={16} />
-              <span>Merge Another Account Into This One</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/30">
-                Consolidate Builds
-              </span>
-            </h2>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl leading-relaxed">
-              Consolidate your drone builds, parts, and preferences into{" "}
-              <strong className="text-zinc-900 dark:text-zinc-200">@{user?.id}</strong>. All
-              database references from the other account will be atomically reassigned to this
-              account, and its email address will be added as a login method.
-            </p>
-          </div>
-          <button
-            onClick={() => {
-              setIsMergeModalOpen(true);
-              setMergeStep(1);
-              setMergeEmail("");
-              setMergeCode("");
-              setMergeError(null);
-            }}
-            className="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white transition flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
-          >
-            <ArrowRightLeft size={14} />
-            <span>Merge Account</span>
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
-            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-              Builds & Schematics
-            </div>
-            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
-              Reassigned to @{user?.id}
-            </div>
-          </div>
-          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
-            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-              Authentication Email
-            </div>
-            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
-              Kept as active login alias
-            </div>
-          </div>
-          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
-            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-              Security Guard
-            </div>
-            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
-              Requires OTP verification
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Modal: Account Merging Dialog */}
+      {/* Modal: Account Merging Dialog (triggered when an existing account email is entered) */}
       {isMergeModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
           <div className="max-w-lg w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-2xl p-6 space-y-6">
+            {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-sm">
@@ -718,10 +662,10 @@ export function AccountSettingsPage() {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                    Merge Account
+                    Existing Account Detected
                   </h3>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                    Transfer another account's data into @{user?.id}
+                    Merge @{mergeOtherHandle} into your account
                   </p>
                 </div>
               </div>
@@ -739,55 +683,65 @@ export function AccountSettingsPage() {
               </div>
             )}
 
-            {/* Step 1: Input other account email */}
-            {mergeStep === 1 && (
+            {!mergeSuccess ? (
               <div className="space-y-4">
-                <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  Enter the email address of the account you want to merge. We will send a 6-digit
-                  confirmation code to that inbox to verify you own both accounts.
-                </p>
-                <div>
-                  <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-400 mb-1">
-                    Account Email to Merge
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="pilot.other@example.com"
-                    value={mergeEmail}
-                    onChange={(e) => setMergeEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={handleStartMergeVerify}
-                  disabled={isSendingMergeOtp || !mergeEmail.trim()}
-                  className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5"
-                >
-                  {isSendingMergeOtp && <Loader2 size={13} className="animate-spin" />}
-                  <span>Send Verification Code</span>
-                </button>
-              </div>
-            )}
-
-            {/* Step 2: Confirmation & Code Verification */}
-            {mergeStep === 2 && (
-              <div className="space-y-4">
-                <div className="p-3.5 rounded-xl border border-purple-500/30 bg-purple-500/10 space-y-2">
-                  <div className="text-xs font-bold text-purple-700 dark:text-purple-300">
-                    Verify Ownership of {mergeEmail}
+                {/* Instructions & Data Transfer Details */}
+                <div className="p-4 rounded-xl border border-purple-500/30 bg-purple-500/10 space-y-2.5">
+                  <div className="text-xs font-bold text-purple-700 dark:text-purple-300 flex items-center gap-1.5">
+                    <AlertCircle size={14} />
+                    <span>Account Merge Instructions</span>
                   </div>
-                  <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
-                    Merging will permanently transfer all drone builds, flight logs, and settings
-                    into <strong>@{user?.id}</strong>. The email {mergeEmail} will be added to your
-                    account as a login method.
+                  <p className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                    The email{" "}
+                    <strong className="font-mono text-zinc-900 dark:text-zinc-100">
+                      {mergeEmail}
+                    </strong>{" "}
+                    belongs to an existing Quadsmith account (
+                    <strong className="text-purple-700 dark:text-purple-300">
+                      @{mergeOtherHandle}
+                    </strong>
+                    ). Adding this email address will consolidate that account into your current
+                    account (
+                    <strong className="text-zinc-900 dark:text-zinc-100">@{user?.id}</strong>).
                   </p>
+                  <ul className="text-[11px] text-zinc-600 dark:text-zinc-300 space-y-1.5 pt-1.5 border-t border-purple-500/20">
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
+                      <span>
+                        All <strong>{mergeOtherBuildCount}</strong> drone builds and configurations
+                        will be permanently transferred to <strong>@{user?.id}</strong>.
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
+                      <span>
+                        <strong>{mergeEmail}</strong> will be added to your account as a verified
+                        login method.
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-1.5">
+                      <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
+                      <span>
+                        The account <strong>@{mergeOtherHandle}</strong> will be consolidated into
+                        your profile.
+                      </span>
+                    </li>
+                  </ul>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-400 mb-1">
-                    6-Digit Verification Code
+                {/* Confirmation & Code Entry */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                    Confirmation Code
                   </label>
+                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    To confirm this action and authorize the merge, enter the 6-digit verification
+                    code sent to{" "}
+                    <strong className="font-mono text-zinc-700 dark:text-zinc-300">
+                      {mergeEmail}
+                    </strong>
+                    :
+                  </p>
                   <input
                     type="text"
                     maxLength={6}
@@ -798,32 +752,28 @@ export function AccountSettingsPage() {
                   />
                 </div>
 
-                <div className="flex gap-2.5">
+                {/* Footer Buttons */}
+                <div className="flex gap-2.5 pt-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      setMergeStep(1);
-                      setMergeError(null);
-                    }}
+                    onClick={() => setIsMergeModalOpen(false)}
                     className="flex-1 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition"
                   >
-                    Back
+                    Cancel
                   </button>
                   <button
                     type="button"
                     onClick={handleExecuteMerge}
                     disabled={isExecutingMerge || mergeCode.length !== 6}
-                    className="flex-2 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5"
+                    className="flex-2 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm"
                   >
                     {isExecutingMerge && <Loader2 size={13} className="animate-spin" />}
                     <span>Confirm & Merge Accounts</span>
                   </button>
                 </div>
               </div>
-            )}
-
-            {/* Step 3: Success State */}
-            {mergeStep === 3 && (
+            ) : (
+              /* Success State */
               <div className="text-center py-4 space-y-3">
                 <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center text-xl font-bold">
                   ✓
@@ -833,14 +783,19 @@ export function AccountSettingsPage() {
                 </h4>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-sm mx-auto">
                   {transferredBuilds > 0
-                    ? `All ${transferredBuilds} builds from the merged account have been reassigned to your account, and `
-                    : "The merged account has been consolidated into your profile, and "}
+                    ? `All ${transferredBuilds} builds from @${mergeOtherHandle} have been reassigned to your account, and `
+                    : `The account @${mergeOtherHandle} has been consolidated into your profile, and `}
                   <span className="font-mono text-zinc-900 dark:text-zinc-200">{mergeEmail}</span>{" "}
                   has been added to your login emails.
                 </p>
                 <button
                   type="button"
-                  onClick={() => setIsMergeModalOpen(false)}
+                  onClick={() => {
+                    setIsMergeModalOpen(false);
+                    setNewEmail("");
+                    setAddOtpSent(false);
+                    setAddOtpCode("");
+                  }}
                   className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition shadow-sm"
                 >
                   Done

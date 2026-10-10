@@ -103,45 +103,54 @@ describe("AccountSettingsPage Component", () => {
     });
   });
 
-  it("allows merging another account through the merge modal", async () => {
+  it("brings up the merge modal with instructions and confirmation when an existing account email is entered in Add Email", async () => {
     renderApp("/account");
 
-    const openMergeBtn = await screen.findByRole("button", { name: /merge account/i });
-    fireEvent.click(openMergeBtn);
+    // Click Add Email in Section 1
+    const addEmailBtn = await screen.findByRole("button", { name: /add email/i });
+    fireEvent.click(addEmailBtn);
 
-    // Step 1: Input email to merge
-    expect(screen.getByPlaceholderText(/pilot\.other@example\.com/i)).toBeInTheDocument();
-    const mergeInput = screen.getByPlaceholderText(/pilot\.other@example\.com/i);
-    fireEvent.change(mergeInput, { target: { value: "old.racer@fpv.org" } });
+    // Enter email of an existing account
+    const emailInput = screen.getByPlaceholderText(/pilot\.secondary@example\.com/i);
+    fireEvent.change(emailInput, { target: { value: "old.racer@fpv.org" } });
 
-    const sendVerifyBtn = screen.getByRole("button", { name: /send verification code/i });
-    fireEvent.click(sendVerifyBtn);
+    // Click Send Code
+    const sendCodeBtn = screen.getByRole("button", { name: /send code/i });
+    expect(sendCodeBtn).not.toBeDisabled();
+    fireEvent.click(sendCodeBtn);
 
-    // Step 2: Verification code & confirm
     await waitFor(() => {
-      expect(screen.getByText(/verify ownership of old\.racer@fpv\.org/i)).toBeInTheDocument();
+      expect(screen.getByText("Existing Account Detected")).toBeInTheDocument();
+      expect(screen.getByText("Account Merge Instructions")).toBeInTheDocument();
+      expect(screen.getByText(/merge @old_racer into your account/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/drone builds and configurations will be permanently transferred/i),
+      ).toBeInTheDocument();
     });
 
+    // Enter verification code
     const codeInput = screen.getByPlaceholderText("123456");
     fireEvent.change(codeInput, { target: { value: "123456" } });
 
+    // Confirm & Merge
     const confirmBtn = screen.getByRole("button", { name: /confirm & merge accounts/i });
     fireEvent.click(confirmBtn);
 
-    // Step 3: Success state
+    // Success state in modal
     await waitFor(() => {
       expect(screen.getByText(/accounts merged successfully!/i)).toBeInTheDocument();
       expect(
-        screen.getByText(/all 4 builds from the merged account have been reassigned/i),
+        screen.getByText(/all 4 builds from @old_racer have been reassigned to your account/i),
       ).toBeInTheDocument();
     });
 
     const doneBtn = screen.getByRole("button", { name: /done/i });
     fireEvent.click(doneBtn);
 
-    // Modal closed
+    // Modal closes and email is in the list
     await waitFor(() => {
       expect(screen.queryByText(/accounts merged successfully!/i)).not.toBeInTheDocument();
+      expect(screen.getByText("old.racer@fpv.org")).toBeInTheDocument();
     });
   });
 });

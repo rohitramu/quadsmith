@@ -460,6 +460,26 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("this email address is already associated with your account"))
 	}
 
+	// Check if this email is registered to ANOTHER account
+	var otherUserUUID, otherHandle string
+	err = s.db.QueryRow(ctx, `
+		SELECT u.uuid, u.id
+		FROM users u
+		WHERE LOWER(u.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
+		UNION
+		SELECT u.uuid, u.id
+		FROM user_emails ue
+		JOIN users u ON u.uuid = ue.user_uuid
+		WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
+		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherHandle)
+
+	var isExistingAccount bool
+	var existingBuildCount int
+	if err == nil && otherUserUUID != "" {
+		isExistingAccount = true
+		_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, otherUserUUID).Scan(&existingBuildCount)
+	}
+
 	// Rate limit per IP
 	clientIP := extractClientIP(req.Header())
 	if err := CheckIPRateLimit(clientIP); err != nil {
@@ -497,9 +517,12 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 	fmt.Printf("=======================================================\n\n")
 
 	return connect.NewResponse(&pb.SendEmailOtpResponse{
-		Success:         true,
-		Message:         "Verification code sent to email",
-		CooldownSeconds: 60,
+		Success:            true,
+		Message:            "Verification code sent to email",
+		CooldownSeconds:    60,
+		IsExistingAccount:  isExistingAccount,
+		ExistingUserHandle: otherHandle,
+		ExistingBuildCount: int32(existingBuildCount),
 	}), nil
 }
 
@@ -556,9 +579,7 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("incorrect code. %d attempts left", remaining))
 	}
 
-	// OTP is valid! Mark as used
 	RecordIPSuccess(clientIP)
-	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
 
 	// Check if this email is registered to ANOTHER account
 	var otherUserUUID, otherHandle string
@@ -574,7 +595,7 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherHandle)
 
 	if err == nil && otherUserUUID != "" {
-		// Another account was found! Merge required
+		// Another account was found! Merge required - do not mark OTP used yet so MergeAccount can complete it.
 		var buildCount int
 		_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, otherUserUUID).Scan(&buildCount)
 
@@ -586,6 +607,9 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 			Message:         fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherHandle, buildCount),
 		}), nil
 	}
+
+	// OTP is valid and no other account -> Mark as used and associate directly
+	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
 
 	// No other account found -> Add directly to current user's emails
 	newUUID := NewUUIDv7()
