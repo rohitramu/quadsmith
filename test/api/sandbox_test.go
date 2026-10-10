@@ -196,3 +196,79 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 		t.Errorf("expected positive all-up weight for in-memory draft, got: %v", resDraft.Msg.AllUpWeightG)
 	}
 }
+
+func TestSandboxCreateBuildDuplicateID(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	buildClient := quadsmithconnect.NewBuildServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+	ctx := context.Background()
+
+	// 1. Create a build whose name generates the same slug as the seeded "bando-basher-5-inch"
+	req1 := connect.NewRequest(&pb.CreateBuildRequest{
+		Build: &pb.Build{
+			Name:                 "Bando Basher 5 inch",
+			Description:          "Copy test build 1",
+			FrameUuid:            "01923019-3008-7001-8001-000000000001",
+			MotorUuid:            "01923019-3001-7001-8001-000000000001",
+			PropellerUuid:        "bac19aec-99fc-43d4-b96d-d1feb30e6b6e",
+			FlightControllerUuid: "01923019-3006-7001-8001-000000000001",
+			VideoTransmitterUuid: "01923019-3004-7001-8001-000000000008",
+		},
+	})
+	res1, err := buildClient.CreateBuild(ctx, req1)
+	if err != nil {
+		t.Fatalf("Failed to create first duplicate build: %v", err)
+	}
+	if res1.Msg.Id != "bando-basher-5-inch-copy1" {
+		t.Errorf("expected id 'bando-basher-5-inch-copy1', got '%s'", res1.Msg.Id)
+	}
+
+	// 2. Create another build with the same name, should auto-increment to -copy2
+	req2 := connect.NewRequest(&pb.CreateBuildRequest{
+		Build: &pb.Build{
+			Name:                 "Bando Basher 5 inch",
+			Description:          "Copy test build 2",
+			FrameUuid:            "01923019-3008-7001-8001-000000000001",
+			MotorUuid:            "01923019-3001-7001-8001-000000000001",
+			PropellerUuid:        "bac19aec-99fc-43d4-b96d-d1feb30e6b6e",
+			FlightControllerUuid: "01923019-3006-7001-8001-000000000001",
+			VideoTransmitterUuid: "01923019-3004-7001-8001-000000000008",
+		},
+	})
+	res2, err := buildClient.CreateBuild(ctx, req2)
+	if err != nil {
+		t.Fatalf("Failed to create second duplicate build: %v", err)
+	}
+	if res2.Msg.Id != "bando-basher-5-inch-copy2" {
+		t.Errorf("expected id 'bando-basher-5-inch-copy2', got '%s'", res2.Msg.Id)
+	}
+
+	// 3. Create a build explicitly providing an ID that already has -copy2 suffix
+	req3 := connect.NewRequest(&pb.CreateBuildRequest{
+		Build: &pb.Build{
+			Id:                   "bando-basher-5-inch-copy2",
+			Name:                 "Explicit Copy Build",
+			Description:          "Copy test build 3",
+			FrameUuid:            "01923019-3008-7001-8001-000000000001",
+			MotorUuid:            "01923019-3001-7001-8001-000000000001",
+			PropellerUuid:        "bac19aec-99fc-43d4-b96d-d1feb30e6b6e",
+			FlightControllerUuid: "01923019-3006-7001-8001-000000000001",
+			VideoTransmitterUuid: "01923019-3004-7001-8001-000000000008",
+		},
+	})
+	res3, err := buildClient.CreateBuild(ctx, req3)
+	if err != nil {
+		t.Fatalf("Failed to create third duplicate build: %v", err)
+	}
+	if res3.Msg.Id != "bando-basher-5-inch-copy3" {
+		t.Errorf("expected id 'bando-basher-5-inch-copy3', got '%s'", res3.Msg.Id)
+	}
+}

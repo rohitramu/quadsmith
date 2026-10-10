@@ -191,9 +191,35 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           throw new ConnectError("Build name is required", Code.InvalidArgument);
         }
         const b = req.build;
+        let id = b.id || b.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        id = id.replace(/^-+|-+$/g, "");
+        if (!id) {
+          id = `build-${(b.uuid || "").substring(0, 8) || "custom"}`;
+        }
+        if (builds.some((existing) => existing.id === id)) {
+          const copyRegex = /^(.*?)-copy(\d*)$/i;
+          const match = id.match(copyRegex);
+          let base = id;
+          let nextNum = 1;
+          if (match) {
+            if (match[1]) {
+              base = match[1];
+            } else {
+              base = "build";
+            }
+            if (match[2]) {
+              nextNum = parseInt(match[2], 10) + 1;
+            }
+          }
+          const existingIds = new Set(builds.map((existing) => existing.id));
+          while (existingIds.has(`${base}-copy${nextNum}`)) {
+            nextNum++;
+          }
+          id = `${base}-copy${nextNum}`;
+        }
         const newBuild = {
           ...b,
-          id: b.id || b.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          id,
           uuid:
             b.uuid ||
             `01912345-${Math.random().toString(16).substring(2, 6)}-7000-8000-${Math.random().toString(16).substring(2, 14)}`,

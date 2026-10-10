@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"quadsmith/api/internal/buildid"
 	"quadsmith/api/internal/cel2sql"
 	"quadsmith/api/internal/pagination"
 	"regexp"
@@ -171,6 +172,22 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	defer tx.Rollback(ctx)
+
+	var idExists bool
+	if err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM builds WHERE id = $1)", b.Id).Scan(&idExists); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to check build id existence: %w", err))
+	}
+	if idExists {
+		newID, err := buildid.NextCopyID(b.Id, func(cand string) (bool, error) {
+			var exists bool
+			err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM builds WHERE id = $1)", cand).Scan(&exists)
+			return exists, err
+		})
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate unique build id: %w", err))
+		}
+		b.Id = newID
+	}
 
 	if err := CreateBuild(ctx, tx, b); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save build: %w", err))

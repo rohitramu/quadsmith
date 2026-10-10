@@ -3,20 +3,28 @@ import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildWizardPage } from "../BuildWizardPage";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import { wasmEngine } from "../../lib/wasmEngine";
+import { mockBuild1, mockBuild2 } from "../../test/mocks/fixtures";
+import type { RenderWithProvidersOptions } from "../../test/test-utils";
+
+function SavedProfile() {
+  const { buildId } = useParams();
+  return (
+    <div data-testid="build-profile-page">
+      Build Saved Profile: <span data-testid="saved-build-id">{buildId}</span>
+    </div>
+  );
+}
 
 describe("BuildWizardPage Component", () => {
-  function renderWizard() {
+  function renderWizard(options: RenderWithProvidersOptions = {}) {
     return renderWithProviders(
       <Routes>
         <Route path="/builds/new" element={<BuildWizardPage />} />
-        <Route
-          path="/builds/:buildId"
-          element={<div data-testid="build-profile-page">Build Saved Profile</div>}
-        />
+        <Route path="/builds/:buildId" element={<SavedProfile />} />
       </Routes>,
-      { route: "/builds/new" },
+      { route: "/builds/new", ...options },
     );
   }
 
@@ -280,8 +288,41 @@ describe("BuildWizardPage Component", () => {
     const saveBtn = screen.getByRole("button", { name: /Create & Save Build to Database/i });
     await user.click(saveBtn);
 
-    // Should navigate to saved build profile
+    // Should navigate to saved build profile with auto-incremented -copy1 suffix
     expect(await screen.findByTestId("build-profile-page")).toBeInTheDocument();
+    expect(screen.getByTestId("saved-build-id")).toHaveTextContent("bando-basher-5-inch-copy1");
+  });
+
+  it("auto-increments copy suffix when saving duplicate builds", async () => {
+    const user = userEvent.setup();
+    const copy1Build = { ...mockBuild1, id: "bando-basher-5-inch-copy1", uuid: "copy1-uuid" };
+    renderWizard({
+      transportOptions: {
+        builds: [mockBuild1, copy1Build, mockBuild2],
+      },
+    });
+
+    // Select template in Stage 0
+    const templateCards = await screen.findAllByText("Bando Basher 5 inch");
+    await user.click(templateCards[0]);
+
+    // Navigate to Stage 4 (Review & Save)
+    const stageNav = screen.getByRole("navigation", { name: "Build Stages" });
+    const stage4Tab = within(stageNav).getByRole("button", { name: /Stage 4/i });
+    await user.click(stage4Tab);
+
+    // Change build name to one that generates -copy1
+    const nameInput = screen.getByPlaceholderText(/e\.g\. My Freestyle 5-Inch/i);
+    await user.clear(nameInput);
+    await user.type(nameInput, "Bando Basher 5 inch copy1");
+
+    // Click Save Build
+    const saveBtn = screen.getByRole("button", { name: /Create & Save Build to Database/i });
+    await user.click(saveBtn);
+
+    // Should auto-detect -copy1 and increment to -copy2
+    expect(await screen.findByTestId("build-profile-page")).toBeInTheDocument();
+    expect(screen.getByTestId("saved-build-id")).toHaveTextContent("bando-basher-5-inch-copy2");
   });
 
   it("resets all wizard selections and returns to Stage 0 on Reset button click", async () => {
