@@ -81,16 +81,16 @@ describe("getTwrDescription", () => {
     expect(getTwrDescription(3.9)).toBe("Long Range Cruiser");
   });
 
-  it("classifies cinelifter & heavy payload (1.8 <= TWR < 2.8)", () => {
-    expect(getTwrDescription(1.8)).toBe("Cinelifter & Heavy Payload");
-    expect(getTwrDescription(2.2)).toBe("Cinelifter & Heavy Payload");
-    expect(getTwrDescription(2.7)).toBe("Cinelifter & Heavy Payload");
+  it("classifies sluggish (1.8 <= TWR < 2.8)", () => {
+    expect(getTwrDescription(1.8)).toBe("Sluggish");
+    expect(getTwrDescription(2.2)).toBe("Sluggish");
+    expect(getTwrDescription(2.7)).toBe("Sluggish");
   });
 
-  it("classifies sluggish / underpowered (1.0 <= TWR < 1.8)", () => {
-    expect(getTwrDescription(1.0)).toBe("Sluggish / Underpowered");
-    expect(getTwrDescription(1.4)).toBe("Sluggish / Underpowered");
-    expect(getTwrDescription(1.79)).toBe("Sluggish / Underpowered");
+  it("classifies underpowered (1.0 <= TWR < 1.8)", () => {
+    expect(getTwrDescription(1.0)).toBe("Underpowered");
+    expect(getTwrDescription(1.4)).toBe("Underpowered");
+    expect(getTwrDescription(1.79)).toBe("Underpowered");
   });
 
   it("classifies cannot take off (TWR < 1.0)", () => {
@@ -149,12 +149,12 @@ describe("getTwrColor", () => {
     expect(getTwrColor(3.2).badge).toContain("bg-sky");
   });
 
-  it("assigns amber for cinelifter & heavy payload (1.8 - 2.7)", () => {
+  it("assigns amber for sluggish (1.8 - 2.7)", () => {
     expect(getTwrColor(2.2).text).toContain("text-amber");
     expect(getTwrColor(2.2).badge).toContain("bg-amber");
   });
 
-  it("assigns orange for sluggish / underpowered (1.0 - 1.79)", () => {
+  it("assigns orange for underpowered (1.0 - 1.79)", () => {
     expect(getTwrColor(1.4).text).toContain("text-orange");
     expect(getTwrColor(1.4).badge).toContain("bg-orange");
   });

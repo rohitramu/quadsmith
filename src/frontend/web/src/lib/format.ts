@@ -70,8 +70,8 @@ export function getTwrDescription(twr: number): string {
   if (twr >= 5.5) return "Freestyle Acro";
   if (twr >= 4.0) return "Sport & Toothpick";
   if (twr >= 2.8) return "Long Range Cruiser";
-  if (twr >= 1.8) return "Cinelifter & Heavy Payload";
-  if (twr >= 1.0) return "Sluggish / Underpowered";
+  if (twr >= 1.8) return "Sluggish";
+  if (twr >= 1.0) return "Underpowered";
   return "Cannot Take Off";
 }
 
