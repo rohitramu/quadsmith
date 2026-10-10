@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildWizardPage } from "../BuildWizardPage";
@@ -424,5 +424,46 @@ describe("BuildWizardPage Component", () => {
     // Clicking on Flight Controller now successfully navigates to Stage 2
     await user.click(unlockedFcButton);
     expect(screen.getByText("2A. Flight Controller")).toBeInTheDocument();
+  });
+
+  it("displays product hover card when hovering over a configured component in the selected parts list", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Advance to Stage 1 and select Frame
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await user.click(await screen.findByText("Master 5 V2"));
+
+    // Find the Selected Parts list frame button
+    const frameBtn = screen.getByTitle("Go to Stage 1: Frame selection");
+    expect(frameBtn).toBeInTheDocument();
+
+    // Find the hover trigger wrapper
+    const hoverTriggers = screen.getAllByTestId("product-hover-trigger");
+    expect(hoverTriggers.length).toBeGreaterThanOrEqual(1);
+
+    // Hover over the frame item
+    fireEvent.mouseEnter(hoverTriggers[0]);
+
+    // Hover card appears with Frame details
+    await waitFor(
+      () => {
+        expect(screen.getByTestId("product-hover-card")).toBeInTheDocument();
+      },
+      { timeout: 1500 },
+    );
+
+    const hoverCard = screen.getByTestId("product-hover-card");
+    expect(within(hoverCard).getByText("Master 5 V2")).toBeInTheDocument();
+    expect(within(hoverCard).getByRole("link", { name: /details/i })).toBeInTheDocument();
+
+    // Mouse leave hides the hover card
+    fireEvent.mouseLeave(hoverTriggers[0]);
+    await waitFor(
+      () => {
+        expect(screen.queryByTestId("product-hover-card")).not.toBeInTheDocument();
+      },
+      { timeout: 1500 },
+    );
   });
 });

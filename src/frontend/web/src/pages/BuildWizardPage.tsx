@@ -17,6 +17,7 @@ import {
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStageBar } from "../components/WizardStageBar";
 import { CollectionIcon } from "../components/CollectionIcon";
+import { ProductHoverCard } from "../components/ProductHoverCard";
 
 // ConnectQuery hooks for component listing
 import { listFrames } from "../gen/quadsmith/frame-FrameService_connectquery";
@@ -106,6 +107,27 @@ export function isVtxAntenna(a: Antenna): boolean {
     nameLower.includes("lollipop") ||
     nameLower.includes("axii") ||
     nameLower.includes("singularity")
+  );
+}
+
+interface SelectedPartHoverWrapperProps {
+  collectionId: string;
+  item?: any;
+  children: React.ReactNode;
+}
+
+function SelectedPartHoverWrapper({ collectionId, item, children }: SelectedPartHoverWrapperProps) {
+  if (!item) return <>{children}</>;
+  return (
+    <ProductHoverCard
+      collectionId={collectionId}
+      item={item}
+      productId={item.id || item.uuid}
+      as="div"
+      className="w-full"
+    >
+      {children}
+    </ProductHoverCard>
   );
 }
 
@@ -3517,570 +3539,615 @@ export function BuildWizardPage() {
             {/* List */}
             <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60 max-h-[380px] overflow-y-auto text-xs">
               {/* Frame */}
-              <button
-                type="button"
-                disabled={!isStage1Unlocked}
-                onClick={() => {
-                  if (isStage1Unlocked) setActiveStage(1);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage1Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={isStage1Unlocked ? "Go to Stage 1: Frame selection" : "Stage 1 is locked"}
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="frames"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>Frame</span>
-                      {!isStage1Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+              <SelectedPartHoverWrapper collectionId="frames" item={selectedFrame}>
+                <button
+                  type="button"
+                  disabled={!isStage1Unlocked}
+                  onClick={() => {
+                    if (isStage1Unlocked) setActiveStage(1);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage1Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={isStage1Unlocked ? "Go to Stage 1: Frame selection" : "Stage 1 is locked"}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="frames"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${selectedFrame ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {selectedFrame ? selectedFrame.name : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>Frame</span>
+                        {!isStage1Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${selectedFrame ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {selectedFrame ? selectedFrame.name : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {selectedFrame ? `${selectedFrame.weightG}g` : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {selectedFrame ? `${selectedFrame.weightG}g` : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* Motors */}
-              <button
-                type="button"
-                disabled={!isStage1Unlocked}
-                onClick={() => {
-                  if (isStage1Unlocked) setActiveStage(1);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage1Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={isStage1Unlocked ? "Go to Stage 1: Motor selection" : "Stage 1 is locked"}
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="motors"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>Motors ({motorCount}x)</span>
-                      {!isStage1Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+              <SelectedPartHoverWrapper collectionId="motors" item={selectedMotor}>
+                <button
+                  type="button"
+                  disabled={!isStage1Unlocked}
+                  onClick={() => {
+                    if (isStage1Unlocked) setActiveStage(1);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage1Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={isStage1Unlocked ? "Go to Stage 1: Motor selection" : "Stage 1 is locked"}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="motors"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${selectedMotor ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {selectedMotor ? selectedMotor.name : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>Motors ({motorCount}x)</span>
+                        {!isStage1Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${selectedMotor ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {selectedMotor ? selectedMotor.name : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {selectedMotor
-                    ? `${((selectedMotor.weightG || 0) * motorCount).toFixed(1)}g`
-                    : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {selectedMotor
+                      ? `${((selectedMotor.weightG || 0) * motorCount).toFixed(1)}g`
+                      : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* Propellers */}
-              <button
-                type="button"
-                disabled={!isStage1Unlocked}
-                onClick={() => {
-                  if (isStage1Unlocked) setActiveStage(1);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage1Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage1Unlocked ? "Go to Stage 1: Propeller selection" : "Stage 1 is locked"
-                }
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="propellers"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>Propellers ({motorCount}x)</span>
-                      {!isStage1Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+              <SelectedPartHoverWrapper collectionId="propellers" item={selectedProp}>
+                <button
+                  type="button"
+                  disabled={!isStage1Unlocked}
+                  onClick={() => {
+                    if (isStage1Unlocked) setActiveStage(1);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage1Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage1Unlocked ? "Go to Stage 1: Propeller selection" : "Stage 1 is locked"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="propellers"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${selectedProp ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {selectedProp ? selectedProp.name : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>Propellers ({motorCount}x)</span>
+                        {!isStage1Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${selectedProp ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {selectedProp ? selectedProp.name : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {selectedProp ? `${((selectedProp.weightG || 0) * motorCount).toFixed(1)}g` : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {selectedProp
+                      ? `${((selectedProp.weightG || 0) * motorCount).toFixed(1)}g`
+                      : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* Flight Controller */}
-              <button
-                type="button"
-                disabled={!isStage2Unlocked}
-                onClick={() => {
-                  if (isStage2Unlocked) setActiveStage(2);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage2Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage2Unlocked
-                    ? "Go to Stage 2: Flight Controller selection"
-                    : "Stage 2 is locked: Flight Controller (Complete Stage 1 first)"
-                }
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="flight-controllers"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>Flight Controller</span>
-                      {!isStage2Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+              <SelectedPartHoverWrapper collectionId="flight-controllers" item={selectedFc}>
+                <button
+                  type="button"
+                  disabled={!isStage2Unlocked}
+                  onClick={() => {
+                    if (isStage2Unlocked) setActiveStage(2);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage2Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage2Unlocked
+                      ? "Go to Stage 2: Flight Controller selection"
+                      : "Stage 2 is locked: Flight Controller (Complete Stage 1 first)"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="flight-controllers"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${selectedFc ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {selectedFc ? selectedFc.name : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>Flight Controller</span>
+                        {!isStage2Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${selectedFc ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {selectedFc ? selectedFc.name : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {selectedFc ? `${selectedFc.weightG}g` : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {selectedFc ? `${selectedFc.weightG}g` : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* ESC */}
-              <button
-                type="button"
-                disabled={!isStage2Unlocked}
-                onClick={() => {
-                  if (isStage2Unlocked) setActiveStage(2);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage2Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage2Unlocked
-                    ? "Go to Stage 2: ESC selection"
-                    : "Stage 2 is locked: Speed Controller (ESC) (Complete Stage 1 first)"
-                }
+              <SelectedPartHoverWrapper
+                collectionId="electronic-speed-controllers"
+                item={useIntegratedEsc ? integratedEsc : noneSelections.esc ? null : selectedEsc}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="electronic-speed-controllers"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>Speed Controller (ESC)</span>
-                      {!isStage2Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+                <button
+                  type="button"
+                  disabled={!isStage2Unlocked}
+                  onClick={() => {
+                    if (isStage2Unlocked) setActiveStage(2);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage2Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage2Unlocked
+                      ? "Go to Stage 2: ESC selection"
+                      : "Stage 2 is locked: Speed Controller (ESC) (Complete Stage 1 first)"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="electronic-speed-controllers"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${useIntegratedEsc || selectedEsc ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {useIntegratedEsc
-                        ? integratedEsc
-                          ? `${integratedEsc.name} (Integrated)`
-                          : "Integrated FC ESC"
-                        : selectedEsc
-                          ? selectedEsc.name
-                          : noneSelections.esc
-                            ? "None (Omitted)"
-                            : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>Speed Controller (ESC)</span>
+                        {!isStage2Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${useIntegratedEsc || selectedEsc ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {useIntegratedEsc
+                          ? integratedEsc
+                            ? `${integratedEsc.name} (Integrated)`
+                            : "Integrated FC ESC"
+                          : selectedEsc
+                            ? selectedEsc.name
+                            : noneSelections.esc
+                              ? "None (Omitted)"
+                              : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {useIntegratedEsc ? "0g" : selectedEsc ? `${selectedEsc.weightG}g` : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {useIntegratedEsc ? "0g" : selectedEsc ? `${selectedEsc.weightG}g` : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* Receiver (RX) */}
-              <button
-                type="button"
-                disabled={!isStage2Unlocked}
-                onClick={() => {
-                  if (isStage2Unlocked) setActiveStage(2);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage2Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage2Unlocked
-                    ? "Go to Stage 2: Receiver selection"
-                    : "Stage 2 is locked: Receiver (RX) (Complete Stage 1 first)"
-                }
+              <SelectedPartHoverWrapper
+                collectionId="receivers"
+                item={useIntegratedRx ? integratedRx : selectedRx}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="receivers"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>Receiver (RX)</span>
-                      {!isStage2Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+                <button
+                  type="button"
+                  disabled={!isStage2Unlocked}
+                  onClick={() => {
+                    if (isStage2Unlocked) setActiveStage(2);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage2Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage2Unlocked
+                      ? "Go to Stage 2: Receiver selection"
+                      : "Stage 2 is locked: Receiver (RX) (Complete Stage 1 first)"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="receivers"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${useIntegratedRx || selectedRx ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {useIntegratedRx
-                        ? integratedRx
-                          ? `${integratedRx.name} (Integrated)`
-                          : "Integrated FC Receiver"
-                        : selectedRx
-                          ? `${selectedRx.name} (${selectedRx.protocol})`
-                          : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>Receiver (RX)</span>
+                        {!isStage2Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${useIntegratedRx || selectedRx ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {useIntegratedRx
+                          ? integratedRx
+                            ? `${integratedRx.name} (Integrated)`
+                            : "Integrated FC Receiver"
+                          : selectedRx
+                            ? `${selectedRx.name} (${selectedRx.protocol})`
+                            : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {useIntegratedRx ? "0g" : selectedRx ? `${selectedRx.weightG}g` : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {useIntegratedRx ? "0g" : selectedRx ? `${selectedRx.weightG}g` : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* RX Antenna */}
-              <button
-                type="button"
-                disabled={!isStage2Unlocked}
-                onClick={() => {
-                  if (isStage2Unlocked) setActiveStage(2);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage2Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage2Unlocked
-                    ? "Go to Stage 2: RX Antenna selection"
-                    : "Stage 2 is locked: RX Antenna (Complete Stage 1 first)"
-                }
+              <SelectedPartHoverWrapper
+                collectionId="antennas"
+                item={noneSelections.rxAntenna ? null : selectedRxAnt}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="antennas"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>RX Antenna {selectedRxAnt ? `(${rxAntCount}x)` : ""}</span>
-                      {!isStage2Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+                <button
+                  type="button"
+                  disabled={!isStage2Unlocked}
+                  onClick={() => {
+                    if (isStage2Unlocked) setActiveStage(2);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage2Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage2Unlocked
+                      ? "Go to Stage 2: RX Antenna selection"
+                      : "Stage 2 is locked: RX Antenna (Complete Stage 1 first)"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="antennas"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${selectedRxAnt ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {selectedRxAnt
-                        ? selectedRxAnt.name
-                        : noneSelections.rxAntenna
-                          ? "None (Omitted)"
-                          : "Not selected yet"}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {selectedRxAnt && !noneSelections.rxAntenna
-                    ? `${((selectedRxAnt.weightG || 0) * rxAntCount).toFixed(1)}g`
-                    : "—"}
-                </div>
-              </button>
-
-              {/* Video Transmitter (VTX) */}
-              <button
-                type="button"
-                disabled={!isStage3Unlocked}
-                onClick={() => {
-                  if (isStage3Unlocked) setActiveStage(3);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage3Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage3Unlocked
-                    ? "Go to Stage 3: Video Transmitter selection"
-                    : "Stage 3 is locked: Video Transmitter (VTX) (Complete Stages 1 & 2 first)"
-                }
-              >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="video-transmitters"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>Video Transmitter (VTX)</span>
-                      {!isStage3Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
-                    </div>
-                    <div
-                      className={`truncate ${useIntegratedVtx || selectedVtx ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {useIntegratedVtx
-                        ? integratedVtx
-                          ? `${integratedVtx.name} (Integrated)`
-                          : "Integrated FC VTX"
-                        : selectedVtx && !noneSelections.vtx
-                          ? selectedVtx.name
-                          : noneSelections.vtx
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>RX Antenna {selectedRxAnt ? `(${rxAntCount}x)` : ""}</span>
+                        {!isStage2Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${selectedRxAnt ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {selectedRxAnt
+                          ? selectedRxAnt.name
+                          : noneSelections.rxAntenna
                             ? "None (Omitted)"
                             : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {useIntegratedVtx
-                    ? "0g"
-                    : selectedVtx && !noneSelections.vtx
-                      ? `${selectedVtx.weightG}g`
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {selectedRxAnt && !noneSelections.rxAntenna
+                      ? `${((selectedRxAnt.weightG || 0) * rxAntCount).toFixed(1)}g`
                       : "—"}
-                </div>
-              </button>
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
+
+              {/* Video Transmitter (VTX) */}
+              <SelectedPartHoverWrapper
+                collectionId="video-transmitters"
+                item={useIntegratedVtx ? integratedVtx : noneSelections.vtx ? null : selectedVtx}
+              >
+                <button
+                  type="button"
+                  disabled={!isStage3Unlocked}
+                  onClick={() => {
+                    if (isStage3Unlocked) setActiveStage(3);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage3Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage3Unlocked
+                      ? "Go to Stage 3: Video Transmitter selection"
+                      : "Stage 3 is locked: Video Transmitter (VTX) (Complete Stages 1 & 2 first)"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="video-transmitters"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>Video Transmitter (VTX)</span>
+                        {!isStage3Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${useIntegratedVtx || selectedVtx ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {useIntegratedVtx
+                          ? integratedVtx
+                            ? `${integratedVtx.name} (Integrated)`
+                            : "Integrated FC VTX"
+                          : selectedVtx && !noneSelections.vtx
+                            ? selectedVtx.name
+                            : noneSelections.vtx
+                              ? "None (Omitted)"
+                              : "Not selected yet"}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {useIntegratedVtx
+                      ? "0g"
+                      : selectedVtx && !noneSelections.vtx
+                        ? `${selectedVtx.weightG}g`
+                        : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* Camera */}
-              <button
-                type="button"
-                disabled={!isStage3Unlocked}
-                onClick={() => {
-                  if (isStage3Unlocked) setActiveStage(3);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage3Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage3Unlocked
-                    ? "Go to Stage 3: Camera selection"
-                    : "Stage 3 is locked: Camera (Complete Stages 1 & 2 first)"
-                }
+              <SelectedPartHoverWrapper
+                collectionId="cameras"
+                item={noneSelections.camera ? null : selectedCam}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="cameras"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>Camera</span>
-                      {!isStage3Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+                <button
+                  type="button"
+                  disabled={!isStage3Unlocked}
+                  onClick={() => {
+                    if (isStage3Unlocked) setActiveStage(3);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage3Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage3Unlocked
+                      ? "Go to Stage 3: Camera selection"
+                      : "Stage 3 is locked: Camera (Complete Stages 1 & 2 first)"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="cameras"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${selectedCam && !noneSelections.camera ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {selectedCam && !noneSelections.camera
-                        ? selectedCam.name
-                        : noneSelections.camera
-                          ? "None (Omitted)"
-                          : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>Camera</span>
+                        {!isStage3Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${selectedCam && !noneSelections.camera ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {selectedCam && !noneSelections.camera
+                          ? selectedCam.name
+                          : noneSelections.camera
+                            ? "None (Omitted)"
+                            : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {selectedCam && !noneSelections.camera ? `${selectedCam.weightG}g` : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {selectedCam && !noneSelections.camera ? `${selectedCam.weightG}g` : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* VTX Antenna */}
-              <button
-                type="button"
-                disabled={!isStage3Unlocked}
-                onClick={() => {
-                  if (isStage3Unlocked) setActiveStage(3);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage3Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage3Unlocked
-                    ? "Go to Stage 3: VTX Antenna selection"
-                    : "Stage 3 is locked: VTX Antenna (Complete Stages 1 & 2 first)"
-                }
+              <SelectedPartHoverWrapper
+                collectionId="antennas"
+                item={noneSelections.vtxAntenna ? null : selectedVtxAnt}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="antennas"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>VTX Antenna {selectedVtxAnt ? `(${vtxAntCount}x)` : ""}</span>
-                      {!isStage3Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+                <button
+                  type="button"
+                  disabled={!isStage3Unlocked}
+                  onClick={() => {
+                    if (isStage3Unlocked) setActiveStage(3);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage3Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage3Unlocked
+                      ? "Go to Stage 3: VTX Antenna selection"
+                      : "Stage 3 is locked: VTX Antenna (Complete Stages 1 & 2 first)"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="antennas"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${selectedVtxAnt && !noneSelections.vtxAntenna ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {selectedVtxAnt && !noneSelections.vtxAntenna
-                        ? selectedVtxAnt.name
-                        : noneSelections.vtxAntenna
-                          ? "None (Omitted)"
-                          : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>VTX Antenna {selectedVtxAnt ? `(${vtxAntCount}x)` : ""}</span>
+                        {!isStage3Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${selectedVtxAnt && !noneSelections.vtxAntenna ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {selectedVtxAnt && !noneSelections.vtxAntenna
+                          ? selectedVtxAnt.name
+                          : noneSelections.vtxAntenna
+                            ? "None (Omitted)"
+                            : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {selectedVtxAnt && !noneSelections.vtxAntenna
-                    ? `${((selectedVtxAnt.weightG || 0) * vtxAntCount).toFixed(1)}g`
-                    : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {selectedVtxAnt && !noneSelections.vtxAntenna
+                      ? `${((selectedVtxAnt.weightG || 0) * vtxAntCount).toFixed(1)}g`
+                      : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
 
               {/* GPS */}
-              <button
-                type="button"
-                disabled={!isStage3Unlocked}
-                onClick={() => {
-                  if (isStage3Unlocked) setActiveStage(3);
-                }}
-                className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                  isStage3Unlocked
-                    ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
-                    : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
-                }`}
-                title={
-                  isStage3Unlocked
-                    ? "Go to Stage 3: GPS selection"
-                    : "Stage 3 is locked: GPS Receiver (Complete Stages 1 & 2 first)"
-                }
+              <SelectedPartHoverWrapper
+                collectionId="gps-receivers"
+                item={noneSelections.gps ? null : selectedGps}
               >
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
-                    <CollectionIcon
-                      collection="gps-receivers"
-                      size={13}
-                      className="text-zinc-500 dark:text-zinc-400"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                      <span>GPS Receiver</span>
-                      {!isStage3Unlocked && (
-                        <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
-                          <Lock size={10} />
-                          Locked
-                        </span>
-                      )}
+                <button
+                  type="button"
+                  disabled={!isStage3Unlocked}
+                  onClick={() => {
+                    if (isStage3Unlocked) setActiveStage(3);
+                  }}
+                  className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
+                    isStage3Unlocked
+                      ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
+                      : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
+                  }`}
+                  title={
+                    isStage3Unlocked
+                      ? "Go to Stage 3: GPS selection"
+                      : "Stage 3 is locked: GPS Receiver (Complete Stages 1 & 2 first)"
+                  }
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-6 h-6 rounded-md bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                      <CollectionIcon
+                        collection="gps-receivers"
+                        size={13}
+                        className="text-zinc-500 dark:text-zinc-400"
+                      />
                     </div>
-                    <div
-                      className={`truncate ${selectedGps && !noneSelections.gps ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
-                    >
-                      {selectedGps && !noneSelections.gps
-                        ? selectedGps.name
-                        : noneSelections.gps
-                          ? "None (Omitted)"
-                          : "Not selected yet"}
+                    <div className="min-w-0">
+                      <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                        <span>GPS Receiver</span>
+                        {!isStage3Unlocked && (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
+                            <Lock size={10} />
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`truncate ${selectedGps && !noneSelections.gps ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
+                      >
+                        {selectedGps && !noneSelections.gps
+                          ? selectedGps.name
+                          : noneSelections.gps
+                            ? "None (Omitted)"
+                            : "Not selected yet"}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                  {selectedGps && !noneSelections.gps ? `${selectedGps.weightG}g` : "—"}
-                </div>
-              </button>
+                  <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
+                    {selectedGps && !noneSelections.gps ? `${selectedGps.weightG}g` : "—"}
+                  </div>
+                </button>
+              </SelectedPartHoverWrapper>
             </div>
 
             {/* Footer: BOM Total Dry Weight */}
