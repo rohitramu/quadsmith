@@ -14,6 +14,7 @@ import {
   Check,
   Lock,
   Gauge,
+  AlertTriangle,
 } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStageBar } from "../components/WizardStageBar";
@@ -72,6 +73,29 @@ import {
 import { CameraService, type Camera } from "../gen/quadsmith/camera_pb";
 import { AntennaService, type Antenna } from "../gen/quadsmith/antenna_pb";
 import { GpsReceiverService, type GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
+import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
+
+export function getVtxAntennaCount(vtx: VideoTransmitter | null | undefined): number {
+  if (!vtx) return 1;
+  if (vtx.antennaUuids && vtx.antennaUuids.length > 0) {
+    return vtx.antennaUuids.length;
+  }
+  const name = (vtx.name || "").toLowerCase();
+  const proto = (vtx.protocol || "").toLowerCase();
+  if (
+    proto.includes("dji o3") ||
+    proto.includes("dji o4") ||
+    name.includes("dji o3") ||
+    name.includes("o3 air unit") ||
+    name.includes("dji o4") ||
+    name.includes("o4 air unit") ||
+    name.includes("moonlight") ||
+    name.includes("dual")
+  ) {
+    return 2;
+  }
+  return 1;
+}
 
 export function formatFrequencyBand(mhz?: number): string {
   if (!mhz) return "2.4 GHz";
@@ -220,7 +244,18 @@ export function BuildWizardPage() {
   const [useIntegratedVtx, setUseIntegratedVtx] = useState<boolean>(false);
   const [selectedCam, setSelectedCam] = useState<Camera | null>(null);
   const [selectedVtxAnt, setSelectedVtxAnt] = useState<Antenna | null>(null);
-  const [vtxAntCount, setVtxAntCount] = useState<number>(1);
+  const vtxAntCount = useMemo(() => getVtxAntennaCount(selectedVtx), [selectedVtx]);
+
+  const scrollToSelectedProduct = (elementId: string) => {
+    const el = document.getElementById(elementId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.classList.add("ring-2", "ring-blue-400");
+      setTimeout(() => {
+        el.classList.remove("ring-2", "ring-blue-400");
+      }, 1200);
+    }
+  };
 
   // Explicit "None" flags for optional parts
   const [noneSelections, setNoneSelections] = useState<{
@@ -1133,8 +1168,6 @@ export function BuildWizardPage() {
       const vtxAnt = fetchedAnts.find(isVtxAntenna);
       if (vtxAnt) {
         setSelectedVtxAnt(vtxAnt);
-        const count = build.antennaUuids.filter((u) => u === vtxAnt.uuid).length;
-        setVtxAntCount(count > 1 ? 2 : 1);
         setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
       } else {
         setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
@@ -1221,7 +1254,6 @@ export function BuildWizardPage() {
     setUseIntegratedVtx(false);
     setSelectedCam(null);
     setSelectedVtxAnt(null);
-    setVtxAntCount(1);
     setNoneSelections({});
   };
 
@@ -1387,9 +1419,6 @@ export function BuildWizardPage() {
                     <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                       Choose Starting Baseline
                     </h3>
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                      Stage 0
-                    </span>
                   </div>
                   <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
                     {selectedTemplateId
@@ -1545,9 +1574,14 @@ export function BuildWizardPage() {
                     </h3>
                   </div>
                   {selectedFrame ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-frame-item")}
+                      title="Scroll to selected frame"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
-                    </span>
+                    </button>
                   ) : (
                     <span className="text-xs font-semibold text-red-500 dark:text-red-400">
                       Required
@@ -1589,6 +1623,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={f.uuid || f.id}
+                        id={isSelected ? "selected-frame-item" : undefined}
                         onClick={() => setSelectedFrame(f)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -1636,9 +1671,14 @@ export function BuildWizardPage() {
                     </h3>
                   </div>
                   {selectedMotor ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-motor-item")}
+                      title="Scroll to selected motor"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
-                    </span>
+                    </button>
                   ) : (
                     <span className="text-xs font-semibold text-red-500 dark:text-red-400">
                       Required
@@ -1676,6 +1716,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={m.uuid || m.id}
+                        id={isSelected ? "selected-motor-item" : undefined}
                         onClick={() => setSelectedMotor(m)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -1726,9 +1767,14 @@ export function BuildWizardPage() {
                     </h3>
                   </div>
                   {selectedProp ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-prop-item")}
+                      title="Scroll to selected propeller"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
-                    </span>
+                    </button>
                   ) : (
                     <span className="text-xs font-semibold text-red-500 dark:text-red-400">
                       Required
@@ -1790,6 +1836,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={p.uuid || p.id}
+                        id={isSelected ? "selected-prop-item" : undefined}
                         onClick={() => setSelectedProp(p)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -1840,9 +1887,14 @@ export function BuildWizardPage() {
                     </h3>
                   </div>
                   {selectedFc ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-fc-item")}
+                      title="Scroll to selected flight controller"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
-                    </span>
+                    </button>
                   ) : (
                     <span className="text-xs font-semibold text-red-500 dark:text-red-400">
                       Required
@@ -1892,6 +1944,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={fc.uuid || fc.id}
+                        id={isSelected ? "selected-fc-item" : undefined}
                         onClick={() => setSelectedFc(fc)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -1944,9 +1997,14 @@ export function BuildWizardPage() {
                     </h3>
                   </div>
                   {selectedEsc || useIntegratedEsc ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-esc-item")}
+                      title="Scroll to selected ESC"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
-                    </span>
+                    </button>
                   ) : fcHasAdequateIntegratedEsc ? (
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
                       Optional
@@ -2013,6 +2071,7 @@ export function BuildWizardPage() {
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {/* Option Card: Integrated FC ESC (Enabled only if FC has adequate ESC) */}
                   <div
+                    id={useIntegratedEsc ? "selected-esc-item" : undefined}
                     onClick={() => {
                       if (fcHasAdequateIntegratedEsc) {
                         setUseIntegratedEsc(true);
@@ -2069,6 +2128,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={esc.uuid || esc.id}
+                        id={isSelected ? "selected-esc-item" : undefined}
                         onClick={() => {
                           setSelectedEsc(esc);
                           setUseIntegratedEsc(false);
@@ -2118,9 +2178,14 @@ export function BuildWizardPage() {
                     </h3>
                   </div>
                   {selectedRx || useIntegratedRx ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-rx-item")}
+                      title="Scroll to selected receiver"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
-                    </span>
+                    </button>
                   ) : fcHasIntegratedRx ? (
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
                       Optional
@@ -2163,6 +2228,7 @@ export function BuildWizardPage() {
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {/* Option Card: Integrated FC Receiver */}
                   <div
+                    id={useIntegratedRx ? "selected-rx-item" : undefined}
                     onClick={() => {
                       if (fcHasIntegratedRx) {
                         setUseIntegratedRx(true);
@@ -2218,6 +2284,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={rx.uuid || rx.id}
+                        id={isSelected ? "selected-rx-item" : undefined}
                         onClick={() => {
                           setSelectedRx(rx);
                           setUseIntegratedRx(false);
@@ -2266,10 +2333,15 @@ export function BuildWizardPage() {
                     </h3>
                   </div>
                   {selectedRxAnt && !noneSelections.rxAntenna ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-rx-ant-item")}
+                      title="Scroll to selected antenna"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} />{" "}
                       {rxAntCount > 1 ? "2x Selected (Diversity)" : "Selected"}
-                    </span>
+                    </button>
                   ) : noneSelections.rxAntenna ? (
                     <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1">
                       <Check size={12} strokeWidth={2.5} /> None
@@ -2402,6 +2474,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={a.uuid || a.id}
+                        id={isSelected ? "selected-rx-ant-item" : undefined}
                         onClick={() => {
                           setSelectedRxAnt(a);
                           setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
@@ -2451,9 +2524,18 @@ export function BuildWizardPage() {
                       2E. GPS Receiver & Compass
                     </h3>
                   </div>
-                  {selectedGps || noneSelections.gps ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                  {selectedGps ? (
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-gps-item")}
+                      title="Scroll to selected GPS"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
+                    </button>
+                  ) : noneSelections.gps ? (
+                    <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> None
                     </span>
                   ) : (
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
@@ -2519,6 +2601,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={g.uuid || g.id}
+                        id={isSelected ? "selected-gps-item" : undefined}
                         onClick={() => {
                           setSelectedGps(g);
                           setNoneSelections((prev) => ({ ...prev, gps: false }));
@@ -2578,9 +2661,18 @@ export function BuildWizardPage() {
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     3A. Video Transmitter (VTX)
                   </h3>
-                  {selectedVtx || useIntegratedVtx || noneSelections.vtx ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                  {selectedVtx || useIntegratedVtx ? (
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-vtx-item")}
+                      title="Scroll to selected VTX"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
+                    </button>
+                  ) : noneSelections.vtx ? (
+                    <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> None
                     </span>
                   ) : (
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
@@ -2661,6 +2753,7 @@ export function BuildWizardPage() {
                   {/* Option Card: Integrated FC VTX (if FC integrates VTX) */}
                   {fcHasIntegratedVtx && (
                     <div
+                      id={useIntegratedVtx ? "selected-vtx-item" : undefined}
                       onClick={() => {
                         setUseIntegratedVtx(true);
                         setSelectedVtx(integratedVtx);
@@ -2704,6 +2797,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={v.uuid || v.id}
+                        id={isSelected ? "selected-vtx-item" : undefined}
                         onClick={() => {
                           setSelectedVtx(v);
                           setUseIntegratedVtx(false);
@@ -2751,9 +2845,18 @@ export function BuildWizardPage() {
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     3B. FPV Camera
                   </h3>
-                  {selectedCam || noneSelections.camera ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                  {selectedCam ? (
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-cam-item")}
+                      title="Scroll to selected camera"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} /> Selected
+                    </button>
+                  ) : noneSelections.camera ? (
+                    <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1">
+                      <Check size={12} strokeWidth={2.5} /> None
                     </span>
                   ) : (
                     <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
@@ -2836,6 +2939,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={c.uuid || c.id}
+                        id={isSelected ? "selected-cam-item" : undefined}
                         onClick={() => {
                           setSelectedCam(c);
                           setNoneSelections((prev) => ({ ...prev, camera: false }));
@@ -2880,10 +2984,15 @@ export function BuildWizardPage() {
                     3C. Video Transmitter Antenna(s)
                   </h3>
                   {selectedVtxAnt && !noneSelections.vtxAntenna ? (
-                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => scrollToSelectedProduct("selected-vtx-ant-item")}
+                      title="Scroll to selected VTX antenna"
+                      className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+                    >
                       <Check size={12} strokeWidth={2.5} />{" "}
                       {vtxAntCount > 1 ? "2x Selected (Dual)" : "Selected"}
-                    </span>
+                    </button>
                   ) : noneSelections.vtxAntenna ? (
                     <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1">
                       <Check size={12} strokeWidth={2.5} /> None
@@ -2930,34 +3039,13 @@ export function BuildWizardPage() {
                       </span>
                       <span className="text-zinc-500 dark:text-zinc-400">
                         {vtxAntCount === 1
-                          ? "Single Antenna (Standard VTX)"
-                          : "Dual Antennas (e.g. DJI O3 / Diversity)"}
+                          ? "Single Antenna (Required by VTX)"
+                          : "Dual Antennas (Required by VTX, e.g. DJI O3 / Diversity)"}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 bg-white dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-2xs">
-                      <button
-                        type="button"
-                        onClick={() => setVtxAntCount(1)}
-                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
-                          vtxAntCount === 1
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
-                        }`}
-                      >
-                        1x Single
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setVtxAntCount(2)}
-                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
-                          vtxAntCount === 2
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
-                        }`}
-                      >
-                        2x Dual
-                      </button>
-                    </div>
+                    <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                      {vtxAntCount}x
+                    </span>
                   </div>
                 )}
 
@@ -2989,6 +3077,7 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={a.uuid || a.id}
+                        id={isSelected ? "selected-vtx-ant-item" : undefined}
                         onClick={() => {
                           setSelectedVtxAnt(a);
                           setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
@@ -3297,16 +3386,6 @@ export function BuildWizardPage() {
             </button>
           </div>
 
-          {/* Distinct Live Evaluation Section Header */}
-          <div className="flex items-center justify-between px-1 pt-1">
-            <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              Live Evaluation
-            </span>
-            <span className="text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
-              Real-time Telemetry
-            </span>
-          </div>
-
           {isWasmDelayed && !isWasmReady && (
             <WasmLoadingIndicator progress={wasmProgress} className="mb-2" />
           )}
@@ -3425,16 +3504,22 @@ export function BuildWizardPage() {
               <div className="text-[11px] uppercase font-semibold text-zinc-500">
                 Estimated Thrust-to-Weight
               </div>
-              <div className="text-3xl font-extrabold text-blue-600 dark:text-blue-400 mt-1">
+              <div
+                className={`text-3xl font-extrabold mt-1 ${
+                  evaluation ? getTwrColor(evaluation.thrustToWeightRatio).text : "text-zinc-400"
+                }`}
+              >
                 {evaluation ? `${evaluation.thrustToWeightRatio.toFixed(2)} : 1` : "-- : 1"}
               </div>
-              <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+              <span
+                className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold border transition-colors ${
+                  evaluation
+                    ? getTwrColor(evaluation.thrustToWeightRatio).badge
+                    : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-transparent"
+                }`}
+              >
                 {evaluation
-                  ? evaluation.thrustToWeightRatio >= 5
-                    ? "🚀 Extreme Punchout"
-                    : evaluation.thrustToWeightRatio >= 3
-                      ? "⚡ Agile Freestyle"
-                      : "Cruiser / Sluggish"
+                  ? getTwrDescription(evaluation.thrustToWeightRatio)
                   : "Select Propulsion Parts"}
               </span>
             </div>
@@ -3459,13 +3544,27 @@ export function BuildWizardPage() {
               </div>
               <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
                 <span className="text-zinc-500">Hover Throttle</span>
-                <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
+                <div
+                  className={`text-sm font-bold font-mono mt-0.5 ${
+                    evaluation
+                      ? getHoverThrottleColor(evaluation.hoverThrottlePercent).text
+                      : "text-zinc-400"
+                  }`}
+                >
                   {evaluation ? `${evaluation.hoverThrottlePercent.toFixed(1)}%` : "--%"}
                 </div>
               </div>
               <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
                 <span className="text-zinc-500">Flight Time</span>
-                <div className="text-sm font-bold text-amber-600 dark:text-amber-400 font-mono mt-0.5">
+                <div
+                  className={`text-sm font-bold font-mono mt-0.5 ${
+                    evaluation
+                      ? evaluation.maxFlightTimeMin > 0 && evaluation.maxFlightTimeMin < 3.0
+                        ? "text-amber-600 dark:text-amber-400"
+                        : "text-zinc-900 dark:text-zinc-100"
+                      : "text-zinc-400"
+                  }`}
+                >
                   {evaluation
                     ? `${evaluation.minFlightTimeMin.toFixed(1)} - ${evaluation.maxFlightTimeMin.toFixed(1)}m`
                     : "-- min"}
@@ -3473,107 +3572,37 @@ export function BuildWizardPage() {
               </div>
             </div>
 
-            {/* Compatibility Rule Checklist */}
-            <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 space-y-1.5 text-[11px]">
-              <div className="font-bold text-zinc-700 dark:text-zinc-300 flex justify-between">
-                <span>Rule Engine Checks</span>
-                <span className="text-zinc-500">
-                  {draftBuild ? "Evaluated" : "Pending Stage 1"}
-                </span>
-              </div>
-              {(() => {
-                const isPropFrameIncompatible =
-                  (selectedFrame &&
-                    selectedProp &&
-                    selectedFrame.maxPropSizeMm > 0 &&
-                    selectedProp.diameterMm > selectedFrame.maxPropSizeMm) ||
-                  compatibilityData?.messages?.some(
-                    (m) =>
-                      m.checkerName === "PropellerFrameChecker" ||
-                      m.message.toLowerCase().includes("propeller diameter exceeds"),
-                  );
+            {/* System Messages & Compatibility Warnings */}
+            {(() => {
+              const messages = (compatibilityData?.messages || []).filter(
+                (m) =>
+                  !m.message.toLowerCase().includes("fully compatible") &&
+                  !m.message.toLowerCase().includes("flight-ready"),
+              );
+              if (messages.length === 0) return null;
 
-                return (
-                  <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
-                    <span>Prop vs Frame Size</span>
-                    <span
-                      className={
-                        selectedFrame && selectedProp
-                          ? isPropFrameIncompatible
-                            ? "text-red-600 dark:text-red-400 font-bold"
-                            : "text-emerald-600 dark:text-emerald-400 font-bold"
-                          : "text-zinc-400"
-                      }
-                    >
-                      {selectedFrame && selectedProp
-                        ? isPropFrameIncompatible
-                          ? "✗ Incompatible"
-                          : "✓ Compatible"
-                        : "--"}
-                    </span>
+              return (
+                <div className="p-3 rounded-xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 space-y-1.5 text-xs text-amber-800 dark:text-amber-300">
+                  <div className="font-bold flex items-center gap-1.5 text-amber-900 dark:text-amber-200 text-[11px] uppercase tracking-wider">
+                    <AlertTriangle
+                      size={13}
+                      className="text-amber-600 dark:text-amber-400 shrink-0"
+                    />
+                    <span>System Messages</span>
                   </div>
-                );
-              })()}
-              <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
-                <span>ESC Amperage Rating</span>
-                <span
-                  className={
-                    selectedEsc || useIntegratedEsc
-                      ? "text-emerald-600 dark:text-emerald-400 font-bold"
-                      : "text-zinc-400"
-                  }
-                >
-                  {selectedEsc || useIntegratedEsc ? "✓ Sufficient" : "--"}
-                </span>
-              </div>
-              <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
-                <span>Stack Mounting Fit</span>
-                <span
-                  className={
-                    selectedFc
-                      ? "text-emerald-600 dark:text-emerald-400 font-bold"
-                      : "text-zinc-400"
-                  }
-                >
-                  {selectedFc ? "✓ Fits frame" : "--"}
-                </span>
-              </div>
-              {compatibilityData?.messages && compatibilityData.messages.length > 0 && (
-                <div className="pt-1 border-t border-zinc-200 dark:border-zinc-800 space-y-1">
-                  {compatibilityData.messages.map((m, idx) => (
-                    <div key={idx} className="text-amber-600 dark:text-amber-400 text-[10px]">
-                      ⚠️ {m.message}
-                    </div>
-                  ))}
+                  <div className="space-y-1 text-[11px]">
+                    {messages.map((m, idx) => (
+                      <div key={idx} className="flex items-start gap-1.5 leading-snug">
+                        <span className="text-amber-600 dark:text-amber-400 shrink-0 mt-0.5">
+                          •
+                        </span>
+                        <span>{m.message}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              )}
-            </div>
-
-            {/* Live Dynamic Compatibility Filter Display */}
-            {isWasmReady && (activeStage === 1 || activeStage === 2 || activeStage === 3) && (
-              <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 space-y-1.5 text-[11px]">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-[10px]">
-                    Dynamic Compatibility Filter
-                  </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
-                    {activeStage === 1
-                      ? "Propeller Target"
-                      : activeStage === 2
-                        ? "ESC Target"
-                        : "Camera/VTX Target"}
-                  </span>
-                </div>
-                <div className="bg-zinc-100 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 font-mono text-[10px] text-indigo-600 dark:text-indigo-400 break-all select-all">
-                  <code>
-                    {(activeStage === 1 && propCelFilter) ||
-                      (activeStage === 2 && escCelFilter) ||
-                      (activeStage === 3 && (camCelFilter || vtxCelFilter)) ||
-                      "CEL engine active: all hardware compatible"}
-                  </code>
-                </div>
-              </div>
-            )}
+              );
+            })()}
           </div>
 
           {/* Selected Parts List under Build Evaluator */}

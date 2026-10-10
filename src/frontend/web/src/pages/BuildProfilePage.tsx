@@ -22,7 +22,7 @@ import { SystemMessageSeverity } from "../gen/quadsmith/evaluator_pb";
 import { MediaGallery } from "../components/MediaGallery";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
 import { buildBatteryCelFilter } from "../lib/batteryFilter";
-import { getTwrDescription } from "../lib/format";
+import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
 import { getHardwareCollection, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "../components/CollectionBadge";
@@ -582,7 +582,9 @@ export function BuildProfilePage() {
                       <span>Thrust / Weight</span>
                     </div>
                     <div>
-                      <div className="text-2xl sm:text-3xl font-bold mt-1 text-emerald-600 dark:text-emerald-400">
+                      <div
+                        className={`text-2xl sm:text-3xl font-bold mt-1 ${getTwrColor(evaluation.thrustToWeightRatio).text}`}
+                      >
                         {evaluation.thrustToWeightRatio.toFixed(1)}
                         <span className="text-sm font-normal text-zinc-500 ml-1">: 1</span>
                       </div>
@@ -637,20 +639,16 @@ export function BuildProfilePage() {
                       <span>Hover Throttle</span>
                     </div>
                     <div>
-                      <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                      <div
+                        className={`text-2xl sm:text-3xl font-bold mt-1 ${getHoverThrottleColor(evaluation.hoverThrottlePercent).text}`}
+                      >
                         {evaluation.hoverThrottlePercent.toFixed(1)}
                         <span className="text-sm font-normal text-zinc-500 ml-1">%</span>
                       </div>
                       {/* Progress bar */}
                       <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-300 ${
-                            evaluation.hoverThrottlePercent > 50
-                              ? "bg-red-500"
-                              : evaluation.hoverThrottlePercent > 35
-                                ? "bg-amber-500"
-                                : "bg-emerald-500"
-                          }`}
+                          className={`h-full rounded-full transition-all duration-300 ${getHoverThrottleColor(evaluation.hoverThrottlePercent).bar}`}
                           style={{
                             width: `${Math.min(100, evaluation.hoverThrottlePercent)}%`,
                           }}

@@ -222,12 +222,11 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("3B. FPV Camera")).toBeInTheDocument();
     expect(screen.getByText("3C. Video Transmitter Antenna(s)")).toBeInTheDocument();
 
-    // Test VTX Antenna selection & dual toggle
+    // Test VTX Antenna selection & automatic antenna derivation
     const vtxAntCard = await screen.findByText(/Lollipop 4/i);
     await user.click(vtxAntCard);
-    expect(screen.getByRole("button", { name: /2x Dual/i })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /2x Dual/i }));
-    expect(screen.getByText(/2x Selected \(Dual\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Single Antenna \(Required by VTX\)/i)).toBeInTheDocument();
+    expect(screen.getByText("1x")).toBeInTheDocument();
 
     // Click "Set All to None (Line-of-Sight)"
     const skipAllBtn = screen.getByRole("button", { name: /Set All to None/i });
@@ -567,5 +566,31 @@ describe("BuildWizardPage Component", () => {
       expect(within(noneAntCard).getByText(/Antenna Required/i)).toBeInTheDocument();
       expect(screen.queryByText("None (Integrated ceramic antenna)")).not.toBeInTheDocument();
     });
+  });
+
+  it("scrolls smoothly to selected product when clicking Selected in the section header", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Advance to Stage 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+
+    // Mock scrollIntoView
+    const scrollIntoViewMock = vi.fn();
+    window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+
+    // Select Frame (Master 5 V2)
+    const frameItem = await screen.findByText("Master 5 V2");
+    await user.click(frameItem);
+
+    // Verify "Scroll to selected frame" button appears in 1A header
+    const selectedBtn = screen.getByTitle("Scroll to selected frame");
+    expect(selectedBtn).toBeInTheDocument();
+
+    // Click "Selected" button
+    await user.click(selectedBtn);
+
+    // scrollIntoView should have been called on the selected item element
+    expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: "smooth", block: "center" });
   });
 });

@@ -3,6 +3,8 @@ import {
   formatStatorSize,
   getYouTubeEmbedUrl,
   getTwrDescription,
+  getTwrColor,
+  getHoverThrottleColor,
   formatProductTitle,
 } from "../format";
 
@@ -123,5 +125,72 @@ describe("formatProductTitle", () => {
   it("falls back to fallback string if name is missing", () => {
     expect(formatProductTitle(null, null, "fallback-id")).toBe("fallback-id");
     expect(formatProductTitle("EMAX", null, "eco-ii-2207")).toBe("EMAX - eco-ii-2207");
+  });
+});
+
+describe("getTwrColor", () => {
+  it("assigns purple for competition racing (>= 8.0)", () => {
+    expect(getTwrColor(8.5).text).toContain("text-purple");
+    expect(getTwrColor(8.5).badge).toContain("bg-purple");
+  });
+
+  it("assigns emerald for freestyle acro (5.5 - 7.9)", () => {
+    expect(getTwrColor(6.4).text).toContain("text-emerald");
+    expect(getTwrColor(6.4).badge).toContain("bg-emerald");
+  });
+
+  it("assigns cyan for sport & toothpick (4.0 - 5.4)", () => {
+    expect(getTwrColor(4.5).text).toContain("text-cyan");
+    expect(getTwrColor(4.5).badge).toContain("bg-cyan");
+  });
+
+  it("assigns sky blue for long range cruiser (2.8 - 3.9)", () => {
+    expect(getTwrColor(3.2).text).toContain("text-sky");
+    expect(getTwrColor(3.2).badge).toContain("bg-sky");
+  });
+
+  it("assigns amber for cinelifter & heavy payload (1.8 - 2.7)", () => {
+    expect(getTwrColor(2.2).text).toContain("text-amber");
+    expect(getTwrColor(2.2).badge).toContain("bg-amber");
+  });
+
+  it("assigns orange for sluggish / underpowered (1.0 - 1.79)", () => {
+    expect(getTwrColor(1.4).text).toContain("text-orange");
+    expect(getTwrColor(1.4).badge).toContain("bg-orange");
+  });
+
+  it("assigns rose red for cannot take off (< 1.0)", () => {
+    expect(getTwrColor(0.8).text).toContain("text-rose");
+    expect(getTwrColor(0.8).badge).toContain("bg-rose");
+  });
+});
+
+describe("getHoverThrottleColor", () => {
+  it("assigns emerald for Category 1 (< 35%)", () => {
+    const res = getHoverThrottleColor(25);
+    expect(res.text).toContain("text-emerald");
+    expect(res.bar).toBe("bg-emerald-500");
+    expect(res.category).toContain("<35%");
+  });
+
+  it("assigns subtle sky blue for Category 2 (35% - 49.9%)", () => {
+    const res = getHoverThrottleColor(42);
+    expect(res.text).toContain("text-sky");
+    expect(res.bar).toBe("bg-sky-500");
+    expect(res.category).toContain("35–50%");
+  });
+
+  it("assigns amber for Category 3 (50% - 64.9%)", () => {
+    const res = getHoverThrottleColor(56);
+    expect(res.text).toContain("text-amber");
+    expect(res.bar).toBe("bg-amber-500");
+    expect(res.category).toContain("50–65%");
+  });
+
+  it("assigns rose red for Category 4 (>= 65%)", () => {
+    const res = getHoverThrottleColor(70);
+    expect(res.text).toContain("text-rose");
+    expect(res.bar).toBe("bg-rose-500");
+    expect(res.category).toContain("≥65%");
   });
 });
