@@ -2,12 +2,13 @@ import React, { createContext, useContext, useState, useEffect, useCallback, use
 import { useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
 import { AuthService } from "../gen/quadsmith/auth_pb";
-import type { User, UserProfile } from "../gen/quadsmith/user_pb";
+import type { User, UserProfile, UserEmail } from "../gen/quadsmith/user_pb";
 import { setAccessToken, getAccessToken } from "../lib/api";
 
 export interface AuthContextType {
   user: User | null;
   profile: UserProfile | null;
+  emails: UserEmail[];
   isAuthenticated: boolean;
   isLoading: boolean;
   sendEmailOtp: (
@@ -22,6 +23,31 @@ export interface AuthContextType {
   }) => Promise<void>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<void>;
+  refreshEmails: () => Promise<void>;
+  sendAddEmailOtp: (
+    email: string,
+  ) => Promise<{ success: boolean; cooldownSeconds: number; message: string }>;
+  verifyAddEmailOtp: (
+    email: string,
+    code: string,
+  ) => Promise<{
+    success: boolean;
+    message: string;
+    mergeRequired: boolean;
+    otherUserHandle?: string;
+    otherBuildCount?: number;
+  }>;
+  mergeAccount: (
+    email: string,
+    code: string,
+  ) => Promise<{
+    success: boolean;
+    message: string;
+    transferredBuildCount: number;
+    mergedHandle: string;
+  }>;
+  setPrimaryEmail: (email: string) => Promise<{ success: boolean; message: string }>;
+  removeUserEmail: (email: string) => Promise<{ success: boolean; message: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,6 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const authClient = useMemo(() => createClient(AuthService, transport), [transport]);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [emails, setEmails] = useState<UserEmail[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const refreshSession = useCallback(async () => {
@@ -63,6 +90,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const currentUser = await authClient.getCurrentUser({});
             if (mounted && currentUser) {
               setUser(currentUser);
+              try {
+                const emailsRes = await authClient.listUserEmails({});
+                if (mounted) setEmails(emailsRes.emails || []);
+              } catch {
+                // ignore
+              }
               // Profile refresh via silent refresh
               const refreshRes = await authClient.refreshToken({});
               if (mounted) {
@@ -81,6 +114,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (res.accessToken) setAccessToken(res.accessToken);
           if (res.user) setUser(res.user);
           if (res.profile) setProfile(res.profile);
+          try {
+            const emailsRes = await authClient.listUserEmails({});
+            if (mounted) setEmails(emailsRes.emails || []);
+          } catch {
+            // ignore
+          }
         }
       } catch {
         if (mounted) {
@@ -112,6 +151,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       clearInterval(interval);
     };
   }, [refreshSession]);
+
+  const refreshEmails = useCallback(async () => {
+    try {
+      const res = await authClient.listUserEmails({});
+      setEmails(res.emails || []);
+    } catch {
+      // ignore
+    }
+  }, [authClient]);
+
+  useEffect(() => {
+    if (user) {
+      refreshEmails();
+    }
+  }, [user, refreshEmails]);
 
   const sendEmailOtp = async (email: string) => {
     const res = await authClient.sendEmailOtp({ email });
@@ -157,6 +211,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setProfile(updated);
   };
 
+  const sendAddEmailOtp = async (email: string) => {
+    const res = await authClient.sendAddEmailOtp({ email });
+    return {
+      success: res.success,
+      cooldownSeconds: res.cooldownSeconds || 60,
+      message: res.message || "Verification code sent to your email",
+    };
+  };
+
+  const verifyAddEmailOtp = async (email: string, code: string) => {
+    const res = await authClient.verifyAddEmailOtp({ email, code });
+    await refreshEmails();
+    return res;
+  };
+
+  const mergeAccount = async (email: string, code: string) => {
+    const res = await authClient.mergeAccount({ email, code });
+    await refreshEmails();
+    try {
+      const currentUser = await authClient.getCurrentUser({});
+      if (currentUser) setUser(currentUser);
+    } catch {
+      // ignore
+    }
+    return res;
+  };
+
+  const setPrimaryEmail = async (email: string) => {
+    const res = await authClient.setPrimaryEmail({ email });
+    await refreshEmails();
+    return res;
+  };
+
+  const removeUserEmail = async (email: string) => {
+    const res = await authClient.removeUserEmail({ email });
+    await refreshEmails();
+    return res;
+  };
+
   const logout = async () => {
     try {
       await authClient.logout({});
@@ -166,6 +259,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setAccessToken(null);
       setUser(null);
       setProfile(null);
+      setEmails([]);
     }
   };
 
@@ -174,6 +268,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         profile,
+        emails,
         isAuthenticated: !!user,
         isLoading,
         sendEmailOtp,
@@ -182,6 +277,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         updateProfile,
         logout,
         refreshSession,
+        refreshEmails,
+        sendAddEmailOtp,
+        verifyAddEmailOtp,
+        mergeAccount,
+        setPrimaryEmail,
+        removeUserEmail,
       }}
     >
       {children}

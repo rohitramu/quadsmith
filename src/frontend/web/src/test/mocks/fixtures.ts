@@ -7,6 +7,7 @@ import {
 } from "../../gen/quadsmith/flight_controller_pb";
 import { ReferenceLinkType } from "../../gen/quadsmith/reference_link_pb";
 import { MediaType } from "../../gen/quadsmith/media_pb";
+import { UserEmailSchema, type UserEmail } from "../../gen/quadsmith/user_pb";
 
 export const mockMotor1: Motor = create(MotorSchema, {
   uuid: "018f0000-0000-7000-0000-000000000001",
@@ -385,3 +386,18 @@ export const mockProfile: any = {
   avatarUrl: "",
   bio: "Freestyle FPV pilot & frame builder.",
 };
+
+export const mockUserEmails: UserEmail[] = [
+  create(UserEmailSchema, {
+    uuid: "018f0000-0000-7000-0000-000000000091",
+    userUuid: "018f0000-0000-7000-0000-000000000099",
+    email: "alex@quadsmith.dev",
+    isPrimary: true,
+  }),
+  create(UserEmailSchema, {
+    uuid: "018f0000-0000-7000-0000-000000000092",
+    userUuid: "018f0000-0000-7000-0000-000000000099",
+    email: "alex.secondary@example.com",
+    isPrimary: false,
+  }),
+];

@@ -66,6 +66,59 @@ message LogoutResponse {
   bool success = 1;
 }
 
+message ListUserEmailsRequest {}
+
+message ListUserEmailsResponse {
+  repeated UserEmail emails = 1;
+}
+
+message SendAddEmailOtpRequest {
+  string email = 1;
+}
+
+message VerifyAddEmailOtpRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message VerifyAddEmailOtpResponse {
+  bool success = 1;
+  string message = 2;
+  bool merge_required = 3;
+  string other_user_handle = 4;
+  int32 other_build_count = 5;
+}
+
+message MergeAccountRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message MergeAccountResponse {
+  bool success = 1;
+  string message = 2;
+  int32 transferred_build_count = 3;
+  string merged_handle = 4;
+}
+
+message SetPrimaryEmailRequest {
+  string email = 1;
+}
+
+message SetPrimaryEmailResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message RemoveUserEmailRequest {
+  string email = 1;
+}
+
+message RemoveUserEmailResponse {
+  bool success = 1;
+  string message = 2;
+}
+
 // ---------------------------------------------------------
 // Authentication Service
 // ---------------------------------------------------------
@@ -78,4 +131,11 @@ service AuthService {
   rpc GetCurrentUser(GetCurrentUserRequest) returns (User);
   rpc UpdateProfile(UpdateProfileRequest) returns (UserProfile);
   rpc Logout(LogoutRequest) returns (LogoutResponse);
+
+  rpc ListUserEmails(ListUserEmailsRequest) returns (ListUserEmailsResponse);
+  rpc SendAddEmailOtp(SendAddEmailOtpRequest) returns (SendEmailOtpResponse);
+  rpc VerifyAddEmailOtp(VerifyAddEmailOtpRequest) returns (VerifyAddEmailOtpResponse);
+  rpc MergeAccount(MergeAccountRequest) returns (MergeAccountResponse);
+  rpc SetPrimaryEmail(SetPrimaryEmailRequest) returns (SetPrimaryEmailResponse);
+  rpc RemoveUserEmail(RemoveUserEmailRequest) returns (RemoveUserEmailResponse);
 }

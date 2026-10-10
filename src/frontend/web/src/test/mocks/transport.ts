@@ -1,5 +1,6 @@
 import { createRouterTransport } from "@connectrpc/connect";
 import { ConnectError, Code } from "@connectrpc/connect";
+import { create } from "@bufbuild/protobuf";
 import { MotorService } from "../../gen/quadsmith/motor_pb";
 import { FrameService } from "../../gen/quadsmith/frame_pb";
 import { FlightControllerService } from "../../gen/quadsmith/flight_controller_pb";
@@ -17,7 +18,7 @@ import { CompatibilityService } from "../../gen/quadsmith/compatibility_pb";
 import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
 import { SearchService } from "../../gen/quadsmith/search_pb";
 import { AuthService } from "../../gen/quadsmith/auth_pb";
-import { UserService } from "../../gen/quadsmith/user_pb";
+import { UserService, UserEmailSchema } from "../../gen/quadsmith/user_pb";
 
 import {
   mockMotors,
@@ -36,6 +37,7 @@ import {
   mockBuilds,
   mockEvaluation1,
   mockBatteries,
+  mockUserEmails,
 } from "./fixtures";
 
 export interface MockTransportOptions {
@@ -44,6 +46,7 @@ export interface MockTransportOptions {
   flightControllers?: typeof mockFlightControllers;
   builds?: typeof mockBuilds;
   batteries?: typeof mockBatteries;
+  userEmails?: typeof mockUserEmails;
   defaultBatteryId?: string;
   nextPageToken?: string;
   simulateError?: boolean;
@@ -62,6 +65,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     simulateError = false,
     isAuthenticated = true,
   } = options;
+  const userEmails = (options.userEmails ?? mockUserEmails).map((e) => create(UserEmailSchema, e));
 
   return createRouterTransport(({ service }) => {
     service(MotorService, {
@@ -510,6 +514,68 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         bio: req.bio ?? mockProfile.bio,
       }),
       logout: () => ({ success: true }),
+      listUserEmails: () => ({
+        emails: userEmails,
+      }),
+      sendAddEmailOtp: (req) => ({
+        success: true,
+        message: `Verification code sent to ${req.email}`,
+        cooldownSeconds: 60,
+      }),
+      verifyAddEmailOtp: (req) => {
+        if (req.code !== "123456") {
+          throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
+        }
+        const newEmail = create(UserEmailSchema, {
+          uuid: `mock-email-uuid-${userEmails.length + 1}`,
+          userUuid: mockUser.uuid,
+          email: req.email,
+          isPrimary: false,
+        });
+        userEmails.push(newEmail);
+        return {
+          success: true,
+          message: "Email verified and added",
+          mergeRequired: false,
+        };
+      },
+      mergeAccount: (req) => {
+        if (req.code !== "123456") {
+          throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
+        }
+        const mergedEmail = create(UserEmailSchema, {
+          uuid: `mock-email-uuid-${userEmails.length + 1}`,
+          userUuid: mockUser.uuid,
+          email: req.email,
+          isPrimary: false,
+        });
+        userEmails.push(mergedEmail);
+        return {
+          success: true,
+          message: "Accounts merged successfully",
+          transferredBuildCount: 4,
+          mergedHandle: "old_racer",
+        };
+      },
+      setPrimaryEmail: (req) => {
+        userEmails.forEach((e) => {
+          e.isPrimary = e.email.toLowerCase() === req.email.toLowerCase();
+        });
+        return {
+          success: true,
+          message: "Primary email updated",
+        };
+      },
+      removeUserEmail: (req) => {
+        const idx = userEmails.findIndex((e) => e.email.toLowerCase() === req.email.toLowerCase());
+        if (idx !== -1) {
+          userEmails.splice(idx, 1);
+        }
+        return {
+          success: true,
+          message: "Email removed",
+        };
+      },
     });
 
     service(UserService, {

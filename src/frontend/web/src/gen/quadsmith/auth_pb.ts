@@ -7,7 +7,7 @@ import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2
 import { file__common } from "./_common_pb";
 import { file__sql } from "./_sql_pb";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { User, UserProfile, UserProfileSchema, UserSchema } from "./user_pb";
+import type { User, UserEmail, UserProfile, UserProfileSchema, UserSchema } from "./user_pb";
 import { file_user } from "./user_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -17,7 +17,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_auth: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CgphdXRoLnByb3RvEglxdWFkc21pdGgiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSJSChRTZW5kRW1haWxPdHBSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSGAoQY29vbGRvd25fc2Vjb25kcxgDIAEoBSI0ChVWZXJpZnlFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkSDAoEY29kZRgCIAEoCSInChZWZXJpZnlNYWdpY0xpbmtSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIoMBCgxBdXRoUmVzcG9uc2USFAoMYWNjZXNzX3Rva2VuGAEgASgJEhUKDXJlZnJlc2hfdG9rZW4YAiABKAkSHQoEdXNlchgDIAEoCzIPLnF1YWRzbWl0aC5Vc2VyEicKB3Byb2ZpbGUYBCABKAsyFi5xdWFkc21pdGguVXNlclByb2ZpbGUibwoUT3RwVmVyaWZpY2F0aW9uRXJyb3ISDwoHbWVzc2FnZRgBIAEoCRIaChJyZW1haW5pbmdfYXR0ZW1wdHMYAiABKAUSFAoMbWF4X2F0dGVtcHRzGAMgASgFEhQKDGlzX2V4aGF1c3RlZBgEIAEoCCIsChNSZWZyZXNoVG9rZW5SZXF1ZXN0EhUKDXJlZnJlc2hfdG9rZW4YASABKAkiFwoVR2V0Q3VycmVudFVzZXJSZXF1ZXN0IoQBChRVcGRhdGVQcm9maWxlUmVxdWVzdBIZCgxkaXNwbGF5X25hbWUYASABKAlIAIgBARIXCgphdmF0YXJfdXJsGAIgASgJSAGIAQESEAoDYmlvGAMgASgJSAKIAQFCDwoNX2Rpc3BsYXlfbmFtZUINCgtfYXZhdGFyX3VybEIGCgRfYmlvIj0KDUxvZ291dFJlcXVlc3QSGgoNcmVmcmVzaF90b2tlbhgBIAEoCUgAiAEBQhAKDl9yZWZyZXNoX3Rva2VuIiEKDkxvZ291dFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgykQQKC0F1dGhTZXJ2aWNlEk8KDFNlbmRFbWFpbE90cBIeLnF1YWRzbWl0aC5TZW5kRW1haWxPdHBSZXF1ZXN0Gh8ucXVhZHNtaXRoLlNlbmRFbWFpbE90cFJlc3BvbnNlEksKDlZlcmlmeUVtYWlsT3RwEiAucXVhZHNtaXRoLlZlcmlmeUVtYWlsT3RwUmVxdWVzdBoXLnF1YWRzbWl0aC5BdXRoUmVzcG9uc2USTQoPVmVyaWZ5TWFnaWNMaW5rEiEucXVhZHNtaXRoLlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QaFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlEkcKDFJlZnJlc2hUb2tlbhIeLnF1YWRzbWl0aC5SZWZyZXNoVG9rZW5SZXF1ZXN0GhcucXVhZHNtaXRoLkF1dGhSZXNwb25zZRJDCg5HZXRDdXJyZW50VXNlchIgLnF1YWRzbWl0aC5HZXRDdXJyZW50VXNlclJlcXVlc3QaDy5xdWFkc21pdGguVXNlchJICg1VcGRhdGVQcm9maWxlEh8ucXVhZHNtaXRoLlVwZGF0ZVByb2ZpbGVSZXF1ZXN0GhYucXVhZHNtaXRoLlVzZXJQcm9maWxlEj0KBkxvZ291dBIYLnF1YWRzbWl0aC5Mb2dvdXRSZXF1ZXN0GhkucXVhZHNtaXRoLkxvZ291dFJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "CgphdXRoLnByb3RvEglxdWFkc21pdGgiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSJSChRTZW5kRW1haWxPdHBSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSGAoQY29vbGRvd25fc2Vjb25kcxgDIAEoBSI0ChVWZXJpZnlFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkSDAoEY29kZRgCIAEoCSInChZWZXJpZnlNYWdpY0xpbmtSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIoMBCgxBdXRoUmVzcG9uc2USFAoMYWNjZXNzX3Rva2VuGAEgASgJEhUKDXJlZnJlc2hfdG9rZW4YAiABKAkSHQoEdXNlchgDIAEoCzIPLnF1YWRzbWl0aC5Vc2VyEicKB3Byb2ZpbGUYBCABKAsyFi5xdWFkc21pdGguVXNlclByb2ZpbGUibwoUT3RwVmVyaWZpY2F0aW9uRXJyb3ISDwoHbWVzc2FnZRgBIAEoCRIaChJyZW1haW5pbmdfYXR0ZW1wdHMYAiABKAUSFAoMbWF4X2F0dGVtcHRzGAMgASgFEhQKDGlzX2V4aGF1c3RlZBgEIAEoCCIsChNSZWZyZXNoVG9rZW5SZXF1ZXN0EhUKDXJlZnJlc2hfdG9rZW4YASABKAkiFwoVR2V0Q3VycmVudFVzZXJSZXF1ZXN0IoQBChRVcGRhdGVQcm9maWxlUmVxdWVzdBIZCgxkaXNwbGF5X25hbWUYASABKAlIAIgBARIXCgphdmF0YXJfdXJsGAIgASgJSAGIAQESEAoDYmlvGAMgASgJSAKIAQFCDwoNX2Rpc3BsYXlfbmFtZUINCgtfYXZhdGFyX3VybEIGCgRfYmlvIj0KDUxvZ291dFJlcXVlc3QSGgoNcmVmcmVzaF90b2tlbhgBIAEoCUgAiAEBQhAKDl9yZWZyZXNoX3Rva2VuIiEKDkxvZ291dFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiFwoVTGlzdFVzZXJFbWFpbHNSZXF1ZXN0Ij4KFkxpc3RVc2VyRW1haWxzUmVzcG9uc2USJAoGZW1haWxzGAEgAygLMhQucXVhZHNtaXRoLlVzZXJFbWFpbCInChZTZW5kQWRkRW1haWxPdHBSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJIjcKGFZlcmlmeUFkZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJIosBChlWZXJpZnlBZGRFbWFpbE90cFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIWCg5tZXJnZV9yZXF1aXJlZBgDIAEoCBIZChFvdGhlcl91c2VyX2hhbmRsZRgEIAEoCRIZChFvdGhlcl9idWlsZF9jb3VudBgFIAEoBSIyChNNZXJnZUFjY291bnRSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJEgwKBGNvZGUYAiABKAkicAoUTWVyZ2VBY2NvdW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh8KF3RyYW5zZmVycmVkX2J1aWxkX2NvdW50GAMgASgFEhUKDW1lcmdlZF9oYW5kbGUYBCABKAkiJwoWU2V0UHJpbWFyeUVtYWlsUmVxdWVzdBINCgVlbWFpbBgBIAEoCSI7ChdTZXRQcmltYXJ5RW1haWxSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkiJwoWUmVtb3ZlVXNlckVtYWlsUmVxdWVzdBINCgVlbWFpbBgBIAEoCSI7ChdSZW1vdmVVc2VyRW1haWxSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkypAgKC0F1dGhTZXJ2aWNlEk8KDFNlbmRFbWFpbE90cBIeLnF1YWRzbWl0aC5TZW5kRW1haWxPdHBSZXF1ZXN0Gh8ucXVhZHNtaXRoLlNlbmRFbWFpbE90cFJlc3BvbnNlEksKDlZlcmlmeUVtYWlsT3RwEiAucXVhZHNtaXRoLlZlcmlmeUVtYWlsT3RwUmVxdWVzdBoXLnF1YWRzbWl0aC5BdXRoUmVzcG9uc2USTQoPVmVyaWZ5TWFnaWNMaW5rEiEucXVhZHNtaXRoLlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QaFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlEkcKDFJlZnJlc2hUb2tlbhIeLnF1YWRzbWl0aC5SZWZyZXNoVG9rZW5SZXF1ZXN0GhcucXVhZHNtaXRoLkF1dGhSZXNwb25zZRJDCg5HZXRDdXJyZW50VXNlchIgLnF1YWRzbWl0aC5HZXRDdXJyZW50VXNlclJlcXVlc3QaDy5xdWFkc21pdGguVXNlchJICg1VcGRhdGVQcm9maWxlEh8ucXVhZHNtaXRoLlVwZGF0ZVByb2ZpbGVSZXF1ZXN0GhYucXVhZHNtaXRoLlVzZXJQcm9maWxlEj0KBkxvZ291dBIYLnF1YWRzbWl0aC5Mb2dvdXRSZXF1ZXN0GhkucXVhZHNtaXRoLkxvZ291dFJlc3BvbnNlElUKDkxpc3RVc2VyRW1haWxzEiAucXVhZHNtaXRoLkxpc3RVc2VyRW1haWxzUmVxdWVzdBohLnF1YWRzbWl0aC5MaXN0VXNlckVtYWlsc1Jlc3BvbnNlElUKD1NlbmRBZGRFbWFpbE90cBIhLnF1YWRzbWl0aC5TZW5kQWRkRW1haWxPdHBSZXF1ZXN0Gh8ucXVhZHNtaXRoLlNlbmRFbWFpbE90cFJlc3BvbnNlEl4KEVZlcmlmeUFkZEVtYWlsT3RwEiMucXVhZHNtaXRoLlZlcmlmeUFkZEVtYWlsT3RwUmVxdWVzdBokLnF1YWRzbWl0aC5WZXJpZnlBZGRFbWFpbE90cFJlc3BvbnNlEk8KDE1lcmdlQWNjb3VudBIeLnF1YWRzbWl0aC5NZXJnZUFjY291bnRSZXF1ZXN0Gh8ucXVhZHNtaXRoLk1lcmdlQWNjb3VudFJlc3BvbnNlElgKD1NldFByaW1hcnlFbWFpbBIhLnF1YWRzbWl0aC5TZXRQcmltYXJ5RW1haWxSZXF1ZXN0GiIucXVhZHNtaXRoLlNldFByaW1hcnlFbWFpbFJlc3BvbnNlElgKD1JlbW92ZVVzZXJFbWFpbBIhLnF1YWRzbWl0aC5SZW1vdmVVc2VyRW1haWxSZXF1ZXN0GiIucXVhZHNtaXRoLlJlbW92ZVVzZXJFbWFpbFJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
     [file__common, file__sql, file_google_protobuf_timestamp, file_user],
   );
 
@@ -268,6 +268,254 @@ export const LogoutResponseSchema: GenMessage<LogoutResponse> =
   messageDesc(file_auth, 10);
 
 /**
+ * @generated from message quadsmith.ListUserEmailsRequest
+ */
+export type ListUserEmailsRequest = Message<"quadsmith.ListUserEmailsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.ListUserEmailsRequest.
+ * Use `create(ListUserEmailsRequestSchema)` to create a new message.
+ */
+export const ListUserEmailsRequestSchema: GenMessage<ListUserEmailsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 11);
+
+/**
+ * @generated from message quadsmith.ListUserEmailsResponse
+ */
+export type ListUserEmailsResponse = Message<"quadsmith.ListUserEmailsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.UserEmail emails = 1;
+   */
+  emails: UserEmail[];
+};
+
+/**
+ * Describes the message quadsmith.ListUserEmailsResponse.
+ * Use `create(ListUserEmailsResponseSchema)` to create a new message.
+ */
+export const ListUserEmailsResponseSchema: GenMessage<ListUserEmailsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 12);
+
+/**
+ * @generated from message quadsmith.SendAddEmailOtpRequest
+ */
+export type SendAddEmailOtpRequest = Message<"quadsmith.SendAddEmailOtpRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+};
+
+/**
+ * Describes the message quadsmith.SendAddEmailOtpRequest.
+ * Use `create(SendAddEmailOtpRequestSchema)` to create a new message.
+ */
+export const SendAddEmailOtpRequestSchema: GenMessage<SendAddEmailOtpRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 13);
+
+/**
+ * @generated from message quadsmith.VerifyAddEmailOtpRequest
+ */
+export type VerifyAddEmailOtpRequest = Message<"quadsmith.VerifyAddEmailOtpRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string code = 2;
+   */
+  code: string;
+};
+
+/**
+ * Describes the message quadsmith.VerifyAddEmailOtpRequest.
+ * Use `create(VerifyAddEmailOtpRequestSchema)` to create a new message.
+ */
+export const VerifyAddEmailOtpRequestSchema: GenMessage<VerifyAddEmailOtpRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 14);
+
+/**
+ * @generated from message quadsmith.VerifyAddEmailOtpResponse
+ */
+export type VerifyAddEmailOtpResponse = Message<"quadsmith.VerifyAddEmailOtpResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: bool merge_required = 3;
+   */
+  mergeRequired: boolean;
+
+  /**
+   * @generated from field: string other_user_handle = 4;
+   */
+  otherUserHandle: string;
+
+  /**
+   * @generated from field: int32 other_build_count = 5;
+   */
+  otherBuildCount: number;
+};
+
+/**
+ * Describes the message quadsmith.VerifyAddEmailOtpResponse.
+ * Use `create(VerifyAddEmailOtpResponseSchema)` to create a new message.
+ */
+export const VerifyAddEmailOtpResponseSchema: GenMessage<VerifyAddEmailOtpResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 15);
+
+/**
+ * @generated from message quadsmith.MergeAccountRequest
+ */
+export type MergeAccountRequest = Message<"quadsmith.MergeAccountRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string code = 2;
+   */
+  code: string;
+};
+
+/**
+ * Describes the message quadsmith.MergeAccountRequest.
+ * Use `create(MergeAccountRequestSchema)` to create a new message.
+ */
+export const MergeAccountRequestSchema: GenMessage<MergeAccountRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 16);
+
+/**
+ * @generated from message quadsmith.MergeAccountResponse
+ */
+export type MergeAccountResponse = Message<"quadsmith.MergeAccountResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: int32 transferred_build_count = 3;
+   */
+  transferredBuildCount: number;
+
+  /**
+   * @generated from field: string merged_handle = 4;
+   */
+  mergedHandle: string;
+};
+
+/**
+ * Describes the message quadsmith.MergeAccountResponse.
+ * Use `create(MergeAccountResponseSchema)` to create a new message.
+ */
+export const MergeAccountResponseSchema: GenMessage<MergeAccountResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 17);
+
+/**
+ * @generated from message quadsmith.SetPrimaryEmailRequest
+ */
+export type SetPrimaryEmailRequest = Message<"quadsmith.SetPrimaryEmailRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+};
+
+/**
+ * Describes the message quadsmith.SetPrimaryEmailRequest.
+ * Use `create(SetPrimaryEmailRequestSchema)` to create a new message.
+ */
+export const SetPrimaryEmailRequestSchema: GenMessage<SetPrimaryEmailRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 18);
+
+/**
+ * @generated from message quadsmith.SetPrimaryEmailResponse
+ */
+export type SetPrimaryEmailResponse = Message<"quadsmith.SetPrimaryEmailResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.SetPrimaryEmailResponse.
+ * Use `create(SetPrimaryEmailResponseSchema)` to create a new message.
+ */
+export const SetPrimaryEmailResponseSchema: GenMessage<SetPrimaryEmailResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 19);
+
+/**
+ * @generated from message quadsmith.RemoveUserEmailRequest
+ */
+export type RemoveUserEmailRequest = Message<"quadsmith.RemoveUserEmailRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+};
+
+/**
+ * Describes the message quadsmith.RemoveUserEmailRequest.
+ * Use `create(RemoveUserEmailRequestSchema)` to create a new message.
+ */
+export const RemoveUserEmailRequestSchema: GenMessage<RemoveUserEmailRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 20);
+
+/**
+ * @generated from message quadsmith.RemoveUserEmailResponse
+ */
+export type RemoveUserEmailResponse = Message<"quadsmith.RemoveUserEmailResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.RemoveUserEmailResponse.
+ * Use `create(RemoveUserEmailResponseSchema)` to create a new message.
+ */
+export const RemoveUserEmailResponseSchema: GenMessage<RemoveUserEmailResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 21);
+
+/**
  * @generated from service quadsmith.AuthService
  */
 export const AuthService: GenService<{
@@ -326,5 +574,53 @@ export const AuthService: GenService<{
     methodKind: "unary";
     input: typeof LogoutRequestSchema;
     output: typeof LogoutResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.ListUserEmails
+   */
+  listUserEmails: {
+    methodKind: "unary";
+    input: typeof ListUserEmailsRequestSchema;
+    output: typeof ListUserEmailsResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.SendAddEmailOtp
+   */
+  sendAddEmailOtp: {
+    methodKind: "unary";
+    input: typeof SendAddEmailOtpRequestSchema;
+    output: typeof SendEmailOtpResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.VerifyAddEmailOtp
+   */
+  verifyAddEmailOtp: {
+    methodKind: "unary";
+    input: typeof VerifyAddEmailOtpRequestSchema;
+    output: typeof VerifyAddEmailOtpResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.MergeAccount
+   */
+  mergeAccount: {
+    methodKind: "unary";
+    input: typeof MergeAccountRequestSchema;
+    output: typeof MergeAccountResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.SetPrimaryEmail
+   */
+  setPrimaryEmail: {
+    methodKind: "unary";
+    input: typeof SetPrimaryEmailRequestSchema;
+    output: typeof SetPrimaryEmailResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.RemoveUserEmail
+   */
+  removeUserEmail: {
+    methodKind: "unary";
+    input: typeof RemoveUserEmailRequestSchema;
+    output: typeof RemoveUserEmailResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_auth, 0);

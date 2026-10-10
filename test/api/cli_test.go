@@ -322,4 +322,25 @@ func TestCLI_Whoami(t *testing.T) {
 	if !strings.Contains(outStr, "Pilot Handle: @test_pilot") {
 		t.Errorf("Expected 'Pilot Handle: @test_pilot' in whoami output, got:\n%s", outStr)
 	}
+	if strings.Contains(outStr, "UUID:") {
+		t.Errorf("Expected no raw UUID in whoami output, got:\n%s", outStr)
+	}
+}
+
+func TestCLI_EmailList(t *testing.T) {
+	cmd := newQSCommand(t, "email", "list", "--json")
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		t.Fatalf("CLI email list --json failed: %v\nStderr: %s", err, stderr.String())
+	}
+	var emails []map[string]interface{}
+	if err := json.Unmarshal(stdout.Bytes(), &emails); err != nil {
+		t.Fatalf("Failed to parse JSON output: %v\nOutput: %s", err, stdout.String())
+	}
+	if len(emails) == 0 {
+		t.Fatalf("Expected at least 1 email in list")
+	}
 }

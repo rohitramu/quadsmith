@@ -586,6 +586,570 @@ func (x *LogoutResponse) GetSuccess() bool {
 	return false
 }
 
+type ListUserEmailsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUserEmailsRequest) Reset() {
+	*x = ListUserEmailsRequest{}
+	mi := &file_auth_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUserEmailsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUserEmailsRequest) ProtoMessage() {}
+
+func (x *ListUserEmailsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUserEmailsRequest.ProtoReflect.Descriptor instead.
+func (*ListUserEmailsRequest) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{11}
+}
+
+type ListUserEmailsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Emails        []*UserEmail           `protobuf:"bytes,1,rep,name=emails,proto3" json:"emails,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUserEmailsResponse) Reset() {
+	*x = ListUserEmailsResponse{}
+	mi := &file_auth_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUserEmailsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUserEmailsResponse) ProtoMessage() {}
+
+func (x *ListUserEmailsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUserEmailsResponse.ProtoReflect.Descriptor instead.
+func (*ListUserEmailsResponse) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ListUserEmailsResponse) GetEmails() []*UserEmail {
+	if x != nil {
+		return x.Emails
+	}
+	return nil
+}
+
+type SendAddEmailOtpRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendAddEmailOtpRequest) Reset() {
+	*x = SendAddEmailOtpRequest{}
+	mi := &file_auth_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendAddEmailOtpRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendAddEmailOtpRequest) ProtoMessage() {}
+
+func (x *SendAddEmailOtpRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendAddEmailOtpRequest.ProtoReflect.Descriptor instead.
+func (*SendAddEmailOtpRequest) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *SendAddEmailOtpRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+type VerifyAddEmailOtpRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyAddEmailOtpRequest) Reset() {
+	*x = VerifyAddEmailOtpRequest{}
+	mi := &file_auth_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyAddEmailOtpRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyAddEmailOtpRequest) ProtoMessage() {}
+
+func (x *VerifyAddEmailOtpRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyAddEmailOtpRequest.ProtoReflect.Descriptor instead.
+func (*VerifyAddEmailOtpRequest) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *VerifyAddEmailOtpRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *VerifyAddEmailOtpRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type VerifyAddEmailOtpResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Success         bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message         string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	MergeRequired   bool                   `protobuf:"varint,3,opt,name=merge_required,json=mergeRequired,proto3" json:"merge_required,omitempty"`
+	OtherUserHandle string                 `protobuf:"bytes,4,opt,name=other_user_handle,json=otherUserHandle,proto3" json:"other_user_handle,omitempty"`
+	OtherBuildCount int32                  `protobuf:"varint,5,opt,name=other_build_count,json=otherBuildCount,proto3" json:"other_build_count,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *VerifyAddEmailOtpResponse) Reset() {
+	*x = VerifyAddEmailOtpResponse{}
+	mi := &file_auth_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyAddEmailOtpResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyAddEmailOtpResponse) ProtoMessage() {}
+
+func (x *VerifyAddEmailOtpResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyAddEmailOtpResponse.ProtoReflect.Descriptor instead.
+func (*VerifyAddEmailOtpResponse) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *VerifyAddEmailOtpResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *VerifyAddEmailOtpResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *VerifyAddEmailOtpResponse) GetMergeRequired() bool {
+	if x != nil {
+		return x.MergeRequired
+	}
+	return false
+}
+
+func (x *VerifyAddEmailOtpResponse) GetOtherUserHandle() string {
+	if x != nil {
+		return x.OtherUserHandle
+	}
+	return ""
+}
+
+func (x *VerifyAddEmailOtpResponse) GetOtherBuildCount() int32 {
+	if x != nil {
+		return x.OtherBuildCount
+	}
+	return 0
+}
+
+type MergeAccountRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MergeAccountRequest) Reset() {
+	*x = MergeAccountRequest{}
+	mi := &file_auth_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MergeAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MergeAccountRequest) ProtoMessage() {}
+
+func (x *MergeAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MergeAccountRequest.ProtoReflect.Descriptor instead.
+func (*MergeAccountRequest) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *MergeAccountRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *MergeAccountRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+type MergeAccountResponse struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	Success               bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message               string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	TransferredBuildCount int32                  `protobuf:"varint,3,opt,name=transferred_build_count,json=transferredBuildCount,proto3" json:"transferred_build_count,omitempty"`
+	MergedHandle          string                 `protobuf:"bytes,4,opt,name=merged_handle,json=mergedHandle,proto3" json:"merged_handle,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *MergeAccountResponse) Reset() {
+	*x = MergeAccountResponse{}
+	mi := &file_auth_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MergeAccountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MergeAccountResponse) ProtoMessage() {}
+
+func (x *MergeAccountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MergeAccountResponse.ProtoReflect.Descriptor instead.
+func (*MergeAccountResponse) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *MergeAccountResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *MergeAccountResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *MergeAccountResponse) GetTransferredBuildCount() int32 {
+	if x != nil {
+		return x.TransferredBuildCount
+	}
+	return 0
+}
+
+func (x *MergeAccountResponse) GetMergedHandle() string {
+	if x != nil {
+		return x.MergedHandle
+	}
+	return ""
+}
+
+type SetPrimaryEmailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetPrimaryEmailRequest) Reset() {
+	*x = SetPrimaryEmailRequest{}
+	mi := &file_auth_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetPrimaryEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetPrimaryEmailRequest) ProtoMessage() {}
+
+func (x *SetPrimaryEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetPrimaryEmailRequest.ProtoReflect.Descriptor instead.
+func (*SetPrimaryEmailRequest) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *SetPrimaryEmailRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+type SetPrimaryEmailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetPrimaryEmailResponse) Reset() {
+	*x = SetPrimaryEmailResponse{}
+	mi := &file_auth_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetPrimaryEmailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetPrimaryEmailResponse) ProtoMessage() {}
+
+func (x *SetPrimaryEmailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetPrimaryEmailResponse.ProtoReflect.Descriptor instead.
+func (*SetPrimaryEmailResponse) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *SetPrimaryEmailResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *SetPrimaryEmailResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type RemoveUserEmailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RemoveUserEmailRequest) Reset() {
+	*x = RemoveUserEmailRequest{}
+	mi := &file_auth_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RemoveUserEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RemoveUserEmailRequest) ProtoMessage() {}
+
+func (x *RemoveUserEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RemoveUserEmailRequest.ProtoReflect.Descriptor instead.
+func (*RemoveUserEmailRequest) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *RemoveUserEmailRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+type RemoveUserEmailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RemoveUserEmailResponse) Reset() {
+	*x = RemoveUserEmailResponse{}
+	mi := &file_auth_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RemoveUserEmailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RemoveUserEmailResponse) ProtoMessage() {}
+
+func (x *RemoveUserEmailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RemoveUserEmailResponse.ProtoReflect.Descriptor instead.
+func (*RemoveUserEmailResponse) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *RemoveUserEmailResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *RemoveUserEmailResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_auth_proto protoreflect.FileDescriptor
 
 const file_auth_proto_rawDesc = "" +
@@ -630,7 +1194,39 @@ const file_auth_proto_rawDesc = "" +
 	"\rrefresh_token\x18\x01 \x01(\tH\x00R\frefreshToken\x88\x01\x01B\x10\n" +
 	"\x0e_refresh_token\"*\n" +
 	"\x0eLogoutResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\x91\x04\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x17\n" +
+	"\x15ListUserEmailsRequest\"F\n" +
+	"\x16ListUserEmailsResponse\x12,\n" +
+	"\x06emails\x18\x01 \x03(\v2\x14.quadsmith.UserEmailR\x06emails\".\n" +
+	"\x16SendAddEmailOtpRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"D\n" +
+	"\x18VerifyAddEmailOtpRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\"\xce\x01\n" +
+	"\x19VerifyAddEmailOtpResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
+	"\x0emerge_required\x18\x03 \x01(\bR\rmergeRequired\x12*\n" +
+	"\x11other_user_handle\x18\x04 \x01(\tR\x0fotherUserHandle\x12*\n" +
+	"\x11other_build_count\x18\x05 \x01(\x05R\x0fotherBuildCount\"?\n" +
+	"\x13MergeAccountRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\"\xa7\x01\n" +
+	"\x14MergeAccountResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x126\n" +
+	"\x17transferred_build_count\x18\x03 \x01(\x05R\x15transferredBuildCount\x12#\n" +
+	"\rmerged_handle\x18\x04 \x01(\tR\fmergedHandle\".\n" +
+	"\x16SetPrimaryEmailRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"M\n" +
+	"\x17SetPrimaryEmailResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\".\n" +
+	"\x16RemoveUserEmailRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"M\n" +
+	"\x17RemoveUserEmailResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage2\xa4\b\n" +
 	"\vAuthService\x12O\n" +
 	"\fSendEmailOtp\x12\x1e.quadsmith.SendEmailOtpRequest\x1a\x1f.quadsmith.SendEmailOtpResponse\x12K\n" +
 	"\x0eVerifyEmailOtp\x12 .quadsmith.VerifyEmailOtpRequest\x1a\x17.quadsmith.AuthResponse\x12M\n" +
@@ -638,7 +1234,13 @@ const file_auth_proto_rawDesc = "" +
 	"\fRefreshToken\x12\x1e.quadsmith.RefreshTokenRequest\x1a\x17.quadsmith.AuthResponse\x12C\n" +
 	"\x0eGetCurrentUser\x12 .quadsmith.GetCurrentUserRequest\x1a\x0f.quadsmith.User\x12H\n" +
 	"\rUpdateProfile\x12\x1f.quadsmith.UpdateProfileRequest\x1a\x16.quadsmith.UserProfile\x12=\n" +
-	"\x06Logout\x12\x18.quadsmith.LogoutRequest\x1a\x19.quadsmith.LogoutResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\x06Logout\x12\x18.quadsmith.LogoutRequest\x1a\x19.quadsmith.LogoutResponse\x12U\n" +
+	"\x0eListUserEmails\x12 .quadsmith.ListUserEmailsRequest\x1a!.quadsmith.ListUserEmailsResponse\x12U\n" +
+	"\x0fSendAddEmailOtp\x12!.quadsmith.SendAddEmailOtpRequest\x1a\x1f.quadsmith.SendEmailOtpResponse\x12^\n" +
+	"\x11VerifyAddEmailOtp\x12#.quadsmith.VerifyAddEmailOtpRequest\x1a$.quadsmith.VerifyAddEmailOtpResponse\x12O\n" +
+	"\fMergeAccount\x12\x1e.quadsmith.MergeAccountRequest\x1a\x1f.quadsmith.MergeAccountResponse\x12X\n" +
+	"\x0fSetPrimaryEmail\x12!.quadsmith.SetPrimaryEmailRequest\x1a\".quadsmith.SetPrimaryEmailResponse\x12X\n" +
+	"\x0fRemoveUserEmail\x12!.quadsmith.RemoveUserEmailRequest\x1a\".quadsmith.RemoveUserEmailResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_auth_proto_rawDescOnce sync.Once
@@ -652,44 +1254,69 @@ func file_auth_proto_rawDescGZIP() []byte {
 	return file_auth_proto_rawDescData
 }
 
-var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_auth_proto_goTypes = []any{
-	(*SendEmailOtpRequest)(nil),    // 0: quadsmith.SendEmailOtpRequest
-	(*SendEmailOtpResponse)(nil),   // 1: quadsmith.SendEmailOtpResponse
-	(*VerifyEmailOtpRequest)(nil),  // 2: quadsmith.VerifyEmailOtpRequest
-	(*VerifyMagicLinkRequest)(nil), // 3: quadsmith.VerifyMagicLinkRequest
-	(*AuthResponse)(nil),           // 4: quadsmith.AuthResponse
-	(*OtpVerificationError)(nil),   // 5: quadsmith.OtpVerificationError
-	(*RefreshTokenRequest)(nil),    // 6: quadsmith.RefreshTokenRequest
-	(*GetCurrentUserRequest)(nil),  // 7: quadsmith.GetCurrentUserRequest
-	(*UpdateProfileRequest)(nil),   // 8: quadsmith.UpdateProfileRequest
-	(*LogoutRequest)(nil),          // 9: quadsmith.LogoutRequest
-	(*LogoutResponse)(nil),         // 10: quadsmith.LogoutResponse
-	(*User)(nil),                   // 11: quadsmith.User
-	(*UserProfile)(nil),            // 12: quadsmith.UserProfile
+	(*SendEmailOtpRequest)(nil),       // 0: quadsmith.SendEmailOtpRequest
+	(*SendEmailOtpResponse)(nil),      // 1: quadsmith.SendEmailOtpResponse
+	(*VerifyEmailOtpRequest)(nil),     // 2: quadsmith.VerifyEmailOtpRequest
+	(*VerifyMagicLinkRequest)(nil),    // 3: quadsmith.VerifyMagicLinkRequest
+	(*AuthResponse)(nil),              // 4: quadsmith.AuthResponse
+	(*OtpVerificationError)(nil),      // 5: quadsmith.OtpVerificationError
+	(*RefreshTokenRequest)(nil),       // 6: quadsmith.RefreshTokenRequest
+	(*GetCurrentUserRequest)(nil),     // 7: quadsmith.GetCurrentUserRequest
+	(*UpdateProfileRequest)(nil),      // 8: quadsmith.UpdateProfileRequest
+	(*LogoutRequest)(nil),             // 9: quadsmith.LogoutRequest
+	(*LogoutResponse)(nil),            // 10: quadsmith.LogoutResponse
+	(*ListUserEmailsRequest)(nil),     // 11: quadsmith.ListUserEmailsRequest
+	(*ListUserEmailsResponse)(nil),    // 12: quadsmith.ListUserEmailsResponse
+	(*SendAddEmailOtpRequest)(nil),    // 13: quadsmith.SendAddEmailOtpRequest
+	(*VerifyAddEmailOtpRequest)(nil),  // 14: quadsmith.VerifyAddEmailOtpRequest
+	(*VerifyAddEmailOtpResponse)(nil), // 15: quadsmith.VerifyAddEmailOtpResponse
+	(*MergeAccountRequest)(nil),       // 16: quadsmith.MergeAccountRequest
+	(*MergeAccountResponse)(nil),      // 17: quadsmith.MergeAccountResponse
+	(*SetPrimaryEmailRequest)(nil),    // 18: quadsmith.SetPrimaryEmailRequest
+	(*SetPrimaryEmailResponse)(nil),   // 19: quadsmith.SetPrimaryEmailResponse
+	(*RemoveUserEmailRequest)(nil),    // 20: quadsmith.RemoveUserEmailRequest
+	(*RemoveUserEmailResponse)(nil),   // 21: quadsmith.RemoveUserEmailResponse
+	(*User)(nil),                      // 22: quadsmith.User
+	(*UserProfile)(nil),               // 23: quadsmith.UserProfile
+	(*UserEmail)(nil),                 // 24: quadsmith.UserEmail
 }
 var file_auth_proto_depIdxs = []int32{
-	11, // 0: quadsmith.AuthResponse.user:type_name -> quadsmith.User
-	12, // 1: quadsmith.AuthResponse.profile:type_name -> quadsmith.UserProfile
-	0,  // 2: quadsmith.AuthService.SendEmailOtp:input_type -> quadsmith.SendEmailOtpRequest
-	2,  // 3: quadsmith.AuthService.VerifyEmailOtp:input_type -> quadsmith.VerifyEmailOtpRequest
-	3,  // 4: quadsmith.AuthService.VerifyMagicLink:input_type -> quadsmith.VerifyMagicLinkRequest
-	6,  // 5: quadsmith.AuthService.RefreshToken:input_type -> quadsmith.RefreshTokenRequest
-	7,  // 6: quadsmith.AuthService.GetCurrentUser:input_type -> quadsmith.GetCurrentUserRequest
-	8,  // 7: quadsmith.AuthService.UpdateProfile:input_type -> quadsmith.UpdateProfileRequest
-	9,  // 8: quadsmith.AuthService.Logout:input_type -> quadsmith.LogoutRequest
-	1,  // 9: quadsmith.AuthService.SendEmailOtp:output_type -> quadsmith.SendEmailOtpResponse
-	4,  // 10: quadsmith.AuthService.VerifyEmailOtp:output_type -> quadsmith.AuthResponse
-	4,  // 11: quadsmith.AuthService.VerifyMagicLink:output_type -> quadsmith.AuthResponse
-	4,  // 12: quadsmith.AuthService.RefreshToken:output_type -> quadsmith.AuthResponse
-	11, // 13: quadsmith.AuthService.GetCurrentUser:output_type -> quadsmith.User
-	12, // 14: quadsmith.AuthService.UpdateProfile:output_type -> quadsmith.UserProfile
-	10, // 15: quadsmith.AuthService.Logout:output_type -> quadsmith.LogoutResponse
-	9,  // [9:16] is the sub-list for method output_type
-	2,  // [2:9] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	22, // 0: quadsmith.AuthResponse.user:type_name -> quadsmith.User
+	23, // 1: quadsmith.AuthResponse.profile:type_name -> quadsmith.UserProfile
+	24, // 2: quadsmith.ListUserEmailsResponse.emails:type_name -> quadsmith.UserEmail
+	0,  // 3: quadsmith.AuthService.SendEmailOtp:input_type -> quadsmith.SendEmailOtpRequest
+	2,  // 4: quadsmith.AuthService.VerifyEmailOtp:input_type -> quadsmith.VerifyEmailOtpRequest
+	3,  // 5: quadsmith.AuthService.VerifyMagicLink:input_type -> quadsmith.VerifyMagicLinkRequest
+	6,  // 6: quadsmith.AuthService.RefreshToken:input_type -> quadsmith.RefreshTokenRequest
+	7,  // 7: quadsmith.AuthService.GetCurrentUser:input_type -> quadsmith.GetCurrentUserRequest
+	8,  // 8: quadsmith.AuthService.UpdateProfile:input_type -> quadsmith.UpdateProfileRequest
+	9,  // 9: quadsmith.AuthService.Logout:input_type -> quadsmith.LogoutRequest
+	11, // 10: quadsmith.AuthService.ListUserEmails:input_type -> quadsmith.ListUserEmailsRequest
+	13, // 11: quadsmith.AuthService.SendAddEmailOtp:input_type -> quadsmith.SendAddEmailOtpRequest
+	14, // 12: quadsmith.AuthService.VerifyAddEmailOtp:input_type -> quadsmith.VerifyAddEmailOtpRequest
+	16, // 13: quadsmith.AuthService.MergeAccount:input_type -> quadsmith.MergeAccountRequest
+	18, // 14: quadsmith.AuthService.SetPrimaryEmail:input_type -> quadsmith.SetPrimaryEmailRequest
+	20, // 15: quadsmith.AuthService.RemoveUserEmail:input_type -> quadsmith.RemoveUserEmailRequest
+	1,  // 16: quadsmith.AuthService.SendEmailOtp:output_type -> quadsmith.SendEmailOtpResponse
+	4,  // 17: quadsmith.AuthService.VerifyEmailOtp:output_type -> quadsmith.AuthResponse
+	4,  // 18: quadsmith.AuthService.VerifyMagicLink:output_type -> quadsmith.AuthResponse
+	4,  // 19: quadsmith.AuthService.RefreshToken:output_type -> quadsmith.AuthResponse
+	22, // 20: quadsmith.AuthService.GetCurrentUser:output_type -> quadsmith.User
+	23, // 21: quadsmith.AuthService.UpdateProfile:output_type -> quadsmith.UserProfile
+	10, // 22: quadsmith.AuthService.Logout:output_type -> quadsmith.LogoutResponse
+	12, // 23: quadsmith.AuthService.ListUserEmails:output_type -> quadsmith.ListUserEmailsResponse
+	1,  // 24: quadsmith.AuthService.SendAddEmailOtp:output_type -> quadsmith.SendEmailOtpResponse
+	15, // 25: quadsmith.AuthService.VerifyAddEmailOtp:output_type -> quadsmith.VerifyAddEmailOtpResponse
+	17, // 26: quadsmith.AuthService.MergeAccount:output_type -> quadsmith.MergeAccountResponse
+	19, // 27: quadsmith.AuthService.SetPrimaryEmail:output_type -> quadsmith.SetPrimaryEmailResponse
+	21, // 28: quadsmith.AuthService.RemoveUserEmail:output_type -> quadsmith.RemoveUserEmailResponse
+	16, // [16:29] is the sub-list for method output_type
+	3,  // [3:16] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_auth_proto_init() }
@@ -708,7 +1335,7 @@ func file_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_auth_proto_rawDesc), len(file_auth_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

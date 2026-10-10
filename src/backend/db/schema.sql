@@ -50,6 +50,20 @@ CREATE TABLE IF NOT EXISTS user_profiles (
 
 CREATE INDEX IF NOT EXISTS idx_user_profiles_user_uuid ON user_profiles (user_uuid);
 
+CREATE TABLE IF NOT EXISTS user_emails (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_uuid UUID NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  is_primary BOOLEAN DEFAULT false NOT NULL,
+  verified_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_emails_user_uuid ON user_emails (user_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_user_emails_email ON user_emails (email);
+
 CREATE TABLE IF NOT EXISTS refresh_tokens (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
@@ -348,6 +362,9 @@ CREATE INDEX IF NOT EXISTS idx_video_transmitters_protocol ON video_transmitters
 -- Foreign Keys
 ALTER TABLE user_profiles
 ADD CONSTRAINT fk_user_profiles_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE user_emails
+ADD CONSTRAINT fk_user_emails_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE refresh_tokens
 ADD CONSTRAINT fk_refresh_tokens_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);

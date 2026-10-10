@@ -50,3 +50,15 @@ func TestIPRateLimiting(t *testing.T) {
 		t.Fatalf("rate limit should be cleared after success: %v", err)
 	}
 }
+
+func TestPluralAttempts(t *testing.T) {
+	if pluralAttempts(1) != "attempt" {
+		t.Errorf("expected 'attempt' for 1, got %s", pluralAttempts(1))
+	}
+	if pluralAttempts(2) != "attempts" {
+		t.Errorf("expected 'attempts' for 2, got %s", pluralAttempts(2))
+	}
+	if pluralAttempts(0) != "attempts" {
+		t.Errorf("expected 'attempts' for 0, got %s", pluralAttempts(0))
+	}
+}

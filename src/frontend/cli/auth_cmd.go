@@ -10,6 +10,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"text/tabwriter"
+	"time"
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
@@ -184,11 +186,234 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			fmt.Printf("Pilot Handle: @%s\n", res.Msg.Id)
 			fmt.Printf("Email:        %s\n", res.Msg.Email)
 			fmt.Printf("Role:         %s\n", res.Msg.Role)
-			fmt.Printf("UUID:         %s\n", res.Msg.Uuid)
 			return nil
 		},
 	}
 	rootCmd.AddCommand(whoamiCmd)
+
+	// email root command
+	emailCmd := &cobra.Command{
+		Use:   "email",
+		Short: "Manage associated login emails for your Quadsmith account",
+	}
+
+	var jsonOutput bool
+
+	// email list
+	emailListCmd := &cobra.Command{
+		Use:   "list",
+		Short: "List all email addresses associated with your account",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := context.Background()
+			res, err := authClient.ListUserEmails(ctx, connect.NewRequest(&pb.ListUserEmailsRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to list emails: %w", err)
+			}
+
+			if jsonOutput {
+				data, err := json.MarshalIndent(res.Msg.Emails, "", "  ")
+				if err != nil {
+					return err
+				}
+				fmt.Println(string(data))
+				return nil
+			}
+
+			w := tabwriter.NewWriter(cmd.OutOrStdout(), 0, 0, 2, ' ', 0)
+			fmt.Fprintln(w, "EMAIL\tPRIMARY\tSTATUS\tCREATED")
+			for _, em := range res.Msg.Emails {
+				isPrimary := "no"
+				if em.IsPrimary {
+					isPrimary = "yes"
+				}
+				status := "verified"
+				created := "recent"
+				if em.CreatedAt != nil {
+					created = time.Unix(em.CreatedAt.Seconds, 0).Format("2006-01-02")
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", em.Email, isPrimary, status, created)
+			}
+			return w.Flush()
+		},
+	}
+	emailListCmd.Flags().BoolVar(&jsonOutput, "json", false, "Output results in JSON format")
+	emailCmd.AddCommand(emailListCmd)
+
+	// email add
+	emailAddCmd := &cobra.Command{
+		Use:   "add [email]",
+		Short: "Associate a new email address with your account",
+		Args:  cobra.MaximumNArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			reader := bufio.NewReader(os.Stdin)
+			var email string
+			if len(args) > 0 {
+				email = strings.TrimSpace(args[0])
+			} else {
+				fmt.Print("Enter the email address to associate: ")
+				input, err := reader.ReadString('\n')
+				if err != nil {
+					return err
+				}
+				email = strings.TrimSpace(input)
+			}
+			if email == "" {
+				return errors.New("email address cannot be empty")
+			}
+
+			ctx := context.Background()
+			fmt.Printf("Sending verification code to %s...\n", email)
+			sendRes, err := authClient.SendAddEmailOtp(ctx, connect.NewRequest(&pb.SendAddEmailOtpRequest{Email: email}))
+			if err != nil {
+				return fmt.Errorf("failed to send OTP: %w", err)
+			}
+
+			fmt.Println(sendRes.Msg.Message)
+			fmt.Print("Enter the 6-digit verification code: ")
+			codeInput, err := reader.ReadString('\n')
+			if err != nil {
+				return err
+			}
+			code := strings.TrimSpace(codeInput)
+			if code == "" {
+				return errors.New("verification code cannot be empty")
+			}
+
+			verifyRes, err := authClient.VerifyAddEmailOtp(ctx, connect.NewRequest(&pb.VerifyAddEmailOtpRequest{
+				Email: email,
+				Code:  code,
+			}))
+			if err != nil {
+				return fmt.Errorf("verification failed: %w", err)
+			}
+
+			if verifyRes.Msg.MergeRequired {
+				fmt.Printf("\n⚠️  Notice: This email is already associated with another account (@%s).\n", verifyRes.Msg.OtherUserHandle)
+				fmt.Printf("To merge that account's builds and data into your current account, run:\n")
+				fmt.Printf("  qs account merge %s\n\n", email)
+				return nil
+			}
+
+			fmt.Printf("✓ Successfully added %s to your account.\n", email)
+			return nil
+		},
+	}
+	emailCmd.AddCommand(emailAddCmd)
+
+	// email set-primary
+	emailSetPrimaryCmd := &cobra.Command{
+		Use:   "set-primary <email>",
+		Short: "Set an associated email address as the primary email",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			email := strings.TrimSpace(args[0])
+			ctx := context.Background()
+			_, err := authClient.SetPrimaryEmail(ctx, connect.NewRequest(&pb.SetPrimaryEmailRequest{Email: email}))
+			if err != nil {
+				return fmt.Errorf("failed to set primary email: %w", err)
+			}
+			fmt.Printf("✓ %s is now your primary account email.\n", email)
+			return nil
+		},
+	}
+	emailCmd.AddCommand(emailSetPrimaryCmd)
+
+	// email remove
+	emailRemoveCmd := &cobra.Command{
+		Use:   "remove <email>",
+		Short: "Remove an associated email address from your account",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			email := strings.TrimSpace(args[0])
+			ctx := context.Background()
+			_, err := authClient.RemoveUserEmail(ctx, connect.NewRequest(&pb.RemoveUserEmailRequest{Email: email}))
+			if err != nil {
+				return fmt.Errorf("failed to remove email: %w", err)
+			}
+			fmt.Printf("✓ Removed %s from your account.\n", email)
+			return nil
+		},
+	}
+	emailCmd.AddCommand(emailRemoveCmd)
+	rootCmd.AddCommand(emailCmd)
+
+	// account root command
+	accountCmd := &cobra.Command{
+		Use:   "account",
+		Short: "Manage your Quadsmith account settings and consolidations",
+	}
+
+	// account merge
+	accountMergeCmd := &cobra.Command{
+		Use:   "merge [email]",
+		Short: "Merge another Quadsmith account into your current account",
+		Args:  cobra.MaximumNArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			reader := bufio.NewReader(os.Stdin)
+			var email string
+			if len(args) > 0 {
+				email = strings.TrimSpace(args[0])
+			} else {
+				fmt.Print("Enter the email address of the account to merge: ")
+				input, err := reader.ReadString('\n')
+				if err != nil {
+					return err
+				}
+				email = strings.TrimSpace(input)
+			}
+			if email == "" {
+				return errors.New("email address cannot be empty")
+			}
+
+			ctx := context.Background()
+			fmt.Printf("Sending verification code to %s...\n", email)
+			sendRes, err := authClient.SendAddEmailOtp(ctx, connect.NewRequest(&pb.SendAddEmailOtpRequest{Email: email}))
+			if err != nil {
+				return fmt.Errorf("failed to send OTP: %w", err)
+			}
+
+			fmt.Println(sendRes.Msg.Message)
+			fmt.Printf("\n⚠️  WARNING: Merging will permanently transfer all drone builds, flight logs,\n")
+			fmt.Printf("and data from the other account into your currently authenticated account.\n")
+			fmt.Printf("The address %s will be added as a login email.\n\n", email)
+
+			fmt.Print("Enter the 6-digit verification code sent to that address: ")
+			codeInput, err := reader.ReadString('\n')
+			if err != nil {
+				return err
+			}
+			code := strings.TrimSpace(codeInput)
+			if code == "" {
+				return errors.New("verification code cannot be empty")
+			}
+
+			fmt.Print("Are you sure you want to proceed with this merge? (y/N): ")
+			confirmInput, err := reader.ReadString('\n')
+			if err != nil {
+				return err
+			}
+			confirm := strings.ToLower(strings.TrimSpace(confirmInput))
+			if confirm != "y" && confirm != "yes" {
+				fmt.Println("Merge cancelled.")
+				return nil
+			}
+
+			mergeRes, err := authClient.MergeAccount(ctx, connect.NewRequest(&pb.MergeAccountRequest{
+				Email: email,
+				Code:  code,
+			}))
+			if err != nil {
+				return fmt.Errorf("merge failed: %w", err)
+			}
+
+			fmt.Printf("\n✓ Accounts merged successfully!\n")
+			fmt.Printf("Transferred builds: %d\n", mergeRes.Msg.TransferredBuildCount)
+			fmt.Printf("Consolidated email: %s\n", email)
+			return nil
+		},
+	}
+	accountCmd.AddCommand(accountMergeCmd)
+	rootCmd.AddCommand(accountCmd)
 
 	// logout
 	logoutCmd := &cobra.Command{

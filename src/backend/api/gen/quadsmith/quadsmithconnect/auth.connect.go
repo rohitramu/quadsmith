@@ -53,6 +53,24 @@ const (
 	AuthServiceUpdateProfileProcedure = "/quadsmith.AuthService/UpdateProfile"
 	// AuthServiceLogoutProcedure is the fully-qualified name of the AuthService's Logout RPC.
 	AuthServiceLogoutProcedure = "/quadsmith.AuthService/Logout"
+	// AuthServiceListUserEmailsProcedure is the fully-qualified name of the AuthService's
+	// ListUserEmails RPC.
+	AuthServiceListUserEmailsProcedure = "/quadsmith.AuthService/ListUserEmails"
+	// AuthServiceSendAddEmailOtpProcedure is the fully-qualified name of the AuthService's
+	// SendAddEmailOtp RPC.
+	AuthServiceSendAddEmailOtpProcedure = "/quadsmith.AuthService/SendAddEmailOtp"
+	// AuthServiceVerifyAddEmailOtpProcedure is the fully-qualified name of the AuthService's
+	// VerifyAddEmailOtp RPC.
+	AuthServiceVerifyAddEmailOtpProcedure = "/quadsmith.AuthService/VerifyAddEmailOtp"
+	// AuthServiceMergeAccountProcedure is the fully-qualified name of the AuthService's MergeAccount
+	// RPC.
+	AuthServiceMergeAccountProcedure = "/quadsmith.AuthService/MergeAccount"
+	// AuthServiceSetPrimaryEmailProcedure is the fully-qualified name of the AuthService's
+	// SetPrimaryEmail RPC.
+	AuthServiceSetPrimaryEmailProcedure = "/quadsmith.AuthService/SetPrimaryEmail"
+	// AuthServiceRemoveUserEmailProcedure is the fully-qualified name of the AuthService's
+	// RemoveUserEmail RPC.
+	AuthServiceRemoveUserEmailProcedure = "/quadsmith.AuthService/RemoveUserEmail"
 )
 
 // AuthServiceClient is a client for the quadsmith.AuthService service.
@@ -64,6 +82,12 @@ type AuthServiceClient interface {
 	GetCurrentUser(context.Context, *connect.Request[quadsmith.GetCurrentUserRequest]) (*connect.Response[quadsmith.User], error)
 	UpdateProfile(context.Context, *connect.Request[quadsmith.UpdateProfileRequest]) (*connect.Response[quadsmith.UserProfile], error)
 	Logout(context.Context, *connect.Request[quadsmith.LogoutRequest]) (*connect.Response[quadsmith.LogoutResponse], error)
+	ListUserEmails(context.Context, *connect.Request[quadsmith.ListUserEmailsRequest]) (*connect.Response[quadsmith.ListUserEmailsResponse], error)
+	SendAddEmailOtp(context.Context, *connect.Request[quadsmith.SendAddEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error)
+	VerifyAddEmailOtp(context.Context, *connect.Request[quadsmith.VerifyAddEmailOtpRequest]) (*connect.Response[quadsmith.VerifyAddEmailOtpResponse], error)
+	MergeAccount(context.Context, *connect.Request[quadsmith.MergeAccountRequest]) (*connect.Response[quadsmith.MergeAccountResponse], error)
+	SetPrimaryEmail(context.Context, *connect.Request[quadsmith.SetPrimaryEmailRequest]) (*connect.Response[quadsmith.SetPrimaryEmailResponse], error)
+	RemoveUserEmail(context.Context, *connect.Request[quadsmith.RemoveUserEmailRequest]) (*connect.Response[quadsmith.RemoveUserEmailResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the quadsmith.AuthService service. By default, it
@@ -119,18 +143,60 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("Logout")),
 			connect.WithClientOptions(opts...),
 		),
+		listUserEmails: connect.NewClient[quadsmith.ListUserEmailsRequest, quadsmith.ListUserEmailsResponse](
+			httpClient,
+			baseURL+AuthServiceListUserEmailsProcedure,
+			connect.WithSchema(authServiceMethods.ByName("ListUserEmails")),
+			connect.WithClientOptions(opts...),
+		),
+		sendAddEmailOtp: connect.NewClient[quadsmith.SendAddEmailOtpRequest, quadsmith.SendEmailOtpResponse](
+			httpClient,
+			baseURL+AuthServiceSendAddEmailOtpProcedure,
+			connect.WithSchema(authServiceMethods.ByName("SendAddEmailOtp")),
+			connect.WithClientOptions(opts...),
+		),
+		verifyAddEmailOtp: connect.NewClient[quadsmith.VerifyAddEmailOtpRequest, quadsmith.VerifyAddEmailOtpResponse](
+			httpClient,
+			baseURL+AuthServiceVerifyAddEmailOtpProcedure,
+			connect.WithSchema(authServiceMethods.ByName("VerifyAddEmailOtp")),
+			connect.WithClientOptions(opts...),
+		),
+		mergeAccount: connect.NewClient[quadsmith.MergeAccountRequest, quadsmith.MergeAccountResponse](
+			httpClient,
+			baseURL+AuthServiceMergeAccountProcedure,
+			connect.WithSchema(authServiceMethods.ByName("MergeAccount")),
+			connect.WithClientOptions(opts...),
+		),
+		setPrimaryEmail: connect.NewClient[quadsmith.SetPrimaryEmailRequest, quadsmith.SetPrimaryEmailResponse](
+			httpClient,
+			baseURL+AuthServiceSetPrimaryEmailProcedure,
+			connect.WithSchema(authServiceMethods.ByName("SetPrimaryEmail")),
+			connect.WithClientOptions(opts...),
+		),
+		removeUserEmail: connect.NewClient[quadsmith.RemoveUserEmailRequest, quadsmith.RemoveUserEmailResponse](
+			httpClient,
+			baseURL+AuthServiceRemoveUserEmailProcedure,
+			connect.WithSchema(authServiceMethods.ByName("RemoveUserEmail")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	sendEmailOtp    *connect.Client[quadsmith.SendEmailOtpRequest, quadsmith.SendEmailOtpResponse]
-	verifyEmailOtp  *connect.Client[quadsmith.VerifyEmailOtpRequest, quadsmith.AuthResponse]
-	verifyMagicLink *connect.Client[quadsmith.VerifyMagicLinkRequest, quadsmith.AuthResponse]
-	refreshToken    *connect.Client[quadsmith.RefreshTokenRequest, quadsmith.AuthResponse]
-	getCurrentUser  *connect.Client[quadsmith.GetCurrentUserRequest, quadsmith.User]
-	updateProfile   *connect.Client[quadsmith.UpdateProfileRequest, quadsmith.UserProfile]
-	logout          *connect.Client[quadsmith.LogoutRequest, quadsmith.LogoutResponse]
+	sendEmailOtp      *connect.Client[quadsmith.SendEmailOtpRequest, quadsmith.SendEmailOtpResponse]
+	verifyEmailOtp    *connect.Client[quadsmith.VerifyEmailOtpRequest, quadsmith.AuthResponse]
+	verifyMagicLink   *connect.Client[quadsmith.VerifyMagicLinkRequest, quadsmith.AuthResponse]
+	refreshToken      *connect.Client[quadsmith.RefreshTokenRequest, quadsmith.AuthResponse]
+	getCurrentUser    *connect.Client[quadsmith.GetCurrentUserRequest, quadsmith.User]
+	updateProfile     *connect.Client[quadsmith.UpdateProfileRequest, quadsmith.UserProfile]
+	logout            *connect.Client[quadsmith.LogoutRequest, quadsmith.LogoutResponse]
+	listUserEmails    *connect.Client[quadsmith.ListUserEmailsRequest, quadsmith.ListUserEmailsResponse]
+	sendAddEmailOtp   *connect.Client[quadsmith.SendAddEmailOtpRequest, quadsmith.SendEmailOtpResponse]
+	verifyAddEmailOtp *connect.Client[quadsmith.VerifyAddEmailOtpRequest, quadsmith.VerifyAddEmailOtpResponse]
+	mergeAccount      *connect.Client[quadsmith.MergeAccountRequest, quadsmith.MergeAccountResponse]
+	setPrimaryEmail   *connect.Client[quadsmith.SetPrimaryEmailRequest, quadsmith.SetPrimaryEmailResponse]
+	removeUserEmail   *connect.Client[quadsmith.RemoveUserEmailRequest, quadsmith.RemoveUserEmailResponse]
 }
 
 // SendEmailOtp calls quadsmith.AuthService.SendEmailOtp.
@@ -168,6 +234,36 @@ func (c *authServiceClient) Logout(ctx context.Context, req *connect.Request[qua
 	return c.logout.CallUnary(ctx, req)
 }
 
+// ListUserEmails calls quadsmith.AuthService.ListUserEmails.
+func (c *authServiceClient) ListUserEmails(ctx context.Context, req *connect.Request[quadsmith.ListUserEmailsRequest]) (*connect.Response[quadsmith.ListUserEmailsResponse], error) {
+	return c.listUserEmails.CallUnary(ctx, req)
+}
+
+// SendAddEmailOtp calls quadsmith.AuthService.SendAddEmailOtp.
+func (c *authServiceClient) SendAddEmailOtp(ctx context.Context, req *connect.Request[quadsmith.SendAddEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error) {
+	return c.sendAddEmailOtp.CallUnary(ctx, req)
+}
+
+// VerifyAddEmailOtp calls quadsmith.AuthService.VerifyAddEmailOtp.
+func (c *authServiceClient) VerifyAddEmailOtp(ctx context.Context, req *connect.Request[quadsmith.VerifyAddEmailOtpRequest]) (*connect.Response[quadsmith.VerifyAddEmailOtpResponse], error) {
+	return c.verifyAddEmailOtp.CallUnary(ctx, req)
+}
+
+// MergeAccount calls quadsmith.AuthService.MergeAccount.
+func (c *authServiceClient) MergeAccount(ctx context.Context, req *connect.Request[quadsmith.MergeAccountRequest]) (*connect.Response[quadsmith.MergeAccountResponse], error) {
+	return c.mergeAccount.CallUnary(ctx, req)
+}
+
+// SetPrimaryEmail calls quadsmith.AuthService.SetPrimaryEmail.
+func (c *authServiceClient) SetPrimaryEmail(ctx context.Context, req *connect.Request[quadsmith.SetPrimaryEmailRequest]) (*connect.Response[quadsmith.SetPrimaryEmailResponse], error) {
+	return c.setPrimaryEmail.CallUnary(ctx, req)
+}
+
+// RemoveUserEmail calls quadsmith.AuthService.RemoveUserEmail.
+func (c *authServiceClient) RemoveUserEmail(ctx context.Context, req *connect.Request[quadsmith.RemoveUserEmailRequest]) (*connect.Response[quadsmith.RemoveUserEmailResponse], error) {
+	return c.removeUserEmail.CallUnary(ctx, req)
+}
+
 // AuthServiceHandler is an implementation of the quadsmith.AuthService service.
 type AuthServiceHandler interface {
 	SendEmailOtp(context.Context, *connect.Request[quadsmith.SendEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error)
@@ -177,6 +273,12 @@ type AuthServiceHandler interface {
 	GetCurrentUser(context.Context, *connect.Request[quadsmith.GetCurrentUserRequest]) (*connect.Response[quadsmith.User], error)
 	UpdateProfile(context.Context, *connect.Request[quadsmith.UpdateProfileRequest]) (*connect.Response[quadsmith.UserProfile], error)
 	Logout(context.Context, *connect.Request[quadsmith.LogoutRequest]) (*connect.Response[quadsmith.LogoutResponse], error)
+	ListUserEmails(context.Context, *connect.Request[quadsmith.ListUserEmailsRequest]) (*connect.Response[quadsmith.ListUserEmailsResponse], error)
+	SendAddEmailOtp(context.Context, *connect.Request[quadsmith.SendAddEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error)
+	VerifyAddEmailOtp(context.Context, *connect.Request[quadsmith.VerifyAddEmailOtpRequest]) (*connect.Response[quadsmith.VerifyAddEmailOtpResponse], error)
+	MergeAccount(context.Context, *connect.Request[quadsmith.MergeAccountRequest]) (*connect.Response[quadsmith.MergeAccountResponse], error)
+	SetPrimaryEmail(context.Context, *connect.Request[quadsmith.SetPrimaryEmailRequest]) (*connect.Response[quadsmith.SetPrimaryEmailResponse], error)
+	RemoveUserEmail(context.Context, *connect.Request[quadsmith.RemoveUserEmailRequest]) (*connect.Response[quadsmith.RemoveUserEmailResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -228,6 +330,42 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("Logout")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceListUserEmailsHandler := connect.NewUnaryHandler(
+		AuthServiceListUserEmailsProcedure,
+		svc.ListUserEmails,
+		connect.WithSchema(authServiceMethods.ByName("ListUserEmails")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceSendAddEmailOtpHandler := connect.NewUnaryHandler(
+		AuthServiceSendAddEmailOtpProcedure,
+		svc.SendAddEmailOtp,
+		connect.WithSchema(authServiceMethods.ByName("SendAddEmailOtp")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceVerifyAddEmailOtpHandler := connect.NewUnaryHandler(
+		AuthServiceVerifyAddEmailOtpProcedure,
+		svc.VerifyAddEmailOtp,
+		connect.WithSchema(authServiceMethods.ByName("VerifyAddEmailOtp")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceMergeAccountHandler := connect.NewUnaryHandler(
+		AuthServiceMergeAccountProcedure,
+		svc.MergeAccount,
+		connect.WithSchema(authServiceMethods.ByName("MergeAccount")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceSetPrimaryEmailHandler := connect.NewUnaryHandler(
+		AuthServiceSetPrimaryEmailProcedure,
+		svc.SetPrimaryEmail,
+		connect.WithSchema(authServiceMethods.ByName("SetPrimaryEmail")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceRemoveUserEmailHandler := connect.NewUnaryHandler(
+		AuthServiceRemoveUserEmailProcedure,
+		svc.RemoveUserEmail,
+		connect.WithSchema(authServiceMethods.ByName("RemoveUserEmail")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceSendEmailOtpProcedure:
@@ -244,6 +382,18 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceUpdateProfileHandler.ServeHTTP(w, r)
 		case AuthServiceLogoutProcedure:
 			authServiceLogoutHandler.ServeHTTP(w, r)
+		case AuthServiceListUserEmailsProcedure:
+			authServiceListUserEmailsHandler.ServeHTTP(w, r)
+		case AuthServiceSendAddEmailOtpProcedure:
+			authServiceSendAddEmailOtpHandler.ServeHTTP(w, r)
+		case AuthServiceVerifyAddEmailOtpProcedure:
+			authServiceVerifyAddEmailOtpHandler.ServeHTTP(w, r)
+		case AuthServiceMergeAccountProcedure:
+			authServiceMergeAccountHandler.ServeHTTP(w, r)
+		case AuthServiceSetPrimaryEmailProcedure:
+			authServiceSetPrimaryEmailHandler.ServeHTTP(w, r)
+		case AuthServiceRemoveUserEmailProcedure:
+			authServiceRemoveUserEmailHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -279,4 +429,28 @@ func (UnimplementedAuthServiceHandler) UpdateProfile(context.Context, *connect.R
 
 func (UnimplementedAuthServiceHandler) Logout(context.Context, *connect.Request[quadsmith.LogoutRequest]) (*connect.Response[quadsmith.LogoutResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.Logout is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) ListUserEmails(context.Context, *connect.Request[quadsmith.ListUserEmailsRequest]) (*connect.Response[quadsmith.ListUserEmailsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.ListUserEmails is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) SendAddEmailOtp(context.Context, *connect.Request[quadsmith.SendAddEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.SendAddEmailOtp is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) VerifyAddEmailOtp(context.Context, *connect.Request[quadsmith.VerifyAddEmailOtpRequest]) (*connect.Response[quadsmith.VerifyAddEmailOtpResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.VerifyAddEmailOtp is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) MergeAccount(context.Context, *connect.Request[quadsmith.MergeAccountRequest]) (*connect.Response[quadsmith.MergeAccountResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.MergeAccount is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) SetPrimaryEmail(context.Context, *connect.Request[quadsmith.SetPrimaryEmailRequest]) (*connect.Response[quadsmith.SetPrimaryEmailResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.SetPrimaryEmail is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) RemoveUserEmail(context.Context, *connect.Request[quadsmith.RemoveUserEmailRequest]) (*connect.Response[quadsmith.RemoveUserEmailResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.RemoveUserEmail is not implemented"))
 }

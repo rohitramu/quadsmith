@@ -222,6 +222,90 @@ func (x *UserProfile) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+type UserEmail struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	UserUuid      string                 `protobuf:"bytes,2,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	IsPrimary     bool                   `protobuf:"varint,4,opt,name=is_primary,json=isPrimary,proto3" json:"is_primary,omitempty"`
+	VerifiedAt    *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=verified_at,json=verifiedAt,proto3" json:"verified_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserEmail) Reset() {
+	*x = UserEmail{}
+	mi := &file_user_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserEmail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserEmail) ProtoMessage() {}
+
+func (x *UserEmail) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserEmail.ProtoReflect.Descriptor instead.
+func (*UserEmail) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *UserEmail) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *UserEmail) GetUserUuid() string {
+	if x != nil {
+		return x.UserUuid
+	}
+	return ""
+}
+
+func (x *UserEmail) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *UserEmail) GetIsPrimary() bool {
+	if x != nil {
+		return x.IsPrimary
+	}
+	return false
+}
+
+func (x *UserEmail) GetVerifiedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.VerifiedAt
+	}
+	return nil
+}
+
+func (x *UserEmail) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
 type PublicUserProfile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Public pilot handle (or UUID fallback)
@@ -236,7 +320,7 @@ type PublicUserProfile struct {
 
 func (x *PublicUserProfile) Reset() {
 	*x = PublicUserProfile{}
-	mi := &file_user_proto_msgTypes[2]
+	mi := &file_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -248,7 +332,7 @@ func (x *PublicUserProfile) String() string {
 func (*PublicUserProfile) ProtoMessage() {}
 
 func (x *PublicUserProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[2]
+	mi := &file_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -261,7 +345,7 @@ func (x *PublicUserProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PublicUserProfile.ProtoReflect.Descriptor instead.
 func (*PublicUserProfile) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{2}
+	return file_user_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *PublicUserProfile) GetId() string {
@@ -321,7 +405,7 @@ type RefreshToken struct {
 
 func (x *RefreshToken) Reset() {
 	*x = RefreshToken{}
-	mi := &file_user_proto_msgTypes[3]
+	mi := &file_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -333,7 +417,7 @@ func (x *RefreshToken) String() string {
 func (*RefreshToken) ProtoMessage() {}
 
 func (x *RefreshToken) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[3]
+	mi := &file_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -346,7 +430,7 @@ func (x *RefreshToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RefreshToken.ProtoReflect.Descriptor instead.
 func (*RefreshToken) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{3}
+	return file_user_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *RefreshToken) GetUuid() string {
@@ -413,7 +497,7 @@ type EmailOtp struct {
 
 func (x *EmailOtp) Reset() {
 	*x = EmailOtp{}
-	mi := &file_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -425,7 +509,7 @@ func (x *EmailOtp) String() string {
 func (*EmailOtp) ProtoMessage() {}
 
 func (x *EmailOtp) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[4]
+	mi := &file_user_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -438,7 +522,7 @@ func (x *EmailOtp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailOtp.ProtoReflect.Descriptor instead.
 func (*EmailOtp) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{4}
+	return file_user_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *EmailOtp) GetUuid() string {
@@ -502,7 +586,7 @@ type HandleHistory struct {
 
 func (x *HandleHistory) Reset() {
 	*x = HandleHistory{}
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -514,7 +598,7 @@ func (x *HandleHistory) String() string {
 func (*HandleHistory) ProtoMessage() {}
 
 func (x *HandleHistory) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[5]
+	mi := &file_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -527,7 +611,7 @@ func (x *HandleHistory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HandleHistory.ProtoReflect.Descriptor instead.
 func (*HandleHistory) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{5}
+	return file_user_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *HandleHistory) GetUuid() string {
@@ -574,7 +658,7 @@ type OAuthAccount struct {
 
 func (x *OAuthAccount) Reset() {
 	*x = OAuthAccount{}
-	mi := &file_user_proto_msgTypes[6]
+	mi := &file_user_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -586,7 +670,7 @@ func (x *OAuthAccount) String() string {
 func (*OAuthAccount) ProtoMessage() {}
 
 func (x *OAuthAccount) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[6]
+	mi := &file_user_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -599,7 +683,7 @@ func (x *OAuthAccount) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OAuthAccount.ProtoReflect.Descriptor instead.
 func (*OAuthAccount) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{6}
+	return file_user_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *OAuthAccount) GetUuid() string {
@@ -667,7 +751,7 @@ type GetUserRequest struct {
 
 func (x *GetUserRequest) Reset() {
 	*x = GetUserRequest{}
-	mi := &file_user_proto_msgTypes[7]
+	mi := &file_user_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -679,7 +763,7 @@ func (x *GetUserRequest) String() string {
 func (*GetUserRequest) ProtoMessage() {}
 
 func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[7]
+	mi := &file_user_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -692,7 +776,7 @@ func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
 func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{7}
+	return file_user_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetUserRequest) GetId() string {
@@ -711,7 +795,7 @@ type GetPublicProfileRequest struct {
 
 func (x *GetPublicProfileRequest) Reset() {
 	*x = GetPublicProfileRequest{}
-	mi := &file_user_proto_msgTypes[8]
+	mi := &file_user_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -723,7 +807,7 @@ func (x *GetPublicProfileRequest) String() string {
 func (*GetPublicProfileRequest) ProtoMessage() {}
 
 func (x *GetPublicProfileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[8]
+	mi := &file_user_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -736,7 +820,7 @@ func (x *GetPublicProfileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPublicProfileRequest.ProtoReflect.Descriptor instead.
 func (*GetPublicProfileRequest) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{8}
+	return file_user_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetPublicProfileRequest) GetId() string {
@@ -755,7 +839,7 @@ type CheckHandleAvailableRequest struct {
 
 func (x *CheckHandleAvailableRequest) Reset() {
 	*x = CheckHandleAvailableRequest{}
-	mi := &file_user_proto_msgTypes[9]
+	mi := &file_user_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -767,7 +851,7 @@ func (x *CheckHandleAvailableRequest) String() string {
 func (*CheckHandleAvailableRequest) ProtoMessage() {}
 
 func (x *CheckHandleAvailableRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[9]
+	mi := &file_user_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -780,7 +864,7 @@ func (x *CheckHandleAvailableRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckHandleAvailableRequest.ProtoReflect.Descriptor instead.
 func (*CheckHandleAvailableRequest) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{9}
+	return file_user_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CheckHandleAvailableRequest) GetHandle() string {
@@ -800,7 +884,7 @@ type CheckHandleAvailableResponse struct {
 
 func (x *CheckHandleAvailableResponse) Reset() {
 	*x = CheckHandleAvailableResponse{}
-	mi := &file_user_proto_msgTypes[10]
+	mi := &file_user_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -812,7 +896,7 @@ func (x *CheckHandleAvailableResponse) String() string {
 func (*CheckHandleAvailableResponse) ProtoMessage() {}
 
 func (x *CheckHandleAvailableResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_user_proto_msgTypes[10]
+	mi := &file_user_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -825,7 +909,7 @@ func (x *CheckHandleAvailableResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckHandleAvailableResponse.ProtoReflect.Descriptor instead.
 func (*CheckHandleAvailableResponse) Descriptor() ([]byte, []int) {
-	return file_user_proto_rawDescGZIP(), []int{10}
+	return file_user_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CheckHandleAvailableResponse) GetAvailable() bool {
@@ -874,7 +958,18 @@ const file_user_proto_rawDesc = "" +
 	"\x03bio\x18\x05 \x01(\tR\x03bio\x129\n" +
 	"\n" +
 	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\x13\xc2\xf3\x18\x0f\n" +
-	"\ruser_profiles\"\xd3\x01\n" +
+	"\ruser_profiles\"\xb0\x02\n" +
+	"\tUserEmail\x12\x1a\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1e\n" +
+	"\x05email\x18\x03 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x05email\x12*\n" +
+	"\n" +
+	"is_primary\x18\x04 \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\tisPrimary\x12;\n" +
+	"\vverified_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"verifiedAt\x129\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x11\xc2\xf3\x18\r\n" +
+	"\vuser_emails\"\xd3\x01\n" +
 	"\x11PublicUserProfile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12!\n" +
 	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x1d\n" +
@@ -956,50 +1051,53 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_user_proto_goTypes = []any{
 	(*User)(nil),                         // 0: quadsmith.User
 	(*UserProfile)(nil),                  // 1: quadsmith.UserProfile
-	(*PublicUserProfile)(nil),            // 2: quadsmith.PublicUserProfile
-	(*RefreshToken)(nil),                 // 3: quadsmith.RefreshToken
-	(*EmailOtp)(nil),                     // 4: quadsmith.EmailOtp
-	(*HandleHistory)(nil),                // 5: quadsmith.HandleHistory
-	(*OAuthAccount)(nil),                 // 6: quadsmith.OAuthAccount
-	(*GetUserRequest)(nil),               // 7: quadsmith.GetUserRequest
-	(*GetPublicProfileRequest)(nil),      // 8: quadsmith.GetPublicProfileRequest
-	(*CheckHandleAvailableRequest)(nil),  // 9: quadsmith.CheckHandleAvailableRequest
-	(*CheckHandleAvailableResponse)(nil), // 10: quadsmith.CheckHandleAvailableResponse
-	(*timestamppb.Timestamp)(nil),        // 11: google.protobuf.Timestamp
+	(*UserEmail)(nil),                    // 2: quadsmith.UserEmail
+	(*PublicUserProfile)(nil),            // 3: quadsmith.PublicUserProfile
+	(*RefreshToken)(nil),                 // 4: quadsmith.RefreshToken
+	(*EmailOtp)(nil),                     // 5: quadsmith.EmailOtp
+	(*HandleHistory)(nil),                // 6: quadsmith.HandleHistory
+	(*OAuthAccount)(nil),                 // 7: quadsmith.OAuthAccount
+	(*GetUserRequest)(nil),               // 8: quadsmith.GetUserRequest
+	(*GetPublicProfileRequest)(nil),      // 9: quadsmith.GetPublicProfileRequest
+	(*CheckHandleAvailableRequest)(nil),  // 10: quadsmith.CheckHandleAvailableRequest
+	(*CheckHandleAvailableResponse)(nil), // 11: quadsmith.CheckHandleAvailableResponse
+	(*timestamppb.Timestamp)(nil),        // 12: google.protobuf.Timestamp
 }
 var file_user_proto_depIdxs = []int32{
-	11, // 0: quadsmith.User.email_verified_at:type_name -> google.protobuf.Timestamp
-	11, // 1: quadsmith.User.last_renamed_at:type_name -> google.protobuf.Timestamp
-	11, // 2: quadsmith.User.deleted_at:type_name -> google.protobuf.Timestamp
-	11, // 3: quadsmith.User.banned_at:type_name -> google.protobuf.Timestamp
-	11, // 4: quadsmith.User.created_at:type_name -> google.protobuf.Timestamp
-	11, // 5: quadsmith.User.updated_at:type_name -> google.protobuf.Timestamp
-	11, // 6: quadsmith.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
-	11, // 7: quadsmith.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
-	11, // 8: quadsmith.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
-	11, // 9: quadsmith.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
-	11, // 10: quadsmith.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
-	11, // 11: quadsmith.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
-	11, // 12: quadsmith.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
-	11, // 13: quadsmith.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
-	11, // 14: quadsmith.HandleHistory.renamed_at:type_name -> google.protobuf.Timestamp
-	11, // 15: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
-	11, // 16: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	7,  // 17: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
-	8,  // 18: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
-	9,  // 19: quadsmith.UserService.CheckHandleAvailable:input_type -> quadsmith.CheckHandleAvailableRequest
-	0,  // 20: quadsmith.UserService.GetUser:output_type -> quadsmith.User
-	2,  // 21: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
-	10, // 22: quadsmith.UserService.CheckHandleAvailable:output_type -> quadsmith.CheckHandleAvailableResponse
-	20, // [20:23] is the sub-list for method output_type
-	17, // [17:20] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	12, // 0: quadsmith.User.email_verified_at:type_name -> google.protobuf.Timestamp
+	12, // 1: quadsmith.User.last_renamed_at:type_name -> google.protobuf.Timestamp
+	12, // 2: quadsmith.User.deleted_at:type_name -> google.protobuf.Timestamp
+	12, // 3: quadsmith.User.banned_at:type_name -> google.protobuf.Timestamp
+	12, // 4: quadsmith.User.created_at:type_name -> google.protobuf.Timestamp
+	12, // 5: quadsmith.User.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 6: quadsmith.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 7: quadsmith.UserEmail.verified_at:type_name -> google.protobuf.Timestamp
+	12, // 8: quadsmith.UserEmail.created_at:type_name -> google.protobuf.Timestamp
+	12, // 9: quadsmith.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
+	12, // 10: quadsmith.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
+	12, // 11: quadsmith.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
+	12, // 12: quadsmith.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
+	12, // 13: quadsmith.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
+	12, // 14: quadsmith.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
+	12, // 15: quadsmith.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
+	12, // 16: quadsmith.HandleHistory.renamed_at:type_name -> google.protobuf.Timestamp
+	12, // 17: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
+	12, // 18: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	8,  // 19: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
+	9,  // 20: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
+	10, // 21: quadsmith.UserService.CheckHandleAvailable:input_type -> quadsmith.CheckHandleAvailableRequest
+	0,  // 22: quadsmith.UserService.GetUser:output_type -> quadsmith.User
+	3,  // 23: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
+	11, // 24: quadsmith.UserService.CheckHandleAvailable:output_type -> quadsmith.CheckHandleAvailableResponse
+	22, // [22:25] is the sub-list for method output_type
+	19, // [19:22] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -1015,7 +1113,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

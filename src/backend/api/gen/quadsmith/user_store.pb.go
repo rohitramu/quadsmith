@@ -500,6 +500,220 @@ func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 	return results, nil
 }
 
+func CreateUserEmail(ctx context.Context, tx pgx.Tx, m *UserEmail) error {
+	query := `INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at) VALUES ($1, $2, $3, $4, $5, $6)`
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.UserUuid), m.Email, m.IsPrimary, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.VerifiedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.CreatedAt))
+	return err
+}
+
+func GetUserEmail(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*UserEmail, error) {
+	colsStr := "uuid, user_uuid, email, is_primary, verified_at, created_at"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "user_uuid", "email", "is_primary", "verified_at", "created_at"}
+	}
+	query := `SELECT ` + colsStr + ` FROM user_emails WHERE uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
+	m := &UserEmail{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "user_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.UserUuid = *v
+				}
+			})
+		case "email":
+			scanArgs[i] = &m.Email
+		case "is_primary":
+			scanArgs[i] = &m.IsPrimary
+		case "verified_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.VerifiedAt = timestamppb.New(*v)
+				}
+			})
+		case "created_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.CreatedAt = timestamppb.New(*v)
+				}
+			})
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
+	if err != nil {
+		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
+	}
+	return m, nil
+}
+
+func UpdateUserEmail(ctx context.Context, tx pgx.Tx, m *UserEmail) error {
+	query := `UPDATE user_emails SET user_uuid = $2, email = $3, is_primary = $4, verified_at = $5, created_at = $6 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.UserUuid), m.Email, m.IsPrimary, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.VerifiedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.CreatedAt))
+	return err
+}
+
+func DeleteUserEmail(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
+	query := `DELETE FROM user_emails WHERE uuid::text = $1`
+	_, err := tx.Exec(ctx, query, idOrUuid)
+	return err
+}
+
+func ListUserEmails(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*UserEmail, error) {
+	colsStr := "uuid, user_uuid, email, is_primary, verified_at, created_at"
+	if len(cols) > 0 {
+		colsStr = strings.Join(cols, ", ")
+	} else {
+		cols = []string{"uuid", "user_uuid", "email", "is_primary", "verified_at", "created_at"}
+	}
+	query := `SELECT ` + colsStr + ` FROM user_emails`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "email": true, "is_primary": true, "verified_at": true, "created_at": true}
+	var orderClauses []string
+	hasIdSort := false
+	if len(sorts) > 0 {
+		for _, s := range sorts {
+			col := s
+			dir := "ASC NULLS LAST"
+			if strings.HasPrefix(s, "^") {
+				col = s[1:]
+				dir = "DESC NULLS LAST"
+			}
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidSortColumn(col)
+			}
+			if col == "id" || col == "uuid" {
+				hasIdSort = true
+			}
+			orderClauses = append(orderClauses, col+" "+dir)
+		}
+	}
+	if !hasIdSort {
+		orderClauses = append(orderClauses, "uuid ASC")
+	}
+	query += " ORDER BY " + strings.Join(orderClauses, ", ")
+	if limit > 0 {
+		query += fmt.Sprintf(" LIMIT $%d", len(args)+1)
+		args = append(args, limit)
+	}
+	if offset > 0 {
+		query += fmt.Sprintf(" OFFSET $%d", len(args)+1)
+		args = append(args, offset)
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*UserEmail, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
+		m := &UserEmail{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "user_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.UserUuid = *v
+					}
+				})
+			case "email":
+				scanArgs[i] = &m.Email
+			case "is_primary":
+				scanArgs[i] = &m.IsPrimary
+			case "verified_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.VerifiedAt = timestamppb.New(*v)
+					}
+				})
+			case "created_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.CreatedAt = timestamppb.New(*v)
+					}
+				})
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		results = append(results, m)
+	}
+	return results, nil
+}
+
 func CreateRefreshToken(ctx context.Context, tx pgx.Tx, m *RefreshToken) error {
 	query := `INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {

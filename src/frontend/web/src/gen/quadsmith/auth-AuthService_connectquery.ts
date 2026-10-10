@@ -38,3 +38,33 @@ export const updateProfile = AuthService.method.updateProfile;
  * @generated from rpc quadsmith.AuthService.Logout
  */
 export const logout = AuthService.method.logout;
+
+/**
+ * @generated from rpc quadsmith.AuthService.ListUserEmails
+ */
+export const listUserEmails = AuthService.method.listUserEmails;
+
+/**
+ * @generated from rpc quadsmith.AuthService.SendAddEmailOtp
+ */
+export const sendAddEmailOtp = AuthService.method.sendAddEmailOtp;
+
+/**
+ * @generated from rpc quadsmith.AuthService.VerifyAddEmailOtp
+ */
+export const verifyAddEmailOtp = AuthService.method.verifyAddEmailOtp;
+
+/**
+ * @generated from rpc quadsmith.AuthService.MergeAccount
+ */
+export const mergeAccount = AuthService.method.mergeAccount;
+
+/**
+ * @generated from rpc quadsmith.AuthService.SetPrimaryEmail
+ */
+export const setPrimaryEmail = AuthService.method.setPrimaryEmail;
+
+/**
+ * @generated from rpc quadsmith.AuthService.RemoveUserEmail
+ */
+export const removeUserEmail = AuthService.method.removeUserEmail;
