@@ -1356,17 +1356,8 @@ export function BuildWizardPage() {
       {/* Top Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-              <Sparkles size={14} />
-              Interactive Build Wizard
-            </span>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">
-              • Stage {activeStage} of 4
-            </span>
-          </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
-            Design Custom Drone
+            Build Wizard
           </h1>
           <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
             Select parts sequentially. Flight electronics include FC, ESC, RX, Antenna &amp; GPS.

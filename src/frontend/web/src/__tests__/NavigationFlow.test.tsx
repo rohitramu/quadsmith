@@ -108,7 +108,7 @@ describe("Full Application Navigation Flow", () => {
     expect(
       await screen.findByRole("heading", {
         level: 1,
-        name: "Design Custom Drone",
+        name: "Build Wizard",
       }),
     ).toBeInTheDocument();
   });

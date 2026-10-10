@@ -38,9 +38,10 @@ describe("BuildWizardPage Component", () => {
 
     // Check title & banner
     expect(
-      await screen.findByRole("heading", { level: 1, name: "Design Custom Drone" }),
+      await screen.findByRole("heading", { level: 1, name: "Build Wizard" }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Interactive Build Wizard/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Interactive Build Wizard/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/• Stage/i)).not.toBeInTheDocument();
 
     // Stage 0 active, Stage 1 unlocked (0/3), stages 2-4 disabled
     expect(screen.getByText("Template Selection")).toBeInTheDocument();
