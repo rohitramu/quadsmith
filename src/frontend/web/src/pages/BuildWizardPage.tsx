@@ -110,6 +110,59 @@ export function isVtxAntenna(a: Antenna): boolean {
   );
 }
 
+export function rxHasIntegratedAntenna(
+  rx?: Receiver | null,
+  ants: Antenna[] = [],
+  fc?: FlightController | null,
+  useIntegratedRx?: boolean,
+): boolean {
+  if (!rx) return false;
+
+  // 1. Check if receiver explicitly references an internal / integrated antenna UUID
+  if (rx.antennaUuids && rx.antennaUuids.length > 0) {
+    const hasIntegratedUuid = rx.antennaUuids.some((uuid) => {
+      if (uuid === "01923019-3009-7001-8001-000000000012") return true;
+      const ant = ants.find((a) => a.uuid === uuid);
+      if (ant && (ant.isInternalOnly || ant.connector?.toLowerCase() === "integrated")) {
+        return true;
+      }
+      return false;
+    });
+    if (hasIntegratedUuid) return true;
+  }
+
+  // 2. Check receiver text (name and description)
+  const rxText = `${rx.name} ${rx.description}`.toLowerCase();
+  if (
+    rxText.includes("ceramic") ||
+    rxText.includes("smd antenna") ||
+    rxText.includes("integrated antenna") ||
+    rxText.includes("built-in antenna") ||
+    rxText.includes("internal antenna") ||
+    rxText.includes("onboard ceramic") ||
+    rxText.includes("on-board ceramic")
+  ) {
+    return true;
+  }
+
+  // 3. If using integrated RX on FC, also check FC's name and description
+  if (useIntegratedRx && fc) {
+    const fcText = `${fc.name} ${fc.description}`.toLowerCase();
+    if (
+      fcText.includes("ceramic antenna") ||
+      fcText.includes("smd antenna") ||
+      fcText.includes("integrated antenna") ||
+      fcText.includes("built-in antenna") ||
+      fcText.includes("internal antenna") ||
+      fcText.includes("integrated ceramic")
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 interface SelectedPartHoverWrapperProps {
   collectionId: string;
   item?: any;
@@ -408,6 +461,22 @@ export function BuildWizardPage() {
       setSelectedVtx(null);
     }
   }, [fcHasIntegratedVtx, useIntegratedVtx]);
+
+  // Active receiver (either standalone or integrated into FC)
+  const activeRx = useIntegratedRx ? integratedRx : selectedRx;
+
+  // Whether "No External Antenna" is permissible for the active receiver
+  const canSelectNoRxAntenna = useMemo(() => {
+    if (!activeRx) return false;
+    return rxHasIntegratedAntenna(activeRx, ants, selectedFc, useIntegratedRx);
+  }, [activeRx, ants, selectedFc, useIntegratedRx]);
+
+  // If active receiver changes to one without an integrated antenna, auto-clear "none" selection
+  useEffect(() => {
+    if (noneSelections.rxAntenna && !canSelectNoRxAntenna) {
+      setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
+    }
+  }, [noneSelections.rxAntenna, canSelectNoRxAntenna]);
 
   // Stage completion checks (when template is selected, all stages are complete)
   const stage0Complete = true;
@@ -2330,21 +2399,45 @@ export function BuildWizardPage() {
                   {/* Explicit None Card */}
                   <div
                     onClick={() => {
+                      if (!canSelectNoRxAntenna) return;
                       setSelectedRxAnt(null);
                       setNoneSelections((prev) => ({ ...prev, rxAntenna: true }));
                     }}
-                    className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
-                      noneSelections.rxAntenna
-                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400"
+                    className={`p-3 rounded-xl border text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+                      !canSelectNoRxAntenna
+                        ? "opacity-60 bg-zinc-100/60 dark:bg-zinc-900/40 border-zinc-200 dark:border-zinc-800/80 cursor-not-allowed select-none"
+                        : noneSelections.rxAntenna
+                          ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 cursor-pointer"
+                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700 cursor-pointer"
                     }`}
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="font-bold text-zinc-900 dark:text-zinc-200">
-                        No External Antenna (None)
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span
+                          className={`font-bold ${
+                            !canSelectNoRxAntenna
+                              ? "text-zinc-500 dark:text-zinc-400"
+                              : "text-zinc-900 dark:text-zinc-200"
+                          }`}
+                        >
+                          No External Antenna (None)
+                        </span>
+                        {!canSelectNoRxAntenna ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-700">
+                            <Lock size={10} /> Antenna Required
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            Integrated SMD Ceramic
+                          </span>
+                        )}
                       </div>
-                      <div className="text-[11px] text-zinc-500 mt-0.5">
-                        Built-in ceramic antenna or saves weight (0g)
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        {!activeRx
+                          ? "Select a receiver with an integrated ceramic antenna to enable this option."
+                          : !canSelectNoRxAntenna
+                            ? `${activeRx.name} requires an external antenna (no integrated ceramic antenna detected).`
+                            : `Uses ${activeRx.name}'s onboard ceramic antenna (0g added weight).`}
                       </div>
                     </div>
                     <div className="text-[11px] text-zinc-500 font-mono shrink-0">0g</div>
@@ -3898,7 +3991,7 @@ export function BuildWizardPage() {
                         {selectedRxAnt
                           ? selectedRxAnt.name
                           : noneSelections.rxAntenna
-                            ? "None (Omitted)"
+                            ? "None (Integrated ceramic antenna)"
                             : "Not selected yet"}
                       </div>
                     </div>

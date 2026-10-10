@@ -235,7 +235,20 @@ export const mockInternalRx: Receiver = create(ReceiverSchema, {
   description: "Internal SPI ExpressLRS 2.4GHz receiver.",
 });
 
-export const mockReceivers: Receiver[] = [mockReceiver1, mockInternalRx];
+export const mockReceiverCeramic: Receiver = create(ReceiverSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000086",
+  id: "radiomaster-rp2-elrs",
+  manufacturer: "RadioMaster",
+  name: "RadioMaster RP2 2.4GHz Receiver",
+  protocol: "ExpressLRS",
+  frequencyBandMhz: 2400,
+  hasTelemetry: true,
+  weightG: 0.6,
+  antennaUuids: ["01923019-3009-7001-8001-000000000012"],
+  description: "ExpressLRS receiver with onboard SMD ceramic antenna.",
+});
+
+export const mockReceivers: Receiver[] = [mockReceiver1, mockInternalRx, mockReceiverCeramic];
 
 export const mockAntenna1: Antenna = create(AntennaSchema, {
   uuid: "018f0000-0000-7000-0000-000000000090",

@@ -2,10 +2,15 @@ import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
-import { BuildWizardPage } from "../BuildWizardPage";
+import { BuildWizardPage, rxHasIntegratedAntenna } from "../BuildWizardPage";
 import { Route, Routes, useParams } from "react-router-dom";
 import { wasmEngine } from "../../lib/wasmEngine";
-import { mockBuild1, mockBuild2 } from "../../test/mocks/fixtures";
+import {
+  mockBuild1,
+  mockBuild2,
+  mockReceiver1,
+  mockReceiverCeramic,
+} from "../../test/mocks/fixtures";
 import type { RenderWithProvidersOptions } from "../../test/test-utils";
 
 function SavedProfile() {
@@ -159,7 +164,7 @@ describe("BuildWizardPage Component", () => {
 
     // Integrated FC Receiver card is clickable and displays rich specs (protocol, frequency band, telemetry)
     expect(screen.getByText("BetaFPV Integrated ELRS 2.4GHz RX")).toBeInTheDocument();
-    expect(screen.getByText("ExpressLRS")).toBeInTheDocument();
+    expect(screen.getAllByText("ExpressLRS").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/2.4 GHz • Telemetry/i)).toBeInTheDocument();
     await user.click(screen.getByText("Use Integrated FC Receiver"));
     expect(
@@ -465,5 +470,103 @@ describe("BuildWizardPage Component", () => {
       },
       { timeout: 1500 },
     );
+  });
+
+  describe("RX Antenna Guard (rxHasIntegratedAntenna & Section 2D)", () => {
+    it("rxHasIntegratedAntenna correctly identifies integrated vs external receivers", () => {
+      // Null / undefined check
+      expect(rxHasIntegratedAntenna(null)).toBe(false);
+      expect(rxHasIntegratedAntenna(undefined)).toBe(false);
+
+      // External antenna receiver (e.g. Crossfire Nano RX)
+      expect(rxHasIntegratedAntenna(mockReceiver1)).toBe(false);
+
+      // Receiver with integrated ceramic antenna in antennaUuids
+      expect(rxHasIntegratedAntenna(mockReceiverCeramic)).toBe(true);
+
+      // Receiver with "ceramic" in description
+      const customCeramicRx = {
+        ...mockReceiver1,
+        description: "Receiver with built-in ceramic antenna for micros",
+      };
+      expect(rxHasIntegratedAntenna(customCeramicRx as any)).toBe(true);
+
+      // Receiver with "smd antenna" in name
+      const customSmdRx = {
+        ...mockReceiver1,
+        name: "ELRS 2.4GHz SMD Antenna Nano",
+      };
+      expect(rxHasIntegratedAntenna(customSmdRx as any)).toBe(true);
+    });
+
+    it("locks 'No External Antenna (None)' unless active receiver has an integrated ceramic antenna and auto-clears when switching to an external-antenna receiver", async () => {
+      const user = userEvent.setup();
+      renderWizard();
+
+      // Advance to Stage 1 and select Frame, Motor, Prop
+      await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+      await user.click(await screen.findByText("Master 5 V2"));
+      await user.click(await screen.findByText("ECO II 2207"));
+      await user.click(await screen.findByText("Hurricane 51433"));
+
+      // Advance to Stage 2
+      await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+
+      // Select FC and ESC
+      await user.click(screen.getByText("F405 V4 FC"));
+      await user.click(screen.getByText("SpeedyBee 50A 4-in-1 ESC"));
+
+      // 1. Initial State in Stage 2 before RX is selected:
+      // "No External Antenna (None)" should be locked
+      const noneAntCard = screen
+        .getByText("No External Antenna (None)")
+        .closest("div[class*='border']") as HTMLElement;
+      expect(noneAntCard).toBeInTheDocument();
+      expect(noneAntCard?.className).toContain("cursor-not-allowed");
+      expect(within(noneAntCard).getByText(/Antenna Required/i)).toBeInTheDocument();
+
+      // 2. Select an external-antenna receiver: Crossfire Nano RX
+      await user.click(screen.getByText("Crossfire Nano RX"));
+
+      // "No External Antenna (None)" remains locked and shows that Crossfire Nano requires an external antenna
+      expect(noneAntCard?.className).toContain("cursor-not-allowed");
+      expect(
+        within(noneAntCard).getByText(/Crossfire Nano RX requires an external antenna/i),
+      ).toBeInTheDocument();
+
+      // Clicking it does NOT select none (guard blocks it)
+      await user.click(noneAntCard);
+      expect(noneAntCard?.className).not.toContain("ring-blue-500");
+
+      // 3. Select an external antenna: RadioMaster T-Antenna
+      await user.click(screen.getByText("RadioMaster T-Antenna 2.4GHz"));
+
+      // 4. Switch to an integrated ceramic receiver: RadioMaster RP2
+      await user.click(screen.getByText("RadioMaster RP2 2.4GHz Receiver"));
+
+      // Now "No External Antenna (None)" is unlocked!
+      expect(noneAntCard?.className).toContain("cursor-pointer");
+      expect(noneAntCard?.className).not.toContain("cursor-not-allowed");
+      expect(within(noneAntCard).getByText("Integrated SMD Ceramic")).toBeInTheDocument();
+      expect(
+        within(noneAntCard).getByText(/Uses RadioMaster RP2.*onboard ceramic antenna/i),
+      ).toBeInTheDocument();
+
+      // Clicking "No External Antenna (None)" successfully selects it!
+      await user.click(noneAntCard);
+      expect(noneAntCard?.className).toContain("ring-blue-500");
+
+      // Selected parts list reflects integrated ceramic antenna
+      expect(screen.getByText("None (Integrated ceramic antenna)")).toBeInTheDocument();
+
+      // 5. Switch back to Crossfire Nano RX (which requires an external antenna)
+      await user.click(screen.getByText("Crossfire Nano RX"));
+
+      // Safety check: "No External Antenna" must automatically clear and lock again!
+      expect(noneAntCard?.className).toContain("cursor-not-allowed");
+      expect(noneAntCard?.className).not.toContain("ring-blue-500");
+      expect(within(noneAntCard).getByText(/Antenna Required/i)).toBeInTheDocument();
+      expect(screen.queryByText("None (Integrated ceramic antenna)")).not.toBeInTheDocument();
+    });
   });
 });
