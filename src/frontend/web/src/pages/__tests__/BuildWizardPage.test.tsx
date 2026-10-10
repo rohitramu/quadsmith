@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
-import { BuildWizardPage, rxHasIntegratedAntenna } from "../BuildWizardPage";
+import { BuildWizardPage, rxHasIntegratedAntenna, getVtxAntennaCount } from "../BuildWizardPage";
 import { Route, Routes, useParams } from "react-router-dom";
 import { wasmEngine } from "../../lib/wasmEngine";
 import {
@@ -592,5 +592,61 @@ describe("BuildWizardPage Component", () => {
 
     // scrollIntoView should have been called on the selected item element
     expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: "smooth", block: "center" });
+  });
+
+  describe("getVtxAntennaCount", () => {
+    it("returns 1 for null or undefined VTX", () => {
+      expect(getVtxAntennaCount(null)).toBe(1);
+      expect(getVtxAntennaCount(undefined)).toBe(1);
+    });
+
+    it("returns 1 for analog VTX without antenna configuration", () => {
+      expect(getVtxAntennaCount({ name: "TBS Unify Pro32", protocol: "Analog" } as any)).toBe(1);
+    });
+
+    it("returns 1 for DJI O4 Lite VTX", () => {
+      expect(getVtxAntennaCount({ name: "DJI O4 Lite VTX", protocol: "DJI O4 Lite" } as any)).toBe(
+        1,
+      );
+      expect(getVtxAntennaCount({ name: "DJI O4 Wide VTX", protocol: "DJI O4 Lite" } as any)).toBe(
+        1,
+      );
+    });
+
+    it("returns 2 for DJI O4 Pro VTX", () => {
+      expect(
+        getVtxAntennaCount({ name: "DJI O4 Air Unit Pro", protocol: "DJI O4 Pro" } as any),
+      ).toBe(2);
+      expect(
+        getVtxAntennaCount({ name: "TANQ 2 DJI O4 Pro VTX Mount", protocol: "DJI O4 Pro" } as any),
+      ).toBe(2);
+    });
+
+    it("returns 2 for DJI O3 and Walksnail Moonlight", () => {
+      expect(getVtxAntennaCount({ name: "DJI O3 Air Unit", protocol: "DJI O3" } as any)).toBe(2);
+      expect(
+        getVtxAntennaCount({
+          name: "Walksnail Moonlight VTX",
+          protocol: "Walksnail Avatar",
+        } as any),
+      ).toBe(2);
+    });
+
+    it("respects explicit antennaUuids length when present", () => {
+      expect(
+        getVtxAntennaCount({
+          name: "Custom VTX",
+          protocol: "Analog",
+          antennaUuids: ["ant-1", "ant-2"],
+        } as any),
+      ).toBe(2);
+      expect(
+        getVtxAntennaCount({
+          name: "Custom VTX",
+          protocol: "Analog",
+          antennaUuids: ["ant-1"],
+        } as any),
+      ).toBe(1);
+    });
   });
 });

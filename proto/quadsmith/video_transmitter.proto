@@ -36,7 +36,7 @@ message VideoTransmitter {
 
   float weight_g = 6;
 
-  // E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
+  // E.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero"
   string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
 
   // Max output power in milliwatts (e.g., 800, 1000, 1200)

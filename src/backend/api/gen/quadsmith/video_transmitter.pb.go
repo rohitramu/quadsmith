@@ -32,7 +32,7 @@ type VideoTransmitter struct {
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
 	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
-	// E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
+	// E.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero"
 	Protocol string `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Max output power in milliwatts (e.g., 800, 1000, 1200)
 	MaxPowerMw uint32 `protobuf:"varint,8,opt,name=max_power_mw,json=maxPowerMw,proto3" json:"max_power_mw,omitempty"`

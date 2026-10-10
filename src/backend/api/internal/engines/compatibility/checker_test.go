@@ -132,6 +132,7 @@ func TestGenerateCelFilter(t *testing.T) {
 }
 
 func TestCameraVtxProtocolCompatibility(t *testing.T) {
+	// Analog vs DJI O3 mismatch
 	comp := &Components{
 		VideoTransmitter: &pb.VideoTransmitter{Protocol: "Analog"},
 		Cameras: []*pb.Camera{
@@ -145,6 +146,43 @@ func TestCameraVtxProtocolCompatibility(t *testing.T) {
 	}
 	if messages[0].SeverityName != "DEFINITE_INCOMPATIBILITY" {
 		t.Errorf("Expected DEFINITE_INCOMPATIBILITY, got %s", messages[0].SeverityName)
+	}
+
+	// DJI O4 Pro vs DJI O4 Lite mismatch
+	compO4Mismatch := &Components{
+		VideoTransmitter: &pb.VideoTransmitter{Protocol: "DJI O4 Pro"},
+		Cameras: []*pb.Camera{
+			{Protocol: "DJI O4 Lite"},
+		},
+	}
+	messagesO4 := CheckCompatibility(compO4Mismatch)
+	if len(messagesO4) == 0 {
+		t.Fatalf("Expected incompatibility message for DJI O4 Pro vs O4 Lite mismatch, got none")
+	}
+	if messagesO4[0].SeverityName != "DEFINITE_INCOMPATIBILITY" {
+		t.Errorf("Expected DEFINITE_INCOMPATIBILITY, got %s", messagesO4[0].SeverityName)
+	}
+
+	// DJI O4 Pro matched
+	compO4ProMatch := &Components{
+		VideoTransmitter: &pb.VideoTransmitter{Protocol: "DJI O4 Pro"},
+		Cameras: []*pb.Camera{
+			{Protocol: "DJI O4 Pro"},
+		},
+	}
+	if msgs := CheckCompatibility(compO4ProMatch); len(msgs) != 0 {
+		t.Errorf("Expected 0 messages for matched DJI O4 Pro, got %d", len(msgs))
+	}
+
+	// DJI O4 Lite matched
+	compO4LiteMatch := &Components{
+		VideoTransmitter: &pb.VideoTransmitter{Protocol: "DJI O4 Lite"},
+		Cameras: []*pb.Camera{
+			{Protocol: "DJI O4 Lite"},
+		},
+	}
+	if msgs := CheckCompatibility(compO4LiteMatch); len(msgs) != 0 {
+		t.Errorf("Expected 0 messages for matched DJI O4 Lite, got %d", len(msgs))
 	}
 }
 

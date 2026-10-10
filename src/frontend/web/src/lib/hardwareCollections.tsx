@@ -556,7 +556,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         name: "protocol",
         type: "string",
-        description: "Video protocol (Analog, DJI O3, DJI O4, Walksnail Avatar, HDZero, MIPI)",
+        description:
+          "Video protocol (Analog, DJI O3, DJI O4 Pro, DJI O4 Lite, Walksnail Avatar, HDZero, MIPI)",
         examples: ['protocol == "DJI O3"', 'protocol == "Analog"'],
       },
       {
@@ -1772,7 +1773,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         name: "protocol",
         type: "string",
         description:
-          "Video transmission protocol (Analog, DJI O3, DJI O4, Walksnail Avatar, HDZero)",
+          "Video transmission protocol (Analog, DJI O3, DJI O4 Pro, DJI O4 Lite, Walksnail Avatar, HDZero)",
         examples: ['protocol.contains("DJI")', 'protocol == "Analog"'],
       },
       {

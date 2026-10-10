@@ -55,7 +55,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 				SeverityLevel: 0,
 				SeverityName:  "DEFINITE_INCOMPATIBILITY",
 				Message:       fmt.Sprintf("Camera protocol (%s) is incompatible with Video Transmitter protocol (%s).", camProto, vtxProto),
-				Resolution:    "Choose a camera and video transmitter that share the same transmission protocol (e.g. Analog, DJI, Walksnail, or HDZero).",
+				Resolution:    "Choose a camera and video transmitter that share the same transmission protocol (e.g. Analog, DJI O3, DJI O4 Pro, DJI O4 Lite, Walksnail, or HDZero).",
 			})
 		}
 	}

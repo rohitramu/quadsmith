@@ -35,7 +35,7 @@ message Camera {
 
   float weight_g = 6;
 
-  // Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4", "Walksnail Avatar", "HDZero")
+  // Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero")
   string protocol = 7;
 
   // Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")

@@ -77,22 +77,32 @@ import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/fo
 
 export function getVtxAntennaCount(vtx: VideoTransmitter | null | undefined): number {
   if (!vtx) return 1;
-  if (vtx.antennaUuids && vtx.antennaUuids.length > 0) {
-    return vtx.antennaUuids.length;
-  }
   const name = (vtx.name || "").toLowerCase();
   const proto = (vtx.protocol || "").toLowerCase();
+
+  // O4 Lite uses a single antenna
+  if (proto.includes("o4 lite") || name.includes("o4 lite")) {
+    return 1;
+  }
+
+  // Dual-antenna digital systems (DJI O3, DJI O4 Pro, Walksnail Moonlight, etc.)
   if (
     proto.includes("dji o3") ||
-    proto.includes("dji o4") ||
+    proto.includes("dji o4 pro") ||
+    proto.includes("o4 pro") ||
     name.includes("dji o3") ||
     name.includes("o3 air unit") ||
-    name.includes("dji o4") ||
+    name.includes("dji o4 pro") ||
+    name.includes("o4 pro") ||
     name.includes("o4 air unit") ||
     name.includes("moonlight") ||
     name.includes("dual")
   ) {
     return 2;
+  }
+
+  if (vtx.antennaUuids && vtx.antennaUuids.length > 0) {
+    return vtx.antennaUuids.length;
   }
   return 1;
 }

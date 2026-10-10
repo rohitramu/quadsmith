@@ -61,7 +61,7 @@ export type VideoTransmitter = Message<"quadsmith.VideoTransmitter"> & {
   weightG: number;
 
   /**
-   * E.g., "Analog", "DJI O3", "Walksnail Avatar", "HDZero"
+   * E.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero"
    *
    * @generated from field: string protocol = 7;
    */

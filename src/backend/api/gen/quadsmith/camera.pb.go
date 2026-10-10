@@ -32,7 +32,7 @@ type Camera struct {
 	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	IsInternalOnly bool                   `protobuf:"varint,5,opt,name=is_internal_only,json=isInternalOnly,proto3" json:"is_internal_only,omitempty"`
 	WeightG        float32                `protobuf:"fixed32,6,opt,name=weight_g,json=weightG,proto3" json:"weight_g,omitempty"`
-	// Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4", "Walksnail Avatar", "HDZero")
+	// Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero")
 	Protocol string `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
 	SensorSize string `protobuf:"bytes,8,opt,name=sensor_size,json=sensorSize,proto3" json:"sensor_size,omitempty"`

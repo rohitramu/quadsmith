@@ -93,12 +93,12 @@ video_transmitters: {
   manufacturer: "DJI"
   name: "DJI O4 Lite VTX"
   weight_g: 3
-  protocol: "DJI O4"
+  protocol: "DJI O4 Lite"
   max_power_mw: 1000
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "DJI DJI O4 Lite VTX DJI O4 video transmitter with up to 1000mW output power, operating voltage 3.1-5.5V, weighing 3.0g."
+  description: "DJI DJI O4 Lite VTX DJI O4 Lite video transmitter with up to 1000mW output power, operating voltage 3.1-5.5V, weighing 3.0g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/heq-g-port-3-axis-gimbal-for-dji-o4-lite"
@@ -111,12 +111,12 @@ video_transmitters: {
   manufacturer: "DJI"
   name: "DJI O4 Wide VTX"
   weight_g: 19.5
-  protocol: "DJI O4"
+  protocol: "DJI O4 Lite"
   max_power_mw: 2000
   input_voltage_min_v: 7
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
-  description: "DJI DJI O4 Wide VTX DJI O4 video transmitter with up to 2000mW output power, operating voltage 7.0-26.0V, weighing 380.6g."
+  description: "DJI DJI O4 Wide VTX DJI O4 Lite video transmitter with up to 2000mW output power, operating voltage 7.0-26.0V, weighing 380.6g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor65-pro-ii-o4-hd-1s-70mm-brushless-whoop-quadcopter-with-dji-o4-wide-air-unit-choose-receiver"
@@ -963,7 +963,7 @@ video_transmitters: {
   manufacturer: "NewBeeDrone"
   name: "NewBeeDrone StingerBee HD O3 to O4"
   weight_g: 7.4
-  protocol: "DJI O4"
+  protocol: "DJI O4 Pro"
   max_power_mw: 2000
   input_voltage_min_v: 7
   input_voltage_max_v: 26
@@ -1133,12 +1133,12 @@ video_transmitters: {
   manufacturer: "Noozle3D"
   name: "TANQ 2 DJI O4 Pro VTX Mount"
   weight_g: 2.1
-  protocol: "DJI O4"
+  protocol: "DJI O4 Pro"
   max_power_mw: 2000
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "Noozle3D TANQ 2 DJI O4 Pro VTX Mount DJI O4 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
+  description: "Noozle3D TANQ 2 DJI O4 Pro VTX Mount DJI O4 Pro video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
 }
 video_transmitters: {
 
@@ -1687,12 +1687,12 @@ video_transmitters: {
   manufacturer: "DJI"
   name: "DJI O4 Air Unit"
   weight_g: 2.1
-  protocol: "DJI O4"
+  protocol: "DJI O4 Pro"
   max_power_mw: 2000
   input_voltage_min_v: 3.1
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
-  description: "DJI O4 Air Unit DJI O4 video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
+  description: "DJI O4 Air Unit DJI O4 Pro video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
   reference_links: {
     type: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/dji-o4-air-unit"
