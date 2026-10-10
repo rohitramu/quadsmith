@@ -1,9 +1,10 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildWizardPage } from "../BuildWizardPage";
 import { Route, Routes } from "react-router-dom";
+import { wasmEngine } from "../../lib/wasmEngine";
 
 describe("BuildWizardPage Component", () => {
   function renderWizard() {
@@ -296,5 +297,33 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
     expect(screen.getByText("Selected (Default)")).toBeInTheDocument();
     expect(screen.getByText("0.0g")).toBeInTheDocument();
+  });
+
+  it("displays WASM dynamic CEL filter when WASM engine is active and allows toggling compatible parts", async () => {
+    vi.spyOn(wasmEngine, "getIsReady").mockReturnValue(true);
+    vi.spyOn(wasmEngine, "generateCelFilter").mockImplementation((target: string) => {
+      if (target === "propellers") return "diameter_mm <= 130.0";
+      return "";
+    });
+
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Advance to Stage 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+
+    // Select Frame (Master 5 V2 - 130mm max prop size)
+    await user.click(await screen.findByText("Master 5 V2"));
+
+    // Check that the dynamic CEL filter banner is rendered for propellers (in Step 1C and Sidebar)
+    const filterElements = await screen.findAllByText("diameter_mm <= 130.0");
+    expect(filterElements.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("WASM Filter:")).toBeInTheDocument();
+
+    // Toggle off Compatible Only
+    const compatibleCheckbox = screen.getByLabelText("Compatible Only");
+    expect(compatibleCheckbox).toBeChecked();
+    await user.click(compatibleCheckbox);
+    expect(compatibleCheckbox).not.toBeChecked();
   });
 });

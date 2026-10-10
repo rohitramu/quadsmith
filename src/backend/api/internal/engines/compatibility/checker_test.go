@@ -101,4 +101,70 @@ func TestGenerateCelFilter(t *testing.T) {
 	if escFilter != "motor_current_max_a >= 20.0" {
 		t.Errorf("expected 'motor_current_max_a >= 20.0', got %q", escFilter)
 	}
+
+	frameFilter := GenerateCelFilter("frames", &Components{
+		Propeller: &pb.Propeller{DiameterMm: 130.0},
+	})
+	if frameFilter != "max_prop_size_mm >= 130.0" {
+		t.Errorf("expected 'max_prop_size_mm >= 130.0', got %q", frameFilter)
+	}
+
+	camFilter := GenerateCelFilter("cameras", &Components{
+		VideoTransmitter: &pb.VideoTransmitter{Protocol: "DJI O3"},
+	})
+	if camFilter != `protocol == "DJI O3"` {
+		t.Errorf(`expected 'protocol == "DJI O3"', got %q`, camFilter)
+	}
+
+	vtxFilter := GenerateCelFilter("video_transmitters", &Components{
+		Cameras: []*pb.Camera{{Protocol: "Walksnail Avatar"}},
+	})
+	if vtxFilter != `protocol == "Walksnail Avatar"` {
+		t.Errorf(`expected 'protocol == "Walksnail Avatar"', got %q`, vtxFilter)
+	}
+
+	motorFilter := GenerateCelFilter("motors", &Components{
+		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{{MotorCurrentMaxA: 30.0}},
+	})
+	if motorFilter != "max_current_a <= 30.0" {
+		t.Errorf("expected 'max_current_a <= 30.0', got %q", motorFilter)
+	}
+}
+
+func TestCameraVtxProtocolCompatibility(t *testing.T) {
+	comp := &Components{
+		VideoTransmitter: &pb.VideoTransmitter{Protocol: "Analog"},
+		Cameras: []*pb.Camera{
+			{Protocol: "DJI O3"},
+		},
+	}
+
+	messages := CheckCompatibility(comp)
+	if len(messages) == 0 {
+		t.Fatalf("Expected incompatibility message for protocol mismatch, got none")
+	}
+	if messages[0].SeverityName != "DEFINITE_INCOMPATIBILITY" {
+		t.Errorf("Expected DEFINITE_INCOMPATIBILITY, got %s", messages[0].SeverityName)
+	}
+}
+
+func TestBatteryVoltageCompatibility(t *testing.T) {
+	comp := &Components{
+		FlightController: &pb.FlightController{
+			MinVoltage: 3.7,
+			MaxVoltage: 8.7, // 1S-2S max
+		},
+		Battery: &pb.Battery{
+			MinVoltage: 18.0, // 6S battery
+			MaxVoltage: 25.2,
+		},
+	}
+
+	messages := CheckCompatibility(comp)
+	if len(messages) == 0 {
+		t.Fatalf("Expected incompatibility message for battery overvoltage, got none")
+	}
+	if messages[0].SeverityName != "DEFINITE_INCOMPATIBILITY" {
+		t.Errorf("Expected DEFINITE_INCOMPATIBILITY, got %s", messages[0].SeverityName)
+	}
 }

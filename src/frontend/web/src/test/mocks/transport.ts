@@ -63,7 +63,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           throw new ConnectError("Failed to fetch motors from server", Code.Internal);
         }
         let list = [...motors];
-        if (req.filter) {
+        if (
+          req.filter &&
+          !req.filter.includes("<=") &&
+          !req.filter.includes(">=") &&
+          !req.filter.includes("==")
+        ) {
           const lower = req.filter.toLowerCase();
           list = list.filter(
             (m) =>

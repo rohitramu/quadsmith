@@ -162,18 +162,79 @@ export function BuildWizardPage() {
   );
   const [saveError, setSaveError] = useState<string | null>(null);
 
+  // WASM Engine Integration
+  const {
+    isReady: isWasmReady,
+    isDelayed: isWasmDelayed,
+    progress: wasmProgress,
+  } = useWasmEngine();
+
+  // Intelligent compatibility filter toggle (default true)
+  const [filterCompatibleOnly, setFilterCompatibleOnly] = useState<boolean>(true);
+
+  // Dynamic Tier 1 CEL filters generated client-side by WASM Engine
+  const propCelFilter = useMemo(() => {
+    if (!isWasmReady || !filterCompatibleOnly || !selectedFrame) return "";
+    const comps = create(AssembledComponentsSchema, { frame: selectedFrame });
+    return wasmEngine.generateCelFilter("propellers", comps);
+  }, [isWasmReady, filterCompatibleOnly, selectedFrame]);
+
+  const escCelFilter = useMemo(() => {
+    if (!isWasmReady || !filterCompatibleOnly || !selectedMotor) return "";
+    const comps = create(AssembledComponentsSchema, { motor: selectedMotor });
+    return wasmEngine.generateCelFilter("electronic_speed_controllers", comps);
+  }, [isWasmReady, filterCompatibleOnly, selectedMotor]);
+
+  const camCelFilter = useMemo(() => {
+    if (!isWasmReady || !filterCompatibleOnly || !selectedVtx) return "";
+    const comps = create(AssembledComponentsSchema, { videoTransmitter: selectedVtx });
+    return wasmEngine.generateCelFilter("cameras", comps);
+  }, [isWasmReady, filterCompatibleOnly, selectedVtx]);
+
+  const vtxCelFilter = useMemo(() => {
+    if (!isWasmReady || !filterCompatibleOnly || !selectedCam) return "";
+    const comps = create(AssembledComponentsSchema, { cameras: [selectedCam] });
+    return wasmEngine.generateCelFilter("video_transmitters", comps);
+  }, [isWasmReady, filterCompatibleOnly, selectedCam]);
+
+  const batteryCelFilter = useMemo(() => {
+    if (!isWasmReady || !filterCompatibleOnly) return "";
+    const comps = create(AssembledComponentsSchema, {
+      frame: selectedFrame || undefined,
+      flightController: selectedFc || undefined,
+      motor: selectedMotor || undefined,
+      electronicSpeedControllers: selectedEsc ? [selectedEsc] : [],
+    });
+    return wasmEngine.generateCelFilter("batteries", comps);
+  }, [isWasmReady, filterCompatibleOnly, selectedFrame, selectedFc, selectedMotor, selectedEsc]);
+
   // Fetch component catalogs
   const { data: framesData } = useQuery(listFrames, { pageSize: 100 });
   const { data: motorsData } = useQuery(listMotors, { pageSize: 100 });
-  const { data: propsData } = useQuery(listPropellers, { pageSize: 100 });
+  const { data: propsData } = useQuery(listPropellers, {
+    filter: propCelFilter || undefined,
+    pageSize: 100,
+  });
   const { data: fcsData } = useQuery(listFlightControllers, { pageSize: 100 });
-  const { data: escsData } = useQuery(listElectronicSpeedControllers, { pageSize: 100 });
+  const { data: escsData } = useQuery(listElectronicSpeedControllers, {
+    filter: escCelFilter || undefined,
+    pageSize: 100,
+  });
   const { data: rxsData } = useQuery(listReceivers, { pageSize: 100 });
-  const { data: vtxsData } = useQuery(listVideoTransmitters, { pageSize: 100 });
-  const { data: camsData } = useQuery(listCameras, { pageSize: 100 });
+  const { data: vtxsData } = useQuery(listVideoTransmitters, {
+    filter: vtxCelFilter || undefined,
+    pageSize: 100,
+  });
+  const { data: camsData } = useQuery(listCameras, {
+    filter: camCelFilter || undefined,
+    pageSize: 100,
+  });
   const { data: antsData } = useQuery(listAntennas, { pageSize: 100 });
   const { data: gpsData } = useQuery(listGpsReceivers, { pageSize: 100 });
-  const { data: batteriesData } = useQuery(listBatteries, { pageSize: 100 });
+  const { data: batteriesData } = useQuery(listBatteries, {
+    filter: batteryCelFilter || undefined,
+    pageSize: 100,
+  });
   const { data: buildsData } = useQuery(listBuilds, { pageSize: 50 });
 
   const frames = useMemo(() => framesData?.frames ?? [], [framesData]);
@@ -454,13 +515,6 @@ export function BuildWizardPage() {
     return batteries.find((b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId);
   }, [batteries, selectedBatteryId]);
 
-  // WASM Engine Integration
-  const {
-    isReady: isWasmReady,
-    isDelayed: isWasmDelayed,
-    progress: wasmProgress,
-  } = useWasmEngine();
-
   // Construct AssembledComponents for WASM
   const assembledComponents = useMemo(() => {
     return create(AssembledComponentsSchema, {
@@ -652,12 +706,16 @@ export function BuildWizardPage() {
   }, [motors, searchMotor]);
 
   const filteredProps = useMemo(() => {
-    if (!searchProp.trim()) return props;
+    let list = props;
+    if (filterCompatibleOnly && selectedFrame && selectedFrame.maxPropSizeMm > 0) {
+      list = list.filter((p) => p.diameterMm <= selectedFrame.maxPropSizeMm);
+    }
+    if (!searchProp.trim()) return list;
     const q = searchProp.toLowerCase();
-    return props.filter(
+    return list.filter(
       (p) => p.name.toLowerCase().includes(q) || p.manufacturer.toLowerCase().includes(q),
     );
-  }, [props, searchProp]);
+  }, [props, filterCompatibleOnly, selectedFrame, searchProp]);
 
   const filteredFcs = useMemo(() => {
     if (!searchFc.trim()) return fcs;
@@ -668,13 +726,16 @@ export function BuildWizardPage() {
   }, [fcs, searchFc]);
 
   const filteredEscs = useMemo(() => {
-    const external = escs.filter((esc) => !esc.isInternalOnly);
+    let external = escs.filter((esc) => !esc.isInternalOnly);
+    if (filterCompatibleOnly && selectedMotor && selectedMotor.statorDiameterMm > 20) {
+      external = external.filter((esc) => esc.motorCurrentMaxA >= 20);
+    }
     if (!searchEsc.trim()) return external;
     const q = searchEsc.toLowerCase();
     return external.filter(
       (esc) => esc.name.toLowerCase().includes(q) || esc.manufacturer.toLowerCase().includes(q),
     );
-  }, [escs, searchEsc]);
+  }, [escs, filterCompatibleOnly, selectedMotor, searchEsc]);
 
   const filteredRxs = useMemo(() => {
     const external = rxs.filter((rx) => !rx.isInternalOnly);
@@ -689,21 +750,30 @@ export function BuildWizardPage() {
   }, [rxs, searchRx]);
 
   const filteredVtxs = useMemo(() => {
-    const external = vtxs.filter((vtx) => !vtx.isInternalOnly);
+    let external = vtxs.filter((vtx) => !vtx.isInternalOnly);
+    if (filterCompatibleOnly && selectedCam && selectedCam.protocol) {
+      external = external.filter(
+        (v) => v.protocol.toLowerCase() === selectedCam.protocol.toLowerCase(),
+      );
+    }
     if (!searchVtx.trim()) return external;
     const q = searchVtx.toLowerCase();
     return external.filter(
       (v) => v.name.toLowerCase().includes(q) || v.manufacturer.toLowerCase().includes(q),
     );
-  }, [vtxs, searchVtx]);
+  }, [vtxs, filterCompatibleOnly, selectedCam, searchVtx]);
 
   const filteredCams = useMemo(() => {
-    if (!searchCam.trim()) return cams;
+    let list = cams;
+    if (filterCompatibleOnly && selectedVtx && selectedVtx.protocol) {
+      list = list.filter((c) => c.protocol.toLowerCase() === selectedVtx.protocol.toLowerCase());
+    }
+    if (!searchCam.trim()) return list;
     const q = searchCam.toLowerCase();
-    return cams.filter(
+    return list.filter(
       (c) => c.name.toLowerCase().includes(q) || c.manufacturer.toLowerCase().includes(q),
     );
-  }, [cams, searchCam]);
+  }, [cams, filterCompatibleOnly, selectedVtx, searchCam]);
 
   const filteredRxAnts = useMemo(() => {
     const rxAnts = ants.filter(isRxAntenna);
@@ -1477,6 +1547,29 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
+                {/* Dynamic WASM CEL Compatibility Filter Banner */}
+                {propCelFilter && (
+                  <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                        WASM Filter:
+                      </span>
+                      <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
+                        {propCelFilter}
+                      </code>
+                    </div>
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={filterCompatibleOnly}
+                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        className="rounded border-emerald-400 text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span>Compatible Only</span>
+                    </label>
+                  </div>
+                )}
+
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {filteredProps.map((p) => {
                     const isSelected = selectedProp?.uuid === p.uuid || selectedProp?.id === p.id;
@@ -1680,6 +1773,29 @@ export function BuildWizardPage() {
                     </button>
                   )}
                 </div>
+
+                {/* Dynamic WASM CEL Compatibility Filter Banner */}
+                {escCelFilter && (
+                  <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                        WASM Filter:
+                      </span>
+                      <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
+                        {escCelFilter}
+                      </code>
+                    </div>
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={filterCompatibleOnly}
+                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        className="rounded border-emerald-400 text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span>Compatible Only</span>
+                    </label>
+                  </div>
+                )}
 
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {/* Option Card: Integrated FC ESC (Enabled only if FC has adequate ESC) */}
@@ -2259,6 +2375,29 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
+                {/* Dynamic WASM CEL Compatibility Filter Banner */}
+                {vtxCelFilter && (
+                  <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                        WASM Filter:
+                      </span>
+                      <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
+                        {vtxCelFilter}
+                      </code>
+                    </div>
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={filterCompatibleOnly}
+                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        className="rounded border-emerald-400 text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span>Compatible Only</span>
+                    </label>
+                  </div>
+                )}
+
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {/* Explicit None Card */}
                   <div
@@ -2408,6 +2547,29 @@ export function BuildWizardPage() {
                     </button>
                   )}
                 </div>
+
+                {/* Dynamic WASM CEL Compatibility Filter Banner */}
+                {camCelFilter && (
+                  <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                        WASM Filter:
+                      </span>
+                      <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
+                        {camCelFilter}
+                      </code>
+                    </div>
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={filterCompatibleOnly}
+                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        className="rounded border-emerald-400 text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span>Compatible Only</span>
+                    </label>
+                  </div>
+                )}
 
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   <div
@@ -3136,6 +3298,35 @@ export function BuildWizardPage() {
                 </div>
               )}
             </div>
+
+            {/* Live WASM Tier 1 Dynamic CEL Filter Display */}
+            {isWasmReady && (
+              <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 space-y-1.5 text-[11px]">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider text-[10px]">
+                    WASM Tier 1 Dynamic CEL
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
+                    {activeStage === 1
+                      ? "Propeller Target"
+                      : activeStage === 2
+                        ? "ESC Target"
+                        : activeStage === 3
+                          ? "Camera/VTX Target"
+                          : "Battery Target"}
+                  </span>
+                </div>
+                <div className="bg-zinc-100 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 font-mono text-[10px] text-indigo-600 dark:text-indigo-400 break-all select-all">
+                  <code>
+                    {(activeStage === 1 && propCelFilter) ||
+                      (activeStage === 2 && escCelFilter) ||
+                      (activeStage === 3 && (camCelFilter || vtxCelFilter)) ||
+                      batteryCelFilter ||
+                      "CEL engine active: all hardware compatible"}
+                  </code>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
