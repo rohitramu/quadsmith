@@ -1106,7 +1106,7 @@ export function AccountSettingsPage() {
                       type="button"
                       onClick={() => setIsMergeModalOpen(false)}
                       disabled={isExecutingMerge}
-                      className="flex-1 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition"
+                      className="flex-[1.8] py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition"
                     >
                       Cancel
                     </button>
@@ -1114,10 +1114,10 @@ export function AccountSettingsPage() {
                       type="button"
                       onClick={handleConfirmMerge}
                       disabled={isExecutingMerge}
-                      className="flex-[2] py-2.5 rounded-xl bg-red-600 hover:bg-red-500 active:bg-red-700 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm shadow-red-500/20"
+                      className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 active:bg-red-700 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm shadow-red-500/20"
                     >
                       {isExecutingMerge && <Loader2 size={13} className="animate-spin" />}
-                      <span>Confirm Merge</span>
+                      <span>Merge</span>
                     </button>
                   </div>
                 </div>

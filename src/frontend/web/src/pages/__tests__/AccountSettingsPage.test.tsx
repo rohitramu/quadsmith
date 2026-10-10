@@ -155,7 +155,7 @@ describe("AccountSettingsPage Component", () => {
     });
 
     // Confirm Merge
-    const confirmBtn = screen.getByRole("button", { name: /^confirm merge$/i });
+    const confirmBtn = screen.getByRole("button", { name: /^merge$/i });
     expect(confirmBtn).not.toBeDisabled();
     fireEvent.click(confirmBtn);
 
@@ -189,7 +189,7 @@ describe("AccountSettingsPage Component", () => {
     });
 
     // User clicks Confirm Merge
-    const confirmBtn = screen.getByRole("button", { name: /^confirm merge$/i });
+    const confirmBtn = screen.getByRole("button", { name: /^merge$/i });
     expect(confirmBtn).not.toBeDisabled();
     fireEvent.click(confirmBtn);
 
