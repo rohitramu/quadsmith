@@ -14,6 +14,7 @@ Always check the manufacturer's official website and official spec sheets as the
 
 - Do not make up names for implementation phases (e.g., "Phase 2") or dictate the roadmap structure without consulting the user first.
 - **No Implementation Without Explicit Instruction**: Never modify codebase files, schemas, or tests to implement anything discussed in a plan or demonstrated in a preview unless the user explicitly instructs you to proceed with implementation. All iterations during planning and preview review must remain strictly confined to the plan or preview artifacts.
+- **Prominent Approval Callouts**: Whenever waiting on user approval to take action (such as implementing a plan, applying preview changes to the codebase, or executing migrations), prominently display a dedicated callout at the end of the message. Title the callout using the format `Awaiting approval to <action>` (e.g., "Awaiting approval to Implement", "Awaiting approval to Execute"), making it immediately clear that progress is paused pending explicit confirmation.
 
 ## Database & Schema Maintenance
 
