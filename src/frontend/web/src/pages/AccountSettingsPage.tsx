@@ -504,10 +504,14 @@ export function AccountSettingsPage() {
                           disabled={emailActionLoading === em.email}
                           onClick={() => handleRemoveEmail(em.email)}
                           aria-label={`Remove ${em.email}`}
-                          className="px-2.5 py-1 rounded-lg border border-rose-500/20 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 text-[11px] font-medium transition inline-flex items-center gap-1"
+                          title="Remove email"
+                          className="p-1.5 rounded-lg border border-rose-500/20 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition inline-flex items-center justify-center align-middle"
                         >
-                          <Trash2 size={11} />
-                          <span>Remove</span>
+                          {emailActionLoading === em.email ? (
+                            <Loader2 size={13} className="animate-spin" />
+                          ) : (
+                            <Trash2 size={13} />
+                          )}
                         </button>
                       </>
                     )}
@@ -519,68 +523,7 @@ export function AccountSettingsPage() {
         </div>
       </section>
 
-      {/* Section 2: Account Merging */}
-      <section className="rounded-2xl border border-purple-500/20 bg-purple-500/5 p-6 space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-sm font-bold flex items-center gap-2 text-purple-700 dark:text-purple-300">
-              <ArrowRightLeft size={16} />
-              <span>Merge Another Account Into This One</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/30">
-                Consolidate Builds
-              </span>
-            </h2>
-            <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl leading-relaxed">
-              Consolidate your drone builds, parts, and preferences into{" "}
-              <strong className="text-zinc-900 dark:text-zinc-200">@{user?.id}</strong>. All
-              database references from the other account will be atomically reassigned to this
-              account, and its email address will be added as a login method.
-            </p>
-          </div>
-          <button
-            onClick={() => {
-              setIsMergeModalOpen(true);
-              setMergeStep(1);
-              setMergeEmail("");
-              setMergeCode("");
-              setMergeError(null);
-            }}
-            className="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white transition flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
-          >
-            <ArrowRightLeft size={14} />
-            <span>Merge Account</span>
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
-            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-              Builds & Schematics
-            </div>
-            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
-              Reassigned to @{user?.id}
-            </div>
-          </div>
-          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
-            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-              Authentication Email
-            </div>
-            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
-              Kept as active login alias
-            </div>
-          </div>
-          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
-            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-              Security Guard
-            </div>
-            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
-              Requires OTP verification
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 3: Profile Details Form */}
+      {/* Section 2: Profile Details Form */}
       <form
         onSubmit={handleSave}
         className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-6 shadow-2xs"
@@ -702,6 +645,67 @@ export function AccountSettingsPage() {
           </div>
         </div>
       </form>
+
+      {/* Section 3: Account Merging */}
+      <section className="rounded-2xl border border-purple-500/20 bg-purple-500/5 p-6 space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-sm font-bold flex items-center gap-2 text-purple-700 dark:text-purple-300">
+              <ArrowRightLeft size={16} />
+              <span>Merge Another Account Into This One</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/30">
+                Consolidate Builds
+              </span>
+            </h2>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+              Consolidate your drone builds, parts, and preferences into{" "}
+              <strong className="text-zinc-900 dark:text-zinc-200">@{user?.id}</strong>. All
+              database references from the other account will be atomically reassigned to this
+              account, and its email address will be added as a login method.
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              setIsMergeModalOpen(true);
+              setMergeStep(1);
+              setMergeEmail("");
+              setMergeCode("");
+              setMergeError(null);
+            }}
+            className="px-4 py-2 rounded-xl text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white transition flex items-center gap-1.5 self-start sm:self-auto shadow-sm"
+          >
+            <ArrowRightLeft size={14} />
+            <span>Merge Account</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
+            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+              Builds & Schematics
+            </div>
+            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
+              Reassigned to @{user?.id}
+            </div>
+          </div>
+          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
+            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+              Authentication Email
+            </div>
+            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
+              Kept as active login alias
+            </div>
+          </div>
+          <div className="p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-900/40">
+            <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+              Security Guard
+            </div>
+            <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-200 mt-0.5">
+              Requires OTP verification
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Modal: Account Merging Dialog */}
       {isMergeModalOpen && (
