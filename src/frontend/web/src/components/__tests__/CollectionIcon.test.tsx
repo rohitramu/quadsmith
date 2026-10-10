@@ -5,6 +5,7 @@ import {
   getCollectionIconComponent,
   DroneFrame,
   Propeller,
+  Motor,
 } from "../CollectionIcon";
 import {
   Antenna,
@@ -13,7 +14,6 @@ import {
   Satellite,
   Cpu,
   Radio,
-  Rocket,
   Tv,
   Wrench,
   Zap,
@@ -34,7 +34,7 @@ describe("CollectionIcon Component", () => {
     expect(getCollectionIconComponent("frames")).toBe(DroneFrame);
     expect(getCollectionIconComponent("gps-receivers")).toBe(Satellite);
     expect(getCollectionIconComponent("gps")).toBe(Satellite);
-    expect(getCollectionIconComponent("motors")).toBe(Rocket);
+    expect(getCollectionIconComponent("motors")).toBe(Motor);
     expect(getCollectionIconComponent("propellers")).toBe(Propeller);
     expect(getCollectionIconComponent("props")).toBe(Propeller);
     expect(getCollectionIconComponent("receivers")).toBe(Radio);

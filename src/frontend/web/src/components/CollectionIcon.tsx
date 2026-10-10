@@ -6,7 +6,6 @@ import {
   Satellite,
   Cpu,
   Radio,
-  Rocket,
   Tv,
   Wrench,
   Zap,
@@ -99,6 +98,42 @@ export const DroneFrame: IconComponent = ({
 
 export const DroneFrameIcon = DroneFrame;
 
+/**
+ * Custom FPV Brushless Motor (side-view outrunner motor) matching Lucide 24x24 icon grid.
+ */
+export const Motor: IconComponent = ({ size = 24, className = "", strokeWidth = 2, ...props }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    {...props}
+  >
+    {/* Prop Shaft (M5 threaded motor shaft) */}
+    <line x1="12" y1="2" x2="12" y2="7" />
+    {/* Rotor Bell Housing (Chamfered outrunner bell) */}
+    <path d="M4 11 8 7h8l4 4v5H4z" />
+    {/* Bell Cooling Vents */}
+    <line x1="9" y1="11" x2="9" y2="14.5" />
+    <line x1="15" y1="11" x2="15" y2="14.5" />
+    {/* Stator Core */}
+    <path d="M6 16v3h12v-3" />
+    {/* Mounting Baseplate & Screws */}
+    <line x1="3" y1="20" x2="21" y2="20" />
+    <line x1="6.5" y1="20" x2="6.5" y2="22" />
+    <line x1="17.5" y1="20" x2="17.5" y2="22" />
+  </svg>
+);
+
+export const MotorIcon = Motor;
+export const BrushlessMotor = Motor;
+
 export function getCollectionIconComponent(collectionKey?: string | null): IconComponent {
   const norm = normalizeCollectionKey(collectionKey);
   switch (norm) {
@@ -119,7 +154,7 @@ export function getCollectionIconComponent(collectionKey?: string | null): IconC
     case "gps-receivers":
       return Satellite;
     case "motors":
-      return Rocket;
+      return Motor;
     case "propellers":
       return Propeller;
     case "receivers":
