@@ -955,7 +955,7 @@ export function AccountSettingsPage() {
                       type="button"
                       onClick={handleVerifyOwnership}
                       disabled={isVerifyingOwnership || mergeOtpDigits.join("").length !== 6}
-                      className="flex-2 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm"
+                      className="flex-[2] py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm"
                     >
                       {isVerifyingOwnership && <Loader2 size={13} className="animate-spin" />}
                       <span>Verify Ownership & Review</span>
@@ -1114,7 +1114,7 @@ export function AccountSettingsPage() {
                       type="button"
                       onClick={handleConfirmMerge}
                       disabled={isExecutingMerge}
-                      className="flex-2 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm"
+                      className="flex-[2] py-2.5 rounded-xl bg-red-600 hover:bg-red-500 active:bg-red-700 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm shadow-red-500/20"
                     >
                       {isExecutingMerge && <Loader2 size={13} className="animate-spin" />}
                       <span>Confirm Merge</span>
