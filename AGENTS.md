@@ -12,9 +12,13 @@ Always check the manufacturer's official website and official spec sheets as the
 
 ## Project Planning
 
-- Do not make up names for implementation phases (e.g., "Phase 2") or dictate the roadmap structure without consulting the user first.
-- **No Implementation Without Explicit Instruction**: Never modify codebase files, schemas, or tests to implement anything discussed in a plan or demonstrated in a preview unless the user explicitly instructs you to proceed with implementation. All iterations during planning and preview review must remain strictly confined to the plan or preview artifacts.
-- **Prominent Approval Callouts**: Whenever waiting on user approval to take action (such as implementing a plan, applying preview changes to the codebase, or executing migrations), prominently display a dedicated callout at the end of the message. Title the callout using the format `Awaiting approval to <action>` (e.g., "Awaiting approval to Implement", "Awaiting approval to Execute"), making it immediately clear that progress is paused pending explicit confirmation.
+- **Direct Requests vs. Plans & Questions**:
+  - When the user directly asks for something (e.g., a specific change, feature, or bugfix), implement it directly in the codebase without pausing to ask for approval.
+  - Only ask for approval before modifying codebase files if:
+    1. The user asked a question that needs to be answered/clarified before proceeding, or
+    2. You are actively discussing a **plan** — defined specifically as either a **visual design** (iterating via preview artifacts) or a **planning document** (e.g., via the `/plan` action).
+  - All iterations during plan discussion or visual design review must remain strictly confined to the plan or preview artifacts until approved.
+- **Prominent Approval Callouts**: Whenever waiting on user approval (when answering questions or discussing a plan), prominently display a dedicated callout at the end of the message. Title the callout using the format `Awaiting approval to <action>` (e.g., "Awaiting approval to Implement", "Awaiting approval to Execute"), making it immediately clear that progress is paused pending explicit confirmation.
 
 ## Database & Schema Maintenance
 
@@ -50,8 +54,8 @@ Whenever committing changes that modify the UI (such as frontend web components,
 - **Dual Previews (Desktop & Mobile)**:
   - Generate **two separate self-contained HTML preview artifacts** for every UI change:
     1. **Desktop Preview** (`<name>_preview_desktop.html`): Built for the Antigravity Desktop studio/side-pane. Features the full layout, side-by-side builder controls, continuous interactive sliders (60 FPS), complete data tables/metrics dashboards, and interactive simulations.
-    2. **Mobile Preview** (`<name>_preview_mobile.html`): Specifically optimized for the Android Antigravity app inline embed.
-  - Embed both previews in the conversation using `<agent-embed src="file:///<path>"></agent-embed>` and provide direct clickable markdown links (`[Open Full-Screen Preview](file:///...)`) for full-page viewing.
+    2. **Mobile Preview** (`<name>_preview_mobile.html`): Specifically optimized for the Android Antigravity app.
+  - **Artifact Links Only (No Inline Embeds)**: Share direct clickable markdown links to both preview artifacts (e.g., `[Open Desktop Preview](file:///...)` and `[Open Mobile Preview](file:///...)`) for full-page viewing. Never embed preview iframes or `<agent-embed>` directly in the conversation.
 - **Desktop Preview as Implementation Guide**:
   - When planning changes or translating designs into code, **always use the desktop preview** as the primary visual plan and implementation specification. Do not simplify the final codebase to match mobile preview compromises.
 - **Visual Parity for Mobile**:
@@ -67,5 +71,5 @@ Whenever committing changes that modify the UI (such as frontend web components,
 - **Self-Contained Styling & CSP Safety**: HTML previews must be completely self-contained. Do not rely on external CDNs (such as `cdn.tailwindcss.com`) that may be blocked by iframe Content Security Policies. Use the allowlisted gstatic Tailwind script (`https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js`) alongside embedded `<style>` fallback rules so previews render reliably in any sandboxed or offline environment.
 - **Fidelity & Implementation Alignment**: Previews must match the real implementation as closely as possible. Do not include mock UI elements, decorative sections, or controls in the preview that will not be built into the final codebase.
 - **Visual Plan & Specification**: Treat HTML previews as a visual plan and implementation guide alongside any planning document. The final frontend implementation must faithfully mirror the layout, components, data fields, and styling shown in the approved desktop preview.
-- **Design Iteration vs. Implementation**: Iterating on previews with the user is strictly design-phase work. Do not modify or push any application source code while iterating on previews. Wait for explicit user approval before translating approved previews into codebase changes.
+- **Design Iteration vs. Direct Execution**: When discussing a visual design plan, keep iterations strictly confined to the preview artifacts until approved. When the user directly requests a specific UI change (outside of discussing a visual design or planning document), implement it directly in the codebase alongside the updated preview artifacts, tests, and commit/push.
 
