@@ -227,6 +227,10 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
                 )}
                 <span className="truncate max-w-[160px] sm:max-w-xs">{siteName}</span>
               </div>
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-600 shrink-0"
+                aria-hidden="true"
+              />
               <div className="flex flex-wrap items-center gap-1.5">
                 {isInferredOther ? (
                   <span
