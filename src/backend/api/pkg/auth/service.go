@@ -1219,8 +1219,8 @@ func (s *AuthService) generateUniqueHandle(ctx context.Context, email string) st
 	for {
 		var exists bool
 		err := s.db.QueryRow(ctx, `
-			SELECT EXISTS(SELECT 1 FROM users WHERE id = $1)
-			OR EXISTS(SELECT 1 FROM handle_histories WHERE old_handle = $1)`, candidate).Scan(&exists)
+			SELECT EXISTS(SELECT 1 FROM users WHERE id = $1 AND deleted_at IS NULL)
+			OR EXISTS(SELECT 1 FROM handle_histories WHERE old_handle = $1 AND renamed_at >= NOW() - INTERVAL '30 days')`, candidate).Scan(&exists)
 		if err != nil || !exists {
 			return candidate
 		}
@@ -1264,9 +1264,25 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 		&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
+			// Check if this was a recent handle within the 30-day hold window
+			err = s.db.QueryRow(ctx, `
+				SELECT u.uuid, u.id, u.email, u.role, u.email_verified_at, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+				FROM handle_histories hh
+				JOIN users u ON u.uuid = hh.user_uuid
+				WHERE LOWER(hh.old_handle) = LOWER($1) AND u.deleted_at IS NULL AND hh.renamed_at >= NOW() - INTERVAL '30 days'
+				ORDER BY hh.renamed_at DESC
+				LIMIT 1`, id).Scan(
+				&user.Uuid, &user.Id, &user.Email, &user.Role,
+				&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+			if err != nil {
+				if errors.Is(err, pgx.ErrNoRows) {
+					return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
+				}
+				return nil, connect.NewError(connect.CodeInternal, err)
+			}
+		} else {
+			return nil, connect.NewError(connect.CodeInternal, err)
 		}
-		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	if emailVerifiedAt != nil {
 		user.EmailVerifiedAt = timestamppb.New(*emailVerifiedAt)
@@ -1298,9 +1314,24 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 		&userUUID, &handle, &createdAt, &displayName, &avatarUrl, &bio)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("pilot profile not found"))
+			// Check if this was a recent handle within the 30-day hold window
+			err = s.db.QueryRow(ctx, `
+				SELECT u.uuid, u.id, u.created_at, p.display_name, p.avatar_url, p.bio
+				FROM handle_histories hh
+				JOIN users u ON u.uuid = hh.user_uuid
+				LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
+				WHERE LOWER(hh.old_handle) = LOWER($1) AND u.deleted_at IS NULL AND hh.renamed_at >= NOW() - INTERVAL '30 days'
+				ORDER BY hh.renamed_at DESC
+				LIMIT 1`, id).Scan(&userUUID, &handle, &createdAt, &displayName, &avatarUrl, &bio)
+			if err != nil {
+				if errors.Is(err, pgx.ErrNoRows) {
+					return nil, connect.NewError(connect.CodeNotFound, errors.New("pilot profile not found"))
+				}
+				return nil, connect.NewError(connect.CodeInternal, err)
+			}
+		} else {
+			return nil, connect.NewError(connect.CodeInternal, err)
 		}
-		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
 	var buildCount int32
@@ -1339,8 +1370,8 @@ func (s *UserService) CheckHandleAvailable(ctx context.Context, req *connect.Req
 
 	var exists bool
 	err := s.db.QueryRow(ctx, `
-		SELECT EXISTS(SELECT 1 FROM users WHERE LOWER(id) = $1)
-		OR EXISTS(SELECT 1 FROM handle_histories WHERE LOWER(old_handle) = $1)`, handle).Scan(&exists)
+		SELECT EXISTS(SELECT 1 FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL)
+		OR EXISTS(SELECT 1 FROM handle_histories WHERE LOWER(old_handle) = $1 AND renamed_at >= NOW() - INTERVAL '30 days')`, handle).Scan(&exists)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

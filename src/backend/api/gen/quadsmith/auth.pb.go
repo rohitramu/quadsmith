@@ -1207,12 +1207,12 @@ const file_auth_proto_rawDesc = "" +
 	"_sql.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\n" +
 	"user.proto\"+\n" +
 	"\x13SendEmailOtpRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"\xb1\x01\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"\xa5\x01\n" +
 	"\x14SendEmailOtpResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12)\n" +
 	"\x10cooldown_seconds\x18\x03 \x01(\x05R\x0fcooldownSeconds\x12.\n" +
-	"\x13is_existing_account\x18\x04 \x01(\bR\x11isExistingAccountJ\x04\b\x05\x10\x06J\x04\b\x06\x10\a\"A\n" +
+	"\x13is_existing_account\x18\x04 \x01(\bR\x11isExistingAccount\"A\n" +
 	"\x15VerifyEmailOtpRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\".\n" +

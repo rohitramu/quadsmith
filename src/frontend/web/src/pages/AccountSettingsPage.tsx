@@ -1013,8 +1013,8 @@ export function AccountSettingsPage() {
                         <strong className="text-zinc-700 dark:text-zinc-300">
                           @{mergeOtherHandle}
                         </strong>{" "}
-                        will be deleted and permanently archived to your handle history. Existing
-                        profile links will automatically redirect to{" "}
+                        will be held for 30 days before being released. During this 30-day window,
+                        existing profile links will automatically redirect to{" "}
                         <strong className="text-zinc-700 dark:text-zinc-300">@{user?.id}</strong>.
                       </div>
                     </div>

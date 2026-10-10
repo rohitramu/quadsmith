@@ -145,6 +145,7 @@ describe("AccountSettingsPage Component", () => {
       expect(screen.getByText("Confirm Account Merge")).toBeInTheDocument();
       expect(screen.getByText(/ownership verified for/i)).toBeInTheDocument();
       expect(screen.getByText(/delete username:/i)).toBeInTheDocument();
+      expect(screen.getByText(/held for 30 days before being released/i)).toBeInTheDocument();
       expect(screen.getByText(/associate email address/i)).toBeInTheDocument();
       expect(screen.getByText(/migrated resources \(4 drone builds\)/i)).toBeInTheDocument();
       expect(screen.getByText(/bando basher 5-inch/i)).toBeInTheDocument();
