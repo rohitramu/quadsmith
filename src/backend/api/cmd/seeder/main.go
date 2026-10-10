@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/encoding/prototext"
 	pb "quadsmith/api/gen/quadsmith"
+	"quadsmith/api/internal/validation"
 )
 
 func main() {
@@ -50,6 +51,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Motors {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("motor %s: %w", v.Id, err))
+			}
 			if err := pb.CreateMotor(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -63,6 +67,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Frames {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("frame %s: %w", v.Id, err))
+			}
 			if v.MotorCount == 0 {
 				v.MotorCount = 4
 			}
@@ -79,6 +86,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Batteries {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("battery %s: %w", v.Id, err))
+			}
 			if err := pb.CreateBattery(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -92,6 +102,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.ElectronicSpeedControllers {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("electronic speed controller %s: %w", v.Id, err))
+			}
 			if err := pb.CreateElectronicSpeedController(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -105,6 +118,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Antennas {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("antenna %s: %w", v.Id, err))
+			}
 			if err := pb.CreateAntenna(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -118,6 +134,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Cameras {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("camera %s: %w", v.Id, err))
+			}
 			if err := pb.CreateCamera(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -131,6 +150,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Propellers {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("propeller %s: %w", v.Id, err))
+			}
 			if err := pb.CreatePropeller(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -144,6 +166,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Receivers {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("receiver %s: %w", v.Id, err))
+			}
 			if err := pb.CreateReceiver(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -157,6 +182,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.VideoTransmitters {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("video transmitter %s: %w", v.Id, err))
+			}
 			if err := pb.CreateVideoTransmitter(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -170,6 +198,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.FlightControllers {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("flight controller %s: %w", v.Id, err))
+			}
 			if err := pb.CreateFlightController(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -183,6 +214,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.GpsReceivers {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("gps receiver %s: %w", v.Id, err))
+			}
 			if err := pb.CreateGpsReceiver(ctx, tx, v); err != nil {
 				panic(err)
 			}
@@ -196,6 +230,9 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Builds {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("build %s: %w", v.Id, err))
+			}
 			if err := pb.CreateBuild(ctx, tx, v); err != nil {
 				panic(err)
 			}

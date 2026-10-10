@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
-import { SocialLinkPreviewCard } from "../SocialLinkPreviewCard";
+import { SocialLinkPreviewCard, validateReferenceLink } from "../SocialLinkPreviewCard";
 import { ReferenceLinkType } from "../../gen/quadsmith/reference_link_pb";
 
 describe("SocialLinkPreviewCard", () => {
@@ -50,6 +50,53 @@ describe("SocialLinkPreviewCard", () => {
       expect(screen.getByText("Official Product Page")).toBeInTheDocument();
       expect(screen.getByText("Purchase")).toBeInTheDocument();
     });
+  });
+
+  it("infers 'Other' category when types array is empty", async () => {
+    const link = {
+      types: [],
+      url: "https://example.com/other-link",
+    };
+
+    renderWithProviders(<SocialLinkPreviewCard link={link} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Other")).toBeInTheDocument();
+    });
+  });
+
+  it("infers 'Other' category when types is not provided", async () => {
+    const link = {
+      url: "https://example.com/no-types",
+    };
+
+    renderWithProviders(<SocialLinkPreviewCard link={link} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Other")).toBeInTheDocument();
+    });
+  });
+
+  it("throws validation error when UNSPECIFIED type is provided", () => {
+    const link = {
+      types: [ReferenceLinkType.UNSPECIFIED],
+      url: "https://example.com/unspecified",
+    };
+
+    expect(() => validateReferenceLink(link)).toThrow(
+      "ReferenceLinkType.UNSPECIFIED is not permitted",
+    );
+  });
+
+  it("throws validation error when UNSPECIFIED is included among other types", () => {
+    const link = {
+      types: [ReferenceLinkType.PURCHASE, ReferenceLinkType.UNSPECIFIED],
+      url: "https://example.com/multi-unspecified",
+    };
+
+    expect(() => validateReferenceLink(link)).toThrow(
+      "ReferenceLinkType.UNSPECIFIED is not permitted",
+    );
   });
 
   it("gracefully falls back when legacy type field is provided", async () => {

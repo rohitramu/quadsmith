@@ -5,13 +5,17 @@ package quadsmith;
 option go_package = "quadsmith/api/gen/quadsmith";
 
 enum ReferenceLinkType {
+  // Retained for proto3 enum zero-value requirement, but invalid in practice.
+  // Reference links must not include UNSPECIFIED in their types array.
   REFERENCE_LINK_TYPE_UNSPECIFIED = 0;
   REFERENCE_LINK_TYPE_PURCHASE = 1;
   REFERENCE_LINK_TYPE_PRODUCT_PAGE = 2;
   REFERENCE_LINK_TYPE_DOCUMENTATION = 3;
   REFERENCE_LINK_TYPE_FORUM_POST = 4;
   REFERENCE_LINK_TYPE_REVIEW = 5;
-  REFERENCE_LINK_TYPE_OTHER = 6;
+
+  reserved 6;
+  reserved "REFERENCE_LINK_TYPE_OTHER";
 }
 
 message ReferenceLink {

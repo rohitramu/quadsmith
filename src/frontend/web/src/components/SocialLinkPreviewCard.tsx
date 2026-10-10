@@ -11,8 +11,6 @@ const LINK_TYPE_LABELS: Record<number, string> = {
   [ReferenceLinkType.DOCUMENTATION]: "Documentation",
   [ReferenceLinkType.FORUM_POST]: "Forum Discussion",
   [ReferenceLinkType.REVIEW]: "Review",
-  [ReferenceLinkType.OTHER]: "Other",
-  [ReferenceLinkType.UNSPECIFIED]: "Reference Link",
 };
 
 const LINK_TYPE_STYLES: Record<number, string> = {
@@ -26,11 +24,31 @@ const LINK_TYPE_STYLES: Record<number, string> = {
     "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border-amber-200 dark:border-amber-800",
   [ReferenceLinkType.FORUM_POST]:
     "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border-sky-200 dark:border-sky-800",
-  [ReferenceLinkType.OTHER]:
-    "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700",
-  [ReferenceLinkType.UNSPECIFIED]:
-    "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700",
 };
+
+export const OTHER_LABEL = "Other";
+export const OTHER_STYLE =
+  "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700";
+
+export function validateReferenceLink(link: {
+  types?: (ReferenceLinkType | number)[];
+  type?: ReferenceLinkType | number;
+  url?: string;
+}) {
+  const rawTypes = Array.isArray(link.types)
+    ? link.types
+    : link.type !== undefined && link.type !== null
+      ? [link.type]
+      : [];
+
+  for (const t of rawTypes) {
+    if (t === ReferenceLinkType.UNSPECIFIED || t === 0) {
+      throw new Error(
+        "ReferenceLinkType.UNSPECIFIED is not permitted. Omit categories or use an empty array to infer 'Other'.",
+      );
+    }
+  }
+}
 
 export interface SocialLinkPreviewCardProps {
   link:
@@ -44,6 +62,8 @@ export interface SocialLinkPreviewCardProps {
 }
 
 export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPreviewCardProps) {
+  validateReferenceLink(link);
+
   const [imageError, setImageError] = useState(false);
   const [faviconError, setFaviconError] = useState(false);
 
@@ -65,12 +85,14 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
   }
 
   const rawLink = link as { types?: number[]; type?: number };
-  const linkTypes: number[] =
-    Array.isArray(rawLink.types) && rawLink.types.length > 0
-      ? rawLink.types
-      : rawLink.type !== undefined && rawLink.type !== null
-        ? [rawLink.type]
-        : [ReferenceLinkType.UNSPECIFIED];
+  const rawList = Array.isArray(rawLink.types)
+    ? rawLink.types
+    : rawLink.type !== undefined && rawLink.type !== null
+      ? [rawLink.type]
+      : [];
+
+  const linkTypes: number[] = rawList.filter((t) => t !== ReferenceLinkType.UNSPECIFIED && t !== 0);
+  const isInferredOther = linkTypes.length === 0;
 
   const title = preview?.title || hostname;
   const description = preview?.description;
@@ -104,19 +126,26 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
           <div className="flex items-center justify-between gap-2 mb-1.5">
             <div className="flex items-center gap-2 min-w-0">
               <div className="flex flex-wrap items-center gap-1.5 shrink-0">
-                {linkTypes.map((t, idx) => {
-                  const label = LINK_TYPE_LABELS[t] || "Link";
-                  const badgeStyle =
-                    LINK_TYPE_STYLES[t] || LINK_TYPE_STYLES[ReferenceLinkType.OTHER];
-                  return (
-                    <span
-                      key={idx}
-                      className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${badgeStyle} shrink-0`}
-                    >
-                      {label}
-                    </span>
-                  );
-                })}
+                {isInferredOther ? (
+                  <span
+                    className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${OTHER_STYLE} shrink-0`}
+                  >
+                    {OTHER_LABEL}
+                  </span>
+                ) : (
+                  linkTypes.map((t, idx) => {
+                    const label = LINK_TYPE_LABELS[t] || OTHER_LABEL;
+                    const badgeStyle = LINK_TYPE_STYLES[t] || OTHER_STYLE;
+                    return (
+                      <span
+                        key={idx}
+                        className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${badgeStyle} shrink-0`}
+                      >
+                        {label}
+                      </span>
+                    );
+                  })
+                )}
               </div>
               <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 truncate">
                 {preview?.favicon && !faviconError ? (

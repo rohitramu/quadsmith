@@ -272,3 +272,40 @@ func TestSandboxCreateBuildDuplicateID(t *testing.T) {
 		t.Errorf("expected id 'bando-basher-5-inch-copy3', got '%s'", res3.Msg.Id)
 	}
 }
+
+func TestSandboxCreateBuild_RejectsUnspecifiedReferenceLink(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	buildClient := quadsmithconnect.NewBuildServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+	ctx := context.Background()
+
+	req := connect.NewRequest(&pb.CreateBuildRequest{
+		Build: &pb.Build{
+			Name: "Invalid Reference Link Build",
+			ReferenceLinks: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_UNSPECIFIED},
+					Url:   "https://example.com/invalid",
+				},
+			},
+		},
+	})
+	_, err = buildClient.CreateBuild(ctx, req)
+	if err == nil {
+		t.Fatal("expected CreateBuild to fail with InvalidArgument when REFERENCE_LINK_TYPE_UNSPECIFIED is provided, but it succeeded")
+	}
+	if connect.CodeOf(err) != connect.CodeInvalidArgument {
+		t.Errorf("expected CodeInvalidArgument, got %v: %v", connect.CodeOf(err), err)
+	}
+	if !strings.Contains(err.Error(), "REFERENCE_LINK_TYPE_UNSPECIFIED is not permitted") {
+		t.Errorf("expected error message to mention REFERENCE_LINK_TYPE_UNSPECIFIED is not permitted, got: %v", err)
+	}
+}

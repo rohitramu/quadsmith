@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_reference_link: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChRyZWZlcmVuY2VfbGluay5wcm90bxIJcXVhZHNtaXRoIkkKDVJlZmVyZW5jZUxpbmsSKwoFdHlwZXMYASADKA4yHC5xdWFkc21pdGguUmVmZXJlbmNlTGlua1R5cGUSCwoDdXJsGAIgASgJKooCChFSZWZlcmVuY2VMaW5rVHlwZRIjCh9SRUZFUkVOQ0VfTElOS19UWVBFX1VOU1BFQ0lGSUVEEAASIAocUkVGRVJFTkNFX0xJTktfVFlQRV9QVVJDSEFTRRABEiQKIFJFRkVSRU5DRV9MSU5LX1RZUEVfUFJPRFVDVF9QQUdFEAISJQohUkVGRVJFTkNFX0xJTktfVFlQRV9ET0NVTUVOVEFUSU9OEAMSIgoeUkVGRVJFTkNFX0xJTktfVFlQRV9GT1JVTV9QT1NUEAQSHgoaUkVGRVJFTkNFX0xJTktfVFlQRV9SRVZJRVcQBRIdChlSRUZFUkVOQ0VfTElOS19UWVBFX09USEVSEAZCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "ChRyZWZlcmVuY2VfbGluay5wcm90bxIJcXVhZHNtaXRoIkkKDVJlZmVyZW5jZUxpbmsSKwoFdHlwZXMYASADKA4yHC5xdWFkc21pdGguUmVmZXJlbmNlTGlua1R5cGUSCwoDdXJsGAIgASgJKowCChFSZWZlcmVuY2VMaW5rVHlwZRIjCh9SRUZFUkVOQ0VfTElOS19UWVBFX1VOU1BFQ0lGSUVEEAASIAocUkVGRVJFTkNFX0xJTktfVFlQRV9QVVJDSEFTRRABEiQKIFJFRkVSRU5DRV9MSU5LX1RZUEVfUFJPRFVDVF9QQUdFEAISJQohUkVGRVJFTkNFX0xJTktfVFlQRV9ET0NVTUVOVEFUSU9OEAMSIgoeUkVGRVJFTkNFX0xJTktfVFlQRV9GT1JVTV9QT1NUEAQSHgoaUkVGRVJFTkNFX0xJTktfVFlQRV9SRVZJRVcQBSIECAYQBioZUkVGRVJFTkNFX0xJTktfVFlQRV9PVEhFUkIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
   );
 
 /**
@@ -43,6 +43,9 @@ export const ReferenceLinkSchema: GenMessage<ReferenceLink> =
  */
 export enum ReferenceLinkType {
   /**
+   * Retained for proto3 enum zero-value requirement, but invalid in practice.
+   * Reference links must not include UNSPECIFIED in their types array.
+   *
    * @generated from enum value: REFERENCE_LINK_TYPE_UNSPECIFIED = 0;
    */
   UNSPECIFIED = 0,
@@ -71,11 +74,6 @@ export enum ReferenceLinkType {
    * @generated from enum value: REFERENCE_LINK_TYPE_REVIEW = 5;
    */
   REVIEW = 5,
-
-  /**
-   * @generated from enum value: REFERENCE_LINK_TYPE_OTHER = 6;
-   */
-  OTHER = 6,
 }
 
 /**

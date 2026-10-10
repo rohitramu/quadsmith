@@ -79,6 +79,18 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("build object is required"))
 	}
 
+	// Validate reference links
+	for i, link := range b.ReferenceLinks {
+		if link == nil {
+			continue
+		}
+		for _, t := range link.Types {
+			if t == ReferenceLinkType_REFERENCE_LINK_TYPE_UNSPECIFIED {
+				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("reference link %d: REFERENCE_LINK_TYPE_UNSPECIFIED is not permitted; omit categories or provide an empty types array for 'Other'", i))
+			}
+		}
+	}
+
 	// 1. Assign UUID v7 if empty
 	if b.Uuid == "" {
 		var randBytes [16]byte
