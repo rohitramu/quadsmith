@@ -795,14 +795,17 @@ func (x *VerifyAddEmailOtpRequest) GetToken() string {
 }
 
 type VerifyAddEmailOtpResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Success         bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Message         string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	MergeRequired   bool                   `protobuf:"varint,3,opt,name=merge_required,json=mergeRequired,proto3" json:"merge_required,omitempty"`
-	OtherUserHandle string                 `protobuf:"bytes,4,opt,name=other_user_handle,json=otherUserHandle,proto3" json:"other_user_handle,omitempty"`
-	OtherBuildCount int32                  `protobuf:"varint,5,opt,name=other_build_count,json=otherBuildCount,proto3" json:"other_build_count,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	Success             bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message             string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	MergeRequired       bool                   `protobuf:"varint,3,opt,name=merge_required,json=mergeRequired,proto3" json:"merge_required,omitempty"`
+	OtherUserHandle     string                 `protobuf:"bytes,4,opt,name=other_user_handle,json=otherUserHandle,proto3" json:"other_user_handle,omitempty"`
+	OtherBuildCount     int32                  `protobuf:"varint,5,opt,name=other_build_count,json=otherBuildCount,proto3" json:"other_build_count,omitempty"`
+	OtherBuildNames     []string               `protobuf:"bytes,6,rep,name=other_build_names,json=otherBuildNames,proto3" json:"other_build_names,omitempty"`
+	OtherEmails         []string               `protobuf:"bytes,7,rep,name=other_emails,json=otherEmails,proto3" json:"other_emails,omitempty"`
+	OtherOauthProviders []string               `protobuf:"bytes,8,rep,name=other_oauth_providers,json=otherOauthProviders,proto3" json:"other_oauth_providers,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *VerifyAddEmailOtpResponse) Reset() {
@@ -868,6 +871,27 @@ func (x *VerifyAddEmailOtpResponse) GetOtherBuildCount() int32 {
 		return x.OtherBuildCount
 	}
 	return 0
+}
+
+func (x *VerifyAddEmailOtpResponse) GetOtherBuildNames() []string {
+	if x != nil {
+		return x.OtherBuildNames
+	}
+	return nil
+}
+
+func (x *VerifyAddEmailOtpResponse) GetOtherEmails() []string {
+	if x != nil {
+		return x.OtherEmails
+	}
+	return nil
+}
+
+func (x *VerifyAddEmailOtpResponse) GetOtherOauthProviders() []string {
+	if x != nil {
+		return x.OtherOauthProviders
+	}
+	return nil
 }
 
 type MergeAccountRequest struct {
@@ -1246,13 +1270,16 @@ const file_auth_proto_rawDesc = "" +
 	"\x18VerifyAddEmailOtpRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
-	"\x05token\x18\x03 \x01(\tR\x05token\"\xce\x01\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\"\xd1\x02\n" +
 	"\x19VerifyAddEmailOtpResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
 	"\x0emerge_required\x18\x03 \x01(\bR\rmergeRequired\x12*\n" +
 	"\x11other_user_handle\x18\x04 \x01(\tR\x0fotherUserHandle\x12*\n" +
-	"\x11other_build_count\x18\x05 \x01(\x05R\x0fotherBuildCount\"U\n" +
+	"\x11other_build_count\x18\x05 \x01(\x05R\x0fotherBuildCount\x12*\n" +
+	"\x11other_build_names\x18\x06 \x03(\tR\x0fotherBuildNames\x12!\n" +
+	"\fother_emails\x18\a \x03(\tR\votherEmails\x122\n" +
+	"\x15other_oauth_providers\x18\b \x03(\tR\x13otherOauthProviders\"U\n" +
 	"\x13MergeAccountRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +

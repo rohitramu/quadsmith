@@ -535,6 +535,31 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (req.code !== "123456" && !req.token) {
           throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
         }
+        const emailLower = (req.email || "").toLowerCase();
+        const isExisting =
+          emailLower.includes("other") ||
+          emailLower.includes("old.racer") ||
+          emailLower.includes("existing") ||
+          Boolean(req.token && !req.email);
+
+        if (isExisting) {
+          return {
+            success: true,
+            message: "Account merge required",
+            mergeRequired: true,
+            otherUserHandle: "old_racer",
+            otherBuildCount: 4,
+            otherBuildNames: [
+              "Bando Basher 5-inch",
+              "CineWhoop 3.5 Pro",
+              "Long Range Cruiser 7-inch",
+              "Ultralight Toothpick 2S",
+            ],
+            otherEmails: ["old.racer@fpv.org", "old.racer.backup@example.com"],
+            otherOauthProviders: ["github"],
+          };
+        }
+
         const newEmail = create(UserEmailSchema, {
           uuid: `mock-email-uuid-${userEmails.length + 1}`,
           userUuid: mockUser.uuid,
@@ -546,6 +571,11 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           success: true,
           message: "Email verified and added",
           mergeRequired: false,
+          otherUserHandle: "",
+          otherBuildCount: 0,
+          otherBuildNames: [],
+          otherEmails: [],
+          otherOauthProviders: [],
         };
       },
       mergeAccount: (req) => {

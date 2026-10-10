@@ -42,6 +42,9 @@ export interface AuthContextType {
     mergeRequired: boolean;
     otherUserHandle?: string;
     otherBuildCount?: number;
+    otherBuildNames?: string[];
+    otherEmails?: string[];
+    otherOauthProviders?: string[];
   }>;
   mergeAccount: (
     email: string,

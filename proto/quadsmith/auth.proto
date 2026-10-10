@@ -91,6 +91,9 @@ message VerifyAddEmailOtpResponse {
   bool merge_required = 3;
   string other_user_handle = 4;
   int32 other_build_count = 5;
+  repeated string other_build_names = 6;
+  repeated string other_emails = 7;
+  repeated string other_oauth_providers = 8;
 }
 
 message MergeAccountRequest {

@@ -643,12 +643,51 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		var buildCount int
 		_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, otherUserUUID).Scan(&buildCount)
 
+		var buildNames []string
+		rows, err := s.db.Query(ctx, `SELECT name FROM builds WHERE user_uuid = $1 ORDER BY name ASC LIMIT 10`, otherUserUUID)
+		if err == nil {
+			defer rows.Close()
+			for rows.Next() {
+				var bName string
+				if err := rows.Scan(&bName); err == nil {
+					buildNames = append(buildNames, bName)
+				}
+			}
+		}
+
+		var otherEmails []string
+		mailRows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1 ORDER BY email ASC`, otherUserUUID)
+		if err == nil {
+			defer mailRows.Close()
+			for mailRows.Next() {
+				var em string
+				if err := mailRows.Scan(&em); err == nil {
+					otherEmails = append(otherEmails, em)
+				}
+			}
+		}
+
+		var oauthProviders []string
+		oaRows, err := s.db.Query(ctx, `SELECT provider FROM oauth_accounts WHERE user_uuid = $1 ORDER BY provider ASC`, otherUserUUID)
+		if err == nil {
+			defer oaRows.Close()
+			for oaRows.Next() {
+				var prov string
+				if err := oaRows.Scan(&prov); err == nil {
+					oauthProviders = append(oauthProviders, prov)
+				}
+			}
+		}
+
 		return connect.NewResponse(&pb.VerifyAddEmailOtpResponse{
-			Success:         true,
-			MergeRequired:   true,
-			OtherUserHandle: otherHandle,
-			OtherBuildCount: int32(buildCount),
-			Message:         fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherHandle, buildCount),
+			Success:             true,
+			MergeRequired:       true,
+			OtherUserHandle:     otherHandle,
+			OtherBuildCount:     int32(buildCount),
+			OtherBuildNames:     buildNames,
+			OtherEmails:         otherEmails,
+			OtherOauthProviders: oauthProviders,
+			Message:             fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherHandle, buildCount),
 		}), nil
 	}
 

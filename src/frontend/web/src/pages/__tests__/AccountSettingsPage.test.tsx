@@ -120,13 +120,10 @@ describe("AccountSettingsPage Component", () => {
     fireEvent.click(sendCodeBtn);
 
     await waitFor(() => {
+      expect(screen.getByText("Verify Account Ownership")).toBeInTheDocument();
       expect(screen.getByText("Existing Account Detected")).toBeInTheDocument();
-      expect(screen.getByText("Account Merge Instructions")).toBeInTheDocument();
-      expect(screen.getByText("Two Ways to Confirm:")).toBeInTheDocument();
-      expect(screen.getByText(/merge @old_racer into your account/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/drone builds and configurations will be permanently transferred/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Two Ways to Verify:")).toBeInTheDocument();
+      expect(screen.getByText(/ownership check for @old_racer/i)).toBeInTheDocument();
     });
 
     // Enter verification code into segmented OTP inputs
@@ -134,8 +131,26 @@ describe("AccountSettingsPage Component", () => {
     expect(firstDigit).toBeInTheDocument();
     fireEvent.change(firstDigit, { target: { value: "123456" } });
 
-    // Confirm & Merge
-    const confirmBtn = screen.getByRole("button", { name: /confirm & merge accounts/i });
+    // Verify Ownership & Review
+    const verifyBtn = screen.getByRole("button", { name: /verify ownership & review/i });
+    expect(verifyBtn).not.toBeDisabled();
+    fireEvent.click(verifyBtn);
+
+    // Summary screen displayed after ownership check
+    await waitFor(() => {
+      expect(screen.getByText("Confirm Account Merge")).toBeInTheDocument();
+      expect(screen.getByText(/ownership verified for/i)).toBeInTheDocument();
+      expect(screen.getByText(/delete username:/i)).toBeInTheDocument();
+      expect(screen.getByText(/associate email address/i)).toBeInTheDocument();
+      expect(screen.getByText(/migrated resources \(4 drone builds\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/bando basher 5-inch/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/this action is permanent and cannot be undone/i),
+      ).toBeInTheDocument();
+    });
+
+    // Confirm Merge
+    const confirmBtn = screen.getByRole("button", { name: /^confirm merge$/i });
     expect(confirmBtn).not.toBeDisabled();
     fireEvent.click(confirmBtn);
 
@@ -157,10 +172,23 @@ describe("AccountSettingsPage Component", () => {
     });
   });
 
-  it("automatically authorizes merge when arriving with merge_token in URL", async () => {
+  it("verifies ownership via merge_token and presents summary before confirming merge", async () => {
     renderApp("/account?merge_token=valid-mock-token");
 
-    // Success state in modal triggered via magic link
+    // Arrives with token, verifies ownership, and displays summary
+    await waitFor(() => {
+      expect(screen.getByText("Confirm Account Merge")).toBeInTheDocument();
+      expect(screen.getByText(/ownership verified for/i)).toBeInTheDocument();
+      expect(screen.getByText(/delete username:/i)).toBeInTheDocument();
+      expect(screen.getByText(/migrated resources \(4 drone builds\)/i)).toBeInTheDocument();
+    });
+
+    // User clicks Confirm Merge
+    const confirmBtn = screen.getByRole("button", { name: /^confirm merge$/i });
+    expect(confirmBtn).not.toBeDisabled();
+    fireEvent.click(confirmBtn);
+
+    // Success state in modal
     await waitFor(() => {
       expect(screen.getByText(/accounts merged successfully!/i)).toBeInTheDocument();
       expect(

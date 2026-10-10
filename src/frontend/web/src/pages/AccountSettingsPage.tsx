@@ -14,6 +14,9 @@ import {
   Trash2,
   AlertCircle,
   CheckCircle2,
+  UserX,
+  Package,
+  AlertTriangle,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
@@ -61,13 +64,21 @@ export function AccountSettingsPage() {
 
   // Merge Account Modal state
   const [isMergeModalOpen, setIsMergeModalOpen] = useState(false);
+  const [mergeModalStep, setMergeModalStep] = useState<"ownership" | "summary" | "success">(
+    "ownership",
+  );
   const [mergeEmail, setMergeEmail] = useState("");
   const [mergeOtherHandle, setMergeOtherHandle] = useState("");
   const [mergeOtherBuildCount, setMergeOtherBuildCount] = useState<number>(0);
+  const [mergeOtherBuildNames, setMergeOtherBuildNames] = useState<string[]>([]);
+  const [mergeOtherEmails, setMergeOtherEmails] = useState<string[]>([]);
+  const [mergeOtherOauthProviders, setMergeOtherOauthProviders] = useState<string[]>([]);
+  const [verifiedMergeCode, setVerifiedMergeCode] = useState("");
+  const [verifiedMergeToken, setVerifiedMergeToken] = useState("");
   const [mergeOtpDigits, setMergeOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
+  const [isVerifyingOwnership, setIsVerifyingOwnership] = useState(false);
   const [isExecutingMerge, setIsExecutingMerge] = useState(false);
   const [mergeError, setMergeError] = useState<string | null>(null);
-  const [mergeSuccess, setMergeSuccess] = useState(false);
   const [transferredBuilds, setTransferredBuilds] = useState<number>(0);
 
   const mergeOtpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -77,16 +88,31 @@ export function AccountSettingsPage() {
     if (mergeToken) {
       let isMounted = true;
       async function handleMagicMerge() {
-        setIsExecutingMerge(true);
+        setIsVerifyingOwnership(true);
         setMergeError(null);
         setIsMergeModalOpen(true);
         try {
-          const res = await mergeAccount("", undefined, mergeToken);
+          const res = await verifyAddEmailOtp("", undefined, mergeToken);
           if (!isMounted) return;
-          setTransferredBuilds(res.transferredBuildCount || 0);
-          setMergeOtherHandle(res.mergedHandle || "pilot");
-          setMergeSuccess(true);
-          await refreshEmails();
+          if (res.mergeRequired) {
+            setMergeOtherHandle(res.otherUserHandle || "pilot");
+            setMergeOtherBuildCount(res.otherBuildCount || 0);
+            setMergeOtherBuildNames(res.otherBuildNames || []);
+            setMergeOtherEmails(res.otherEmails || []);
+            setMergeOtherOauthProviders(res.otherOauthProviders || []);
+            if (res.otherEmails && res.otherEmails.length > 0) {
+              setMergeEmail(res.otherEmails[0]);
+            }
+            setVerifiedMergeToken(mergeToken || "");
+            setMergeModalStep("summary");
+          } else {
+            setAddEmailSuccess(
+              "Email verified and added to your account successfully via magic link.",
+            );
+            setTimeout(() => setAddEmailSuccess(null), 4000);
+            setIsMergeModalOpen(false);
+            await refreshEmails();
+          }
           searchParams.delete("merge_token");
           setSearchParams(searchParams, { replace: true });
         } catch (err: unknown) {
@@ -98,7 +124,7 @@ export function AccountSettingsPage() {
           }
         } finally {
           if (isMounted) {
-            setIsExecutingMerge(false);
+            setIsVerifyingOwnership(false);
           }
         }
       }
@@ -113,9 +139,14 @@ export function AccountSettingsPage() {
           const res = await verifyAddEmailOtp("", undefined, addEmailToken);
           if (!isMounted) return;
           if (res.mergeRequired) {
-            setMergeEmail(res.otherUserHandle ? `account @${res.otherUserHandle}` : "");
+            setMergeEmail(res.otherEmails?.[0] || "");
             setMergeOtherHandle(res.otherUserHandle || "pilot");
             setMergeOtherBuildCount(res.otherBuildCount || 0);
+            setMergeOtherBuildNames(res.otherBuildNames || []);
+            setMergeOtherEmails(res.otherEmails || []);
+            setMergeOtherOauthProviders(res.otherOauthProviders || []);
+            setVerifiedMergeToken(addEmailToken || "");
+            setMergeModalStep("summary");
             setIsMergeModalOpen(true);
           } else {
             setAddEmailSuccess(
@@ -140,15 +171,7 @@ export function AccountSettingsPage() {
         isMounted = false;
       };
     }
-  }, [
-    mergeToken,
-    addEmailToken,
-    mergeAccount,
-    verifyAddEmailOtp,
-    refreshEmails,
-    searchParams,
-    setSearchParams,
-  ]);
+  }, [mergeToken, addEmailToken, verifyAddEmailOtp, refreshEmails, searchParams, setSearchParams]);
 
   // Email Action feedback
   const [emailActionLoading, setEmailActionLoading] = useState<string | null>(null);
@@ -201,13 +224,18 @@ export function AccountSettingsPage() {
       const res = await sendAddEmailOtp(newEmail.trim());
       if (res.isExistingAccount) {
         // Email belongs to an existing Quadsmith account!
-        // Bring up the Merge Confirmation Modal
+        // Bring up the Merge Modal for ownership check
         setMergeEmail(newEmail.trim());
         setMergeOtherHandle(res.existingUserHandle || "pilot");
         setMergeOtherBuildCount(res.existingBuildCount || 0);
+        setMergeOtherBuildNames([]);
+        setMergeOtherEmails([]);
+        setMergeOtherOauthProviders([]);
+        setVerifiedMergeCode("");
+        setVerifiedMergeToken("");
         setMergeOtpDigits(["", "", "", "", "", ""]);
         setMergeError(null);
-        setMergeSuccess(false);
+        setMergeModalStep("ownership");
         setIsMergeModalOpen(true);
         setIsAddEmailOpen(false);
         setTimeout(() => mergeOtpInputRefs.current[0]?.focus(), 100);
@@ -239,17 +267,14 @@ export function AccountSettingsPage() {
         setMergeEmail(newEmail.trim());
         setMergeOtherHandle(res.otherUserHandle || "pilot");
         setMergeOtherBuildCount(res.otherBuildCount || 0);
-        const digits = ["", "", "", "", "", ""];
-        addOtpCode
-          .trim()
-          .slice(0, 6)
-          .split("")
-          .forEach((c, i) => {
-            digits[i] = c;
-          });
-        setMergeOtpDigits(digits);
+        setMergeOtherBuildNames(res.otherBuildNames || []);
+        setMergeOtherEmails(res.otherEmails || []);
+        setMergeOtherOauthProviders(res.otherOauthProviders || []);
+        setVerifiedMergeCode(addOtpCode.trim());
+        setVerifiedMergeToken("");
         setMergeError(null);
-        setMergeSuccess(false);
+        // Ownership verified in inline form, proceed directly to summary
+        setMergeModalStep("summary");
         setIsMergeModalOpen(true);
         setIsAddEmailOpen(false);
         return;
@@ -303,6 +328,66 @@ export function AccountSettingsPage() {
     }
   };
 
+  // Step 1: Verify Ownership (checks 6-digit code for existing account)
+  const handleVerifyOwnership = async () => {
+    const code = mergeOtpDigits.join("");
+    if (code.length !== 6) {
+      setMergeError("Please enter all 6 digits of the verification code");
+      return;
+    }
+    setIsVerifyingOwnership(true);
+    setMergeError(null);
+    try {
+      const res = await verifyAddEmailOtp(mergeEmail.trim(), code);
+      if (res.mergeRequired) {
+        setMergeOtherHandle(res.otherUserHandle || "pilot");
+        setMergeOtherBuildCount(res.otherBuildCount || 0);
+        setMergeOtherBuildNames(res.otherBuildNames || []);
+        setMergeOtherEmails(res.otherEmails || []);
+        setMergeOtherOauthProviders(res.otherOauthProviders || []);
+        setVerifiedMergeCode(code);
+        setMergeModalStep("summary");
+      } else {
+        setAddEmailSuccess(`Successfully added ${mergeEmail.trim()} to your account.`);
+        setTimeout(() => setAddEmailSuccess(null), 4000);
+        setIsMergeModalOpen(false);
+        await refreshEmails();
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setMergeError(err.message);
+      } else {
+        setMergeError("Verification failed. Please check the code and try again.");
+      }
+    } finally {
+      setIsVerifyingOwnership(false);
+    }
+  };
+
+  // Step 2: Confirm Merge after reviewing the impact summary
+  const handleConfirmMerge = async () => {
+    setIsExecutingMerge(true);
+    setMergeError(null);
+    try {
+      const res = await mergeAccount(
+        mergeEmail.trim(),
+        verifiedMergeCode || undefined,
+        verifiedMergeToken || undefined,
+      );
+      setTransferredBuilds(res.transferredBuildCount || 0);
+      setMergeModalStep("success");
+      await refreshEmails();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setMergeError(err.message);
+      } else {
+        setMergeError("Merge failed. Please try again.");
+      }
+    } finally {
+      setIsExecutingMerge(false);
+    }
+  };
+
   // Handle Set Primary
   const handleSetPrimary = async (emailAddr: string) => {
     setEmailActionLoading(emailAddr);
@@ -341,31 +426,6 @@ export function AccountSettingsPage() {
       }
     } finally {
       setEmailActionLoading(null);
-    }
-  };
-
-  // Handle Execute Merge
-  const handleExecuteMerge = async () => {
-    const code = mergeOtpDigits.join("");
-    if (code.length !== 6) {
-      setMergeError("Please enter all 6 digits of the verification code");
-      return;
-    }
-    setIsExecutingMerge(true);
-    setMergeError(null);
-    try {
-      const res = await mergeAccount(mergeEmail.trim(), code);
-      setTransferredBuilds(res.transferredBuildCount || 0);
-      setMergeSuccess(true);
-      await refreshEmails();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setMergeError(err.message);
-      } else {
-        setMergeError("Merge failed. Please verify the code and try again.");
-      }
-    } finally {
-      setIsExecutingMerge(false);
     }
   };
 
@@ -788,10 +848,18 @@ export function AccountSettingsPage() {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                    Existing Account Detected
+                    {mergeModalStep === "ownership"
+                      ? "Verify Account Ownership"
+                      : mergeModalStep === "summary"
+                        ? "Confirm Account Merge"
+                        : "Accounts Merged"}
                   </h3>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                    Merge @{mergeOtherHandle} into your account
+                    {mergeModalStep === "ownership"
+                      ? `Ownership check for @${mergeOtherHandle}`
+                      : mergeModalStep === "summary"
+                        ? `Consolidate @${mergeOtherHandle} into @${user?.id}`
+                        : "Consolidation complete"}
                   </p>
                 </div>
               </div>
@@ -809,65 +877,40 @@ export function AccountSettingsPage() {
               </div>
             )}
 
-            {!mergeSuccess ? (
+            {mergeModalStep === "ownership" && (
               <div className="space-y-4">
-                {/* Instructions & Data Transfer Details */}
+                {/* Instructions & Notice */}
                 <div className="p-4 rounded-xl border border-purple-500/30 bg-purple-500/10 space-y-2.5">
                   <div className="text-xs font-bold text-purple-700 dark:text-purple-300 flex items-center gap-1.5">
                     <AlertCircle size={14} />
-                    <span>Account Merge Instructions</span>
+                    <span>Existing Account Detected</span>
                   </div>
                   <p className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-relaxed">
                     The email{" "}
                     <strong className="font-mono text-zinc-900 dark:text-zinc-100">
                       {mergeEmail}
                     </strong>{" "}
-                    belongs to an existing Quadsmith account (
+                    is already associated with Quadsmith account{" "}
                     <strong className="text-purple-700 dark:text-purple-300">
                       @{mergeOtherHandle}
                     </strong>
-                    ). Adding this email address will consolidate that account into your current
-                    account (
-                    <strong className="text-zinc-900 dark:text-zinc-100">@{user?.id}</strong>).
+                    . Before merging, please verify ownership of this account.
                   </p>
-                  <ul className="text-[11px] text-zinc-600 dark:text-zinc-300 space-y-1.5 pt-1.5 border-t border-purple-500/20">
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
-                      <span>
-                        All <strong>{mergeOtherBuildCount}</strong> drone builds and configurations
-                        will be permanently transferred to <strong>@{user?.id}</strong>.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
-                      <span>
-                        <strong>{mergeEmail}</strong> will be added to your account as a verified
-                        login method.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-1.5">
-                      <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
-                      <span>
-                        The account <strong>@{mergeOtherHandle}</strong> will be consolidated into
-                        your profile.
-                      </span>
-                    </li>
-                  </ul>
                 </div>
 
                 {/* Dual-path instructions */}
                 <div className="p-3.5 rounded-xl border border-purple-500/20 bg-purple-500/10 text-zinc-700 dark:text-zinc-300 text-xs space-y-1.5">
                   <div className="flex items-center gap-1.5 font-semibold text-purple-600 dark:text-purple-400">
                     <CheckCircle2 size={14} />
-                    <span>Two Ways to Confirm:</span>
+                    <span>Two Ways to Verify:</span>
                   </div>
                   <ul className="list-disc list-inside space-y-1 text-[11px] text-zinc-600 dark:text-zinc-400">
                     <li>
-                      Enter the <strong>6-digit code</strong> sent to your email below.
+                      Enter the <strong>6-digit verification code</strong> sent to your email below.
                     </li>
                     <li>
-                      Or click the <strong>1-click Magic Link</strong> in the email to authorize the
-                      merge instantly.
+                      Or click the <strong>1-click Magic Link</strong> in the email to verify
+                      instantly.
                     </li>
                   </ul>
                 </div>
@@ -892,7 +935,7 @@ export function AccountSettingsPage() {
                         maxLength={1}
                         aria-label={`Digit ${index + 1}`}
                         value={digit}
-                        disabled={isExecutingMerge}
+                        disabled={isVerifyingOwnership}
                         onChange={(e) => handleMergeOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleMergeKeyDown(index, e)}
                         className="w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none transition border-zinc-300 dark:border-zinc-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
@@ -913,12 +956,12 @@ export function AccountSettingsPage() {
                     </button>
                     <button
                       type="button"
-                      onClick={handleExecuteMerge}
-                      disabled={isExecutingMerge || mergeOtpDigits.join("").length !== 6}
+                      onClick={handleVerifyOwnership}
+                      disabled={isVerifyingOwnership || mergeOtpDigits.join("").length !== 6}
                       className="flex-2 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm"
                     >
-                      {isExecutingMerge && <Loader2 size={13} className="animate-spin" />}
-                      <span>Confirm & Merge Accounts</span>
+                      {isVerifyingOwnership && <Loader2 size={13} className="animate-spin" />}
+                      <span>Verify Ownership & Review</span>
                     </button>
                   </div>
 
@@ -927,7 +970,7 @@ export function AccountSettingsPage() {
                     <button
                       type="button"
                       onClick={() => handleSendAddCode()}
-                      disabled={isSendingAddOtp || isExecutingMerge}
+                      disabled={isSendingAddOtp || isVerifyingOwnership}
                       className="text-purple-600 dark:text-purple-400 hover:underline font-medium disabled:opacity-50"
                     >
                       Resend code
@@ -935,7 +978,156 @@ export function AccountSettingsPage() {
                   </div>
                 </div>
               </div>
-            ) : (
+            )}
+
+            {mergeModalStep === "summary" && (
+              <div className="space-y-4">
+                {/* Ownership Verified Badge */}
+                <div className="flex items-center gap-2 p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-medium">
+                  <CheckCircle2
+                    size={15}
+                    className="text-emerald-600 dark:text-emerald-400 shrink-0"
+                  />
+                  <span>
+                    Ownership verified for <strong>@{mergeOtherHandle}</strong>
+                  </span>
+                </div>
+
+                <div className="text-xs text-zinc-600 dark:text-zinc-300">
+                  Please review the summary below of everything that will happen upon merging:
+                </div>
+
+                {/* Summary Cards */}
+                <div className="space-y-2.5">
+                  {/* Item 1: Deleting other username */}
+                  <div className="p-3 rounded-xl border border-red-500/20 bg-red-500/5 flex items-start gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 mt-0.5">
+                      <UserX size={15} />
+                    </div>
+                    <div className="space-y-0.5 text-xs">
+                      <div className="font-semibold text-zinc-900 dark:text-zinc-100">
+                        Delete Username:{" "}
+                        <span className="font-mono text-red-600 dark:text-red-400">
+                          @{mergeOtherHandle}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                        The handle{" "}
+                        <strong className="text-zinc-700 dark:text-zinc-300">
+                          @{mergeOtherHandle}
+                        </strong>{" "}
+                        will be deleted and permanently archived to your handle history. Existing
+                        profile links will automatically redirect to{" "}
+                        <strong className="text-zinc-700 dark:text-zinc-300">@{user?.id}</strong>.
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Item 2: Associating secondary email */}
+                  <div className="p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 flex items-start gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
+                      <Mail size={15} />
+                    </div>
+                    <div className="space-y-0.5 text-xs">
+                      <div className="font-semibold text-zinc-900 dark:text-zinc-100">
+                        Associate Email Address
+                      </div>
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                        <strong className="font-mono text-zinc-800 dark:text-zinc-200">
+                          {mergeEmail}
+                        </strong>
+                        {mergeOtherEmails.length > 1 && (
+                          <span>
+                            {" "}
+                            (along with{" "}
+                            {mergeOtherEmails.filter((e) => e !== mergeEmail).join(", ")})
+                          </span>
+                        )}{" "}
+                        will be added as a verified login email under your account (
+                        <strong className="text-zinc-700 dark:text-zinc-300">@{user?.id}</strong>).
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Item 3: Migrating resources (builds, OAuth, etc.) */}
+                  <div className="p-3 rounded-xl border border-purple-500/20 bg-purple-500/5 flex items-start gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-purple-500/15 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 mt-0.5">
+                      <Package size={15} />
+                    </div>
+                    <div className="space-y-1 text-xs">
+                      <div className="font-semibold text-zinc-900 dark:text-zinc-100">
+                        Migrated Resources ({mergeOtherBuildCount} Drone{" "}
+                        {mergeOtherBuildCount === 1 ? "Build" : "Builds"})
+                      </div>
+                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                        All {mergeOtherBuildCount} drone configurations, specs, and parts will be
+                        transferred to your profile.
+                      </div>
+                      {mergeOtherBuildNames && mergeOtherBuildNames.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {mergeOtherBuildNames.map((name, i) => (
+                            <span
+                              key={i}
+                              className="px-2 py-0.5 rounded-md bg-purple-500/10 text-purple-700 dark:text-purple-300 text-[10px] font-medium border border-purple-500/20"
+                            >
+                              {name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {mergeOtherOauthProviders && mergeOtherOauthProviders.length > 0 && (
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 pt-0.5">
+                          Linked OAuth providers:{" "}
+                          <strong className="capitalize text-zinc-700 dark:text-zinc-300">
+                            {mergeOtherOauthProviders.join(", ")}
+                          </strong>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Permanent Warning */}
+                  <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 flex items-start gap-2.5 text-amber-700 dark:text-amber-300 text-xs">
+                    <AlertTriangle
+                      size={15}
+                      className="shrink-0 mt-0.5 text-amber-600 dark:text-amber-400"
+                    />
+                    <div className="text-[11px] leading-relaxed">
+                      This action is permanent and cannot be undone. Once merged,{" "}
+                      <strong className="text-zinc-900 dark:text-zinc-100">
+                        @{mergeOtherHandle}
+                      </strong>{" "}
+                      will be completely closed and cannot be restored.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer Buttons */}
+                <div className="space-y-2.5 pt-2">
+                  <div className="flex gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => setIsMergeModalOpen(false)}
+                      disabled={isExecutingMerge}
+                      className="flex-1 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleConfirmMerge}
+                      disabled={isExecutingMerge}
+                      className="flex-2 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5 shadow-sm"
+                    >
+                      {isExecutingMerge && <Loader2 size={13} className="animate-spin" />}
+                      <span>Confirm Merge</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {mergeModalStep === "success" && (
               /* Success State */
               <div className="text-center py-4 space-y-3">
                 <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mx-auto flex items-center justify-center text-xl font-bold">
