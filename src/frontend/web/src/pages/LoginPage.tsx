@@ -134,6 +134,10 @@ export function LoginPage() {
       setOtpDigits(newDigits);
       const nextIndex = Math.min(chars.length, 5);
       otpInputRefs.current[nextIndex]?.focus();
+      const code = newDigits.join("");
+      if (code.length === 6 && !isLoading) {
+        handleVerifyOtp(code);
+      }
       return;
     }
 
@@ -144,6 +148,11 @@ export function LoginPage() {
     if (clean && index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
+
+    const code = newDigits.join("");
+    if (code.length === 6 && !isLoading) {
+      handleVerifyOtp(code);
+    }
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -152,13 +161,13 @@ export function LoginPage() {
     }
   };
 
-  const handleVerifyOtp = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    const code = otpDigits.join("");
+  const handleVerifyOtp = async (explicitCode?: string) => {
+    const code = explicitCode || otpDigits.join("");
     if (code.length < 6) {
       setErrorMsg("Please enter all 6 digits of the verification code");
       return;
     }
+    if (isLoading) return;
 
     setIsLoading(true);
     setErrorMsg(null);
@@ -368,30 +377,21 @@ export function LoginPage() {
               </div>
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons & Status */}
             <div className="space-y-2.5">
-              {!isExhausted ? (
-                <button
-                  type="button"
-                  onClick={() => handleVerifyOtp()}
-                  disabled={isLoading || otpDigits.join("").length < 6}
-                  className="w-full py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 transition shadow-sm flex items-center justify-center gap-2"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" />
-                      <span>Verifying...</span>
-                    </>
-                  ) : (
-                    <span>Verify Code & Continue</span>
-                  )}
-                </button>
-              ) : (
+              {isLoading && (
+                <div className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400">
+                  <Loader2 size={16} className="animate-spin" />
+                  <span>Verifying code...</span>
+                </div>
+              )}
+
+              {isExhausted && (
                 <button
                   type="button"
                   onClick={() => handleSendEmail()}
                   disabled={isLoading}
-                  className="w-full py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 transition shadow-sm flex items-center justify-center gap-2"
+                  className="w-full py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 transition shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Request New Verification Code</span>
                 </button>
@@ -406,7 +406,7 @@ export function LoginPage() {
                     setErrorMsg(null);
                     setRemainingAttempts(null);
                   }}
-                  className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 flex items-center gap-1 transition"
+                  className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 flex items-center gap-1 transition cursor-pointer"
                 >
                   <ArrowLeft size={13} />
                   <span>Change email</span>
@@ -416,7 +416,7 @@ export function LoginPage() {
                   type="button"
                   onClick={() => handleSendEmail()}
                   disabled={cooldown > 0 || isLoading}
-                  className="text-blue-500 hover:underline disabled:opacity-50 disabled:no-underline font-medium"
+                  className="text-blue-500 hover:underline disabled:opacity-50 disabled:no-underline font-medium cursor-pointer"
                 >
                   {cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"}
                 </button>
@@ -424,13 +424,6 @@ export function LoginPage() {
             </div>
           </div>
         )}
-
-        {/* Footer info */}
-        <div className="pt-2 text-center border-t border-zinc-200 dark:border-zinc-800">
-          <p className="text-[11px] text-zinc-400">
-            Secure, passwordless authentication. Sessions stay active for 5 days of activity.
-          </p>
-        </div>
       </div>
     </div>
   );

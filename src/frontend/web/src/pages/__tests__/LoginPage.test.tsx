@@ -44,4 +44,42 @@ describe("LoginPage Component", () => {
     const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBe(6);
   });
+
+  it("does not render passwordless footer text, has no continue button, and automatically continues on 6-digit OTP entry", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    // Ensure footer text is absent on step 1
+    expect(screen.queryByText(/secure, passwordless authentication/i)).not.toBeInTheDocument();
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "pilot@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    // Verify OTP step reached
+    await screen.findByText(/two ways to sign in/i);
+
+    // Ensure footer text is absent on step 2
+    expect(screen.queryByText(/secure, passwordless authentication/i)).not.toBeInTheDocument();
+
+    // Verify continue button is removed
+    expect(
+      screen.queryByRole("button", { name: /verify code & continue/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^continue$/i })).not.toBeInTheDocument();
+
+    // Enter 6-digit code into OTP boxes
+    const inputs = screen.getAllByRole("textbox");
+    expect(inputs.length).toBe(6);
+
+    for (let i = 0; i < 6; i++) {
+      await user.type(inputs[i], "1");
+    }
+
+    // Auto-continues without clicking any button: token saved in localStorage
+    expect(localStorage.getItem("qs_access_token")).toBe("mock-jwt-token");
+  });
 });
