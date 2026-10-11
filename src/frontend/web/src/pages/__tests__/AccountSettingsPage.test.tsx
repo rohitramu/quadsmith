@@ -58,24 +58,26 @@ describe("AccountSettingsPage Component", () => {
     const addEmailBtn = await screen.findByRole("button", { name: /add email/i });
     fireEvent.click(addEmailBtn);
 
-    // Form inputs appear
-    expect(screen.getByPlaceholderText(/user\.secondary@example\.com/i)).toBeInTheDocument();
-    const emailInput = screen.getByPlaceholderText(/user\.secondary@example\.com/i);
+    // Modal appears
+    expect(screen.getByRole("heading", { name: /add email address/i })).toBeInTheDocument();
+    const emailInput = screen.getByPlaceholderText(/alex@quadsmith\.dev/i);
     fireEvent.change(emailInput, { target: { value: "new.pilot@fpv.org" } });
 
-    const sendCodeBtn = screen.getByRole("button", { name: /send code/i });
+    const sendCodeBtn = screen.getByRole("button", { name: /send verification code/i });
     fireEvent.click(sendCodeBtn);
 
-    // Code input should appear
+    // OTP inputs appear in modal
     await waitFor(() => {
-      expect(screen.getByPlaceholderText("123456")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /verify your email/i })).toBeInTheDocument();
     });
 
-    const codeInput = screen.getByPlaceholderText("123456");
-    fireEvent.change(codeInput, { target: { value: "123456" } });
+    const otpInputs = screen
+      .getAllByRole("textbox")
+      .filter((input) => input.getAttribute("inputmode") === "numeric");
+    expect(otpInputs).toHaveLength(6);
 
-    const verifyBtn = screen.getByRole("button", { name: /verify & associate/i });
-    fireEvent.click(verifyBtn);
+    // Entering the 6-digit code auto-submits verification
+    fireEvent.change(otpInputs[0], { target: { value: "123456" } });
 
     // Success notice and email appears in table
     await waitFor(() => {
@@ -113,12 +115,12 @@ describe("AccountSettingsPage Component", () => {
     const addEmailBtn = await screen.findByRole("button", { name: /add email/i });
     fireEvent.click(addEmailBtn);
 
-    // Enter email of an existing account
-    const emailInput = screen.getByPlaceholderText(/user\.secondary@example\.com/i);
+    // Enter email of an existing account in modal
+    const emailInput = screen.getByPlaceholderText(/alex@quadsmith\.dev/i);
     fireEvent.change(emailInput, { target: { value: "old.racer@fpv.org" } });
 
-    // Click Send Code
-    const sendCodeBtn = screen.getByRole("button", { name: /send code/i });
+    // Click Send Verification Code
+    const sendCodeBtn = screen.getByRole("button", { name: /send verification code/i });
     expect(sendCodeBtn).not.toBeDisabled();
     fireEvent.click(sendCodeBtn);
 
