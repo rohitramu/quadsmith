@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildProfilePage } from "../BuildProfilePage";
 import { Route, Routes } from "react-router-dom";
@@ -250,5 +250,39 @@ describe("BuildProfilePage Component", () => {
     ).not.toBeInTheDocument();
     expect(screen.queryByText(/choose a battery/i)).not.toBeInTheDocument();
     expect(screen.queryByRole("textbox", { name: /payload/i })).not.toBeInTheDocument();
+  });
+
+  it("opens technical Q&A tab when clicking Q&A jump button in social toolbar", async () => {
+    renderBuildProfile();
+
+    // Wait for the build profile to load
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
+    ).toBeInTheDocument();
+
+    // Verify initial state: reviews panel is visible (not hidden)
+    const reviewsPanel = document.getElementById("reviews");
+    expect(reviewsPanel).not.toBeNull();
+    expect(reviewsPanel).not.toHaveClass("hidden");
+
+    // Click Q&A button in the toolbar
+    const qaJumpBtn = screen.getByRole("button", { name: /^Q&A/i });
+    fireEvent.click(qaJumpBtn);
+
+    // Q&A panel should be visible and not hidden
+    const qaPanel = document.getElementById("qa");
+    expect(qaPanel).not.toBeNull();
+    expect(qaPanel).not.toHaveClass("hidden");
+
+    // Reviews panel should now have "hidden" class
+    expect(document.getElementById("reviews")).toHaveClass("hidden");
+
+    // Now click Reviews button in the toolbar to switch back
+    const reviewsJumpBtn = screen.getByRole("button", { name: /^Reviews/i });
+    fireEvent.click(reviewsJumpBtn);
+
+    // Reviews panel should be visible again
+    expect(document.getElementById("reviews")).not.toHaveClass("hidden");
+    expect(document.getElementById("qa")).toHaveClass("hidden");
   });
 });

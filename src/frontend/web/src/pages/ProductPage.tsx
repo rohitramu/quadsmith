@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { ChevronRight } from "lucide-react";
@@ -27,6 +28,10 @@ function ProductDetailView({
     collection.getQuery,
     { id: productId },
     { enabled: !!productId },
+  );
+
+  const [activeSocialTab, setActiveSocialTab] = useState<"reviews" | "qa" | "collections">(
+    "reviews",
   );
 
   const item = data as any;
@@ -101,10 +106,12 @@ function ProductDetailView({
                 }}
                 targetName={item.name || item.id}
                 onJumpToReviews={() => {
+                  setActiveSocialTab("reviews");
                   const el = document.getElementById("social-hub");
                   el?.scrollIntoView({ behavior: "smooth" });
                 }}
                 onJumpToQa={() => {
+                  setActiveSocialTab("qa");
                   const el = document.getElementById("social-hub");
                   el?.scrollIntoView({ behavior: "smooth" });
                 }}
@@ -180,6 +187,8 @@ function ProductDetailView({
               collection: collection.id,
             }}
             entityName={item.name || item.id}
+            activeTab={activeSocialTab}
+            onTabChange={setActiveSocialTab}
           />
         </>
       )}

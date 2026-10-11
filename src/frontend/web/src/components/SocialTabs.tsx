@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import {
   getEntitySocialSummary,
@@ -16,6 +16,8 @@ export interface SocialTabsProps {
   targetAuthorUuid?: string;
   entityName?: string;
   defaultTab?: "reviews" | "qa" | "collections";
+  activeTab?: "reviews" | "qa" | "collections";
+  onTabChange?: (tab: "reviews" | "qa" | "collections") => void;
 }
 
 export function SocialTabs({
@@ -23,20 +25,41 @@ export function SocialTabs({
   targetAuthorUuid,
   entityName,
   defaultTab = "reviews",
+  activeTab: controlledActiveTab,
+  onTabChange,
 }: SocialTabsProps) {
-  const [activeTab, setActiveTab] = useState<"reviews" | "qa" | "collections">(defaultTab);
-  const [visitedTabs, setVisitedTabs] = useState<Set<string>>(() => new Set([defaultTab]));
+  const [internalActiveTab, setInternalActiveTab] = useState<"reviews" | "qa" | "collections">(
+    controlledActiveTab || defaultTab,
+  );
+  const activeTab = controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
+  const [visitedTabs, setVisitedTabs] = useState<Set<string>>(
+    () => new Set([controlledActiveTab || defaultTab]),
+  );
   const [isNewColModalOpen, setIsNewColModalOpen] = useState(false);
   const { user } = useAuth();
 
-  const handleTabSelect = (tab: "reviews" | "qa" | "collections") => {
-    setActiveTab(tab);
+  // Sync internal active tab if controlled prop changes
+  useEffect(() => {
+    if (controlledActiveTab !== undefined) {
+      setInternalActiveTab(controlledActiveTab);
+    }
+  }, [controlledActiveTab]);
+
+  // Keep track of visited tabs so unvisited tabs are lazy loaded
+  useEffect(() => {
     setVisitedTabs((prev) => {
-      if (prev.has(tab)) return prev;
+      if (prev.has(activeTab)) return prev;
       const next = new Set(prev);
-      next.add(tab);
+      next.add(activeTab);
       return next;
     });
+  }, [activeTab]);
+
+  const handleTabSelect = (tab: "reviews" | "qa" | "collections") => {
+    if (controlledActiveTab === undefined) {
+      setInternalActiveTab(tab);
+    }
+    onTabChange?.(tab);
   };
 
   const queryPayload = {

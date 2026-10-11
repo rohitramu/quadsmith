@@ -147,6 +147,9 @@ export function BuildProfilePage() {
 
   const [selectedBatteryId, setSelectedBatteryId] = useState<string>("");
   const [isBatteryModalOpen, setIsBatteryModalOpen] = useState(false);
+  const [activeSocialTab, setActiveSocialTab] = useState<"reviews" | "qa" | "collections">(
+    "reviews",
+  );
 
   const {
     data: build,
@@ -199,6 +202,7 @@ export function BuildProfilePage() {
   useEffect(() => {
     setSelectedBatteryId("");
     setSelectedBatteryObj(null);
+    setActiveSocialTab("reviews");
   }, [buildId]);
 
   // Lightest compatible battery selected by default when empty
@@ -337,10 +341,12 @@ export function BuildProfilePage() {
             target={{ type: "build", id: build.id || buildId || "", collection: "builds" }}
             targetName={build.name}
             onJumpToReviews={() => {
+              setActiveSocialTab("reviews");
               const el = document.getElementById("social-hub");
               el?.scrollIntoView({ behavior: "smooth" });
             }}
             onJumpToQa={() => {
+              setActiveSocialTab("qa");
               const el = document.getElementById("social-hub");
               el?.scrollIntoView({ behavior: "smooth" });
             }}
@@ -967,6 +973,8 @@ export function BuildProfilePage() {
         target={{ type: "build", id: build.id || buildId || "", collection: "builds" }}
         targetAuthorUuid={build.userUuid}
         entityName={build.name}
+        activeTab={activeSocialTab}
+        onTabChange={setActiveSocialTab}
       />
 
       {/* Battery Picker Explorer Modal */}
