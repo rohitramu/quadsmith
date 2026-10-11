@@ -835,7 +835,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     aliases: ["flight_controllers", "fcs"],
     name: "Flight Controllers",
     description:
-      "Central processing units and gyro flight computers powering autonomous stabilization and pilot commands.",
+      "Central processing units and gyro flight computers powering autonomous stabilization and user commands.",
     schema: FlightControllerSchema,
     listQuery: listFlightControllers,
     getQuery: getFlightController,
@@ -1727,7 +1727,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     aliases: ["video_transmitters", "vtxs", "vtx"],
     name: "Video Transmitters",
     description:
-      "Analog and HD digital VTX modules transmitting low-latency video feeds to pilot goggles.",
+      "Analog and HD digital VTX modules transmitting low-latency video feeds to user goggles.",
     schema: VideoTransmitterSchema,
     listQuery: listVideoTransmitters,
     getQuery: getVideoTransmitter,

@@ -181,7 +181,7 @@ describe("Social Interactions Components", () => {
     it("allows switching tabs and viewing community reputation rules", async () => {
       const { user } = renderWithProviders(<SocialTabs target={target} entityName={targetName} />);
 
-      // Initial active tab is Pilot Reviews
+      // Initial active tab is User Reviews
       expect(await screen.findByText(/Community Sentiment/i)).toBeInTheDocument();
 
       // Switch to Q&A tab
@@ -201,8 +201,9 @@ describe("Social Interactions Components", () => {
       expect(screen.getByText(/\+30 Rep/i)).toBeInTheDocument();
       expect(screen.getByText(/Accepted Answer/i)).toBeInTheDocument();
       expect(screen.getByText(/\+20 Rep/i)).toBeInTheDocument();
-      expect(screen.getByText(/Author Endorsed/i)).toBeInTheDocument();
-      expect(screen.getByText(/\+5 Rep/i)).toBeInTheDocument();
+      expect(screen.getByText(/\+3 Rep/i)).toBeInTheDocument();
+      expect(screen.getByText(/Review Author/i)).toBeInTheDocument();
+      expect(screen.getByText(/\+1 Rep/i)).toBeInTheDocument();
       expect(screen.getByText(/-2 Rep \(Both\)/i)).toBeInTheDocument();
     });
   });

@@ -156,11 +156,11 @@ func ResolvePageMeta(ctx context.Context, pool *pgxpool.Pool, path string) PageM
 			WHERE (u.id = $1 OR u.uuid::text = $1) AND u.deleted_at IS NULL
 			LIMIT 1`, userId).Scan(&handle, &bio, &avatarUrl)
 		if err == nil {
-			meta.Title = fmt.Sprintf("@%s — Pilot Profile — Quadsmith", handle)
+			meta.Title = fmt.Sprintf("@%s — User Profile — Quadsmith", handle)
 			if strings.TrimSpace(bio) != "" {
 				meta.Description = bio
 			} else {
-				meta.Description = fmt.Sprintf("View FPV drone builds and pilot stats for @%s on Quadsmith.", handle)
+				meta.Description = fmt.Sprintf("View FPV drone builds and user stats for @%s on Quadsmith.", handle)
 			}
 			if avatarUrl != nil && strings.TrimSpace(*avatarUrl) != "" {
 				meta.Image = *avatarUrl

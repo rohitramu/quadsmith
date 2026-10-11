@@ -240,7 +240,7 @@ export function SocialReviewSection({
                 <span>{isComposerOpen ? "Close Composer" : "Write a Review"}</span>
               </button>
               <span className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-2">
-                1 review per pilot • Editable
+                1 review per user • Editable
               </span>
             </>
           )}
@@ -337,7 +337,7 @@ export function SocialReviewSection({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-            Pilot Evaluations ({reviews.length})
+            User Reviews ({reviews.length})
           </span>
           <div className="flex items-center gap-2 text-xs">
             <span className="text-zinc-400">Sort by:</span>
@@ -360,7 +360,7 @@ export function SocialReviewSection({
           </div>
         ) : reviews.length === 0 ? (
           <div className="p-8 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 text-zinc-400 text-xs">
-            No pilot reviews yet. Be the first to share your evaluation!
+            No reviews yet. Be the first to share your evaluation!
           </div>
         ) : (
           reviews.map((review) => {
@@ -394,7 +394,7 @@ export function SocialReviewSection({
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                          {review.authorUsername || "Pilot"}
+                          {review.authorUsername || "User"}
                         </span>
                         {review.isAuthorVerifiedOwner && (
                           <span className="px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-mono">

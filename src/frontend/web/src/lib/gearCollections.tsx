@@ -89,7 +89,7 @@ export const GEAR_COLLECTIONS: HardwareCollectionDef[] = [
     id: "transmitters",
     name: "Transmitters",
     description:
-      "Handheld RC radio controllers and transmitters powering pilot command inputs with high-precision gimbals.",
+      "Handheld RC radio controllers and transmitters powering user command inputs with high-precision gimbals.",
     schema: TransmitterSchema,
     listQuery: listTransmitters,
     getQuery: getTransmitter,

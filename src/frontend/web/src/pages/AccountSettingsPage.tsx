@@ -752,7 +752,7 @@ export function AccountSettingsPage() {
           {avatarUrl ? (
             <img
               src={avatarUrl}
-              alt={user?.id || "Pilot avatar"}
+              alt={user?.id || "User avatar"}
               className="w-16 h-16 rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-800 shadow-sm"
             />
           ) : (

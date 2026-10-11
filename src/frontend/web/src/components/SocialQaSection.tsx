@@ -327,7 +327,7 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
                       <span className="text-xs text-zinc-500 dark:text-zinc-400">
                         Asked by{" "}
                         <span className="font-medium text-zinc-800 dark:text-zinc-200">
-                          @{q.authorUsername || "Pilot"}
+                          @{q.authorUsername || "User"}
                         </span>
                       </span>
                       <span className="text-[11px] text-zinc-400">
@@ -609,7 +609,7 @@ function QuestionAnswersList({
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
                 Answered by{" "}
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                  @{ans.authorUsername || "Pilot"}
+                  @{ans.authorUsername || "User"}
                 </span>{" "}
                 • {formatRelativeDate(ans.createdAt?.seconds)}
               </div>

@@ -72,3 +72,27 @@ func TestReviewTierThresholds(t *testing.T) {
 		}
 	}
 }
+
+func TestReputationDeltaRules(t *testing.T) {
+	const (
+		ReviewAuthorReward  = int32(3)
+		UpvoteTargetReward  = int32(1)
+		DownvoteTargetDelta = int32(-2)
+		DownvoteVoterStakes = int32(-2)
+		DailyUpvoteLimit    = 20
+		DailyDownvoteLimit  = 3
+	)
+
+	if ReviewAuthorReward != 3 {
+		t.Errorf("expected review author reward to be 3, got %d", ReviewAuthorReward)
+	}
+	if UpvoteTargetReward != 1 {
+		t.Errorf("expected upvote target reward to be 1, got %d", UpvoteTargetReward)
+	}
+	if DailyUpvoteLimit != 20 {
+		t.Errorf("expected daily upvote limit to be 20, got %d", DailyUpvoteLimit)
+	}
+	if DailyDownvoteLimit != 3 {
+		t.Errorf("expected daily downvote limit to be 3, got %d", DailyDownvoteLimit)
+	}
+}

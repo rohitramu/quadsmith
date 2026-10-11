@@ -79,7 +79,7 @@ func resolveEntityTarget(ctx context.Context, db *pgxpool.Pool, buildID, compone
 	return nil, &u, nil
 }
 
-func getPilotDisplay(ctx context.Context, db *pgxpool.Pool, userUUID string) (username string, avatarURL string) {
+func getUserDisplay(ctx context.Context, db *pgxpool.Pool, userUUID string) (username string, avatarURL string) {
 	_ = db.QueryRow(ctx, `
 		SELECT u.id, COALESCE(p.avatar_url, '')
 		FROM users u
@@ -123,6 +123,24 @@ func checkDownvoteEligibility(ctx context.Context, db *pgxpool.Pool, userUUID st
 	}
 	if downvoteCount >= 3 {
 		return connect.NewError(connect.CodeResourceExhausted, errors.New("maximum of 3 downvotes per rolling 24-hour window reached"))
+	}
+	return nil
+}
+
+func checkUpvoteEligibility(ctx context.Context, db *pgxpool.Pool, userUUID string) error {
+	var upvoteCount int64
+	err := db.QueryRow(ctx, `
+		SELECT (
+			(SELECT count(*) FROM question_votes WHERE user_uuid = $1 AND is_upvote = true AND created_at > NOW() - INTERVAL '24 hours') +
+			(SELECT count(*) FROM answer_votes WHERE user_uuid = $1 AND is_upvote = true AND created_at > NOW() - INTERVAL '24 hours') +
+			(SELECT count(*) FROM review_votes WHERE user_uuid = $1 AND is_helpful = true AND created_at > NOW() - INTERVAL '24 hours')
+		)
+	`, userUUID).Scan(&upvoteCount)
+	if err != nil {
+		return connect.NewError(connect.CodeInternal, err)
+	}
+	if upvoteCount >= 20 {
+		return connect.NewError(connect.CodeResourceExhausted, errors.New("maximum of 20 upvotes per rolling 24-hour window reached"))
 	}
 	return nil
 }
@@ -236,7 +254,10 @@ func (s *SocialService) CreateReview(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, u.UserUUID)
+	// Reward review author with +3 reputation points
+	_ = adjustReputation(ctx, s.db, u.UserUUID, +3)
+
+	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	res := &pb.Review{
 		Uuid:                  reviewUUID,
@@ -295,7 +316,7 @@ func (s *SocialService) UpdateReview(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, userUUID)
+	username, avatar := getUserDisplay(ctx, s.db, userUUID)
 
 	return connect.NewResponse(&pb.Review{
 		Uuid:            revUUID,
@@ -336,6 +357,9 @@ func (s *SocialService) DeleteReview(ctx context.Context, req *connect.Request[p
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
+
+	// Revert review author +3 reputation reward
+	_ = adjustReputation(ctx, s.db, userUUID, -3)
 
 	var bStr, cStr *string
 	if buildUUID.Valid {
@@ -459,6 +483,12 @@ func (s *SocialService) VoteReview(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot vote on your own review"))
 	}
 
+	// If casting a helpful vote, enforce upvote eligibility cap (20/24h)
+	if req.Msg.GetVoteType() == pb.ReviewVoteType_REVIEW_VOTE_TYPE_HELPFUL {
+		if err := checkUpvoteEligibility(ctx, s.db, u.UserUUID); err != nil {
+			return nil, err
+		}
+	}
 	// If casting an unhelpful vote, enforce downvote unlock threshold and rate limit
 	if req.Msg.GetVoteType() == pb.ReviewVoteType_REVIEW_VOTE_TYPE_UNHELPFUL {
 		if err := checkDownvoteEligibility(ctx, s.db, u.UserUUID); err != nil {
@@ -467,15 +497,18 @@ func (s *SocialService) VoteReview(ctx context.Context, req *connect.Request[pb.
 	}
 
 	var existingIsHelpful sql.NullBool
-	_ = s.db.QueryRow(ctx, "SELECT is_helpful FROM review_votes WHERE review_uuid = $1 AND user_uuid = $2", revUUID, u.UserUUID).Scan(&existingIsHelpful)
+	var existingCreatedAt sql.NullTime
+	_ = s.db.QueryRow(ctx, "SELECT is_helpful, created_at FROM review_votes WHERE review_uuid = $1 AND user_uuid = $2", revUUID, u.UserUUID).Scan(&existingIsHelpful, &existingCreatedAt)
 
 	// Reverse previous vote reputation if existed
 	if existingIsHelpful.Valid {
 		if existingIsHelpful.Bool {
-			_ = adjustReputation(ctx, s.db, authorUUID, -5)
+			_ = adjustReputation(ctx, s.db, authorUUID, -1)
 		} else {
 			_ = adjustReputation(ctx, s.db, authorUUID, +2)
-			_ = adjustReputation(ctx, s.db, u.UserUUID, +2)
+			if existingCreatedAt.Valid && time.Since(existingCreatedAt.Time) <= 24*time.Hour {
+				_ = adjustReputation(ctx, s.db, u.UserUUID, +2)
+			}
 		}
 	}
 
@@ -494,7 +527,7 @@ func (s *SocialService) VoteReview(ctx context.Context, req *connect.Request[pb.
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
-		_ = adjustReputation(ctx, s.db, authorUUID, +5)
+		_ = adjustReputation(ctx, s.db, authorUUID, +1)
 
 	case pb.ReviewVoteType_REVIEW_VOTE_TYPE_UNHELPFUL:
 		voteUUID := authcontext.NewUUIDv7()
@@ -552,7 +585,7 @@ func (s *SocialService) CreateReviewComment(ctx context.Context, req *connect.Re
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, u.UserUUID)
+	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	return connect.NewResponse(&pb.ReviewComment{
 		Uuid:            commentUUID,
@@ -669,7 +702,7 @@ func (s *SocialService) CreateQuestion(ctx context.Context, req *connect.Request
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, u.UserUUID)
+	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	return connect.NewResponse(&pb.Question{
 		Uuid:            qUUID,
@@ -720,7 +753,7 @@ func (s *SocialService) UpdateQuestion(ctx context.Context, req *connect.Request
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, authorUUID)
+	username, avatar := getUserDisplay(ctx, s.db, authorUUID)
 
 	return connect.NewResponse(&pb.Question{
 		Uuid:            qUUID,
@@ -883,22 +916,29 @@ func (s *SocialService) VoteQuestion(ctx context.Context, req *connect.Request[p
 	}
 
 	vote := req.Msg.GetVote() // +1, -1, or 0
-	if vote < 0 {
+	if vote > 0 {
+		if err := checkUpvoteEligibility(ctx, s.db, u.UserUUID); err != nil {
+			return nil, err
+		}
+	} else if vote < 0 {
 		if err := checkDownvoteEligibility(ctx, s.db, u.UserUUID); err != nil {
 			return nil, err
 		}
 	}
 
 	var existingIsUpvote sql.NullBool
-	_ = s.db.QueryRow(ctx, "SELECT is_upvote FROM question_votes WHERE question_uuid = $1 AND user_uuid = $2", qUUID, u.UserUUID).Scan(&existingIsUpvote)
+	var existingCreatedAt sql.NullTime
+	_ = s.db.QueryRow(ctx, "SELECT is_upvote, created_at FROM question_votes WHERE question_uuid = $1 AND user_uuid = $2", qUUID, u.UserUUID).Scan(&existingIsUpvote, &existingCreatedAt)
 
 	// Revert previous vote impact
 	if existingIsUpvote.Valid {
 		if existingIsUpvote.Bool {
-			_ = adjustReputation(ctx, s.db, authorUUID, -5)
+			_ = adjustReputation(ctx, s.db, authorUUID, -1)
 		} else {
 			_ = adjustReputation(ctx, s.db, authorUUID, +2)
-			_ = adjustReputation(ctx, s.db, u.UserUUID, +2)
+			if existingCreatedAt.Valid && time.Since(existingCreatedAt.Time) <= 24*time.Hour {
+				_ = adjustReputation(ctx, s.db, u.UserUUID, +2)
+			}
 		}
 	}
 
@@ -916,7 +956,7 @@ func (s *SocialService) VoteQuestion(ctx context.Context, req *connect.Request[p
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
 		if isUp {
-			_ = adjustReputation(ctx, s.db, authorUUID, +5)
+			_ = adjustReputation(ctx, s.db, authorUUID, +1)
 		} else {
 			_ = adjustReputation(ctx, s.db, authorUUID, -2)
 			_ = adjustReputation(ctx, s.db, u.UserUUID, -2)
@@ -978,7 +1018,7 @@ func (s *SocialService) CreateAnswer(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, u.UserUUID)
+	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	return connect.NewResponse(&pb.Answer{
 		Uuid:              ansUUID,
@@ -1022,7 +1062,7 @@ func (s *SocialService) UpdateAnswer(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, authorUUID)
+	username, avatar := getUserDisplay(ctx, s.db, authorUUID)
 
 	return connect.NewResponse(&pb.Answer{
 		Uuid:            req.Msg.GetAnswerUuid(),
@@ -1143,21 +1183,28 @@ func (s *SocialService) VoteAnswer(ctx context.Context, req *connect.Request[pb.
 	}
 
 	vote := req.Msg.GetVote()
-	if vote < 0 {
+	if vote > 0 {
+		if err := checkUpvoteEligibility(ctx, s.db, u.UserUUID); err != nil {
+			return nil, err
+		}
+	} else if vote < 0 {
 		if err := checkDownvoteEligibility(ctx, s.db, u.UserUUID); err != nil {
 			return nil, err
 		}
 	}
 
 	var existingIsUpvote sql.NullBool
-	_ = s.db.QueryRow(ctx, "SELECT is_upvote FROM answer_votes WHERE answer_uuid = $1 AND user_uuid = $2", ansUUID, u.UserUUID).Scan(&existingIsUpvote)
+	var existingCreatedAt sql.NullTime
+	_ = s.db.QueryRow(ctx, "SELECT is_upvote, created_at FROM answer_votes WHERE answer_uuid = $1 AND user_uuid = $2", ansUUID, u.UserUUID).Scan(&existingIsUpvote, &existingCreatedAt)
 
 	if existingIsUpvote.Valid {
 		if existingIsUpvote.Bool {
-			_ = adjustReputation(ctx, s.db, authorUUID, -5)
+			_ = adjustReputation(ctx, s.db, authorUUID, -1)
 		} else {
 			_ = adjustReputation(ctx, s.db, authorUUID, +2)
-			_ = adjustReputation(ctx, s.db, u.UserUUID, +2)
+			if existingCreatedAt.Valid && time.Since(existingCreatedAt.Time) <= 24*time.Hour {
+				_ = adjustReputation(ctx, s.db, u.UserUUID, +2)
+			}
 		}
 	}
 
@@ -1175,7 +1222,7 @@ func (s *SocialService) VoteAnswer(ctx context.Context, req *connect.Request[pb.
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
 		if isUp {
-			_ = adjustReputation(ctx, s.db, authorUUID, +5)
+			_ = adjustReputation(ctx, s.db, authorUUID, +1)
 		} else {
 			_ = adjustReputation(ctx, s.db, authorUUID, -2)
 			_ = adjustReputation(ctx, s.db, u.UserUUID, -2)
@@ -1261,7 +1308,7 @@ func (s *SocialService) AcceptAnswer(ctx context.Context, req *connect.Request[p
 		_ = adjustReputation(ctx, s.db, askerUUID, -10)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, answererUUID)
+	username, avatar := getUserDisplay(ctx, s.db, answererUUID)
 
 	return connect.NewResponse(&pb.Answer{
 		Uuid:              ansUUID,
@@ -1327,7 +1374,7 @@ func (s *SocialService) EndorseAnswer(ctx context.Context, req *connect.Request[
 		_ = adjustReputation(ctx, s.db, answererUUID, -20)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, answererUUID)
+	username, avatar := getUserDisplay(ctx, s.db, answererUUID)
 
 	return connect.NewResponse(&pb.Answer{
 		Uuid:             ansUUID,
@@ -1365,7 +1412,7 @@ func (s *SocialService) CreateQuestionComment(ctx context.Context, req *connect.
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, u.UserUUID)
+	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	return connect.NewResponse(&pb.QuestionComment{
 		Uuid:            commentUUID,
@@ -1433,7 +1480,7 @@ func (s *SocialService) CreateAnswerComment(ctx context.Context, req *connect.Re
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, avatar := getPilotDisplay(ctx, s.db, u.UserUUID)
+	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	return connect.NewResponse(&pb.AnswerComment{
 		Uuid:            commentUUID,
@@ -1590,7 +1637,7 @@ func (s *SocialService) CreateCollection(ctx context.Context, req *connect.Reque
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, _ := getPilotDisplay(ctx, s.db, u.UserUUID)
+	username, _ := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	return connect.NewResponse(&pb.Collection{
 		Uuid:           colUUID,
@@ -1638,7 +1685,7 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	username, _ := getPilotDisplay(ctx, s.db, userUUID)
+	username, _ := getUserDisplay(ctx, s.db, userUUID)
 
 	return connect.NewResponse(&pb.Collection{
 		Uuid:           colUUID,

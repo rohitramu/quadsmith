@@ -2202,7 +2202,7 @@ export function BuildWizardPage() {
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   {fcHasIntegratedRx
                     ? "External receiver is optional since your flight controller includes an integrated receiver."
-                    : "Provides pilot command link directly to the Flight Controller via serial UART."}
+                    : "Provides radio control link directly to the Flight Controller via serial UART."}
                 </p>
 
                 <div className="relative">
@@ -2356,7 +2356,7 @@ export function BuildWizardPage() {
                   )}
                 </div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Receives pilot control link signals. Supports a single antenna or dual diversity
+                  Receives radio control link signals. Supports a single antenna or dual diversity
                   antennas.
                 </p>
 

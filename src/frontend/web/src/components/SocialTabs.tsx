@@ -56,7 +56,7 @@ export function SocialTabs({
           }`}
         >
           <ThumbsUp size={16} />
-          <span>Pilot Reviews</span>
+          <span>User Reviews</span>
           <span className="px-2 py-0.5 rounded-full text-[11px] bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono">
             {reviewCount}
           </span>
@@ -127,7 +127,7 @@ export function SocialTabs({
                 <span>Collections Featuring This Item</span>
               </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Pilots organize builds and components into custom public and private collections for
+                Users organize builds and components into custom public and private collections for
                 project inspiration, bando parts lists, and gear bags.
               </p>
             </div>
@@ -213,7 +213,15 @@ export function SocialTabs({
           </span>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
+          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
+            <div className="text-zinc-500 dark:text-zinc-400">Review Author</div>
+            <div className="text-emerald-600 dark:text-emerald-400 font-bold font-mono text-base mt-0.5">
+              +3 Rep
+            </div>
+            <div className="text-[10px] text-zinc-400 mt-1">Written evaluation reward</div>
+          </div>
+
           <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
             <div className="text-zinc-500 dark:text-zinc-400">Accepted Answer</div>
             <div className="text-emerald-600 dark:text-emerald-400 font-bold font-mono text-base mt-0.5">
@@ -232,10 +240,10 @@ export function SocialTabs({
 
           <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
             <div className="text-zinc-500 dark:text-zinc-400">Post / Review Upvote</div>
-            <div className="text-blue-600 dark:text-blue-400 font-bold font-mono text-base mt-0.5">
-              +5 Rep
+            <div className="text-emerald-600 dark:text-emerald-400 font-bold font-mono text-base mt-0.5">
+              +1 Rep
             </div>
-            <div className="text-[10px] text-zinc-400 mt-1">Cap: max 100/post</div>
+            <div className="text-[10px] text-zinc-400 mt-1">Daily Cap: max 20 upvotes / 24h</div>
           </div>
 
           <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
@@ -243,7 +251,9 @@ export function SocialTabs({
             <div className="text-rose-600 dark:text-rose-400 font-bold font-mono text-base mt-0.5">
               -2 Rep (Both)
             </div>
-            <div className="text-[10px] text-zinc-400 mt-1">Costs voter -2 • Unlock at 10 rep</div>
+            <div className="text-[10px] text-zinc-400 mt-1">
+              Costs voter -2 • Unlock at 10 rep • Max 3/24h
+            </div>
           </div>
         </div>
       </div>
