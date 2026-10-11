@@ -317,14 +317,20 @@ export function LoginPage() {
 
             <button
               type="submit"
-              disabled={isLoading || !email.trim()}
-              className="w-full py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 transition shadow-sm flex items-center justify-center gap-2"
+              disabled={isLoading || !email.trim() || cooldown > 0}
+              className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
+                cooldown > 0
+                  ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                  : "text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 cursor-pointer"
+              }`}
             >
               {isLoading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
                   <span>Sending code...</span>
                 </>
+              ) : cooldown > 0 ? (
+                <span>Send Verification Code ({cooldown}s)</span>
               ) : (
                 <>
                   <span>Send Verification Code</span>
@@ -436,20 +442,7 @@ export function LoginPage() {
                       : "Request New Verification Code"}
                   </span>
                 </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => handleSendEmail()}
-                  disabled={cooldown > 0 || isLoading}
-                  className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 ${
-                    cooldown > 0
-                      ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                      : "text-zinc-800 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 cursor-pointer"
-                  }`}
-                >
-                  <span>{cooldown > 0 ? `Resend email (${cooldown}s)` : "Resend email"}</span>
-                </button>
-              )}
+              ) : null}
 
               {/* Back Option */}
               <div className="flex items-center text-xs pt-1">
