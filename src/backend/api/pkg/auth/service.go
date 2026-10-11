@@ -160,7 +160,6 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 				LIMIT 1`, email, challengeHash).Scan(&existingUUID, &existingFailures, &existingUsedAt)
 
 			if checkErr != nil {
-				RecordIPFailure(clientIP)
 				return nil, connect.NewError(connect.CodeNotFound, errors.New("no active verification challenge found. Please request a new code"))
 			}
 
@@ -170,6 +169,19 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 
 			if existingFailures >= MaxOtpAttempts {
 				_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, existingUUID)
+				if err := CheckIPRateLimit(clientIP); err != nil {
+					connErr := connect.NewError(connect.CodeResourceExhausted, err)
+					if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
+						Message:           err.Error(),
+						RemainingAttempts: 0,
+						MaxAttempts:       MaxOtpAttempts,
+						IsExhausted:       true,
+						CooldownSeconds:   int32(IPLockoutDuration.Seconds()),
+					}); detailErr == nil {
+						connErr.AddDetail(detail)
+					}
+					return nil, connErr
+				}
 				return s.returnOtpError("Verification challenge exhausted. Please request a new code after the cooldown period.", 0, true, int32(ExhaustedCooldown.Seconds()))
 			}
 
@@ -185,10 +197,23 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 	}
 
 	if !VerifyOTP(code, codeHash) {
-		RecordIPFailure(clientIP)
 		remaining := int32(MaxOtpAttempts - failedAttempts)
 		if remaining <= 0 {
 			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
+			RecordIPFailure(clientIP)
+			if err := CheckIPRateLimit(clientIP); err != nil {
+				connErr := connect.NewError(connect.CodeResourceExhausted, err)
+				if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
+					Message:           err.Error(),
+					RemainingAttempts: 0,
+					MaxAttempts:       MaxOtpAttempts,
+					IsExhausted:       true,
+					CooldownSeconds:   int32(IPLockoutDuration.Seconds()),
+				}); detailErr == nil {
+					connErr.AddDetail(detail)
+				}
+				return nil, connErr
+			}
 			return s.returnOtpError("Incorrect code. You have 0 attempts left.\nPlease request a new code after the cooldown period.", 0, true, int32(ExhaustedCooldown.Seconds()))
 		}
 		msg := fmt.Sprintf("Incorrect code. You have %d %s left", remaining, pluralAttempts(remaining))
@@ -822,7 +847,6 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 
 		if err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
-				RecordIPFailure(clientIP)
 				return nil, connect.NewError(connect.CodeNotFound, errors.New("no active verification challenge found. Please request a new code"))
 			}
 			return nil, connect.NewError(connect.CodeInternal, err)
@@ -834,10 +858,13 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		}
 
 		if !VerifyOTP(code, codeHash) {
-			RecordIPFailure(clientIP)
 			remaining := int32(MaxOtpAttempts - failedAttempts)
 			if remaining <= 0 {
 				_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
+				RecordIPFailure(clientIP)
+				if err := CheckIPRateLimit(clientIP); err != nil {
+					return nil, connect.NewError(connect.CodeResourceExhausted, err)
+				}
 				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("incorrect code. You have 0 attempts left.\nPlease request a new code after the cooldown period."))
 			}
 			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("incorrect code. %d %s left", remaining, pluralAttempts(remaining)))
@@ -1520,13 +1547,14 @@ const ChallengeCookieName = "qs_challenge"
 func extractClientIP(header http.Header, peerAddr string) string {
 	hopsStr := os.Getenv("TRUSTED_PROXY_HOPS")
 	hops, _ := strconv.Atoi(hopsStr)
-	if hops > 0 {
+	if hops > 0 || os.Getenv("ENV") != "production" {
 		xff := header.Get("X-Forwarded-For")
 		if xff != "" {
 			parts := strings.Split(xff, ",")
-			if len(parts) >= hops {
+			if hops > 0 && len(parts) >= hops {
 				return strings.TrimSpace(parts[len(parts)-hops])
 			}
+			return strings.TrimSpace(parts[0])
 		}
 	}
 	if peerAddr != "" {

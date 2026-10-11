@@ -21,7 +21,7 @@ const (
 	EmailCooldown     = 20 * time.Second
 	ExhaustedCooldown = 15 * time.Second
 	MaxOtpAttempts    = 3
-	MaxIPFailures     = 5
+	MaxIPFailures     = 3
 	IPLockoutDuration = 60 * time.Minute
 )
 
@@ -120,9 +120,14 @@ func RecordIPFailure(ip string) {
 	globalIPTracker.failures[ip] = append(globalIPTracker.failures[ip], now)
 }
 
-// RecordIPSuccess records a successful login attempt without resetting failure history
+// RecordIPSuccess records a successful login attempt and resets failure history
 func RecordIPSuccess(ip string) {
-	// Preserved for caller interface compatibility; failures age out over IPLockoutDuration
+	if ip == "" {
+		return
+	}
+	globalIPTracker.mu.Lock()
+	defer globalIPTracker.mu.Unlock()
+	delete(globalIPTracker.failures, ip)
 }
 
 // ---------------------------------------------------------

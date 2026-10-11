@@ -568,3 +568,161 @@ func TestSandboxAuth_ResendEmailOtpGeneratesFreshCodeAndBindsChallenge(t *testin
 		t.Fatalf("expected 1 user row in users after CompleteAccountSetup, got %d", finalUserCount)
 	}
 }
+
+func TestSandboxAuth_LockoutAfter3FailedCodesPerIP(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	authClient := quadsmithconnect.NewAuthServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+	ctx := context.Background()
+	testIP := "203.0.113.101"
+	otherIP := "203.0.113.102"
+	testEmail1 := "ip-lockout-test-1@example.com"
+	testEmail2 := "ip-lockout-test-2@example.com"
+
+	dbUrl := os.Getenv("DATABASE_URL")
+	if dbUrl == "" {
+		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+	}
+	pool, err := pgxpool.New(ctx, dbUrl)
+	if err != nil {
+		t.Fatalf("failed to connect to db: %v", err)
+	}
+	defer pool.Close()
+
+	// Clean up any existing records
+	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE LOWER(email) IN (LOWER($1), LOWER($2))`, testEmail1, testEmail2)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE LOWER(email) IN (LOWER($1), LOWER($2))`, testEmail1, testEmail2)
+
+	failOneCodeChallenge := func(ip string, email string, codeNum int) (bool, int32) {
+		reqSend := connect.NewRequest(&pb.SendEmailOtpRequest{
+			Email: email,
+		})
+		reqSend.Header().Set("X-Forwarded-For", ip)
+		sendRes, err := authClient.SendEmailOtp(ctx, reqSend)
+		if err != nil {
+			t.Fatalf("SendEmailOtp for code #%d failed: %v", codeNum, err)
+		}
+		chId := sendRes.Msg.GetChallengeId()
+
+		// Attempt 1: wrong
+		reqV1 := connect.NewRequest(&pb.VerifyEmailOtpRequest{
+			Email:       email,
+			Code:        "000000",
+			ChallengeId: &chId,
+		})
+		reqV1.Header().Set("X-Forwarded-For", ip)
+		if _, err := authClient.VerifyEmailOtp(ctx, reqV1); err == nil {
+			t.Fatalf("expected attempt 1 to fail")
+		}
+
+		// Attempt 2: wrong
+		reqV2 := connect.NewRequest(&pb.VerifyEmailOtpRequest{
+			Email:       email,
+			Code:        "000000",
+			ChallengeId: &chId,
+		})
+		reqV2.Header().Set("X-Forwarded-For", ip)
+		if _, err := authClient.VerifyEmailOtp(ctx, reqV2); err == nil {
+			t.Fatalf("expected attempt 2 to fail")
+		}
+
+		// Attempt 3: wrong (exhausts this code challenge)
+		reqV3 := connect.NewRequest(&pb.VerifyEmailOtpRequest{
+			Email:       email,
+			Code:        "000000",
+			ChallengeId: &chId,
+		})
+		reqV3.Header().Set("X-Forwarded-For", ip)
+		_, err = authClient.VerifyEmailOtp(ctx, reqV3)
+		if err == nil {
+			t.Fatalf("expected attempt 3 to fail")
+		}
+
+		var isLockout bool
+		var cooldownSec int32
+		if connectErr, ok := err.(*connect.Error); ok {
+			if connectErr.Code() == connect.CodeResourceExhausted {
+				isLockout = true
+			}
+			for _, detail := range connectErr.Details() {
+				msg, valErr := detail.Value()
+				if valErr == nil {
+					if otpErr, ok := msg.(*pb.OtpVerificationError); ok {
+						cooldownSec = otpErr.CooldownSeconds
+					}
+				}
+			}
+		}
+		return isLockout, cooldownSec
+	}
+
+	// 1. Code 1 fails 3 times -> 15s exhausted cooldown, NOT 60-minute lockout
+	isLockout1, cd1 := failOneCodeChallenge(testIP, testEmail1, 1)
+	if isLockout1 {
+		t.Fatalf("Code 1 exhaustion must NOT trigger 60-minute lockout, got cooldown %d", cd1)
+	}
+	if cd1 != 15 {
+		t.Errorf("expected 15s exhausted cooldown for Code 1, got %d", cd1)
+	}
+
+	// Fast-forward 16 seconds to bypass exhausted cooldown
+	_, _ = pool.Exec(ctx, `UPDATE email_otps SET created_at = NOW() - INTERVAL '16 seconds', used_at = NOW() - INTERVAL '16 seconds' WHERE email = $1`, testEmail1)
+
+	// 2. Code 2 fails 3 times -> must NOT trigger 60-minute lockout (verifies bug fix!)
+	isLockout2, cd2 := failOneCodeChallenge(testIP, testEmail1, 2)
+	if isLockout2 {
+		t.Fatalf("Lockout happened after only 2 failed codes! Expected lockout only after 3 failed codes.")
+	}
+	if cd2 != 15 {
+		t.Errorf("expected 15s exhausted cooldown for Code 2, got %d", cd2)
+	}
+
+	// Fast-forward 16 seconds
+	_, _ = pool.Exec(ctx, `UPDATE email_otps SET created_at = NOW() - INTERVAL '16 seconds', used_at = NOW() - INTERVAL '16 seconds' WHERE email = $1`, testEmail1)
+
+	// 3. Code 3 fails 3 times -> triggers 60-minute lockout
+	isLockout3, cd3 := failOneCodeChallenge(testIP, testEmail1, 3)
+	if !isLockout3 {
+		t.Fatalf("expected 3rd failed code to trigger 60-minute lockout, got isLockout=false, cooldown=%d", cd3)
+	}
+	if cd3 < 3500 || cd3 > 3600 {
+		t.Errorf("expected ~3600s lockout cooldown for 3rd failed code, got %d", cd3)
+	}
+
+	// 4. Calling SendEmailOtp from testIP (even for a DIFFERENT email) is blocked due to per-IP isolation
+	reqBlocked := connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: testEmail2,
+	})
+	reqBlocked.Header().Set("X-Forwarded-For", testIP)
+	_, err = authClient.SendEmailOtp(ctx, reqBlocked)
+	if err == nil {
+		t.Fatal("expected SendEmailOtp from locked IP to fail, but it succeeded")
+	}
+	if connect.CodeOf(err) != connect.CodeResourceExhausted {
+		t.Errorf("expected CodeResourceExhausted for locked IP, got %v: %v", connect.CodeOf(err), err)
+	}
+	if !strings.Contains(strings.ToLower(err.Error()), "too many failed verification attempts") && !strings.Contains(err.Error(), "minutes") {
+		t.Errorf("expected lockout message, got: %v", err)
+	}
+
+	// 5. Calling SendEmailOtp from a DIFFERENT IP address must succeed without restriction
+	reqAllowed := connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: testEmail2,
+	})
+	reqAllowed.Header().Set("X-Forwarded-For", otherIP)
+	unlockedRes, err := authClient.SendEmailOtp(ctx, reqAllowed)
+	if err != nil {
+		t.Fatalf("different IP address must NOT be locked out, failed with: %v", err)
+	}
+	if !unlockedRes.Msg.Success {
+		t.Fatalf("expected SendEmailOtp success = true for different IP, got %v", unlockedRes.Msg.Success)
+	}
+}

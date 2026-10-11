@@ -41,13 +41,13 @@
    - **Does not exist:** create a new `User` + `UserProfile`, set `emailVerifiedAt`, log in.
 6. Issue a DB-stored refresh token (30-day TTL) + short-lived JWT access token (1h).
 
-**Two-tier throttling (no lockout field needed — fully computed):**
-- **Tier 1 — per code:** 3 failed attempts → code is exhausted, `failedAttempts = 3`. User must request a new code.
-- **Tier 2 — per email/hour:** count `EmailOtp` rows for this email where `failedAttempts >= 3` AND `createdAt > NOW() - 1 hour`. If count ≥ 3 → locked. Block both new code requests and verification attempts.
-- **Reset:** a successful login clears the burned-code history (or simply: once the 1-hour window passes, the count drops back to zero naturally).
+**Two-tier throttling (per-IP isolation):**
+- **Tier 1 — per code:** 3 failed attempts → code is exhausted, `failedAttempts = 3`. User must request a new code (subject to 15-second cooldown).
+- **Tier 2 — per IP (60-minute lockout):** 3 failed codes (exhausted challenges) from the same client IP address within 1 hour triggers a 60-minute lockout across all verification requests and new code requests from that IP address.
+- **Reset:** once the 60-minute lockout window passes (or failures age out over 1 hour), the count drops back to zero naturally. A successful login also resets the failure count for that IP.
 
 > [!NOTE]
-> The lockout state is derived entirely from existing `EmailOtp` rows — no `lockedUntil` column needed. Expired rows older than 1 hour can be pruned by a cleanup job without affecting lockout logic.
+> IP rate limiting tracks failed challenges per client IP address over a rolling 1-hour window. Expired failures older than 1 hour age out automatically.
 
 > [!IMPORTANT]
 > The OTP code itself must be stored as an Argon2/bcrypt hash. A DB breach must not expose usable codes.

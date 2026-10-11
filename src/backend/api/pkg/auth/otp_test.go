@@ -33,20 +33,30 @@ func TestIPRateLimiting(t *testing.T) {
 		t.Fatalf("unexpected rate limit error: %v", err)
 	}
 
-	// Record 4 failures (limit is 5)
-	for i := 0; i < 4; i++ {
-		RecordIPFailure(testIP)
-	}
+	// Record 1 failure (limit is 3 failed codes)
+	RecordIPFailure(testIP)
 	if err := CheckIPRateLimit(testIP); err != nil {
-		t.Fatalf("should not be rate limited after 4 failures: %v", err)
+		t.Fatalf("should not be rate limited after 1 failure: %v", err)
 	}
 
-	// 5th failure triggers lockout
+	// Record 2nd failure (verifying no premature lockout after 2 failed codes!)
+	RecordIPFailure(testIP)
+	if err := CheckIPRateLimit(testIP); err != nil {
+		t.Fatalf("should not be rate limited after 2 failures: %v", err)
+	}
+
+	// 3rd failure triggers lockout
 	RecordIPFailure(testIP)
 	if err := CheckIPRateLimit(testIP); err == nil {
-		t.Fatalf("expected rate limit lockout after 5 failures")
+		t.Fatalf("expected rate limit lockout after 3 failures")
 	} else if !strings.Contains(err.Error(), "60 minutes") {
 		t.Fatalf("expected 60 minutes in error message, got: %v", err)
+	}
+
+	// RecordIPSuccess clears failures for that IP
+	RecordIPSuccess(testIP)
+	if err := CheckIPRateLimit(testIP); err != nil {
+		t.Fatalf("rate limit should be cleared after RecordIPSuccess: %v", err)
 	}
 
 	// Reset tracker clears failures
