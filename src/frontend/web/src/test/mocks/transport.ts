@@ -495,6 +495,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
                 value: {
                   remainingAttempts: 0,
                   isExhausted: true,
+                  cooldownSeconds: 120,
                   message: "Incorrect code. You have 0 attempts left. Please request a new code",
                 },
               },
@@ -504,7 +505,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         }
         if (req.code === "000000") {
           throw new ConnectError(
-            "Too many failed verification attempts from this IP. Please wait 15 minutes before trying again",
+            "Too many failed verification attempts from this IP. Please wait 60 minutes before trying again",
             Code.ResourceExhausted,
           );
         }

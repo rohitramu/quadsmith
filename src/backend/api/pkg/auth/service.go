@@ -129,7 +129,7 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 
 	if failedAttempts >= MaxOtpAttempts {
 		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-		return s.returnOtpError("Verification challenge exhausted. Please request a new code", 0, true)
+		return s.returnOtpError("Verification challenge exhausted. Please request a new code", 0, true, 120)
 	}
 
 	if !VerifyOTP(code, codeHash) {
@@ -138,11 +138,11 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 		remaining := int32(MaxOtpAttempts - newFailures)
 		if remaining <= 0 {
 			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1, used_at = NOW() WHERE uuid = $2`, newFailures, otpUUID)
-			return s.returnOtpError("Incorrect code. You have 0 attempts left. Please request a new code", 0, true)
+			return s.returnOtpError("Incorrect code. You have 0 attempts left. Please request a new code", 0, true, 120)
 		}
 		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1 WHERE uuid = $2`, newFailures, otpUUID)
 		msg := fmt.Sprintf("Incorrect code. You have %d %s left", remaining, pluralAttempts(remaining))
-		return s.returnOtpError(msg, remaining, false)
+		return s.returnOtpError(msg, remaining, false, 0)
 	}
 
 	// Verification succeeded
@@ -1269,12 +1269,13 @@ func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[p
 // Helper Methods
 // ---------------------------------------------------------
 
-func (s *AuthService) returnOtpError(msg string, remaining int32, isExhausted bool) (*connect.Response[pb.AuthResponse], error) {
+func (s *AuthService) returnOtpError(msg string, remaining int32, isExhausted bool, cooldownSeconds int32) (*connect.Response[pb.AuthResponse], error) {
 	detail, _ := connect.NewErrorDetail(&pb.OtpVerificationError{
 		Message:           msg,
 		RemainingAttempts: remaining,
 		MaxAttempts:       MaxOtpAttempts,
 		IsExhausted:       isExhausted,
+		CooldownSeconds:   cooldownSeconds,
 	})
 	connErr := connect.NewError(connect.CodeInvalidArgument, errors.New(msg))
 	if detail != nil {

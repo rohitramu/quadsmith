@@ -1080,7 +1080,7 @@ export function AccountSettingsPage() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                      Verification Code (3-min expiry)
+                      Verification Code
                     </label>
                   </div>
 

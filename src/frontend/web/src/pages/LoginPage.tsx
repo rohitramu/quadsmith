@@ -26,8 +26,27 @@ export function LoginPage() {
   const [isExhausted, setIsExhausted] = useState(false);
   const [isRateLimited, setIsRateLimited] = useState(false);
   const [cooldown, setCooldown] = useState(0);
+  const [exhaustedCooldown, setExhaustedCooldown] = useState(0);
 
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Cooldown countdown timer
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => {
+      setCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
+  // Exhausted cooldown countdown timer (120s)
+  useEffect(() => {
+    if (exhaustedCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setExhaustedCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [exhaustedCooldown]);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -71,15 +90,6 @@ export function LoginPage() {
     }
   }, [magicToken, isAuthenticated, verifyMagicLink, navigate, redirectUrl]);
 
-  // Cooldown countdown timer
-  useEffect(() => {
-    if (cooldown <= 0) return;
-    const timer = setInterval(() => {
-      setCooldown((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [cooldown]);
-
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   const handleSendEmail = async (e?: React.FormEvent) => {
@@ -95,6 +105,7 @@ export function LoginPage() {
     try {
       const res = await sendEmailOtp(trimmed);
       setCooldown(res.cooldownSeconds);
+      setExhaustedCooldown(0);
       setStep("otp");
       setRemainingAttempts(null);
       setIsExhausted(false);
@@ -104,9 +115,9 @@ export function LoginPage() {
     } catch (err: unknown) {
       if (err instanceof ConnectError) {
         if (
-          err.code === Code.ResourceExhausted ||
-          err.rawMessage.toLowerCase().includes("too many") ||
-          err.rawMessage.toLowerCase().includes("15 minutes")
+          err.code === Code.ResourceExhausted &&
+          (err.rawMessage.toLowerCase().includes("too many") ||
+            err.rawMessage.toLowerCase().includes("minutes"))
         ) {
           setIsRateLimited(true);
         }
@@ -179,9 +190,9 @@ export function LoginPage() {
     } catch (err: unknown) {
       if (err instanceof ConnectError) {
         if (
-          err.code === Code.ResourceExhausted ||
-          err.rawMessage.toLowerCase().includes("too many") ||
-          err.rawMessage.toLowerCase().includes("15 minutes")
+          err.code === Code.ResourceExhausted &&
+          (err.rawMessage.toLowerCase().includes("too many") ||
+            err.rawMessage.toLowerCase().includes("minutes"))
         ) {
           setIsRateLimited(true);
           setErrorMsg(err.rawMessage);
@@ -191,6 +202,9 @@ export function LoginPage() {
         if (detail) {
           setRemainingAttempts(detail.remainingAttempts);
           setIsExhausted(detail.isExhausted);
+          if (detail.isExhausted) {
+            setExhaustedCooldown(detail.cooldownSeconds || 120);
+          }
           setErrorMsg(detail.message);
         } else {
           setErrorMsg(err.rawMessage);
@@ -345,7 +359,7 @@ export function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                  Verification Code (3-min expiry)
+                  Verification Code
                 </label>
                 {remainingAttempts !== null &&
                   remainingAttempts > 0 &&
@@ -403,16 +417,24 @@ export function LoginPage() {
                   className="w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
                 >
                   <ShieldAlert size={14} className="text-zinc-400 dark:text-zinc-500" />
-                  <span>Temporarily Locked (15m)</span>
+                  <span>Temporarily Locked Out</span>
                 </button>
               ) : isExhausted ? (
                 <button
                   type="button"
                   onClick={() => handleSendEmail()}
-                  disabled={isLoading}
-                  className="w-full py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 transition shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={exhaustedCooldown > 0 || isLoading}
+                  className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
+                    exhaustedCooldown > 0
+                      ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                      : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
+                  }`}
                 >
-                  <span>Request New Verification Code</span>
+                  <span>
+                    {exhaustedCooldown > 0
+                      ? `Request New Verification Code (${exhaustedCooldown}s)`
+                      : "Request New Verification Code"}
+                  </span>
                 </button>
               ) : (
                 <button
@@ -439,6 +461,7 @@ export function LoginPage() {
                     setRemainingAttempts(null);
                     setIsExhausted(false);
                     setIsRateLimited(false);
+                    setExhaustedCooldown(0);
                   }}
                   className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 flex items-center gap-1 transition cursor-pointer"
                 >

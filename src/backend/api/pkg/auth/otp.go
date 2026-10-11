@@ -19,9 +19,10 @@ const (
 	OtpTTL            = 3 * time.Minute
 	MagicLinkTTL      = 15 * time.Minute
 	EmailCooldown     = 60 * time.Second
+	ExhaustedCooldown = 120 * time.Second
 	MaxOtpAttempts    = 3
 	MaxIPFailures     = 5
-	IPLockoutDuration = 15 * time.Minute
+	IPLockoutDuration = 60 * time.Minute
 )
 
 // GenerateOTP generates a cryptographically random 6-digit numeric OTP and its verification hash
@@ -94,7 +95,7 @@ func CheckIPRateLimit(ip string) error {
 	globalIPTracker.failures[ip] = valid
 
 	if len(valid) >= MaxIPFailures {
-		return errors.New("too many failed verification attempts from this IP. Please wait 15 minutes before trying again")
+		return errors.New("too many failed verification attempts from this IP. Please wait 60 minutes before trying again")
 	}
 
 	return nil
@@ -126,16 +127,32 @@ func RecordIPSuccess(ip string) {
 // Email Send Cooldown
 // ---------------------------------------------------------
 
-// CheckEmailCooldown verifies whether an email was sent within the 60-second cooldown window
+// CheckEmailCooldown verifies whether an email was sent within the 60-second cooldown window,
+// or if a previous challenge was exhausted (3 failed attempts) within the 120-second lockout window.
 func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (int32, error) {
 	var createdAt time.Time
-	query := `SELECT created_at FROM email_otps WHERE email = $1 ORDER BY created_at DESC LIMIT 1`
-	err := db.QueryRow(ctx, query, email).Scan(&createdAt)
+	var usedAt *time.Time
+	var failedAttempts int32
+	query := `SELECT created_at, used_at, failed_attempts FROM email_otps WHERE email = $1 ORDER BY created_at DESC LIMIT 1`
+	err := db.QueryRow(ctx, query, email).Scan(&createdAt, &usedAt, &failedAttempts)
 	if err != nil {
 		// No previous OTPs sent for this email
 		return 0, nil
 	}
 
+	// Enforce 120-second cooldown starting when the 3rd failed challenge happened
+	if failedAttempts >= MaxOtpAttempts && usedAt != nil {
+		elapsedExhausted := time.Since(*usedAt)
+		if elapsedExhausted < ExhaustedCooldown {
+			remaining := int32((ExhaustedCooldown - elapsedExhausted).Seconds())
+			if remaining < 1 {
+				remaining = 1
+			}
+			return remaining, nil
+		}
+	}
+
+	// Enforce 60-second cooldown from when the email was sent
 	elapsed := time.Since(createdAt)
 	if elapsed < EmailCooldown {
 		remaining := int32((EmailCooldown - elapsed).Seconds())

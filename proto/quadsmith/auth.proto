@@ -46,6 +46,7 @@ message OtpVerificationError {
   int32 remaining_attempts = 2;
   int32 max_attempts = 3;
   bool is_exhausted = 4;
+  int32 cooldown_seconds = 5;
 }
 
 message RefreshTokenRequest {

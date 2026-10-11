@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -42,6 +43,8 @@ func TestIPRateLimiting(t *testing.T) {
 	RecordIPFailure(testIP)
 	if err := CheckIPRateLimit(testIP); err == nil {
 		t.Fatalf("expected rate limit lockout after 5 failures")
+	} else if !strings.Contains(err.Error(), "60 minutes") {
+		t.Fatalf("expected 60 minutes in error message, got: %v", err)
 	}
 
 	// Successful login resets failures

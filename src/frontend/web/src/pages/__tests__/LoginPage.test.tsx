@@ -111,9 +111,15 @@ describe("LoginPage Component", () => {
     }
 
     // Wait for lockout state
-    expect(
-      await screen.findByRole("button", { name: /request new verification code/i }),
-    ).toBeInTheDocument();
+    const reqBtn = await screen.findByRole("button", {
+      name: /request new verification code \(120s\)/i,
+    });
+    expect(reqBtn).toBeInTheDocument();
+    expect(reqBtn).toBeDisabled();
+
+    // Verification code label does not contain 3-min expiry
+    expect(screen.getByText(/^verification code$/i)).toBeInTheDocument();
+    expect(screen.queryByText(/3-min expiry/i)).not.toBeInTheDocument();
 
     // Resend email button is replaced by Request New Verification Code
     expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
@@ -130,7 +136,7 @@ describe("LoginPage Component", () => {
     expect(screen.getByRole("button", { name: /back/i })).toBeInTheDocument();
   });
 
-  it("handles multi-code 15-minute IP lockout with disabled controls and lockout warning", async () => {
+  it("handles multi-code 60-minute IP lockout with disabled controls and lockout warning", async () => {
     const { user } = renderApp("/login", {
       transportOptions: { isAuthenticated: false },
     });
@@ -149,13 +155,14 @@ describe("LoginPage Component", () => {
       await user.type(inputs[i], "0");
     }
 
-    // Displays the 15-minute IP lockout message
+    // Displays the 60-minute IP lockout message
     expect(
       await screen.findByText(/too many failed verification attempts from this ip/i),
     ).toBeInTheDocument();
+    expect(screen.getByText(/60 minutes/i)).toBeInTheDocument();
 
-    // Renders disabled "Temporarily Locked (15m)" button instead of Request New Code
-    const lockedBtn = screen.getByRole("button", { name: /temporarily locked \(15m\)/i });
+    // Renders disabled "Temporarily Locked Out" button instead of Request New Code
+    const lockedBtn = screen.getByRole("button", { name: /temporarily locked out/i });
     expect(lockedBtn).toBeInTheDocument();
     expect(lockedBtn).toBeDisabled();
     expect(

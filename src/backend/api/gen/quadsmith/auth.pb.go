@@ -304,6 +304,7 @@ type OtpVerificationError struct {
 	RemainingAttempts int32                  `protobuf:"varint,2,opt,name=remaining_attempts,json=remainingAttempts,proto3" json:"remaining_attempts,omitempty"`
 	MaxAttempts       int32                  `protobuf:"varint,3,opt,name=max_attempts,json=maxAttempts,proto3" json:"max_attempts,omitempty"`
 	IsExhausted       bool                   `protobuf:"varint,4,opt,name=is_exhausted,json=isExhausted,proto3" json:"is_exhausted,omitempty"`
+	CooldownSeconds   int32                  `protobuf:"varint,5,opt,name=cooldown_seconds,json=cooldownSeconds,proto3" json:"cooldown_seconds,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -364,6 +365,13 @@ func (x *OtpVerificationError) GetIsExhausted() bool {
 		return x.IsExhausted
 	}
 	return false
+}
+
+func (x *OtpVerificationError) GetCooldownSeconds() int32 {
+	if x != nil {
+		return x.CooldownSeconds
+	}
+	return 0
 }
 
 type RefreshTokenRequest struct {
@@ -1530,12 +1538,13 @@ const file_auth_proto_rawDesc = "" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12#\n" +
 	"\x04user\x18\x03 \x01(\v2\x0f.quadsmith.UserR\x04user\x120\n" +
-	"\aprofile\x18\x04 \x01(\v2\x16.quadsmith.UserProfileR\aprofile\"\xa5\x01\n" +
+	"\aprofile\x18\x04 \x01(\v2\x16.quadsmith.UserProfileR\aprofile\"\xd0\x01\n" +
 	"\x14OtpVerificationError\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\x12-\n" +
 	"\x12remaining_attempts\x18\x02 \x01(\x05R\x11remainingAttempts\x12!\n" +
 	"\fmax_attempts\x18\x03 \x01(\x05R\vmaxAttempts\x12!\n" +
-	"\fis_exhausted\x18\x04 \x01(\bR\visExhausted\":\n" +
+	"\fis_exhausted\x18\x04 \x01(\bR\visExhausted\x12)\n" +
+	"\x10cooldown_seconds\x18\x05 \x01(\x05R\x0fcooldownSeconds\":\n" +
 	"\x13RefreshTokenRequest\x12#\n" +
 	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"\x17\n" +
 	"\x15GetCurrentUserRequest\"\xa1\x01\n" +
