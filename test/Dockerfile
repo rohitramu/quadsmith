@@ -68,26 +68,12 @@ RUN apt-get update && apt-get install -y wget && \
 ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=postgres
 ENV POSTGRES_DB=quadsmith
+ENV PGDATA=/var/lib/postgresql/pgdata
 ENV DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
 ENV PORT=8080
 ENV STATIC_DIR="/app/web/dist"
 
 EXPOSE 5432 8080
-
-# Inline the sandbox entrypoint script securely using printf (legacy builder compatible)
-RUN printf '#!/usr/bin/env bash\n\
-set -e\n\
-echo "Starting PostgreSQL..."\n\
-docker-entrypoint.sh postgres > /var/log/postgres.log 2>&1 &\n\
-echo "Waiting for PostgreSQL to be ready..."\n\
-until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 1; done\n\
-echo "Applying Schema..."\n\
-psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql\n\
-echo "Seeding Database..."\n\
-./seeder\n\
-exec ./server\n' > /app/sandbox-entrypoint.sh
-
-RUN chmod +x /app/sandbox-entrypoint.sh
 
 # Copy binaries from builder
 COPY --from=builder /app/bin/server /app/server
@@ -96,8 +82,34 @@ COPY --from=builder /app/bin/seeder /app/seeder
 # Copy Web UI build from web-builder
 COPY --from=web-builder /app/dist /app/web/dist
 
-# Copy database schema and seeds at the very end
+# Copy database schema and seeds
 COPY src/backend/db/schema.sql /app/src/backend/db/schema.sql
 COPY src/backend/db/seeds /app/src/backend/db/seeds
+
+# Pre-populate PostgreSQL database with schema and seeds at image build time
+RUN docker-entrypoint.sh postgres & \
+    pid=$! && \
+    until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done && \
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql && \
+    ./seeder && \
+    gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
+    wait $pid
+
+# Inline the sandbox entrypoint script
+RUN printf '#!/usr/bin/env bash\n\
+set -e\n\
+echo "Starting PostgreSQL..."\n\
+docker-entrypoint.sh postgres > /var/log/postgres.log 2>&1 &\n\
+echo "Waiting for PostgreSQL to be ready..."\n\
+until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done\n\
+ROW_COUNT=$(psql -U postgres -d quadsmith -tAc "SELECT count(*) FROM motors;" 2>/dev/null || echo "0")\n\
+if [ "$ROW_COUNT" = "0" ]; then\n\
+    echo "Applying Schema & Seeding Database..."\n\
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql\n\
+    ./seeder\n\
+fi\n\
+exec ./server\n' > /app/sandbox-entrypoint.sh
+
+RUN chmod +x /app/sandbox-entrypoint.sh
 
 ENTRYPOINT ["/app/sandbox-entrypoint.sh"]
