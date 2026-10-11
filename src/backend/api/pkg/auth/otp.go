@@ -36,9 +36,9 @@ func GenerateOTP() (code string, hash string, err error) {
 	return code, hash, nil
 }
 
-// HashOTP hashes the 6-digit code with a server secret to prevent tampering
+// HashOTP hashes the 6-digit code with a dedicated derived key to prevent tampering
 func HashOTP(code string) string {
-	mac := hmac.New(sha256.New, getJWTSecret())
+	mac := hmac.New(sha256.New, deriveKey("otp_hash"))
 	mac.Write([]byte("otp:" + code))
 	return hex.EncodeToString(mac.Sum(nil))
 }
@@ -47,21 +47,6 @@ func HashOTP(code string) string {
 func VerifyOTP(code, hash string) bool {
 	expectedHash := HashOTP(code)
 	return hmac.Equal([]byte(expectedHash), []byte(hash))
-}
-
-// RecoverOTP attempts to recover a 6-digit OTP from its hash by searching 000000 to 999999.
-// This serves as a fallback for legacy records where the plaintext code was not stored.
-func RecoverOTP(hash string) string {
-	if hash == "" {
-		return ""
-	}
-	for i := 0; i < 1000000; i++ {
-		code := fmt.Sprintf("%06d", i)
-		if VerifyOTP(code, hash) {
-			return code
-		}
-	}
-	return ""
 }
 
 // GenerateMagicLinkToken generates a secure 32-byte single-use magic link token and its hash
@@ -88,9 +73,16 @@ var globalIPTracker = &ipAttemptTracker{
 	failures: make(map[string][]time.Time),
 }
 
+// ResetIPTracker clears all tracked IP failures (used in tests)
+func ResetIPTracker() {
+	globalIPTracker.mu.Lock()
+	defer globalIPTracker.mu.Unlock()
+	globalIPTracker.failures = make(map[string][]time.Time)
+}
+
 // CheckIPRateLimit checks if an IP has exceeded the failure limit
 func CheckIPRateLimit(ip string) error {
-	if ip == "" || ip == "127.0.0.1" || ip == "::1" || ip == "localhost" {
+	if ip == "" {
 		return nil
 	}
 
@@ -128,14 +120,9 @@ func RecordIPFailure(ip string) {
 	globalIPTracker.failures[ip] = append(globalIPTracker.failures[ip], now)
 }
 
-// RecordIPSuccess clears failure records for an IP upon successful sign-in
+// RecordIPSuccess records a successful login attempt without resetting failure history
 func RecordIPSuccess(ip string) {
-	if ip == "" {
-		return
-	}
-	globalIPTracker.mu.Lock()
-	defer globalIPTracker.mu.Unlock()
-	delete(globalIPTracker.failures, ip)
+	// Preserved for caller interface compatibility; failures age out over IPLockoutDuration
 }
 
 // ---------------------------------------------------------

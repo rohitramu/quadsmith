@@ -88,10 +88,14 @@ CREATE TABLE IF NOT EXISTS email_otps (
   used_at TIMESTAMPTZ,
   failed_attempts INTEGER DEFAULT 0 NOT NULL,
   created_at TIMESTAMPTZ,
-  code TEXT DEFAULT '' NOT NULL
+  challenge_id_hash TEXT DEFAULT '' NOT NULL,
+  purpose TEXT DEFAULT 'login' NOT NULL,
+  requested_by_user_uuid UUID
 );
 
 CREATE INDEX IF NOT EXISTS idx_email_otps_email ON email_otps (email);
+
+CREATE INDEX IF NOT EXISTS idx_email_otps_challenge_id_hash ON email_otps (challenge_id_hash);
 
 CREATE TABLE IF NOT EXISTS username_histories (
   uuid UUID NOT NULL,
@@ -542,6 +546,9 @@ ADD CONSTRAINT fk_user_emails_user_uuid FOREIGN KEY (user_uuid) REFERENCES users
 
 ALTER TABLE refresh_tokens
 ADD CONSTRAINT fk_refresh_tokens_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE email_otps
+ADD CONSTRAINT fk_email_otps_requested_by_user_uuid FOREIGN KEY (requested_by_user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE username_histories
 ADD CONSTRAINT fk_username_histories_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);

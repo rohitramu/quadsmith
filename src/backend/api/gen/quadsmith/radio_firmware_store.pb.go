@@ -22,9 +22,17 @@ func CreateRadioFirmware(ctx context.Context, tx pgx.Tx, m *RadioFirmware) error
 }
 
 func GetRadioFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*RadioFirmware, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "supported_protocols": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, version, supported_protocols, is_open_source, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "version", "supported_protocols", "is_open_source", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -85,9 +93,17 @@ func DeleteRadioFirmware(ctx context.Context, tx pgx.Tx, idOrUuid string) error 
 }
 
 func ListRadioFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*RadioFirmware, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "supported_protocols": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, version, supported_protocols, is_open_source, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "version", "supported_protocols", "is_open_source", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -95,7 +111,6 @@ func ListRadioFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, so
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "supported_protocols": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -112,7 +127,7 @@ func ListRadioFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, so
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {

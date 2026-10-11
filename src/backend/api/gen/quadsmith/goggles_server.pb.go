@@ -4,6 +4,8 @@ package quadsmith
 import (
 	"connectrpc.com/connect"
 	"context"
+	"errors"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"quadsmith/api/internal/cel2sql"
 	"quadsmith/api/internal/pagination"
@@ -20,7 +22,13 @@ func NewGogglesServiceHandler(db *pgxpool.Pool) *GogglesServiceHandler {
 func (s *GogglesServiceHandler) GetGoggles(ctx context.Context, req *connect.Request[GetGogglesRequest]) (*connect.Response[Goggles], error) {
 	m, err := GetGoggles(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		if pagination.IsInvalidArgument(err) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, errors.New("an internal error occurred"))
 	}
 	return connect.NewResponse(m), nil
 }
@@ -46,7 +54,7 @@ func (s *GogglesServiceHandler) ListGoggles(ctx context.Context, req *connect.Re
 		if pagination.IsInvalidArgument(err) {
 			return nil, connect.NewError(connect.CodeInvalidArgument, err)
 		}
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, connect.NewError(connect.CodeInternal, errors.New("an internal error occurred"))
 	}
 
 	nextPageToken := ""

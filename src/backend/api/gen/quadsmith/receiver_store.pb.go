@@ -27,9 +27,17 @@ func CreateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
 }
 
 func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Receiver, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "frequency_band_mhz": true, "has_telemetry": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -101,9 +109,17 @@ func DeleteReceiver(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Receiver, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "frequency_band_mhz": true, "has_telemetry": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -111,7 +127,6 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "frequency_band_mhz": true, "has_telemetry": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -128,7 +143,7 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {

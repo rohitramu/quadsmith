@@ -489,17 +489,19 @@ func (x *RefreshToken) GetCreatedAt() *timestamppb.Timestamp {
 }
 
 type EmailOtp struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Email          string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	CodeHash       string                 `protobuf:"bytes,3,opt,name=code_hash,json=codeHash,proto3" json:"code_hash,omitempty"`
-	ExpiresAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
-	UsedAt         *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=used_at,json=usedAt,proto3" json:"used_at,omitempty"`
-	FailedAttempts int32                  `protobuf:"varint,6,opt,name=failed_attempts,json=failedAttempts,proto3" json:"failed_attempts,omitempty"`
-	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	Code           string                 `protobuf:"bytes,8,opt,name=code,proto3" json:"code,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	Uuid                string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Email               string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	CodeHash            string                 `protobuf:"bytes,3,opt,name=code_hash,json=codeHash,proto3" json:"code_hash,omitempty"`
+	ExpiresAt           *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	UsedAt              *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=used_at,json=usedAt,proto3" json:"used_at,omitempty"`
+	FailedAttempts      int32                  `protobuf:"varint,6,opt,name=failed_attempts,json=failedAttempts,proto3" json:"failed_attempts,omitempty"`
+	CreatedAt           *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	ChallengeIdHash     string                 `protobuf:"bytes,8,opt,name=challenge_id_hash,json=challengeIdHash,proto3" json:"challenge_id_hash,omitempty"`
+	Purpose             string                 `protobuf:"bytes,9,opt,name=purpose,proto3" json:"purpose,omitempty"`
+	RequestedByUserUuid *string                `protobuf:"bytes,10,opt,name=requested_by_user_uuid,json=requestedByUserUuid,proto3,oneof" json:"requested_by_user_uuid,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *EmailOtp) Reset() {
@@ -581,9 +583,23 @@ func (x *EmailOtp) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *EmailOtp) GetCode() string {
+func (x *EmailOtp) GetChallengeIdHash() string {
 	if x != nil {
-		return x.Code
+		return x.ChallengeIdHash
+	}
+	return ""
+}
+
+func (x *EmailOtp) GetPurpose() string {
+	if x != nil {
+		return x.Purpose
+	}
+	return ""
+}
+
+func (x *EmailOtp) GetRequestedByUserUuid() string {
+	if x != nil && x.RequestedByUserUuid != nil {
+		return *x.RequestedByUserUuid
 	}
 	return ""
 }
@@ -1025,7 +1041,7 @@ const file_user_proto_rawDesc = "" +
 	"deviceHint\x129\n" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x14\xc2\xf3\x18\x10\n" +
-	"\x0erefresh_tokens\"\xee\x02\n" +
+	"\x0erefresh_tokens\"\x99\x04\n" +
 	"\bEmailOtp\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x1c\n" +
 	"\x05email\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\x05email\x12\x1b\n" +
@@ -1035,10 +1051,15 @@ const file_user_proto_rawDesc = "" +
 	"\aused_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x06usedAt\x120\n" +
 	"\x0ffailed_attempts\x18\x06 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x0efailedAttempts\x129\n" +
 	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1c\n" +
-	"\x04code\x18\b \x01(\tB\b\xc2\xf3\x18\x04:\x02''R\x04code:\x10\xc2\xf3\x18\f\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x126\n" +
+	"\x11challenge_id_hash\x18\b \x01(\tB\n" +
+	"\xc2\xf3\x18\x06(\x01:\x02''R\x0fchallengeIdHash\x12'\n" +
+	"\apurpose\x18\t \x01(\tB\r\xc2\xf3\x18\t:\a'login'R\apurpose\x12K\n" +
+	"\x16requested_by_user_uuid\x18\n" +
+	" \x01(\tB\x11\xc2\xf3\x18\r\x1a\vusers(uuid)H\x00R\x13requestedByUserUuid\x88\x01\x01:\x10\xc2\xf3\x18\f\n" +
 	"\n" +
-	"email_otps\"\x89\x03\n" +
+	"email_otpsB\x19\n" +
+	"\x17_requested_by_user_uuid\"\x89\x03\n" +
 	"\x0fUsernameHistory\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
 	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12)\n" +
@@ -1146,6 +1167,7 @@ func file_user_proto_init() {
 	file___common_proto_init()
 	file___sql_proto_init()
 	file___validate_proto_init()
+	file_user_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

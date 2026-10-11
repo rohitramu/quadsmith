@@ -23,11 +23,13 @@ message SendEmailOtpResponse {
   string message = 2;
   int32 cooldown_seconds = 3;
   bool is_existing_account = 4;
+  optional string challenge_id = 5;
 }
 
 message VerifyEmailOtpRequest {
   string email = 1;
   string code = 2;
+  optional string challenge_id = 3;
 }
 
 message VerifyMagicLinkRequest {
@@ -104,6 +106,7 @@ message VerifyAddEmailOtpRequest {
   string email = 1;
   string code = 2;
   string token = 3;
+  optional string challenge_id = 4;
 }
 
 message VerifyAddEmailOtpResponse {
@@ -115,12 +118,15 @@ message VerifyAddEmailOtpResponse {
   repeated string other_build_names = 6;
   repeated string other_emails = 7;
   repeated string other_oauth_providers = 8;
+  optional string merge_ticket = 9;
 }
 
 message MergeAccountRequest {
   string email = 1;
   string code = 2;
   string token = 3;
+  optional string merge_ticket = 4;
+  optional string challenge_id = 5;
 }
 
 message MergeAccountResponse {

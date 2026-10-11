@@ -58,6 +58,8 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                       title={item.title || `Media Video ${index + 1}`}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
+                      sandbox="allow-scripts allow-same-origin allow-presentation"
+                      referrerPolicy="strict-origin-when-cross-origin"
                       className="w-full h-full border-0"
                     />
                   </div>

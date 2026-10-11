@@ -261,6 +261,22 @@ export function LoginPage() {
     }
   };
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (!pasted) return;
+    const newDigits = [...otpDigits];
+    pasted.split("").forEach((c, i) => {
+      newDigits[i] = c;
+    });
+    setOtpDigits(newDigits);
+    const nextIndex = Math.min(pasted.length, 5);
+    otpInputRefs.current[nextIndex]?.focus();
+    if (pasted.length === 6 && !isLoading) {
+      handleVerifyOtp(pasted);
+    }
+  };
+
   const handleVerifyOtp = async (explicitCode?: string) => {
     const code = explicitCode || otpDigits.join("");
     if (code.length < 6) {
@@ -483,12 +499,15 @@ export function LoginPage() {
               }}
               type="text"
               inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete={index === 0 ? "one-time-code" : "off"}
               maxLength={1}
               placeholder={hintDigits[index] || ""}
               value={digit}
               disabled={isSuccess || isExhausted || isRateLimited || isLoading}
               onChange={(e) => handleOtpChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
+              onPaste={handlePaste}
               className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition ${
                 isSuccess || isExhausted || isRateLimited
                   ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"

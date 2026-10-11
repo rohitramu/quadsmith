@@ -4,16 +4,16 @@ package quadsmith
 import (
 	"connectrpc.com/connect"
 	"context"
-	"crypto/rand"
 	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"quadsmith/api/internal/authcontext"
 	"quadsmith/api/internal/buildid"
 	"quadsmith/api/internal/cel2sql"
 	"quadsmith/api/internal/pagination"
 	"regexp"
 	"strings"
-	"time"
 )
 
 type BuildServiceHandler struct {
@@ -27,7 +27,13 @@ func NewBuildServiceHandler(db *pgxpool.Pool) *BuildServiceHandler {
 func (s *BuildServiceHandler) GetBuild(ctx context.Context, req *connect.Request[GetBuildRequest]) (*connect.Response[Build], error) {
 	m, err := GetBuild(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		if pagination.IsInvalidArgument(err) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, errors.New("an internal error occurred"))
 	}
 	return connect.NewResponse(m), nil
 }
@@ -53,7 +59,7 @@ func (s *BuildServiceHandler) ListBuilds(ctx context.Context, req *connect.Reque
 		if pagination.IsInvalidArgument(err) {
 			return nil, connect.NewError(connect.CodeInvalidArgument, err)
 		}
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, connect.NewError(connect.CodeInternal, errors.New("an internal error occurred"))
 	}
 
 	nextPageToken := ""
@@ -74,9 +80,19 @@ func (s *BuildServiceHandler) ListBuilds(ctx context.Context, req *connect.Reque
 
 // CreateBuild creates and persists a new build record
 func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Request[CreateBuildRequest]) (*connect.Response[Build], error) {
+	userCtx := authcontext.UserContextFromContext(ctx)
 	b := req.Msg.GetBuild()
 	if b == nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("build object is required"))
+	}
+
+	// Enforce ownership from authenticated session context (prevent spoofing)
+	if userCtx != nil {
+		b.UserUuid = &userCtx.UserUUID
+		b.AuthorUsername = &userCtx.UserID
+	} else {
+		b.UserUuid = nil
+		b.AuthorUsername = nil
 	}
 
 	// Validate reference links
@@ -92,6 +108,13 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 		}
 		normURL := strings.TrimRight(strings.TrimSpace(link.Url), "/")
 		if normURL != "" {
+			if len(normURL) > 2048 {
+				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("reference link %d URL exceeds maximum length of 2048 characters", i))
+			}
+			lower := strings.ToLower(normURL)
+			if !strings.HasPrefix(lower, "http://") && !strings.HasPrefix(lower, "https://") {
+				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("reference link %d URL must start with http:// or https://", i))
+			}
 			if prevIdx, exists := seenURLs[normURL]; exists {
 				return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("reference link %d duplicates URL from link %d (%s): duplicate reference link URL is not permitted; combine categories into the types array of a single link", i, prevIdx, link.Url))
 			}
@@ -99,25 +122,10 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 		}
 	}
 
-	// 1. Assign UUID v7 if empty
-	if b.Uuid == "" {
-		var randBytes [16]byte
-		if _, err := rand.Read(randBytes[:]); err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate uuid: %w", err))
-		}
-		ms := time.Now().UnixMilli()
-		randBytes[0] = byte(ms >> 40)
-		randBytes[1] = byte(ms >> 32)
-		randBytes[2] = byte(ms >> 24)
-		randBytes[3] = byte(ms >> 16)
-		randBytes[4] = byte(ms >> 8)
-		randBytes[5] = byte(ms)
-		randBytes[6] = (randBytes[6] & 0x0f) | 0x70 // UUID v7
-		randBytes[8] = (randBytes[8] & 0x3f) | 0x80 // RFC 4122
-		b.Uuid = fmt.Sprintf("%08x-%04x-%04x-%04x-%012x", randBytes[0:4], randBytes[4:6], randBytes[6:8], randBytes[8:10], randBytes[10:16])
-	}
+	// 1. Assign server-generated UUID v7 (ignore any client-provided UUID)
+	b.Uuid = authcontext.NewUUIDv7()
 
-	// 2. Generate unique slug if empty
+	// 2. Generate unique slug if empty, or validate custom id is not a UUID
 	if b.Id == "" {
 		reg := regexp.MustCompile("[^a-z0-9]+")
 		slug := strings.Trim(reg.ReplaceAllString(strings.ToLower(b.Name), "-"), "-")
@@ -125,6 +133,12 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 			slug = "build-" + b.Uuid[:8]
 		}
 		b.Id = slug
+	} else {
+		b.Id = strings.ToLower(strings.TrimSpace(b.Id))
+		uuidRegex := regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
+		if uuidRegex.MatchString(b.Id) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("custom build id cannot be formatted as a UUID"))
+		}
 	}
 
 	// 3. Translate any foreign key human-readable IDs to UUIDs (per AGENTS.md rule)

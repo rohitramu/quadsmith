@@ -72,6 +72,7 @@ type SendEmailOtpResponse struct {
 	Message           string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	CooldownSeconds   int32                  `protobuf:"varint,3,opt,name=cooldown_seconds,json=cooldownSeconds,proto3" json:"cooldown_seconds,omitempty"`
 	IsExistingAccount bool                   `protobuf:"varint,4,opt,name=is_existing_account,json=isExistingAccount,proto3" json:"is_existing_account,omitempty"`
+	ChallengeId       *string                `protobuf:"bytes,5,opt,name=challenge_id,json=challengeId,proto3,oneof" json:"challenge_id,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -134,10 +135,18 @@ func (x *SendEmailOtpResponse) GetIsExistingAccount() bool {
 	return false
 }
 
+func (x *SendEmailOtpResponse) GetChallengeId() string {
+	if x != nil && x.ChallengeId != nil {
+		return *x.ChallengeId
+	}
+	return ""
+}
+
 type VerifyEmailOtpRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	ChallengeId   *string                `protobuf:"bytes,3,opt,name=challenge_id,json=challengeId,proto3,oneof" json:"challenge_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -182,6 +191,13 @@ func (x *VerifyEmailOtpRequest) GetEmail() string {
 func (x *VerifyEmailOtpRequest) GetCode() string {
 	if x != nil {
 		return x.Code
+	}
+	return ""
+}
+
+func (x *VerifyEmailOtpRequest) GetChallengeId() string {
+	if x != nil && x.ChallengeId != nil {
+		return *x.ChallengeId
 	}
 	return ""
 }
@@ -807,6 +823,7 @@ type VerifyAddEmailOtpRequest struct {
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
 	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
+	ChallengeId   *string                `protobuf:"bytes,4,opt,name=challenge_id,json=challengeId,proto3,oneof" json:"challenge_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -862,6 +879,13 @@ func (x *VerifyAddEmailOtpRequest) GetToken() string {
 	return ""
 }
 
+func (x *VerifyAddEmailOtpRequest) GetChallengeId() string {
+	if x != nil && x.ChallengeId != nil {
+		return *x.ChallengeId
+	}
+	return ""
+}
+
 type VerifyAddEmailOtpResponse struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Success             bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
@@ -872,6 +896,7 @@ type VerifyAddEmailOtpResponse struct {
 	OtherBuildNames     []string               `protobuf:"bytes,6,rep,name=other_build_names,json=otherBuildNames,proto3" json:"other_build_names,omitempty"`
 	OtherEmails         []string               `protobuf:"bytes,7,rep,name=other_emails,json=otherEmails,proto3" json:"other_emails,omitempty"`
 	OtherOauthProviders []string               `protobuf:"bytes,8,rep,name=other_oauth_providers,json=otherOauthProviders,proto3" json:"other_oauth_providers,omitempty"`
+	MergeTicket         *string                `protobuf:"bytes,9,opt,name=merge_ticket,json=mergeTicket,proto3,oneof" json:"merge_ticket,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -962,11 +987,20 @@ func (x *VerifyAddEmailOtpResponse) GetOtherOauthProviders() []string {
 	return nil
 }
 
+func (x *VerifyAddEmailOtpResponse) GetMergeTicket() string {
+	if x != nil && x.MergeTicket != nil {
+		return *x.MergeTicket
+	}
+	return ""
+}
+
 type MergeAccountRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
 	Token         string                 `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
+	MergeTicket   *string                `protobuf:"bytes,4,opt,name=merge_ticket,json=mergeTicket,proto3,oneof" json:"merge_ticket,omitempty"`
+	ChallengeId   *string                `protobuf:"bytes,5,opt,name=challenge_id,json=challengeId,proto3,oneof" json:"challenge_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1018,6 +1052,20 @@ func (x *MergeAccountRequest) GetCode() string {
 func (x *MergeAccountRequest) GetToken() string {
 	if x != nil {
 		return x.Token
+	}
+	return ""
+}
+
+func (x *MergeAccountRequest) GetMergeTicket() string {
+	if x != nil && x.MergeTicket != nil {
+		return *x.MergeTicket
+	}
+	return ""
+}
+
+func (x *MergeAccountRequest) GetChallengeId() string {
+	if x != nil && x.ChallengeId != nil {
+		return *x.ChallengeId
 	}
 	return ""
 }
@@ -1599,15 +1647,19 @@ const file_auth_proto_rawDesc = "" +
 	"_sql.proto\x1a\x0f_validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\n" +
 	"user.proto\"+\n" +
 	"\x13SendEmailOtpRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"\xa5\x01\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"\xde\x01\n" +
 	"\x14SendEmailOtpResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12)\n" +
 	"\x10cooldown_seconds\x18\x03 \x01(\x05R\x0fcooldownSeconds\x12.\n" +
-	"\x13is_existing_account\x18\x04 \x01(\bR\x11isExistingAccount\"A\n" +
+	"\x13is_existing_account\x18\x04 \x01(\bR\x11isExistingAccount\x12&\n" +
+	"\fchallenge_id\x18\x05 \x01(\tH\x00R\vchallengeId\x88\x01\x01B\x0f\n" +
+	"\r_challenge_id\"z\n" +
 	"\x15VerifyEmailOtpRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\".\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12&\n" +
+	"\fchallenge_id\x18\x03 \x01(\tH\x00R\vchallengeId\x88\x01\x01B\x0f\n" +
+	"\r_challenge_id\".\n" +
 	"\x16VerifyMagicLinkRequest\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\"\x84\x02\n" +
 	"\fAuthResponse\x12!\n" +
@@ -1653,11 +1705,13 @@ const file_auth_proto_rawDesc = "" +
 	"\x16ListUserEmailsResponse\x12,\n" +
 	"\x06emails\x18\x01 \x03(\v2\x14.quadsmith.UserEmailR\x06emails\".\n" +
 	"\x16SendAddEmailOtpRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\"Z\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"\x93\x01\n" +
 	"\x18VerifyAddEmailOtpRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
-	"\x05token\x18\x03 \x01(\tR\x05token\"\xd5\x02\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\x12&\n" +
+	"\fchallenge_id\x18\x04 \x01(\tH\x00R\vchallengeId\x88\x01\x01B\x0f\n" +
+	"\r_challenge_id\"\x8e\x03\n" +
 	"\x19VerifyAddEmailOtpResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12%\n" +
@@ -1666,11 +1720,17 @@ const file_auth_proto_rawDesc = "" +
 	"\x11other_build_count\x18\x05 \x01(\x05R\x0fotherBuildCount\x12*\n" +
 	"\x11other_build_names\x18\x06 \x03(\tR\x0fotherBuildNames\x12!\n" +
 	"\fother_emails\x18\a \x03(\tR\votherEmails\x122\n" +
-	"\x15other_oauth_providers\x18\b \x03(\tR\x13otherOauthProviders\"U\n" +
+	"\x15other_oauth_providers\x18\b \x03(\tR\x13otherOauthProviders\x12&\n" +
+	"\fmerge_ticket\x18\t \x01(\tH\x00R\vmergeTicket\x88\x01\x01B\x0f\n" +
+	"\r_merge_ticket\"\xc7\x01\n" +
 	"\x13MergeAccountRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
-	"\x05token\x18\x03 \x01(\tR\x05token\"\xab\x01\n" +
+	"\x05token\x18\x03 \x01(\tR\x05token\x12&\n" +
+	"\fmerge_ticket\x18\x04 \x01(\tH\x00R\vmergeTicket\x88\x01\x01\x12&\n" +
+	"\fchallenge_id\x18\x05 \x01(\tH\x01R\vchallengeId\x88\x01\x01B\x0f\n" +
+	"\r_merge_ticketB\x0f\n" +
+	"\r_challenge_id\"\xab\x01\n" +
 	"\x14MergeAccountResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x126\n" +
@@ -1839,9 +1899,14 @@ func file_auth_proto_init() {
 	file___sql_proto_init()
 	file___validate_proto_init()
 	file_user_proto_init()
+	file_auth_proto_msgTypes[1].OneofWrappers = []any{}
+	file_auth_proto_msgTypes[2].OneofWrappers = []any{}
 	file_auth_proto_msgTypes[5].OneofWrappers = []any{}
 	file_auth_proto_msgTypes[9].OneofWrappers = []any{}
 	file_auth_proto_msgTypes[10].OneofWrappers = []any{}
+	file_auth_proto_msgTypes[15].OneofWrappers = []any{}
+	file_auth_proto_msgTypes[16].OneofWrappers = []any{}
+	file_auth_proto_msgTypes[17].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

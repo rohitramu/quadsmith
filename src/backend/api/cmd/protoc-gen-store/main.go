@@ -176,11 +176,21 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("}")
 	g.P()
 
+	validColsStr := "map[string]bool{\"" + strings.Join(colNames, "\": true, \"") + "\": true}"
+
 	// --- GET ---
 	g.P("func Get", msgName, "(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*", msgName, ", error) {")
+	g.P("	validCols := " + validColsStr)
 	g.P("	colsStr := \"", colsStr, "\"")
 	g.P("	if len(cols) > 0 {")
-	g.P("		colsStr = strings.Join(cols, \", \")")
+	g.P("		safeCols := make([]string, 0, len(cols))")
+	g.P("		for _, col := range cols {")
+	g.P("			if !validCols[col] {")
+	g.P("				return nil, pagination.ErrInvalidColumn(col)")
+	g.P("			}")
+	g.P("			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())")
+	g.P("		}")
+	g.P("		colsStr = strings.Join(safeCols, \", \")")
 	g.P("	} else {")
 	g.P("       cols = []string{\"" + strings.ReplaceAll(colsStr, ", ", "\", \"") + "\"}")
 	g.P("   }")
@@ -294,12 +304,20 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		pluralName = msgName
 	}
 
-	validColsStr := "map[string]bool{\"" + strings.Join(colNames, "\": true, \"") + "\": true}"
+	validColsStr = "map[string]bool{\"" + strings.Join(colNames, "\": true, \"") + "\": true}"
 
 	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*", msgName, ", error) {")
+	g.P("	validCols := " + validColsStr)
 	g.P("	colsStr := \"", colsStr, "\"")
 	g.P("	if len(cols) > 0 {")
-	g.P("		colsStr = strings.Join(cols, \", \")")
+	g.P("		safeCols := make([]string, 0, len(cols))")
+	g.P("		for _, col := range cols {")
+	g.P("			if !validCols[col] {")
+	g.P("				return nil, pagination.ErrInvalidColumn(col)")
+	g.P("			}")
+	g.P("			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())")
+	g.P("		}")
+	g.P("		colsStr = strings.Join(safeCols, \", \")")
 	g.P("	} else {")
 	g.P("       cols = []string{\"" + strings.ReplaceAll(colsStr, ", ", "\", \"") + "\"}")
 	g.P("   }")
@@ -307,7 +325,6 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	if whereClause != \"\" {")
 	g.P("		query += \" WHERE \" + whereClause")
 	g.P("	}")
-	g.P("	validCols := " + validColsStr)
 	g.P("	var orderClauses []string")
 	g.P("	hasIdSort := false")
 	g.P("	if len(sorts) > 0 {")
@@ -324,7 +341,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("			if col == \"id\" || col == \"uuid\" {")
 	g.P("				hasIdSort = true")
 	g.P("			}")
-	g.P("			orderClauses = append(orderClauses, col + \" \" + dir)")
+	g.P("			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize() + \" \" + dir)")
 	g.P("		}")
 	g.P("	}")
 	g.P("	if !hasIdSort {")

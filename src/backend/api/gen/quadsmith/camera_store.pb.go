@@ -22,9 +22,17 @@ func CreateCamera(ctx context.Context, tx pgx.Tx, m *Camera) error {
 }
 
 func GetCamera(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Camera, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "sensor_size": true, "width_mm": true, "lens_size_mm": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, sensor_size, width_mm, lens_size_mm, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "sensor_size", "width_mm", "lens_size_mm", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -91,9 +99,17 @@ func DeleteCamera(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Camera, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "sensor_size": true, "width_mm": true, "lens_size_mm": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, sensor_size, width_mm, lens_size_mm, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "sensor_size", "width_mm", "lens_size_mm", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -101,7 +117,6 @@ func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "sensor_size": true, "width_mm": true, "lens_size_mm": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -118,7 +133,7 @@ func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {

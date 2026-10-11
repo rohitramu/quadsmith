@@ -25,19 +25,84 @@ type cacheEntry struct {
 
 var (
 	previewCache   sync.Map
+	cacheCount     int64
+	maxCacheSize   = int64(2000)
 	cacheTTL       = 24 * time.Hour
 	maxPayloadSize = int64(512 * 1024) // 512 KB
-	httpClient     = &http.Client{
-		Timeout: 3 * time.Second,
+
+	privateIPBlocks []*net.IPNet
+	httpClient      *http.Client
+)
+
+func init() {
+	for _, cidr := range []string{
+		"127.0.0.0/8",    // IPv4 loopback
+		"10.0.0.0/8",     // RFC1918
+		"172.16.0.0/12",  // RFC1918
+		"192.168.0.0/16", // RFC1918
+		"169.254.0.0/16", // RFC3927 link-local (cloud metadata services)
+		"::1/128",        // IPv6 loopback
+		"fc00::/7",       // IPv6 ULA
+		"fe80::/10",      // IPv6 link-local
+		"100.64.0.0/10",  // CGNAT
+		"0.0.0.0/8",      // "this" network
+	} {
+		_, block, err := net.ParseCIDR(cidr)
+		if err == nil {
+			privateIPBlocks = append(privateIPBlocks, block)
+		}
+	}
+
+	transport := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+			host, port, err := net.SplitHostPort(addr)
+			if err != nil {
+				return nil, err
+			}
+
+			ips, err := net.DefaultResolver.LookupIP(ctx, "ip", host)
+			if err != nil {
+				return nil, err
+			}
+
+			for _, ip := range ips {
+				if isRestrictedIP(ip) {
+					return nil, fmt.Errorf("SSRF protection: host %s resolves to restricted IP %s", host, ip)
+				}
+			}
+
+			dialer := &net.Dialer{Timeout: 3 * time.Second}
+			return dialer.DialContext(ctx, network, net.JoinHostPort(ips[0].String(), port))
+		},
+		ResponseHeaderTimeout: 3 * time.Second,
+		MaxIdleConns:          100,
+		IdleConnTimeout:       30 * time.Second,
+	}
+
+	httpClient = &http.Client{
+		Timeout:   3 * time.Second,
+		Transport: transport,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			if len(via) >= 5 {
 				return errors.New("stopped after 5 redirects")
 			}
-			// Enforce SSRF checks on redirect target
 			return validateHostSecurity(req.Context(), req.URL.Hostname())
 		},
 	}
-)
+}
+
+func isRestrictedIP(ip net.IP) bool {
+	if ip.IsLoopback() || ip.IsPrivate() || ip.IsLinkLocalUnicast() || ip.IsLinkLocalMulticast() || ip.IsUnspecified() {
+		return true
+	}
+	for _, block := range privateIPBlocks {
+		if block.Contains(ip) {
+			return true
+		}
+	}
+	return false
+}
 
 // validateHostSecurity checks whether a hostname is safe against SSRF attacks.
 func validateHostSecurity(ctx context.Context, hostname string) error {
@@ -52,7 +117,7 @@ func validateHostSecurity(ctx context.Context, hostname string) error {
 	}
 
 	for _, ip := range ips {
-		if ip.IsLoopback() || ip.IsPrivate() || ip.IsLinkLocalUnicast() || ip.IsLinkLocalMulticast() || ip.IsUnspecified() {
+		if isRestrictedIP(ip) {
 			return fmt.Errorf("access to internal/private IP address (%s) is forbidden", ip.String())
 		}
 	}

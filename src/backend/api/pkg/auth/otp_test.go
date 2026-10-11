@@ -24,22 +24,8 @@ func TestOTPGenerationAndVerification(t *testing.T) {
 	}
 }
 
-func TestRecoverOTP(t *testing.T) {
-	testCodes := []string{"000000", "042189", "999999"}
-	for _, expected := range testCodes {
-		hash := HashOTP(expected)
-		recovered := RecoverOTP(hash)
-		if recovered != expected {
-			t.Errorf("RecoverOTP(%s) = %q, want %q", hash, recovered, expected)
-		}
-	}
-
-	if recovered := RecoverOTP(""); recovered != "" {
-		t.Errorf("RecoverOTP(\"\") = %q, want empty string", recovered)
-	}
-}
-
 func TestIPRateLimiting(t *testing.T) {
+	ResetIPTracker()
 	testIP := "203.0.113.42"
 
 	// Initially clean
@@ -63,10 +49,10 @@ func TestIPRateLimiting(t *testing.T) {
 		t.Fatalf("expected 60 minutes in error message, got: %v", err)
 	}
 
-	// Successful login resets failures
-	RecordIPSuccess(testIP)
+	// Reset tracker clears failures
+	ResetIPTracker()
 	if err := CheckIPRateLimit(testIP); err != nil {
-		t.Fatalf("rate limit should be cleared after success: %v", err)
+		t.Fatalf("rate limit should be cleared after reset: %v", err)
 	}
 }
 

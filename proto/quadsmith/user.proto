@@ -126,7 +126,12 @@ message EmailOtp {
   google.protobuf.Timestamp used_at = 5;
   int32 failed_attempts = 6 [(quadsmith.sql.column) = {default_value: "0"}];
   google.protobuf.Timestamp created_at = 7;
-  string code = 8 [(quadsmith.sql.column) = {default_value: "''"}];
+  string challenge_id_hash = 8 [(quadsmith.sql.column) = {
+    create_index: true
+    default_value: "''"
+  }];
+  string purpose = 9 [(quadsmith.sql.column) = {default_value: "'login'"}];
+  optional string requested_by_user_uuid = 10 [(quadsmith.sql.column) = {references: "users(uuid)"}];
 }
 
 message UsernameHistory {

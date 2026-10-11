@@ -22,9 +22,17 @@ func CreateTransmitter(ctx context.Context, tx pgx.Tx, m *Transmitter) error {
 }
 
 func GetTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Transmitter, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "rf_protocol": true, "operating_system": true, "gimbal_type": true, "max_power_mw": true, "channels": true, "battery_type": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "rf_protocol", "operating_system", "gimbal_type", "max_power_mw", "channels", "battery_type", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -93,9 +101,17 @@ func DeleteTransmitter(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Transmitter, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "rf_protocol": true, "operating_system": true, "gimbal_type": true, "max_power_mw": true, "channels": true, "battery_type": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "rf_protocol", "operating_system", "gimbal_type", "max_power_mw", "channels", "battery_type", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -103,7 +119,6 @@ func ListTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "rf_protocol": true, "operating_system": true, "gimbal_type": true, "max_power_mw": true, "channels": true, "battery_type": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -120,7 +135,7 @@ func ListTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {

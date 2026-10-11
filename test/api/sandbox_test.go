@@ -9,9 +9,11 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
+	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	"quadsmith/api/pkg/auth"
 )
 
 func getAPIURL() string {
@@ -352,7 +354,7 @@ func TestSandboxCreateBuild_RejectsDuplicateReferenceLinkURL(t *testing.T) {
 	}
 }
 
-func TestSandboxAuth_ResendEmailOtpPreservesCodeAndAttempts(t *testing.T) {
+func TestSandboxAuth_ResendEmailOtpGeneratesFreshCodeAndBindsChallenge(t *testing.T) {
 	apiUrl := getAPIURL()
 	client := &http.Client{Timeout: 2 * time.Second}
 	_, err := client.Get(apiUrl)
@@ -391,28 +393,33 @@ func TestSandboxAuth_ResendEmailOtpPreservesCodeAndAttempts(t *testing.T) {
 	if !res.Msg.Success {
 		t.Fatalf("expected SendEmailOtp success = true, got %v", res.Msg.Success)
 	}
+	challengeId1 := res.Msg.GetChallengeId()
+	if challengeId1 == "" {
+		t.Fatal("expected SendEmailOtp to return challenge_id, got empty")
+	}
 
-	// Read initial code and attempts from DB
-	var code1 string
+	// Read initial code_hash and attempts from DB
+	var codeHash1, challengeHash1 string
 	var failedAttempts1 int32
 	err = pool.QueryRow(ctx, `
-		SELECT code, failed_attempts FROM email_otps
+		SELECT code_hash, challenge_id_hash, failed_attempts FROM email_otps
 		WHERE email = $1 AND used_at IS NULL
-		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&code1, &failedAttempts1)
+		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&codeHash1, &challengeHash1, &failedAttempts1)
 	if err != nil {
 		t.Fatalf("failed to query otp from DB: %v", err)
 	}
-	if len(code1) != 6 {
-		t.Fatalf("expected 6-digit code stored in DB, got %q", code1)
+	if auth.HashToken(challengeId1) != challengeHash1 {
+		t.Fatalf("challenge token hash mismatch in DB")
 	}
 	if failedAttempts1 != 0 {
 		t.Fatalf("expected 0 failed attempts initially, got %d", failedAttempts1)
 	}
 
-	// 2. Submit wrong code
+	// 2. Submit wrong code with challenge ID
 	_, err = authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
-		Email: testEmail,
-		Code:  "000000",
+		Email:       testEmail,
+		Code:        "000000",
+		ChallengeId: &challengeId1,
 	}))
 	if err == nil {
 		t.Fatal("expected VerifyEmailOtp to fail on incorrect code, got nil")
@@ -440,7 +447,7 @@ func TestSandboxAuth_ResendEmailOtpPreservesCodeAndAttempts(t *testing.T) {
 		t.Fatalf("failed to adjust created_at for cooldown: %v", err)
 	}
 
-	// 4. Resend email OTP
+	// 4. Resend email OTP (Option A: generates a fresh code and binds to new challenge)
 	resResend, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
 		Email: testEmail,
 	}))
@@ -450,31 +457,59 @@ func TestSandboxAuth_ResendEmailOtpPreservesCodeAndAttempts(t *testing.T) {
 	if !resResend.Msg.Success {
 		t.Fatalf("expected resend success = true, got %v", resResend.Msg.Success)
 	}
+	challengeId2 := resResend.Msg.GetChallengeId()
+	if challengeId2 == "" || challengeId2 == challengeId1 {
+		t.Fatalf("expected new distinct challenge_id on resend, got %q", challengeId2)
+	}
 
-	// Query DB: code must be identical, and failed_attempts must still be 1!
-	var code2 string
+	// Query DB: old challenge must be invalidated (used_at NOT NULL), new challenge has new code_hash!
+	var codeHash2 string
 	var failedAttempts2 int32
 	err = pool.QueryRow(ctx, `
-		SELECT code, failed_attempts FROM email_otps
+		SELECT code_hash, failed_attempts FROM email_otps
 		WHERE email = $1 AND used_at IS NULL
-		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&code2, &failedAttempts2)
+		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&codeHash2, &failedAttempts2)
 	if err != nil {
 		t.Fatalf("failed to query otp after resend: %v", err)
 	}
-	if code2 != code1 {
-		t.Fatalf("expected resent OTP code to be %q, got %q", code1, code2)
+	if codeHash2 == codeHash1 {
+		t.Fatalf("expected fresh code_hash on resend, got identical hash")
 	}
-	if failedAttempts2 != 1 {
-		t.Fatalf("expected failed_attempts to remain 1 after resend, got %d", failedAttempts2)
+	if failedAttempts2 != 0 {
+		t.Fatalf("expected fresh failed_attempts count of 0 on new challenge, got %d", failedAttempts2)
 	}
 
-	// 5. Verify successfully using original code
+	// 5. Attempting to verify using the superseded challengeId1 must fail
+	_, err = authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
+		Email:       testEmail,
+		Code:        "123456",
+		ChallengeId: &challengeId1,
+	}))
+	if err == nil {
+		t.Fatal("expected verification with superseded challengeId1 to fail, got nil")
+	}
+
+	// 6. Find 6-digit code matching codeHash2 for verification
+	var validCode string
+	for i := 0; i < 1000000; i++ {
+		candidate := fmt.Sprintf("%06d", i)
+		if auth.VerifyOTP(candidate, codeHash2) {
+			validCode = candidate
+			break
+		}
+	}
+	if validCode == "" {
+		t.Fatal("failed to find valid OTP matching codeHash2")
+	}
+
+	// 7. Verify successfully using validCode and challengeId2
 	verifyRes, err := authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
-		Email: testEmail,
-		Code:  code1,
+		Email:       testEmail,
+		Code:        validCode,
+		ChallengeId: &challengeId2,
 	}))
 	if err != nil {
-		t.Fatalf("VerifyEmailOtp with original code failed: %v", err)
+		t.Fatalf("VerifyEmailOtp with new challenge failed: %v", err)
 	}
 
 	// Because testEmail is a new email, user creation is deferred until Account Setup!

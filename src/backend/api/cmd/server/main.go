@@ -44,69 +44,72 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	authInterceptor := connect.WithInterceptors(auth.NewAuthInterceptor(pool))
+	handlerOpts := []connect.HandlerOption{
+		connect.WithInterceptors(auth.NewAuthInterceptor(pool)),
+		connect.WithReadMaxBytes(1 << 20), // 1MB limit for RPC payloads
+	}
 
-	path_NewAuthServiceHandler, h_NewAuthServiceHandler := quadsmithconnect.NewAuthServiceHandler(auth.NewAuthService(pool), authInterceptor)
+	path_NewAuthServiceHandler, h_NewAuthServiceHandler := quadsmithconnect.NewAuthServiceHandler(auth.NewAuthService(pool), handlerOpts...)
 	mux.Handle(path_NewAuthServiceHandler, h_NewAuthServiceHandler)
 
-	path_NewUserServiceHandler, h_NewUserServiceHandler := quadsmithconnect.NewUserServiceHandler(auth.NewUserService(pool), authInterceptor)
+	path_NewUserServiceHandler, h_NewUserServiceHandler := quadsmithconnect.NewUserServiceHandler(auth.NewUserService(pool), handlerOpts...)
 	mux.Handle(path_NewUserServiceHandler, h_NewUserServiceHandler)
 
-	path_NewMotorServiceHandler, h_NewMotorServiceHandler := quadsmithconnect.NewMotorServiceHandler(pb.NewMotorServiceHandler(pool), authInterceptor)
+	path_NewMotorServiceHandler, h_NewMotorServiceHandler := quadsmithconnect.NewMotorServiceHandler(pb.NewMotorServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewMotorServiceHandler, h_NewMotorServiceHandler)
-	path_NewFrameServiceHandler, h_NewFrameServiceHandler := quadsmithconnect.NewFrameServiceHandler(pb.NewFrameServiceHandler(pool), authInterceptor)
+	path_NewFrameServiceHandler, h_NewFrameServiceHandler := quadsmithconnect.NewFrameServiceHandler(pb.NewFrameServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewFrameServiceHandler, h_NewFrameServiceHandler)
-	path_NewBatteryServiceHandler, h_NewBatteryServiceHandler := quadsmithconnect.NewBatteryServiceHandler(pb.NewBatteryServiceHandler(pool), authInterceptor)
+	path_NewBatteryServiceHandler, h_NewBatteryServiceHandler := quadsmithconnect.NewBatteryServiceHandler(pb.NewBatteryServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewBatteryServiceHandler, h_NewBatteryServiceHandler)
-	path_NewElectronicSpeedControllerServiceHandler, h_NewElectronicSpeedControllerServiceHandler := quadsmithconnect.NewElectronicSpeedControllerServiceHandler(pb.NewElectronicSpeedControllerServiceHandler(pool), authInterceptor)
+	path_NewElectronicSpeedControllerServiceHandler, h_NewElectronicSpeedControllerServiceHandler := quadsmithconnect.NewElectronicSpeedControllerServiceHandler(pb.NewElectronicSpeedControllerServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewElectronicSpeedControllerServiceHandler, h_NewElectronicSpeedControllerServiceHandler)
-	path_NewFlightControllerServiceHandler, h_NewFlightControllerServiceHandler := quadsmithconnect.NewFlightControllerServiceHandler(pb.NewFlightControllerServiceHandler(pool), authInterceptor)
+	path_NewFlightControllerServiceHandler, h_NewFlightControllerServiceHandler := quadsmithconnect.NewFlightControllerServiceHandler(pb.NewFlightControllerServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewFlightControllerServiceHandler, h_NewFlightControllerServiceHandler)
-	path_NewReceiverServiceHandler, h_NewReceiverServiceHandler := quadsmithconnect.NewReceiverServiceHandler(pb.NewReceiverServiceHandler(pool), authInterceptor)
+	path_NewReceiverServiceHandler, h_NewReceiverServiceHandler := quadsmithconnect.NewReceiverServiceHandler(pb.NewReceiverServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewReceiverServiceHandler, h_NewReceiverServiceHandler)
-	path_NewVideoTransmitterServiceHandler, h_NewVideoTransmitterServiceHandler := quadsmithconnect.NewVideoTransmitterServiceHandler(pb.NewVideoTransmitterServiceHandler(pool), authInterceptor)
+	path_NewVideoTransmitterServiceHandler, h_NewVideoTransmitterServiceHandler := quadsmithconnect.NewVideoTransmitterServiceHandler(pb.NewVideoTransmitterServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewVideoTransmitterServiceHandler, h_NewVideoTransmitterServiceHandler)
-	path_NewAntennaServiceHandler, h_NewAntennaServiceHandler := quadsmithconnect.NewAntennaServiceHandler(pb.NewAntennaServiceHandler(pool), authInterceptor)
+	path_NewAntennaServiceHandler, h_NewAntennaServiceHandler := quadsmithconnect.NewAntennaServiceHandler(pb.NewAntennaServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewAntennaServiceHandler, h_NewAntennaServiceHandler)
-	path_NewCameraServiceHandler, h_NewCameraServiceHandler := quadsmithconnect.NewCameraServiceHandler(pb.NewCameraServiceHandler(pool), authInterceptor)
+	path_NewCameraServiceHandler, h_NewCameraServiceHandler := quadsmithconnect.NewCameraServiceHandler(pb.NewCameraServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewCameraServiceHandler, h_NewCameraServiceHandler)
-	path_NewPropellerServiceHandler, h_NewPropellerServiceHandler := quadsmithconnect.NewPropellerServiceHandler(pb.NewPropellerServiceHandler(pool), authInterceptor)
+	path_NewPropellerServiceHandler, h_NewPropellerServiceHandler := quadsmithconnect.NewPropellerServiceHandler(pb.NewPropellerServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewPropellerServiceHandler, h_NewPropellerServiceHandler)
-	path_NewBuildServiceHandler, h_NewBuildServiceHandler := quadsmithconnect.NewBuildServiceHandler(pb.NewBuildServiceHandler(pool), authInterceptor)
+	path_NewBuildServiceHandler, h_NewBuildServiceHandler := quadsmithconnect.NewBuildServiceHandler(pb.NewBuildServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewBuildServiceHandler, h_NewBuildServiceHandler)
-	path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler := quadsmithconnect.NewGpsReceiverServiceHandler(pb.NewGpsReceiverServiceHandler(pool), authInterceptor)
+	path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler := quadsmithconnect.NewGpsReceiverServiceHandler(pb.NewGpsReceiverServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler)
 
-	path_NewFcFirmwareServiceHandler, h_NewFcFirmwareServiceHandler := quadsmithconnect.NewFcFirmwareServiceHandler(pb.NewFcFirmwareServiceHandler(pool), authInterceptor)
+	path_NewFcFirmwareServiceHandler, h_NewFcFirmwareServiceHandler := quadsmithconnect.NewFcFirmwareServiceHandler(pb.NewFcFirmwareServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewFcFirmwareServiceHandler, h_NewFcFirmwareServiceHandler)
-	path_NewEscFirmwareServiceHandler, h_NewEscFirmwareServiceHandler := quadsmithconnect.NewEscFirmwareServiceHandler(pb.NewEscFirmwareServiceHandler(pool), authInterceptor)
+	path_NewEscFirmwareServiceHandler, h_NewEscFirmwareServiceHandler := quadsmithconnect.NewEscFirmwareServiceHandler(pb.NewEscFirmwareServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewEscFirmwareServiceHandler, h_NewEscFirmwareServiceHandler)
-	path_NewVtxFirmwareServiceHandler, h_NewVtxFirmwareServiceHandler := quadsmithconnect.NewVtxFirmwareServiceHandler(pb.NewVtxFirmwareServiceHandler(pool), authInterceptor)
+	path_NewVtxFirmwareServiceHandler, h_NewVtxFirmwareServiceHandler := quadsmithconnect.NewVtxFirmwareServiceHandler(pb.NewVtxFirmwareServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewVtxFirmwareServiceHandler, h_NewVtxFirmwareServiceHandler)
-	path_NewRadioFirmwareServiceHandler, h_NewRadioFirmwareServiceHandler := quadsmithconnect.NewRadioFirmwareServiceHandler(pb.NewRadioFirmwareServiceHandler(pool), authInterceptor)
+	path_NewRadioFirmwareServiceHandler, h_NewRadioFirmwareServiceHandler := quadsmithconnect.NewRadioFirmwareServiceHandler(pb.NewRadioFirmwareServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewRadioFirmwareServiceHandler, h_NewRadioFirmwareServiceHandler)
-	path_NewSoftwareToolServiceHandler, h_NewSoftwareToolServiceHandler := quadsmithconnect.NewSoftwareToolServiceHandler(pb.NewSoftwareToolServiceHandler(pool), authInterceptor)
+	path_NewSoftwareToolServiceHandler, h_NewSoftwareToolServiceHandler := quadsmithconnect.NewSoftwareToolServiceHandler(pb.NewSoftwareToolServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewSoftwareToolServiceHandler, h_NewSoftwareToolServiceHandler)
 
-	path_NewTransmitterServiceHandler, h_NewTransmitterServiceHandler := quadsmithconnect.NewTransmitterServiceHandler(pb.NewTransmitterServiceHandler(pool), authInterceptor)
+	path_NewTransmitterServiceHandler, h_NewTransmitterServiceHandler := quadsmithconnect.NewTransmitterServiceHandler(pb.NewTransmitterServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewTransmitterServiceHandler, h_NewTransmitterServiceHandler)
-	path_NewGogglesServiceHandler, h_NewGogglesServiceHandler := quadsmithconnect.NewGogglesServiceHandler(pb.NewGogglesServiceHandler(pool), authInterceptor)
+	path_NewGogglesServiceHandler, h_NewGogglesServiceHandler := quadsmithconnect.NewGogglesServiceHandler(pb.NewGogglesServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewGogglesServiceHandler, h_NewGogglesServiceHandler)
-	path_NewChargerServiceHandler, h_NewChargerServiceHandler := quadsmithconnect.NewChargerServiceHandler(pb.NewChargerServiceHandler(pool), authInterceptor)
+	path_NewChargerServiceHandler, h_NewChargerServiceHandler := quadsmithconnect.NewChargerServiceHandler(pb.NewChargerServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewChargerServiceHandler, h_NewChargerServiceHandler)
-	path_NewFieldToolServiceHandler, h_NewFieldToolServiceHandler := quadsmithconnect.NewFieldToolServiceHandler(pb.NewFieldToolServiceHandler(pool), authInterceptor)
+	path_NewFieldToolServiceHandler, h_NewFieldToolServiceHandler := quadsmithconnect.NewFieldToolServiceHandler(pb.NewFieldToolServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewFieldToolServiceHandler, h_NewFieldToolServiceHandler)
 
-	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool), authInterceptor)
+	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler)
 
-	path_NewSearchServiceHandler, h_NewSearchServiceHandler := quadsmithconnect.NewSearchServiceHandler(search.NewSearchServiceHandler(pool), authInterceptor)
+	path_NewSearchServiceHandler, h_NewSearchServiceHandler := quadsmithconnect.NewSearchServiceHandler(search.NewSearchServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewSearchServiceHandler, h_NewSearchServiceHandler)
 
-	path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler := quadsmithconnect.NewLinkPreviewServiceHandler(linkpreview.NewLinkPreviewServiceHandler(), authInterceptor)
+	path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler := quadsmithconnect.NewLinkPreviewServiceHandler(linkpreview.NewLinkPreviewServiceHandler(), handlerOpts...)
 	mux.Handle(path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler)
 
-	path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler := quadsmithconnect.NewCompatibilityServiceHandler(compatibility.NewCompatibilityServiceHandler(pool), authInterceptor)
+	path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler := quadsmithconnect.NewCompatibilityServiceHandler(compatibility.NewCompatibilityServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler)
 
 	// Serve the React SPA for any unmatched paths
@@ -116,9 +119,6 @@ func main() {
 	}
 	mux.Handle("/", static.ServeSPA(staticDir, pool))
 
-	// TODO: Add HTTP middleware for CORS to allow frontend applications to call this API.
-	// TODO: Add Authentication/Authorization interceptors to secure write operations (Create/Update/Delete).
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -126,11 +126,32 @@ func main() {
 
 	fmt.Printf("Starting Quadsmith API Server on port %s...\n", port)
 
-	err = http.ListenAndServe(
-		":"+port,
-		h2c.NewHandler(mux, &http2.Server{}),
-	)
-	if err != nil {
+	// Wrap root handler with security headers and request body size limit (2 MB)
+	rootHandler := securityHeadersMiddleware(http.MaxBytesHandler(mux, 2<<20))
+
+	server := &http.Server{
+		Addr:              ":" + port,
+		Handler:           h2c.NewHandler(rootHandler, &http2.Server{}),
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       30 * time.Second,
+		WriteTimeout:      60 * time.Second,
+		IdleTimeout:       120 * time.Second,
+	}
+
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Server failed: %v", err)
 	}
+}
+
+func securityHeadersMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+		w.Header().Set("X-Frame-Options", "DENY")
+		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self';")
+		if r.TLS != nil || r.Header.Get("X-Forwarded-Proto") == "https" {
+			w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+		}
+		next.ServeHTTP(w, r)
+	})
 }

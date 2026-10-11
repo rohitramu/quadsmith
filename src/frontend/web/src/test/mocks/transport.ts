@@ -482,7 +482,13 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(AuthService, {
-      sendEmailOtp: () => ({ success: true, message: "Code sent", cooldownSeconds: 20 }),
+      sendEmailOtp: () => ({
+        success: true,
+        message: "Code sent",
+        cooldownSeconds: 20,
+        isExistingAccount: true,
+        challengeId: "mock-challenge-id",
+      }),
       verifyEmailOtp: (req) => {
         if (req.code === "888888") {
           const err = new ConnectError(
@@ -524,7 +530,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         }
         if (req.code === "999999") {
           const err = new ConnectError(
-            "Incorrect code. You have 0 attempts left. Please request a new code",
+            "Incorrect code. You have 0 attempts left.\nPlease request a new code after the cooldown period.",
             Code.InvalidArgument,
             undefined,
             [
@@ -534,7 +540,8 @@ export function createMockTransport(options: MockTransportOptions = {}) {
                   remainingAttempts: 0,
                   isExhausted: true,
                   cooldownSeconds: 60,
-                  message: "Incorrect code. You have 0 attempts left. Please request a new code",
+                  message:
+                    "Incorrect code. You have 0 attempts left.\nPlease request a new code after the cooldown period.",
                 },
               },
             ],

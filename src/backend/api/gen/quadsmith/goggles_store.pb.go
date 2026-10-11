@@ -22,9 +22,17 @@ func CreateGoggles(ctx context.Context, tx pgx.Tx, m *Goggles) error {
 }
 
 func GetGoggles(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Goggles, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -95,9 +103,17 @@ func DeleteGoggles(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Goggles, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media"}
 	}
@@ -105,7 +121,6 @@ func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -122,7 +137,7 @@ func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {

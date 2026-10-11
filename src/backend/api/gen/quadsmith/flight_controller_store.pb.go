@@ -37,9 +37,17 @@ func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 }
 
 func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*FlightController, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_electronic_speed_controller_uuid": true, "internal_receiver_uuid": true, "internal_video_transmitter_uuid": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true}
 	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links, primary_display_image, media, min_voltage, max_voltage"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_electronic_speed_controller_uuid", "internal_receiver_uuid", "internal_video_transmitter_uuid", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage"}
 	}
@@ -127,9 +135,17 @@ func DeleteFlightController(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 }
 
 func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*FlightController, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_electronic_speed_controller_uuid": true, "internal_receiver_uuid": true, "internal_video_transmitter_uuid": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true}
 	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links, primary_display_image, media, min_voltage, max_voltage"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_electronic_speed_controller_uuid", "internal_receiver_uuid", "internal_video_transmitter_uuid", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage"}
 	}
@@ -137,7 +153,6 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_electronic_speed_controller_uuid": true, "internal_receiver_uuid": true, "internal_video_transmitter_uuid": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -154,7 +169,7 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {

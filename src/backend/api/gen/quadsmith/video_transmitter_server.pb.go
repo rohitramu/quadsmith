@@ -4,6 +4,8 @@ package quadsmith
 import (
 	"connectrpc.com/connect"
 	"context"
+	"errors"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"quadsmith/api/internal/cel2sql"
 	"quadsmith/api/internal/pagination"
@@ -20,7 +22,13 @@ func NewVideoTransmitterServiceHandler(db *pgxpool.Pool) *VideoTransmitterServic
 func (s *VideoTransmitterServiceHandler) GetVideoTransmitter(ctx context.Context, req *connect.Request[GetVideoTransmitterRequest]) (*connect.Response[VideoTransmitter], error) {
 	m, err := GetVideoTransmitter(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		if pagination.IsInvalidArgument(err) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, errors.New("an internal error occurred"))
 	}
 	return connect.NewResponse(m), nil
 }
@@ -46,7 +54,7 @@ func (s *VideoTransmitterServiceHandler) ListVideoTransmitters(ctx context.Conte
 		if pagination.IsInvalidArgument(err) {
 			return nil, connect.NewError(connect.CodeInvalidArgument, err)
 		}
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, connect.NewError(connect.CodeInternal, errors.New("an internal error occurred"))
 	}
 
 	nextPageToken := ""

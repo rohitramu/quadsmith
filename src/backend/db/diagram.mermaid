@@ -264,11 +264,13 @@ erDiagram
         UUID uuid PK
         TEXT email
         TEXT code_hash
+        TEXT challenge_id_hash
+        TEXT purpose
+        UUID requested_by_user_uuid FK
         TIMESTAMPTZ expires_at
         TIMESTAMPTZ used_at
         INTEGER failed_attempts
         TIMESTAMPTZ created_at
-        TEXT code
     }
 
     username_histories {
@@ -448,6 +450,4 @@ erDiagram
     users ||--o{ username_histories : has
     users ||--o{ oauth_accounts : has
     users ||--o{ builds : authors
-
-
-
+    users ||--o{ email_otps : requests

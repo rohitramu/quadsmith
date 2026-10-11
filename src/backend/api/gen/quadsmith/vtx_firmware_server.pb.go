@@ -4,6 +4,8 @@ package quadsmith
 import (
 	"connectrpc.com/connect"
 	"context"
+	"errors"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"quadsmith/api/internal/cel2sql"
 	"quadsmith/api/internal/pagination"
@@ -20,7 +22,13 @@ func NewVtxFirmwareServiceHandler(db *pgxpool.Pool) *VtxFirmwareServiceHandler {
 func (s *VtxFirmwareServiceHandler) GetVtxFirmware(ctx context.Context, req *connect.Request[GetVtxFirmwareRequest]) (*connect.Response[VtxFirmware], error) {
 	m, err := GetVtxFirmware(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+		if pagination.IsInvalidArgument(err) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, errors.New("an internal error occurred"))
 	}
 	return connect.NewResponse(m), nil
 }
@@ -46,7 +54,7 @@ func (s *VtxFirmwareServiceHandler) ListVtxFirmwares(ctx context.Context, req *c
 		if pagination.IsInvalidArgument(err) {
 			return nil, connect.NewError(connect.CodeInvalidArgument, err)
 		}
-		return nil, connect.NewError(connect.CodeInternal, err)
+		return nil, connect.NewError(connect.CodeInternal, errors.New("an internal error occurred"))
 	}
 
 	nextPageToken := ""

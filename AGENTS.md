@@ -10,6 +10,12 @@ Always check the manufacturer's official website and official spec sheets as the
 - After creating a commit, always push to the remote. If you need to do a force push, ask the user first.
 - When writing a commit message, do not mention changes to AGENTS.md in the subject line (top line) unless it is the only changed file.
 
+## Code Cleanliness & Breaking Changes
+
+- This codebase is not deployed anywhere and is iterating toward its first version. Prioritize code cleanliness, simplicity, and architectural elegance above all else.
+- Do not check for breaking changes, do not run breaking change checks, and ignore any warnings about breaking changes.
+- Never add backwards-compatibility shims, legacy adapters, reserved protobuf tags, or deprecated database columns. Design all schemas, APIs, Protobuf messages, and data models cleanly and directly as if building from scratch.
+
 ## Project Planning
 
 - **Direct Requests vs. Plans & Questions**:
@@ -41,7 +47,7 @@ Always check the manufacturer's official website and official spec sheets as the
 
 - `make sandbox` starts the local server and Docker sandbox environment. It is a long-running daemon process that does not terminate unless an error occurs.
 - Never wait for `make sandbox` to complete execution. If executing `make sandbox`, run it as a background daemon process and monitor its startup output/logs instead of blocking on termination.
-- If only verifying build integrity, code generation, or breaking change warnings without needing a running server, use `make build` or `make warn-breaking` instead.
+- If only verifying build integrity or code generation without needing a running server, use `make build` instead.
 
 ## Testing
 

@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"crypto/hkdf"
 	"crypto/hmac"
 	"crypto/rand"
 	"crypto/sha256"
@@ -19,28 +20,23 @@ const (
 	RefreshTokenTTL = 5 * 24 * time.Hour // 5-day sliding window
 )
 
-func getJWTSecret() []byte {
-	secret := os.Getenv("JWT_SECRET")
+func getMasterSecret() []byte {
+	secret := os.Getenv("AUTH_SECRET")
+	if secret == "" {
+		secret = os.Getenv("JWT_SECRET")
+	}
 	if secret == "" {
 		secret = "quadsmith-dev-secret-key-32bytes-long!"
 	}
 	return []byte(secret)
 }
 
-// NewUUIDv7 generates a standard RFC 9562 UUID v7
-func NewUUIDv7() string {
-	var randBytes [16]byte
-	_, _ = rand.Read(randBytes[:])
-	ms := time.Now().UnixMilli()
-	randBytes[0] = byte(ms >> 40)
-	randBytes[1] = byte(ms >> 32)
-	randBytes[2] = byte(ms >> 24)
-	randBytes[3] = byte(ms >> 16)
-	randBytes[4] = byte(ms >> 8)
-	randBytes[5] = byte(ms)
-	randBytes[6] = (randBytes[6] & 0x0f) | 0x70 // UUID v7
-	randBytes[8] = (randBytes[8] & 0x3f) | 0x80 // RFC 4122 variant
-	return fmt.Sprintf("%08x-%04x-%04x-%04x-%012x", randBytes[0:4], randBytes[4:6], randBytes[6:8], randBytes[8:10], randBytes[10:16])
+func deriveKey(purpose string) []byte {
+	k, err := hkdf.Key(sha256.New, getMasterSecret(), nil, "quadsmith:"+purpose, 32)
+	if err != nil {
+		panic(fmt.Sprintf("deriveKey failed: %v", err))
+	}
+	return k
 }
 
 type jwtHeader struct {
@@ -58,7 +54,7 @@ type JWTClaims struct {
 	Iat         int64  `json:"iat"`
 }
 
-// SignAccessToken signs a new 1-hour access JWT using HMAC-SHA256
+// SignAccessToken signs a new 1-hour access JWT using HMAC-SHA256 with a dedicated subkey
 func SignAccessToken(userUUID, userID, email, role, sessionUUID string) (string, error) {
 	now := time.Now()
 	claims := JWTClaims{
@@ -85,7 +81,7 @@ func SignAccessToken(userUUID, userID, email, role, sessionUUID string) (string,
 	claimsB64 := base64.RawURLEncoding.EncodeToString(claimsJSON)
 
 	payload := headerB64 + "." + claimsB64
-	sig := hmacSHA256([]byte(payload), getJWTSecret())
+	sig := hmacSHA256([]byte(payload), deriveKey("access_token"))
 	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
 
 	return payload + "." + sigB64, nil
@@ -99,7 +95,7 @@ func VerifyAccessToken(tokenStr string) (*UserContext, error) {
 	}
 
 	headerB64, claimsB64, sigB64 := parts[0], parts[1], parts[2]
-	expectedSig := hmacSHA256([]byte(headerB64+"."+claimsB64), getJWTSecret())
+	expectedSig := hmacSHA256([]byte(headerB64+"."+claimsB64), deriveKey("access_token"))
 	actualSig, err := base64.RawURLEncoding.DecodeString(sigB64)
 	if err != nil {
 		return nil, errors.New("invalid signature encoding")
@@ -143,6 +139,17 @@ func GenerateRefreshToken() (token string, hash string, err error) {
 	return token, hash, nil
 }
 
+// GenerateChallengeToken generates a secure 32-byte challenge token and its SHA-256 hash
+func GenerateChallengeToken() (token string, hash string, err error) {
+	rawBytes := make([]byte, 32)
+	if _, err := rand.Read(rawBytes); err != nil {
+		return "", "", err
+	}
+	token = hex.EncodeToString(rawBytes)
+	hash = HashToken(token)
+	return token, hash, nil
+}
+
 // HashToken hashes a token using SHA-256 for database storage
 func HashToken(token string) string {
 	h := sha256.Sum256([]byte(token))
@@ -156,55 +163,59 @@ func hmacSHA256(data, secret []byte) []byte {
 }
 
 type MagicLinkClaims struct {
-	OtpUUID string `json:"otp_uuid"`
-	Email   string `json:"email"`
-	Exp     int64  `json:"exp"`
+	OtpUUID           string `json:"otp_uuid"`
+	Email             string `json:"email"`
+	Purpose           string `json:"purpose,omitempty"`
+	RequesterUserUUID string `json:"requester_user_uuid,omitempty"`
+	Exp               int64  `json:"exp"`
 }
 
-// SignMagicLinkToken creates an HMAC-SHA256 signed magic link token
-func SignMagicLinkToken(otpUUID, email string, exp time.Time) (string, error) {
+// SignMagicLinkToken creates an HMAC-SHA256 signed magic link token bound to a purpose
+func SignMagicLinkToken(otpUUID, email, purpose, requesterUserUUID string, exp time.Time) (string, error) {
 	claims := MagicLinkClaims{
-		OtpUUID: otpUUID,
-		Email:   email,
-		Exp:     exp.Unix(),
+		OtpUUID:           otpUUID,
+		Email:             strings.ToLower(strings.TrimSpace(email)),
+		Purpose:           purpose,
+		RequesterUserUUID: requesterUserUUID,
+		Exp:               exp.Unix(),
 	}
 	claimsJSON, err := json.Marshal(claims)
 	if err != nil {
 		return "", err
 	}
 	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
-	sig := hmacSHA256([]byte(payload), getJWTSecret())
+	sig := hmacSHA256([]byte(payload), deriveKey("magic_link"))
 	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
 	return payload + "." + sigB64, nil
 }
 
-// VerifyMagicLinkToken verifies a magic link token and returns the otpUUID and email
-func VerifyMagicLinkToken(tokenStr string) (string, string, error) {
+// VerifyMagicLinkToken verifies a magic link token and returns the full claims
+func VerifyMagicLinkToken(tokenStr string) (*MagicLinkClaims, error) {
 	parts := strings.Split(tokenStr, ".")
 	if len(parts) != 2 {
-		return "", "", errors.New("invalid token format")
+		return nil, errors.New("invalid token format")
 	}
 	payload, sigB64 := parts[0], parts[1]
-	expectedSig := hmacSHA256([]byte(payload), getJWTSecret())
+	expectedSig := hmacSHA256([]byte(payload), deriveKey("magic_link"))
 	actualSig, err := base64.RawURLEncoding.DecodeString(sigB64)
 	if err != nil {
-		return "", "", errors.New("invalid signature encoding")
+		return nil, errors.New("invalid signature encoding")
 	}
 	if !hmac.Equal(expectedSig, actualSig) {
-		return "", "", errors.New("invalid token signature")
+		return nil, errors.New("invalid token signature")
 	}
 	claimsJSON, err := base64.RawURLEncoding.DecodeString(payload)
 	if err != nil {
-		return "", "", errors.New("invalid payload encoding")
+		return nil, errors.New("invalid payload encoding")
 	}
 	var claims MagicLinkClaims
 	if err := json.Unmarshal(claimsJSON, &claims); err != nil {
-		return "", "", errors.New("invalid claims json")
+		return nil, errors.New("invalid claims json")
 	}
 	if time.Now().Unix() > claims.Exp {
-		return "", "", errors.New("magic link has expired")
+		return nil, errors.New("magic link has expired")
 	}
-	return claims.OtpUUID, claims.Email, nil
+	return &claims, nil
 }
 
 // SetupTokenClaims contains claims for deferred account creation after email verification
@@ -228,7 +239,7 @@ func SignSetupToken(email string) (string, error) {
 		return "", err
 	}
 	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
-	sig := hmacSHA256([]byte(payload), getJWTSecret())
+	sig := hmacSHA256([]byte(payload), deriveKey("setup_token"))
 	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
 	return payload + "." + sigB64, nil
 }
@@ -240,7 +251,7 @@ func VerifySetupToken(tokenStr string) (string, error) {
 		return "", errors.New("invalid setup token format")
 	}
 	payload, sigB64 := parts[0], parts[1]
-	expectedSig := hmacSHA256([]byte(payload), getJWTSecret())
+	expectedSig := hmacSHA256([]byte(payload), deriveKey("setup_token"))
 	actualSig, err := base64.RawURLEncoding.DecodeString(sigB64)
 	if err != nil {
 		return "", errors.New("invalid signature encoding")
@@ -263,4 +274,64 @@ func VerifySetupToken(tokenStr string) (string, error) {
 		return "", errors.New("setup token has expired. Please verify your email again")
 	}
 	return claims.Email, nil
+}
+
+// MergeTicketClaims defines the cryptographically signed authorization ticket for account merges
+type MergeTicketClaims struct {
+	SourceUserUUID string `json:"source_user_uuid"`
+	TargetUserUUID string `json:"target_user_uuid"`
+	Email          string `json:"email"`
+	Exp            int64  `json:"exp"`
+	Purpose        string `json:"purpose"`
+}
+
+// SignMergeTicket creates a signed ticket proving that an authenticated user verified ownership of an existing account's email
+func SignMergeTicket(sourceUserUUID, targetUserUUID, email string, exp time.Time) (string, error) {
+	claims := MergeTicketClaims{
+		SourceUserUUID: sourceUserUUID,
+		TargetUserUUID: targetUserUUID,
+		Email:          strings.ToLower(strings.TrimSpace(email)),
+		Exp:            exp.Unix(),
+		Purpose:        "account_merge",
+	}
+	claimsJSON, err := json.Marshal(claims)
+	if err != nil {
+		return "", err
+	}
+	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
+	sig := hmacSHA256([]byte(payload), deriveKey("merge_ticket"))
+	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
+	return payload + "." + sigB64, nil
+}
+
+// VerifyMergeTicket verifies the signature, validity, and purpose of an account merge authorization ticket
+func VerifyMergeTicket(ticketStr string) (*MergeTicketClaims, error) {
+	parts := strings.Split(ticketStr, ".")
+	if len(parts) != 2 {
+		return nil, errors.New("invalid merge ticket format")
+	}
+	payload, sigB64 := parts[0], parts[1]
+	expectedSig := hmacSHA256([]byte(payload), deriveKey("merge_ticket"))
+	actualSig, err := base64.RawURLEncoding.DecodeString(sigB64)
+	if err != nil {
+		return nil, errors.New("invalid signature encoding")
+	}
+	if !hmac.Equal(expectedSig, actualSig) {
+		return nil, errors.New("invalid merge ticket signature")
+	}
+	claimsJSON, err := base64.RawURLEncoding.DecodeString(payload)
+	if err != nil {
+		return nil, errors.New("invalid payload encoding")
+	}
+	var claims MergeTicketClaims
+	if err := json.Unmarshal(claimsJSON, &claims); err != nil {
+		return nil, errors.New("invalid claims json")
+	}
+	if claims.Purpose != "account_merge" {
+		return nil, errors.New("invalid merge ticket purpose")
+	}
+	if time.Now().Unix() > claims.Exp {
+		return nil, errors.New("merge ticket has expired. Please verify the email again")
+	}
+	return &claims, nil
 }

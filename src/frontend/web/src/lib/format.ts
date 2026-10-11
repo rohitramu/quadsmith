@@ -41,20 +41,36 @@ export function getYouTubeEmbedUrl(url?: string | null): string | null {
   if (!url) return null;
   try {
     const parsed = new URL(url);
-    if (parsed.hostname.includes("youtu.be")) {
-      const id = parsed.pathname.replace(/^\//, "").split("/")[0];
-      return id ? `https://www.youtube.com/embed/${id}` : null;
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      return null;
     }
-    if (parsed.pathname.startsWith("/shorts/")) {
-      const id = parsed.pathname.split("/")[2];
-      return id ? `https://www.youtube.com/embed/${id}` : null;
+    const host = parsed.hostname.toLowerCase();
+    const validHosts = [
+      "youtube.com",
+      "www.youtube.com",
+      "m.youtube.com",
+      "youtu.be",
+      "youtube-nocookie.com",
+      "www.youtube-nocookie.com",
+    ];
+    if (!validHosts.includes(host)) {
+      return null;
     }
-    if (parsed.searchParams.has("v")) {
-      const id = parsed.searchParams.get("v");
-      return id ? `https://www.youtube.com/embed/${id}` : null;
+    let videoId: string | null = null;
+    if (host === "youtu.be") {
+      videoId = parsed.pathname.replace(/^\//, "").split("/")[0] || null;
+    } else if (parsed.pathname.startsWith("/shorts/")) {
+      videoId = parsed.pathname.split("/")[2] || null;
+    } else if (parsed.searchParams.has("v")) {
+      videoId = parsed.searchParams.get("v");
+    } else if (parsed.pathname.startsWith("/embed/")) {
+      videoId = parsed.pathname.split("/")[2] || null;
+      if (videoId && /^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+        return url;
+      }
     }
-    if (parsed.pathname.startsWith("/embed/")) {
-      return url;
+    if (videoId && /^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+      return `https://www.youtube.com/embed/${videoId}`;
     }
   } catch {
     // Return null if not a valid URL

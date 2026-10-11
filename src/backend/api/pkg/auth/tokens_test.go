@@ -71,25 +71,28 @@ func TestMagicLinkTokenSigningAndVerification(t *testing.T) {
 	email := "alex@example.com"
 	exp := time.Now().Add(15 * time.Minute)
 
-	token, err := SignMagicLinkToken(otpUUID, email, exp)
+	token, err := SignMagicLinkToken(otpUUID, email, "login", "", exp)
 	if err != nil {
 		t.Fatalf("SignMagicLinkToken failed: %v", err)
 	}
 
-	gotUUID, gotEmail, err := VerifyMagicLinkToken(token)
+	claims, err := VerifyMagicLinkToken(token)
 	if err != nil {
 		t.Fatalf("VerifyMagicLinkToken failed: %v", err)
 	}
-	if gotUUID != otpUUID {
-		t.Errorf("expected otpUUID %s, got %s", otpUUID, gotUUID)
+	if claims.OtpUUID != otpUUID {
+		t.Errorf("expected otpUUID %s, got %s", otpUUID, claims.OtpUUID)
 	}
-	if gotEmail != email {
-		t.Errorf("expected email %s, got %s", email, gotEmail)
+	if claims.Email != email {
+		t.Errorf("expected email %s, got %s", email, claims.Email)
+	}
+	if claims.Purpose != "login" {
+		t.Errorf("expected purpose login, got %s", claims.Purpose)
 	}
 
 	// Expired token test
-	expiredToken, _ := SignMagicLinkToken(otpUUID, email, time.Now().Add(-1*time.Minute))
-	_, _, err = VerifyMagicLinkToken(expiredToken)
+	expiredToken, _ := SignMagicLinkToken(otpUUID, email, "login", "", time.Now().Add(-1*time.Minute))
+	_, err = VerifyMagicLinkToken(expiredToken)
 	if err == nil {
 		t.Fatalf("expected expired magic link verification to fail")
 	}
@@ -105,6 +108,52 @@ func TestRefreshTokenGenerationAndHashing(t *testing.T) {
 	}
 	if HashToken(token) != hash {
 		t.Fatalf("HashToken mismatch")
+	}
+}
+
+func TestChallengeTokenGeneration(t *testing.T) {
+	token, hash, err := GenerateChallengeToken()
+	if err != nil {
+		t.Fatalf("GenerateChallengeToken failed: %v", err)
+	}
+	if len(token) != 64 {
+		t.Fatalf("expected 64 hex chars, got %d", len(token))
+	}
+	if HashToken(token) != hash {
+		t.Fatalf("HashToken mismatch for challenge token")
+	}
+}
+
+func TestMergeTicketSigningAndVerification(t *testing.T) {
+	sourceUserUUID := NewUUIDv7()
+	targetUserUUID := NewUUIDv7()
+	email := "alex_second@example.com"
+	exp := time.Now().Add(15 * time.Minute)
+
+	ticket, err := SignMergeTicket(sourceUserUUID, targetUserUUID, email, exp)
+	if err != nil {
+		t.Fatalf("SignMergeTicket failed: %v", err)
+	}
+
+	claims, err := VerifyMergeTicket(ticket)
+	if err != nil {
+		t.Fatalf("VerifyMergeTicket failed: %v", err)
+	}
+	if claims.SourceUserUUID != sourceUserUUID {
+		t.Errorf("expected source %s, got %s", sourceUserUUID, claims.SourceUserUUID)
+	}
+	if claims.TargetUserUUID != targetUserUUID {
+		t.Errorf("expected target %s, got %s", targetUserUUID, claims.TargetUserUUID)
+	}
+	if claims.Email != email {
+		t.Errorf("expected email %s, got %s", email, claims.Email)
+	}
+
+	// Tampered ticket
+	tampered := ticket[:len(ticket)-5] + "xxxxx"
+	_, err = VerifyMergeTicket(tampered)
+	if err == nil {
+		t.Fatalf("expected tampered merge ticket verification to fail")
 	}
 }
 
@@ -138,7 +187,7 @@ func TestSetupTokenSigningAndVerification(t *testing.T) {
 	}
 	claimsJSON, _ := json.Marshal(claims)
 	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
-	sig := hmacSHA256([]byte(payload), getJWTSecret())
+	sig := hmacSHA256([]byte(payload), deriveKey("setup_token"))
 	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
 	expiredToken := payload + "." + sigB64
 

@@ -30,6 +30,11 @@ func ErrInvalidSortColumn(col string) error {
 	return &InvalidArgumentError{msg: fmt.Sprintf("invalid sort column %q", col)}
 }
 
+// ErrInvalidColumn creates an InvalidArgumentError for an unrecognized column in projection.
+func ErrInvalidColumn(col string) error {
+	return &InvalidArgumentError{msg: fmt.Sprintf("invalid column %q", col)}
+}
+
 // IsInvalidArgument returns true if the error is an InvalidArgumentError.
 func IsInvalidArgument(err error) bool {
 	var invalidArg *InvalidArgumentError

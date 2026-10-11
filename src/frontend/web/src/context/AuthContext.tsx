@@ -16,12 +16,17 @@ export interface AuthContextType {
   emails: UserEmail[];
   isAuthenticated: boolean;
   isLoading: boolean;
-  sendEmailOtp: (
-    email: string,
-  ) => Promise<{ success: boolean; cooldownSeconds: number; message: string }>;
+  challengeId: string | null;
+  sendEmailOtp: (email: string) => Promise<{
+    success: boolean;
+    cooldownSeconds: number;
+    message: string;
+    challengeId?: string;
+  }>;
   verifyEmailOtp: (
     email: string,
     code: string,
+    challengeId?: string,
   ) => Promise<{ accountSetupRequired?: boolean; setupToken?: string }>;
   verifyMagicLink: (
     token: string,
@@ -40,11 +45,13 @@ export interface AuthContextType {
     cooldownSeconds: number;
     message: string;
     isExistingAccount?: boolean;
+    challengeId?: string;
   }>;
   verifyAddEmailOtp: (
     email: string,
     code?: string | null,
     token?: string | null,
+    challengeId?: string | null,
   ) => Promise<{
     success: boolean;
     message: string;
@@ -54,11 +61,14 @@ export interface AuthContextType {
     otherBuildNames?: string[];
     otherEmails?: string[];
     otherOauthProviders?: string[];
+    mergeTicket?: string;
   }>;
   mergeAccount: (
     email: string,
     code?: string | null,
     token?: string | null,
+    mergeTicket?: string | null,
+    challengeId?: string | null,
   ) => Promise<{
     success: boolean;
     message: string;
@@ -81,6 +91,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [emails, setEmails] = useState<UserEmail[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [challengeId, setChallengeId] = useState<string | null>(() => {
+    try {
+      return sessionStorage.getItem("qs_challenge_id");
+    } catch {
+      return null;
+    }
+  });
+  const [mergeTicket, setMergeTicket] = useState<string | null>(null);
 
   const refreshSession = useCallback(async () => {
     try {
@@ -191,15 +209,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const sendEmailOtp = async (email: string) => {
     const res = await authClient.sendEmailOtp({ email });
+    if (res.challengeId) {
+      setChallengeId(res.challengeId);
+      try {
+        sessionStorage.setItem("qs_challenge_id", res.challengeId);
+      } catch {
+        // ignore
+      }
+    }
     return {
       success: res.success,
       cooldownSeconds: res.cooldownSeconds || 20,
       message: res.message || "Verification code sent to your email",
+      challengeId: res.challengeId,
     };
   };
 
-  const verifyEmailOtp = async (email: string, code: string) => {
-    const res = await authClient.verifyEmailOtp({ email, code });
+  const verifyEmailOtp = async (email: string, code: string, explicitChallengeId?: string) => {
+    const cid =
+      explicitChallengeId ||
+      challengeId ||
+      (() => {
+        try {
+          return sessionStorage.getItem("qs_challenge_id");
+        } catch {
+          return null;
+        }
+      })() ||
+      undefined;
+
+    const res = await authClient.verifyEmailOtp({ email, code, challengeId: cid });
+    setChallengeId(null);
+    try {
+      sessionStorage.removeItem("qs_challenge_id");
+    } catch {
+      // ignore
+    }
     if (res.accessToken) {
       setAccessToken(res.accessToken);
     }
@@ -260,30 +305,88 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const sendAddEmailOtp = async (email: string) => {
     const res = await authClient.sendAddEmailOtp({ email });
+    if (res.challengeId) {
+      setChallengeId(res.challengeId);
+      try {
+        sessionStorage.setItem("qs_challenge_id", res.challengeId);
+      } catch {
+        // ignore
+      }
+    }
     return {
       success: res.success,
       cooldownSeconds: res.cooldownSeconds || 20,
       message: res.message || "Verification code sent to your email",
       isExistingAccount: res.isExistingAccount || false,
+      challengeId: res.challengeId,
     };
   };
 
-  const verifyAddEmailOtp = async (email: string, code?: string | null, token?: string | null) => {
+  const verifyAddEmailOtp = async (
+    email: string,
+    code?: string | null,
+    token?: string | null,
+    explicitChallengeId?: string | null,
+  ) => {
+    const cid =
+      explicitChallengeId ||
+      challengeId ||
+      (() => {
+        try {
+          return sessionStorage.getItem("qs_challenge_id");
+        } catch {
+          return null;
+        }
+      })() ||
+      undefined;
+
     const res = await authClient.verifyAddEmailOtp({
       email,
       code: code || "",
       token: token || "",
+      challengeId: cid,
     });
+    if (res.mergeTicket) {
+      setMergeTicket(res.mergeTicket);
+    }
     await refreshEmails();
     return res;
   };
 
-  const mergeAccount = async (email: string, code?: string | null, token?: string | null) => {
+  const mergeAccount = async (
+    email: string,
+    code?: string | null,
+    token?: string | null,
+    explicitMergeTicket?: string | null,
+    explicitChallengeId?: string | null,
+  ) => {
+    const cid =
+      explicitChallengeId ||
+      challengeId ||
+      (() => {
+        try {
+          return sessionStorage.getItem("qs_challenge_id");
+        } catch {
+          return null;
+        }
+      })() ||
+      undefined;
+    const ticket = explicitMergeTicket || mergeTicket || undefined;
+
     const res = await authClient.mergeAccount({
       email,
       code: code || "",
       token: token || "",
+      mergeTicket: ticket,
+      challengeId: cid,
     });
+    setMergeTicket(null);
+    setChallengeId(null);
+    try {
+      sessionStorage.removeItem("qs_challenge_id");
+    } catch {
+      // ignore
+    }
     await refreshEmails();
     try {
       const currentUser = await authClient.getCurrentUser({});
@@ -345,6 +448,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setProfile(null);
       setEmails([]);
+      setChallengeId(null);
+      setMergeTicket(null);
+      try {
+        sessionStorage.removeItem("qs_challenge_id");
+      } catch {
+        // ignore
+      }
     }
   };
 
@@ -356,6 +466,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         emails,
         isAuthenticated: !!user,
         isLoading,
+        challengeId,
         sendEmailOtp,
         verifyEmailOtp,
         verifyMagicLink,

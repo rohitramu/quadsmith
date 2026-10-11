@@ -22,9 +22,17 @@ func CreateFrame(ctx context.Context, tx pgx.Tx, m *Frame) error {
 }
 
 func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Frame, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "wheelbase_mm": true, "max_prop_size_mm": true, "geometry": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "motor_count": true}
 	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links, primary_display_image, media, motor_count"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links", "primary_display_image", "media", "motor_count"}
 	}
@@ -89,9 +97,17 @@ func DeleteFrame(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Frame, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "wheelbase_mm": true, "max_prop_size_mm": true, "geometry": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "motor_count": true}
 	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links, primary_display_image, media, motor_count"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links", "primary_display_image", "media", "motor_count"}
 	}
@@ -99,7 +115,6 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "wheelbase_mm": true, "max_prop_size_mm": true, "geometry": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "motor_count": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -116,7 +131,7 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {

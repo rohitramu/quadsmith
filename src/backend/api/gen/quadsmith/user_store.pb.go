@@ -54,9 +54,17 @@ func CreateUser(ctx context.Context, tx pgx.Tx, m *User) error {
 }
 
 func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*User, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "email_verified_at": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
 	colsStr := "uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "email", "role", "email_verified_at", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
 	}
@@ -181,9 +189,17 @@ func DeleteUser(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*User, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "email_verified_at": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
 	colsStr := "uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "email", "role", "email_verified_at", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
 	}
@@ -191,7 +207,6 @@ func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "email_verified_at": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -208,7 +223,7 @@ func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {
@@ -330,9 +345,17 @@ func CreateUserProfile(ctx context.Context, tx pgx.Tx, m *UserProfile) error {
 }
 
 func GetUserProfile(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*UserProfile, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "display_name": true, "avatar_url": true, "bio": true, "updated_at": true}
 	colsStr := "uuid, user_uuid, display_name, avatar_url, bio, updated_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "display_name", "avatar_url", "bio", "updated_at"}
 	}
@@ -405,9 +428,17 @@ func DeleteUserProfile(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*UserProfile, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "display_name": true, "avatar_url": true, "bio": true, "updated_at": true}
 	colsStr := "uuid, user_uuid, display_name, avatar_url, bio, updated_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "display_name", "avatar_url", "bio", "updated_at"}
 	}
@@ -415,7 +446,6 @@ func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "display_name": true, "avatar_url": true, "bio": true, "updated_at": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -432,7 +462,7 @@ func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {
@@ -527,9 +557,17 @@ func CreateUserEmail(ctx context.Context, tx pgx.Tx, m *UserEmail) error {
 }
 
 func GetUserEmail(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*UserEmail, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "email": true, "is_primary": true, "verified_at": true, "created_at": true}
 	colsStr := "uuid, user_uuid, email, is_primary, verified_at, created_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "email", "is_primary", "verified_at", "created_at"}
 	}
@@ -613,9 +651,17 @@ func DeleteUserEmail(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListUserEmails(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*UserEmail, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "email": true, "is_primary": true, "verified_at": true, "created_at": true}
 	colsStr := "uuid, user_uuid, email, is_primary, verified_at, created_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "email", "is_primary", "verified_at", "created_at"}
 	}
@@ -623,7 +669,6 @@ func ListUserEmails(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "email": true, "is_primary": true, "verified_at": true, "created_at": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -640,7 +685,7 @@ func ListUserEmails(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {
@@ -746,9 +791,17 @@ func CreateRefreshToken(ctx context.Context, tx pgx.Tx, m *RefreshToken) error {
 }
 
 func GetRefreshToken(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*RefreshToken, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "token_hash": true, "expires_at": true, "last_used_at": true, "device_hint": true, "created_at": true}
 	colsStr := "uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, created_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "token_hash", "expires_at", "last_used_at", "device_hint", "created_at"}
 	}
@@ -845,9 +898,17 @@ func DeleteRefreshToken(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*RefreshToken, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "token_hash": true, "expires_at": true, "last_used_at": true, "device_hint": true, "created_at": true}
 	colsStr := "uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, created_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "token_hash", "expires_at", "last_used_at", "device_hint", "created_at"}
 	}
@@ -855,7 +916,6 @@ func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "token_hash": true, "expires_at": true, "last_used_at": true, "device_hint": true, "created_at": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -872,7 +932,7 @@ func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {
@@ -955,7 +1015,7 @@ func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 }
 
 func CreateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
-	query := `INSERT INTO email_otps (uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
+	query := `INSERT INTO email_otps (uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -976,16 +1036,29 @@ func CreateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.CreatedAt), m.Code)
+	}(m.CreatedAt), m.ChallengeIdHash, m.Purpose, func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.RequestedByUserUuid))
 	return err
 }
 
 func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*EmailOtp, error) {
-	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, code"
+	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true, "challenge_id_hash": true, "purpose": true, "requested_by_user_uuid": true}
+	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "code"}
+		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "challenge_id_hash", "purpose", "requested_by_user_uuid"}
 	}
 	query := `SELECT ` + colsStr + ` FROM email_otps WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -1025,8 +1098,12 @@ func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 					m.CreatedAt = timestamppb.New(*v)
 				}
 			})
-		case "code":
-			scanArgs[i] = &m.Code
+		case "challenge_id_hash":
+			scanArgs[i] = &m.ChallengeIdHash
+		case "purpose":
+			scanArgs[i] = &m.Purpose
+		case "requested_by_user_uuid":
+			scanArgs[i] = &m.RequestedByUserUuid
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -1044,7 +1121,7 @@ func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 }
 
 func UpdateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
-	query := `UPDATE email_otps SET email = $2, code_hash = $3, expires_at = $4, used_at = $5, failed_attempts = $6, created_at = $7, code = $8 WHERE uuid = $1`
+	query := `UPDATE email_otps SET email = $2, code_hash = $3, expires_at = $4, used_at = $5, failed_attempts = $6, created_at = $7, challenge_id_hash = $8, purpose = $9, requested_by_user_uuid = $10 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Email, m.CodeHash, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
@@ -1060,7 +1137,12 @@ func UpdateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.CreatedAt), m.Code)
+	}(m.CreatedAt), m.ChallengeIdHash, m.Purpose, func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.RequestedByUserUuid))
 	return err
 }
 
@@ -1071,17 +1153,24 @@ func DeleteEmailOtp(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*EmailOtp, error) {
-	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, code"
+	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true, "challenge_id_hash": true, "purpose": true, "requested_by_user_uuid": true}
+	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "code"}
+		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "challenge_id_hash", "purpose", "requested_by_user_uuid"}
 	}
 	query := `SELECT ` + colsStr + ` FROM email_otps`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true, "code": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -1098,7 +1187,7 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {
@@ -1157,8 +1246,12 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 						m.CreatedAt = timestamppb.New(*v)
 					}
 				})
-			case "code":
-				scanArgs[i] = &m.Code
+			case "challenge_id_hash":
+				scanArgs[i] = &m.ChallengeIdHash
+			case "purpose":
+				scanArgs[i] = &m.Purpose
+			case "requested_by_user_uuid":
+				scanArgs[i] = &m.RequestedByUserUuid
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -1208,9 +1301,17 @@ func CreateUsernameHistory(ctx context.Context, tx pgx.Tx, m *UsernameHistory) e
 }
 
 func GetUsernameHistory(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*UsernameHistory, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "old_username": true, "renamed_at": true, "first_archived_at": true, "release_warning_sent_at": true}
 	colsStr := "uuid, user_uuid, old_username, renamed_at, first_archived_at, release_warning_sent_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "old_username", "renamed_at", "first_archived_at", "release_warning_sent_at"}
 	}
@@ -1305,9 +1406,17 @@ func DeleteUsernameHistory(ctx context.Context, tx pgx.Tx, idOrUuid string) erro
 }
 
 func ListUsernameHistories(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*UsernameHistory, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "old_username": true, "renamed_at": true, "first_archived_at": true, "release_warning_sent_at": true}
 	colsStr := "uuid, user_uuid, old_username, renamed_at, first_archived_at, release_warning_sent_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "old_username", "renamed_at", "first_archived_at", "release_warning_sent_at"}
 	}
@@ -1315,7 +1424,6 @@ func ListUsernameHistories(ctx context.Context, db *pgxpool.Pool, cols []string,
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "old_username": true, "renamed_at": true, "first_archived_at": true, "release_warning_sent_at": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -1332,7 +1440,7 @@ func ListUsernameHistories(ctx context.Context, db *pgxpool.Pool, cols []string,
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {
@@ -1439,9 +1547,17 @@ func CreateOAuthAccount(ctx context.Context, tx pgx.Tx, m *OAuthAccount) error {
 }
 
 func GetOAuthAccount(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*OAuthAccount, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "provider": true, "provider_account_id": true, "access_token": true, "refresh_token": true, "token_expires_at": true, "created_at": true}
 	colsStr := "uuid, user_uuid, provider, provider_account_id, access_token, refresh_token, token_expires_at, created_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "provider", "provider_account_id", "access_token", "refresh_token", "token_expires_at", "created_at"}
 	}
@@ -1529,9 +1645,17 @@ func DeleteOAuthAccount(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListOAuthAccounts(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*OAuthAccount, error) {
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "provider": true, "provider_account_id": true, "access_token": true, "refresh_token": true, "token_expires_at": true, "created_at": true}
 	colsStr := "uuid, user_uuid, provider, provider_account_id, access_token, refresh_token, token_expires_at, created_at"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "user_uuid", "provider", "provider_account_id", "access_token", "refresh_token", "token_expires_at", "created_at"}
 	}
@@ -1539,7 +1663,6 @@ func ListOAuthAccounts(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "provider": true, "provider_account_id": true, "access_token": true, "refresh_token": true, "token_expires_at": true, "created_at": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -1556,7 +1679,7 @@ func ListOAuthAccounts(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {

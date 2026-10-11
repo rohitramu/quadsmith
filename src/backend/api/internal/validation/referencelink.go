@@ -31,6 +31,13 @@ func ValidateReferenceLinks(links []*pb.ReferenceLink) error {
 
 		normURL := strings.TrimRight(strings.TrimSpace(link.Url), "/")
 		if normURL != "" {
+			if len(normURL) > 2048 {
+				return fmt.Errorf("reference link %d URL exceeds maximum length of 2048 characters", i)
+			}
+			lower := strings.ToLower(normURL)
+			if !strings.HasPrefix(lower, "http://") && !strings.HasPrefix(lower, "https://") {
+				return fmt.Errorf("reference link %d URL must start with http:// or https://", i)
+			}
 			if prevIdx, exists := seenURLs[normURL]; exists {
 				return fmt.Errorf("reference link %d duplicates URL from link %d (%s): %w", i, prevIdx, link.Url, ErrDuplicateReferenceLinkURL)
 			}

@@ -77,9 +77,17 @@ func CreateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 }
 
 func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Build, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "flight_controller_uuid": true, "electronic_speed_controller_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "video_transmitter_uuid": true, "gps_receiver_uuid": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
 	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "flight_controller_uuid", "electronic_speed_controller_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "gps_receiver_uuid", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
@@ -241,9 +249,17 @@ func DeleteBuild(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Build, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "flight_controller_uuid": true, "electronic_speed_controller_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "video_transmitter_uuid": true, "gps_receiver_uuid": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
 	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
-		colsStr = strings.Join(cols, ", ")
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
 	} else {
 		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "flight_controller_uuid", "electronic_speed_controller_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "gps_receiver_uuid", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
@@ -251,7 +267,6 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "flight_controller_uuid": true, "electronic_speed_controller_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "video_transmitter_uuid": true, "gps_receiver_uuid": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -268,7 +283,7 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 			if col == "id" || col == "uuid" {
 				hasIdSort = true
 			}
-			orderClauses = append(orderClauses, col+" "+dir)
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
 		}
 	}
 	if !hasIdSort {
