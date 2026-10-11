@@ -48,8 +48,29 @@ func TestAPI_NoBreakingChangesAgainstGitBase(t *testing.T) {
 
 	t.Logf("Running buf breaking against base ref: %s", baseRef)
 
-	// buf breaking proto --against '.git#ref=<baseRef>,subdir=proto'
+	// Fast path: Extract baseline proto directory via git archive into a temp directory.
+	// Running buf breaking directly against .git#ref= causes buf to parse git history in pure Go (~21s).
+	// Using git archive allows buf breaking to run against a local directory in <0.1s.
 	againstArg := fmt.Sprintf(".git#ref=%s,subdir=proto", baseRef)
+	if tmpBaseDir, err := os.MkdirTemp("", "proto_git_base_*"); err == nil {
+		defer os.RemoveAll(tmpBaseDir)
+		archiveCmd := exec.Command("git", "archive", baseRef, "proto")
+		archiveCmd.Dir = gh.RepoRoot
+		tarCmd := exec.Command("tar", "-x", "-C", tmpBaseDir)
+		if pipe, pipeErr := archiveCmd.StdoutPipe(); pipeErr == nil {
+			tarCmd.Stdin = pipe
+			if err := tarCmd.Start(); err == nil {
+				if err := archiveCmd.Run(); err == nil {
+					if err := tarCmd.Wait(); err == nil {
+						extractedProto := filepath.Join(tmpBaseDir, "proto")
+						if fi, statErr := os.Stat(extractedProto); statErr == nil && fi.IsDir() {
+							againstArg = extractedProto
+						}
+					}
+				}
+			}
+		}
+	}
 
 	cmd := exec.Command(bufBin, "breaking", "proto", "--against", againstArg)
 	cmd.Dir = gh.RepoRoot

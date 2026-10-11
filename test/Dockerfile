@@ -34,7 +34,10 @@ COPY src/vendor/ ./src/vendor/
 COPY . .
 
 # Build Server and Seeder
-RUN cd src/backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    cd src/backend/api && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder
 
 
 # Stage 2: Build the Web UI
@@ -45,7 +48,7 @@ WORKDIR /app
 COPY src/frontend/web/package.json src/frontend/web/package-lock.json* ./
 
 # Install dependencies
-RUN npm install
+RUN --mount=type=cache,target=/root/.npm npm install
 
 # Copy source and build
 COPY src/frontend/web/ .

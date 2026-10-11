@@ -22,27 +22,27 @@ endif
 
 all: build
 
-build: generate
+build: generate bin/qs
 	@echo "--- Formatting textproto files with txtpbfmt ---"
 	@find src -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
 	@go run -mod=vendor ./src/backend/api/cmd/check-regex
 	@echo "--- Building all Go binaries to bin/ ---"
 	@go build -mod=vendor -o bin/server ./src/backend/api/cmd/server/main.go
-
-	@echo "--- Generating and building CLI to bin/qs ---"
-	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go && go build -mod=vendor -o ../../../bin/qs .
-	@echo "--- Generating shell completions to bin/ ---"
-	@./bin/qs completion bash > bin/completion.bash || true
-	@./bin/qs completion zsh > bin/completion.zsh || true
 	@echo "--- Building WebAssembly Core Engine ---"
 	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/public/wasm_exec.js
 	@GOOS=js GOARCH=wasm go build -mod=vendor -o src/frontend/web/public/quadsmith-engine.wasm ./src/backend/api/cmd/wasm/main.go
 	@echo "--- Building Web UI ---"
 	@cd src/frontend/web && npm run build
-	@$(MAKE) --no-print-directory warn-breaking
 
-sandbox: build
+bin/qs:
+	@echo "--- Generating and building CLI to bin/qs ---"
+	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go && go build -mod=vendor -o ../../../bin/qs .
+	@echo "--- Generating shell completions to bin/ ---"
+	@./bin/qs completion bash > bin/completion.bash || true
+	@./bin/qs completion zsh > bin/completion.zsh || true
+
+sandbox: generate bin/qs
 	@echo "--- Starting Quadsmith Sandbox (Docker) ---"
 	@./test/start_sandbox.sh $(PORT) || if [ $$? -eq 130 ]; then exit 0; else exit $$?; fi
 
@@ -59,7 +59,6 @@ warn-breaking:
 		cat .tmp/breaking_warning.log; \
 		echo "================================================================================"; \
 		echo ""; \
-		rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log; \
 	fi
 
 generate:
@@ -85,7 +84,6 @@ test: generate
 	@echo "--- Running Go Tests ---"
 	@cd src/backend/api && go test -mod=vendor -count=1 ./...
 	@cd src/frontend/cli && go test -mod=vendor ./...
-	@$(MAKE) --no-print-directory warn-breaking
 	@echo "--- Running Web UI Tests ---"
 	@cd src/frontend/web && npm test
 	@$(MAKE) --no-print-directory test-e2e
@@ -97,7 +95,7 @@ breaking-change: generate
 
 test-breaking: breaking-change
 
-test-e2e: build
+test-e2e: bin/qs
 	@echo "--- Running E2E Sandbox Tests ---"
 	@./test/run_sandbox_tests.sh
 
