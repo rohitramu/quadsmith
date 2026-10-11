@@ -37,6 +37,7 @@ export function LoginPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const [exhaustedCooldown, setExhaustedCooldown] = useState(0);
+  const [rateLimitCooldown, setRateLimitCooldown] = useState(0);
 
   // Account Setup State
   const [setupToken, setSetupToken] = useState("");
@@ -67,6 +68,15 @@ export function LoginPage() {
     }, 1000);
     return () => clearInterval(timer);
   }, [exhaustedCooldown]);
+
+  // Rate limit cooldown countdown timer (60m0s -> 3600s)
+  useEffect(() => {
+    if (rateLimitCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setRateLimitCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [rateLimitCooldown]);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -156,7 +166,7 @@ export function LoginPage() {
       return;
     }
 
-    const isResend = step === "otp" && !isExhausted;
+    const isResend = step === "otp" && !isExhausted && !isRateLimited;
 
     setIsLoading(true);
     if (!isResend) {
@@ -166,6 +176,7 @@ export function LoginPage() {
       const res = await sendEmailOtp(trimmed);
       setCooldown(res.cooldownSeconds);
       setExhaustedCooldown(0);
+      setRateLimitCooldown(0);
       setStep("otp");
       if (!isResend) {
         setRemainingAttempts(null);
@@ -183,6 +194,18 @@ export function LoginPage() {
             err.rawMessage.toLowerCase().includes("minutes"))
         ) {
           setIsRateLimited(true);
+          const detail = err.findDetails(OtpVerificationErrorSchema)[0];
+          let cd = detail?.cooldownSeconds;
+          if (!cd) {
+            const matchMin = err.rawMessage.match(/(\d+)\s*minutes?/i);
+            const matchSec = err.rawMessage.match(/(\d+)\s*seconds?/i);
+            cd = matchMin
+              ? parseInt(matchMin[1], 10) * 60
+              : matchSec
+                ? parseInt(matchSec[1], 10)
+                : 3600;
+          }
+          setRateLimitCooldown(cd);
         }
         setErrorMsg(err.rawMessage);
       } else if (err instanceof Error) {
@@ -270,6 +293,18 @@ export function LoginPage() {
             err.rawMessage.toLowerCase().includes("minutes"))
         ) {
           setIsRateLimited(true);
+          const detail = err.findDetails(OtpVerificationErrorSchema)[0];
+          let cd = detail?.cooldownSeconds;
+          if (!cd) {
+            const matchMin = err.rawMessage.match(/(\d+)\s*minutes?/i);
+            const matchSec = err.rawMessage.match(/(\d+)\s*seconds?/i);
+            cd = matchMin
+              ? parseInt(matchMin[1], 10) * 60
+              : matchSec
+                ? parseInt(matchSec[1], 10)
+                : 3600;
+          }
+          setRateLimitCooldown(cd);
           setErrorMsg(err.rawMessage);
           return;
         }
@@ -336,6 +371,7 @@ export function LoginPage() {
     setIsRateLimited(false);
     setIsSuccess(false);
     setExhaustedCooldown(0);
+    setRateLimitCooldown(0);
     setHintDigits(["", "", "", "", "", ""]);
     setOtpDigits(["", "", "", "", "", ""]);
   };
@@ -475,21 +511,25 @@ export function LoginPage() {
           </div>
         )}
 
-        {isExhausted && (
+        {(isExhausted || isRateLimited) && (
           <button
             type="button"
             onClick={() => handleSendEmail()}
-            disabled={exhaustedCooldown > 0 || isLoading}
+            disabled={(isRateLimited ? rateLimitCooldown > 0 : exhaustedCooldown > 0) || isLoading}
             className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
-              exhaustedCooldown > 0
+              (isRateLimited ? rateLimitCooldown > 0 : exhaustedCooldown > 0)
                 ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
                 : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
             }`}
           >
             <span>
-              {exhaustedCooldown > 0
-                ? `Request New Verification Code (${exhaustedCooldown}s)`
-                : "Request New Verification Code"}
+              {isRateLimited
+                ? rateLimitCooldown > 0
+                  ? `Request New Verification Code (${Math.floor(rateLimitCooldown / 60)}m${rateLimitCooldown % 60}s)`
+                  : "Request New Verification Code"
+                : exhaustedCooldown > 0
+                  ? `Request New Verification Code (${exhaustedCooldown}s)`
+                  : "Request New Verification Code"}
             </span>
           </button>
         )}

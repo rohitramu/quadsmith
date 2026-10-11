@@ -150,7 +150,17 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 
 	clientIP := extractClientIP(req.Header())
 	if err := CheckIPRateLimit(clientIP); err != nil {
-		return nil, connect.NewError(connect.CodeResourceExhausted, err)
+		connErr := connect.NewError(connect.CodeResourceExhausted, err)
+		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
+			Message:           err.Error(),
+			RemainingAttempts: 0,
+			MaxAttempts:       MaxOtpAttempts,
+			IsExhausted:       true,
+			CooldownSeconds:   int32(IPLockoutDuration.Seconds()),
+		}); detailErr == nil {
+			connErr.AddDetail(detail)
+		}
+		return nil, connErr
 	}
 
 	var otpUUID string

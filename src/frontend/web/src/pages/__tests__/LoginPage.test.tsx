@@ -216,7 +216,7 @@ describe("LoginPage Component", () => {
     expect(screen.getByRole("button", { name: /back/i })).toBeInTheDocument();
   });
 
-  it("handles multi-code 60-minute lockout with disabled controls, without leaking IP in error, and with no locked out button", async () => {
+  it("handles multi-code 60-minute lockout with disabled controls, without leaking IP in error, and showing greyed out Request New Verification Code (60m0s) button", async () => {
     const { user } = renderApp("/login", {
       transportOptions: { isAuthenticated: false },
     });
@@ -240,12 +240,16 @@ describe("LoginPage Component", () => {
     const banner = screen.getByTestId("otp-error-banner");
     expect(banner.querySelector("svg.lucide-lock")).toBeInTheDocument();
 
+    // Request New Verification Code (60m0s) button is present and disabled (greyed out)
+    const reqBtn = screen.getByRole("button", {
+      name: /request new verification code \(60m0s\)/i,
+    });
+    expect(reqBtn).toBeInTheDocument();
+    expect(reqBtn).toBeDisabled();
+
     // Temporarily Locked Out button is removed
     expect(
       screen.queryByRole("button", { name: /temporarily locked out/i }),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: /request new verification code/i }),
     ).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
 
