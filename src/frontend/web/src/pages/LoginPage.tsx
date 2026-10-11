@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ConnectError, Code } from "@connectrpc/connect";
-import { Moon, Sun, Loader2, ArrowLeft, Mail, AlertTriangle, ShieldAlert } from "lucide-react";
+import { Moon, Sun, Loader2, ArrowLeft, Mail, AlertTriangle, Lock } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
@@ -284,7 +284,7 @@ export function LoginPage() {
             }`}
           >
             {isExhausted || isRateLimited ? (
-              <ShieldAlert size={16} className="text-red-500 shrink-0 mt-0.5" />
+              <Lock size={16} className="text-red-500 shrink-0 mt-0.5" />
             ) : remainingAttempts === 2 ? (
               <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
             ) : (
@@ -436,7 +436,7 @@ export function LoginPage() {
                   disabled
                   className="w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
                 >
-                  <ShieldAlert size={14} className="text-zinc-400 dark:text-zinc-500" />
+                  <Lock size={14} className="text-zinc-400 dark:text-zinc-500" />
                   <span>Temporarily Locked Out</span>
                 </button>
               ) : isExhausted ? (

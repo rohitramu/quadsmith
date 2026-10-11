@@ -191,6 +191,10 @@ describe("LoginPage Component", () => {
     expect(reqBtn).toBeInTheDocument();
     expect(reqBtn).toBeDisabled();
 
+    // Error banner renders Lock icon
+    const banner = await screen.findByTestId("otp-error-banner");
+    expect(banner.querySelector("svg.lucide-lock")).toBeInTheDocument();
+
     // Verification code label does not contain 3-min expiry
     expect(screen.getByText(/^verification code$/i)).toBeInTheDocument();
     expect(screen.queryByText(/3-min expiry/i)).not.toBeInTheDocument();
@@ -229,16 +233,19 @@ describe("LoginPage Component", () => {
       await user.type(inputs[i], "0");
     }
 
-    // Displays the 60-minute IP lockout message
+    // Displays the 60-minute IP lockout message with Lock icon
     expect(
       await screen.findByText(/too many failed verification attempts from this ip/i),
     ).toBeInTheDocument();
     expect(screen.getByText(/60 minutes/i)).toBeInTheDocument();
+    const banner = screen.getByTestId("otp-error-banner");
+    expect(banner.querySelector("svg.lucide-lock")).toBeInTheDocument();
 
-    // Renders disabled "Temporarily Locked Out" button instead of Request New Code
+    // Renders disabled "Temporarily Locked Out" button with Lock icon instead of Request New Code
     const lockedBtn = screen.getByRole("button", { name: /temporarily locked out/i });
     expect(lockedBtn).toBeInTheDocument();
     expect(lockedBtn).toBeDisabled();
+    expect(lockedBtn.querySelector("svg.lucide-lock")).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /request new verification code/i }),
     ).not.toBeInTheDocument();
