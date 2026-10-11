@@ -52,10 +52,10 @@ describe("LoginPage Component", () => {
     const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBe(6);
 
-    // Verify Back button and Resend Email button are present
+    // Verify Back button is present and removed buttons are NOT present
     expect(screen.getByRole("button", { name: /back/i })).toBeInTheDocument();
     expect(screen.queryByText(/change email/i)).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /request new verification code/i }),
     ).not.toBeInTheDocument();
@@ -64,7 +64,7 @@ describe("LoginPage Component", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("clears fields on incorrect code, displays incorrect code as placeholder hints, and preserves Resend Email button", async () => {
+  it("clears fields on incorrect code, displays incorrect code as placeholder hints, keeps neutral borders, and displays error above verification code", async () => {
     const { user } = renderApp("/login", {
       transportOptions: { isAuthenticated: false },
     });
@@ -77,8 +77,8 @@ describe("LoginPage Component", () => {
 
     await screen.findByRole("heading", { name: /verify your email/i });
 
-    // Resend Email button is visible initially
-    expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
+    // No Resend Email button
+    expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
 
     // Type incorrect 6-digit code: "888888"
     const inputs = screen.getAllByRole("textbox") as HTMLInputElement[];
@@ -94,15 +94,14 @@ describe("LoginPage Component", () => {
     const attemptsBadge = screen.getByText(/^2 attempts left$/i);
     expect(attemptsBadge.className).toMatch(/text-amber-500/);
 
-    // Inputs are cleared (empty value) but have the incorrect digits as placeholders and amber border
+    // Inputs are cleared (empty value) with incorrect digits as placeholders, keeping neutral borders (NOT amber or rose)
     inputs.forEach((input, index) => {
       expect(input.value).toBe("");
       expect(input.placeholder).toBe(wrongDigits[index]);
-      expect(input.className).toMatch(/border-amber-500/);
+      expect(input.className).toMatch(/border-zinc-300/);
+      expect(input.className).not.toMatch(/border-amber-500/);
+      expect(input.className).not.toMatch(/border-rose-500/);
     });
-
-    // Resend Email button is STILL visible while waiting for re-entry
-    expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
 
     // Type 2nd failed attempt: "777777" (1 attempt left)
     enterOtp(inputs, "777777");
@@ -116,7 +115,9 @@ describe("LoginPage Component", () => {
     expect(finalBadge.className).toMatch(/text-rose-500/);
 
     inputs.forEach((input) => {
-      expect(input.className).toMatch(/border-rose-500/);
+      expect(input.className).toMatch(/border-zinc-300/);
+      expect(input.className).not.toMatch(/border-amber-500/);
+      expect(input.className).not.toMatch(/border-rose-500/);
     });
   });
 
@@ -157,11 +158,8 @@ describe("LoginPage Component", () => {
       expect(localStorage.getItem("qs_access_token")).toBe("mock-jwt-token");
     });
 
-    // Resend Email button is disabled on success and has NO countdown timer
-    const resendBtn = screen.getByRole("button", { name: /^resend email$/i });
-    expect(resendBtn).toBeInTheDocument();
-    expect(resendBtn).toBeDisabled();
-    expect(screen.queryByText(/resend email \(\d+s\)/i)).not.toBeInTheDocument();
+    // Resend Email button is absent
+    expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
   });
 
   it("greys out text boxes, removes locked out label above inputs, and displays Request New Verification Code upon lockout", async () => {
@@ -196,7 +194,7 @@ describe("LoginPage Component", () => {
     expect(screen.getByText(/^verification code$/i)).toBeInTheDocument();
     expect(screen.queryByText(/3-min expiry/i)).not.toBeInTheDocument();
 
-    // Resend email button is replaced by Request New Verification Code
+    // Resend email button is not present
     expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
 
     // Text boxes are disabled
@@ -211,7 +209,7 @@ describe("LoginPage Component", () => {
     expect(screen.getByRole("button", { name: /back/i })).toBeInTheDocument();
   });
 
-  it("handles multi-code 60-minute IP lockout with disabled controls and lockout warning", async () => {
+  it("handles multi-code 60-minute lockout with disabled controls, without leaking IP in error, and with no locked out button", async () => {
     const { user } = renderApp("/login", {
       transportOptions: { isAuthenticated: false },
     });
@@ -224,23 +222,21 @@ describe("LoginPage Component", () => {
 
     await screen.findByRole("heading", { name: /verify your email/i });
 
-    // Enter code 000000 to trigger multi-code IP lockout
+    // Enter code 000000 to trigger multi-code lockout
     const inputs = screen.getAllByRole("textbox");
     enterOtp(inputs, "000000");
 
-    // Displays the 60-minute IP lockout message with Lock icon
-    expect(
-      await screen.findByText(/too many failed verification attempts from this ip/i),
-    ).toBeInTheDocument();
+    // Displays the 60-minute lockout message with Lock icon, without mentioning IP
+    expect(await screen.findByText(/too many failed verification attempts/i)).toBeInTheDocument();
+    expect(screen.queryByText(/from this ip/i)).not.toBeInTheDocument();
     expect(screen.getByText(/60 minutes/i)).toBeInTheDocument();
     const banner = screen.getByTestId("otp-error-banner");
     expect(banner.querySelector("svg.lucide-lock")).toBeInTheDocument();
 
-    // Renders disabled "Temporarily Locked Out" button with Lock icon instead of Request New Code
-    const lockedBtn = screen.getByRole("button", { name: /temporarily locked out/i });
-    expect(lockedBtn).toBeInTheDocument();
-    expect(lockedBtn).toBeDisabled();
-    expect(lockedBtn.querySelector("svg.lucide-lock")).toBeInTheDocument();
+    // Temporarily Locked Out button is removed
+    expect(
+      screen.queryByRole("button", { name: /temporarily locked out/i }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /request new verification code/i }),
     ).not.toBeInTheDocument();
@@ -259,7 +255,7 @@ describe("LoginPage Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("preserves remaining attempts counter and placeholder hints when resending email", async () => {
+  it("preserves remaining attempts counter and placeholder hints across failed entries with no resend button", async () => {
     const { user } = renderApp("/login", {
       transportOptions: { isAuthenticated: false },
     });
@@ -282,14 +278,7 @@ describe("LoginPage Component", () => {
       expect(input.placeholder).toBe("8");
     });
 
-    // Click Resend Email button
-    const resendBtn = screen.getByRole("button", { name: /resend email/i });
-    await user.click(resendBtn);
-
-    // After resend, attempts counter should NOT be reset to null, hints should NOT be cleared
-    expect(screen.getByText(/^2 attempts left$/i)).toBeInTheDocument();
-    inputs.forEach((input) => {
-      expect(input.placeholder).toBe("8");
-    });
+    // Resend Email button is completely removed
+    expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
   });
 });

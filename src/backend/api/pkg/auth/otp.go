@@ -110,7 +110,7 @@ func CheckIPRateLimit(ip string) error {
 	globalIPTracker.failures[ip] = valid
 
 	if len(valid) >= MaxIPFailures {
-		return errors.New("too many failed verification attempts from this IP. Please wait 60 minutes before trying again")
+		return errors.New("too many failed verification attempts. Please wait 60 minutes before trying again")
 	}
 
 	return nil

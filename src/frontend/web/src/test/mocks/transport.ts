@@ -543,7 +543,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         }
         if (req.code === "000000") {
           throw new ConnectError(
-            "Too many failed verification attempts from this IP. Please wait 60 minutes before trying again",
+            "Too many failed verification attempts. Please wait 60 minutes before trying again",
             Code.ResourceExhausted,
           );
         }

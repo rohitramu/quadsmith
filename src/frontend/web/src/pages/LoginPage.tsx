@@ -235,6 +235,42 @@ export function LoginPage() {
     }
   };
 
+  const renderErrorBanner = () => {
+    if (!errorMsg) return null;
+    return (
+      <div
+        data-testid="otp-error-banner"
+        className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
+          isExhausted || isRateLimited
+            ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
+            : remainingAttempts === 2
+              ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
+              : remainingAttempts === 1
+                ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400"
+                : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
+        }`}
+      >
+        {isExhausted || isRateLimited ? (
+          <Lock size={16} className="text-red-500 shrink-0 mt-0.5" />
+        ) : remainingAttempts === 2 ? (
+          <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
+        ) : (
+          <AlertTriangle size={16} className="text-rose-500 shrink-0 mt-0.5" />
+        )}
+        <div className="space-y-0.5 flex-1">
+          <p className="font-semibold">{errorMsg}</p>
+          {remainingAttempts !== null && remainingAttempts > 0 && (
+            <p className="text-[11px] opacity-90">
+              {remainingAttempts === 1
+                ? "Final attempt remaining before this code is invalidated."
+                : `${remainingAttempts} attempts remaining for this verification challenge.`}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans relative">
       {/* Theme Switcher Button */}
@@ -275,87 +311,56 @@ export function LoginPage() {
           </div>
         )}
 
-        {/* Dynamic Error / Attempt Warning Banner */}
-        {errorMsg && (
-          <div
-            data-testid="otp-error-banner"
-            className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
-              isExhausted || isRateLimited
-                ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
-                : remainingAttempts === 2
-                  ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
-                  : remainingAttempts === 1
-                    ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400"
-                    : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
-            }`}
-          >
-            {isExhausted || isRateLimited ? (
-              <Lock size={16} className="text-red-500 shrink-0 mt-0.5" />
-            ) : remainingAttempts === 2 ? (
-              <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
-            ) : (
-              <AlertTriangle size={16} className="text-rose-500 shrink-0 mt-0.5" />
-            )}
-            <div className="space-y-0.5 flex-1">
-              <p className="font-semibold">{errorMsg}</p>
-              {remainingAttempts !== null && remainingAttempts > 0 && (
-                <p className="text-[11px] opacity-90">
-                  {remainingAttempts === 1
-                    ? "Final attempt remaining before this code is invalidated."
-                    : `${remainingAttempts} attempts remaining for this verification challenge.`}
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
         {/* STEP 1: Email Form */}
         {step === "email" && (
-          <form onSubmit={handleSendEmail} className="space-y-4">
-            <div>
-              <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
-                  size={16}
-                />
-                <input
-                  type="email"
-                  required
-                  placeholder="alex@quadsmith.dev"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+          <div className="space-y-4">
+            {renderErrorBanner()}
+            <form onSubmit={handleSendEmail} className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                    size={16}
+                  />
+                  <input
+                    type="email"
+                    required
+                    placeholder="alex@quadsmith.dev"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={isLoading || !email.trim() || cooldown > 0}
-              className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
-                cooldown > 0
-                  ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                  : "text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 cursor-pointer"
-              }`}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  <span>Sending code...</span>
-                </>
-              ) : cooldown > 0 ? (
-                <span>Send Verification Code ({cooldown}s)</span>
-              ) : (
-                <>
-                  <span>Send Verification Code</span>
-                  <span>&rarr;</span>
-                </>
-              )}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={isLoading || !email.trim() || cooldown > 0}
+                className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
+                  cooldown > 0
+                    ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                    : "text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 cursor-pointer"
+                }`}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>Sending code...</span>
+                  </>
+                ) : cooldown > 0 ? (
+                  <span>Send Verification Code ({cooldown}s)</span>
+                ) : (
+                  <>
+                    <span>Send Verification Code</span>
+                    <span>&rarr;</span>
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         )}
 
         {/* STEP 2: OTP Verification Form */}
@@ -377,6 +382,9 @@ export function LoginPage() {
                 Click the link in the email.
               </p>
             </div>
+
+            {/* Error / Attempt Warning Banner directly above verification code */}
+            {renderErrorBanner()}
 
             {/* 6 Digit Inputs */}
             <div>
@@ -416,11 +424,7 @@ export function LoginPage() {
                     className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition ${
                       isSuccess || isExhausted || isRateLimited
                         ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
-                        : remainingAttempts !== null && remainingAttempts > 0
-                          ? remainingAttempts === 1
-                            ? "border-2 border-rose-500 focus:border-rose-600"
-                            : "border-2 border-amber-500 focus:border-amber-600"
-                          : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                     }`}
                   />
                 ))}
@@ -436,16 +440,7 @@ export function LoginPage() {
                 </div>
               )}
 
-              {isRateLimited ? (
-                <button
-                  type="button"
-                  disabled
-                  className="w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                >
-                  <Lock size={14} className="text-zinc-400 dark:text-zinc-500" />
-                  <span>Temporarily Locked Out</span>
-                </button>
-              ) : isExhausted ? (
+              {isExhausted && (
                 <button
                   type="button"
                   onClick={() => handleSendEmail()}
@@ -460,21 +455,6 @@ export function LoginPage() {
                     {exhaustedCooldown > 0
                       ? `Request New Verification Code (${exhaustedCooldown}s)`
                       : "Request New Verification Code"}
-                  </span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => handleSendEmail()}
-                  disabled={isSuccess || cooldown > 0 || isLoading}
-                  className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 ${
-                    isSuccess || cooldown > 0
-                      ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                      : "text-zinc-800 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 cursor-pointer"
-                  }`}
-                >
-                  <span>
-                    {!isSuccess && cooldown > 0 ? `Resend Email (${cooldown}s)` : "Resend Email"}
                   </span>
                 </button>
               )}
