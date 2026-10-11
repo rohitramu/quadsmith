@@ -408,7 +408,7 @@ const file_electronic_speed_controller_proto_rawDesc = "" +
 	"\x13motor_current_max_a\n" +
 	"\n" +
 	"max_motors\n" +
-	"\bfirmware\x1a\a#f97316\x9a\xb5\x180components/hardware/electronic-speed-controllers\xc2\xf3\x18\x1e\n" +
+	"\bfirmware\x12\a#f97316\x9a\xb5\x180components/hardware/electronic-speed-controllers\xc2\xf3\x18\x1e\n" +
 	"\x1celectronic_speed_controllersB\x18\n" +
 	"\x16_primary_display_image\"O\n" +
 	"#GetElectronicSpeedControllerRequest\x12\x0e\n" +

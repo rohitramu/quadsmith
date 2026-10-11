@@ -354,7 +354,7 @@ const file_field_tool_proto_rawDesc = "" +
 	"\x04name\n" +
 	"\ttool_type\n" +
 	"\fpower_source\n" +
-	"\bweight_g\x1a\a#f43f5e\x9a\xb5\x18\x1bcomponents/gear/field-tools\xc2\xf3\x18\r\n" +
+	"\bweight_g\x12\a#f43f5e\x9a\xb5\x18\x1bcomponents/gear/field-tools\xc2\xf3\x18\r\n" +
 	"\vfield_toolsB\x18\n" +
 	"\x16_primary_display_image\"?\n" +
 	"\x13GetFieldToolRequest\x12\x0e\n" +

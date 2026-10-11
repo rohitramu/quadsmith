@@ -363,7 +363,7 @@ const file_esc_firmware_proto_rawDesc = "" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\tprotocols\n" +
-	"\x0eis_open_source\x1a\a#10b981\x9a\xb5\x18 components/software/esc-firmware\xc2\xf3\x18'\n" +
+	"\x0eis_open_source\x12\a#10b981\x9a\xb5\x18 components/software/esc-firmware\xc2\xf3\x18'\n" +
 	"%electronic_speed_controller_firmwaresB\x18\n" +
 	"\x16_primary_display_image\"A\n" +
 	"\x15GetEscFirmwareRequest\x12\x0e\n" +

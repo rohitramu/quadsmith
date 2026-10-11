@@ -391,7 +391,7 @@ const file_charger_proto_rawDesc = "" +
 	"\bchannels\n" +
 	"\x12max_charge_power_w\n" +
 	"\x14max_charge_current_a\n" +
-	"\vmax_cells_s\x1a\a#f59e0b\x9a\xb5\x18\x18components/gear/chargers\xc2\xf3\x18\n" +
+	"\vmax_cells_s\x12\a#f59e0b\x9a\xb5\x18\x18components/gear/chargers\xc2\xf3\x18\n" +
 	"\n" +
 	"\bchargersB\x18\n" +
 	"\x16_primary_display_image\"=\n" +

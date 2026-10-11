@@ -140,14 +140,14 @@ const file_reference_link_proto_rawDesc = "" +
 	"\x14reference_link.proto\x12\tquadsmith\"U\n" +
 	"\rReferenceLink\x122\n" +
 	"\x05types\x18\x01 \x03(\x0e2\x1c.quadsmith.ReferenceLinkTypeR\x05types\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url*\x8c\x02\n" +
+	"\x03url\x18\x02 \x01(\tR\x03url*\xeb\x01\n" +
 	"\x11ReferenceLinkType\x12#\n" +
 	"\x1fREFERENCE_LINK_TYPE_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cREFERENCE_LINK_TYPE_PURCHASE\x10\x01\x12$\n" +
 	" REFERENCE_LINK_TYPE_PRODUCT_PAGE\x10\x02\x12%\n" +
 	"!REFERENCE_LINK_TYPE_DOCUMENTATION\x10\x03\x12\"\n" +
 	"\x1eREFERENCE_LINK_TYPE_FORUM_POST\x10\x04\x12\x1e\n" +
-	"\x1aREFERENCE_LINK_TYPE_REVIEW\x10\x05\"\x04\b\x06\x10\x06*\x19REFERENCE_LINK_TYPE_OTHERB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\x1aREFERENCE_LINK_TYPE_REVIEW\x10\x05B\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_reference_link_proto_rawDescOnce sync.Once

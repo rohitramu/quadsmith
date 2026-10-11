@@ -373,7 +373,7 @@ const file_fc_firmware_proto_rawDesc = "" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\x14target_architectures\n" +
-	"\x0eis_open_source\x1a\a#3b82f6\x9a\xb5\x18\x1fcomponents/software/fc-firmware\xc2\xf3\x18\x1d\n" +
+	"\x0eis_open_source\x12\a#3b82f6\x9a\xb5\x18\x1fcomponents/software/fc-firmware\xc2\xf3\x18\x1d\n" +
 	"\x1bflight_controller_firmwaresB\x18\n" +
 	"\x16_primary_display_image\"@\n" +
 	"\x14GetFcFirmwareRequest\x12\x0e\n" +

@@ -394,7 +394,7 @@ const file_transmitter_proto_rawDesc = "" +
 	"\vrf_protocol\n" +
 	"\x10operating_system\n" +
 	"\vgimbal_type\n" +
-	"\fmax_power_mw\x1a\a#0ea5e9\x9a\xb5\x18\x1ccomponents/gear/transmitters\xc2\xf3\x18\x0e\n" +
+	"\fmax_power_mw\x12\a#0ea5e9\x9a\xb5\x18\x1ccomponents/gear/transmitters\xc2\xf3\x18\x0e\n" +
 	"\ftransmittersB\x18\n" +
 	"\x16_primary_display_image\"A\n" +
 	"\x15GetTransmitterRequest\x12\x0e\n" +

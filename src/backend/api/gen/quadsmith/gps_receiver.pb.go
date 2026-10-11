@@ -393,7 +393,7 @@ const file_gps_receiver_proto_rawDesc = "" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\achipset\n" +
-	"\acompass\x1a\a#10b981\x9a\xb5\x18!components/hardware/gps-receivers\xc2\xf3\x18\x0f\n" +
+	"\acompass\x12\a#10b981\x9a\xb5\x18!components/hardware/gps-receivers\xc2\xf3\x18\x0f\n" +
 	"\rgps_receiversB\n" +
 	"\n" +
 	"\b_compassB\x18\n" +

@@ -354,7 +354,7 @@ const file_radio_firmware_proto_rawDesc = "" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\x13supported_protocols\n" +
-	"\x0eis_open_source\x1a\a#84cc16\x9a\xb5\x18\"components/software/radio-firmware\xc2\xf3\x18\x11\n" +
+	"\x0eis_open_source\x12\a#84cc16\x9a\xb5\x18\"components/software/radio-firmware\xc2\xf3\x18\x11\n" +
 	"\x0fradio_firmwaresB\x18\n" +
 	"\x16_primary_display_image\"C\n" +
 	"\x17GetRadioFirmwareRequest\x12\x0e\n" +

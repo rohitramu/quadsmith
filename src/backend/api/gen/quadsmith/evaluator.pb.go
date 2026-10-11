@@ -703,7 +703,7 @@ const file_evaluator_proto_rawDesc = "" +
 	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
 	"\n" +
 	"battery_id\x18\x03 \x01(\tR\tbatteryIdB\x0e\n" +
-	"\fbuild_source\"\xc1\x06\n" +
+	"\fbuild_source\"\xdc\x05\n" +
 	"\x15EvaluateBuildResponse\x12%\n" +
 	"\x0fall_up_weight_g\x18\x01 \x01(\x02R\fallUpWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
@@ -725,7 +725,7 @@ const file_evaluator_proto_rawDesc = "" +
 	"maxVoltage\x12\"\n" +
 	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentA\x12\x1c\n" +
 	"\tconnector\x18\x14 \x01(\tR\tconnector\x123\n" +
-	"\x15compatible_connectors\x18\x15 \x03(\tR\x14compatibleConnectorsJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aJ\x04\b\x13\x10\x14R\x19estimated_flight_time_minR\bwarningsR\x06errorsR\x0ebuild_weight_gR\x0etotal_weight_g\"x\n" +
+	"\x15compatible_connectors\x18\x15 \x03(\tR\x14compatibleConnectors\"x\n" +
 	"\x1fGetBuildElectricalLimitsRequest\x12\x1b\n" +
 	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x12(\n" +
 	"\x05build\x18\x02 \x01(\v2\x10.quadsmith.BuildH\x00R\x05buildB\x0e\n" +

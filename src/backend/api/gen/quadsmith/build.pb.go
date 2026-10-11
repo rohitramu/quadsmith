@@ -454,7 +454,7 @@ var File_build_proto protoreflect.FileDescriptor
 const file_build_proto_rawDesc = "" +
 	"\n" +
 	"\vbuild.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xe4\b\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xd0\b\n" +
 	"\x05Build\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12\x12\n" +
@@ -479,13 +479,13 @@ const file_build_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x13 \x01(\tB\x11\xc2\xf3\x18\r\x1a\vusers(uuid)H\x02R\buserUuid\x88\x01\x01\x12,\n" +
 	"\x0fauthor_username\x18\x14 \x01(\tH\x03R\x0eauthorUsername\x88\x01\x01:-\x8a\xb5\x18\x13\n" +
 	"\x02id\n" +
-	"\x04name\x1a\a#3b82f6\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
+	"\x04name\x12\a#3b82f6\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
 	"\x06buildsB\x14\n" +
 	"\x12_gps_receiver_uuidB\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_usernameJ\x04\b\a\x10\bR\fbattery_uuid\";\n" +
+	"\x10_author_username\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +

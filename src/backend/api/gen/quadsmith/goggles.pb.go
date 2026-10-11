@@ -404,7 +404,7 @@ const file_goggles_proto_rawDesc = "" +
 	"\fdisplay_type\n" +
 	"\n" +
 	"resolution\n" +
-	"\afov_deg\x1a\a#d946ef\x9a\xb5\x18\x17components/gear/goggles\xc2\xf3\x18\t\n" +
+	"\afov_deg\x12\a#d946ef\x9a\xb5\x18\x17components/gear/goggles\xc2\xf3\x18\t\n" +
 	"\agogglesB\x18\n" +
 	"\x16_primary_display_image\"=\n" +
 	"\x11GetGogglesRequest\x12\x0e\n" +

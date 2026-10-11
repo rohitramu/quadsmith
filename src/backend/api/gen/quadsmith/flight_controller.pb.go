@@ -417,7 +417,7 @@ const file_flight_controller_proto_rawDesc = "" +
 	"\x04name\n" +
 	"\tprocessor\n" +
 	"\x04gyro\n" +
-	"\bweight_g\x1a\a#3b82f6\x9a\xb5\x18&components/hardware/flight-controllers\xc2\xf3\x18\x14\n" +
+	"\bweight_g\x12\a#3b82f6\x9a\xb5\x18&components/hardware/flight-controllers\xc2\xf3\x18\x14\n" +
 	"\x12flight_controllersB,\n" +
 	"*_internal_electronic_speed_controller_uuidB\x19\n" +
 	"\x17_internal_receiver_uuidB\"\n" +

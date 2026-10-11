@@ -13,9 +13,6 @@ enum ReferenceLinkType {
   REFERENCE_LINK_TYPE_DOCUMENTATION = 3;
   REFERENCE_LINK_TYPE_FORUM_POST = 4;
   REFERENCE_LINK_TYPE_REVIEW = 5;
-
-  reserved 6;
-  reserved "REFERENCE_LINK_TYPE_OTHER";
 }
 
 message ReferenceLink {

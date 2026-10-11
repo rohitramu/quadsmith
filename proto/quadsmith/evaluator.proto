@@ -68,9 +68,6 @@ message EvaluateBuildResponse {
   float max_current_a = 18;
   string connector = 20;
   repeated string compatible_connectors = 21;
-
-  reserved 4, 5, 6, 19;
-  reserved "estimated_flight_time_min", "warnings", "errors", "build_weight_g", "total_weight_g";
 }
 
 message GetBuildElectricalLimitsRequest {

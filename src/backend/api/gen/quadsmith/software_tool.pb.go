@@ -354,7 +354,7 @@ const file_software_tool_proto_rawDesc = "" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\bcategory\n" +
-	"\bplatform\x1a\a#a855f7\x9a\xb5\x18\"components/software/software-tools\xc2\xf3\x18\x10\n" +
+	"\bplatform\x12\a#a855f7\x9a\xb5\x18\"components/software/software-tools\xc2\xf3\x18\x10\n" +
 	"\x0esoftware_toolsB\x18\n" +
 	"\x16_primary_display_image\"B\n" +
 	"\x16GetSoftwareToolRequest\x12\x0e\n" +

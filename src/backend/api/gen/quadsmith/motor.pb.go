@@ -397,7 +397,7 @@ const file_motor_proto_rawDesc = "" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\x12stator_diameter_mm\n" +
-	"\x02kv\x1a\a#ef4444\x9a\xb5\x18\x1acomponents/hardware/motors\xc2\xf3\x18\b\n" +
+	"\x02kv\x12\a#ef4444\x9a\xb5\x18\x1acomponents/hardware/motors\xc2\xf3\x18\b\n" +
 	"\x06motorsB\x18\n" +
 	"\x16_primary_display_image\";\n" +
 	"\x0fGetMotorRequest\x12\x0e\n" +

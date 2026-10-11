@@ -27,7 +27,7 @@ type FrontendOptions struct {
 	// The default columns to display in CLI tables and UI collection listings.
 	DefaultColumns []string `protobuf:"bytes,1,rep,name=default_columns,json=defaultColumns,proto3" json:"default_columns,omitempty"`
 	// The primary color code for this resource collection (e.g., hex code "#10b981").
-	ColorCode     string `protobuf:"bytes,3,opt,name=color_code,json=colorCode,proto3" json:"color_code,omitempty"`
+	ColorCode     string `protobuf:"bytes,2,opt,name=color_code,json=colorCode,proto3" json:"color_code,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -111,11 +111,11 @@ var File___common_proto protoreflect.FileDescriptor
 
 const file___common_proto_rawDesc = "" +
 	"\n" +
-	"\r_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"e\n" +
+	"\r_common.proto\x12\tquadsmith\x1a google/protobuf/descriptor.proto\"Y\n" +
 	"\x0fFrontendOptions\x12'\n" +
 	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumns\x12\x1d\n" +
 	"\n" +
-	"color_code\x18\x03 \x01(\tR\tcolorCodeJ\x04\b\x02\x10\x03R\x04path:Y\n" +
+	"color_code\x18\x02 \x01(\tR\tcolorCode:Y\n" +
 	"\bfrontend\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2\x1a.quadsmith.FrontendOptionsR\bfrontend:J\n" +
 	"\x0fcollection_path\x12\x1f.google.protobuf.MessageOptions\x18ӆ\x03 \x01(\tR\x0ecollectionPathB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
