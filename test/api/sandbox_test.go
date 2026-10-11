@@ -780,8 +780,8 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 		VALUES ($1, $2, '', 'Target User', NOW())`,
 		"018f0000-0000-7000-8000-0000000000a2", userAUUID)
 	_, _ = pool.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-		VALUES ($1, $2, $3, true, NOW(), NOW())`,
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+		VALUES ($1, $2, $3, true, NOW())`,
 		"018f0000-0000-7000-8000-0000000000a3", userAUUID, userAEmail)
 
 	// Seed User B with 2 emails and an email_otp referencing user_b
@@ -797,12 +797,12 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 		VALUES ($1, $2, '', 'Source User to merge', NOW())`,
 		"018f0000-0000-7000-8000-0000000000b2", userBUUID)
 	_, _ = pool.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-		VALUES ($1, $2, $3, true, NOW(), NOW())`,
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+		VALUES ($1, $2, $3, true, NOW())`,
 		"018f0000-0000-7000-8000-0000000000b3", userBUUID, userBEmail1)
 	_, _ = pool.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-		VALUES ($1, $2, $3, false, NOW(), NOW())`,
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+		VALUES ($1, $2, $3, false, NOW())`,
 		"018f0000-0000-7000-8000-0000000000b4", userBUUID, userBEmail2)
 
 	// Add an OTP record requested by user B to verify fk constraint handling

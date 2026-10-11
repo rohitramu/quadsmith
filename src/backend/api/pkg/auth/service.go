@@ -363,8 +363,8 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 	defer tx.Rollback(ctx)
 
 	_, err = tx.Exec(ctx, `
-		INSERT INTO users (uuid, id, email, role, email_verified_at, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $5, $5)`,
+		INSERT INTO users (uuid, id, email, role, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $5)`,
 		userUUID, username, email, role, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user: %w", err))
@@ -382,8 +382,8 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 
 	emailUUID := NewUUIDv7()
 	_, err = tx.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-		VALUES ($1, $2, $3, true, $4, $4)`,
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+		VALUES ($1, $2, $3, true, $4)`,
 		emailUUID, userUUID, email, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user email: %w", err))
@@ -463,21 +463,18 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 	// Fetch User
 	var user pb.User
 	var username, email, role string
-	var emailVerifiedAt, lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at
+		SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
 		FROM users WHERE uuid = $1`, userUUID).Scan(
 		&user.Uuid, &username, &email, &role,
-		&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	user.Id = username
 	user.Email = email
 	user.Role = role
-	if emailVerifiedAt != nil {
-		user.EmailVerifiedAt = timestamppb.New(*emailVerifiedAt)
-	}
 	if createdAt != nil {
 		user.CreatedAt = timestamppb.New(*createdAt)
 	}
@@ -528,17 +525,14 @@ func (s *AuthService) GetCurrentUser(ctx context.Context, _ *connect.Request[pb.
 	}
 
 	var user pb.User
-	var emailVerifiedAt, lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 	err := s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at
+		SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
 		FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
-		&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
-	}
-	if emailVerifiedAt != nil {
-		user.EmailVerifiedAt = timestamppb.New(*emailVerifiedAt)
 	}
 	if lastRenamedAt != nil {
 		user.LastRenamedAt = timestamppb.New(*lastRenamedAt)
@@ -628,14 +622,14 @@ func (s *AuthService) ListUserEmails(ctx context.Context, req *connect.Request[p
 	if userCtx.Email != "" {
 		emailUUID := NewUUIDv7()
 		_, _ = s.db.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-			VALUES ($1, $2, $3, true, NOW(), NOW())
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+			VALUES ($1, $2, $3, true, NOW())
 			ON CONFLICT (email) DO NOTHING`,
 			emailUUID, userCtx.UserUUID, userCtx.Email)
 	}
 
 	rows, err := s.db.Query(ctx, `
-		SELECT uuid, user_uuid, email, is_primary, verified_at, created_at
+		SELECT uuid, user_uuid, email, is_primary, created_at
 		FROM user_emails
 		WHERE user_uuid = $1
 		ORDER BY is_primary DESC, created_at ASC`, userCtx.UserUUID)
@@ -647,12 +641,9 @@ func (s *AuthService) ListUserEmails(ctx context.Context, req *connect.Request[p
 	var emails []*pb.UserEmail
 	for rows.Next() {
 		var em pb.UserEmail
-		var verifiedAt, createdAt *time.Time
-		if err := rows.Scan(&em.Uuid, &em.UserUuid, &em.Email, &em.IsPrimary, &verifiedAt, &createdAt); err != nil {
+		var createdAt *time.Time
+		if err := rows.Scan(&em.Uuid, &em.UserUuid, &em.Email, &em.IsPrimary, &createdAt); err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to scan email: %w", err))
-		}
-		if verifiedAt != nil {
-			em.VerifiedAt = timestamppb.New(*verifiedAt)
 		}
 		if createdAt != nil {
 			em.CreatedAt = timestamppb.New(*createdAt)
@@ -933,9 +924,9 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 	// No other account found -> Add directly to current user's emails
 	newUUID := NewUUIDv7()
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-		VALUES ($1, $2, $3, false, NOW(), NOW())
-		ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_at = NOW()`,
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+		VALUES ($1, $2, $3, false, NOW())
+		ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false`,
 		newUUID, userCtx.UserUUID, email)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to add email: %w", err))
@@ -1088,9 +1079,9 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		}
 		newEmailUUID := NewUUIDv7()
 		_, err = tx.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-			VALUES ($1, $2, $3, false, NOW(), NOW())
-			ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_at = NOW()`,
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+			VALUES ($1, $2, $3, false, NOW())
+			ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false`,
 			newEmailUUID, userCtx.UserUUID, emLower)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to associate email %s: %w", emLower, err))
@@ -1481,16 +1472,13 @@ func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[p
 
 	// Fetch updated user to return
 	var user pb.User
-	var emailVerifiedAt, newLastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var newLastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at
+		SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
 		FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
-		&emailVerifiedAt, &newLastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&newLastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err == nil {
-		if emailVerifiedAt != nil {
-			user.EmailVerifiedAt = timestamppb.New(*emailVerifiedAt)
-		}
 		if newLastRenamedAt != nil {
 			user.LastRenamedAt = timestamppb.New(*newLastRenamedAt)
 		}
@@ -1502,9 +1490,9 @@ func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[p
 		}
 	}
 
-	// Security alert email dispatch: Send to all user's verified emails
+	// Security alert email dispatch: Send to all user's emails
 	var emails []string
-	rows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1 AND verified_at IS NOT NULL`, userCtx.UserUUID)
+	rows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1`, userCtx.UserUUID)
 	if err == nil {
 		for rows.Next() {
 			var e string
@@ -1624,26 +1612,26 @@ func extractChallengeID(reqChallenge string, header http.Header) string {
 func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint string) (*connect.Response[pb.AuthResponse], error) {
 	var user pb.User
 	var userUUID, username, role string
-	var emailVerifiedAt, lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 
 	// 1. Try finding user via user_emails
 	err := s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, u.email, u.role, u.email_verified_at, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		SELECT u.uuid, u.id, u.email, u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND u.deleted_at IS NULL
 		LIMIT 1`, email).Scan(
 		&userUUID, &username, &user.Email, &role,
-		&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 
 	if errors.Is(err, pgx.ErrNoRows) {
 		// Fallback: check users table directly
 		err = s.db.QueryRow(ctx, `
-			SELECT uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at
+			SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
 			FROM users
 			WHERE LOWER(email) = LOWER($1) AND deleted_at IS NULL`, email).Scan(
 			&userUUID, &username, &user.Email, &role,
-			&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+			&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	}
 
 	if errors.Is(err, pgx.ErrNoRows) {
@@ -1653,8 +1641,8 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		now := time.Now()
 
 		_, err = s.db.Exec(ctx, `
-			INSERT INTO users (uuid, id, email, role, email_verified_at, created_at, updated_at)
-			VALUES ($1, $2, $3, $4, $5, $5, $5)`,
+			INSERT INTO users (uuid, id, email, role, created_at, updated_at)
+			VALUES ($1, $2, $3, $4, $5, $5)`,
 			userUUID, username, email, role, now)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user: %w", err))
@@ -1671,8 +1659,8 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 
 		emailUUID := NewUUIDv7()
 		_, _ = s.db.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-			VALUES ($1, $2, $3, true, $4, $4)
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+			VALUES ($1, $2, $3, true, $4)
 			ON CONFLICT (email) DO NOTHING`,
 			emailUUID, userUUID, email, now)
 
@@ -1680,7 +1668,6 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		user.Id = username
 		user.Email = email
 		user.Role = role
-		user.EmailVerifiedAt = timestamppb.New(now)
 		user.CreatedAt = timestamppb.New(now)
 		user.UpdatedAt = timestamppb.New(now)
 	} else if err != nil {
@@ -1689,20 +1676,14 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		// Ensure user_emails has this email
 		emailUUID := NewUUIDv7()
 		_, _ = s.db.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-			VALUES ($1, $2, $3, true, NOW(), NOW())
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+			VALUES ($1, $2, $3, true, NOW())
 			ON CONFLICT (email) DO NOTHING`,
 			emailUUID, userUUID, email)
 
 		user.Uuid = userUUID
 		user.Id = username
 		user.Role = role
-		if emailVerifiedAt == nil {
-			_, _ = s.db.Exec(ctx, `UPDATE users SET email_verified_at = NOW() WHERE uuid = $1`, userUUID)
-			user.EmailVerifiedAt = timestamppb.Now()
-		} else {
-			user.EmailVerifiedAt = timestamppb.New(*emailVerifiedAt)
-		}
 		if lastRenamedAt != nil {
 			user.LastRenamedAt = timestamppb.New(*lastRenamedAt)
 		}
@@ -1862,25 +1843,25 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 	}
 
 	var user pb.User
-	var emailVerifiedAt, lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 	err := s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at
+		SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
 		FROM users
 		WHERE (id = $1 OR uuid::text = $1) AND deleted_at IS NULL`, id).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
-		&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			// Check if this was a recent username within the 30-day hold window
 			err = s.db.QueryRow(ctx, `
-				SELECT u.uuid, u.id, u.email, u.role, u.email_verified_at, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+				SELECT u.uuid, u.id, u.email, u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
 				FROM username_histories hh
 				JOIN users u ON u.uuid = hh.user_uuid
 				WHERE LOWER(hh.old_username) = LOWER($1) AND u.deleted_at IS NULL AND COALESCE(hh.first_archived_at, hh.renamed_at) >= NOW() - INTERVAL '30 days'
 				ORDER BY hh.renamed_at DESC
 				LIMIT 1`, id).Scan(
 				&user.Uuid, &user.Id, &user.Email, &user.Role,
-				&emailVerifiedAt, &lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+				&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 			if err != nil {
 				if errors.Is(err, pgx.ErrNoRows) {
 					return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
@@ -1901,9 +1882,6 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("permission denied"))
 	}
 
-	if emailVerifiedAt != nil {
-		user.EmailVerifiedAt = timestamppb.New(*emailVerifiedAt)
-	}
 	if lastRenamedAt != nil {
 		user.LastRenamedAt = timestamppb.New(*lastRenamedAt)
 	}

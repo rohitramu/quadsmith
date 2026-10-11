@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS users (
   id TEXT UNIQUE NOT NULL,
   email TEXT UNIQUE NOT NULL,
   role TEXT DEFAULT 'USER' NOT NULL,
-  email_verified_at TIMESTAMPTZ,
   last_renamed_at TIMESTAMPTZ,
   deleted_at TIMESTAMPTZ,
   banned_at TIMESTAMPTZ,
@@ -55,7 +54,6 @@ CREATE TABLE IF NOT EXISTS user_emails (
   user_uuid UUID NOT NULL,
   email TEXT UNIQUE NOT NULL,
   is_primary BOOLEAN DEFAULT false NOT NULL,
-  verified_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ
 );
 

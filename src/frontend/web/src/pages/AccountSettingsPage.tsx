@@ -593,7 +593,6 @@ export function AccountSettingsPage() {
               userUuid: "",
               email: user.email,
               isPrimary: true,
-              verifiedAt: undefined,
               createdAt: undefined,
             },
           ]

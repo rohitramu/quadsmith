@@ -13,18 +13,13 @@ import (
 )
 
 func CreateUser(ctx context.Context, tx pgx.Tx, m *User) error {
-	query := `INSERT INTO users (uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+	query := `INSERT INTO users (uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
 	}(m.Uuid), m.Id, m.Email, m.Role, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.EmailVerifiedAt), func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -54,8 +49,8 @@ func CreateUser(ctx context.Context, tx pgx.Tx, m *User) error {
 }
 
 func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*User, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "email_verified_at": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
-	colsStr := "uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
+	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
+	colsStr := "uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -66,7 +61,7 @@ func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []stri
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "email", "role", "email_verified_at", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
+		cols = []string{"uuid", "id", "email", "role", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM users WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -82,14 +77,6 @@ func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []stri
 			scanArgs[i] = &m.Email
 		case "role":
 			scanArgs[i] = &m.Role
-		case "email_verified_at":
-			var v *time.Time
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.EmailVerifiedAt = timestamppb.New(*v)
-				}
-			})
 		case "last_renamed_at":
 			var v *time.Time
 			scanArgs[i] = &v
@@ -147,13 +134,8 @@ func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []stri
 }
 
 func UpdateUser(ctx context.Context, tx pgx.Tx, m *User) error {
-	query := `UPDATE users SET email = $2, role = $3, email_verified_at = $4, last_renamed_at = $5, deleted_at = $6, banned_at = $7, created_at = $8, updated_at = $9 WHERE uuid = $1`
+	query := `UPDATE users SET email = $2, role = $3, last_renamed_at = $4, deleted_at = $5, banned_at = $6, created_at = $7, updated_at = $8 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Email, m.Role, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.EmailVerifiedAt), func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -189,8 +171,8 @@ func DeleteUser(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*User, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "email_verified_at": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
-	colsStr := "uuid, id, email, role, email_verified_at, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
+	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
+	colsStr := "uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -201,7 +183,7 @@ func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "email", "role", "email_verified_at", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
+		cols = []string{"uuid", "id", "email", "role", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM users`
 	if whereClause != "" {
@@ -258,14 +240,6 @@ func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 				scanArgs[i] = &m.Email
 			case "role":
 				scanArgs[i] = &m.Role
-			case "email_verified_at":
-				var v *time.Time
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.EmailVerifiedAt = timestamppb.New(*v)
-					}
-				})
 			case "last_renamed_at":
 				var v *time.Time
 				scanArgs[i] = &v
@@ -527,7 +501,7 @@ func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 }
 
 func CreateUserEmail(ctx context.Context, tx pgx.Tx, m *UserEmail) error {
-	query := `INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at) VALUES ($1, $2, $3, $4, $5, $6)`
+	query := `INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at) VALUES ($1, $2, $3, $4, $5)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -543,18 +517,13 @@ func CreateUserEmail(ctx context.Context, tx pgx.Tx, m *UserEmail) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.VerifiedAt), func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
 	}(m.CreatedAt))
 	return err
 }
 
 func GetUserEmail(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*UserEmail, error) {
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "email": true, "is_primary": true, "verified_at": true, "created_at": true}
-	colsStr := "uuid, user_uuid, email, is_primary, verified_at, created_at"
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "email": true, "is_primary": true, "created_at": true}
+	colsStr := "uuid, user_uuid, email, is_primary, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -565,7 +534,7 @@ func GetUserEmail(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "email", "is_primary", "verified_at", "created_at"}
+		cols = []string{"uuid", "user_uuid", "email", "is_primary", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM user_emails WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -587,14 +556,6 @@ func GetUserEmail(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 			scanArgs[i] = &m.Email
 		case "is_primary":
 			scanArgs[i] = &m.IsPrimary
-		case "verified_at":
-			var v *time.Time
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.VerifiedAt = timestamppb.New(*v)
-				}
-			})
 		case "created_at":
 			var v *time.Time
 			scanArgs[i] = &v
@@ -620,18 +581,13 @@ func GetUserEmail(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 }
 
 func UpdateUserEmail(ctx context.Context, tx pgx.Tx, m *UserEmail) error {
-	query := `UPDATE user_emails SET user_uuid = $2, email = $3, is_primary = $4, verified_at = $5, created_at = $6 WHERE uuid = $1`
+	query := `UPDATE user_emails SET user_uuid = $2, email = $3, is_primary = $4, created_at = $5 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
 	}(m.UserUuid), m.Email, m.IsPrimary, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.VerifiedAt), func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -647,8 +603,8 @@ func DeleteUserEmail(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListUserEmails(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*UserEmail, error) {
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "email": true, "is_primary": true, "verified_at": true, "created_at": true}
-	colsStr := "uuid, user_uuid, email, is_primary, verified_at, created_at"
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "email": true, "is_primary": true, "created_at": true}
+	colsStr := "uuid, user_uuid, email, is_primary, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -659,7 +615,7 @@ func ListUserEmails(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "email", "is_primary", "verified_at", "created_at"}
+		cols = []string{"uuid", "user_uuid", "email", "is_primary", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM user_emails`
 	if whereClause != "" {
@@ -722,14 +678,6 @@ func ListUserEmails(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 				scanArgs[i] = &m.Email
 			case "is_primary":
 				scanArgs[i] = &m.IsPrimary
-			case "verified_at":
-				var v *time.Time
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.VerifiedAt = timestamppb.New(*v)
-					}
-				})
 			case "created_at":
 				var v *time.Time
 				scanArgs[i] = &v

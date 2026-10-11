@@ -68,8 +68,8 @@ func TestMain(m *testing.M) {
 				ON CONFLICT (user_uuid) DO NOTHING`,
 				"018f0000-0000-7000-8000-000000000002", "018f0000-0000-7000-8000-000000000001")
 			_, _ = pool.Exec(ctx, `
-				INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-				VALUES ($1, $2, $3, true, NOW(), NOW())
+				INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
+				VALUES ($1, $2, $3, true, NOW())
 				ON CONFLICT (email) DO NOTHING`,
 				"018f0000-0000-7000-8000-000000000003", "018f0000-0000-7000-8000-000000000001", "pilot@example.com")
 		}

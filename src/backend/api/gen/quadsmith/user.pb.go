@@ -83,17 +83,16 @@ type User struct {
 	// - Rejects reserved handles ("admin", "root") via `not_in`.
 	// - Rejects consecutive underscores ("__") and reserved brands ("quadsmith", "quad_smith") via `not_contains`.
 	// (See `_validate.proto` for comprehensive documentation on RE2 regex restrictions and ReDoS guarantees).
-	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Email           string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // Verified email (private)
-	Role            string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // "USER", "ADMIN"
-	EmailVerifiedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=email_verified_at,json=emailVerifiedAt,proto3" json:"email_verified_at,omitempty"`
-	LastRenamedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=last_renamed_at,json=lastRenamedAt,proto3" json:"last_renamed_at,omitempty"`
-	DeletedAt       *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
-	BannedAt        *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=banned_at,json=bannedAt,proto3" json:"banned_at,omitempty"`
-	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // Verified email (private)
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // "USER", "ADMIN"
+	LastRenamedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_renamed_at,json=lastRenamedAt,proto3" json:"last_renamed_at,omitempty"`
+	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
+	BannedAt      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=banned_at,json=bannedAt,proto3" json:"banned_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
@@ -152,13 +151,6 @@ func (x *User) GetRole() string {
 		return x.Role
 	}
 	return ""
-}
-
-func (x *User) GetEmailVerifiedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.EmailVerifiedAt
-	}
-	return nil
 }
 
 func (x *User) GetLastRenamedAt() *timestamppb.Timestamp {
@@ -278,8 +270,7 @@ type UserEmail struct {
 	UserUuid      string                 `protobuf:"bytes,2,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	IsPrimary     bool                   `protobuf:"varint,4,opt,name=is_primary,json=isPrimary,proto3" json:"is_primary,omitempty"`
-	VerifiedAt    *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=verified_at,json=verifiedAt,proto3" json:"verified_at,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -340,13 +331,6 @@ func (x *UserEmail) GetIsPrimary() bool {
 		return x.IsPrimary
 	}
 	return false
-}
-
-func (x *UserEmail) GetVerifiedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.VerifiedAt
-	}
-	return nil
 }
 
 func (x *UserEmail) GetCreatedAt() *timestamppb.Timestamp {
@@ -1022,24 +1006,22 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
 	"user.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x0f_validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd3\x04\n" +
+	"_sql.proto\x1a\x0f_validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8b\x04\n" +
 	"\x04User\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12j\n" +
 	"\x02id\x18\x02 \x01(\tBZ\xc2\xf3\x18\x04 \x01(\x01\x82\xb2\x19N\n" +
 	"L\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root*\x02__*\tquadsmith*\n" +
 	"quad_smithR\x02id\x12\x1e\n" +
 	"\x05email\x18\x03 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x05email\x12 \n" +
-	"\x04role\x18\x04 \x01(\tB\f\xc2\xf3\x18\b:\x06'USER'R\x04role\x12F\n" +
-	"\x11email_verified_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x0femailVerifiedAt\x12B\n" +
-	"\x0flast_renamed_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\rlastRenamedAt\x129\n" +
+	"\x04role\x18\x04 \x01(\tB\f\xc2\xf3\x18\b:\x06'USER'R\x04role\x12B\n" +
+	"\x0flast_renamed_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\rlastRenamedAt\x129\n" +
 	"\n" +
-	"deleted_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt\x127\n" +
-	"\tbanned_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\bbannedAt\x129\n" +
+	"deleted_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt\x127\n" +
+	"\tbanned_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bbannedAt\x129\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\v\xc2\xf3\x18\a\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\v\xc2\xf3\x18\a\n" +
 	"\x05users\"\xde\x01\n" +
 	"\vUserProfile\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x122\n" +
@@ -1049,17 +1031,15 @@ const file_user_proto_rawDesc = "" +
 	"\x03bio\x18\x04 \x01(\tR\x03bio\x129\n" +
 	"\n" +
 	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\x13\xc2\xf3\x18\x0f\n" +
-	"\ruser_profiles\"\xb0\x02\n" +
+	"\ruser_profiles\"\xf3\x01\n" +
 	"\tUserEmail\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
 	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1e\n" +
 	"\x05email\x18\x03 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x05email\x12*\n" +
 	"\n" +
-	"is_primary\x18\x04 \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\tisPrimary\x12;\n" +
-	"\vverified_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"verifiedAt\x129\n" +
+	"is_primary\x18\x04 \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\tisPrimary\x129\n" +
 	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x11\xc2\xf3\x18\r\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x11\xc2\xf3\x18\r\n" +
 	"\vuser_emails\"\xb0\x01\n" +
 	"\x11PublicUserProfile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
@@ -1173,39 +1153,37 @@ var file_user_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),          // 13: google.protobuf.Timestamp
 }
 var file_user_proto_depIdxs = []int32{
-	13, // 0: quadsmith.User.email_verified_at:type_name -> google.protobuf.Timestamp
-	13, // 1: quadsmith.User.last_renamed_at:type_name -> google.protobuf.Timestamp
-	13, // 2: quadsmith.User.deleted_at:type_name -> google.protobuf.Timestamp
-	13, // 3: quadsmith.User.banned_at:type_name -> google.protobuf.Timestamp
-	13, // 4: quadsmith.User.created_at:type_name -> google.protobuf.Timestamp
-	13, // 5: quadsmith.User.updated_at:type_name -> google.protobuf.Timestamp
-	13, // 6: quadsmith.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
-	13, // 7: quadsmith.UserEmail.verified_at:type_name -> google.protobuf.Timestamp
-	13, // 8: quadsmith.UserEmail.created_at:type_name -> google.protobuf.Timestamp
-	13, // 9: quadsmith.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
-	13, // 10: quadsmith.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
-	13, // 11: quadsmith.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
-	13, // 12: quadsmith.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
-	13, // 13: quadsmith.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
-	13, // 14: quadsmith.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
-	13, // 15: quadsmith.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
-	13, // 16: quadsmith.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
-	13, // 17: quadsmith.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
-	13, // 18: quadsmith.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
-	13, // 19: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
-	13, // 20: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	0,  // 21: quadsmith.CheckUsernameAvailableResponse.status:type_name -> quadsmith.UsernameAvailabilityStatus
-	9,  // 22: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
-	10, // 23: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
-	11, // 24: quadsmith.UserService.CheckUsernameAvailable:input_type -> quadsmith.CheckUsernameAvailableRequest
-	1,  // 25: quadsmith.UserService.GetUser:output_type -> quadsmith.User
-	4,  // 26: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
-	12, // 27: quadsmith.UserService.CheckUsernameAvailable:output_type -> quadsmith.CheckUsernameAvailableResponse
-	25, // [25:28] is the sub-list for method output_type
-	22, // [22:25] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	13, // 0: quadsmith.User.last_renamed_at:type_name -> google.protobuf.Timestamp
+	13, // 1: quadsmith.User.deleted_at:type_name -> google.protobuf.Timestamp
+	13, // 2: quadsmith.User.banned_at:type_name -> google.protobuf.Timestamp
+	13, // 3: quadsmith.User.created_at:type_name -> google.protobuf.Timestamp
+	13, // 4: quadsmith.User.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 5: quadsmith.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 6: quadsmith.UserEmail.created_at:type_name -> google.protobuf.Timestamp
+	13, // 7: quadsmith.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
+	13, // 8: quadsmith.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
+	13, // 9: quadsmith.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
+	13, // 10: quadsmith.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
+	13, // 11: quadsmith.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
+	13, // 12: quadsmith.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
+	13, // 13: quadsmith.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
+	13, // 14: quadsmith.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
+	13, // 15: quadsmith.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
+	13, // 16: quadsmith.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
+	13, // 17: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
+	13, // 18: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	0,  // 19: quadsmith.CheckUsernameAvailableResponse.status:type_name -> quadsmith.UsernameAvailabilityStatus
+	9,  // 20: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
+	10, // 21: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
+	11, // 22: quadsmith.UserService.CheckUsernameAvailable:input_type -> quadsmith.CheckUsernameAvailableRequest
+	1,  // 23: quadsmith.UserService.GetUser:output_type -> quadsmith.User
+	4,  // 24: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
+	12, // 25: quadsmith.UserService.CheckUsernameAvailable:output_type -> quadsmith.CheckUsernameAvailableResponse
+	23, // [23:26] is the sub-list for method output_type
+	20, // [20:23] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }

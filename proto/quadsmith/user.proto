@@ -49,12 +49,11 @@ message User {
   }]; // Verified email (private)
   string role = 4 [(quadsmith.sql.column) = {default_value: "'USER'"}]; // "USER", "ADMIN"
 
-  google.protobuf.Timestamp email_verified_at = 5;
-  google.protobuf.Timestamp last_renamed_at = 6;
-  google.protobuf.Timestamp deleted_at = 7;
-  google.protobuf.Timestamp banned_at = 8;
-  google.protobuf.Timestamp created_at = 9;
-  google.protobuf.Timestamp updated_at = 10;
+  google.protobuf.Timestamp last_renamed_at = 5;
+  google.protobuf.Timestamp deleted_at = 6;
+  google.protobuf.Timestamp banned_at = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
 }
 
 message UserProfile {
@@ -84,8 +83,7 @@ message UserEmail {
     create_index: true
   }];
   bool is_primary = 4 [(quadsmith.sql.column) = {default_value: "false"}];
-  google.protobuf.Timestamp verified_at = 5;
-  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp created_at = 5;
 }
 
 message PublicUserProfile {
