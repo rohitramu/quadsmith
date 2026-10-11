@@ -540,28 +540,33 @@ export function LoginPage() {
           </div>
         )}
 
-        {(isExhausted || isRateLimited) && (
-          <button
-            type="button"
-            onClick={() => handleSendEmail()}
-            disabled={(isRateLimited ? rateLimitCooldown > 0 : exhaustedCooldown > 0) || isLoading}
-            className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
-              (isRateLimited ? rateLimitCooldown > 0 : exhaustedCooldown > 0)
-                ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
-            }`}
-          >
-            <span>
-              {isRateLimited
-                ? rateLimitCooldown > 0
-                  ? `Request New Verification Code (${Math.floor(rateLimitCooldown / 60)}m${rateLimitCooldown % 60}s)`
-                  : "Request New Verification Code"
-                : exhaustedCooldown > 0
-                  ? `Request New Verification Code (${exhaustedCooldown}s)`
-                  : "Request New Verification Code"}
-            </span>
-          </button>
-        )}
+        {(isExhausted || isRateLimited) &&
+          (() => {
+            const isReqDisabled =
+              (isRateLimited ? rateLimitCooldown > 0 : exhaustedCooldown > 0) || isLoading;
+            return (
+              <button
+                type="button"
+                onClick={() => handleSendEmail()}
+                disabled={isReqDisabled}
+                className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
+                  isReqDisabled
+                    ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                    : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
+                }`}
+              >
+                <span>
+                  {isRateLimited
+                    ? rateLimitCooldown > 0
+                      ? `Request New Verification Code (${Math.floor(rateLimitCooldown / 60)}m${rateLimitCooldown % 60}s)`
+                      : "Request New Verification Code"
+                    : exhaustedCooldown > 0
+                      ? `Request New Verification Code (${exhaustedCooldown}s)`
+                      : "Request New Verification Code"}
+                </span>
+              </button>
+            );
+          })()}
 
         {/* Back Option */}
         <div className="flex items-center text-xs pt-1">
@@ -817,29 +822,46 @@ export function LoginPage() {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={isLoading || !email.trim() || cooldown > 0}
-                className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
-                  cooldown > 0
-                    ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                    : "text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 cursor-pointer"
-                }`}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" />
-                    <span>Sending code...</span>
-                  </>
-                ) : cooldown > 0 ? (
-                  <span>Send Verification Code ({cooldown}s)</span>
-                ) : (
-                  <>
-                    <span>Send Verification Code</span>
-                    <span>&rarr;</span>
-                  </>
-                )}
-              </button>
+              {(() => {
+                const isSendDisabled =
+                  isLoading ||
+                  !email.trim() ||
+                  cooldown > 0 ||
+                  (isRateLimited && rateLimitCooldown > 0);
+
+                return (
+                  <button
+                    type="submit"
+                    disabled={isSendDisabled}
+                    className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
+                      isSendDisabled
+                        ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                        : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
+                    }`}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>Sending code...</span>
+                      </>
+                    ) : isRateLimited && rateLimitCooldown > 0 ? (
+                      <span>
+                        Send Verification Code ({Math.floor(rateLimitCooldown / 60)}m
+                        {rateLimitCooldown % 60}s)
+                      </span>
+                    ) : cooldown > 0 ? (
+                      <span>Send Verification Code ({cooldown}s)</span>
+                    ) : !email.trim() ? (
+                      <span>Send Verification Code</span>
+                    ) : (
+                      <>
+                        <span>Send Verification Code</span>
+                        <span>&rarr;</span>
+                      </>
+                    )}
+                  </button>
+                );
+              })()}
             </form>
           </div>
         </div>

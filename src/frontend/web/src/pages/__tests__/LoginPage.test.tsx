@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { screen, waitFor, fireEvent } from "@testing-library/react";
-import { renderApp } from "../../test/test-utils";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { screen, waitFor, fireEvent, act } from "@testing-library/react";
+import { renderApp, renderWithProviders } from "../../test/test-utils";
+import { AppRoutes } from "../../App";
 
 function enterOtp(inputs: HTMLElement[], code: string) {
   code.split("").forEach((char, i) => {
@@ -446,5 +447,89 @@ describe("LoginPage Component", () => {
     ).toBeInTheDocument();
     const resetEmailInput = screen.getByPlaceholderText(/alex@quadsmith.dev/i) as HTMLInputElement;
     expect(resetEmailInput.value).toBe("");
+  });
+
+  it("keeps Send Verification Code button disabled when email field is empty, before and after cooldown", async () => {
+    vi.useFakeTimers();
+    try {
+      renderWithProviders(<AppRoutes />, {
+        route: "/login",
+        transportOptions: { isAuthenticated: false },
+      });
+
+      const emailInput = screen.getByPlaceholderText(/alex@quadsmith.dev/i);
+      const submitBtn = screen.getByRole("button", { name: /^send verification code$/i });
+
+      // Initially empty: disabled with cursor-not-allowed
+      expect(submitBtn).toBeDisabled();
+      expect(submitBtn.className).toMatch(/cursor-not-allowed/);
+      expect(submitBtn.className).not.toMatch(/cursor-pointer/);
+      expect(submitBtn.className).toMatch(/bg-zinc-100/);
+
+      // Typing email enables the button
+      fireEvent.change(emailInput, { target: { value: "pilot@example.com" } });
+      expect(submitBtn).not.toBeDisabled();
+      expect(submitBtn.className).toMatch(/cursor-pointer/);
+      expect(submitBtn.className).toMatch(/bg-blue-600/);
+      expect(screen.getByText("→")).toBeInTheDocument();
+
+      // Clearing email disables it again
+      fireEvent.change(emailInput, { target: { value: "" } });
+      expect(submitBtn).toBeDisabled();
+      expect(submitBtn.className).toMatch(/cursor-not-allowed/);
+      expect(screen.queryByText("→")).not.toBeInTheDocument();
+
+      // Re-type email and submit to trigger cooldown & transition to step 2
+      fireEvent.change(emailInput, { target: { value: "pilot@example.com" } });
+      fireEvent.click(submitBtn);
+
+      // Advance mock promise tick
+      await act(async () => {
+        await Promise.resolve();
+      });
+
+      // Verify OTP screen reached
+      expect(screen.getByRole("heading", { name: /verify your email/i })).toBeInTheDocument();
+
+      // Click Back to return to Step 1
+      const backBtn = screen.getByRole("button", { name: /back/i });
+      fireEvent.click(backBtn);
+
+      // Back on Step 1: email is reset to empty, cooldown is active (20s)
+      expect(screen.getByRole("heading", { name: /sign in to quadsmith/i })).toBeInTheDocument();
+      const backEmailInput = screen.getByPlaceholderText(/alex@quadsmith.dev/i) as HTMLInputElement;
+      expect(backEmailInput.value).toBe("");
+
+      // Button is in cooldown and disabled
+      const cooldownBtn = screen.getByRole("button", {
+        name: /send verification code \(\d+s\)/i,
+      });
+      expect(cooldownBtn).toBeDisabled();
+      expect(cooldownBtn.className).toMatch(/cursor-not-allowed/);
+
+      // Fast-forward 25 seconds so cooldown expires completely
+      act(() => {
+        vi.advanceTimersByTime(25000);
+      });
+
+      // After cooldown expires: email field is still empty, so button MUST remain disabled!
+      const postCooldownBtn = screen.getByRole("button", {
+        name: /^send verification code$/i,
+      });
+      expect(postCooldownBtn).toBeDisabled();
+      expect(postCooldownBtn.className).toMatch(/cursor-not-allowed/);
+      expect(postCooldownBtn.className).not.toMatch(/cursor-pointer/);
+      expect(postCooldownBtn.className).toMatch(/bg-zinc-100/);
+      expect(screen.queryByText("→")).not.toBeInTheDocument();
+
+      // Now entering an email address after cooldown expires enables the button
+      fireEvent.change(backEmailInput, { target: { value: "another@example.com" } });
+      expect(postCooldownBtn).not.toBeDisabled();
+      expect(postCooldownBtn.className).toMatch(/cursor-pointer/);
+      expect(postCooldownBtn.className).toMatch(/bg-blue-600/);
+      expect(screen.getByText("→")).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
