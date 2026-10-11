@@ -200,10 +200,9 @@ type UserProfile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	UserUuid      string                 `protobuf:"bytes,2,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	DisplayName   string                 `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	AvatarUrl     string                 `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
-	Bio           string                 `protobuf:"bytes,5,opt,name=bio,proto3" json:"bio,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	AvatarUrl     string                 `protobuf:"bytes,3,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	Bio           string                 `protobuf:"bytes,4,opt,name=bio,proto3" json:"bio,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -248,13 +247,6 @@ func (x *UserProfile) GetUuid() string {
 func (x *UserProfile) GetUserUuid() string {
 	if x != nil {
 		return x.UserUuid
-	}
-	return ""
-}
-
-func (x *UserProfile) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
 	}
 	return ""
 }
@@ -367,11 +359,10 @@ func (x *UserEmail) GetCreatedAt() *timestamppb.Timestamp {
 type PublicUserProfile struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Public username (or UUID fallback)
-	DisplayName   string                 `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
-	AvatarUrl     string                 `protobuf:"bytes,3,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
-	Bio           string                 `protobuf:"bytes,4,opt,name=bio,proto3" json:"bio,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	BuildCount    int32                  `protobuf:"varint,6,opt,name=build_count,json=buildCount,proto3" json:"build_count,omitempty"`
+	AvatarUrl     string                 `protobuf:"bytes,2,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	Bio           string                 `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	BuildCount    int32                  `protobuf:"varint,5,opt,name=build_count,json=buildCount,proto3" json:"build_count,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -409,13 +400,6 @@ func (*PublicUserProfile) Descriptor() ([]byte, []int) {
 func (x *PublicUserProfile) GetId() string {
 	if x != nil {
 		return x.Id
-	}
-	return ""
-}
-
-func (x *PublicUserProfile) GetDisplayName() string {
-	if x != nil {
-		return x.DisplayName
 	}
 	return ""
 }
@@ -1056,16 +1040,15 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\v\xc2\xf3\x18\a\n" +
-	"\x05users\"\x81\x02\n" +
+	"\x05users\"\xde\x01\n" +
 	"\vUserProfile\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x122\n" +
-	"\tuser_uuid\x18\x02 \x01(\tB\x15\xc2\xf3\x18\x11\x1a\vusers(uuid) \x01(\x01R\buserUuid\x12!\n" +
-	"\fdisplay_name\x18\x03 \x01(\tR\vdisplayName\x12\x1d\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x15\xc2\xf3\x18\x11\x1a\vusers(uuid) \x01(\x01R\buserUuid\x12\x1d\n" +
 	"\n" +
-	"avatar_url\x18\x04 \x01(\tR\tavatarUrl\x12\x10\n" +
-	"\x03bio\x18\x05 \x01(\tR\x03bio\x129\n" +
+	"avatar_url\x18\x03 \x01(\tR\tavatarUrl\x12\x10\n" +
+	"\x03bio\x18\x04 \x01(\tR\x03bio\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\x13\xc2\xf3\x18\x0f\n" +
+	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\x13\xc2\xf3\x18\x0f\n" +
 	"\ruser_profiles\"\xb0\x02\n" +
 	"\tUserEmail\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
@@ -1077,16 +1060,15 @@ const file_user_proto_rawDesc = "" +
 	"verifiedAt\x129\n" +
 	"\n" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x11\xc2\xf3\x18\r\n" +
-	"\vuser_emails\"\xd3\x01\n" +
+	"\vuser_emails\"\xb0\x01\n" +
 	"\x11PublicUserProfile\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12!\n" +
-	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12\x1d\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
 	"\n" +
-	"avatar_url\x18\x03 \x01(\tR\tavatarUrl\x12\x10\n" +
-	"\x03bio\x18\x04 \x01(\tR\x03bio\x129\n" +
+	"avatar_url\x18\x02 \x01(\tR\tavatarUrl\x12\x10\n" +
+	"\x03bio\x18\x03 \x01(\tR\x03bio\x129\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1f\n" +
-	"\vbuild_count\x18\x06 \x01(\x05R\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1f\n" +
+	"\vbuild_count\x18\x05 \x01(\x05R\n" +
 	"buildCount\"\xf0\x02\n" +
 	"\fRefreshToken\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +

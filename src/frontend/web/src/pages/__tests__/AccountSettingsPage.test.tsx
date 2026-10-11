@@ -27,15 +27,16 @@ describe("AccountSettingsPage Component", () => {
     const logoutBtn = screen.getByRole("button", { name: /log out/i });
     expect(logoutBtn).toBeInTheDocument();
 
-    // Verify Save Changes button
-    expect(screen.getByRole("button", { name: /save changes/i })).toBeInTheDocument();
+    // Verify Save button (disabled by default when clean)
+    const saveBtn = screen.getByRole("button", { name: /^save$/i });
+    expect(saveBtn).toBeInTheDocument();
+    expect(saveBtn).toBeDisabled();
   });
 
   it("renders associated emails with primary and secondary status badges", async () => {
     renderApp("/account");
 
     expect(await screen.findByText("Associated Email Addresses")).toBeInTheDocument();
-    expect(screen.getByText("Multi-Email Login")).toBeInTheDocument();
 
     // Both mock emails should be in the table
     await waitFor(() => {
@@ -263,6 +264,33 @@ describe("AccountSettingsPage Component", () => {
 
     await waitFor(() => {
       expect(screen.getByText(/changed to @aero_glide/i)).toBeInTheDocument();
+    });
+  });
+
+  it("disables Save button initially, enables it when fields are modified, and shows modified indicators", async () => {
+    renderApp("/account");
+
+    const saveBtn = await screen.findByRole("button", { name: /^save$/i });
+    expect(saveBtn).toBeDisabled();
+    expect(screen.getByText("No unsaved changes")).toBeInTheDocument();
+    expect(screen.queryByText("Modified")).not.toBeInTheDocument();
+
+    // Modify bio
+    const bioTextarea = screen.getByPlaceholderText(/tell other users about your flying style/i);
+    fireEvent.change(bioTextarea, { target: { value: "FPV freestyle pilot and bando crusher." } });
+
+    // Now save button is enabled and shows modified indicators
+    expect(saveBtn).not.toBeDisabled();
+    expect(screen.getByText("Unsaved changes")).toBeInTheDocument();
+    expect(screen.getByText("Modified")).toBeInTheDocument();
+
+    // Click Save
+    fireEvent.click(saveBtn);
+
+    // After save, success notice appears and button becomes disabled
+    await waitFor(() => {
+      expect(screen.getByText("Saved successfully")).toBeInTheDocument();
+      expect(saveBtn).toBeDisabled();
     });
   });
 });

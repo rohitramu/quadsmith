@@ -382,7 +382,6 @@ export const mockProfile: any = {
   $typeName: "quadsmith.UserProfile",
   uuid: "018f0000-0000-7000-0000-000000000098",
   userUuid: "018f0000-0000-7000-0000-000000000099",
-  displayName: "Alex Rivera",
   avatarUrl: "",
   bio: "Freestyle FPV pilot & frame builder.",
 };

@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
   user_uuid UUID UNIQUE NOT NULL,
-  display_name TEXT NOT NULL,
   avatar_url TEXT NOT NULL,
   bio TEXT NOT NULL,
   updated_at TIMESTAMPTZ

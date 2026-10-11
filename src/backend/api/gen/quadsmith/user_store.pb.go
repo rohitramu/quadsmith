@@ -324,7 +324,7 @@ func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 }
 
 func CreateUserProfile(ctx context.Context, tx pgx.Tx, m *UserProfile) error {
-	query := `INSERT INTO user_profiles (uuid, user_uuid, display_name, avatar_url, bio, updated_at) VALUES ($1, $2, $3, $4, $5, $6)`
+	query := `INSERT INTO user_profiles (uuid, user_uuid, avatar_url, bio, updated_at) VALUES ($1, $2, $3, $4, $5)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -335,7 +335,7 @@ func CreateUserProfile(ctx context.Context, tx pgx.Tx, m *UserProfile) error {
 			return nil
 		}
 		return s
-	}(m.UserUuid), m.DisplayName, m.AvatarUrl, m.Bio, func(ts *timestamppb.Timestamp) interface{} {
+	}(m.UserUuid), m.AvatarUrl, m.Bio, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -345,8 +345,8 @@ func CreateUserProfile(ctx context.Context, tx pgx.Tx, m *UserProfile) error {
 }
 
 func GetUserProfile(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*UserProfile, error) {
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "display_name": true, "avatar_url": true, "bio": true, "updated_at": true}
-	colsStr := "uuid, user_uuid, display_name, avatar_url, bio, updated_at"
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "avatar_url": true, "bio": true, "updated_at": true}
+	colsStr := "uuid, user_uuid, avatar_url, bio, updated_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -357,7 +357,7 @@ func GetUserProfile(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "display_name", "avatar_url", "bio", "updated_at"}
+		cols = []string{"uuid", "user_uuid", "avatar_url", "bio", "updated_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM user_profiles WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -375,8 +375,6 @@ func GetUserProfile(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 					m.UserUuid = *v
 				}
 			})
-		case "display_name":
-			scanArgs[i] = &m.DisplayName
 		case "avatar_url":
 			scanArgs[i] = &m.AvatarUrl
 		case "bio":
@@ -406,13 +404,13 @@ func GetUserProfile(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 }
 
 func UpdateUserProfile(ctx context.Context, tx pgx.Tx, m *UserProfile) error {
-	query := `UPDATE user_profiles SET user_uuid = $2, display_name = $3, avatar_url = $4, bio = $5, updated_at = $6 WHERE uuid = $1`
+	query := `UPDATE user_profiles SET user_uuid = $2, avatar_url = $3, bio = $4, updated_at = $5 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.UserUuid), m.DisplayName, m.AvatarUrl, m.Bio, func(ts *timestamppb.Timestamp) interface{} {
+	}(m.UserUuid), m.AvatarUrl, m.Bio, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -428,8 +426,8 @@ func DeleteUserProfile(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*UserProfile, error) {
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "display_name": true, "avatar_url": true, "bio": true, "updated_at": true}
-	colsStr := "uuid, user_uuid, display_name, avatar_url, bio, updated_at"
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "avatar_url": true, "bio": true, "updated_at": true}
+	colsStr := "uuid, user_uuid, avatar_url, bio, updated_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -440,7 +438,7 @@ func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "display_name", "avatar_url", "bio", "updated_at"}
+		cols = []string{"uuid", "user_uuid", "avatar_url", "bio", "updated_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM user_profiles`
 	if whereClause != "" {
@@ -499,8 +497,6 @@ func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 						m.UserUuid = *v
 					}
 				})
-			case "display_name":
-				scanArgs[i] = &m.DisplayName
 			case "avatar_url":
 				scanArgs[i] = &m.AvatarUrl
 			case "bio":

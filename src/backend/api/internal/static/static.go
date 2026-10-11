@@ -146,21 +146,21 @@ func ResolvePageMeta(ctx context.Context, pool *pgxpool.Pool, path string) PageM
 	// Route: /users/:id
 	if len(parts) == 2 && parts[0] == "users" && pool != nil {
 		userId := parts[1]
-		var handle, displayName, bio string
+		var handle, bio string
 		var avatarUrl *string
 
 		err := pool.QueryRow(ctx, `
-			SELECT u.id, COALESCE(p.display_name, u.id), COALESCE(p.bio, ''), p.avatar_url
+			SELECT u.id, COALESCE(p.bio, ''), p.avatar_url
 			FROM users u
 			LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
 			WHERE (u.id = $1 OR u.uuid::text = $1) AND u.deleted_at IS NULL
-			LIMIT 1`, userId).Scan(&handle, &displayName, &bio, &avatarUrl)
+			LIMIT 1`, userId).Scan(&handle, &bio, &avatarUrl)
 		if err == nil {
-			meta.Title = fmt.Sprintf("%s (@%s) — Pilot Profile — Quadsmith", displayName, handle)
+			meta.Title = fmt.Sprintf("@%s — Pilot Profile — Quadsmith", handle)
 			if strings.TrimSpace(bio) != "" {
 				meta.Description = bio
 			} else {
-				meta.Description = fmt.Sprintf("View FPV drone builds and pilot stats for %s (@%s) on Quadsmith.", displayName, handle)
+				meta.Description = fmt.Sprintf("View FPV drone builds and pilot stats for @%s on Quadsmith.", handle)
 			}
 			if avatarUrl != nil && strings.TrimSpace(*avatarUrl) != "" {
 				meta.Image = *avatarUrl

@@ -37,11 +37,7 @@ export interface AuthContextType {
     token: string,
   ) => Promise<{ accountSetupRequired?: boolean; setupToken?: string }>;
   completeAccountSetup: (setupToken: string, username: string, avatarUrl?: string) => Promise<void>;
-  updateProfile: (data: {
-    displayName?: string;
-    avatarUrl?: string;
-    bio?: string;
-  }) => Promise<void>;
+  updateProfile: (data: { avatarUrl?: string; bio?: string }) => Promise<void>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<void>;
   refreshEmails: () => Promise<void>;
@@ -303,11 +299,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const updateProfile = async (data: {
-    displayName?: string;
-    avatarUrl?: string;
-    bio?: string;
-  }) => {
+  const updateProfile = async (data: { avatarUrl?: string; bio?: string }) => {
     const updated = await authClient.updateProfile(data);
     setProfile(updated);
   };

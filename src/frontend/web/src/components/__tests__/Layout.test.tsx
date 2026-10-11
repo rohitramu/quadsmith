@@ -116,4 +116,35 @@ describe("Layout Component", () => {
     const feedIcon = feedLink.querySelector("svg");
     expect(feedIcon).toHaveClass("text-blue-600");
   });
+
+  it("shows account dropdown menu with Public profile, Account settings, and Log out on hover", async () => {
+    const { user } = renderWithProviders(<Layout />, { route: "/" });
+
+    // Find the account settings avatar button
+    const accountBtn = await screen.findByRole("link", { name: /Account Settings/i });
+    expect(accountBtn).toBeInTheDocument();
+
+    // Menu is not visible initially
+    expect(screen.queryByRole("menu", { name: /account menu/i })).not.toBeInTheDocument();
+
+    // Hover over the account button container
+    await user.hover(accountBtn);
+
+    // Menu should appear
+    const menu = await screen.findByRole("menu", { name: /account menu/i });
+    expect(menu).toBeInTheDocument();
+
+    // Check menu items
+    const publicProfileLink = screen.getByRole("menuitem", { name: /public profile/i });
+    expect(publicProfileLink).toBeInTheDocument();
+    expect(publicProfileLink).toHaveAttribute("href", "/users/fpv_pilot");
+
+    const settingsLink = screen.getByRole("menuitem", { name: /account settings/i });
+    expect(settingsLink).toBeInTheDocument();
+    expect(settingsLink).toHaveAttribute("href", "/account");
+
+    const logoutBtn = screen.getByRole("menuitem", { name: /log out/i });
+    expect(logoutBtn).toBeInTheDocument();
+    expect(logoutBtn).toHaveClass("text-rose-600");
+  });
 });

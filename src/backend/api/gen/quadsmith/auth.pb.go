@@ -548,9 +548,8 @@ func (*GetCurrentUserRequest) Descriptor() ([]byte, []int) {
 
 type UpdateProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	DisplayName   *string                `protobuf:"bytes,1,opt,name=display_name,json=displayName,proto3,oneof" json:"display_name,omitempty"`
-	AvatarUrl     *string                `protobuf:"bytes,2,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
-	Bio           *string                `protobuf:"bytes,3,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
+	AvatarUrl     *string                `protobuf:"bytes,1,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
+	Bio           *string                `protobuf:"bytes,2,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -583,13 +582,6 @@ func (x *UpdateProfileRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use UpdateProfileRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProfileRequest) Descriptor() ([]byte, []int) {
 	return file_auth_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *UpdateProfileRequest) GetDisplayName() string {
-	if x != nil && x.DisplayName != nil {
-		return *x.DisplayName
-	}
-	return ""
 }
 
 func (x *UpdateProfileRequest) GetAvatarUrl() string {
@@ -1687,13 +1679,11 @@ const file_auth_proto_rawDesc = "" +
 	"\x10cooldown_seconds\x18\x05 \x01(\x05R\x0fcooldownSeconds\":\n" +
 	"\x13RefreshTokenRequest\x12#\n" +
 	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"\x17\n" +
-	"\x15GetCurrentUserRequest\"\xa1\x01\n" +
-	"\x14UpdateProfileRequest\x12&\n" +
-	"\fdisplay_name\x18\x01 \x01(\tH\x00R\vdisplayName\x88\x01\x01\x12\"\n" +
+	"\x15GetCurrentUserRequest\"h\n" +
+	"\x14UpdateProfileRequest\x12\"\n" +
 	"\n" +
-	"avatar_url\x18\x02 \x01(\tH\x01R\tavatarUrl\x88\x01\x01\x12\x15\n" +
-	"\x03bio\x18\x03 \x01(\tH\x02R\x03bio\x88\x01\x01B\x0f\n" +
-	"\r_display_nameB\r\n" +
+	"avatar_url\x18\x01 \x01(\tH\x00R\tavatarUrl\x88\x01\x01\x12\x15\n" +
+	"\x03bio\x18\x02 \x01(\tH\x01R\x03bio\x88\x01\x01B\r\n" +
 	"\v_avatar_urlB\x06\n" +
 	"\x04_bio\"K\n" +
 	"\rLogoutRequest\x12(\n" +

@@ -79,9 +79,8 @@ message RefreshTokenRequest {
 message GetCurrentUserRequest {}
 
 message UpdateProfileRequest {
-  optional string display_name = 1;
-  optional string avatar_url = 2;
-  optional string bio = 3;
+  optional string avatar_url = 1;
+  optional string bio = 2;
 }
 
 message LogoutRequest {

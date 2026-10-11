@@ -66,10 +66,9 @@ message UserProfile {
     is_unique: true
     create_index: true
   }];
-  string display_name = 3;
-  string avatar_url = 4;
-  string bio = 5;
-  google.protobuf.Timestamp updated_at = 6;
+  string avatar_url = 3;
+  string bio = 4;
+  google.protobuf.Timestamp updated_at = 5;
 }
 
 message UserEmail {
@@ -91,11 +90,10 @@ message UserEmail {
 
 message PublicUserProfile {
   string id = 1; // Public username (or UUID fallback)
-  string display_name = 2;
-  string avatar_url = 3;
-  string bio = 4;
-  google.protobuf.Timestamp created_at = 5;
-  int32 build_count = 6;
+  string avatar_url = 2;
+  string bio = 3;
+  google.protobuf.Timestamp created_at = 4;
+  int32 build_count = 5;
 }
 
 message RefreshToken {

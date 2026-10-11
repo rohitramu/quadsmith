@@ -76,7 +76,7 @@ export function UserProfilePage() {
   }
 
   const palette = getAvatarPalette(profile.id);
-  const initial = getInitial(profile.displayName || profile.id);
+  const initial = getInitial(profile.id);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
@@ -87,7 +87,7 @@ export function UserProfilePage() {
             {profile.avatarUrl ? (
               <img
                 src={profile.avatarUrl}
-                alt={profile.displayName}
+                alt={profile.id}
                 className="w-20 h-20 rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-800 shadow-md"
               />
             ) : (
@@ -98,8 +98,7 @@ export function UserProfilePage() {
               </div>
             )}
             <div className="space-y-1">
-              <h1 className="text-2xl font-extrabold tracking-tight">{profile.displayName}</h1>
-              <p className="text-xs font-mono text-zinc-500 dark:text-zinc-400">@{profile.id}</p>
+              <h1 className="text-2xl font-extrabold tracking-tight">@{profile.id}</h1>
               {profile.createdAt && (
                 <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 pt-1">
                   <Calendar size={12} />

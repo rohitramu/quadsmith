@@ -7,7 +7,7 @@
 | User purpose | Manage builds + contribute to catalog; favorites, comments, upvotes, edit suggestions |
 | Auth methods | Email OTP + OAuth providers |
 | OAuth providers | Google, GitHub, Discord, Microsoft/Azure AD (Meta to consider) |
-| Profile import | Pull displayName + avatarUrl from OAuth provider at signup |
+| Profile import | Pull avatarUrl from OAuth provider at signup |
 | Roles | `ADMIN`, `USER` (moderator can be added later when needed) |
 | Email verification | Required before any write operation |
 | Session strategy | Hybrid: short-lived JWT (1h) + long-lived refresh token in DB (30 days) |
@@ -131,7 +131,6 @@
 | Column | Type | Notes |
 |---|---|---|
 | `userId` | `Int` | PK, FK → User (cascade delete) |
-| `displayName` | `String` | Editable; pre-populated from OAuth provider at signup |
 | `avatarUrl` | `String?` | Editable; pre-populated from OAuth provider at signup |
 | `updatedAt` | `DateTime` | `@updatedAt` |
 
@@ -196,7 +195,6 @@ erDiagram
     }
     UserProfile {
         Int userId PK
-        String displayName
         String avatarUrl
         DateTime updatedAt
     }

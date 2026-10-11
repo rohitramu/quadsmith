@@ -6,7 +6,6 @@ import {
   Check,
   Loader2,
   ExternalLink,
-  ShieldCheck,
   Mail,
   ArrowRightLeft,
   Plus,
@@ -63,12 +62,31 @@ export function AccountSettingsPage() {
   }, [refreshEmails]);
 
   // Profile form state
-  const [displayName, setDisplayName] = useState(profile?.displayName || user?.id || "");
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl || "");
   const [bio, setBio] = useState(profile?.bio || "");
+  const [initialValues, setInitialValues] = useState({
+    avatarUrl: profile?.avatarUrl || "",
+    bio: profile?.bio || "",
+  });
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Synchronize initial values when profile loads
+  useEffect(() => {
+    if (profile) {
+      setAvatarUrl(profile.avatarUrl || "");
+      setBio(profile.bio || "");
+      setInitialValues({
+        avatarUrl: profile.avatarUrl || "",
+        bio: profile.bio || "",
+      });
+    }
+  }, [profile]);
+
+  const isAvatarModified = avatarUrl.trim() !== (initialValues.avatarUrl || "").trim();
+  const isBioModified = bio.trim() !== (initialValues.bio || "").trim();
+  const isDirty = isAvatarModified || isBioModified;
 
   // Add Email state
   const [isAddEmailOpen, setIsAddEmailOpen] = useState(false);
@@ -196,18 +214,22 @@ export function AccountSettingsPage() {
   const [emailActionError, setEmailActionError] = useState<string | null>(null);
 
   const palette = getAvatarPalette(user?.uuid);
-  const initial = getInitial(profile?.displayName || user?.id);
+  const initial = getInitial(user?.id);
 
   // Handle Profile Save
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isDirty || isSaving) return;
     setIsSaving(true);
     setSaveSuccess(false);
     setErrorMsg(null);
 
     try {
       await updateProfile({
-        displayName: displayName.trim(),
+        avatarUrl: avatarUrl.trim(),
+        bio: bio.trim(),
+      });
+      setInitialValues({
         avatarUrl: avatarUrl.trim(),
         bio: bio.trim(),
       });
@@ -619,7 +641,7 @@ export function AccountSettingsPage() {
           {avatarUrl ? (
             <img
               src={avatarUrl}
-              alt={displayName}
+              alt={user?.id || "Pilot avatar"}
               className="w-16 h-16 rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-800 shadow-sm"
             />
           ) : (
@@ -674,9 +696,6 @@ export function AccountSettingsPage() {
             <h2 className="text-sm font-bold flex items-center gap-2">
               <Mail size={16} className="text-blue-500" />
               <span>Associated Email Addresses</span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-500/10 text-blue-500 dark:text-blue-400 border border-blue-500/20">
-                Multi-Email Login
-              </span>
             </h2>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
               Any verified email address listed below can be used to receive login codes and access
@@ -804,14 +823,6 @@ export function AccountSettingsPage() {
         {/* Email List Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead>
-              <tr className="border-b border-zinc-200 dark:border-zinc-800 text-[11px] uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                <th className="pb-2.5 font-semibold">Email Address</th>
-                <th className="pb-2.5 font-semibold">Status</th>
-                <th className="pb-2.5 font-semibold">Added</th>
-                <th className="pb-2.5 font-semibold text-right">Actions</th>
-              </tr>
-            </thead>
             <tbody className="divide-y divide-zinc-200/60 dark:divide-zinc-800/60 font-mono">
               {displayedEmails.map((em) => (
                 <tr key={em.email} className="group">
@@ -828,9 +839,6 @@ export function AccountSettingsPage() {
                         </span>
                       )}
                     </div>
-                  </td>
-                  <td className="py-3 text-emerald-600 dark:text-emerald-400 font-sans text-[11px]">
-                    <span>✓ Verified</span>
                   </td>
                   <td className="py-3 text-zinc-500 text-[11px] font-sans">
                     {formatDate(em.createdAt?.seconds)}
@@ -893,63 +901,29 @@ export function AccountSettingsPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Public Username (id) */}
-          <div>
-            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Public Username (<code className="font-mono text-blue-500">id</code>)
-            </label>
-            <div className="flex items-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3.5 py-2.5 text-xs text-zinc-500 dark:text-zinc-400">
-              <span className="font-mono mr-1">quadsmith.dev/users/</span>
-              <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">
-                {user?.id}
-              </span>
-            </div>
-            <p className="text-[11px] text-zinc-400 mt-1">
-              Your unique public username across build logs and component submissions.
-            </p>
-          </div>
-
-          {/* Primary Login Email */}
-          <div>
-            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Primary Account Email
-            </label>
-            <div className="flex items-center justify-between rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3.5 py-2.5 text-xs">
-              <span className="font-mono text-zinc-900 dark:text-zinc-100">{user?.email}</span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                Primary
-              </span>
-            </div>
-            <p className="text-[11px] text-zinc-400 mt-1">
-              Manage all associated login addresses in the section above.
-            </p>
-          </div>
-
-          {/* Display Name */}
-          <div>
-            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Display Name
-            </label>
-            <input
-              type="text"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
+        <div className="space-y-6">
           {/* Avatar Image URL */}
           <div>
-            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Avatar Image URL (Optional)
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                Avatar Image URL (Optional)
+              </label>
+              {isAvatarModified && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                  Modified
+                </span>
+              )}
+            </div>
             <input
               type="url"
               placeholder="https://example.com/avatar.jpg"
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full px-3.5 py-2.5 rounded-xl border text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none transition-colors ${
+                isAvatarModified
+                  ? "border-amber-500/60 dark:border-amber-500/50 bg-amber-500/5 ring-1 ring-amber-500/30 focus:ring-2 focus:ring-amber-500"
+                  : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:ring-2 focus:ring-blue-500"
+              }`}
             />
             <p className="text-[11px] text-zinc-400 mt-1">
               Leave blank to automatically generate an initial with adaptive category chip colors.
@@ -957,46 +931,55 @@ export function AccountSettingsPage() {
           </div>
 
           {/* Bio */}
-          <div className="md:col-span-2">
-            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Bio
-            </label>
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Bio</label>
+              {isBioModified && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                  Modified
+                </span>
+              )}
+            </div>
             <textarea
               rows={3}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="Tell other users about your flying style, favorite frames, and builds..."
-              className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full px-3.5 py-2.5 rounded-xl border text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none transition-colors ${
+                isBioModified
+                  ? "border-amber-500/60 dark:border-amber-500/50 bg-amber-500/5 ring-1 ring-amber-500/30 focus:ring-2 focus:ring-amber-500"
+                  : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:ring-2 focus:ring-blue-500"
+              }`}
             />
           </div>
         </div>
 
-        {/* Session Security Banner & Save Button */}
-        <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs">
-            <ShieldCheck size={16} className="text-emerald-500 shrink-0" />
-            <span className="text-zinc-600 dark:text-zinc-300 font-medium">Session Status:</span>
-            <span className="text-zinc-500 font-mono text-[11px]">
-              Active 5-Day Sliding Window (refreshes automatically on activity)
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {saveSuccess && (
+        {/* Save Button Row */}
+        <div className="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-zinc-800">
+          <div className="flex items-center gap-2">
+            {isDirty ? (
+              <span className="text-xs text-amber-600 dark:text-amber-400 font-medium flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                <span>Unsaved changes</span>
+              </span>
+            ) : saveSuccess ? (
               <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                 <Check size={14} />
                 <span>Saved successfully</span>
               </span>
+            ) : (
+              <span className="text-xs text-zinc-400 dark:text-zinc-500">No unsaved changes</span>
             )}
-            <button
-              type="submit"
-              disabled={isSaving}
-              className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-50 transition shadow-sm flex items-center gap-1.5"
-            >
-              {isSaving && <Loader2 size={14} className="animate-spin" />}
-              <span>Save Changes</span>
-            </button>
           </div>
+
+          <button
+            type="submit"
+            disabled={!isDirty || isSaving}
+            className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm flex items-center gap-1.5"
+          >
+            {isSaving && <Loader2 size={14} className="animate-spin" />}
+            <span>Save</span>
+          </button>
         </div>
       </form>
 

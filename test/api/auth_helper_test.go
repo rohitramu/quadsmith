@@ -63,8 +63,8 @@ func TestMain(m *testing.M) {
 				ON CONFLICT (uuid) DO NOTHING`,
 				"018f0000-0000-7000-8000-000000000001", "test_pilot", "pilot@example.com")
 			_, _ = pool.Exec(ctx, `
-				INSERT INTO user_profiles (uuid, user_uuid, display_name, avatar_url, bio, updated_at)
-				VALUES ($1, $2, 'Test Pilot', '', 'E2E Test Account', NOW())
+				INSERT INTO user_profiles (uuid, user_uuid, avatar_url, bio, updated_at)
+				VALUES ($1, $2, '', 'E2E Test Account', NOW())
 				ON CONFLICT (user_uuid) DO NOTHING`,
 				"018f0000-0000-7000-8000-000000000002", "018f0000-0000-7000-8000-000000000001")
 			_, _ = pool.Exec(ctx, `

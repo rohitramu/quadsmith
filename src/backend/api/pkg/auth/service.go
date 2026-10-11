@@ -372,9 +372,9 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 	profileUUID := NewUUIDv7()
 	avatarURL := strings.TrimSpace(req.Msg.GetAvatarUrl())
 	_, err = tx.Exec(ctx, `
-		INSERT INTO user_profiles (uuid, user_uuid, display_name, avatar_url, bio, updated_at)
-		VALUES ($1, $2, $3, $4, '', $5)`,
-		profileUUID, userUUID, username, avatarURL, now)
+		INSERT INTO user_profiles (uuid, user_uuid, avatar_url, bio, updated_at)
+		VALUES ($1, $2, $3, '', $4)`,
+		profileUUID, userUUID, avatarURL, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create profile: %w", err))
 	}
@@ -488,9 +488,9 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 	var profile pb.UserProfile
 	var profileUpdatedAt *time.Time
 	_ = s.db.QueryRow(ctx, `
-		SELECT uuid, user_uuid, display_name, avatar_url, bio, updated_at
+		SELECT uuid, user_uuid, avatar_url, bio, updated_at
 		FROM user_profiles WHERE user_uuid = $1`, userUUID).Scan(
-		&profile.Uuid, &profile.UserUuid, &profile.DisplayName, &profile.AvatarUrl, &profile.Bio, &profileUpdatedAt)
+		&profile.Uuid, &profile.UserUuid, &profile.AvatarUrl, &profile.Bio, &profileUpdatedAt)
 	if profileUpdatedAt != nil {
 		profile.UpdatedAt = timestamppb.New(*profileUpdatedAt)
 	}
@@ -564,17 +564,14 @@ func (s *AuthService) UpdateProfile(ctx context.Context, req *connect.Request[pb
 	if errors.Is(err, pgx.ErrNoRows) {
 		profileUUID = NewUUIDv7()
 		_, err = s.db.Exec(ctx, `
-			INSERT INTO user_profiles (uuid, user_uuid, display_name, avatar_url, bio, updated_at)
-			VALUES ($1, $2, $3, '', '', NOW())`,
-			profileUUID, userCtx.UserUUID, userCtx.UserID)
+			INSERT INTO user_profiles (uuid, user_uuid, avatar_url, bio, updated_at)
+			VALUES ($1, $2, '', '', NOW())`,
+			profileUUID, userCtx.UserUUID)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
 	}
 
-	if req.Msg.DisplayName != nil {
-		_, _ = s.db.Exec(ctx, `UPDATE user_profiles SET display_name = $1, updated_at = NOW() WHERE user_uuid = $2`, *req.Msg.DisplayName, userCtx.UserUUID)
-	}
 	if req.Msg.AvatarUrl != nil {
 		_, _ = s.db.Exec(ctx, `UPDATE user_profiles SET avatar_url = $1, updated_at = NOW() WHERE user_uuid = $2`, *req.Msg.AvatarUrl, userCtx.UserUUID)
 	}
@@ -585,9 +582,9 @@ func (s *AuthService) UpdateProfile(ctx context.Context, req *connect.Request[pb
 	var profile pb.UserProfile
 	var updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
-		SELECT uuid, user_uuid, display_name, avatar_url, bio, updated_at
+		SELECT uuid, user_uuid, avatar_url, bio, updated_at
 		FROM user_profiles WHERE user_uuid = $1`, userCtx.UserUUID).Scan(
-		&profile.Uuid, &profile.UserUuid, &profile.DisplayName, &profile.AvatarUrl, &profile.Bio, &updatedAt)
+		&profile.Uuid, &profile.UserUuid, &profile.AvatarUrl, &profile.Bio, &updatedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1647,9 +1644,9 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 
 		profileUUID := NewUUIDv7()
 		_, err = s.db.Exec(ctx, `
-			INSERT INTO user_profiles (uuid, user_uuid, display_name, avatar_url, bio, updated_at)
-			VALUES ($1, $2, $3, '', '', $4)`,
-			profileUUID, userUUID, username, now)
+			INSERT INTO user_profiles (uuid, user_uuid, avatar_url, bio, updated_at)
+			VALUES ($1, $2, '', '', $3)`,
+			profileUUID, userUUID, now)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create profile: %w", err))
 		}
@@ -1702,9 +1699,9 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 	var profile pb.UserProfile
 	var profileUpdatedAt *time.Time
 	_ = s.db.QueryRow(ctx, `
-		SELECT uuid, user_uuid, display_name, avatar_url, bio, updated_at
+		SELECT uuid, user_uuid, avatar_url, bio, updated_at
 		FROM user_profiles WHERE user_uuid = $1`, userUUID).Scan(
-		&profile.Uuid, &profile.UserUuid, &profile.DisplayName, &profile.AvatarUrl, &profile.Bio, &profileUpdatedAt)
+		&profile.Uuid, &profile.UserUuid, &profile.AvatarUrl, &profile.Bio, &profileUpdatedAt)
 	if profileUpdatedAt != nil {
 		profile.UpdatedAt = timestamppb.New(*profileUpdatedAt)
 	}
@@ -1909,25 +1906,25 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 
 	var userUUID, username string
 	var createdAt *time.Time
-	var displayName, avatarUrl, bio *string
+	var avatarUrl, bio *string
 
 	err := s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, u.created_at, p.display_name, p.avatar_url, p.bio
+		SELECT u.uuid, u.id, u.created_at, p.avatar_url, p.bio
 		FROM users u
 		LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
 		WHERE (u.id = $1 OR u.uuid::text = $1) AND u.deleted_at IS NULL`, id).Scan(
-		&userUUID, &username, &createdAt, &displayName, &avatarUrl, &bio)
+		&userUUID, &username, &createdAt, &avatarUrl, &bio)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			// Check if this was a recent username within the 30-day hold window
 			err = s.db.QueryRow(ctx, `
-				SELECT u.uuid, u.id, u.created_at, p.display_name, p.avatar_url, p.bio
+				SELECT u.uuid, u.id, u.created_at, p.avatar_url, p.bio
 				FROM username_histories hh
 				JOIN users u ON u.uuid = hh.user_uuid
 				LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
 				WHERE LOWER(hh.old_username) = LOWER($1) AND u.deleted_at IS NULL AND COALESCE(hh.first_archived_at, hh.renamed_at) >= NOW() - INTERVAL '30 days'
 				ORDER BY hh.renamed_at DESC
-				LIMIT 1`, id).Scan(&userUUID, &username, &createdAt, &displayName, &avatarUrl, &bio)
+				LIMIT 1`, id).Scan(&userUUID, &username, &createdAt, &avatarUrl, &bio)
 			if err != nil {
 				if errors.Is(err, pgx.ErrNoRows) {
 					return nil, connect.NewError(connect.CodeNotFound, errors.New("user profile not found"))
@@ -1945,11 +1942,6 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 	pub := &pb.PublicUserProfile{
 		Id:         username,
 		BuildCount: buildCount,
-	}
-	if displayName != nil && *displayName != "" {
-		pub.DisplayName = *displayName
-	} else {
-		pub.DisplayName = username
 	}
 	if avatarUrl != nil {
 		pub.AvatarUrl = *avatarUrl

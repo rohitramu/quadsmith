@@ -593,7 +593,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           },
           profile: {
             ...mockProfile,
-            displayName: req.username,
             avatarUrl: req.avatarUrl || "",
           },
           accountSetupRequired: false,
@@ -618,7 +617,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       },
       updateProfile: (req) => ({
         ...mockProfile,
-        displayName: req.displayName ?? mockProfile.displayName,
         avatarUrl: req.avatarUrl ?? mockProfile.avatarUrl,
         bio: req.bio ?? mockProfile.bio,
       }),
@@ -766,7 +764,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       getUser: () => mockUser,
       getPublicProfile: (req) => ({
         id: req.id || mockUser.id,
-        displayName: mockProfile.displayName,
         avatarUrl: mockProfile.avatarUrl,
         bio: mockProfile.bio,
         createdAt: mockUser.createdAt,

@@ -1,5 +1,16 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { Moon, Sun, Search, X, Loader2, Hammer, GalleryVertical } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  Search,
+  X,
+  Loader2,
+  Hammer,
+  GalleryVertical,
+  User,
+  Settings,
+  LogOut,
+} from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { search } from "../gen/quadsmith/search-SearchService_connectquery";
@@ -20,10 +31,35 @@ import { useAuth } from "../context/AuthContext";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
 export function Layout() {
-  const { user, profile } = useAuth();
+  const { user, profile, logout } = useAuth();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const accountMenuTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleAccountMouseEnter = () => {
+    if (accountMenuTimerRef.current) {
+      clearTimeout(accountMenuTimerRef.current);
+      accountMenuTimerRef.current = null;
+    }
+    setIsAccountMenuOpen(true);
+  };
+
+  const handleAccountMouseLeave = () => {
+    accountMenuTimerRef.current = setTimeout(() => {
+      setIsAccountMenuOpen(false);
+    }, 150);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (accountMenuTimerRef.current) {
+        clearTimeout(accountMenuTimerRef.current);
+      }
+    };
+  }, []);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -242,28 +278,96 @@ export function Layout() {
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          {/* Rightmost Account Button */}
+          {/* Rightmost Account Button & Hover Dropdown Menu */}
           {user && (
-            <Link
-              to="/account"
-              aria-label="Account Settings"
-              title={`Account Settings (@${user.id})`}
-              className="flex items-center justify-center transition-transform hover:scale-105 shrink-0"
+            <div
+              className="relative"
+              onMouseEnter={handleAccountMouseEnter}
+              onMouseLeave={handleAccountMouseLeave}
             >
-              {profile?.avatarUrl ? (
-                <img
-                  src={profile.avatarUrl}
-                  alt={profile.displayName || user.id}
-                  className="w-8 h-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 shadow-2xs"
-                />
-              ) : (
+              <Link
+                to="/account"
+                aria-label="Account Settings"
+                title={`Account Settings (@${user.id})`}
+                className="flex items-center justify-center transition-transform hover:scale-105 shrink-0"
+              >
+                {profile?.avatarUrl ? (
+                  <img
+                    src={profile.avatarUrl}
+                    alt={user.id}
+                    className="w-8 h-8 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 shadow-2xs"
+                  />
+                ) : (
+                  <div
+                    className={`w-8 h-8 rounded-full border flex items-center justify-center font-bold text-xs shadow-2xs ${getAvatarPalette(user.uuid).badgeClass}`}
+                  >
+                    {getInitial(user.id)}
+                  </div>
+                )}
+              </Link>
+
+              {/* Hover Dropdown Menu */}
+              {isAccountMenuOpen && (
                 <div
-                  className={`w-8 h-8 rounded-full border flex items-center justify-center font-bold text-xs shadow-2xs ${getAvatarPalette(user.uuid).badgeClass}`}
+                  className="absolute right-0 top-full pt-1.5 z-50"
+                  onMouseEnter={handleAccountMouseEnter}
+                  onMouseLeave={handleAccountMouseLeave}
                 >
-                  {getInitial(profile?.displayName || user.id)}
+                  <div
+                    className="w-48 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl py-1.5 text-xs font-medium"
+                    role="menu"
+                    aria-label="Account menu"
+                  >
+                    <div className="px-3.5 py-2 border-b border-zinc-100 dark:border-zinc-800/80 mb-1">
+                      <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                        @{user.id}
+                      </p>
+                      {user.email && (
+                        <p className="text-[11px] text-zinc-400 dark:text-zinc-500 truncate">
+                          {user.email}
+                        </p>
+                      )}
+                    </div>
+
+                    <Link
+                      to={`/users/${user.id}`}
+                      role="menuitem"
+                      onClick={() => setIsAccountMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 rounded-xl mx-1 transition-colors"
+                    >
+                      <User size={15} className="text-zinc-500 dark:text-zinc-400 shrink-0" />
+                      <span>Public profile</span>
+                    </Link>
+
+                    <Link
+                      to="/account"
+                      role="menuitem"
+                      onClick={() => setIsAccountMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 rounded-xl mx-1 transition-colors"
+                    >
+                      <Settings size={15} className="text-zinc-500 dark:text-zinc-400 shrink-0" />
+                      <span>Account settings</span>
+                    </Link>
+
+                    <div className="my-1 border-t border-zinc-100 dark:border-zinc-800/80" />
+
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={async () => {
+                        setIsAccountMenuOpen(false);
+                        await logout();
+                        navigate("/login", { replace: true });
+                      }}
+                      className="w-[calc(100%-8px)] flex items-center gap-2.5 px-3 py-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl mx-1 transition-colors text-left font-medium"
+                    >
+                      <LogOut size={15} className="shrink-0" />
+                      <span>Log out</span>
+                    </button>
+                  </div>
                 </div>
               )}
-            </Link>
+            </div>
           )}
         </div>
       </header>
