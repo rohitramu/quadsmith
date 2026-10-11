@@ -1,6 +1,12 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { renderApp } from "../../test/test-utils";
+
+function enterOtp(inputs: HTMLElement[], code: string) {
+  code.split("").forEach((char, i) => {
+    fireEvent.change(inputs[i], { target: { value: char } });
+  });
+}
 
 describe("LoginPage Component", () => {
   beforeEach(() => {
@@ -77,9 +83,7 @@ describe("LoginPage Component", () => {
     // Type incorrect 6-digit code: "888888"
     const inputs = screen.getAllByRole("textbox") as HTMLInputElement[];
     const wrongDigits = ["8", "8", "8", "8", "8", "8"];
-    for (let i = 0; i < 6; i++) {
-      await user.type(inputs[i], wrongDigits[i]);
-    }
+    enterOtp(inputs, "888888");
 
     // Error banner appears with yellow (amber) styling for 1 failed attempt (2 attempts left)
     expect(await screen.findByText(/incorrect/i)).toBeInTheDocument();
@@ -101,9 +105,7 @@ describe("LoginPage Component", () => {
     expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
 
     // Type 2nd failed attempt: "777777" (1 attempt left)
-    for (let i = 0; i < 6; i++) {
-      await user.type(inputs[i], "7");
-    }
+    enterOtp(inputs, "777777");
 
     // Error banner switches to red (rose) styling for 2 failed attempts (1 attempt left)
     const redBanner = await screen.findByTestId("otp-error-banner");
@@ -148,10 +150,7 @@ describe("LoginPage Component", () => {
     // Enter 6-digit code into OTP boxes
     const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBe(6);
-
-    for (let i = 0; i < 6; i++) {
-      await user.type(inputs[i], "1");
-    }
+    enterOtp(inputs, "111111");
 
     // Auto-continues without clicking any button: token saved in localStorage
     await waitFor(() => {
@@ -180,9 +179,7 @@ describe("LoginPage Component", () => {
 
     // Enter incorrect code 999999 to trigger exhausted lockout
     const inputs = screen.getAllByRole("textbox");
-    for (let i = 0; i < 6; i++) {
-      await user.type(inputs[i], "9");
-    }
+    enterOtp(inputs, "999999");
 
     // Wait for lockout state (60s cooldown)
     const reqBtn = await screen.findByRole("button", {
@@ -229,9 +226,7 @@ describe("LoginPage Component", () => {
 
     // Enter code 000000 to trigger multi-code IP lockout
     const inputs = screen.getAllByRole("textbox");
-    for (let i = 0; i < 6; i++) {
-      await user.type(inputs[i], "0");
-    }
+    enterOtp(inputs, "000000");
 
     // Displays the 60-minute IP lockout message with Lock icon
     expect(
@@ -262,5 +257,39 @@ describe("LoginPage Component", () => {
     expect(
       await screen.findByRole("heading", { name: /sign in to quadsmith/i }),
     ).toBeInTheDocument();
+  });
+
+  it("preserves remaining attempts counter and placeholder hints when resending email", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "pilot@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    await screen.findByRole("heading", { name: /verify your email/i });
+
+    // Type incorrect 6-digit code: "888888" to fail once (2 attempts left)
+    const inputs = screen.getAllByRole("textbox") as HTMLInputElement[];
+    enterOtp(inputs, "888888");
+
+    expect(await screen.findByText(/^2 attempts left$/i)).toBeInTheDocument();
+    inputs.forEach((input) => {
+      expect(input.value).toBe("");
+      expect(input.placeholder).toBe("8");
+    });
+
+    // Click Resend Email button
+    const resendBtn = screen.getByRole("button", { name: /resend email/i });
+    await user.click(resendBtn);
+
+    // After resend, attempts counter should NOT be reset to null, hints should NOT be cleared
+    expect(screen.getByText(/^2 attempts left$/i)).toBeInTheDocument();
+    inputs.forEach((input) => {
+      expect(input.placeholder).toBe("8");
+    });
   });
 });

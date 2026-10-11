@@ -955,7 +955,7 @@ func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 }
 
 func CreateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
-	query := `INSERT INTO email_otps (uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	query := `INSERT INTO email_otps (uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, code) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -976,16 +976,16 @@ func CreateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.CreatedAt))
+	}(m.CreatedAt), m.Code)
 	return err
 }
 
 func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*EmailOtp, error) {
-	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at"
+	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, code"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at"}
+		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "code"}
 	}
 	query := `SELECT ` + colsStr + ` FROM email_otps WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -1025,6 +1025,8 @@ func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 					m.CreatedAt = timestamppb.New(*v)
 				}
 			})
+		case "code":
+			scanArgs[i] = &m.Code
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -1042,7 +1044,7 @@ func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 }
 
 func UpdateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
-	query := `UPDATE email_otps SET email = $2, code_hash = $3, expires_at = $4, used_at = $5, failed_attempts = $6, created_at = $7 WHERE uuid = $1`
+	query := `UPDATE email_otps SET email = $2, code_hash = $3, expires_at = $4, used_at = $5, failed_attempts = $6, created_at = $7, code = $8 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Email, m.CodeHash, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
@@ -1058,7 +1060,7 @@ func UpdateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.CreatedAt))
+	}(m.CreatedAt), m.Code)
 	return err
 }
 
@@ -1069,17 +1071,17 @@ func DeleteEmailOtp(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*EmailOtp, error) {
-	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at"
+	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, code"
 	if len(cols) > 0 {
 		colsStr = strings.Join(cols, ", ")
 	} else {
-		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at"}
+		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "code"}
 	}
 	query := `SELECT ` + colsStr + ` FROM email_otps`
 	if whereClause != "" {
 		query += " WHERE " + whereClause
 	}
-	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true}
+	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true, "code": true}
 	var orderClauses []string
 	hasIdSort := false
 	if len(sorts) > 0 {
@@ -1155,6 +1157,8 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 						m.CreatedAt = timestamppb.New(*v)
 					}
 				})
+			case "code":
+				scanArgs[i] = &m.Code
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

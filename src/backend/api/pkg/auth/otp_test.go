@@ -24,6 +24,21 @@ func TestOTPGenerationAndVerification(t *testing.T) {
 	}
 }
 
+func TestRecoverOTP(t *testing.T) {
+	testCodes := []string{"000000", "042189", "999999"}
+	for _, expected := range testCodes {
+		hash := HashOTP(expected)
+		recovered := RecoverOTP(hash)
+		if recovered != expected {
+			t.Errorf("RecoverOTP(%s) = %q, want %q", hash, recovered, expected)
+		}
+	}
+
+	if recovered := RecoverOTP(""); recovered != "" {
+		t.Errorf("RecoverOTP(\"\") = %q, want empty string", recovered)
+	}
+}
+
 func TestIPRateLimiting(t *testing.T) {
 	testIP := "203.0.113.42"
 

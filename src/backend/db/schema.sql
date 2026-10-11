@@ -87,7 +87,8 @@ CREATE TABLE IF NOT EXISTS email_otps (
   expires_at TIMESTAMPTZ,
   used_at TIMESTAMPTZ,
   failed_attempts INTEGER DEFAULT 0 NOT NULL,
-  created_at TIMESTAMPTZ
+  created_at TIMESTAMPTZ,
+  code TEXT DEFAULT '' NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_email_otps_email ON email_otps (email);

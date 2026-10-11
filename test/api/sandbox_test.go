@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
+	"github.com/jackc/pgx/v5/pgxpool"
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 )
@@ -348,5 +349,146 @@ func TestSandboxCreateBuild_RejectsDuplicateReferenceLinkURL(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "duplicate reference link URL is not permitted") {
 		t.Errorf("expected error message to mention duplicate reference link URL is not permitted, got: %v", err)
+	}
+}
+
+func TestSandboxAuth_ResendEmailOtpPreservesCodeAndAttempts(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	authClient := quadsmithconnect.NewAuthServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+	ctx := context.Background()
+	testEmail := "pilot-resend-test@example.com"
+
+	dbUrl := os.Getenv("DATABASE_URL")
+	if dbUrl == "" {
+		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+	}
+	pool, err := pgxpool.New(ctx, dbUrl)
+	if err != nil {
+		t.Fatalf("failed to connect to db: %v", err)
+	}
+	defer pool.Close()
+
+	// Clean up any existing records for this email
+	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE email = $1`, testEmail)
+
+	// 1. Initial send
+	res, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: testEmail,
+	}))
+	if err != nil {
+		t.Fatalf("SendEmailOtp failed: %v", err)
+	}
+	if !res.Msg.Success {
+		t.Fatalf("expected SendEmailOtp success = true, got %v", res.Msg.Success)
+	}
+
+	// Read initial code and attempts from DB
+	var code1 string
+	var failedAttempts1 int32
+	err = pool.QueryRow(ctx, `
+		SELECT code, failed_attempts FROM email_otps
+		WHERE email = $1 AND used_at IS NULL
+		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&code1, &failedAttempts1)
+	if err != nil {
+		t.Fatalf("failed to query otp from DB: %v", err)
+	}
+	if len(code1) != 6 {
+		t.Fatalf("expected 6-digit code stored in DB, got %q", code1)
+	}
+	if failedAttempts1 != 0 {
+		t.Fatalf("expected 0 failed attempts initially, got %d", failedAttempts1)
+	}
+
+	// 2. Submit wrong code
+	_, err = authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
+		Email: testEmail,
+		Code:  "000000",
+	}))
+	if err == nil {
+		t.Fatal("expected VerifyEmailOtp to fail on incorrect code, got nil")
+	}
+
+	// Verify failed_attempts incremented to 1
+	var failedAttemptsAfterWrong int32
+	err = pool.QueryRow(ctx, `
+		SELECT failed_attempts FROM email_otps
+		WHERE email = $1 AND used_at IS NULL
+		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&failedAttemptsAfterWrong)
+	if err != nil {
+		t.Fatalf("failed to query otp after wrong entry: %v", err)
+	}
+	if failedAttemptsAfterWrong != 1 {
+		t.Fatalf("expected 1 failed attempt, got %d", failedAttemptsAfterWrong)
+	}
+
+	// 3. Fast-forward created_at by 25 seconds to bypass cooldown for resend
+	_, err = pool.Exec(ctx, `
+		UPDATE email_otps
+		SET created_at = NOW() - INTERVAL '25 seconds'
+		WHERE email = $1 AND used_at IS NULL`, testEmail)
+	if err != nil {
+		t.Fatalf("failed to adjust created_at for cooldown: %v", err)
+	}
+
+	// 4. Resend email OTP
+	resResend, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: testEmail,
+	}))
+	if err != nil {
+		t.Fatalf("SendEmailOtp resend failed: %v", err)
+	}
+	if !resResend.Msg.Success {
+		t.Fatalf("expected resend success = true, got %v", resResend.Msg.Success)
+	}
+
+	// Query DB: code must be identical, and failed_attempts must still be 1!
+	var code2 string
+	var failedAttempts2 int32
+	err = pool.QueryRow(ctx, `
+		SELECT code, failed_attempts FROM email_otps
+		WHERE email = $1 AND used_at IS NULL
+		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&code2, &failedAttempts2)
+	if err != nil {
+		t.Fatalf("failed to query otp after resend: %v", err)
+	}
+	if code2 != code1 {
+		t.Fatalf("expected resent OTP code to be %q, got %q", code1, code2)
+	}
+	if failedAttempts2 != 1 {
+		t.Fatalf("expected failed_attempts to remain 1 after resend, got %d", failedAttempts2)
+	}
+
+	// 5. Verify successfully using original code
+	verifyRes, err := authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
+		Email: testEmail,
+		Code:  code1,
+	}))
+	if err != nil {
+		t.Fatalf("VerifyEmailOtp with original code failed: %v", err)
+	}
+	if verifyRes.Msg.AccessToken == "" {
+		t.Fatalf("expected access token in response, got empty")
+	}
+
+	// Verify challenge is marked used in DB
+	var usedAt *time.Time
+	err = pool.QueryRow(ctx, `
+		SELECT used_at FROM email_otps
+		WHERE email = $1
+		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&usedAt)
+	if err != nil {
+		t.Fatalf("failed to query used_at: %v", err)
+	}
+	if usedAt == nil {
+		t.Fatal("expected used_at to be non-nil after successful verification")
 	}
 }

@@ -497,6 +497,7 @@ type EmailOtp struct {
 	UsedAt         *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=used_at,json=usedAt,proto3" json:"used_at,omitempty"`
 	FailedAttempts int32                  `protobuf:"varint,6,opt,name=failed_attempts,json=failedAttempts,proto3" json:"failed_attempts,omitempty"`
 	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Code           string                 `protobuf:"bytes,8,opt,name=code,proto3" json:"code,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -578,6 +579,13 @@ func (x *EmailOtp) GetCreatedAt() *timestamppb.Timestamp {
 		return x.CreatedAt
 	}
 	return nil
+}
+
+func (x *EmailOtp) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
 }
 
 type UsernameHistory struct {
@@ -1017,7 +1025,7 @@ const file_user_proto_rawDesc = "" +
 	"deviceHint\x129\n" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x14\xc2\xf3\x18\x10\n" +
-	"\x0erefresh_tokens\"\xd0\x02\n" +
+	"\x0erefresh_tokens\"\xee\x02\n" +
 	"\bEmailOtp\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x1c\n" +
 	"\x05email\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\x05email\x12\x1b\n" +
@@ -1027,7 +1035,8 @@ const file_user_proto_rawDesc = "" +
 	"\aused_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x06usedAt\x120\n" +
 	"\x0ffailed_attempts\x18\x06 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x0efailedAttempts\x129\n" +
 	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x10\xc2\xf3\x18\f\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1c\n" +
+	"\x04code\x18\b \x01(\tB\b\xc2\xf3\x18\x04:\x02''R\x04code:\x10\xc2\xf3\x18\f\n" +
 	"\n" +
 	"email_otps\"\x89\x03\n" +
 	"\x0fUsernameHistory\x12\x1a\n" +

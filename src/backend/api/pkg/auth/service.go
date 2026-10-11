@@ -53,6 +53,59 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
 	}
 
+	// Check if there is an active, unexhausted challenge for this email:
+	// If an unexhausted, non-expired challenge exists, resend the same code and preserve failed attempts.
+	var existingUUID string
+	var existingCode string
+	var existingHash string
+	var failedAttempts int32
+	var createdAt time.Time
+	var expiresAt time.Time
+
+	err = s.db.QueryRow(ctx, `
+		SELECT uuid, code, code_hash, failed_attempts, created_at, expires_at
+		FROM email_otps
+		WHERE email = $1 AND used_at IS NULL
+		ORDER BY created_at DESC
+		LIMIT 1`, email).Scan(&existingUUID, &existingCode, &existingHash, &failedAttempts, &createdAt, &expiresAt)
+
+	if err == nil && failedAttempts < MaxOtpAttempts && time.Since(createdAt) <= OtpTTL {
+		otpCode := existingCode
+		if otpCode == "" {
+			otpCode = RecoverOTP(existingHash)
+		}
+
+		if otpCode != "" {
+			now := time.Now()
+			newExpiresAt := now.Add(MagicLinkTTL)
+			_, err = s.db.Exec(ctx, `
+				UPDATE email_otps
+				SET created_at = $1, expires_at = $2, code = $3
+				WHERE uuid = $4`,
+				now, newExpiresAt, otpCode, existingUUID)
+			if err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update otp challenge: %w", err))
+			}
+
+			magicToken, err := SignMagicLinkToken(existingUUID, email, newExpiresAt)
+			if err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
+			}
+
+			// Development & Sandbox notification logging
+			fmt.Printf("\n=======================================================\n")
+			fmt.Printf("[AUTH] Resent Email OTP for %s: %s (attempts preserved: %d used, %d remaining)\n", email, otpCode, failedAttempts, MaxOtpAttempts-failedAttempts)
+			fmt.Printf("[AUTH] Magic Link: /login/verify?token=%s (valid for 15 minutes)\n", magicToken)
+			fmt.Printf("=======================================================\n\n")
+
+			return connect.NewResponse(&pb.SendEmailOtpResponse{
+				Success:         true,
+				Message:         "Verification code sent to your email",
+				CooldownSeconds: int32(EmailCooldown.Seconds()),
+			}), nil
+		}
+	}
+
 	otpCode, codeHash, err := GenerateOTP()
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate otp: %w", err))
@@ -60,12 +113,12 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 
 	otpUUID := NewUUIDv7()
 	now := time.Now()
-	expiresAt := now.Add(MagicLinkTTL) // 15 min max lifespan for the challenge
+	expiresAt = now.Add(MagicLinkTTL) // 15 min max lifespan for the challenge
 
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO email_otps (uuid, email, code_hash, expires_at, created_at, failed_attempts)
-		VALUES ($1, $2, $3, $4, $5, 0)`,
-		otpUUID, email, codeHash, expiresAt, now)
+		INSERT INTO email_otps (uuid, email, code, code_hash, expires_at, created_at, failed_attempts)
+		VALUES ($1, $2, $3, $4, $5, $6, 0)`,
+		otpUUID, email, otpCode, codeHash, expiresAt, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save otp challenge: %w", err))
 	}
@@ -497,6 +550,63 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
 	}
 
+	// Check if there is an active, unexhausted challenge for this email:
+	var existingUUID string
+	var existingCode string
+	var existingHash string
+	var failedAttempts int32
+	var createdAt time.Time
+	var expiresAt time.Time
+
+	err = s.db.QueryRow(ctx, `
+		SELECT uuid, code, code_hash, failed_attempts, created_at, expires_at
+		FROM email_otps
+		WHERE email = $1 AND used_at IS NULL
+		ORDER BY created_at DESC
+		LIMIT 1`, email).Scan(&existingUUID, &existingCode, &existingHash, &failedAttempts, &createdAt, &expiresAt)
+
+	if err == nil && failedAttempts < MaxOtpAttempts && time.Since(createdAt) <= OtpTTL {
+		otpCode := existingCode
+		if otpCode == "" {
+			otpCode = RecoverOTP(existingHash)
+		}
+
+		if otpCode != "" {
+			now := time.Now()
+			newExpiresAt := now.Add(MagicLinkTTL)
+			_, err = s.db.Exec(ctx, `
+				UPDATE email_otps
+				SET created_at = $1, expires_at = $2, code = $3
+				WHERE uuid = $4`,
+				now, newExpiresAt, otpCode, existingUUID)
+			if err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update otp challenge: %w", err))
+			}
+
+			magicToken, err := SignMagicLinkToken(existingUUID, email, newExpiresAt)
+			if err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
+			}
+
+			// Development & Sandbox notification logging
+			fmt.Printf("\n=======================================================\n")
+			fmt.Printf("[AUTH] Resent Add/Merge Email OTP for %s: %s (attempts preserved: %d used, %d remaining)\n", email, otpCode, failedAttempts, MaxOtpAttempts-failedAttempts)
+			if isExistingAccount {
+				fmt.Printf("[AUTH] Merge Magic Link: /account?merge_token=%s (valid for 15 minutes)\n", magicToken)
+			} else {
+				fmt.Printf("[AUTH] Add Email Magic Link: /account?add_email_token=%s (valid for 15 minutes)\n", magicToken)
+			}
+			fmt.Printf("=======================================================\n\n")
+
+			return connect.NewResponse(&pb.SendEmailOtpResponse{
+				Success:           true,
+				Message:           "Verification code sent to email",
+				CooldownSeconds:   int32(EmailCooldown.Seconds()),
+				IsExistingAccount: isExistingAccount,
+			}), nil
+		}
+	}
+
 	otpCode, codeHash, err := GenerateOTP()
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate otp: %w", err))
@@ -504,12 +614,12 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 
 	otpUUID := NewUUIDv7()
 	now := time.Now()
-	expiresAt := now.Add(MagicLinkTTL)
+	expiresAt = now.Add(MagicLinkTTL)
 
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO email_otps (uuid, email, code_hash, expires_at, created_at, failed_attempts)
-		VALUES ($1, $2, $3, $4, $5, 0)`,
-		otpUUID, email, codeHash, expiresAt, now)
+		INSERT INTO email_otps (uuid, email, code, code_hash, expires_at, created_at, failed_attempts)
+		VALUES ($1, $2, $3, $4, $5, $6, 0)`,
+		otpUUID, email, otpCode, codeHash, expiresAt, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save otp challenge: %w", err))
 	}
@@ -618,9 +728,13 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		if !VerifyOTP(code, codeHash) {
 			RecordIPFailure(clientIP)
 			newFailures := failedAttempts + 1
-			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1 WHERE uuid = $2`, newFailures, otpUUID)
 			remaining := int32(MaxOtpAttempts - newFailures)
-			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("incorrect code. %d attempts left", remaining))
+			if remaining <= 0 {
+				_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1, used_at = NOW() WHERE uuid = $2`, newFailures, otpUUID)
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("incorrect code. You have 0 attempts left. Please request a new code"))
+			}
+			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1 WHERE uuid = $2`, newFailures, otpUUID)
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("incorrect code. %d %s left", remaining, pluralAttempts(remaining)))
 		}
 	}
 

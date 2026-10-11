@@ -49,6 +49,21 @@ func VerifyOTP(code, hash string) bool {
 	return hmac.Equal([]byte(expectedHash), []byte(hash))
 }
 
+// RecoverOTP attempts to recover a 6-digit OTP from its hash by searching 000000 to 999999.
+// This serves as a fallback for legacy records where the plaintext code was not stored.
+func RecoverOTP(hash string) string {
+	if hash == "" {
+		return ""
+	}
+	for i := 0; i < 1000000; i++ {
+		code := fmt.Sprintf("%06d", i)
+		if VerifyOTP(code, hash) {
+			return code
+		}
+	}
+	return ""
+}
+
 // GenerateMagicLinkToken generates a secure 32-byte single-use magic link token and its hash
 func GenerateMagicLinkToken() (token string, hash string, err error) {
 	rawBytes := make([]byte, 32)
@@ -141,8 +156,12 @@ func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (in
 	}
 
 	// Enforce 60-second cooldown starting when the 3rd failed challenge happened
-	if failedAttempts >= MaxOtpAttempts && usedAt != nil {
-		elapsedExhausted := time.Since(*usedAt)
+	if failedAttempts >= MaxOtpAttempts {
+		refTime := createdAt
+		if usedAt != nil {
+			refTime = *usedAt
+		}
+		elapsedExhausted := time.Since(refTime)
 		if elapsedExhausted < ExhaustedCooldown {
 			remaining := int32((ExhaustedCooldown - elapsedExhausted).Seconds())
 			if remaining < 1 {

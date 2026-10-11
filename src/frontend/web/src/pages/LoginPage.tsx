@@ -103,18 +103,24 @@ export function LoginPage() {
       return;
     }
 
+    const isResend = step === "otp" && !isExhausted;
+
     setIsLoading(true);
-    setErrorMsg(null);
+    if (!isResend) {
+      setErrorMsg(null);
+    }
     try {
       const res = await sendEmailOtp(trimmed);
       setCooldown(res.cooldownSeconds);
       setExhaustedCooldown(0);
       setStep("otp");
-      setRemainingAttempts(null);
-      setIsExhausted(false);
-      setIsRateLimited(false);
-      setHintDigits(["", "", "", "", "", ""]);
-      setOtpDigits(["", "", "", "", "", ""]);
+      if (!isResend) {
+        setRemainingAttempts(null);
+        setIsExhausted(false);
+        setIsRateLimited(false);
+        setHintDigits(["", "", "", "", "", ""]);
+        setOtpDigits(["", "", "", "", "", ""]);
+      }
       setTimeout(() => otpInputRefs.current[0]?.focus(), 100);
     } catch (err: unknown) {
       if (err instanceof ConnectError) {
