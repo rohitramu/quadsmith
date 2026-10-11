@@ -683,18 +683,32 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (req.code !== "123456" && !req.token) {
           throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
         }
-        const mergedEmail = create(UserEmailSchema, {
-          uuid: `mock-email-uuid-${userEmails.length + 1}`,
-          userUuid: mockUser.uuid,
-          email: req.email || "old.racer@fpv.org",
-          isPrimary: false,
-        });
-        userEmails.push(mergedEmail);
+        const candidateEmails = [
+          "old.racer@fpv.org",
+          "old.racer.backup@example.com",
+          ...(req.email ? [req.email] : []),
+        ];
+        const addedEmails: string[] = [];
+        for (const em of candidateEmails) {
+          const lower = em.toLowerCase();
+          if (!userEmails.some((ue) => ue.email.toLowerCase() === lower)) {
+            userEmails.push(
+              create(UserEmailSchema, {
+                uuid: `mock-email-uuid-${userEmails.length + 1}`,
+                userUuid: mockUser.uuid,
+                email: em,
+                isPrimary: false,
+              }),
+            );
+            addedEmails.push(em);
+          }
+        }
         return {
           success: true,
           message: "Accounts merged successfully",
           transferredBuildCount: 4,
           mergedUsername: "old_racer",
+          mergedEmails: addedEmails,
         };
       },
       setPrimaryEmail: (req) => {

@@ -75,6 +75,7 @@ export interface AuthContextType {
     message: string;
     transferredBuildCount: number;
     mergedUsername: string;
+    mergedEmails?: string[];
   }>;
   setPrimaryEmail: (email: string) => Promise<{ success: boolean; message: string }>;
   removeUserEmail: (email: string) => Promise<{ success: boolean; message: string }>;

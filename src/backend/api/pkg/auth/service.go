@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -885,15 +886,23 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		}
 
 		var otherEmails []string
-		mailRows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1 ORDER BY email ASC`, otherUserUUID)
+		mailRows, err := s.db.Query(ctx, `
+			SELECT DISTINCT email FROM (
+				SELECT email FROM user_emails WHERE user_uuid = $1
+				UNION
+				SELECT email FROM users WHERE uuid = $1
+			) sub ORDER BY email ASC`, otherUserUUID)
 		if err == nil {
 			defer mailRows.Close()
 			for mailRows.Next() {
 				var em string
-				if err := mailRows.Scan(&em); err == nil {
+				if err := mailRows.Scan(&em); err == nil && em != "" {
 					otherEmails = append(otherEmails, em)
 				}
 			}
+		}
+		if email != "" && !slices.Contains(otherEmails, email) {
+			otherEmails = append(otherEmails, email)
 		}
 
 		var oauthProviders []string
@@ -1041,25 +1050,52 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to transfer builds: %w", err))
 	}
 
-	// 3. Transfer user_emails
-	_, err = tx.Exec(ctx, `
-		UPDATE user_emails
-		SET user_uuid = $1, is_primary = false
-		WHERE user_uuid = $2`,
-		userCtx.UserUUID, otherUserUUID)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to transfer emails: %w", err))
+	// 3. Collect all email addresses belonging to the other account (both user_emails and users.email)
+	var emailsToTransfer []string
+	mailRows, err := tx.Query(ctx, `
+		SELECT DISTINCT email FROM (
+			SELECT email FROM user_emails WHERE user_uuid = $1
+			UNION
+			SELECT email FROM users WHERE uuid = $1
+		) sub`, otherUserUUID)
+	if err == nil {
+		defer mailRows.Close()
+		for mailRows.Next() {
+			var em string
+			if err := mailRows.Scan(&em); err == nil && em != "" {
+				emailsToTransfer = append(emailsToTransfer, em)
+			}
+		}
+	}
+	if otherEmail != "" && !slices.Contains(emailsToTransfer, otherEmail) {
+		emailsToTransfer = append(emailsToTransfer, otherEmail)
+	}
+	if email != "" && !slices.Contains(emailsToTransfer, email) {
+		emailsToTransfer = append(emailsToTransfer, email)
 	}
 
-	// 4. Ensure other account's email is present in user_emails for current user
-	newEmailUUID := NewUUIDv7()
-	_, err = tx.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
-		VALUES ($1, $2, $3, false, NOW(), NOW())
-		ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_at = NOW()`,
-		newEmailUUID, userCtx.UserUUID, otherEmail)
+	// 4. Reassign and transfer all emails to the current user
+	_, err = tx.Exec(ctx, `DELETE FROM user_emails WHERE user_uuid = $1`, otherUserUUID)
 	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to associate primary email: %w", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to clear old user emails: %w", err))
+	}
+
+	var transferredEmails []string
+	for _, em := range emailsToTransfer {
+		emLower := strings.ToLower(strings.TrimSpace(em))
+		if emLower == "" {
+			continue
+		}
+		newEmailUUID := NewUUIDv7()
+		_, err = tx.Exec(ctx, `
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
+			VALUES ($1, $2, $3, false, NOW(), NOW())
+			ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_at = NOW()`,
+			newEmailUUID, userCtx.UserUUID, emLower)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to associate email %s: %w", emLower, err))
+		}
+		transferredEmails = append(transferredEmails, emLower)
 	}
 
 	// 5. Transfer OAuth accounts
@@ -1085,10 +1121,13 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 	// 7. Revoke other user's active sessions
 	_, _ = tx.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid = $1`, otherUserUUID)
 
-	// 8. Delete other user's profile
+	// 8. Delete email_otps requested by the other user (prevents fk_email_otps_requested_by_user_uuid violation)
+	_, _ = tx.Exec(ctx, `DELETE FROM email_otps WHERE requested_by_user_uuid = $1`, otherUserUUID)
+
+	// 9. Delete other user's profile
 	_, _ = tx.Exec(ctx, `DELETE FROM user_profiles WHERE user_uuid = $1`, otherUserUUID)
 
-	// 9. Delete other user record from users table
+	// 10. Delete other user record from users table
 	_, err = tx.Exec(ctx, `DELETE FROM users WHERE uuid = $1`, otherUserUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to finalize merge: %w", err))
@@ -1103,6 +1142,7 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		Message:               fmt.Sprintf("Successfully merged @%s into your account. %d builds transferred.", otherUsername, buildCount),
 		TransferredBuildCount: int32(buildCount),
 		MergedUsername:        otherUsername,
+		MergedEmails:          transferredEmails,
 	}), nil
 }
 

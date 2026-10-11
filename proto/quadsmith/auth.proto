@@ -133,6 +133,7 @@ message MergeAccountResponse {
   string message = 2;
   int32 transferred_build_count = 3;
   string merged_username = 4;
+  repeated string merged_emails = 5;
 }
 
 message SetPrimaryEmailRequest {

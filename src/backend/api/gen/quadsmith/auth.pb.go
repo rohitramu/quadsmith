@@ -1068,6 +1068,7 @@ type MergeAccountResponse struct {
 	Message               string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	TransferredBuildCount int32                  `protobuf:"varint,3,opt,name=transferred_build_count,json=transferredBuildCount,proto3" json:"transferred_build_count,omitempty"`
 	MergedUsername        string                 `protobuf:"bytes,4,opt,name=merged_username,json=mergedUsername,proto3" json:"merged_username,omitempty"`
+	MergedEmails          []string               `protobuf:"bytes,5,rep,name=merged_emails,json=mergedEmails,proto3" json:"merged_emails,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -1128,6 +1129,13 @@ func (x *MergeAccountResponse) GetMergedUsername() string {
 		return x.MergedUsername
 	}
 	return ""
+}
+
+func (x *MergeAccountResponse) GetMergedEmails() []string {
+	if x != nil {
+		return x.MergedEmails
+	}
+	return nil
 }
 
 type SetPrimaryEmailRequest struct {
@@ -1720,12 +1728,13 @@ const file_auth_proto_rawDesc = "" +
 	"\fmerge_ticket\x18\x04 \x01(\tH\x00R\vmergeTicket\x88\x01\x01\x12&\n" +
 	"\fchallenge_id\x18\x05 \x01(\tH\x01R\vchallengeId\x88\x01\x01B\x0f\n" +
 	"\r_merge_ticketB\x0f\n" +
-	"\r_challenge_id\"\xab\x01\n" +
+	"\r_challenge_id\"\xd0\x01\n" +
 	"\x14MergeAccountResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x126\n" +
 	"\x17transferred_build_count\x18\x03 \x01(\x05R\x15transferredBuildCount\x12'\n" +
-	"\x0fmerged_username\x18\x04 \x01(\tR\x0emergedUsername\".\n" +
+	"\x0fmerged_username\x18\x04 \x01(\tR\x0emergedUsername\x12#\n" +
+	"\rmerged_emails\x18\x05 \x03(\tR\fmergedEmails\".\n" +
 	"\x16SetPrimaryEmailRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\"M\n" +
 	"\x17SetPrimaryEmailResponse\x12\x18\n" +

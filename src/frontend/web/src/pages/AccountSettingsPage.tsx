@@ -524,6 +524,9 @@ export function AccountSettingsPage() {
         verifiedMergeToken || undefined,
       );
       setTransferredBuilds(res.transferredBuildCount || 0);
+      if (res.mergedEmails && res.mergedEmails.length > 0) {
+        setMergeOtherEmails(res.mergedEmails);
+      }
       setMergeModalStep("success");
       await refreshEmails();
     } catch (err: unknown) {
@@ -1383,21 +1386,35 @@ export function AccountSettingsPage() {
                     </div>
                     <div className="space-y-0.5 text-xs">
                       <div className="font-semibold text-zinc-900 dark:text-zinc-100">
-                        Associate Email Address
+                        {mergeOtherEmails.length > 1
+                          ? `Associate ${mergeOtherEmails.length} Email Addresses`
+                          : "Associate Email Address"}
                       </div>
                       <div className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
-                        <strong className="font-mono text-zinc-800 dark:text-zinc-200">
-                          {mergeEmail}
-                        </strong>
-                        {mergeOtherEmails.length > 1 && (
-                          <span>
-                            {" "}
-                            (along with{" "}
-                            {mergeOtherEmails.filter((e) => e !== mergeEmail).join(", ")})
-                          </span>
-                        )}{" "}
-                        will be added as a verified login email under your account (
-                        <strong className="text-zinc-700 dark:text-zinc-300">@{user?.id}</strong>).
+                        {mergeOtherEmails.length > 1 ? (
+                          <>
+                            All associated emails (
+                            <strong className="font-mono text-zinc-800 dark:text-zinc-200">
+                              {mergeOtherEmails.join(", ")}
+                            </strong>
+                            ) will be added as verified login emails under your account (
+                            <strong className="text-zinc-700 dark:text-zinc-300">
+                              @{user?.id}
+                            </strong>
+                            ).
+                          </>
+                        ) : (
+                          <>
+                            <strong className="font-mono text-zinc-800 dark:text-zinc-200">
+                              {mergeEmail}
+                            </strong>{" "}
+                            will be added as a verified login email under your account (
+                            <strong className="text-zinc-700 dark:text-zinc-300">
+                              @{user?.id}
+                            </strong>
+                            ).
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1493,8 +1510,22 @@ export function AccountSettingsPage() {
                   {transferredBuilds > 0
                     ? `All ${transferredBuilds} builds from @${mergeOtherUsername} have been reassigned to your account, and `
                     : `The account @${mergeOtherUsername} has been consolidated into your profile, and `}
-                  <span className="font-mono text-zinc-900 dark:text-zinc-200">{mergeEmail}</span>{" "}
-                  has been added to your login emails.
+                  {mergeOtherEmails.length > 1 ? (
+                    <>
+                      all {mergeOtherEmails.length} email addresses (
+                      <span className="font-mono text-zinc-900 dark:text-zinc-200">
+                        {mergeOtherEmails.join(", ")}
+                      </span>
+                      ) have been added to your login emails.
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-mono text-zinc-900 dark:text-zinc-200">
+                        {mergeEmail}
+                      </span>{" "}
+                      has been added to your login emails.
+                    </>
+                  )}
                 </p>
                 <button
                   type="button"

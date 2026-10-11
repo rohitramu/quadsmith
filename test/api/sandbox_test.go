@@ -726,3 +726,203 @@ func TestSandboxAuth_LockoutAfter3FailedCodesPerIP(t *testing.T) {
 		t.Fatalf("expected SendEmailOtp success = true for different IP, got %v", unlockedRes.Msg.Success)
 	}
 }
+
+func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	authClient := quadsmithconnect.NewAuthServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+	ctx := context.Background()
+
+	dbUrl := os.Getenv("DATABASE_URL")
+	if dbUrl == "" {
+		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+	}
+	pool, err := pgxpool.New(ctx, dbUrl)
+	if err != nil {
+		t.Fatalf("failed to connect to db: %v", err)
+	}
+	defer pool.Close()
+
+	userAUUID := "018f0000-0000-7000-8000-0000000000a1"
+	userAId := "pilot_target_a"
+	userAEmail := "pilot_target_a@example.com"
+
+	userBUUID := "018f0000-0000-7000-8000-0000000000b1"
+	userBId := "pilot_source_b"
+	userBEmail1 := "pilot_source_b1@example.com"
+	userBEmail2 := "pilot_source_b2@example.com"
+
+	// Cleanup any previous data
+	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE email IN ($1, $2, $3) OR requested_by_user_uuid IN ($4, $5)`,
+		userAEmail, userBEmail1, userBEmail2, userAUUID, userBUUID)
+	_, _ = pool.Exec(ctx, `DELETE FROM user_emails WHERE email IN ($1, $2, $3)`, userAEmail, userBEmail1, userBEmail2)
+	_, _ = pool.Exec(ctx, `DELETE FROM user_profiles WHERE user_uuid IN ($1, $2)`, userAUUID, userBUUID)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE uuid IN ($1, $2) OR id IN ($3, $4)`, userAUUID, userBUUID, userAId, userBId)
+
+	// Seed User A
+	_, err = pool.Exec(ctx, `
+		INSERT INTO users (uuid, id, email, role, created_at, updated_at)
+		VALUES ($1, $2, $3, 'user', NOW(), NOW())`,
+		userAUUID, userAId, userAEmail)
+	if err != nil {
+		t.Fatalf("failed to seed user A: %v", err)
+	}
+	_, _ = pool.Exec(ctx, `
+		INSERT INTO user_profiles (uuid, user_uuid, avatar_url, bio, updated_at)
+		VALUES ($1, $2, '', 'Target User', NOW())`,
+		"018f0000-0000-7000-8000-0000000000a2", userAUUID)
+	_, _ = pool.Exec(ctx, `
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
+		VALUES ($1, $2, $3, true, NOW(), NOW())`,
+		"018f0000-0000-7000-8000-0000000000a3", userAUUID, userAEmail)
+
+	// Seed User B with 2 emails and an email_otp referencing user_b
+	_, err = pool.Exec(ctx, `
+		INSERT INTO users (uuid, id, email, role, created_at, updated_at)
+		VALUES ($1, $2, $3, 'user', NOW(), NOW())`,
+		userBUUID, userBId, userBEmail1)
+	if err != nil {
+		t.Fatalf("failed to seed user B: %v", err)
+	}
+	_, _ = pool.Exec(ctx, `
+		INSERT INTO user_profiles (uuid, user_uuid, avatar_url, bio, updated_at)
+		VALUES ($1, $2, '', 'Source User to merge', NOW())`,
+		"018f0000-0000-7000-8000-0000000000b2", userBUUID)
+	_, _ = pool.Exec(ctx, `
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
+		VALUES ($1, $2, $3, true, NOW(), NOW())`,
+		"018f0000-0000-7000-8000-0000000000b3", userBUUID, userBEmail1)
+	_, _ = pool.Exec(ctx, `
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
+		VALUES ($1, $2, $3, false, NOW(), NOW())`,
+		"018f0000-0000-7000-8000-0000000000b4", userBUUID, userBEmail2)
+
+	// Add an OTP record requested by user B to verify fk constraint handling
+	_, _ = pool.Exec(ctx, `
+		INSERT INTO email_otps (uuid, email, code_hash, expires_at, created_at, challenge_id_hash, purpose, requested_by_user_uuid)
+		VALUES ($1, $2, 'dummyhash', NOW() + INTERVAL '10 minutes', NOW() - INTERVAL '1 hour', 'cidhash', 'add_email', $3)`,
+		"018f0000-0000-7000-8000-0000000000b5", userBEmail1, userBUUID)
+
+	// Generate access token for User A
+	tokenA, err := auth.SignAccessToken(userAUUID, userAId, userAEmail, "user", "session-a")
+	if err != nil {
+		t.Fatalf("failed to sign token for user A: %v", err)
+	}
+
+	testIP := "198.51.100.99"
+
+	// 1. User A initiates Add Email for userBEmail2 (the secondary email)
+	sendReq := connect.NewRequest(&pb.SendAddEmailOtpRequest{
+		Email: userBEmail2,
+	})
+	sendReq.Header().Set("Authorization", "Bearer "+tokenA)
+	sendReq.Header().Set("X-Forwarded-For", testIP)
+	sendRes, err := authClient.SendAddEmailOtp(ctx, sendReq)
+	if err != nil {
+		t.Fatalf("SendAddEmailOtp failed: %v", err)
+	}
+	challengeId := sendRes.Msg.GetChallengeId()
+	if challengeId == "" {
+		t.Fatal("expected challenge_id from SendAddEmailOtp")
+	}
+
+	// Update OTP code to a known value for verification
+	knownCode := "654321"
+	_, err = pool.Exec(ctx, `
+		UPDATE email_otps
+		SET code_hash = $1
+		WHERE email = $2 AND purpose = 'add_email' AND requested_by_user_uuid = $3`,
+		auth.HashOTP(knownCode), userBEmail2, userAUUID)
+	if err != nil {
+		t.Fatalf("failed to update otp code: %v", err)
+	}
+
+	// 2. User A verifies Add Email OTP
+	verifyReq := connect.NewRequest(&pb.VerifyAddEmailOtpRequest{
+		Email:       userBEmail2,
+		Code:        knownCode,
+		ChallengeId: &challengeId,
+	})
+	verifyReq.Header().Set("Authorization", "Bearer "+tokenA)
+	verifyReq.Header().Set("X-Forwarded-For", testIP)
+	verifyReq.Header().Set("X-Challenge-Id", challengeId)
+	verifyRes, err := authClient.VerifyAddEmailOtp(ctx, verifyReq)
+	if err != nil {
+		t.Fatalf("VerifyAddEmailOtp failed: %v", err)
+	}
+	if !verifyRes.Msg.MergeRequired {
+		t.Fatalf("expected MergeRequired=true, got false")
+	}
+	if verifyRes.Msg.OtherUserUsername != userBId {
+		t.Errorf("expected other username %s, got %s", userBId, verifyRes.Msg.OtherUserUsername)
+	}
+	// Verify that OtherEmails contains BOTH emails of User B
+	if len(verifyRes.Msg.OtherEmails) != 2 {
+		t.Errorf("expected 2 other emails, got %v", verifyRes.Msg.OtherEmails)
+	}
+	ticket := verifyRes.Msg.GetMergeTicket()
+	if ticket == "" {
+		t.Fatal("expected non-empty merge ticket")
+	}
+
+	// 3. User A calls MergeAccount
+	mergeReq := connect.NewRequest(&pb.MergeAccountRequest{
+		Email:       userBEmail2,
+		MergeTicket: &ticket,
+	})
+	mergeReq.Header().Set("Authorization", "Bearer "+tokenA)
+	mergeReq.Header().Set("X-Forwarded-For", testIP)
+	mergeRes, err := authClient.MergeAccount(ctx, mergeReq)
+	if err != nil {
+		t.Fatalf("MergeAccount failed: %v", err)
+	}
+	if !mergeRes.Msg.Success {
+		t.Errorf("expected MergeAccount success=true, got false")
+	}
+	if len(mergeRes.Msg.MergedEmails) != 2 {
+		t.Errorf("expected 2 merged emails in response, got %v", mergeRes.Msg.MergedEmails)
+	}
+
+	// 4. Verify in DB that User B is deleted
+	var bCount int
+	_ = pool.QueryRow(ctx, `SELECT COUNT(*) FROM users WHERE uuid = $1`, userBUUID).Scan(&bCount)
+	if bCount != 0 {
+		t.Errorf("expected User B to be deleted, found count %d", bCount)
+	}
+
+	// 5. Verify User A now has all 3 emails in user_emails
+	var userEmails []string
+	rows, err := pool.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1 ORDER BY email ASC`, userAUUID)
+	if err != nil {
+		t.Fatalf("failed to query user_emails: %v", err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var em string
+		if err := rows.Scan(&em); err == nil {
+			userEmails = append(userEmails, em)
+		}
+	}
+	if len(userEmails) != 3 {
+		t.Fatalf("expected User A to have 3 emails, got %d: %v", len(userEmails), userEmails)
+	}
+
+	// 6. User A calls ListUserEmails via RPC
+	listReq := connect.NewRequest(&pb.ListUserEmailsRequest{})
+	listReq.Header().Set("Authorization", "Bearer "+tokenA)
+	listRes, err := authClient.ListUserEmails(ctx, listReq)
+	if err != nil {
+		t.Fatalf("ListUserEmails failed: %v", err)
+	}
+	if len(listRes.Msg.Emails) != 3 {
+		t.Errorf("expected 3 emails from ListUserEmails RPC, got %d", len(listRes.Msg.Emails))
+	}
+}

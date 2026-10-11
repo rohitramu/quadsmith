@@ -148,7 +148,7 @@ describe("AccountSettingsPage Component", () => {
       expect(screen.getByText(/ownership verified for/i)).toBeInTheDocument();
       expect(screen.getByText(/delete username:/i)).toBeInTheDocument();
       expect(screen.getByText(/held for 30 days before being released/i)).toBeInTheDocument();
-      expect(screen.getByText(/associate email address/i)).toBeInTheDocument();
+      expect(screen.getByText(/associate \d+ email addresses/i)).toBeInTheDocument();
       expect(screen.getByText(/migrated resources \(4 drone builds\)/i)).toBeInTheDocument();
       expect(screen.getByText(/bando basher 5-inch/i)).toBeInTheDocument();
       expect(
@@ -167,15 +167,17 @@ describe("AccountSettingsPage Component", () => {
       expect(
         screen.getByText(/all 4 builds from @old_racer have been reassigned to your account/i),
       ).toBeInTheDocument();
+      expect(screen.getByText(/all 2 email addresses/i)).toBeInTheDocument();
     });
 
     const doneBtn = screen.getByRole("button", { name: /done/i });
     fireEvent.click(doneBtn);
 
-    // Modal closes and email is in the list
+    // Modal closes and all emails are in the list
     await waitFor(() => {
       expect(screen.queryByText(/accounts merged successfully!/i)).not.toBeInTheDocument();
       expect(screen.getByText("old.racer@fpv.org")).toBeInTheDocument();
+      expect(screen.getByText("old.racer.backup@example.com")).toBeInTheDocument();
     });
   });
 
@@ -209,6 +211,7 @@ describe("AccountSettingsPage Component", () => {
     await waitFor(() => {
       expect(screen.queryByText(/accounts merged successfully!/i)).not.toBeInTheDocument();
       expect(screen.getByText("old.racer@fpv.org")).toBeInTheDocument();
+      expect(screen.getByText("old.racer.backup@example.com")).toBeInTheDocument();
     });
   });
 
