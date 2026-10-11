@@ -543,7 +543,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
                 value: {
                   remainingAttempts: 0,
                   isExhausted: true,
-                  cooldownSeconds: 60,
+                  cooldownSeconds: 15,
                   message:
                     "Incorrect code. You have 0 attempts left.\nPlease request a new code after the cooldown period.",
                 },

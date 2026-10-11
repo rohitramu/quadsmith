@@ -19,7 +19,7 @@ const (
 	OtpTTL            = 3 * time.Minute
 	MagicLinkTTL      = 15 * time.Minute
 	EmailCooldown     = 20 * time.Second
-	ExhaustedCooldown = 60 * time.Second
+	ExhaustedCooldown = 15 * time.Second
 	MaxOtpAttempts    = 3
 	MaxIPFailures     = 5
 	IPLockoutDuration = 60 * time.Minute
@@ -142,7 +142,7 @@ func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (in
 		return 0, nil
 	}
 
-	// Enforce 60-second cooldown starting when the 3rd failed challenge happened
+	// Enforce 15-second cooldown starting when the 3rd failed challenge happened
 	if failedAttempts >= MaxOtpAttempts {
 		refTime := createdAt
 		if usedAt != nil {
@@ -156,6 +156,7 @@ func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (in
 			}
 			return remaining, nil
 		}
+		return 0, nil
 	}
 
 	// Enforce 20-second cooldown from when the email was sent

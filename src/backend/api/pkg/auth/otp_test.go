@@ -72,7 +72,7 @@ func TestCooldownDurations(t *testing.T) {
 	if EmailCooldown != 20*time.Second {
 		t.Errorf("expected EmailCooldown to be 20s, got %v", EmailCooldown)
 	}
-	if ExhaustedCooldown != 60*time.Second {
-		t.Errorf("expected ExhaustedCooldown to be 60s, got %v", ExhaustedCooldown)
+	if ExhaustedCooldown != 15*time.Second {
+		t.Errorf("expected ExhaustedCooldown to be 15s, got %v", ExhaustedCooldown)
 	}
 }

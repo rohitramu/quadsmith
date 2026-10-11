@@ -62,7 +62,7 @@ export function LoginPage() {
     return () => clearInterval(timer);
   }, [cooldown]);
 
-  // Exhausted cooldown countdown timer (60s)
+  // Exhausted cooldown countdown timer (15s)
   useEffect(() => {
     if (exhaustedCooldown <= 0) return;
     const timer = setInterval(() => {
@@ -339,7 +339,7 @@ export function LoginPage() {
           setRemainingAttempts(detail.remainingAttempts);
           setIsExhausted(detail.isExhausted);
           if (detail.isExhausted) {
-            setExhaustedCooldown(detail.cooldownSeconds || 60);
+            setExhaustedCooldown(detail.cooldownSeconds || 15);
           }
           setErrorMsg(detail.message);
         } else {

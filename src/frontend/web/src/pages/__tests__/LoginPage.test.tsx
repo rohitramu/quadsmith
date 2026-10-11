@@ -186,9 +186,9 @@ describe("LoginPage Component", () => {
     const inputs = screen.getAllByRole("textbox");
     enterOtp(inputs, "999999");
 
-    // Wait for lockout state (60s cooldown)
+    // Wait for lockout state (15s cooldown)
     const reqBtn = await screen.findByRole("button", {
-      name: /request new verification code \(60s\)/i,
+      name: /request new verification code \(15s\)/i,
     });
     expect(reqBtn).toBeInTheDocument();
     expect(reqBtn).toBeDisabled();
