@@ -1938,14 +1938,23 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 
 func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.Request[pb.CheckUsernameAvailableRequest]) (*connect.Response[pb.CheckUsernameAvailableResponse], error) {
 	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
+	if username == "" {
+		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+			Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_INVALID,
+			Available: false,
+			Message:   "Username is required",
+		}), nil
+	}
 	if username == "admin" || username == "root" {
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+			Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_UNAVAILABLE,
 			Available: false,
 			Message:   "This username is already taken",
 		}), nil
 	}
 	if err := ValidateUsername(username); err != nil {
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+			Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_INVALID,
 			Available: false,
 			Message:   err.Error(),
 		}), nil
@@ -1959,11 +1968,13 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 	if err == nil {
 		if userCtx != nil && activeOwnerUUID == userCtx.UserUUID {
 			return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+				Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_UNAVAILABLE,
 				Available: false,
 				Message:   "This is your current username",
 			}), nil
 		}
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+			Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_UNAVAILABLE,
 			Available: false,
 			Message:   "This username is already taken",
 		}), nil
@@ -1982,11 +1993,13 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 	if err == nil {
 		if userCtx != nil && historyOwnerUUID == userCtx.UserUUID {
 			return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+				Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_AVAILABLE,
 				Available: true,
 				Message:   "Your archived username (available to reclaim)",
 			}), nil
 		}
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+			Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_UNAVAILABLE,
 			Available: false,
 			Message:   "This username is already taken",
 		}), nil
@@ -1995,6 +2008,7 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 	}
 
 	return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+		Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_AVAILABLE,
 		Available: true,
 		Message:   "Username is available",
 	}), nil

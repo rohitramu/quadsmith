@@ -179,26 +179,21 @@ message GetPublicProfileRequest {
   string id = 1; // Can be username or UUID
 }
 
+enum UsernameAvailabilityStatus {
+  USERNAME_AVAILABILITY_STATUS_UNSPECIFIED = 0;
+  USERNAME_AVAILABILITY_STATUS_AVAILABLE = 1;
+  USERNAME_AVAILABILITY_STATUS_UNAVAILABLE = 2;
+  USERNAME_AVAILABILITY_STATUS_INVALID = 3;
+}
+
 message CheckUsernameAvailableRequest {
-  string username = 1 [(quadsmith.validate.rules).string = {
-    min_len: 3
-    max_len: 20
-    pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
-    not_in: [
-      "admin",
-      "root"
-    ]
-    not_contains: [
-      "__",
-      "quadsmith",
-      "quad_smith"
-    ]
-  }];
+  string username = 1;
 }
 
 message CheckUsernameAvailableResponse {
-  bool available = 1;
-  string message = 2;
+  UsernameAvailabilityStatus status = 1;
+  bool available = 2;
+  string message = 3;
 }
 
 service UserService {

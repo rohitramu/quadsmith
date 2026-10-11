@@ -7,7 +7,12 @@ import type {
   ListArchivedUsernamesResponse,
 } from "../gen/quadsmith/auth_pb";
 import { UserService } from "../gen/quadsmith/user_pb";
-import type { User, UserProfile, UserEmail } from "../gen/quadsmith/user_pb";
+import type {
+  User,
+  UserProfile,
+  UserEmail,
+  UsernameAvailabilityStatus,
+} from "../gen/quadsmith/user_pb";
 import { setAccessToken, getAccessToken } from "../lib/api";
 
 export interface AuthContextType {
@@ -79,7 +84,11 @@ export interface AuthContextType {
   removeUserEmail: (email: string) => Promise<{ success: boolean; message: string }>;
   changeUsername: (newUsername: string) => Promise<ChangeUsernameResponse>;
   listArchivedUsernames: () => Promise<ListArchivedUsernamesResponse>;
-  checkUsernameAvailable: (username: string) => Promise<{ available: boolean; message: string }>;
+  checkUsernameAvailable: (username: string) => Promise<{
+    status: UsernameAvailabilityStatus;
+    available: boolean;
+    message: string;
+  }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -433,6 +442,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkUsernameAvailable = async (username: string) => {
     const res = await userClient.checkUsernameAvailable({ username });
     return {
+      status: res.status,
       available: res.available,
       message: res.message,
     };

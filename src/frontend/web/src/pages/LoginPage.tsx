@@ -6,33 +6,8 @@ import { useAuth } from "../context/AuthContext";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 import { OtpVerificationErrorSchema } from "../gen/quadsmith/auth_pb";
+import { UsernameAvailabilityStatus } from "../gen/quadsmith/user_pb";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
-
-export function validateUsernameRules(val: string): string | null {
-  const trimmed = val.trim().toLowerCase();
-  if (trimmed.length < 3) {
-    return "Usernames must be at least 3 characters long (3–20 characters).";
-  }
-  if (trimmed.length > 20) {
-    return "Usernames cannot exceed 20 characters (3–20 characters max).";
-  }
-  if (!/^[a-z]/.test(trimmed)) {
-    return "Username must start with a lowercase letter (a–z).";
-  }
-  if (!/[a-z0-9]$/.test(trimmed)) {
-    return "Username must end with a letter or number (cannot end with an underscore).";
-  }
-  if (!/^[a-z0-9_]+$/.test(trimmed)) {
-    return "Username can only contain lowercase letters, numbers, and underscores.";
-  }
-  if (trimmed.includes("__")) {
-    return "Username cannot contain consecutive underscores (__).";
-  }
-  if (trimmed.includes("quadsmith") || trimmed.includes("quad_smith")) {
-    return "Username cannot contain 'quadsmith' or 'quad_smith'.";
-  }
-  return null;
-}
 
 export function LoginPage() {
   const [searchParams] = useSearchParams();
@@ -153,7 +128,8 @@ export function LoginPage() {
     }
   }, [magicToken, isAuthenticated, verifyMagicLink, navigate, redirectUrl]);
 
-  // Debounced username availability check with client-side naming rules validation
+  // Debounced server-side username availability check
+  // The server decides whether the username is available, unavailable, or invalid.
   useEffect(() => {
     const trimmed = username.trim().toLowerCase();
     if (!trimmed) {
@@ -162,37 +138,24 @@ export function LoginPage() {
       return;
     }
 
-    const ruleError = validateUsernameRules(trimmed);
-    if (ruleError) {
-      setUsernameStatus("invalid");
-      setUsernameMessage(ruleError);
-      return;
-    }
-
     setUsernameStatus("checking");
     const timeout = setTimeout(async () => {
       try {
         const res = await checkUsernameAvailable(trimmed);
-        if (res.available) {
+        if (
+          res.status === UsernameAvailabilityStatus.AVAILABLE ||
+          (res.status === undefined && res.available)
+        ) {
           setUsernameStatus("available");
-          setUsernameMessage("Username is available!");
+          setUsernameMessage(res.message || "Username is available!");
+        } else if (res.status === UsernameAvailabilityStatus.INVALID) {
+          setUsernameStatus("invalid");
+          setUsernameMessage(res.message || "Username does not meet the naming rules.");
         } else {
-          const msg = res.message || "";
-          const lower = msg.toLowerCase();
-          if (
-            lower.includes("character") ||
-            lower.includes("letter") ||
-            lower.includes("underscore") ||
-            lower.includes("quadsmith") ||
-            lower.includes("invalid") ||
-            lower.includes("naming")
-          ) {
-            setUsernameStatus("invalid");
-            setUsernameMessage(msg);
-          } else {
-            setUsernameStatus("unavailable");
-            setUsernameMessage(msg || "This username is already taken. Please choose another.");
-          }
+          setUsernameStatus("unavailable");
+          setUsernameMessage(
+            res.message || "This username is already taken. Please choose another.",
+          );
         }
       } catch {
         setUsernameStatus("unavailable");

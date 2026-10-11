@@ -23,7 +23,11 @@ import {
   ArchivedUsernameSchema,
   OtpVerificationErrorSchema,
 } from "../../gen/quadsmith/auth_pb";
-import { UserService, UserEmailSchema } from "../../gen/quadsmith/user_pb";
+import {
+  UserService,
+  UserEmailSchema,
+  UsernameAvailabilityStatus,
+} from "../../gen/quadsmith/user_pb";
 
 import {
   mockMotors,
@@ -770,8 +774,16 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       }),
       checkUsernameAvailable: (req) => {
         const u = req.username?.trim().toLowerCase() || "";
+        if (!u) {
+          return {
+            status: UsernameAvailabilityStatus.INVALID,
+            available: false,
+            message: "Username is required",
+          };
+        }
         if (u === "admin" || u === "root" || u === "taken" || u === "alex") {
           return {
+            status: UsernameAvailabilityStatus.UNAVAILABLE,
             available: false,
             message: "This username is already taken",
           };
@@ -779,6 +791,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         const regex = /^[a-z][a-z0-9_]{1,18}[a-z0-9]$/;
         if (!regex.test(u)) {
           return {
+            status: UsernameAvailabilityStatus.INVALID,
             available: false,
             message:
               "Username must be 3-20 characters, start with a letter, end with alphanumeric, and contain only lowercase letters, numbers, and underscores",
@@ -786,17 +799,20 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         }
         if (u.includes("__")) {
           return {
+            status: UsernameAvailabilityStatus.INVALID,
             available: false,
             message: "Username cannot contain consecutive underscores",
           };
         }
         if (u.includes("quadsmith") || u.includes("quad_smith")) {
           return {
+            status: UsernameAvailabilityStatus.INVALID,
             available: false,
             message: "Username cannot contain 'quadsmith' or 'quad_smith'",
           };
         }
         return {
+          status: UsernameAvailabilityStatus.AVAILABLE,
           available: true,
           message: "Username is available",
         };

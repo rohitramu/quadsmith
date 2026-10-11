@@ -358,7 +358,7 @@ describe("LoginPage Component", () => {
     // 2. Invalid length ("ab" - too short) -> shows Invalid badge & naming rule message
     fireEvent.change(usernameInput, { target: { value: "ab" } });
     expect(await screen.findByText(/^invalid$/i, {}, { timeout: 3000 })).toBeInTheDocument();
-    expect(screen.getByText(/at least 3 characters/i)).toBeInTheDocument();
+    expect(screen.getByText(/3-20 characters/i)).toBeInTheDocument();
     expect(completeBtn).toBeDisabled();
 
     // 3. Invalid consecutive underscores ("rotor__ninja") -> shows Invalid badge & underscore rule message
@@ -376,7 +376,7 @@ describe("LoginPage Component", () => {
     // 5. Available username ("rotor_pilot") -> shows Available badge & enables complete setup
     fireEvent.change(usernameInput, { target: { value: "rotor_pilot" } });
     expect(await screen.findByText(/^✓ available$/i, {}, { timeout: 3000 })).toBeInTheDocument();
-    expect(screen.getByText(/username is available!/i)).toBeInTheDocument();
+    expect(screen.getByText(/username is available/i)).toBeInTheDocument();
     expect(completeBtn).toBeEnabled();
 
     // Avatar preview dynamically updates to initial "R" with palette badge styling
