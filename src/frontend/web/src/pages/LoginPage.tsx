@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { ConnectError } from "@connectrpc/connect";
+import { ConnectError, Code } from "@connectrpc/connect";
 import { Moon, Sun, Loader2, ArrowLeft, Mail, AlertTriangle, ShieldAlert } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
@@ -24,6 +24,7 @@ export function LoginPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [isExhausted, setIsExhausted] = useState(false);
+  const [isRateLimited, setIsRateLimited] = useState(false);
   const [cooldown, setCooldown] = useState(0);
 
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -97,10 +98,20 @@ export function LoginPage() {
       setStep("otp");
       setRemainingAttempts(null);
       setIsExhausted(false);
+      setIsRateLimited(false);
       setOtpDigits(["", "", "", "", "", ""]);
       setTimeout(() => otpInputRefs.current[0]?.focus(), 100);
     } catch (err: unknown) {
-      if (err instanceof Error) {
+      if (err instanceof ConnectError) {
+        if (
+          err.code === Code.ResourceExhausted ||
+          err.rawMessage.toLowerCase().includes("too many") ||
+          err.rawMessage.toLowerCase().includes("15 minutes")
+        ) {
+          setIsRateLimited(true);
+        }
+        setErrorMsg(err.rawMessage);
+      } else if (err instanceof Error) {
         setErrorMsg(err.message);
       } else {
         setErrorMsg("Failed to send verification code. Please try again.");
@@ -167,6 +178,15 @@ export function LoginPage() {
       navigate(redirectUrl, { replace: true });
     } catch (err: unknown) {
       if (err instanceof ConnectError) {
+        if (
+          err.code === Code.ResourceExhausted ||
+          err.rawMessage.toLowerCase().includes("too many") ||
+          err.rawMessage.toLowerCase().includes("15 minutes")
+        ) {
+          setIsRateLimited(true);
+          setErrorMsg(err.rawMessage);
+          return;
+        }
         const detail = err.findDetails(OtpVerificationErrorSchema)[0];
         if (detail) {
           setRemainingAttempts(detail.remainingAttempts);
@@ -208,7 +228,7 @@ export function LoginPage() {
             />
           </div>
           <h1 className="text-xl font-bold tracking-tight">
-            {step === "email" ? "Sign in to Quadsmith" : "Verify your account"}
+            {step === "email" ? "Sign in to Quadsmith" : "Verify your email"}
           </h1>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
             {step === "email"
@@ -229,7 +249,7 @@ export function LoginPage() {
         {errorMsg && (
           <div
             className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
-              isExhausted
+              isExhausted || isRateLimited
                 ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
                 : remainingAttempts === 1
                   ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
@@ -238,7 +258,7 @@ export function LoginPage() {
                     : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
             }`}
           >
-            {isExhausted ? (
+            {isExhausted || isRateLimited ? (
               <ShieldAlert size={16} className="text-red-500 shrink-0 mt-0.5" />
             ) : remainingAttempts !== null ? (
               <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
@@ -327,19 +347,18 @@ export function LoginPage() {
                 <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                   Verification Code (3-min expiry)
                 </label>
-                {remainingAttempts !== null && (
-                  <span
-                    className={`text-[10px] font-mono font-bold ${
-                      remainingAttempts === 1
-                        ? "text-amber-500"
-                        : remainingAttempts === 0
-                          ? "text-red-500"
-                          : "text-rose-500"
-                    }`}
-                  >
-                    {remainingAttempts} attempt{remainingAttempts === 1 ? "" : "s"} left
-                  </span>
-                )}
+                {remainingAttempts !== null &&
+                  remainingAttempts > 0 &&
+                  !isExhausted &&
+                  !isRateLimited && (
+                    <span
+                      className={`text-[10px] font-mono font-bold ${
+                        remainingAttempts === 1 ? "text-amber-500" : "text-rose-500"
+                      }`}
+                    >
+                      {remainingAttempts} attempt{remainingAttempts === 1 ? "" : "s"} left
+                    </span>
+                  )}
               </div>
 
               <div className="flex items-center justify-between gap-2">
@@ -353,12 +372,12 @@ export function LoginPage() {
                     inputMode="numeric"
                     maxLength={1}
                     value={digit}
-                    disabled={isExhausted || isLoading}
+                    disabled={isExhausted || isRateLimited || isLoading}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
                     className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none transition ${
-                      isExhausted
-                        ? "opacity-50 border-zinc-200 dark:border-zinc-800"
+                      isExhausted || isRateLimited
+                        ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
                         : remainingAttempts !== null && remainingAttempts > 0
                           ? "border-2 border-rose-500 focus:border-rose-600"
                           : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
@@ -377,7 +396,16 @@ export function LoginPage() {
                 </div>
               )}
 
-              {isExhausted && (
+              {isRateLimited ? (
+                <button
+                  type="button"
+                  disabled
+                  className="w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                >
+                  <ShieldAlert size={14} className="text-zinc-400 dark:text-zinc-500" />
+                  <span>Temporarily Locked (15m)</span>
+                </button>
+              ) : isExhausted ? (
                 <button
                   type="button"
                   onClick={() => handleSendEmail()}
@@ -386,30 +414,36 @@ export function LoginPage() {
                 >
                   <span>Request New Verification Code</span>
                 </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => handleSendEmail()}
+                  disabled={cooldown > 0 || isLoading}
+                  className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 ${
+                    cooldown > 0
+                      ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                      : "text-zinc-800 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 cursor-pointer"
+                  }`}
+                >
+                  <span>{cooldown > 0 ? `Resend email (${cooldown}s)` : "Resend email"}</span>
+                </button>
               )}
 
-              {/* Resend Code and Back Options */}
-              <div className="flex items-center justify-between text-xs pt-1">
+              {/* Back Option */}
+              <div className="flex items-center text-xs pt-1">
                 <button
                   type="button"
                   onClick={() => {
                     setStep("email");
                     setErrorMsg(null);
                     setRemainingAttempts(null);
+                    setIsExhausted(false);
+                    setIsRateLimited(false);
                   }}
                   className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 flex items-center gap-1 transition cursor-pointer"
                 >
                   <ArrowLeft size={13} />
-                  <span>Change email</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleSendEmail()}
-                  disabled={cooldown > 0 || isLoading}
-                  className="text-blue-500 hover:underline disabled:opacity-50 disabled:no-underline font-medium cursor-pointer"
-                >
-                  {cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"}
+                  <span>Back</span>
                 </button>
               </div>
             </div>

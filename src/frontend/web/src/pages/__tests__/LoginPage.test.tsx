@@ -36,7 +36,8 @@ describe("LoginPage Component", () => {
 
     // Verify transition to OTP step
     expect(screen.queryByText(/two ways to sign in/i)).not.toBeInTheDocument();
-    expect(await screen.findByText(/enter the/i)).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /verify your email/i })).toBeInTheDocument();
+    expect(screen.getByText(/enter the/i)).toBeInTheDocument();
     expect(screen.getByText(/6-digit code/i)).toBeInTheDocument();
     expect(screen.getByText(/^or$/i)).toBeInTheDocument();
     expect(screen.getByText(/click the link in the email/i)).toBeInTheDocument();
@@ -44,6 +45,11 @@ describe("LoginPage Component", () => {
     // Verify 6 OTP input boxes
     const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBe(6);
+
+    // Verify Back button and Resend email button
+    expect(screen.getByRole("button", { name: /back/i })).toBeInTheDocument();
+    expect(screen.queryByText(/change email/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
   });
 
   it("does not render passwordless footer text, has no continue button, and automatically continues on 6-digit OTP entry", async () => {
@@ -83,5 +89,90 @@ describe("LoginPage Component", () => {
 
     // Auto-continues without clicking any button: token saved in localStorage
     expect(localStorage.getItem("qs_access_token")).toBe("mock-jwt-token");
+  });
+
+  it("greys out text boxes, removes locked out label above inputs, and displays Request New Verification Code upon lockout", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "pilot@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    await screen.findByRole("heading", { name: /verify your email/i });
+
+    // Enter incorrect code 999999 to trigger exhausted lockout
+    const inputs = screen.getAllByRole("textbox");
+    for (let i = 0; i < 6; i++) {
+      await user.type(inputs[i], "9");
+    }
+
+    // Wait for lockout state
+    expect(
+      await screen.findByRole("button", { name: /request new verification code/i }),
+    ).toBeInTheDocument();
+
+    // Resend email button is replaced by Request New Verification Code
+    expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
+
+    // Text boxes are disabled
+    inputs.forEach((input) => {
+      expect(input).toBeDisabled();
+    });
+
+    // "Locked out" text is NOT shown above text boxes
+    expect(screen.queryByText(/locked out/i)).not.toBeInTheDocument();
+
+    // Back button is still present
+    expect(screen.getByRole("button", { name: /back/i })).toBeInTheDocument();
+  });
+
+  it("handles multi-code 15-minute IP lockout with disabled controls and lockout warning", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "attacker@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    await screen.findByRole("heading", { name: /verify your email/i });
+
+    // Enter code 000000 to trigger multi-code IP lockout
+    const inputs = screen.getAllByRole("textbox");
+    for (let i = 0; i < 6; i++) {
+      await user.type(inputs[i], "0");
+    }
+
+    // Displays the 15-minute IP lockout message
+    expect(
+      await screen.findByText(/too many failed verification attempts from this ip/i),
+    ).toBeInTheDocument();
+
+    // Renders disabled "Temporarily Locked (15m)" button instead of Request New Code
+    const lockedBtn = screen.getByRole("button", { name: /temporarily locked \(15m\)/i });
+    expect(lockedBtn).toBeInTheDocument();
+    expect(lockedBtn).toBeDisabled();
+    expect(
+      screen.queryByRole("button", { name: /request new verification code/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
+
+    // Text inputs are disabled
+    inputs.forEach((input) => {
+      expect(input).toBeDisabled();
+    });
+
+    // Clicking "Back" returns to the email input step
+    const backBtn = screen.getByRole("button", { name: /back/i });
+    await user.click(backBtn);
+    expect(
+      await screen.findByRole("heading", { name: /sign in to quadsmith/i }),
+    ).toBeInTheDocument();
   });
 });

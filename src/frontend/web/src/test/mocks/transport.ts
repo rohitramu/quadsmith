@@ -21,6 +21,7 @@ import {
   AuthService,
   SendEmailOtpResponseSchema,
   ArchivedUsernameSchema,
+  OtpVerificationErrorSchema,
 } from "../../gen/quadsmith/auth_pb";
 import { UserService, UserEmailSchema } from "../../gen/quadsmith/user_pb";
 
@@ -482,12 +483,38 @@ export function createMockTransport(options: MockTransportOptions = {}) {
 
     service(AuthService, {
       sendEmailOtp: () => ({ success: true, message: "Code sent", cooldownSeconds: 60 }),
-      verifyEmailOtp: () => ({
-        accessToken: "mock-jwt-token",
-        refreshToken: "mock-refresh-token",
-        user: mockUser,
-        profile: mockProfile,
-      }),
+      verifyEmailOtp: (req) => {
+        if (req.code === "999999") {
+          const err = new ConnectError(
+            "Incorrect code. You have 0 attempts left. Please request a new code",
+            Code.InvalidArgument,
+            undefined,
+            [
+              {
+                desc: OtpVerificationErrorSchema,
+                value: {
+                  remainingAttempts: 0,
+                  isExhausted: true,
+                  message: "Incorrect code. You have 0 attempts left. Please request a new code",
+                },
+              },
+            ],
+          );
+          throw err;
+        }
+        if (req.code === "000000") {
+          throw new ConnectError(
+            "Too many failed verification attempts from this IP. Please wait 15 minutes before trying again",
+            Code.ResourceExhausted,
+          );
+        }
+        return {
+          accessToken: "mock-jwt-token",
+          refreshToken: "mock-refresh-token",
+          user: mockUser,
+          profile: mockProfile,
+        };
+      },
       verifyMagicLink: () => ({
         accessToken: "mock-jwt-token",
         refreshToken: "mock-refresh-token",
