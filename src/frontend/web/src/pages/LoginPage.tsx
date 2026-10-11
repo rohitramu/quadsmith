@@ -383,9 +383,6 @@ export function LoginPage() {
               </p>
             </div>
 
-            {/* Error / Attempt Warning Banner directly above verification code */}
-            {renderErrorBanner()}
-
             {/* 6 Digit Inputs */}
             <div>
               <div className="flex items-center justify-between mb-2">
@@ -430,6 +427,9 @@ export function LoginPage() {
                 ))}
               </div>
             </div>
+
+            {/* Error / Attempt Warning Banner below verification code and above buttons */}
+            {renderErrorBanner()}
 
             {/* Action Buttons & Status */}
             <div className="space-y-2.5">

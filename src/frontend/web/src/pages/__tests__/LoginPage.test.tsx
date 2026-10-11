@@ -64,7 +64,7 @@ describe("LoginPage Component", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("clears fields on incorrect code, displays incorrect code as placeholder hints, keeps neutral borders, and displays error above verification code", async () => {
+  it("clears fields on incorrect code, displays incorrect code as placeholder hints, keeps neutral borders, and displays error below verification code and above buttons", async () => {
     const { user } = renderApp("/login", {
       transportOptions: { isAuthenticated: false },
     });
@@ -90,6 +90,13 @@ describe("LoginPage Component", () => {
     const banner = screen.getByTestId("otp-error-banner");
     expect(banner.className).toMatch(/amber/);
     expect(banner.className).not.toMatch(/rose/);
+
+    // Verify DOM position: below the verification code inputs and above the buttons
+    const backBtn = screen.getByRole("button", { name: /back/i });
+    expect(
+      inputs[5].compareDocumentPosition(banner) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(banner.compareDocumentPosition(backBtn) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 
     const attemptsBadge = screen.getByText(/^2 attempts left$/i);
     expect(attemptsBadge.className).toMatch(/text-amber-500/);
