@@ -31,15 +31,17 @@ import {
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
 export interface SocialReviewSectionProps {
-  target: { type: "build" | "component"; id: string };
+  target: { type?: "build" | "component"; id: string; collection?: string };
   targetAuthorUuid?: string;
   entityName?: string;
+  isArchived?: boolean;
 }
 
 export function SocialReviewSection({
   target,
   targetAuthorUuid,
   entityName,
+  isArchived = false,
 }: SocialReviewSectionProps) {
   const { user, isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
@@ -54,8 +56,11 @@ export function SocialReviewSection({
   // Discussion reply inputs keyed by review UUID/ID
   const [openThreads, setOpenThreads] = useState<Record<string, boolean>>({});
 
-  const queryPayload =
-    target.type === "build" ? { buildId: target.id, sortBy } : { componentId: target.id, sortBy };
+  const queryPayload = {
+    entityId: target.id,
+    collection: target.collection || (target.type === "build" ? "build" : undefined),
+    sortBy,
+  };
 
   const {
     data: reviewsResponse,
@@ -84,8 +89,8 @@ export function SocialReviewSection({
     setIsSubmitting(true);
     try {
       await mutateCreateReview({
-        buildId: target.type === "build" ? target.id : undefined,
-        componentId: target.type === "component" ? target.id : undefined,
+        entityId: target.id,
+        collection: target.collection || (target.type === "build" ? "build" : undefined),
         isRecommended,
         body: reviewBody.trim(),
       });
@@ -206,7 +211,12 @@ export function SocialReviewSection({
 
         {/* Write Review Button Box */}
         <div className="flex flex-col justify-center items-start md:items-end border-t md:border-t-0 md:border-l border-zinc-200 dark:border-zinc-800 pt-4 md:pt-0 md:pl-6">
-          {isAuthorOfBuild ? (
+          {isArchived ? (
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs text-center md:text-right">
+              <AlertCircle size={16} className="inline mr-1 mb-0.5" />
+              Archived entity: Reviews are read-only.
+            </div>
+          ) : isAuthorOfBuild ? (
             <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs text-center md:text-right">
               <AlertCircle size={16} className="inline mr-1 mb-0.5" />
               Build creators cannot review their own builds.
@@ -443,6 +453,7 @@ export function SocialReviewSection({
                     {/* Yes button */}
                     <button
                       type="button"
+                      disabled={isArchived}
                       onClick={() => handleVote(review.id, review.currentUserVote, true)}
                       className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer ${
                         review.currentUserVote === ReviewVoteType.HELPFUL
@@ -451,13 +462,18 @@ export function SocialReviewSection({
                       }`}
                     >
                       <ThumbsUp size={13} />
-                      <span>Yes</span>
+                      <span>
+                        {review.currentUserVote === ReviewVoteType.HELPFUL
+                          ? "You voted Yes"
+                          : "Yes"}
+                      </span>
                       <span className="font-mono text-zinc-400 ml-0.5">{review.helpfulCount}</span>
                     </button>
 
                     {/* No button */}
                     <button
                       type="button"
+                      disabled={isArchived}
                       onClick={() => handleVote(review.id, review.currentUserVote, false)}
                       className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer ${
                         review.currentUserVote === ReviewVoteType.UNHELPFUL
@@ -466,7 +482,11 @@ export function SocialReviewSection({
                       }`}
                     >
                       <ThumbsDown size={13} />
-                      <span>No</span>
+                      <span>
+                        {review.currentUserVote === ReviewVoteType.UNHELPFUL
+                          ? "You voted No"
+                          : "No"}
+                      </span>
                       <span className="font-mono text-zinc-400 ml-0.5">
                         {review.unhelpfulCount}
                       </span>

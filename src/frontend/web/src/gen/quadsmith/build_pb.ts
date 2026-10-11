@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_build: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CgtidWlsZC5wcm90bxIJcXVhZHNtaXRoIsEGCgVCdWlsZBIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEiYKCmZyYW1lX3V1aWQYBSABKAlCEsLzGA4aDGZyYW1lcyh1dWlkKRImCgptb3Rvcl91dWlkGAYgASgJQhLC8xgOGgxtb3RvcnModXVpZCkSPgoWZmxpZ2h0X2NvbnRyb2xsZXJfdXVpZBgIIAEoCUIewvMYGhoYZmxpZ2h0X2NvbnRyb2xsZXJzKHV1aWQpEikKIWVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkcxgJIAMoCRIWCg5yZWNlaXZlcl91dWlkcxgKIAMoCRIVCg1hbnRlbm5hX3V1aWRzGAsgAygJEi4KDnByb3BlbGxlcl91dWlkGAwgASgJQhbC8xgSGhBwcm9wZWxsZXJzKHV1aWQpEhQKDGNhbWVyYV91dWlkcxgNIAMoCRI+ChZ2aWRlb190cmFuc21pdHRlcl91dWlkGA4gASgJQh7C8xgaGhh2aWRlb190cmFuc21pdHRlcnModXVpZCkSOQoRZ3BzX3JlY2VpdmVyX3V1aWQYDyABKAlCGcLzGBUaE2dwc19yZWNlaXZlcnModXVpZClIAIgBARIxCg9yZWZlcmVuY2VfbGlua3MYECADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluaxIiChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYESABKAlIAYgBARIfCgVtZWRpYRgSIAMoCzIQLnF1YWRzbWl0aC5NZWRpYRIpCgl1c2VyX3V1aWQYEyABKAlCEcLzGA0aC3VzZXJzKHV1aWQpSAKIAQESHAoPYXV0aG9yX3VzZXJuYW1lGBQgASgJSAOIAQE6LYq1GBMKAmlkCgRuYW1lEgcjM2I4MmY2mrUYBmJ1aWxkc8LzGAgKBmJ1aWxkc0IUChJfZ3BzX3JlY2VpdmVyX3V1aWRCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiLgoPR2V0QnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdEJ1aWxkc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJPChJMaXN0QnVpbGRzUmVzcG9uc2USIAoGYnVpbGRzGAEgAygLMhAucXVhZHNtaXRoLkJ1aWxkEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI1ChJDcmVhdGVCdWlsZFJlcXVlc3QSHwoFYnVpbGQYASABKAsyEC5xdWFkc21pdGguQnVpbGQy0wEKDEJ1aWxkU2VydmljZRI4CghHZXRCdWlsZBIaLnF1YWRzbWl0aC5HZXRCdWlsZFJlcXVlc3QaEC5xdWFkc21pdGguQnVpbGQSSQoKTGlzdEJ1aWxkcxIcLnF1YWRzbWl0aC5MaXN0QnVpbGRzUmVxdWVzdBodLnF1YWRzbWl0aC5MaXN0QnVpbGRzUmVzcG9uc2USPgoLQ3JlYXRlQnVpbGQSHS5xdWFkc21pdGguQ3JlYXRlQnVpbGRSZXF1ZXN0GhAucXVhZHNtaXRoLkJ1aWxkQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "CgtidWlsZC5wcm90bxIJcXVhZHNtaXRoIsEGCgVCdWlsZBIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEiYKCmZyYW1lX3V1aWQYBSABKAlCEsLzGA4aDGZyYW1lcyh1dWlkKRImCgptb3Rvcl91dWlkGAYgASgJQhLC8xgOGgxtb3RvcnModXVpZCkSPgoWZmxpZ2h0X2NvbnRyb2xsZXJfdXVpZBgIIAEoCUIewvMYGhoYZmxpZ2h0X2NvbnRyb2xsZXJzKHV1aWQpEikKIWVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkcxgJIAMoCRIWCg5yZWNlaXZlcl91dWlkcxgKIAMoCRIVCg1hbnRlbm5hX3V1aWRzGAsgAygJEi4KDnByb3BlbGxlcl91dWlkGAwgASgJQhbC8xgSGhBwcm9wZWxsZXJzKHV1aWQpEhQKDGNhbWVyYV91dWlkcxgNIAMoCRI+ChZ2aWRlb190cmFuc21pdHRlcl91dWlkGA4gASgJQh7C8xgaGhh2aWRlb190cmFuc21pdHRlcnModXVpZCkSOQoRZ3BzX3JlY2VpdmVyX3V1aWQYDyABKAlCGcLzGBUaE2dwc19yZWNlaXZlcnModXVpZClIAIgBARIxCg9yZWZlcmVuY2VfbGlua3MYECADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluaxIiChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYESABKAlIAYgBARIfCgVtZWRpYRgSIAMoCzIQLnF1YWRzbWl0aC5NZWRpYRIpCgl1c2VyX3V1aWQYEyABKAlCEcLzGA0aC3VzZXJzKHV1aWQpSAKIAQESHAoPYXV0aG9yX3VzZXJuYW1lGBQgASgJSAOIAQE6LYq1GBMKAmlkCgRuYW1lEgcjM2I4MmY2mrUYBmJ1aWxkc8LzGAgKBmJ1aWxkc0IUChJfZ3BzX3JlY2VpdmVyX3V1aWRCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiLgoPR2V0QnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdEJ1aWxkc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJPChJMaXN0QnVpbGRzUmVzcG9uc2USIAoGYnVpbGRzGAEgAygLMhAucXVhZHNtaXRoLkJ1aWxkEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI1ChJDcmVhdGVCdWlsZFJlcXVlc3QSHwoFYnVpbGQYASABKAsyEC5xdWFkc21pdGguQnVpbGQiIAoSRGVsZXRlQnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJIioKE0RlbGV0ZUJ1aWxkUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgyoQIKDEJ1aWxkU2VydmljZRI4CghHZXRCdWlsZBIaLnF1YWRzbWl0aC5HZXRCdWlsZFJlcXVlc3QaEC5xdWFkc21pdGguQnVpbGQSSQoKTGlzdEJ1aWxkcxIcLnF1YWRzbWl0aC5MaXN0QnVpbGRzUmVxdWVzdBodLnF1YWRzbWl0aC5MaXN0QnVpbGRzUmVzcG9uc2USPgoLQ3JlYXRlQnVpbGQSHS5xdWFkc21pdGguQ3JlYXRlQnVpbGRSZXF1ZXN0GhAucXVhZHNtaXRoLkJ1aWxkEkwKC0RlbGV0ZUJ1aWxkEh0ucXVhZHNtaXRoLkRlbGV0ZUJ1aWxkUmVxdWVzdBoeLnF1YWRzbWl0aC5EZWxldGVCdWlsZFJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
     [file__common, file__sql, file_media, file_reference_link],
   );
 
@@ -259,6 +259,42 @@ export const CreateBuildRequestSchema: GenMessage<CreateBuildRequest> =
   messageDesc(file_build, 4);
 
 /**
+ * @generated from message quadsmith.DeleteBuildRequest
+ */
+export type DeleteBuildRequest = Message<"quadsmith.DeleteBuildRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.DeleteBuildRequest.
+ * Use `create(DeleteBuildRequestSchema)` to create a new message.
+ */
+export const DeleteBuildRequestSchema: GenMessage<DeleteBuildRequest> =
+  /*@__PURE__*/
+  messageDesc(file_build, 5);
+
+/**
+ * @generated from message quadsmith.DeleteBuildResponse
+ */
+export type DeleteBuildResponse = Message<"quadsmith.DeleteBuildResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.DeleteBuildResponse.
+ * Use `create(DeleteBuildResponseSchema)` to create a new message.
+ */
+export const DeleteBuildResponseSchema: GenMessage<DeleteBuildResponse> =
+  /*@__PURE__*/
+  messageDesc(file_build, 6);
+
+/**
  * ---------------------------------------------------------
  * gRPC Service
  * ---------------------------------------------------------
@@ -289,5 +325,13 @@ export const BuildService: GenService<{
     methodKind: "unary";
     input: typeof CreateBuildRequestSchema;
     output: typeof BuildSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.BuildService.DeleteBuild
+   */
+  deleteBuild: {
+    methodKind: "unary";
+    input: typeof DeleteBuildRequestSchema;
+    output: typeof DeleteBuildResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_build, 0);

@@ -5,14 +5,14 @@ import {
   listUserCollections,
 } from "../gen/quadsmith/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
-import { ThumbsUp, HelpCircle, Bookmark, Star, ArrowUpRight, Plus } from "lucide-react";
+import { ThumbsUp, HelpCircle, Bookmark, Star, ArrowUpRight, Plus, Archive } from "lucide-react";
 import { SocialReviewSection } from "./SocialReviewSection";
 import { SocialQaSection } from "./SocialQaSection";
 import { SaveToCollectionModal } from "./SaveToCollectionModal";
 import { Link } from "react-router-dom";
 
 export interface SocialTabsProps {
-  target: { type: "build" | "component"; id: string };
+  target: { type?: "build" | "component"; id: string; collection?: string };
   targetAuthorUuid?: string;
   entityName?: string;
   defaultTab?: "reviews" | "qa" | "collections";
@@ -28,8 +28,10 @@ export function SocialTabs({
   const [isNewColModalOpen, setIsNewColModalOpen] = useState(false);
   const { user } = useAuth();
 
-  const queryPayload =
-    target.type === "build" ? { buildId: target.id } : { componentId: target.id };
+  const queryPayload = {
+    entityId: target.id,
+    collection: target.collection || (target.type === "build" ? "build" : undefined),
+  };
 
   const { data: summary } = useQuery(getEntitySocialSummary, queryPayload);
   const { data: userColsRes } = useQuery(
@@ -41,9 +43,22 @@ export function SocialTabs({
   const reviewCount = summary?.reviewSummary?.totalReviews ?? 0;
   const questionCount = summary?.questionCount ?? 0;
   const collections = userColsRes?.collections || [];
+  const isArchived = summary?.isArchived || false;
 
   return (
     <section id="social-hub" className="mt-12 space-y-6">
+      {/* Archived Read-Only Banner */}
+      {isArchived && (
+        <div className="p-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs flex items-center gap-3">
+          <Archive size={18} className="shrink-0 text-amber-500" />
+          <div>
+            <span className="font-bold">Archived Entity (Read-Only): </span>
+            This entity has been archived for historical reference. New reviews, questions, answers,
+            and votes are disabled.
+          </div>
+        </div>
+      )}
+
       {/* Tab Navigation Bar */}
       <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-px flex-wrap">
         <button
@@ -102,6 +117,7 @@ export function SocialTabs({
             target={target}
             targetAuthorUuid={targetAuthorUuid}
             entityName={entityName}
+            isArchived={isArchived}
           />
         </div>
       )}
@@ -113,6 +129,7 @@ export function SocialTabs({
             target={target}
             targetAuthorUuid={targetAuthorUuid}
             entityName={entityName}
+            isArchived={isArchived}
           />
         </div>
       )}
@@ -252,7 +269,7 @@ export function SocialTabs({
               -2 Rep (Both)
             </div>
             <div className="text-[10px] text-zinc-400 mt-1">
-              Costs voter -2 • Unlock at 10 rep • Max 3/24h
+              Costs voter -2 • Unlock at 100 rep • Max 3/24h (max 3/wk per target author)
             </div>
           </div>
         </div>

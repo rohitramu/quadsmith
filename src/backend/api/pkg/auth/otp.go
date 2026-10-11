@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"strings"
 	"sync"
 	"time"
 
@@ -78,6 +79,70 @@ func ResetIPTracker() {
 	globalIPTracker.mu.Lock()
 	defer globalIPTracker.mu.Unlock()
 	globalIPTracker.failures = make(map[string][]time.Time)
+	ResetIPSignInTracker()
+}
+
+// ---------------------------------------------------------
+// IP Sign-in Throttling (Anti-Sybil Protection)
+// ---------------------------------------------------------
+
+const MaxSignInsPerIP24h = 5
+
+type ipAccountSignInTracker struct {
+	mu       sync.Mutex
+	accounts map[string]map[string]time.Time
+}
+
+var globalIPSignInTracker = &ipAccountSignInTracker{
+	accounts: make(map[string]map[string]time.Time),
+}
+
+// ResetIPSignInTracker clears all tracked IP sign-ins (used in tests)
+func ResetIPSignInTracker() {
+	globalIPSignInTracker.mu.Lock()
+	defer globalIPSignInTracker.mu.Unlock()
+	globalIPSignInTracker.accounts = make(map[string]map[string]time.Time)
+}
+
+// CheckAndRecordIPSignIn checks if an IP has exceeded the limit of 5 independent account sign-ins per rolling 24 hours.
+func CheckAndRecordIPSignIn(ip, accountKey string) error {
+	if ip == "" || accountKey == "" {
+		return nil
+	}
+	normalizedAccount := strings.ToLower(strings.TrimSpace(accountKey))
+
+	globalIPSignInTracker.mu.Lock()
+	defer globalIPSignInTracker.mu.Unlock()
+
+	now := time.Now()
+	cutoff := now.Add(-24 * time.Hour)
+
+	accountMap, ok := globalIPSignInTracker.accounts[ip]
+	if !ok {
+		accountMap = make(map[string]time.Time)
+		globalIPSignInTracker.accounts[ip] = accountMap
+	}
+
+	// Evict entries older than 24h
+	for acc, t := range accountMap {
+		if t.Before(cutoff) {
+			delete(accountMap, acc)
+		}
+	}
+
+	// If account is already active in the window, refresh timestamp and allow
+	if _, exists := accountMap[normalizedAccount]; exists {
+		accountMap[normalizedAccount] = now
+		return nil
+	}
+
+	// Limit to max 5 distinct accounts per IP in 24h
+	if len(accountMap) >= MaxSignInsPerIP24h {
+		return errors.New("maximum number of independent account sign-ins from this IP exceeded (max 5 accounts per 24 hours)")
+	}
+
+	accountMap[normalizedAccount] = now
+	return nil
 }
 
 // CheckIPRateLimit checks if an IP has exceeded the failure limit

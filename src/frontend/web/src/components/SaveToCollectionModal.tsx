@@ -13,7 +13,7 @@ import { X, Plus, Bookmark, Lock, Globe, Loader2 } from "lucide-react";
 export interface SaveToCollectionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  target: { type: "build" | "component"; id: string };
+  target: { type?: "build" | "component"; id: string; collection?: string };
   targetName?: string;
 }
 
@@ -71,14 +71,14 @@ export function SaveToCollectionModal({
       if (currentlyInCollection) {
         await mutateRemoveItem({
           collectionId: colId,
-          buildId: target.type === "build" ? target.id : undefined,
-          componentId: target.type === "component" ? target.id : undefined,
+          entityId: target.id,
+          collection: target.collection || (target.type === "build" ? "build" : undefined),
         });
       } else {
         await mutateAddItem({
           collectionId: colId,
-          buildId: target.type === "build" ? target.id : undefined,
-          componentId: target.type === "component" ? target.id : undefined,
+          entityId: target.id,
+          collection: target.collection || (target.type === "build" ? "build" : undefined),
         });
       }
       await refetchCollections();
@@ -106,8 +106,8 @@ export function SaveToCollectionModal({
       // Automatically add current item to newly created collection
       await mutateAddItem({
         collectionId: created.id,
-        buildId: target.type === "build" ? target.id : undefined,
-        componentId: target.type === "component" ? target.id : undefined,
+        entityId: target.id,
+        collection: target.collection || (target.type === "build" ? "build" : undefined),
       });
 
       setNewColName("");

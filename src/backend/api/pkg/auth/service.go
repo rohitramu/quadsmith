@@ -223,6 +223,9 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 
 	// Verification succeeded: mark challenge consumed
 	RecordIPSuccess(clientIP)
+	if err := CheckAndRecordIPSignIn(clientIP, email); err != nil {
+		return nil, connect.NewError(connect.CodeResourceExhausted, err)
+	}
 	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
 
 	exists, err := s.userExistsForEmail(ctx, email)
@@ -282,6 +285,9 @@ func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[
 
 	clientIP := getClientIP(req)
 	RecordIPSuccess(clientIP)
+	if err := CheckAndRecordIPSignIn(clientIP, claims.Email); err != nil {
+		return nil, connect.NewError(connect.CodeResourceExhausted, err)
+	}
 
 	email := claims.Email
 	exists, err := s.userExistsForEmail(ctx, email)
@@ -391,6 +397,11 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 
 	if err := tx.Commit(ctx); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to commit account creation: %w", err))
+	}
+
+	clientIP := getClientIP(req)
+	if err := CheckAndRecordIPSignIn(clientIP, email); err != nil {
+		return nil, connect.NewError(connect.CodeResourceExhausted, err)
 	}
 
 	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))

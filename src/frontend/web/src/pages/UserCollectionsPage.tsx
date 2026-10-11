@@ -84,13 +84,13 @@ export function UserCollectionsPage() {
     }
   }
 
-  async function handleRemoveItem(target: { buildId?: string; componentId?: string }) {
+  async function handleRemoveItem(target: { entityId: string; collection?: string }) {
     if (!collectionId) return;
     try {
       await mutateRemoveItem({
         collectionId,
-        buildId: target.buildId,
-        componentId: target.componentId,
+        entityId: target.entityId,
+        collection: target.collection,
       });
       await refetchItems();
       await queryClient.invalidateQueries();
@@ -230,10 +230,10 @@ export function UserCollectionsPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {(items as CollectionItem[]).map((item: CollectionItem) => {
-                const isBuild = item.itemType === "build" || !!item.buildUuid;
+                const isBuild = item.collection === "build" || item.collection === "builds";
                 const linkHref = isBuild
-                  ? `/builds/${item.itemId}`
-                  : `/components/hardware/${item.itemId}`;
+                  ? `/builds/${item.entityId}`
+                  : `/components/hardware/${item.entityId}`;
 
                 return (
                   <div
@@ -241,10 +241,10 @@ export function UserCollectionsPage() {
                     className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-4 space-y-3 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors shadow-2xs flex flex-col justify-between"
                   >
                     <div className="space-y-3">
-                      {item.itemImage ? (
+                      {item.primaryDisplayImage ? (
                         <img
-                          src={item.itemImage}
-                          alt={item.itemName}
+                          src={item.primaryDisplayImage}
+                          alt={item.name}
                           className="w-full h-32 object-cover rounded-xl border border-zinc-100 dark:border-zinc-800"
                         />
                       ) : (
@@ -258,9 +258,9 @@ export function UserCollectionsPage() {
                           <span className="px-1.5 py-0.5 rounded text-[10px] uppercase font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
                             {isBuild ? "Build" : "Component"}
                           </span>
-                          {item.itemAuthorOrManufacturer && (
+                          {item.authorOrManufacturer && (
                             <span className="text-[11px] text-zinc-400 truncate">
-                              • {item.itemAuthorOrManufacturer}
+                              • {item.authorOrManufacturer}
                             </span>
                           )}
                         </div>
@@ -269,7 +269,7 @@ export function UserCollectionsPage() {
                           to={linkHref}
                           className="font-bold text-sm text-zinc-900 dark:text-zinc-100 hover:text-blue-500 transition-colors line-clamp-1 block"
                         >
-                          {item.itemName || item.itemId}
+                          {item.name || item.entityId}
                         </Link>
                       </div>
                     </div>
@@ -287,9 +287,10 @@ export function UserCollectionsPage() {
                         <button
                           type="button"
                           onClick={() =>
-                            handleRemoveItem(
-                              isBuild ? { buildId: item.itemId } : { componentId: item.itemId },
-                            )
+                            handleRemoveItem({
+                              entityId: item.entityId,
+                              collection: item.collection,
+                            })
                           }
                           className="text-zinc-400 hover:text-rose-500 transition-colors p-1"
                           title="Remove from collection"

@@ -11,7 +11,7 @@ import { getReviewTierBadgeClass, getReviewTierLabel } from "../lib/socialFormat
 import { SaveToCollectionModal } from "./SaveToCollectionModal";
 
 export interface SocialToolbarProps {
-  target: { type: "build" | "component"; id: string };
+  target: { type?: "build" | "component"; id: string; collection?: string };
   targetName?: string;
   onJumpToReviews?: () => void;
   onJumpToQa?: () => void;
@@ -29,8 +29,10 @@ export function SocialToolbar({
   const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
 
-  const queryPayload =
-    target.type === "build" ? { buildId: target.id } : { componentId: target.id };
+  const queryPayload = {
+    entityId: target.id,
+    collection: target.collection || (target.type === "build" ? "build" : undefined),
+  };
 
   const { data: summary, refetch: refetchSummary } = useQuery(getEntitySocialSummary, queryPayload);
 
@@ -41,9 +43,10 @@ export function SocialToolbar({
       return;
     }
     try {
-      await mutateToggleLike(
-        target.type === "build" ? { buildId: target.id } : { componentId: target.id },
-      );
+      await mutateToggleLike({
+        entityId: target.id,
+        collection: target.collection || (target.type === "build" ? "build" : undefined),
+      });
       await refetchSummary();
       await queryClient.invalidateQueries();
     } catch {

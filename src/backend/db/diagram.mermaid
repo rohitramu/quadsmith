@@ -441,27 +441,41 @@ erDiagram
         JSONB media
     }
 
-    components {
+    entities {
         UUID uuid PK
-        TEXT id
         TEXT collection
+        TEXT id
         TEXT name
-        TEXT manufacturer
+        TEXT description
         TEXT primary_display_image
+        JSONB reference_links
+        JSONB media
+        TEXT author_or_manufacturer
+        BOOLEAN is_archived
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
     }
 
     reviews {
         UUID uuid PK
         TEXT id UK
         UUID user_uuid FK
-        UUID build_uuid FK
-        UUID component_uuid FK
+        UUID entity_uuid FK
         BOOLEAN is_recommended
         TEXT body
         BOOLEAN is_edited
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
+        TEXT author_username
+        TEXT author_avatar_url
+        INTEGER helpful_count
+        INTEGER unhelpful_count
+        INTEGER comment_count
+        INTEGER current_user_vote
+        BOOLEAN is_author_verified_owner
+        TEXT collection
+        TEXT entity_id
     }
 
     review_votes {
@@ -480,14 +494,15 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
+        TEXT author_username
+        TEXT author_avatar_url
     }
 
     questions {
         UUID uuid PK
         TEXT id UK
         UUID user_uuid FK
-        UUID build_uuid FK
-        UUID component_uuid FK
+        UUID entity_uuid FK
         TEXT title
         TEXT body
         INTEGER net_score
@@ -495,6 +510,15 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
+        TEXT author_username
+        TEXT author_avatar_url
+        INTEGER upvote_count
+        INTEGER downvote_count
+        INTEGER answer_count
+        BOOLEAN has_accepted_answer
+        INTEGER current_user_vote
+        TEXT collection
+        TEXT entity_id
     }
 
     answers {
@@ -509,6 +533,14 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
+        TIMESTAMPTZ accepted_at
+        TIMESTAMPTZ endorsed_at
+        TEXT author_username
+        TEXT author_avatar_url
+        INTEGER upvote_count
+        INTEGER downvote_count
+        INTEGER current_user_vote
+        INTEGER comment_count
     }
 
     question_votes {
@@ -535,6 +567,8 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
+        TEXT author_username
+        TEXT author_avatar_url
     }
 
     answer_comments {
@@ -545,6 +579,8 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
+        TEXT author_username
+        TEXT author_avatar_url
     }
 
     user_reputations {
@@ -569,9 +605,13 @@ erDiagram
     collection_items {
         UUID uuid PK
         UUID collection_uuid FK
-        UUID build_uuid FK
-        UUID component_uuid FK
+        UUID entity_uuid FK
         TIMESTAMPTZ created_at
+        TEXT entity_id
+        TEXT collection
+        TEXT name
+        TEXT primary_display_image
+        TEXT author_or_manufacturer
     }
 
     users ||--o| user_profiles : has
@@ -593,13 +633,11 @@ erDiagram
     users ||--o{ question_comments : writes
     users ||--o{ answer_comments : writes
 
-    builds ||--o{ reviews : receives
-    components ||--o{ reviews : receives
+    entities ||--o{ reviews : receives
     reviews ||--o{ review_votes : has
     reviews ||--o{ review_comments : has
 
-    builds ||--o{ questions : receives
-    components ||--o{ questions : receives
+    entities ||--o{ questions : receives
     questions ||--o{ answers : has
     questions ||--o{ question_votes : has
     questions ||--o{ question_comments : has
@@ -607,6 +645,6 @@ erDiagram
     answers ||--o{ answer_comments : has
 
     collections ||--o{ collection_items : contains
-    builds ||--o{ collection_items : collected_in
-    components ||--o{ collection_items : collected_in
+    entities ||--o{ collection_items : collected_in
+
 

@@ -847,15 +847,18 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       getEntitySocialSummary: () => entitySocialSummary,
       listReviews: (req) => {
         let list = [...reviews];
-        if (req.buildId) {
-          const b = builds.find((b) => b.id === req.buildId || b.uuid === req.buildId);
-          const bUuid = b?.uuid || req.buildId;
+        const targetId = req.entityId || (req as any).buildId || (req as any).componentId;
+        if (targetId) {
+          const b = builds.find((b) => b.id === targetId || b.uuid === targetId);
+          const bUuid = b?.uuid || targetId;
           list = list.filter(
-            (r) => r.buildUuid === bUuid || r.buildUuid === req.buildId || r.id === req.buildId,
-          );
-        } else if (req.componentId) {
-          list = list.filter(
-            (r) => r.componentUuid === req.componentId || r.id === req.componentId,
+            (r) =>
+              (r as any).entityUuid === bUuid ||
+              (r as any).entityUuid === targetId ||
+              (r as any).buildUuid === bUuid ||
+              (r as any).buildUuid === targetId ||
+              (r as any).componentUuid === targetId ||
+              r.id === targetId,
           );
         }
         return {
@@ -865,12 +868,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         };
       },
       createReview: (req) => {
+        const targetId = req.entityId || (req as any).buildId || (req as any).componentId;
         const newRev = {
           uuid: `rev-${Date.now()}`,
           id: `review-${Date.now()}`,
           userUuid: mockUser.uuid,
-          buildUuid: req.buildId,
-          componentUuid: req.componentId,
+          entityUuid: targetId,
           isRecommended: req.isRecommended,
           body: req.body,
           isEdited: false,
@@ -931,15 +934,18 @@ export function createMockTransport(options: MockTransportOptions = {}) {
 
       listQuestions: (req) => {
         let list = [...questions];
-        if (req.buildId) {
-          const b = builds.find((b) => b.id === req.buildId || b.uuid === req.buildId);
-          const bUuid = b?.uuid || req.buildId;
+        const targetId = req.entityId || (req as any).buildId || (req as any).componentId;
+        if (targetId) {
+          const b = builds.find((b) => b.id === targetId || b.uuid === targetId);
+          const bUuid = b?.uuid || targetId;
           list = list.filter(
-            (q) => q.buildUuid === bUuid || q.buildUuid === req.buildId || q.id === req.buildId,
-          );
-        } else if (req.componentId) {
-          list = list.filter(
-            (q) => q.componentUuid === req.componentId || q.id === req.componentId,
+            (q) =>
+              (q as any).entityUuid === bUuid ||
+              (q as any).entityUuid === targetId ||
+              (q as any).buildUuid === bUuid ||
+              (q as any).buildUuid === targetId ||
+              (q as any).componentUuid === targetId ||
+              q.id === targetId,
           );
         }
         return {
@@ -948,12 +954,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         };
       },
       createQuestion: (req) => {
+        const targetId = req.entityId || (req as any).buildId || (req as any).componentId;
         const newQ = {
           uuid: `q-${Date.now()}`,
           id: `question-${Date.now()}`,
           userUuid: mockUser.uuid,
-          buildUuid: req.buildId,
-          componentUuid: req.componentId,
+          entityUuid: targetId,
           title: req.title,
           body: req.body,
           netScore: 0,
@@ -1158,14 +1164,15 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         };
       },
       addCollectionItem: (req) => {
+        const entityId = req.entityId || (req as any).buildId || (req as any).componentId || "item";
         return {
           uuid: `ci-${Date.now()}`,
           collectionUuid: req.collectionId,
-          buildUuid: req.buildId,
-          componentUuid: req.componentId,
-          itemId: req.buildId || req.componentId || "item",
-          itemName: "Item",
-          itemType: req.buildId ? "Build" : "Component",
+          entityUuid: entityId,
+          entityId,
+          collection: req.collection || "build",
+          name: "Item",
+          authorOrManufacturer: "alex",
         } as any;
       },
       removeCollectionItem: () => mockCollectionItem1,

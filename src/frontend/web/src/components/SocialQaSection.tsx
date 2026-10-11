@@ -29,12 +29,18 @@ import {
 import { formatRelativeDate } from "../lib/socialFormat";
 
 export interface SocialQaSectionProps {
-  target: { type: "build" | "component"; id: string };
+  target: { type?: "build" | "component"; id: string; collection?: string };
   targetAuthorUuid?: string;
   entityName?: string;
+  isArchived?: boolean;
 }
 
-export function SocialQaSection({ target, targetAuthorUuid, entityName }: SocialQaSectionProps) {
+export function SocialQaSection({
+  target,
+  targetAuthorUuid,
+  entityName,
+  isArchived = false,
+}: SocialQaSectionProps) {
   const { user, isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
 
@@ -53,8 +59,11 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
   // Micro comments state
   const [qCommentTexts, setQCommentTexts] = useState<Record<string, string>>({});
 
-  const queryPayload =
-    target.type === "build" ? { buildId: target.id, sortBy } : { componentId: target.id, sortBy };
+  const queryPayload = {
+    entityId: target.id,
+    collection: target.collection || (target.type === "build" ? "build" : undefined),
+    sortBy,
+  };
 
   const {
     data: qResponse,
@@ -82,8 +91,8 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
     setIsSubmittingQ(true);
     try {
       await mutateCreateQuestion({
-        buildId: target.type === "build" ? target.id : undefined,
-        componentId: target.type === "component" ? target.id : undefined,
+        entityId: target.id,
+        collection: target.collection || (target.type === "build" ? "build" : undefined),
         title: qTitle.trim(),
         body: qBody.trim(),
       });
@@ -165,18 +174,28 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsQuestionComposerOpen((prev) => !prev)}
-          className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors shrink-0 shadow-lg shadow-blue-500/20 flex items-center gap-1.5 justify-center cursor-pointer"
-        >
-          <Plus size={14} />
-          <span>{isQuestionComposerOpen ? "Cancel Question" : "Ask a Question"}</span>
-        </button>
+        {isArchived ? (
+          <div className="p-2.5 px-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs text-center font-medium">
+            Archived entity: Q&A is read-only.
+          </div>
+        ) : isBuildAuthor ? (
+          <div className="p-2.5 px-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs text-center font-medium">
+            Build creators cannot ask questions on their own builds.
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setIsQuestionComposerOpen((prev) => !prev)}
+            className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors shrink-0 shadow-lg shadow-blue-500/20 flex items-center gap-1.5 justify-center cursor-pointer"
+          >
+            <Plus size={14} />
+            <span>{isQuestionComposerOpen ? "Cancel Question" : "Ask a Question"}</span>
+          </button>
+        )}
       </div>
 
       {/* Ask Question Composer */}
-      {isQuestionComposerOpen && (
+      {isQuestionComposerOpen && !isArchived && !isBuildAuthor && (
         <form
           onSubmit={handleAskQuestion}
           className="rounded-2xl border-2 border-blue-500/30 bg-white dark:bg-zinc-900/90 p-6 space-y-4 shadow-xl"
@@ -233,7 +252,7 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
               className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-md transition-colors flex items-center gap-1.5 disabled:opacity-50"
             >
               {isSubmittingQ && <Loader2 size={13} className="animate-spin" />}
-              <span>Submit Question (+5 Rep when upvoted)</span>
+              <span>Submit Question (+1 Rep when upvoted)</span>
             </button>
           </div>
         </form>
@@ -283,13 +302,14 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
                   <div className="flex flex-col items-center gap-0.5 shrink-0 pt-1">
                     <button
                       type="button"
+                      disabled={isArchived}
                       onClick={() => handleVoteQ(q.id, q.currentUserVote, 1)}
                       className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                         q.currentUserVote === 1
-                          ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                          : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-blue-500"
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
                       }`}
-                      title="Upvote (+5 rep to author)"
+                      title="Upvote (+1 rep to author)"
                     >
                       <ChevronUp size={20} />
                     </button>
@@ -298,13 +318,14 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
                     </span>
                     <button
                       type="button"
+                      disabled={isArchived}
                       onClick={() => handleVoteQ(q.id, q.currentUserVote, -1)}
                       className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                         q.currentUserVote === -1
                           ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
                           : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
                       }`}
-                      title="Downvote (-2 rep to author, costs you -2 rep)"
+                      title="Downvote (-2 rep to author, costs voter -2 rep • requires 100 rep)"
                     >
                       <ChevronDown size={20} />
                     </button>
@@ -333,7 +354,7 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
                       <span className="text-[11px] text-zinc-400">
                         {formatRelativeDate(q.createdAt?.seconds)}
                       </span>
-                      {isAsker && (
+                      {isAsker && !isArchived && (
                         <button
                           type="button"
                           onClick={() => handleDeleteQ(q.id)}
@@ -374,7 +395,7 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
                     )}
 
                     {/* Add comment under question */}
-                    {isAuthenticated && (
+                    {isAuthenticated && !isArchived && (
                       <div className="pt-2 flex items-center gap-2">
                         <input
                           type="text"
@@ -407,20 +428,22 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
                 <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
                   <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                     <span>{q.answerCount} Answers</span>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setAnsweringQuestionId(answeringQuestionId === q.id ? null : q.id)
-                      }
-                      className="text-blue-500 hover:underline cursor-pointer flex items-center gap-1 font-semibold"
-                    >
-                      <Plus size={12} />
-                      <span>Answer This Question</span>
-                    </button>
+                    {!isArchived && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setAnsweringQuestionId(answeringQuestionId === q.id ? null : q.id)
+                        }
+                        className="text-blue-500 hover:underline cursor-pointer flex items-center gap-1 font-semibold"
+                      >
+                        <Plus size={12} />
+                        <span>Answer This Question</span>
+                      </button>
+                    )}
                   </div>
 
                   {/* Inline Answer Composer */}
-                  {answeringQuestionId === q.id && (
+                  {answeringQuestionId === q.id && !isArchived && (
                     <div className="p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 space-y-3">
                       <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                         Your Answer
@@ -457,6 +480,7 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
                   <QuestionAnswersList
                     question={q}
                     isBuildAuthor={isBuildAuthor}
+                    isArchived={isArchived}
                     onAnswerUpdated={() => refetchQuestions()}
                   />
                 </div>
@@ -472,10 +496,12 @@ export function SocialQaSection({ target, targetAuthorUuid, entityName }: Social
 function QuestionAnswersList({
   question,
   isBuildAuthor,
+  isArchived = false,
   onAnswerUpdated,
 }: {
   question: Question;
   isBuildAuthor: boolean;
+  isArchived?: boolean;
   onAnswerUpdated: () => void;
 }) {
   const { user, isAuthenticated } = useAuth();
@@ -496,7 +522,7 @@ function QuestionAnswersList({
   const isQuestionAsker = user?.uuid === question.userUuid;
 
   async function handleVote(answerUuid: string, currentVote: number, targetVote: number) {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || isArchived) return;
     const newVote = currentVote === targetVote ? 0 : targetVote;
     try {
       await mutateVoteAnswer({ answerUuid, vote: newVote });
@@ -577,7 +603,7 @@ function QuestionAnswersList({
                     <Check size={14} strokeWidth={3} />
                     <span>Accepted Answer</span>
                   </div>
-                ) : isQuestionAsker ? (
+                ) : !isArchived && isQuestionAsker && user?.uuid !== ans.userUuid ? (
                   <button
                     type="button"
                     onClick={() => handleAccept(ans.uuid)}
@@ -594,7 +620,7 @@ function QuestionAnswersList({
                     <Star size={13} className="fill-current" />
                     <span>Author Verified</span>
                   </div>
-                ) : isBuildAuthor ? (
+                ) : !isArchived && isBuildAuthor && user?.uuid !== ans.userUuid ? (
                   <button
                     type="button"
                     onClick={() => handleEndorse(ans.uuid)}
@@ -620,13 +646,14 @@ function QuestionAnswersList({
               <div className="flex flex-col items-center gap-0.5 shrink-0 pt-0.5">
                 <button
                   type="button"
+                  disabled={isArchived}
                   onClick={() => handleVote(ans.uuid, ans.currentUserVote, 1)}
                   className={`p-1 rounded-md transition-colors cursor-pointer ${
                     ans.currentUserVote === 1
-                      ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                      : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-blue-500"
+                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                      : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
                   }`}
-                  title="Upvote (+5 rep)"
+                  title="Upvote (+1 rep)"
                 >
                   <ChevronUp size={16} />
                 </button>
@@ -635,13 +662,14 @@ function QuestionAnswersList({
                 </span>
                 <button
                   type="button"
+                  disabled={isArchived}
                   onClick={() => handleVote(ans.uuid, ans.currentUserVote, -1)}
                   className={`p-1 rounded-md transition-colors cursor-pointer ${
                     ans.currentUserVote === -1
                       ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
                       : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
                   }`}
-                  title="Downvote (-2 rep)"
+                  title="Downvote (-2 rep, costs voter -2 rep • requires 100 rep)"
                 >
                   <ChevronDown size={16} />
                 </button>
@@ -670,7 +698,7 @@ function QuestionAnswersList({
             )}
 
             {/* Add comment under answer */}
-            {isAuthenticated && (
+            {isAuthenticated && !isArchived && (
               <div className="pt-1 pl-4 flex items-center gap-2">
                 <input
                   type="text"

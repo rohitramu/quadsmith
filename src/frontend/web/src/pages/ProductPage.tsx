@@ -94,7 +94,11 @@ function ProductDetailView({
 
             <div className="mt-4">
               <SocialToolbar
-                target={{ type: "component", id: item.id || item.uuid || productId }}
+                target={{
+                  type: "component",
+                  id: item.id || item.uuid || productId,
+                  collection: collection.id,
+                }}
                 targetName={item.name || item.id}
                 onJumpToReviews={() => {
                   const el = document.getElementById("social-hub");
@@ -170,7 +174,11 @@ function ProductDetailView({
 
           {/* Social Interactions: Reviews, Q&A, Collections */}
           <SocialTabs
-            target={{ type: "component", id: item.id || item.uuid || productId }}
+            target={{
+              type: "component",
+              id: item.id || item.uuid || productId,
+              collection: collection.id,
+            }}
             entityName={item.name || item.id}
           />
         </>

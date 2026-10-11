@@ -18,3 +18,8 @@ export const listBuilds = BuildService.method.listBuilds;
  * @generated from rpc quadsmith.BuildService.CreateBuild
  */
 export const createBuild = BuildService.method.createBuild;
+
+/**
+ * @generated from rpc quadsmith.BuildService.DeleteBuild
+ */
+export const deleteBuild = BuildService.method.deleteBuild;

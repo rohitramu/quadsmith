@@ -86,3 +86,39 @@ func TestCooldownDurations(t *testing.T) {
 		t.Errorf("expected ExhaustedCooldown to be 15s, got %v", ExhaustedCooldown)
 	}
 }
+
+func TestIPAccountSignInThrottling(t *testing.T) {
+	ResetIPSignInTracker()
+	testIP := "198.51.100.25"
+
+	// Sign in with 5 different accounts - all should succeed
+	for i := 1; i <= 5; i++ {
+		email := strings.ToLower(string(rune('a'+i))) + "@example.com"
+		if err := CheckAndRecordIPSignIn(testIP, email); err != nil {
+			t.Fatalf("account %d should succeed within limit: %v", i, err)
+		}
+	}
+
+	// Signing in again with one of the already-recorded accounts should succeed (same account)
+	if err := CheckAndRecordIPSignIn(testIP, "b@example.com"); err != nil {
+		t.Fatalf("re-signing into existing account should succeed: %v", err)
+	}
+
+	// 6th different account from the same IP should fail
+	if err := CheckAndRecordIPSignIn(testIP, "sybil6@example.com"); err == nil {
+		t.Fatalf("expected 6th distinct account from same IP to be blocked by Sybil rate limit")
+	} else if !strings.Contains(err.Error(), "max 5 accounts per 24 hours") {
+		t.Fatalf("unexpected error message: %v", err)
+	}
+
+	// Different IP should still be able to sign in
+	if err := CheckAndRecordIPSignIn("198.51.100.99", "sybil6@example.com"); err != nil {
+		t.Fatalf("different IP should succeed: %v", err)
+	}
+
+	// Reset clears tracker
+	ResetIPSignInTracker()
+	if err := CheckAndRecordIPSignIn(testIP, "sybil6@example.com"); err != nil {
+		t.Fatalf("after reset, sign-in should succeed: %v", err)
+	}
+}

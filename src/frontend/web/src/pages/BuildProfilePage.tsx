@@ -307,7 +307,7 @@ export function BuildProfilePage() {
 
         <div className="mt-4">
           <SocialToolbar
-            target={{ type: "build", id: build.id || buildId || "" }}
+            target={{ type: "build", id: build.id || buildId || "", collection: "build" }}
             targetName={build.name}
             onJumpToReviews={() => {
               const el = document.getElementById("social-hub");
@@ -934,7 +934,7 @@ export function BuildProfilePage() {
       {/* SOCIAL INTERACTIONS: REVIEWS, Q&A, COLLECTIONS               */}
       {/* ============================================================ */}
       <SocialTabs
-        target={{ type: "build", id: build.id || buildId || "" }}
+        target={{ type: "build", id: build.id || buildId || "", collection: "build" }}
         targetAuthorUuid={build.userUuid}
         entityName={build.name}
       />

@@ -5,25 +5,36 @@ package quadsmith;
 import "_common.proto";
 import "_sql.proto";
 import "google/protobuf/timestamp.proto";
+import "media.proto";
+import "reference_link.proto";
 
 option go_package = "quadsmith/api/gen/quadsmith";
 
 // ---------------------------------------------------------
-// Unified Catalog Component Registry
+// Unified Entity Registry (Builds & Components Supertype)
 // ---------------------------------------------------------
 
-message Component {
+message Entity {
   option (quadsmith.sql.table) = {
-    name: "components"
+    name: "entities"
     unique_constraints: ["collection, id"]
   };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {create_index: true}];
-  string collection = 3 [(quadsmith.sql.column) = {create_index: true}]; // e.g. "motors", "frames"
+  string collection = 2 [(quadsmith.sql.column) = {create_index: true}]; // e.g. "builds", "motors", "frames"
+  string id = 3 [(quadsmith.sql.column) = {create_index: true}];
   string name = 4;
-  string manufacturer = 5;
+  string description = 5;
   optional string primary_display_image = 6;
+  repeated ReferenceLink reference_links = 7;
+  repeated Media media = 8;
+  string author_or_manufacturer = 9;
+  bool is_archived = 10 [(quadsmith.sql.column) = {
+    default_value: "false"
+    create_index: true
+  }];
+  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 12 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 }
 
 // ---------------------------------------------------------
@@ -57,11 +68,7 @@ enum ReviewVoteType {
 message Review {
   option (quadsmith.sql.table) = {
     name: "reviews"
-    checks: ["num_nonnulls(build_uuid, component_uuid) = 1"]
-    unique_constraints: [
-      "user_uuid, build_uuid",
-      "user_uuid, component_uuid"
-    ]
+    unique_constraints: ["user_uuid, entity_uuid"]
   };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
@@ -74,31 +81,28 @@ message Review {
     create_index: true
   }];
 
-  // Polymorphic Target (exactly one is set)
-  optional string build_uuid = 4 [(quadsmith.sql.column) = {
-    references: "builds(uuid)"
-    create_index: true
-  }];
-  optional string component_uuid = 5 [(quadsmith.sql.column) = {
-    references: "components(uuid)"
+  string entity_uuid = 4 [(quadsmith.sql.column) = {
+    references: "entities(uuid) ON DELETE CASCADE"
     create_index: true
   }];
 
-  bool is_recommended = 6; // true = Thumbs Up / Recommended, false = Thumbs Down
-  string body = 7; // Markdown writeup
-  bool is_edited = 8 [(quadsmith.sql.column) = {default_value: "false"}];
-  optional google.protobuf.Timestamp deleted_at = 9;
-  google.protobuf.Timestamp created_at = 10 [(quadsmith.sql.column) = {default_value: "NOW()"}];
-  google.protobuf.Timestamp updated_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  bool is_recommended = 5; // true = Thumbs Up / Recommended, false = Thumbs Down
+  string body = 6; // Markdown writeup
+  bool is_edited = 7 [(quadsmith.sql.column) = {default_value: "false"}];
+  optional google.protobuf.Timestamp deleted_at = 8;
+  google.protobuf.Timestamp created_at = 9 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 10 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
   // Denormalized / resolved fields for UI display
-  string author_username = 12;
-  string author_avatar_url = 13;
-  int32 helpful_count = 14;
-  int32 unhelpful_count = 15;
-  int32 comment_count = 16;
-  ReviewVoteType current_user_vote = 17;
-  bool is_author_verified_owner = 18;
+  string author_username = 11;
+  string author_avatar_url = 12;
+  int32 helpful_count = 13;
+  int32 unhelpful_count = 14;
+  int32 comment_count = 15;
+  ReviewVoteType current_user_vote = 16;
+  bool is_author_verified_owner = 17;
+  string collection = 18;
+  string entity_id = 19;
 }
 
 message ReviewVote {
@@ -109,7 +113,7 @@ message ReviewVote {
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string review_uuid = 2 [(quadsmith.sql.column) = {
-    references: "reviews(uuid)"
+    references: "reviews(uuid) ON DELETE CASCADE"
     create_index: true
   }];
   string user_uuid = 3 [(quadsmith.sql.column) = {
@@ -125,7 +129,7 @@ message ReviewComment {
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string review_uuid = 2 [(quadsmith.sql.column) = {
-    references: "reviews(uuid)"
+    references: "reviews(uuid) ON DELETE CASCADE"
     create_index: true
   }];
   string user_uuid = 3 [(quadsmith.sql.column) = {
@@ -147,10 +151,7 @@ message ReviewComment {
 // ---------------------------------------------------------
 
 message Question {
-  option (quadsmith.sql.table) = {
-    name: "questions"
-    checks: ["num_nonnulls(build_uuid, component_uuid) = 1"]
-  };
+  option (quadsmith.sql.table) = {name: "questions"};
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string id = 2 [(quadsmith.sql.column) = {
@@ -162,36 +163,33 @@ message Question {
     create_index: true
   }];
 
-  // Polymorphic Target (exactly one is set)
-  optional string build_uuid = 4 [(quadsmith.sql.column) = {
-    references: "builds(uuid)"
-    create_index: true
-  }];
-  optional string component_uuid = 5 [(quadsmith.sql.column) = {
-    references: "components(uuid)"
+  string entity_uuid = 4 [(quadsmith.sql.column) = {
+    references: "entities(uuid) ON DELETE CASCADE"
     create_index: true
   }];
 
-  string title = 6;
-  string body = 7; // Markdown
-  int32 net_score = 8 [(quadsmith.sql.column) = {
+  string title = 5;
+  string body = 6; // Markdown
+  int32 net_score = 7 [(quadsmith.sql.column) = {
     default_value: "0"
     create_index: true
   }];
-  bool is_edited = 9 [(quadsmith.sql.column) = {default_value: "false"}];
-  optional google.protobuf.Timestamp deleted_at = 10;
-  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
-  google.protobuf.Timestamp updated_at = 12 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  bool is_edited = 8 [(quadsmith.sql.column) = {default_value: "false"}];
+  optional google.protobuf.Timestamp deleted_at = 9;
+  google.protobuf.Timestamp created_at = 10 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
   // Resolved display fields
-  string author_username = 13;
-  string author_avatar_url = 14;
-  int32 upvote_count = 15;
-  int32 downvote_count = 16;
-  int32 answer_count = 17;
-  bool has_accepted_answer = 18;
-  int32 current_user_vote = 19; // +1, -1, or 0
-  repeated QuestionComment comments = 20;
+  string author_username = 12;
+  string author_avatar_url = 13;
+  int32 upvote_count = 14;
+  int32 downvote_count = 15;
+  int32 answer_count = 16;
+  bool has_accepted_answer = 17;
+  int32 current_user_vote = 18; // +1, -1, or 0
+  repeated QuestionComment comments = 19;
+  string collection = 20;
+  string entity_id = 21;
 }
 
 message Answer {
@@ -199,7 +197,7 @@ message Answer {
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string question_uuid = 2 [(quadsmith.sql.column) = {
-    references: "questions(uuid)"
+    references: "questions(uuid) ON DELETE CASCADE"
     create_index: true
   }];
   string user_uuid = 3 [(quadsmith.sql.column) = {
@@ -218,15 +216,17 @@ message Answer {
   optional google.protobuf.Timestamp deleted_at = 9;
   google.protobuf.Timestamp created_at = 10 [(quadsmith.sql.column) = {default_value: "NOW()"}];
   google.protobuf.Timestamp updated_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  optional google.protobuf.Timestamp accepted_at = 12;
+  optional google.protobuf.Timestamp endorsed_at = 13;
 
   // Resolved display fields
-  string author_username = 12;
-  string author_avatar_url = 13;
-  int32 upvote_count = 14;
-  int32 downvote_count = 15;
-  int32 current_user_vote = 16;
-  int32 comment_count = 17;
-  repeated AnswerComment comments = 18;
+  string author_username = 14;
+  string author_avatar_url = 15;
+  int32 upvote_count = 16;
+  int32 downvote_count = 17;
+  int32 current_user_vote = 18;
+  int32 comment_count = 19;
+  repeated AnswerComment comments = 20;
 }
 
 message QuestionVote {
@@ -237,7 +237,7 @@ message QuestionVote {
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string question_uuid = 2 [(quadsmith.sql.column) = {
-    references: "questions(uuid)"
+    references: "questions(uuid) ON DELETE CASCADE"
     create_index: true
   }];
   string user_uuid = 3 [(quadsmith.sql.column) = {
@@ -256,7 +256,7 @@ message AnswerVote {
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string answer_uuid = 2 [(quadsmith.sql.column) = {
-    references: "answers(uuid)"
+    references: "answers(uuid) ON DELETE CASCADE"
     create_index: true
   }];
   string user_uuid = 3 [(quadsmith.sql.column) = {
@@ -272,7 +272,7 @@ message QuestionComment {
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string question_uuid = 2 [(quadsmith.sql.column) = {
-    references: "questions(uuid)"
+    references: "questions(uuid) ON DELETE CASCADE"
     create_index: true
   }];
   string user_uuid = 3 [(quadsmith.sql.column) = {
@@ -293,7 +293,7 @@ message AnswerComment {
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string answer_uuid = 2 [(quadsmith.sql.column) = {
-    references: "answers(uuid)"
+    references: "answers(uuid) ON DELETE CASCADE"
     create_index: true
   }];
   string user_uuid = 3 [(quadsmith.sql.column) = {
@@ -366,37 +366,28 @@ message Collection {
 message CollectionItem {
   option (quadsmith.sql.table) = {
     name: "collection_items"
-    checks: ["num_nonnulls(build_uuid, component_uuid) = 1"]
-    unique_constraints: [
-      "collection_uuid, build_uuid",
-      "collection_uuid, component_uuid"
-    ]
+    unique_constraints: ["collection_uuid, entity_uuid"]
   };
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
   string collection_uuid = 2 [(quadsmith.sql.column) = {
-    references: "collections(uuid)"
+    references: "collections(uuid) ON DELETE CASCADE"
     create_index: true
   }];
 
-  // Polymorphic Target (Build or Component)
-  optional string build_uuid = 3 [(quadsmith.sql.column) = {
-    references: "builds(uuid)"
-    create_index: true
-  }];
-  optional string component_uuid = 4 [(quadsmith.sql.column) = {
-    references: "components(uuid)"
+  string entity_uuid = 3 [(quadsmith.sql.column) = {
+    references: "entities(uuid) ON DELETE CASCADE"
     create_index: true
   }];
 
-  google.protobuf.Timestamp created_at = 5 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp created_at = 4 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
   // Resolved item details for display
-  string item_id = 6;
-  string item_name = 7;
-  string item_type = 8; // "build" or component collection name (e.g. "motors")
-  string item_image = 9;
-  string item_author_or_manufacturer = 10;
+  string entity_id = 5;
+  string collection = 6;
+  string name = 7;
+  optional string primary_display_image = 8;
+  optional string author_or_manufacturer = 9;
 }
 
 message EntitySocialSummary {
@@ -404,6 +395,7 @@ message EntitySocialSummary {
   int32 like_count = 2;
   ReviewSummary review_summary = 3;
   int32 question_count = 4;
+  bool is_archived = 5;
 }
 
 // ---------------------------------------------------------
@@ -411,8 +403,8 @@ message EntitySocialSummary {
 // ---------------------------------------------------------
 
 message CreateReviewRequest {
-  optional string build_id = 1;
-  optional string component_id = 2;
+  string entity_id = 1;
+  optional string collection = 2;
   bool is_recommended = 3;
   string body = 4;
 }
@@ -428,8 +420,8 @@ message DeleteReviewRequest {
 }
 
 message ListReviewsRequest {
-  optional string build_id = 1;
-  optional string component_id = 2;
+  string entity_id = 1;
+  optional string collection = 2;
   string sort_by = 3; // "helpful", "recent", "positive", "negative"
   int32 page_size = 4;
   string page_token = 5;
@@ -470,8 +462,8 @@ message ListReviewCommentsResponse {
 }
 
 message CreateQuestionRequest {
-  optional string build_id = 1;
-  optional string component_id = 2;
+  string entity_id = 1;
+  optional string collection = 2;
   string title = 3;
   string body = 4;
 }
@@ -487,8 +479,8 @@ message DeleteQuestionRequest {
 }
 
 message ListQuestionsRequest {
-  optional string build_id = 1;
-  optional string component_id = 2;
+  string entity_id = 1;
+  optional string collection = 2;
   string sort_by = 3; // "score", "recent"
   string query = 4; // Search filter
   int32 page_size = 5;
@@ -602,8 +594,8 @@ message ListUserCollectionsResponse {
 }
 
 message ToggleLikeItemRequest {
-  optional string build_id = 1;
-  optional string component_id = 2;
+  string entity_id = 1;
+  optional string collection = 2;
 }
 
 message ToggleLikeItemResponse {
@@ -613,14 +605,14 @@ message ToggleLikeItemResponse {
 
 message AddCollectionItemRequest {
   string collection_id = 1;
-  optional string build_id = 2;
-  optional string component_id = 3;
+  string entity_id = 2;
+  optional string collection = 3;
 }
 
 message RemoveCollectionItemRequest {
   string collection_id = 1;
-  optional string build_id = 2;
-  optional string component_id = 3;
+  string entity_id = 2;
+  optional string collection = 3;
 }
 
 message ListCollectionItemsRequest {
@@ -636,8 +628,8 @@ message ListCollectionItemsResponse {
 }
 
 message GetEntitySocialSummaryRequest {
-  optional string build_id = 1;
-  optional string component_id = 2;
+  string entity_id = 1;
+  optional string collection = 2;
 }
 
 // ---------------------------------------------------------

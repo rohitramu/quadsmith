@@ -1,6 +1,6 @@
 gps_receivers: {
 
-  uuid: "01923019-3008-7001-8001-000000000001"
+  uuid: "01923019-3008-7001-8008-000000000001"
   id: "matek-m10-5883"
   manufacturer: "Matek Systems"
   name: "Matek M10-5883 GNSS & Compass"
@@ -22,7 +22,7 @@ gps_receivers: {
 }
 gps_receivers: {
 
-  uuid: "01923019-3008-7001-8001-000000000002"
+  uuid: "01923019-3008-7001-8008-000000000002"
   id: "flywoo-goku-gm10-nano-v3"
   manufacturer: "Flywoo"
   name: "GOKU GM10 Nano V3 GPS"
@@ -47,7 +47,7 @@ gps_receivers: {
 }
 gps_receivers: {
 
-  uuid: "01923019-3008-7001-8001-000000000003"
+  uuid: "01923019-3008-7001-8008-000000000003"
   id: "flywoo-goku-gm10-mini-v3"
   manufacturer: "Flywoo"
   name: "GOKU GM10 Mini V3 GPS with Compass"
@@ -73,7 +73,7 @@ gps_receivers: {
 }
 gps_receivers: {
 
-  uuid: "01923019-3008-7001-8001-000000000004"
+  uuid: "01923019-3008-7001-8008-000000000004"
   id: "flywoo-goku-gm10-pro-v3"
   manufacturer: "Flywoo"
   name: "GOKU GM10 Pro V3 GPS with Compass"
@@ -99,7 +99,7 @@ gps_receivers: {
 }
 gps_receivers: {
 
-  uuid: "01923019-3008-7001-8001-000000000005"
+  uuid: "01923019-3008-7001-8008-000000000005"
   id: "holybro-micro-m10"
   manufacturer: "Holybro"
   name: "Holybro Micro M10 GPS"
@@ -129,7 +129,7 @@ gps_receivers: {
 }
 gps_receivers: {
 
-  uuid: "01923019-3008-7001-8001-000000000006"
+  uuid: "01923019-3008-7001-8008-000000000006"
   id: "hglrc-m100-5883"
   manufacturer: "HGLRC"
   name: "HGLRC M100-5883 GPS"

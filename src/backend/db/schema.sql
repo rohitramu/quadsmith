@@ -479,28 +479,35 @@ CREATE TABLE IF NOT EXISTS radio_firmwares (
 
 CREATE INDEX IF NOT EXISTS idx_radio_firmwares_manufacturer ON radio_firmwares (manufacturer);
 
-CREATE TABLE IF NOT EXISTS components (
+CREATE TABLE IF NOT EXISTS entities (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
-  id TEXT NOT NULL,
   collection TEXT NOT NULL,
+  id TEXT NOT NULL,
   name TEXT NOT NULL,
-  manufacturer TEXT NOT NULL,
+  description TEXT NOT NULL,
   primary_display_image TEXT,
+  reference_links JSONB,
+  media JSONB,
+  author_or_manufacturer TEXT NOT NULL,
+  is_archived BOOLEAN DEFAULT false NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE (collection, id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_components_id ON components (id);
+CREATE INDEX IF NOT EXISTS idx_entities_collection ON entities (collection);
 
-CREATE INDEX IF NOT EXISTS idx_components_collection ON components (collection);
+CREATE INDEX IF NOT EXISTS idx_entities_id ON entities (id);
+
+CREATE INDEX IF NOT EXISTS idx_entities_is_archived ON entities (is_archived);
 
 CREATE TABLE IF NOT EXISTS reviews (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
   id TEXT UNIQUE NOT NULL,
   user_uuid UUID NOT NULL,
-  build_uuid UUID,
-  component_uuid UUID,
+  entity_uuid UUID NOT NULL,
   is_recommended BOOLEAN NOT NULL,
   body TEXT NOT NULL,
   is_edited BOOLEAN DEFAULT false NOT NULL,
@@ -514,18 +521,16 @@ CREATE TABLE IF NOT EXISTS reviews (
   comment_count INTEGER NOT NULL,
   current_user_vote INTEGER NOT NULL,
   is_author_verified_owner BOOLEAN NOT NULL,
-  CHECK (num_nonnulls (build_uuid, component_uuid) = 1),
-  UNIQUE (user_uuid, build_uuid),
-  UNIQUE (user_uuid, component_uuid)
+  collection TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  UNIQUE (user_uuid, entity_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_reviews_id ON reviews (id);
 
 CREATE INDEX IF NOT EXISTS idx_reviews_user_uuid ON reviews (user_uuid);
 
-CREATE INDEX IF NOT EXISTS idx_reviews_build_uuid ON reviews (build_uuid);
-
-CREATE INDEX IF NOT EXISTS idx_reviews_component_uuid ON reviews (component_uuid);
+CREATE INDEX IF NOT EXISTS idx_reviews_entity_uuid ON reviews (entity_uuid);
 
 CREATE TABLE IF NOT EXISTS review_votes (
   uuid UUID NOT NULL,
@@ -563,8 +568,7 @@ CREATE TABLE IF NOT EXISTS questions (
   PRIMARY KEY (uuid),
   id TEXT UNIQUE NOT NULL,
   user_uuid UUID NOT NULL,
-  build_uuid UUID,
-  component_uuid UUID,
+  entity_uuid UUID NOT NULL,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
   net_score INTEGER DEFAULT 0 NOT NULL,
@@ -580,16 +584,15 @@ CREATE TABLE IF NOT EXISTS questions (
   has_accepted_answer BOOLEAN NOT NULL,
   current_user_vote INTEGER NOT NULL,
   comments JSONB,
-  CHECK (num_nonnulls (build_uuid, component_uuid) = 1)
+  collection TEXT NOT NULL,
+  entity_id TEXT NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_questions_id ON questions (id);
 
 CREATE INDEX IF NOT EXISTS idx_questions_user_uuid ON questions (user_uuid);
 
-CREATE INDEX IF NOT EXISTS idx_questions_build_uuid ON questions (build_uuid);
-
-CREATE INDEX IF NOT EXISTS idx_questions_component_uuid ON questions (component_uuid);
+CREATE INDEX IF NOT EXISTS idx_questions_entity_uuid ON questions (entity_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_questions_net_score ON questions (net_score);
 
@@ -606,6 +609,8 @@ CREATE TABLE IF NOT EXISTS answers (
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
+  accepted_at TIMESTAMPTZ,
+  endorsed_at TIMESTAMPTZ,
   author_username TEXT NOT NULL,
   author_avatar_url TEXT NOT NULL,
   upvote_count INTEGER NOT NULL,
@@ -722,24 +727,19 @@ CREATE TABLE IF NOT EXISTS collection_items (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
   collection_uuid UUID NOT NULL,
-  build_uuid UUID,
-  component_uuid UUID,
+  entity_uuid UUID NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  item_id TEXT NOT NULL,
-  item_name TEXT NOT NULL,
-  item_type TEXT NOT NULL,
-  item_image TEXT NOT NULL,
-  item_author_or_manufacturer TEXT NOT NULL,
-  CHECK (num_nonnulls (build_uuid, component_uuid) = 1),
-  UNIQUE (collection_uuid, build_uuid),
-  UNIQUE (collection_uuid, component_uuid)
+  entity_id TEXT NOT NULL,
+  collection TEXT NOT NULL,
+  name TEXT NOT NULL,
+  primary_display_image TEXT,
+  author_or_manufacturer TEXT,
+  UNIQUE (collection_uuid, entity_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_collection_items_collection_uuid ON collection_items (collection_uuid);
 
-CREATE INDEX IF NOT EXISTS idx_collection_items_build_uuid ON collection_items (build_uuid);
-
-CREATE INDEX IF NOT EXISTS idx_collection_items_component_uuid ON collection_items (component_uuid);
+CREATE INDEX IF NOT EXISTS idx_collection_items_entity_uuid ON collection_items (entity_uuid);
 
 CREATE TABLE IF NOT EXISTS software_tools (
   uuid UUID NOT NULL,
@@ -849,19 +849,16 @@ ALTER TABLE reviews
 ADD CONSTRAINT fk_reviews_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE reviews
-ADD CONSTRAINT fk_reviews_build_uuid FOREIGN KEY (build_uuid) REFERENCES builds (uuid);
-
-ALTER TABLE reviews
-ADD CONSTRAINT fk_reviews_component_uuid FOREIGN KEY (component_uuid) REFERENCES components (uuid);
+ADD CONSTRAINT fk_reviews_entity_uuid FOREIGN KEY (entity_uuid) REFERENCES entities (uuid) ON DELETE CASCADE;
 
 ALTER TABLE review_votes
-ADD CONSTRAINT fk_review_votes_review_uuid FOREIGN KEY (review_uuid) REFERENCES reviews (uuid);
+ADD CONSTRAINT fk_review_votes_review_uuid FOREIGN KEY (review_uuid) REFERENCES reviews (uuid) ON DELETE CASCADE;
 
 ALTER TABLE review_votes
 ADD CONSTRAINT fk_review_votes_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE review_comments
-ADD CONSTRAINT fk_review_comments_review_uuid FOREIGN KEY (review_uuid) REFERENCES reviews (uuid);
+ADD CONSTRAINT fk_review_comments_review_uuid FOREIGN KEY (review_uuid) REFERENCES reviews (uuid) ON DELETE CASCADE;
 
 ALTER TABLE review_comments
 ADD CONSTRAINT fk_review_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
@@ -870,37 +867,34 @@ ALTER TABLE questions
 ADD CONSTRAINT fk_questions_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE questions
-ADD CONSTRAINT fk_questions_build_uuid FOREIGN KEY (build_uuid) REFERENCES builds (uuid);
-
-ALTER TABLE questions
-ADD CONSTRAINT fk_questions_component_uuid FOREIGN KEY (component_uuid) REFERENCES components (uuid);
+ADD CONSTRAINT fk_questions_entity_uuid FOREIGN KEY (entity_uuid) REFERENCES entities (uuid) ON DELETE CASCADE;
 
 ALTER TABLE answers
-ADD CONSTRAINT fk_answers_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid);
+ADD CONSTRAINT fk_answers_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid) ON DELETE CASCADE;
 
 ALTER TABLE answers
 ADD CONSTRAINT fk_answers_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE question_votes
-ADD CONSTRAINT fk_question_votes_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid);
+ADD CONSTRAINT fk_question_votes_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid) ON DELETE CASCADE;
 
 ALTER TABLE question_votes
 ADD CONSTRAINT fk_question_votes_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE answer_votes
-ADD CONSTRAINT fk_answer_votes_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES answers (uuid);
+ADD CONSTRAINT fk_answer_votes_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES answers (uuid) ON DELETE CASCADE;
 
 ALTER TABLE answer_votes
 ADD CONSTRAINT fk_answer_votes_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE question_comments
-ADD CONSTRAINT fk_question_comments_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid);
+ADD CONSTRAINT fk_question_comments_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid) ON DELETE CASCADE;
 
 ALTER TABLE question_comments
 ADD CONSTRAINT fk_question_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE answer_comments
-ADD CONSTRAINT fk_answer_comments_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES answers (uuid);
+ADD CONSTRAINT fk_answer_comments_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES answers (uuid) ON DELETE CASCADE;
 
 ALTER TABLE answer_comments
 ADD CONSTRAINT fk_answer_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
@@ -912,10 +906,7 @@ ALTER TABLE collections
 ADD CONSTRAINT fk_collections_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE collection_items
-ADD CONSTRAINT fk_collection_items_collection_uuid FOREIGN KEY (collection_uuid) REFERENCES collections (uuid);
+ADD CONSTRAINT fk_collection_items_collection_uuid FOREIGN KEY (collection_uuid) REFERENCES collections (uuid) ON DELETE CASCADE;
 
 ALTER TABLE collection_items
-ADD CONSTRAINT fk_collection_items_build_uuid FOREIGN KEY (build_uuid) REFERENCES builds (uuid);
-
-ALTER TABLE collection_items
-ADD CONSTRAINT fk_collection_items_component_uuid FOREIGN KEY (component_uuid) REFERENCES components (uuid);
+ADD CONSTRAINT fk_collection_items_entity_uuid FOREIGN KEY (entity_uuid) REFERENCES entities (uuid) ON DELETE CASCADE;

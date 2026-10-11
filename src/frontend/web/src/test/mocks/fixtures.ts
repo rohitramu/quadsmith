@@ -442,7 +442,7 @@ export const mockReview1: Review = create(ReviewSchema, {
   uuid: "018f0000-0000-7000-0000-000000000301",
   id: "review-rotor-king",
   userUuid: "018f0000-0000-7000-0000-000000000098",
-  buildUuid: mockBuild1.uuid,
+  entityUuid: mockBuild1.uuid,
   isRecommended: true,
   body: "Incredible frame stiffness and smooth low-end throttle resolution. Survived a direct hit to concrete!",
   isEdited: false,
@@ -461,7 +461,7 @@ export const mockReview2: Review = create(ReviewSchema, {
   uuid: "018f0000-0000-7000-0000-000000000302",
   id: "review-acro-fan",
   userUuid: "018f0000-0000-7000-0000-000000000097",
-  componentUuid: "018f0000-0000-7000-0000-000000000001",
+  entityUuid: "018f0000-0000-7000-0000-000000000001",
   isRecommended: true,
   body: "Solid motors for the price. Very smooth bearings.",
   isEdited: false,
@@ -503,7 +503,7 @@ export const mockQuestion1: Question = create(QuestionSchema, {
   uuid: "018f0000-0000-7000-0000-000000000601",
   id: "does-this-fit-20x20-stack",
   userUuid: "018f0000-0000-7000-0000-000000000096",
-  buildUuid: mockBuild1.uuid,
+  entityUuid: mockBuild1.uuid,
   title: "Does this frame fit 20x20mm mounting stacks?",
   body: "I have a 20x20mm FC/ESC stack and want to know if mounting holes are included or if an adapter is needed.",
   netScore: 3,
@@ -556,14 +556,14 @@ export const mockCollections = [mockCollectionLiked, mockCollection1];
 export const mockCollectionItem1: CollectionItem = create(CollectionItemSchema, {
   uuid: "018f0000-0000-7000-0000-000000000801",
   collectionUuid: mockCollection1.uuid,
-  buildUuid: mockBuild1.uuid,
+  entityUuid: mockBuild1.uuid,
   createdAt: { seconds: 1716600000n, nanos: 0 },
-  itemId: "bando-basher-5-inch",
-  itemName: "Bando Basher 5 inch Freestyle",
-  itemType: "Build",
-  itemImage:
+  entityId: "bando-basher-5-inch",
+  collection: "build",
+  name: "Bando Basher 5 inch Freestyle",
+  primaryDisplayImage:
     "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1200&q=80",
-  itemAuthorOrManufacturer: "alex",
+  authorOrManufacturer: "alex",
 });
 
 export const mockEntitySocialSummary1: EntitySocialSummary = create(EntitySocialSummarySchema, {

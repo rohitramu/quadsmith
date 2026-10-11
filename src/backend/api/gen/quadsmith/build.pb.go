@@ -449,6 +449,94 @@ func (x *CreateBuildRequest) GetBuild() *Build {
 	return nil
 }
 
+type DeleteBuildRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBuildRequest) Reset() {
+	*x = DeleteBuildRequest{}
+	mi := &file_build_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBuildRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBuildRequest) ProtoMessage() {}
+
+func (x *DeleteBuildRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_build_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBuildRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBuildRequest) Descriptor() ([]byte, []int) {
+	return file_build_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DeleteBuildRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteBuildResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBuildResponse) Reset() {
+	*x = DeleteBuildResponse{}
+	mi := &file_build_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBuildResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBuildResponse) ProtoMessage() {}
+
+func (x *DeleteBuildResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_build_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBuildResponse.ProtoReflect.Descriptor instead.
+func (*DeleteBuildResponse) Descriptor() ([]byte, []int) {
+	return file_build_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *DeleteBuildResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
 var File_build_proto protoreflect.FileDescriptor
 
 const file_build_proto_rawDesc = "" +
@@ -500,12 +588,18 @@ const file_build_proto_rawDesc = "" +
 	"\x06builds\x18\x01 \x03(\v2\x10.quadsmith.BuildR\x06builds\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"<\n" +
 	"\x12CreateBuildRequest\x12&\n" +
-	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build2\xd3\x01\n" +
+	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\"$\n" +
+	"\x12DeleteBuildRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"6\n" +
+	"\x13DeleteBuildResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived2\xa1\x02\n" +
 	"\fBuildService\x128\n" +
 	"\bGetBuild\x12\x1a.quadsmith.GetBuildRequest\x1a\x10.quadsmith.Build\x12I\n" +
 	"\n" +
 	"ListBuilds\x12\x1c.quadsmith.ListBuildsRequest\x1a\x1d.quadsmith.ListBuildsResponse\x12>\n" +
-	"\vCreateBuild\x12\x1d.quadsmith.CreateBuildRequest\x1a\x10.quadsmith.BuildB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\vCreateBuild\x12\x1d.quadsmith.CreateBuildRequest\x1a\x10.quadsmith.Build\x12L\n" +
+	"\vDeleteBuild\x12\x1d.quadsmith.DeleteBuildRequest\x1a\x1e.quadsmith.DeleteBuildResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_build_proto_rawDescOnce sync.Once
@@ -519,29 +613,33 @@ func file_build_proto_rawDescGZIP() []byte {
 	return file_build_proto_rawDescData
 }
 
-var file_build_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_build_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_build_proto_goTypes = []any{
-	(*Build)(nil),              // 0: quadsmith.Build
-	(*GetBuildRequest)(nil),    // 1: quadsmith.GetBuildRequest
-	(*ListBuildsRequest)(nil),  // 2: quadsmith.ListBuildsRequest
-	(*ListBuildsResponse)(nil), // 3: quadsmith.ListBuildsResponse
-	(*CreateBuildRequest)(nil), // 4: quadsmith.CreateBuildRequest
-	(*ReferenceLink)(nil),      // 5: quadsmith.ReferenceLink
-	(*Media)(nil),              // 6: quadsmith.Media
+	(*Build)(nil),               // 0: quadsmith.Build
+	(*GetBuildRequest)(nil),     // 1: quadsmith.GetBuildRequest
+	(*ListBuildsRequest)(nil),   // 2: quadsmith.ListBuildsRequest
+	(*ListBuildsResponse)(nil),  // 3: quadsmith.ListBuildsResponse
+	(*CreateBuildRequest)(nil),  // 4: quadsmith.CreateBuildRequest
+	(*DeleteBuildRequest)(nil),  // 5: quadsmith.DeleteBuildRequest
+	(*DeleteBuildResponse)(nil), // 6: quadsmith.DeleteBuildResponse
+	(*ReferenceLink)(nil),       // 7: quadsmith.ReferenceLink
+	(*Media)(nil),               // 8: quadsmith.Media
 }
 var file_build_proto_depIdxs = []int32{
-	5, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
-	6, // 1: quadsmith.Build.media:type_name -> quadsmith.Media
+	7, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
+	8, // 1: quadsmith.Build.media:type_name -> quadsmith.Media
 	0, // 2: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
 	0, // 3: quadsmith.CreateBuildRequest.build:type_name -> quadsmith.Build
 	1, // 4: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
 	2, // 5: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
 	4, // 6: quadsmith.BuildService.CreateBuild:input_type -> quadsmith.CreateBuildRequest
-	0, // 7: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
-	3, // 8: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
-	0, // 9: quadsmith.BuildService.CreateBuild:output_type -> quadsmith.Build
-	7, // [7:10] is the sub-list for method output_type
-	4, // [4:7] is the sub-list for method input_type
+	5, // 7: quadsmith.BuildService.DeleteBuild:input_type -> quadsmith.DeleteBuildRequest
+	0, // 8: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
+	3, // 9: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
+	0, // 10: quadsmith.BuildService.CreateBuild:output_type -> quadsmith.Build
+	6, // 11: quadsmith.BuildService.DeleteBuild:output_type -> quadsmith.DeleteBuildResponse
+	8, // [8:12] is the sub-list for method output_type
+	4, // [4:8] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
 	4, // [4:4] is the sub-list for extension extendee
 	0, // [0:4] is the sub-list for field type_name
@@ -563,7 +661,7 @@ func file_build_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_build_proto_rawDesc), len(file_build_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

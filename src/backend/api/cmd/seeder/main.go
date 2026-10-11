@@ -38,7 +38,7 @@ func main() {
 		"flight_controller_firmwares", "electronic_speed_controller_firmwares", "video_transmitter_firmwares",
 		"radio_firmwares", "software_tools", "transmitters", "goggles", "chargers", "field_tools",
 		"reviews", "review_votes", "review_comments", "questions", "answers", "question_votes", "answer_votes",
-		"question_comments", "answer_comments", "collections", "collection_items", "user_reputations", "components",
+		"question_comments", "answer_comments", "collections", "collection_items", "user_reputations", "entities",
 	}
 
 	for _, table := range tables {
@@ -421,14 +421,24 @@ func main() {
 		{"software_tools", "software-tools"},
 	}
 
+	// Populate unified entities table from builds
+	query := `
+		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at)
+		SELECT uuid, 'builds', id, name, description, primary_display_image, reference_links, media, COALESCE(author_username, ''), false, NOW(), NOW() FROM builds
+		ON CONFLICT (collection, id) DO NOTHING;
+	`
+	if _, err := tx.Exec(ctx, query); err != nil {
+		panic(fmt.Errorf("failed populating entities from builds: %w", err))
+	}
+
 	for _, ct := range componentTables {
-		query := fmt.Sprintf(`
-			INSERT INTO components (uuid, id, collection, name, manufacturer, primary_display_image)
-			SELECT uuid, id, '%s', name, manufacturer, primary_display_image FROM %s
-			ON CONFLICT (uuid) DO NOTHING;
+		q := fmt.Sprintf(`
+			INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at)
+			SELECT uuid, '%s', id, name, description, primary_display_image, reference_links, media, manufacturer, false, NOW(), NOW() FROM %s
+			ON CONFLICT (collection, id) DO NOTHING;
 		`, ct.collection, ct.table)
-		if _, err := tx.Exec(ctx, query); err != nil {
-			panic(fmt.Errorf("failed populating components from %s: %w", ct.table, err))
+		if _, err := tx.Exec(ctx, q); err != nil {
+			panic(fmt.Errorf("failed populating entities from %s: %w", ct.table, err))
 		}
 	}
 

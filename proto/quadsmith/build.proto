@@ -99,6 +99,14 @@ message CreateBuildRequest {
   Build build = 1;
 }
 
+message DeleteBuildRequest {
+  string id = 1;
+}
+
+message DeleteBuildResponse {
+  bool is_archived = 1;
+}
+
 // ---------------------------------------------------------
 // gRPC Service
 // ---------------------------------------------------------
@@ -106,4 +114,5 @@ service BuildService {
   rpc GetBuild(GetBuildRequest) returns (Build);
   rpc ListBuilds(ListBuildsRequest) returns (ListBuildsResponse);
   rpc CreateBuild(CreateBuildRequest) returns (Build);
+  rpc DeleteBuild(DeleteBuildRequest) returns (DeleteBuildResponse);
 }

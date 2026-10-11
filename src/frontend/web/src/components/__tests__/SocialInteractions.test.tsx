@@ -129,8 +129,8 @@ describe("Social Interactions Components", () => {
 
       await user.click(helpfulBtn);
 
-      // Count increases to 6
-      expect(await screen.findByRole("button", { name: /yes\s*6/i })).toBeInTheDocument();
+      // Count increases to 6 and displays directional label
+      expect(await screen.findByRole("button", { name: /you voted yes\s*6/i })).toBeInTheDocument();
     });
   });
 
@@ -175,6 +175,21 @@ describe("Social Interactions Components", () => {
         await screen.findByText("What battery strap length is recommended?"),
       ).toBeInTheDocument();
     });
+
+    it("prevents build author from asking questions on their own build", async () => {
+      renderWithProviders(
+        <SocialQaSection
+          target={target}
+          targetAuthorUuid="018f0000-0000-7000-0000-000000000099" // mockUser.uuid
+          entityName={targetName}
+        />,
+      );
+
+      expect(
+        await screen.findByText(/Build creators cannot ask questions on their own builds/i),
+      ).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /ask a question/i })).not.toBeInTheDocument();
+    });
   });
 
   describe("SocialTabs", () => {
@@ -205,6 +220,7 @@ describe("Social Interactions Components", () => {
       expect(screen.getByText(/Review Author/i)).toBeInTheDocument();
       expect(screen.getByText(/\+1 Rep/i)).toBeInTheDocument();
       expect(screen.getByText(/-2 Rep \(Both\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Unlock at 100 rep/i)).toBeInTheDocument();
     });
   });
 });

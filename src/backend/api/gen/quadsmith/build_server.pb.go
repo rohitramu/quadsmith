@@ -4,6 +4,7 @@ package quadsmith
 import (
 	"connectrpc.com/connect"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/jackc/pgx/v5"
@@ -223,6 +224,27 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 		b.Id = newID
 	}
 
+	var refLinksJSON, mediaJSON []byte
+	if len(b.ReferenceLinks) > 0 {
+		refLinksJSON, _ = json.Marshal(b.ReferenceLinks)
+	}
+	if len(b.Media) > 0 {
+		mediaJSON, _ = json.Marshal(b.Media)
+	}
+	authorStr := ""
+	if b.AuthorUsername != nil {
+		authorStr = *b.AuthorUsername
+	}
+	_, err = tx.Exec(ctx, `
+		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at)
+		VALUES ($1, 'builds', $2, $3, $4, $5, $6, $7, $8, false, NOW(), NOW())
+		ON CONFLICT (collection, id) DO UPDATE
+		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, updated_at = NOW()
+	`, b.Uuid, b.Id, b.Name, b.Description, b.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorStr)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save entity: %w", err))
+	}
+
 	if err := CreateBuild(ctx, tx, b); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save build: %w", err))
 	}
@@ -232,4 +254,56 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 	}
 
 	return connect.NewResponse(b), nil
+}
+
+// DeleteBuild deletes or delists a build record (Steam-style hybrid deletion)
+func (s *BuildServiceHandler) DeleteBuild(ctx context.Context, req *connect.Request[DeleteBuildRequest]) (*connect.Response[DeleteBuildResponse], error) {
+	userCtx := authcontext.UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	idOrUUID := strings.TrimSpace(req.Msg.GetId())
+	if idOrUUID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("build id is required"))
+	}
+	b, err := GetBuild(ctx, s.db, idOrUUID, []string{"uuid", "user_uuid"})
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("build not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if userCtx.Role != "ADMIN" && (b.UserUuid == nil || *b.UserUuid != userCtx.UserUUID) {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to delete this build"))
+	}
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer tx.Rollback(ctx)
+	var activityCount int64
+	_ = tx.QueryRow(ctx, `
+		SELECT (
+			(SELECT count(*) FROM questions WHERE entity_uuid = $1) +
+			(SELECT count(*) FROM reviews WHERE entity_uuid = $1)
+		)
+	`, b.Uuid).Scan(&activityCount)
+	isArchived := false
+	if activityCount == 0 {
+		if _, err := tx.Exec(ctx, "DELETE FROM builds WHERE uuid = $1", b.Uuid); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete build: %w", err))
+		}
+		if _, err := tx.Exec(ctx, "DELETE FROM entities WHERE uuid = $1", b.Uuid); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete entity: %w", err))
+		}
+	} else {
+		isArchived = true
+		if _, err := tx.Exec(ctx, "UPDATE entities SET is_archived = true, updated_at = NOW() WHERE uuid = $1", b.Uuid); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to archive entity: %w", err))
+		}
+	}
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	return connect.NewResponse(&DeleteBuildResponse{IsArchived: isArchived}), nil
 }

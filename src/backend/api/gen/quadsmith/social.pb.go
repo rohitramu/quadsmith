@@ -135,32 +135,38 @@ func (ReviewVoteType) EnumDescriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{1}
 }
 
-type Component struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	Uuid                string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id                  string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Collection          string                 `protobuf:"bytes,3,opt,name=collection,proto3" json:"collection,omitempty"` // e.g. "motors", "frames"
-	Name                string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	Manufacturer        string                 `protobuf:"bytes,5,opt,name=manufacturer,proto3" json:"manufacturer,omitempty"`
-	PrimaryDisplayImage *string                `protobuf:"bytes,6,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+type Entity struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	Uuid                 string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Collection           string                 `protobuf:"bytes,2,opt,name=collection,proto3" json:"collection,omitempty"` // e.g. "builds", "motors", "frames"
+	Id                   string                 `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
+	Name                 string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Description          string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	PrimaryDisplayImage  *string                `protobuf:"bytes,6,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	ReferenceLinks       []*ReferenceLink       `protobuf:"bytes,7,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	Media                []*Media               `protobuf:"bytes,8,rep,name=media,proto3" json:"media,omitempty"`
+	AuthorOrManufacturer string                 `protobuf:"bytes,9,opt,name=author_or_manufacturer,json=authorOrManufacturer,proto3" json:"author_or_manufacturer,omitempty"`
+	IsArchived           bool                   `protobuf:"varint,10,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	CreatedAt            *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt            *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
-func (x *Component) Reset() {
-	*x = Component{}
+func (x *Entity) Reset() {
+	*x = Entity{}
 	mi := &file_social_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Component) String() string {
+func (x *Entity) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Component) ProtoMessage() {}
+func (*Entity) ProtoMessage() {}
 
-func (x *Component) ProtoReflect() protoreflect.Message {
+func (x *Entity) ProtoReflect() protoreflect.Message {
 	mi := &file_social_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -172,51 +178,93 @@ func (x *Component) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Component.ProtoReflect.Descriptor instead.
-func (*Component) Descriptor() ([]byte, []int) {
+// Deprecated: Use Entity.ProtoReflect.Descriptor instead.
+func (*Entity) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Component) GetUuid() string {
+func (x *Entity) GetUuid() string {
 	if x != nil {
 		return x.Uuid
 	}
 	return ""
 }
 
-func (x *Component) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *Component) GetCollection() string {
+func (x *Entity) GetCollection() string {
 	if x != nil {
 		return x.Collection
 	}
 	return ""
 }
 
-func (x *Component) GetName() string {
+func (x *Entity) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Entity) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *Component) GetManufacturer() string {
+func (x *Entity) GetDescription() string {
 	if x != nil {
-		return x.Manufacturer
+		return x.Description
 	}
 	return ""
 }
 
-func (x *Component) GetPrimaryDisplayImage() string {
+func (x *Entity) GetPrimaryDisplayImage() string {
 	if x != nil && x.PrimaryDisplayImage != nil {
 		return *x.PrimaryDisplayImage
 	}
 	return ""
+}
+
+func (x *Entity) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
+}
+
+func (x *Entity) GetMedia() []*Media {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
+func (x *Entity) GetAuthorOrManufacturer() string {
+	if x != nil {
+		return x.AuthorOrManufacturer
+	}
+	return ""
+}
+
+func (x *Entity) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+func (x *Entity) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Entity) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
 }
 
 type ReviewSummary struct {
@@ -288,27 +336,27 @@ func (x *ReviewSummary) GetTier() ReviewTier {
 }
 
 type Review struct {
-	state    protoimpl.MessageState `protogen:"open.v1"`
-	Uuid     string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id       string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	UserUuid string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	// Polymorphic Target (exactly one is set)
-	BuildUuid     *string                `protobuf:"bytes,4,opt,name=build_uuid,json=buildUuid,proto3,oneof" json:"build_uuid,omitempty"`
-	ComponentUuid *string                `protobuf:"bytes,5,opt,name=component_uuid,json=componentUuid,proto3,oneof" json:"component_uuid,omitempty"`
-	IsRecommended bool                   `protobuf:"varint,6,opt,name=is_recommended,json=isRecommended,proto3" json:"is_recommended,omitempty"` // true = Thumbs Up / Recommended, false = Thumbs Down
-	Body          string                 `protobuf:"bytes,7,opt,name=body,proto3" json:"body,omitempty"`                                         // Markdown writeup
-	IsEdited      bool                   `protobuf:"varint,8,opt,name=is_edited,json=isEdited,proto3" json:"is_edited,omitempty"`
-	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=deleted_at,json=deletedAt,proto3,oneof" json:"deleted_at,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	UserUuid      string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	EntityUuid    string                 `protobuf:"bytes,4,opt,name=entity_uuid,json=entityUuid,proto3" json:"entity_uuid,omitempty"`
+	IsRecommended bool                   `protobuf:"varint,5,opt,name=is_recommended,json=isRecommended,proto3" json:"is_recommended,omitempty"` // true = Thumbs Up / Recommended, false = Thumbs Down
+	Body          string                 `protobuf:"bytes,6,opt,name=body,proto3" json:"body,omitempty"`                                         // Markdown writeup
+	IsEdited      bool                   `protobuf:"varint,7,opt,name=is_edited,json=isEdited,proto3" json:"is_edited,omitempty"`
+	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=deleted_at,json=deletedAt,proto3,oneof" json:"deleted_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	// Denormalized / resolved fields for UI display
-	AuthorUsername        string         `protobuf:"bytes,12,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
-	AuthorAvatarUrl       string         `protobuf:"bytes,13,opt,name=author_avatar_url,json=authorAvatarUrl,proto3" json:"author_avatar_url,omitempty"`
-	HelpfulCount          int32          `protobuf:"varint,14,opt,name=helpful_count,json=helpfulCount,proto3" json:"helpful_count,omitempty"`
-	UnhelpfulCount        int32          `protobuf:"varint,15,opt,name=unhelpful_count,json=unhelpfulCount,proto3" json:"unhelpful_count,omitempty"`
-	CommentCount          int32          `protobuf:"varint,16,opt,name=comment_count,json=commentCount,proto3" json:"comment_count,omitempty"`
-	CurrentUserVote       ReviewVoteType `protobuf:"varint,17,opt,name=current_user_vote,json=currentUserVote,proto3,enum=quadsmith.ReviewVoteType" json:"current_user_vote,omitempty"`
-	IsAuthorVerifiedOwner bool           `protobuf:"varint,18,opt,name=is_author_verified_owner,json=isAuthorVerifiedOwner,proto3" json:"is_author_verified_owner,omitempty"`
+	AuthorUsername        string         `protobuf:"bytes,11,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
+	AuthorAvatarUrl       string         `protobuf:"bytes,12,opt,name=author_avatar_url,json=authorAvatarUrl,proto3" json:"author_avatar_url,omitempty"`
+	HelpfulCount          int32          `protobuf:"varint,13,opt,name=helpful_count,json=helpfulCount,proto3" json:"helpful_count,omitempty"`
+	UnhelpfulCount        int32          `protobuf:"varint,14,opt,name=unhelpful_count,json=unhelpfulCount,proto3" json:"unhelpful_count,omitempty"`
+	CommentCount          int32          `protobuf:"varint,15,opt,name=comment_count,json=commentCount,proto3" json:"comment_count,omitempty"`
+	CurrentUserVote       ReviewVoteType `protobuf:"varint,16,opt,name=current_user_vote,json=currentUserVote,proto3,enum=quadsmith.ReviewVoteType" json:"current_user_vote,omitempty"`
+	IsAuthorVerifiedOwner bool           `protobuf:"varint,17,opt,name=is_author_verified_owner,json=isAuthorVerifiedOwner,proto3" json:"is_author_verified_owner,omitempty"`
+	Collection            string         `protobuf:"bytes,18,opt,name=collection,proto3" json:"collection,omitempty"`
+	EntityId              string         `protobuf:"bytes,19,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -364,16 +412,9 @@ func (x *Review) GetUserUuid() string {
 	return ""
 }
 
-func (x *Review) GetBuildUuid() string {
-	if x != nil && x.BuildUuid != nil {
-		return *x.BuildUuid
-	}
-	return ""
-}
-
-func (x *Review) GetComponentUuid() string {
-	if x != nil && x.ComponentUuid != nil {
-		return *x.ComponentUuid
+func (x *Review) GetEntityUuid() string {
+	if x != nil {
+		return x.EntityUuid
 	}
 	return ""
 }
@@ -467,6 +508,20 @@ func (x *Review) GetIsAuthorVerifiedOwner() bool {
 		return x.IsAuthorVerifiedOwner
 	}
 	return false
+}
+
+func (x *Review) GetCollection() string {
+	if x != nil {
+		return x.Collection
+	}
+	return ""
+}
+
+func (x *Review) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
 }
 
 type ReviewVote struct {
@@ -655,29 +710,29 @@ func (x *ReviewComment) GetAuthorAvatarUrl() string {
 }
 
 type Question struct {
-	state    protoimpl.MessageState `protogen:"open.v1"`
-	Uuid     string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id       string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	UserUuid string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	// Polymorphic Target (exactly one is set)
-	BuildUuid     *string                `protobuf:"bytes,4,opt,name=build_uuid,json=buildUuid,proto3,oneof" json:"build_uuid,omitempty"`
-	ComponentUuid *string                `protobuf:"bytes,5,opt,name=component_uuid,json=componentUuid,proto3,oneof" json:"component_uuid,omitempty"`
-	Title         string                 `protobuf:"bytes,6,opt,name=title,proto3" json:"title,omitempty"`
-	Body          string                 `protobuf:"bytes,7,opt,name=body,proto3" json:"body,omitempty"` // Markdown
-	NetScore      int32                  `protobuf:"varint,8,opt,name=net_score,json=netScore,proto3" json:"net_score,omitempty"`
-	IsEdited      bool                   `protobuf:"varint,9,opt,name=is_edited,json=isEdited,proto3" json:"is_edited,omitempty"`
-	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=deleted_at,json=deletedAt,proto3,oneof" json:"deleted_at,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	Uuid       string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id         string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	UserUuid   string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	EntityUuid string                 `protobuf:"bytes,4,opt,name=entity_uuid,json=entityUuid,proto3" json:"entity_uuid,omitempty"`
+	Title      string                 `protobuf:"bytes,5,opt,name=title,proto3" json:"title,omitempty"`
+	Body       string                 `protobuf:"bytes,6,opt,name=body,proto3" json:"body,omitempty"` // Markdown
+	NetScore   int32                  `protobuf:"varint,7,opt,name=net_score,json=netScore,proto3" json:"net_score,omitempty"`
+	IsEdited   bool                   `protobuf:"varint,8,opt,name=is_edited,json=isEdited,proto3" json:"is_edited,omitempty"`
+	DeletedAt  *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=deleted_at,json=deletedAt,proto3,oneof" json:"deleted_at,omitempty"`
+	CreatedAt  *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt  *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	// Resolved display fields
-	AuthorUsername    string             `protobuf:"bytes,13,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
-	AuthorAvatarUrl   string             `protobuf:"bytes,14,opt,name=author_avatar_url,json=authorAvatarUrl,proto3" json:"author_avatar_url,omitempty"`
-	UpvoteCount       int32              `protobuf:"varint,15,opt,name=upvote_count,json=upvoteCount,proto3" json:"upvote_count,omitempty"`
-	DownvoteCount     int32              `protobuf:"varint,16,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
-	AnswerCount       int32              `protobuf:"varint,17,opt,name=answer_count,json=answerCount,proto3" json:"answer_count,omitempty"`
-	HasAcceptedAnswer bool               `protobuf:"varint,18,opt,name=has_accepted_answer,json=hasAcceptedAnswer,proto3" json:"has_accepted_answer,omitempty"`
-	CurrentUserVote   int32              `protobuf:"varint,19,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"` // +1, -1, or 0
-	Comments          []*QuestionComment `protobuf:"bytes,20,rep,name=comments,proto3" json:"comments,omitempty"`
+	AuthorUsername    string             `protobuf:"bytes,12,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
+	AuthorAvatarUrl   string             `protobuf:"bytes,13,opt,name=author_avatar_url,json=authorAvatarUrl,proto3" json:"author_avatar_url,omitempty"`
+	UpvoteCount       int32              `protobuf:"varint,14,opt,name=upvote_count,json=upvoteCount,proto3" json:"upvote_count,omitempty"`
+	DownvoteCount     int32              `protobuf:"varint,15,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
+	AnswerCount       int32              `protobuf:"varint,16,opt,name=answer_count,json=answerCount,proto3" json:"answer_count,omitempty"`
+	HasAcceptedAnswer bool               `protobuf:"varint,17,opt,name=has_accepted_answer,json=hasAcceptedAnswer,proto3" json:"has_accepted_answer,omitempty"`
+	CurrentUserVote   int32              `protobuf:"varint,18,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"` // +1, -1, or 0
+	Comments          []*QuestionComment `protobuf:"bytes,19,rep,name=comments,proto3" json:"comments,omitempty"`
+	Collection        string             `protobuf:"bytes,20,opt,name=collection,proto3" json:"collection,omitempty"`
+	EntityId          string             `protobuf:"bytes,21,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -733,16 +788,9 @@ func (x *Question) GetUserUuid() string {
 	return ""
 }
 
-func (x *Question) GetBuildUuid() string {
-	if x != nil && x.BuildUuid != nil {
-		return *x.BuildUuid
-	}
-	return ""
-}
-
-func (x *Question) GetComponentUuid() string {
-	if x != nil && x.ComponentUuid != nil {
-		return *x.ComponentUuid
+func (x *Question) GetEntityUuid() string {
+	if x != nil {
+		return x.EntityUuid
 	}
 	return ""
 }
@@ -852,6 +900,20 @@ func (x *Question) GetComments() []*QuestionComment {
 	return nil
 }
 
+func (x *Question) GetCollection() string {
+	if x != nil {
+		return x.Collection
+	}
+	return ""
+}
+
+func (x *Question) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
 type Answer struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Uuid              string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -865,14 +927,16 @@ type Answer struct {
 	DeletedAt         *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=deleted_at,json=deletedAt,proto3,oneof" json:"deleted_at,omitempty"`
 	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt         *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	AcceptedAt        *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=accepted_at,json=acceptedAt,proto3,oneof" json:"accepted_at,omitempty"`
+	EndorsedAt        *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=endorsed_at,json=endorsedAt,proto3,oneof" json:"endorsed_at,omitempty"`
 	// Resolved display fields
-	AuthorUsername  string           `protobuf:"bytes,12,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
-	AuthorAvatarUrl string           `protobuf:"bytes,13,opt,name=author_avatar_url,json=authorAvatarUrl,proto3" json:"author_avatar_url,omitempty"`
-	UpvoteCount     int32            `protobuf:"varint,14,opt,name=upvote_count,json=upvoteCount,proto3" json:"upvote_count,omitempty"`
-	DownvoteCount   int32            `protobuf:"varint,15,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
-	CurrentUserVote int32            `protobuf:"varint,16,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"`
-	CommentCount    int32            `protobuf:"varint,17,opt,name=comment_count,json=commentCount,proto3" json:"comment_count,omitempty"`
-	Comments        []*AnswerComment `protobuf:"bytes,18,rep,name=comments,proto3" json:"comments,omitempty"`
+	AuthorUsername  string           `protobuf:"bytes,14,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
+	AuthorAvatarUrl string           `protobuf:"bytes,15,opt,name=author_avatar_url,json=authorAvatarUrl,proto3" json:"author_avatar_url,omitempty"`
+	UpvoteCount     int32            `protobuf:"varint,16,opt,name=upvote_count,json=upvoteCount,proto3" json:"upvote_count,omitempty"`
+	DownvoteCount   int32            `protobuf:"varint,17,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
+	CurrentUserVote int32            `protobuf:"varint,18,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"`
+	CommentCount    int32            `protobuf:"varint,19,opt,name=comment_count,json=commentCount,proto3" json:"comment_count,omitempty"`
+	Comments        []*AnswerComment `protobuf:"bytes,20,rep,name=comments,proto3" json:"comments,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -980,6 +1044,20 @@ func (x *Answer) GetCreatedAt() *timestamppb.Timestamp {
 func (x *Answer) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
+	}
+	return nil
+}
+
+func (x *Answer) GetAcceptedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AcceptedAt
+	}
+	return nil
+}
+
+func (x *Answer) GetEndorsedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndorsedAt
 	}
 	return nil
 }
@@ -1606,18 +1684,16 @@ type CollectionItem struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	CollectionUuid string                 `protobuf:"bytes,2,opt,name=collection_uuid,json=collectionUuid,proto3" json:"collection_uuid,omitempty"`
-	// Polymorphic Target (Build or Component)
-	BuildUuid     *string                `protobuf:"bytes,3,opt,name=build_uuid,json=buildUuid,proto3,oneof" json:"build_uuid,omitempty"`
-	ComponentUuid *string                `protobuf:"bytes,4,opt,name=component_uuid,json=componentUuid,proto3,oneof" json:"component_uuid,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	EntityUuid     string                 `protobuf:"bytes,3,opt,name=entity_uuid,json=entityUuid,proto3" json:"entity_uuid,omitempty"`
+	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// Resolved item details for display
-	ItemId                   string `protobuf:"bytes,6,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`
-	ItemName                 string `protobuf:"bytes,7,opt,name=item_name,json=itemName,proto3" json:"item_name,omitempty"`
-	ItemType                 string `protobuf:"bytes,8,opt,name=item_type,json=itemType,proto3" json:"item_type,omitempty"` // "build" or component collection name (e.g. "motors")
-	ItemImage                string `protobuf:"bytes,9,opt,name=item_image,json=itemImage,proto3" json:"item_image,omitempty"`
-	ItemAuthorOrManufacturer string `protobuf:"bytes,10,opt,name=item_author_or_manufacturer,json=itemAuthorOrManufacturer,proto3" json:"item_author_or_manufacturer,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
+	EntityId             string  `protobuf:"bytes,5,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection           string  `protobuf:"bytes,6,opt,name=collection,proto3" json:"collection,omitempty"`
+	Name                 string  `protobuf:"bytes,7,opt,name=name,proto3" json:"name,omitempty"`
+	PrimaryDisplayImage  *string `protobuf:"bytes,8,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	AuthorOrManufacturer *string `protobuf:"bytes,9,opt,name=author_or_manufacturer,json=authorOrManufacturer,proto3,oneof" json:"author_or_manufacturer,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *CollectionItem) Reset() {
@@ -1664,16 +1740,9 @@ func (x *CollectionItem) GetCollectionUuid() string {
 	return ""
 }
 
-func (x *CollectionItem) GetBuildUuid() string {
-	if x != nil && x.BuildUuid != nil {
-		return *x.BuildUuid
-	}
-	return ""
-}
-
-func (x *CollectionItem) GetComponentUuid() string {
-	if x != nil && x.ComponentUuid != nil {
-		return *x.ComponentUuid
+func (x *CollectionItem) GetEntityUuid() string {
+	if x != nil {
+		return x.EntityUuid
 	}
 	return ""
 }
@@ -1685,37 +1754,37 @@ func (x *CollectionItem) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *CollectionItem) GetItemId() string {
+func (x *CollectionItem) GetEntityId() string {
 	if x != nil {
-		return x.ItemId
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *CollectionItem) GetItemName() string {
+func (x *CollectionItem) GetCollection() string {
 	if x != nil {
-		return x.ItemName
+		return x.Collection
 	}
 	return ""
 }
 
-func (x *CollectionItem) GetItemType() string {
+func (x *CollectionItem) GetName() string {
 	if x != nil {
-		return x.ItemType
+		return x.Name
 	}
 	return ""
 }
 
-func (x *CollectionItem) GetItemImage() string {
-	if x != nil {
-		return x.ItemImage
+func (x *CollectionItem) GetPrimaryDisplayImage() string {
+	if x != nil && x.PrimaryDisplayImage != nil {
+		return *x.PrimaryDisplayImage
 	}
 	return ""
 }
 
-func (x *CollectionItem) GetItemAuthorOrManufacturer() string {
-	if x != nil {
-		return x.ItemAuthorOrManufacturer
+func (x *CollectionItem) GetAuthorOrManufacturer() string {
+	if x != nil && x.AuthorOrManufacturer != nil {
+		return *x.AuthorOrManufacturer
 	}
 	return ""
 }
@@ -1726,6 +1795,7 @@ type EntitySocialSummary struct {
 	LikeCount     int32                  `protobuf:"varint,2,opt,name=like_count,json=likeCount,proto3" json:"like_count,omitempty"`
 	ReviewSummary *ReviewSummary         `protobuf:"bytes,3,opt,name=review_summary,json=reviewSummary,proto3" json:"review_summary,omitempty"`
 	QuestionCount int32                  `protobuf:"varint,4,opt,name=question_count,json=questionCount,proto3" json:"question_count,omitempty"`
+	IsArchived    bool                   `protobuf:"varint,5,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1788,10 +1858,17 @@ func (x *EntitySocialSummary) GetQuestionCount() int32 {
 	return 0
 }
 
+func (x *EntitySocialSummary) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
 type CreateReviewRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BuildId       *string                `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3,oneof" json:"build_id,omitempty"`
-	ComponentId   *string                `protobuf:"bytes,2,opt,name=component_id,json=componentId,proto3,oneof" json:"component_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
 	IsRecommended bool                   `protobuf:"varint,3,opt,name=is_recommended,json=isRecommended,proto3" json:"is_recommended,omitempty"`
 	Body          string                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -1828,16 +1905,16 @@ func (*CreateReviewRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *CreateReviewRequest) GetBuildId() string {
-	if x != nil && x.BuildId != nil {
-		return *x.BuildId
+func (x *CreateReviewRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *CreateReviewRequest) GetComponentId() string {
-	if x != nil && x.ComponentId != nil {
-		return *x.ComponentId
+func (x *CreateReviewRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
 	}
 	return ""
 }
@@ -1962,8 +2039,8 @@ func (x *DeleteReviewRequest) GetReviewId() string {
 
 type ListReviewsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BuildId       *string                `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3,oneof" json:"build_id,omitempty"`
-	ComponentId   *string                `protobuf:"bytes,2,opt,name=component_id,json=componentId,proto3,oneof" json:"component_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
 	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"` // "helpful", "recent", "positive", "negative"
 	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
@@ -2001,16 +2078,16 @@ func (*ListReviewsRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{18}
 }
 
-func (x *ListReviewsRequest) GetBuildId() string {
-	if x != nil && x.BuildId != nil {
-		return *x.BuildId
+func (x *ListReviewsRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *ListReviewsRequest) GetComponentId() string {
-	if x != nil && x.ComponentId != nil {
-		return *x.ComponentId
+func (x *ListReviewsRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
 	}
 	return ""
 }
@@ -2394,8 +2471,8 @@ func (x *ListReviewCommentsResponse) GetComments() []*ReviewComment {
 
 type CreateQuestionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BuildId       *string                `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3,oneof" json:"build_id,omitempty"`
-	ComponentId   *string                `protobuf:"bytes,2,opt,name=component_id,json=componentId,proto3,oneof" json:"component_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
 	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
 	Body          string                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -2432,16 +2509,16 @@ func (*CreateQuestionRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{26}
 }
 
-func (x *CreateQuestionRequest) GetBuildId() string {
-	if x != nil && x.BuildId != nil {
-		return *x.BuildId
+func (x *CreateQuestionRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *CreateQuestionRequest) GetComponentId() string {
-	if x != nil && x.ComponentId != nil {
-		return *x.ComponentId
+func (x *CreateQuestionRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
 	}
 	return ""
 }
@@ -2566,8 +2643,8 @@ func (x *DeleteQuestionRequest) GetQuestionId() string {
 
 type ListQuestionsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BuildId       *string                `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3,oneof" json:"build_id,omitempty"`
-	ComponentId   *string                `protobuf:"bytes,2,opt,name=component_id,json=componentId,proto3,oneof" json:"component_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
 	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"` // "score", "recent"
 	Query         string                 `protobuf:"bytes,4,opt,name=query,proto3" json:"query,omitempty"`                 // Search filter
 	PageSize      int32                  `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
@@ -2606,16 +2683,16 @@ func (*ListQuestionsRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{29}
 }
 
-func (x *ListQuestionsRequest) GetBuildId() string {
-	if x != nil && x.BuildId != nil {
-		return *x.BuildId
+func (x *ListQuestionsRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *ListQuestionsRequest) GetComponentId() string {
-	if x != nil && x.ComponentId != nil {
-		return *x.ComponentId
+func (x *ListQuestionsRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
 	}
 	return ""
 }
@@ -3762,8 +3839,8 @@ func (x *ListUserCollectionsResponse) GetCollections() []*Collection {
 
 type ToggleLikeItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BuildId       *string                `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3,oneof" json:"build_id,omitempty"`
-	ComponentId   *string                `protobuf:"bytes,2,opt,name=component_id,json=componentId,proto3,oneof" json:"component_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3798,16 +3875,16 @@ func (*ToggleLikeItemRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{52}
 }
 
-func (x *ToggleLikeItemRequest) GetBuildId() string {
-	if x != nil && x.BuildId != nil {
-		return *x.BuildId
+func (x *ToggleLikeItemRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *ToggleLikeItemRequest) GetComponentId() string {
-	if x != nil && x.ComponentId != nil {
-		return *x.ComponentId
+func (x *ToggleLikeItemRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
 	}
 	return ""
 }
@@ -3867,8 +3944,8 @@ func (x *ToggleLikeItemResponse) GetLikeCount() int32 {
 type AddCollectionItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
-	BuildId       *string                `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3,oneof" json:"build_id,omitempty"`
-	ComponentId   *string                `protobuf:"bytes,3,opt,name=component_id,json=componentId,proto3,oneof" json:"component_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,3,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3910,16 +3987,16 @@ func (x *AddCollectionItemRequest) GetCollectionId() string {
 	return ""
 }
 
-func (x *AddCollectionItemRequest) GetBuildId() string {
-	if x != nil && x.BuildId != nil {
-		return *x.BuildId
+func (x *AddCollectionItemRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *AddCollectionItemRequest) GetComponentId() string {
-	if x != nil && x.ComponentId != nil {
-		return *x.ComponentId
+func (x *AddCollectionItemRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
 	}
 	return ""
 }
@@ -3927,8 +4004,8 @@ func (x *AddCollectionItemRequest) GetComponentId() string {
 type RemoveCollectionItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
-	BuildId       *string                `protobuf:"bytes,2,opt,name=build_id,json=buildId,proto3,oneof" json:"build_id,omitempty"`
-	ComponentId   *string                `protobuf:"bytes,3,opt,name=component_id,json=componentId,proto3,oneof" json:"component_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,3,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3970,16 +4047,16 @@ func (x *RemoveCollectionItemRequest) GetCollectionId() string {
 	return ""
 }
 
-func (x *RemoveCollectionItemRequest) GetBuildId() string {
-	if x != nil && x.BuildId != nil {
-		return *x.BuildId
+func (x *RemoveCollectionItemRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *RemoveCollectionItemRequest) GetComponentId() string {
-	if x != nil && x.ComponentId != nil {
-		return *x.ComponentId
+func (x *RemoveCollectionItemRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
 	}
 	return ""
 }
@@ -4106,8 +4183,8 @@ func (x *ListCollectionItemsResponse) GetNextPageToken() string {
 
 type GetEntitySocialSummaryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BuildId       *string                `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3,oneof" json:"build_id,omitempty"`
-	ComponentId   *string                `protobuf:"bytes,2,opt,name=component_id,json=componentId,proto3,oneof" json:"component_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4142,16 +4219,16 @@ func (*GetEntitySocialSummaryRequest) Descriptor() ([]byte, []int) {
 	return file_social_proto_rawDescGZIP(), []int{58}
 }
 
-func (x *GetEntitySocialSummaryRequest) GetBuildId() string {
-	if x != nil && x.BuildId != nil {
-		return *x.BuildId
+func (x *GetEntitySocialSummaryRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
 	}
 	return ""
 }
 
-func (x *GetEntitySocialSummaryRequest) GetComponentId() string {
-	if x != nil && x.ComponentId != nil {
-		return *x.ComponentId
+func (x *GetEntitySocialSummaryRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
 	}
 	return ""
 }
@@ -4161,66 +4238,76 @@ var File_social_proto protoreflect.FileDescriptor
 const file_social_proto_rawDesc = "" +
 	"\n" +
 	"\fsocial.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x94\x02\n" +
-	"\tComponent\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\x02id\x12&\n" +
+	"_sql.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xee\x04\n" +
+	"\x06Entity\x12\x1a\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12&\n" +
 	"\n" +
-	"collection\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\n" +
-	"collection\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12\"\n" +
-	"\fmanufacturer\x18\x05 \x01(\tR\fmanufacturer\x127\n" +
-	"\x15primary_display_image\x18\x06 \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01: \xc2\xf3\x18\x1c\n" +
+	"collection\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\n" +
+	"collection\x12\x16\n" +
+	"\x02id\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\x02id\x12\x12\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x05 \x01(\tR\vdescription\x127\n" +
+	"\x15primary_display_image\x18\x06 \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12A\n" +
+	"\x0freference_links\x18\a \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x12&\n" +
+	"\x05media\x18\b \x03(\v2\x10.quadsmith.MediaR\x05media\x124\n" +
+	"\x16author_or_manufacturer\x18\t \x01(\tR\x14authorOrManufacturer\x12.\n" +
+	"\vis_archived\x18\n" +
+	" \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\n" +
+	"isArchived\x12F\n" +
 	"\n" +
-	"components\x1a\x0ecollection, idB\x18\n" +
+	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
+	"\n" +
+	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt:\x1e\xc2\xf3\x18\x1a\n" +
+	"\bentities\x1a\x0ecollection, idB\x18\n" +
 	"\x16_primary_display_image\"\xb7\x01\n" +
 	"\rReviewSummary\x12#\n" +
 	"\rtotal_reviews\x18\x01 \x01(\x05R\ftotalReviews\x12+\n" +
 	"\x11recommended_count\x18\x02 \x01(\x05R\x10recommendedCount\x12)\n" +
 	"\x10score_percentage\x18\x03 \x01(\x02R\x0fscorePercentage\x12)\n" +
-	"\x04tier\x18\x04 \x01(\x0e2\x15.quadsmith.ReviewTierR\x04tier\"\x8d\b\n" +
+	"\x04tier\x18\x04 \x01(\x0e2\x15.quadsmith.ReviewTierR\x04tier\"\xab\a\n" +
 	"\x06Review\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
 	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x128\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12I\n" +
+	"\ventity_uuid\x18\x04 \x01(\tB(\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01R\n" +
+	"entityUuid\x12%\n" +
+	"\x0eis_recommended\x18\x05 \x01(\bR\risRecommended\x12\x12\n" +
+	"\x04body\x18\x06 \x01(\tR\x04body\x12(\n" +
+	"\tis_edited\x18\a \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\bisEdited\x12>\n" +
 	"\n" +
-	"build_uuid\x18\x04 \x01(\tB\x14\xc2\xf3\x18\x10\x1a\fbuilds(uuid)(\x01H\x00R\tbuildUuid\x88\x01\x01\x12D\n" +
-	"\x0ecomponent_uuid\x18\x05 \x01(\tB\x18\xc2\xf3\x18\x14\x1a\x10components(uuid)(\x01H\x01R\rcomponentUuid\x88\x01\x01\x12%\n" +
-	"\x0eis_recommended\x18\x06 \x01(\bR\risRecommended\x12\x12\n" +
-	"\x04body\x18\a \x01(\tR\x04body\x12(\n" +
-	"\tis_edited\x18\b \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\bisEdited\x12>\n" +
+	"deleted_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\x00R\tdeletedAt\x88\x01\x01\x12F\n" +
 	"\n" +
-	"deleted_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\x02R\tdeletedAt\x88\x01\x01\x12F\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"created_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
+	"\x0fauthor_username\x18\v \x01(\tR\x0eauthorUsername\x12*\n" +
+	"\x11author_avatar_url\x18\f \x01(\tR\x0fauthorAvatarUrl\x12#\n" +
+	"\rhelpful_count\x18\r \x01(\x05R\fhelpfulCount\x12'\n" +
+	"\x0funhelpful_count\x18\x0e \x01(\x05R\x0eunhelpfulCount\x12#\n" +
+	"\rcomment_count\x18\x0f \x01(\x05R\fcommentCount\x12E\n" +
+	"\x11current_user_vote\x18\x10 \x01(\x0e2\x19.quadsmith.ReviewVoteTypeR\x0fcurrentUserVote\x127\n" +
+	"\x18is_author_verified_owner\x18\x11 \x01(\bR\x15isAuthorVerifiedOwner\x12\x1e\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\f \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\r \x01(\tR\x0fauthorAvatarUrl\x12#\n" +
-	"\rhelpful_count\x18\x0e \x01(\x05R\fhelpfulCount\x12'\n" +
-	"\x0funhelpful_count\x18\x0f \x01(\x05R\x0eunhelpfulCount\x12#\n" +
-	"\rcomment_count\x18\x10 \x01(\x05R\fcommentCount\x12E\n" +
-	"\x11current_user_vote\x18\x11 \x01(\x0e2\x19.quadsmith.ReviewVoteTypeR\x0fcurrentUserVote\x127\n" +
-	"\x18is_author_verified_owner\x18\x12 \x01(\bR\x15isAuthorVerifiedOwner:m\xc2\xf3\x18i\n" +
-	"\areviews\x12,num_nonnulls(build_uuid, component_uuid) = 1\x1a\x15user_uuid, build_uuid\x1a\x19user_uuid, component_uuidB\r\n" +
-	"\v_build_uuidB\x11\n" +
-	"\x0f_component_uuidB\r\n" +
-	"\v_deleted_at\"\xa5\x02\n" +
+	"collection\x18\x12 \x01(\tR\n" +
+	"collection\x12\x1b\n" +
+	"\tentity_id\x18\x13 \x01(\tR\bentityId:%\xc2\xf3\x18!\n" +
+	"\areviews\x1a\x16user_uuid, entity_uuidB\r\n" +
+	"\v_deleted_at\"\xb7\x02\n" +
 	"\n" +
 	"ReviewVote\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x126\n" +
-	"\vreview_uuid\x18\x02 \x01(\tB\x15\xc2\xf3\x18\x11\x1a\rreviews(uuid)(\x01R\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
+	"\vreview_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1freviews(uuid) ON DELETE CASCADE(\x01R\n" +
 	"reviewUuid\x120\n" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1d\n" +
 	"\n" +
 	"is_helpful\x18\x04 \x01(\bR\tisHelpful\x12F\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:*\xc2\xf3\x18&\n" +
-	"\freview_votes\x1a\x16user_uuid, review_uuid\"\xf4\x03\n" +
+	"\freview_votes\x1a\x16user_uuid, review_uuid\"\x86\x04\n" +
 	"\rReviewComment\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x126\n" +
-	"\vreview_uuid\x18\x02 \x01(\tB\x15\xc2\xf3\x18\x11\x1a\rreviews(uuid)(\x01R\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
+	"\vreview_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1freviews(uuid) ON DELETE CASCADE(\x01R\n" +
 	"reviewUuid\x120\n" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
 	"\x04body\x18\x04 \x01(\tR\x04body\x12>\n" +
@@ -4233,40 +4320,41 @@ const file_social_proto_rawDesc = "" +
 	"\x0fauthor_username\x18\b \x01(\tR\x0eauthorUsername\x12*\n" +
 	"\x11author_avatar_url\x18\t \x01(\tR\x0fauthorAvatarUrl:\x15\xc2\xf3\x18\x11\n" +
 	"\x0freview_commentsB\r\n" +
-	"\v_deleted_at\"\x84\b\n" +
+	"\v_deleted_at\"\xbc\a\n" +
 	"\bQuestion\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
 	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x128\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12I\n" +
+	"\ventity_uuid\x18\x04 \x01(\tB(\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01R\n" +
+	"entityUuid\x12\x14\n" +
+	"\x05title\x18\x05 \x01(\tR\x05title\x12\x12\n" +
+	"\x04body\x18\x06 \x01(\tR\x04body\x12&\n" +
+	"\tnet_score\x18\a \x01(\x05B\t\xc2\xf3\x18\x05(\x01:\x010R\bnetScore\x12(\n" +
+	"\tis_edited\x18\b \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\bisEdited\x12>\n" +
 	"\n" +
-	"build_uuid\x18\x04 \x01(\tB\x14\xc2\xf3\x18\x10\x1a\fbuilds(uuid)(\x01H\x00R\tbuildUuid\x88\x01\x01\x12D\n" +
-	"\x0ecomponent_uuid\x18\x05 \x01(\tB\x18\xc2\xf3\x18\x14\x1a\x10components(uuid)(\x01H\x01R\rcomponentUuid\x88\x01\x01\x12\x14\n" +
-	"\x05title\x18\x06 \x01(\tR\x05title\x12\x12\n" +
-	"\x04body\x18\a \x01(\tR\x04body\x12&\n" +
-	"\tnet_score\x18\b \x01(\x05B\t\xc2\xf3\x18\x05(\x01:\x010R\bnetScore\x12(\n" +
-	"\tis_edited\x18\t \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\bisEdited\x12>\n" +
+	"deleted_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\x00R\tdeletedAt\x88\x01\x01\x12F\n" +
 	"\n" +
-	"deleted_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampH\x02R\tdeletedAt\x88\x01\x01\x12F\n" +
+	"created_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
+	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
+	"\x0fauthor_username\x18\f \x01(\tR\x0eauthorUsername\x12*\n" +
+	"\x11author_avatar_url\x18\r \x01(\tR\x0fauthorAvatarUrl\x12!\n" +
+	"\fupvote_count\x18\x0e \x01(\x05R\vupvoteCount\x12%\n" +
+	"\x0edownvote_count\x18\x0f \x01(\x05R\rdownvoteCount\x12!\n" +
+	"\fanswer_count\x18\x10 \x01(\x05R\vanswerCount\x12.\n" +
+	"\x13has_accepted_answer\x18\x11 \x01(\bR\x11hasAcceptedAnswer\x12*\n" +
+	"\x11current_user_vote\x18\x12 \x01(\x05R\x0fcurrentUserVote\x126\n" +
+	"\bcomments\x18\x13 \x03(\v2\x1a.quadsmith.QuestionCommentR\bcomments\x12\x1e\n" +
 	"\n" +
-	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\r \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\x0e \x01(\tR\x0fauthorAvatarUrl\x12!\n" +
-	"\fupvote_count\x18\x0f \x01(\x05R\vupvoteCount\x12%\n" +
-	"\x0edownvote_count\x18\x10 \x01(\x05R\rdownvoteCount\x12!\n" +
-	"\fanswer_count\x18\x11 \x01(\x05R\vanswerCount\x12.\n" +
-	"\x13has_accepted_answer\x18\x12 \x01(\bR\x11hasAcceptedAnswer\x12*\n" +
-	"\x11current_user_vote\x18\x13 \x01(\x05R\x0fcurrentUserVote\x126\n" +
-	"\bcomments\x18\x14 \x03(\v2\x1a.quadsmith.QuestionCommentR\bcomments:=\xc2\xf3\x189\n" +
-	"\tquestions\x12,num_nonnulls(build_uuid, component_uuid) = 1B\r\n" +
-	"\v_build_uuidB\x11\n" +
-	"\x0f_component_uuidB\r\n" +
-	"\v_deleted_at\"\x87\a\n" +
+	"collection\x18\x14 \x01(\tR\n" +
+	"collection\x12\x1b\n" +
+	"\tentity_id\x18\x15 \x01(\tR\bentityId:\x0f\xc2\xf3\x18\v\n" +
+	"\tquestionsB\r\n" +
+	"\v_deleted_at\"\xbd\b\n" +
 	"\x06Answer\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12<\n" +
-	"\rquestion_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x13\x1a\x0fquestions(uuid)(\x01R\fquestionUuid\x120\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12N\n" +
+	"\rquestion_uuid\x18\x02 \x01(\tB)\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01R\fquestionUuid\x120\n" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
 	"\x04body\x18\x04 \x01(\tR\x04body\x12&\n" +
 	"\tnet_score\x18\x05 \x01(\x05B\t\xc2\xf3\x18\x05(\x01:\x010R\bnetScore\x12<\n" +
@@ -4279,37 +4367,43 @@ const file_social_proto_rawDesc = "" +
 	"created_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\f \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\r \x01(\tR\x0fauthorAvatarUrl\x12!\n" +
-	"\fupvote_count\x18\x0e \x01(\x05R\vupvoteCount\x12%\n" +
-	"\x0edownvote_count\x18\x0f \x01(\x05R\rdownvoteCount\x12*\n" +
-	"\x11current_user_vote\x18\x10 \x01(\x05R\x0fcurrentUserVote\x12#\n" +
-	"\rcomment_count\x18\x11 \x01(\x05R\fcommentCount\x124\n" +
-	"\bcomments\x18\x12 \x03(\v2\x18.quadsmith.AnswerCommentR\bcomments:\r\xc2\xf3\x18\t\n" +
+	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12@\n" +
+	"\vaccepted_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampH\x01R\n" +
+	"acceptedAt\x88\x01\x01\x12@\n" +
+	"\vendorsed_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampH\x02R\n" +
+	"endorsedAt\x88\x01\x01\x12'\n" +
+	"\x0fauthor_username\x18\x0e \x01(\tR\x0eauthorUsername\x12*\n" +
+	"\x11author_avatar_url\x18\x0f \x01(\tR\x0fauthorAvatarUrl\x12!\n" +
+	"\fupvote_count\x18\x10 \x01(\x05R\vupvoteCount\x12%\n" +
+	"\x0edownvote_count\x18\x11 \x01(\x05R\rdownvoteCount\x12*\n" +
+	"\x11current_user_vote\x18\x12 \x01(\x05R\x0fcurrentUserVote\x12#\n" +
+	"\rcomment_count\x18\x13 \x01(\x05R\fcommentCount\x124\n" +
+	"\bcomments\x18\x14 \x03(\v2\x18.quadsmith.AnswerCommentR\bcomments:\r\xc2\xf3\x18\t\n" +
 	"\aanswersB\r\n" +
-	"\v_deleted_at\"\xaf\x02\n" +
+	"\v_deleted_atB\x0e\n" +
+	"\f_accepted_atB\x0e\n" +
+	"\f_endorsed_at\"\xc1\x02\n" +
 	"\fQuestionVote\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12<\n" +
-	"\rquestion_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x13\x1a\x0fquestions(uuid)(\x01R\fquestionUuid\x120\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12N\n" +
+	"\rquestion_uuid\x18\x02 \x01(\tB)\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01R\fquestionUuid\x120\n" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1b\n" +
 	"\tis_upvote\x18\x04 \x01(\bR\bisUpvote\x12F\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:.\xc2\xf3\x18*\n" +
-	"\x0equestion_votes\x1a\x18user_uuid, question_uuid\"\xa3\x02\n" +
+	"\x0equestion_votes\x1a\x18user_uuid, question_uuid\"\xb5\x02\n" +
 	"\n" +
 	"AnswerVote\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x126\n" +
-	"\vanswer_uuid\x18\x02 \x01(\tB\x15\xc2\xf3\x18\x11\x1a\ranswers(uuid)(\x01R\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
+	"\vanswer_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1fanswers(uuid) ON DELETE CASCADE(\x01R\n" +
 	"answerUuid\x120\n" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1b\n" +
 	"\tis_upvote\x18\x04 \x01(\bR\bisUpvote\x12F\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:*\xc2\xf3\x18&\n" +
-	"\fanswer_votes\x1a\x16user_uuid, answer_uuid\"\xfe\x03\n" +
+	"\fanswer_votes\x1a\x16user_uuid, answer_uuid\"\x90\x04\n" +
 	"\x0fQuestionComment\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12<\n" +
-	"\rquestion_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x13\x1a\x0fquestions(uuid)(\x01R\fquestionUuid\x120\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12N\n" +
+	"\rquestion_uuid\x18\x02 \x01(\tB)\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01R\fquestionUuid\x120\n" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
 	"\x04body\x18\x04 \x01(\tR\x04body\x12>\n" +
 	"\n" +
@@ -4321,10 +4415,10 @@ const file_social_proto_rawDesc = "" +
 	"\x0fauthor_username\x18\b \x01(\tR\x0eauthorUsername\x12*\n" +
 	"\x11author_avatar_url\x18\t \x01(\tR\x0fauthorAvatarUrl:\x17\xc2\xf3\x18\x13\n" +
 	"\x11question_commentsB\r\n" +
-	"\v_deleted_at\"\xf4\x03\n" +
+	"\v_deleted_at\"\x86\x04\n" +
 	"\rAnswerComment\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x126\n" +
-	"\vanswer_uuid\x18\x02 \x01(\tB\x15\xc2\xf3\x18\x11\x1a\ranswers(uuid)(\x01R\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
+	"\vanswer_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1fanswers(uuid) ON DELETE CASCADE(\x01R\n" +
 	"answerUuid\x120\n" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
 	"\x04body\x18\x04 \x01(\tR\x04body\x12>\n" +
@@ -4363,53 +4457,56 @@ const file_social_proto_rawDesc = "" +
 	"\n" +
 	"item_count\x18\v \x01(\x05R\titemCount\x12%\n" +
 	"\x0epreview_images\x18\f \x03(\tR\rpreviewImages:\x11\xc2\xf3\x18\r\n" +
-	"\vcollections\"\x90\x05\n" +
+	"\vcollections\"\xc5\x04\n" +
 	"\x0eCollectionItem\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12B\n" +
-	"\x0fcollection_uuid\x18\x02 \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x11collections(uuid)(\x01R\x0ecollectionUuid\x128\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12T\n" +
+	"\x0fcollection_uuid\x18\x02 \x01(\tB+\xc2\xf3\x18'\x1a#collections(uuid) ON DELETE CASCADE(\x01R\x0ecollectionUuid\x12I\n" +
+	"\ventity_uuid\x18\x03 \x01(\tB(\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01R\n" +
+	"entityUuid\x12F\n" +
 	"\n" +
-	"build_uuid\x18\x03 \x01(\tB\x14\xc2\xf3\x18\x10\x1a\fbuilds(uuid)(\x01H\x00R\tbuildUuid\x88\x01\x01\x12D\n" +
-	"\x0ecomponent_uuid\x18\x04 \x01(\tB\x18\xc2\xf3\x18\x14\x1a\x10components(uuid)(\x01H\x01R\rcomponentUuid\x88\x01\x01\x12F\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12\x1b\n" +
+	"\tentity_id\x18\x05 \x01(\tR\bentityId\x12\x1e\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12\x17\n" +
-	"\aitem_id\x18\x06 \x01(\tR\x06itemId\x12\x1b\n" +
-	"\titem_name\x18\a \x01(\tR\bitemName\x12\x1b\n" +
-	"\titem_type\x18\b \x01(\tR\bitemType\x12\x1d\n" +
-	"\n" +
-	"item_image\x18\t \x01(\tR\titemImage\x12=\n" +
-	"\x1bitem_author_or_manufacturer\x18\n" +
-	" \x01(\tR\x18itemAuthorOrManufacturer:\x82\x01\xc2\xf3\x18~\n" +
-	"\x10collection_items\x12,num_nonnulls(build_uuid, component_uuid) = 1\x1a\x1bcollection_uuid, build_uuid\x1a\x1fcollection_uuid, component_uuidB\r\n" +
-	"\v_build_uuidB\x11\n" +
-	"\x0f_component_uuid\"\xb7\x01\n" +
+	"collection\x18\x06 \x01(\tR\n" +
+	"collection\x12\x12\n" +
+	"\x04name\x18\a \x01(\tR\x04name\x127\n" +
+	"\x15primary_display_image\x18\b \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x129\n" +
+	"\x16author_or_manufacturer\x18\t \x01(\tH\x01R\x14authorOrManufacturer\x88\x01\x01:4\xc2\xf3\x180\n" +
+	"\x10collection_items\x1a\x1ccollection_uuid, entity_uuidB\x18\n" +
+	"\x16_primary_display_imageB\x19\n" +
+	"\x17_author_or_manufacturer\"\xd8\x01\n" +
 	"\x13EntitySocialSummary\x12\x19\n" +
 	"\bis_liked\x18\x01 \x01(\bR\aisLiked\x12\x1d\n" +
 	"\n" +
 	"like_count\x18\x02 \x01(\x05R\tlikeCount\x12?\n" +
 	"\x0ereview_summary\x18\x03 \x01(\v2\x18.quadsmith.ReviewSummaryR\rreviewSummary\x12%\n" +
-	"\x0equestion_count\x18\x04 \x01(\x05R\rquestionCount\"\xb6\x01\n" +
-	"\x13CreateReviewRequest\x12\x1e\n" +
-	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x88\x01\x01\x12&\n" +
-	"\fcomponent_id\x18\x02 \x01(\tH\x01R\vcomponentId\x88\x01\x01\x12%\n" +
+	"\x0equestion_count\x18\x04 \x01(\x05R\rquestionCount\x12\x1f\n" +
+	"\vis_archived\x18\x05 \x01(\bR\n" +
+	"isArchived\"\xa1\x01\n" +
+	"\x13CreateReviewRequest\x12\x1b\n" +
+	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12#\n" +
+	"\n" +
+	"collection\x18\x02 \x01(\tH\x00R\n" +
+	"collection\x88\x01\x01\x12%\n" +
 	"\x0eis_recommended\x18\x03 \x01(\bR\risRecommended\x12\x12\n" +
-	"\x04body\x18\x04 \x01(\tR\x04bodyB\v\n" +
-	"\t_build_idB\x0f\n" +
-	"\r_component_id\"m\n" +
+	"\x04body\x18\x04 \x01(\tR\x04bodyB\r\n" +
+	"\v_collection\"m\n" +
 	"\x13UpdateReviewRequest\x12\x1b\n" +
 	"\treview_id\x18\x01 \x01(\tR\breviewId\x12%\n" +
 	"\x0eis_recommended\x18\x02 \x01(\bR\risRecommended\x12\x12\n" +
 	"\x04body\x18\x03 \x01(\tR\x04body\"2\n" +
 	"\x13DeleteReviewRequest\x12\x1b\n" +
-	"\treview_id\x18\x01 \x01(\tR\breviewId\"\xcf\x01\n" +
-	"\x12ListReviewsRequest\x12\x1e\n" +
-	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x88\x01\x01\x12&\n" +
-	"\fcomponent_id\x18\x02 \x01(\tH\x01R\vcomponentId\x88\x01\x01\x12\x17\n" +
+	"\treview_id\x18\x01 \x01(\tR\breviewId\"\xba\x01\n" +
+	"\x12ListReviewsRequest\x12\x1b\n" +
+	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12#\n" +
+	"\n" +
+	"collection\x18\x02 \x01(\tH\x00R\n" +
+	"collection\x88\x01\x01\x12\x17\n" +
 	"\asort_by\x18\x03 \x01(\tR\x06sortBy\x12\x1b\n" +
 	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x05 \x01(\tR\tpageTokenB\v\n" +
-	"\t_build_idB\x0f\n" +
-	"\r_component_id\"\x9e\x01\n" +
+	"page_token\x18\x05 \x01(\tR\tpageTokenB\r\n" +
+	"\v_collection\"\x9e\x01\n" +
 	"\x13ListReviewsResponse\x12+\n" +
 	"\areviews\x18\x01 \x03(\v2\x11.quadsmith.ReviewR\areviews\x122\n" +
 	"\asummary\x18\x02 \x01(\v2\x18.quadsmith.ReviewSummaryR\asummary\x12&\n" +
@@ -4429,14 +4526,15 @@ const file_social_proto_rawDesc = "" +
 	"\x19ListReviewCommentsRequest\x12\x1b\n" +
 	"\treview_id\x18\x01 \x01(\tR\breviewId\"R\n" +
 	"\x1aListReviewCommentsResponse\x124\n" +
-	"\bcomments\x18\x01 \x03(\v2\x18.quadsmith.ReviewCommentR\bcomments\"\xa7\x01\n" +
-	"\x15CreateQuestionRequest\x12\x1e\n" +
-	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x88\x01\x01\x12&\n" +
-	"\fcomponent_id\x18\x02 \x01(\tH\x01R\vcomponentId\x88\x01\x01\x12\x14\n" +
+	"\bcomments\x18\x01 \x03(\v2\x18.quadsmith.ReviewCommentR\bcomments\"\x92\x01\n" +
+	"\x15CreateQuestionRequest\x12\x1b\n" +
+	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12#\n" +
+	"\n" +
+	"collection\x18\x02 \x01(\tH\x00R\n" +
+	"collection\x88\x01\x01\x12\x14\n" +
 	"\x05title\x18\x03 \x01(\tR\x05title\x12\x12\n" +
-	"\x04body\x18\x04 \x01(\tR\x04bodyB\v\n" +
-	"\t_build_idB\x0f\n" +
-	"\r_component_id\"b\n" +
+	"\x04body\x18\x04 \x01(\tR\x04bodyB\r\n" +
+	"\v_collection\"b\n" +
 	"\x15UpdateQuestionRequest\x12\x1f\n" +
 	"\vquestion_id\x18\x01 \x01(\tR\n" +
 	"questionId\x12\x14\n" +
@@ -4444,17 +4542,18 @@ const file_social_proto_rawDesc = "" +
 	"\x04body\x18\x03 \x01(\tR\x04body\"8\n" +
 	"\x15DeleteQuestionRequest\x12\x1f\n" +
 	"\vquestion_id\x18\x01 \x01(\tR\n" +
-	"questionId\"\xe7\x01\n" +
-	"\x14ListQuestionsRequest\x12\x1e\n" +
-	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x88\x01\x01\x12&\n" +
-	"\fcomponent_id\x18\x02 \x01(\tH\x01R\vcomponentId\x88\x01\x01\x12\x17\n" +
+	"questionId\"\xd2\x01\n" +
+	"\x14ListQuestionsRequest\x12\x1b\n" +
+	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12#\n" +
+	"\n" +
+	"collection\x18\x02 \x01(\tH\x00R\n" +
+	"collection\x88\x01\x01\x12\x17\n" +
 	"\asort_by\x18\x03 \x01(\tR\x06sortBy\x12\x14\n" +
 	"\x05query\x18\x04 \x01(\tR\x05query\x12\x1b\n" +
 	"\tpage_size\x18\x05 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x06 \x01(\tR\tpageTokenB\v\n" +
-	"\t_build_idB\x0f\n" +
-	"\r_component_id\"r\n" +
+	"page_token\x18\x06 \x01(\tR\tpageTokenB\r\n" +
+	"\v_collection\"r\n" +
 	"\x15ListQuestionsResponse\x121\n" +
 	"\tquestions\x18\x01 \x03(\v2\x13.quadsmith.QuestionR\tquestions\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"J\n" +
@@ -4526,28 +4625,31 @@ const file_social_proto_rawDesc = "" +
 	"\x1aListUserCollectionsRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\"V\n" +
 	"\x1bListUserCollectionsResponse\x127\n" +
-	"\vcollections\x18\x01 \x03(\v2\x15.quadsmith.CollectionR\vcollections\"}\n" +
-	"\x15ToggleLikeItemRequest\x12\x1e\n" +
-	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x88\x01\x01\x12&\n" +
-	"\fcomponent_id\x18\x02 \x01(\tH\x01R\vcomponentId\x88\x01\x01B\v\n" +
-	"\t_build_idB\x0f\n" +
-	"\r_component_id\"R\n" +
+	"\vcollections\x18\x01 \x03(\v2\x15.quadsmith.CollectionR\vcollections\"h\n" +
+	"\x15ToggleLikeItemRequest\x12\x1b\n" +
+	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12#\n" +
+	"\n" +
+	"collection\x18\x02 \x01(\tH\x00R\n" +
+	"collection\x88\x01\x01B\r\n" +
+	"\v_collection\"R\n" +
 	"\x16ToggleLikeItemResponse\x12\x19\n" +
 	"\bis_liked\x18\x01 \x01(\bR\aisLiked\x12\x1d\n" +
 	"\n" +
-	"like_count\x18\x02 \x01(\x05R\tlikeCount\"\xa5\x01\n" +
+	"like_count\x18\x02 \x01(\x05R\tlikeCount\"\x90\x01\n" +
 	"\x18AddCollectionItemRequest\x12#\n" +
-	"\rcollection_id\x18\x01 \x01(\tR\fcollectionId\x12\x1e\n" +
-	"\bbuild_id\x18\x02 \x01(\tH\x00R\abuildId\x88\x01\x01\x12&\n" +
-	"\fcomponent_id\x18\x03 \x01(\tH\x01R\vcomponentId\x88\x01\x01B\v\n" +
-	"\t_build_idB\x0f\n" +
-	"\r_component_id\"\xa8\x01\n" +
+	"\rcollection_id\x18\x01 \x01(\tR\fcollectionId\x12\x1b\n" +
+	"\tentity_id\x18\x02 \x01(\tR\bentityId\x12#\n" +
+	"\n" +
+	"collection\x18\x03 \x01(\tH\x00R\n" +
+	"collection\x88\x01\x01B\r\n" +
+	"\v_collection\"\x93\x01\n" +
 	"\x1bRemoveCollectionItemRequest\x12#\n" +
-	"\rcollection_id\x18\x01 \x01(\tR\fcollectionId\x12\x1e\n" +
-	"\bbuild_id\x18\x02 \x01(\tH\x00R\abuildId\x88\x01\x01\x12&\n" +
-	"\fcomponent_id\x18\x03 \x01(\tH\x01R\vcomponentId\x88\x01\x01B\v\n" +
-	"\t_build_idB\x0f\n" +
-	"\r_component_id\"}\n" +
+	"\rcollection_id\x18\x01 \x01(\tR\fcollectionId\x12\x1b\n" +
+	"\tentity_id\x18\x02 \x01(\tR\bentityId\x12#\n" +
+	"\n" +
+	"collection\x18\x03 \x01(\tH\x00R\n" +
+	"collection\x88\x01\x01B\r\n" +
+	"\v_collection\"}\n" +
 	"\x1aListCollectionItemsRequest\x12#\n" +
 	"\rcollection_id\x18\x01 \x01(\tR\fcollectionId\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
@@ -4558,12 +4660,13 @@ const file_social_proto_rawDesc = "" +
 	"collection\x18\x01 \x01(\v2\x15.quadsmith.CollectionR\n" +
 	"collection\x12/\n" +
 	"\x05items\x18\x02 \x03(\v2\x19.quadsmith.CollectionItemR\x05items\x12&\n" +
-	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"\x85\x01\n" +
-	"\x1dGetEntitySocialSummaryRequest\x12\x1e\n" +
-	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x88\x01\x01\x12&\n" +
-	"\fcomponent_id\x18\x02 \x01(\tH\x01R\vcomponentId\x88\x01\x01B\v\n" +
-	"\t_build_idB\x0f\n" +
-	"\r_component_id*\x89\x02\n" +
+	"\x0fnext_page_token\x18\x03 \x01(\tR\rnextPageToken\"p\n" +
+	"\x1dGetEntitySocialSummaryRequest\x12\x1b\n" +
+	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12#\n" +
+	"\n" +
+	"collection\x18\x02 \x01(\tH\x00R\n" +
+	"collection\x88\x01\x01B\r\n" +
+	"\v_collection*\x89\x02\n" +
 	"\n" +
 	"ReviewTier\x12\x1b\n" +
 	"\x17REVIEW_TIER_UNSPECIFIED\x10\x00\x12'\n" +
@@ -4633,7 +4736,7 @@ var file_social_proto_msgTypes = make([]protoimpl.MessageInfo, 59)
 var file_social_proto_goTypes = []any{
 	(ReviewTier)(0),                       // 0: quadsmith.ReviewTier
 	(ReviewVoteType)(0),                   // 1: quadsmith.ReviewVoteType
-	(*Component)(nil),                     // 2: quadsmith.Component
+	(*Entity)(nil),                        // 2: quadsmith.Entity
 	(*ReviewSummary)(nil),                 // 3: quadsmith.ReviewSummary
 	(*Review)(nil),                        // 4: quadsmith.Review
 	(*ReviewVote)(nil),                    // 5: quadsmith.ReviewVote
@@ -4692,122 +4795,130 @@ var file_social_proto_goTypes = []any{
 	(*ListCollectionItemsRequest)(nil),    // 58: quadsmith.ListCollectionItemsRequest
 	(*ListCollectionItemsResponse)(nil),   // 59: quadsmith.ListCollectionItemsResponse
 	(*GetEntitySocialSummaryRequest)(nil), // 60: quadsmith.GetEntitySocialSummaryRequest
-	(*timestamppb.Timestamp)(nil),         // 61: google.protobuf.Timestamp
+	(*ReferenceLink)(nil),                 // 61: quadsmith.ReferenceLink
+	(*Media)(nil),                         // 62: quadsmith.Media
+	(*timestamppb.Timestamp)(nil),         // 63: google.protobuf.Timestamp
 }
 var file_social_proto_depIdxs = []int32{
-	0,  // 0: quadsmith.ReviewSummary.tier:type_name -> quadsmith.ReviewTier
-	61, // 1: quadsmith.Review.deleted_at:type_name -> google.protobuf.Timestamp
-	61, // 2: quadsmith.Review.created_at:type_name -> google.protobuf.Timestamp
-	61, // 3: quadsmith.Review.updated_at:type_name -> google.protobuf.Timestamp
-	1,  // 4: quadsmith.Review.current_user_vote:type_name -> quadsmith.ReviewVoteType
-	61, // 5: quadsmith.ReviewVote.created_at:type_name -> google.protobuf.Timestamp
-	61, // 6: quadsmith.ReviewComment.deleted_at:type_name -> google.protobuf.Timestamp
-	61, // 7: quadsmith.ReviewComment.created_at:type_name -> google.protobuf.Timestamp
-	61, // 8: quadsmith.ReviewComment.updated_at:type_name -> google.protobuf.Timestamp
-	61, // 9: quadsmith.Question.deleted_at:type_name -> google.protobuf.Timestamp
-	61, // 10: quadsmith.Question.created_at:type_name -> google.protobuf.Timestamp
-	61, // 11: quadsmith.Question.updated_at:type_name -> google.protobuf.Timestamp
-	11, // 12: quadsmith.Question.comments:type_name -> quadsmith.QuestionComment
-	61, // 13: quadsmith.Answer.deleted_at:type_name -> google.protobuf.Timestamp
-	61, // 14: quadsmith.Answer.created_at:type_name -> google.protobuf.Timestamp
-	61, // 15: quadsmith.Answer.updated_at:type_name -> google.protobuf.Timestamp
-	12, // 16: quadsmith.Answer.comments:type_name -> quadsmith.AnswerComment
-	61, // 17: quadsmith.QuestionVote.created_at:type_name -> google.protobuf.Timestamp
-	61, // 18: quadsmith.AnswerVote.created_at:type_name -> google.protobuf.Timestamp
-	61, // 19: quadsmith.QuestionComment.deleted_at:type_name -> google.protobuf.Timestamp
-	61, // 20: quadsmith.QuestionComment.created_at:type_name -> google.protobuf.Timestamp
-	61, // 21: quadsmith.QuestionComment.updated_at:type_name -> google.protobuf.Timestamp
-	61, // 22: quadsmith.AnswerComment.deleted_at:type_name -> google.protobuf.Timestamp
-	61, // 23: quadsmith.AnswerComment.created_at:type_name -> google.protobuf.Timestamp
-	61, // 24: quadsmith.AnswerComment.updated_at:type_name -> google.protobuf.Timestamp
-	61, // 25: quadsmith.UserReputation.updated_at:type_name -> google.protobuf.Timestamp
-	61, // 26: quadsmith.Collection.created_at:type_name -> google.protobuf.Timestamp
-	61, // 27: quadsmith.Collection.updated_at:type_name -> google.protobuf.Timestamp
-	61, // 28: quadsmith.CollectionItem.created_at:type_name -> google.protobuf.Timestamp
-	3,  // 29: quadsmith.EntitySocialSummary.review_summary:type_name -> quadsmith.ReviewSummary
-	4,  // 30: quadsmith.ListReviewsResponse.reviews:type_name -> quadsmith.Review
-	3,  // 31: quadsmith.ListReviewsResponse.summary:type_name -> quadsmith.ReviewSummary
-	1,  // 32: quadsmith.VoteReviewRequest.vote_type:type_name -> quadsmith.ReviewVoteType
-	1,  // 33: quadsmith.VoteReviewResponse.current_user_vote:type_name -> quadsmith.ReviewVoteType
-	6,  // 34: quadsmith.ListReviewCommentsResponse.comments:type_name -> quadsmith.ReviewComment
-	7,  // 35: quadsmith.ListQuestionsResponse.questions:type_name -> quadsmith.Question
-	8,  // 36: quadsmith.ListAnswersResponse.answers:type_name -> quadsmith.Answer
-	14, // 37: quadsmith.ListUserCollectionsResponse.collections:type_name -> quadsmith.Collection
-	14, // 38: quadsmith.ListCollectionItemsResponse.collection:type_name -> quadsmith.Collection
-	15, // 39: quadsmith.ListCollectionItemsResponse.items:type_name -> quadsmith.CollectionItem
-	17, // 40: quadsmith.SocialService.CreateReview:input_type -> quadsmith.CreateReviewRequest
-	18, // 41: quadsmith.SocialService.UpdateReview:input_type -> quadsmith.UpdateReviewRequest
-	19, // 42: quadsmith.SocialService.DeleteReview:input_type -> quadsmith.DeleteReviewRequest
-	20, // 43: quadsmith.SocialService.ListReviews:input_type -> quadsmith.ListReviewsRequest
-	22, // 44: quadsmith.SocialService.VoteReview:input_type -> quadsmith.VoteReviewRequest
-	24, // 45: quadsmith.SocialService.CreateReviewComment:input_type -> quadsmith.CreateReviewCommentRequest
-	25, // 46: quadsmith.SocialService.DeleteReviewComment:input_type -> quadsmith.DeleteReviewCommentRequest
-	26, // 47: quadsmith.SocialService.ListReviewComments:input_type -> quadsmith.ListReviewCommentsRequest
-	28, // 48: quadsmith.SocialService.CreateQuestion:input_type -> quadsmith.CreateQuestionRequest
-	29, // 49: quadsmith.SocialService.UpdateQuestion:input_type -> quadsmith.UpdateQuestionRequest
-	30, // 50: quadsmith.SocialService.DeleteQuestion:input_type -> quadsmith.DeleteQuestionRequest
-	31, // 51: quadsmith.SocialService.ListQuestions:input_type -> quadsmith.ListQuestionsRequest
-	33, // 52: quadsmith.SocialService.VoteQuestion:input_type -> quadsmith.VoteQuestionRequest
-	35, // 53: quadsmith.SocialService.CreateAnswer:input_type -> quadsmith.CreateAnswerRequest
-	36, // 54: quadsmith.SocialService.UpdateAnswer:input_type -> quadsmith.UpdateAnswerRequest
-	37, // 55: quadsmith.SocialService.DeleteAnswer:input_type -> quadsmith.DeleteAnswerRequest
-	38, // 56: quadsmith.SocialService.ListAnswers:input_type -> quadsmith.ListAnswersRequest
-	40, // 57: quadsmith.SocialService.VoteAnswer:input_type -> quadsmith.VoteAnswerRequest
-	42, // 58: quadsmith.SocialService.AcceptAnswer:input_type -> quadsmith.AcceptAnswerRequest
-	43, // 59: quadsmith.SocialService.EndorseAnswer:input_type -> quadsmith.EndorseAnswerRequest
-	44, // 60: quadsmith.SocialService.CreateQuestionComment:input_type -> quadsmith.CreateQuestionCommentRequest
-	45, // 61: quadsmith.SocialService.DeleteQuestionComment:input_type -> quadsmith.DeleteQuestionCommentRequest
-	46, // 62: quadsmith.SocialService.CreateAnswerComment:input_type -> quadsmith.CreateAnswerCommentRequest
-	47, // 63: quadsmith.SocialService.DeleteAnswerComment:input_type -> quadsmith.DeleteAnswerCommentRequest
-	48, // 64: quadsmith.SocialService.CreateCollection:input_type -> quadsmith.CreateCollectionRequest
-	49, // 65: quadsmith.SocialService.UpdateCollection:input_type -> quadsmith.UpdateCollectionRequest
-	50, // 66: quadsmith.SocialService.DeleteCollection:input_type -> quadsmith.DeleteCollectionRequest
-	51, // 67: quadsmith.SocialService.GetCollection:input_type -> quadsmith.GetCollectionRequest
-	52, // 68: quadsmith.SocialService.ListUserCollections:input_type -> quadsmith.ListUserCollectionsRequest
-	54, // 69: quadsmith.SocialService.ToggleLikeItem:input_type -> quadsmith.ToggleLikeItemRequest
-	56, // 70: quadsmith.SocialService.AddCollectionItem:input_type -> quadsmith.AddCollectionItemRequest
-	57, // 71: quadsmith.SocialService.RemoveCollectionItem:input_type -> quadsmith.RemoveCollectionItemRequest
-	58, // 72: quadsmith.SocialService.ListCollectionItems:input_type -> quadsmith.ListCollectionItemsRequest
-	60, // 73: quadsmith.SocialService.GetEntitySocialSummary:input_type -> quadsmith.GetEntitySocialSummaryRequest
-	4,  // 74: quadsmith.SocialService.CreateReview:output_type -> quadsmith.Review
-	4,  // 75: quadsmith.SocialService.UpdateReview:output_type -> quadsmith.Review
-	3,  // 76: quadsmith.SocialService.DeleteReview:output_type -> quadsmith.ReviewSummary
-	21, // 77: quadsmith.SocialService.ListReviews:output_type -> quadsmith.ListReviewsResponse
-	23, // 78: quadsmith.SocialService.VoteReview:output_type -> quadsmith.VoteReviewResponse
-	6,  // 79: quadsmith.SocialService.CreateReviewComment:output_type -> quadsmith.ReviewComment
-	6,  // 80: quadsmith.SocialService.DeleteReviewComment:output_type -> quadsmith.ReviewComment
-	27, // 81: quadsmith.SocialService.ListReviewComments:output_type -> quadsmith.ListReviewCommentsResponse
-	7,  // 82: quadsmith.SocialService.CreateQuestion:output_type -> quadsmith.Question
-	7,  // 83: quadsmith.SocialService.UpdateQuestion:output_type -> quadsmith.Question
-	7,  // 84: quadsmith.SocialService.DeleteQuestion:output_type -> quadsmith.Question
-	32, // 85: quadsmith.SocialService.ListQuestions:output_type -> quadsmith.ListQuestionsResponse
-	34, // 86: quadsmith.SocialService.VoteQuestion:output_type -> quadsmith.VoteQuestionResponse
-	8,  // 87: quadsmith.SocialService.CreateAnswer:output_type -> quadsmith.Answer
-	8,  // 88: quadsmith.SocialService.UpdateAnswer:output_type -> quadsmith.Answer
-	8,  // 89: quadsmith.SocialService.DeleteAnswer:output_type -> quadsmith.Answer
-	39, // 90: quadsmith.SocialService.ListAnswers:output_type -> quadsmith.ListAnswersResponse
-	41, // 91: quadsmith.SocialService.VoteAnswer:output_type -> quadsmith.VoteAnswerResponse
-	8,  // 92: quadsmith.SocialService.AcceptAnswer:output_type -> quadsmith.Answer
-	8,  // 93: quadsmith.SocialService.EndorseAnswer:output_type -> quadsmith.Answer
-	11, // 94: quadsmith.SocialService.CreateQuestionComment:output_type -> quadsmith.QuestionComment
-	11, // 95: quadsmith.SocialService.DeleteQuestionComment:output_type -> quadsmith.QuestionComment
-	12, // 96: quadsmith.SocialService.CreateAnswerComment:output_type -> quadsmith.AnswerComment
-	12, // 97: quadsmith.SocialService.DeleteAnswerComment:output_type -> quadsmith.AnswerComment
-	14, // 98: quadsmith.SocialService.CreateCollection:output_type -> quadsmith.Collection
-	14, // 99: quadsmith.SocialService.UpdateCollection:output_type -> quadsmith.Collection
-	14, // 100: quadsmith.SocialService.DeleteCollection:output_type -> quadsmith.Collection
-	14, // 101: quadsmith.SocialService.GetCollection:output_type -> quadsmith.Collection
-	53, // 102: quadsmith.SocialService.ListUserCollections:output_type -> quadsmith.ListUserCollectionsResponse
-	55, // 103: quadsmith.SocialService.ToggleLikeItem:output_type -> quadsmith.ToggleLikeItemResponse
-	15, // 104: quadsmith.SocialService.AddCollectionItem:output_type -> quadsmith.CollectionItem
-	15, // 105: quadsmith.SocialService.RemoveCollectionItem:output_type -> quadsmith.CollectionItem
-	59, // 106: quadsmith.SocialService.ListCollectionItems:output_type -> quadsmith.ListCollectionItemsResponse
-	16, // 107: quadsmith.SocialService.GetEntitySocialSummary:output_type -> quadsmith.EntitySocialSummary
-	74, // [74:108] is the sub-list for method output_type
-	40, // [40:74] is the sub-list for method input_type
-	40, // [40:40] is the sub-list for extension type_name
-	40, // [40:40] is the sub-list for extension extendee
-	0,  // [0:40] is the sub-list for field type_name
+	61, // 0: quadsmith.Entity.reference_links:type_name -> quadsmith.ReferenceLink
+	62, // 1: quadsmith.Entity.media:type_name -> quadsmith.Media
+	63, // 2: quadsmith.Entity.created_at:type_name -> google.protobuf.Timestamp
+	63, // 3: quadsmith.Entity.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 4: quadsmith.ReviewSummary.tier:type_name -> quadsmith.ReviewTier
+	63, // 5: quadsmith.Review.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 6: quadsmith.Review.created_at:type_name -> google.protobuf.Timestamp
+	63, // 7: quadsmith.Review.updated_at:type_name -> google.protobuf.Timestamp
+	1,  // 8: quadsmith.Review.current_user_vote:type_name -> quadsmith.ReviewVoteType
+	63, // 9: quadsmith.ReviewVote.created_at:type_name -> google.protobuf.Timestamp
+	63, // 10: quadsmith.ReviewComment.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 11: quadsmith.ReviewComment.created_at:type_name -> google.protobuf.Timestamp
+	63, // 12: quadsmith.ReviewComment.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 13: quadsmith.Question.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 14: quadsmith.Question.created_at:type_name -> google.protobuf.Timestamp
+	63, // 15: quadsmith.Question.updated_at:type_name -> google.protobuf.Timestamp
+	11, // 16: quadsmith.Question.comments:type_name -> quadsmith.QuestionComment
+	63, // 17: quadsmith.Answer.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 18: quadsmith.Answer.created_at:type_name -> google.protobuf.Timestamp
+	63, // 19: quadsmith.Answer.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 20: quadsmith.Answer.accepted_at:type_name -> google.protobuf.Timestamp
+	63, // 21: quadsmith.Answer.endorsed_at:type_name -> google.protobuf.Timestamp
+	12, // 22: quadsmith.Answer.comments:type_name -> quadsmith.AnswerComment
+	63, // 23: quadsmith.QuestionVote.created_at:type_name -> google.protobuf.Timestamp
+	63, // 24: quadsmith.AnswerVote.created_at:type_name -> google.protobuf.Timestamp
+	63, // 25: quadsmith.QuestionComment.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 26: quadsmith.QuestionComment.created_at:type_name -> google.protobuf.Timestamp
+	63, // 27: quadsmith.QuestionComment.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 28: quadsmith.AnswerComment.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 29: quadsmith.AnswerComment.created_at:type_name -> google.protobuf.Timestamp
+	63, // 30: quadsmith.AnswerComment.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 31: quadsmith.UserReputation.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 32: quadsmith.Collection.created_at:type_name -> google.protobuf.Timestamp
+	63, // 33: quadsmith.Collection.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 34: quadsmith.CollectionItem.created_at:type_name -> google.protobuf.Timestamp
+	3,  // 35: quadsmith.EntitySocialSummary.review_summary:type_name -> quadsmith.ReviewSummary
+	4,  // 36: quadsmith.ListReviewsResponse.reviews:type_name -> quadsmith.Review
+	3,  // 37: quadsmith.ListReviewsResponse.summary:type_name -> quadsmith.ReviewSummary
+	1,  // 38: quadsmith.VoteReviewRequest.vote_type:type_name -> quadsmith.ReviewVoteType
+	1,  // 39: quadsmith.VoteReviewResponse.current_user_vote:type_name -> quadsmith.ReviewVoteType
+	6,  // 40: quadsmith.ListReviewCommentsResponse.comments:type_name -> quadsmith.ReviewComment
+	7,  // 41: quadsmith.ListQuestionsResponse.questions:type_name -> quadsmith.Question
+	8,  // 42: quadsmith.ListAnswersResponse.answers:type_name -> quadsmith.Answer
+	14, // 43: quadsmith.ListUserCollectionsResponse.collections:type_name -> quadsmith.Collection
+	14, // 44: quadsmith.ListCollectionItemsResponse.collection:type_name -> quadsmith.Collection
+	15, // 45: quadsmith.ListCollectionItemsResponse.items:type_name -> quadsmith.CollectionItem
+	17, // 46: quadsmith.SocialService.CreateReview:input_type -> quadsmith.CreateReviewRequest
+	18, // 47: quadsmith.SocialService.UpdateReview:input_type -> quadsmith.UpdateReviewRequest
+	19, // 48: quadsmith.SocialService.DeleteReview:input_type -> quadsmith.DeleteReviewRequest
+	20, // 49: quadsmith.SocialService.ListReviews:input_type -> quadsmith.ListReviewsRequest
+	22, // 50: quadsmith.SocialService.VoteReview:input_type -> quadsmith.VoteReviewRequest
+	24, // 51: quadsmith.SocialService.CreateReviewComment:input_type -> quadsmith.CreateReviewCommentRequest
+	25, // 52: quadsmith.SocialService.DeleteReviewComment:input_type -> quadsmith.DeleteReviewCommentRequest
+	26, // 53: quadsmith.SocialService.ListReviewComments:input_type -> quadsmith.ListReviewCommentsRequest
+	28, // 54: quadsmith.SocialService.CreateQuestion:input_type -> quadsmith.CreateQuestionRequest
+	29, // 55: quadsmith.SocialService.UpdateQuestion:input_type -> quadsmith.UpdateQuestionRequest
+	30, // 56: quadsmith.SocialService.DeleteQuestion:input_type -> quadsmith.DeleteQuestionRequest
+	31, // 57: quadsmith.SocialService.ListQuestions:input_type -> quadsmith.ListQuestionsRequest
+	33, // 58: quadsmith.SocialService.VoteQuestion:input_type -> quadsmith.VoteQuestionRequest
+	35, // 59: quadsmith.SocialService.CreateAnswer:input_type -> quadsmith.CreateAnswerRequest
+	36, // 60: quadsmith.SocialService.UpdateAnswer:input_type -> quadsmith.UpdateAnswerRequest
+	37, // 61: quadsmith.SocialService.DeleteAnswer:input_type -> quadsmith.DeleteAnswerRequest
+	38, // 62: quadsmith.SocialService.ListAnswers:input_type -> quadsmith.ListAnswersRequest
+	40, // 63: quadsmith.SocialService.VoteAnswer:input_type -> quadsmith.VoteAnswerRequest
+	42, // 64: quadsmith.SocialService.AcceptAnswer:input_type -> quadsmith.AcceptAnswerRequest
+	43, // 65: quadsmith.SocialService.EndorseAnswer:input_type -> quadsmith.EndorseAnswerRequest
+	44, // 66: quadsmith.SocialService.CreateQuestionComment:input_type -> quadsmith.CreateQuestionCommentRequest
+	45, // 67: quadsmith.SocialService.DeleteQuestionComment:input_type -> quadsmith.DeleteQuestionCommentRequest
+	46, // 68: quadsmith.SocialService.CreateAnswerComment:input_type -> quadsmith.CreateAnswerCommentRequest
+	47, // 69: quadsmith.SocialService.DeleteAnswerComment:input_type -> quadsmith.DeleteAnswerCommentRequest
+	48, // 70: quadsmith.SocialService.CreateCollection:input_type -> quadsmith.CreateCollectionRequest
+	49, // 71: quadsmith.SocialService.UpdateCollection:input_type -> quadsmith.UpdateCollectionRequest
+	50, // 72: quadsmith.SocialService.DeleteCollection:input_type -> quadsmith.DeleteCollectionRequest
+	51, // 73: quadsmith.SocialService.GetCollection:input_type -> quadsmith.GetCollectionRequest
+	52, // 74: quadsmith.SocialService.ListUserCollections:input_type -> quadsmith.ListUserCollectionsRequest
+	54, // 75: quadsmith.SocialService.ToggleLikeItem:input_type -> quadsmith.ToggleLikeItemRequest
+	56, // 76: quadsmith.SocialService.AddCollectionItem:input_type -> quadsmith.AddCollectionItemRequest
+	57, // 77: quadsmith.SocialService.RemoveCollectionItem:input_type -> quadsmith.RemoveCollectionItemRequest
+	58, // 78: quadsmith.SocialService.ListCollectionItems:input_type -> quadsmith.ListCollectionItemsRequest
+	60, // 79: quadsmith.SocialService.GetEntitySocialSummary:input_type -> quadsmith.GetEntitySocialSummaryRequest
+	4,  // 80: quadsmith.SocialService.CreateReview:output_type -> quadsmith.Review
+	4,  // 81: quadsmith.SocialService.UpdateReview:output_type -> quadsmith.Review
+	3,  // 82: quadsmith.SocialService.DeleteReview:output_type -> quadsmith.ReviewSummary
+	21, // 83: quadsmith.SocialService.ListReviews:output_type -> quadsmith.ListReviewsResponse
+	23, // 84: quadsmith.SocialService.VoteReview:output_type -> quadsmith.VoteReviewResponse
+	6,  // 85: quadsmith.SocialService.CreateReviewComment:output_type -> quadsmith.ReviewComment
+	6,  // 86: quadsmith.SocialService.DeleteReviewComment:output_type -> quadsmith.ReviewComment
+	27, // 87: quadsmith.SocialService.ListReviewComments:output_type -> quadsmith.ListReviewCommentsResponse
+	7,  // 88: quadsmith.SocialService.CreateQuestion:output_type -> quadsmith.Question
+	7,  // 89: quadsmith.SocialService.UpdateQuestion:output_type -> quadsmith.Question
+	7,  // 90: quadsmith.SocialService.DeleteQuestion:output_type -> quadsmith.Question
+	32, // 91: quadsmith.SocialService.ListQuestions:output_type -> quadsmith.ListQuestionsResponse
+	34, // 92: quadsmith.SocialService.VoteQuestion:output_type -> quadsmith.VoteQuestionResponse
+	8,  // 93: quadsmith.SocialService.CreateAnswer:output_type -> quadsmith.Answer
+	8,  // 94: quadsmith.SocialService.UpdateAnswer:output_type -> quadsmith.Answer
+	8,  // 95: quadsmith.SocialService.DeleteAnswer:output_type -> quadsmith.Answer
+	39, // 96: quadsmith.SocialService.ListAnswers:output_type -> quadsmith.ListAnswersResponse
+	41, // 97: quadsmith.SocialService.VoteAnswer:output_type -> quadsmith.VoteAnswerResponse
+	8,  // 98: quadsmith.SocialService.AcceptAnswer:output_type -> quadsmith.Answer
+	8,  // 99: quadsmith.SocialService.EndorseAnswer:output_type -> quadsmith.Answer
+	11, // 100: quadsmith.SocialService.CreateQuestionComment:output_type -> quadsmith.QuestionComment
+	11, // 101: quadsmith.SocialService.DeleteQuestionComment:output_type -> quadsmith.QuestionComment
+	12, // 102: quadsmith.SocialService.CreateAnswerComment:output_type -> quadsmith.AnswerComment
+	12, // 103: quadsmith.SocialService.DeleteAnswerComment:output_type -> quadsmith.AnswerComment
+	14, // 104: quadsmith.SocialService.CreateCollection:output_type -> quadsmith.Collection
+	14, // 105: quadsmith.SocialService.UpdateCollection:output_type -> quadsmith.Collection
+	14, // 106: quadsmith.SocialService.DeleteCollection:output_type -> quadsmith.Collection
+	14, // 107: quadsmith.SocialService.GetCollection:output_type -> quadsmith.Collection
+	53, // 108: quadsmith.SocialService.ListUserCollections:output_type -> quadsmith.ListUserCollectionsResponse
+	55, // 109: quadsmith.SocialService.ToggleLikeItem:output_type -> quadsmith.ToggleLikeItemResponse
+	15, // 110: quadsmith.SocialService.AddCollectionItem:output_type -> quadsmith.CollectionItem
+	15, // 111: quadsmith.SocialService.RemoveCollectionItem:output_type -> quadsmith.CollectionItem
+	59, // 112: quadsmith.SocialService.ListCollectionItems:output_type -> quadsmith.ListCollectionItemsResponse
+	16, // 113: quadsmith.SocialService.GetEntitySocialSummary:output_type -> quadsmith.EntitySocialSummary
+	80, // [80:114] is the sub-list for method output_type
+	46, // [46:80] is the sub-list for method input_type
+	46, // [46:46] is the sub-list for extension type_name
+	46, // [46:46] is the sub-list for extension extendee
+	0,  // [0:46] is the sub-list for field type_name
 }
 
 func init() { file_social_proto_init() }
@@ -4817,6 +4928,8 @@ func file_social_proto_init() {
 	}
 	file___common_proto_init()
 	file___sql_proto_init()
+	file_media_proto_init()
+	file_reference_link_proto_init()
 	file_social_proto_msgTypes[0].OneofWrappers = []any{}
 	file_social_proto_msgTypes[2].OneofWrappers = []any{}
 	file_social_proto_msgTypes[4].OneofWrappers = []any{}
