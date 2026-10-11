@@ -187,7 +187,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const res = await authClient.sendEmailOtp({ email });
     return {
       success: res.success,
-      cooldownSeconds: res.cooldownSeconds || 60,
+      cooldownSeconds: res.cooldownSeconds || 20,
       message: res.message || "Verification code sent to your email",
     };
   };
@@ -231,7 +231,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const res = await authClient.sendAddEmailOtp({ email });
     return {
       success: res.success,
-      cooldownSeconds: res.cooldownSeconds || 60,
+      cooldownSeconds: res.cooldownSeconds || 20,
       message: res.message || "Verification code sent to your email",
       isExistingAccount: res.isExistingAccount || false,
     };

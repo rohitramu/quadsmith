@@ -131,6 +131,12 @@ describe("LoginPage Component", () => {
 
     // Auto-continues without clicking any button: token saved in localStorage
     expect(localStorage.getItem("qs_access_token")).toBe("mock-jwt-token");
+
+    // Resend Email button is disabled on success and has NO countdown timer
+    const resendBtn = screen.getByRole("button", { name: /^resend email$/i });
+    expect(resendBtn).toBeInTheDocument();
+    expect(resendBtn).toBeDisabled();
+    expect(screen.queryByText(/resend email \(\d+s\)/i)).not.toBeInTheDocument();
   });
 
   it("greys out text boxes, removes locked out label above inputs, and displays Request New Verification Code upon lockout", async () => {
@@ -152,9 +158,9 @@ describe("LoginPage Component", () => {
       await user.type(inputs[i], "9");
     }
 
-    // Wait for lockout state
+    // Wait for lockout state (60s cooldown)
     const reqBtn = await screen.findByRole("button", {
-      name: /request new verification code \(120s\)/i,
+      name: /request new verification code \(60s\)/i,
     });
     expect(reqBtn).toBeInTheDocument();
     expect(reqBtn).toBeDisabled();

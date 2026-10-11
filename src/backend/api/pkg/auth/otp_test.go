@@ -3,6 +3,7 @@ package auth
 import (
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestOTPGenerationAndVerification(t *testing.T) {
@@ -63,5 +64,14 @@ func TestPluralAttempts(t *testing.T) {
 	}
 	if pluralAttempts(0) != "attempts" {
 		t.Errorf("expected 'attempts' for 0, got %s", pluralAttempts(0))
+	}
+}
+
+func TestCooldownDurations(t *testing.T) {
+	if EmailCooldown != 20*time.Second {
+		t.Errorf("expected EmailCooldown to be 20s, got %v", EmailCooldown)
+	}
+	if ExhaustedCooldown != 60*time.Second {
+		t.Errorf("expected ExhaustedCooldown to be 60s, got %v", ExhaustedCooldown)
 	}
 }

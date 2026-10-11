@@ -482,7 +482,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(AuthService, {
-      sendEmailOtp: () => ({ success: true, message: "Code sent", cooldownSeconds: 60 }),
+      sendEmailOtp: () => ({ success: true, message: "Code sent", cooldownSeconds: 20 }),
       verifyEmailOtp: (req) => {
         if (req.code === "888888") {
           const err = new ConnectError(
@@ -514,7 +514,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
                 value: {
                   remainingAttempts: 0,
                   isExhausted: true,
-                  cooldownSeconds: 120,
+                  cooldownSeconds: 60,
                   message: "Incorrect code. You have 0 attempts left. Please request a new code",
                 },
               },
@@ -576,7 +576,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         return create(SendEmailOtpResponseSchema, {
           success: true,
           message: `Verification code sent to ${req.email}`,
-          cooldownSeconds: 60,
+          cooldownSeconds: 20,
           isExistingAccount: isExisting,
         });
       },

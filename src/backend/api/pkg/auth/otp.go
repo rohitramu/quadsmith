@@ -18,8 +18,8 @@ import (
 const (
 	OtpTTL            = 3 * time.Minute
 	MagicLinkTTL      = 15 * time.Minute
-	EmailCooldown     = 60 * time.Second
-	ExhaustedCooldown = 120 * time.Second
+	EmailCooldown     = 20 * time.Second
+	ExhaustedCooldown = 60 * time.Second
 	MaxOtpAttempts    = 3
 	MaxIPFailures     = 5
 	IPLockoutDuration = 60 * time.Minute
@@ -127,8 +127,8 @@ func RecordIPSuccess(ip string) {
 // Email Send Cooldown
 // ---------------------------------------------------------
 
-// CheckEmailCooldown verifies whether an email was sent within the 60-second cooldown window,
-// or if a previous challenge was exhausted (3 failed attempts) within the 120-second lockout window.
+// CheckEmailCooldown verifies whether an email was sent within the 20-second cooldown window,
+// or if a previous challenge was exhausted (3 failed attempts) within the 60-second lockout window.
 func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (int32, error) {
 	var createdAt time.Time
 	var usedAt *time.Time
@@ -140,7 +140,7 @@ func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (in
 		return 0, nil
 	}
 
-	// Enforce 120-second cooldown starting when the 3rd failed challenge happened
+	// Enforce 60-second cooldown starting when the 3rd failed challenge happened
 	if failedAttempts >= MaxOtpAttempts && usedAt != nil {
 		elapsedExhausted := time.Since(*usedAt)
 		if elapsedExhausted < ExhaustedCooldown {
@@ -152,7 +152,7 @@ func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (in
 		}
 	}
 
-	// Enforce 60-second cooldown from when the email was sent
+	// Enforce 20-second cooldown from when the email was sent
 	elapsed := time.Since(createdAt)
 	if elapsed < EmailCooldown {
 		remaining := int32((EmailCooldown - elapsed).Seconds())

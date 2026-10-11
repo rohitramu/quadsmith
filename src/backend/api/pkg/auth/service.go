@@ -84,7 +84,7 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 	return connect.NewResponse(&pb.SendEmailOtpResponse{
 		Success:         true,
 		Message:         "Verification code sent to your email",
-		CooldownSeconds: 60,
+		CooldownSeconds: int32(EmailCooldown.Seconds()),
 	}), nil
 }
 
@@ -129,7 +129,7 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 
 	if failedAttempts >= MaxOtpAttempts {
 		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-		return s.returnOtpError("Verification challenge exhausted. Please request a new code", 0, true, 120)
+		return s.returnOtpError("Verification challenge exhausted. Please request a new code", 0, true, int32(ExhaustedCooldown.Seconds()))
 	}
 
 	if !VerifyOTP(code, codeHash) {
@@ -138,7 +138,7 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 		remaining := int32(MaxOtpAttempts - newFailures)
 		if remaining <= 0 {
 			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1, used_at = NOW() WHERE uuid = $2`, newFailures, otpUUID)
-			return s.returnOtpError("Incorrect code. You have 0 attempts left. Please request a new code", 0, true, 120)
+			return s.returnOtpError("Incorrect code. You have 0 attempts left. Please request a new code", 0, true, int32(ExhaustedCooldown.Seconds()))
 		}
 		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1 WHERE uuid = $2`, newFailures, otpUUID)
 		msg := fmt.Sprintf("Incorrect code. You have %d %s left", remaining, pluralAttempts(remaining))
@@ -532,7 +532,7 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 	return connect.NewResponse(&pb.SendEmailOtpResponse{
 		Success:           true,
 		Message:           "Verification code sent to email",
-		CooldownSeconds:   60,
+		CooldownSeconds:   int32(EmailCooldown.Seconds()),
 		IsExistingAccount: isExistingAccount,
 	}), nil
 }

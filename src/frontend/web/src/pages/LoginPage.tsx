@@ -26,6 +26,7 @@ export function LoginPage() {
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [isExhausted, setIsExhausted] = useState(false);
   const [isRateLimited, setIsRateLimited] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const [exhaustedCooldown, setExhaustedCooldown] = useState(0);
 
@@ -40,7 +41,7 @@ export function LoginPage() {
     return () => clearInterval(timer);
   }, [cooldown]);
 
-  // Exhausted cooldown countdown timer (120s)
+  // Exhausted cooldown countdown timer (60s)
   useEffect(() => {
     if (exhaustedCooldown <= 0) return;
     const timer = setInterval(() => {
@@ -75,6 +76,7 @@ export function LoginPage() {
         setErrorMsg(null);
         try {
           await verifyMagicLink(token);
+          setIsSuccess(true);
           navigate(redirectUrl, { replace: true });
         } catch (err: unknown) {
           if (err instanceof Error) {
@@ -188,6 +190,7 @@ export function LoginPage() {
     setErrorMsg(null);
     try {
       await verifyEmailOtp(email, code);
+      setIsSuccess(true);
       navigate(redirectUrl, { replace: true });
     } catch (err: unknown) {
       // Clear fields and show incorrect code as faded placeholder hints
@@ -210,7 +213,7 @@ export function LoginPage() {
           setRemainingAttempts(detail.remainingAttempts);
           setIsExhausted(detail.isExhausted);
           if (detail.isExhausted) {
-            setExhaustedCooldown(detail.cooldownSeconds || 120);
+            setExhaustedCooldown(detail.cooldownSeconds || 60);
           }
           setErrorMsg(detail.message);
         } else {
@@ -400,11 +403,11 @@ export function LoginPage() {
                     maxLength={1}
                     placeholder={hintDigits[index] || ""}
                     value={digit}
-                    disabled={isExhausted || isRateLimited || isLoading}
+                    disabled={isSuccess || isExhausted || isRateLimited || isLoading}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
                     className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition ${
-                      isExhausted || isRateLimited
+                      isSuccess || isExhausted || isRateLimited
                         ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
                         : remainingAttempts !== null && remainingAttempts > 0
                           ? "border-2 border-rose-500 focus:border-rose-600"
@@ -454,14 +457,16 @@ export function LoginPage() {
                 <button
                   type="button"
                   onClick={() => handleSendEmail()}
-                  disabled={cooldown > 0 || isLoading}
+                  disabled={isSuccess || cooldown > 0 || isLoading}
                   className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 ${
-                    cooldown > 0
+                    isSuccess || cooldown > 0
                       ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
                       : "text-zinc-800 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 cursor-pointer"
                   }`}
                 >
-                  <span>{cooldown > 0 ? `Resend Email (${cooldown}s)` : "Resend Email"}</span>
+                  <span>
+                    {!isSuccess && cooldown > 0 ? `Resend Email (${cooldown}s)` : "Resend Email"}
+                  </span>
                 </button>
               )}
 
@@ -475,6 +480,7 @@ export function LoginPage() {
                     setRemainingAttempts(null);
                     setIsExhausted(false);
                     setIsRateLimited(false);
+                    setIsSuccess(false);
                     setExhaustedCooldown(0);
                     setHintDigits(["", "", "", "", "", ""]);
                     setOtpDigits(["", "", "", "", "", ""]);
