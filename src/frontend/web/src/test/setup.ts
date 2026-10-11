@@ -48,8 +48,9 @@ globalThis.IntersectionObserver = class IntersectionObserver {
   }
 } as any;
 
-// Mock scrollTo
+// Mock scrollTo and scrollIntoView
 window.scrollTo = vi.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 // Mock HTMLDialogElement methods for jsdom
 if (typeof HTMLDialogElement !== "undefined") {

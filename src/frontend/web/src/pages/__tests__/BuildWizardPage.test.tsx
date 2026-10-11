@@ -599,6 +599,86 @@ describe("BuildWizardPage Component", () => {
     expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: "smooth", block: "center" });
   });
 
+  it("keeps 'Compatible Only' checkbox visible when deselected, and renders incompatible products with desaturation and warning badge", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Advance to Step 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+
+    // Select Frame (Master 5 V2 - maxPropSizeMm: 130)
+    await user.click(await screen.findByText("Master 5 V2"));
+
+    // By default, "Compatible Only" is checked in 1C Propellers
+    const compatCheckbox = (await screen.findByLabelText("Compatible Only")) as HTMLInputElement;
+    expect(compatCheckbox).toBeInTheDocument();
+    expect(compatCheckbox.checked).toBe(true);
+
+    // Only compatible propeller (Hurricane 51433) is visible; incompatible 7-inch (HQProp DP 7X4X3) is not visible
+    expect(screen.getByText("Hurricane 51433")).toBeInTheDocument();
+    expect(screen.queryByText("HQProp DP 7X4X3")).not.toBeInTheDocument();
+
+    // Uncheck "Compatible Only"
+    await user.click(compatCheckbox);
+
+    // Checkbox and banner must NOT disappear!
+    expect(compatCheckbox).toBeInTheDocument();
+    expect(compatCheckbox.checked).toBe(false);
+
+    // Now incompatible propeller (HQProp DP 7X4X3) is visible
+    const incompatibleProp = await screen.findByText("HQProp DP 7X4X3");
+    expect(incompatibleProp).toBeInTheDocument();
+
+    // Verify incompatible styling and badge
+    const card = incompatibleProp.closest(".cursor-pointer");
+    expect(card?.className).toContain("opacity-60");
+    expect(card?.className).toContain("saturate-50");
+    expect(
+      within(card as HTMLElement).getByText(/Incompatible \(7.0" > 5.1"\)/i),
+    ).toBeInTheDocument();
+
+    // Re-check "Compatible Only"
+    await user.click(compatCheckbox);
+    expect(compatCheckbox.checked).toBe(true);
+    expect(screen.queryByText("HQProp DP 7X4X3")).not.toBeInTheDocument();
+  });
+
+  it("navigates to step and scrolls to selected product when clicking on a selected part in the sidebar", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Advance to Step 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+
+    // Mock scrollIntoView
+    const scrollIntoViewMock = vi.fn();
+    window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
+
+    // Select Frame, Motor, Prop
+    await user.click(await screen.findByText("Master 5 V2"));
+    await user.click(await screen.findByText("ECO II 2207"));
+    await user.click(await screen.findByText("Hurricane 51433"));
+
+    // Advance to Step 2
+    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+    expect(await screen.findByText("2A. Flight Controller")).toBeInTheDocument();
+
+    // Find "Frame" item in "Selected Parts" sidebar and click it
+    const sidebarFrameBtn = screen.getByTitle("Go to Step 1: Frame selection");
+    expect(sidebarFrameBtn).toBeInTheDocument();
+
+    scrollIntoViewMock.mockClear();
+    await user.click(sidebarFrameBtn);
+
+    // Verify it transitioned back to Step 1
+    expect(screen.getByText("1A. Frame Chassis")).toBeInTheDocument();
+
+    // Wait for the smooth scroll to be triggered on the selected element
+    await waitFor(() => {
+      expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: "smooth", block: "center" });
+    });
+  });
+
   describe("getVtxAntennaCount", () => {
     it("returns 1 for null or undefined VTX", () => {
       expect(getVtxAntennaCount(null)).toBe(1);

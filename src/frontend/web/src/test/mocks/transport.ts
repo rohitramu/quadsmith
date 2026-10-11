@@ -38,7 +38,7 @@ import {
   mockESCs,
   mockUser,
   mockProfile,
-  mockPropeller1,
+  mockPropellers,
   mockCamera1,
   mockVTX1,
   mockReceivers,
@@ -409,10 +409,11 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(PropellerService, {
-      listPropellers: () => ({ propellers: [mockPropeller1], nextPageToken: "" }),
+      listPropellers: () => ({ propellers: mockPropellers, nextPageToken: "" }),
       getPropeller: (req) => {
-        if (req.id === mockPropeller1.id || req.id === mockPropeller1.uuid) {
-          return mockPropeller1;
+        const prop = mockPropellers.find((p) => p.id === req.id || p.uuid === req.id);
+        if (prop) {
+          return prop;
         }
         throw new ConnectError("Propeller not found", Code.NotFound);
       },

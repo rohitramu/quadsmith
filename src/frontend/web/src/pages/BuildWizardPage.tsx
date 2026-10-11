@@ -260,8 +260,10 @@ export function BuildWizardPage() {
   const [selectedVtxAnt, setSelectedVtxAnt] = useState<Antenna | null>(null);
   const vtxAntCount = useMemo(() => getVtxAntennaCount(selectedVtx), [selectedVtx]);
 
-  const scrollToSelectedProduct = (elementId: string) => {
-    const el = document.getElementById(elementId);
+  const scrollToSelectedProduct = (elementId: string, fallbackSectionId?: string) => {
+    const el =
+      document.getElementById(elementId) ||
+      (fallbackSectionId ? document.getElementById(fallbackSectionId) : null);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "center" });
       el.classList.add("ring-2", "ring-blue-400");
@@ -269,6 +271,14 @@ export function BuildWizardPage() {
         el.classList.remove("ring-2", "ring-blue-400");
       }, 1200);
     }
+  };
+
+  const navigateToStepAndScroll = (step: number, elementId: string, fallbackSectionId?: string) => {
+    setActiveStep(step);
+    scrollToSelectedProduct(elementId, fallbackSectionId);
+    setTimeout(() => {
+      scrollToSelectedProduct(elementId, fallbackSectionId);
+    }, 80);
   };
 
   // Explicit "None" flags for optional parts
@@ -316,28 +326,28 @@ export function BuildWizardPage() {
 
   // Dynamic Tier 1 CEL filters generated client-side by WASM Engine
   const propCelFilter = useMemo(() => {
-    if (!isWasmReady || !filterCompatibleOnly || !selectedFrame) return "";
+    if (!isWasmReady || !selectedFrame) return "";
     const comps = create(AssembledComponentsSchema, { frame: selectedFrame });
     return wasmEngine.generateCelFilter("propellers", comps);
-  }, [isWasmReady, filterCompatibleOnly, selectedFrame]);
+  }, [isWasmReady, selectedFrame]);
 
   const escCelFilter = useMemo(() => {
-    if (!isWasmReady || !filterCompatibleOnly || !selectedMotor) return "";
+    if (!isWasmReady || !selectedMotor) return "";
     const comps = create(AssembledComponentsSchema, { motor: selectedMotor });
     return wasmEngine.generateCelFilter("electronic_speed_controllers", comps);
-  }, [isWasmReady, filterCompatibleOnly, selectedMotor]);
+  }, [isWasmReady, selectedMotor]);
 
   const camCelFilter = useMemo(() => {
-    if (!isWasmReady || !filterCompatibleOnly || !selectedVtx) return "";
+    if (!isWasmReady || !selectedVtx) return "";
     const comps = create(AssembledComponentsSchema, { videoTransmitter: selectedVtx });
     return wasmEngine.generateCelFilter("cameras", comps);
-  }, [isWasmReady, filterCompatibleOnly, selectedVtx]);
+  }, [isWasmReady, selectedVtx]);
 
   const vtxCelFilter = useMemo(() => {
-    if (!isWasmReady || !filterCompatibleOnly || !selectedCam) return "";
+    if (!isWasmReady || !selectedCam) return "";
     const comps = create(AssembledComponentsSchema, { cameras: [selectedCam] });
     return wasmEngine.generateCelFilter("video_transmitters", comps);
-  }, [isWasmReady, filterCompatibleOnly, selectedCam]);
+  }, [isWasmReady, selectedCam]);
 
   const batteryCelFilter = useMemo(() => {
     if (!isWasmReady) return "";
@@ -354,21 +364,17 @@ export function BuildWizardPage() {
   const { data: framesData } = useQuery(listFrames, { pageSize: 100 });
   const { data: motorsData } = useQuery(listMotors, { pageSize: 100 });
   const { data: propsData } = useQuery(listPropellers, {
-    filter: propCelFilter || undefined,
     pageSize: 100,
   });
   const { data: fcsData } = useQuery(listFlightControllers, { pageSize: 100 });
   const { data: escsData } = useQuery(listElectronicSpeedControllers, {
-    filter: escCelFilter || undefined,
     pageSize: 100,
   });
   const { data: rxsData } = useQuery(listReceivers, { pageSize: 100 });
   const { data: vtxsData } = useQuery(listVideoTransmitters, {
-    filter: vtxCelFilter || undefined,
     pageSize: 100,
   });
   const { data: camsData } = useQuery(listCameras, {
-    filter: camCelFilter || undefined,
     pageSize: 100,
   });
   const { data: antsData } = useQuery(listAntennas, { pageSize: 100 });
@@ -1568,7 +1574,10 @@ export function BuildWizardPage() {
           {activeStep === 1 && (
             <div className="space-y-6">
               {/* 1A. Frame Chassis */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-frame"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-blue-500"></span>
@@ -1579,7 +1588,9 @@ export function BuildWizardPage() {
                   {selectedFrame ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-frame-item")}
+                      onClick={() =>
+                        scrollToSelectedProduct("selected-frame-item", "section-frame")
+                      }
                       title="Scroll to selected frame"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -1662,7 +1673,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 1B. Motors */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-motor"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-blue-500"></span>
@@ -1676,7 +1690,9 @@ export function BuildWizardPage() {
                   {selectedMotor ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-motor-item")}
+                      onClick={() =>
+                        scrollToSelectedProduct("selected-motor-item", "section-motor")
+                      }
                       title="Scroll to selected motor"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -1758,7 +1774,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 1C. Propellers */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-prop"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-blue-500"></span>
@@ -1772,7 +1791,7 @@ export function BuildWizardPage() {
                   {selectedProp ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-prop-item")}
+                      onClick={() => scrollToSelectedProduct("selected-prop-item", "section-prop")}
                       title="Scroll to selected propeller"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -1811,12 +1830,30 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {propCelFilter && (
-                  <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                  <div
+                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                      filterCompatibleOnly
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                    }`}
+                  >
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                      <span
+                        className={`font-semibold text-[10px] uppercase tracking-wider ${
+                          filterCompatibleOnly
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-zinc-500 dark:text-zinc-400"
+                        }`}
+                      >
                         Compatibility Filter:
                       </span>
-                      <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
+                      <code
+                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
+                          filterCompatibleOnly
+                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
+                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
+                        }`}
+                      >
                         {propCelFilter}
                       </code>
                     </div>
@@ -1825,7 +1862,7 @@ export function BuildWizardPage() {
                         type="checkbox"
                         checked={filterCompatibleOnly}
                         onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
-                        className="rounded border-emerald-400 text-emerald-600 focus:ring-emerald-500"
+                        className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible Only</span>
                     </label>
@@ -1836,6 +1873,11 @@ export function BuildWizardPage() {
                   {filteredProps.map((p) => {
                     const isSelected = selectedProp?.uuid === p.uuid || selectedProp?.id === p.id;
                     const diam = p.diameterMm ? (p.diameterMm / 25.4).toFixed(1) : "5.0";
+                    const isIncompatible = Boolean(
+                      selectedFrame &&
+                      selectedFrame.maxPropSizeMm > 0 &&
+                      p.diameterMm > selectedFrame.maxPropSizeMm,
+                    );
                     return (
                       <div
                         key={p.uuid || p.id}
@@ -1844,7 +1886,9 @@ export function BuildWizardPage() {
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                            : isIncompatible
+                              ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                              : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
                         <div className="flex-1 min-w-0">
@@ -1855,6 +1899,12 @@ export function BuildWizardPage() {
                             <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0">
                               {diam}"
                             </span>
+                            {isIncompatible && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                                Incompatible ({diam}" &gt;{" "}
+                                {(selectedFrame!.maxPropSizeMm / 25.4).toFixed(1)}")
+                              </span>
+                            )}
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                             {p.manufacturer} • Weight: {p.weightG}g ea (
@@ -1881,7 +1931,10 @@ export function BuildWizardPage() {
           {activeStep === 2 && (
             <div className="space-y-6">
               {/* 2A. Flight Controller */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-fc"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
@@ -1892,7 +1945,7 @@ export function BuildWizardPage() {
                   {selectedFc ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-fc-item")}
+                      onClick={() => scrollToSelectedProduct("selected-fc-item", "section-fc")}
                       title="Scroll to selected flight controller"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -1991,7 +2044,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 2B. Electronic Speed Controller (ESC) - Conditional Logic */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-esc"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
@@ -2002,7 +2058,7 @@ export function BuildWizardPage() {
                   {selectedEsc || useIntegratedEsc ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-esc-item")}
+                      onClick={() => scrollToSelectedProduct("selected-esc-item", "section-esc")}
                       title="Scroll to selected ESC"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -2050,12 +2106,30 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {escCelFilter && (
-                  <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                  <div
+                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                      filterCompatibleOnly
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                    }`}
+                  >
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                      <span
+                        className={`font-semibold text-[10px] uppercase tracking-wider ${
+                          filterCompatibleOnly
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-zinc-500 dark:text-zinc-400"
+                        }`}
+                      >
                         Compatibility Filter:
                       </span>
-                      <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
+                      <code
+                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
+                          filterCompatibleOnly
+                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
+                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
+                        }`}
+                      >
                         {escCelFilter}
                       </code>
                     </div>
@@ -2064,7 +2138,7 @@ export function BuildWizardPage() {
                         type="checkbox"
                         checked={filterCompatibleOnly}
                         onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
-                        className="rounded border-emerald-400 text-emerald-600 focus:ring-emerald-500"
+                        className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible Only</span>
                     </label>
@@ -2128,6 +2202,11 @@ export function BuildWizardPage() {
                     const isSelected =
                       !useIntegratedEsc &&
                       (selectedEsc?.uuid === esc.uuid || selectedEsc?.id === esc.id);
+                    const isIncompatible = Boolean(
+                      selectedMotor &&
+                      selectedMotor.statorDiameterMm > 20 &&
+                      esc.motorCurrentMaxA < 20,
+                    );
                     return (
                       <div
                         key={esc.uuid || esc.id}
@@ -2140,7 +2219,9 @@ export function BuildWizardPage() {
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                            : isIncompatible
+                              ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                              : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
                         <div className="flex-1 min-w-0">
@@ -2151,6 +2232,11 @@ export function BuildWizardPage() {
                             <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shrink-0">
                               {esc.motorCurrentMaxA || 50}A
                             </span>
+                            {isIncompatible && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                                Incompatible (&lt;20A for {selectedMotor!.statorDiameterMm}mm motor)
+                              </span>
+                            )}
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                             {esc.manufacturer} • Weight: {esc.weightG}g • {esc.maxMotors || 4}x
@@ -2172,7 +2258,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 2C. Radio Receiver */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-rx"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
@@ -2183,7 +2272,7 @@ export function BuildWizardPage() {
                   {selectedRx || useIntegratedRx ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-rx-item")}
+                      onClick={() => scrollToSelectedProduct("selected-rx-item", "section-rx")}
                       title="Scroll to selected receiver"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -2327,7 +2416,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 2D. Radio Receiver Antenna(s) */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-rx-ant"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
@@ -2338,7 +2430,9 @@ export function BuildWizardPage() {
                   {selectedRxAnt && !noneSelections.rxAntenna ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-rx-ant-item")}
+                      onClick={() =>
+                        scrollToSelectedProduct("selected-rx-ant-item", "section-rx-ant")
+                      }
                       title="Scroll to selected antenna"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -2519,7 +2613,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 2E. GPS Receiver & Compass */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-gps"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
@@ -2530,7 +2627,7 @@ export function BuildWizardPage() {
                   {selectedGps ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-gps-item")}
+                      onClick={() => scrollToSelectedProduct("selected-gps-item", "section-gps")}
                       title="Scroll to selected GPS"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -2659,7 +2756,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 3A. Video Transmitter (VTX) */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-vtx"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     3A. Video Transmitter (VTX)
@@ -2667,7 +2767,7 @@ export function BuildWizardPage() {
                   {selectedVtx || useIntegratedVtx ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-vtx-item")}
+                      onClick={() => scrollToSelectedProduct("selected-vtx-item", "section-vtx")}
                       title="Scroll to selected VTX"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -2709,12 +2809,30 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {vtxCelFilter && (
-                  <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                  <div
+                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                      filterCompatibleOnly
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                    }`}
+                  >
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                      <span
+                        className={`font-semibold text-[10px] uppercase tracking-wider ${
+                          filterCompatibleOnly
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-zinc-500 dark:text-zinc-400"
+                        }`}
+                      >
                         Compatibility Filter:
                       </span>
-                      <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
+                      <code
+                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
+                          filterCompatibleOnly
+                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
+                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
+                        }`}
+                      >
                         {vtxCelFilter}
                       </code>
                     </div>
@@ -2723,7 +2841,7 @@ export function BuildWizardPage() {
                         type="checkbox"
                         checked={filterCompatibleOnly}
                         onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
-                        className="rounded border-emerald-400 text-emerald-600 focus:ring-emerald-500"
+                        className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible Only</span>
                     </label>
@@ -2797,6 +2915,12 @@ export function BuildWizardPage() {
                       !useIntegratedVtx &&
                       !noneSelections.vtx &&
                       (selectedVtx?.uuid === v.uuid || selectedVtx?.id === v.id);
+                    const isIncompatible = Boolean(
+                      selectedCam &&
+                      selectedCam.protocol &&
+                      v.protocol &&
+                      v.protocol.toLowerCase() !== selectedCam.protocol.toLowerCase(),
+                    );
                     return (
                       <div
                         key={v.uuid || v.id}
@@ -2809,7 +2933,9 @@ export function BuildWizardPage() {
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                            : isIncompatible
+                              ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                              : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
                         <div className="flex-1 min-w-0">
@@ -2820,6 +2946,12 @@ export function BuildWizardPage() {
                             {v.maxPowerMw && (
                               <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20 shrink-0">
                                 {v.maxPowerMw}mW
+                              </span>
+                            )}
+                            {isIncompatible && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                                Incompatible ({v.protocol?.toUpperCase()} vs{" "}
+                                {selectedCam!.protocol?.toUpperCase()})
                               </span>
                             )}
                           </div>
@@ -2843,7 +2975,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 3B. Camera */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-cam"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     3B. FPV Camera
@@ -2851,7 +2986,7 @@ export function BuildWizardPage() {
                   {selectedCam ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-cam-item")}
+                      onClick={() => scrollToSelectedProduct("selected-cam-item", "section-cam")}
                       title="Scroll to selected camera"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -2893,12 +3028,30 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {camCelFilter && (
-                  <div className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                  <div
+                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                      filterCompatibleOnly
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                    }`}
+                  >
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                      <span
+                        className={`font-semibold text-[10px] uppercase tracking-wider ${
+                          filterCompatibleOnly
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-zinc-500 dark:text-zinc-400"
+                        }`}
+                      >
                         Compatibility Filter:
                       </span>
-                      <code className="font-mono text-[11px] bg-emerald-500/10 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">
+                      <code
+                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
+                          filterCompatibleOnly
+                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
+                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
+                        }`}
+                      >
                         {camCelFilter}
                       </code>
                     </div>
@@ -2907,7 +3060,7 @@ export function BuildWizardPage() {
                         type="checkbox"
                         checked={filterCompatibleOnly}
                         onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
-                        className="rounded border-emerald-400 text-emerald-600 focus:ring-emerald-500"
+                        className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible Only</span>
                     </label>
@@ -2939,6 +3092,12 @@ export function BuildWizardPage() {
                     const isSelected =
                       !noneSelections.camera &&
                       (selectedCam?.uuid === c.uuid || selectedCam?.id === c.id);
+                    const isIncompatible = Boolean(
+                      selectedVtx &&
+                      selectedVtx.protocol &&
+                      c.protocol &&
+                      c.protocol.toLowerCase() !== selectedVtx.protocol.toLowerCase(),
+                    );
                     return (
                       <div
                         key={c.uuid || c.id}
@@ -2950,7 +3109,9 @@ export function BuildWizardPage() {
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                            : isIncompatible
+                              ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                              : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
                         <div className="flex-1 min-w-0">
@@ -2961,6 +3122,12 @@ export function BuildWizardPage() {
                             <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20 shrink-0">
                               {c.protocol || "Analog"}
                             </span>
+                            {isIncompatible && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                                Incompatible ({c.protocol?.toUpperCase()} vs{" "}
+                                {selectedVtx!.protocol?.toUpperCase()})
+                              </span>
+                            )}
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                             {c.manufacturer} • Weight: {c.weightG}g
@@ -2981,7 +3148,10 @@ export function BuildWizardPage() {
               </div>
 
               {/* 3C. Video Transmitter Antenna(s) */}
-              <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+              <div
+                id="section-vtx-ant"
+                className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
+              >
                 <div className="flex items-center justify-between">
                   <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                     3C. Video Transmitter Antenna(s)
@@ -2989,7 +3159,9 @@ export function BuildWizardPage() {
                   {selectedVtxAnt && !noneSelections.vtxAntenna ? (
                     <button
                       type="button"
-                      onClick={() => scrollToSelectedProduct("selected-vtx-ant-item")}
+                      onClick={() =>
+                        scrollToSelectedProduct("selected-vtx-ant-item", "section-vtx-ant")
+                      }
                       title="Scroll to selected VTX antenna"
                       className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
                     >
@@ -3636,7 +3808,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep1Unlocked}
                   onClick={() => {
-                    if (isStep1Unlocked) setActiveStep(1);
+                    if (isStep1Unlocked)
+                      navigateToStepAndScroll(1, "selected-frame-item", "section-frame");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep1Unlocked
@@ -3682,7 +3855,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep1Unlocked}
                   onClick={() => {
-                    if (isStep1Unlocked) setActiveStep(1);
+                    if (isStep1Unlocked)
+                      navigateToStepAndScroll(1, "selected-motor-item", "section-motor");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep1Unlocked
@@ -3730,7 +3904,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep1Unlocked}
                   onClick={() => {
-                    if (isStep1Unlocked) setActiveStep(1);
+                    if (isStep1Unlocked)
+                      navigateToStepAndScroll(1, "selected-prop-item", "section-prop");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep1Unlocked
@@ -3778,7 +3953,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep2Unlocked}
                   onClick={() => {
-                    if (isStep2Unlocked) setActiveStep(2);
+                    if (isStep2Unlocked)
+                      navigateToStepAndScroll(2, "selected-fc-item", "section-fc");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep2Unlocked
@@ -3831,7 +4007,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep2Unlocked}
                   onClick={() => {
-                    if (isStep2Unlocked) setActiveStep(2);
+                    if (isStep2Unlocked)
+                      navigateToStepAndScroll(2, "selected-esc-item", "section-esc");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep2Unlocked
@@ -3892,7 +4069,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep2Unlocked}
                   onClick={() => {
-                    if (isStep2Unlocked) setActiveStep(2);
+                    if (isStep2Unlocked)
+                      navigateToStepAndScroll(2, "selected-rx-item", "section-rx");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep2Unlocked
@@ -3951,7 +4129,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep2Unlocked}
                   onClick={() => {
-                    if (isStep2Unlocked) setActiveStep(2);
+                    if (isStep2Unlocked)
+                      navigateToStepAndScroll(2, "selected-rx-ant-item", "section-rx-ant");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep2Unlocked
@@ -4010,7 +4189,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep3Unlocked}
                   onClick={() => {
-                    if (isStep3Unlocked) setActiveStep(3);
+                    if (isStep3Unlocked)
+                      navigateToStepAndScroll(3, "selected-vtx-item", "section-vtx");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep3Unlocked
@@ -4075,7 +4255,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep3Unlocked}
                   onClick={() => {
-                    if (isStep3Unlocked) setActiveStep(3);
+                    if (isStep3Unlocked)
+                      navigateToStepAndScroll(3, "selected-cam-item", "section-cam");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep3Unlocked
@@ -4132,7 +4313,8 @@ export function BuildWizardPage() {
                   type="button"
                   disabled={!isStep3Unlocked}
                   onClick={() => {
-                    if (isStep3Unlocked) setActiveStep(3);
+                    if (isStep3Unlocked)
+                      navigateToStepAndScroll(3, "selected-vtx-ant-item", "section-vtx-ant");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
                     isStep3Unlocked
@@ -4189,19 +4371,20 @@ export function BuildWizardPage() {
               >
                 <button
                   type="button"
-                  disabled={!isStep3Unlocked}
+                  disabled={!isStep2Unlocked}
                   onClick={() => {
-                    if (isStep3Unlocked) setActiveStep(3);
+                    if (isStep2Unlocked)
+                      navigateToStepAndScroll(2, "selected-gps-item", "section-gps");
                   }}
                   className={`w-full text-left p-2.5 flex items-center justify-between transition-colors ${
-                    isStep3Unlocked
+                    isStep2Unlocked
                       ? "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer group"
                       : "opacity-50 bg-zinc-50/30 dark:bg-zinc-900/30 cursor-not-allowed group"
                   }`}
                   title={
-                    isStep3Unlocked
-                      ? "Go to Step 3: GPS selection"
-                      : "Step 3 is locked: GPS Receiver (Complete Steps 1 & 2 first)"
+                    isStep2Unlocked
+                      ? "Go to Step 2: GPS selection"
+                      : "Step 2 is locked: GPS Receiver (Complete Step 1 first)"
                   }
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -4215,7 +4398,7 @@ export function BuildWizardPage() {
                     <div className="min-w-0">
                       <div className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                         <span>GPS Receiver</span>
-                        {!isStep3Unlocked && (
+                        {!isStep2Unlocked && (
                           <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-amber-600 dark:text-amber-400">
                             <Lock size={10} />
                             Locked

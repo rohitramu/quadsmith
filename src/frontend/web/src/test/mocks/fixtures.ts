@@ -207,6 +207,20 @@ export const mockPropeller1: Propeller = create(PropellerSchema, {
   description: "Crisp throttle response and durable polycarbonate construction.",
 });
 
+export const mockPropeller2: Propeller = create(PropellerSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000051",
+  id: "hqprop-dp-7x4x3",
+  manufacturer: "HQProp",
+  name: "HQProp DP 7X4X3",
+  weightG: 8.5,
+  diameterMm: 177.8,
+  pitchMm: 101.6,
+  blades: 3,
+  description: "Heavy-duty 7-inch propeller for long range and cinematic quads.",
+});
+
+export const mockPropellers: Propeller[] = [mockPropeller1, mockPropeller2];
+
 export const mockCamera1: Camera = create(CameraSchema, {
   uuid: "018f0000-0000-7000-0000-000000000060",
   id: "caddx-ratel-2",

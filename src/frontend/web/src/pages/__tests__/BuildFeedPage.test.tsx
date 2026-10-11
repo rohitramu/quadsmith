@@ -4,7 +4,7 @@ import { renderWithProviders } from "../../test/test-utils";
 import { BuildFeedPage } from "../BuildFeedPage";
 
 describe("BuildFeedPage Component", () => {
-  it("renders Build Feed heading, description, and link to The Forge", () => {
+  it("renders Build Feed heading and description", () => {
     renderWithProviders(<BuildFeedPage />, { route: "/builds" });
 
     expect(screen.getByRole("heading", { level: 1, name: "Build Feed" })).toBeInTheDocument();
@@ -13,13 +13,7 @@ describe("BuildFeedPage Component", () => {
       screen.getByText(/explore verified community and curated quadcopter builds/i),
     ).toBeInTheDocument();
 
-    const forgeLink = screen.getByRole("link", {
-      name: /new build in the forge/i,
-    });
-    expect(forgeLink).toBeInTheDocument();
-    expect(forgeLink).toHaveAttribute("href", "/builds/new");
-    const icon = forgeLink.querySelector("svg");
-    expect(icon).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /new build in the forge/i })).not.toBeInTheDocument();
   });
 
   it("renders build cards from mock data and links to build profiles", async () => {

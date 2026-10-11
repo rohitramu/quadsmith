@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@connectrpc/connect-query";
 import { listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
 import { BuildCard } from "../components/BuildCard";
 import { useMemo, useRef, useEffect } from "react";
-import { Hammer, RefreshCw, CheckCircle, ArrowRight, GalleryVertical } from "lucide-react";
+import { RefreshCw, CheckCircle, GalleryVertical } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { getCollectionColor } from "../lib/collectionColors";
 
@@ -71,15 +70,6 @@ export function BuildFeedPage() {
             Materials, component compatibility, and simulated flight performance.
           </p>
         </div>
-
-        <Link
-          to="/builds/new"
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-semibold text-xs sm:text-sm shadow-xs transition-colors shrink-0 self-start sm:self-center"
-        >
-          <Hammer size={16} className="shrink-0" />
-          <span>New Build in The Forge</span>
-          <ArrowRight size={14} />
-        </Link>
       </div>
 
       {/* Social-Style Auto-Loading Builds Stream */}
