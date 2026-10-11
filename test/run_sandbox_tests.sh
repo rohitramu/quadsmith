@@ -7,12 +7,14 @@ cd "$ROOT_DIR"
 
 PORT="${PORT:-8080}"
 DB_PORT="${DB_PORT:-5432}"
+WORKER_PORT="${WORKER_PORT:-8081}"
 
 API_URL="${QS_API_URL:-http://127.0.0.1:${PORT}}"
+WORKER_URL="${QS_WORKER_URL:-http://127.0.0.1:${WORKER_PORT}}"
 DB_URL="${DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:${DB_PORT}/quadsmith}"
 
 is_sandbox_ready() {
-    curl -s -f -m 1 "${API_URL}" >/dev/null 2>&1
+    curl -s -f -m 1 "${API_URL}" >/dev/null 2>&1 && curl -s -f -m 1 "${WORKER_URL}/healthz" >/dev/null 2>&1
 }
 
 CONTAINER_NAME="quadsmith-sandbox-test-run"
@@ -34,10 +36,11 @@ fi
 echo "--- Building Sandbox Docker Image ---"
 docker build -t quadsmith-sandbox -f test/Dockerfile .
 
-echo "--- Starting fresh Sandbox container on port ${PORT} (DB: ${DB_PORT}) ---"
+echo "--- Starting fresh Sandbox container on port ${PORT} (Worker: ${WORKER_PORT}, DB: ${DB_PORT}) ---"
 docker run -d --name "$CONTAINER_NAME" \
     -e PORT="$PORT" \
     -p "${PORT}":"${PORT}" \
+    -p "${WORKER_PORT}":8081 \
     -p "${DB_PORT}":5432 \
     quadsmith-sandbox
 
@@ -57,6 +60,7 @@ echo "--- Sandbox is ready! ---"
 
 echo "--- Running Sandbox Tests ---"
 export QS_API_URL="${API_URL}"
+export QS_WORKER_URL="${WORKER_URL}"
 export DATABASE_URL="${DB_URL}"
 export GOWORK="${ROOT_DIR}/src/go.work"
 

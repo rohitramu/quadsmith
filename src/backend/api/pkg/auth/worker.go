@@ -2,39 +2,36 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	"quadsmith/api/pkg/worker"
 )
 
-// StartUsernameReleaseWarningWorker starts a periodic background worker that scans
-// username_histories for archived usernames approaching the end of their 30-day hold window
-// (23 days elapsed, 7 days remaining) and dispatches warning notifications.
-func StartUsernameReleaseWarningWorker(ctx context.Context, pool *pgxpool.Pool, checkInterval time.Duration) {
-	if checkInterval <= 0 {
-		checkInterval = 1 * time.Hour
-	}
+// RegisterWorkers registers all auth-related background tasks into the worker registry.
+func RegisterWorkers(r *worker.Registry, pool *pgxpool.Pool) {
+	// Periodic 1h task: username hold release warnings (7 days prior to release)
+	worker.RegisterPeriodic(r, "auth.username_release_warning", 1*time.Hour, worker.EmptyPayload{}, func(ctx context.Context, job worker.Job[worker.EmptyPayload]) error {
+		return HandleUsernameReleaseWarning(ctx, pool)
+	})
 
-	go func() {
-		ticker := time.NewTicker(checkInterval)
-		defer ticker.Stop()
+	// Periodic 6h task: clean up used and expired email OTPs older than 24h
+	worker.RegisterPeriodic(r, "auth.cleanup_expired_otps", 6*time.Hour, worker.EmptyPayload{}, func(ctx context.Context, job worker.Job[worker.EmptyPayload]) error {
+		return HandleCleanupExpiredOTPs(ctx, pool)
+	})
 
-		// Run an initial check on startup
-		runReleaseWarningCheck(ctx, pool)
-
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case <-ticker.C:
-				runReleaseWarningCheck(ctx, pool)
-			}
-		}
-	}()
+	// Periodic 12h task: clean up expired refresh tokens older than 7d
+	worker.RegisterPeriodic(r, "auth.cleanup_expired_tokens", 12*time.Hour, worker.EmptyPayload{}, func(ctx context.Context, job worker.Job[worker.EmptyPayload]) error {
+		return HandleCleanupExpiredTokens(ctx, pool)
+	})
 }
 
-func runReleaseWarningCheck(ctx context.Context, pool *pgxpool.Pool) {
+// HandleUsernameReleaseWarning scans username_histories for archived usernames approaching the end of their 30-day hold window
+// (23 days elapsed, 7 days remaining) and dispatches warning notifications.
+func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error {
 	rows, err := pool.Query(ctx, `
 		SELECT hh.uuid, hh.old_username, hh.user_uuid, COALESCE(hh.first_archived_at, hh.renamed_at), u.email
 		FROM username_histories hh
@@ -45,8 +42,7 @@ func runReleaseWarningCheck(ctx context.Context, pool *pgxpool.Pool) {
 		  AND LOWER(hh.old_username) != LOWER(u.id)
 		  AND u.deleted_at IS NULL`)
 	if err != nil {
-		log.Printf("[UsernameReleaseWorker] Failed to query expiring usernames: %v", err)
-		return
+		return fmt.Errorf("failed to query expiring usernames: %w", err)
 	}
 	defer rows.Close()
 
@@ -83,4 +79,35 @@ func runReleaseWarningCheck(ctx context.Context, pool *pgxpool.Pool) {
 			log.Printf("[UsernameReleaseWorker] Failed to mark release warning sent for %s: %v", item.uuid, err)
 		}
 	}
+
+	return nil
+}
+
+// HandleCleanupExpiredOTPs purges used OTPs and expired OTPs older than 24 hours.
+func HandleCleanupExpiredOTPs(ctx context.Context, pool *pgxpool.Pool) error {
+	cmd, err := pool.Exec(ctx, `
+		DELETE FROM email_otps 
+		WHERE (used_at IS NOT NULL OR expires_at < NOW()) 
+		  AND created_at < NOW() - INTERVAL '24 hours';`)
+	if err != nil {
+		return fmt.Errorf("failed to clean up expired OTPs: %w", err)
+	}
+	if rows := cmd.RowsAffected(); rows > 0 {
+		log.Printf("[AuthWorker] Cleaned up %d expired/used OTPs", rows)
+	}
+	return nil
+}
+
+// HandleCleanupExpiredTokens purges revoked or expired refresh tokens older than 7 days.
+func HandleCleanupExpiredTokens(ctx context.Context, pool *pgxpool.Pool) error {
+	cmd, err := pool.Exec(ctx, `
+		DELETE FROM refresh_tokens 
+		WHERE expires_at < NOW() - INTERVAL '7 days';`)
+	if err != nil {
+		return fmt.Errorf("failed to clean up expired refresh tokens: %w", err)
+	}
+	if rows := cmd.RowsAffected(); rows > 0 {
+		log.Printf("[AuthWorker] Cleaned up %d expired refresh tokens", rows)
+	}
+	return nil
 }

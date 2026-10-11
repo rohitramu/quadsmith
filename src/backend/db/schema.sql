@@ -796,6 +796,39 @@ CREATE TABLE IF NOT EXISTS video_transmitter_firmwares (
 
 CREATE INDEX IF NOT EXISTS idx_video_transmitter_firmwares_manufacturer ON video_transmitter_firmwares (manufacturer);
 
+CREATE TABLE IF NOT EXISTS background_jobs (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  job_type TEXT NOT NULL,
+  payload JSONB DEFAULT '{}' NOT NULL,
+  status TEXT DEFAULT 'pending' NOT NULL,
+  unique_key TEXT,
+  max_attempts INTEGER DEFAULT 3 NOT NULL,
+  scheduled_at TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_background_jobs_job_type ON background_jobs (job_type);
+
+CREATE INDEX IF NOT EXISTS idx_background_jobs_status ON background_jobs (status);
+
+CREATE INDEX IF NOT EXISTS idx_background_jobs_scheduled_at ON background_jobs (scheduled_at);
+
+CREATE TABLE IF NOT EXISTS background_job_attempts (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  job_uuid UUID NOT NULL,
+  attempt_number INTEGER NOT NULL,
+  worker_id TEXT NOT NULL,
+  started_at TIMESTAMPTZ DEFAULT NOW(),
+  completed_at TIMESTAMPTZ,
+  status TEXT DEFAULT 'running' NOT NULL,
+  error_message TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_background_job_attempts_job_uuid ON background_job_attempts (job_uuid);
+
 -- Foreign Keys
 ALTER TABLE user_profiles
 ADD CONSTRAINT fk_user_profiles_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
@@ -910,3 +943,6 @@ ADD CONSTRAINT fk_collection_items_collection_uuid FOREIGN KEY (collection_uuid)
 
 ALTER TABLE collection_items
 ADD CONSTRAINT fk_collection_items_entity_uuid FOREIGN KEY (entity_uuid) REFERENCES entities (uuid) ON DELETE CASCADE;
+
+ALTER TABLE background_job_attempts
+ADD CONSTRAINT fk_background_job_attempts_job_uuid FOREIGN KEY (job_uuid) REFERENCES background_jobs (uuid) ON DELETE CASCADE;

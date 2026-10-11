@@ -40,9 +40,6 @@ func main() {
 	// Ensure pg_trgm extension is available for fuzzy text completion search
 	_, _ = pool.Exec(context.Background(), "CREATE EXTENSION IF NOT EXISTS pg_trgm;")
 
-	// Start background worker for 7-day username release warnings
-	auth.StartUsernameReleaseWarningWorker(context.Background(), pool, 1*time.Hour)
-
 	mux := http.NewServeMux()
 
 	handlerOpts := []connect.HandlerOption{

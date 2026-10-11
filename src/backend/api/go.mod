@@ -6,6 +6,7 @@ require (
 	cel.dev/cel-go v0.32.0
 	connectrpc.com/connect v1.21.0
 	github.com/jackc/pgx/v5 v5.11.0
+	github.com/spf13/cobra v1.10.2
 	golang.org/x/net v0.59.0
 	google.golang.org/protobuf v1.36.12
 )

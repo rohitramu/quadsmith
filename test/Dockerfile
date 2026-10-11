@@ -33,10 +33,12 @@ COPY src/vendor/ ./src/vendor/
 # Copy all source code (including pre-generated proto files)
 COPY . .
 
-# Build Server and Seeder
+# Build Server, Worker, Seeder, and qsops
 RUN --mount=type=cache,target=/root/.cache/go-build \
     cd src/backend/api && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/worker ./cmd/worker/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./cmd/qsops/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder
 
 
@@ -73,10 +75,12 @@ ENV DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
 ENV PORT=8080
 ENV STATIC_DIR="/app/web/dist"
 
-EXPOSE 5432 8080
+EXPOSE 5432 8080 8081
 
 # Copy binaries from builder
 COPY --from=builder /app/bin/server /app/server
+COPY --from=builder /app/bin/worker /app/worker
+COPY --from=builder /app/bin/qsops /usr/local/bin/qsops
 COPY --from=builder /app/bin/seeder /app/seeder
 
 # Copy Web UI build from web-builder
@@ -108,6 +112,8 @@ if [ "$ROW_COUNT" = "0" ]; then\n\
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql\n\
     ./seeder\n\
 fi\n\
+echo "Starting Background Worker Daemon..."\n\
+./worker > /var/log/worker.log 2>&1 &\n\
 exec ./server\n' > /app/sandbox-entrypoint.sh
 
 RUN chmod +x /app/sandbox-entrypoint.sh

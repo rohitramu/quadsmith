@@ -27,18 +27,27 @@ CLI_FILES      := $(shell find src/frontend/cli -name "*.go" -not -name "*_test.
 
 all: build
 
-build: generate bin/qs
+build: generate bin/qs bin/qsops
 	@echo "--- Formatting textproto files with txtpbfmt ---"
 	@find src -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
 	@go run -mod=vendor ./src/backend/api/cmd/check-regex
 	@echo "--- Building all Go binaries to bin/ ---"
 	@go build -mod=vendor -o bin/server ./src/backend/api/cmd/server/main.go
+	@go build -mod=vendor -o bin/worker ./src/backend/api/cmd/worker/main.go
 	@echo "--- Building WebAssembly Core Engine ---"
 	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/public/wasm_exec.js
 	@GOOS=js GOARCH=wasm go build -mod=vendor -o src/frontend/web/public/quadsmith-engine.wasm ./src/backend/api/cmd/wasm/main.go
 	@echo "--- Building Web UI ---"
 	@cd src/frontend/web && npm run build
+
+bin/qsops: $(wildcard src/backend/api/cmd/qsops/*.go) bin/.generate_proto.sentinel
+	@mkdir -p bin
+	@echo "--- Building Operations CLI to bin/qsops ---"
+	@go build -mod=vendor -o bin/qsops ./src/backend/api/cmd/qsops/main.go
+	@echo "--- Generating qsops shell completions to bin/ ---"
+	@./bin/qsops completion bash > bin/qsops_completion.bash || true
+	@./bin/qsops completion zsh > bin/qsops_completion.zsh || true
 
 bin/qs: $(CLI_FILES) bin/.generate_proto.sentinel
 	@mkdir -p bin

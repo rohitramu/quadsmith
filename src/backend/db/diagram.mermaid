@@ -614,6 +614,29 @@ erDiagram
         TEXT author_or_manufacturer
     }
 
+    background_jobs {
+        UUID uuid PK
+        TEXT job_type
+        JSONB payload
+        TEXT status
+        TEXT unique_key
+        INTEGER max_attempts
+        TIMESTAMPTZ scheduled_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    background_job_attempts {
+        UUID uuid PK
+        UUID job_uuid FK
+        INTEGER attempt_number
+        TEXT worker_id
+        TIMESTAMPTZ started_at
+        TIMESTAMPTZ completed_at
+        TEXT status
+        TEXT error_message
+    }
+
     users ||--o| user_profiles : has
     users ||--o{ user_emails : has
     users ||--o{ refresh_tokens : has
@@ -646,5 +669,7 @@ erDiagram
 
     collections ||--o{ collection_items : contains
     entities ||--o{ collection_items : collected_in
+
+    background_jobs ||--o{ background_job_attempts : has
 
 
