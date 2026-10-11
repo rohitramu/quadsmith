@@ -92,7 +92,7 @@ func TestGenerateCelFilter(t *testing.T) {
 	}
 
 	batFilter := GenerateCelFilter("batteries", comp)
-	expectedBat := "min_voltage >= 14.80 && max_voltage <= 25.20 && max_current_a >= 140.00"
+	expectedBat := "min_voltage >= 14.80 && max_voltage <= 25.20 && max_current_a >= 140.00 && connector == \"XT60\""
 	if batFilter != expectedBat {
 		t.Errorf("expected %q, got %q", expectedBat, batFilter)
 	}
@@ -205,4 +205,148 @@ func TestBatteryVoltageCompatibility(t *testing.T) {
 	if messages[0].SeverityName != "DEFINITE_INCOMPATIBILITY" {
 		t.Errorf("Expected DEFINITE_INCOMPATIBILITY, got %s", messages[0].SeverityName)
 	}
+}
+
+func TestBatteryConnectorCompatibility(t *testing.T) {
+	t.Run("Mismatched Connector", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				MinVoltage: 11.1,
+				MaxVoltage: 26.0,
+			},
+			Motor: &pb.Motor{
+				MinVoltage:  14.8,
+				MaxVoltage:  25.2,
+				MaxCurrentA: 35.0, // 140A total -> XT60
+			},
+			Battery: &pb.Battery{
+				MinVoltage:  14.8,
+				MaxVoltage:  25.2,
+				MaxCurrentA: 150.0,
+				Connector:   "XT30", // Mismatched! Build expects XT60
+			},
+		}
+
+		messages := CheckCompatibility(comp)
+		var found bool
+		for _, m := range messages {
+			if m.CheckerName == "BatteryConnectorChecker" {
+				found = true
+				if m.SeverityName != "DEFINITE_INCOMPATIBILITY" {
+					t.Errorf("Expected DEFINITE_INCOMPATIBILITY, got %s", m.SeverityName)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("Expected BatteryConnectorChecker message, got none")
+		}
+	})
+
+	t.Run("Matched Connector", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				MinVoltage: 11.1,
+				MaxVoltage: 26.0,
+			},
+			Motor: &pb.Motor{
+				MinVoltage:  14.8,
+				MaxVoltage:  25.2,
+				MaxCurrentA: 35.0, // XT60
+			},
+			Battery: &pb.Battery{
+				MinVoltage:  14.8,
+				MaxVoltage:  25.2,
+				MaxCurrentA: 150.0,
+				Connector:   "XT60", // Matched
+			},
+		}
+
+		messages := CheckCompatibility(comp)
+		for _, m := range messages {
+			if m.CheckerName == "BatteryConnectorChecker" {
+				t.Errorf("Unexpected BatteryConnectorChecker message for matched connector: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("1S Whoop Cross Compatible BT2.0 and A30", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				MinVoltage: 3.0,
+				MaxVoltage: 4.35,
+			},
+			Battery: &pb.Battery{
+				MinVoltage:  3.0,
+				MaxVoltage:  4.35,
+				MaxCurrentA: 15.0,
+				Connector:   "A30",
+			},
+		}
+
+		messages := CheckCompatibility(comp)
+		for _, m := range messages {
+			if m.CheckerName == "BatteryConnectorChecker" {
+				t.Errorf("A30 should be compatible with 1S whoop build: %s", m.Message)
+			}
+		}
+	})
+}
+
+func TestDetermineBatteryConnector(t *testing.T) {
+	t.Run("1S Build BT2.0", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				MaxVoltage: 4.35,
+			},
+		}
+		primary, compatible := DetermineBatteryConnector(comp, 3.0, 4.35, 15.0)
+		if primary != "BT2.0" {
+			t.Errorf("expected primary BT2.0, got %s", primary)
+		}
+		if len(compatible) != 3 {
+			t.Errorf("expected 3 compatible connectors, got %d", len(compatible))
+		}
+	})
+
+	t.Run("Micro Toothpick XT30", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				WheelbaseMm: 120,
+			},
+		}
+		primary, compatible := DetermineBatteryConnector(comp, 7.4, 16.8, 30.0)
+		if primary != "XT30" {
+			t.Errorf("expected primary XT30, got %s", primary)
+		}
+		if len(compatible) != 1 || compatible[0] != "XT30" {
+			t.Errorf("expected [XT30], got %v", compatible)
+		}
+	})
+
+	t.Run("Standard 5 Inch XT60", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				WheelbaseMm: 220,
+			},
+		}
+		primary, compatible := DetermineBatteryConnector(comp, 14.8, 25.2, 140.0)
+		if primary != "XT60" {
+			t.Errorf("expected primary XT60, got %s", primary)
+		}
+		if len(compatible) != 1 || compatible[0] != "XT60" {
+			t.Errorf("expected [XT60], got %v", compatible)
+		}
+	})
+
+	t.Run("Explicit Component Mention in Name", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				Name: "SuperX HD AIO 1S Whoop A30",
+			},
+		}
+		primary, _ := DetermineBatteryConnector(comp, 3.0, 4.35, 10.0)
+		if primary != "A30" {
+			t.Errorf("expected primary A30, got %s", primary)
+		}
+	})
 }

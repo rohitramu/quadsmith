@@ -43,7 +43,7 @@ export function BatteryCombobox({
   }, [searchQuery]);
 
   // Query search API for batteries if query is non-empty
-  const { data: searchResponse, isLoading: isSearching } = useQuery(
+  const { isLoading: isSearching } = useQuery(
     search,
     {
       query: debouncedQuery,
@@ -58,26 +58,25 @@ export function BatteryCombobox({
     return batteries.find((b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId);
   }, [batteries, selectedBatteryId]);
 
-  // Combine and deduplicate options:
-  // If debouncedQuery is non-empty, use search results (merging with catalog objects if matched)
-  // Otherwise, use all available batteries passed in props
+  // Filter compatible batteries:
+  // If debouncedQuery is non-empty, strictly filter the provided compatible batteries
+  // Otherwise, use all available compatible batteries passed in props
   const displayItems = useMemo(() => {
     if (debouncedQuery.length > 0) {
-      const results = searchResponse?.results || [];
-      return results.map((res) => {
-        const matched = batteries.find((b) => b.id === res.id || b.uuid === res.uuid);
-        if (matched) return matched;
-        return {
-          id: res.id,
-          uuid: res.uuid,
-          name: res.name,
-          description: res.description,
-          primaryDisplayImage: res.primaryDisplayImage,
-        };
+      const q = debouncedQuery.toLowerCase();
+      return batteries.filter((b) => {
+        const nameMatch = b.name?.toLowerCase().includes(q);
+        const descMatch = b.description?.toLowerCase().includes(q);
+        const connMatch = b.connector?.toLowerCase().includes(q);
+        const capMatch = b.capacityMah ? `${b.capacityMah}`.includes(q) : false;
+        const cellMatch = b.cellCountS
+          ? `${b.cellCountS}s`.includes(q) || `${b.cellCountS}` === q
+          : false;
+        return nameMatch || descMatch || connMatch || capMatch || cellMatch;
       });
     }
     return batteries;
-  }, [debouncedQuery, searchResponse, batteries]);
+  }, [debouncedQuery, batteries]);
 
   // Reset highlighted index when items change
   useEffect(() => {

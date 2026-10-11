@@ -194,14 +194,26 @@ export function BuildProfilePage() {
     setSelectedBatteryId("");
   }, [buildId]);
 
-  // Lightest compatible battery selected by default
+  // Lightest compatible battery selected by default or reset if invalid
   useEffect(() => {
-    if (!selectedBatteryId) {
-      if (electricalLimits?.defaultBatteryId) {
+    const isCurrentBatteryValid = compatibleBatteries.some(
+      (b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId,
+    );
+    if (!isCurrentBatteryValid && compatibleBatteries.length > 0) {
+      if (
+        electricalLimits?.defaultBatteryId &&
+        compatibleBatteries.some(
+          (b) =>
+            b.id === electricalLimits.defaultBatteryId ||
+            b.uuid === electricalLimits.defaultBatteryId,
+        )
+      ) {
         setSelectedBatteryId(electricalLimits.defaultBatteryId);
-      } else if (compatibleBatteries.length > 0) {
+      } else {
         setSelectedBatteryId(compatibleBatteries[0].id || compatibleBatteries[0].uuid);
       }
+    } else if (compatibleBatteries.length === 0) {
+      setSelectedBatteryId("");
     }
   }, [electricalLimits, compatibleBatteries, selectedBatteryId]);
 
@@ -377,6 +389,7 @@ export function BuildProfilePage() {
                       {electricalLimits.maxCurrentA
                         ? `, ≥${electricalLimits.maxCurrentA.toFixed(0)}A`
                         : ""}
+                      {electricalLimits.connector ? `, ${electricalLimits.connector}` : ""}
                     </span>
                   ) : null}
                 </div>
@@ -412,6 +425,14 @@ export function BuildProfilePage() {
                     <span>
                       {activeBattery.cellCountS}S {activeBattery.chemistry}
                     </span>
+                    {activeBattery.connector ? (
+                      <>
+                        <span>•</span>
+                        <span className="font-semibold text-blue-600 dark:text-blue-400">
+                          {activeBattery.connector}
+                        </span>
+                      </>
+                    ) : null}
                     {activeBattery.maxCurrentA ? (
                       <>
                         <span>•</span>

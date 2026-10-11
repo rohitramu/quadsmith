@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	pb "quadsmith/api/gen/quadsmith"
+	"quadsmith/api/internal/engines/compatibility"
 )
 
 type EvaluatorServiceHandler struct {
@@ -184,6 +185,18 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 
 	// 7. Calculate build electrical limits & compatibility checks
 	electrical := ComputeElectricalLimits(fc, escs, motor, motorCount)
+	if frame != nil {
+		pConn, cConns := compatibility.DetermineBatteryConnector(&pb.AssembledComponents{
+			Frame:                      frame,
+			FlightController:           fc,
+			ElectronicSpeedControllers: escs,
+			Motor:                      motor,
+		}, electrical.MinVoltage, electrical.MaxVoltage, electrical.MaxCurrentA)
+		if pConn != "" {
+			electrical.Connector = pConn
+			electrical.CompatibleConnectors = cConns
+		}
+	}
 	if electrical.MinVoltage > 0 && electrical.MaxVoltage > 0 && electrical.MinVoltage > electrical.MaxVoltage {
 		systemMessages = append(systemMessages, &pb.SystemMessage{
 			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
@@ -210,6 +223,21 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
 				Message:  fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA)", battery.MaxCurrentA, electrical.MaxCurrentA),
 			})
+		}
+		if len(electrical.CompatibleConnectors) > 0 && battery.Connector != "" {
+			matched := false
+			for _, c := range electrical.CompatibleConnectors {
+				if strings.EqualFold(battery.Connector, c) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				systemMessages = append(systemMessages, &pb.SystemMessage{
+					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+					Message:  fmt.Sprintf("Battery connector (%s) is incompatible with build connector (%s)", battery.Connector, electrical.Connector),
+				})
+			}
 		}
 	}
 
@@ -305,6 +333,8 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		MinVoltage:           electrical.MinVoltage,
 		MaxVoltage:           electrical.MaxVoltage,
 		MaxCurrentA:          electrical.MaxCurrentA,
+		Connector:            electrical.Connector,
+		CompatibleConnectors: electrical.CompatibleConnectors,
 	}
 
 	return connect.NewResponse(res), nil
@@ -400,6 +430,18 @@ func EvaluateComponentsDirect(comps *pb.AssembledComponents, payloadWeight float
 	}
 
 	electrical := ComputeElectricalLimits(fc, escs, motor, motorCount)
+	if frame != nil {
+		pConn, cConns := compatibility.DetermineBatteryConnector(&pb.AssembledComponents{
+			Frame:                      frame,
+			FlightController:           fc,
+			ElectronicSpeedControllers: escs,
+			Motor:                      motor,
+		}, electrical.MinVoltage, electrical.MaxVoltage, electrical.MaxCurrentA)
+		if pConn != "" {
+			electrical.Connector = pConn
+			electrical.CompatibleConnectors = cConns
+		}
+	}
 	if electrical.MinVoltage > 0 && electrical.MaxVoltage > 0 && electrical.MinVoltage > electrical.MaxVoltage {
 		systemMessages = append(systemMessages, &pb.SystemMessage{
 			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
@@ -425,6 +467,21 @@ func EvaluateComponentsDirect(comps *pb.AssembledComponents, payloadWeight float
 				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
 				Message:  fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA)", battery.MaxCurrentA, electrical.MaxCurrentA),
 			})
+		}
+		if len(electrical.CompatibleConnectors) > 0 && battery.Connector != "" {
+			matched := false
+			for _, c := range electrical.CompatibleConnectors {
+				if strings.EqualFold(battery.Connector, c) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				systemMessages = append(systemMessages, &pb.SystemMessage{
+					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
+					Message:  fmt.Sprintf("Battery connector (%s) is incompatible with build connector (%s)", battery.Connector, electrical.Connector),
+				})
+			}
 		}
 	}
 
@@ -460,6 +517,8 @@ func EvaluateComponentsDirect(comps *pb.AssembledComponents, payloadWeight float
 		MinVoltage:           electrical.MinVoltage,
 		MaxVoltage:           electrical.MaxVoltage,
 		MaxCurrentA:          electrical.MaxCurrentA,
+		Connector:            electrical.Connector,
+		CompatibleConnectors: electrical.CompatibleConnectors,
 	}, nil
 }
 
@@ -890,16 +949,21 @@ func (s *EvaluatorServiceHandler) GetComponentsElectricalLimits(ctx context.Cont
 		motorCount = comps.Frame.MotorCount
 	}
 	limits := ComputeElectricalLimits(comps.FlightController, comps.ElectronicSpeedControllers, comps.Motor, motorCount)
+	primaryConn, compatConns := compatibility.DetermineBatteryConnector(comps, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+	if primaryConn != "" {
+		limits.Connector = primaryConn
+		limits.CompatibleConnectors = compatConns
+	}
 	if len(req.Msg.GetCandidateBatteries()) > 0 {
-		limits.DefaultBatteryId = FindLightestCompatibleBatteryFromList(req.Msg.GetCandidateBatteries(), limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+		limits.DefaultBatteryId = FindLightestCompatibleBatteryFromList(req.Msg.GetCandidateBatteries(), limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA, limits.CompatibleConnectors...)
 	} else if s.db != nil {
-		limits.DefaultBatteryId = s.FindLightestCompatibleBattery(ctx, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+		limits.DefaultBatteryId = s.FindLightestCompatibleBattery(ctx, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA, limits.CompatibleConnectors...)
 	}
 	return connect.NewResponse(limits), nil
 }
 
 // FindLightestCompatibleBatteryFromList finds the lightest compatible battery from a candidate slice in memory.
-func FindLightestCompatibleBatteryFromList(batteries []*pb.Battery, minV, maxV, maxA float32) string {
+func FindLightestCompatibleBatteryFromList(batteries []*pb.Battery, minV, maxV, maxA float32, connectors ...string) string {
 	if minV > 0 && maxV > 0 && minV > maxV {
 		return ""
 	}
@@ -920,6 +984,18 @@ func FindLightestCompatibleBatteryFromList(batteries []*pb.Battery, minV, maxV, 
 		if maxA > 0 && b.MaxCurrentA < maxA {
 			continue
 		}
+		if len(connectors) > 0 {
+			matched := false
+			for _, c := range connectors {
+				if strings.EqualFold(b.Connector, c) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				continue
+			}
+		}
 		if minWeight < 0 || b.WeightG < minWeight || (b.WeightG == minWeight && b.Id < bestId) {
 			minWeight = b.WeightG
 			if b.Id != "" {
@@ -935,14 +1011,18 @@ func FindLightestCompatibleBatteryFromList(batteries []*pb.Battery, minV, maxV, 
 
 // CalculateElectricalLimits queries referenced components and computes electrical constraints.
 func (s *EvaluatorServiceHandler) CalculateElectricalLimits(ctx context.Context, b *pb.Build) (*pb.GetBuildElectricalLimitsResponse, error) {
+	var frame *pb.Frame
 	var fc *pb.FlightController
 	var escs []*pb.ElectronicSpeedController
 	var motor *pb.Motor
 	var motorCount uint32 = 4
 
 	if b.FrameUuid != "" && s.db != nil {
-		if f, err := pb.GetFrame(ctx, s.db, b.FrameUuid, []string{"motor_count"}); err == nil && f != nil && f.MotorCount > 0 {
-			motorCount = f.MotorCount
+		if f, err := pb.GetFrame(ctx, s.db, b.FrameUuid, []string{"motor_count", "wheelbase_mm", "max_prop_size_mm", "name", "description"}); err == nil && f != nil {
+			frame = f
+			if f.MotorCount > 0 {
+				motorCount = f.MotorCount
+			}
 		}
 	}
 
@@ -976,7 +1056,19 @@ func (s *EvaluatorServiceHandler) CalculateElectricalLimits(ctx context.Context,
 	}
 
 	limits := ComputeElectricalLimits(fc, escs, motor, motorCount)
-	limits.DefaultBatteryId = s.FindLightestCompatibleBattery(ctx, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+	if frame != nil {
+		pConn, cConns := compatibility.DetermineBatteryConnector(&pb.AssembledComponents{
+			Frame:                      frame,
+			FlightController:           fc,
+			ElectronicSpeedControllers: escs,
+			Motor:                      motor,
+		}, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+		if pConn != "" {
+			limits.Connector = pConn
+			limits.CompatibleConnectors = cConns
+		}
+	}
+	limits.DefaultBatteryId = s.FindLightestCompatibleBattery(ctx, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA, limits.CompatibleConnectors...)
 
 	return limits, nil
 }
@@ -1039,27 +1131,49 @@ func ComputeElectricalLimits(fc *pb.FlightController, escs []*pb.ElectronicSpeed
 		maxCurrentA = escTotal
 	}
 
-	return &pb.GetBuildElectricalLimitsResponse{
+	resp := &pb.GetBuildElectricalLimitsResponse{
 		MinVoltage:  float32(math.Round(float64(minV)*100) / 100),
 		MaxVoltage:  float32(math.Round(float64(maxV)*100) / 100),
 		MaxCurrentA: float32(math.Round(float64(maxCurrentA)*10) / 10),
 	}
+	comp := &pb.AssembledComponents{
+		FlightController:           fc,
+		ElectronicSpeedControllers: escs,
+		Motor:                      motor,
+	}
+	pConn, cConns := compatibility.DetermineBatteryConnector(comp, resp.MinVoltage, resp.MaxVoltage, resp.MaxCurrentA)
+	resp.Connector = pConn
+	resp.CompatibleConnectors = cConns
+	return resp
 }
 
 // FindLightestCompatibleBattery finds the lightest compatible battery in the database.
-func (s *EvaluatorServiceHandler) FindLightestCompatibleBattery(ctx context.Context, minV, maxV, maxA float32) string {
+func (s *EvaluatorServiceHandler) FindLightestCompatibleBattery(ctx context.Context, minV, maxV, maxA float32, connectors ...string) string {
 	if s.db == nil || (minV > 0 && maxV > 0 && minV > maxV) {
 		return ""
 	}
 
 	var batteryId string
-	// Strict match: min_voltage >= minV, max_voltage <= maxV, max_current_a >= maxA
-	err := s.db.QueryRow(ctx, `
+	query := `
 		SELECT id FROM batteries
 		WHERE min_voltage >= $1 AND max_voltage <= $2 AND max_current_a >= $3
-		ORDER BY weight_g ASC, id ASC
-		LIMIT 1
-	`, minV, maxV, maxA).Scan(&batteryId)
+	`
+	args := []any{minV, maxV, maxA}
+	if len(connectors) > 0 {
+		var valid []string
+		for _, c := range connectors {
+			if strings.TrimSpace(c) != "" {
+				valid = append(valid, c)
+			}
+		}
+		if len(valid) > 0 {
+			query += fmt.Sprintf(` AND connector = ANY($%d)`, len(args)+1)
+			args = append(args, valid)
+		}
+	}
+	query += ` ORDER BY weight_g ASC, id ASC LIMIT 1`
+
+	err := s.db.QueryRow(ctx, query, args...).Scan(&batteryId)
 	if err != nil {
 		return ""
 	}

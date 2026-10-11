@@ -73,12 +73,18 @@ func computeElectricalLimits(this js.Value, args []js.Value) any {
 	}
 
 	limits := evaluator.ComputeElectricalLimits(fc, escs, motor, motorCount)
+	primaryConn, compatConns := compatibility.DetermineBatteryConnector(comps, limits.MinVoltage, limits.MaxVoltage, limits.MaxCurrentA)
+	if primaryConn != "" {
+		limits.Connector = primaryConn
+		limits.CompatibleConnectors = compatConns
+	}
 	if len(req.GetCandidateBatteries()) > 0 {
 		limits.DefaultBatteryId = evaluator.FindLightestCompatibleBatteryFromList(
 			req.GetCandidateBatteries(),
 			limits.MinVoltage,
 			limits.MaxVoltage,
 			limits.MaxCurrentA,
+			limits.CompatibleConnectors...,
 		)
 	}
 

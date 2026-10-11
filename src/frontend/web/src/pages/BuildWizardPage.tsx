@@ -340,7 +340,7 @@ export function BuildWizardPage() {
   }, [isWasmReady, filterCompatibleOnly, selectedCam]);
 
   const batteryCelFilter = useMemo(() => {
-    if (!isWasmReady || !filterCompatibleOnly) return "";
+    if (!isWasmReady) return "";
     const comps = create(AssembledComponentsSchema, {
       frame: selectedFrame || undefined,
       flightController: selectedFc || undefined,
@@ -348,7 +348,7 @@ export function BuildWizardPage() {
       electronicSpeedControllers: selectedEsc ? [selectedEsc] : [],
     });
     return wasmEngine.generateCelFilter("batteries", comps);
-  }, [isWasmReady, filterCompatibleOnly, selectedFrame, selectedFc, selectedMotor, selectedEsc]);
+  }, [isWasmReady, selectedFrame, selectedFc, selectedMotor, selectedEsc]);
 
   // Fetch component catalogs
   const { data: framesData } = useQuery(listFrames, { pageSize: 100 });
@@ -846,14 +846,26 @@ export function BuildWizardPage() {
 
   const electricalLimits = wasmElectricalLimits || queryElectricalLimits;
 
-  // Auto-select lightest compatible battery when limits arrive or batteries change
+  // Auto-select lightest compatible battery when limits arrive or batteries change, or reset if invalid
   useEffect(() => {
-    if (!selectedBatteryId && batteries.length > 0) {
-      if (electricalLimits?.defaultBatteryId) {
+    const isCurrentBatteryValid = batteries.some(
+      (b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId,
+    );
+    if (!isCurrentBatteryValid && batteries.length > 0) {
+      if (
+        electricalLimits?.defaultBatteryId &&
+        batteries.some(
+          (b) =>
+            b.id === electricalLimits.defaultBatteryId ||
+            b.uuid === electricalLimits.defaultBatteryId,
+        )
+      ) {
         setSelectedBatteryId(electricalLimits.defaultBatteryId);
       } else {
         setSelectedBatteryId(batteries[0].id || batteries[0].uuid);
       }
+    } else if (batteries.length === 0) {
+      setSelectedBatteryId("");
     }
   }, [electricalLimits, batteries, selectedBatteryId]);
 
@@ -3396,9 +3408,16 @@ export function BuildWizardPage() {
 
             {/* Test Battery Selection */}
             <div className="space-y-1.5 text-xs">
-              <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
-                Test Battery (Runtime Parameter)
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
+                  Test Battery (Runtime Parameter)
+                </label>
+                {electricalLimits?.connector ? (
+                  <span className="text-[10px] text-blue-600 dark:text-blue-400 font-mono font-medium">
+                    {electricalLimits.connector}
+                  </span>
+                ) : null}
+              </div>
               <BatteryCombobox
                 selectedBatteryId={selectedBatteryId}
                 onSelectBattery={(id) => setSelectedBatteryId(id)}

@@ -1182,8 +1182,8 @@ batteries: {
   capacity_mah: 260
   cell_count_s: 1
   chemistry: "LiPo"
-  connector: "XT60"
-  description: "BETAFPV LAVA 1S 260mAh 80C Battery 1S 260mAh LiPo battery with XT60 connector, weighing 7.11g."
+  connector: "BT2.0"
+  description: "BETAFPV LAVA 1S 260mAh 80C Battery 1S 260mAh LiPo battery with BT2.0 connector, weighing 7.11g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-260mah-80c-battery-5pcs"
@@ -1278,8 +1278,8 @@ batteries: {
   capacity_mah: 550
   cell_count_s: 1
   chemistry: "LiPo"
-  connector: "XT60"
-  description: "BETAFPV LAVA 1S 550mAh 75C Battery 1S 550mAh LiPo battery with XT60 connector, weighing 12.2g."
+  connector: "BT2.0"
+  description: "BETAFPV LAVA 1S 550mAh 75C Battery 1S 550mAh LiPo battery with BT2.0 connector, weighing 12.2g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-550mah-75c-battery-4pcs"
@@ -1299,8 +1299,8 @@ batteries: {
   capacity_mah: 450
   cell_count_s: 1
   chemistry: "LiPo"
-  connector: "XT60"
-  description: "BETAFPV LAVA 1S 450mAh 75C Battery 1S 450mAh LiPo battery with XT60 connector, weighing 12.2g."
+  connector: "BT2.0"
+  description: "BETAFPV LAVA 1S 450mAh 75C Battery 1S 450mAh LiPo battery with BT2.0 connector, weighing 12.2g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-450mah-75c-battery-4pcs"
@@ -1324,8 +1324,8 @@ batteries: {
   capacity_mah: 300
   cell_count_s: 1
   chemistry: "LiPo"
-  connector: "XT60"
-  description: "BETAFPV LAVA 1S 300mAh 75C Battery 1S 300mAh LiPo battery with XT60 connector, weighing 8.3g."
+  connector: "BT2.0"
+  description: "BETAFPV LAVA 1S 300mAh 75C Battery 1S 300mAh LiPo battery with BT2.0 connector, weighing 8.3g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lava-1s-300mah-75c-battery-5pcs"
@@ -1454,8 +1454,8 @@ batteries: {
   capacity_mah: 550
   cell_count_s: 1
   chemistry: "LiHV"
-  connector: "XT60"
-  description: "BETAFPV 550mAh 1S Lipo HV Battery 1S 550mAh LiHV battery with XT60 connector, weighing 13.8g."
+  connector: "BT2.0"
+  description: "BETAFPV 550mAh 1S Lipo HV Battery 1S 550mAh LiHV battery with BT2.0 connector, weighing 13.8g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/copy-of-550mah-1s-lipo-hv-battery-2pcs"
@@ -2146,7 +2146,7 @@ batteries: {
   capacity_mah: 5000
   cell_count_s: 2
   chemistry: "Li-ion"
-  connector: "XT60"
+  connector: "XT30"
   description: "NewBeeDrone 21700 5000mAh Li-ion Battery – XT30 & JST-XH Connector"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -2337,7 +2337,7 @@ batteries: {
   capacity_mah: 650
   cell_count_s: 3
   chemistry: "LiPo"
-  connector: "XT60"
+  connector: "XT30"
   description: "MiniStar 3S 650mAh 70C LiPo Battery with XT30 Connector (Copy)"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PURCHASE
@@ -2379,7 +2379,7 @@ batteries: {
   capacity_mah: 850
   cell_count_s: 4
   chemistry: "LiHV"
-  connector: "XT60"
+  connector: "XT30"
   description: "4S 850mAh LiHV Battery with XT30 Connector"
 
   min_voltage: 13.2
@@ -2417,7 +2417,7 @@ batteries: {
   capacity_mah: 300
   cell_count_s: 4
   chemistry: "LiHV"
-  connector: "XT60"
+  connector: "XT30"
   description: "4S 300mAh 80C LiHV Battery with XT30 Connector"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PURCHASE
@@ -2438,7 +2438,7 @@ batteries: {
   capacity_mah: 720
   cell_count_s: 4
   chemistry: "LiHV"
-  connector: "XT60"
+  connector: "XT30"
   description: "4S 720mAh 100C LiHV Battery with XT30 Connector"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PURCHASE
@@ -2480,7 +2480,7 @@ batteries: {
   capacity_mah: 8200
   cell_count_s: 8
   chemistry: "LiHV"
-  connector: "XT60"
+  connector: "XT90"
   description: "8S 8200mAh 65C LiHV Battery with XT90 Connector"
 
   min_voltage: 26.4
@@ -2497,7 +2497,7 @@ batteries: {
   capacity_mah: 3000
   cell_count_s: 4
   chemistry: "Li-ion"
-  connector: "XT60"
+  connector: "XT30"
   description: "Explorer 4S 30 Ah 18650 Li-Ion Battery with XT30 Connector"
 
   min_voltage: 11.2
@@ -2594,7 +2594,7 @@ batteries: {
   capacity_mah: 660
   cell_count_s: 4
   chemistry: "LiHV"
-  connector: "XT60"
+  connector: "XT30"
   description: "4S 660mAh 90C LiHV Battery with XT30 Connector"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PURCHASE
@@ -2695,7 +2695,7 @@ batteries: {
   capacity_mah: 850
   cell_count_s: 4
   chemistry: "LiPo"
-  connector: "XT60"
+  connector: "XT30"
   description: "R-Line Version 1.0 4S 850mAh 95C LiPo Battery with XT30 Connector"
 
   min_voltage: 13.2
@@ -2729,7 +2729,7 @@ batteries: {
   capacity_mah: 300
   cell_count_s: 1
   chemistry: "LiHV"
-  connector: "XT60"
+  connector: "BT2.0"
   description: "1S 300mAh 75C LiHV Battery with BT2.0 Connector (5pcs)"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PURCHASE
@@ -2750,7 +2750,7 @@ batteries: {
   capacity_mah: 450
   cell_count_s: 1
   chemistry: "LiHV"
-  connector: "XT60"
+  connector: "PH2.0"
   description: "1S 450mAh 80C LiHV Battery with PH2.0 Connector"
 
   min_voltage: 3.3
@@ -2960,7 +2960,7 @@ batteries: {
   capacity_mah: 450
   cell_count_s: 1
   chemistry: "LiHV"
-  connector: "XT60"
+  connector: "BT2.0"
   description: "1S 450mAh 75C LiHV Battery with BT2.0 Connector (5pcs)"
 
   min_voltage: 3.3
@@ -2998,7 +2998,7 @@ batteries: {
   capacity_mah: 450
   cell_count_s: 3
   chemistry: "LiPo"
-  connector: "XT60"
+  connector: "XT30"
   description: "MiniStar 3S 450mAh 70C LiPo Battery with XT30 Connector"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -3044,7 +3044,7 @@ batteries: {
   capacity_mah: 450
   cell_count_s: 4
   chemistry: "LiPo"
-  connector: "XT60"
+  connector: "XT30"
   description: "4S 450mAh 75C LiPo Battery with XT30 Connector"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PURCHASE
@@ -3372,8 +3372,8 @@ batteries: {
   capacity_mah: 300
   cell_count_s: 1
   chemistry: "LiPo"
-  connector: "XT60"
-  description: "Sub250 Sub250 1S 300mAh 75 C Battery 1S 300mAh LiPo battery with XT60 connector, weighing 8.2g."
+  connector: "A30"
+  description: "Sub250 Sub250 1S 300mAh 75 C Battery 1S 300mAh LiPo battery with A30 connector, weighing 8.2g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-300mah-75-c-battery"
@@ -3393,8 +3393,8 @@ batteries: {
   capacity_mah: 720
   cell_count_s: 1
   chemistry: "LiPo"
-  connector: "XT60"
-  description: "Sub250 Sub250 1S 720mAh 90C Battery 1S 720mAh LiPo battery with XT60 connector, weighing 16.5g."
+  connector: "A30"
+  description: "Sub250 Sub250 1S 720mAh 90C Battery 1S 720mAh LiPo battery with A30 connector, weighing 16.5g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/sub250-1s-720mah-90c-battery"
@@ -3494,7 +3494,7 @@ batteries: {
   capacity_mah: 380
   cell_count_s: 1
   chemistry: "LiPo"
-  connector: "XT60"
+  connector: "A30"
   description: "Sub250 1S 380mAh 90C  Battery for Nanofly16 (2pcs/6pcs)"
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE

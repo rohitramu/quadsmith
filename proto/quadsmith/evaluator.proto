@@ -66,6 +66,8 @@ message EvaluateBuildResponse {
   float min_voltage = 16;
   float max_voltage = 17;
   float max_current_a = 18;
+  string connector = 20;
+  repeated string compatible_connectors = 21;
 
   reserved 4, 5, 6, 19;
   reserved "estimated_flight_time_min", "warnings", "errors", "build_weight_g", "total_weight_g";
@@ -87,6 +89,8 @@ message GetBuildElectricalLimitsResponse {
   // Lightest compatible battery ID recommended for this build
   string default_battery_id = 4;
   string build_id = 5;
+  string connector = 6;
+  repeated string compatible_connectors = 7;
 }
 
 message EvaluateComponentsRequest {

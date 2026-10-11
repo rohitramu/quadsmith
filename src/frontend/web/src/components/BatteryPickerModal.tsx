@@ -14,6 +14,8 @@ export interface BatteryPickerModalProps {
     minVoltage?: number;
     maxVoltage?: number;
     maxCurrentA?: number;
+    connector?: string;
+    compatibleConnectors?: string[];
   } | null;
   compatibleBatteries: Battery[];
   isLoading?: boolean;
@@ -127,6 +129,11 @@ export function BatteryPickerModal({
               {limits.maxCurrentA ? (
                 <span className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-mono">
                   ≥ {limits.maxCurrentA.toFixed(1)}A
+                </span>
+              ) : null}
+              {limits.connector ? (
+                <span className="px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-semibold font-mono">
+                  {limits.connector} Connector
                 </span>
               ) : null}
             </div>

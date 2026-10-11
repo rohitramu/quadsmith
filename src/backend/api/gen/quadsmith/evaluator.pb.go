@@ -250,11 +250,13 @@ type EvaluateBuildResponse struct {
 	PayloadWeightG float32 `protobuf:"fixed32,14,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
 	BatteryId      string  `protobuf:"bytes,15,opt,name=battery_id,json=batteryId,proto3" json:"battery_id,omitempty"`
 	// Electrical limits determined by the build's FC, ESCs, and Motors
-	MinVoltage    float32 `protobuf:"fixed32,16,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
-	MaxVoltage    float32 `protobuf:"fixed32,17,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
-	MaxCurrentA   float32 `protobuf:"fixed32,18,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	MinVoltage           float32  `protobuf:"fixed32,16,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
+	MaxVoltage           float32  `protobuf:"fixed32,17,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	MaxCurrentA          float32  `protobuf:"fixed32,18,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
+	Connector            string   `protobuf:"bytes,20,opt,name=connector,proto3" json:"connector,omitempty"`
+	CompatibleConnectors []string `protobuf:"bytes,21,rep,name=compatible_connectors,json=compatibleConnectors,proto3" json:"compatible_connectors,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *EvaluateBuildResponse) Reset() {
@@ -392,6 +394,20 @@ func (x *EvaluateBuildResponse) GetMaxCurrentA() float32 {
 	return 0
 }
 
+func (x *EvaluateBuildResponse) GetConnector() string {
+	if x != nil {
+		return x.Connector
+	}
+	return ""
+}
+
+func (x *EvaluateBuildResponse) GetCompatibleConnectors() []string {
+	if x != nil {
+		return x.CompatibleConnectors
+	}
+	return nil
+}
+
 type GetBuildElectricalLimitsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to BuildSource:
@@ -482,10 +498,12 @@ type GetBuildElectricalLimitsResponse struct {
 	MaxVoltage  float32                `protobuf:"fixed32,2,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
 	MaxCurrentA float32                `protobuf:"fixed32,3,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
 	// Lightest compatible battery ID recommended for this build
-	DefaultBatteryId string `protobuf:"bytes,4,opt,name=default_battery_id,json=defaultBatteryId,proto3" json:"default_battery_id,omitempty"`
-	BuildId          string `protobuf:"bytes,5,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	DefaultBatteryId     string   `protobuf:"bytes,4,opt,name=default_battery_id,json=defaultBatteryId,proto3" json:"default_battery_id,omitempty"`
+	BuildId              string   `protobuf:"bytes,5,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	Connector            string   `protobuf:"bytes,6,opt,name=connector,proto3" json:"connector,omitempty"`
+	CompatibleConnectors []string `protobuf:"bytes,7,rep,name=compatible_connectors,json=compatibleConnectors,proto3" json:"compatible_connectors,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *GetBuildElectricalLimitsResponse) Reset() {
@@ -551,6 +569,20 @@ func (x *GetBuildElectricalLimitsResponse) GetBuildId() string {
 		return x.BuildId
 	}
 	return ""
+}
+
+func (x *GetBuildElectricalLimitsResponse) GetConnector() string {
+	if x != nil {
+		return x.Connector
+	}
+	return ""
+}
+
+func (x *GetBuildElectricalLimitsResponse) GetCompatibleConnectors() []string {
+	if x != nil {
+		return x.CompatibleConnectors
+	}
+	return nil
 }
 
 type EvaluateComponentsRequest struct {
@@ -671,7 +703,7 @@ const file_evaluator_proto_rawDesc = "" +
 	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\x12\x1d\n" +
 	"\n" +
 	"battery_id\x18\x03 \x01(\tR\tbatteryIdB\x0e\n" +
-	"\fbuild_source\"\xee\x05\n" +
+	"\fbuild_source\"\xc1\x06\n" +
 	"\x15EvaluateBuildResponse\x12%\n" +
 	"\x0fall_up_weight_g\x18\x01 \x01(\x02R\fallUpWeightG\x124\n" +
 	"\x16hover_throttle_percent\x18\x02 \x01(\x02R\x14hoverThrottlePercent\x123\n" +
@@ -691,11 +723,13 @@ const file_evaluator_proto_rawDesc = "" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x11 \x01(\x02R\n" +
 	"maxVoltage\x12\"\n" +
-	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentAJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aJ\x04\b\x13\x10\x14R\x19estimated_flight_time_minR\bwarningsR\x06errorsR\x0ebuild_weight_gR\x0etotal_weight_g\"x\n" +
+	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentA\x12\x1c\n" +
+	"\tconnector\x18\x14 \x01(\tR\tconnector\x123\n" +
+	"\x15compatible_connectors\x18\x15 \x03(\tR\x14compatibleConnectorsJ\x04\b\x04\x10\x05J\x04\b\x05\x10\x06J\x04\b\x06\x10\aJ\x04\b\x13\x10\x14R\x19estimated_flight_time_minR\bwarningsR\x06errorsR\x0ebuild_weight_gR\x0etotal_weight_g\"x\n" +
 	"\x1fGetBuildElectricalLimitsRequest\x12\x1b\n" +
 	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x12(\n" +
 	"\x05build\x18\x02 \x01(\v2\x10.quadsmith.BuildH\x00R\x05buildB\x0e\n" +
-	"\fbuild_source\"\xd1\x01\n" +
+	"\fbuild_source\"\xa4\x02\n" +
 	" GetBuildElectricalLimitsResponse\x12\x1f\n" +
 	"\vmin_voltage\x18\x01 \x01(\x02R\n" +
 	"minVoltage\x12\x1f\n" +
@@ -703,7 +737,9 @@ const file_evaluator_proto_rawDesc = "" +
 	"maxVoltage\x12\"\n" +
 	"\rmax_current_a\x18\x03 \x01(\x02R\vmaxCurrentA\x12,\n" +
 	"\x12default_battery_id\x18\x04 \x01(\tR\x10defaultBatteryId\x12\x19\n" +
-	"\bbuild_id\x18\x05 \x01(\tR\abuildId\"\x85\x01\n" +
+	"\bbuild_id\x18\x05 \x01(\tR\abuildId\x12\x1c\n" +
+	"\tconnector\x18\x06 \x01(\tR\tconnector\x123\n" +
+	"\x15compatible_connectors\x18\a \x03(\tR\x14compatibleConnectors\"\x85\x01\n" +
 	"\x19EvaluateComponentsRequest\x12>\n" +
 	"\n" +
 	"components\x18\x01 \x01(\v2\x1e.quadsmith.AssembledComponentsR\n" +

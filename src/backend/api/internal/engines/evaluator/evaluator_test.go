@@ -499,6 +499,9 @@ func TestComputeElectricalLimits(t *testing.T) {
 		if limits.MaxCurrentA != 154.0 {
 			t.Errorf("Expected MaxCurrentA 154.0 (38.5A * 4), got %.1f", limits.MaxCurrentA)
 		}
+		if limits.Connector != "XT60" {
+			t.Errorf("Expected Connector XT60, got %s", limits.Connector)
+		}
 	})
 
 	t.Run("1S Whoop Build", func(t *testing.T) {
@@ -530,6 +533,9 @@ func TestComputeElectricalLimits(t *testing.T) {
 		}
 		if limits.MaxCurrentA != 22.0 {
 			t.Errorf("Expected MaxCurrentA 22.0 (5.5A * 4), got %.1f", limits.MaxCurrentA)
+		}
+		if limits.Connector != "BT2.0" {
+			t.Errorf("Expected Connector BT2.0, got %s", limits.Connector)
 		}
 	})
 
@@ -850,4 +856,37 @@ func TestFindLightestCompatibleBatteryFromList(t *testing.T) {
 	if best != "light-6s" {
 		t.Errorf("expected 'light-6s', got %q", best)
 	}
+
+	t.Run("Connector Matching", func(t *testing.T) {
+		candidates := []*pb.Battery{
+			{
+				Id:          "lighter-xt30",
+				WeightG:     100.0,
+				MinVoltage:  14.8,
+				MaxVoltage:  25.2,
+				MaxCurrentA: 130.0,
+				Connector:   "XT30",
+			},
+			{
+				Id:          "heavier-xt60",
+				WeightG:     180.0,
+				MinVoltage:  14.8,
+				MaxVoltage:  25.2,
+				MaxCurrentA: 140.0,
+				Connector:   "XT60",
+			},
+		}
+
+		// When filtered for XT60, should skip lighter-xt30 and pick heavier-xt60
+		bestXT60 := FindLightestCompatibleBatteryFromList(candidates, 14.8, 25.2, 120.0, "XT60")
+		if bestXT60 != "heavier-xt60" {
+			t.Errorf("expected 'heavier-xt60', got %q", bestXT60)
+		}
+
+		// When filtered for XT30, should pick lighter-xt30
+		bestXT30 := FindLightestCompatibleBatteryFromList(candidates, 14.8, 25.2, 120.0, "XT30")
+		if bestXT30 != "lighter-xt30" {
+			t.Errorf("expected 'lighter-xt30', got %q", bestXT30)
+		}
+	})
 }
