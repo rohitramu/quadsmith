@@ -272,22 +272,23 @@ export function LoginPage() {
         {/* Dynamic Error / Attempt Warning Banner */}
         {errorMsg && (
           <div
+            data-testid="otp-error-banner"
             className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
               isExhausted || isRateLimited
                 ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
-                : remainingAttempts === 1
+                : remainingAttempts === 2
                   ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
-                  : remainingAttempts === 2
+                  : remainingAttempts === 1
                     ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400"
                     : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
             }`}
           >
             {isExhausted || isRateLimited ? (
               <ShieldAlert size={16} className="text-red-500 shrink-0 mt-0.5" />
-            ) : remainingAttempts !== null ? (
+            ) : remainingAttempts === 2 ? (
               <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
             ) : (
-              <AlertTriangle size={16} className="text-red-500 shrink-0 mt-0.5" />
+              <AlertTriangle size={16} className="text-rose-500 shrink-0 mt-0.5" />
             )}
             <div className="space-y-0.5 flex-1">
               <p className="font-semibold">{errorMsg}</p>
@@ -383,7 +384,7 @@ export function LoginPage() {
                   !isRateLimited && (
                     <span
                       className={`text-[10px] font-mono font-bold ${
-                        remainingAttempts === 1 ? "text-amber-500" : "text-rose-500"
+                        remainingAttempts === 1 ? "text-rose-500" : "text-amber-500"
                       }`}
                     >
                       {remainingAttempts} attempt{remainingAttempts === 1 ? "" : "s"} left
@@ -410,7 +411,9 @@ export function LoginPage() {
                       isSuccess || isExhausted || isRateLimited
                         ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
                         : remainingAttempts !== null && remainingAttempts > 0
-                          ? "border-2 border-rose-500 focus:border-rose-600"
+                          ? remainingAttempts === 1
+                            ? "border-2 border-rose-500 focus:border-rose-600"
+                            : "border-2 border-amber-500 focus:border-amber-600"
                           : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                     }`}
                   />

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { renderApp } from "../../test/test-utils";
 
 describe("LoginPage Component", () => {
@@ -81,17 +81,41 @@ describe("LoginPage Component", () => {
       await user.type(inputs[i], wrongDigits[i]);
     }
 
-    // Error banner appears
+    // Error banner appears with yellow (amber) styling for 1 failed attempt (2 attempts left)
     expect(await screen.findByText(/incorrect/i)).toBeInTheDocument();
+    const banner = screen.getByTestId("otp-error-banner");
+    expect(banner.className).toMatch(/amber/);
+    expect(banner.className).not.toMatch(/rose/);
 
-    // Inputs are cleared (empty value) but have the incorrect digits as placeholders
+    const attemptsBadge = screen.getByText(/^2 attempts left$/i);
+    expect(attemptsBadge.className).toMatch(/text-amber-500/);
+
+    // Inputs are cleared (empty value) but have the incorrect digits as placeholders and amber border
     inputs.forEach((input, index) => {
       expect(input.value).toBe("");
       expect(input.placeholder).toBe(wrongDigits[index]);
+      expect(input.className).toMatch(/border-amber-500/);
     });
 
     // Resend Email button is STILL visible while waiting for re-entry
     expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
+
+    // Type 2nd failed attempt: "777777" (1 attempt left)
+    for (let i = 0; i < 6; i++) {
+      await user.type(inputs[i], "7");
+    }
+
+    // Error banner switches to red (rose) styling for 2 failed attempts (1 attempt left)
+    const redBanner = await screen.findByTestId("otp-error-banner");
+    expect(redBanner.className).toMatch(/rose/);
+    expect(redBanner.className).not.toMatch(/amber/);
+
+    const finalBadge = screen.getByText(/^1 attempt left$/i);
+    expect(finalBadge.className).toMatch(/text-rose-500/);
+
+    inputs.forEach((input) => {
+      expect(input.className).toMatch(/border-rose-500/);
+    });
   });
 
   it("does not render passwordless footer text, has no continue button, and automatically continues on 6-digit OTP entry", async () => {
@@ -130,7 +154,9 @@ describe("LoginPage Component", () => {
     }
 
     // Auto-continues without clicking any button: token saved in localStorage
-    expect(localStorage.getItem("qs_access_token")).toBe("mock-jwt-token");
+    await waitFor(() => {
+      expect(localStorage.getItem("qs_access_token")).toBe("mock-jwt-token");
+    });
 
     // Resend Email button is disabled on success and has NO countdown timer
     const resendBtn = screen.getByRole("button", { name: /^resend email$/i });

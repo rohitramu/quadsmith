@@ -503,6 +503,25 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           );
           throw err;
         }
+        if (req.code === "777777") {
+          const err = new ConnectError(
+            "Incorrect code. You have 1 attempt left",
+            Code.InvalidArgument,
+            undefined,
+            [
+              {
+                desc: OtpVerificationErrorSchema,
+                value: {
+                  remainingAttempts: 1,
+                  isExhausted: false,
+                  cooldownSeconds: 0,
+                  message: "Incorrect code. You have 1 attempt left",
+                },
+              },
+            ],
+          );
+          throw err;
+        }
         if (req.code === "999999") {
           const err = new ConnectError(
             "Incorrect code. You have 0 attempts left. Please request a new code",
