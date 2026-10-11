@@ -287,6 +287,9 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 	}
 
 	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
+	if username == "admin" || username == "root" {
+		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("This username is already taken"))
+	}
 	if err := ValidateUsername(username); err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
@@ -1935,6 +1938,12 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 
 func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.Request[pb.CheckUsernameAvailableRequest]) (*connect.Response[pb.CheckUsernameAvailableResponse], error) {
 	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
+	if username == "admin" || username == "root" {
+		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
+			Available: false,
+			Message:   "This username is already taken",
+		}), nil
+	}
 	if err := ValidateUsername(username); err != nil {
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,

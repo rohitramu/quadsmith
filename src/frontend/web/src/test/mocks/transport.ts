@@ -770,6 +770,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       }),
       checkUsernameAvailable: (req) => {
         const u = req.username?.trim().toLowerCase() || "";
+        if (u === "admin" || u === "root" || u === "taken" || u === "alex") {
+          return {
+            available: false,
+            message: "This username is already taken",
+          };
+        }
         const regex = /^[a-z][a-z0-9_]{1,18}[a-z0-9]$/;
         if (!regex.test(u)) {
           return {
@@ -788,18 +794,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           return {
             available: false,
             message: "Username cannot contain 'quadsmith' or 'quad_smith'",
-          };
-        }
-        if (u === "admin" || u === "root") {
-          return {
-            available: false,
-            message: "Reserved username",
-          };
-        }
-        if (u === "taken" || u === "alex") {
-          return {
-            available: false,
-            message: "This username is already taken",
           };
         }
         return {

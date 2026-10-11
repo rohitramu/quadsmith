@@ -367,10 +367,10 @@ describe("LoginPage Component", () => {
     expect(screen.getByText(/consecutive underscores/i)).toBeInTheDocument();
     expect(completeBtn).toBeDisabled();
 
-    // 4. Reserved username ("admin") -> shows Invalid badge & reserved naming rule message
+    // 4. Reserved username ("admin") -> treated the same as unavailable! Shows Unavailable badge
     fireEvent.change(usernameInput, { target: { value: "admin" } });
-    expect(await screen.findByText(/^invalid$/i, {}, { timeout: 3000 })).toBeInTheDocument();
-    expect(screen.getByText(/reserved/i)).toBeInTheDocument();
+    expect(await screen.findByText(/^unavailable$/i, {}, { timeout: 3000 })).toBeInTheDocument();
+    expect(screen.getByText(/this username is already taken/i)).toBeInTheDocument();
     expect(completeBtn).toBeDisabled();
 
     // 5. Available username ("rotor_pilot") -> shows Available badge & enables complete setup

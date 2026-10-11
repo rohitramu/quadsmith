@@ -31,9 +31,6 @@ export function validateUsernameRules(val: string): string | null {
   if (trimmed.includes("quadsmith") || trimmed.includes("quad_smith")) {
     return "Username cannot contain 'quadsmith' or 'quad_smith'.";
   }
-  if (trimmed === "admin" || trimmed === "root") {
-    return `The username '${trimmed}' is reserved and cannot be registered.`;
-  }
   return null;
 }
 
@@ -187,7 +184,6 @@ export function LoginPage() {
             lower.includes("letter") ||
             lower.includes("underscore") ||
             lower.includes("quadsmith") ||
-            lower.includes("reserved") ||
             lower.includes("invalid") ||
             lower.includes("naming")
           ) {
