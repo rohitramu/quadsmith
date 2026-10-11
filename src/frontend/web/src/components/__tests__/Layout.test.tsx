@@ -51,15 +51,26 @@ describe("Layout Component", () => {
   it("renders sidebar navigation links with hardware collections permanently expanded", () => {
     renderWithProviders(<Layout />, { route: "/" });
 
-    // Builds link is removed altogether from sidebar and top navbar
-    expect(screen.queryByRole("link", { name: "Builds" })).not.toBeInTheDocument();
+    // Generic "Builds" link is removed in favor of "Build Feed"
+    expect(screen.queryByRole("link", { name: /^Builds$/ })).not.toBeInTheDocument();
+
+    const feedLink = screen.getByRole("link", { name: /Build Feed/i });
+    expect(feedLink).toHaveAttribute("href", "/builds");
+    const feedIcon = feedLink.querySelector("svg");
+    expect(feedIcon).toBeInTheDocument();
+    expect(feedIcon).toHaveClass("text-blue-600");
 
     const wizardLink = screen.getByRole("link", { name: /The Forge/i });
     expect(wizardLink).toHaveAttribute("href", "/builds/new");
     const wizardIcon = wizardLink.querySelector("svg");
     expect(wizardIcon).toBeInTheDocument();
     expect(wizardIcon).toHaveClass("text-[#FF6D00]");
-    expect(screen.queryByText("New")).not.toBeInTheDocument();
+
+    // Verify Build Feed is positioned above The Forge in Discover section
+    const discoverNav = wizardLink.closest("ul")!;
+    const navItems = discoverNav.querySelectorAll("li a");
+    expect(navItems[0]).toHaveAttribute("href", "/builds");
+    expect(navItems[1]).toHaveAttribute("href", "/builds/new");
     expect(screen.getByRole("link", { name: "Hardware" })).toHaveAttribute(
       "href",
       "/components/hardware",
@@ -94,5 +105,15 @@ describe("Layout Component", () => {
     expect(forgeLink).toHaveClass("dark:text-blue-400");
     const forgeIcon = forgeLink.querySelector("svg");
     expect(forgeIcon).toHaveClass("text-[#FF6D00]");
+  });
+
+  it("styles Build Feed link with blue active text when selected, while keeping blue icon", () => {
+    renderWithProviders(<Layout />, { route: "/builds" });
+
+    const feedLink = screen.getByRole("link", { name: /Build Feed/i });
+    expect(feedLink).toHaveClass("text-blue-600");
+    expect(feedLink).toHaveClass("dark:text-blue-400");
+    const feedIcon = feedLink.querySelector("svg");
+    expect(feedIcon).toHaveClass("text-blue-600");
   });
 });

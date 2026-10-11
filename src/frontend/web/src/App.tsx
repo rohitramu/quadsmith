@@ -15,6 +15,7 @@ import { ProductPage } from "./pages/ProductPage";
 import { HomePage } from "./pages/HomePage";
 import { BuildProfilePage } from "./pages/BuildProfilePage";
 import { BuildWizardPage } from "./pages/BuildWizardPage";
+import { BuildFeedPage } from "./pages/BuildFeedPage";
 
 const defaultQueryClient = new QueryClient();
 
@@ -31,7 +32,7 @@ export function AppRoutes() {
           <Route index element={<HomePage />} />
           <Route path="account" element={<AccountSettingsPage />} />
           <Route path="users/:id" element={<UserProfilePage />} />
-          <Route path="builds" element={<Navigate to="/" replace />} />
+          <Route path="builds" element={<BuildFeedPage />} />
           <Route path="builds/new" element={<BuildWizardPage />} />
           <Route path="builds/:buildId" element={<BuildProfilePage />} />
           <Route path="components/:categoryId" element={<CategoryPage />} />

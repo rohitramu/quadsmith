@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { Moon, Sun, Search, X, Loader2, Hammer } from "lucide-react";
+import { Moon, Sun, Search, X, Loader2, Hammer, GalleryVertical } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { search } from "../gen/quadsmith/search-SearchService_connectquery";
@@ -278,6 +278,29 @@ export function Layout() {
                 Discover
               </h2>
               <ul className="space-y-1">
+                <li>
+                  {(() => {
+                    const buildColor = getCollectionColor("builds");
+                    return (
+                      <Link
+                        to="/builds"
+                        className={`flex items-center justify-between px-3 py-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
+                          location.pathname === "/builds"
+                            ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
+                            : "text-zinc-700 dark:text-zinc-300"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <GalleryVertical
+                            size={16}
+                            className={`${buildColor.textClass} shrink-0`}
+                          />
+                          <span>Build Feed</span>
+                        </div>
+                      </Link>
+                    );
+                  })()}
+                </li>
                 <li>
                   {(() => {
                     const forgeColor = getCollectionColor("the-forge");
