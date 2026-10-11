@@ -1,0 +1,67 @@
+fc_firmwares: {
+  uuid: "018f3a50-1001-7001-9001-000000000001"
+  id: "betaflight-4.5"
+  manufacturer: "Betaflight"
+  name: "Betaflight 4.5"
+  version: "4.5.1"
+  target_architectures: "STM32F405, STM32F7X2, STM32G473, AT32F435"
+  supported_protocols: "DShot300, DShot600, CRSF, SBUS, FPORT, MSP"
+  is_open_source: true
+  repository_url: "https://github.com/betaflight/betaflight"
+  description: "High-performance multi-rotor flight control firmware featuring RPM filtering, advanced feedforward, and modern HD OSD support."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://betaflight.com/docs/wiki/guides/current/4-5-tuning-guide"
+  }
+}
+
+fc_firmwares: {
+  uuid: "018f3a50-1001-7001-9001-000000000002"
+  id: "inav-7.1"
+  manufacturer: "INAV"
+  name: "INAV 7.1"
+  version: "7.1.2"
+  target_architectures: "STM32F405, STM32F722, STM32F745, STM32H743"
+  supported_protocols: "DShot300, DShot600, CRSF, MSP, MAVLink"
+  is_open_source: true
+  repository_url: "https://github.com/iNavFlight/inav"
+  description: "Navigation-enabled flight control software tailored for fixed-wing and long-range multirotor autonomous waypoints and return-to-home."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/iNavFlight/inav/wiki"
+  }
+}
+
+fc_firmwares: {
+  uuid: "018f3a50-1001-7001-9001-000000000003"
+  id: "ardupilot-copter-4.5"
+  manufacturer: "ArduPilot"
+  name: "ArduPilot Copter 4.5"
+  version: "4.5.3"
+  target_architectures: "STM32F405, STM32F765, STM32H743, STM32H753"
+  supported_protocols: "DShot600, BDShot, MAVLink2, CRSF"
+  is_open_source: true
+  repository_url: "https://github.com/ArduPilot/ardupilot"
+  description: "Advanced open source autopilot system supporting fully autonomous flight, geofencing, optical flow, and obstacle avoidance."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://ardupilot.org/copter/docs/introduction.html"
+  }
+}
+
+fc_firmwares: {
+  uuid: "018f3a50-1001-7001-9001-000000000004"
+  id: "quicksilver-firmware"
+  manufacturer: "QuickSilver"
+  name: "QuickSilver Micro FC"
+  version: "0.9.1"
+  target_architectures: "STM32F411, AT32F435"
+  supported_protocols: "DShot300, ExpressLRS SPI, CRSF"
+  is_open_source: true
+  repository_url: "https://github.com/BossHobby/QUICKSILVER"
+  description: "Ultralight, ultra-fast flight controller firmware specifically optimized for whoops and toothpicks with zero configuration friction."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/BossHobby/QUICKSILVER/wiki"
+  }
+}

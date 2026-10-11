@@ -35,7 +35,10 @@ func main() {
 	tables := []string{
 		"builds", "motors", "frames", "batteries", "electronic_speed_controllers", "flight_controllers",
 		"receivers", "video_transmitters", "antennas", "cameras", "propellers", "gps_receivers",
+		"flight_controller_firmwares", "electronic_speed_controller_firmwares", "video_transmitter_firmwares",
+		"radio_firmwares", "software_tools", "transmitters", "goggles", "chargers", "field_tools",
 	}
+
 	for _, table := range tables {
 		tx.Exec(ctx, "TRUNCATE TABLE "+table+" CASCADE;")
 	}
@@ -234,6 +237,150 @@ func main() {
 				panic(fmt.Errorf("build %s: %w", v.Id, err))
 			}
 			if err := pb.CreateBuild(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Flight Controller Firmwares
+	if b, err := os.ReadFile(dir + "fc_firmwares.textproto"); err == nil {
+		m := &pb.ListFcFirmwaresResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.FcFirmwares {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("fc_firmware %s: %w", v.Id, err))
+			}
+			if err := pb.CreateFcFirmware(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// ESC Firmwares
+	if b, err := os.ReadFile(dir + "esc_firmwares.textproto"); err == nil {
+		m := &pb.ListEscFirmwaresResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.EscFirmwares {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("esc_firmware %s: %w", v.Id, err))
+			}
+			if err := pb.CreateEscFirmware(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Video Transmitter Firmwares
+	if b, err := os.ReadFile(dir + "vtx_firmwares.textproto"); err == nil {
+		m := &pb.ListVtxFirmwaresResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.VtxFirmwares {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("vtx_firmware %s: %w", v.Id, err))
+			}
+			if err := pb.CreateVtxFirmware(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Radio Firmwares
+	if b, err := os.ReadFile(dir + "radio_firmwares.textproto"); err == nil {
+		m := &pb.ListRadioFirmwaresResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.RadioFirmwares {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("radio_firmware %s: %w", v.Id, err))
+			}
+			if err := pb.CreateRadioFirmware(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Software Tools
+	if b, err := os.ReadFile(dir + "software_tools.textproto"); err == nil {
+		m := &pb.ListSoftwareToolsResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.SoftwareTools {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("software_tool %s: %w", v.Id, err))
+			}
+			if err := pb.CreateSoftwareTool(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Transmitters
+	if b, err := os.ReadFile(dir + "transmitters.textproto"); err == nil {
+		m := &pb.ListTransmittersResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.Transmitters {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("transmitter %s: %w", v.Id, err))
+			}
+			if err := pb.CreateTransmitter(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Goggles
+	if b, err := os.ReadFile(dir + "goggles.textproto"); err == nil {
+		m := &pb.ListGogglesResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.Goggles {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("goggles %s: %w", v.Id, err))
+			}
+			if err := pb.CreateGoggles(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Chargers
+	if b, err := os.ReadFile(dir + "chargers.textproto"); err == nil {
+		m := &pb.ListChargersResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.Chargers {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("charger %s: %w", v.Id, err))
+			}
+			if err := pb.CreateCharger(ctx, tx, v); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	// Field Tools
+	if b, err := os.ReadFile(dir + "field_tools.textproto"); err == nil {
+		m := &pb.ListFieldToolsResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, v := range m.FieldTools {
+			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+				panic(fmt.Errorf("field_tool %s: %w", v.Id, err))
+			}
+			if err := pb.CreateFieldTool(ctx, tx, v); err != nil {
 				panic(err)
 			}
 		}

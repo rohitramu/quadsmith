@@ -240,6 +240,168 @@ func TestSeeds_UnmarshalWithoutErrors(t *testing.T) {
 				return len(res.Builds), ids, uuids, refLinks, nil
 			},
 		},
+		{
+			filename: "fc_firmwares.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListFcFirmwaresResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.FcFirmwares))
+				uuids := make([]string, len(res.FcFirmwares))
+				refLinks := make([][]*pb.ReferenceLink, len(res.FcFirmwares))
+				for i, m := range res.FcFirmwares {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.FcFirmwares), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "esc_firmwares.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListEscFirmwaresResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.EscFirmwares))
+				uuids := make([]string, len(res.EscFirmwares))
+				refLinks := make([][]*pb.ReferenceLink, len(res.EscFirmwares))
+				for i, m := range res.EscFirmwares {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.EscFirmwares), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "vtx_firmwares.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListVtxFirmwaresResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.VtxFirmwares))
+				uuids := make([]string, len(res.VtxFirmwares))
+				refLinks := make([][]*pb.ReferenceLink, len(res.VtxFirmwares))
+				for i, m := range res.VtxFirmwares {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.VtxFirmwares), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "radio_firmwares.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListRadioFirmwaresResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.RadioFirmwares))
+				uuids := make([]string, len(res.RadioFirmwares))
+				refLinks := make([][]*pb.ReferenceLink, len(res.RadioFirmwares))
+				for i, m := range res.RadioFirmwares {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.RadioFirmwares), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "software_tools.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListSoftwareToolsResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.SoftwareTools))
+				uuids := make([]string, len(res.SoftwareTools))
+				refLinks := make([][]*pb.ReferenceLink, len(res.SoftwareTools))
+				for i, m := range res.SoftwareTools {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.SoftwareTools), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "transmitters.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListTransmittersResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.Transmitters))
+				uuids := make([]string, len(res.Transmitters))
+				refLinks := make([][]*pb.ReferenceLink, len(res.Transmitters))
+				for i, m := range res.Transmitters {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.Transmitters), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "goggles.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListGogglesResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.Goggles))
+				uuids := make([]string, len(res.Goggles))
+				refLinks := make([][]*pb.ReferenceLink, len(res.Goggles))
+				for i, m := range res.Goggles {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.Goggles), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "chargers.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListChargersResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.Chargers))
+				uuids := make([]string, len(res.Chargers))
+				refLinks := make([][]*pb.ReferenceLink, len(res.Chargers))
+				for i, m := range res.Chargers {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.Chargers), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "field_tools.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListFieldToolsResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.FieldTools))
+				uuids := make([]string, len(res.FieldTools))
+				refLinks := make([][]*pb.ReferenceLink, len(res.FieldTools))
+				for i, m := range res.FieldTools {
+					ids[i] = m.Id
+					uuids[i] = m.Uuid
+					refLinks[i] = m.ReferenceLinks
+				}
+				return len(res.FieldTools), ids, uuids, refLinks, nil
+			},
+		},
 	}
 
 	for _, tt := range tests {

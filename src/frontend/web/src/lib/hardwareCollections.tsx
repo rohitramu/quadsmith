@@ -1908,14 +1908,26 @@ export {
   type CollectionColorDef,
 } from "./collectionColors";
 
-export function getHardwareCollection(collectionId?: string): HardwareCollectionDef | undefined {
+import { SOFTWARE_COLLECTIONS } from "./softwareCollections";
+import { GEAR_COLLECTIONS } from "./gearCollections";
+
+export { SOFTWARE_COLLECTIONS } from "./softwareCollections";
+export { GEAR_COLLECTIONS } from "./gearCollections";
+
+export const ALL_COLLECTIONS: HardwareCollectionDef[] = [
+  ...HARDWARE_COLLECTIONS,
+  ...SOFTWARE_COLLECTIONS,
+  ...GEAR_COLLECTIONS,
+];
+
+export function getComponentCollection(collectionId?: string): HardwareCollectionDef | undefined {
   if (!collectionId) return undefined;
   const normalized = collectionId
     .toLowerCase()
     .trim()
     .replace(/^\/+|\/+$/g, "");
   const kebab = normalized.replace(/_/g, "-");
-  return HARDWARE_COLLECTIONS.find(
+  return ALL_COLLECTIONS.find(
     (c) =>
       c.id === normalized ||
       c.id === kebab ||
@@ -1927,4 +1939,8 @@ export function getHardwareCollection(collectionId?: string): HardwareCollection
       c.aliases?.includes(normalized) ||
       c.aliases?.includes(kebab),
   );
+}
+
+export function getHardwareCollection(collectionId?: string): HardwareCollectionDef | undefined {
+  return getComponentCollection(collectionId);
 }

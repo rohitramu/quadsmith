@@ -1,6 +1,11 @@
 import { useParams, Link } from "react-router-dom";
-import { Cpu } from "lucide-react";
-import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
+import { Cpu, Code2, Wrench } from "lucide-react";
+import {
+  HARDWARE_COLLECTIONS,
+  SOFTWARE_COLLECTIONS,
+  GEAR_COLLECTIONS,
+  getCollectionPath,
+} from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionIcon } from "../components/CollectionIcon";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
@@ -17,7 +22,14 @@ export function CategoryPage() {
     description: `Explore and compare ${formattedCat.toLowerCase()} drone components and hardware on Quadsmith.`,
   });
 
-  const collections = categoryId === "hardware" ? HARDWARE_COLLECTIONS : [];
+  const collections =
+    categoryId === "hardware"
+      ? HARDWARE_COLLECTIONS
+      : categoryId === "software"
+        ? SOFTWARE_COLLECTIONS
+        : categoryId === "gear"
+          ? GEAR_COLLECTIONS
+          : [];
 
   return (
     <div>
@@ -25,8 +37,23 @@ export function CategoryPage() {
         {categoryId === "hardware" && (
           <Cpu size={32} className="text-zinc-600 dark:text-zinc-400 shrink-0" aria-hidden="true" />
         )}
+        {categoryId === "software" && (
+          <Code2
+            size={32}
+            className="text-zinc-600 dark:text-zinc-400 shrink-0"
+            aria-hidden="true"
+          />
+        )}
+        {categoryId === "gear" && (
+          <Wrench
+            size={32}
+            className="text-zinc-600 dark:text-zinc-400 shrink-0"
+            aria-hidden="true"
+          />
+        )}
         <h1 className="text-3xl font-bold capitalize">{categoryId}</h1>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {collections.map((c) => {
           const colColor = c.color || getCollectionColor(c.id);

@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "_common.proto";
+import "_sql.proto";
+import "media.proto";
+import "reference_link.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Transmitter {
+  option (quadsmith.sql.table) = {name: "transmitters"};
+  option (quadsmith.collection_path) = "components/gear/transmitters";
+  option (quadsmith.frontend) = {
+    color_code: "#0ea5e9"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "rf_protocol",
+      "operating_system",
+      "gimbal_type",
+      "max_power_mw"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4;
+  float weight_g = 5;
+  string rf_protocol = 6;
+  string operating_system = 7;
+  string gimbal_type = 8;
+  uint32 max_power_mw = 9;
+  uint32 channels = 10;
+  string battery_type = 11;
+  string description = 12;
+  repeated ReferenceLink reference_links = 13;
+  optional string primary_display_image = 14;
+  repeated Media media = 15;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetTransmitterRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListTransmittersRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListTransmittersResponse {
+  repeated Transmitter transmitters = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service TransmitterService {
+  rpc GetTransmitter(GetTransmitterRequest) returns (Transmitter);
+  rpc ListTransmitters(ListTransmittersRequest) returns (ListTransmittersResponse);
+}

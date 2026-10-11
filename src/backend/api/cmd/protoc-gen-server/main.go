@@ -93,6 +93,8 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 		pluralName := msgName + "s"
 		if strings.HasSuffix(msgName, "y") {
 			pluralName = strings.TrimSuffix(msgName, "y") + "ies"
+		} else if strings.HasSuffix(msgName, "s") {
+			pluralName = msgName
 		}
 
 		g.P("type ", serviceName, "Handler struct {")
@@ -372,6 +374,8 @@ func generateSearchRegistry(gen *protogen.Plugin) {
 			plural := msgName + "s"
 			if strings.HasSuffix(msgName, "y") {
 				plural = strings.TrimSuffix(msgName, "y") + "ies"
+			} else if strings.HasSuffix(msgName, "s") {
+				plural = msgName
 			}
 
 			hasMfr := false

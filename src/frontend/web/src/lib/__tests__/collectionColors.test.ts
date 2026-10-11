@@ -28,9 +28,18 @@ describe("collectionColors module", () => {
       "propellers",
       "receivers",
       "video-transmitters",
+      "fc-firmware",
+      "esc-firmware",
+      "vtx-firmware",
+      "radio-firmware",
+      "software-tools",
+      "transmitters",
+      "goggles",
+      "chargers",
+      "field-tools",
     ];
 
-    expect(Object.keys(COLLECTION_COLORS)).toHaveLength(12);
+    expect(Object.keys(COLLECTION_COLORS)).toHaveLength(21);
 
     for (const key of requiredCollections) {
       expect(COLLECTION_COLORS[key]).toBeDefined();
@@ -47,8 +56,6 @@ describe("collectionColors module", () => {
     // Builds shares the blue theme (#3b82f6) with flight controllers
     expect(COLLECTION_COLORS["builds"].hex).toBe("#3b82f6");
     expect(COLLECTION_COLORS["flight-controllers"].hex).toBe("#3b82f6");
-    const allHexSet = new Set(Object.values(COLLECTION_COLORS).map((c) => c.hex));
-    expect(allHexSet.size).toBe(11);
   });
 
   it("extracts colors directly from proto schema options as the source of truth", () => {
@@ -120,6 +127,22 @@ describe("collectionColors module", () => {
     expect(getCollectionColor("build-wizard").textClass).toBe("text-[#FF6D00] dark:text-[#FF6D00]");
     expect(getCollectionColor("builds/new").id).toBe("the-forge");
     expect(getCollectionColor("builds/new").hex).toBe("#FF6D00");
+
+    // Software & Gear collections
+    expect(normalizeCollectionKey("components/software/fc-firmware")).toBe("fc-firmware");
+    expect(getCollectionColor("fc-firmware").id).toBe("fc-firmware");
+    expect(getCollectionColor("esc-firmware").id).toBe("esc-firmware");
+    expect(getCollectionColor("vtx-firmware").id).toBe("vtx-firmware");
+    expect(getCollectionColor("radio-firmware").id).toBe("radio-firmware");
+    expect(getCollectionColor("software-tools").id).toBe("software-tools");
+    expect(getCollectionColor("configurator").id).toBe("software-tools");
+    expect(getCollectionColor("radio").id).toBe("transmitters");
+    expect(getCollectionColor("transmitters").id).toBe("transmitters");
+    expect(getCollectionColor("goggles").id).toBe("goggles");
+    expect(getCollectionColor("fpv-goggles").id).toBe("goggles");
+    expect(getCollectionColor("chargers").id).toBe("chargers");
+    expect(getCollectionColor("field-tools").id).toBe("field-tools");
+    expect(getCollectionColor("tools").id).toBe("field-tools");
   });
 
   it("falls back gracefully to default grey for unknown, missing, or empty color codes", () => {

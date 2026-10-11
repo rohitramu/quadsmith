@@ -290,6 +290,8 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	pluralName := msgName + "s"
 	if strings.HasSuffix(msgName, "y") {
 		pluralName = strings.TrimSuffix(msgName, "y") + "ies"
+	} else if strings.HasSuffix(msgName, "s") {
+		pluralName = msgName
 	}
 
 	validColsStr := "map[string]bool{\"" + strings.Join(colNames, "\": true, \"") + "\": true}"

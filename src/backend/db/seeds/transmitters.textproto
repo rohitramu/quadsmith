@@ -1,0 +1,75 @@
+transmitters: {
+  uuid: "018f3a50-6001-7001-9001-000000000001"
+  id: "radiomaster-boxer-elrs"
+  manufacturer: "RadioMaster"
+  name: "RadioMaster Boxer ELRS 2.4GHz"
+  weight_g: 532.5
+  rf_protocol: "ExpressLRS 2.4GHz"
+  operating_system: "EdgeTX"
+  gimbal_type: "Full Size Hall Gimbal 4.0"
+  max_power_mw: 1000
+  channels: 16
+  battery_type: "2x 18650 Li-ion or 2S LiPo"
+  description: "Ergonomic full-size radio transmitter with 1W built-in cooling fan ExpressLRS module and high precision Hall gimbals."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/boxer-radio-controller"
+  }
+}
+
+transmitters: {
+  uuid: "018f3a50-6001-7001-9001-000000000002"
+  id: "radiomaster-pocket-elrs"
+  manufacturer: "RadioMaster"
+  name: "RadioMaster Pocket ELRS 2.4GHz"
+  weight_g: 288.0
+  rf_protocol: "ExpressLRS 2.4GHz"
+  operating_system: "EdgeTX"
+  gimbal_type: "Hall Effect Compact"
+  max_power_mw: 250
+  channels: 16
+  battery_type: "2x 18650 Li-ion"
+  description: "Compact and lightweight portable controller featuring removable stick ends and foldable antenna for ultimate backpack convenience."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/pocket-radio-controller"
+  }
+}
+
+transmitters: {
+  uuid: "018f3a50-6001-7001-9001-000000000003"
+  id: "radiomaster-tx16s-mkii-elrs"
+  manufacturer: "RadioMaster"
+  name: "RadioMaster TX16S MKII ELRS"
+  weight_g: 750.0
+  rf_protocol: "ExpressLRS 2.4GHz"
+  operating_system: "EdgeTX"
+  gimbal_type: "V4.0 Hall Effect Gimbals"
+  max_power_mw: 1000
+  channels: 16
+  battery_type: "2x 21700 or 2S LiPo"
+  description: "Flagship 4.3-inch color touch-screen radio controller with aluminum faceplates, 1000mW ELRS RF module, and dual speaker audio."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.radiomasterrc.com/products/tx16s-mark-ii-radio-controller"
+  }
+}
+
+transmitters: {
+  uuid: "018f3a50-6001-7001-9001-000000000004"
+  id: "tbs-tango-2-pro"
+  manufacturer: "Team BlackSheep"
+  name: "TBS Tango 2 Pro"
+  weight_g: 345.0
+  rf_protocol: "Crossfire 915MHz"
+  operating_system: "FreedomTX"
+  gimbal_type: "Full Size Folding Hall Gimbals"
+  max_power_mw: 1000
+  channels: 12
+  battery_type: "Built-in 5000mAh 1S LiPo"
+  description: "Game-controller form factor radio with built-in full-power TBS Crossfire Micro TX and folding hall sensor gimbals."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.team-blacksheep.com/products/prod:tbs_tango_2_pro"
+  }
+}

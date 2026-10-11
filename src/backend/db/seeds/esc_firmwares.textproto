@@ -1,0 +1,47 @@
+esc_firmwares: {
+  uuid: "018f3a50-2001-7001-9001-000000000001"
+  id: "bluejay-0.19"
+  manufacturer: "Bluejay"
+  name: "Bluejay BLHeli_S Enhancement"
+  version: "0.19.2"
+  protocols: "DShot150, DShot300, DShot600, Bi-directional DShot"
+  pwm_frequency_range: "24kHz, 48kHz, 96kHz"
+  is_open_source: true
+  description: "Open-source ESC firmware for EFM8BB21 MCUs adding bi-directional DShot RPM telemetry, custom startup tones, and high PWM frequencies for whoops and 5-inch quads."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/mathiasvr/bluejay"
+  }
+}
+
+esc_firmwares: {
+  uuid: "018f3a50-2001-7001-9001-000000000002"
+  id: "am32-multi-rotor"
+  manufacturer: "AlkaMotors"
+  name: "AM32 32-bit Multi-Rotor ESC Firmware"
+  version: "2.1.6"
+  protocols: "DShot300, DShot600, ProShot, Bi-directional DShot"
+  pwm_frequency_range: "16kHz - 48kHz variable"
+  is_open_source: true
+  description: "Next-generation 32-bit open source firmware designed for ARM Cortex MCUs (STM32, AT32, GD32) with sinusoidal startup and bidirectional DShot."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/AlkaMotors/AM32-MultiRotor-ESC-firmware"
+  }
+}
+
+esc_firmwares: {
+  uuid: "018f3a50-2001-7001-9001-000000000003"
+  id: "blheli-32"
+  manufacturer: "BLHeli"
+  name: "BLHeli_32 ARM ESC Firmware"
+  version: "32.9"
+  protocols: "DShot1200, DShot600, ProShot1000, Bi-directional DShot"
+  pwm_frequency_range: "16kHz - 48kHz"
+  is_open_source: false
+  description: "Industry-standard third-generation 32-bit ESC firmware running on ARM Cortex-M processors with current limiting and autonomous telemetry."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/bitdump/BLHeli"
+  }
+}

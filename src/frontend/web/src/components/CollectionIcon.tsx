@@ -11,8 +11,15 @@ import {
   Zap,
   Box,
   Hammer,
+  Code2,
+  Terminal,
+  Gamepad2,
+  Glasses,
+  BatteryCharging,
+  Signal,
   type LucideProps,
 } from "lucide-react";
+
 import { normalizeCollectionKey } from "../lib/collectionColors";
 
 export type IconComponent = FC<LucideProps & SVGProps<SVGSVGElement>>;
@@ -166,6 +173,24 @@ export function getCollectionIconComponent(collectionKey?: string | null): IconC
     case "the-forge":
     case "forge":
       return Hammer;
+    case "fc-firmware":
+      return Code2;
+    case "esc-firmware":
+      return Zap;
+    case "vtx-firmware":
+      return Tv;
+    case "radio-firmware":
+      return Signal;
+    case "software-tools":
+      return Terminal;
+    case "transmitters":
+      return Gamepad2;
+    case "goggles":
+      return Glasses;
+    case "chargers":
+      return BatteryCharging;
+    case "field-tools":
+      return Wrench;
     default:
       return Box;
   }

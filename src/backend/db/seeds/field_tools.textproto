@@ -1,0 +1,59 @@
+field_tools: {
+  uuid: "018f3a50-9001-7001-9001-000000000001"
+  id: "miniware-ts101-soldering-iron"
+  manufacturer: "Miniware"
+  name: "Miniware TS101 Smart Soldering Iron"
+  weight_g: 33.0
+  tool_type: "Smart Soldering Iron"
+  power_source: "USB-C PD 65W or DC 5525 9-24V"
+  description: "Lightweight portable smart soldering iron with dual power inputs, OLED screen, PID temperature control, and boost heating mode."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.miniware.com.cn/product/ts101-smart-soldering-iron/"
+  }
+}
+
+field_tools: {
+  uuid: "018f3a50-9001-7001-9001-000000000002"
+  id: "vifly-shortsaver-2"
+  manufacturer: "VIFLY"
+  name: "VIFLY ShortSaver 2 Smart Smoke Stopper"
+  weight_g: 15.0
+  tool_type: "Smoke Stopper / Circuit Protector"
+  power_source: "XT30 / XT60 1S-6S LiPo"
+  description: "Electronic fuse smoke stopper with ultra-fast 3ms shutoff reaction time and switchable 1A / 2A threshold to prevent bench shorts."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://viflydrone.com/products/vifly-shortsaver-v2"
+  }
+}
+
+field_tools: {
+  uuid: "018f3a50-9001-7001-9001-000000000003"
+  id: "toolkitrc-st8-signal-tester"
+  manufacturer: "ToolkitRC"
+  name: "ToolkitRC ST8 8-Channel Signal Tester"
+  weight_g: 140.0
+  tool_type: "Signal & Servo Tester"
+  power_source: "DC 7-28V or USB-C"
+  description: "Multifunctional PWM, PPM, and SBUS signal generator and servo tester with programmable outputs and voltage load testing."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.toolkitrc.com/st8"
+  }
+}
+
+field_tools: {
+  uuid: "018f3a50-9001-7001-9001-000000000004"
+  id: "ethix-metric-hex-driver-set"
+  manufacturer: "Team BlackSheep"
+  name: "Ethix Metric Hex Driver Set"
+  weight_g: 110.0
+  tool_type: "Hex Driver Wrench Set"
+  power_source: "Manual Hand Tool"
+  description: "High tensile steel precision hex drivers (1.5mm, 2.0mm, 2.5mm, 8mm prop nut) with knurled lightweight aluminum handles."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.team-blacksheep.com/products/prod:ethix_hex_tool_set"
+  }
+}

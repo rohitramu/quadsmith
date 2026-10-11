@@ -299,11 +299,154 @@ erDiagram
         TIMESTAMPTZ created_at
     }
 
+    flight_controller_firmwares {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        TEXT version
+        TEXT target_architectures
+        TEXT supported_protocols
+        BOOLEAN is_open_source
+        TEXT repository_url
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
+    electronic_speed_controller_firmwares {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        TEXT version
+        TEXT protocols
+        TEXT pwm_frequency_range
+        BOOLEAN is_open_source
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
+    video_transmitter_firmwares {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        TEXT version
+        TEXT protocol
+        TEXT supported_resolutions
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
+    radio_firmwares {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        TEXT version
+        TEXT supported_protocols
+        BOOLEAN is_open_source
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
+    software_tools {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        TEXT version
+        TEXT category
+        TEXT platform
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
+    transmitters {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        TEXT rf_protocol
+        TEXT operating_system
+        TEXT gimbal_type
+        INTEGER max_power_mw
+        INTEGER channels
+        TEXT battery_type
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
+    goggles {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        TEXT video_protocol
+        TEXT display_type
+        TEXT resolution
+        DECIMAL fov_deg
+        TEXT ipd_range_mm
+        TEXT voltage_range
+        BOOLEAN dvr_supported
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
+    chargers {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        INTEGER channels
+        DECIMAL max_charge_power_w
+        DECIMAL max_charge_current_a
+        TEXT input_voltage_range
+        TEXT supported_chemistries
+        INTEGER max_cells_s
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
+    field_tools {
+        UUID uuid PK
+        TEXT id UK
+        TEXT manufacturer
+        TEXT name
+        DECIMAL weight_g
+        TEXT tool_type
+        TEXT power_source
+        TEXT description
+        JSONB reference_links
+        TEXT primary_display_image
+        JSONB media
+    }
+
     users ||--o| user_profiles : has
     users ||--o{ user_emails : has
     users ||--o{ refresh_tokens : has
     users ||--o{ username_histories : has
     users ||--o{ oauth_accounts : has
     users ||--o{ builds : authors
+
 
 

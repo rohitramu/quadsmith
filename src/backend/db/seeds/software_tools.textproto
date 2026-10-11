@@ -1,0 +1,59 @@
+software_tools: {
+  uuid: "018f3a50-5001-7001-9001-000000000001"
+  id: "betaflight-configurator"
+  manufacturer: "Betaflight"
+  name: "Betaflight Configurator"
+  version: "10.10.0"
+  category: "Configurator"
+  platform: "Windows / macOS / Linux / Web"
+  description: "Cross-platform graphical configuration utility for Betaflight flight control software with 3D model visualization and PID tuning."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/betaflight/betaflight-configurator"
+  }
+}
+
+software_tools: {
+  uuid: "018f3a50-5001-7001-9001-000000000002"
+  id: "expresslrs-configurator"
+  manufacturer: "ExpressLRS"
+  name: "ExpressLRS Configurator"
+  version: "1.7.2"
+  category: "Flasher & Setup"
+  platform: "Windows / macOS / Linux"
+  description: "Official build and flash tool for ExpressLRS transmitters and receivers over USB, WiFi, or Betaflight Passthrough."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/ExpressLRS/ExpressLRS-Configurator"
+  }
+}
+
+software_tools: {
+  uuid: "018f3a50-5001-7001-9001-000000000003"
+  id: "blackbox-explorer"
+  manufacturer: "Betaflight"
+  name: "Betaflight Blackbox Explorer"
+  version: "3.7.0"
+  category: "Analysis & Log Viewer"
+  platform: "Windows / macOS / Linux / Web"
+  description: "Interactive flight log viewer for analyzing onboard sensor data, motor traces, gyro noise spectrum, and PID step responses."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/betaflight/blackbox-log-viewer"
+  }
+}
+
+software_tools: {
+  uuid: "018f3a50-5001-7001-9001-000000000004"
+  id: "inav-configurator"
+  manufacturer: "INAV"
+  name: "INAV Configurator"
+  version: "7.1.0"
+  category: "Configurator"
+  platform: "Windows / macOS / Linux"
+  description: "Ground station configuration tool for INAV providing waypoint mission planning, GPS sensor calibration, and safe RTH parameters."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://github.com/iNavFlight/inav-configurator"
+  }
+}

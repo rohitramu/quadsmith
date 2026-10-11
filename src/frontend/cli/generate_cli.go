@@ -27,6 +27,9 @@ func (d Domain) PluralName() string {
 	if strings.HasSuffix(name, "y") {
 		return strings.TrimSuffix(name, "y") + "ies"
 	}
+	if strings.HasSuffix(name, "s") {
+		return name
+	}
 	return name + "s"
 }
 
@@ -128,6 +131,42 @@ var domains = []Domain{
 	{
 		Message: &pb.VideoTransmitter{},
 		Aliases: []string{"videotransmitters", "vtx", "vtxs", "video-transmitter"},
+	},
+	{
+		Message: &pb.FcFirmware{},
+		Aliases: []string{"fc-firmwares", "fcfirmwares", "fc-firmware"},
+	},
+	{
+		Message: &pb.EscFirmware{},
+		Aliases: []string{"esc-firmwares", "escfirmwares", "esc-firmware"},
+	},
+	{
+		Message: &pb.VtxFirmware{},
+		Aliases: []string{"vtx-firmwares", "vtxfirmwares", "vtx-firmware"},
+	},
+	{
+		Message: &pb.RadioFirmware{},
+		Aliases: []string{"radio-firmwares", "radiofirmwares", "radio-firmware"},
+	},
+	{
+		Message: &pb.SoftwareTool{},
+		Aliases: []string{"software-tools", "softwaretools", "software-tool"},
+	},
+	{
+		Message: &pb.Transmitter{},
+		Aliases: []string{"transmitters", "transmitter", "radios", "radio"},
+	},
+	{
+		Message: &pb.Goggles{},
+		Aliases: []string{"goggles", "headsets"},
+	},
+	{
+		Message: &pb.Charger{},
+		Aliases: []string{"chargers", "charger"},
+	},
+	{
+		Message: &pb.FieldTool{},
+		Aliases: []string{"field-tools", "fieldtools", "field-tool"},
 	},
 }
 

@@ -77,6 +77,26 @@ func main() {
 	path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler := quadsmithconnect.NewGpsReceiverServiceHandler(pb.NewGpsReceiverServiceHandler(pool), authInterceptor)
 	mux.Handle(path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler)
 
+	path_NewFcFirmwareServiceHandler, h_NewFcFirmwareServiceHandler := quadsmithconnect.NewFcFirmwareServiceHandler(pb.NewFcFirmwareServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewFcFirmwareServiceHandler, h_NewFcFirmwareServiceHandler)
+	path_NewEscFirmwareServiceHandler, h_NewEscFirmwareServiceHandler := quadsmithconnect.NewEscFirmwareServiceHandler(pb.NewEscFirmwareServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewEscFirmwareServiceHandler, h_NewEscFirmwareServiceHandler)
+	path_NewVtxFirmwareServiceHandler, h_NewVtxFirmwareServiceHandler := quadsmithconnect.NewVtxFirmwareServiceHandler(pb.NewVtxFirmwareServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewVtxFirmwareServiceHandler, h_NewVtxFirmwareServiceHandler)
+	path_NewRadioFirmwareServiceHandler, h_NewRadioFirmwareServiceHandler := quadsmithconnect.NewRadioFirmwareServiceHandler(pb.NewRadioFirmwareServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewRadioFirmwareServiceHandler, h_NewRadioFirmwareServiceHandler)
+	path_NewSoftwareToolServiceHandler, h_NewSoftwareToolServiceHandler := quadsmithconnect.NewSoftwareToolServiceHandler(pb.NewSoftwareToolServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewSoftwareToolServiceHandler, h_NewSoftwareToolServiceHandler)
+
+	path_NewTransmitterServiceHandler, h_NewTransmitterServiceHandler := quadsmithconnect.NewTransmitterServiceHandler(pb.NewTransmitterServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewTransmitterServiceHandler, h_NewTransmitterServiceHandler)
+	path_NewGogglesServiceHandler, h_NewGogglesServiceHandler := quadsmithconnect.NewGogglesServiceHandler(pb.NewGogglesServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewGogglesServiceHandler, h_NewGogglesServiceHandler)
+	path_NewChargerServiceHandler, h_NewChargerServiceHandler := quadsmithconnect.NewChargerServiceHandler(pb.NewChargerServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewChargerServiceHandler, h_NewChargerServiceHandler)
+	path_NewFieldToolServiceHandler, h_NewFieldToolServiceHandler := quadsmithconnect.NewFieldToolServiceHandler(pb.NewFieldToolServiceHandler(pool), authInterceptor)
+	mux.Handle(path_NewFieldToolServiceHandler, h_NewFieldToolServiceHandler)
+
 	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool), authInterceptor)
 	mux.Handle(path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler)
 

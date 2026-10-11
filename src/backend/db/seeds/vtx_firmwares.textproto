@@ -1,0 +1,44 @@
+vtx_firmwares: {
+  uuid: "018f3a50-3001-7001-9001-000000000001"
+  id: "hdzero-vtx-firmware"
+  manufacturer: "HDZero"
+  name: "HDZero Digital VTX Firmware"
+  version: "1.5.0"
+  protocol: "HDZero"
+  supported_resolutions: "720p 60fps, 540p 90fps, 540p 60fps"
+  description: "Fixed low-latency zero-frame-delay digital video transmission firmware for HDZero Whoop Lite, Race V2, and Freestyle V2 transmitters."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://www.hd-zero.com/document"
+  }
+}
+
+vtx_firmwares: {
+  uuid: "018f3a50-3001-7001-9001-000000000002"
+  id: "walksnail-avataros"
+  manufacturer: "Caddx"
+  name: "Walksnail AvatarOS VTX Firmware"
+  version: "37.42.4"
+  protocol: "Walksnail Avatar HD"
+  supported_resolutions: "1080p 60fps, 720p 120fps, 720p 60fps"
+  description: "H.265 high-definition video transmitter firmware supporting dual antenna diversity, canvas mode OSD, and low latency 120fps mode."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_DOCUMENTATION
+    url: "https://caddxfpv.com/pages/download"
+  }
+}
+
+vtx_firmwares: {
+  uuid: "018f3a50-3001-7001-9001-000000000003"
+  id: "dji-o3-air-unit-firmware"
+  manufacturer: "DJI"
+  name: "DJI O3 Air Unit System Firmware"
+  version: "v01.02.0000"
+  protocol: "DJI O3"
+  supported_resolutions: "1080p 100fps, 1080p 60fps, 4K 60fps (Onboard)"
+  description: "Proprietary digital HD transmission and recording firmware featuring RockSteady stabilization and D-Cinelike 10-bit color profile."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.dji.com/o3-air-unit/downloads"
+  }
+}

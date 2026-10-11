@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "_common.proto";
+import "_sql.proto";
+import "media.proto";
+import "reference_link.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message RadioFirmware {
+  option (quadsmith.sql.table) = {name: "radio_firmwares"};
+  option (quadsmith.collection_path) = "components/software/radio-firmware";
+  option (quadsmith.frontend) = {
+    color_code: "#84cc16"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "version",
+      "supported_protocols",
+      "is_open_source"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4;
+  string version = 5;
+  string supported_protocols = 6;
+  bool is_open_source = 7;
+  string description = 8;
+  repeated ReferenceLink reference_links = 9;
+  optional string primary_display_image = 10;
+  repeated Media media = 11;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetRadioFirmwareRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListRadioFirmwaresRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListRadioFirmwaresResponse {
+  repeated RadioFirmware radio_firmwares = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service RadioFirmwareService {
+  rpc GetRadioFirmware(GetRadioFirmwareRequest) returns (RadioFirmware);
+  rpc ListRadioFirmwares(ListRadioFirmwaresRequest) returns (ListRadioFirmwaresResponse);
+}

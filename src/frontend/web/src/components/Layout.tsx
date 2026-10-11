@@ -5,7 +5,13 @@ import { useQuery } from "@connectrpc/connect-query";
 import { search } from "../gen/quadsmith/search-SearchService_connectquery";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
-import { HARDWARE_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
+import {
+  HARDWARE_COLLECTIONS,
+  SOFTWARE_COLLECTIONS,
+  GEAR_COLLECTIONS,
+  getCollectionPath,
+} from "../lib/hardwareCollections";
+
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
 import { CollectionIcon } from "./CollectionIcon";
@@ -347,6 +353,30 @@ export function Layout() {
                   >
                     Software
                   </Link>
+                  <ul className="pl-6 mt-1 space-y-1">
+                    {SOFTWARE_COLLECTIONS.map((c) => {
+                      const colColor = getCollectionColor(c.id);
+                      return (
+                        <li key={c.id}>
+                          <Link
+                            to={`/${getCollectionPath(c)}`}
+                            className={`flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
+                              location.pathname.startsWith(`/${getCollectionPath(c)}`)
+                                ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
+                                : "text-zinc-600 dark:text-zinc-400"
+                            }`}
+                          >
+                            <CollectionIcon
+                              collection={c.id}
+                              size={15}
+                              className={`${colColor.textClass} shrink-0`}
+                            />
+                            <span>{c.name}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </li>
                 <li>
                   <Link
@@ -359,6 +389,30 @@ export function Layout() {
                   >
                     Gear
                   </Link>
+                  <ul className="pl-6 mt-1 space-y-1">
+                    {GEAR_COLLECTIONS.map((c) => {
+                      const colColor = getCollectionColor(c.id);
+                      return (
+                        <li key={c.id}>
+                          <Link
+                            to={`/${getCollectionPath(c)}`}
+                            className={`flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 ${
+                              location.pathname.startsWith(`/${getCollectionPath(c)}`)
+                                ? "bg-zinc-200/70 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-medium"
+                                : "text-zinc-600 dark:text-zinc-400"
+                            }`}
+                          >
+                            <CollectionIcon
+                              collection={c.id}
+                              size={15}
+                              className={`${colColor.textClass} shrink-0`}
+                            />
+                            <span>{c.name}</span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </li>
               </ul>
             </div>

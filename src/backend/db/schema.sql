@@ -189,6 +189,27 @@ CREATE TABLE IF NOT EXISTS cameras (
 
 CREATE INDEX IF NOT EXISTS idx_cameras_manufacturer ON cameras (manufacturer);
 
+CREATE TABLE IF NOT EXISTS chargers (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  weight_g DECIMAL NOT NULL,
+  channels INTEGER NOT NULL,
+  max_charge_power_w DECIMAL NOT NULL,
+  max_charge_current_a DECIMAL NOT NULL,
+  input_voltage_range TEXT NOT NULL,
+  supported_chemistries TEXT NOT NULL,
+  max_cells_s INTEGER NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_chargers_manufacturer ON chargers (manufacturer);
+
 CREATE TABLE IF NOT EXISTS electronic_speed_controllers (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
@@ -362,6 +383,154 @@ CREATE TABLE IF NOT EXISTS video_transmitters (
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_manufacturer ON video_transmitters (manufacturer);
 
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_protocol ON video_transmitters (protocol);
+
+CREATE TABLE IF NOT EXISTS electronic_speed_controller_firmwares (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  protocols TEXT NOT NULL,
+  pwm_frequency_range TEXT NOT NULL,
+  is_open_source BOOLEAN NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_electronic_speed_controller_firmwares_manufacturer ON electronic_speed_controller_firmwares (manufacturer);
+
+CREATE TABLE IF NOT EXISTS flight_controller_firmwares (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  target_architectures TEXT NOT NULL,
+  supported_protocols TEXT NOT NULL,
+  is_open_source BOOLEAN NOT NULL,
+  repository_url TEXT NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_flight_controller_firmwares_manufacturer ON flight_controller_firmwares (manufacturer);
+
+CREATE TABLE IF NOT EXISTS field_tools (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  weight_g DECIMAL NOT NULL,
+  tool_type TEXT NOT NULL,
+  power_source TEXT NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_field_tools_manufacturer ON field_tools (manufacturer);
+
+CREATE TABLE IF NOT EXISTS goggles (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  weight_g DECIMAL NOT NULL,
+  video_protocol TEXT NOT NULL,
+  display_type TEXT NOT NULL,
+  resolution TEXT NOT NULL,
+  fov_deg DECIMAL NOT NULL,
+  ipd_range_mm TEXT NOT NULL,
+  voltage_range TEXT NOT NULL,
+  dvr_supported BOOLEAN NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_goggles_manufacturer ON goggles (manufacturer);
+
+CREATE TABLE IF NOT EXISTS radio_firmwares (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  supported_protocols TEXT NOT NULL,
+  is_open_source BOOLEAN NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_radio_firmwares_manufacturer ON radio_firmwares (manufacturer);
+
+CREATE TABLE IF NOT EXISTS software_tools (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  category TEXT NOT NULL,
+  platform TEXT NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_software_tools_manufacturer ON software_tools (manufacturer);
+
+CREATE TABLE IF NOT EXISTS transmitters (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  weight_g DECIMAL NOT NULL,
+  rf_protocol TEXT NOT NULL,
+  operating_system TEXT NOT NULL,
+  gimbal_type TEXT NOT NULL,
+  max_power_mw INTEGER NOT NULL,
+  channels INTEGER NOT NULL,
+  battery_type TEXT NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_transmitters_manufacturer ON transmitters (manufacturer);
+
+CREATE TABLE IF NOT EXISTS video_transmitter_firmwares (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  manufacturer TEXT NOT NULL,
+  name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  protocol TEXT NOT NULL,
+  supported_resolutions TEXT NOT NULL,
+  description TEXT NOT NULL,
+  reference_links JSONB,
+  primary_display_image TEXT,
+  media JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_video_transmitter_firmwares_manufacturer ON video_transmitter_firmwares (manufacturer);
 
 -- Foreign Keys
 ALTER TABLE user_profiles

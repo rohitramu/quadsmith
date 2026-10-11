@@ -14,6 +14,15 @@ import { MotorSchema } from "../gen/quadsmith/motor_pb";
 import { PropellerSchema } from "../gen/quadsmith/propeller_pb";
 import { ReceiverSchema } from "../gen/quadsmith/receiver_pb";
 import { VideoTransmitterSchema } from "../gen/quadsmith/video_transmitter_pb";
+import { FcFirmwareSchema } from "../gen/quadsmith/fc_firmware_pb";
+import { EscFirmwareSchema } from "../gen/quadsmith/esc_firmware_pb";
+import { VtxFirmwareSchema } from "../gen/quadsmith/vtx_firmware_pb";
+import { RadioFirmwareSchema } from "../gen/quadsmith/radio_firmware_pb";
+import { SoftwareToolSchema } from "../gen/quadsmith/software_tool_pb";
+import { TransmitterSchema } from "../gen/quadsmith/transmitter_pb";
+import { GogglesSchema } from "../gen/quadsmith/goggles_pb";
+import { ChargerSchema } from "../gen/quadsmith/charger_pb";
+import { FieldToolSchema } from "../gen/quadsmith/field_tool_pb";
 
 export interface CollectionColorDef {
   id: string;
@@ -288,6 +297,21 @@ export const COLLECTION_SHORT_NAMES: Record<string, string> = {
   transmitter: "TX",
   tx: "TX",
   txs: "TX",
+  "fc-firmware": "FC FW",
+  "flight-controller-firmware": "FC FW",
+  "esc-firmware": "ESC FW",
+  "electronic-speed-controller-firmware": "ESC FW",
+  "vtx-firmware": "VTX FW",
+  "video-transmitter-firmware": "VTX FW",
+  "radio-firmware": "Radio FW",
+  "software-tools": "Tools",
+  "software-tool": "Tools",
+  goggles: "Goggles",
+  goggle: "Goggles",
+  chargers: "Chargers",
+  charger: "Charger",
+  "field-tools": "Tools",
+  "field-tool": "Tools",
 };
 
 export const DEFAULT_COLLECTION_COLOR: CollectionColorDef = {
@@ -382,6 +406,15 @@ const SCHEMA_COLLECTIONS: { id: string; name: string; schema: any }[] = [
     name: "Video Transmitters",
     schema: VideoTransmitterSchema,
   },
+  { id: "fc-firmware", name: "Flight Controller Firmware", schema: FcFirmwareSchema },
+  { id: "esc-firmware", name: "ESC Firmware", schema: EscFirmwareSchema },
+  { id: "vtx-firmware", name: "Video Transmitter Firmware", schema: VtxFirmwareSchema },
+  { id: "radio-firmware", name: "Radio Firmware", schema: RadioFirmwareSchema },
+  { id: "software-tools", name: "Software Tools", schema: SoftwareToolSchema },
+  { id: "transmitters", name: "Transmitters", schema: TransmitterSchema },
+  { id: "goggles", name: "FPV Goggles", schema: GogglesSchema },
+  { id: "chargers", name: "Battery Chargers", schema: ChargerSchema },
+  { id: "field-tools", name: "Field Tools", schema: FieldToolSchema },
 ];
 
 /**
@@ -500,7 +533,66 @@ export function normalizeCollectionKey(raw?: string | null): string {
     case "txs":
     case "transmitter":
     case "transmitters":
+    case "radio":
+    case "radios":
       return "transmitters";
+
+    case "fc-firmware":
+    case "fc-firmwares":
+    case "fcfirmware":
+    case "flight-controller-firmware":
+    case "flight-controller-firmwares":
+      return "fc-firmware";
+
+    case "esc-firmware":
+    case "esc-firmwares":
+    case "escfirmware":
+    case "electronic-speed-controller-firmware":
+    case "electronic-speed-controller-firmwares":
+      return "esc-firmware";
+
+    case "vtx-firmware":
+    case "vtx-firmwares":
+    case "vtxfirmware":
+    case "video-transmitter-firmware":
+    case "video-transmitter-firmwares":
+      return "vtx-firmware";
+
+    case "radio-firmware":
+    case "radio-firmwares":
+    case "radiofirmware":
+    case "transmitters-firmware":
+    case "tx-firmware":
+      return "radio-firmware";
+
+    case "software-tool":
+    case "software-tools":
+    case "softwaretool":
+    case "softwaretools":
+    case "configurator":
+    case "configurators":
+      return "software-tools";
+
+    case "goggle":
+    case "goggles":
+    case "headset":
+    case "headsets":
+    case "fpv-goggles":
+      return "goggles";
+
+    case "charger":
+    case "chargers":
+    case "battery-charger":
+    case "battery-chargers":
+      return "chargers";
+
+    case "field-tool":
+    case "field-tools":
+    case "fieldtool":
+    case "fieldtools":
+    case "tool":
+    case "tools":
+      return "field-tools";
 
     default:
       return clean;

@@ -1,0 +1,56 @@
+chargers: {
+  uuid: "018f3a50-8001-7001-9001-000000000001"
+  id: "toolkitrc-m6d-dual"
+  manufacturer: "ToolkitRC"
+  name: "ToolkitRC M6D Dual Channel 500W Smart Charger"
+  weight_g: 220.0
+  channels: 2
+  max_charge_power_w: 500.0
+  max_charge_current_a: 15.0
+  input_voltage_range: "DC 7.0V - 28.0V"
+  supported_chemistries: "LiPo, LiHV, LiFe, Lion, NiMh, Pb"
+  max_cells_s: 6
+  description: "Compact dual-channel DC balance charger delivering up to 500W in asynchronous mode and 250W per channel in synchronous mode."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.toolkitrc.com/m6d"
+  }
+}
+
+chargers: {
+  uuid: "018f3a50-8001-7001-9001-000000000002"
+  id: "isdt-q6-nano"
+  manufacturer: "ISDT"
+  name: "ISDT Q6 Nano 200W Pocket Charger"
+  weight_g: 120.0
+  channels: 1
+  max_charge_power_w: 200.0
+  max_charge_current_a: 8.0
+  input_voltage_range: "DC 10.0V - 30.0V"
+  supported_chemistries: "LiPo, LiHV, LiFe, Lion, NiMh, Pb"
+  max_cells_s: 6
+  description: "Ultra-portable pocket-sized single channel balance charger with 200W high power output and bright IPS LCD."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://isdt.co/q6nano.html"
+  }
+}
+
+chargers: {
+  uuid: "018f3a50-8001-7001-9001-000000000003"
+  id: "hota-d6-pro-dual"
+  manufacturer: "HOTA"
+  name: "HOTA D6 Pro Dual Channel AC/DC Smart Charger"
+  weight_g: 550.0
+  channels: 2
+  max_charge_power_w: 650.0
+  max_charge_current_a: 15.0
+  input_voltage_range: "AC 100-240V / DC 6.5-30V"
+  supported_chemistries: "LiPo, LiHV, LiFe, Lion, NiMh, Pb"
+  max_cells_s: 6
+  description: "Versatile dual channel charger supporting AC direct mains plug-in (200W) or external DC power supply input (650W) with Qi wireless charging."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://hota-exp.com/index.php/case_v_10_126.html"
+  }
+}

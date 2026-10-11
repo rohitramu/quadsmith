@@ -1,0 +1,79 @@
+goggles: {
+  uuid: "018f3a50-7001-7001-9001-000000000001"
+  id: "walksnail-avatar-hd-goggles-x"
+  manufacturer: "Caddx"
+  name: "Walksnail Avatar HD Goggles X"
+  weight_g: 290.0
+  video_protocol: "Walksnail Avatar HD"
+  display_type: "OLED"
+  resolution: "1920x1080 100Hz"
+  fov_deg: 50.0
+  ipd_range_mm: "54-74mm"
+  voltage_range: "7V - 26V (2S-6S)"
+  dvr_supported: true
+  description: "Next-gen FPV goggles featuring 1080p 100Hz OLED displays, swappable VRX receiver modules, HDMI input/output, and built-in head tracking."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-x"
+  }
+}
+
+goggles: {
+  uuid: "018f3a50-7001-7001-9001-000000000002"
+  id: "hdzero-fpv-goggles"
+  manufacturer: "HDZero"
+  name: "HDZero Digital FPV Goggles"
+  weight_g: 295.0
+  video_protocol: "HDZero / 5.8GHz Analog"
+  display_type: "OLED"
+  resolution: "1920x1080 90Hz"
+  fov_deg: 54.0
+  ipd_range_mm: "57-70mm"
+  voltage_range: "7V - 26V (2S-6S)"
+  dvr_supported: true
+  description: "Open-source FPV goggles engineered for near-zero latency digital racing with full analog expansion module bay and open firmware."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.hd-zero.com/product-page/hdzero-goggle"
+  }
+}
+
+goggles: {
+  uuid: "018f3a50-7001-7001-9001-000000000003"
+  id: "dji-goggles-3"
+  manufacturer: "DJI"
+  name: "DJI Goggles 3"
+  weight_g: 420.0
+  video_protocol: "DJI O4"
+  display_type: "Micro-OLED"
+  resolution: "1920x1080 100Hz"
+  fov_deg: 44.0
+  ipd_range_mm: "56-72mm"
+  voltage_range: "Built-in Battery Headband (3000mAh)"
+  dvr_supported: true
+  description: "Immersive FPV headset with Real View PiP (Picture-in-Picture) cameras, diopter adjustment, and low latency O4 video transmission."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.dji.com/goggles-3"
+  }
+}
+
+goggles: {
+  uuid: "018f3a50-7001-7001-9001-000000000004"
+  id: "skyzone-sky04x-pro"
+  manufacturer: "Skyzone"
+  name: "Skyzone SKY04X PRO OLED Goggles"
+  weight_g: 262.0
+  video_protocol: "5.8GHz Analog Steadyview"
+  display_type: "OLED"
+  resolution: "1920x1080 100Hz"
+  fov_deg: 52.0
+  ipd_range_mm: "58-71mm"
+  voltage_range: "DC 6.5V - 25.2V (2S-6S)"
+  dvr_supported: true
+  description: "Premium analog FPV goggles equipped with Steadyview diversity fusion receiver, 52-degree wide FOV, and HDMI 1080p input."
+  reference_links: {
+    types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
+    url: "https://www.skyzonefpv.com/products/sky04x-pro"
+  }
+}
