@@ -547,6 +547,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
             Code.ResourceExhausted,
           );
         }
+        if (req.code === "222222" || req.email.includes("new")) {
+          return {
+            accountSetupRequired: true,
+            setupToken: "mock-setup-token",
+          };
+        }
         return {
           accessToken: "mock-jwt-token",
           refreshToken: "mock-refresh-token",
@@ -560,6 +566,28 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         user: mockUser,
         profile: mockProfile,
       }),
+      completeAccountSetup: (req) => {
+        if (!req.setupToken) {
+          throw new ConnectError("Setup token required", Code.InvalidArgument);
+        }
+        if (req.username === "taken" || req.username === "alex" || req.username === "admin") {
+          throw new ConnectError("Username is not available", Code.InvalidArgument);
+        }
+        return {
+          accessToken: "mock-jwt-token",
+          refreshToken: "mock-refresh-token",
+          user: {
+            ...mockUser,
+            id: req.username,
+          },
+          profile: {
+            ...mockProfile,
+            displayName: req.username,
+            avatarUrl: req.avatarUrl || "",
+          },
+          accountSetupRequired: false,
+        };
+      },
       refreshToken: () => {
         if (!isAuthenticated) {
           throw new ConnectError("Unauthenticated", Code.Unauthenticated);
@@ -733,10 +761,14 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         createdAt: mockUser.createdAt,
         buildCount: 3,
       }),
-      checkUsernameAvailable: (req) => ({
-        available: req.username !== "taken",
-        message: req.username === "taken" ? "Username taken" : "Username available",
-      }),
+      checkUsernameAvailable: (req) => {
+        const unavailable =
+          req.username === "taken" || req.username === "alex" || req.username === "admin";
+        return {
+          available: !unavailable,
+          message: unavailable ? "Username is not available" : "Username is available",
+        };
+      },
     });
   });
 }

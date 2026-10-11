@@ -42,6 +42,9 @@ const (
 	// AuthServiceVerifyMagicLinkProcedure is the fully-qualified name of the AuthService's
 	// VerifyMagicLink RPC.
 	AuthServiceVerifyMagicLinkProcedure = "/quadsmith.AuthService/VerifyMagicLink"
+	// AuthServiceCompleteAccountSetupProcedure is the fully-qualified name of the AuthService's
+	// CompleteAccountSetup RPC.
+	AuthServiceCompleteAccountSetupProcedure = "/quadsmith.AuthService/CompleteAccountSetup"
 	// AuthServiceRefreshTokenProcedure is the fully-qualified name of the AuthService's RefreshToken
 	// RPC.
 	AuthServiceRefreshTokenProcedure = "/quadsmith.AuthService/RefreshToken"
@@ -84,6 +87,7 @@ type AuthServiceClient interface {
 	SendEmailOtp(context.Context, *connect.Request[quadsmith.SendEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error)
 	VerifyEmailOtp(context.Context, *connect.Request[quadsmith.VerifyEmailOtpRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	VerifyMagicLink(context.Context, *connect.Request[quadsmith.VerifyMagicLinkRequest]) (*connect.Response[quadsmith.AuthResponse], error)
+	CompleteAccountSetup(context.Context, *connect.Request[quadsmith.CompleteAccountSetupRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	RefreshToken(context.Context, *connect.Request[quadsmith.RefreshTokenRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	GetCurrentUser(context.Context, *connect.Request[quadsmith.GetCurrentUserRequest]) (*connect.Response[quadsmith.User], error)
 	UpdateProfile(context.Context, *connect.Request[quadsmith.UpdateProfileRequest]) (*connect.Response[quadsmith.UserProfile], error)
@@ -125,6 +129,12 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			httpClient,
 			baseURL+AuthServiceVerifyMagicLinkProcedure,
 			connect.WithSchema(authServiceMethods.ByName("VerifyMagicLink")),
+			connect.WithClientOptions(opts...),
+		),
+		completeAccountSetup: connect.NewClient[quadsmith.CompleteAccountSetupRequest, quadsmith.AuthResponse](
+			httpClient,
+			baseURL+AuthServiceCompleteAccountSetupProcedure,
+			connect.WithSchema(authServiceMethods.ByName("CompleteAccountSetup")),
 			connect.WithClientOptions(opts...),
 		),
 		refreshToken: connect.NewClient[quadsmith.RefreshTokenRequest, quadsmith.AuthResponse](
@@ -207,6 +217,7 @@ type authServiceClient struct {
 	sendEmailOtp          *connect.Client[quadsmith.SendEmailOtpRequest, quadsmith.SendEmailOtpResponse]
 	verifyEmailOtp        *connect.Client[quadsmith.VerifyEmailOtpRequest, quadsmith.AuthResponse]
 	verifyMagicLink       *connect.Client[quadsmith.VerifyMagicLinkRequest, quadsmith.AuthResponse]
+	completeAccountSetup  *connect.Client[quadsmith.CompleteAccountSetupRequest, quadsmith.AuthResponse]
 	refreshToken          *connect.Client[quadsmith.RefreshTokenRequest, quadsmith.AuthResponse]
 	getCurrentUser        *connect.Client[quadsmith.GetCurrentUserRequest, quadsmith.User]
 	updateProfile         *connect.Client[quadsmith.UpdateProfileRequest, quadsmith.UserProfile]
@@ -234,6 +245,11 @@ func (c *authServiceClient) VerifyEmailOtp(ctx context.Context, req *connect.Req
 // VerifyMagicLink calls quadsmith.AuthService.VerifyMagicLink.
 func (c *authServiceClient) VerifyMagicLink(ctx context.Context, req *connect.Request[quadsmith.VerifyMagicLinkRequest]) (*connect.Response[quadsmith.AuthResponse], error) {
 	return c.verifyMagicLink.CallUnary(ctx, req)
+}
+
+// CompleteAccountSetup calls quadsmith.AuthService.CompleteAccountSetup.
+func (c *authServiceClient) CompleteAccountSetup(ctx context.Context, req *connect.Request[quadsmith.CompleteAccountSetupRequest]) (*connect.Response[quadsmith.AuthResponse], error) {
+	return c.completeAccountSetup.CallUnary(ctx, req)
 }
 
 // RefreshToken calls quadsmith.AuthService.RefreshToken.
@@ -301,6 +317,7 @@ type AuthServiceHandler interface {
 	SendEmailOtp(context.Context, *connect.Request[quadsmith.SendEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error)
 	VerifyEmailOtp(context.Context, *connect.Request[quadsmith.VerifyEmailOtpRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	VerifyMagicLink(context.Context, *connect.Request[quadsmith.VerifyMagicLinkRequest]) (*connect.Response[quadsmith.AuthResponse], error)
+	CompleteAccountSetup(context.Context, *connect.Request[quadsmith.CompleteAccountSetupRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	RefreshToken(context.Context, *connect.Request[quadsmith.RefreshTokenRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	GetCurrentUser(context.Context, *connect.Request[quadsmith.GetCurrentUserRequest]) (*connect.Response[quadsmith.User], error)
 	UpdateProfile(context.Context, *connect.Request[quadsmith.UpdateProfileRequest]) (*connect.Response[quadsmith.UserProfile], error)
@@ -338,6 +355,12 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		AuthServiceVerifyMagicLinkProcedure,
 		svc.VerifyMagicLink,
 		connect.WithSchema(authServiceMethods.ByName("VerifyMagicLink")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceCompleteAccountSetupHandler := connect.NewUnaryHandler(
+		AuthServiceCompleteAccountSetupProcedure,
+		svc.CompleteAccountSetup,
+		connect.WithSchema(authServiceMethods.ByName("CompleteAccountSetup")),
 		connect.WithHandlerOptions(opts...),
 	)
 	authServiceRefreshTokenHandler := connect.NewUnaryHandler(
@@ -420,6 +443,8 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceVerifyEmailOtpHandler.ServeHTTP(w, r)
 		case AuthServiceVerifyMagicLinkProcedure:
 			authServiceVerifyMagicLinkHandler.ServeHTTP(w, r)
+		case AuthServiceCompleteAccountSetupProcedure:
+			authServiceCompleteAccountSetupHandler.ServeHTTP(w, r)
 		case AuthServiceRefreshTokenProcedure:
 			authServiceRefreshTokenHandler.ServeHTTP(w, r)
 		case AuthServiceGetCurrentUserProcedure:
@@ -463,6 +488,10 @@ func (UnimplementedAuthServiceHandler) VerifyEmailOtp(context.Context, *connect.
 
 func (UnimplementedAuthServiceHandler) VerifyMagicLink(context.Context, *connect.Request[quadsmith.VerifyMagicLinkRequest]) (*connect.Response[quadsmith.AuthResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.VerifyMagicLink is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) CompleteAccountSetup(context.Context, *connect.Request[quadsmith.CompleteAccountSetupRequest]) (*connect.Response[quadsmith.AuthResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.CompleteAccountSetup is not implemented"))
 }
 
 func (UnimplementedAuthServiceHandler) RefreshToken(context.Context, *connect.Request[quadsmith.RefreshTokenRequest]) (*connect.Response[quadsmith.AuthResponse], error) {

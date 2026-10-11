@@ -288,4 +288,148 @@ describe("LoginPage Component", () => {
     // Resend Email button is completely removed
     expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
   });
+
+  it("transitions into Account Setup with sliding container when OTP verification requires setup", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "newpilot@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    await screen.findByRole("heading", { name: /verify your email/i });
+
+    // Enter 222222 to trigger accountSetupRequired
+    const inputs = screen.getAllByRole("textbox");
+    enterOtp(inputs, "222222");
+
+    // Sliding container is rendered with Account Setup screen
+    expect(await screen.findByTestId("sliding-container")).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /account setup/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/your username is your public display identifier across quadsmith/i),
+    ).toBeInTheDocument();
+
+    // Username input is empty by default and required
+    const usernameInput = screen.getByTestId("username-input") as HTMLInputElement;
+    expect(usernameInput.value).toBe("");
+    expect(screen.getByText(/^required$/i)).toBeInTheDocument();
+
+    // Complete setup button is disabled initially
+    const completeBtn = screen.getByTestId("complete-setup-btn");
+    expect(completeBtn).toBeDisabled();
+
+    // Live avatar preview renders initial
+    const avatarPreview = screen.getByTestId("avatar-preview");
+    expect(avatarPreview).toBeInTheDocument();
+    expect(avatarPreview.textContent).toBe("N"); // initial of newpilot
+  });
+
+  it("performs live server-side availability check: invalid/reserved/taken all show unified Unavailable without leaking reason", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "newpilot@example.com");
+    await user.click(screen.getByRole("button", { name: /send verification code/i }));
+    await screen.findByRole("heading", { name: /verify your email/i });
+
+    const inputs = screen.getAllByRole("textbox");
+    enterOtp(inputs, "222222");
+
+    await screen.findByRole("heading", { name: /account setup/i });
+    const usernameInput = screen.getByTestId("username-input");
+    const completeBtn = screen.getByTestId("complete-setup-btn");
+
+    // 1. Taken username ("alex")
+    fireEvent.change(usernameInput, { target: { value: "alex" } });
+    expect(await screen.findByText(/^unavailable$/i, {}, { timeout: 3000 })).toBeInTheDocument();
+    expect(screen.getByText(/username is not available/i)).toBeInTheDocument();
+    expect(completeBtn).toBeDisabled();
+
+    // 2. Reserved / Invalid username ("admin")
+    fireEvent.change(usernameInput, { target: { value: "admin" } });
+    expect(await screen.findByText(/^unavailable$/i, {}, { timeout: 3000 })).toBeInTheDocument();
+    expect(screen.getByText(/username is not available/i)).toBeInTheDocument();
+    // Verify zero distinction/leak between taken and reserved
+    expect(completeBtn).toBeDisabled();
+
+    // 3. Available username ("rotor_pilot")
+    fireEvent.change(usernameInput, { target: { value: "rotor_pilot" } });
+    expect(await screen.findByText(/^✓ available$/i, {}, { timeout: 3000 })).toBeInTheDocument();
+    expect(screen.getByText(/username is available!/i)).toBeInTheDocument();
+    expect(completeBtn).toBeEnabled();
+
+    // Avatar preview dynamically updates to initial "R" with palette badge styling
+    const avatarPreview = screen.getByTestId("avatar-preview");
+    expect(avatarPreview.textContent).toBe("R");
+    expect(avatarPreview.className).toMatch(/bg-teal-100/);
+  });
+
+  it("updates display image live preview and completes setup successfully", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "newpilot@example.com");
+    await user.click(screen.getByRole("button", { name: /send verification code/i }));
+    await screen.findByRole("heading", { name: /verify your email/i });
+
+    const inputs = screen.getAllByRole("textbox");
+    enterOtp(inputs, "222222");
+
+    await screen.findByRole("heading", { name: /account setup/i });
+    const usernameInput = screen.getByTestId("username-input");
+    fireEvent.change(usernameInput, { target: { value: "rotor_pilot" } });
+    expect(await screen.findByText(/^✓ available$/i, {}, { timeout: 3000 })).toBeInTheDocument();
+
+    // Optional avatar URL
+    const avatarUrlInput = screen.getByTestId("avatar-url-input");
+    fireEvent.change(avatarUrlInput, { target: { value: "https://example.com/avatar.jpg" } });
+
+    const avatarImg = screen.getByAltText("Avatar Preview") as HTMLImageElement;
+    expect(avatarImg).toBeInTheDocument();
+    expect(avatarImg.src).toBe("https://example.com/avatar.jpg");
+
+    // Click Complete Setup
+    const completeBtn = screen.getByTestId("complete-setup-btn");
+    await user.click(completeBtn);
+
+    // Setup completes and access token is saved in localStorage
+    await waitFor(() => {
+      expect(localStorage.getItem("qs_access_token")).toBe("mock-jwt-token");
+    });
+  });
+
+  it("resets back to email step when 'Use a different email' is clicked on Account Setup", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "newpilot@example.com");
+    await user.click(screen.getByRole("button", { name: /send verification code/i }));
+    await screen.findByRole("heading", { name: /verify your email/i });
+
+    const inputs = screen.getAllByRole("textbox");
+    enterOtp(inputs, "222222");
+
+    await screen.findByRole("heading", { name: /account setup/i });
+
+    // Click "Use a different email"
+    const diffEmailBtn = screen.getByRole("button", { name: /use a different email/i });
+    await user.click(diffEmailBtn);
+
+    // Transitions back to Step 1
+    expect(
+      await screen.findByRole("heading", { name: /sign in to quadsmith/i }),
+    ).toBeInTheDocument();
+    const resetEmailInput = screen.getByPlaceholderText(/alex@quadsmith.dev/i) as HTMLInputElement;
+    expect(resetEmailInput.value).toBe("");
+  });
 });

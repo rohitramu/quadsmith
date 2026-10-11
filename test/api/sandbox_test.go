@@ -379,6 +379,7 @@ func TestSandboxAuth_ResendEmailOtpPreservesCodeAndAttempts(t *testing.T) {
 
 	// Clean up any existing records for this email
 	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE email = $1`, testEmail)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE LOWER(email) = LOWER($1) OR LOWER(id) = 'pilot_resend_tester'`, testEmail)
 
 	// 1. Initial send
 	res, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
@@ -475,8 +476,23 @@ func TestSandboxAuth_ResendEmailOtpPreservesCodeAndAttempts(t *testing.T) {
 	if err != nil {
 		t.Fatalf("VerifyEmailOtp with original code failed: %v", err)
 	}
-	if verifyRes.Msg.AccessToken == "" {
-		t.Fatalf("expected access token in response, got empty")
+
+	// Because testEmail is a new email, user creation is deferred until Account Setup!
+	if !verifyRes.Msg.AccountSetupRequired {
+		t.Fatalf("expected AccountSetupRequired = true for new user, got false")
+	}
+	if verifyRes.Msg.SetupToken == "" {
+		t.Fatalf("expected SetupToken to be present for new user, got empty")
+	}
+
+	// Verify no user record was prematurely created in users table
+	var prematureUserCount int
+	err = pool.QueryRow(ctx, `SELECT COUNT(*) FROM users WHERE LOWER(email) = LOWER($1)`, testEmail).Scan(&prematureUserCount)
+	if err != nil {
+		t.Fatalf("failed to query users table: %v", err)
+	}
+	if prematureUserCount != 0 {
+		t.Fatalf("expected 0 user rows in users before Account Setup, got %d", prematureUserCount)
 	}
 
 	// Verify challenge is marked used in DB
@@ -490,5 +506,30 @@ func TestSandboxAuth_ResendEmailOtpPreservesCodeAndAttempts(t *testing.T) {
 	}
 	if usedAt == nil {
 		t.Fatal("expected used_at to be non-nil after successful verification")
+	}
+
+	// 6. Complete Account Setup
+	setupRes, err := authClient.CompleteAccountSetup(ctx, connect.NewRequest(&pb.CompleteAccountSetupRequest{
+		SetupToken: verifyRes.Msg.SetupToken,
+		Username:   "pilot_resend_tester",
+	}))
+	if err != nil {
+		t.Fatalf("CompleteAccountSetup failed: %v", err)
+	}
+	if setupRes.Msg.AccessToken == "" {
+		t.Fatalf("expected access token after CompleteAccountSetup, got empty")
+	}
+	if setupRes.Msg.User == nil || setupRes.Msg.User.Id != "pilot_resend_tester" {
+		t.Fatalf("expected username pilot_resend_tester, got %v", setupRes.Msg.User)
+	}
+
+	// Verify user now exists in users table
+	var finalUserCount int
+	err = pool.QueryRow(ctx, `SELECT COUNT(*) FROM users WHERE LOWER(email) = LOWER($1) AND id = 'pilot_resend_tester'`, testEmail).Scan(&finalUserCount)
+	if err != nil {
+		t.Fatalf("failed to query users table: %v", err)
+	}
+	if finalUserCount != 1 {
+		t.Fatalf("expected 1 user row in users after CompleteAccountSetup, got %d", finalUserCount)
 	}
 }

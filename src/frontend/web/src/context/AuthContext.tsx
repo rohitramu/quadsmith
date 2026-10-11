@@ -19,8 +19,14 @@ export interface AuthContextType {
   sendEmailOtp: (
     email: string,
   ) => Promise<{ success: boolean; cooldownSeconds: number; message: string }>;
-  verifyEmailOtp: (email: string, code: string) => Promise<void>;
-  verifyMagicLink: (token: string) => Promise<void>;
+  verifyEmailOtp: (
+    email: string,
+    code: string,
+  ) => Promise<{ accountSetupRequired?: boolean; setupToken?: string }>;
+  verifyMagicLink: (
+    token: string,
+  ) => Promise<{ accountSetupRequired?: boolean; setupToken?: string }>;
+  completeAccountSetup: (setupToken: string, username: string, avatarUrl?: string) => Promise<void>;
   updateProfile: (data: {
     displayName?: string;
     avatarUrl?: string;
@@ -203,10 +209,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (res.profile) {
       setProfile(res.profile);
     }
+    return {
+      accountSetupRequired: res.accountSetupRequired,
+      setupToken: res.setupToken,
+    };
   };
 
   const verifyMagicLink = async (token: string) => {
     const res = await authClient.verifyMagicLink({ token });
+    if (res.accessToken) {
+      setAccessToken(res.accessToken);
+    }
+    if (res.user) {
+      setUser(res.user);
+    }
+    if (res.profile) {
+      setProfile(res.profile);
+    }
+    return {
+      accountSetupRequired: res.accountSetupRequired,
+      setupToken: res.setupToken,
+    };
+  };
+
+  const completeAccountSetup = async (setupToken: string, username: string, avatarUrl?: string) => {
+    const res = await authClient.completeAccountSetup({
+      setupToken,
+      username,
+      avatarUrl: avatarUrl || undefined,
+    });
     if (res.accessToken) {
       setAccessToken(res.accessToken);
     }
@@ -328,6 +359,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         sendEmailOtp,
         verifyEmailOtp,
         verifyMagicLink,
+        completeAccountSetup,
         updateProfile,
         logout,
         refreshSession,

@@ -206,3 +206,61 @@ func VerifyMagicLinkToken(tokenStr string) (string, string, error) {
 	}
 	return claims.OtpUUID, claims.Email, nil
 }
+
+// SetupTokenClaims contains claims for deferred account creation after email verification
+type SetupTokenClaims struct {
+	Email   string `json:"email"`
+	Exp     int64  `json:"exp"`
+	Purpose string `json:"purpose"`
+}
+
+const SetupTokenTTL = 15 * time.Minute
+
+// SignSetupToken creates a signed setup token for an email that completed OTP or magic link verification
+func SignSetupToken(email string) (string, error) {
+	claims := SetupTokenClaims{
+		Email:   strings.ToLower(strings.TrimSpace(email)),
+		Exp:     time.Now().Add(SetupTokenTTL).Unix(),
+		Purpose: "account_setup",
+	}
+	claimsJSON, err := json.Marshal(claims)
+	if err != nil {
+		return "", err
+	}
+	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
+	sig := hmacSHA256([]byte(payload), getJWTSecret())
+	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
+	return payload + "." + sigB64, nil
+}
+
+// VerifySetupToken verifies a setup token and returns the verified email
+func VerifySetupToken(tokenStr string) (string, error) {
+	parts := strings.Split(tokenStr, ".")
+	if len(parts) != 2 {
+		return "", errors.New("invalid setup token format")
+	}
+	payload, sigB64 := parts[0], parts[1]
+	expectedSig := hmacSHA256([]byte(payload), getJWTSecret())
+	actualSig, err := base64.RawURLEncoding.DecodeString(sigB64)
+	if err != nil {
+		return "", errors.New("invalid signature encoding")
+	}
+	if !hmac.Equal(expectedSig, actualSig) {
+		return "", errors.New("invalid token signature")
+	}
+	claimsJSON, err := base64.RawURLEncoding.DecodeString(payload)
+	if err != nil {
+		return "", errors.New("invalid payload encoding")
+	}
+	var claims SetupTokenClaims
+	if err := json.Unmarshal(claimsJSON, &claims); err != nil {
+		return "", errors.New("invalid claims json")
+	}
+	if claims.Purpose != "account_setup" {
+		return "", errors.New("invalid token purpose")
+	}
+	if time.Now().Unix() > claims.Exp {
+		return "", errors.New("setup token has expired. Please verify your email again")
+	}
+	return claims.Email, nil
+}

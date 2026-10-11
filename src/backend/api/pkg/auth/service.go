@@ -202,6 +202,21 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 	RecordIPSuccess(clientIP)
 	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
 
+	exists, err := s.userExistsForEmail(ctx, email)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if !exists {
+		setupToken, err := SignSetupToken(email)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign setup token: %w", err))
+		}
+		return connect.NewResponse(&pb.AuthResponse{
+			AccountSetupRequired: true,
+			SetupToken:           setupToken,
+		}), nil
+	}
+
 	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
 }
 
@@ -240,7 +255,130 @@ func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[
 	clientIP := extractClientIP(req.Header())
 	RecordIPSuccess(clientIP)
 
+	exists, err := s.userExistsForEmail(ctx, email)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if !exists {
+		setupToken, err := SignSetupToken(email)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign setup token: %w", err))
+		}
+		return connect.NewResponse(&pb.AuthResponse{
+			AccountSetupRequired: true,
+			SetupToken:           setupToken,
+		}), nil
+	}
+
 	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
+}
+
+func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Request[pb.CompleteAccountSetupRequest]) (*connect.Response[pb.AuthResponse], error) {
+	setupToken := strings.TrimSpace(req.Msg.GetSetupToken())
+	if setupToken == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("setup token required"))
+	}
+	email, err := VerifySetupToken(setupToken)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("invalid or expired setup token: %w", err))
+	}
+
+	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
+	if err := ValidateUsername(username); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("Username is not available"))
+	}
+
+	// Check if active user already has this username
+	var activeOwnerUUID string
+	err = s.db.QueryRow(ctx, `SELECT uuid FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL`, username).Scan(&activeOwnerUUID)
+	if err == nil {
+		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("Username is not available"))
+	} else if !errors.Is(err, pgx.ErrNoRows) {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Check if held in username_histories within 30-day window
+	var historyOwnerUUID string
+	err = s.db.QueryRow(ctx, `
+		SELECT user_uuid
+		FROM username_histories
+		WHERE LOWER(old_username) = $1 AND COALESCE(first_archived_at, renamed_at) + INTERVAL '30 days' > NOW()
+		ORDER BY COALESCE(first_archived_at, renamed_at) DESC
+		LIMIT 1`, username).Scan(&historyOwnerUUID)
+	if err == nil {
+		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("Username is not available"))
+	} else if !errors.Is(err, pgx.ErrNoRows) {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Check if user already exists for this email
+	exists, err := s.userExistsForEmail(ctx, email)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if exists {
+		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("an account with this email already exists"))
+	}
+
+	userUUID := NewUUIDv7()
+	now := time.Now()
+	role := "USER"
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer tx.Rollback(ctx)
+
+	_, err = tx.Exec(ctx, `
+		INSERT INTO users (uuid, id, email, role, email_verified_at, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $5, $5)`,
+		userUUID, username, email, role, now)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user: %w", err))
+	}
+
+	profileUUID := NewUUIDv7()
+	avatarURL := strings.TrimSpace(req.Msg.GetAvatarUrl())
+	_, err = tx.Exec(ctx, `
+		INSERT INTO user_profiles (uuid, user_uuid, display_name, avatar_url, bio, updated_at)
+		VALUES ($1, $2, $3, $4, '', $5)`,
+		profileUUID, userUUID, username, avatarURL, now)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create profile: %w", err))
+	}
+
+	emailUUID := NewUUIDv7()
+	_, err = tx.Exec(ctx, `
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_at, created_at)
+		VALUES ($1, $2, $3, true, $4, $4)`,
+		emailUUID, userUUID, email, now)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user email: %w", err))
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to commit account creation: %w", err))
+	}
+
+	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
+}
+
+func (s *AuthService) userExistsForEmail(ctx context.Context, email string) (bool, error) {
+	var count int
+	err := s.db.QueryRow(ctx, `
+		SELECT COUNT(*) FROM (
+			SELECT 1 FROM user_emails ue
+			JOIN users u ON u.uuid = ue.user_uuid
+			WHERE LOWER(ue.email) = LOWER($1) AND u.deleted_at IS NULL
+			UNION
+			SELECT 1 FROM users u
+			WHERE LOWER(u.email) = LOWER($1) AND u.deleted_at IS NULL
+		) sub`, email).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
 }
 
 func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.RefreshTokenRequest]) (*connect.Response[pb.AuthResponse], error) {
@@ -1769,7 +1907,7 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 	if err := ValidateUsername(username); err != nil {
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
-			Message:   err.Error(),
+			Message:   "Username is not available",
 		}), nil
 	}
 
@@ -1787,7 +1925,7 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 		}
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
-			Message:   "This username is already taken",
+			Message:   "Username is not available",
 		}), nil
 	} else if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, connect.NewError(connect.CodeInternal, err)
@@ -1810,7 +1948,7 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 		}
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
-			Message:   "This username is reserved",
+			Message:   "Username is not available",
 		}), nil
 	} else if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, connect.NewError(connect.CodeInternal, err)

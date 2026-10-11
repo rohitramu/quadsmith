@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"testing"
 	"time"
 )
@@ -103,5 +105,45 @@ func TestRefreshTokenGenerationAndHashing(t *testing.T) {
 	}
 	if HashToken(token) != hash {
 		t.Fatalf("HashToken mismatch")
+	}
+}
+
+func TestSetupTokenSigningAndVerification(t *testing.T) {
+	email := "newpilot@example.com"
+	token, err := SignSetupToken(email)
+	if err != nil {
+		t.Fatalf("SignSetupToken failed: %v", err)
+	}
+
+	gotEmail, err := VerifySetupToken(token)
+	if err != nil {
+		t.Fatalf("VerifySetupToken failed: %v", err)
+	}
+	if gotEmail != email {
+		t.Errorf("expected email %s, got %s", email, gotEmail)
+	}
+
+	// Tampered setup token
+	tampered := token[:len(token)-5] + "bbbbb"
+	_, err = VerifySetupToken(tampered)
+	if err == nil {
+		t.Fatalf("expected tampered setup token verification to fail")
+	}
+
+	// Expired setup token
+	claims := SetupTokenClaims{
+		Email:   email,
+		Exp:     time.Now().Add(-1 * time.Minute).Unix(),
+		Purpose: "account_setup",
+	}
+	claimsJSON, _ := json.Marshal(claims)
+	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
+	sig := hmacSHA256([]byte(payload), getJWTSecret())
+	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
+	expiredToken := payload + "." + sigB64
+
+	_, err = VerifySetupToken(expiredToken)
+	if err == nil {
+		t.Fatalf("expected expired setup token verification to fail")
 	}
 }

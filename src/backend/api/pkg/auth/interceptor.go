@@ -14,6 +14,7 @@ var publicProcedures = map[string]bool{
 	"/quadsmith.AuthService/SendEmailOtp":           true,
 	"/quadsmith.AuthService/VerifyEmailOtp":         true,
 	"/quadsmith.AuthService/VerifyMagicLink":        true,
+	"/quadsmith.AuthService/CompleteAccountSetup":   true,
 	"/quadsmith.AuthService/RefreshToken":           true,
 	"/quadsmith.UserService/CheckUsernameAvailable": true,
 }

@@ -39,6 +39,27 @@ message AuthResponse {
   string refresh_token = 2;
   User user = 3;
   UserProfile profile = 4;
+  bool account_setup_required = 5;
+  string setup_token = 6;
+}
+
+message CompleteAccountSetupRequest {
+  string setup_token = 1;
+  string username = 2 [(quadsmith.validate.rules).string = {
+    min_len: 3
+    max_len: 20
+    pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
+    not_in: [
+      "admin",
+      "root"
+    ]
+    not_contains: [
+      "__",
+      "quadsmith",
+      "quad_smith"
+    ]
+  }];
+  optional string avatar_url = 3;
 }
 
 message OtpVerificationError {
@@ -178,6 +199,7 @@ service AuthService {
   rpc SendEmailOtp(SendEmailOtpRequest) returns (SendEmailOtpResponse);
   rpc VerifyEmailOtp(VerifyEmailOtpRequest) returns (AuthResponse);
   rpc VerifyMagicLink(VerifyMagicLinkRequest) returns (AuthResponse);
+  rpc CompleteAccountSetup(CompleteAccountSetupRequest) returns (AuthResponse);
   rpc RefreshToken(RefreshTokenRequest) returns (AuthResponse);
   rpc GetCurrentUser(GetCurrentUserRequest) returns (User);
   rpc UpdateProfile(UpdateProfileRequest) returns (UserProfile);

@@ -20,6 +20,11 @@ export const verifyEmailOtp = AuthService.method.verifyEmailOtp;
 export const verifyMagicLink = AuthService.method.verifyMagicLink;
 
 /**
+ * @generated from rpc quadsmith.AuthService.CompleteAccountSetup
+ */
+export const completeAccountSetup = AuthService.method.completeAccountSetup;
+
+/**
  * @generated from rpc quadsmith.AuthService.RefreshToken
  */
 export const refreshToken = AuthService.method.refreshToken;
