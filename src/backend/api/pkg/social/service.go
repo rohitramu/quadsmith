@@ -1912,18 +1912,39 @@ func (s *SocialService) ListUserCollections(ctx context.Context, req *connect.Re
 		privacyFilter = ""
 	}
 
+	var filterEntityUUID string
+	if req.Msg.ContainsEntityId != nil && strings.TrimSpace(*req.Msg.ContainsEntityId) != "" {
+		entityUUID, _, _, _, _, _, err := resolveEntity(ctx, s.db, *req.Msg.ContainsEntityId, req.Msg.ContainsCollection)
+		if err == nil {
+			filterEntityUUID = entityUUID
+		}
+	}
+
+	var args []any
+	args = append(args, targetUserUUID)
+
+	containsItemSelect := "false as contains_item"
+	if filterEntityUUID != "" {
+		args = append(args, filterEntityUUID)
+		containsItemSelect = fmt.Sprintf(`EXISTS (
+			SELECT 1 FROM collection_items ci
+			WHERE ci.collection_uuid = c.uuid AND ci.entity_uuid = $%d
+		) as contains_item`, len(args))
+	}
+
 	query := fmt.Sprintf(`
 		SELECT
 			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_default_liked,
 			c.created_at, c.updated_at, u.id as author_username,
-			(SELECT count(*) FROM collection_items WHERE collection_uuid = c.uuid) as item_count
+			(SELECT count(*) FROM collection_items WHERE collection_uuid = c.uuid) as item_count,
+			%s
 		FROM collections c
 		JOIN users u ON u.uuid = c.user_uuid
 		WHERE c.user_uuid = $1 %s
 		ORDER BY c.is_default_liked DESC, c.created_at DESC
-	`, privacyFilter)
+	`, containsItemSelect, privacyFilter)
 
-	rows, err := s.db.Query(ctx, query, targetUserUUID)
+	rows, err := s.db.Query(ctx, query, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1935,7 +1956,7 @@ func (s *SocialService) ListUserCollections(ctx context.Context, req *connect.Re
 		var createdAt, updatedAt time.Time
 		err := rows.Scan(
 			&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsDefaultLiked,
-			&createdAt, &updatedAt, &c.AuthorUsername, &c.ItemCount,
+			&createdAt, &updatedAt, &c.AuthorUsername, &c.ItemCount, &c.ContainsItem,
 		)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)

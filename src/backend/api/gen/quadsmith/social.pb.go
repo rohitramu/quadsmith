@@ -1562,6 +1562,7 @@ type Collection struct {
 	AuthorUsername string   `protobuf:"bytes,10,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
 	ItemCount      int32    `protobuf:"varint,11,opt,name=item_count,json=itemCount,proto3" json:"item_count,omitempty"`
 	PreviewImages  []string `protobuf:"bytes,12,rep,name=preview_images,json=previewImages,proto3" json:"preview_images,omitempty"`
+	ContainsItem   bool     `protobuf:"varint,13,opt,name=contains_item,json=containsItem,proto3" json:"contains_item,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1678,6 +1679,13 @@ func (x *Collection) GetPreviewImages() []string {
 		return x.PreviewImages
 	}
 	return nil
+}
+
+func (x *Collection) GetContainsItem() bool {
+	if x != nil {
+		return x.ContainsItem
+	}
+	return false
 }
 
 type CollectionItem struct {
@@ -3750,10 +3758,12 @@ func (x *GetCollectionRequest) GetId() string {
 }
 
 type ListUserCollectionsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // Username or UUID
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	UserId             string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // Username or UUID
+	ContainsEntityId   *string                `protobuf:"bytes,2,opt,name=contains_entity_id,json=containsEntityId,proto3,oneof" json:"contains_entity_id,omitempty"`
+	ContainsCollection *string                `protobuf:"bytes,3,opt,name=contains_collection,json=containsCollection,proto3,oneof" json:"contains_collection,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListUserCollectionsRequest) Reset() {
@@ -3789,6 +3799,20 @@ func (*ListUserCollectionsRequest) Descriptor() ([]byte, []int) {
 func (x *ListUserCollectionsRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
+	}
+	return ""
+}
+
+func (x *ListUserCollectionsRequest) GetContainsEntityId() string {
+	if x != nil && x.ContainsEntityId != nil {
+		return *x.ContainsEntityId
+	}
+	return ""
+}
+
+func (x *ListUserCollectionsRequest) GetContainsCollection() string {
+	if x != nil && x.ContainsCollection != nil {
+		return *x.ContainsCollection
 	}
 	return ""
 }
@@ -4438,7 +4462,7 @@ const file_social_proto_rawDesc = "" +
 	"\x05score\x18\x03 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x05score\x12F\n" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt:!\xc2\xf3\x18\x1d\n" +
-	"\x10user_reputations\x1a\tuser_uuid\"\xa1\x04\n" +
+	"\x10user_reputations\x1a\tuser_uuid\"\xc6\x04\n" +
 	"\n" +
 	"Collection\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
@@ -4456,7 +4480,8 @@ const file_social_proto_rawDesc = "" +
 	" \x01(\tR\x0eauthorUsername\x12\x1d\n" +
 	"\n" +
 	"item_count\x18\v \x01(\x05R\titemCount\x12%\n" +
-	"\x0epreview_images\x18\f \x03(\tR\rpreviewImages:\x11\xc2\xf3\x18\r\n" +
+	"\x0epreview_images\x18\f \x03(\tR\rpreviewImages\x12#\n" +
+	"\rcontains_item\x18\r \x01(\bR\fcontainsItem:\x11\xc2\xf3\x18\r\n" +
 	"\vcollections\"\xc5\x04\n" +
 	"\x0eCollectionItem\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12T\n" +
@@ -4621,9 +4646,13 @@ const file_social_proto_rawDesc = "" +
 	"\x17DeleteCollectionRequest\x12#\n" +
 	"\rcollection_id\x18\x01 \x01(\tR\fcollectionId\"&\n" +
 	"\x14GetCollectionRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"5\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xcd\x01\n" +
 	"\x1aListUserCollectionsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"V\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x121\n" +
+	"\x12contains_entity_id\x18\x02 \x01(\tH\x00R\x10containsEntityId\x88\x01\x01\x124\n" +
+	"\x13contains_collection\x18\x03 \x01(\tH\x01R\x12containsCollection\x88\x01\x01B\x15\n" +
+	"\x13_contains_entity_idB\x16\n" +
+	"\x14_contains_collection\"V\n" +
 	"\x1bListUserCollectionsResponse\x127\n" +
 	"\vcollections\x18\x01 \x03(\v2\x15.quadsmith.CollectionR\vcollections\"h\n" +
 	"\x15ToggleLikeItemRequest\x12\x1b\n" +
@@ -4942,6 +4971,7 @@ func file_social_proto_init() {
 	file_social_proto_msgTypes[18].OneofWrappers = []any{}
 	file_social_proto_msgTypes[26].OneofWrappers = []any{}
 	file_social_proto_msgTypes[29].OneofWrappers = []any{}
+	file_social_proto_msgTypes[50].OneofWrappers = []any{}
 	file_social_proto_msgTypes[52].OneofWrappers = []any{}
 	file_social_proto_msgTypes[54].OneofWrappers = []any{}
 	file_social_proto_msgTypes[55].OneofWrappers = []any{}

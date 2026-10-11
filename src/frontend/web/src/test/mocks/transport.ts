@@ -92,6 +92,14 @@ export function createMockTransport(options: MockTransportOptions = {}) {
   } = options;
   const userEmails = (options.userEmails ?? mockUserEmails).map((e) => create(UserEmailSchema, e));
 
+  const collectionItemsSet = new Map<string, Set<string>>();
+  if (mockCollectionItem1.collectionUuid) {
+    collectionItemsSet.set(
+      mockCollectionItem1.collectionUuid,
+      new Set([mockCollectionItem1.entityId]),
+    );
+  }
+
   return createRouterTransport(({ service }) => {
     service(MotorService, {
       listMotors(req) {
@@ -1136,10 +1144,21 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       deleteAnswerComment: () => ({}),
 
       listUserCollections: (req) => {
+        const containsEntityId = req.containsEntityId;
         return {
-          collections: collections.filter(
-            (c) => !req.userId || c.authorUsername === req.userId || c.userUuid === req.userId,
-          ),
+          collections: collections
+            .filter(
+              (c) => !req.userId || c.authorUsername === req.userId || c.userUuid === req.userId,
+            )
+            .map((c) => ({
+              ...c,
+              containsItem: containsEntityId
+                ? !!(
+                    collectionItemsSet.get(c.uuid)?.has(containsEntityId) ||
+                    collectionItemsSet.get(c.id)?.has(containsEntityId)
+                  )
+                : false,
+            })),
         };
       },
       getCollection: (req) => {
@@ -1196,6 +1215,20 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       },
       addCollectionItem: (req) => {
         const entityId = req.entityId || (req as any).buildId || (req as any).componentId || "item";
+        const col = collections.find(
+          (c) => c.id === req.collectionId || c.uuid === req.collectionId,
+        );
+        if (col) {
+          col.itemCount = (col.itemCount || 0) + 1;
+        }
+        if (!collectionItemsSet.has(req.collectionId)) {
+          collectionItemsSet.set(req.collectionId, new Set());
+        }
+        collectionItemsSet.get(req.collectionId)!.add(entityId);
+        if (col && col.uuid !== req.collectionId) {
+          if (!collectionItemsSet.has(col.uuid)) collectionItemsSet.set(col.uuid, new Set());
+          collectionItemsSet.get(col.uuid)!.add(entityId);
+        }
         return {
           uuid: `ci-${Date.now()}`,
           collectionUuid: req.collectionId,
@@ -1206,7 +1239,20 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           authorOrManufacturer: "alex",
         } as any;
       },
-      removeCollectionItem: () => mockCollectionItem1,
+      removeCollectionItem: (req) => {
+        const entityId = req.entityId || (req as any).buildId || (req as any).componentId || "item";
+        const col = collections.find(
+          (c) => c.id === req.collectionId || c.uuid === req.collectionId,
+        );
+        if (col && col.itemCount > 0) {
+          col.itemCount -= 1;
+        }
+        collectionItemsSet.get(req.collectionId)?.delete(entityId);
+        if (col && col.uuid !== req.collectionId) {
+          collectionItemsSet.get(col.uuid)?.delete(entityId);
+        }
+        return mockCollectionItem1;
+      },
       toggleLikeItem: () => {
         entitySocialSummary.isLiked = !entitySocialSummary.isLiked;
         entitySocialSummary.likeCount += entitySocialSummary.isLiked ? 1 : -1;

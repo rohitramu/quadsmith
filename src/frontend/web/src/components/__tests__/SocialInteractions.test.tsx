@@ -56,7 +56,7 @@ describe("Social Interactions Components", () => {
   });
 
   describe("SaveToCollectionModal", () => {
-    it("lists user collections and allows creating a new collection", async () => {
+    it("lists user collections, indicates added items with solid circle tick icon, and allows toggling membership", async () => {
       const onClose = vi.fn();
       const { user } = renderWithProviders(
         <SaveToCollectionModal
@@ -71,8 +71,28 @@ describe("Social Interactions Components", () => {
       expect(screen.getByRole("heading", { name: /save to collection/i })).toBeInTheDocument();
 
       // Should list user's collections
-      expect(await screen.findByText("Liked")).toBeInTheDocument();
-      expect(screen.getByText("Cinewhoop Favorites")).toBeInTheDocument();
+      const likedBtn = await screen.findByRole("button", { name: /add.*to liked/i });
+      const cinewhoopBtn = screen.getByRole("button", {
+        name: /remove.*from cinewhoop favorites/i,
+      });
+
+      expect(likedBtn).toBeInTheDocument();
+      expect(cinewhoopBtn).toBeInTheDocument();
+
+      // Cinewhoop Favorites already contains target: should have tick icon inside solid circle and Added badge
+      expect(cinewhoopBtn.querySelector('[data-testid="tick-icon"]')).toBeInTheDocument();
+      expect(screen.getByText("Added")).toBeInTheDocument();
+
+      // Liked does not yet contain target: should have plus icon
+      expect(likedBtn.querySelector('[data-testid="plus-icon"]')).toBeInTheDocument();
+
+      // Click "Liked" to add build to Liked collection: plus icon changes to tick icon
+      await user.click(likedBtn);
+      expect(likedBtn.querySelector('[data-testid="tick-icon"]')).toBeInTheDocument();
+
+      // Click "Cinewhoop Favorites" to remove build: tick icon changes to plus icon
+      await user.click(cinewhoopBtn);
+      expect(cinewhoopBtn.querySelector('[data-testid="plus-icon"]')).toBeInTheDocument();
 
       // Create new collection
       const input = screen.getByPlaceholderText(/Collection name/i);
@@ -81,8 +101,12 @@ describe("Social Interactions Components", () => {
       const createBtn = screen.getByRole("button", { name: /create/i });
       await user.click(createBtn);
 
-      // Newly created collection should appear
-      expect(await screen.findByText("Racing Rigs")).toBeInTheDocument();
+      // Newly created collection should appear with tick icon because item was auto-added
+      const racingRigsBtn = await screen.findByRole("button", {
+        name: /remove.*from racing rigs/i,
+      });
+      expect(racingRigsBtn).toBeInTheDocument();
+      expect(racingRigsBtn.querySelector('[data-testid="tick-icon"]')).toBeInTheDocument();
     });
   });
 

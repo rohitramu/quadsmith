@@ -361,6 +361,7 @@ message Collection {
   string author_username = 10;
   int32 item_count = 11;
   repeated string preview_images = 12;
+  bool contains_item = 13;
 }
 
 message CollectionItem {
@@ -587,6 +588,8 @@ message GetCollectionRequest {
 
 message ListUserCollectionsRequest {
   string user_id = 1; // Username or UUID
+  optional string contains_entity_id = 2;
+  optional string contains_collection = 3;
 }
 
 message ListUserCollectionsResponse {

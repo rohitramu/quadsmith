@@ -8,7 +8,7 @@ import {
   removeCollectionItem,
 } from "../gen/quadsmith/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
-import { X, Plus, Bookmark, Lock, Globe, Loader2 } from "lucide-react";
+import { X, Plus, Check, Bookmark, Lock, Globe, Loader2 } from "lucide-react";
 
 export interface SaveToCollectionModalProps {
   isOpen: boolean;
@@ -32,6 +32,17 @@ export function SaveToCollectionModal({
   const [isCreating, setIsCreating] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
 
+  // Track toggled collections loading state
+  const [pendingCollections, setPendingCollections] = useState<Record<string, boolean>>({});
+  // Track optimistic overrides for membership: Record<collectionId, boolean>
+  const [membershipOverrides, setMembershipOverrides] = useState<Record<string, boolean>>({});
+
+  // Reset overrides when modal opens or closes or target changes
+  useEffect(() => {
+    setMembershipOverrides({});
+    setActionError(null);
+  }, [isOpen, target.id]);
+
   // Close on Escape key
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -43,22 +54,23 @@ export function SaveToCollectionModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
+  const queryPayload = {
+    userId: user?.id || "",
+    containsEntityId: target.id,
+    containsCollection: target.collection || (target.type === "build" ? "builds" : undefined),
+  };
+
   const {
     data: collectionsData,
     isLoading: isLoadingCollections,
     refetch: refetchCollections,
-  } = useQuery(
-    listUserCollections,
-    { userId: user?.id || "" },
-    { enabled: isOpen && isAuthenticated && !!user?.id },
-  );
+  } = useQuery(listUserCollections, queryPayload, {
+    enabled: isOpen && isAuthenticated && !!user?.id,
+  });
 
   const { mutateAsync: mutateCreateCollection } = useMutation(createCollection);
   const { mutateAsync: mutateAddItem } = useMutation(addCollectionItem);
   const { mutateAsync: mutateRemoveItem } = useMutation(removeCollectionItem);
-
-  // Track toggled collections
-  const [pendingCollections, setPendingCollections] = useState<Record<string, boolean>>({});
 
   if (!isOpen) return null;
 
@@ -67,6 +79,7 @@ export function SaveToCollectionModal({
   async function handleToggleCollection(colId: string, currentlyInCollection: boolean) {
     setActionError(null);
     setPendingCollections((prev) => ({ ...prev, [colId]: true }));
+    setMembershipOverrides((prev) => ({ ...prev, [colId]: !currentlyInCollection }));
     try {
       if (currentlyInCollection) {
         await mutateRemoveItem({
@@ -84,6 +97,7 @@ export function SaveToCollectionModal({
       await refetchCollections();
       await queryClient.invalidateQueries();
     } catch (err: unknown) {
+      setMembershipOverrides((prev) => ({ ...prev, [colId]: currentlyInCollection }));
       setActionError(err instanceof Error ? err.message : "Failed to update collection");
     } finally {
       setPendingCollections((prev) => ({ ...prev, [colId]: false }));
@@ -102,6 +116,9 @@ export function SaveToCollectionModal({
         description: newColDesc.trim(),
         isPublic: newColIsPublic,
       });
+
+      // Optimistically record that the item is in the newly created collection
+      setMembershipOverrides((prev) => ({ ...prev, [created.id]: true }));
 
       // Automatically add current item to newly created collection
       await mutateAddItem({
@@ -179,21 +196,51 @@ export function SaveToCollectionModal({
             ) : (
               collections.map((col) => {
                 const isPending = pendingCollections[col.id] || false;
+                const isAdded =
+                  membershipOverrides[col.id] !== undefined
+                    ? membershipOverrides[col.id]
+                    : Boolean(col.containsItem);
+                const initiallyHad = Boolean(col.containsItem);
+                const displayItemCount =
+                  col.itemCount +
+                  (isAdded && !initiallyHad ? 1 : !isAdded && initiallyHad ? -1 : 0);
+
                 return (
                   <button
                     key={col.id}
                     type="button"
                     disabled={isPending}
-                    onClick={() => handleToggleCollection(col.id, false)}
-                    className="w-full flex items-center justify-between p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/60 hover:bg-zinc-100 dark:hover:bg-zinc-800/40 text-left transition-colors cursor-pointer group"
+                    onClick={() => handleToggleCollection(col.id, isAdded)}
+                    aria-pressed={isAdded}
+                    aria-label={
+                      isAdded
+                        ? `Remove ${targetName || "item"} from ${col.name}`
+                        : `Add ${targetName || "item"} to ${col.name}`
+                    }
+                    className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer group ${
+                      isAdded
+                        ? "border-emerald-500/40 bg-emerald-50/50 dark:bg-emerald-950/20 hover:bg-emerald-100/50 dark:hover:bg-emerald-900/30"
+                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/60 hover:bg-zinc-100 dark:hover:bg-zinc-800/40"
+                    }`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
+                      <div
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                          isAdded
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                            : "bg-blue-500/10 text-blue-500"
+                        }`}
+                      >
                         {col.isPublic ? <Globe size={14} /> : <Lock size={14} />}
                       </div>
                       <div className="min-w-0">
-                        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
-                          {col.name}
+                        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate flex items-center gap-2">
+                          <span>{col.name}</span>
+                          {isAdded && (
+                            <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                              Added
+                            </span>
+                          )}
                         </div>
                         <div className="text-[11px] text-zinc-500">
                           {col.isDefaultLiked
@@ -201,16 +248,30 @@ export function SaveToCollectionModal({
                             : col.isPublic
                               ? "Public"
                               : "Private"}{" "}
-                          • {col.itemCount} items
+                          • {Math.max(0, displayItemCount)} items
                         </div>
                       </div>
                     </div>
                     <div className="shrink-0 pl-2">
                       {isPending ? (
-                        <Loader2 size={16} className="animate-spin text-zinc-400" />
+                        <div className="w-6 h-6 flex items-center justify-center">
+                          <Loader2 size={16} className="animate-spin text-zinc-400" />
+                        </div>
+                      ) : isAdded ? (
+                        <div
+                          data-testid="tick-icon"
+                          className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xs transition-transform group-hover:scale-105"
+                          title="Added to collection (click to remove)"
+                        >
+                          <Check size={14} strokeWidth={2.5} />
+                        </div>
                       ) : (
-                        <div className="w-5 h-5 rounded border border-zinc-300 dark:border-zinc-700 flex items-center justify-center group-hover:border-blue-500">
-                          <Plus size={12} className="text-zinc-400 group-hover:text-blue-500" />
+                        <div
+                          data-testid="plus-icon"
+                          className="w-6 h-6 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-400 group-hover:border-blue-500 group-hover:text-blue-500 transition-colors"
+                          title="Add to collection"
+                        >
+                          <Plus size={14} />
                         </div>
                       )}
                     </div>
