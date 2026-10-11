@@ -1,16 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ConnectError } from "@connectrpc/connect";
-import {
-  Moon,
-  Sun,
-  Loader2,
-  ArrowLeft,
-  Mail,
-  AlertTriangle,
-  ShieldAlert,
-  CheckCircle2,
-} from "lucide-react";
+import { Moon, Sun, Loader2, ArrowLeft, Mail, AlertTriangle, ShieldAlert } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
@@ -314,20 +305,20 @@ export function LoginPage() {
         {step === "otp" && (
           <div className="space-y-5">
             {/* Dual-path instructions */}
-            <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-zinc-700 dark:text-zinc-300 text-xs space-y-1.5">
-              <div className="flex items-center gap-1.5 font-semibold text-blue-600 dark:text-blue-400">
-                <CheckCircle2 size={14} />
-                <span>Two Ways to Sign In:</span>
+            <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-zinc-700 dark:text-zinc-300 text-xs space-y-2 text-center">
+              <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
+                Enter the <strong>6-digit code</strong> sent to your email below.
+              </p>
+              <div className="flex items-center justify-center gap-2">
+                <div className="h-px bg-blue-500/20 flex-1"></div>
+                <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                  OR
+                </span>
+                <div className="h-px bg-blue-500/20 flex-1"></div>
               </div>
-              <ul className="list-disc list-inside space-y-1 text-[11px] text-zinc-600 dark:text-zinc-400">
-                <li>
-                  Enter the <strong>6-digit code</strong> sent to your email below.
-                </li>
-                <li>
-                  Or click the <strong>1-click Magic Link</strong> in the email to sign in
-                  instantly.
-                </li>
-              </ul>
+              <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
+                Click the link in the email.
+              </p>
             </div>
 
             {/* 6 Digit Inputs */}

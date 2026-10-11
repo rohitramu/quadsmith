@@ -35,10 +35,11 @@ describe("LoginPage Component", () => {
     await user.click(submitBtn);
 
     // Verify transition to OTP step
-    expect(await screen.findByText(/two ways to sign in/i)).toBeInTheDocument();
-    expect(screen.getByText(/enter the/i)).toBeInTheDocument();
+    expect(screen.queryByText(/two ways to sign in/i)).not.toBeInTheDocument();
+    expect(await screen.findByText(/enter the/i)).toBeInTheDocument();
     expect(screen.getByText(/6-digit code/i)).toBeInTheDocument();
-    expect(screen.getByText(/1-click magic link/i)).toBeInTheDocument();
+    expect(screen.getByText(/^or$/i)).toBeInTheDocument();
+    expect(screen.getByText(/click the link in the email/i)).toBeInTheDocument();
 
     // Verify 6 OTP input boxes
     const inputs = screen.getAllByRole("textbox");
@@ -60,7 +61,8 @@ describe("LoginPage Component", () => {
     await user.click(submitBtn);
 
     // Verify OTP step reached
-    await screen.findByText(/two ways to sign in/i);
+    await screen.findByText(/click the link in the email/i);
+    expect(screen.queryByText(/two ways to sign in/i)).not.toBeInTheDocument();
 
     // Ensure footer text is absent on step 2
     expect(screen.queryByText(/secure, passwordless authentication/i)).not.toBeInTheDocument();
