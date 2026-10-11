@@ -20,6 +20,11 @@ ifeq (tool,$(firstword $(MAKECMDGOALS)))
   $(foreach arg,$(TOOL_ARGS),$(eval $(arg):;@:))
 endif
 
+VENDOR_PLUGINS := bin/protoc-gen-go bin/protoc-gen-connect-go bin/buf bin/txtpbfmt
+CUSTOM_PLUGINS := bin/protoc-gen-sql bin/protoc-gen-store bin/protoc-gen-server
+PROTO_FILES    := $(shell find proto -type f 2>/dev/null)
+CLI_FILES      := $(shell find src/frontend/cli -name "*.go" -not -name "*_test.go" 2>/dev/null)
+
 all: build
 
 build: generate bin/qs
@@ -35,7 +40,8 @@ build: generate bin/qs
 	@echo "--- Building Web UI ---"
 	@cd src/frontend/web && npm run build
 
-bin/qs:
+bin/qs: $(CLI_FILES) bin/.generate_proto.sentinel
+	@mkdir -p bin
 	@echo "--- Generating and building CLI to bin/qs ---"
 	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go && go build -mod=vendor -o ../../../bin/qs .
 	@echo "--- Generating shell completions to bin/ ---"
@@ -61,23 +67,45 @@ warn-breaking:
 		echo ""; \
 	fi
 
-generate:
+$(VENDOR_PLUGINS):
+	@mkdir -p bin
 	@echo "--- Installing protoc plugins from vendor ---"
 	@cd src && go build -mod=vendor -o ../bin/protoc-gen-go google.golang.org/protobuf/cmd/protoc-gen-go
 	@cd src && go build -mod=vendor -o ../bin/protoc-gen-connect-go connectrpc.com/connect/cmd/protoc-gen-connect-go
 	@cd src && go build -mod=vendor -o ../bin/buf github.com/bufbuild/buf/cmd/buf
 	@cd src && go build -mod=vendor -o ../bin/txtpbfmt github.com/protocolbuffers/txtpbfmt/cmd/txtpbfmt
-	@echo "--- Building custom protoc plugins ---"
+
+bin/protoc-gen-sql: $(wildcard src/backend/api/cmd/protoc-gen-sql/*.go)
+	@mkdir -p bin
+	@echo "--- Building custom protoc plugin: protoc-gen-sql ---"
 	@go build -mod=vendor -o bin/protoc-gen-sql ./src/backend/api/cmd/protoc-gen-sql
+
+bin/protoc-gen-store: $(wildcard src/backend/api/cmd/protoc-gen-store/*.go)
+	@mkdir -p bin
+	@echo "--- Building custom protoc plugin: protoc-gen-store ---"
 	@go build -mod=vendor -o bin/protoc-gen-store ./src/backend/api/cmd/protoc-gen-store
+
+bin/protoc-gen-server: $(wildcard src/backend/api/cmd/protoc-gen-server/*.go)
+	@mkdir -p bin
+	@echo "--- Building custom protoc plugin: protoc-gen-server ---"
 	@go build -mod=vendor -o bin/protoc-gen-server ./src/backend/api/cmd/protoc-gen-server
+
+bin/.generate_proto.sentinel: $(PROTO_FILES) $(VENDOR_PLUGINS) $(CUSTOM_PLUGINS)
+	@mkdir -p bin
 	@echo "--- Generating Protobuf & ConnectRPC Code ---"
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@for f in src/backend/api/gen/quadsmith/_*.pb.go; do [ -f "$$f" ] && mv "$$f" "$$(echo $$f | sed 's|/_|/|')"; done || true
 	@gofmt -s -w src/backend/api/gen/
 	@npx --prefix src/frontend/web prettier --write "src/frontend/web/src/gen/**/*.{ts,tsx}"
+	@touch bin/.generate_proto.sentinel
+
+bin/.format_sql.sentinel: src/backend/db/schema.sql .sql-formatter.json
+	@mkdir -p bin
 	@npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/schema.sql
+	@touch bin/.format_sql.sentinel
+
+generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel
 
 test: generate
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
