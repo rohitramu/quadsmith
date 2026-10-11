@@ -18,7 +18,7 @@ func TestSeeds_UnmarshalWithoutErrors(t *testing.T) {
 		t.Fatalf("Failed to initialize GitHelper: %v", err)
 	}
 
-	seedsDir := filepath.Join(gh.RepoRoot, "test/db/seeds")
+	seedsDir := filepath.Join(gh.RepoRoot, "test/seed_data")
 
 	tests := []struct {
 		filename  string
@@ -400,6 +400,23 @@ func TestSeeds_UnmarshalWithoutErrors(t *testing.T) {
 					refLinks[i] = m.ReferenceLinks
 				}
 				return len(res.FieldTools), ids, uuids, refLinks, nil
+			},
+		},
+		{
+			filename: "users.textproto",
+			unmarshal: func(data []byte) (int, []string, []string, [][]*pb.ReferenceLink, error) {
+				res := &pb.ListUsersResponse{}
+				if err := prototext.Unmarshal(data, res); err != nil {
+					return 0, nil, nil, nil, err
+				}
+				ids := make([]string, len(res.Users))
+				uuids := make([]string, len(res.Users))
+				refLinks := make([][]*pb.ReferenceLink, len(res.Users))
+				for i, u := range res.Users {
+					ids[i] = u.Id
+					uuids[i] = u.Uuid
+				}
+				return len(res.Users), ids, uuids, refLinks, nil
 			},
 		},
 	}

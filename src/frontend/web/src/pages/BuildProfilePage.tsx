@@ -299,6 +299,17 @@ export function BuildProfilePage() {
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
           {build.name}
         </h1>
+        {build.authorUsername && (
+          <div className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            Created by{" "}
+            <Link
+              to={`/users/${build.authorUsername}`}
+              className="font-medium text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+            >
+              @{build.authorUsername}
+            </Link>
+          </div>
+        )}
         {build.description && (
           <p className="mt-3 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
             {build.description}
@@ -307,7 +318,7 @@ export function BuildProfilePage() {
 
         <div className="mt-4">
           <SocialToolbar
-            target={{ type: "build", id: build.id || buildId || "", collection: "build" }}
+            target={{ type: "build", id: build.id || buildId || "", collection: "builds" }}
             targetName={build.name}
             onJumpToReviews={() => {
               const el = document.getElementById("social-hub");
@@ -768,12 +779,12 @@ export function BuildProfilePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* BILL OF MATERIALS (BOM) SECTION                              */}
+      {/* HARDWARE (BOM) SECTION                                       */}
       {/* ============================================================ */}
       <section className="mb-10">
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
           <Layers className="text-blue-600 dark:text-blue-400" size={22} />
-          <span>Bill of Materials (Hardware Components)</span>
+          <span>Hardware</span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -934,7 +945,7 @@ export function BuildProfilePage() {
       {/* SOCIAL INTERACTIONS: REVIEWS, Q&A, COLLECTIONS               */}
       {/* ============================================================ */}
       <SocialTabs
-        target={{ type: "build", id: build.id || buildId || "", collection: "build" }}
+        target={{ type: "build", id: build.id || buildId || "", collection: "builds" }}
         targetAuthorUuid={build.userUuid}
         entityName={build.name}
       />

@@ -58,7 +58,7 @@ export function SocialReviewSection({
 
   const queryPayload = {
     entityId: target.id,
-    collection: target.collection || (target.type === "build" ? "build" : undefined),
+    collection: target.collection || (target.type === "build" ? "builds" : undefined),
     sortBy,
   };
 
@@ -66,7 +66,7 @@ export function SocialReviewSection({
     data: reviewsResponse,
     isLoading: isLoadingReviews,
     refetch: refetchReviews,
-  } = useQuery(listReviews, queryPayload);
+  } = useQuery(listReviews, queryPayload, { staleTime: 60_000 });
 
   const { mutateAsync: mutateCreateReview } = useMutation(createReview);
   const { mutateAsync: mutateDeleteReview } = useMutation(deleteReview);
@@ -90,7 +90,7 @@ export function SocialReviewSection({
     try {
       await mutateCreateReview({
         entityId: target.id,
-        collection: target.collection || (target.type === "build" ? "build" : undefined),
+        collection: target.collection || (target.type === "build" ? "builds" : undefined),
         isRecommended,
         body: reviewBody.trim(),
       });
@@ -161,11 +161,15 @@ export function SocialReviewSection({
             <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Community Sentiment
             </h3>
-            {summary && totalReviews > 0 && tierColors && (
+            {totalReviews > 0 && tierColors ? (
               <span
                 className={`px-2 py-0.5 rounded text-[10px] font-bold border ${tierColors.bg} ${tierColors.border} ${tierColors.text}`}
               >
                 {tierLabel}
+              </span>
+            ) : (
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
+                No Reviews
               </span>
             )}
           </div>
@@ -187,26 +191,30 @@ export function SocialReviewSection({
           </p>
 
           {/* Qualitative Tier Progress */}
-          {totalReviews > 0 && (
-            <div className="space-y-1.5 pt-2">
-              <div className="flex justify-between text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
-                <span>Consensus</span>
-                <span>
-                  {positivePercent}% ({tierLabel})
-                </span>
-              </div>
-              <div className="h-2 w-full bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden flex">
-                <div
-                  className="bg-emerald-500 h-full transition-all duration-300"
-                  style={{ width: `${positivePercent}%` }}
-                />
-                <div
-                  className="bg-rose-500 h-full transition-all duration-300"
-                  style={{ width: `${100 - positivePercent}%` }}
-                />
-              </div>
+          <div className="space-y-1.5 pt-2">
+            <div className="flex justify-between text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+              <span>Consensus</span>
+              <span>
+                {totalReviews > 0 ? `${positivePercent}% (${tierLabel})` : "No consensus yet"}
+              </span>
             </div>
-          )}
+            <div className="h-2 w-full bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden flex">
+              {totalReviews > 0 ? (
+                <>
+                  <div
+                    className="bg-emerald-500 h-full transition-all duration-300"
+                    style={{ width: `${positivePercent}%` }}
+                  />
+                  <div
+                    className="bg-rose-500 h-full transition-all duration-300"
+                    style={{ width: `${100 - positivePercent}%` }}
+                  />
+                </>
+              ) : (
+                <div className="bg-zinc-300 dark:bg-zinc-700 h-full w-full opacity-30" />
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Write Review Button Box */}
@@ -358,8 +366,6 @@ export function SocialReviewSection({
             >
               <option value="helpful">Most Helpful</option>
               <option value="recent">Most Recent</option>
-              <option value="positive">Positive First</option>
-              <option value="negative">Negative First</option>
             </select>
           </div>
         </div>

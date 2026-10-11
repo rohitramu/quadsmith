@@ -203,7 +203,7 @@ describe("Social Interactions Components", () => {
       const qaTab = screen.getByRole("button", { name: /technical q&a/i });
       await user.click(qaTab);
       expect(
-        await screen.findByText(/Technical Q&A & Wiring Troubleshooting/i),
+        await screen.findByRole("heading", { level: 3, name: /^technical q&a$/i }),
       ).toBeInTheDocument();
 
       // Switch to Collections tab
@@ -214,7 +214,7 @@ describe("Social Interactions Components", () => {
       // Verify reputation economy content card
       expect(screen.getByText(/Community Reputation Economy \(Karma Rules\)/i)).toBeInTheDocument();
       expect(screen.getByText(/\+30 Rep/i)).toBeInTheDocument();
-      expect(screen.getByText(/Accepted Answer/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Accepted Answer/i).length).toBeGreaterThan(0);
       expect(screen.getByText(/\+20 Rep/i)).toBeInTheDocument();
       expect(screen.getByText(/\+3 Rep/i)).toBeInTheDocument();
       expect(screen.getByText(/Review Author/i)).toBeInTheDocument();

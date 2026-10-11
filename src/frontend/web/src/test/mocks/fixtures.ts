@@ -330,6 +330,8 @@ export const mockBuild1: Build = create(BuildSchema, {
   name: "Bando Basher 5 inch",
   description:
     "A durable 5-inch freestyle quadcopter built to withstand concrete hits in abandoned buildings, featuring the TBS Source One V5 frame, T-Motor F60 PRO V 1950KV motors, SpeedyBee F405 V4 stack, Caddx Ratel 2 camera, and CNHL 1500mAh 6S LiPo.",
+  userUuid: "018f0000-0000-7000-8000-000000000010",
+  authorUsername: "alex",
   frameUuid: mockFrame1.uuid,
   motorUuid: mockMotor1.uuid,
   flightControllerUuid: mockFC1.uuid,
@@ -573,7 +575,7 @@ export const mockCollectionItem1: CollectionItem = create(CollectionItemSchema, 
   entityUuid: mockBuild1.uuid,
   createdAt: { seconds: 1716600000n, nanos: 0 },
   entityId: "bando-basher-5-inch",
-  collection: "build",
+  collection: "builds",
   name: "Bando Basher 5 inch Freestyle",
   primaryDisplayImage:
     "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1200&q=80",

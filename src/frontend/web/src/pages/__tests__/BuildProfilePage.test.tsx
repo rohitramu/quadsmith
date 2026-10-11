@@ -20,6 +20,8 @@ describe("BuildProfilePage Component", () => {
     expect(
       await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
     ).toBeInTheDocument();
+    expect(screen.getByText(/Created by/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "@alex" })).toBeInTheDocument();
     expect(screen.queryByText("@bando-basher-5-inch")).not.toBeInTheDocument();
     expect(
       screen.getByText(/durable 5-inch freestyle quadcopter built to withstand concrete hits/i),
@@ -67,13 +69,13 @@ describe("BuildProfilePage Component", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("renders Bill of Materials (BOM) with hardware components and product links", async () => {
+  it("renders Hardware with components and product links", async () => {
     renderBuildProfile();
 
     expect(
       await screen.findByRole("heading", {
         level: 2,
-        name: /bill of materials \(hardware components\)/i,
+        name: /^hardware$/i,
       }),
     ).toBeInTheDocument();
 

@@ -4,10 +4,13 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "quadsmith/api/gen/quadsmith"
+	"quadsmith/api/internal/authcontext"
 	"quadsmith/api/internal/validation"
 )
 
@@ -33,12 +36,13 @@ func main() {
 	defer tx.Rollback(ctx)
 
 	tables := []string{
+		"users", "user_profiles", "user_emails", "user_reputations",
 		"builds", "motors", "frames", "batteries", "electronic_speed_controllers", "flight_controllers",
 		"receivers", "video_transmitters", "antennas", "cameras", "propellers", "gps_receivers",
 		"flight_controller_firmwares", "electronic_speed_controller_firmwares", "video_transmitter_firmwares",
 		"radio_firmwares", "software_tools", "transmitters", "goggles", "chargers", "field_tools",
 		"reviews", "review_votes", "review_comments", "questions", "answers", "question_votes", "answer_votes",
-		"question_comments", "answer_comments", "collections", "collection_items", "user_reputations", "entities",
+		"question_comments", "answer_comments", "collections", "collection_items", "entities",
 	}
 
 	for _, table := range tables {
@@ -47,12 +51,67 @@ func main() {
 
 	fmt.Println("Seeding Database from textproto...")
 
-	dir := "test/db/seeds/"
+	dir := "test/seed_data/"
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		for _, fallback := range []string{"../../test/db/seeds/", "../../../test/db/seeds/"} {
+		for _, fallback := range []string{"../../test/seed_data/", "../../../test/seed_data/"} {
 			if _, err := os.Stat(fallback); err == nil {
 				dir = fallback
 				break
+			}
+		}
+	}
+
+	// Users
+	if b, err := os.ReadFile(dir + "users.textproto"); err == nil {
+		m := &pb.ListUsersResponse{}
+		if err := prototext.Unmarshal(b, m); err != nil {
+			panic(err)
+		}
+		for _, u := range m.Users {
+			userUUID := u.Uuid
+			if userUUID == "" {
+				userUUID = authcontext.NewUUIDv7()
+			}
+			now := time.Now()
+			twoDaysAgo := now.Add(-48 * time.Hour)
+			if err := pb.CreateUser(ctx, tx, &pb.User{
+				Uuid:      userUUID,
+				Id:        u.Id,
+				Email:     u.Email,
+				Role:      u.Role,
+				CreatedAt: timestamppb.New(twoDaysAgo),
+				UpdatedAt: timestamppb.New(now),
+			}); err != nil {
+				panic(err)
+			}
+
+			if err := pb.CreateUserProfile(ctx, tx, &pb.UserProfile{
+				Uuid:      authcontext.NewUUIDv7(),
+				UserUuid:  userUUID,
+				AvatarUrl: "",
+				Bio:       u.Bio,
+				UpdatedAt: timestamppb.New(now),
+			}); err != nil {
+				panic(err)
+			}
+
+			if err := pb.CreateUserEmail(ctx, tx, &pb.UserEmail{
+				Uuid:      authcontext.NewUUIDv7(),
+				UserUuid:  userUUID,
+				Email:     u.Email,
+				IsPrimary: true,
+				CreatedAt: timestamppb.New(twoDaysAgo),
+			}); err != nil {
+				panic(err)
+			}
+
+			if err := pb.CreateUserReputation(ctx, tx, &pb.UserReputation{
+				Uuid:      authcontext.NewUUIDv7(),
+				UserUuid:  userUUID,
+				Score:     u.ReputationScore,
+				UpdatedAt: timestamppb.New(now),
+			}); err != nil {
+				panic(err)
 			}
 		}
 	}

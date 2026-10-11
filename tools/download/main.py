@@ -177,16 +177,16 @@ def process_item(item, session):
 
 def collect_items():
     files = {
-        "motors": "../../test/db/seeds/motors.textproto",
-        "batteries": "../../test/db/seeds/batteries.textproto",
-        "frames": "../../test/db/seeds/frames.textproto",
-        "escs": "../../test/db/seeds/escs.textproto",
-        "flight_controllers": "../../test/db/seeds/flight_controllers.textproto",
-        "propellers": "../../test/db/seeds/propellers.textproto",
-        "receivers": "../../test/db/seeds/receivers.textproto",
-        "cameras": "../../test/db/seeds/cameras.textproto",
-        "video_transmitters": "../../test/db/seeds/video_transmitters.textproto",
-        "antennas": "../../test/db/seeds/antennas.textproto",
+        "motors": "../../test/seed_data/motors.textproto",
+        "batteries": "../../test/seed_data/batteries.textproto",
+        "frames": "../../test/seed_data/frames.textproto",
+        "escs": "../../test/seed_data/electronic_speed_controllers.textproto",
+        "flight_controllers": "../../test/seed_data/flight_controllers.textproto",
+        "propellers": "../../test/seed_data/propellers.textproto",
+        "receivers": "../../test/seed_data/receivers.textproto",
+        "cameras": "../../test/seed_data/cameras.textproto",
+        "video_transmitters": "../../test/seed_data/video_transmitters.textproto",
+        "antennas": "../../test/seed_data/antennas.textproto",
     }
 
     items = []

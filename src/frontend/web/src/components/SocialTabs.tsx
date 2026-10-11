@@ -25,19 +25,32 @@ export function SocialTabs({
   defaultTab = "reviews",
 }: SocialTabsProps) {
   const [activeTab, setActiveTab] = useState<"reviews" | "qa" | "collections">(defaultTab);
+  const [visitedTabs, setVisitedTabs] = useState<Set<string>>(() => new Set([defaultTab]));
   const [isNewColModalOpen, setIsNewColModalOpen] = useState(false);
   const { user } = useAuth();
 
-  const queryPayload = {
-    entityId: target.id,
-    collection: target.collection || (target.type === "build" ? "build" : undefined),
+  const handleTabSelect = (tab: "reviews" | "qa" | "collections") => {
+    setActiveTab(tab);
+    setVisitedTabs((prev) => {
+      if (prev.has(tab)) return prev;
+      const next = new Set(prev);
+      next.add(tab);
+      return next;
+    });
   };
 
-  const { data: summary } = useQuery(getEntitySocialSummary, queryPayload);
+  const queryPayload = {
+    entityId: target.id,
+    collection: target.collection || (target.type === "build" ? "builds" : undefined),
+  };
+
+  const { data: summary } = useQuery(getEntitySocialSummary, queryPayload, {
+    staleTime: 60_000,
+  });
   const { data: userColsRes } = useQuery(
     listUserCollections,
     { userId: user?.id || "" },
-    { enabled: !!user?.id },
+    { enabled: !!user?.id, staleTime: 60_000 },
   );
 
   const reviewCount = summary?.reviewSummary?.totalReviews ?? 0;
@@ -63,7 +76,7 @@ export function SocialTabs({
       <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-px flex-wrap">
         <button
           type="button"
-          onClick={() => setActiveTab("reviews")}
+          onClick={() => handleTabSelect("reviews")}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
             activeTab === "reviews"
               ? "border-blue-500 text-blue-600 dark:text-blue-400"
@@ -79,7 +92,7 @@ export function SocialTabs({
 
         <button
           type="button"
-          onClick={() => setActiveTab("qa")}
+          onClick={() => handleTabSelect("qa")}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
             activeTab === "qa"
               ? "border-blue-500 text-blue-600 dark:text-blue-400"
@@ -95,7 +108,7 @@ export function SocialTabs({
 
         <button
           type="button"
-          onClick={() => setActiveTab("collections")}
+          onClick={() => handleTabSelect("collections")}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
             activeTab === "collections"
               ? "border-blue-500 text-blue-600 dark:text-blue-400"
@@ -111,10 +124,16 @@ export function SocialTabs({
       </div>
 
       {/* Tab 1: Reviews */}
-      {activeTab === "reviews" && (
-        <div id="reviews" className="animate-in fade-in duration-150">
+      {visitedTabs.has("reviews") && (
+        <div
+          id="reviews"
+          className={`animate-in fade-in duration-150 ${activeTab === "reviews" ? "" : "hidden"}`}
+        >
           <SocialReviewSection
-            target={target}
+            target={{
+              ...target,
+              collection: target.collection || (target.type === "build" ? "builds" : undefined),
+            }}
             targetAuthorUuid={targetAuthorUuid}
             entityName={entityName}
             isArchived={isArchived}
@@ -123,10 +142,16 @@ export function SocialTabs({
       )}
 
       {/* Tab 2: Q&A */}
-      {activeTab === "qa" && (
-        <div id="qa" className="animate-in fade-in duration-150">
+      {visitedTabs.has("qa") && (
+        <div
+          id="qa"
+          className={`animate-in fade-in duration-150 ${activeTab === "qa" ? "" : "hidden"}`}
+        >
           <SocialQaSection
-            target={target}
+            target={{
+              ...target,
+              collection: target.collection || (target.type === "build" ? "builds" : undefined),
+            }}
             targetAuthorUuid={targetAuthorUuid}
             entityName={entityName}
             isArchived={isArchived}
@@ -135,8 +160,11 @@ export function SocialTabs({
       )}
 
       {/* Tab 3: Collections */}
-      {activeTab === "collections" && (
-        <div id="collections" className="space-y-6 animate-in fade-in duration-150">
+      {visitedTabs.has("collections") && (
+        <div
+          id="collections"
+          className={`space-y-6 animate-in fade-in duration-150 ${activeTab === "collections" ? "" : "hidden"}`}
+        >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40">
             <div className="space-y-1">
               <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100 flex items-center gap-2">

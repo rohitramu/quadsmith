@@ -61,7 +61,7 @@ export function SocialQaSection({
 
   const queryPayload = {
     entityId: target.id,
-    collection: target.collection || (target.type === "build" ? "build" : undefined),
+    collection: target.collection || (target.type === "build" ? "builds" : undefined),
     sortBy,
   };
 
@@ -69,7 +69,7 @@ export function SocialQaSection({
     data: qResponse,
     isLoading: isLoadingQuestions,
     refetch: refetchQuestions,
-  } = useQuery(listQuestions, queryPayload);
+  } = useQuery(listQuestions, queryPayload, { staleTime: 60_000 });
 
   const { mutateAsync: mutateCreateQuestion } = useMutation(createQuestion);
   const { mutateAsync: mutateDeleteQuestion } = useMutation(deleteQuestion);
@@ -92,7 +92,7 @@ export function SocialQaSection({
     try {
       await mutateCreateQuestion({
         entityId: target.id,
-        collection: target.collection || (target.type === "build" ? "build" : undefined),
+        collection: target.collection || (target.type === "build" ? "builds" : undefined),
         title: qTitle.trim(),
         body: qBody.trim(),
       });
@@ -166,7 +166,7 @@ export function SocialQaSection({
         <div className="space-y-1">
           <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
             <HelpCircle size={18} className="text-blue-500" />
-            <span>Technical Q&A & Wiring Troubleshooting</span>
+            <span>Technical Q&A</span>
           </h3>
           <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Have questions about component fitment, motor KV pairing, or firmware configurations?

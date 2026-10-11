@@ -72,13 +72,13 @@ export function SaveToCollectionModal({
         await mutateRemoveItem({
           collectionId: colId,
           entityId: target.id,
-          collection: target.collection || (target.type === "build" ? "build" : undefined),
+          collection: target.collection || (target.type === "build" ? "builds" : undefined),
         });
       } else {
         await mutateAddItem({
           collectionId: colId,
           entityId: target.id,
-          collection: target.collection || (target.type === "build" ? "build" : undefined),
+          collection: target.collection || (target.type === "build" ? "builds" : undefined),
         });
       }
       await refetchCollections();
@@ -107,7 +107,7 @@ export function SaveToCollectionModal({
       await mutateAddItem({
         collectionId: created.id,
         entityId: target.id,
-        collection: target.collection || (target.type === "build" ? "build" : undefined),
+        collection: target.collection || (target.type === "build" ? "builds" : undefined),
       });
 
       setNewColName("");

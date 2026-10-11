@@ -50,6 +50,9 @@ func resolveEntity(ctx context.Context, db *pgxpool.Pool, entityID string, colle
 	col := ""
 	if collection != nil {
 		col = strings.TrimSpace(*collection)
+		if col == "build" {
+			col = "builds"
+		}
 	}
 
 	if col != "" {

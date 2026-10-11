@@ -196,6 +196,20 @@ message CheckUsernameAvailableResponse {
   string message = 3;
 }
 
+message SeedUser {
+  string uuid = 1;
+  string id = 2;
+  string email = 3;
+  string role = 4;
+  string bio = 5;
+  int32 reputation_score = 6;
+}
+
+message ListUsersResponse {
+  repeated SeedUser users = 1;
+  string next_page_token = 2;
+}
+
 service UserService {
   rpc GetUser(GetUserRequest) returns (User);
   rpc GetPublicProfile(GetPublicProfileRequest) returns (PublicUserProfile);

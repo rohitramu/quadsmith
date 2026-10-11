@@ -88,8 +88,7 @@ COPY --from=web-builder /app/dist /app/web/dist
 
 # Copy database schema and seeds
 COPY src/backend/db/schema.sql /app/src/backend/db/schema.sql
-COPY test/db/seeds /app/test/db/seeds
-COPY test/db/seed_data.sql /app/test/db/seed_data.sql
+COPY test/seed_data /app/test/seed_data
 
 # Pre-populate PostgreSQL database with schema and seeds at image build time
 RUN docker-entrypoint.sh postgres & \
@@ -97,7 +96,6 @@ RUN docker-entrypoint.sh postgres & \
     until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done && \
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql && \
     ./seeder && \
-    psql -U postgres -d quadsmith < /app/test/db/seed_data.sql && \
     gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
     wait $pid
 
@@ -113,7 +111,6 @@ if [ "$ROW_COUNT" = "0" ]; then\n\
     echo "Applying Schema & Seeding Database..."\n\
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql\n\
     ./seeder\n\
-    psql -U postgres -d quadsmith < /app/test/db/seed_data.sql\n\
 fi\n\
 echo "Starting Background Worker Daemon..."\n\
 ./worker > /var/log/worker.log 2>&1 &\n\

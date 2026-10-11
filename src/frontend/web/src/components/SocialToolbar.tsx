@@ -31,10 +31,14 @@ export function SocialToolbar({
 
   const queryPayload = {
     entityId: target.id,
-    collection: target.collection || (target.type === "build" ? "build" : undefined),
+    collection: target.collection || (target.type === "build" ? "builds" : undefined),
   };
 
-  const { data: summary, refetch: refetchSummary } = useQuery(getEntitySocialSummary, queryPayload);
+  const { data: summary, refetch: refetchSummary } = useQuery(
+    getEntitySocialSummary,
+    queryPayload,
+    { staleTime: 60_000 },
+  );
 
   const { mutateAsync: mutateToggleLike, isPending: isLiking } = useMutation(toggleLikeItem);
 
@@ -45,7 +49,7 @@ export function SocialToolbar({
     try {
       await mutateToggleLike({
         entityId: target.id,
-        collection: target.collection || (target.type === "build" ? "build" : undefined),
+        collection: target.collection || (target.type === "build" ? "builds" : undefined),
       });
       await refetchSummary();
       await queryClient.invalidateQueries();

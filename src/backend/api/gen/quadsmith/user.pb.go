@@ -1008,6 +1008,142 @@ func (x *CheckUsernameAvailableResponse) GetMessage() string {
 	return ""
 }
 
+type SeedUser struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Uuid            string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Email           string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Role            string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
+	Bio             string                 `protobuf:"bytes,5,opt,name=bio,proto3" json:"bio,omitempty"`
+	ReputationScore int32                  `protobuf:"varint,6,opt,name=reputation_score,json=reputationScore,proto3" json:"reputation_score,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SeedUser) Reset() {
+	*x = SeedUser{}
+	mi := &file_user_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SeedUser) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SeedUser) ProtoMessage() {}
+
+func (x *SeedUser) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SeedUser.ProtoReflect.Descriptor instead.
+func (*SeedUser) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *SeedUser) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *SeedUser) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SeedUser) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *SeedUser) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+func (x *SeedUser) GetBio() string {
+	if x != nil {
+		return x.Bio
+	}
+	return ""
+}
+
+func (x *SeedUser) GetReputationScore() int32 {
+	if x != nil {
+		return x.ReputationScore
+	}
+	return 0
+}
+
+type ListUsersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*SeedUser            `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUsersResponse) Reset() {
+	*x = ListUsersResponse{}
+	mi := &file_user_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUsersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUsersResponse) ProtoMessage() {}
+
+func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUsersResponse.ProtoReflect.Descriptor instead.
+func (*ListUsersResponse) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ListUsersResponse) GetUsers() []*SeedUser {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+func (x *ListUsersResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
 var File_user_proto protoreflect.FileDescriptor
 
 const file_user_proto_rawDesc = "" +
@@ -1120,7 +1256,17 @@ const file_user_proto_rawDesc = "" +
 	"\x1eCheckUsernameAvailableResponse\x12=\n" +
 	"\x06status\x18\x01 \x01(\x0e2%.quadsmith.UsernameAvailabilityStatusR\x06status\x12\x1c\n" +
 	"\tavailable\x18\x02 \x01(\bR\tavailable\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage*\xce\x01\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"\x95\x01\n" +
+	"\bSeedUser\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\tR\x04role\x12\x10\n" +
+	"\x03bio\x18\x05 \x01(\tR\x03bio\x12)\n" +
+	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"f\n" +
+	"\x11ListUsersResponse\x12)\n" +
+	"\x05users\x18\x01 \x03(\v2\x13.quadsmith.SeedUserR\x05users\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken*\xce\x01\n" +
 	"\x1aUsernameAvailabilityStatus\x12,\n" +
 	"(USERNAME_AVAILABILITY_STATUS_UNSPECIFIED\x10\x00\x12*\n" +
 	"&USERNAME_AVAILABILITY_STATUS_AVAILABLE\x10\x01\x12,\n" +
@@ -1144,7 +1290,7 @@ func file_user_proto_rawDescGZIP() []byte {
 }
 
 var file_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_user_proto_goTypes = []any{
 	(UsernameAvailabilityStatus)(0),        // 0: quadsmith.UsernameAvailabilityStatus
 	(*User)(nil),                           // 1: quadsmith.User
@@ -1159,40 +1305,43 @@ var file_user_proto_goTypes = []any{
 	(*GetPublicProfileRequest)(nil),        // 10: quadsmith.GetPublicProfileRequest
 	(*CheckUsernameAvailableRequest)(nil),  // 11: quadsmith.CheckUsernameAvailableRequest
 	(*CheckUsernameAvailableResponse)(nil), // 12: quadsmith.CheckUsernameAvailableResponse
-	(*timestamppb.Timestamp)(nil),          // 13: google.protobuf.Timestamp
+	(*SeedUser)(nil),                       // 13: quadsmith.SeedUser
+	(*ListUsersResponse)(nil),              // 14: quadsmith.ListUsersResponse
+	(*timestamppb.Timestamp)(nil),          // 15: google.protobuf.Timestamp
 }
 var file_user_proto_depIdxs = []int32{
-	13, // 0: quadsmith.User.last_renamed_at:type_name -> google.protobuf.Timestamp
-	13, // 1: quadsmith.User.deleted_at:type_name -> google.protobuf.Timestamp
-	13, // 2: quadsmith.User.banned_at:type_name -> google.protobuf.Timestamp
-	13, // 3: quadsmith.User.created_at:type_name -> google.protobuf.Timestamp
-	13, // 4: quadsmith.User.updated_at:type_name -> google.protobuf.Timestamp
-	13, // 5: quadsmith.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
-	13, // 6: quadsmith.UserEmail.created_at:type_name -> google.protobuf.Timestamp
-	13, // 7: quadsmith.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
-	13, // 8: quadsmith.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
-	13, // 9: quadsmith.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
-	13, // 10: quadsmith.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
-	13, // 11: quadsmith.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
-	13, // 12: quadsmith.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
-	13, // 13: quadsmith.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
-	13, // 14: quadsmith.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
-	13, // 15: quadsmith.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
-	13, // 16: quadsmith.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
-	13, // 17: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
-	13, // 18: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	15, // 0: quadsmith.User.last_renamed_at:type_name -> google.protobuf.Timestamp
+	15, // 1: quadsmith.User.deleted_at:type_name -> google.protobuf.Timestamp
+	15, // 2: quadsmith.User.banned_at:type_name -> google.protobuf.Timestamp
+	15, // 3: quadsmith.User.created_at:type_name -> google.protobuf.Timestamp
+	15, // 4: quadsmith.User.updated_at:type_name -> google.protobuf.Timestamp
+	15, // 5: quadsmith.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
+	15, // 6: quadsmith.UserEmail.created_at:type_name -> google.protobuf.Timestamp
+	15, // 7: quadsmith.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
+	15, // 8: quadsmith.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
+	15, // 9: quadsmith.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
+	15, // 10: quadsmith.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
+	15, // 11: quadsmith.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
+	15, // 12: quadsmith.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
+	15, // 13: quadsmith.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
+	15, // 14: quadsmith.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
+	15, // 15: quadsmith.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
+	15, // 16: quadsmith.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
+	15, // 17: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
+	15, // 18: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
 	0,  // 19: quadsmith.CheckUsernameAvailableResponse.status:type_name -> quadsmith.UsernameAvailabilityStatus
-	9,  // 20: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
-	10, // 21: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
-	11, // 22: quadsmith.UserService.CheckUsernameAvailable:input_type -> quadsmith.CheckUsernameAvailableRequest
-	1,  // 23: quadsmith.UserService.GetUser:output_type -> quadsmith.User
-	4,  // 24: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
-	12, // 25: quadsmith.UserService.CheckUsernameAvailable:output_type -> quadsmith.CheckUsernameAvailableResponse
-	23, // [23:26] is the sub-list for method output_type
-	20, // [20:23] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	13, // 20: quadsmith.ListUsersResponse.users:type_name -> quadsmith.SeedUser
+	9,  // 21: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
+	10, // 22: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
+	11, // 23: quadsmith.UserService.CheckUsernameAvailable:input_type -> quadsmith.CheckUsernameAvailableRequest
+	1,  // 24: quadsmith.UserService.GetUser:output_type -> quadsmith.User
+	4,  // 25: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
+	12, // 26: quadsmith.UserService.CheckUsernameAvailable:output_type -> quadsmith.CheckUsernameAvailableResponse
+	24, // [24:27] is the sub-list for method output_type
+	21, // [21:24] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }
@@ -1210,7 +1359,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_user_proto_rawDesc), len(file_user_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   12,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
