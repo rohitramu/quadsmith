@@ -3746,7 +3746,7 @@ export function BuildWizardPage() {
                   }`}
                 >
                   {evaluation
-                    ? `${evaluation.minFlightTimeMin.toFixed(1)} - ${evaluation.maxFlightTimeMin.toFixed(1)}m`
+                    ? `${evaluation.minFlightTimeMin.toFixed(1)} - ${evaluation.maxFlightTimeMin.toFixed(1)} min`
                     : "-- min"}
                 </div>
               </div>

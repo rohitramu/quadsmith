@@ -374,7 +374,33 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(BatteryService, {
-      listBatteries: () => ({ batteries, nextPageToken: "" }),
+      listBatteries: (req) => {
+        let list = [...batteries];
+        if (req?.filter) {
+          const minVoltMatch = req.filter.match(/min_voltage\s*>=\s*([\d.]+)/);
+          const maxVoltMatch = req.filter.match(/max_voltage\s*<=\s*([\d.]+)/);
+          const maxCurrMatch = req.filter.match(/max_current_a\s*>=\s*([\d.]+)/);
+          const connMatch = req.filter.match(/connector\s*==\s*"([^"]+)"/);
+
+          if (minVoltMatch) {
+            const minV = parseFloat(minVoltMatch[1]);
+            list = list.filter((b) => (b.minVoltage || 0) >= minV);
+          }
+          if (maxVoltMatch) {
+            const maxV = parseFloat(maxVoltMatch[1]);
+            list = list.filter((b) => (b.maxVoltage || 999) <= maxV);
+          }
+          if (maxCurrMatch) {
+            const maxA = parseFloat(maxCurrMatch[1]);
+            list = list.filter((b) => (b.maxCurrentA || 0) >= maxA);
+          }
+          if (connMatch) {
+            const conn = connMatch[1];
+            list = list.filter((b) => b.connector === conn);
+          }
+        }
+        return { batteries: list, nextPageToken: "" };
+      },
       getBattery: (req) => {
         const found = batteries.find((b) => b.id === req.id || b.uuid === req.id);
         if (found) {

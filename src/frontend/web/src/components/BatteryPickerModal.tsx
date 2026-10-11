@@ -1,5 +1,7 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useQuery } from "@connectrpc/connect-query";
 import type { Battery } from "../gen/quadsmith/battery_pb";
+import { listBatteries } from "../gen/quadsmith/battery-BatteryService_connectquery";
 import { X, Search, Weight, Gauge, Check, ArrowUpDown, Filter } from "lucide-react";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
@@ -9,7 +11,7 @@ export interface BatteryPickerModalProps {
   isOpen: boolean;
   onClose: () => void;
   selectedBatteryId: string;
-  onSelectBattery: (batteryId: string) => void;
+  onSelectBattery: (batteryId: string, battery?: Battery) => void;
   limits?: {
     minVoltage?: number;
     maxVoltage?: number;
@@ -18,6 +20,7 @@ export interface BatteryPickerModalProps {
     compatibleConnectors?: string[];
   } | null;
   compatibleBatteries: Battery[];
+  allBatteries?: Battery[];
   isLoading?: boolean;
 }
 
@@ -30,10 +33,12 @@ export function BatteryPickerModal({
   onSelectBattery,
   limits,
   compatibleBatteries,
+  allBatteries: propAllBatteries,
   isLoading,
 }: BatteryPickerModalProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("weight_asc");
+  const [compatibleOnly, setCompatibleOnly] = useState<boolean>(true);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   // Sync native dialog state and handle escape key
@@ -58,9 +63,98 @@ export function BatteryPickerModal({
     onClose();
   };
 
+  // Fetch all batteries when modal is open if not provided in props
+  const { data: allBatteriesResponse, isLoading: isLoadingAllBatteries } = useQuery(
+    listBatteries,
+    { sort: ["weight_g"], pageSize: 100 },
+    { enabled: isOpen && !propAllBatteries },
+  );
+
+  const allBatteries = propAllBatteries || allBatteriesResponse?.batteries || [];
+
+  const compatibleIdSet = useMemo(() => {
+    return new Set(compatibleBatteries.map((b) => b.id || b.uuid).filter(Boolean));
+  }, [compatibleBatteries]);
+
+  const getIncompatibilityReason = useCallback(
+    (b: Battery): string | null => {
+      // If compatibleIdSet already contains this battery, it is confirmed compatible
+      if (compatibleIdSet.has(b.id) || compatibleIdSet.has(b.uuid)) {
+        return null;
+      }
+
+      if (limits) {
+        if (
+          limits.minVoltage !== undefined &&
+          limits.minVoltage > 0 &&
+          b.maxVoltage &&
+          b.maxVoltage < limits.minVoltage - 0.05
+        ) {
+          return `${b.maxVoltage.toFixed(1)}V < ${limits.minVoltage.toFixed(1)}V min`;
+        }
+        if (
+          limits.minVoltage !== undefined &&
+          limits.minVoltage > 0 &&
+          b.minVoltage &&
+          b.minVoltage < limits.minVoltage - 0.05
+        ) {
+          return `${b.minVoltage.toFixed(1)}V < ${limits.minVoltage.toFixed(1)}V min`;
+        }
+        if (
+          limits.maxVoltage !== undefined &&
+          limits.maxVoltage > 0 &&
+          b.maxVoltage &&
+          b.maxVoltage > limits.maxVoltage + 0.05
+        ) {
+          return `${b.maxVoltage.toFixed(1)}V > ${limits.maxVoltage.toFixed(1)}V max`;
+        }
+        if (
+          limits.maxCurrentA !== undefined &&
+          limits.maxCurrentA > 0 &&
+          b.maxCurrentA &&
+          b.maxCurrentA < limits.maxCurrentA - 0.1
+        ) {
+          return `${b.maxCurrentA.toFixed(0)}A < ${limits.maxCurrentA.toFixed(0)}A req`;
+        }
+        const conns =
+          limits.compatibleConnectors && limits.compatibleConnectors.length > 0
+            ? limits.compatibleConnectors
+            : limits.connector
+              ? [limits.connector]
+              : [];
+        if (conns.length > 0 && b.connector && !conns.includes(b.connector)) {
+          return `${b.connector} ≠ ${conns.join("/")}`;
+        }
+      }
+
+      if (compatibleIdSet.size > 0) {
+        return "Limits exceeded";
+      }
+
+      return null;
+    },
+    [limits, compatibleIdSet],
+  );
+
+  const candidateBatteries = useMemo(() => {
+    if (compatibleOnly) {
+      return compatibleBatteries;
+    }
+    const seen = new Set<string>();
+    const list: Battery[] = [];
+    for (const b of [...allBatteries, ...compatibleBatteries]) {
+      const id = b.id || b.uuid;
+      if (id && !seen.has(id)) {
+        seen.add(id);
+        list.push(b);
+      }
+    }
+    return list;
+  }, [compatibleOnly, compatibleBatteries, allBatteries]);
+
   // Filter and sort batteries
   const filteredAndSortedBatteries = useMemo(() => {
-    let result = [...compatibleBatteries];
+    let result = [...candidateBatteries];
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
@@ -88,7 +182,7 @@ export function BatteryPickerModal({
     });
 
     return result;
-  }, [compatibleBatteries, searchQuery, sortBy]);
+  }, [candidateBatteries, searchQuery, sortBy]);
 
   if (!isOpen) return null;
 
@@ -166,53 +260,73 @@ export function BatteryPickerModal({
           />
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0 text-xs">
-          <ArrowUpDown size={14} className="text-zinc-400" />
-          <span className="text-zinc-500 dark:text-zinc-400 font-medium">Sort:</span>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as SortOption)}
-            className="px-2 py-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="weight_asc">Lightest (Recommended)</option>
-            <option value="capacity_desc">Capacity (High to Low)</option>
-            <option value="current_desc">Max Current (High to Low)</option>
-          </select>
+        <div className="flex items-center gap-3 sm:gap-4 shrink-0 text-xs">
+          <label className="flex items-center gap-1.5 cursor-pointer text-xs font-medium text-zinc-700 dark:text-zinc-300 select-none">
+            <input
+              type="checkbox"
+              checked={compatibleOnly}
+              onChange={(e) => setCompatibleOnly(e.target.checked)}
+              className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+            />
+            <span>Compatible only</span>
+          </label>
+
+          <div className="flex items-center gap-1.5">
+            <ArrowUpDown size={14} className="text-zinc-400" />
+            <span className="text-zinc-500 dark:text-zinc-400 font-medium">Sort:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="px-2 py-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="weight_asc">Lightest (Recommended)</option>
+              <option value="capacity_desc">Capacity (High to Low)</option>
+              <option value="current_desc">Max Current (High to Low)</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {/* Battery List Content */}
       <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-2.5 min-h-[280px]">
-        {isLoading ? (
+        {isLoading ||
+        (isLoadingAllBatteries && !compatibleOnly && candidateBatteries.length === 0) ? (
           <div className="py-12 text-center text-zinc-400 text-sm animate-pulse">
-            Loading compatible batteries...
+            Loading batteries...
           </div>
         ) : filteredAndSortedBatteries.length === 0 ? (
           <div className="py-12 text-center">
             <Filter size={32} className="mx-auto text-zinc-300 dark:text-zinc-600 mb-2" />
             <p className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
-              No compatible batteries found
+              No {compatibleOnly ? "compatible " : ""}batteries found
             </p>
             <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
               {searchQuery
                 ? `No batteries match "${searchQuery}". Try a different search term.`
-                : "No batteries in the database match this build's electrical voltage and current limits."}
+                : compatibleOnly
+                  ? "No batteries in the database match this build's electrical voltage and current limits. Uncheck 'Compatible only' to browse all batteries."
+                  : "No batteries found in the database."}
             </p>
           </div>
         ) : (
           filteredAndSortedBatteries.map((b) => {
             const isSelected = b.id === selectedBatteryId || b.uuid === selectedBatteryId;
+            const incompatibilityReason = getIncompatibilityReason(b);
+            const isIncompatible = !!incompatibilityReason;
+
             return (
               <div
                 key={b.uuid || b.id}
                 onClick={() => {
-                  onSelectBattery(b.id || b.uuid);
+                  onSelectBattery(b.id || b.uuid, b);
                   onClose();
                 }}
                 className={`group cursor-pointer p-3.5 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                   isSelected
                     ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                    : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50/80 dark:hover:bg-zinc-850"
+                    : isIncompatible
+                      ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                      : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50/80 dark:hover:bg-zinc-850"
                 }`}
               >
                 <div className="min-w-0 flex-1">
@@ -233,6 +347,11 @@ export function BatteryPickerModal({
                         {b.connector}
                       </span>
                     ) : null}
+                    {isIncompatible && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                        Incompatible ({incompatibilityReason})
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400 flex-wrap">
@@ -295,7 +414,7 @@ export function BatteryPickerModal({
       {/* Footer */}
       <div className="p-3 sm:px-5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 flex items-center justify-between text-xs text-zinc-500">
         <span>
-          Showing {filteredAndSortedBatteries.length} compatible{" "}
+          Showing {filteredAndSortedBatteries.length} {compatibleOnly ? "compatible " : ""}
           {filteredAndSortedBatteries.length === 1 ? "battery" : "batteries"}
         </span>
         <button

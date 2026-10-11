@@ -84,4 +84,37 @@ describe("ProductHoverCard", () => {
     expect(card).toBeInTheDocument();
     expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
   });
+
+  it("positions hover card next to the trigger element when placement is 'side'", async () => {
+    renderWithProviders(
+      <ProductHoverCard collectionId="motors" item={mockMotor1} placement="side">
+        <span data-testid="side-trigger">Side Hover Target</span>
+      </ProductHoverCard>,
+    );
+
+    const trigger = screen.getByTestId("product-hover-trigger");
+    vi.spyOn(trigger, "getBoundingClientRect").mockReturnValue({
+      left: 100,
+      right: 350,
+      top: 200,
+      bottom: 236,
+      width: 250,
+      height: 36,
+      x: 100,
+      y: 200,
+      toJSON: () => {},
+    });
+
+    act(() => {
+      fireEvent.mouseEnter(trigger);
+      vi.advanceTimersByTime(250);
+    });
+
+    const card = screen.getByTestId("product-hover-card");
+    expect(card).toBeInTheDocument();
+    // In placement="side", left should be right + 8 = 358px
+    expect(card.style.left).toBe("358px");
+    expect(card.style.top).toBe("200px");
+    expect(card.style.transform).toBe("none");
+  });
 });

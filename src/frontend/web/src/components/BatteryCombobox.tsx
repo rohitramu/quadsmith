@@ -263,6 +263,7 @@ export function BatteryCombobox({
                     item={b}
                     productId={bId}
                     as="li"
+                    placement="side"
                     className={`p-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer flex items-center justify-between transition-colors ${
                       isSelected
                         ? "bg-blue-50/80 dark:bg-blue-950/30 border-l-2 border-blue-500"

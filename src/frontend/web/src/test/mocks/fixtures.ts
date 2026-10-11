@@ -164,7 +164,23 @@ export const mockBattery1: Battery = create(BatterySchema, {
   description: "High discharge 6S battery pack for freestyle drones.",
 });
 
-export const mockBatteries: Battery[] = [mockBattery1];
+export const mockBatteryIncompatible: Battery = create(BatterySchema, {
+  uuid: "018f0000-0000-7000-0000-000000000035",
+  id: "tattu-450mah-1s-whoop",
+  manufacturer: "Tattu",
+  name: "Tattu 450mAh 1S 95C",
+  capacityMah: 450,
+  cellCountS: 1,
+  weightG: 13,
+  chemistry: "LiPo",
+  connector: "BT2.0",
+  minVoltage: 3.3,
+  maxVoltage: 4.35,
+  maxCurrentA: 42.75,
+  description: "Tiny whoop 1S high rate battery.",
+});
+
+export const mockBatteries: Battery[] = [mockBattery1, mockBatteryIncompatible];
 
 export const mockESC1: ElectronicSpeedController = create(ElectronicSpeedControllerSchema, {
   uuid: "018f0000-0000-7000-0000-000000000040",

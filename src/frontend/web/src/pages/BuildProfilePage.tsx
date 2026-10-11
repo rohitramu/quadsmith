@@ -19,6 +19,7 @@ import { getReceiver } from "../gen/quadsmith/receiver-ReceiverService_connectqu
 import { getAntenna } from "../gen/quadsmith/antenna-AntennaService_connectquery";
 import { getGpsReceiver } from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
 import { SystemMessageSeverity } from "../gen/quadsmith/evaluator_pb";
+import type { Battery } from "../gen/quadsmith/battery_pb";
 import { MediaGallery } from "../components/MediaGallery";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
 import { buildBatteryCelFilter } from "../lib/batteryFilter";
@@ -191,17 +192,18 @@ export function BuildProfilePage() {
   );
   const compatibleBatteries = batteryResponse?.batteries || [];
 
+  // Selected battery object state (for custom or incompatible selection)
+  const [selectedBatteryObj, setSelectedBatteryObj] = useState<Battery | null>(null);
+
   // Reset selected battery when changing builds
   useEffect(() => {
     setSelectedBatteryId("");
+    setSelectedBatteryObj(null);
   }, [buildId]);
 
-  // Lightest compatible battery selected by default or reset if invalid
+  // Lightest compatible battery selected by default when empty
   useEffect(() => {
-    const isCurrentBatteryValid = compatibleBatteries.some(
-      (b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId,
-    );
-    if (!isCurrentBatteryValid && compatibleBatteries.length > 0) {
+    if (!selectedBatteryId && compatibleBatteries.length > 0) {
       if (
         electricalLimits?.defaultBatteryId &&
         compatibleBatteries.some(
@@ -214,8 +216,6 @@ export function BuildProfilePage() {
       } else {
         setSelectedBatteryId(compatibleBatteries[0].id || compatibleBatteries[0].uuid);
       }
-    } else if (compatibleBatteries.length === 0) {
-      setSelectedBatteryId("");
     }
   }, [electricalLimits, compatibleBatteries, selectedBatteryId]);
 
@@ -225,10 +225,26 @@ export function BuildProfilePage() {
     isBatteryLoaded && (compatibleBatteries.length === 0 || !electricalLimits.defaultBatteryId);
 
   const activeBattery = useMemo(() => {
-    return compatibleBatteries.find(
-      (b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId,
+    return (
+      compatibleBatteries.find((b) => b.id === selectedBatteryId || b.uuid === selectedBatteryId) ||
+      (selectedBatteryObj &&
+      (selectedBatteryObj.id === selectedBatteryId || selectedBatteryObj.uuid === selectedBatteryId)
+        ? selectedBatteryObj
+        : undefined)
     );
-  }, [compatibleBatteries, selectedBatteryId]);
+  }, [compatibleBatteries, selectedBatteryId, selectedBatteryObj]);
+
+  const comboboxBatteries = useMemo(() => {
+    if (
+      activeBattery &&
+      !compatibleBatteries.some(
+        (b) => (b.id || b.uuid) === (activeBattery.id || activeBattery.uuid),
+      )
+    ) {
+      return [activeBattery, ...compatibleBatteries];
+    }
+    return compatibleBatteries;
+  }, [activeBattery, compatibleBatteries]);
 
   const {
     data: evaluation,
@@ -425,8 +441,11 @@ export function BuildProfilePage() {
                 <div className="flex items-center gap-1.5 my-1.5">
                   <BatteryCombobox
                     selectedBatteryId={selectedBatteryId}
-                    onSelectBattery={(id) => setSelectedBatteryId(id)}
-                    batteries={compatibleBatteries}
+                    onSelectBattery={(id, battery) => {
+                      setSelectedBatteryId(id);
+                      if (battery) setSelectedBatteryObj(battery);
+                    }}
+                    batteries={comboboxBatteries}
                     isLoading={isLoadingBatteries}
                     ariaLabel="Select battery"
                     className="flex-1 min-w-0"
@@ -955,7 +974,10 @@ export function BuildProfilePage() {
         isOpen={isBatteryModalOpen}
         onClose={() => setIsBatteryModalOpen(false)}
         selectedBatteryId={selectedBatteryId}
-        onSelectBattery={(id) => setSelectedBatteryId(id)}
+        onSelectBattery={(id, battery) => {
+          setSelectedBatteryId(id);
+          if (battery) setSelectedBatteryObj(battery);
+        }}
         limits={electricalLimits}
         compatibleBatteries={compatibleBatteries}
         isLoading={isLoadingBatteries}

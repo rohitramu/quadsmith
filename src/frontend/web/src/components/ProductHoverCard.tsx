@@ -18,6 +18,7 @@ export interface ProductHoverCardProps {
   children: React.ReactNode;
   className?: string;
   as?: React.ElementType;
+  placement?: "auto" | "side" | "top" | "bottom";
 }
 
 interface ProductHoverCardPresenterProps {
@@ -27,6 +28,7 @@ interface ProductHoverCardPresenterProps {
   children: React.ReactNode;
   className?: string;
   as?: React.ElementType;
+  placement?: "auto" | "side" | "top" | "bottom";
 }
 
 function ProductHoverCardPresenter({
@@ -36,6 +38,7 @@ function ProductHoverCardPresenter({
   children,
   className = "",
   as,
+  placement = "auto",
 }: ProductHoverCardPresenterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number; placeAbove: boolean }>({
@@ -59,28 +62,52 @@ function ProductHoverCardPresenter({
     const cardWidth = 320;
     const estimatedHeight = 240;
 
-    // Viewport bounds checking
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const placeAbove = spaceBelow < estimatedHeight && rect.top > estimatedHeight;
-
     let left = rect.left;
-    if (as === "tr" && lastMousePosRef.current) {
-      left = lastMousePosRef.current.clientX - 40;
-    }
+    let top = rect.top;
+    let placeAbove = false;
 
-    if (left + cardWidth > window.innerWidth - 16) {
-      left = window.innerWidth - cardWidth - 16;
-    }
-    if (left < 16) left = 16;
+    if (placement === "side") {
+      const spaceRight = window.innerWidth - rect.right;
+      const spaceLeft = rect.left;
 
-    const top = placeAbove ? rect.top - 8 : rect.bottom + 8;
+      if (spaceRight >= cardWidth + 16) {
+        left = rect.right + 8;
+      } else if (spaceLeft >= cardWidth + 16) {
+        left = rect.left - cardWidth - 8;
+      } else {
+        left =
+          spaceRight >= spaceLeft
+            ? Math.min(rect.right + 8, window.innerWidth - cardWidth - 16)
+            : Math.max(16, rect.left - cardWidth - 8);
+      }
+
+      // Vertically align top of card with hovered element, clamped within viewport
+      top = Math.max(16, Math.min(rect.top, window.innerHeight - estimatedHeight - 16));
+      placeAbove = false;
+    } else {
+      const spaceBelow = window.innerHeight - rect.bottom;
+      placeAbove =
+        placement === "top" ||
+        (placement !== "bottom" && spaceBelow < estimatedHeight && rect.top > estimatedHeight);
+
+      if (as === "tr" && lastMousePosRef.current) {
+        left = lastMousePosRef.current.clientX - 40;
+      }
+
+      if (left + cardWidth > window.innerWidth - 16) {
+        left = window.innerWidth - cardWidth - 16;
+      }
+      if (left < 16) left = 16;
+
+      top = placeAbove ? rect.top - 8 : rect.bottom + 8;
+    }
 
     setCoords({
       top: top + window.scrollY,
       left: left + window.scrollX,
       placeAbove,
     });
-  }, [as]);
+  }, [as, placement]);
 
   const handleMouseEnter = (e: React.MouseEvent) => {
     lastMousePosRef.current = { clientX: e.clientX, clientY: e.clientY };
@@ -241,6 +268,7 @@ function ProductHoverCardWithQuery({
   children,
   className,
   as,
+  placement,
 }: ProductHoverCardProps & { getQuery: any }) {
   const { data: fetchedItem } = useQuery(getQuery, { id: productId }, { staleTime: 60_000 });
 
@@ -251,6 +279,7 @@ function ProductHoverCardWithQuery({
       productId={productId}
       className={className}
       as={as}
+      placement={placement}
     >
       {children}
     </ProductHoverCardPresenter>
@@ -263,6 +292,7 @@ function ProductHoverCardFetcher({
   children,
   className,
   as,
+  placement,
 }: ProductHoverCardProps) {
   const collection = getHardwareCollection(collectionId);
 
@@ -278,6 +308,7 @@ function ProductHoverCardFetcher({
       getQuery={collection.getQuery}
       className={className}
       as={as}
+      placement={placement}
     >
       {children}
     </ProductHoverCardWithQuery>

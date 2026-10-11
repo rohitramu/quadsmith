@@ -244,8 +244,8 @@ export function BuildCard({ build }: BuildCardProps) {
                 >
                   <Clock size={13} />
                   {evaluation.minFlightTimeMin > 0
-                    ? `${evaluation.minFlightTimeMin.toFixed(1)}–${evaluation.maxFlightTimeMin.toFixed(1)}m`
-                    : `~${evaluation.maxFlightTimeMin.toFixed(1)}m`}
+                    ? `${evaluation.minFlightTimeMin.toFixed(1)}–${evaluation.maxFlightTimeMin.toFixed(1)} min`
+                    : `~${evaluation.maxFlightTimeMin.toFixed(1)} min`}
                 </span>
               )}
             </div>
