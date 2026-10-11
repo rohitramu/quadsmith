@@ -124,28 +124,25 @@ describe("AccountSettingsPage Component", () => {
     expect(sendCodeBtn).not.toBeDisabled();
     fireEvent.click(sendCodeBtn);
 
+    // Uses the same Add Email modal without ANY early indication that an account already exists
     await waitFor(() => {
-      expect(screen.getByText("Verify Account Ownership")).toBeInTheDocument();
-      expect(screen.getByText("Existing Account Detected")).toBeInTheDocument();
-      expect(screen.getByText("Two Ways to Verify:")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /verify your email/i })).toBeInTheDocument();
       expect(
-        screen.getByText(/enter the verification code sent to your email to continue/i),
+        screen.getByText(/we sent a single-use verification code to old\.racer@fpv\.org/i),
       ).toBeInTheDocument();
-      // Crucial: ensure @old_racer is NOT leaked before ownership is verified
+      expect(screen.queryByText(/existing account/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/merge/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/old_racer/i)).not.toBeInTheDocument();
     });
 
-    // Enter verification code into segmented OTP inputs
-    const firstDigit = screen.getByLabelText("Digit 1");
-    expect(firstDigit).toBeInTheDocument();
-    fireEvent.change(firstDigit, { target: { value: "123456" } });
+    // Enter verification code into Add Email OTP inputs
+    const otpInputs = screen
+      .getAllByRole("textbox")
+      .filter((input) => input.getAttribute("inputmode") === "numeric");
+    expect(otpInputs).toHaveLength(6);
+    fireEvent.change(otpInputs[0], { target: { value: "123456" } });
 
-    // Verify Ownership & Review
-    const verifyBtn = screen.getByRole("button", { name: /verify ownership & review/i });
-    expect(verifyBtn).not.toBeDisabled();
-    fireEvent.click(verifyBtn);
-
-    // Summary screen displayed after ownership check
+    // After successful verification, transition to the "Confirm Account Merge" modal
     await waitFor(() => {
       expect(screen.getByText("Confirm Account Merge")).toBeInTheDocument();
       expect(screen.getByText(/ownership verified for/i)).toBeInTheDocument();

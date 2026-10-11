@@ -684,24 +684,6 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("this email address is already associated with your account"))
 	}
 
-	// Check if this email is registered to ANOTHER account
-	var otherUserUUID string
-	err = s.db.QueryRow(ctx, `
-		SELECT u.uuid
-		FROM users u
-		WHERE LOWER(u.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-		UNION
-		SELECT u.uuid
-		FROM user_emails ue
-		JOIN users u ON u.uuid = ue.user_uuid
-		WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID)
-
-	var isExistingAccount bool
-	if err == nil && otherUserUUID != "" {
-		isExistingAccount = true
-	}
-
 	// Rate limit per IP
 	clientIP := getClientIP(req)
 	if err := CheckIPRateLimit(clientIP); err != nil {
@@ -749,13 +731,9 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 	// ConsoleMailer: controlled via QS_DEV_PRINT_OTP=1 (or non-production)
 	if os.Getenv("QS_DEV_PRINT_OTP") == "1" || os.Getenv("ENV") != "production" {
 		fmt.Printf("\n=======================================================\n")
-		fmt.Printf("[AUTH] Add/Merge Email OTP for %s: %s (valid for 3 minutes)\n", email, otpCode)
+		fmt.Printf("[AUTH] Add Email OTP for %s: %s (valid for 3 minutes)\n", email, otpCode)
 		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
-		if isExistingAccount {
-			fmt.Printf("[AUTH] Merge Magic Link: /account?merge_token=%s (valid for 15 minutes)\n", magicToken)
-		} else {
-			fmt.Printf("[AUTH] Add Email Magic Link: /account?add_email_token=%s (valid for 15 minutes)\n", magicToken)
-		}
+		fmt.Printf("[AUTH] Add Email Magic Link: /account?add_email_token=%s (valid for 15 minutes)\n", magicToken)
 		fmt.Printf("=======================================================\n\n")
 	}
 
@@ -763,7 +741,7 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 		Success:           true,
 		Message:           "Verification code sent to email",
 		CooldownSeconds:   int32(EmailCooldown.Seconds()),
-		IsExistingAccount: isExistingAccount,
+		IsExistingAccount: false,
 		ChallengeId:       &challengeToken,
 	})
 	setChallengeCookie(res.Header(), challengeToken)

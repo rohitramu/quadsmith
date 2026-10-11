@@ -117,7 +117,7 @@ describe("Layout Component", () => {
     expect(feedIcon).toHaveClass("text-blue-600");
   });
 
-  it("shows account dropdown menu with Public profile, Account settings, and Log out on hover", async () => {
+  it("shows account dropdown menu with username link to public profile, Account settings, and Log out on hover", async () => {
     const { user } = renderWithProviders(<Layout />, { route: "/" });
 
     // Find the account settings avatar button
@@ -134,10 +134,13 @@ describe("Layout Component", () => {
     const menu = await screen.findByRole("menu", { name: /account menu/i });
     expect(menu).toBeInTheDocument();
 
-    // Check menu items
-    const publicProfileLink = screen.getByRole("menuitem", { name: /public profile/i });
-    expect(publicProfileLink).toBeInTheDocument();
-    expect(publicProfileLink).toHaveAttribute("href", "/users/fpv_pilot");
+    // The username is a link that navigates to the public profile
+    const usernameProfileLink = screen.getByRole("link", { name: /@fpv_pilot/i });
+    expect(usernameProfileLink).toBeInTheDocument();
+    expect(usernameProfileLink).toHaveAttribute("href", "/users/fpv_pilot");
+
+    // There should NOT be a separate "Public profile" menu item
+    expect(screen.queryByRole("menuitem", { name: /public profile/i })).not.toBeInTheDocument();
 
     const settingsLink = screen.getByRole("menuitem", { name: /account settings/i });
     expect(settingsLink).toBeInTheDocument();

@@ -625,15 +625,11 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         emails: userEmails,
       }),
       sendAddEmailOtp: (req) => {
-        const isExisting =
-          req.email.toLowerCase().includes("other") ||
-          req.email.toLowerCase().includes("old.racer") ||
-          req.email.toLowerCase().includes("existing");
         return create(SendEmailOtpResponseSchema, {
           success: true,
           message: `Verification code sent to ${req.email}`,
           cooldownSeconds: 20,
-          isExistingAccount: isExisting,
+          isExistingAccount: false,
         });
       },
       verifyAddEmailOtp: (req) => {

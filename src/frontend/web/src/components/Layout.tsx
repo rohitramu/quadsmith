@@ -7,7 +7,6 @@ import {
   Loader2,
   Hammer,
   GalleryVertical,
-  User,
   Settings,
   LogOut,
 } from "lucide-react";
@@ -319,25 +318,19 @@ export function Layout() {
                     aria-label="Account menu"
                   >
                     <div className="px-3.5 py-2 border-b border-zinc-100 dark:border-zinc-800/80 mb-1">
-                      <p className="font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                      <Link
+                        to={`/users/${user.id}`}
+                        onClick={() => setIsAccountMenuOpen(false)}
+                        className="font-semibold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors block truncate"
+                      >
                         @{user.id}
-                      </p>
+                      </Link>
                       {user.email && (
                         <p className="text-[11px] text-zinc-400 dark:text-zinc-500 truncate">
                           {user.email}
                         </p>
                       )}
                     </div>
-
-                    <Link
-                      to={`/users/${user.id}`}
-                      role="menuitem"
-                      onClick={() => setIsAccountMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-3 py-2 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 rounded-xl mx-1 transition-colors"
-                    >
-                      <User size={15} className="text-zinc-500 dark:text-zinc-400 shrink-0" />
-                      <span>Public profile</span>
-                    </Link>
 
                     <Link
                       to="/account"
