@@ -769,11 +769,42 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         buildCount: 3,
       }),
       checkUsernameAvailable: (req) => {
-        const unavailable =
-          req.username === "taken" || req.username === "alex" || req.username === "admin";
+        const u = req.username?.trim().toLowerCase() || "";
+        const regex = /^[a-z][a-z0-9_]{1,18}[a-z0-9]$/;
+        if (!regex.test(u)) {
+          return {
+            available: false,
+            message:
+              "Username must be 3-20 characters, start with a letter, end with alphanumeric, and contain only lowercase letters, numbers, and underscores",
+          };
+        }
+        if (u.includes("__")) {
+          return {
+            available: false,
+            message: "Username cannot contain consecutive underscores",
+          };
+        }
+        if (u.includes("quadsmith") || u.includes("quad_smith")) {
+          return {
+            available: false,
+            message: "Username cannot contain 'quadsmith' or 'quad_smith'",
+          };
+        }
+        if (u === "admin" || u === "root") {
+          return {
+            available: false,
+            message: "Reserved username",
+          };
+        }
+        if (u === "taken" || u === "alex") {
+          return {
+            available: false,
+            message: "This username is already taken",
+          };
+        }
         return {
-          available: !unavailable,
-          message: unavailable ? "Username is not available" : "Username is available",
+          available: true,
+          message: "Username is available",
         };
       },
     });

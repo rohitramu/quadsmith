@@ -332,7 +332,7 @@ describe("LoginPage Component", () => {
     expect(avatarPreview.textContent).toBe("N"); // initial of newpilot
   });
 
-  it("performs live server-side availability check: invalid/reserved/taken all show unified Unavailable without leaking reason", async () => {
+  it("shows distinct errors for invalid naming rules vs unavailable taken usernames on Account Setup", async () => {
     const { user } = renderApp("/login", {
       transportOptions: { isAuthenticated: false },
     });
@@ -349,20 +349,31 @@ describe("LoginPage Component", () => {
     const usernameInput = screen.getByTestId("username-input");
     const completeBtn = screen.getByTestId("complete-setup-btn");
 
-    // 1. Taken username ("alex")
+    // 1. Taken username ("alex") -> shows Unavailable badge & already taken message
     fireEvent.change(usernameInput, { target: { value: "alex" } });
     expect(await screen.findByText(/^unavailable$/i, {}, { timeout: 3000 })).toBeInTheDocument();
-    expect(screen.getByText(/username is not available/i)).toBeInTheDocument();
+    expect(screen.getByText(/this username is already taken/i)).toBeInTheDocument();
     expect(completeBtn).toBeDisabled();
 
-    // 2. Reserved / Invalid username ("admin")
+    // 2. Invalid length ("ab" - too short) -> shows Invalid badge & naming rule message
+    fireEvent.change(usernameInput, { target: { value: "ab" } });
+    expect(await screen.findByText(/^invalid$/i, {}, { timeout: 3000 })).toBeInTheDocument();
+    expect(screen.getByText(/at least 3 characters/i)).toBeInTheDocument();
+    expect(completeBtn).toBeDisabled();
+
+    // 3. Invalid consecutive underscores ("rotor__ninja") -> shows Invalid badge & underscore rule message
+    fireEvent.change(usernameInput, { target: { value: "rotor__ninja" } });
+    expect(await screen.findByText(/^invalid$/i, {}, { timeout: 3000 })).toBeInTheDocument();
+    expect(screen.getByText(/consecutive underscores/i)).toBeInTheDocument();
+    expect(completeBtn).toBeDisabled();
+
+    // 4. Reserved username ("admin") -> shows Invalid badge & reserved naming rule message
     fireEvent.change(usernameInput, { target: { value: "admin" } });
-    expect(await screen.findByText(/^unavailable$/i, {}, { timeout: 3000 })).toBeInTheDocument();
-    expect(screen.getByText(/username is not available/i)).toBeInTheDocument();
-    // Verify zero distinction/leak between taken and reserved
+    expect(await screen.findByText(/^invalid$/i, {}, { timeout: 3000 })).toBeInTheDocument();
+    expect(screen.getByText(/reserved/i)).toBeInTheDocument();
     expect(completeBtn).toBeDisabled();
 
-    // 3. Available username ("rotor_pilot")
+    // 5. Available username ("rotor_pilot") -> shows Available badge & enables complete setup
     fireEvent.change(usernameInput, { target: { value: "rotor_pilot" } });
     expect(await screen.findByText(/^✓ available$/i, {}, { timeout: 3000 })).toBeInTheDocument();
     expect(screen.getByText(/username is available!/i)).toBeInTheDocument();

@@ -8,6 +8,35 @@ import logoLight from "../assets/quadsmith-logo-light.svg";
 import { OtpVerificationErrorSchema } from "../gen/quadsmith/auth_pb";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
+export function validateUsernameRules(val: string): string | null {
+  const trimmed = val.trim().toLowerCase();
+  if (trimmed.length < 3) {
+    return "Usernames must be at least 3 characters long (3–20 characters).";
+  }
+  if (trimmed.length > 20) {
+    return "Usernames cannot exceed 20 characters (3–20 characters max).";
+  }
+  if (!/^[a-z]/.test(trimmed)) {
+    return "Username must start with a lowercase letter (a–z).";
+  }
+  if (!/[a-z0-9]$/.test(trimmed)) {
+    return "Username must end with a letter or number (cannot end with an underscore).";
+  }
+  if (!/^[a-z0-9_]+$/.test(trimmed)) {
+    return "Username can only contain lowercase letters, numbers, and underscores.";
+  }
+  if (trimmed.includes("__")) {
+    return "Username cannot contain consecutive underscores (__).";
+  }
+  if (trimmed.includes("quadsmith") || trimmed.includes("quad_smith")) {
+    return "Username cannot contain 'quadsmith' or 'quad_smith'.";
+  }
+  if (trimmed === "admin" || trimmed === "root") {
+    return `The username '${trimmed}' is reserved and cannot be registered.`;
+  }
+  return null;
+}
+
 export function LoginPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -43,8 +72,9 @@ export function LoginPage() {
   const [setupToken, setSetupToken] = useState("");
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [isCheckingUsername, setIsCheckingUsername] = useState(false);
-  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
+  const [usernameStatus, setUsernameStatus] = useState<
+    "idle" | "checking" | "available" | "unavailable" | "invalid"
+  >("idle");
   const [usernameMessage, setUsernameMessage] = useState<string | null>(null);
   const [isCompletingSetup, setIsCompletingSetup] = useState(false);
   const [setupError, setSetupError] = useState<string | null>(null);
@@ -126,30 +156,51 @@ export function LoginPage() {
     }
   }, [magicToken, isAuthenticated, verifyMagicLink, navigate, redirectUrl]);
 
-  // Debounced server-side username availability check
-  // All availability checks and format validation are performed strictly on the server.
+  // Debounced username availability check with client-side naming rules validation
   useEffect(() => {
     const trimmed = username.trim().toLowerCase();
     if (!trimmed) {
-      setIsCheckingUsername(false);
-      setUsernameAvailable(null);
+      setUsernameStatus("idle");
       setUsernameMessage(null);
       return;
     }
 
-    setIsCheckingUsername(true);
+    const ruleError = validateUsernameRules(trimmed);
+    if (ruleError) {
+      setUsernameStatus("invalid");
+      setUsernameMessage(ruleError);
+      return;
+    }
+
+    setUsernameStatus("checking");
     const timeout = setTimeout(async () => {
       try {
         const res = await checkUsernameAvailable(trimmed);
-        setUsernameAvailable(res.available);
-        setUsernameMessage(
-          res.available ? "Username is available!" : res.message || "Username is not available",
-        );
+        if (res.available) {
+          setUsernameStatus("available");
+          setUsernameMessage("Username is available!");
+        } else {
+          const msg = res.message || "";
+          const lower = msg.toLowerCase();
+          if (
+            lower.includes("character") ||
+            lower.includes("letter") ||
+            lower.includes("underscore") ||
+            lower.includes("quadsmith") ||
+            lower.includes("reserved") ||
+            lower.includes("invalid") ||
+            lower.includes("naming")
+          ) {
+            setUsernameStatus("invalid");
+            setUsernameMessage(msg);
+          } else {
+            setUsernameStatus("unavailable");
+            setUsernameMessage(msg || "This username is already taken. Please choose another.");
+          }
+        }
       } catch {
-        setUsernameAvailable(false);
-        setUsernameMessage("Username is not available");
-      } finally {
-        setIsCheckingUsername(false);
+        setUsernameStatus("unavailable");
+        setUsernameMessage("This username is already taken or unavailable.");
       }
     }, 250);
 
@@ -347,7 +398,7 @@ export function LoginPage() {
 
   const handleCompleteSetup = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!usernameAvailable || !setupToken || isCompletingSetup || isCheckingUsername) return;
+    if (usernameStatus !== "available" || !setupToken || isCompletingSetup) return;
 
     setIsCompletingSetup(true);
     setSetupError(null);
@@ -378,7 +429,7 @@ export function LoginPage() {
     setSetupToken("");
     setUsername("");
     setAvatarUrl("");
-    setUsernameAvailable(null);
+    setUsernameStatus("idle");
     setUsernameMessage(null);
     setSetupError(null);
     setErrorMsg(null);
@@ -613,15 +664,17 @@ export function LoginPage() {
             >
               Username
             </label>
-            {isCheckingUsername ? (
+            {usernameStatus === "checking" ? (
               <span className="text-[11px] font-medium text-zinc-400 flex items-center gap-1">
                 <Loader2 size={12} className="animate-spin text-blue-500" />
                 Checking...
               </span>
-            ) : usernameAvailable === true ? (
+            ) : usernameStatus === "available" ? (
               <span className="text-[11px] font-bold text-emerald-500">✓ Available</span>
-            ) : usernameAvailable === false ? (
+            ) : usernameStatus === "unavailable" ? (
               <span className="text-[11px] font-semibold text-amber-500">Unavailable</span>
+            ) : usernameStatus === "invalid" ? (
+              <span className="text-[11px] font-semibold text-rose-500">Invalid</span>
             ) : (
               <span className="text-[11px] font-medium text-zinc-400">Required</span>
             )}
@@ -636,22 +689,30 @@ export function LoginPage() {
               onChange={(e) => setUsername(e.target.value)}
               autoComplete="off"
               spellCheck={false}
+              aria-invalid={usernameStatus === "invalid" || usernameStatus === "unavailable"}
+              aria-describedby="username-feedback"
               className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none transition ${
-                usernameAvailable === true
+                usernameStatus === "available"
                   ? "border-emerald-500/80 bg-emerald-500/5 focus:ring-2 focus:ring-emerald-500"
-                  : usernameAvailable === false
+                  : usernameStatus === "unavailable"
                     ? "border-amber-500 bg-amber-500/5 focus:ring-2 focus:ring-amber-500"
-                    : "border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 focus:ring-2 focus:ring-blue-500"
+                    : usernameStatus === "invalid"
+                      ? "border-rose-500 bg-rose-500/5 focus:ring-2 focus:ring-rose-500"
+                      : "border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 focus:ring-2 focus:ring-blue-500"
               }`}
             />
           </div>
           <p
+            id="username-feedback"
+            data-testid="username-feedback"
             className={`text-[10px] ${
-              usernameAvailable === true
+              usernameStatus === "available"
                 ? "text-emerald-600 dark:text-emerald-400 font-medium"
-                : usernameAvailable === false
-                  ? "text-amber-500 font-medium"
-                  : "text-zinc-500 dark:text-zinc-400"
+                : usernameStatus === "unavailable"
+                  ? "text-amber-600 dark:text-amber-400 font-medium"
+                  : usernameStatus === "invalid"
+                    ? "text-rose-600 dark:text-rose-400 font-medium"
+                    : "text-zinc-500 dark:text-zinc-400"
             }`}
           >
             {usernameMessage ||
@@ -702,10 +763,10 @@ export function LoginPage() {
         <button
           type="button"
           data-testid="complete-setup-btn"
-          disabled={!usernameAvailable || isCompletingSetup || isCheckingUsername}
+          disabled={usernameStatus !== "available" || isCompletingSetup}
           onClick={handleCompleteSetup}
           className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
-            !usernameAvailable || isCompletingSetup || isCheckingUsername
+            usernameStatus !== "available" || isCompletingSetup
               ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
               : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
           }`}

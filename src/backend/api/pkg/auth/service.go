@@ -288,14 +288,14 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 
 	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
 	if err := ValidateUsername(username); err != nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("Username is not available"))
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
 	// Check if active user already has this username
 	var activeOwnerUUID string
 	err = s.db.QueryRow(ctx, `SELECT uuid FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL`, username).Scan(&activeOwnerUUID)
 	if err == nil {
-		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("Username is not available"))
+		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("This username is already taken"))
 	} else if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -309,7 +309,7 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 		ORDER BY COALESCE(first_archived_at, renamed_at) DESC
 		LIMIT 1`, username).Scan(&historyOwnerUUID)
 	if err == nil {
-		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("Username is not available"))
+		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("This username is already taken"))
 	} else if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1938,7 +1938,7 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 	if err := ValidateUsername(username); err != nil {
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
-			Message:   "Username is not available",
+			Message:   err.Error(),
 		}), nil
 	}
 
@@ -1956,7 +1956,7 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 		}
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
-			Message:   "Username is not available",
+			Message:   "This username is already taken",
 		}), nil
 	} else if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, connect.NewError(connect.CodeInternal, err)
@@ -1979,7 +1979,7 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 		}
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Available: false,
-			Message:   "Username is not available",
+			Message:   "This username is already taken",
 		}), nil
 	} else if !errors.Is(err, pgx.ErrNoRows) {
 		return nil, connect.NewError(connect.CodeInternal, err)
