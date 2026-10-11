@@ -46,16 +46,52 @@ describe("LoginPage Component", () => {
     const inputs = screen.getAllByRole("textbox");
     expect(inputs.length).toBe(6);
 
-    // Verify Back button is present, and no action buttons (Resend email, Request New Code, Locked Out) are rendered during active entry
+    // Verify Back button and Resend Email button are present
     expect(screen.getByRole("button", { name: /back/i })).toBeInTheDocument();
     expect(screen.queryByText(/change email/i)).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /resend email/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /request new verification code/i }),
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /temporarily locked out/i }),
     ).not.toBeInTheDocument();
+  });
+
+  it("clears fields on incorrect code, displays incorrect code as placeholder hints, and preserves Resend Email button", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "pilot@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    await screen.findByRole("heading", { name: /verify your email/i });
+
+    // Resend Email button is visible initially
+    expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
+
+    // Type incorrect 6-digit code: "888888"
+    const inputs = screen.getAllByRole("textbox") as HTMLInputElement[];
+    const wrongDigits = ["8", "8", "8", "8", "8", "8"];
+    for (let i = 0; i < 6; i++) {
+      await user.type(inputs[i], wrongDigits[i]);
+    }
+
+    // Error banner appears
+    expect(await screen.findByText(/incorrect/i)).toBeInTheDocument();
+
+    // Inputs are cleared (empty value) but have the incorrect digits as placeholders
+    inputs.forEach((input, index) => {
+      expect(input.value).toBe("");
+      expect(input.placeholder).toBe(wrongDigits[index]);
+    });
+
+    // Resend Email button is STILL visible while waiting for re-entry
+    expect(screen.getByRole("button", { name: /resend email/i })).toBeInTheDocument();
   });
 
   it("does not render passwordless footer text, has no continue button, and automatically continues on 6-digit OTP entry", async () => {

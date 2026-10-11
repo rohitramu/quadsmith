@@ -19,6 +19,7 @@ export function LoginPage() {
   const [step, setStep] = useState<"email" | "otp">(magicToken ? "otp" : "email");
   const [email, setEmail] = useState("");
   const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
+  const [hintDigits, setHintDigits] = useState<string[]>(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
   const [magicLinkLoading, setMagicLinkLoading] = useState(!!magicToken);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -110,6 +111,7 @@ export function LoginPage() {
       setRemainingAttempts(null);
       setIsExhausted(false);
       setIsRateLimited(false);
+      setHintDigits(["", "", "", "", "", ""]);
       setOtpDigits(["", "", "", "", "", ""]);
       setTimeout(() => otpInputRefs.current[0]?.focus(), 100);
     } catch (err: unknown) {
@@ -188,6 +190,11 @@ export function LoginPage() {
       await verifyEmailOtp(email, code);
       navigate(redirectUrl, { replace: true });
     } catch (err: unknown) {
+      // Clear fields and show incorrect code as faded placeholder hints
+      setHintDigits(code.split(""));
+      setOtpDigits(["", "", "", "", "", ""]);
+      setTimeout(() => otpInputRefs.current[0]?.focus(), 10);
+
       if (err instanceof ConnectError) {
         if (
           err.code === Code.ResourceExhausted &&
@@ -391,11 +398,12 @@ export function LoginPage() {
                     type="text"
                     inputMode="numeric"
                     maxLength={1}
+                    placeholder={hintDigits[index] || ""}
                     value={digit}
                     disabled={isExhausted || isRateLimited || isLoading}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none transition ${
+                    className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none transition ${
                       isExhausted || isRateLimited
                         ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
                         : remainingAttempts !== null && remainingAttempts > 0
@@ -442,7 +450,20 @@ export function LoginPage() {
                       : "Request New Verification Code"}
                   </span>
                 </button>
-              ) : null}
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => handleSendEmail()}
+                  disabled={cooldown > 0 || isLoading}
+                  className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-xs flex items-center justify-center gap-2 ${
+                    cooldown > 0
+                      ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                      : "text-zinc-800 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 cursor-pointer"
+                  }`}
+                >
+                  <span>{cooldown > 0 ? `Resend Email (${cooldown}s)` : "Resend Email"}</span>
+                </button>
+              )}
 
               {/* Back Option */}
               <div className="flex items-center text-xs pt-1">
@@ -455,6 +476,8 @@ export function LoginPage() {
                     setIsExhausted(false);
                     setIsRateLimited(false);
                     setExhaustedCooldown(0);
+                    setHintDigits(["", "", "", "", "", ""]);
+                    setOtpDigits(["", "", "", "", "", ""]);
                   }}
                   className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 flex items-center gap-1 transition cursor-pointer"
                 >

@@ -484,6 +484,25 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     service(AuthService, {
       sendEmailOtp: () => ({ success: true, message: "Code sent", cooldownSeconds: 60 }),
       verifyEmailOtp: (req) => {
+        if (req.code === "888888") {
+          const err = new ConnectError(
+            "Incorrect code. You have 2 attempts left",
+            Code.InvalidArgument,
+            undefined,
+            [
+              {
+                desc: OtpVerificationErrorSchema,
+                value: {
+                  remainingAttempts: 2,
+                  isExhausted: false,
+                  cooldownSeconds: 0,
+                  message: "Incorrect code. You have 2 attempts left",
+                },
+              },
+            ],
+          );
+          throw err;
+        }
         if (req.code === "999999") {
           const err = new ConnectError(
             "Incorrect code. You have 0 attempts left. Please request a new code",
