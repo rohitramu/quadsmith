@@ -29,7 +29,7 @@ all: build
 
 build: generate bin/qs bin/qsops
 	@echo "--- Formatting textproto files with txtpbfmt ---"
-	@find src -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
+	@find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
 	@go run -mod=vendor ./src/backend/api/cmd/check-regex
 	@echo "--- Building all Go binaries to bin/ ---"

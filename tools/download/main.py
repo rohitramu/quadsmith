@@ -177,16 +177,16 @@ def process_item(item, session):
 
 def collect_items():
     files = {
-        "motors": "../../src/backend/db/seeds/motors.textproto",
-        "batteries": "../../src/backend/db/seeds/batteries.textproto",
-        "frames": "../../src/backend/db/seeds/frames.textproto",
-        "escs": "../../src/backend/db/seeds/escs.textproto",
-        "flight_controllers": "../../src/backend/db/seeds/flight_controllers.textproto",
-        "propellers": "../../src/backend/db/seeds/propellers.textproto",
-        "receivers": "../../src/backend/db/seeds/receivers.textproto",
-        "cameras": "../../src/backend/db/seeds/cameras.textproto",
-        "video_transmitters": "../../src/backend/db/seeds/video_transmitters.textproto",
-        "antennas": "../../src/backend/db/seeds/antennas.textproto",
+        "motors": "../../test/db/seeds/motors.textproto",
+        "batteries": "../../test/db/seeds/batteries.textproto",
+        "frames": "../../test/db/seeds/frames.textproto",
+        "escs": "../../test/db/seeds/escs.textproto",
+        "flight_controllers": "../../test/db/seeds/flight_controllers.textproto",
+        "propellers": "../../test/db/seeds/propellers.textproto",
+        "receivers": "../../test/db/seeds/receivers.textproto",
+        "cameras": "../../test/db/seeds/cameras.textproto",
+        "video_transmitters": "../../test/db/seeds/video_transmitters.textproto",
+        "antennas": "../../test/db/seeds/antennas.textproto",
     }
 
     items = []

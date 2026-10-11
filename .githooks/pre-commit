@@ -74,7 +74,7 @@ if [ ! -f bin/txtpbfmt ]; then
     (cd src && go build -mod=vendor -o ../bin/txtpbfmt github.com/protocolbuffers/txtpbfmt/cmd/txtpbfmt)
 fi
 UNFORMATTED_TEXTPROTO=""
-for f in $(find src -name "*.textproto"); do
+for f in $(find src test -name "*.textproto"); do
     if [ -n "$(./bin/txtpbfmt -dry_run -expand_all_children "$f")" ]; then
         UNFORMATTED_TEXTPROTO="$UNFORMATTED_TEXTPROTO $f"
     fi

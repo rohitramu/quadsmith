@@ -24,17 +24,17 @@ import (
 func resolveSeedPath(t *testing.T) string {
 	t.Helper()
 	// Relative from test/api/
-	p := filepath.Join("..", "..", "src", "backend", "db", "seeds", "motors.textproto")
+	p := filepath.Join("..", "db", "seeds", "motors.textproto")
 	if _, err := os.Stat(p); err == nil {
 		return p
 	}
 	// Relative from test/
-	p = filepath.Join("..", "src", "backend", "db", "seeds", "motors.textproto")
+	p = filepath.Join("db", "seeds", "motors.textproto")
 	if _, err := os.Stat(p); err == nil {
 		return p
 	}
 	// Relative from root
-	p = filepath.Join("src", "backend", "db", "seeds", "motors.textproto")
+	p = filepath.Join("test", "db", "seeds", "motors.textproto")
 	if _, err := os.Stat(p); err == nil {
 		return p
 	}
