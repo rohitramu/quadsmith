@@ -45,8 +45,10 @@ Always check the manufacturer's official website and official spec sheets as the
 
 ## Development & Sandbox Execution
 
-- `make sandbox` starts the local server and Docker sandbox environment. It is a long-running daemon process that does not terminate unless an error occurs.
-- Never wait for `make sandbox` to complete execution. If executing `make sandbox`, run it as a background daemon process and monitor its startup output/logs instead of blocking on termination.
+- **Server & Sandbox Long-Running Daemon Processes**:
+  - Whenever starting the server directly or indirectly (e.g., via `make sandbox`, `test/start_sandbox.sh`, `docker run ... quadsmith-sandbox`, or `./server`), the command runs a persistent daemon that **will not exit on its own**.
+  - Upon successful startup, it will hang on `"Starting Quadsmith API Server on port 8080..."` (or the configured port) indefinitely while serving requests.
+  - **Never wait synchronously** for server startup commands to complete. Always launch them as background daemon tasks (`IsDaemon: true` or background tasks), monitor startup logs asynchronously, and send a **SIGTERM** (or kill/cancel the task) when finished.
 - If only verifying build integrity or code generation without needing a running server, use `make build` instead.
 
 ## Testing
