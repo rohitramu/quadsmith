@@ -9,6 +9,7 @@ import { Layout } from "./components/Layout";
 import { LoginPage } from "./pages/LoginPage";
 import { AccountSettingsPage } from "./pages/AccountSettingsPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
+import { UserCollectionsPage } from "./pages/UserCollectionsPage";
 import { CategoryPage } from "./pages/CategoryPage";
 import { CollectionPage } from "./pages/CollectionPage";
 import { ProductPage } from "./pages/ProductPage";
@@ -32,6 +33,8 @@ export function AppRoutes() {
           <Route index element={<HomePage />} />
           <Route path="account" element={<AccountSettingsPage />} />
           <Route path="users/:id" element={<UserProfilePage />} />
+          <Route path="users/:id/collections" element={<UserCollectionsPage />} />
+          <Route path="users/:id/collections/:collectionId" element={<UserCollectionsPage />} />
           <Route path="builds" element={<BuildFeedPage />} />
           <Route path="builds/new" element={<BuildWizardPage />} />
           <Route path="builds/:buildId" element={<BuildProfilePage />} />

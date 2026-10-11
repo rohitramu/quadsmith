@@ -17,6 +17,16 @@ var publicProcedures = map[string]bool{
 	"/quadsmith.AuthService/CompleteAccountSetup":   true,
 	"/quadsmith.AuthService/RefreshToken":           true,
 	"/quadsmith.UserService/CheckUsernameAvailable": true,
+
+	// Public social queries
+	"/quadsmith.SocialService/ListReviews":            true,
+	"/quadsmith.SocialService/ListReviewComments":     true,
+	"/quadsmith.SocialService/ListQuestions":          true,
+	"/quadsmith.SocialService/ListAnswers":            true,
+	"/quadsmith.SocialService/GetEntitySocialSummary": true,
+	"/quadsmith.SocialService/GetCollection":          true,
+	"/quadsmith.SocialService/ListUserCollections":    true,
+	"/quadsmith.SocialService/ListCollectionItems":    true,
 }
 
 // NewAuthInterceptor creates a ConnectRPC unary interceptor for authentication

@@ -41,21 +41,22 @@ func main() {
 	})
 }
 
-func getTableName(msg *protogen.Message) string {
+func getTableOptions(msg *protogen.Message) *quadsmith_sql.TableOptions {
 	opts := msg.Desc.Options()
 	if proto.HasExtension(opts, quadsmith_sql.E_Table) {
 		if tblOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Table).(*quadsmith_sql.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
-			return tblOpts.Name
+			return tblOpts
 		}
 	}
-	return ""
+	return nil
 }
 
 func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
-	tableName := getTableName(msg)
-	if tableName == "" {
+	tblOpts := getTableOptions(msg)
+	if tblOpts == nil {
 		return nil
 	}
+	tableName := tblOpts.Name
 
 	g.P("CREATE TABLE IF NOT EXISTS ", tableName, " (")
 
@@ -106,6 +107,14 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 		if colOpt != nil && colOpt.References != "" {
 			alters = append(alters, fmt.Sprintf("ALTER TABLE %s ADD CONSTRAINT fk_%s_%s FOREIGN KEY (%s) REFERENCES %s;", tableName, tableName, colName, colName, colOpt.References))
 		}
+	}
+
+	for _, chk := range tblOpts.GetChecks() {
+		defs = append(defs, fmt.Sprintf("CHECK (%s)", chk))
+	}
+
+	for _, uq := range tblOpts.GetUniqueConstraints() {
+		defs = append(defs, fmt.Sprintf("UNIQUE (%s)", uq))
 	}
 
 	g.P("    ", strings.Join(defs, ",\n    "))

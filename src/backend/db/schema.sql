@@ -479,6 +479,268 @@ CREATE TABLE IF NOT EXISTS radio_firmwares (
 
 CREATE INDEX IF NOT EXISTS idx_radio_firmwares_manufacturer ON radio_firmwares (manufacturer);
 
+CREATE TABLE IF NOT EXISTS components (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT NOT NULL,
+  collection TEXT NOT NULL,
+  name TEXT NOT NULL,
+  manufacturer TEXT NOT NULL,
+  primary_display_image TEXT,
+  UNIQUE (collection, id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_components_id ON components (id);
+
+CREATE INDEX IF NOT EXISTS idx_components_collection ON components (collection);
+
+CREATE TABLE IF NOT EXISTS reviews (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  user_uuid UUID NOT NULL,
+  build_uuid UUID,
+  component_uuid UUID,
+  is_recommended BOOLEAN NOT NULL,
+  body TEXT NOT NULL,
+  is_edited BOOLEAN DEFAULT false NOT NULL,
+  deleted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  author_username TEXT NOT NULL,
+  author_avatar_url TEXT NOT NULL,
+  helpful_count INTEGER NOT NULL,
+  unhelpful_count INTEGER NOT NULL,
+  comment_count INTEGER NOT NULL,
+  current_user_vote INTEGER NOT NULL,
+  is_author_verified_owner BOOLEAN NOT NULL,
+  CHECK (num_nonnulls (build_uuid, component_uuid) = 1),
+  UNIQUE (user_uuid, build_uuid),
+  UNIQUE (user_uuid, component_uuid)
+);
+
+CREATE INDEX IF NOT EXISTS idx_reviews_id ON reviews (id);
+
+CREATE INDEX IF NOT EXISTS idx_reviews_user_uuid ON reviews (user_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_reviews_build_uuid ON reviews (build_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_reviews_component_uuid ON reviews (component_uuid);
+
+CREATE TABLE IF NOT EXISTS review_votes (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  review_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  is_helpful BOOLEAN NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_uuid, review_uuid)
+);
+
+CREATE INDEX IF NOT EXISTS idx_review_votes_review_uuid ON review_votes (review_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_review_votes_user_uuid ON review_votes (user_uuid);
+
+CREATE TABLE IF NOT EXISTS review_comments (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  review_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  body TEXT NOT NULL,
+  deleted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  author_username TEXT NOT NULL,
+  author_avatar_url TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_review_comments_review_uuid ON review_comments (review_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_review_comments_user_uuid ON review_comments (user_uuid);
+
+CREATE TABLE IF NOT EXISTS questions (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  user_uuid UUID NOT NULL,
+  build_uuid UUID,
+  component_uuid UUID,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  net_score INTEGER DEFAULT 0 NOT NULL,
+  is_edited BOOLEAN DEFAULT false NOT NULL,
+  deleted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  author_username TEXT NOT NULL,
+  author_avatar_url TEXT NOT NULL,
+  upvote_count INTEGER NOT NULL,
+  downvote_count INTEGER NOT NULL,
+  answer_count INTEGER NOT NULL,
+  has_accepted_answer BOOLEAN NOT NULL,
+  current_user_vote INTEGER NOT NULL,
+  comments JSONB,
+  CHECK (num_nonnulls (build_uuid, component_uuid) = 1)
+);
+
+CREATE INDEX IF NOT EXISTS idx_questions_id ON questions (id);
+
+CREATE INDEX IF NOT EXISTS idx_questions_user_uuid ON questions (user_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_questions_build_uuid ON questions (build_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_questions_component_uuid ON questions (component_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_questions_net_score ON questions (net_score);
+
+CREATE TABLE IF NOT EXISTS answers (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  question_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  body TEXT NOT NULL,
+  net_score INTEGER DEFAULT 0 NOT NULL,
+  is_accepted_by_asker BOOLEAN DEFAULT false NOT NULL,
+  is_author_endorsed BOOLEAN DEFAULT false NOT NULL,
+  is_edited BOOLEAN DEFAULT false NOT NULL,
+  deleted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  author_username TEXT NOT NULL,
+  author_avatar_url TEXT NOT NULL,
+  upvote_count INTEGER NOT NULL,
+  downvote_count INTEGER NOT NULL,
+  current_user_vote INTEGER NOT NULL,
+  comment_count INTEGER NOT NULL,
+  comments JSONB
+);
+
+CREATE INDEX IF NOT EXISTS idx_answers_question_uuid ON answers (question_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_answers_user_uuid ON answers (user_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_answers_net_score ON answers (net_score);
+
+CREATE TABLE IF NOT EXISTS question_votes (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  question_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  is_upvote BOOLEAN NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_uuid, question_uuid)
+);
+
+CREATE INDEX IF NOT EXISTS idx_question_votes_question_uuid ON question_votes (question_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_question_votes_user_uuid ON question_votes (user_uuid);
+
+CREATE TABLE IF NOT EXISTS answer_votes (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  answer_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  is_upvote BOOLEAN NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_uuid, answer_uuid)
+);
+
+CREATE INDEX IF NOT EXISTS idx_answer_votes_answer_uuid ON answer_votes (answer_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_answer_votes_user_uuid ON answer_votes (user_uuid);
+
+CREATE TABLE IF NOT EXISTS question_comments (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  question_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  body TEXT NOT NULL,
+  deleted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  author_username TEXT NOT NULL,
+  author_avatar_url TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_question_comments_question_uuid ON question_comments (question_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_question_comments_user_uuid ON question_comments (user_uuid);
+
+CREATE TABLE IF NOT EXISTS answer_comments (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  answer_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  body TEXT NOT NULL,
+  deleted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  author_username TEXT NOT NULL,
+  author_avatar_url TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_answer_comments_answer_uuid ON answer_comments (answer_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_answer_comments_user_uuid ON answer_comments (user_uuid);
+
+CREATE TABLE IF NOT EXISTS user_reputations (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_uuid UUID NOT NULL,
+  score INTEGER DEFAULT 0 NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_uuid)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_reputations_user_uuid ON user_reputations (user_uuid);
+
+CREATE TABLE IF NOT EXISTS collections (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  user_uuid UUID NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  is_public BOOLEAN DEFAULT false NOT NULL,
+  is_default_liked BOOLEAN DEFAULT false NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  author_username TEXT NOT NULL,
+  item_count INTEGER NOT NULL,
+  preview_images TEXT[]
+);
+
+CREATE INDEX IF NOT EXISTS idx_collections_id ON collections (id);
+
+CREATE INDEX IF NOT EXISTS idx_collections_user_uuid ON collections (user_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_collections_is_public ON collections (is_public);
+
+CREATE INDEX IF NOT EXISTS idx_collections_is_default_liked ON collections (is_default_liked);
+
+CREATE TABLE IF NOT EXISTS collection_items (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  collection_uuid UUID NOT NULL,
+  build_uuid UUID,
+  component_uuid UUID,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  item_id TEXT NOT NULL,
+  item_name TEXT NOT NULL,
+  item_type TEXT NOT NULL,
+  item_image TEXT NOT NULL,
+  item_author_or_manufacturer TEXT NOT NULL,
+  CHECK (num_nonnulls (build_uuid, component_uuid) = 1),
+  UNIQUE (collection_uuid, build_uuid),
+  UNIQUE (collection_uuid, component_uuid)
+);
+
+CREATE INDEX IF NOT EXISTS idx_collection_items_collection_uuid ON collection_items (collection_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_collection_items_build_uuid ON collection_items (build_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_collection_items_component_uuid ON collection_items (component_uuid);
+
 CREATE TABLE IF NOT EXISTS software_tools (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
@@ -582,3 +844,78 @@ ADD CONSTRAINT fk_flight_controllers_internal_receiver_uuid FOREIGN KEY (interna
 
 ALTER TABLE flight_controllers
 ADD CONSTRAINT fk_flight_controllers_internal_video_transmitter_uuid FOREIGN KEY (internal_video_transmitter_uuid) REFERENCES video_transmitters (uuid);
+
+ALTER TABLE reviews
+ADD CONSTRAINT fk_reviews_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE reviews
+ADD CONSTRAINT fk_reviews_build_uuid FOREIGN KEY (build_uuid) REFERENCES builds (uuid);
+
+ALTER TABLE reviews
+ADD CONSTRAINT fk_reviews_component_uuid FOREIGN KEY (component_uuid) REFERENCES components (uuid);
+
+ALTER TABLE review_votes
+ADD CONSTRAINT fk_review_votes_review_uuid FOREIGN KEY (review_uuid) REFERENCES reviews (uuid);
+
+ALTER TABLE review_votes
+ADD CONSTRAINT fk_review_votes_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE review_comments
+ADD CONSTRAINT fk_review_comments_review_uuid FOREIGN KEY (review_uuid) REFERENCES reviews (uuid);
+
+ALTER TABLE review_comments
+ADD CONSTRAINT fk_review_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE questions
+ADD CONSTRAINT fk_questions_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE questions
+ADD CONSTRAINT fk_questions_build_uuid FOREIGN KEY (build_uuid) REFERENCES builds (uuid);
+
+ALTER TABLE questions
+ADD CONSTRAINT fk_questions_component_uuid FOREIGN KEY (component_uuid) REFERENCES components (uuid);
+
+ALTER TABLE answers
+ADD CONSTRAINT fk_answers_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid);
+
+ALTER TABLE answers
+ADD CONSTRAINT fk_answers_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE question_votes
+ADD CONSTRAINT fk_question_votes_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid);
+
+ALTER TABLE question_votes
+ADD CONSTRAINT fk_question_votes_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE answer_votes
+ADD CONSTRAINT fk_answer_votes_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES answers (uuid);
+
+ALTER TABLE answer_votes
+ADD CONSTRAINT fk_answer_votes_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE question_comments
+ADD CONSTRAINT fk_question_comments_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid);
+
+ALTER TABLE question_comments
+ADD CONSTRAINT fk_question_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE answer_comments
+ADD CONSTRAINT fk_answer_comments_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES answers (uuid);
+
+ALTER TABLE answer_comments
+ADD CONSTRAINT fk_answer_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE user_reputations
+ADD CONSTRAINT fk_user_reputations_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE collections
+ADD CONSTRAINT fk_collections_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE collection_items
+ADD CONSTRAINT fk_collection_items_collection_uuid FOREIGN KEY (collection_uuid) REFERENCES collections (uuid);
+
+ALTER TABLE collection_items
+ADD CONSTRAINT fk_collection_items_build_uuid FOREIGN KEY (build_uuid) REFERENCES builds (uuid);
+
+ALTER TABLE collection_items
+ADD CONSTRAINT fk_collection_items_component_uuid FOREIGN KEY (component_uuid) REFERENCES components (uuid);

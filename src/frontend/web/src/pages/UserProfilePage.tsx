@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
-import { Loader2, Hammer, Calendar, AlertCircle } from "lucide-react";
+import { Loader2, Hammer, Calendar, AlertCircle, Star, Bookmark } from "lucide-react";
 import { UserService, type PublicUserProfile } from "../gen/quadsmith/user_pb";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
@@ -118,7 +118,7 @@ export function UserProfilePage() {
           </div>
 
           {/* Stats Badge */}
-          <div className="flex items-center gap-4 bg-zinc-50 dark:bg-zinc-950 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <div className="flex items-center gap-4 bg-zinc-50 dark:bg-zinc-950 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 flex-wrap">
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-lg bg-blue-500/10 text-blue-500">
                 <Hammer size={20} />
@@ -126,6 +126,18 @@ export function UserProfilePage() {
               <div>
                 <div className="text-xl font-bold font-mono">{profile.buildCount}</div>
                 <div className="text-[11px] text-zinc-400 font-medium">Authored Builds</div>
+              </div>
+            </div>
+
+            <div className="h-8 w-px bg-zinc-200 dark:border-zinc-800" />
+
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500">
+                <Star size={20} className="fill-current" />
+              </div>
+              <div>
+                <div className="text-xl font-bold font-mono">{profile.reputationScore ?? 0}</div>
+                <div className="text-[11px] text-zinc-400 font-medium">Reputation</div>
               </div>
             </div>
           </div>
@@ -139,22 +151,51 @@ export function UserProfilePage() {
         )}
       </div>
 
-      {/* Builds Section */}
-      <div className="space-y-4">
-        <h2 className="text-base font-bold flex items-center gap-2">
-          <Hammer size={16} className="text-blue-500" />
-          <span>Builds by @{profile.id}</span>
-        </h2>
+      {/* Profile Navigation Tabs / Sections */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Builds Section */}
+        <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-4">
+          <h2 className="text-base font-bold flex items-center gap-2">
+            <Hammer size={16} className="text-blue-500" />
+            <span>Builds by @{profile.id}</span>
+          </h2>
 
-        {profile.buildCount === 0 ? (
-          <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 text-zinc-400 space-y-2">
-            <p className="text-xs">This user hasn&apos;t published any custom builds yet.</p>
+          {profile.buildCount === 0 ? (
+            <div className="p-8 text-center rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 text-zinc-400 text-xs">
+              This user hasn&apos;t published any custom builds yet.
+            </div>
+          ) : (
+            <div className="p-4 text-center rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-500 text-xs">
+              Viewing {profile.buildCount} published build{profile.buildCount === 1 ? "" : "s"}.
+            </div>
+          )}
+        </div>
+
+        {/* Collections Section */}
+        <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-bold flex items-center gap-2">
+              <Bookmark size={16} className="text-blue-500" />
+              <span>Curated Collections</span>
+            </h2>
+            <Link
+              to={`/users/${profile.id}/collections`}
+              className="text-xs text-blue-500 hover:underline font-medium"
+            >
+              Browse all →
+            </Link>
           </div>
-        ) : (
-          <div className="p-6 text-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 text-xs">
-            Viewing {profile.buildCount} published build{profile.buildCount === 1 ? "" : "s"}.
+
+          <div className="p-6 text-center rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-500 text-xs space-y-2">
+            <p>Explore custom collections and liked items curated by @{profile.id}.</p>
+            <Link
+              to={`/users/${profile.id}/collections`}
+              className="inline-block px-4 py-2 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold hover:opacity-90 transition-opacity"
+            >
+              View @{profile.id}&apos;s Collections
+            </Link>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

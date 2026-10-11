@@ -1,0 +1,689 @@
+syntax = "proto3";
+
+package quadsmith;
+
+import "_common.proto";
+import "_sql.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith";
+
+// ---------------------------------------------------------
+// Unified Catalog Component Registry
+// ---------------------------------------------------------
+
+message Component {
+  option (quadsmith.sql.table) = {
+    name: "components"
+    unique_constraints: ["collection, id"]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {create_index: true}];
+  string collection = 3 [(quadsmith.sql.column) = {create_index: true}]; // e.g. "motors", "frames"
+  string name = 4;
+  string manufacturer = 5;
+  optional string primary_display_image = 6;
+}
+
+// ---------------------------------------------------------
+// Reviews Subsystem (Steam-Style Recommendations)
+// ---------------------------------------------------------
+
+enum ReviewTier {
+  REVIEW_TIER_UNSPECIFIED = 0;
+  REVIEW_TIER_OVERWHELMINGLY_POSITIVE = 1; // >= 95% (min 50 reviews)
+  REVIEW_TIER_VERY_POSITIVE = 2; // 80% - 94% (min 10 reviews)
+  REVIEW_TIER_POSITIVE = 3; // 70% - 79%
+  REVIEW_TIER_MIXED = 4; // 40% - 69%
+  REVIEW_TIER_MOSTLY_NEGATIVE = 5; // 20% - 39%
+  REVIEW_TIER_OVERWHELMINGLY_NEGATIVE = 6; // < 20% (min 50 reviews)
+  REVIEW_TIER_FEW_REVIEWS = 7; // < 5 reviews
+}
+
+message ReviewSummary {
+  int32 total_reviews = 1;
+  int32 recommended_count = 2;
+  float score_percentage = 3;
+  ReviewTier tier = 4;
+}
+
+enum ReviewVoteType {
+  REVIEW_VOTE_TYPE_UNSPECIFIED = 0;
+  REVIEW_VOTE_TYPE_HELPFUL = 1;
+  REVIEW_VOTE_TYPE_UNHELPFUL = 2;
+}
+
+message Review {
+  option (quadsmith.sql.table) = {
+    name: "reviews"
+    checks: ["num_nonnulls(build_uuid, component_uuid) = 1"]
+    unique_constraints: [
+      "user_uuid, build_uuid",
+      "user_uuid, component_uuid"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {
+    is_unique: true
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+
+  // Polymorphic Target (exactly one is set)
+  optional string build_uuid = 4 [(quadsmith.sql.column) = {
+    references: "builds(uuid)"
+    create_index: true
+  }];
+  optional string component_uuid = 5 [(quadsmith.sql.column) = {
+    references: "components(uuid)"
+    create_index: true
+  }];
+
+  bool is_recommended = 6; // true = Thumbs Up / Recommended, false = Thumbs Down
+  string body = 7; // Markdown writeup
+  bool is_edited = 8 [(quadsmith.sql.column) = {default_value: "false"}];
+  optional google.protobuf.Timestamp deleted_at = 9;
+  google.protobuf.Timestamp created_at = 10 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+
+  // Denormalized / resolved fields for UI display
+  string author_username = 12;
+  string author_avatar_url = 13;
+  int32 helpful_count = 14;
+  int32 unhelpful_count = 15;
+  int32 comment_count = 16;
+  ReviewVoteType current_user_vote = 17;
+  bool is_author_verified_owner = 18;
+}
+
+message ReviewVote {
+  option (quadsmith.sql.table) = {
+    name: "review_votes"
+    unique_constraints: ["user_uuid, review_uuid"]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string review_uuid = 2 [(quadsmith.sql.column) = {
+    references: "reviews(uuid)"
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  bool is_helpful = 4; // true = Helpful, false = Unhelpful
+  google.protobuf.Timestamp created_at = 5 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+}
+
+message ReviewComment {
+  option (quadsmith.sql.table) = {name: "review_comments"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string review_uuid = 2 [(quadsmith.sql.column) = {
+    references: "reviews(uuid)"
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  string body = 4;
+  optional google.protobuf.Timestamp deleted_at = 5;
+  google.protobuf.Timestamp created_at = 6 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 7 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+
+  // Resolved display fields
+  string author_username = 8;
+  string author_avatar_url = 9;
+}
+
+// ---------------------------------------------------------
+// Technical Q&A Subsystem (StackOverflow-Style)
+// ---------------------------------------------------------
+
+message Question {
+  option (quadsmith.sql.table) = {
+    name: "questions"
+    checks: ["num_nonnulls(build_uuid, component_uuid) = 1"]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {
+    is_unique: true
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+
+  // Polymorphic Target (exactly one is set)
+  optional string build_uuid = 4 [(quadsmith.sql.column) = {
+    references: "builds(uuid)"
+    create_index: true
+  }];
+  optional string component_uuid = 5 [(quadsmith.sql.column) = {
+    references: "components(uuid)"
+    create_index: true
+  }];
+
+  string title = 6;
+  string body = 7; // Markdown
+  int32 net_score = 8 [(quadsmith.sql.column) = {
+    default_value: "0"
+    create_index: true
+  }];
+  bool is_edited = 9 [(quadsmith.sql.column) = {default_value: "false"}];
+  optional google.protobuf.Timestamp deleted_at = 10;
+  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 12 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+
+  // Resolved display fields
+  string author_username = 13;
+  string author_avatar_url = 14;
+  int32 upvote_count = 15;
+  int32 downvote_count = 16;
+  int32 answer_count = 17;
+  bool has_accepted_answer = 18;
+  int32 current_user_vote = 19; // +1, -1, or 0
+  repeated QuestionComment comments = 20;
+}
+
+message Answer {
+  option (quadsmith.sql.table) = {name: "answers"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string question_uuid = 2 [(quadsmith.sql.column) = {
+    references: "questions(uuid)"
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+
+  string body = 4; // Markdown
+  int32 net_score = 5 [(quadsmith.sql.column) = {
+    default_value: "0"
+    create_index: true
+  }];
+  bool is_accepted_by_asker = 6 [(quadsmith.sql.column) = {default_value: "false"}];
+  bool is_author_endorsed = 7 [(quadsmith.sql.column) = {default_value: "false"}];
+  bool is_edited = 8 [(quadsmith.sql.column) = {default_value: "false"}];
+  optional google.protobuf.Timestamp deleted_at = 9;
+  google.protobuf.Timestamp created_at = 10 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+
+  // Resolved display fields
+  string author_username = 12;
+  string author_avatar_url = 13;
+  int32 upvote_count = 14;
+  int32 downvote_count = 15;
+  int32 current_user_vote = 16;
+  int32 comment_count = 17;
+  repeated AnswerComment comments = 18;
+}
+
+message QuestionVote {
+  option (quadsmith.sql.table) = {
+    name: "question_votes"
+    unique_constraints: ["user_uuid, question_uuid"]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string question_uuid = 2 [(quadsmith.sql.column) = {
+    references: "questions(uuid)"
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  bool is_upvote = 4; // true = +1, false = -1
+  google.protobuf.Timestamp created_at = 5 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+}
+
+message AnswerVote {
+  option (quadsmith.sql.table) = {
+    name: "answer_votes"
+    unique_constraints: ["user_uuid, answer_uuid"]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string answer_uuid = 2 [(quadsmith.sql.column) = {
+    references: "answers(uuid)"
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  bool is_upvote = 4; // true = +1, false = -1
+  google.protobuf.Timestamp created_at = 5 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+}
+
+message QuestionComment {
+  option (quadsmith.sql.table) = {name: "question_comments"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string question_uuid = 2 [(quadsmith.sql.column) = {
+    references: "questions(uuid)"
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  string body = 4;
+  optional google.protobuf.Timestamp deleted_at = 5;
+  google.protobuf.Timestamp created_at = 6 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 7 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+
+  string author_username = 8;
+  string author_avatar_url = 9;
+}
+
+message AnswerComment {
+  option (quadsmith.sql.table) = {name: "answer_comments"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string answer_uuid = 2 [(quadsmith.sql.column) = {
+    references: "answers(uuid)"
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  string body = 4;
+  optional google.protobuf.Timestamp deleted_at = 5;
+  google.protobuf.Timestamp created_at = 6 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 7 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+
+  string author_username = 8;
+  string author_avatar_url = 9;
+}
+
+// ---------------------------------------------------------
+// User Reputation (Karma)
+// ---------------------------------------------------------
+
+message UserReputation {
+  option (quadsmith.sql.table) = {
+    name: "user_reputations"
+    unique_constraints: ["user_uuid"]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string user_uuid = 2 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  int32 score = 3 [(quadsmith.sql.column) = {default_value: "0"}];
+  google.protobuf.Timestamp updated_at = 4 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+}
+
+// ---------------------------------------------------------
+// Favorites & Collections (Instagram / Printables-Style)
+// ---------------------------------------------------------
+
+message Collection {
+  option (quadsmith.sql.table) = {name: "collections"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {
+    is_unique: true
+    create_index: true
+  }];
+  string user_uuid = 3 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  string name = 4;
+  string description = 5;
+  bool is_public = 6 [(quadsmith.sql.column) = {
+    default_value: "false"
+    create_index: true
+  }];
+  bool is_default_liked = 7 [(quadsmith.sql.column) = {
+    default_value: "false"
+    create_index: true
+  }];
+  google.protobuf.Timestamp created_at = 8 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 9 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+
+  // Resolved display fields
+  string author_username = 10;
+  int32 item_count = 11;
+  repeated string preview_images = 12;
+}
+
+message CollectionItem {
+  option (quadsmith.sql.table) = {
+    name: "collection_items"
+    checks: ["num_nonnulls(build_uuid, component_uuid) = 1"]
+    unique_constraints: [
+      "collection_uuid, build_uuid",
+      "collection_uuid, component_uuid"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string collection_uuid = 2 [(quadsmith.sql.column) = {
+    references: "collections(uuid)"
+    create_index: true
+  }];
+
+  // Polymorphic Target (Build or Component)
+  optional string build_uuid = 3 [(quadsmith.sql.column) = {
+    references: "builds(uuid)"
+    create_index: true
+  }];
+  optional string component_uuid = 4 [(quadsmith.sql.column) = {
+    references: "components(uuid)"
+    create_index: true
+  }];
+
+  google.protobuf.Timestamp created_at = 5 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+
+  // Resolved item details for display
+  string item_id = 6;
+  string item_name = 7;
+  string item_type = 8; // "build" or component collection name (e.g. "motors")
+  string item_image = 9;
+  string item_author_or_manufacturer = 10;
+}
+
+message EntitySocialSummary {
+  bool is_liked = 1;
+  int32 like_count = 2;
+  ReviewSummary review_summary = 3;
+  int32 question_count = 4;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+
+message CreateReviewRequest {
+  optional string build_id = 1;
+  optional string component_id = 2;
+  bool is_recommended = 3;
+  string body = 4;
+}
+
+message UpdateReviewRequest {
+  string review_id = 1;
+  bool is_recommended = 2;
+  string body = 3;
+}
+
+message DeleteReviewRequest {
+  string review_id = 1;
+}
+
+message ListReviewsRequest {
+  optional string build_id = 1;
+  optional string component_id = 2;
+  string sort_by = 3; // "helpful", "recent", "positive", "negative"
+  int32 page_size = 4;
+  string page_token = 5;
+}
+
+message ListReviewsResponse {
+  repeated Review reviews = 1;
+  ReviewSummary summary = 2;
+  string next_page_token = 3;
+}
+
+message VoteReviewRequest {
+  string review_id = 1;
+  ReviewVoteType vote_type = 2; // HELPFUL, UNHELPFUL, or UNSPECIFIED to retract
+}
+
+message VoteReviewResponse {
+  int32 helpful_count = 1;
+  int32 unhelpful_count = 2;
+  ReviewVoteType current_user_vote = 3;
+}
+
+message CreateReviewCommentRequest {
+  string review_id = 1;
+  string body = 2;
+}
+
+message DeleteReviewCommentRequest {
+  string comment_uuid = 1;
+}
+
+message ListReviewCommentsRequest {
+  string review_id = 1;
+}
+
+message ListReviewCommentsResponse {
+  repeated ReviewComment comments = 1;
+}
+
+message CreateQuestionRequest {
+  optional string build_id = 1;
+  optional string component_id = 2;
+  string title = 3;
+  string body = 4;
+}
+
+message UpdateQuestionRequest {
+  string question_id = 1;
+  string title = 2;
+  string body = 3;
+}
+
+message DeleteQuestionRequest {
+  string question_id = 1;
+}
+
+message ListQuestionsRequest {
+  optional string build_id = 1;
+  optional string component_id = 2;
+  string sort_by = 3; // "score", "recent"
+  string query = 4; // Search filter
+  int32 page_size = 5;
+  string page_token = 6;
+}
+
+message ListQuestionsResponse {
+  repeated Question questions = 1;
+  string next_page_token = 2;
+}
+
+message VoteQuestionRequest {
+  string question_id = 1;
+  int32 vote = 2; // +1, -1, or 0 to retract
+}
+
+message VoteQuestionResponse {
+  int32 net_score = 1;
+  int32 upvote_count = 2;
+  int32 downvote_count = 3;
+  int32 current_user_vote = 4;
+}
+
+message CreateAnswerRequest {
+  string question_id = 1;
+  string body = 2;
+}
+
+message UpdateAnswerRequest {
+  string answer_uuid = 1;
+  string body = 2;
+}
+
+message DeleteAnswerRequest {
+  string answer_uuid = 1;
+}
+
+message ListAnswersRequest {
+  string question_id = 1;
+}
+
+message ListAnswersResponse {
+  repeated Answer answers = 1;
+}
+
+message VoteAnswerRequest {
+  string answer_uuid = 1;
+  int32 vote = 2; // +1, -1, or 0
+}
+
+message VoteAnswerResponse {
+  int32 net_score = 1;
+  int32 upvote_count = 2;
+  int32 downvote_count = 3;
+  int32 current_user_vote = 4;
+}
+
+message AcceptAnswerRequest {
+  string answer_uuid = 1;
+}
+
+message EndorseAnswerRequest {
+  string answer_uuid = 1;
+}
+
+message CreateQuestionCommentRequest {
+  string question_id = 1;
+  string body = 2;
+}
+
+message DeleteQuestionCommentRequest {
+  string comment_uuid = 1;
+}
+
+message CreateAnswerCommentRequest {
+  string answer_uuid = 1;
+  string body = 2;
+}
+
+message DeleteAnswerCommentRequest {
+  string comment_uuid = 1;
+}
+
+message CreateCollectionRequest {
+  string name = 1;
+  string description = 2;
+  bool is_public = 3;
+}
+
+message UpdateCollectionRequest {
+  string collection_id = 1;
+  string name = 2;
+  string description = 3;
+  bool is_public = 4;
+}
+
+message DeleteCollectionRequest {
+  string collection_id = 1;
+}
+
+message GetCollectionRequest {
+  string id = 1; // Can be slug or UUID
+}
+
+message ListUserCollectionsRequest {
+  string user_id = 1; // Username or UUID
+}
+
+message ListUserCollectionsResponse {
+  repeated Collection collections = 1;
+}
+
+message ToggleLikeItemRequest {
+  optional string build_id = 1;
+  optional string component_id = 2;
+}
+
+message ToggleLikeItemResponse {
+  bool is_liked = 1;
+  int32 like_count = 2;
+}
+
+message AddCollectionItemRequest {
+  string collection_id = 1;
+  optional string build_id = 2;
+  optional string component_id = 3;
+}
+
+message RemoveCollectionItemRequest {
+  string collection_id = 1;
+  optional string build_id = 2;
+  optional string component_id = 3;
+}
+
+message ListCollectionItemsRequest {
+  string collection_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListCollectionItemsResponse {
+  Collection collection = 1;
+  repeated CollectionItem items = 2;
+  string next_page_token = 3;
+}
+
+message GetEntitySocialSummaryRequest {
+  optional string build_id = 1;
+  optional string component_id = 2;
+}
+
+// ---------------------------------------------------------
+// ConnectRPC Social Service
+// ---------------------------------------------------------
+
+service SocialService {
+  // Reviews
+  rpc CreateReview(CreateReviewRequest) returns (Review);
+  rpc UpdateReview(UpdateReviewRequest) returns (Review);
+  rpc DeleteReview(DeleteReviewRequest) returns (ReviewSummary);
+  rpc ListReviews(ListReviewsRequest) returns (ListReviewsResponse);
+  rpc VoteReview(VoteReviewRequest) returns (VoteReviewResponse);
+  rpc CreateReviewComment(CreateReviewCommentRequest) returns (ReviewComment);
+  rpc DeleteReviewComment(DeleteReviewCommentRequest) returns (ReviewComment);
+  rpc ListReviewComments(ListReviewCommentsRequest) returns (ListReviewCommentsResponse);
+
+  // Technical Q&A
+  rpc CreateQuestion(CreateQuestionRequest) returns (Question);
+  rpc UpdateQuestion(UpdateQuestionRequest) returns (Question);
+  rpc DeleteQuestion(DeleteQuestionRequest) returns (Question);
+  rpc ListQuestions(ListQuestionsRequest) returns (ListQuestionsResponse);
+  rpc VoteQuestion(VoteQuestionRequest) returns (VoteQuestionResponse);
+  rpc CreateAnswer(CreateAnswerRequest) returns (Answer);
+  rpc UpdateAnswer(UpdateAnswerRequest) returns (Answer);
+  rpc DeleteAnswer(DeleteAnswerRequest) returns (Answer);
+  rpc ListAnswers(ListAnswersRequest) returns (ListAnswersResponse);
+  rpc VoteAnswer(VoteAnswerRequest) returns (VoteAnswerResponse);
+  rpc AcceptAnswer(AcceptAnswerRequest) returns (Answer);
+  rpc EndorseAnswer(EndorseAnswerRequest) returns (Answer);
+  rpc CreateQuestionComment(CreateQuestionCommentRequest) returns (QuestionComment);
+  rpc DeleteQuestionComment(DeleteQuestionCommentRequest) returns (QuestionComment);
+  rpc CreateAnswerComment(CreateAnswerCommentRequest) returns (AnswerComment);
+  rpc DeleteAnswerComment(DeleteAnswerCommentRequest) returns (AnswerComment);
+
+  // Collections & Likes
+  rpc CreateCollection(CreateCollectionRequest) returns (Collection);
+  rpc UpdateCollection(UpdateCollectionRequest) returns (Collection);
+  rpc DeleteCollection(DeleteCollectionRequest) returns (Collection);
+  rpc GetCollection(GetCollectionRequest) returns (Collection);
+  rpc ListUserCollections(ListUserCollectionsRequest) returns (ListUserCollectionsResponse);
+  rpc ToggleLikeItem(ToggleLikeItemRequest) returns (ToggleLikeItemResponse);
+  rpc AddCollectionItem(AddCollectionItemRequest) returns (CollectionItem);
+  rpc RemoveCollectionItem(RemoveCollectionItemRequest) returns (CollectionItem);
+  rpc ListCollectionItems(ListCollectionItemsRequest) returns (ListCollectionItemsResponse);
+
+  // Unified Entity Social Status
+  rpc GetEntitySocialSummary(GetEntitySocialSummaryRequest) returns (EntitySocialSummary);
+}

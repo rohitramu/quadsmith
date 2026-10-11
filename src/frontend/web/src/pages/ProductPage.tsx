@@ -9,6 +9,8 @@ import {
 import { CollectionBadge } from "../components/CollectionBadge";
 import { MediaGallery } from "../components/MediaGallery";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
+import { SocialToolbar } from "../components/SocialToolbar";
+import { SocialTabs } from "../components/SocialTabs";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { formatProductTitle } from "../lib/format";
 
@@ -89,6 +91,21 @@ function ProductDetailView({
             <p className="text-xl text-zinc-500 dark:text-zinc-400">
               {item.manufacturer || "Unknown Manufacturer"}
             </p>
+
+            <div className="mt-4">
+              <SocialToolbar
+                target={{ type: "component", id: item.id || item.uuid || productId }}
+                targetName={item.name || item.id}
+                onJumpToReviews={() => {
+                  const el = document.getElementById("social-hub");
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }}
+                onJumpToQa={() => {
+                  const el = document.getElementById("social-hub");
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }}
+              />
+            </div>
           </div>
 
           {/* Key Spec Highlight Cards */}
@@ -150,6 +167,12 @@ function ProductDetailView({
               <ReferenceLinksList links={item.referenceLinks} />
             </div>
           )}
+
+          {/* Social Interactions: Reviews, Q&A, Collections */}
+          <SocialTabs
+            target={{ type: "component", id: item.id || item.uuid || productId }}
+            entityName={item.name || item.id}
+          />
         </>
       )}
     </div>

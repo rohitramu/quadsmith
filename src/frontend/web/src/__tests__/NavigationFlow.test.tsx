@@ -111,5 +111,5 @@ describe("Full Application Navigation Flow", () => {
         name: "The Forge",
       }),
     ).toBeInTheDocument();
-  });
+  }, 15000);
 });

@@ -15,6 +15,14 @@ message TableOptions {
   // If omitted, the Go generator will not generate a table for this message.
   // Example: option (quadsmith.sql.table) = { name: "motors" };
   string name = 1;
+
+  // Table-level CHECK constraints.
+  // Example: checks: "num_nonnulls(build_uuid, component_uuid) = 1"
+  repeated string checks = 2;
+
+  // Composite UNIQUE constraints.
+  // Example: unique_constraints: "user_uuid, build_uuid"
+  repeated string unique_constraints = 3;
 }
 
 // ---------------------------------------------------------

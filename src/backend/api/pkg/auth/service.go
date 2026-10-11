@@ -1935,9 +1935,13 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 	var buildCount int32
 	_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, userUUID).Scan(&buildCount)
 
+	var reputationScore int32
+	_ = s.db.QueryRow(ctx, `SELECT score FROM user_reputations WHERE user_uuid = $1`, userUUID).Scan(&reputationScore)
+
 	pub := &pb.PublicUserProfile{
-		Id:         username,
-		BuildCount: buildCount,
+		Id:              username,
+		BuildCount:      buildCount,
+		ReputationScore: reputationScore,
 	}
 	if avatarUrl != nil {
 		pub.AvatarUrl = *avatarUrl

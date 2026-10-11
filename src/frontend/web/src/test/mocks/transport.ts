@@ -17,6 +17,7 @@ import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
 import { CompatibilityService } from "../../gen/quadsmith/compatibility_pb";
 import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
 import { SearchService } from "../../gen/quadsmith/search_pb";
+import { SocialService } from "../../gen/quadsmith/social_pb";
 import {
   AuthService,
   SendEmailOtpResponseSchema,
@@ -47,6 +48,13 @@ import {
   mockEvaluation1,
   mockBatteries,
   mockUserEmails,
+  mockReviews,
+  mockReviewSummary1,
+  mockQuestions,
+  mockAnswers,
+  mockCollections,
+  mockCollectionItem1,
+  mockEntitySocialSummary1,
 } from "./fixtures";
 
 export interface MockTransportOptions {
@@ -56,6 +64,10 @@ export interface MockTransportOptions {
   builds?: typeof mockBuilds;
   batteries?: typeof mockBatteries;
   userEmails?: typeof mockUserEmails;
+  reviews?: typeof mockReviews;
+  questions?: typeof mockQuestions;
+  collections?: typeof mockCollections;
+  entitySocialSummary?: typeof mockEntitySocialSummary1;
   defaultBatteryId?: string;
   nextPageToken?: string;
   simulateError?: boolean;
@@ -70,6 +82,10 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     builds = [...(options.builds ?? mockBuilds)],
     batteries = mockBatteries,
     defaultBatteryId = batteries.length > 0 ? batteries[0].id : "",
+    reviews = [...(options.reviews ?? mockReviews)],
+    questions = [...(options.questions ?? mockQuestions)],
+    collections = [...(options.collections ?? mockCollections)],
+    entitySocialSummary = options.entitySocialSummary ?? mockEntitySocialSummary1,
     nextPageToken = "",
     simulateError = false,
     isAuthenticated = true,
@@ -778,6 +794,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         bio: mockProfile.bio,
         createdAt: mockUser.createdAt,
         buildCount: 3,
+        reputationScore: 145,
       }),
       checkUsernameAvailable: (req) => {
         const u = req.username?.trim().toLowerCase() || "";
@@ -822,6 +839,342 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           status: UsernameAvailabilityStatus.AVAILABLE,
           available: true,
           message: "Username is available",
+        };
+      },
+    });
+
+    service(SocialService, {
+      getEntitySocialSummary: () => entitySocialSummary,
+      listReviews: (req) => {
+        let list = [...reviews];
+        if (req.buildId) {
+          const b = builds.find((b) => b.id === req.buildId || b.uuid === req.buildId);
+          const bUuid = b?.uuid || req.buildId;
+          list = list.filter(
+            (r) => r.buildUuid === bUuid || r.buildUuid === req.buildId || r.id === req.buildId,
+          );
+        } else if (req.componentId) {
+          list = list.filter(
+            (r) => r.componentUuid === req.componentId || r.id === req.componentId,
+          );
+        }
+        return {
+          reviews: list,
+          summary: entitySocialSummary.reviewSummary ?? mockReviewSummary1,
+          nextPageToken: "",
+        };
+      },
+      createReview: (req) => {
+        const newRev = {
+          uuid: `rev-${Date.now()}`,
+          id: `review-${Date.now()}`,
+          userUuid: mockUser.uuid,
+          buildUuid: req.buildId,
+          componentUuid: req.componentId,
+          isRecommended: req.isRecommended,
+          body: req.body,
+          isEdited: false,
+          authorUsername: mockUser.id,
+          helpfulCount: 0,
+          unhelpfulCount: 0,
+          commentCount: 0,
+          currentUserVote: 0,
+          isAuthorVerifiedOwner: false,
+        };
+        reviews.unshift(newRev as any);
+        return newRev as any;
+      },
+      updateReview: (req) => {
+        const rev = reviews.find((r) => r.id === req.reviewId || r.uuid === req.reviewId);
+        if (rev) {
+          rev.body = req.body;
+          rev.isRecommended = req.isRecommended;
+          rev.isEdited = true;
+          return rev;
+        }
+        throw new ConnectError("Review not found", Code.NotFound);
+      },
+      deleteReview: (req) => {
+        const idx = reviews.findIndex((r) => r.id === req.reviewId || r.uuid === req.reviewId);
+        if (idx !== -1) {
+          reviews.splice(idx, 1);
+        }
+        return entitySocialSummary.reviewSummary ?? mockReviewSummary1;
+      },
+      voteReview: (req) => {
+        const rev = reviews.find((r) => r.id === req.reviewId || r.uuid === req.reviewId);
+        if (rev) {
+          if (req.voteType === 1) {
+            rev.helpfulCount += 1;
+          } else if (req.voteType === 2) {
+            rev.unhelpfulCount += 1;
+          }
+          rev.currentUserVote = req.voteType;
+          return {
+            helpfulCount: rev.helpfulCount,
+            unhelpfulCount: rev.unhelpfulCount,
+            currentUserVote: req.voteType,
+          };
+        }
+        return { helpfulCount: 0, unhelpfulCount: 0, currentUserVote: req.voteType };
+      },
+      listReviewComments: () => ({ comments: [] }),
+      createReviewComment: (req) =>
+        ({
+          uuid: `rc-${Date.now()}`,
+          reviewUuid: req.reviewId,
+          userUuid: mockUser.uuid,
+          body: req.body,
+          authorUsername: mockUser.id,
+        }) as any,
+      deleteReviewComment: () => ({}),
+
+      listQuestions: (req) => {
+        let list = [...questions];
+        if (req.buildId) {
+          const b = builds.find((b) => b.id === req.buildId || b.uuid === req.buildId);
+          const bUuid = b?.uuid || req.buildId;
+          list = list.filter(
+            (q) => q.buildUuid === bUuid || q.buildUuid === req.buildId || q.id === req.buildId,
+          );
+        } else if (req.componentId) {
+          list = list.filter(
+            (q) => q.componentUuid === req.componentId || q.id === req.componentId,
+          );
+        }
+        return {
+          questions: list,
+          nextPageToken: "",
+        };
+      },
+      createQuestion: (req) => {
+        const newQ = {
+          uuid: `q-${Date.now()}`,
+          id: `question-${Date.now()}`,
+          userUuid: mockUser.uuid,
+          buildUuid: req.buildId,
+          componentUuid: req.componentId,
+          title: req.title,
+          body: req.body,
+          netScore: 0,
+          upvoteCount: 0,
+          downvoteCount: 0,
+          answerCount: 0,
+          hasAcceptedAnswer: false,
+          isEdited: false,
+          authorUsername: mockUser.id,
+          currentUserVote: 0,
+          comments: [],
+        };
+        questions.unshift(newQ as any);
+        return newQ as any;
+      },
+      updateQuestion: (req) => {
+        const q = questions.find(
+          (item) => item.id === req.questionId || item.uuid === req.questionId,
+        );
+        if (q) {
+          q.title = req.title;
+          q.body = req.body;
+          q.isEdited = true;
+          return q;
+        }
+        throw new ConnectError("Question not found", Code.NotFound);
+      },
+      deleteQuestion: (req) => {
+        const idx = questions.findIndex(
+          (item) => item.id === req.questionId || item.uuid === req.questionId,
+        );
+        if (idx !== -1) {
+          return questions.splice(idx, 1)[0];
+        }
+        throw new ConnectError("Question not found", Code.NotFound);
+      },
+      voteQuestion: (req) => {
+        const q = questions.find(
+          (item) => item.id === req.questionId || item.uuid === req.questionId,
+        );
+        if (q) {
+          q.netScore += req.vote;
+          q.upvoteCount += req.vote > 0 ? 1 : 0;
+          q.downvoteCount += req.vote < 0 ? 1 : 0;
+          q.currentUserVote = req.vote;
+          return {
+            netScore: q.netScore,
+            upvoteCount: q.upvoteCount,
+            downvoteCount: q.downvoteCount,
+            currentUserVote: q.currentUserVote,
+          };
+        }
+        return { netScore: 0, upvoteCount: 0, downvoteCount: 0, currentUserVote: req.vote };
+      },
+      listAnswers: () => ({
+        answers: mockAnswers,
+      }),
+      createAnswer: (req) => {
+        const newA = {
+          uuid: `ans-${Date.now()}`,
+          questionUuid: req.questionId,
+          userUuid: mockUser.uuid,
+          body: req.body,
+          netScore: 0,
+          upvoteCount: 0,
+          downvoteCount: 0,
+          isAcceptedByAsker: false,
+          isAuthorEndorsed: false,
+          isEdited: false,
+          authorUsername: mockUser.id,
+          currentUserVote: 0,
+          commentCount: 0,
+          comments: [],
+        };
+        mockAnswers.push(newA as any);
+        return newA as any;
+      },
+      updateAnswer: (req) => {
+        const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
+        if (a) {
+          a.body = req.body;
+          a.isEdited = true;
+          return a;
+        }
+        throw new ConnectError("Answer not found", Code.NotFound);
+      },
+      deleteAnswer: (req) => {
+        const idx = mockAnswers.findIndex((item) => item.uuid === req.answerUuid);
+        if (idx !== -1) {
+          return mockAnswers.splice(idx, 1)[0];
+        }
+        throw new ConnectError("Answer not found", Code.NotFound);
+      },
+      voteAnswer: (req) => {
+        const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
+        if (a) {
+          a.netScore += req.vote;
+          a.upvoteCount += req.vote > 0 ? 1 : 0;
+          a.downvoteCount += req.vote < 0 ? 1 : 0;
+          a.currentUserVote = req.vote;
+          return {
+            netScore: a.netScore,
+            upvoteCount: a.upvoteCount,
+            downvoteCount: a.downvoteCount,
+            currentUserVote: a.currentUserVote,
+          };
+        }
+        return { netScore: 0, upvoteCount: 0, downvoteCount: 0, currentUserVote: req.vote };
+      },
+      acceptAnswer: (req) => {
+        const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
+        if (a) {
+          a.isAcceptedByAsker = !a.isAcceptedByAsker;
+          return a;
+        }
+        throw new ConnectError("Answer not found", Code.NotFound);
+      },
+      endorseAnswer: (req) => {
+        const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
+        if (a) {
+          a.isAuthorEndorsed = !a.isAuthorEndorsed;
+          return a;
+        }
+        throw new ConnectError("Answer not found", Code.NotFound);
+      },
+      createQuestionComment: (req) =>
+        ({
+          uuid: `qc-${Date.now()}`,
+          questionUuid: req.questionId,
+          userUuid: mockUser.uuid,
+          body: req.body,
+          authorUsername: mockUser.id,
+        }) as any,
+      deleteQuestionComment: () => ({}),
+      createAnswerComment: (req) =>
+        ({
+          uuid: `ac-${Date.now()}`,
+          answerUuid: req.answerUuid,
+          userUuid: mockUser.uuid,
+          body: req.body,
+          authorUsername: mockUser.id,
+        }) as any,
+      deleteAnswerComment: () => ({}),
+
+      listUserCollections: (req) => {
+        return {
+          collections: collections.filter(
+            (c) => !req.userId || c.authorUsername === req.userId || c.userUuid === req.userId,
+          ),
+        };
+      },
+      getCollection: (req) => {
+        const col = collections.find((c) => c.id === req.id || c.uuid === req.id);
+        if (col) return col;
+        throw new ConnectError("Collection not found", Code.NotFound);
+      },
+      createCollection: (req) => {
+        const newCol = {
+          uuid: `col-${Date.now()}`,
+          id: req.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          userUuid: mockUser.uuid,
+          name: req.name,
+          description: req.description,
+          isPublic: req.isPublic,
+          isDefaultLiked: false,
+          authorUsername: mockUser.id,
+          itemCount: 0,
+          previewImages: [],
+        };
+        collections.push(newCol as any);
+        return newCol as any;
+      },
+      updateCollection: (req) => {
+        const col = collections.find(
+          (c) => c.id === req.collectionId || c.uuid === req.collectionId,
+        );
+        if (col) {
+          col.name = req.name;
+          col.description = req.description;
+          col.isPublic = req.isPublic;
+          return col;
+        }
+        throw new ConnectError("Collection not found", Code.NotFound);
+      },
+      deleteCollection: (req) => {
+        const idx = collections.findIndex(
+          (c) => c.id === req.collectionId || c.uuid === req.collectionId,
+        );
+        if (idx !== -1) {
+          return collections.splice(idx, 1)[0];
+        }
+        throw new ConnectError("Collection not found", Code.NotFound);
+      },
+      listCollectionItems: (req) => {
+        const col =
+          collections.find((c) => c.id === req.collectionId || c.uuid === req.collectionId) ??
+          collections[0];
+        return {
+          collection: col,
+          items: [mockCollectionItem1],
+          nextPageToken: "",
+        };
+      },
+      addCollectionItem: (req) => {
+        return {
+          uuid: `ci-${Date.now()}`,
+          collectionUuid: req.collectionId,
+          buildUuid: req.buildId,
+          componentUuid: req.componentId,
+          itemId: req.buildId || req.componentId || "item",
+          itemName: "Item",
+          itemType: req.buildId ? "Build" : "Component",
+        } as any;
+      },
+      removeCollectionItem: () => mockCollectionItem1,
+      toggleLikeItem: () => {
+        entitySocialSummary.isLiked = !entitySocialSummary.isLiked;
+        entitySocialSummary.likeCount += entitySocialSummary.isLiked ? 1 : -1;
+        return {
+          isLiked: entitySocialSummary.isLiked,
+          likeCount: entitySocialSummary.likeCount,
         };
       },
     });

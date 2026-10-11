@@ -29,6 +29,8 @@ import { CollectionBadge } from "../components/CollectionBadge";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { ProductHoverCard } from "../components/ProductHoverCard";
 import { BatteryCombobox } from "../components/BatteryCombobox";
+import { SocialToolbar } from "../components/SocialToolbar";
+import { SocialTabs } from "../components/SocialTabs";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import {
   ChevronRight,
@@ -302,6 +304,21 @@ export function BuildProfilePage() {
             {build.description}
           </p>
         )}
+
+        <div className="mt-4">
+          <SocialToolbar
+            target={{ type: "build", id: build.id || buildId || "" }}
+            targetName={build.name}
+            onJumpToReviews={() => {
+              const el = document.getElementById("social-hub");
+              el?.scrollIntoView({ behavior: "smooth" });
+            }}
+            onJumpToQa={() => {
+              const el = document.getElementById("social-hub");
+              el?.scrollIntoView({ behavior: "smooth" });
+            }}
+          />
+        </div>
       </div>
 
       {/* ============================================================ */}
@@ -912,6 +929,15 @@ export function BuildProfilePage() {
           <ReferenceLinksList links={build.referenceLinks} />
         </section>
       )}
+
+      {/* ============================================================ */}
+      {/* SOCIAL INTERACTIONS: REVIEWS, Q&A, COLLECTIONS               */}
+      {/* ============================================================ */}
+      <SocialTabs
+        target={{ type: "build", id: build.id || buildId || "" }}
+        targetAuthorUuid={build.userUuid}
+        entityName={build.name}
+      />
 
       {/* Battery Picker Explorer Modal */}
       <BatteryPickerModal

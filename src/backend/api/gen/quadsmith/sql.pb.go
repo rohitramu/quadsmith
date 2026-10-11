@@ -27,9 +27,15 @@ type TableOptions struct {
 	// The name of the SQL table to generate for this message.
 	// If omitted, the Go generator will not generate a table for this message.
 	// Example: option (quadsmith.sql.table) = { name: "motors" };
-	Name          string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Table-level CHECK constraints.
+	// Example: checks: "num_nonnulls(build_uuid, component_uuid) = 1"
+	Checks []string `protobuf:"bytes,2,rep,name=checks,proto3" json:"checks,omitempty"`
+	// Composite UNIQUE constraints.
+	// Example: unique_constraints: "user_uuid, build_uuid"
+	UniqueConstraints []string `protobuf:"bytes,3,rep,name=unique_constraints,json=uniqueConstraints,proto3" json:"unique_constraints,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *TableOptions) Reset() {
@@ -67,6 +73,20 @@ func (x *TableOptions) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *TableOptions) GetChecks() []string {
+	if x != nil {
+		return x.Checks
+	}
+	return nil
+}
+
+func (x *TableOptions) GetUniqueConstraints() []string {
+	if x != nil {
+		return x.UniqueConstraints
+	}
+	return nil
 }
 
 type ColumnOptions struct {
@@ -211,9 +231,11 @@ var File___sql_proto protoreflect.FileDescriptor
 const file___sql_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"_sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto\"\"\n" +
+	"_sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto\"i\n" +
 	"\fTableOptions\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"\xef\x01\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
+	"\x06checks\x18\x02 \x03(\tR\x06checks\x12-\n" +
+	"\x12unique_constraints\x18\x03 \x03(\tR\x11uniqueConstraints\"\xef\x01\n" +
 	"\rColumnOptions\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12$\n" +
 	"\x0eis_primary_key\x18\x02 \x01(\bR\fisPrimaryKey\x12\x1e\n" +

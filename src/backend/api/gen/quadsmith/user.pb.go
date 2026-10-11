@@ -341,14 +341,15 @@ func (x *UserEmail) GetCreatedAt() *timestamppb.Timestamp {
 }
 
 type PublicUserProfile struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Public username (or UUID fallback)
-	AvatarUrl     string                 `protobuf:"bytes,2,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
-	Bio           string                 `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	BuildCount    int32                  `protobuf:"varint,5,opt,name=build_count,json=buildCount,proto3" json:"build_count,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Public username (or UUID fallback)
+	AvatarUrl       string                 `protobuf:"bytes,2,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	Bio             string                 `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
+	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	BuildCount      int32                  `protobuf:"varint,5,opt,name=build_count,json=buildCount,proto3" json:"build_count,omitempty"`
+	ReputationScore int32                  `protobuf:"varint,6,opt,name=reputation_score,json=reputationScore,proto3" json:"reputation_score,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *PublicUserProfile) Reset() {
@@ -412,6 +413,13 @@ func (x *PublicUserProfile) GetCreatedAt() *timestamppb.Timestamp {
 func (x *PublicUserProfile) GetBuildCount() int32 {
 	if x != nil {
 		return x.BuildCount
+	}
+	return 0
+}
+
+func (x *PublicUserProfile) GetReputationScore() int32 {
+	if x != nil {
+		return x.ReputationScore
 	}
 	return 0
 }
@@ -1040,7 +1048,7 @@ const file_user_proto_rawDesc = "" +
 	"is_primary\x18\x04 \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\tisPrimary\x129\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x11\xc2\xf3\x18\r\n" +
-	"\vuser_emails\"\xb0\x01\n" +
+	"\vuser_emails\"\xdb\x01\n" +
 	"\x11PublicUserProfile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
 	"\n" +
@@ -1049,7 +1057,8 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1f\n" +
 	"\vbuild_count\x18\x05 \x01(\x05R\n" +
-	"buildCount\"\xf0\x02\n" +
+	"buildCount\x12)\n" +
+	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"\xf0\x02\n" +
 	"\fRefreshToken\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
 	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12'\n" +

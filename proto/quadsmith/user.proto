@@ -92,6 +92,7 @@ message PublicUserProfile {
   string bio = 3;
   google.protobuf.Timestamp created_at = 4;
   int32 build_count = 5;
+  int32 reputation_score = 6;
 }
 
 message RefreshToken {

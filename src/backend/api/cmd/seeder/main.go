@@ -37,6 +37,8 @@ func main() {
 		"receivers", "video_transmitters", "antennas", "cameras", "propellers", "gps_receivers",
 		"flight_controller_firmwares", "electronic_speed_controller_firmwares", "video_transmitter_firmwares",
 		"radio_firmwares", "software_tools", "transmitters", "goggles", "chargers", "field_tools",
+		"reviews", "review_votes", "review_comments", "questions", "answers", "question_votes", "answer_votes",
+		"question_comments", "answer_comments", "collections", "collection_items", "user_reputations", "components",
 	}
 
 	for _, table := range tables {
@@ -391,6 +393,44 @@ func main() {
 	tx.Exec(ctx, "UPDATE flight_controllers SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), weight_g = ROUND(weight_g, 2);")
 	tx.Exec(ctx, "UPDATE electronic_speed_controllers SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), weight_g = ROUND(weight_g, 2);")
 	tx.Exec(ctx, "UPDATE motors SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), max_current_a = ROUND(max_current_a, 2), weight_g = ROUND(weight_g, 2);")
+
+	// Populate unified components registry table
+	componentTables := []struct {
+		table      string
+		collection string
+	}{
+		{"motors", "motors"},
+		{"frames", "frames"},
+		{"batteries", "batteries"},
+		{"electronic_speed_controllers", "electronic-speed-controllers"},
+		{"flight_controllers", "flight-controllers"},
+		{"receivers", "receivers"},
+		{"video_transmitters", "video-transmitters"},
+		{"antennas", "antennas"},
+		{"cameras", "cameras"},
+		{"propellers", "propellers"},
+		{"gps_receivers", "gps-receivers"},
+		{"transmitters", "transmitters"},
+		{"goggles", "goggles"},
+		{"chargers", "chargers"},
+		{"field_tools", "field-tools"},
+		{"flight_controller_firmwares", "fc-firmware"},
+		{"electronic_speed_controller_firmwares", "esc-firmware"},
+		{"video_transmitter_firmwares", "vtx-firmware"},
+		{"radio_firmwares", "radio-firmware"},
+		{"software_tools", "software-tools"},
+	}
+
+	for _, ct := range componentTables {
+		query := fmt.Sprintf(`
+			INSERT INTO components (uuid, id, collection, name, manufacturer, primary_display_image)
+			SELECT uuid, id, '%s', name, manufacturer, primary_display_image FROM %s
+			ON CONFLICT (uuid) DO NOTHING;
+		`, ct.collection, ct.table)
+		if _, err := tx.Exec(ctx, query); err != nil {
+			panic(fmt.Errorf("failed populating components from %s: %w", ct.table, err))
+		}
+	}
 
 	if err := tx.Commit(ctx); err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to commit tx: %v\n", err)

@@ -8,6 +8,26 @@ import {
 import { ReferenceLinkType } from "../../gen/quadsmith/reference_link_pb";
 import { MediaType } from "../../gen/quadsmith/media_pb";
 import { UserEmailSchema, type UserEmail } from "../../gen/quadsmith/user_pb";
+import {
+  ReviewSchema,
+  type Review,
+  ReviewSummarySchema,
+  type ReviewSummary,
+  ReviewCommentSchema,
+  type ReviewComment,
+  QuestionSchema,
+  type Question,
+  AnswerSchema,
+  type Answer,
+  CollectionSchema,
+  type Collection,
+  CollectionItemSchema,
+  type CollectionItem,
+  EntitySocialSummarySchema,
+  type EntitySocialSummary,
+  ReviewTier,
+  ReviewVoteType,
+} from "../../gen/quadsmith/social_pb";
 
 export const mockMotor1: Motor = create(MotorSchema, {
   uuid: "018f0000-0000-7000-0000-000000000001",
@@ -400,3 +420,155 @@ export const mockUserEmails: UserEmail[] = [
     isPrimary: false,
   }),
 ];
+
+export const mockReviewSummary1: ReviewSummary = create(ReviewSummarySchema, {
+  totalReviews: 12,
+  recommendedCount: 11,
+  scorePercentage: 91.6,
+  tier: ReviewTier.VERY_POSITIVE,
+});
+
+export const mockReviewComment1: ReviewComment = create(ReviewCommentSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000401",
+  reviewUuid: "018f0000-0000-7000-0000-000000000301",
+  userUuid: "018f0000-0000-7000-0000-000000000099",
+  authorUsername: "fpv_pilot",
+  body: "Totally agree on the bell durability!",
+  createdAt: { seconds: 1718000000n, nanos: 0 },
+  updatedAt: { seconds: 1718000000n, nanos: 0 },
+});
+
+export const mockReview1: Review = create(ReviewSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000301",
+  id: "review-rotor-king",
+  userUuid: "018f0000-0000-7000-0000-000000000098",
+  buildUuid: mockBuild1.uuid,
+  isRecommended: true,
+  body: "Incredible frame stiffness and smooth low-end throttle resolution. Survived a direct hit to concrete!",
+  isEdited: false,
+  createdAt: { seconds: 1717000000n, nanos: 0 },
+  updatedAt: { seconds: 1717000000n, nanos: 0 },
+  authorUsername: "rotor_king",
+  authorAvatarUrl: "",
+  helpfulCount: 5,
+  unhelpfulCount: 0,
+  commentCount: 1,
+  currentUserVote: ReviewVoteType.UNSPECIFIED,
+  isAuthorVerifiedOwner: true,
+});
+
+export const mockReview2: Review = create(ReviewSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000302",
+  id: "review-acro-fan",
+  userUuid: "018f0000-0000-7000-0000-000000000097",
+  componentUuid: "018f0000-0000-7000-0000-000000000001",
+  isRecommended: true,
+  body: "Solid motors for the price. Very smooth bearings.",
+  isEdited: false,
+  createdAt: { seconds: 1717100000n, nanos: 0 },
+  updatedAt: { seconds: 1717100000n, nanos: 0 },
+  authorUsername: "acro_fan",
+  authorAvatarUrl: "",
+  helpfulCount: 2,
+  unhelpfulCount: 1,
+  commentCount: 0,
+  currentUserVote: ReviewVoteType.HELPFUL,
+  isAuthorVerifiedOwner: false,
+});
+
+export const mockReviews = [mockReview1, mockReview2];
+
+export const mockAnswer1: Answer = create(AnswerSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000501",
+  questionUuid: "018f0000-0000-7000-0000-000000000601",
+  userUuid: "018f0000-0000-7000-0000-000000000099",
+  authorUsername: "fpv_pilot",
+  body: "Yes, you can use 20x20mm stacks using the included CNC adapter plate.",
+  netScore: 4,
+  upvoteCount: 4,
+  downvoteCount: 0,
+  isAcceptedByAsker: true,
+  isAuthorEndorsed: true,
+  isEdited: false,
+  createdAt: { seconds: 1717005000n, nanos: 0 },
+  updatedAt: { seconds: 1717005000n, nanos: 0 },
+  commentCount: 0,
+  comments: [],
+  currentUserVote: 1,
+});
+
+export const mockAnswers = [mockAnswer1];
+
+export const mockQuestion1: Question = create(QuestionSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000601",
+  id: "does-this-fit-20x20-stack",
+  userUuid: "018f0000-0000-7000-0000-000000000096",
+  buildUuid: mockBuild1.uuid,
+  title: "Does this frame fit 20x20mm mounting stacks?",
+  body: "I have a 20x20mm FC/ESC stack and want to know if mounting holes are included or if an adapter is needed.",
+  netScore: 3,
+  upvoteCount: 3,
+  downvoteCount: 0,
+  answerCount: 1,
+  hasAcceptedAnswer: true,
+  isEdited: false,
+  createdAt: { seconds: 1717001000n, nanos: 0 },
+  updatedAt: { seconds: 1717001000n, nanos: 0 },
+  authorUsername: "newbie_flyer",
+  currentUserVote: 0,
+  comments: [],
+});
+
+export const mockQuestions = [mockQuestion1];
+
+export const mockCollectionLiked: Collection = create(CollectionSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000701",
+  id: "liked",
+  userUuid: "018f0000-0000-7000-0000-000000000099",
+  name: "Liked",
+  description: "Default collection of liked builds and parts",
+  isPublic: false,
+  isDefaultLiked: true,
+  createdAt: { seconds: 1716000000n, nanos: 0 },
+  updatedAt: { seconds: 1716000000n, nanos: 0 },
+  authorUsername: "fpv_pilot",
+  itemCount: 2,
+  previewImages: [],
+});
+
+export const mockCollection1: Collection = create(CollectionSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000702",
+  id: "cinewhoop-favorites",
+  userUuid: "018f0000-0000-7000-0000-000000000099",
+  name: "Cinewhoop Favorites",
+  description: "Curated parts for indoor sub-250g filming",
+  isPublic: true,
+  isDefaultLiked: false,
+  createdAt: { seconds: 1716500000n, nanos: 0 },
+  updatedAt: { seconds: 1716500000n, nanos: 0 },
+  authorUsername: "fpv_pilot",
+  itemCount: 1,
+  previewImages: [],
+});
+
+export const mockCollections = [mockCollectionLiked, mockCollection1];
+
+export const mockCollectionItem1: CollectionItem = create(CollectionItemSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000801",
+  collectionUuid: mockCollection1.uuid,
+  buildUuid: mockBuild1.uuid,
+  createdAt: { seconds: 1716600000n, nanos: 0 },
+  itemId: "bando-basher-5-inch",
+  itemName: "Bando Basher 5 inch Freestyle",
+  itemType: "Build",
+  itemImage:
+    "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1200&q=80",
+  itemAuthorOrManufacturer: "alex",
+});
+
+export const mockEntitySocialSummary1: EntitySocialSummary = create(EntitySocialSummarySchema, {
+  isLiked: true,
+  likeCount: 42,
+  reviewSummary: mockReviewSummary1,
+  questionCount: 3,
+});

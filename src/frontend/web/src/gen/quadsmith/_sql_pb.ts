@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file__sql: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cgpfc3FsLnByb3RvEg1xdWFkc21pdGguc3FsIhwKDFRhYmxlT3B0aW9ucxIMCgRuYW1lGAEgASgJIp4BCg1Db2x1bW5PcHRpb25zEgwKBG5hbWUYASABKAkSFgoOaXNfcHJpbWFyeV9rZXkYAiABKAgSEgoKcmVmZXJlbmNlcxgDIAEoCRIRCglpc191bmlxdWUYBCABKAgSFAoMY3JlYXRlX2luZGV4GAUgASgIEhMKC2NvbHVtbl90eXBlGAYgASgJEhUKDWRlZmF1bHRfdmFsdWUYByABKAk6VAoFdGFibGUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMYuI4DIAEoCzIbLnF1YWRzbWl0aC5zcWwuVGFibGVPcHRpb25zUgV0YWJsZTpVCgZjb2x1bW4SHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLiOAyABKAsyHC5xdWFkc21pdGguc3FsLkNvbHVtbk9wdGlvbnNSBmNvbHVtbkIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
+    "Cgpfc3FsLnByb3RvEg1xdWFkc21pdGguc3FsIkgKDFRhYmxlT3B0aW9ucxIMCgRuYW1lGAEgASgJEg4KBmNoZWNrcxgCIAMoCRIaChJ1bmlxdWVfY29uc3RyYWludHMYAyADKAkingEKDUNvbHVtbk9wdGlvbnMSDAoEbmFtZRgBIAEoCRIWCg5pc19wcmltYXJ5X2tleRgCIAEoCBISCgpyZWZlcmVuY2VzGAMgASgJEhEKCWlzX3VuaXF1ZRgEIAEoCBIUCgxjcmVhdGVfaW5kZXgYBSABKAgSEwoLY29sdW1uX3R5cGUYBiABKAkSFQoNZGVmYXVsdF92YWx1ZRgHIAEoCTpUCgV0YWJsZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxi4jgMgASgLMhsucXVhZHNtaXRoLnNxbC5UYWJsZU9wdGlvbnNSBXRhYmxlOlUKBmNvbHVtbhIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYuI4DIAEoCzIcLnF1YWRzbWl0aC5zcWwuQ29sdW1uT3B0aW9uc1IGY29sdW1uQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
     [file_google_protobuf_descriptor],
   );
 
@@ -30,6 +30,22 @@ export type TableOptions = Message<"quadsmith.sql.TableOptions"> & {
    * @generated from field: string name = 1;
    */
   name: string;
+
+  /**
+   * Table-level CHECK constraints.
+   * Example: checks: "num_nonnulls(build_uuid, component_uuid) = 1"
+   *
+   * @generated from field: repeated string checks = 2;
+   */
+  checks: string[];
+
+  /**
+   * Composite UNIQUE constraints.
+   * Example: unique_constraints: "user_uuid, build_uuid"
+   *
+   * @generated from field: repeated string unique_constraints = 3;
+   */
+  uniqueConstraints: string[];
 };
 
 /**

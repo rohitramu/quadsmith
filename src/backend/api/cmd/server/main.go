@@ -22,6 +22,7 @@ import (
 	"quadsmith/api/internal/engines/search"
 	"quadsmith/api/internal/static"
 	"quadsmith/api/pkg/auth"
+	"quadsmith/api/pkg/social"
 )
 
 func main() {
@@ -111,6 +112,9 @@ func main() {
 
 	path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler := quadsmithconnect.NewCompatibilityServiceHandler(compatibility.NewCompatibilityServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler)
+
+	path_NewSocialServiceHandler, h_NewSocialServiceHandler := quadsmithconnect.NewSocialServiceHandler(social.NewSocialService(pool), handlerOpts...)
+	mux.Handle(path_NewSocialServiceHandler, h_NewSocialServiceHandler)
 
 	// Serve the React SPA for any unmatched paths
 	staticDir := os.Getenv("STATIC_DIR")

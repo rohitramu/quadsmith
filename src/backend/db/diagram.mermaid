@@ -441,6 +441,139 @@ erDiagram
         JSONB media
     }
 
+    components {
+        UUID uuid PK
+        TEXT id
+        TEXT collection
+        TEXT name
+        TEXT manufacturer
+        TEXT primary_display_image
+    }
+
+    reviews {
+        UUID uuid PK
+        TEXT id UK
+        UUID user_uuid FK
+        UUID build_uuid FK
+        UUID component_uuid FK
+        BOOLEAN is_recommended
+        TEXT body
+        BOOLEAN is_edited
+        TIMESTAMPTZ deleted_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    review_votes {
+        UUID uuid PK
+        UUID review_uuid FK
+        UUID user_uuid FK
+        BOOLEAN is_helpful
+        TIMESTAMPTZ created_at
+    }
+
+    review_comments {
+        UUID uuid PK
+        UUID review_uuid FK
+        UUID user_uuid FK
+        TEXT body
+        TIMESTAMPTZ deleted_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    questions {
+        UUID uuid PK
+        TEXT id UK
+        UUID user_uuid FK
+        UUID build_uuid FK
+        UUID component_uuid FK
+        TEXT title
+        TEXT body
+        INTEGER net_score
+        BOOLEAN is_edited
+        TIMESTAMPTZ deleted_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    answers {
+        UUID uuid PK
+        UUID question_uuid FK
+        UUID user_uuid FK
+        TEXT body
+        INTEGER net_score
+        BOOLEAN is_accepted_by_asker
+        BOOLEAN is_author_endorsed
+        BOOLEAN is_edited
+        TIMESTAMPTZ deleted_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    question_votes {
+        UUID uuid PK
+        UUID question_uuid FK
+        UUID user_uuid FK
+        BOOLEAN is_upvote
+        TIMESTAMPTZ created_at
+    }
+
+    answer_votes {
+        UUID uuid PK
+        UUID answer_uuid FK
+        UUID user_uuid FK
+        BOOLEAN is_upvote
+        TIMESTAMPTZ created_at
+    }
+
+    question_comments {
+        UUID uuid PK
+        UUID question_uuid FK
+        UUID user_uuid FK
+        TEXT body
+        TIMESTAMPTZ deleted_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    answer_comments {
+        UUID uuid PK
+        UUID answer_uuid FK
+        UUID user_uuid FK
+        TEXT body
+        TIMESTAMPTZ deleted_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    user_reputations {
+        UUID uuid PK
+        UUID user_uuid FK
+        INTEGER score
+        TIMESTAMPTZ updated_at
+    }
+
+    collections {
+        UUID uuid PK
+        TEXT id UK
+        UUID user_uuid FK
+        TEXT name
+        TEXT description
+        BOOLEAN is_public
+        BOOLEAN is_default_liked
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ updated_at
+    }
+
+    collection_items {
+        UUID uuid PK
+        UUID collection_uuid FK
+        UUID build_uuid FK
+        UUID component_uuid FK
+        TIMESTAMPTZ created_at
+    }
+
     users ||--o| user_profiles : has
     users ||--o{ user_emails : has
     users ||--o{ refresh_tokens : has
@@ -448,3 +581,32 @@ erDiagram
     users ||--o{ oauth_accounts : has
     users ||--o{ builds : authors
     users ||--o{ email_otps : requests
+    users ||--o| user_reputations : has
+    users ||--o{ collections : creates
+    users ||--o{ reviews : writes
+    users ||--o{ review_votes : casts
+    users ||--o{ review_comments : writes
+    users ||--o{ questions : asks
+    users ||--o{ answers : submits
+    users ||--o{ question_votes : casts
+    users ||--o{ answer_votes : casts
+    users ||--o{ question_comments : writes
+    users ||--o{ answer_comments : writes
+
+    builds ||--o{ reviews : receives
+    components ||--o{ reviews : receives
+    reviews ||--o{ review_votes : has
+    reviews ||--o{ review_comments : has
+
+    builds ||--o{ questions : receives
+    components ||--o{ questions : receives
+    questions ||--o{ answers : has
+    questions ||--o{ question_votes : has
+    questions ||--o{ question_comments : has
+    answers ||--o{ answer_votes : has
+    answers ||--o{ answer_comments : has
+
+    collections ||--o{ collection_items : contains
+    builds ||--o{ collection_items : collected_in
+    components ||--o{ collection_items : collected_in
+
