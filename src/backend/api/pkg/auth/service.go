@@ -319,7 +319,7 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 	}
 
 	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
-	if username == "admin" || username == "root" {
+	if IsReservedUsername(username) {
 		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("This username is already taken"))
 	}
 	if err := ValidateUsername(username); err != nil {
@@ -1759,6 +1759,16 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 
 var usernameStructureRegex = regexp.MustCompile(`^[a-z][a-z0-9_]{1,18}[a-z0-9]$`)
 
+// IsReservedUsername returns true if the username is reserved by the platform.
+func IsReservedUsername(username string) bool {
+	switch username {
+	case "admin", "root", "system", "bot", "robot":
+		return true
+	default:
+		return false
+	}
+}
+
 // ValidateUsername validates a candidate username against the rules declared in user.proto.
 //
 // Rules enforced:
@@ -1767,7 +1777,7 @@ var usernameStructureRegex = regexp.MustCompile(`^[a-z][a-z0-9_]{1,18}[a-z0-9]$`
 // 3. Contains only lowercase letters, digits, and underscores.
 // 4. Cannot contain consecutive underscores ("__").
 // 5. Cannot contain "quadsmith" or "quad_smith".
-// 6. Cannot equal reserved usernames "admin" or "root".
+// 6. Cannot equal reserved usernames "admin", "root", "system", "bot", or "robot".
 func ValidateUsername(username string) error {
 	if !usernameStructureRegex.MatchString(username) {
 		return errors.New("username must be 3-20 characters, start with a letter, end with alphanumeric, and contain only lowercase letters, numbers, and underscores")
@@ -1778,7 +1788,7 @@ func ValidateUsername(username string) error {
 	if strings.Contains(username, "quadsmith") || strings.Contains(username, "quad_smith") {
 		return errors.New("username cannot contain 'quadsmith' or 'quad_smith'")
 	}
-	if username == "admin" || username == "root" {
+	if IsReservedUsername(username) {
 		return errors.New("reserved username")
 	}
 	return nil
@@ -1809,7 +1819,7 @@ func (s *AuthService) generateUniqueUsername(ctx context.Context, email string) 
 		cleaned = cleaned[:20]
 		cleaned = strings.TrimRight(cleaned, "_")
 	}
-	if cleaned == "admin" || cleaned == "root" {
+	if IsReservedUsername(cleaned) {
 		cleaned = "user_" + cleaned
 	}
 
@@ -1976,7 +1986,7 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 			Message:   "Username is required",
 		}), nil
 	}
-	if username == "admin" || username == "root" {
+	if IsReservedUsername(username) {
 		return connect.NewResponse(&pb.CheckUsernameAvailableResponse{
 			Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_UNAVAILABLE,
 			Available: false,

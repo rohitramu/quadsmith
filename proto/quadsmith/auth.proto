@@ -53,7 +53,10 @@ message CompleteAccountSetupRequest {
     pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
     not_in: [
       "admin",
-      "root"
+      "root",
+      "system",
+      "bot",
+      "robot"
     ]
     not_contains: [
       "__",
@@ -171,7 +174,10 @@ message ChangeUsernameRequest {
     pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
     not_in: [
       "admin",
-      "root"
+      "root",
+      "system",
+      "bot",
+      "robot"
     ]
     not_contains: [
       "__",

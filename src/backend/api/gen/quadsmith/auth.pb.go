@@ -1669,12 +1669,12 @@ const file_auth_proto_rawDesc = "" +
 	"\aprofile\x18\x04 \x01(\v2\x16.quadsmith.UserProfileR\aprofile\x124\n" +
 	"\x16account_setup_required\x18\x05 \x01(\bR\x14accountSetupRequired\x12\x1f\n" +
 	"\vsetup_token\x18\x06 \x01(\tR\n" +
-	"setupToken\"\xe1\x01\n" +
+	"setupToken\"\xf6\x01\n" +
 	"\x1bCompleteAccountSetupRequest\x12\x1f\n" +
 	"\vsetup_token\x18\x01 \x01(\tR\n" +
-	"setupToken\x12n\n" +
-	"\busername\x18\x02 \x01(\tBR\x82\xb2\x19N\n" +
-	"L\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root*\x02__*\tquadsmith*\n" +
+	"setupToken\x12\x82\x01\n" +
+	"\busername\x18\x02 \x01(\tBf\x82\xb2\x19b\n" +
+	"`\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root\"\x06system\"\x03bot\"\x05robot*\x02__*\tquadsmith*\n" +
 	"quad_smithR\busername\x12\"\n" +
 	"\n" +
 	"avatar_url\x18\x03 \x01(\tH\x00R\tavatarUrl\x88\x01\x01B\r\n" +
@@ -1754,10 +1754,10 @@ const file_auth_proto_rawDesc = "" +
 	"release_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\treleaseAt\x12%\n" +
 	"\x0edays_remaining\x18\x05 \x01(\x05R\rdaysRemaining\x12&\n" +
 	"\x0fcan_reclaim_now\x18\x06 \x01(\bR\rcanReclaimNow\x12Q\n" +
-	"\x17next_reclaim_allowed_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x14nextReclaimAllowedAt\"\x8e\x01\n" +
-	"\x15ChangeUsernameRequest\x12u\n" +
-	"\fnew_username\x18\x01 \x01(\tBR\x82\xb2\x19N\n" +
-	"L\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root*\x02__*\tquadsmith*\n" +
+	"\x17next_reclaim_allowed_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x14nextReclaimAllowedAt\"\xa3\x01\n" +
+	"\x15ChangeUsernameRequest\x12\x89\x01\n" +
+	"\fnew_username\x18\x01 \x01(\tBf\x82\xb2\x19b\n" +
+	"`\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root\"\x06system\"\x03bot\"\x05robot*\x02__*\tquadsmith*\n" +
 	"quad_smithR\vnewUsername\"\xa9\x02\n" +
 	"\x16ChangeUsernameResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +

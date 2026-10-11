@@ -42,8 +42,14 @@ func TestValidateUsername(t *testing.T) {
 		// Reserved names
 		{"admin", true, "equals admin"},
 		{"root", true, "equals root"},
+		{"system", true, "equals system"},
+		{"bot", true, "equals bot"},
+		{"robot", true, "equals robot"},
 		{"admin_fpv", false, "allowed prefix not equal to admin"},
 		{"root_user", false, "allowed prefix not equal to root"},
+		{"system_status", false, "allowed prefix not equal to system"},
+		{"bot_helper", false, "allowed prefix not equal to bot"},
+		{"robot_arm", false, "allowed prefix not equal to robot"},
 	}
 
 	for _, tt := range tests {

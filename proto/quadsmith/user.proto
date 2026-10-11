@@ -20,7 +20,7 @@ message User {
   // Public username (e.g. "fpv_pilot")
   // Enforces username constraints via declarative rules defined in _validate.proto:
   // - Starts with [a-z], ends with [a-z0-9], allows [a-z0-9_], length 3-20.
-  // - Rejects reserved handles ("admin", "root") via `not_in`.
+  // - Rejects reserved handles ("admin", "root", "system", "bot", "robot") via `not_in`.
   // - Rejects consecutive underscores ("__") and reserved brands ("quadsmith", "quad_smith") via `not_contains`.
   // (See `_validate.proto` for comprehensive documentation on RE2 regex restrictions and ReDoS guarantees).
   string id = 2 [
@@ -34,7 +34,10 @@ message User {
       pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
       not_in: [
         "admin",
-        "root"
+        "root",
+        "system",
+        "bot",
+        "robot"
       ]
       not_contains: [
         "__",

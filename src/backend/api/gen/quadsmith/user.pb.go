@@ -80,7 +80,7 @@ type User struct {
 	// Public username (e.g. "fpv_pilot")
 	// Enforces username constraints via declarative rules defined in _validate.proto:
 	// - Starts with [a-z], ends with [a-z0-9], allows [a-z0-9_], length 3-20.
-	// - Rejects reserved handles ("admin", "root") via `not_in`.
+	// - Rejects reserved handles ("admin", "root", "system", "bot", "robot") via `not_in`.
 	// - Rejects consecutive underscores ("__") and reserved brands ("quadsmith", "quad_smith") via `not_contains`.
 	// (See `_validate.proto` for comprehensive documentation on RE2 regex restrictions and ReDoS guarantees).
 	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
@@ -1014,11 +1014,11 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
 	"user.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x0f_validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8b\x04\n" +
+	"_sql.proto\x1a\x0f_validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9f\x04\n" +
 	"\x04User\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12j\n" +
-	"\x02id\x18\x02 \x01(\tBZ\xc2\xf3\x18\x04 \x01(\x01\x82\xb2\x19N\n" +
-	"L\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root*\x02__*\tquadsmith*\n" +
+	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12~\n" +
+	"\x02id\x18\x02 \x01(\tBn\xc2\xf3\x18\x04 \x01(\x01\x82\xb2\x19b\n" +
+	"`\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root\"\x06system\"\x03bot\"\x05robot*\x02__*\tquadsmith*\n" +
 	"quad_smithR\x02id\x12\x1e\n" +
 	"\x05email\x18\x03 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x05email\x12 \n" +
 	"\x04role\x18\x04 \x01(\tB\f\xc2\xf3\x18\b:\x06'USER'R\x04role\x12B\n" +

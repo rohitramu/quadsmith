@@ -597,7 +597,11 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (!req.setupToken) {
           throw new ConnectError("Setup token required", Code.InvalidArgument);
         }
-        if (req.username === "taken" || req.username === "alex" || req.username === "admin") {
+        if (
+          req.username === "taken" ||
+          req.username === "alex" ||
+          ["admin", "root", "system", "bot", "robot"].includes(req.username)
+        ) {
           throw new ConnectError("Username is not available", Code.InvalidArgument);
         }
         return {
@@ -805,7 +809,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
             message: "Username is required",
           };
         }
-        if (u === "admin" || u === "root" || u === "taken" || u === "alex") {
+        if (["admin", "root", "system", "bot", "robot", "taken", "alex"].includes(u)) {
           return {
             status: UsernameAvailabilityStatus.UNAVAILABLE,
             available: false,
