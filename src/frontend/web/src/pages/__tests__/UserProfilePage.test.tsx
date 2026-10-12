@@ -247,4 +247,19 @@ describe("UserProfilePage Component", () => {
 
     expect(confirmSpy).toHaveBeenCalled();
   });
+
+  it("makes collection cards clickable buttons navigating to collection page without an Explore button", async () => {
+    renderUserProfile("/users/fpv_pilot?tab=collections");
+
+    expect(await screen.findByText("Cinewhoop Favorites")).toBeInTheDocument();
+
+    // Verify there is no "Explore" button
+    expect(screen.queryByRole("link", { name: /explore/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/explore/i)).not.toBeInTheDocument();
+
+    // Verify the card itself has a clickable link to open the collection
+    const cardLink = screen.getByRole("link", { name: /open cinewhoop favorites collection/i });
+    expect(cardLink).toBeInTheDocument();
+    expect(cardLink).toHaveAttribute("href", "/users/fpv_pilot/collections/cinewhoop-favorites");
+  });
 });

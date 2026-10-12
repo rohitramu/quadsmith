@@ -10,7 +10,6 @@ import {
   Star,
   Bookmark,
   Plus,
-  ChevronRight,
   Globe,
   Lock,
   Heart,
@@ -576,18 +575,25 @@ export function UserProfilePage() {
               </div>
             )}
 
-            {/* Scrollable Collections Grid with garbage bin removal icon */}
+            {/* Scrollable Collections Grid - Cards are clickable buttons opening the collection page */}
             {collections.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {collections.map((col) => (
                   <div
                     key={col.id}
-                    className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-5 space-y-3 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors shadow-2xs flex flex-col justify-between"
+                    className="relative group rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-5 space-y-3 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-md transition-all shadow-2xs flex flex-col justify-between cursor-pointer"
                   >
-                    <div className="space-y-2">
+                    {/* Stretched clickable card link opening the collection page */}
+                    <Link
+                      to={`/users/${profile.id}/collections/${col.id}`}
+                      className="absolute inset-0 rounded-2xl focus:outline-hidden focus:ring-2 focus:ring-blue-500 z-0"
+                      aria-label={`Open ${col.name} collection`}
+                    />
+
+                    <div className="space-y-2 relative z-10 pointer-events-none">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-sm shrink-0">
+                          <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-sm shrink-0 group-hover:scale-105 transition-transform">
                             {col.isSystemCollection ? (
                               <Heart size={16} className="fill-rose-500 text-rose-500" />
                             ) : (
@@ -595,7 +601,7 @@ export function UserProfilePage() {
                             )}
                           </div>
                           <div className="min-w-0">
-                            <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 truncate">
+                            <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-blue-500 transition-colors truncate">
                               {col.name}
                             </h4>
                             <p className="text-[10px] text-zinc-400 truncate">
@@ -625,33 +631,28 @@ export function UserProfilePage() {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-                      <span className="font-mono">{col.itemCount} items</span>
-                      <div className="flex items-center gap-2">
-                        {isOwner && !col.isSystemCollection && (
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteCollection(col.id)}
-                            disabled={deletingColId === col.id}
-                            className="text-zinc-400 hover:text-rose-500 transition-colors p-1.5 rounded-lg hover:bg-rose-500/10 cursor-pointer"
-                            title="Delete collection"
-                            aria-label={`Delete ${col.name}`}
-                          >
-                            {deletingColId === col.id ? (
-                              <Loader2 size={13} className="animate-spin text-rose-500" />
-                            ) : (
-                              <Trash2 size={13} />
-                            )}
-                          </button>
-                        )}
-                        <Link
-                          to={`/users/${profile.id}/collections/${col.id}`}
-                          className="text-blue-500 hover:underline flex items-center gap-1 font-medium cursor-pointer"
+                    <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-100 dark:border-zinc-800 relative z-10">
+                      <span className="font-mono pointer-events-none">{col.itemCount} items</span>
+                      {isOwner && !col.isSystemCollection && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDeleteCollection(col.id);
+                          }}
+                          disabled={deletingColId === col.id}
+                          className="text-zinc-400 hover:text-rose-500 transition-colors p-1.5 rounded-lg hover:bg-rose-500/10 cursor-pointer pointer-events-auto"
+                          title="Delete collection"
+                          aria-label={`Delete ${col.name}`}
                         >
-                          <span>Explore</span>
-                          <ChevronRight size={13} />
-                        </Link>
-                      </div>
+                          {deletingColId === col.id ? (
+                            <Loader2 size={13} className="animate-spin text-rose-500" />
+                          ) : (
+                            <Trash2 size={13} />
+                          )}
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
