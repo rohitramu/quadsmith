@@ -1187,8 +1187,8 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           (c) => c.id === req.collectionId || c.uuid === req.collectionId,
         );
         if (col) {
-          col.name = req.name;
-          col.description = req.description;
+          if (req.name) col.name = req.name;
+          if (req.description !== undefined) col.description = req.description;
           col.isPublic = req.isPublic;
           return col;
         }

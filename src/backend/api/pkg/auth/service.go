@@ -8,6 +8,7 @@ import (
 	"math"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"slices"
@@ -87,12 +88,14 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
 	}
 
+	baseURL := getBaseURL(req)
+
 	// ConsoleMailer: controlled via QS_DEV_PRINT_OTP=1 (or non-production)
 	if os.Getenv("QS_DEV_PRINT_OTP") == "1" || os.Getenv("ENV") != "production" {
 		fmt.Printf("\n=======================================================\n")
 		fmt.Printf("[AUTH] Email OTP for %s: %s (valid for 3 minutes)\n", email, otpCode)
 		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
-		fmt.Printf("[AUTH] Magic Link: /login/verify?token=%s (valid for 15 minutes)\n", magicToken)
+		fmt.Printf("[AUTH] Magic Link: %s/login/verify?token=%s (valid for 15 minutes)\n", baseURL, magicToken)
 		fmt.Printf("=======================================================\n\n")
 	}
 
@@ -731,12 +734,14 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
 	}
 
+	baseURL := getBaseURL(req)
+
 	// ConsoleMailer: controlled via QS_DEV_PRINT_OTP=1 (or non-production)
 	if os.Getenv("QS_DEV_PRINT_OTP") == "1" || os.Getenv("ENV") != "production" {
 		fmt.Printf("\n=======================================================\n")
 		fmt.Printf("[AUTH] Add Email OTP for %s: %s (valid for 3 minutes)\n", email, otpCode)
 		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
-		fmt.Printf("[AUTH] Add Email Magic Link: /account?add_email_token=%s (valid for 15 minutes)\n", magicToken)
+		fmt.Printf("[AUTH] Add Email Magic Link: %s/account?add_email_token=%s (valid for 15 minutes)\n", baseURL, magicToken)
 		fmt.Printf("=======================================================\n\n")
 	}
 
@@ -1587,6 +1592,72 @@ func getClientIP[T any](req *connect.Request[T]) string {
 		peerAddr = req.Peer().Addr
 	}
 	return extractClientIP(req.Header(), peerAddr)
+}
+
+func getBaseURL[T any](req *connect.Request[T]) string {
+	if req != nil {
+		return extractBaseURL(req.Header())
+	}
+	return extractBaseURL(nil)
+}
+
+func extractBaseURL(header http.Header) string {
+	// 1. Explicit environment variable configuration
+	for _, envKey := range []string{"APP_URL", "WEB_URL", "BASE_URL"} {
+		if val := strings.TrimRight(strings.TrimSpace(os.Getenv(envKey)), "/"); val != "" {
+			return val
+		}
+	}
+
+	// 2. Extract from request headers if available
+	if header != nil {
+		// Check Origin header (e.g. http://localhost:5173 or http://localhost:8080)
+		if origin := strings.TrimRight(strings.TrimSpace(header.Get("Origin")), "/"); origin != "" {
+			if u, err := url.Parse(origin); err == nil && (u.Scheme == "http" || u.Scheme == "https") && u.Host != "" {
+				return origin
+			}
+		}
+
+		// Check Referer header (e.g. http://localhost:5173/login)
+		if referer := strings.TrimSpace(header.Get("Referer")); referer != "" {
+			if u, err := url.Parse(referer); err == nil && (u.Scheme == "http" || u.Scheme == "https") && u.Host != "" {
+				return fmt.Sprintf("%s://%s", u.Scheme, u.Host)
+			}
+		}
+
+		// Check X-Forwarded-Host or Host
+		host := header.Get("X-Forwarded-Host")
+		if host == "" {
+			host = header.Get("Host")
+		}
+		if host != "" {
+			if strings.Contains(host, ",") {
+				host = strings.TrimSpace(strings.Split(host, ",")[0])
+			}
+			proto := header.Get("X-Forwarded-Proto")
+			if proto == "" {
+				if os.Getenv("ENV") == "production" || os.Getenv("SECURE_COOKIES") == "true" {
+					proto = "https"
+				} else {
+					proto = "http"
+				}
+			}
+			return fmt.Sprintf("%s://%s", proto, strings.TrimRight(host, "/"))
+		}
+	}
+
+	// 3. Fallback to localhost with configured PORT
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	if port == "80" {
+		return "http://localhost"
+	}
+	if port == "443" {
+		return "https://localhost"
+	}
+	return fmt.Sprintf("http://localhost:%s", port)
 }
 
 func setChallengeCookie(header http.Header, challengeToken string) {

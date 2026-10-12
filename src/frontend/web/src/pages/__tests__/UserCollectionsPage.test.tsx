@@ -47,4 +47,81 @@ describe("UserCollectionsPage", () => {
     expect(await screen.findByText("Bando Basher 5 inch Freestyle")).toBeInTheDocument();
     expect(screen.getByText("Build")).toBeInTheDocument();
   });
+
+  it("allows owner to toggle visibility from public to private on collections list", async () => {
+    const { user } = renderCollections("/users/fpv_pilot/collections");
+
+    // Wait for collections to load
+    expect(await screen.findByText("Cinewhoop Favorites")).toBeInTheDocument();
+
+    // Group for Cinewhoop Favorites visibility
+    const group = screen.getByRole("group", { name: /visibility for cinewhoop favorites/i });
+    expect(group).toBeInTheDocument();
+
+    const publicBtn = screen.getByRole("button", { name: /^public$/i });
+    const privateBtn = screen.getByRole("button", { name: /^private$/i });
+
+    expect(publicBtn).toHaveAttribute("aria-pressed", "true");
+    expect(privateBtn).toHaveAttribute("aria-pressed", "false");
+
+    // Click Private
+    await user.click(privateBtn);
+
+    // Private is now pressed
+    expect(privateBtn).toHaveAttribute("aria-pressed", "true");
+    expect(publicBtn).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("allows owner to toggle visibility from public to private in single collection view", async () => {
+    const { user } = renderCollections("/users/fpv_pilot/collections/cinewhoop-favorites");
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Cinewhoop Favorites" }),
+    ).toBeInTheDocument();
+
+    const group = screen.getByRole("group", { name: /collection visibility/i });
+    expect(group).toBeInTheDocument();
+
+    const privateBtn = screen.getByRole("button", { name: /^private$/i });
+    await user.click(privateBtn);
+
+    expect(privateBtn).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("allows owner to edit collection details and toggle visibility via modal", async () => {
+    const { user } = renderCollections("/users/fpv_pilot/collections/cinewhoop-favorites");
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Cinewhoop Favorites" }),
+    ).toBeInTheDocument();
+
+    const editBtn = screen.getByRole("button", { name: /edit collection/i });
+    await user.click(editBtn);
+
+    // Modal opens
+    expect(
+      await screen.findByRole("heading", { level: 3, name: /edit collection/i }),
+    ).toBeInTheDocument();
+
+    // Switch visibility in modal
+    const privateOption = screen.getByRole("button", { name: /private only you can see it/i });
+    await user.click(privateOption);
+
+    // Save changes
+    const saveBtn = screen.getByRole("button", { name: /save changes/i });
+    await user.click(saveBtn);
+
+    // Modal closes
+    expect(
+      screen.queryByRole("heading", { level: 3, name: /edit collection/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows read-only visibility badge for non-owners", async () => {
+    // Render collections of another user where logged in user is not the owner
+    renderCollections("/users/other_pilot/collections");
+
+    // No visibility button groups should exist
+    expect(screen.queryByRole("group", { name: /visibility/i })).not.toBeInTheDocument();
+  });
 });

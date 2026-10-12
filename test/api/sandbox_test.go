@@ -974,3 +974,69 @@ func TestSandboxCreateCollection(t *testing.T) {
 		t.Errorf("created collection id %s not found in user collections", res.Msg.Id)
 	}
 }
+
+func TestSandboxUpdateCollectionVisibility(t *testing.T) {
+	apiUrl := getAPIURL()
+	socialClient := quadsmithconnect.NewSocialServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+
+	ctx := context.Background()
+	// 1. Create a public collection
+	createReq := connect.NewRequest(&pb.CreateCollectionRequest{
+		Name:        "Secret Quads",
+		Description: "Initially public collection",
+		IsPublic:    true,
+	})
+	createRes, err := socialClient.CreateCollection(ctx, createReq)
+	if err != nil {
+		t.Fatalf("CreateCollection failed: %v", err)
+	}
+	colId := createRes.Msg.Id
+	if !createRes.Msg.IsPublic {
+		t.Fatalf("expected collection to be public initially")
+	}
+
+	// 2. Change visibility from public to private
+	updateReq := connect.NewRequest(&pb.UpdateCollectionRequest{
+		CollectionId: colId,
+		Name:         "Secret Quads",
+		Description:  "Now private collection",
+		IsPublic:     false,
+	})
+	updateRes, err := socialClient.UpdateCollection(ctx, updateReq)
+	if err != nil {
+		t.Fatalf("UpdateCollection to private failed: %v", err)
+	}
+	if updateRes.Msg.IsPublic {
+		t.Errorf("expected collection is_public to be false, got true")
+	}
+
+	// 3. Confirm GetCollection returns is_public=false for owner
+	getReq := connect.NewRequest(&pb.GetCollectionRequest{
+		Id: colId,
+	})
+	getRes, err := socialClient.GetCollection(ctx, getReq)
+	if err != nil {
+		t.Fatalf("GetCollection failed for owner: %v", err)
+	}
+	if getRes.Msg.IsPublic {
+		t.Errorf("expected GetCollection is_public to be false, got true")
+	}
+
+	// 4. Change visibility back from private to public
+	updateReqPublic := connect.NewRequest(&pb.UpdateCollectionRequest{
+		CollectionId: colId,
+		Name:         "Secret Quads",
+		Description:  "Back to public collection",
+		IsPublic:     true,
+	})
+	updateResPublic, err := socialClient.UpdateCollection(ctx, updateReqPublic)
+	if err != nil {
+		t.Fatalf("UpdateCollection back to public failed: %v", err)
+	}
+	if !updateResPublic.Msg.IsPublic {
+		t.Errorf("expected collection is_public to be true, got false")
+	}
+}

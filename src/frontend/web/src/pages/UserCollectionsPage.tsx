@@ -9,6 +9,7 @@ import {
   deleteCollection,
   removeCollectionItem,
   createCollection,
+  updateCollection,
 } from "../gen/quadsmith/social-SocialService_connectquery";
 import type { Collection, CollectionItem } from "../gen/quadsmith/social_pb";
 import { useAuth } from "../context/AuthContext";
@@ -23,6 +24,10 @@ import {
   Hammer,
   Cpu,
   Loader2,
+  Globe,
+  Lock,
+  Edit3,
+  X,
 } from "lucide-react";
 
 export function UserCollectionsPage() {
@@ -36,6 +41,14 @@ export function UserCollectionsPage() {
   const [newColDesc, setNewColDesc] = useState("");
   const [newColIsPublic, setNewColIsPublic] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
+
+  // Quick visibility toggle and edit modal state
+  const [updatingColId, setUpdatingColId] = useState<string | null>(null);
+  const [editingCol, setEditingCol] = useState<Collection | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [editIsPublic, setEditIsPublic] = useState(true);
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   const isOwner = user?.id === userId;
 
@@ -51,11 +64,11 @@ export function UserCollectionsPage() {
   );
 
   // Single collection details
-  const { data: singleCol, isLoading: isLoadingSingleCol } = useQuery(
-    getCollection,
-    { id: collectionId || "" },
-    { enabled: !!collectionId },
-  );
+  const {
+    data: singleCol,
+    isLoading: isLoadingSingleCol,
+    refetch: refetchSingleCol,
+  } = useQuery(getCollection, { id: collectionId || "" }, { enabled: !!collectionId });
 
   // Items in single collection
   const {
@@ -71,6 +84,180 @@ export function UserCollectionsPage() {
   const { mutateAsync: mutateDeleteCollection } = useMutation(deleteCollection);
   const { mutateAsync: mutateRemoveItem } = useMutation(removeCollectionItem);
   const { mutateAsync: mutateCreateCollection } = useMutation(createCollection);
+  const { mutateAsync: mutateUpdateCollection } = useMutation(updateCollection);
+
+  async function handleSetVisibility(col: Collection, isPublic: boolean) {
+    if (col.isPublic === isPublic) return;
+    setUpdatingColId(col.id);
+    try {
+      await mutateUpdateCollection({
+        collectionId: col.id,
+        name: col.name,
+        description: col.description,
+        isPublic,
+      });
+      if (collectionId) {
+        await refetchSingleCol();
+      }
+      await refetchCols();
+      await queryClient.invalidateQueries();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to update collection visibility");
+    } finally {
+      setUpdatingColId(null);
+    }
+  }
+
+  function openEditModal(col: Collection) {
+    setEditingCol(col);
+    setEditName(col.name);
+    setEditDesc(col.description);
+    setEditIsPublic(col.isPublic);
+  }
+
+  async function handleSaveEdit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!editingCol || !editName.trim()) return;
+    setIsSavingEdit(true);
+    try {
+      await mutateUpdateCollection({
+        collectionId: editingCol.id,
+        name: editName.trim(),
+        description: editDesc.trim(),
+        isPublic: editIsPublic,
+      });
+      setEditingCol(null);
+      if (collectionId) {
+        await refetchSingleCol();
+      }
+      await refetchCols();
+      await queryClient.invalidateQueries();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to update collection");
+    } finally {
+      setIsSavingEdit(false);
+    }
+  }
+
+  function renderEditModal() {
+    if (!editingCol) return null;
+    return (
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="edit-col-title"
+        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in"
+      >
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden p-6 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
+            <h3
+              id="edit-col-title"
+              className="font-bold text-base text-zinc-900 dark:text-zinc-100 flex items-center gap-2"
+            >
+              <Edit3 size={16} className="text-blue-500" />
+              <span>Edit Collection</span>
+            </h3>
+            <button
+              type="button"
+              onClick={() => setEditingCol(null)}
+              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1 rounded-lg cursor-pointer"
+              aria-label="Close edit modal"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          <form onSubmit={handleSaveEdit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                Name
+              </label>
+              <input
+                type="text"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+                required
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                Description (optional)
+              </label>
+              <textarea
+                rows={3}
+                value={editDesc}
+                onChange={(e) => setEditDesc(e.target.value)}
+                placeholder="Notes on what is collected here..."
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+              />
+            </div>
+
+            <div className="space-y-2 pt-1">
+              <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                Visibility
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditIsPublic(true)}
+                  className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                    editIsPublic
+                      ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-semibold"
+                      : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                  }`}
+                >
+                  <Globe
+                    size={16}
+                    className={editIsPublic ? "text-emerald-500" : "text-zinc-400"}
+                  />
+                  <div>
+                    <div className="text-xs">Public</div>
+                    <div className="text-[10px] text-zinc-500 font-normal">Visible to everyone</div>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setEditIsPublic(false)}
+                  className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                    !editIsPublic
+                      ? "border-blue-500/50 bg-blue-500/10 text-blue-700 dark:text-blue-300 font-semibold"
+                      : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                  }`}
+                >
+                  <Lock size={16} className={!editIsPublic ? "text-blue-500" : "text-zinc-400"} />
+                  <div>
+                    <div className="text-xs">Private</div>
+                    <div className="text-[10px] text-zinc-500 font-normal">Only you can see it</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+              <button
+                type="button"
+                onClick={() => setEditingCol(null)}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSavingEdit || !editName.trim()}
+                className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+              >
+                {isSavingEdit && <Loader2 size={12} className="animate-spin" />}
+                <span>Save Changes</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   async function handleDeleteCollection(colId: string) {
     if (!window.confirm("Are you sure you want to delete this collection?")) return;
@@ -177,19 +364,64 @@ export function UserCollectionsPage() {
                 )}
               </div>
               <div>
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2.5 flex-wrap">
                   <h1 className="text-2xl font-black text-zinc-900 dark:text-zinc-50">
                     {singleCol.name}
                   </h1>
-                  <span
-                    className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                      singleCol.isPublic
-                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
-                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700"
-                    }`}
-                  >
-                    {singleCol.isPublic ? "Public" : "Private"}
-                  </span>
+
+                  {/* Visibility control: interactive segmented toggle for owner, static badge for viewers */}
+                  {isOwner && !singleCol.isDefaultLiked ? (
+                    <div
+                      className="inline-flex items-center rounded-lg p-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
+                      role="group"
+                      aria-label="Collection visibility"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleSetVisibility(singleCol, true)}
+                        disabled={updatingColId === singleCol.id}
+                        aria-pressed={singleCol.isPublic}
+                        className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                          singleCol.isPublic
+                            ? "bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-2xs"
+                            : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                        }`}
+                        title="Make collection public"
+                      >
+                        <Globe size={12} />
+                        <span>Public</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSetVisibility(singleCol, false)}
+                        disabled={updatingColId === singleCol.id}
+                        aria-pressed={!singleCol.isPublic}
+                        className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                          !singleCol.isPublic
+                            ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-2xs"
+                            : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                        }`}
+                        title="Make collection private"
+                      >
+                        <Lock size={12} />
+                        <span>Private</span>
+                      </button>
+                      {updatingColId === singleCol.id && (
+                        <Loader2 size={12} className="animate-spin text-blue-500 mx-1" />
+                      )}
+                    </div>
+                  ) : (
+                    <span
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold border ${
+                        singleCol.isPublic
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700"
+                      }`}
+                    >
+                      {singleCol.isPublic ? <Globe size={11} /> : <Lock size={11} />}
+                      <span>{singleCol.isPublic ? "Public" : "Private"}</span>
+                    </span>
+                  )}
                 </div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
                   Curated by @{singleCol.authorUsername} • {items.length} items
@@ -198,14 +430,24 @@ export function UserCollectionsPage() {
             </div>
 
             {isOwner && !singleCol.isDefaultLiked && (
-              <button
-                type="button"
-                onClick={() => handleDeleteCollection(singleCol.id)}
-                className="px-3 py-2 rounded-xl text-xs text-rose-500 hover:bg-rose-500/10 border border-rose-500/20 flex items-center gap-1.5 transition-colors self-start sm:self-auto cursor-pointer"
-              >
-                <Trash2 size={14} />
-                <span>Delete Collection</span>
-              </button>
+              <div className="flex items-center gap-2 self-start sm:self-auto">
+                <button
+                  type="button"
+                  onClick={() => openEditModal(singleCol)}
+                  className="px-3 py-2 rounded-xl text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Edit3 size={14} />
+                  <span>Edit Collection</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDeleteCollection(singleCol.id)}
+                  className="px-3 py-2 rounded-xl text-xs text-rose-500 hover:bg-rose-500/10 border border-rose-500/20 flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Trash2 size={14} />
+                  <span>Delete Collection</span>
+                </button>
+              </div>
             )}
           </div>
 
@@ -305,6 +547,7 @@ export function UserCollectionsPage() {
             </div>
           )}
         </div>
+        {renderEditModal()}
       </div>
     );
   }
@@ -446,15 +689,67 @@ export function UserCollectionsPage() {
                       </p>
                     </div>
                   </div>
-                  <span
-                    className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                      col.isPublic
-                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
-                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700"
-                    }`}
-                  >
-                    {col.isPublic ? "Public" : "Private"}
-                  </span>
+                  {isOwner && !col.isDefaultLiked ? (
+                    <div
+                      className="inline-flex items-center rounded-lg p-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-[11px]"
+                      role="group"
+                      aria-label={`Visibility for ${col.name}`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleSetVisibility(col, true);
+                        }}
+                        disabled={updatingColId === col.id}
+                        aria-pressed={col.isPublic}
+                        className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
+                          col.isPublic
+                            ? "bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-2xs font-semibold"
+                            : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                        }`}
+                        title="Make collection public"
+                      >
+                        <Globe size={11} />
+                        <span>Public</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleSetVisibility(col, false);
+                        }}
+                        disabled={updatingColId === col.id}
+                        aria-pressed={!col.isPublic}
+                        className={`flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium transition-all cursor-pointer ${
+                          !col.isPublic
+                            ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-2xs font-semibold"
+                            : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                        }`}
+                        title="Make collection private"
+                      >
+                        <Lock size={11} />
+                        <span>Private</span>
+                      </button>
+                      {updatingColId === col.id && (
+                        <Loader2 size={11} className="animate-spin text-blue-500 mx-1" />
+                      )}
+                    </div>
+                  ) : (
+                    <span
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold border ${
+                        col.isPublic
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700"
+                      }`}
+                    >
+                      {col.isPublic ? <Globe size={10} /> : <Lock size={10} />}
+                      <span>{col.isPublic ? "Public" : "Private"}</span>
+                    </span>
+                  )}
                 </div>
 
                 {col.description && (
@@ -466,18 +761,36 @@ export function UserCollectionsPage() {
 
               <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-100 dark:border-zinc-800">
                 <span className="font-mono">{col.itemCount} items</span>
-                <Link
-                  to={`/users/${userId}/collections/${col.id}`}
-                  className="text-blue-500 hover:underline flex items-center gap-1 font-medium"
-                >
-                  <span>View Details</span>
-                  <ChevronRight size={13} />
-                </Link>
+                <div className="flex items-center gap-2">
+                  {isOwner && !col.isDefaultLiked && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openEditModal(col);
+                      }}
+                      className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors p-1 rounded-md cursor-pointer"
+                      title="Edit collection"
+                      aria-label={`Edit ${col.name}`}
+                    >
+                      <Edit3 size={13} />
+                    </button>
+                  )}
+                  <Link
+                    to={`/users/${userId}/collections/${col.id}`}
+                    className="text-blue-500 hover:underline flex items-center gap-1 font-medium"
+                  >
+                    <span>View Details</span>
+                    <ChevronRight size={13} />
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
         </div>
       )}
+      {renderEditModal()}
     </div>
   );
 }

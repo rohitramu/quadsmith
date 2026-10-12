@@ -1792,14 +1792,9 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 		return nil, err
 	}
 
-	name := strings.TrimSpace(req.Msg.GetName())
-	if name == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("collection name cannot be empty"))
-	}
-
-	var colUUID, userUUID string
+	var colUUID, colID, userUUID, currentName, currentDesc string
 	var isDefault bool
-	err := s.db.QueryRow(ctx, "SELECT uuid, user_uuid, is_default_liked FROM collections WHERE id = $1 OR uuid::text = $1", req.Msg.GetCollectionId()).Scan(&colUUID, &userUUID, &isDefault)
+	err := s.db.QueryRow(ctx, "SELECT uuid, id, user_uuid, name, description, is_default_liked FROM collections WHERE id = $1 OR uuid::text = $1", req.Msg.GetCollectionId()).Scan(&colUUID, &colID, &userUUID, &currentName, &currentDesc, &isDefault)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
 	}
@@ -1808,11 +1803,27 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot update another user's collection"))
 	}
 
+	name := strings.TrimSpace(req.Msg.GetName())
+	if name == "" {
+		name = currentName
+	}
+	if isDefault {
+		name = "Liked"
+	}
+	if name == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("collection name cannot be empty"))
+	}
+
+	desc := req.Msg.GetDescription()
+	if req.Msg.GetName() == "" && desc == "" && currentDesc != "" {
+		desc = currentDesc
+	}
+
 	_, err = s.db.Exec(ctx, `
 		UPDATE collections
 		SET name = $1, description = $2, is_public = $3, updated_at = NOW()
 		WHERE uuid = $4
-	`, name, req.Msg.GetDescription(), req.Msg.GetIsPublic(), colUUID)
+	`, name, desc, req.Msg.GetIsPublic(), colUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1821,11 +1832,11 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 
 	return connect.NewResponse(&pb.Collection{
 		Uuid:           colUUID,
-		Id:             req.Msg.GetCollectionId(),
+		Id:             colID,
 		UserUuid:       userUUID,
 		AuthorUsername: username,
 		Name:           name,
-		Description:    req.Msg.GetDescription(),
+		Description:    desc,
 		IsPublic:       req.Msg.GetIsPublic(),
 		IsDefaultLiked: isDefault,
 		UpdatedAt:      timestamppb.Now(),
