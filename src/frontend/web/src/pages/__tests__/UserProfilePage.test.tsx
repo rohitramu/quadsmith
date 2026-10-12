@@ -43,6 +43,10 @@ describe("UserProfilePage Component", () => {
     return renderWithProviders(
       <Routes>
         <Route path="/users/:id" element={<UserProfilePage />} />
+        <Route
+          path="/users/:id/collections/:collectionId"
+          element={<div>Collection Detail Page</div>}
+        />
       </Routes>,
       {
         route,
@@ -261,5 +265,17 @@ describe("UserProfilePage Component", () => {
     const cardLink = screen.getByRole("link", { name: /open cinewhoop favorites collection/i });
     expect(cardLink).toBeInTheDocument();
     expect(cardLink).toHaveAttribute("href", "/users/fpv_pilot/collections/cinewhoop-favorites");
+  });
+
+  it("navigates to collection page when clicking anywhere on the card including the bottom part", async () => {
+    const { user } = renderUserProfile("/users/fpv_pilot?tab=collections");
+
+    expect(await screen.findByText("Cinewhoop Favorites")).toBeInTheDocument();
+
+    // Click on the bottom footer item count
+    const itemCountText = screen.getByText("1 items");
+    await user.click(itemCountText);
+
+    expect(await screen.findByText("Collection Detail Page")).toBeInTheDocument();
   });
 });

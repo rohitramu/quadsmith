@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useParams, Link, useSearchParams } from "react-router-dom";
+import { useParams, Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useQuery, useInfiniteQuery, useMutation } from "@connectrpc/connect-query";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -32,6 +32,7 @@ import { useDocumentMeta } from "../hooks/useDocumentMeta";
 
 export function UserProfilePage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -581,16 +582,22 @@ export function UserProfilePage() {
                 {collections.map((col) => (
                   <div
                     key={col.id}
-                    className="relative group rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-5 space-y-3 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-md transition-all shadow-2xs flex flex-col justify-between cursor-pointer"
+                    onClick={(e) => {
+                      if ((e.target as HTMLElement).closest("button")) {
+                        return;
+                      }
+                      navigate(`/users/${profile.id}/collections/${col.id}`);
+                    }}
+                    className="relative group rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-5 gap-3 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-md transition-all shadow-2xs flex flex-col justify-between cursor-pointer"
                   >
-                    {/* Stretched clickable card link opening the collection page */}
+                    {/* Stretched clickable card link opening the collection page across entire height and width */}
                     <Link
                       to={`/users/${profile.id}/collections/${col.id}`}
-                      className="absolute inset-0 rounded-2xl focus:outline-hidden focus:ring-2 focus:ring-blue-500 z-0"
+                      className="absolute inset-0 rounded-2xl focus:outline-hidden focus:ring-2 focus:ring-blue-500 z-10"
                       aria-label={`Open ${col.name} collection`}
                     />
 
-                    <div className="space-y-2 relative z-10 pointer-events-none">
+                    <div className="space-y-2 pointer-events-none">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
                           <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-sm shrink-0 group-hover:scale-105 transition-transform">
@@ -631,8 +638,9 @@ export function UserProfilePage() {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-100 dark:border-zinc-800 relative z-10">
-                      <span className="font-mono pointer-events-none">{col.itemCount} items</span>
+                    {/* Bottom footer with item count and delete button */}
+                    <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-100 dark:border-zinc-800 pointer-events-none">
+                      <span className="font-mono">{col.itemCount} items</span>
                       {isOwner && !col.isSystemCollection && (
                         <button
                           type="button"
@@ -642,7 +650,7 @@ export function UserProfilePage() {
                             handleDeleteCollection(col.id);
                           }}
                           disabled={deletingColId === col.id}
-                          className="text-zinc-400 hover:text-rose-500 transition-colors p-1.5 rounded-lg hover:bg-rose-500/10 cursor-pointer pointer-events-auto"
+                          className="relative z-20 pointer-events-auto text-zinc-400 hover:text-rose-500 transition-colors p-1.5 rounded-lg hover:bg-rose-500/10 cursor-pointer"
                           title="Delete collection"
                           aria-label={`Delete ${col.name}`}
                         >
