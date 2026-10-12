@@ -286,7 +286,6 @@ export function BuildWizardPage() {
   // Explicit "None" flags for optional parts
   const [noneSelections, setNoneSelections] = useState<{
     esc?: boolean;
-    rxAntenna?: boolean;
     gps?: boolean;
     vtx?: boolean;
     camera?: boolean;
@@ -347,20 +346,24 @@ export function BuildWizardPage() {
   }, [isWasmReady, selectedFrame, selectedMotor]);
 
   const motorCelFilter = useMemo(() => {
-    if (!isWasmReady || (!selectedEsc && !selectedProp && !selectedFrame)) return "";
+    if (!isWasmReady || (!selectedEsc && !selectedProp && !selectedFrame && !selectedFc)) return "";
     const comps = create(AssembledComponentsSchema, {
       electronicSpeedControllers: selectedEsc ? [selectedEsc] : [],
       propeller: selectedProp || undefined,
       frame: selectedFrame || undefined,
+      flightController: selectedFc || undefined,
     });
     return wasmEngine.generateCelFilter("motors", comps);
-  }, [isWasmReady, selectedEsc, selectedProp, selectedFrame]);
+  }, [isWasmReady, selectedEsc, selectedProp, selectedFrame, selectedFc]);
 
   const escCelFilter = useMemo(() => {
-    if (!isWasmReady || !selectedMotor) return "";
-    const comps = create(AssembledComponentsSchema, { motor: selectedMotor });
+    if (!isWasmReady || (!selectedMotor && !selectedFc)) return "";
+    const comps = create(AssembledComponentsSchema, {
+      motor: selectedMotor || undefined,
+      flightController: selectedFc || undefined,
+    });
     return wasmEngine.generateCelFilter("electronic_speed_controllers", comps);
-  }, [isWasmReady, selectedMotor]);
+  }, [isWasmReady, selectedMotor, selectedFc]);
 
   const camCelFilter = useMemo(() => {
     if (!isWasmReady || (!selectedVtx && !selectedFrame)) return "";
@@ -372,13 +375,16 @@ export function BuildWizardPage() {
   }, [isWasmReady, selectedVtx, selectedFrame]);
 
   const fcCelFilter = useMemo(() => {
-    if (!isWasmReady || (!selectedFrame && !selectedVtx)) return "";
+    if (!isWasmReady || (!selectedFrame && !selectedVtx && !selectedEsc && !selectedMotor))
+      return "";
     const comps = create(AssembledComponentsSchema, {
       frame: selectedFrame || undefined,
       videoTransmitter: selectedVtx || undefined,
+      electronicSpeedControllers: selectedEsc ? [selectedEsc] : [],
+      motor: selectedMotor || undefined,
     });
     return wasmEngine.generateCelFilter("flight_controllers", comps);
-  }, [isWasmReady, selectedFrame, selectedVtx]);
+  }, [isWasmReady, selectedFrame, selectedVtx, selectedEsc, selectedMotor]);
 
   const vtxCelFilter = useMemo(() => {
     if (!isWasmReady || (!selectedFc && !selectedFrame)) return "";
@@ -557,22 +563,6 @@ export function BuildWizardPage() {
     }
   }, [fcHasIntegratedVtx, useIntegratedVtx]);
 
-  // Active receiver (either standalone or integrated into FC)
-  const activeRx = useIntegratedRx ? integratedRx : selectedRx;
-
-  // Whether "No External Antenna" is permissible for the active receiver
-  const canSelectNoRxAntenna = useMemo(() => {
-    if (!activeRx) return false;
-    return rxHasIntegratedAntenna(activeRx, ants, selectedFc, useIntegratedRx);
-  }, [activeRx, ants, selectedFc, useIntegratedRx]);
-
-  // If active receiver changes to one without an integrated antenna, auto-clear "none" selection
-  useEffect(() => {
-    if (noneSelections.rxAntenna && !canSelectNoRxAntenna) {
-      setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
-    }
-  }, [noneSelections.rxAntenna, canSelectNoRxAntenna]);
-
   // Step completion checks (when template is selected, all steps are complete)
   const step0Complete = true;
   const step1Complete = !!selectedTemplateId || !!(selectedFrame && selectedMotor && selectedProp);
@@ -581,7 +571,8 @@ export function BuildWizardPage() {
     !!(
       selectedFc &&
       (selectedRx || useIntegratedRx) &&
-      (useIntegratedEsc || noneSelections.esc || selectedEsc)
+      (useIntegratedEsc || noneSelections.esc || selectedEsc) &&
+      selectedRxAnt
     );
   const step3Complete =
     !!selectedTemplateId ||
@@ -620,7 +611,7 @@ export function BuildWizardPage() {
     if (selectedRx && !useIntegratedRx) {
       weight += selectedRx.weightG || 0;
     }
-    if (selectedRxAnt && !noneSelections.rxAntenna) {
+    if (selectedRxAnt) {
       weight += (selectedRxAnt.weightG || 0) * rxAntCount;
     }
     if (selectedGps && !noneSelections.gps) {
@@ -748,7 +739,7 @@ export function BuildWizardPage() {
       });
     }
 
-    if (selectedRxAnt && !noneSelections.rxAntenna) {
+    if (selectedRxAnt) {
       const w = (selectedRxAnt.weightG || 0) * rxAntCount;
       items.push({
         id: "rx-antenna",
@@ -843,7 +834,7 @@ export function BuildWizardPage() {
     if (selectedFc) count++;
     if (selectedEsc || useIntegratedEsc || noneSelections.esc) count++;
     if (selectedRx || useIntegratedRx) count++;
-    if (selectedRxAnt || noneSelections.rxAntenna) count++;
+    if (selectedRxAnt) count++;
     if (selectedVtx || useIntegratedVtx || noneSelections.vtx) count++;
     if (selectedCam || noneSelections.camera) count++;
     if (selectedVtxAnt || noneSelections.vtxAntenna) count++;
@@ -860,7 +851,6 @@ export function BuildWizardPage() {
     selectedRx,
     useIntegratedRx,
     selectedRxAnt,
-    noneSelections.rxAntenna,
     selectedVtx,
     useIntegratedVtx,
     noneSelections.vtx,
@@ -877,7 +867,7 @@ export function BuildWizardPage() {
     if (!selectedFrame || !selectedMotor) return null;
 
     const antennaUuids: string[] = [];
-    if (selectedRxAnt && !noneSelections.rxAntenna) {
+    if (selectedRxAnt) {
       for (let i = 0; i < rxAntCount; i++) {
         antennaUuids.push(selectedRxAnt.uuid);
       }
@@ -973,9 +963,7 @@ export function BuildWizardPage() {
           ? [selectedRx]
           : [],
       antennas: [
-        ...(selectedRxAnt && !noneSelections.rxAntenna
-          ? Array(rxAntCount).fill(selectedRxAnt)
-          : []),
+        ...(selectedRxAnt ? Array(rxAntCount).fill(selectedRxAnt) : []),
         ...(selectedVtxAnt && !noneSelections.vtxAntenna
           ? Array(vtxAntCount).fill(selectedVtxAnt)
           : []),
@@ -1204,29 +1192,70 @@ export function BuildWizardPage() {
           );
         });
       }
+      if (selectedEsc) {
+        if (selectedEsc.maxVoltage > 0) {
+          list = list.filter((fc) => !fc.minVoltage || fc.minVoltage <= selectedEsc.maxVoltage);
+        }
+        if (selectedEsc.minVoltage > 0) {
+          list = list.filter((fc) => !fc.maxVoltage || fc.maxVoltage >= selectedEsc.minVoltage);
+        }
+      }
+      if (selectedMotor) {
+        if (selectedMotor.maxVoltage > 0) {
+          list = list.filter((fc) => !fc.minVoltage || fc.minVoltage <= selectedMotor.maxVoltage);
+        }
+        if (selectedMotor.minVoltage > 0) {
+          list = list.filter((fc) => !fc.maxVoltage || fc.maxVoltage >= selectedMotor.minVoltage);
+        }
+      }
     }
     if (!searchFc.trim()) return list;
     const q = searchFc.toLowerCase();
     return list.filter(
       (fc) => fc.name.toLowerCase().includes(q) || fc.manufacturer.toLowerCase().includes(q),
     );
-  }, [fcs, compatibleOnlyMap, selectedFrame, searchFc]);
+  }, [fcs, compatibleOnlyMap, selectedFrame, selectedEsc, selectedMotor, searchFc]);
 
   const filteredEscs = useMemo(() => {
     let external = escs.filter((esc) => !esc.isInternalOnly);
-    if (
-      isCompatibleOnly("electronic_speed_controllers") &&
-      selectedMotor &&
-      selectedMotor.statorDiameterMm > 20
-    ) {
-      external = external.filter((esc) => esc.motorCurrentMaxA >= 20);
+    if (isCompatibleOnly("electronic_speed_controllers")) {
+      if (selectedMotor && selectedMotor.statorDiameterMm > 20) {
+        external = external.filter((esc) => esc.motorCurrentMaxA >= 20);
+      }
+      if (selectedMotor && selectedMotor.maxCurrentA > 0) {
+        external = external.filter((esc) => esc.motorCurrentMaxA >= selectedMotor.maxCurrentA);
+      }
+      if (selectedFc) {
+        if (selectedFc.maxVoltage > 0) {
+          external = external.filter(
+            (esc) => !esc.minVoltage || esc.minVoltage <= selectedFc.maxVoltage,
+          );
+        }
+        if (selectedFc.minVoltage > 0) {
+          external = external.filter(
+            (esc) => !esc.maxVoltage || esc.maxVoltage >= selectedFc.minVoltage,
+          );
+        }
+      }
+      if (selectedMotor) {
+        if (selectedMotor.maxVoltage > 0) {
+          external = external.filter(
+            (esc) => !esc.minVoltage || esc.minVoltage <= selectedMotor.maxVoltage,
+          );
+        }
+        if (selectedMotor.minVoltage > 0) {
+          external = external.filter(
+            (esc) => !esc.maxVoltage || esc.maxVoltage >= selectedMotor.minVoltage,
+          );
+        }
+      }
     }
     if (!searchEsc.trim()) return external;
     const q = searchEsc.toLowerCase();
     return external.filter(
       (esc) => esc.name.toLowerCase().includes(q) || esc.manufacturer.toLowerCase().includes(q),
     );
-  }, [escs, compatibleOnlyMap, selectedMotor, searchEsc]);
+  }, [escs, compatibleOnlyMap, selectedMotor, selectedFc, searchEsc]);
 
   const filteredRxs = useMemo(() => {
     const external = rxs.filter((rx) => !rx.isInternalOnly);
@@ -1501,9 +1530,6 @@ export function BuildWizardPage() {
         setSelectedRxAnt(rxAnt);
         const count = build.antennaUuids.filter((u) => u === rxAnt.uuid).length;
         setRxAntCount(count > 1 ? 2 : 1);
-        setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
-      } else {
-        setNoneSelections((prev) => ({ ...prev, rxAntenna: true }));
       }
 
       const vtxAnt = fetchedAnts.find(isVtxAntenna);
@@ -1514,7 +1540,7 @@ export function BuildWizardPage() {
         setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
       }
     } else {
-      setNoneSelections((prev) => ({ ...prev, rxAntenna: true, vtxAntenna: true }));
+      setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
     }
 
     // GPS
@@ -1624,7 +1650,7 @@ export function BuildWizardPage() {
     try {
       setSaveError(null);
       const antennaUuids: string[] = [];
-      if (selectedRxAnt && !noneSelections.rxAntenna) {
+      if (selectedRxAnt) {
         for (let i = 0; i < rxAntCount; i++) {
           antennaUuids.push(selectedRxAnt.uuid);
         }
@@ -1719,7 +1745,7 @@ export function BuildWizardPage() {
         stepProgressText={{
           0: selectedTemplateId ? "Template ✓" : "Baseline ✓",
           1: `${(selectedFrame ? 1 : 0) + (selectedMotor ? 1 : 0) + (selectedProp ? 1 : 0)}/3`,
-          2: `${(selectedFc ? 1 : 0) + (selectedRx || useIntegratedRx ? 1 : 0) + (selectedEsc || useIntegratedEsc || noneSelections.esc ? 1 : 0)}/3`,
+          2: `${(selectedFc ? 1 : 0) + (selectedRx || useIntegratedRx ? 1 : 0) + (selectedEsc || useIntegratedEsc || noneSelections.esc ? 1 : 0) + (selectedRxAnt ? 1 : 0)}/4`,
           3: "Optional",
           4: "Finalize",
         }}
@@ -1871,7 +1897,8 @@ export function BuildWizardPage() {
               <AlertCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
               <div>
                 <span className="font-bold">
-                  Step 2 Incomplete: Flight Controller, ESC, and Radio Receiver are required
+                  Step 2 Incomplete: Flight Controller, ESC, Radio Receiver, and Receiver Antenna
+                  are required
                 </span>
                 <p className="opacity-90 mt-0.5">
                   External ESC is optional only if your flight controller has an integrated ESC with
@@ -2043,14 +2070,8 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {motorCelFilter && (
-                  <div
-                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      isCompatibleOnly("motors")
-                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
-                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
-                    }`}
-                  >
-                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                  <div className="flex items-center justify-end text-xs py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 shrink-0">
                       <input
                         type="checkbox"
                         checked={isCompatibleOnly("motors")}
@@ -2165,14 +2186,8 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {propCelFilter && (
-                  <div
-                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      isCompatibleOnly("propellers")
-                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
-                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
-                    }`}
-                  >
-                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                  <div className="flex items-center justify-end text-xs py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 shrink-0">
                       <input
                         type="checkbox"
                         checked={isCompatibleOnly("propellers")}
@@ -2316,14 +2331,8 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {fcCelFilter && (
-                  <div
-                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      isCompatibleOnly("flight_controllers")
-                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
-                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
-                    }`}
-                  >
-                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                  <div className="flex items-center justify-end text-xs py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 shrink-0">
                       <input
                         type="checkbox"
                         checked={isCompatibleOnly("flight_controllers")}
@@ -2484,14 +2493,8 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {escCelFilter && (
-                  <div
-                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      isCompatibleOnly("electronic_speed_controllers")
-                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
-                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
-                    }`}
-                  >
-                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                  <div className="flex items-center justify-end text-xs py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 shrink-0">
                       <input
                         type="checkbox"
                         checked={isCompatibleOnly("electronic_speed_controllers")}
@@ -2787,7 +2790,7 @@ export function BuildWizardPage() {
                       2D. Radio Receiver Antenna(s)
                     </h3>
                   </div>
-                  {selectedRxAnt && !noneSelections.rxAntenna ? (
+                  {selectedRxAnt ? (
                     <button
                       type="button"
                       onClick={() =>
@@ -2799,13 +2802,9 @@ export function BuildWizardPage() {
                       <Check size={12} strokeWidth={2.5} />{" "}
                       {rxAntCount > 1 ? "2x Selected (Diversity)" : "Selected"}
                     </button>
-                  ) : noneSelections.rxAntenna ? (
-                    <span className="text-xs font-semibold text-zinc-500 flex items-center gap-1">
-                      <Check size={12} strokeWidth={2.5} /> None
-                    </span>
                   ) : (
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-                      Optional
+                    <span className="text-xs font-semibold text-red-500 dark:text-red-400">
+                      Required
                     </span>
                   )}
                 </div>
@@ -2837,7 +2836,7 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                {selectedRxAnt && !noneSelections.rxAntenna && (
+                {selectedRxAnt && (
                   <div className="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 text-xs">
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-zinc-800 dark:text-zinc-200">
@@ -2877,65 +2876,13 @@ export function BuildWizardPage() {
                 )}
 
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
-                  {/* Explicit None Card */}
-                  <div
-                    onClick={() => {
-                      if (!canSelectNoRxAntenna) return;
-                      setSelectedRxAnt(null);
-                      setNoneSelections((prev) => ({ ...prev, rxAntenna: true }));
-                    }}
-                    className={`p-3 rounded-xl border text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
-                      !canSelectNoRxAntenna
-                        ? "opacity-60 bg-zinc-100/60 dark:bg-zinc-900/40 border-zinc-200 dark:border-zinc-800/80 cursor-not-allowed select-none"
-                        : noneSelections.rxAntenna
-                          ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 cursor-pointer"
-                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700 cursor-pointer"
-                    }`}
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span
-                          className={`font-bold ${
-                            !canSelectNoRxAntenna
-                              ? "text-zinc-500 dark:text-zinc-400"
-                              : "text-zinc-900 dark:text-zinc-200"
-                          }`}
-                        >
-                          No External Antenna (None)
-                        </span>
-                        {!canSelectNoRxAntenna ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-300 dark:border-zinc-700">
-                            <Lock size={10} /> Antenna Required
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                            Integrated SMD Ceramic
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                        {!activeRx
-                          ? "Select a receiver with an integrated ceramic antenna to enable this option."
-                          : !canSelectNoRxAntenna
-                            ? `${activeRx.name} requires an external antenna (no integrated ceramic antenna detected).`
-                            : `Uses ${activeRx.name}'s onboard ceramic antenna (0.00g added weight).`}
-                      </div>
-                    </div>
-                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.00g</div>
-                  </div>
-
                   {filteredRxAnts.map((a) => {
-                    const isSelected =
-                      !noneSelections.rxAntenna &&
-                      (selectedRxAnt?.uuid === a.uuid || selectedRxAnt?.id === a.id);
+                    const isSelected = selectedRxAnt?.uuid === a.uuid || selectedRxAnt?.id === a.id;
                     return (
                       <div
                         key={a.uuid || a.id}
                         id={isSelected ? "selected-rx-ant-item" : undefined}
-                        onClick={() => {
-                          setSelectedRxAnt(a);
-                          setNoneSelections((prev) => ({ ...prev, rxAntenna: false }));
-                        }}
+                        onClick={() => setSelectedRxAnt(a)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
@@ -3171,14 +3118,8 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {vtxCelFilter && (
-                  <div
-                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      isCompatibleOnly("video_transmitters")
-                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
-                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
-                    }`}
-                  >
-                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                  <div className="flex items-center justify-end text-xs py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 shrink-0">
                       <input
                         type="checkbox"
                         checked={isCompatibleOnly("video_transmitters")}
@@ -3392,14 +3333,8 @@ export function BuildWizardPage() {
 
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {camCelFilter && (
-                  <div
-                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      isCompatibleOnly("cameras")
-                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
-                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
-                    }`}
-                  >
-                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                  <div className="flex items-center justify-end text-xs py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 shrink-0">
                       <input
                         type="checkbox"
                         checked={isCompatibleOnly("cameras")}
@@ -4376,10 +4311,7 @@ export function BuildWizardPage() {
               </SelectedPartHoverWrapper>
 
               {/* RX Antenna */}
-              <SelectedPartHoverWrapper
-                collectionId="antennas"
-                item={noneSelections.rxAntenna ? null : selectedRxAnt}
-              >
+              <SelectedPartHoverWrapper collectionId="antennas" item={selectedRxAnt}>
                 <button
                   type="button"
                   disabled={!isStep2Unlocked}
@@ -4419,16 +4351,12 @@ export function BuildWizardPage() {
                       <div
                         className={`truncate ${selectedRxAnt ? "font-medium text-zinc-900 dark:text-zinc-100" : "italic text-zinc-400"}`}
                       >
-                        {selectedRxAnt
-                          ? selectedRxAnt.name
-                          : noneSelections.rxAntenna
-                            ? "None (Integrated ceramic antenna)"
-                            : "Not selected yet"}
+                        {selectedRxAnt ? selectedRxAnt.name : "Not selected yet"}
                       </div>
                     </div>
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                    {selectedRxAnt && !noneSelections.rxAntenna
+                    {selectedRxAnt
                       ? `${((selectedRxAnt.weightG || 0) * rxAntCount).toFixed(2)}g`
                       : "—"}
                   </div>

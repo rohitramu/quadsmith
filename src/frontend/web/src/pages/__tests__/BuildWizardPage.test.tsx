@@ -509,7 +509,7 @@ describe("BuildWizardPage Component", () => {
       expect(rxHasIntegratedAntenna(customSmdRx as any)).toBe(true);
     });
 
-    it("locks 'No External Antenna (None)' unless active receiver has an integrated ceramic antenna and auto-clears when switching to an external-antenna receiver", async () => {
+    it("requires radio receiver antenna selection to complete Step 2 and does not provide a None option", async () => {
       const user = userEvent.setup();
       renderWizard();
 
@@ -522,61 +522,32 @@ describe("BuildWizardPage Component", () => {
       // Advance to Step 2
       await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
 
-      // Select FC and ESC
+      // Select FC, ESC, and RX
       await user.click(screen.getByText("F405 V4 FC"));
       await user.click(screen.getByText("SpeedyBee 50A 4-in-1 ESC"));
-
-      // 1. Initial State in Step 2 before RX is selected:
-      // "No External Antenna (None)" should be locked
-      const noneAntCard = screen
-        .getByText("No External Antenna (None)")
-        .closest("div[class*='border']") as HTMLElement;
-      expect(noneAntCard).toBeInTheDocument();
-      expect(noneAntCard?.className).toContain("cursor-not-allowed");
-      expect(within(noneAntCard).getByText(/Antenna Required/i)).toBeInTheDocument();
-
-      // 2. Select an external-antenna receiver: Crossfire Nano RX
       await user.click(screen.getByText("Crossfire Nano RX"));
 
-      // "No External Antenna (None)" remains locked and shows that Crossfire Nano requires an external antenna
-      expect(noneAntCard?.className).toContain("cursor-not-allowed");
-      expect(
-        within(noneAntCard).getByText(/Crossfire Nano RX requires an external antenna/i),
-      ).toBeInTheDocument();
+      // 1. Verify that "No External Antenna (None)" is NOT present
+      expect(screen.queryByText("No External Antenna (None)")).not.toBeInTheDocument();
 
-      // Clicking it does NOT select none (guard blocks it)
-      await user.click(noneAntCard);
-      expect(noneAntCard?.className).not.toContain("ring-blue-500");
+      // 2. Verify that Section 2D displays "Required"
+      const rxAntSection = screen
+        .getByText("2D. Radio Receiver Antenna(s)")
+        .closest("div[id='section-rx-ant']") as HTMLElement;
+      expect(within(rxAntSection).getByText("Required")).toBeInTheDocument();
 
-      // 3. Select an external antenna: RadioMaster T-Antenna
+      // Next step button should be disabled because RX antenna is not selected yet
+      const nextBtn = screen.getByRole("button", { name: /Next: Video/i });
+      expect(nextBtn).toBeDisabled();
+
+      // 3. Select an RX antenna
       await user.click(screen.getByText("RadioMaster T-Antenna 2.4GHz"));
 
-      // 4. Switch to an integrated ceramic receiver: RadioMaster RP2
-      await user.click(screen.getByText("RadioMaster RP2 2.4GHz Receiver"));
+      // Section 2D now shows "Selected"
+      expect(within(rxAntSection).getByText("Selected")).toBeInTheDocument();
 
-      // Now "No External Antenna (None)" is unlocked!
-      expect(noneAntCard?.className).toContain("cursor-pointer");
-      expect(noneAntCard?.className).not.toContain("cursor-not-allowed");
-      expect(within(noneAntCard).getByText("Integrated SMD Ceramic")).toBeInTheDocument();
-      expect(
-        within(noneAntCard).getByText(/Uses RadioMaster RP2.*onboard ceramic antenna/i),
-      ).toBeInTheDocument();
-
-      // Clicking "No External Antenna (None)" successfully selects it!
-      await user.click(noneAntCard);
-      expect(noneAntCard?.className).toContain("ring-blue-500");
-
-      // Selected parts list reflects integrated ceramic antenna
-      expect(screen.getByText("None (Integrated ceramic antenna)")).toBeInTheDocument();
-
-      // 5. Switch back to Crossfire Nano RX (which requires an external antenna)
-      await user.click(screen.getByText("Crossfire Nano RX"));
-
-      // Safety check: "No External Antenna" must automatically clear and lock again!
-      expect(noneAntCard?.className).toContain("cursor-not-allowed");
-      expect(noneAntCard?.className).not.toContain("ring-blue-500");
-      expect(within(noneAntCard).getByText(/Antenna Required/i)).toBeInTheDocument();
-      expect(screen.queryByText("None (Integrated ceramic antenna)")).not.toBeInTheDocument();
+      // Next step button is now enabled
+      expect(nextBtn).not.toBeDisabled();
     });
   });
 

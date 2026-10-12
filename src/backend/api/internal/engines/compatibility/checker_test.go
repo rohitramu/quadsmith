@@ -100,8 +100,9 @@ func TestGenerateCelFilter(t *testing.T) {
 	}
 
 	escFilter := GenerateCelFilter("electronic_speed_controllers", comp)
-	if escFilter != "motor_current_max_a >= 20.0" {
-		t.Errorf("expected 'motor_current_max_a >= 20.0', got %q", escFilter)
+	expectedEsc := "motor_current_max_a >= 20.0 && motor_current_max_a >= 35.0 && min_voltage <= 25.20 && max_voltage >= 14.80"
+	if escFilter != expectedEsc {
+		t.Errorf("expected %q, got %q", expectedEsc, escFilter)
 	}
 
 	frameFilter := GenerateCelFilter("frames", &Components{
@@ -887,6 +888,119 @@ func TestBoardMountCelFilters(t *testing.T) {
 		expected := "input_voltage_min_v <= 9.0 && input_voltage_max_v >= 5.0 && port_type == \"SH1.0-6P\" && mount_pattern == \"20x20mm\""
 		if vtxFilter != expected {
 			t.Errorf("expected %q, got %q", expected, vtxFilter)
+		}
+	})
+}
+
+func TestFlightControllerElectronicSpeedControllerVoltageCompatibility(t *testing.T) {
+	t.Run("ESC requires higher min voltage than FC max voltage -> Incompatible", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				MinVoltage: 3.0,
+				MaxVoltage: 4.4, // 1S Whoop FC
+			},
+			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+				{
+					MinVoltage: 7.4,  // Requires at least 2S
+					MaxVoltage: 25.2, // 6S ESC
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		found := false
+		for _, m := range messages {
+			if m.CheckerName == "FlightControllerElectronicSpeedControllerVoltageChecker" {
+				found = true
+				if m.SeverityName != "DEFINITE_INCOMPATIBILITY" {
+					t.Errorf("expected DEFINITE_INCOMPATIBILITY, got %s", m.SeverityName)
+				}
+				if !strings.Contains(m.Message, "Electronic speed controller minimum operating voltage") {
+					t.Errorf("unexpected message: %s", m.Message)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("expected FlightControllerElectronicSpeedControllerVoltageChecker message, got none")
+		}
+	})
+
+	t.Run("ESC max voltage is below FC min voltage -> Incompatible", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				MinVoltage: 14.8, // 4S minimum
+				MaxVoltage: 25.2,
+			},
+			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+				{
+					MinVoltage: 3.7,
+					MaxVoltage: 8.4, // 2S max
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		found := false
+		for _, m := range messages {
+			if m.CheckerName == "FlightControllerElectronicSpeedControllerVoltageChecker" {
+				found = true
+				if m.SeverityName != "DEFINITE_INCOMPATIBILITY" {
+					t.Errorf("expected DEFINITE_INCOMPATIBILITY, got %s", m.SeverityName)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("expected FlightControllerElectronicSpeedControllerVoltageChecker message, got none")
+		}
+	})
+
+	t.Run("Overlapping voltages -> Compatible", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				MinVoltage: 11.1,
+				MaxVoltage: 25.2,
+			},
+			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+				{
+					MinVoltage:       14.8,
+					MaxVoltage:       30.0,
+					MotorCurrentMaxA: 45.0,
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		for _, m := range messages {
+			if m.CheckerName == "FlightControllerElectronicSpeedControllerVoltageChecker" {
+				t.Errorf("unexpected incompatibility message: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("GenerateCelFilter for ESC with FC selected", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				MinVoltage: 11.1,
+				MaxVoltage: 25.2,
+			},
+		}
+		escFilter := GenerateCelFilter("electronic_speed_controllers", comp)
+		expected := "min_voltage <= 25.20 && max_voltage >= 11.10"
+		if escFilter != expected {
+			t.Errorf("expected %q, got %q", expected, escFilter)
+		}
+	})
+
+	t.Run("GenerateCelFilter for FC with ESC selected", func(t *testing.T) {
+		comp := &Components{
+			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+				{
+					MinVoltage: 14.8,
+					MaxVoltage: 25.2,
+				},
+			},
+		}
+		fcFilter := GenerateCelFilter("flight_controllers", comp)
+		expected := "min_voltage <= 25.20 && max_voltage >= 14.80"
+		if fcFilter != expected {
+			t.Errorf("expected %q, got %q", expected, fcFilter)
 		}
 	})
 }
