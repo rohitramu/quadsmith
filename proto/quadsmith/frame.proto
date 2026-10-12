@@ -55,6 +55,9 @@ message Frame {
 
   // Motor mounting bolt patterns supported by this frame (e.g., ["16x16mm", "19x19mm"], ["9x9mm", "12x12mm"], ["3-hole 6.6mm"])
   repeated string motor_mount_patterns = 15;
+
+  // Board mounting patterns supported by this frame (e.g., ["30.5x30.5mm", "20x20mm"], ["25.5x25.5mm"], ["16x16mm"])
+  repeated string board_mount_patterns = 16;
 }
 
 // ---------------------------------------------------------

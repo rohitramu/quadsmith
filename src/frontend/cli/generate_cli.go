@@ -643,7 +643,7 @@ func newRootCmd() *cobra.Command {
 				}
 				if wt, ok := item.Metadata["weight_g"]; ok && wt != "" {
 					if f, err := strconv.ParseFloat(wt, 64); err == nil {
-						details = append(details, fmt.Sprintf("%.1fg", f))
+						details = append(details, fmt.Sprintf("%.2fg", f))
 					} else {
 						details = append(details, wt+"g")
 					}

@@ -46,7 +46,9 @@ type VideoTransmitter struct {
 	PrimaryDisplayImage *string          `protobuf:"bytes,14,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,15,rep,name=media,proto3" json:"media,omitempty"`
 	// Port/pin connection interface (e.g., "JST-SH 6-Pin", "Solder Pads", "JST-SH 4-Pin")
-	PortType      string `protobuf:"bytes,16,opt,name=port_type,json=portType,proto3" json:"port_type,omitempty"`
+	PortType string `protobuf:"bytes,16,opt,name=port_type,json=portType,proto3" json:"port_type,omitempty"`
+	// Board mounting pattern (e.g., "20x20mm", "25.5x25.5mm", "30.5x30.5mm")
+	MountPattern  string `protobuf:"bytes,17,opt,name=mount_pattern,json=mountPattern,proto3" json:"mount_pattern,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -189,6 +191,13 @@ func (x *VideoTransmitter) GetMedia() []*Media {
 func (x *VideoTransmitter) GetPortType() string {
 	if x != nil {
 		return x.PortType
+	}
+	return ""
+}
+
+func (x *VideoTransmitter) GetMountPattern() string {
+	if x != nil {
+		return x.MountPattern
 	}
 	return ""
 }
@@ -381,7 +390,7 @@ var File_video_transmitter_proto protoreflect.FileDescriptor
 const file_video_transmitter_proto_rawDesc = "" +
 	"\n" +
 	"\x17video_transmitter.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x99\x06\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xbe\x06\n" +
 	"\x10VideoTransmitter\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -400,7 +409,8 @@ const file_video_transmitter_proto_rawDesc = "" +
 	"\x0freference_links\x18\r \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\x0e \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
 	"\x05media\x18\x0f \x03(\v2\x10.quadsmith.MediaR\x05media\x12\x1b\n" +
-	"\tport_type\x18\x10 \x01(\tR\bportType:\x85\x01\x8a\xb5\x18?\n" +
+	"\tport_type\x18\x10 \x01(\tR\bportType\x12#\n" +
+	"\rmount_pattern\x18\x11 \x01(\tR\fmountPattern:\x85\x01\x8a\xb5\x18?\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +

@@ -56,8 +56,8 @@ describe("BuildWizardPage Component", () => {
     // Step 0 baseline options
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
     expect(screen.queryByText("Start from Scratch")).not.toBeInTheDocument();
-    // Initial dry weight is 0.0g across evaluator and selected parts list
-    expect(screen.getAllByText("0.0g").length).toBeGreaterThanOrEqual(1);
+    // Initial dry weight is 0.00g across evaluator and selected parts list
+    expect(screen.getAllByText("0.00g").length).toBeGreaterThanOrEqual(1);
 
     // Selected Parts section under Evaluator
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
@@ -110,7 +110,7 @@ describe("BuildWizardPage Component", () => {
 
     // Dry weight should now be > 0
     await waitFor(() => {
-      expect(screen.queryByText("0.0g")).not.toBeInTheDocument();
+      expect(screen.queryByText("0.00g")).not.toBeInTheDocument();
     });
 
     // Next button should be enabled
@@ -252,17 +252,17 @@ describe("BuildWizardPage Component", () => {
     // Click + button to add 10g
     const plusBtn = screen.getByRole("button", { name: /Add 10g/i });
     await user.click(plusBtn);
-    expect(screen.getByText("+10.0g")).toBeInTheDocument();
+    expect(screen.getByText("+10.00g")).toBeInTheDocument();
 
     // Click GoPro preset (+133g)
     const goproBtn = screen.getByRole("button", { name: /GoPro \(\+133g\)/i });
     await user.click(goproBtn);
-    expect(screen.getByText("+133.0g")).toBeInTheDocument();
+    expect(screen.getByText("+133.00g")).toBeInTheDocument();
 
     // Click Bare preset (0g)
     const bareBtn = screen.getByRole("button", { name: /Bare \(0g\)/i });
     await user.click(bareBtn);
-    expect(screen.getByText("+0.0g")).toBeInTheDocument();
+    expect(screen.getByText("+0.00g")).toBeInTheDocument();
   });
 
   it("allows selecting a template in Step 0, reviewing BOM in Step 4, and saving the build to PostgreSQL", async () => {
@@ -355,7 +355,7 @@ describe("BuildWizardPage Component", () => {
 
     // Should return to Step 0 baseline selection
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
-    expect(screen.getAllByText("0.0g").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("0.00g").length).toBeGreaterThanOrEqual(1);
   });
 
   it("displays dynamic CEL filter when physics engine is active and allows toggling compatible parts", async () => {

@@ -206,7 +206,7 @@ export function Layout() {
                     if (item.metadata["weight_g"]) {
                       const wt = parseFloat(item.metadata["weight_g"]);
                       details.push(
-                        isNaN(wt) ? `${item.metadata["weight_g"]}g` : `${wt.toFixed(1)}g`,
+                        isNaN(wt) ? `${item.metadata["weight_g"]}g` : `${wt.toFixed(2)}g`,
                       );
                     }
 

@@ -255,7 +255,8 @@ CREATE TABLE IF NOT EXISTS flight_controllers (
   max_voltage DECIMAL NOT NULL,
   vtx_ports TEXT[],
   vtx_voltage_min_v DECIMAL NOT NULL,
-  vtx_voltage_max_v DECIMAL NOT NULL
+  vtx_voltage_max_v DECIMAL NOT NULL,
+  mount_pattern TEXT NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_flight_controllers_manufacturer ON flight_controllers (manufacturer);
@@ -276,7 +277,8 @@ CREATE TABLE IF NOT EXISTS frames (
   media JSONB,
   motor_count INTEGER DEFAULT 4 NOT NULL,
   camera_mount_width_mm DECIMAL NOT NULL,
-  motor_mount_patterns TEXT[]
+  motor_mount_patterns TEXT[],
+  board_mount_patterns TEXT[]
 );
 
 CREATE INDEX IF NOT EXISTS idx_frames_manufacturer ON frames (manufacturer);
@@ -388,7 +390,8 @@ CREATE TABLE IF NOT EXISTS video_transmitters (
   reference_links JSONB,
   primary_display_image TEXT,
   media JSONB,
-  port_type TEXT NOT NULL
+  port_type TEXT NOT NULL,
+  mount_pattern TEXT NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_manufacturer ON video_transmitters (manufacturer);

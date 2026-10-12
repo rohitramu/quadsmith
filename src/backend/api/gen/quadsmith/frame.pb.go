@@ -47,6 +47,8 @@ type Frame struct {
 	CameraMountWidthMm float32 `protobuf:"fixed32,14,opt,name=camera_mount_width_mm,json=cameraMountWidthMm,proto3" json:"camera_mount_width_mm,omitempty"`
 	// Motor mounting bolt patterns supported by this frame (e.g., ["16x16mm", "19x19mm"], ["9x9mm", "12x12mm"], ["3-hole 6.6mm"])
 	MotorMountPatterns []string `protobuf:"bytes,15,rep,name=motor_mount_patterns,json=motorMountPatterns,proto3" json:"motor_mount_patterns,omitempty"`
+	// Board mounting patterns supported by this frame (e.g., ["30.5x30.5mm", "20x20mm"], ["25.5x25.5mm"], ["16x16mm"])
+	BoardMountPatterns []string `protobuf:"bytes,16,rep,name=board_mount_patterns,json=boardMountPatterns,proto3" json:"board_mount_patterns,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -182,6 +184,13 @@ func (x *Frame) GetCameraMountWidthMm() float32 {
 func (x *Frame) GetMotorMountPatterns() []string {
 	if x != nil {
 		return x.MotorMountPatterns
+	}
+	return nil
+}
+
+func (x *Frame) GetBoardMountPatterns() []string {
+	if x != nil {
+		return x.BoardMountPatterns
 	}
 	return nil
 }
@@ -374,7 +383,7 @@ var File_frame_proto protoreflect.FileDescriptor
 const file_frame_proto_rawDesc = "" +
 	"\n" +
 	"\vframe.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xd2\x05\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x84\x06\n" +
 	"\x05Frame\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -392,7 +401,8 @@ const file_frame_proto_rawDesc = "" +
 	"\vmotor_count\x18\r \x01(\rB\a\xc2\xf3\x18\x03:\x014R\n" +
 	"motorCount\x121\n" +
 	"\x15camera_mount_width_mm\x18\x0e \x01(\x02R\x12cameraMountWidthMm\x120\n" +
-	"\x14motor_mount_patterns\x18\x0f \x03(\tR\x12motorMountPatterns:c\x8a\xb5\x185\n" +
+	"\x14motor_mount_patterns\x18\x0f \x03(\tR\x12motorMountPatterns\x120\n" +
+	"\x14board_mount_patterns\x18\x10 \x03(\tR\x12boardMountPatterns:c\x8a\xb5\x185\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fwheelbase_mm\n" +

@@ -73,6 +73,9 @@ message FlightController {
 
   // Maximum voltage available to power a VTX (volts) - e.g. 5.0 for 5V-only whoop FC, 10.0 or 26.0 for FC with 9V/10V BEC or VBAT
   float vtx_voltage_max_v = 20;
+
+  // Board mounting pattern (e.g., "30.5x30.5mm", "20x20mm", "25.5x25.5mm", "16x16mm")
+  string mount_pattern = 21;
 }
 
 // ---------------------------------------------------------

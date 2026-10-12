@@ -325,6 +325,8 @@ frames: {
   geometry: "Whoop"
   camera_mount_width_mm: 20
   motor_mount_patterns: "9x9mm"
+  board_mount_patterns: "25.5x25.5mm"
+  board_mount_patterns: "20x20mm"
   description: "BETAFPV Pavo20 Pro Brushless Whoop Frame Whoop drone frame with 93.9mm wheelbase, supporting up to 50.8mm props, weighing 35.7g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -1712,6 +1714,8 @@ frames: {
   geometry: "Deadcat"
   camera_mount_width_mm: 20
   motor_mount_patterns: "19x19mm"
+  board_mount_patterns: "30.5x30.5mm"
+  board_mount_patterns: "20x20mm"
   description: "Rotor Riot CL2-XR 7 Deadcat Frame Deadcat drone frame with 288.0mm wheelbase, supporting up to 177.8mm props, weighing 185.0g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -2670,6 +2674,8 @@ frames: {
   geometry: "Squashed-X"
   camera_mount_width_mm: 14
   motor_mount_patterns: "9x9mm"
+  board_mount_patterns: "25.5x25.5mm"
+  board_mount_patterns: "20x20mm"
   description: "FPVCycle ToothPick 3 Frame - TP3 Squashed-X drone frame with 160.0mm wheelbase, supporting up to 101.6mm props, weighing 17.5g."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -2729,6 +2735,8 @@ frames: {
   camera_mount_width_mm: 19
   motor_mount_patterns: "16x16mm"
   motor_mount_patterns: "19x19mm"
+  board_mount_patterns: "30.5x30.5mm"
+  board_mount_patterns: "20x20mm"
   description: "Popular open-source community collaborative freestyle frame designed by Team BlackSheep for durability, cheap spare arms, and easy maintenance."
   reference_links: {
     types: REFERENCE_LINK_TYPE_DOCUMENTATION
@@ -2756,6 +2764,8 @@ frames: {
   camera_mount_width_mm: 20
   motor_mount_patterns: "16x16mm"
   motor_mount_patterns: "19x19mm"
+  board_mount_patterns: "30.5x30.5mm"
+  board_mount_patterns: "20x20mm"
   description: "Aerodynamic 5-inch deadcat freestyle frame with zero props in view for DJI O3, injection-molded TPU protection, and dual 20x20/30x30 mounting."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -2776,6 +2786,11 @@ frames: {
   wheelbase_mm: 225
   max_prop_size_mm: 129.54
   geometry: "Squashed X"
+  camera_mount_width_mm: 20
+  motor_mount_patterns: "16x16mm"
+  motor_mount_patterns: "19x19mm"
+  board_mount_patterns: "30.5x30.5mm"
+  board_mount_patterns: "20x20mm"
   description: "Flagship geometric frame with illuminated side panels, XT60 integrated plug, and CNC aluminum camera cage."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -2796,6 +2811,11 @@ frames: {
   wheelbase_mm: 225
   max_prop_size_mm: 129.54
   geometry: "Squashed X"
+  camera_mount_width_mm: 20
+  motor_mount_patterns: "16x16mm"
+  motor_mount_patterns: "19x19mm"
+  board_mount_patterns: "30.5x30.5mm"
+  board_mount_patterns: "20x20mm"
   description: "High-rigidity freestyle frame with CNC 7075 aluminum camera plates and vibration-damped stack design."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
@@ -2816,6 +2836,12 @@ frames: {
   wheelbase_mm: 168
   max_prop_size_mm: 101.6
   geometry: "Deadcat"
+  camera_mount_width_mm: 19
+  motor_mount_patterns: "9x9mm"
+  motor_mount_patterns: "12x12mm"
+  board_mount_patterns: "20x20mm"
+  board_mount_patterns: "25.5x25.5mm"
+  board_mount_patterns: "16x16mm"
   description: "Ultralight Sub-250g 4-inch micro long-range frame designed by Dave_C FPV with deadcat geometry for obstruction-free flight recording."
   reference_links: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE

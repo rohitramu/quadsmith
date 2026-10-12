@@ -57,6 +57,7 @@ erDiagram
         INTEGER motor_count
         DECIMAL camera_mount_width_mm
         TEXT_ARRAY motor_mount_patterns
+        TEXT_ARRAY board_mount_patterns
     }
 
     batteries {
@@ -99,6 +100,7 @@ erDiagram
         TEXT_ARRAY vtx_ports
         DECIMAL vtx_voltage_min_v
         DECIMAL vtx_voltage_max_v
+        TEXT mount_pattern
     }
 
     electronic_speed_controllers {
@@ -154,6 +156,7 @@ erDiagram
         TEXT primary_display_image
         JSONB media
         TEXT port_type
+        TEXT mount_pattern
     }
 
     antennas {

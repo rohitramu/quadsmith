@@ -1486,6 +1486,7 @@ flight_controllers: {
   vtx_ports: "Solder Pads"
   vtx_voltage_min_v: 5.0
   vtx_voltage_max_v: 9.0
+  mount_pattern: "30.5x30.5mm"
 }
 flight_controllers: {
 
@@ -1513,6 +1514,7 @@ flight_controllers: {
   vtx_ports: "Solder Pads"
   vtx_voltage_min_v: 5.0
   vtx_voltage_max_v: 10.0
+  mount_pattern: "30.5x30.5mm"
 }
 flight_controllers: {
 
@@ -1545,6 +1547,7 @@ flight_controllers: {
   vtx_ports: "Solder Pads"
   vtx_voltage_min_v: 5.0
   vtx_voltage_max_v: 12.0
+  mount_pattern: "30.5x30.5mm"
 }
 flight_controllers: {
 
@@ -1569,4 +1572,5 @@ flight_controllers: {
   vtx_ports: "Solder Pads"
   vtx_voltage_min_v: 3.3
   vtx_voltage_max_v: 9.0
+  mount_pattern: "25.5x25.5mm"
 }

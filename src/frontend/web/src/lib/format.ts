@@ -234,12 +234,12 @@ export function formatProductTitle(
 }
 
 /**
- * Formats a weight in grams to exactly 1 decimal point.
+ * Formats a weight in grams to exactly 2 decimal points.
  *
  * Examples:
- *   formatWeight(34) -> "34.0g"
- *   formatWeight(34, false) -> "34.0"
- *   formatWeight(0) -> "0.0g"
+ *   formatWeight(34) -> "34.00g"
+ *   formatWeight(34, false) -> "34.00"
+ *   formatWeight(0) -> "0.00g"
  *   formatWeight(null) -> "-"
  */
 export function formatWeight(
@@ -248,6 +248,6 @@ export function formatWeight(
   fallback: string = "-",
 ): string {
   if (weight == null || isNaN(weight)) return fallback;
-  const formatted = weight.toFixed(1);
+  const formatted = weight.toFixed(2);
   return includeUnit ? `${formatted}g` : formatted;
 }

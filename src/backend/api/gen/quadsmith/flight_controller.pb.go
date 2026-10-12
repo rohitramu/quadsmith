@@ -56,8 +56,10 @@ type FlightController struct {
 	VtxVoltageMinV float32 `protobuf:"fixed32,19,opt,name=vtx_voltage_min_v,json=vtxVoltageMinV,proto3" json:"vtx_voltage_min_v,omitempty"`
 	// Maximum voltage available to power a VTX (volts) - e.g. 5.0 for 5V-only whoop FC, 10.0 or 26.0 for FC with 9V/10V BEC or VBAT
 	VtxVoltageMaxV float32 `protobuf:"fixed32,20,opt,name=vtx_voltage_max_v,json=vtxVoltageMaxV,proto3" json:"vtx_voltage_max_v,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Board mounting pattern (e.g., "30.5x30.5mm", "20x20mm", "25.5x25.5mm", "16x16mm")
+	MountPattern  string `protobuf:"bytes,21,opt,name=mount_pattern,json=mountPattern,proto3" json:"mount_pattern,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *FlightController) Reset() {
@@ -228,6 +230,13 @@ func (x *FlightController) GetVtxVoltageMaxV() float32 {
 		return x.VtxVoltageMaxV
 	}
 	return 0
+}
+
+func (x *FlightController) GetMountPattern() string {
+	if x != nil {
+		return x.MountPattern
+	}
+	return ""
 }
 
 // ---------------------------------------------------------
@@ -418,7 +427,7 @@ var File_flight_controller_proto protoreflect.FileDescriptor
 const file_flight_controller_proto_rawDesc = "" +
 	"\n" +
 	"\x17flight_controller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xc7\t\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xec\t\n" +
 	"\x10FlightController\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -442,7 +451,8 @@ const file_flight_controller_proto_rawDesc = "" +
 	"maxVoltage\x12\x1b\n" +
 	"\tvtx_ports\x18\x12 \x03(\tR\bvtxPorts\x12)\n" +
 	"\x11vtx_voltage_min_v\x18\x13 \x01(\x02R\x0evtxVoltageMinV\x12)\n" +
-	"\x11vtx_voltage_max_v\x18\x14 \x01(\x02R\x0evtxVoltageMaxV:~\x8a\xb5\x188\n" +
+	"\x11vtx_voltage_max_v\x18\x14 \x01(\x02R\x0evtxVoltageMaxV\x12#\n" +
+	"\rmount_pattern\x18\x15 \x01(\tR\fmountPattern:~\x8a\xb5\x188\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tprocessor\n" +

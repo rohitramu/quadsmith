@@ -88,6 +88,7 @@ export const mockFrame1: Frame = create(FrameSchema, {
   weightG: 145,
   maxPropSizeMm: 130,
   geometry: "True X",
+  boardMountPatterns: ["30.5x30.5mm", "20x20mm"],
   description:
     "Freestyle 5-inch frame featuring an innovative anti-vibration stack and CNC camera mount.",
   referenceLinks: [
@@ -106,6 +107,7 @@ export const mockFC1: FlightController = create(FlightControllerSchema, {
   manufacturer: "SpeedyBee",
   name: "F405 V4 FC",
   processor: "STM32F405",
+  mountPattern: "30.5x30.5mm",
   weightG: 8.8,
   description:
     "Affordable F4 flight controller with wireless Bluetooth configuration via SpeedyBee App.",
@@ -256,6 +258,7 @@ export const mockVTX1: VideoTransmitter = create(VideoTransmitterSchema, {
   weightG: 8.7,
   maxPowerMw: 1000,
   protocol: "SmartAudio",
+  mountPattern: "20x20mm",
   inputVoltageMinV: 3,
   inputVoltageMaxV: 13,
   description: "Ultra-compact 5.8GHz video transmitter with up to 1W output power.",

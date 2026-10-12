@@ -147,7 +147,7 @@ export function BatteryCombobox({
   const displayLabel = useMemo(() => {
     if (!selectedBattery) return "";
     const specs = [
-      selectedBattery.weightG ? `${selectedBattery.weightG.toFixed(1)}g` : "",
+      selectedBattery.weightG ? `${selectedBattery.weightG.toFixed(2)}g` : "",
       selectedBattery.cellCountS ? `${selectedBattery.cellCountS}S` : "",
       selectedBattery.capacityMah ? `${selectedBattery.capacityMah}mAh` : "",
     ]
@@ -292,7 +292,7 @@ export function BatteryCombobox({
                         <div className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono flex items-center gap-1.5 flex-wrap">
                           {b.cellCountS ? <span>{b.cellCountS}S</span> : null}
                           {b.capacityMah ? <span>• {b.capacityMah}mAh</span> : null}
-                          {b.weightG ? <span>• {b.weightG.toFixed(1)}g</span> : null}
+                          {b.weightG ? <span>• {b.weightG.toFixed(2)}g</span> : null}
                           {b.connector ? <span>• {b.connector}</span> : null}
                         </div>
                       </div>

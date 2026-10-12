@@ -398,6 +398,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"vtx_ports",
 			"vtx_voltage_min_v",
 			"vtx_voltage_max_v",
+			"mount_pattern",
 		},
 	},
 	{
@@ -434,6 +435,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"motor_count",
 			"camera_mount_width_mm",
 			"motor_mount_patterns",
+			"board_mount_patterns",
 		},
 	},
 	{
@@ -627,6 +629,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"primary_display_image",
 			"media",
 			"port_type",
+			"mount_pattern",
 		},
 	},
 	{

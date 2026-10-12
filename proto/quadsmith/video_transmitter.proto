@@ -55,6 +55,9 @@ message VideoTransmitter {
 
   // Port/pin connection interface (e.g., "JST-SH 6-Pin", "Solder Pads", "JST-SH 4-Pin")
   string port_type = 16;
+
+  // Board mounting pattern (e.g., "20x20mm", "25.5x25.5mm", "30.5x30.5mm")
+  string mount_pattern = 17;
 }
 
 // ---------------------------------------------------------

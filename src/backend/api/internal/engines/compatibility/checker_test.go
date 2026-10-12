@@ -771,3 +771,122 @@ func TestFlightControllerVtxCompatibility(t *testing.T) {
 		}
 	})
 }
+
+func TestFlightControllerFrameMountCompatibility(t *testing.T) {
+	t.Run("Compatible Board Mount Pattern", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				BoardMountPatterns: []string{"30.5x30.5mm", "20x20mm"},
+			},
+			FlightController: &pb.FlightController{
+				MountPattern: "30.5x30.5mm",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerFrameMountChecker" {
+				t.Errorf("Unexpected FlightControllerFrameMountChecker message: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("Incompatible Board Mount Pattern", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				BoardMountPatterns: []string{"20x20mm", "25.5x25.5mm"},
+			},
+			FlightController: &pb.FlightController{
+				MountPattern: "30.5x30.5mm",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerFrameMountChecker" {
+				found = true
+				if m.SeverityLevel != 0 {
+					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("Expected FlightControllerFrameMountChecker message, got none")
+		}
+	})
+}
+
+func TestVideoTransmitterFrameMountCompatibility(t *testing.T) {
+	t.Run("Compatible Board Mount Pattern", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				BoardMountPatterns: []string{"30.5x30.5mm", "20x20mm"},
+			},
+			VideoTransmitter: &pb.VideoTransmitter{
+				MountPattern: "20x20mm",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "VideoTransmitterFrameMountChecker" {
+				t.Errorf("Unexpected VideoTransmitterFrameMountChecker message: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("Incompatible Board Mount Pattern", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				BoardMountPatterns: []string{"25.5x25.5mm"},
+			},
+			VideoTransmitter: &pb.VideoTransmitter{
+				MountPattern: "30.5x30.5mm",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "VideoTransmitterFrameMountChecker" {
+				found = true
+				if m.SeverityLevel != 0 {
+					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("Expected VideoTransmitterFrameMountChecker message, got none")
+		}
+	})
+}
+
+func TestBoardMountCelFilters(t *testing.T) {
+	t.Run("Flight Controller CEL Filter with Frame Board Mount Patterns", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				BoardMountPatterns: []string{"30.5x30.5mm", "20x20mm"},
+			},
+		}
+		fcFilter := GenerateCelFilter("flight_controllers", comp)
+		expected := "(mount_pattern == \"30.5x30.5mm\" || mount_pattern == \"20x20mm\")"
+		if fcFilter != expected {
+			t.Errorf("expected %q, got %q", expected, fcFilter)
+		}
+	})
+
+	t.Run("Video Transmitter CEL Filter with Frame Board Mount Patterns and FC", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				BoardMountPatterns: []string{"20x20mm"},
+			},
+			FlightController: &pb.FlightController{
+				VtxVoltageMaxV: 9.0,
+				VtxVoltageMinV: 5.0,
+				VtxPorts:       []string{"SH1.0-6P"},
+			},
+		}
+		vtxFilter := GenerateCelFilter("video_transmitters", comp)
+		expected := "input_voltage_min_v <= 9.0 && input_voltage_max_v >= 5.0 && port_type == \"SH1.0-6P\" && mount_pattern == \"20x20mm\""
+		if vtxFilter != expected {
+			t.Errorf("expected %q, got %q", expected, vtxFilter)
+		}
+	})
+}

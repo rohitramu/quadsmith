@@ -58,7 +58,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
     weight_g: {
       id: "weight_g",
       title: "Weight (g)",
-      renderCell: (m) => (m.weightG != null && m.weightG > 0 ? `${m.weightG.toFixed(1)}g` : "-"),
+      renderCell: (m) => (m.weightG != null && m.weightG > 0 ? `${m.weightG.toFixed(2)}g` : "-"),
     },
     description: {
       id: "description",
@@ -175,7 +175,7 @@ export const GEAR_COLLECTIONS: HardwareCollectionDef[] = [
     technicalSpecs: [
       { label: "Manufacturer", value: (m) => m.manufacturer || "-" },
       { label: "Model", value: (m) => m.name || m.id },
-      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(1)}g` : "-") },
+      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(2)}g` : "-") },
       { label: "RF Protocol", value: (m) => m.rfProtocol || "-" },
       { label: "Operating System", value: (m) => m.operatingSystem || "-" },
       { label: "Gimbal Mechanism", value: (m) => m.gimbalType || "-" },
@@ -271,7 +271,7 @@ export const GEAR_COLLECTIONS: HardwareCollectionDef[] = [
     technicalSpecs: [
       { label: "Manufacturer", value: (m) => m.manufacturer || "-" },
       { label: "Model", value: (m) => m.name || m.id },
-      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(1)}g` : "-") },
+      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(2)}g` : "-") },
       { label: "Video Protocol", value: (m) => m.videoProtocol || "-" },
       { label: "Display Panel", value: (m) => m.displayType || "-" },
       { label: "Display Resolution", value: (m) => m.resolution || "-" },
@@ -371,7 +371,7 @@ export const GEAR_COLLECTIONS: HardwareCollectionDef[] = [
     technicalSpecs: [
       { label: "Manufacturer", value: (m) => m.manufacturer || "-" },
       { label: "Model", value: (m) => m.name || m.id },
-      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(1)}g` : "-") },
+      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(2)}g` : "-") },
       { label: "Output Channels", value: (m) => (m.channels ? `${m.channels}` : "-") },
       {
         label: "Max Charging Power",
@@ -440,14 +440,14 @@ export const GEAR_COLLECTIONS: HardwareCollectionDef[] = [
     highlights: [
       { label: "Tool Type", value: (m) => m.toolType || "-" },
       { label: "Power Source", value: (m) => m.powerSource || "-" },
-      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(1)}g` : "-") },
+      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(2)}g` : "-") },
     ],
     technicalSpecs: [
       { label: "Manufacturer", value: (m) => m.manufacturer || "-" },
       { label: "Tool Name", value: (m) => m.name || m.id },
       { label: "Tool Type", value: (m) => m.toolType || "-" },
       { label: "Power Source", value: (m) => m.powerSource || "-" },
-      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(1)}g` : "-") },
+      { label: "Weight", value: (m) => (m.weightG ? `${m.weightG.toFixed(2)}g` : "-") },
       { label: "Description", value: (m) => m.description || "-" },
     ],
   },

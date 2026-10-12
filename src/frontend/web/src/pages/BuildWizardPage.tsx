@@ -370,13 +370,23 @@ export function BuildWizardPage() {
     return wasmEngine.generateCelFilter("cameras", comps);
   }, [isWasmReady, selectedVtx, selectedFrame]);
 
-  const vtxCelFilter = useMemo(() => {
-    if (!isWasmReady || !selectedFc) return "";
+  const fcCelFilter = useMemo(() => {
+    if (!isWasmReady || (!selectedFrame && !selectedVtx)) return "";
     const comps = create(AssembledComponentsSchema, {
-      flightController: selectedFc,
+      frame: selectedFrame || undefined,
+      videoTransmitter: selectedVtx || undefined,
+    });
+    return wasmEngine.generateCelFilter("flight_controllers", comps);
+  }, [isWasmReady, selectedFrame, selectedVtx]);
+
+  const vtxCelFilter = useMemo(() => {
+    if (!isWasmReady || (!selectedFc && !selectedFrame)) return "";
+    const comps = create(AssembledComponentsSchema, {
+      flightController: selectedFc || undefined,
+      frame: selectedFrame || undefined,
     });
     return wasmEngine.generateCelFilter("video_transmitters", comps);
-  }, [isWasmReady, selectedFc]);
+  }, [isWasmReady, selectedFc, selectedFrame]);
 
   const batteryCelFilter = useMemo(() => {
     if (!isWasmReady) return "";
@@ -622,7 +632,7 @@ export function BuildWizardPage() {
     if (selectedVtxAnt && !noneSelections.vtxAntenna) {
       weight += (selectedVtxAnt.weightG || 0) * vtxAntCount;
     }
-    return parseFloat(weight.toFixed(1));
+    return parseFloat(weight.toFixed(2));
   }, [
     selectedFrame,
     selectedMotor,
@@ -661,7 +671,7 @@ export function BuildWizardPage() {
         id: "frame",
         label: `Frame: ${selectedFrame.name}`,
         weight: selectedFrame.weightG || 0,
-        weightFormatted: `${(selectedFrame.weightG || 0).toFixed(1)}g`,
+        weightFormatted: `${(selectedFrame.weightG || 0).toFixed(2)}g`,
       });
     }
 
@@ -671,7 +681,7 @@ export function BuildWizardPage() {
         id: "motors",
         label: `Motors: ${selectedMotor.name} (${motorCount}x)`,
         weight: w,
-        weightFormatted: `${w.toFixed(1)}g`,
+        weightFormatted: `${w.toFixed(2)}g`,
       });
     }
 
@@ -681,7 +691,7 @@ export function BuildWizardPage() {
         id: "propellers",
         label: `Propellers: ${selectedProp.name} (${motorCount}x)`,
         weight: w,
-        weightFormatted: `${w.toFixed(1)}g`,
+        weightFormatted: `${w.toFixed(2)}g`,
       });
     }
 
@@ -690,7 +700,7 @@ export function BuildWizardPage() {
         id: "fc",
         label: `Flight Controller: ${selectedFc.name}`,
         weight: selectedFc.weightG || 0,
-        weightFormatted: `${(selectedFc.weightG || 0).toFixed(1)}g`,
+        weightFormatted: `${(selectedFc.weightG || 0).toFixed(2)}g`,
       });
     }
 
@@ -699,7 +709,7 @@ export function BuildWizardPage() {
         id: "esc",
         label: `ESC: ${integratedEsc ? `${integratedEsc.name} (Integrated ${integratedEsc.motorCurrentMaxA || 20}A)` : "Using Integrated FC ESC"}`,
         weight: 0,
-        weightFormatted: "0.0g",
+        weightFormatted: "0.00g",
         isIntegrated: true,
       });
     } else if (selectedEsc && !noneSelections.esc) {
@@ -707,7 +717,7 @@ export function BuildWizardPage() {
         id: "esc",
         label: `ESC: ${selectedEsc.name}`,
         weight: selectedEsc.weightG || 0,
-        weightFormatted: `${(selectedEsc.weightG || 0).toFixed(1)}g`,
+        weightFormatted: `${(selectedEsc.weightG || 0).toFixed(2)}g`,
       });
     }
 
@@ -716,7 +726,7 @@ export function BuildWizardPage() {
         id: "rx",
         label: `Receiver: ${integratedRx ? `${integratedRx.name} (Integrated ${integratedRx.protocol || "ExpressLRS"} @ ${formatFrequencyBand(integratedRx.frequencyBandMhz)})` : "Using Integrated FC Receiver"}`,
         weight: 0,
-        weightFormatted: "0.0g",
+        weightFormatted: "0.00g",
         isIntegrated: true,
       });
     } else if (selectedRx) {
@@ -724,7 +734,7 @@ export function BuildWizardPage() {
         id: "rx",
         label: `Receiver: ${selectedRx.name} (${selectedRx.protocol} @ ${formatFrequencyBand(selectedRx.frequencyBandMhz)})`,
         weight: selectedRx.weightG || 0,
-        weightFormatted: `${(selectedRx.weightG || 0).toFixed(1)}g`,
+        weightFormatted: `${(selectedRx.weightG || 0).toFixed(2)}g`,
       });
     }
 
@@ -734,7 +744,7 @@ export function BuildWizardPage() {
         id: "rx-antenna",
         label: `RX Antenna: ${selectedRxAnt.name} (${rxAntCount}x)`,
         weight: w,
-        weightFormatted: `${w.toFixed(1)}g`,
+        weightFormatted: `${w.toFixed(2)}g`,
       });
     }
 
@@ -743,7 +753,7 @@ export function BuildWizardPage() {
         id: "gps",
         label: `GPS: ${selectedGps.name}`,
         weight: selectedGps.weightG || 0,
-        weightFormatted: `${(selectedGps.weightG || 0).toFixed(1)}g`,
+        weightFormatted: `${(selectedGps.weightG || 0).toFixed(2)}g`,
       });
     }
 
@@ -752,7 +762,7 @@ export function BuildWizardPage() {
         id: "vtx",
         label: `VTX: ${integratedVtx ? `${integratedVtx.name} (Integrated ${integratedVtx.maxPowerMw || 400}mW)` : "Using Integrated FC VTX"}`,
         weight: 0,
-        weightFormatted: "0.0g",
+        weightFormatted: "0.00g",
         isIntegrated: true,
       });
     } else if (selectedVtx && !noneSelections.vtx) {
@@ -760,7 +770,7 @@ export function BuildWizardPage() {
         id: "vtx",
         label: `VTX: ${selectedVtx.name}`,
         weight: selectedVtx.weightG || 0,
-        weightFormatted: `${(selectedVtx.weightG || 0).toFixed(1)}g`,
+        weightFormatted: `${(selectedVtx.weightG || 0).toFixed(2)}g`,
       });
     }
 
@@ -769,7 +779,7 @@ export function BuildWizardPage() {
         id: "camera",
         label: `Camera: ${selectedCam.name}`,
         weight: selectedCam.weightG || 0,
-        weightFormatted: `${(selectedCam.weightG || 0).toFixed(1)}g`,
+        weightFormatted: `${(selectedCam.weightG || 0).toFixed(2)}g`,
       });
     }
 
@@ -779,7 +789,7 @@ export function BuildWizardPage() {
         id: "vtx-antenna",
         label: `VTX Antenna: ${selectedVtxAnt.name} (${vtxAntCount}x)`,
         weight: w,
-        weightFormatted: `${w.toFixed(1)}g`,
+        weightFormatted: `${w.toFixed(2)}g`,
       });
     }
 
@@ -1164,12 +1174,27 @@ export function BuildWizardPage() {
   }, [props, compatibleOnlyMap, selectedFrame, selectedMotor, searchProp]);
 
   const filteredFcs = useMemo(() => {
-    if (!searchFc.trim()) return fcs;
+    let list = fcs;
+    if (isCompatibleOnly("flight_controllers")) {
+      if (
+        selectedFrame &&
+        selectedFrame.boardMountPatterns &&
+        selectedFrame.boardMountPatterns.length > 0
+      ) {
+        list = list.filter((fc) => {
+          if (!fc.mountPattern) return true;
+          return selectedFrame.boardMountPatterns.some(
+            (p) => p.toLowerCase().trim() === fc.mountPattern.toLowerCase().trim(),
+          );
+        });
+      }
+    }
+    if (!searchFc.trim()) return list;
     const q = searchFc.toLowerCase();
-    return fcs.filter(
+    return list.filter(
       (fc) => fc.name.toLowerCase().includes(q) || fc.manufacturer.toLowerCase().includes(q),
     );
-  }, [fcs, searchFc]);
+  }, [fcs, compatibleOnlyMap, selectedFrame, searchFc]);
 
   const filteredEscs = useMemo(() => {
     let external = escs.filter((esc) => !esc.isInternalOnly);
@@ -1201,41 +1226,55 @@ export function BuildWizardPage() {
 
   const filteredVtxs = useMemo(() => {
     let external = vtxs.filter((vtx) => !vtx.isInternalOnly);
-    if (isCompatibleOnly("video_transmitters") && selectedFc) {
-      external = external.filter((vtx) => {
-        // Voltage check
-        if (
-          selectedFc.vtxVoltageMaxV > 0 &&
-          vtx.inputVoltageMinV > 0 &&
-          vtx.inputVoltageMinV > selectedFc.vtxVoltageMaxV
-        ) {
-          return false;
-        }
-        if (
-          selectedFc.vtxVoltageMinV > 0 &&
-          vtx.inputVoltageMaxV > 0 &&
-          vtx.inputVoltageMaxV < selectedFc.vtxVoltageMinV
-        ) {
-          return false;
-        }
-        // Port check
-        if (selectedFc.vtxPorts && selectedFc.vtxPorts.length > 0 && vtx.portType) {
-          const hasMatch = selectedFc.vtxPorts.some(
-            (p) =>
-              p.toLowerCase().trim() === vtx.portType.toLowerCase().trim() ||
-              p.toLowerCase().trim() === "solder pads",
+    if (isCompatibleOnly("video_transmitters")) {
+      if (selectedFc) {
+        external = external.filter((vtx) => {
+          // Voltage check
+          if (
+            selectedFc.vtxVoltageMaxV > 0 &&
+            vtx.inputVoltageMinV > 0 &&
+            vtx.inputVoltageMinV > selectedFc.vtxVoltageMaxV
+          ) {
+            return false;
+          }
+          if (
+            selectedFc.vtxVoltageMinV > 0 &&
+            vtx.inputVoltageMaxV > 0 &&
+            vtx.inputVoltageMaxV < selectedFc.vtxVoltageMinV
+          ) {
+            return false;
+          }
+          // Port check
+          if (selectedFc.vtxPorts && selectedFc.vtxPorts.length > 0 && vtx.portType) {
+            const hasMatch = selectedFc.vtxPorts.some(
+              (p) =>
+                p.toLowerCase().trim() === vtx.portType.toLowerCase().trim() ||
+                p.toLowerCase().trim() === "solder pads",
+            );
+            if (!hasMatch) return false;
+          }
+          return true;
+        });
+      }
+      if (
+        selectedFrame &&
+        selectedFrame.boardMountPatterns &&
+        selectedFrame.boardMountPatterns.length > 0
+      ) {
+        external = external.filter((vtx) => {
+          if (!vtx.mountPattern) return true;
+          return selectedFrame.boardMountPatterns.some(
+            (p) => p.toLowerCase().trim() === vtx.mountPattern.toLowerCase().trim(),
           );
-          if (!hasMatch) return false;
-        }
-        return true;
-      });
+        });
+      }
     }
     if (!searchVtx.trim()) return external;
     const q = searchVtx.toLowerCase();
     return external.filter(
       (v) => v.name.toLowerCase().includes(q) || v.manufacturer.toLowerCase().includes(q),
     );
-  }, [vtxs, compatibleOnlyMap, selectedFc, searchVtx]);
+  }, [vtxs, compatibleOnlyMap, selectedFc, selectedFrame, searchVtx]);
 
   const filteredCams = useMemo(() => {
     let list = cams;
@@ -1911,7 +1950,7 @@ export function BuildWizardPage() {
                             </span>
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            {f.manufacturer} • Weight: {(f.weightG || 0).toFixed(1)}g •{" "}
+                            {f.manufacturer} • Weight: {(f.weightG || 0).toFixed(2)}g •{" "}
                             {f.geometry || "Standard"}
                           </div>
                         </div>
@@ -2051,8 +2090,8 @@ export function BuildWizardPage() {
                             </span>
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            {m.manufacturer} • Weight: {(m.weightG || 0).toFixed(1)}g ea (
-                            {((m.weightG || 0) * motorCount).toFixed(1)}g total)
+                            {m.manufacturer} • Weight: {(m.weightG || 0).toFixed(2)}g ea (
+                            {((m.weightG || 0) * motorCount).toFixed(2)}g total)
                           </div>
                         </div>
                         <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
@@ -2205,8 +2244,8 @@ export function BuildWizardPage() {
                             )}
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            {p.manufacturer} • Weight: {(p.weightG || 0).toFixed(1)}g ea (
-                            {((p.weightG || 0) * motorCount).toFixed(1)}g total)
+                            {p.manufacturer} • Weight: {(p.weightG || 0).toFixed(2)}g ea (
+                            {((p.weightG || 0) * motorCount).toFixed(2)}g total)
                           </div>
                         </div>
                         <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
@@ -2256,28 +2295,85 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
-                <div className="relative">
-                  <Search
-                    size={14}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
-                  />
-                  <input
-                    type="text"
-                    value={searchFc}
-                    onChange={(e) => setSearchFc(e.target.value)}
-                    placeholder="Search flight controllers by MCU, gyro, mounting pattern..."
-                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  />
-                  {searchFc && (
-                    <button
-                      type="button"
-                      onClick={() => setSearchFc("")}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
-                    >
-                      <X size={13} />
-                    </button>
-                  )}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="relative flex-1">
+                    <Search
+                      size={14}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
+                    />
+                    <input
+                      type="text"
+                      value={searchFc}
+                      onChange={(e) => setSearchFc(e.target.value)}
+                      placeholder="Search flight controllers by MCU, gyro, mounting pattern..."
+                      className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    />
+                    {searchFc && (
+                      <button
+                        type="button"
+                        onClick={() => setSearchFc("")}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                      >
+                        <X size={13} />
+                      </button>
+                    )}
+                  </div>
+                  {selectedFrame &&
+                    selectedFrame.boardMountPatterns &&
+                    selectedFrame.boardMountPatterns.length > 0 &&
+                    !fcCelFilter && (
+                      <label className="flex items-center gap-1.5 text-xs text-zinc-600 dark:text-zinc-400 cursor-pointer select-none shrink-0 font-medium">
+                        <input
+                          type="checkbox"
+                          className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5"
+                          checked={isCompatibleOnly("flight_controllers")}
+                          onChange={() => toggleCompatibleOnly("flight_controllers")}
+                        />
+                        <span>Compatible Only</span>
+                      </label>
+                    )}
                 </div>
+
+                {/* Dynamic WASM CEL Compatibility Filter Banner */}
+                {fcCelFilter && (
+                  <div
+                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                      isCompatibleOnly("flight_controllers")
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span
+                        className={`font-semibold text-[10px] uppercase tracking-wider ${
+                          isCompatibleOnly("flight_controllers")
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-zinc-500 dark:text-zinc-400"
+                        }`}
+                      >
+                        Compatibility Filter:
+                      </span>
+                      <code
+                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
+                          isCompatibleOnly("flight_controllers")
+                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
+                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
+                        }`}
+                      >
+                        {fcCelFilter}
+                      </code>
+                    </div>
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={isCompatibleOnly("flight_controllers")}
+                        onChange={() => toggleCompatibleOnly("flight_controllers")}
+                        className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                      />
+                      <span>Compatible Only</span>
+                    </label>
+                  </div>
+                )}
 
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {filteredFcs.map((fc) => {
@@ -2295,6 +2391,15 @@ export function BuildWizardPage() {
                       fc.name.toLowerCase().includes("frsky");
                     const hasVtx =
                       !!fc.internalVideoTransmitterUuid || fc.name.toLowerCase().includes("vtx");
+                    const isIncompatible = Boolean(
+                      selectedFrame &&
+                      selectedFrame.boardMountPatterns &&
+                      selectedFrame.boardMountPatterns.length > 0 &&
+                      fc.mountPattern &&
+                      !selectedFrame.boardMountPatterns.some(
+                        (p) => p.toLowerCase().trim() === fc.mountPattern.toLowerCase().trim(),
+                      ),
+                    );
                     return (
                       <div
                         key={fc.uuid || fc.id}
@@ -2303,7 +2408,9 @@ export function BuildWizardPage() {
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                            : isIncompatible
+                              ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                              : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                         }`}
                       >
                         <div className="flex-1 min-w-0">
@@ -2320,9 +2427,19 @@ export function BuildWizardPage() {
                             >
                               {isAio ? "AIO (Integrated ESC)" : "Standalone FC"}
                             </span>
+                            {fc.mountPattern && (
+                              <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
+                                {fc.mountPattern}
+                              </span>
+                            )}
+                            {isIncompatible && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                                Incompatible Mount ({fc.mountPattern})
+                              </span>
+                            )}
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            {fc.manufacturer} • Weight: {(fc.weightG || 0).toFixed(1)}g •{" "}
+                            {fc.manufacturer} • Weight: {(fc.weightG || 0).toFixed(2)}g •{" "}
                             {fc.processor || "MCU"}
                           </div>
                         </div>
@@ -2538,7 +2655,7 @@ export function BuildWizardPage() {
                             )}
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            {esc.manufacturer} • Weight: {(esc.weightG || 0).toFixed(1)}g •{" "}
+                            {esc.manufacturer} • Weight: {(esc.weightG || 0).toFixed(2)}g •{" "}
                             {esc.maxMotors || 4}x Motors
                           </div>
                         </div>
@@ -2696,7 +2813,7 @@ export function BuildWizardPage() {
                             </span>
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            {rx.manufacturer} • Weight: {(rx.weightG || 0).toFixed(1)}g •{" "}
+                            {rx.manufacturer} • Weight: {(rx.weightG || 0).toFixed(2)}g •{" "}
                             {formatFrequencyBand(rx.frequencyBandMhz)}
                           </div>
                         </div>
@@ -2857,10 +2974,10 @@ export function BuildWizardPage() {
                           ? "Select a receiver with an integrated ceramic antenna to enable this option."
                           : !canSelectNoRxAntenna
                             ? `${activeRx.name} requires an external antenna (no integrated ceramic antenna detected).`
-                            : `Uses ${activeRx.name}'s onboard ceramic antenna (0.0g added weight).`}
+                            : `Uses ${activeRx.name}'s onboard ceramic antenna (0.00g added weight).`}
                       </div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.0g</div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.00g</div>
                   </div>
 
                   {filteredRxAnts.map((a) => {
@@ -2892,9 +3009,9 @@ export function BuildWizardPage() {
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                             {a.manufacturer} • Weight:{" "}
-                            {((a.weightG || 0) * (isSelected ? rxAntCount : 1)).toFixed(1)}g{" "}
+                            {((a.weightG || 0) * (isSelected ? rxAntCount : 1)).toFixed(2)}g{" "}
                             {isSelected && rxAntCount > 1
-                              ? `(${rxAntCount}x ${(a.weightG || 0).toFixed(1)}g)`
+                              ? `(${rxAntCount}x ${(a.weightG || 0).toFixed(2)}g)`
                               : ""}{" "}
                             • {a.polarization || "Linear"}
                           </div>
@@ -2989,10 +3106,10 @@ export function BuildWizardPage() {
                         No GPS (None)
                       </div>
                       <div className="text-[11px] text-zinc-500 mt-0.5">
-                        Saves weight (0.0g) & frees 1 UART
+                        Saves weight (0.00g) & frees 1 UART
                       </div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.0g</div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.00g</div>
                   </div>
 
                   {filteredGps.map((g) => {
@@ -3023,7 +3140,7 @@ export function BuildWizardPage() {
                             </span>
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            {g.manufacturer} • Weight: {(g.weightG || 0).toFixed(1)}g •{" "}
+                            {g.manufacturer} • Weight: {(g.weightG || 0).toFixed(2)}g •{" "}
                             {g.compass ? "Compass included" : "No compass"}
                           </div>
                         </div>
@@ -3167,9 +3284,9 @@ export function BuildWizardPage() {
                       <div className="font-bold text-zinc-900 dark:text-zinc-200">
                         No VTX (None)
                       </div>
-                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0.0g)</div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0.00g)</div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.0g</div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.00g</div>
                   </div>
 
                   {/* Option Card: Integrated FC VTX (if FC integrates VTX) */}
@@ -3201,7 +3318,7 @@ export function BuildWizardPage() {
                         </div>
                         <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                           {integratedVtx?.manufacturer || selectedFc?.manufacturer} • Integrated
-                          into {selectedFc?.name} • Weight: 0.0g (FC integrated) •{" "}
+                          into {selectedFc?.name} • Weight: 0.00g (FC integrated) •{" "}
                           {integratedVtx?.protocol || "Analog"}
                         </div>
                       </div>
@@ -3216,12 +3333,22 @@ export function BuildWizardPage() {
                       !useIntegratedVtx &&
                       !noneSelections.vtx &&
                       (selectedVtx?.uuid === v.uuid || selectedVtx?.id === v.id);
-                    const isIncompatible = Boolean(
+                    const isProtoIncompatible = Boolean(
                       selectedCam &&
                       selectedCam.protocol &&
                       v.protocol &&
                       v.protocol.toLowerCase() !== selectedCam.protocol.toLowerCase(),
                     );
+                    const isMountIncompatible = Boolean(
+                      selectedFrame &&
+                      selectedFrame.boardMountPatterns &&
+                      selectedFrame.boardMountPatterns.length > 0 &&
+                      v.mountPattern &&
+                      !selectedFrame.boardMountPatterns.some(
+                        (p) => p.toLowerCase().trim() === v.mountPattern.toLowerCase().trim(),
+                      ),
+                    );
+                    const isIncompatible = isProtoIncompatible || isMountIncompatible;
                     return (
                       <div
                         key={v.uuid || v.id}
@@ -3249,20 +3376,30 @@ export function BuildWizardPage() {
                                 {v.maxPowerMw}mW
                               </span>
                             )}
-                            {isIncompatible && (
+                            {v.mountPattern && (
+                              <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 shrink-0">
+                                {v.mountPattern}
+                              </span>
+                            )}
+                            {isProtoIncompatible && (
                               <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
                                 Incompatible ({v.protocol?.toUpperCase()} vs{" "}
                                 {selectedCam!.protocol?.toUpperCase()})
                               </span>
                             )}
+                            {isMountIncompatible && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                                Incompatible Mount ({v.mountPattern})
+                              </span>
+                            )}
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                             {v.manufacturer} • Protocol: {v.protocol || "5.8GHz"} • Weight:{" "}
-                            {(v.weightG || 0).toFixed(1)}g
+                            {(v.weightG || 0).toFixed(2)}g
                           </div>
                         </div>
                         <div className="text-[11px] text-zinc-500 font-mono shrink-0">
-                          {(v.weightG || 0).toFixed(1)}g
+                          {(v.weightG || 0).toFixed(2)}g
                         </div>
                       </div>
                     );
@@ -3384,9 +3521,9 @@ export function BuildWizardPage() {
                       <div className="font-bold text-zinc-900 dark:text-zinc-200">
                         No Camera (None)
                       </div>
-                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0.0g)</div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0.00g)</div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.0g</div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.00g</div>
                   </div>
 
                   {filteredCams.map((c) => {
@@ -3431,11 +3568,11 @@ export function BuildWizardPage() {
                             )}
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                            {c.manufacturer} • Weight: {(c.weightG || 0).toFixed(1)}g
+                            {c.manufacturer} • Weight: {(c.weightG || 0).toFixed(2)}g
                           </div>
                         </div>
                         <div className="text-[11px] text-zinc-500 font-mono shrink-0">
-                          {(c.weightG || 0).toFixed(1)}g
+                          {(c.weightG || 0).toFixed(2)}g
                         </div>
                       </div>
                     );
@@ -3541,9 +3678,9 @@ export function BuildWizardPage() {
                       <div className="font-bold text-zinc-900 dark:text-zinc-200">
                         No Antenna (None)
                       </div>
-                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0.0g)</div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5">Saves weight (0.00g)</div>
                     </div>
-                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.0g</div>
+                    <div className="text-[11px] text-zinc-500 font-mono shrink-0">0.00g</div>
                   </div>
 
                   {filteredVtxAnts.map((a) => {
@@ -3575,14 +3712,14 @@ export function BuildWizardPage() {
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                             {a.manufacturer} • Weight:{" "}
-                            {((a.weightG || 0) * (isSelected ? vtxAntCount : 1)).toFixed(1)}g{" "}
+                            {((a.weightG || 0) * (isSelected ? vtxAntCount : 1)).toFixed(2)}g{" "}
                             {isSelected && vtxAntCount > 1
-                              ? `(${vtxAntCount}x ${(a.weightG || 0).toFixed(1)}g)`
+                              ? `(${vtxAntCount}x ${(a.weightG || 0).toFixed(2)}g)`
                               : ""}
                           </div>
                         </div>
                         <div className="text-[11px] text-zinc-500 font-mono shrink-0">
-                          {((a.weightG || 0) * (isSelected ? vtxAntCount : 1)).toFixed(1)}g
+                          {((a.weightG || 0) * (isSelected ? vtxAntCount : 1)).toFixed(2)}g
                         </div>
                       </div>
                     );
@@ -3651,7 +3788,7 @@ export function BuildWizardPage() {
                   <span>
                     Dry Weight:{" "}
                     <strong className="text-blue-600 dark:text-blue-400">
-                      {dryWeightG.toFixed(1)}g
+                      {dryWeightG.toFixed(2)}g
                     </strong>
                   </span>
                 </div>
@@ -3794,7 +3931,7 @@ export function BuildWizardPage() {
                   Payload Simulation
                 </span>
                 <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                  +{payloadWeightG.toFixed(1)}g
+                  +{payloadWeightG.toFixed(2)}g
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -3898,17 +4035,17 @@ export function BuildWizardPage() {
               <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
                 <span className="text-zinc-500">Dry Weight</span>
                 <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
-                  {dryWeightG.toFixed(1)}g
+                  {dryWeightG.toFixed(2)}g
                 </div>
               </div>
               <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
                 <span className="text-zinc-500">All-Up Weight</span>
                 <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
                   {evaluation
-                    ? `${evaluation.allUpWeightG.toFixed(1)}g`
+                    ? `${evaluation.allUpWeightG.toFixed(2)}g`
                     : activeBattery
-                      ? `${(dryWeightG + (activeBattery.weightG || 0) + payloadWeightG).toFixed(1)}g`
-                      : `${dryWeightG}g`}
+                      ? `${(dryWeightG + (activeBattery.weightG || 0) + payloadWeightG).toFixed(2)}g`
+                      : `${dryWeightG.toFixed(2)}g`}
                 </div>
               </div>
               <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
@@ -4033,7 +4170,7 @@ export function BuildWizardPage() {
                     </div>
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                    {selectedFrame ? `${(selectedFrame.weightG || 0).toFixed(1)}g` : "—"}
+                    {selectedFrame ? `${(selectedFrame.weightG || 0).toFixed(2)}g` : "—"}
                   </div>
                 </button>
               </SelectedPartHoverWrapper>
@@ -4081,7 +4218,7 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {selectedMotor
-                      ? `${((selectedMotor.weightG || 0) * motorCount).toFixed(1)}g`
+                      ? `${((selectedMotor.weightG || 0) * motorCount).toFixed(2)}g`
                       : "—"}
                   </div>
                 </button>
@@ -4130,7 +4267,7 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {selectedProp
-                      ? `${((selectedProp.weightG || 0) * motorCount).toFixed(1)}g`
+                      ? `${((selectedProp.weightG || 0) * motorCount).toFixed(2)}g`
                       : "—"}
                   </div>
                 </button>
@@ -4182,7 +4319,7 @@ export function BuildWizardPage() {
                     </div>
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
-                    {selectedFc ? `${(selectedFc.weightG || 0).toFixed(1)}g` : "—"}
+                    {selectedFc ? `${(selectedFc.weightG || 0).toFixed(2)}g` : "—"}
                   </div>
                 </button>
               </SelectedPartHoverWrapper>
@@ -4245,9 +4382,9 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {useIntegratedEsc
-                      ? "0.0g"
+                      ? "0.00g"
                       : selectedEsc && !noneSelections.esc
-                        ? `${(selectedEsc.weightG || 0).toFixed(1)}g`
+                        ? `${(selectedEsc.weightG || 0).toFixed(2)}g`
                         : "—"}
                   </div>
                 </button>
@@ -4309,9 +4446,9 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {useIntegratedRx
-                      ? "0.0g"
+                      ? "0.00g"
                       : selectedRx
-                        ? `${(selectedRx.weightG || 0).toFixed(1)}g`
+                        ? `${(selectedRx.weightG || 0).toFixed(2)}g`
                         : "—"}
                   </div>
                 </button>
@@ -4371,7 +4508,7 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {selectedRxAnt && !noneSelections.rxAntenna
-                      ? `${((selectedRxAnt.weightG || 0) * rxAntCount).toFixed(1)}g`
+                      ? `${((selectedRxAnt.weightG || 0) * rxAntCount).toFixed(2)}g`
                       : "—"}
                   </div>
                 </button>
@@ -4435,9 +4572,9 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {useIntegratedVtx
-                      ? "0.0g"
+                      ? "0.00g"
                       : selectedVtx && !noneSelections.vtx
-                        ? `${(selectedVtx.weightG || 0).toFixed(1)}g`
+                        ? `${(selectedVtx.weightG || 0).toFixed(2)}g`
                         : "—"}
                   </div>
                 </button>
@@ -4497,7 +4634,7 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {selectedCam && !noneSelections.camera
-                      ? `${(selectedCam.weightG || 0).toFixed(1)}g`
+                      ? `${(selectedCam.weightG || 0).toFixed(2)}g`
                       : "—"}
                   </div>
                 </button>
@@ -4557,7 +4694,7 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {selectedVtxAnt && !noneSelections.vtxAntenna
-                      ? `${((selectedVtxAnt.weightG || 0) * vtxAntCount).toFixed(1)}g`
+                      ? `${((selectedVtxAnt.weightG || 0) * vtxAntCount).toFixed(2)}g`
                       : "—"}
                   </div>
                 </button>
@@ -4617,7 +4754,7 @@ export function BuildWizardPage() {
                   </div>
                   <div className="text-right shrink-0 font-mono text-[11px] text-zinc-500 ml-2">
                     {selectedGps && !noneSelections.gps
-                      ? `${(selectedGps.weightG || 0).toFixed(1)}g`
+                      ? `${(selectedGps.weightG || 0).toFixed(2)}g`
                       : "—"}
                   </div>
                 </button>
@@ -4628,7 +4765,7 @@ export function BuildWizardPage() {
             <div className="p-3 bg-zinc-50 dark:bg-zinc-800/50 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs">
               <span className="text-zinc-500 font-medium">BOM Total Dry Weight:</span>
               <span className="font-mono font-bold text-indigo-600 dark:text-indigo-400 text-sm">
-                {dryWeightG.toFixed(1)}g
+                {dryWeightG.toFixed(2)}g
               </span>
             </div>
           </div>

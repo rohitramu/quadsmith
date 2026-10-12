@@ -228,7 +228,7 @@ export function BuildCard({ build }: BuildCardProps) {
             <div className="flex items-center gap-3 text-zinc-600 dark:text-zinc-400">
               <span className="flex items-center gap-1 font-medium" title="All Up Weight (AUW)">
                 <Weight size={13} className="text-zinc-400" />
-                {evaluation.allUpWeightG.toFixed(1)}g
+                {evaluation.allUpWeightG.toFixed(2)}g
               </span>
               <span
                 className="flex items-center gap-1 font-medium text-emerald-600 dark:text-emerald-400"

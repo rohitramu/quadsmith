@@ -252,7 +252,7 @@ func searchCollection(ctx context.Context, db *pgxpool.Pool, target CollectionTa
 					if val, ok := rawMap[colName]; ok && val != nil {
 						if colName == "weight_g" {
 							if f, ok := val.(float64); ok {
-								metadata[colName] = fmt.Sprintf("%.1f", f)
+								metadata[colName] = fmt.Sprintf("%.2f", f)
 								continue
 							}
 						}
@@ -262,7 +262,7 @@ func searchCollection(ctx context.Context, db *pgxpool.Pool, target CollectionTa
 				// Also include weight_g if available and not already included
 				if val, ok := rawMap["weight_g"]; ok && val != nil && metadata["weight_g"] == "" {
 					if f, ok := val.(float64); ok {
-						metadata["weight_g"] = fmt.Sprintf("%.1f", f)
+						metadata["weight_g"] = fmt.Sprintf("%.2f", f)
 					} else {
 						metadata["weight_g"] = fmt.Sprint(val)
 					}

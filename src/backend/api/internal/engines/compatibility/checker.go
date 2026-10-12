@@ -166,6 +166,52 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 	}
 
+	// Rule 8: Flight Controller vs Frame Board Mount Pattern
+	if comp.FlightController != nil && comp.Frame != nil {
+		if comp.FlightController.MountPattern != "" && len(comp.Frame.BoardMountPatterns) > 0 {
+			matched := false
+			for _, p := range comp.Frame.BoardMountPatterns {
+				if strings.EqualFold(strings.TrimSpace(comp.FlightController.MountPattern), strings.TrimSpace(p)) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				messages = append(messages, &pb.CompatibilityMessage{
+					CheckerName:   "FlightControllerFrameMountChecker",
+					Components:    "Flight Controller and Frame",
+					SeverityLevel: 0,
+					SeverityName:  "DEFINITE_INCOMPATIBILITY",
+					Message:       fmt.Sprintf("Flight controller mounting pattern (%s) is not supported by frame board mount holes (%s).", comp.FlightController.MountPattern, strings.Join(comp.Frame.BoardMountPatterns, ", ")),
+					Resolution:    "Select a flight controller matching the frame's board mounting pattern or choose a frame with compatible mounting holes.",
+				})
+			}
+		}
+	}
+
+	// Rule 9: Video Transmitter vs Frame Board Mount Pattern
+	if comp.VideoTransmitter != nil && comp.Frame != nil {
+		if comp.VideoTransmitter.MountPattern != "" && len(comp.Frame.BoardMountPatterns) > 0 {
+			matched := false
+			for _, p := range comp.Frame.BoardMountPatterns {
+				if strings.EqualFold(strings.TrimSpace(comp.VideoTransmitter.MountPattern), strings.TrimSpace(p)) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				messages = append(messages, &pb.CompatibilityMessage{
+					CheckerName:   "VideoTransmitterFrameMountChecker",
+					Components:    "Video Transmitter and Frame",
+					SeverityLevel: 0,
+					SeverityName:  "DEFINITE_INCOMPATIBILITY",
+					Message:       fmt.Sprintf("Video transmitter mounting pattern (%s) is not supported by frame board mount holes (%s).", comp.VideoTransmitter.MountPattern, strings.Join(comp.Frame.BoardMountPatterns, ", ")),
+					Resolution:    "Select a video transmitter matching the frame's board mounting pattern or choose a frame with compatible mounting holes.",
+				})
+			}
+		}
+	}
+
 	// Rule 4: Component-to-Component Voltage Conflict
 	minV, maxV, maxA := CalculateElectricalLimits(comp)
 	if minV > 0 && maxV > 0 && minV > maxV {
@@ -550,6 +596,27 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 		if comp.Frame != nil && comp.Frame.CameraMountWidthMm > 0 {
 			conditions = append(conditions, fmt.Sprintf("width_mm <= %d", uint32(comp.Frame.CameraMountWidthMm)))
 		}
+	case "flight_controllers":
+		if comp.Frame != nil && len(comp.Frame.BoardMountPatterns) > 0 {
+			if len(comp.Frame.BoardMountPatterns) == 1 {
+				conditions = append(conditions, fmt.Sprintf("mount_pattern == %q", comp.Frame.BoardMountPatterns[0]))
+			} else {
+				var parts []string
+				for _, p := range comp.Frame.BoardMountPatterns {
+					parts = append(parts, fmt.Sprintf("mount_pattern == %q", p))
+				}
+				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
+			}
+		}
+		if comp.VideoTransmitter != nil {
+			vtx := comp.VideoTransmitter
+			if vtx.InputVoltageMinV > 0 {
+				conditions = append(conditions, fmt.Sprintf("vtx_voltage_max_v >= %.1f", vtx.InputVoltageMinV))
+			}
+			if vtx.InputVoltageMaxV > 0 {
+				conditions = append(conditions, fmt.Sprintf("vtx_voltage_min_v <= %.1f", vtx.InputVoltageMaxV))
+			}
+		}
 	case "video_transmitters":
 		if comp.FlightController != nil {
 			fc := comp.FlightController
@@ -565,6 +632,17 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 				var parts []string
 				for _, p := range fc.VtxPorts {
 					parts = append(parts, fmt.Sprintf("port_type == %q", p))
+				}
+				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
+			}
+		}
+		if comp.Frame != nil && len(comp.Frame.BoardMountPatterns) > 0 {
+			if len(comp.Frame.BoardMountPatterns) == 1 {
+				conditions = append(conditions, fmt.Sprintf("mount_pattern == %q", comp.Frame.BoardMountPatterns[0]))
+			} else {
+				var parts []string
+				for _, p := range comp.Frame.BoardMountPatterns {
+					parts = append(parts, fmt.Sprintf("mount_pattern == %q", p))
 				}
 				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
 			}
