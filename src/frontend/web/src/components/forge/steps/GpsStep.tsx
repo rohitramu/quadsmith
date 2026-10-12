@@ -244,7 +244,7 @@ export function GpsStep() {
           className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         >
           <ArrowLeft size={14} />
-          <span>Back</span>
+          <span>{noneSelections.camera ? "Back: Camera" : "Back: VTX Antennas"}</span>
         </button>
 
         <button

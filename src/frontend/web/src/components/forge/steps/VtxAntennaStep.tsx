@@ -9,6 +9,7 @@ import {
   Sparkles,
   EyeOff,
   Check,
+  Lock,
 } from "lucide-react";
 import { useForge, checkVtxAntennaCompatibility, formatFrequencyBand } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
@@ -99,7 +100,13 @@ export function VtxAntennaStep() {
               10. VTX Antenna(s)
             </h3>
             <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-              {isVtxNone ? "Omitted" : isVtxAntennaIntegrated ? "Integrated" : "Required"}
+              {noneSelections.camera
+                ? "Locked"
+                : isVtxNone
+                  ? "Omitted"
+                  : isVtxAntennaIntegrated
+                    ? "Integrated"
+                    : "Required"}
             </span>
           </div>
           {selectedVtxAnt ? (
@@ -117,11 +124,13 @@ export function VtxAntennaStep() {
             </button>
           ) : (
             <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 truncate max-w-[200px]">
-              {isVtxNone
-                ? "None (VTX Omitted)"
-                : isVtxAntennaIntegrated
-                  ? "Integrated Antenna"
-                  : "None selected"}
+              {noneSelections.camera
+                ? "None (Camera Omitted)"
+                : isVtxNone
+                  ? "None (VTX Omitted)"
+                  : isVtxAntennaIntegrated
+                    ? "Integrated Antenna"
+                    : "None selected"}
             </span>
           )}
         </div>
@@ -131,7 +140,18 @@ export function VtxAntennaStep() {
           frequency band and connector type (e.g. SMA, U.FL, Dual U.FL).
         </p>
 
-        {isVtxNone ? (
+        {noneSelections.camera ? (
+          <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/40 text-xs space-y-2">
+            <div className="flex items-center gap-2 text-zinc-700 dark:text-zinc-300 font-bold">
+              <Lock size={16} className="text-zinc-500 shrink-0" />
+              <span>Camera Omitted — VTX Antenna Locked to None</span>
+            </div>
+            <p className="text-zinc-500 dark:text-zinc-400 text-[11px] leading-relaxed">
+              Because no FPV camera was selected in Step 8, external video transmitter antennas are
+              omitted and locked.
+            </p>
+          </div>
+        ) : isVtxNone ? (
           <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/40 text-xs flex items-center gap-3">
             <EyeOff size={16} className="text-zinc-400 shrink-0" />
             <div>
@@ -316,11 +336,16 @@ export function VtxAntennaStep() {
 
         <button
           type="button"
-          disabled={(!isAntennaNone && !isVtxAntennaIntegrated && !selectedVtxAnt) || !!conflictMsg}
+          disabled={
+            !noneSelections.camera &&
+            ((!isAntennaNone && !isVtxAntennaIntegrated && !selectedVtxAnt) || !!conflictMsg)
+          }
           onClick={handleNextStep}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-all shadow-sm"
         >
-          <span>Next: GPS Navigation</span>
+          <span>
+            {noneSelections.camera ? "Next: GPS (Camera Omitted)" : "Next: GPS Navigation"}
+          </span>
           <ArrowRight size={14} />
         </button>
       </div>

@@ -1,5 +1,14 @@
-import { useState } from "react";
-import { Hammer, RotateCcw, Gauge, Search, Check, AlertTriangle, ChevronRight } from "lucide-react";
+import { useState, useMemo } from "react";
+import {
+  Hammer,
+  RotateCcw,
+  Gauge,
+  Search,
+  Check,
+  AlertTriangle,
+  ChevronRight,
+  Lock,
+} from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStepBar } from "../components/WizardStepBar";
 import { BatteryCombobox } from "../components/BatteryCombobox";
@@ -117,17 +126,17 @@ function BuildWizardContent() {
 
   // Count equipped parts out of 11 components
   const equippedCount = [
-    !!selectedFrame,
-    !!selectedFc,
-    !!(useIntegratedRx ? integratedRx : selectedRx),
-    !!(isRxAntennaIntegrated || selectedRxAnt),
-    !!(useIntegratedEsc ? integratedEsc : selectedEsc || noneSelections.esc),
-    !!selectedMotor,
-    !!selectedProp,
-    !!(selectedCam || noneSelections.camera),
-    !!(noneSelections.vtx || (useIntegratedVtx ? integratedVtx : selectedVtx)),
-    !!(noneSelections.vtxAntenna || isVtxAntennaIntegrated || selectedVtxAnt),
-    !!(selectedGps || noneSelections.gps),
+    selectedFrame,
+    selectedFc,
+    useIntegratedRx ? integratedRx : selectedRx,
+    isRxAntennaIntegrated ? { name: "Integrated SMD" } : selectedRxAnt,
+    useIntegratedEsc ? integratedEsc : selectedEsc,
+    selectedMotor,
+    selectedProp,
+    selectedCam,
+    useIntegratedVtx ? integratedVtx : selectedVtx,
+    isVtxAntennaIntegrated ? { name: "Integrated VTX Ant" } : selectedVtxAnt,
+    selectedGps,
   ].filter(Boolean).length;
 
   const partsSummaryList = [
@@ -174,6 +183,21 @@ function BuildWizardContent() {
     { step: 11, label: "GPS Module", item: selectedGps, omitted: noneSelections.gps, count: 1 },
   ];
 
+  const stepProgressText: Record<number, string> = useMemo(() => {
+    const texts: Record<number, string> = {};
+    if (noneSelections.camera) {
+      texts[9] = "Locked (Omitted)";
+      texts[10] = "Locked (Omitted)";
+    } else if (noneSelections.vtx) {
+      texts[9] = "None (Omitted)";
+      texts[10] = "Locked (Omitted)";
+    }
+    if (noneSelections.gps) {
+      texts[11] = "None (Omitted)";
+    }
+    return texts;
+  }, [noneSelections]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Header Banner */}
@@ -209,6 +233,7 @@ function BuildWizardContent() {
           currentStep={activeStep}
           unlockedSteps={unlockedSteps}
           stepCompletion={stepCompletion}
+          stepProgressText={stepProgressText}
           stepConflicts={stepConflicts}
           stepBatteryConflicts={stepBatteryConflicts}
           onSelectStep={(step) => setActiveStep(step)}
@@ -483,6 +508,8 @@ function BuildWizardContent() {
                       <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0">
                         {hasConflict || hasBatteryConflict ? (
                           <AlertTriangle size={12} className="text-amber-500" />
+                        ) : !isUnlocked ? (
+                          <Lock size={12} className="text-zinc-400 dark:text-zinc-500" />
                         ) : isSelected ? (
                           <Check size={12} className="text-emerald-500 font-bold" />
                         ) : (
@@ -494,11 +521,13 @@ function BuildWizardContent() {
                           {part.label}
                         </div>
                         <div className="text-[10px] text-zinc-400 truncate">
-                          {part.omitted
-                            ? "Omitted"
-                            : part.item
-                              ? `${part.item.name || "Selected"}${part.count > 1 ? ` (x${part.count})` : ""}`
-                              : "Not selected"}
+                          {part.item
+                            ? `${part.item.name || "Selected"}${part.count > 1 ? ` (x${part.count})` : ""}`
+                            : !isUnlocked
+                              ? "Locked (Omitted)"
+                              : part.omitted
+                                ? "Omitted"
+                                : "Not selected"}
                         </div>
                       </div>
                     </div>

@@ -327,6 +327,7 @@ interface ForgeContextType {
   activeStep: number;
   setActiveStep: (step: number) => void;
   unlockedSteps: number[];
+  isStepLocked: (step: number) => boolean;
   stepCompletion: Record<number, boolean>;
   stepConflicts: Record<number, string>;
   stepBatteryConflicts: Record<number, boolean>;
@@ -507,7 +508,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     camera: false,
     vtx: false,
     vtxAntenna: false,
-    gps: false,
+    gps: true,
     esc: false,
   });
 
@@ -677,14 +678,28 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       autoSelectedFcRef.current = fcUuid;
 
       // Integrated ESC: auto-select if adequate and no external ESC selected
-      if (fcHasAdequateIntegratedEsc && !selectedEsc) {
+      if (useIntegratedEsc) {
+        if (fcHasAdequateIntegratedEsc) {
+          setSelectedEsc(integratedEsc);
+        } else {
+          setUseIntegratedEsc(false);
+          setSelectedEsc(null);
+        }
+      } else if (fcHasAdequateIntegratedEsc && !selectedEsc) {
         setUseIntegratedEsc(true);
         setSelectedEsc(integratedEsc);
         setNoneSelections((prev) => ({ ...prev, esc: false }));
       }
 
       // Integrated RX: auto-select if no external RX selected
-      if (fcHasIntegratedRx && !selectedRx) {
+      if (useIntegratedRx) {
+        if (fcHasIntegratedRx) {
+          setSelectedRx(integratedRx);
+        } else {
+          setUseIntegratedRx(false);
+          setSelectedRx(null);
+        }
+      } else if (fcHasIntegratedRx && !selectedRx) {
         setUseIntegratedRx(true);
         setSelectedRx(integratedRx);
       }
@@ -695,7 +710,14 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
         selectedCam &&
         selectedCam.protocol &&
         !selectedCam.protocol.toLowerCase().includes("analog");
-      if (fcHasIntegratedVtx && !selectedVtx && !isCameraDigital) {
+      if (useIntegratedVtx) {
+        if (fcHasIntegratedVtx && !isCameraDigital) {
+          setSelectedVtx(integratedVtx);
+        } else {
+          setUseIntegratedVtx(false);
+          setSelectedVtx(null);
+        }
+      } else if (fcHasIntegratedVtx && !selectedVtx && !isCameraDigital && !noneSelections.camera) {
         setUseIntegratedVtx(true);
         setSelectedVtx(integratedVtx);
         setNoneSelections((prev) => ({ ...prev, vtx: false }));
@@ -708,13 +730,17 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     fcHasAdequateIntegratedEsc,
     integratedEsc,
     selectedEsc,
+    useIntegratedEsc,
     fcHasIntegratedRx,
     integratedRx,
     selectedRx,
+    useIntegratedRx,
     fcHasIntegratedVtx,
     integratedVtx,
     selectedVtx,
+    useIntegratedVtx,
     selectedCam,
+    noneSelections.camera,
   ]);
 
   // Integrated Antenna checks
@@ -739,17 +765,32 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     return getVtxAntennaCount(activeV);
   }, [useIntegratedVtx, integratedVtx, selectedVtx]);
 
-  // Rule: Camera set to None forces VTX and VTX Antennas to None
+  // Track previous camera None state to lock or unlock VTX and VTX Antenna
+  const prevCameraNoneRef = useRef<boolean>(noneSelections.camera || false);
+
   useEffect(() => {
-    if (noneSelections.camera) {
-      if (!noneSelections.vtx) {
-        setNoneSelections((prev) => ({ ...prev, vtx: true, vtxAntenna: true }));
-        setSelectedVtx(null);
-        setUseIntegratedVtx(false);
-        setSelectedVtxAnt(null);
+    const wasCameraNone = prevCameraNoneRef.current;
+    const isCameraNone = !!noneSelections.camera;
+    prevCameraNoneRef.current = isCameraNone;
+
+    if (isCameraNone && !wasCameraNone) {
+      // User omitted Camera: lock VTX & VTX antenna to None and clear external selections
+      setNoneSelections((prev) => ({ ...prev, vtx: true, vtxAntenna: true }));
+      setSelectedVtx(null);
+      setUseIntegratedVtx(false);
+      setSelectedVtxAnt(null);
+    } else if (!isCameraNone && wasCameraNone) {
+      // User un-omitted Camera (selected a camera): unlock VTX & VTX Antenna
+      setNoneSelections((prev) => ({ ...prev, vtx: false, vtxAntenna: false }));
+      // If FC has integrated VTX and camera is analog, auto-select it
+      const isAnalog =
+        !selectedCam?.protocol || selectedCam.protocol.toLowerCase().includes("analog");
+      if (fcHasIntegratedVtx && isAnalog && integratedVtx) {
+        setUseIntegratedVtx(true);
+        setSelectedVtx(integratedVtx);
       }
     }
-  }, [noneSelections.camera, noneSelections.vtx]);
+  }, [noneSelections.camera, fcHasIntegratedVtx, integratedVtx, selectedCam]);
 
   // Rule: VTX set to None forces VTX Antennas to None
   useEffect(() => {
@@ -760,6 +801,13 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       }
     }
   }, [noneSelections.vtx, noneSelections.vtxAntenna]);
+
+  // If camera is None and active step is 9 or 10, redirect to Step 11 (GPS)
+  useEffect(() => {
+    if (noneSelections.camera && (activeStep === 9 || activeStep === 10)) {
+      setActiveStep(11);
+    }
+  }, [noneSelections.camera, activeStep]);
 
   // Helper to build AssembledComponents up to step N
   const buildAssembledUpTo = useCallback(
@@ -1170,14 +1218,33 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     unlocked.push(1);
 
     for (let step = 1; step <= 11; step++) {
+      // If camera is None, steps 9 (VTX) and 10 (VTX Antenna) are locked
+      if (noneSelections.camera && (step === 9 || step === 10)) {
+        continue;
+      }
+
       // If this step is not complete or has a conflict, subsequent steps are locked
       if (!stepCompletion[step]) break;
       if (stepConflicts[step]) break;
-      unlocked.push(step + 1);
+
+      // Determine next step
+      let nextStep = step + 1;
+      if (step === 8 && noneSelections.camera) {
+        nextStep = 11;
+      }
+
+      if (!unlocked.includes(nextStep)) {
+        unlocked.push(nextStep);
+      }
     }
 
     return unlocked;
-  }, [stepCompletion, stepConflicts]);
+  }, [stepCompletion, stepConflicts, noneSelections.camera]);
+
+  const isStepLocked = useCallback(
+    (step: number) => !unlockedSteps.includes(step),
+    [unlockedSteps],
+  );
 
   // Dynamic CEL filter generator for catalog queries
   const getCelFilterForStep = useCallback(
@@ -1373,6 +1440,9 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       if (g) {
         setSelectedGps(g);
         setNoneSelections((prev) => ({ ...prev, gps: false }));
+      } else {
+        setSelectedGps(null);
+        setNoneSelections((prev) => ({ ...prev, gps: true }));
       }
 
       // Antennas
@@ -1421,7 +1491,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       camera: false,
       vtx: false,
       vtxAntenna: false,
-      gps: false,
+      gps: true,
       esc: false,
     });
     setBuildName("Custom Build");
@@ -1538,6 +1608,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     activeStep,
     setActiveStep,
     unlockedSteps,
+    isStepLocked,
     stepCompletion,
     stepConflicts,
     stepBatteryConflicts,

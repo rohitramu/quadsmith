@@ -91,14 +91,14 @@ export function WizardStepBar({
                   <AlertTriangle size={13} className="text-amber-500" />
                 ) : hasBatteryConflict ? (
                   <AlertTriangle size={13} className="text-amber-500" />
+                ) : !isUnlocked ? (
+                  <Lock size={12} className="text-zinc-400 dark:text-zinc-500" />
                 ) : isComplete ? (
                   <Check
                     size={13}
                     strokeWidth={2.5}
                     className="text-emerald-600 dark:text-emerald-400"
                   />
-                ) : !isUnlocked ? (
-                  <Lock size={12} className="text-zinc-400 dark:text-zinc-500" />
                 ) : (
                   <span
                     className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold ${
@@ -123,9 +123,9 @@ export function WizardStepBar({
                     ? "Conflict"
                     : hasBatteryConflict
                       ? "Battery mismatch"
-                      : isComplete
-                        ? "Done"
-                        : progress || s.subtitle}
+                      : !isUnlocked
+                        ? progress || "Locked"
+                        : progress || (isComplete ? "Done" : s.subtitle)}
                 </span>
               </div>
             </button>

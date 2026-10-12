@@ -270,14 +270,53 @@ describe("BuildWizardPage Component", () => {
     expect(await screen.findByText("8. FPV Camera")).toBeInTheDocument();
     expect(screen.getByText("No Camera (Omitted)")).toBeInTheDocument();
 
-    // If Camera is omitted, VTX and VTX Antennas are also omitted, skipping to GPS on Next
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const step9Tab = within(stepNav).getByRole("button", { name: /^step 9:/i });
+    const step10Tab = within(stepNav).getByRole("button", { name: /^step 10:/i });
+    const step11Tab = within(stepNav).getByRole("button", { name: /^step 11:/i });
+    const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
+
+    // Omit Camera: Step 9 & 10 are locked to None and disabled in stepNav
     await user.click(screen.getByText("No Camera (Omitted)"));
+    expect(step9Tab).toBeDisabled();
+    expect(step10Tab).toBeDisabled();
+    expect(step11Tab).toBeEnabled();
+    // Step 12 is also unlocked because GPS is None by default
+    expect(step12Tab).toBeEnabled();
+
+    // Verify step bar subtitles show Locked (Omitted) for Step 9 & 10 and None (Omitted) for Step 11
+    expect(within(step9Tab).getByText("Locked (Omitted)")).toBeInTheDocument();
+    expect(within(step10Tab).getByText("Locked (Omitted)")).toBeInTheDocument();
+    expect(within(step11Tab).getByText("None (Omitted)")).toBeInTheDocument();
+
+    // Next button in Step 8 skips to Step 11 (GPS)
     const nextBtn = screen.getByRole("button", { name: /Next: GPS \(Video Skipped\)/i });
     expect(nextBtn).toBeInTheDocument();
     await user.click(nextBtn);
 
     // Verify skipped directly to Step 11 (GPS)
     expect(await screen.findByText("11. GPS Receiver & Compass")).toBeInTheDocument();
+
+    // Verify GPS is selected as "Omit GPS (Freestyle / Racing)" by default
+    expect(screen.getAllByText("None (Omitted)").length).toBeGreaterThanOrEqual(1);
+
+    // Next button from Step 11 goes to Step 12 (Review & Save) without requiring explicit interaction
+    const nextToReviewBtn = screen.getByRole("button", { name: /Next: Review/i });
+    expect(nextToReviewBtn).toBeEnabled();
+
+    // Back button from Step 11 skips Step 10 and Step 9, returning directly to Step 8 (Camera)
+    const backBtn = screen.getByRole("button", { name: /Back: Camera/i });
+    expect(backBtn).toBeInTheDocument();
+    await user.click(backBtn);
+    expect(await screen.findByText("8. FPV Camera")).toBeInTheDocument();
+
+    // Selecting a camera in Step 8 unlocks Step 9 (VTX) and Step 10 (VTX Antenna)
+    const ratelCam = await screen.findByText("Ratel 2");
+    await user.click(ratelCam);
+    expect(step9Tab).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: /Next: Video Transmitter \(VTX\)/i }),
+    ).toBeInTheDocument();
   });
 
   it("allows interactive payload adjustment and preset selection in Evaluator", async () => {
@@ -925,5 +964,41 @@ describe("BuildWizardPage Component", () => {
     await waitFor(() => expect(screen.queryByText(/Incompatibility Detected/i)).toBeNull());
     expect(step11Tab).toBeEnabled();
     expect(step12Tab).toBeEnabled();
+  });
+
+  it("defaults optional components (GPS) to None and auto-selects integrated components when FC is chosen", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Confirm scratch baseline
+    await advanceToStep1(user);
+
+    // Select Frame in Step 1
+    await user.click(await screen.findByText("Master 5 V2"));
+    await user.click(screen.getByRole("button", { name: /Next: Flight Controller/i }));
+
+    // Select FC with integrated components (Integrated FC AIO)
+    await user.click(await screen.findByText("Integrated FC AIO"));
+
+    // GPS in step bar displays None (Omitted) by default
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const step11Tab = within(stepNav).getByRole("button", { name: /^step 11:/i });
+    expect(within(step11Tab).getByText("None (Omitted)")).toBeInTheDocument();
+
+    // Navigate to Step 3 (Radio Receiver)
+    await user.click(screen.getByRole("button", { name: /Next: Radio Receiver/i }));
+    expect(screen.getByText("Use Integrated FC Receiver")).toBeInTheDocument();
+
+    // Next goes to Step 4 (RX Antennas)
+    await user.click(screen.getByRole("button", { name: /Next: RX Antennas/i }));
+    expect(await screen.findByText("4. Radio Receiver Antenna(s)")).toBeInTheDocument();
+
+    // Select antenna and proceed to Step 5 (ESC)
+    await user.click(await screen.findByText("RadioMaster T-Antenna 2.4GHz"));
+    await user.click(screen.getByRole("button", { name: /Next: Speed Controller/i }));
+
+    // Step 5 (ESC): Integrated ESC is active
+    expect(await screen.findByText("5. Electronic Speed Controller (ESC)")).toBeInTheDocument();
+    expect(screen.getByText("Use Integrated FC ESC")).toBeInTheDocument();
   });
 });
