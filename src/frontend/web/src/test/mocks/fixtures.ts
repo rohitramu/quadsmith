@@ -472,6 +472,8 @@ export const mockBuild2: Build = create(BuildSchema, {
   name: "Long Range Explorer 7 inch",
   description:
     "A dedicated 7-inch mountain surfer and long-range cruiser engineered for 30+ minute endurance flights with Li-ion pack.",
+  authorUsername: "test_pilot",
+  userUuid: "018f0000-0000-7000-8000-000000000001",
   frameUuid: mockFrame1.uuid,
   motorUuid: mockMotor2.uuid,
   flightControllerUuid: mockFC1.uuid,

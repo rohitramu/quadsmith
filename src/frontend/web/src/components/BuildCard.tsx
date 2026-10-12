@@ -148,7 +148,7 @@ export function BuildCard({
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
-                  <span>@{build.id}</span>
+                  <span>@{build.authorUsername || "community"}</span>
                   <span>•</span>
                   <CollectionBadge collection="builds" label="Build" size="xs" />
                 </div>
@@ -289,7 +289,16 @@ export function BuildCard({
               {build.name}
             </Link>
             <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
-              <span>@{build.id}</span>
+              {build.authorUsername ? (
+                <Link
+                  to={`/users/${build.authorUsername}`}
+                  className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
+                >
+                  @{build.authorUsername}
+                </Link>
+              ) : (
+                <span>@community</span>
+              )}
               <span>•</span>
               <CollectionBadge collection="builds" label="Build" size="xs" />
               <span>•</span>

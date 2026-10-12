@@ -61,6 +61,15 @@ describe("HomePage Component", () => {
     });
     expect(bandoProfileLinks.length).toBeGreaterThan(0);
     expect(bandoProfileLinks[0]).toHaveAttribute("href", "/builds/bando-basher-5-inch");
+
+    // Verify creator usernames are shown instead of build IDs
+    expect(screen.getByRole("link", { name: "@alex" })).toHaveAttribute("href", "/users/alex");
+    expect(screen.getByRole("link", { name: "@test_pilot" })).toHaveAttribute(
+      "href",
+      "/users/test_pilot",
+    );
+    expect(screen.queryByText("@bando-basher-5-inch")).not.toBeInTheDocument();
+    expect(screen.queryByText("@long-range-explorer")).not.toBeInTheDocument();
   });
 
   it("displays end of feed caught up message when all builds have loaded", async () => {
