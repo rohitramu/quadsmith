@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, Sparkles, Check } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
@@ -27,6 +27,15 @@ export function ReceiverStep() {
     getCelFilterForStep,
     stepConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-rx-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.receivers || "";
   const conflictMsg = stepConflicts[3];
@@ -107,15 +116,11 @@ export function ReceiverStep() {
         <div
           role="button"
           tabIndex={0}
+          id={isUsingIntegrated ? "selected-rx-item" : undefined}
           onClick={() => {
             if (!fcHasIntegratedRx) return;
-            if (isUsingIntegrated) {
-              setUseIntegratedRx(false);
-              setSelectedRx(null);
-            } else {
-              setUseIntegratedRx(true);
-              setSelectedRx(integratedRx);
-            }
+            setUseIntegratedRx(true);
+            setSelectedRx(integratedRx);
           }}
           className={`p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
             !fcHasIntegratedRx
@@ -215,7 +220,7 @@ export function ReceiverStep() {
                   tabIndex={0}
                   onClick={() => {
                     setUseIntegratedRx(false);
-                    setSelectedRx(isSelected ? null : r);
+                    setSelectedRx(r);
                   }}
                   className="flex-1 min-w-0"
                 >

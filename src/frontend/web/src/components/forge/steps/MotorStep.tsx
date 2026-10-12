@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, AlertTriangle, Check } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
@@ -28,6 +28,15 @@ export function MotorStep() {
     stepConflicts,
     stepBatteryConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-motor-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.motors || "";
   const conflictMsg = stepConflicts[6];
@@ -199,7 +208,7 @@ export function MotorStep() {
                 <div
                   role="button"
                   tabIndex={0}
-                  onClick={() => setSelectedMotor(isSelected ? null : m)}
+                  onClick={() => setSelectedMotor(m)}
                   className="flex-1 min-w-0"
                 >
                   <div className="flex items-center gap-2 flex-wrap">

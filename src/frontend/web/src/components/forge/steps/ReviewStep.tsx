@@ -1,18 +1,8 @@
 import { useMemo } from "react";
-import {
-  ArrowLeft,
-  Save,
-  AlertCircle,
-  Loader2,
-  Gauge,
-  ShieldCheck,
-  Lock,
-  Globe,
-} from "lucide-react";
+import { ArrowLeft, Save, AlertCircle, Loader2, ShieldCheck, Lock, Globe } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { CollectionIcon } from "../../CollectionIcon";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import { getTwrColor, getHoverThrottleColor } from "../../../lib/format";
 
 export function ReviewStep() {
   const {
@@ -40,8 +30,6 @@ export function ReviewStep() {
     activeBattery,
     noneSelections,
     dryWeightG,
-    allUpWeightG,
-    evaluatedMetrics,
     buildName,
     setBuildName,
     buildDesc,
@@ -260,97 +248,55 @@ export function ReviewStep() {
         </div>
 
         <div className="divide-y divide-zinc-100 dark:divide-zinc-800 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
-          {bomItems.map((item) => (
-            <div
-              key={item.id}
-              className={`p-2.5 flex items-center justify-between gap-2 transition-colors ${
-                item.omitted
-                  ? "opacity-60 bg-zinc-50 dark:bg-zinc-950/40"
-                  : "bg-white dark:bg-zinc-900"
-              }`}
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <CollectionIcon
-                  collectionId={item.collectionId}
-                  size={14}
-                  color={getCollectionColor(item.collectionId)}
-                />
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                      {item.name}
-                    </span>
-                    {item.qty > 1 && (
-                      <span className="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
-                        x{item.qty}
+          {bomItems.map((item) => {
+            const isSelected =
+              !item.omitted &&
+              item.name !== "None" &&
+              item.qty > 0 &&
+              !item.name.startsWith("None");
+            const colorDef = getCollectionColor(item.collectionId);
+
+            return (
+              <div
+                key={item.id}
+                className={`p-2.5 flex items-center justify-between gap-2 transition-colors ${
+                  !isSelected
+                    ? "opacity-60 bg-zinc-50 dark:bg-zinc-950/40"
+                    : "bg-white dark:bg-zinc-900"
+                }`}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <CollectionIcon
+                    collectionId={item.collectionId}
+                    size={14}
+                    color={isSelected ? colorDef.hex : undefined}
+                    className={isSelected ? "" : "text-zinc-400 dark:text-zinc-500"}
+                  />
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                        {item.name}
                       </span>
-                    )}
+                      {item.qty > 1 && (
+                        <span className="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                          x{item.qty}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                      {item.label} {item.manufacturer ? `• by ${item.manufacturer}` : ""}
+                    </span>
                   </div>
-                  <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
-                    {item.label} {item.manufacturer ? `• by ${item.manufacturer}` : ""}
+                </div>
+
+                <div className="text-right shrink-0">
+                  <span className="font-mono text-zinc-700 dark:text-zinc-300 font-semibold text-xs">
+                    {item.weightG > 0 ? `${item.weightG.toFixed(1)}g` : "--"}
                   </span>
                 </div>
               </div>
-
-              <div className="text-right shrink-0">
-                <span className="font-mono text-zinc-700 dark:text-zinc-300 font-semibold text-xs">
-                  {item.weightG > 0 ? `${item.weightG.toFixed(1)}g` : "--"}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Physics / Telemetry Summary */}
-      <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
-        <div className="flex items-center gap-2">
-          <Gauge size={16} className="text-blue-500" />
-          <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-            Calculated Build Metrics
-          </h3>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
-            <span className="text-[11px] text-zinc-400">Thrust-to-Weight</span>
-            <div
-              className={`text-lg font-mono font-black mt-0.5 ${
-                evaluatedMetrics
-                  ? getTwrColor(evaluatedMetrics.thrustToWeightRatio).text
-                  : "text-zinc-400"
-              }`}
-            >
-              {evaluatedMetrics ? `${evaluatedMetrics.thrustToWeightRatio.toFixed(2)} : 1` : "--"}
-            </div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
-            <span className="text-[11px] text-zinc-400">All-Up Weight</span>
-            <div className="text-lg font-mono font-black text-zinc-900 dark:text-zinc-100 mt-0.5">
-              {allUpWeightG.toFixed(1)}g
-            </div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
-            <span className="text-[11px] text-zinc-400">Hover Throttle</span>
-            <div
-              className={`text-lg font-mono font-black mt-0.5 ${
-                evaluatedMetrics
-                  ? getHoverThrottleColor(evaluatedMetrics.hoverThrottlePercent).text
-                  : "text-zinc-400"
-              }`}
-            >
-              {evaluatedMetrics ? `${evaluatedMetrics.hoverThrottlePercent.toFixed(1)}%` : "--"}
-            </div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
-            <span className="text-[11px] text-zinc-400">Est. Flight Time</span>
-            <div className="text-lg font-mono font-black text-zinc-900 dark:text-zinc-100 mt-0.5">
-              {evaluatedMetrics ? `${evaluatedMetrics.flightTimeMinutes.toFixed(1)} min` : "--"}
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
 
@@ -412,14 +358,21 @@ export function ReviewStep() {
 
             <button
               type="button"
+              role="switch"
+              aria-checked={!isPrivate}
+              aria-label="Build Visibility"
               onClick={() => setIsPrivate(!isPrivate)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
-                isPrivate
-                  ? "bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
-                  : "bg-blue-600 text-white"
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${
+                !isPrivate ? "bg-blue-600" : "bg-zinc-300 dark:bg-zinc-700"
               }`}
             >
-              {isPrivate ? "Make Public" : "Make Private"}
+              <span className="sr-only">Build Visibility</span>
+              <span
+                aria-hidden="true"
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                  !isPrivate ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
             </button>
           </div>
         </div>

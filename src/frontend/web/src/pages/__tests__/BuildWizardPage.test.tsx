@@ -219,9 +219,11 @@ describe("BuildWizardPage Component", () => {
       screen.getByText("Use Integrated FC Receiver").closest(".border-blue-500"),
     ).toBeInTheDocument();
 
-    // Clicking the selected integrated RX deselects it
+    // Clicking the selected integrated RX keeps it selected (deselection is disabled)
     await user.click(screen.getByText("Use Integrated FC Receiver"));
-    expect(screen.getByText("Use Integrated FC Receiver").closest(".border-blue-500")).toBeNull();
+    expect(
+      screen.getByText("Use Integrated FC Receiver").closest(".border-blue-500"),
+    ).toBeInTheDocument();
   });
 
   it("automatically skips Receiver Antenna step when receiver has integrated SMD/ceramic antenna", async () => {
@@ -367,6 +369,20 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getAllByText(/ECO II 2207/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/F405 V4 FC/i).length).toBeGreaterThanOrEqual(1);
 
+    // Calculated Build Metrics section should NOT be present (metrics are in live evaluator)
+    expect(screen.queryByText(/Calculated Build Metrics/i)).toBeNull();
+
+    // Verify Public/Private switch toggle is present and defaults to Public
+    const visibilitySwitch = screen.getByRole("switch", { name: "Build Visibility" });
+    expect(visibilitySwitch).toBeInTheDocument();
+    expect(visibilitySwitch).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByText("Public Build")).toBeInTheDocument();
+
+    // Toggle switch to Private
+    await user.click(visibilitySwitch);
+    expect(visibilitySwitch).toHaveAttribute("aria-checked", "false");
+    expect(screen.getByText("Private Build")).toBeInTheDocument();
+
     // Click Save Build
     const saveBtn = screen.getByRole("button", { name: /Save & Create Build/i });
     await user.click(saveBtn);
@@ -460,13 +476,16 @@ describe("BuildWizardPage Component", () => {
     // Verify Selected Parts card under Evaluator
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
     expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
+    expect(screen.getByText((_, el) => el?.textContent === "Dry: 0.0g")).toBeInTheDocument();
 
     // Confirm Step 0 and select Frame in Step 1
     await advanceToStep1(user);
     await user.click(await screen.findByText("Master 5 V2"));
 
-    // Selected parts count increments
+    // Selected parts count and dry weight increment
     expect(screen.getByText("1 / 11 Parts")).toBeInTheDocument();
+    expect(screen.getByText((_, el) => el?.textContent === "Dry: 145.0g")).toBeInTheDocument();
+    expect(screen.getAllByText("145.0g").length).toBeGreaterThanOrEqual(2);
   });
 
   it("scrolls smoothly to selected product when clicking Selected in the section header", async () => {
@@ -676,18 +695,40 @@ describe("BuildWizardPage Component", () => {
     });
   });
 
-  it("allows deselecting any component by clicking on the selected card", async () => {
+  it("prevents deselecting components when clicking on the already selected card", async () => {
     const user = userEvent.setup();
     renderWizard();
 
     await advanceToStep1(user);
 
-    // Select Frame then click again to deselect
+    // Select Frame then click again: selection remains intact
     const frameCard = await screen.findByText("Master 5 V2");
     await user.click(frameCard);
     expect(frameCard.closest(".border-blue-500")).toBeInTheDocument();
     await user.click(frameCard);
-    expect(frameCard.closest(".border-blue-500")).toBeNull();
+    expect(frameCard.closest(".border-blue-500")).toBeInTheDocument();
+    expect(screen.getByText("1 / 11 Parts")).toBeInTheDocument();
+  });
+
+  it("shows evaluation paused notice when no battery is selected and clears it when battery is chosen", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // In Step 0 scratch baseline, no battery is selected initially
+    expect(screen.getByText(/Evaluation Paused/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Select a test battery to calculate thrust-to-weight/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Select Battery to Calculate/i)).toBeInTheDocument();
+
+    // Select a battery
+    const batteryCombobox = screen.getByRole("combobox", { name: /select test battery/i });
+    await user.click(batteryCombobox);
+    const batteryOption = await screen.findByText(/Black Series 1500mAh 6S/i);
+    await user.click(batteryOption);
+
+    // Notice disappears
+    expect(screen.queryByText(/Evaluation Paused/i)).toBeNull();
   });
 
   it("formats motor stator and prop diameter with mm/inch correctly", async () => {

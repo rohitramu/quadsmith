@@ -4,15 +4,16 @@ import {
   RotateCcw,
   Gauge,
   Search,
-  Check,
   AlertTriangle,
+  AlertCircle,
   ChevronRight,
-  Lock,
 } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { WizardStepBar } from "../components/WizardStepBar";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
+import { CollectionIcon } from "../components/CollectionIcon";
+import { getCollectionColor } from "../lib/collectionColors";
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
 import {
   ForgeProvider,
@@ -140,47 +141,108 @@ function BuildWizardContent() {
   ].filter(Boolean).length;
 
   const partsSummaryList = [
-    { step: 1, label: "Frame", item: selectedFrame, omitted: false, count: 1 },
-    { step: 2, label: "Flight Controller", item: selectedFc, omitted: false, count: 1 },
+    {
+      step: 1,
+      label: "Frame",
+      collectionId: "frames",
+      item: selectedFrame,
+      weightG: selectedFrame?.weightG || 0,
+      omitted: false,
+      count: 1,
+    },
+    {
+      step: 2,
+      label: "Flight Controller",
+      collectionId: "flight_controllers",
+      item: selectedFc,
+      weightG: selectedFc?.weightG || 0,
+      omitted: false,
+      count: 1,
+    },
     {
       step: 3,
       label: "Radio Receiver",
+      collectionId: "receivers",
       item: useIntegratedRx ? { name: `${integratedRx?.name} (AIO)` } : selectedRx,
+      weightG: useIntegratedRx ? 0 : selectedRx?.weightG || 0,
       omitted: false,
       count: 1,
     },
     {
       step: 4,
       label: "RX Antenna",
+      collectionId: "antennas",
       item: isRxAntennaIntegrated ? { name: "Integrated SMD" } : selectedRxAnt,
+      weightG: isRxAntennaIntegrated ? 0 : (selectedRxAnt?.weightG || 0) * rxAntCount,
       omitted: isRxAntennaIntegrated,
       count: rxAntCount,
     },
     {
       step: 5,
       label: "Speed Controller",
+      collectionId: "electronic_speed_controllers",
       item: useIntegratedEsc ? { name: `${integratedEsc?.name} (AIO)` } : selectedEsc,
+      weightG: useIntegratedEsc ? 0 : selectedEsc?.weightG || 0,
       omitted: noneSelections.esc,
       count: 1,
     },
-    { step: 6, label: "Motors", item: selectedMotor, omitted: false, count: motorCount },
-    { step: 7, label: "Propellers", item: selectedProp, omitted: false, count: motorCount },
-    { step: 8, label: "FPV Camera", item: selectedCam, omitted: noneSelections.camera, count: 1 },
+    {
+      step: 6,
+      label: "Motors",
+      collectionId: "motors",
+      item: selectedMotor,
+      weightG: (selectedMotor?.weightG || 0) * motorCount,
+      omitted: false,
+      count: motorCount,
+    },
+    {
+      step: 7,
+      label: "Propellers",
+      collectionId: "propellers",
+      item: selectedProp,
+      weightG: (selectedProp?.weightG || 0) * motorCount,
+      omitted: false,
+      count: motorCount,
+    },
+    {
+      step: 8,
+      label: "FPV Camera",
+      collectionId: "cameras",
+      item: selectedCam,
+      weightG: noneSelections.camera ? 0 : selectedCam?.weightG || 0,
+      omitted: noneSelections.camera,
+      count: 1,
+    },
     {
       step: 9,
       label: "Video Transmitter",
+      collectionId: "video_transmitters",
       item: useIntegratedVtx ? { name: `${integratedVtx?.name} (AIO)` } : selectedVtx,
+      weightG: noneSelections.vtx || useIntegratedVtx ? 0 : selectedVtx?.weightG || 0,
       omitted: noneSelections.vtx,
       count: 1,
     },
     {
       step: 10,
       label: "VTX Antenna",
+      collectionId: "antennas",
       item: isVtxAntennaIntegrated ? { name: "Integrated VTX Ant" } : selectedVtxAnt,
+      weightG:
+        noneSelections.vtx || noneSelections.vtxAntenna || isVtxAntennaIntegrated
+          ? 0
+          : (selectedVtxAnt?.weightG || 0) * vtxAntCount,
       omitted: noneSelections.vtx || noneSelections.vtxAntenna,
       count: vtxAntCount,
     },
-    { step: 11, label: "GPS Module", item: selectedGps, omitted: noneSelections.gps, count: 1 },
+    {
+      step: 11,
+      label: "GPS Module",
+      collectionId: "gps_receivers",
+      item: selectedGps,
+      weightG: noneSelections.gps ? 0 : selectedGps?.weightG || 0,
+      omitted: noneSelections.gps,
+      count: 1,
+    },
   ];
 
   const stepProgressText: Record<number, string> = useMemo(() => {
@@ -279,9 +341,16 @@ function BuildWizardContent() {
             {/* Test Battery Selection with Browse Button */}
             <div className="space-y-1.5 text-xs">
               <div className="flex items-center justify-between">
-                <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
-                  Test Battery (Runtime Parameter)
-                </label>
+                <div className="flex items-center gap-1.5">
+                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
+                    Test Battery (Runtime Parameter)
+                  </label>
+                  {!activeBattery && (
+                    <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                      Required
+                    </span>
+                  )}
+                </div>
                 {electricalLimits?.connector ? (
                   <span className="text-[10px] text-blue-600 dark:text-blue-400 font-mono font-medium">
                     {electricalLimits.connector}
@@ -310,7 +379,7 @@ function BuildWizardContent() {
                 </button>
               </div>
 
-              {activeBattery && (
+              {activeBattery ? (
                 <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 flex items-center gap-2">
                   <span>
                     {activeBattery.cellCountS}S ({activeBattery.minVoltage}V -{" "}
@@ -318,6 +387,14 @@ function BuildWizardContent() {
                   </span>
                   <span>• {activeBattery.capacityMah}mAh</span>
                   <span>• {activeBattery.weightG}g</span>
+                </div>
+              ) : (
+                <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] flex items-start gap-2 mt-1">
+                  <AlertCircle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                  <p className="leading-tight">
+                    <span className="font-bold">Evaluation Paused:</span> Select a test battery to
+                    calculate thrust-to-weight, hover throttle, and flight times.
+                  </p>
                 </div>
               )}
             </div>
@@ -421,12 +498,16 @@ function BuildWizardContent() {
                 className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold border transition-colors ${
                   evaluatedMetrics
                     ? getTwrColor(evaluatedMetrics.thrustToWeightRatio).badge
-                    : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-transparent"
+                    : !activeBattery
+                      ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
+                      : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-transparent"
                 }`}
               >
                 {evaluatedMetrics
                   ? getTwrDescription(evaluatedMetrics.thrustToWeightRatio)
-                  : "Select Propulsion Parts"}
+                  : !activeBattery
+                    ? "Select Battery to Calculate"
+                    : "Select Propulsion Parts"}
               </span>
             </div>
 
@@ -475,9 +556,16 @@ function BuildWizardContent() {
               <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
                 Selected Parts
               </span>
-              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
-                {equippedCount} / 11 Parts
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-zinc-600 dark:text-zinc-400 font-mono">
+                  Dry:{" "}
+                  <span className="text-blue-600 dark:text-blue-400">{dryWeightG.toFixed(1)}g</span>
+                </span>
+                <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                  {equippedCount} / 11 Parts
+                </span>
+              </div>
             </div>
 
             <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1 text-xs">
@@ -487,6 +575,7 @@ function BuildWizardContent() {
                 const isUnlocked = unlockedSteps.includes(part.step);
                 const hasConflict = !!stepConflicts[part.step];
                 const hasBatteryConflict = !!stepBatteryConflicts[part.step];
+                const colorDef = getCollectionColor(part.collectionId);
 
                 return (
                   <div
@@ -508,12 +597,13 @@ function BuildWizardContent() {
                       <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0">
                         {hasConflict || hasBatteryConflict ? (
                           <AlertTriangle size={12} className="text-amber-500" />
-                        ) : !isUnlocked ? (
-                          <Lock size={12} className="text-zinc-400 dark:text-zinc-500" />
-                        ) : isSelected ? (
-                          <Check size={12} className="text-emerald-500 font-bold" />
                         ) : (
-                          <span className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                          <CollectionIcon
+                            collectionId={part.collectionId}
+                            size={14}
+                            color={isSelected ? colorDef.hex : undefined}
+                            className={isSelected ? "" : "text-zinc-400 dark:text-zinc-500"}
+                          />
                         )}
                       </div>
                       <div className="min-w-0">
@@ -532,7 +622,12 @@ function BuildWizardContent() {
                       </div>
                     </div>
 
-                    <ChevronRight size={12} className="text-zinc-400 shrink-0" />
+                    <div className="text-right shrink-0 flex items-center gap-1.5">
+                      <span className="font-mono text-zinc-500 dark:text-zinc-400 text-[10px]">
+                        {part.weightG > 0 ? `${part.weightG.toFixed(1)}g` : "--"}
+                      </span>
+                      <ChevronRight size={12} className="text-zinc-400 shrink-0" />
+                    </div>
                   </div>
                 );
               })}

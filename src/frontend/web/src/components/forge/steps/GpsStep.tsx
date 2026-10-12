@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, EyeOff, Check } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
@@ -23,6 +23,15 @@ export function GpsStep() {
     getCelFilterForStep,
     stepConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-gps-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const isCompatibleOnly = compatibleOnlyMap.gps_receivers ?? true;
 
@@ -103,6 +112,7 @@ export function GpsStep() {
         <div
           role="button"
           tabIndex={0}
+          id={isOmitted ? "selected-gps-item" : undefined}
           onClick={() => {
             setNoneSelections((prev) => ({ ...prev, gps: true }));
             setSelectedGps(null);
@@ -193,7 +203,7 @@ export function GpsStep() {
                   tabIndex={0}
                   onClick={() => {
                     setNoneSelections((prev) => ({ ...prev, gps: false }));
-                    setSelectedGps(isSelected ? null : g);
+                    setSelectedGps(g);
                   }}
                   className="flex-1 min-w-0"
                 >

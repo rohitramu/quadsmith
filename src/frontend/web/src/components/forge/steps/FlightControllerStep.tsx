@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import {
   Search,
   X,
@@ -38,6 +38,15 @@ export function FlightControllerStep() {
     fcHasIntegratedRx,
     fcHasIntegratedVtx,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-fc-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.flight_controllers || "";
   const conflictMsg = stepConflicts[2];
@@ -220,7 +229,7 @@ export function FlightControllerStep() {
                 <div
                   role="button"
                   tabIndex={0}
-                  onClick={() => setSelectedFc(isSelected ? null : fc)}
+                  onClick={() => setSelectedFc(fc)}
                   className="flex-1 min-w-0"
                 >
                   <div className="flex items-center gap-2 flex-wrap">

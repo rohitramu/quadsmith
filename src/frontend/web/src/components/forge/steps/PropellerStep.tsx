@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, Check } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
@@ -23,6 +23,15 @@ export function PropellerStep() {
     getCelFilterForStep,
     stepConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-prop-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.propellers || "";
   const conflictMsg = stepConflicts[7];
@@ -178,7 +187,7 @@ export function PropellerStep() {
                 <div
                   role="button"
                   tabIndex={0}
-                  onClick={() => setSelectedProp(isSelected ? null : p)}
+                  onClick={() => setSelectedProp(p)}
                   className="flex-1 min-w-0"
                 >
                   <div className="flex items-center gap-2 flex-wrap">

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, Check } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
@@ -21,6 +21,15 @@ export function FrameStep() {
     toggleCompatibleOnly,
     getCelFilterForStep,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-frame-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.frames || "";
   const conflictMsg = stepConflicts[1];
@@ -147,7 +156,7 @@ export function FrameStep() {
                 <div
                   role="button"
                   tabIndex={0}
-                  onClick={() => setSelectedFrame(isSelected ? null : f)}
+                  onClick={() => setSelectedFrame(f)}
                   className="flex-1 min-w-0"
                 >
                   <div className="flex items-center gap-2 flex-wrap">

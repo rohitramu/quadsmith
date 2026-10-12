@@ -209,7 +209,18 @@ export function CollectionIcon({
   collectionId,
   size = 16,
   className = "",
+  color,
+  ...props
 }: CollectionIconProps) {
   const Component = getCollectionIconComponent(collection || collectionId);
-  return <Component size={size} className={className} aria-hidden="true" />;
+  return (
+    <Component
+      size={size}
+      className={className}
+      color={color}
+      style={color ? { color } : undefined}
+      aria-hidden="true"
+      {...props}
+    />
+  );
 }

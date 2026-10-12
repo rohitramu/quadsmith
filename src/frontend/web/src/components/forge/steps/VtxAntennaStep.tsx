@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import {
   Search,
   X,
@@ -39,6 +39,15 @@ export function VtxAntennaStep() {
     getCelFilterForStep,
     stepConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-vtx-ant-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const isCompatibleOnly = compatibleOnlyMap.vtx_antennas ?? true;
 
@@ -254,7 +263,7 @@ export function VtxAntennaStep() {
                       tabIndex={0}
                       onClick={() => {
                         setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
-                        setSelectedVtxAnt(isSelected ? null : ant);
+                        setSelectedVtxAnt(ant);
                       }}
                       className="flex-1 min-w-0"
                     >

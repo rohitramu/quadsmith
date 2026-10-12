@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import {
   Search,
   X,
@@ -39,6 +39,15 @@ export function VtxStep() {
     getCelFilterForStep,
     stepConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-vtx-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.video_transmitters || "";
   const conflictMsg = stepConflicts[9];
@@ -157,6 +166,7 @@ export function VtxStep() {
                 <div
                   role="button"
                   tabIndex={0}
+                  id={isUsingIntegrated ? "selected-vtx-item" : undefined}
                   onClick={() => {
                     setUseIntegratedVtx(true);
                     setSelectedVtx(integratedVtx);
@@ -197,6 +207,7 @@ export function VtxStep() {
               <div
                 role="button"
                 tabIndex={0}
+                id={isOmitted ? "selected-vtx-item" : undefined}
                 onClick={() => {
                   setNoneSelections((prev) => ({ ...prev, vtx: true, vtxAntenna: true }));
                   setSelectedVtx(null);
@@ -295,7 +306,7 @@ export function VtxStep() {
                       onClick={() => {
                         setNoneSelections((prev) => ({ ...prev, vtx: false }));
                         setUseIntegratedVtx(false);
-                        setSelectedVtx(isSelected ? null : v);
+                        setSelectedVtx(v);
                       }}
                       className="flex-1 min-w-0"
                     >

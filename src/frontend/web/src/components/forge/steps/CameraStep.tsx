@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, EyeOff, Check } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
@@ -24,6 +24,15 @@ export function CameraStep() {
     getCelFilterForStep,
     stepConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-cam-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.cameras || "";
   const conflictMsg = stepConflicts[8];
@@ -110,6 +119,7 @@ export function CameraStep() {
         <div
           role="button"
           tabIndex={0}
+          id={isOmitted ? "selected-cam-item" : undefined}
           onClick={() => {
             setNoneSelections((prev) => ({ ...prev, camera: true, vtx: true, vtxAntenna: true }));
             setSelectedCam(null);
@@ -200,7 +210,7 @@ export function CameraStep() {
                   tabIndex={0}
                   onClick={() => {
                     setNoneSelections((prev) => ({ ...prev, camera: false }));
-                    setSelectedCam(isSelected ? null : c);
+                    setSelectedCam(c);
                   }}
                   className="flex-1 min-w-0"
                 >

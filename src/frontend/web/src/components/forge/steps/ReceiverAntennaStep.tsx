@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import {
   Search,
   X,
@@ -35,6 +35,15 @@ export function ReceiverAntennaStep() {
     getCelFilterForStep,
     stepConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-rx-ant-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.rx_antennas || "";
   const conflictMsg = stepConflicts[4];
@@ -201,7 +210,7 @@ export function ReceiverAntennaStep() {
                     <div
                       role="button"
                       tabIndex={0}
-                      onClick={() => setSelectedRxAnt(isSelected ? null : ant)}
+                      onClick={() => setSelectedRxAnt(ant)}
                       className="flex-1 min-w-0"
                     >
                       <div className="flex items-center gap-2 flex-wrap">

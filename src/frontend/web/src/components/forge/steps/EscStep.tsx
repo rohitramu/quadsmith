@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import {
   Search,
   X,
@@ -37,6 +37,15 @@ export function EscStep() {
     stepConflicts,
     stepBatteryConflicts,
   } = useForge();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document
+        .getElementById("selected-esc-item")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const search = searchQueries.electronic_speed_controllers || "";
   const conflictMsg = stepConflicts[5];
@@ -147,15 +156,11 @@ export function EscStep() {
         <div
           role="button"
           tabIndex={0}
+          id={isUsingIntegrated ? "selected-esc-item" : undefined}
           onClick={() => {
             if (!fcHasAdequateIntegratedEsc) return;
-            if (isUsingIntegrated) {
-              setUseIntegratedEsc(false);
-              setSelectedEsc(null);
-            } else {
-              setUseIntegratedEsc(true);
-              setSelectedEsc(integratedEsc);
-            }
+            setUseIntegratedEsc(true);
+            setSelectedEsc(integratedEsc);
           }}
           className={`p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
             !fcHasAdequateIntegratedEsc
@@ -256,7 +261,7 @@ export function EscStep() {
                   tabIndex={0}
                   onClick={() => {
                     setUseIntegratedEsc(false);
-                    setSelectedEsc(isSelected ? null : esc);
+                    setSelectedEsc(esc);
                   }}
                   className="flex-1 min-w-0"
                 >
