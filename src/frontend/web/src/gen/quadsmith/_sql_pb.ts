@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file__sql: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Cgpfc3FsLnByb3RvEg1xdWFkc21pdGguc3FsIkgKDFRhYmxlT3B0aW9ucxIMCgRuYW1lGAEgASgJEg4KBmNoZWNrcxgCIAMoCRIaChJ1bmlxdWVfY29uc3RyYWludHMYAyADKAkingEKDUNvbHVtbk9wdGlvbnMSDAoEbmFtZRgBIAEoCRIWCg5pc19wcmltYXJ5X2tleRgCIAEoCBISCgpyZWZlcmVuY2VzGAMgASgJEhEKCWlzX3VuaXF1ZRgEIAEoCBIUCgxjcmVhdGVfaW5kZXgYBSABKAgSEwoLY29sdW1uX3R5cGUYBiABKAkSFQoNZGVmYXVsdF92YWx1ZRgHIAEoCTpUCgV0YWJsZRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxi4jgMgASgLMhsucXVhZHNtaXRoLnNxbC5UYWJsZU9wdGlvbnNSBXRhYmxlOlUKBmNvbHVtbhIdLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE9wdGlvbnMYuI4DIAEoCzIcLnF1YWRzbWl0aC5zcWwuQ29sdW1uT3B0aW9uc1IGY29sdW1uQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "Cgpfc3FsLnByb3RvEg1xdWFkc21pdGguc3FsIkgKDFRhYmxlT3B0aW9ucxIMCgRuYW1lGAEgASgJEg4KBmNoZWNrcxgCIAMoCRIaChJ1bmlxdWVfY29uc3RyYWludHMYAyADKAkirgEKDUNvbHVtbk9wdGlvbnMSDAoEbmFtZRgBIAEoCRIWCg5pc19wcmltYXJ5X2tleRgCIAEoCBISCgpyZWZlcmVuY2VzGAMgASgJEhEKCWlzX3VuaXF1ZRgEIAEoCBIUCgxjcmVhdGVfaW5kZXgYBSABKAgSEwoLY29sdW1uX3R5cGUYBiABKAkSFQoNZGVmYXVsdF92YWx1ZRgHIAEoCRIOCgZpZ25vcmUYCCABKAg6VAoFdGFibGUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMYuI4DIAEoCzIbLnF1YWRzbWl0aC5zcWwuVGFibGVPcHRpb25zUgV0YWJsZTpVCgZjb2x1bW4SHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLiOAyABKAsyHC5xdWFkc21pdGguc3FsLkNvbHVtbk9wdGlvbnNSBmNvbHVtbkIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file_google_protobuf_descriptor],
   );
 
@@ -109,6 +109,13 @@ export type ColumnOptions = Message<"quadsmith.sql.ColumnOptions"> & {
    * @generated from field: string default_value = 7;
    */
   defaultValue: string;
+
+  /**
+   * If true, this field is an API-only field and will not be generated in the SQL schema or store operations.
+   *
+   * @generated from field: bool ignore = 8;
+   */
+  ignore: boolean;
 };
 
 /**

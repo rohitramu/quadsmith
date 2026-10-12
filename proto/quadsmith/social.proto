@@ -361,7 +361,7 @@ message Collection {
   string author_username = 10;
   int32 item_count = 11;
   repeated string preview_images = 12;
-  bool contains_item = 13;
+  bool contains_item = 13 [(quadsmith.sql.column) = {ignore: true}];
 }
 
 message CollectionItem {

@@ -104,10 +104,24 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 
 	msgName := msg.GoIdent.GoName
 
+	var activeFields []*protogen.Field
+	for _, field := range msg.Fields {
+		var colOpt *quadsmith_sql.ColumnOptions
+		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
+			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+				colOpt = co
+			}
+		}
+		if colOpt != nil && colOpt.Ignore {
+			continue
+		}
+		activeFields = append(activeFields, field)
+	}
+
 	var colNames []string
 	var placeHolders []string
 	var mFields []string
-	for i, field := range msg.Fields {
+	for i, field := range activeFields {
 		colName := string(field.Desc.Name())
 		colType := ""
 		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
@@ -149,7 +163,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	mFieldsStr := strings.Join(mFields, ", ")
 
 	hasId := false
-	for _, f := range msg.Fields {
+	for _, f := range activeFields {
 		fCol := string(f.Desc.Name())
 		if proto.HasExtension(f.Desc.Options(), quadsmith_sql.E_Column) {
 			if co, ok := proto.GetExtension(f.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
@@ -202,7 +216,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	for i, col := range cols {")
 	g.P("		switch col {")
 	for j, colName := range colNames {
-		field := msg.Fields[j]
+		field := activeFields[j]
 		goName := field.GoName
 		g.P("		case \"", colName, "\":")
 		if isTimestampField(field) {
@@ -250,14 +264,11 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	updateArgs = append(updateArgs, "m.Uuid")
 
 	argIdx := 2
-	for i, field := range msg.Fields {
-		colName := string(field.Desc.Name())
+	for i, field := range activeFields {
+		colName := colNames[i]
 		colType := ""
 		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
 			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
-				if co.Name != "" {
-					colName = co.Name
-				}
 				if co.ColumnType != "" {
 					colType = co.ColumnType
 				}
@@ -374,7 +385,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("		for i, col := range cols {")
 	g.P("			switch col {")
 	for j, colName := range colNames {
-		field := msg.Fields[j]
+		field := activeFields[j]
 		goName := field.GoName
 		g.P("			case \"", colName, "\":")
 		if isTimestampField(field) {

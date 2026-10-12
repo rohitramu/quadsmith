@@ -3004,7 +3004,7 @@ func ListUserReputations(ctx context.Context, db *pgxpool.Pool, cols []string, s
 }
 
 func CreateCollection(ctx context.Context, tx pgx.Tx, m *Collection) error {
-	query := `INSERT INTO collections (uuid, id, user_uuid, name, description, is_public, is_default_liked, created_at, updated_at, author_username, item_count, preview_images, contains_item) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	query := `INSERT INTO collections (uuid, id, user_uuid, name, description, is_public, is_default_liked, created_at, updated_at, author_username, item_count, preview_images) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -3025,13 +3025,13 @@ func CreateCollection(ctx context.Context, tx pgx.Tx, m *Collection) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.UpdatedAt), m.AuthorUsername, m.ItemCount, m.PreviewImages, m.ContainsItem)
+	}(m.UpdatedAt), m.AuthorUsername, m.ItemCount, m.PreviewImages)
 	return err
 }
 
 func GetCollection(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Collection, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "name": true, "description": true, "is_public": true, "is_default_liked": true, "created_at": true, "updated_at": true, "author_username": true, "item_count": true, "preview_images": true, "contains_item": true}
-	colsStr := "uuid, id, user_uuid, name, description, is_public, is_default_liked, created_at, updated_at, author_username, item_count, preview_images, contains_item"
+	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "name": true, "description": true, "is_public": true, "is_default_liked": true, "created_at": true, "updated_at": true, "author_username": true, "item_count": true, "preview_images": true}
+	colsStr := "uuid, id, user_uuid, name, description, is_public, is_default_liked, created_at, updated_at, author_username, item_count, preview_images"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -3042,7 +3042,7 @@ func GetCollection(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols 
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "user_uuid", "name", "description", "is_public", "is_default_liked", "created_at", "updated_at", "author_username", "item_count", "preview_images", "contains_item"}
+		cols = []string{"uuid", "id", "user_uuid", "name", "description", "is_public", "is_default_liked", "created_at", "updated_at", "author_username", "item_count", "preview_images"}
 	}
 	query := `SELECT ` + colsStr + ` FROM collections WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -3092,8 +3092,6 @@ func GetCollection(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols 
 			scanArgs[i] = &m.ItemCount
 		case "preview_images":
 			scanArgs[i] = &m.PreviewImages
-		case "contains_item":
-			scanArgs[i] = &m.ContainsItem
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -3111,7 +3109,7 @@ func GetCollection(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols 
 }
 
 func UpdateCollection(ctx context.Context, tx pgx.Tx, m *Collection) error {
-	query := `UPDATE collections SET user_uuid = $2, name = $3, description = $4, is_public = $5, is_default_liked = $6, created_at = $7, updated_at = $8, author_username = $9, item_count = $10, preview_images = $11, contains_item = $12 WHERE uuid = $1`
+	query := `UPDATE collections SET user_uuid = $2, name = $3, description = $4, is_public = $5, is_default_liked = $6, created_at = $7, updated_at = $8, author_username = $9, item_count = $10, preview_images = $11 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -3127,7 +3125,7 @@ func UpdateCollection(ctx context.Context, tx pgx.Tx, m *Collection) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.UpdatedAt), m.AuthorUsername, m.ItemCount, m.PreviewImages, m.ContainsItem)
+	}(m.UpdatedAt), m.AuthorUsername, m.ItemCount, m.PreviewImages)
 	return err
 }
 
@@ -3138,8 +3136,8 @@ func DeleteCollection(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListCollections(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Collection, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "name": true, "description": true, "is_public": true, "is_default_liked": true, "created_at": true, "updated_at": true, "author_username": true, "item_count": true, "preview_images": true, "contains_item": true}
-	colsStr := "uuid, id, user_uuid, name, description, is_public, is_default_liked, created_at, updated_at, author_username, item_count, preview_images, contains_item"
+	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "name": true, "description": true, "is_public": true, "is_default_liked": true, "created_at": true, "updated_at": true, "author_username": true, "item_count": true, "preview_images": true}
+	colsStr := "uuid, id, user_uuid, name, description, is_public, is_default_liked, created_at, updated_at, author_username, item_count, preview_images"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -3150,7 +3148,7 @@ func ListCollections(ctx context.Context, db *pgxpool.Pool, cols []string, sorts
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "user_uuid", "name", "description", "is_public", "is_default_liked", "created_at", "updated_at", "author_username", "item_count", "preview_images", "contains_item"}
+		cols = []string{"uuid", "id", "user_uuid", "name", "description", "is_public", "is_default_liked", "created_at", "updated_at", "author_username", "item_count", "preview_images"}
 	}
 	query := `SELECT ` + colsStr + ` FROM collections`
 	if whereClause != "" {
@@ -3241,8 +3239,6 @@ func ListCollections(ctx context.Context, db *pgxpool.Pool, cols []string, sorts
 				scanArgs[i] = &m.ItemCount
 			case "preview_images":
 				scanArgs[i] = &m.PreviewImages
-			case "contains_item":
-				scanArgs[i] = &m.ContainsItem
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

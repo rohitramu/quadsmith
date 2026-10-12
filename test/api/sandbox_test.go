@@ -926,3 +926,51 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 		t.Errorf("expected 3 emails from ListUserEmails RPC, got %d", len(listRes.Msg.Emails))
 	}
 }
+
+func TestSandboxCreateCollection(t *testing.T) {
+	apiUrl := getAPIURL()
+	socialClient := quadsmithconnect.NewSocialServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+
+	ctx := context.Background()
+	req := connect.NewRequest(&pb.CreateCollectionRequest{
+		Name:        "Speed Demons",
+		Description: "Collection of fast 5-inch quads",
+		IsPublic:    true,
+	})
+
+	res, err := socialClient.CreateCollection(ctx, req)
+	if err != nil {
+		t.Fatalf("CreateCollection failed: %v", err)
+	}
+
+	if res.Msg == nil {
+		t.Fatal("expected non-nil Collection response")
+	}
+
+	if res.Msg.Name != "Speed Demons" {
+		t.Errorf("expected collection name 'Speed Demons', got '%s'", res.Msg.Name)
+	}
+
+	// Verify collection can be listed
+	listReq := connect.NewRequest(&pb.ListUserCollectionsRequest{
+		UserId: "test_pilot",
+	})
+	listRes, err := socialClient.ListUserCollections(ctx, listReq)
+	if err != nil {
+		t.Fatalf("ListUserCollections failed: %v", err)
+	}
+
+	found := false
+	for _, col := range listRes.Msg.Collections {
+		if col.Id == res.Msg.Id {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Errorf("created collection id %s not found in user collections", res.Msg.Id)
+	}
+}

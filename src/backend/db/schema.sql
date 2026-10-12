@@ -712,8 +712,7 @@ CREATE TABLE IF NOT EXISTS collections (
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   author_username TEXT NOT NULL,
   item_count INTEGER NOT NULL,
-  preview_images TEXT[],
-  contains_item BOOLEAN NOT NULL
+  preview_images TEXT[]
 );
 
 CREATE INDEX IF NOT EXISTS idx_collections_id ON collections (id);

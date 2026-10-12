@@ -73,6 +73,10 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 			}
 		}
 
+		if colOpt != nil && colOpt.Ignore {
+			continue
+		}
+
 		colName := string(field.Desc.Name())
 		if colOpt != nil && colOpt.Name != "" {
 			colName = colOpt.Name
@@ -125,7 +129,7 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 	for _, field := range msg.Fields {
 		fOpts := field.Desc.Options()
 		if proto.HasExtension(fOpts, quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(fOpts, quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && co.CreateIndex {
+			if co, ok := proto.GetExtension(fOpts, quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && !co.Ignore && co.CreateIndex {
 				colName := string(field.Desc.Name())
 				if co.Name != "" {
 					colName = co.Name

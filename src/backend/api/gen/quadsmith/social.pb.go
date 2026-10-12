@@ -4462,7 +4462,7 @@ const file_social_proto_rawDesc = "" +
 	"\x05score\x18\x03 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x05score\x12F\n" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt:!\xc2\xf3\x18\x1d\n" +
-	"\x10user_reputations\x1a\tuser_uuid\"\xc6\x04\n" +
+	"\x10user_reputations\x1a\tuser_uuid\"\xce\x04\n" +
 	"\n" +
 	"Collection\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
@@ -4480,8 +4480,8 @@ const file_social_proto_rawDesc = "" +
 	" \x01(\tR\x0eauthorUsername\x12\x1d\n" +
 	"\n" +
 	"item_count\x18\v \x01(\x05R\titemCount\x12%\n" +
-	"\x0epreview_images\x18\f \x03(\tR\rpreviewImages\x12#\n" +
-	"\rcontains_item\x18\r \x01(\bR\fcontainsItem:\x11\xc2\xf3\x18\r\n" +
+	"\x0epreview_images\x18\f \x03(\tR\rpreviewImages\x12+\n" +
+	"\rcontains_item\x18\r \x01(\bB\x06\xc2\xf3\x18\x02@\x01R\fcontainsItem:\x11\xc2\xf3\x18\r\n" +
 	"\vcollections\"\xc5\x04\n" +
 	"\x0eCollectionItem\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12T\n" +
