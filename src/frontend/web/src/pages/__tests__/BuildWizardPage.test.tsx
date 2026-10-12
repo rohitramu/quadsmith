@@ -599,8 +599,8 @@ describe("BuildWizardPage Component", () => {
     // Click "Frame" in the Selected Parts sidebar list
     const sidebarFramePart = screen
       .getAllByText("Frame")
-      .find((el) => el.closest("div[role='button']"))
-      ?.closest("div[role='button']") as HTMLElement;
+      .find((el) => el.closest("[role='button']"))
+      ?.closest("[role='button']") as HTMLElement;
     expect(sidebarFramePart).toBeInTheDocument();
     await user.click(sidebarFramePart);
 

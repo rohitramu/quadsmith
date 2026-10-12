@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import {
   Hammer,
   RotateCcw,
@@ -7,9 +7,10 @@ import {
   AlertTriangle,
   AlertCircle,
   ChevronRight,
+  Sparkles,
+  ClipboardCheck,
 } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
-import { WizardStepBar } from "../components/WizardStepBar";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
 import { CollectionIcon } from "../components/CollectionIcon";
@@ -62,6 +63,9 @@ function BuildWizardContent() {
     stepConflicts,
     stepBatteryConflicts,
     resetBuild,
+    templateBuilds,
+    selectedTemplateId,
+    isTemplateConfirmed,
 
     // Selections
     selectedFrame,
@@ -104,6 +108,29 @@ function BuildWizardContent() {
   const [isBatteryModalOpen, setIsBatteryModalOpen] = useState(false);
   const [payloadInput, setPayloadInput] = useState(payloadWeightG.toString());
 
+  const stepRowRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const stepsContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const rowEl = stepRowRefs.current[activeStep];
+    const containerEl = stepsContainerRef.current;
+    if (rowEl && containerEl) {
+      const containerRect = containerEl.getBoundingClientRect();
+      const rowRect = rowEl.getBoundingClientRect();
+      if (rowRect.top < containerRect.top) {
+        containerEl.scrollTo({
+          top: containerEl.scrollTop - (containerRect.top - rowRect.top + 8),
+          behavior: "smooth",
+        });
+      } else if (rowRect.bottom > containerRect.bottom) {
+        containerEl.scrollTo({
+          top: containerEl.scrollTop + (rowRect.bottom - containerRect.bottom + 8),
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [activeStep]);
+
   const handlePayloadInput = (val: string) => {
     setPayloadInput(val);
     const parsed = parseFloat(val);
@@ -140,9 +167,26 @@ function BuildWizardContent() {
     selectedGps,
   ].filter(Boolean).length;
 
-  const partsSummaryList = [
+  const selectedTemplate = templateBuilds?.find((t) => t.id === selectedTemplateId);
+
+  const allForgeStepsList = [
+    {
+      step: 0,
+      title: "Template",
+      label: "Template",
+      collectionId: null,
+      item: selectedTemplate
+        ? { name: selectedTemplate.name }
+        : isTemplateConfirmed
+          ? { name: "Start from Scratch" }
+          : null,
+      weightG: 0,
+      omitted: false,
+      count: 1,
+    },
     {
       step: 1,
+      title: "Frame",
       label: "Frame",
       collectionId: "frames",
       item: selectedFrame,
@@ -152,6 +196,7 @@ function BuildWizardContent() {
     },
     {
       step: 2,
+      title: "Flight Controller",
       label: "Flight Controller",
       collectionId: "flight_controllers",
       item: selectedFc,
@@ -161,6 +206,7 @@ function BuildWizardContent() {
     },
     {
       step: 3,
+      title: "RX",
       label: "Radio Receiver",
       collectionId: "receivers",
       item: useIntegratedRx ? { name: `${integratedRx?.name} (AIO)` } : selectedRx,
@@ -170,6 +216,7 @@ function BuildWizardContent() {
     },
     {
       step: 4,
+      title: "RX Antennas",
       label: "RX Antenna",
       collectionId: "antennas",
       item: isRxAntennaIntegrated ? { name: "Integrated SMD" } : selectedRxAnt,
@@ -179,6 +226,7 @@ function BuildWizardContent() {
     },
     {
       step: 5,
+      title: "ESC",
       label: "Speed Controller",
       collectionId: "electronic_speed_controllers",
       item: useIntegratedEsc ? { name: `${integratedEsc?.name} (AIO)` } : selectedEsc,
@@ -188,6 +236,7 @@ function BuildWizardContent() {
     },
     {
       step: 6,
+      title: "Motors",
       label: "Motors",
       collectionId: "motors",
       item: selectedMotor,
@@ -197,6 +246,7 @@ function BuildWizardContent() {
     },
     {
       step: 7,
+      title: "Propellers",
       label: "Propellers",
       collectionId: "propellers",
       item: selectedProp,
@@ -206,6 +256,7 @@ function BuildWizardContent() {
     },
     {
       step: 8,
+      title: "Camera",
       label: "FPV Camera",
       collectionId: "cameras",
       item: selectedCam,
@@ -215,6 +266,7 @@ function BuildWizardContent() {
     },
     {
       step: 9,
+      title: "VTX",
       label: "Video Transmitter",
       collectionId: "video_transmitters",
       item: useIntegratedVtx ? { name: `${integratedVtx?.name} (AIO)` } : selectedVtx,
@@ -224,6 +276,7 @@ function BuildWizardContent() {
     },
     {
       step: 10,
+      title: "VTX Antennas",
       label: "VTX Antenna",
       collectionId: "antennas",
       item: isVtxAntennaIntegrated ? { name: "Integrated VTX Ant" } : selectedVtxAnt,
@@ -236,11 +289,22 @@ function BuildWizardContent() {
     },
     {
       step: 11,
+      title: "GPS",
       label: "GPS Module",
       collectionId: "gps_receivers",
       item: selectedGps,
       weightG: noneSelections.gps ? 0 : selectedGps?.weightG || 0,
       omitted: noneSelections.gps,
+      count: 1,
+    },
+    {
+      step: 12,
+      title: "Review & Save",
+      label: "Review & Save",
+      collectionId: null,
+      item: stepCompletion[12] ? { name: "Ready to Save" } : null,
+      weightG: 0,
+      omitted: false,
       count: 1,
     },
   ];
@@ -289,23 +353,10 @@ function BuildWizardContent() {
         </button>
       </div>
 
-      {/* Horizontal Step Bar */}
-      <div className="sticky top-0 z-20 bg-zinc-50/90 dark:bg-zinc-950/90 backdrop-blur-md py-2 -mx-4 px-4 sm:-mx-6 sm:px-6 border-b border-zinc-200/50 dark:border-zinc-800/50">
-        <WizardStepBar
-          currentStep={activeStep}
-          unlockedSteps={unlockedSteps}
-          stepCompletion={stepCompletion}
-          stepProgressText={stepProgressText}
-          stepConflicts={stepConflicts}
-          stepBatteryConflicts={stepBatteryConflicts}
-          onSelectStep={(step) => setActiveStep(step)}
-        />
-      </div>
-
       {/* Main 2-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column (8 cols): Active Step Component */}
-        <div className="lg:col-span-8 space-y-4">
+        <div className="lg:col-span-8">
           {activeStep === 0 && <TemplateStep />}
           {activeStep === 1 && <FrameStep />}
           {activeStep === 2 && <FlightControllerStep />}
@@ -321,8 +372,166 @@ function BuildWizardContent() {
           {activeStep === 12 && <ReviewStep />}
         </div>
 
-        {/* Right Column (4 cols): Persistent Live Evaluator & Parts Summary */}
-        <div className="lg:col-span-4 space-y-4 sticky top-20">
+        {/* Right Column (4 cols): Persistent Steps & Parts Summary & Live Evaluator */}
+        <div className="lg:col-span-4 space-y-4 sticky top-6">
+          {/* Selected Parts / Build Steps Card */}
+          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3 shadow-sm">
+            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2">
+              <div className="flex items-center gap-2">
+                <Hammer className="text-[#FF6D00] shrink-0" size={15} />
+                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                  Selected Parts
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-zinc-600 dark:text-zinc-400 font-mono">
+                  Dry:{" "}
+                  <span className="text-blue-600 dark:text-blue-400">{dryWeightG.toFixed(1)}g</span>
+                </span>
+                <span className="text-zinc-300 dark:text-zinc-700">•</span>
+                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                  {equippedCount} / 11 Parts
+                </span>
+              </div>
+            </div>
+
+            <nav aria-label="Build Steps" className="w-full">
+              <div
+                ref={stepsContainerRef}
+                className="space-y-1.5 max-h-72 overflow-y-auto pr-1 text-xs custom-scroll"
+              >
+                {allForgeStepsList.map((part) => {
+                  const isSelected = !!part.item;
+                  const isCurrent = activeStep === part.step;
+                  const isUnlocked = unlockedSteps.includes(part.step);
+                  const isComplete = !!stepCompletion[part.step];
+                  const hasConflict = !!stepConflicts[part.step];
+                  const hasBatteryConflict = !!stepBatteryConflicts[part.step];
+                  const progress = stepProgressText ? stepProgressText[part.step] : undefined;
+                  const colorDef = part.collectionId ? getCollectionColor(part.collectionId) : null;
+
+                  let borderClass = "border-zinc-100 dark:border-zinc-800/80";
+                  let bgClass = "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer";
+
+                  if (isCurrent) {
+                    borderClass =
+                      "border-blue-500 bg-blue-50/70 dark:bg-blue-950/40 ring-1 ring-blue-500/40 shadow-xs";
+                    bgClass = "cursor-default";
+                  } else if (hasConflict) {
+                    borderClass =
+                      "border-amber-500 ring-1 ring-amber-500/30 bg-amber-50/50 dark:bg-amber-950/20";
+                  } else if (hasBatteryConflict) {
+                    borderClass =
+                      "border-amber-400/80 ring-1 ring-amber-400/20 bg-amber-50/30 dark:bg-amber-950/15";
+                  } else if (!isUnlocked) {
+                    borderClass = "border-zinc-100 dark:border-zinc-800/40 opacity-40";
+                    bgClass = "cursor-not-allowed";
+                  }
+
+                  return (
+                    <button
+                      key={part.step}
+                      type="button"
+                      ref={(el) => {
+                        stepRowRefs.current[part.step] = el;
+                      }}
+                      role="button"
+                      disabled={!isUnlocked}
+                      onClick={() => {
+                        if (isUnlocked) setActiveStep(part.step);
+                      }}
+                      aria-label={`Step ${part.step}: ${part.title}`}
+                      className={`w-full p-2 rounded-xl border flex items-center justify-between gap-2 transition-all text-left ${borderClass} ${bgClass}`}
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0">
+                          {hasConflict || hasBatteryConflict ? (
+                            <AlertTriangle size={14} className="text-amber-500 shrink-0" />
+                          ) : part.step === 0 ? (
+                            <Sparkles
+                              size={14}
+                              className={
+                                isComplete || isTemplateConfirmed
+                                  ? "text-blue-500 shrink-0"
+                                  : "text-zinc-400 dark:text-zinc-500 shrink-0"
+                              }
+                            />
+                          ) : part.step === 12 ? (
+                            <ClipboardCheck
+                              size={14}
+                              className={
+                                isComplete
+                                  ? "text-emerald-500 shrink-0"
+                                  : "text-zinc-400 dark:text-zinc-500 shrink-0"
+                              }
+                            />
+                          ) : part.collectionId && colorDef ? (
+                            <CollectionIcon
+                              collectionId={part.collectionId}
+                              size={14}
+                              color={isSelected && !part.omitted ? colorDef.hex : undefined}
+                              className={
+                                isSelected && !part.omitted
+                                  ? "shrink-0"
+                                  : "text-zinc-400 dark:text-zinc-500 shrink-0"
+                              }
+                            />
+                          ) : null}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px] truncate flex items-center gap-1">
+                            <span className="text-zinc-400 font-normal">{part.step}.</span>
+                            <span>{part.label}</span>
+                          </div>
+                          <div className="text-[10px] text-zinc-400 truncate">
+                            {hasConflict
+                              ? "Conflict"
+                              : hasBatteryConflict
+                                ? "Battery Conflict"
+                                : progress ||
+                                  (part.item
+                                    ? `${part.item.name || "Selected"}${part.count > 1 ? ` (x${part.count})` : ""}`
+                                    : !isUnlocked
+                                      ? "Locked (Omitted)"
+                                      : part.omitted
+                                        ? "None (Omitted)"
+                                        : part.step === 0
+                                          ? "Baseline"
+                                          : "Not selected")}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="text-right shrink-0 flex items-center gap-1.5">
+                        {isCurrent && (
+                          <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-blue-600 text-white">
+                            Active
+                          </span>
+                        )}
+                        {part.weightG > 0 ? (
+                          <span className="font-mono text-zinc-600 dark:text-zinc-400 text-[10px]">
+                            {part.weightG.toFixed(1)}g
+                          </span>
+                        ) : part.step === 0 ? (
+                          <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                            {isComplete ? "Done" : "--"}
+                          </span>
+                        ) : part.step === 12 ? (
+                          <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                            Save
+                          </span>
+                        ) : (
+                          <span className="font-mono text-zinc-400 text-[10px]">--</span>
+                        )}
+                        <ChevronRight size={12} className="text-zinc-400 shrink-0" />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </nav>
+          </div>
+
           {/* Live Evaluator Card */}
           <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-4 shadow-sm">
             <div className="border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
@@ -547,90 +756,6 @@ function BuildWizardContent() {
                     : "-- min"}
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Selected Parts List Card */}
-          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3 shadow-sm">
-            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2">
-              <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
-                Selected Parts
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-zinc-600 dark:text-zinc-400 font-mono">
-                  Dry:{" "}
-                  <span className="text-blue-600 dark:text-blue-400">{dryWeightG.toFixed(1)}g</span>
-                </span>
-                <span className="text-zinc-300 dark:text-zinc-700">•</span>
-                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
-                  {equippedCount} / 11 Parts
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1 text-xs">
-              {partsSummaryList.map((part) => {
-                const isSelected = !!part.item;
-                const isCurrent = activeStep === part.step;
-                const isUnlocked = unlockedSteps.includes(part.step);
-                const hasConflict = !!stepConflicts[part.step];
-                const hasBatteryConflict = !!stepBatteryConflicts[part.step];
-                const colorDef = getCollectionColor(part.collectionId);
-
-                return (
-                  <div
-                    key={part.step}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => {
-                      if (isUnlocked) setActiveStep(part.step);
-                    }}
-                    className={`p-2 rounded-xl border flex items-center justify-between gap-2 transition-colors ${
-                      isCurrent
-                        ? "border-blue-500 bg-blue-50/40 dark:bg-blue-950/20"
-                        : isUnlocked
-                          ? "border-zinc-100 dark:border-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer"
-                          : "border-zinc-100 dark:border-zinc-800/40 opacity-40 cursor-not-allowed"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0">
-                        {hasConflict || hasBatteryConflict ? (
-                          <AlertTriangle size={12} className="text-amber-500" />
-                        ) : (
-                          <CollectionIcon
-                            collectionId={part.collectionId}
-                            size={14}
-                            color={isSelected ? colorDef.hex : undefined}
-                            className={isSelected ? "" : "text-zinc-400 dark:text-zinc-500"}
-                          />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px] truncate">
-                          {part.label}
-                        </div>
-                        <div className="text-[10px] text-zinc-400 truncate">
-                          {part.item
-                            ? `${part.item.name || "Selected"}${part.count > 1 ? ` (x${part.count})` : ""}`
-                            : !isUnlocked
-                              ? "Locked (Omitted)"
-                              : part.omitted
-                                ? "Omitted"
-                                : "Not selected"}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="text-right shrink-0 flex items-center gap-1.5">
-                      <span className="font-mono text-zinc-500 dark:text-zinc-400 text-[10px]">
-                        {part.weightG > 0 ? `${part.weightG.toFixed(1)}g` : "--"}
-                      </span>
-                      <ChevronRight size={12} className="text-zinc-400 shrink-0" />
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           </div>
         </div>
