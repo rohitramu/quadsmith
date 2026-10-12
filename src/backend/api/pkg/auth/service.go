@@ -55,7 +55,17 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	if cooldown > 0 {
-		return nil, connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
+		connErr := connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
+		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
+			Message:           fmt.Sprintf("Please wait %d seconds before requesting another code", cooldown),
+			RemainingAttempts: 0,
+			MaxAttempts:       MaxOtpAttempts,
+			IsExhausted:       false,
+			CooldownSeconds:   cooldown,
+		}); detailErr == nil {
+			connErr.AddDetail(detail)
+		}
+		return nil, connErr
 	}
 
 	// Invalidate any existing active challenges for this email so previous codes cannot be used
@@ -906,7 +916,17 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	if cooldown > 0 {
-		return nil, connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
+		connErr := connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
+		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
+			Message:           fmt.Sprintf("Please wait %d seconds before requesting another code", cooldown),
+			RemainingAttempts: 0,
+			MaxAttempts:       MaxOtpAttempts,
+			IsExhausted:       false,
+			CooldownSeconds:   cooldown,
+		}); detailErr == nil {
+			connErr.AddDetail(detail)
+		}
+		return nil, connErr
 	}
 
 	// Invalidate previous unconsumed OTP challenges for this email

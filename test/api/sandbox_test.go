@@ -1124,6 +1124,39 @@ func TestSandboxAuth_CrossDeviceMagicLinkApproval(t *testing.T) {
 	if statusResDeny.Msg.GetStatus() != pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_DENIED {
 		t.Errorf("expected status DENIED, got %v", statusResDeny.Msg.GetStatus())
 	}
+
+	// 10. Verify server enforcement: Device A tries to request a new code immediately after denial while cooldown is active -> REJECTED by server
+	_, prematureErr := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: testEmailDeny,
+	}))
+	if prematureErr == nil {
+		t.Fatal("expected server to reject SendEmailOtp during active cooldown after denial, got nil")
+	}
+	if connect.CodeOf(prematureErr) != connect.CodeResourceExhausted {
+		t.Errorf("expected server to return CodeResourceExhausted, got %v", connect.CodeOf(prematureErr))
+	}
+	if !strings.Contains(prematureErr.Error(), "seconds before requesting another code") {
+		t.Errorf("expected cooldown message from server, got %v", prematureErr)
+	}
+
+	// Verify server allows request once cooldown expires (simulated by fast-forwarding created_at by 25s)
+	_, err = pool.Exec(ctx, `
+		UPDATE email_otps
+		SET created_at = NOW() - INTERVAL '25 seconds'
+		WHERE email = $1`, testEmailDeny)
+	if err != nil {
+		t.Fatalf("failed to adjust created_at for cooldown: %v", err)
+	}
+
+	resendAfterCooldownRes, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: testEmailDeny,
+	}))
+	if err != nil {
+		t.Fatalf("expected SendEmailOtp to succeed after cooldown expired, got %v", err)
+	}
+	if !resendAfterCooldownRes.Msg.GetSuccess() {
+		t.Errorf("expected SendEmailOtp success=true after cooldown expiration")
+	}
 }
 
 func TestSandboxCreateCollection(t *testing.T) {
