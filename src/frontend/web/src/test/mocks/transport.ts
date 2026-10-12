@@ -202,13 +202,19 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         }
         let list = [...builds];
         if (req.filter) {
-          const lower = req.filter.toLowerCase();
-          list = list.filter(
-            (b) =>
-              b.name.toLowerCase().includes(lower) ||
-              b.id.toLowerCase().includes(lower) ||
-              b.description.toLowerCase().includes(lower),
-          );
+          const authorMatch = req.filter.match(/author_username\s*==\s*["']([^"']+)["']/i);
+          if (authorMatch) {
+            const author = authorMatch[1].toLowerCase();
+            list = list.filter((b) => b.authorUsername?.toLowerCase() === author);
+          } else {
+            const lower = req.filter.toLowerCase();
+            list = list.filter(
+              (b) =>
+                b.name.toLowerCase().includes(lower) ||
+                b.id.toLowerCase().includes(lower) ||
+                b.description.toLowerCase().includes(lower),
+            );
+          }
         }
         const pageSize = req.pageSize || 20;
         let pToken = "";
@@ -879,7 +885,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         id: req.id || mockUser.id,
         avatarUrl: mockProfile.avatarUrl,
         bio: mockProfile.bio,
-        createdAt: mockUser.createdAt,
+        createdAt: { seconds: 1716000000n, nanos: 0 },
         buildCount: 3,
         reputationScore: 145,
       }),
