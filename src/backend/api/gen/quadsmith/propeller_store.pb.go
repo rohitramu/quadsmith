@@ -11,19 +11,19 @@ import (
 )
 
 func CreatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
-	query := `INSERT INTO propellers (uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	query := `INSERT INTO propellers (uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, shaft_diameter_mm) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.ShaftDiameterMm)
 	return err
 }
 
 func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Propeller, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "shaft_diameter_mm": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, shaft_diameter_mm"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,7 +34,7 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "shaft_diameter_mm"}
 	}
 	query := `SELECT ` + colsStr + ` FROM propellers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -68,6 +68,8 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "shaft_diameter_mm":
+			scanArgs[i] = &m.ShaftDiameterMm
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -85,8 +87,8 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 }
 
 func UpdatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
-	query := `UPDATE propellers SET manufacturer = $2, name = $3, weight_g = $4, diameter_mm = $5, pitch_mm = $6, blades = $7, material = $8, description = $9, reference_links = $10, primary_display_image = $11, media = $12 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE propellers SET manufacturer = $2, name = $3, weight_g = $4, diameter_mm = $5, pitch_mm = $6, blades = $7, material = $8, description = $9, reference_links = $10, primary_display_image = $11, media = $12, shaft_diameter_mm = $13 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.ShaftDiameterMm)
 	return err
 }
 
@@ -97,8 +99,8 @@ func DeletePropeller(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Propeller, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "shaft_diameter_mm": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, shaft_diameter_mm"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -109,7 +111,7 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "shaft_diameter_mm"}
 	}
 	query := `SELECT ` + colsStr + ` FROM propellers`
 	if whereClause != "" {
@@ -184,6 +186,8 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "shaft_diameter_mm":
+				scanArgs[i] = &m.ShaftDiameterMm
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

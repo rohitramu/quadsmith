@@ -1,8 +1,10 @@
 package compatibility
 
 import (
-	pb "quadsmith/api/gen/quadsmith"
+	"strings"
 	"testing"
+
+	pb "quadsmith/api/gen/quadsmith"
 )
 
 func TestMotorEscCompatibility(t *testing.T) {
@@ -502,5 +504,81 @@ func TestGenerateCelFilter_ConflictHandling(t *testing.T) {
 	})
 	if motorFilter != "min_voltage <= 17.40" {
 		t.Errorf("Expected 'min_voltage <= 17.40', got %q", motorFilter)
+	}
+}
+
+func TestCheckCompatibility_MotorPropellerShaft(t *testing.T) {
+	// 1. Matching shafts (5.0mm motor with 5.0mm prop) -> Compatible
+	compMatch := &Components{
+		Motor:     &pb.Motor{ShaftDiameterMm: 5.0},
+		Propeller: &pb.Propeller{ShaftDiameterMm: 5.0},
+	}
+	msgs := CheckCompatibility(compMatch)
+	for _, m := range msgs {
+		if m.CheckerName == "MotorPropellerShaftChecker" {
+			t.Errorf("Expected no shaft incompatibility for matching 5.0mm shafts, got: %v", m)
+		}
+	}
+
+	// 2. Mismatched shafts (5.0mm motor with 1.5mm prop) -> Definite Incompatibility
+	compMismatch := &Components{
+		Motor:     &pb.Motor{ShaftDiameterMm: 5.0},
+		Propeller: &pb.Propeller{ShaftDiameterMm: 1.5},
+	}
+	msgsMismatch := CheckCompatibility(compMismatch)
+	found := false
+	for _, m := range msgsMismatch {
+		if m.CheckerName == "MotorPropellerShaftChecker" {
+			found = true
+			if m.SeverityLevel != 0 {
+				t.Errorf("Expected SeverityLevel 0 (DEFINITE_INCOMPATIBILITY), got %d", m.SeverityLevel)
+			}
+			if !strings.Contains(m.Message, "5.0mm") || !strings.Contains(m.Message, "1.5mm") {
+				t.Errorf("Message does not mention shaft sizes: %s", m.Message)
+			}
+		}
+	}
+	if !found {
+		t.Errorf("Expected MotorPropellerShaftChecker message for 5.0mm vs 1.5mm, found none")
+	}
+
+	// 3. Unspecified shaft (0.0 on motor or prop) -> No error
+	compUnspecified := &Components{
+		Motor:     &pb.Motor{ShaftDiameterMm: 0.0},
+		Propeller: &pb.Propeller{ShaftDiameterMm: 5.0},
+	}
+	msgsUnspecified := CheckCompatibility(compUnspecified)
+	for _, m := range msgsUnspecified {
+		if m.CheckerName == "MotorPropellerShaftChecker" {
+			t.Errorf("Expected no incompatibility when motor shaft is unspecified, got: %v", m)
+		}
+	}
+}
+
+func TestGenerateCelFilter_ShaftDiameter(t *testing.T) {
+	// Propellers filter when motor is selected
+	propFilter := GenerateCelFilter("propellers", &Components{
+		Motor: &pb.Motor{ShaftDiameterMm: 5.0},
+	})
+	if propFilter != "shaft_diameter_mm == 5.0" {
+		t.Errorf("Expected 'shaft_diameter_mm == 5.0', got %q", propFilter)
+	}
+
+	// Propellers filter with frame and motor
+	propFilterCombined := GenerateCelFilter("propellers", &Components{
+		Frame: &pb.Frame{MaxPropSizeMm: 127.0},
+		Motor: &pb.Motor{ShaftDiameterMm: 5.0},
+	})
+	expectedCombined := "diameter_mm <= 127.0 && shaft_diameter_mm == 5.0"
+	if propFilterCombined != expectedCombined {
+		t.Errorf("Expected %q, got %q", expectedCombined, propFilterCombined)
+	}
+
+	// Motors filter when propeller is selected
+	motorFilter := GenerateCelFilter("motors", &Components{
+		Propeller: &pb.Propeller{ShaftDiameterMm: 1.5},
+	})
+	if motorFilter != "shaft_diameter_mm == 1.5" {
+		t.Errorf("Expected 'shaft_diameter_mm == 1.5', got %q", motorFilter)
 	}
 }

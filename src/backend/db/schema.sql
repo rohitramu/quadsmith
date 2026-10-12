@@ -315,7 +315,8 @@ CREATE TABLE IF NOT EXISTS motors (
   media JSONB,
   min_voltage DECIMAL NOT NULL,
   max_voltage DECIMAL NOT NULL,
-  max_current_a DECIMAL NOT NULL
+  max_current_a DECIMAL NOT NULL,
+  shaft_diameter_mm DECIMAL NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_motors_manufacturer ON motors (manufacturer);
@@ -336,7 +337,8 @@ CREATE TABLE IF NOT EXISTS propellers (
   description TEXT NOT NULL,
   reference_links JSONB,
   primary_display_image TEXT,
-  media JSONB
+  media JSONB,
+  shaft_diameter_mm DECIMAL NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_propellers_manufacturer ON propellers (manufacturer);

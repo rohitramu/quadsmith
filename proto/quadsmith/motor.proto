@@ -51,6 +51,9 @@ message Motor {
 
   // Maximum continuous current rating (amperes) - mandatory
   float max_current_a = 15;
+
+  // Motor shaft diameter (mm) - e.g. 5.0 for standard M5, 1.5, 1.0, 0.8 for micro/whoop
+  float shaft_diameter_mm = 16;
 }
 
 // ---------------------------------------------------------

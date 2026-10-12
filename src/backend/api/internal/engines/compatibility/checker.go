@@ -44,7 +44,24 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 	}
 
-	// Rule 3: Camera vs Video Transmitter Protocol
+	// Rule 3: Motor vs Propeller Shaft Compatibility
+	if comp.Motor != nil && comp.Propeller != nil {
+		if comp.Motor.ShaftDiameterMm > 0 && comp.Propeller.ShaftDiameterMm > 0 {
+			diff := comp.Motor.ShaftDiameterMm - comp.Propeller.ShaftDiameterMm
+			if diff < -0.05 || diff > 0.05 {
+				messages = append(messages, &pb.CompatibilityMessage{
+					CheckerName:   "MotorPropellerShaftChecker",
+					Components:    "Motor and Propeller",
+					SeverityLevel: 0,
+					SeverityName:  "DEFINITE_INCOMPATIBILITY",
+					Message:       fmt.Sprintf("Motor shaft diameter (%.1fmm) does not match propeller shaft diameter (%.1fmm).", comp.Motor.ShaftDiameterMm, comp.Propeller.ShaftDiameterMm),
+					Resolution:    "Select a propeller with a matching shaft diameter or a motor with compatible shaft size.",
+				})
+			}
+		}
+	}
+
+	// Rule 4: Camera vs Video Transmitter Protocol
 	if comp.VideoTransmitter != nil && len(comp.Cameras) > 0 {
 		vtxProto := strings.TrimSpace(comp.VideoTransmitter.Protocol)
 		camProto := strings.TrimSpace(comp.Cameras[0].Protocol)
@@ -359,6 +376,9 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 		if comp.Frame != nil && comp.Frame.MaxPropSizeMm > 0 {
 			conditions = append(conditions, fmt.Sprintf("diameter_mm <= %.1f", comp.Frame.MaxPropSizeMm))
 		}
+		if comp.Motor != nil && comp.Motor.ShaftDiameterMm > 0 {
+			conditions = append(conditions, fmt.Sprintf("shaft_diameter_mm == %.1f", comp.Motor.ShaftDiameterMm))
+		}
 	case "frames":
 		if comp.Propeller != nil && comp.Propeller.DiameterMm > 0 {
 			conditions = append(conditions, fmt.Sprintf("max_prop_size_mm >= %.1f", comp.Propeller.DiameterMm))
@@ -397,6 +417,9 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 			conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", comp.Motor.MinVoltage))
 		}
 	case "motors":
+		if comp.Propeller != nil && comp.Propeller.ShaftDiameterMm > 0 {
+			conditions = append(conditions, fmt.Sprintf("shaft_diameter_mm == %.1f", comp.Propeller.ShaftDiameterMm))
+		}
 		if len(comp.ElectronicSpeedControllers) > 0 {
 			var minEscCurrent float32 = 0
 			var minEscMaxV float32 = 0

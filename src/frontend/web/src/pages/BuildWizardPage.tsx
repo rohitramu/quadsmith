@@ -326,10 +326,22 @@ export function BuildWizardPage() {
 
   // Dynamic Tier 1 CEL filters generated client-side by WASM Engine
   const propCelFilter = useMemo(() => {
-    if (!isWasmReady || !selectedFrame) return "";
-    const comps = create(AssembledComponentsSchema, { frame: selectedFrame });
+    if (!isWasmReady || (!selectedFrame && !selectedMotor)) return "";
+    const comps = create(AssembledComponentsSchema, {
+      frame: selectedFrame || undefined,
+      motor: selectedMotor || undefined,
+    });
     return wasmEngine.generateCelFilter("propellers", comps);
-  }, [isWasmReady, selectedFrame]);
+  }, [isWasmReady, selectedFrame, selectedMotor]);
+
+  const motorCelFilter = useMemo(() => {
+    if (!isWasmReady || (!selectedEsc && !selectedProp)) return "";
+    const comps = create(AssembledComponentsSchema, {
+      electronicSpeedControllers: selectedEsc ? [selectedEsc] : [],
+      propeller: selectedProp || undefined,
+    });
+    return wasmEngine.generateCelFilter("motors", comps);
+  }, [isWasmReady, selectedEsc, selectedProp]);
 
   const escCelFilter = useMemo(() => {
     if (!isWasmReady || !selectedMotor) return "";
@@ -918,27 +930,40 @@ export function BuildWizardPage() {
   }, [frames, searchFrame]);
 
   const filteredMotors = useMemo(() => {
-    if (!searchMotor.trim()) return motors;
+    let list = motors;
+    if (filterCompatibleOnly && selectedProp && (selectedProp.shaftDiameterMm || 0) > 0) {
+      list = list.filter(
+        (m) =>
+          !m.shaftDiameterMm || Math.abs(m.shaftDiameterMm - selectedProp.shaftDiameterMm) < 0.05,
+      );
+    }
+    if (!searchMotor.trim()) return list;
     const q = searchMotor.toLowerCase();
-    return motors.filter(
+    return list.filter(
       (m) =>
         m.name.toLowerCase().includes(q) ||
         m.manufacturer.toLowerCase().includes(q) ||
         String(m.kv).includes(q),
     );
-  }, [motors, searchMotor]);
+  }, [motors, filterCompatibleOnly, selectedProp, searchMotor]);
 
   const filteredProps = useMemo(() => {
     let list = props;
     if (filterCompatibleOnly && selectedFrame && selectedFrame.maxPropSizeMm > 0) {
       list = list.filter((p) => p.diameterMm <= selectedFrame.maxPropSizeMm);
     }
+    if (filterCompatibleOnly && selectedMotor && (selectedMotor.shaftDiameterMm || 0) > 0) {
+      list = list.filter(
+        (p) =>
+          !p.shaftDiameterMm || Math.abs(p.shaftDiameterMm - selectedMotor.shaftDiameterMm) < 0.05,
+      );
+    }
     if (!searchProp.trim()) return list;
     const q = searchProp.toLowerCase();
     return list.filter(
       (p) => p.name.toLowerCase().includes(q) || p.manufacturer.toLowerCase().includes(q),
     );
-  }, [props, filterCompatibleOnly, selectedFrame, searchProp]);
+  }, [props, filterCompatibleOnly, selectedFrame, selectedMotor, searchProp]);
 
   const filteredFcs = useMemo(() => {
     if (!searchFc.trim()) return fcs;
@@ -1728,6 +1753,47 @@ export function BuildWizardPage() {
                     </button>
                   )}
                 </div>
+
+                {/* Dynamic WASM CEL Compatibility Filter Banner */}
+                {motorCelFilter && (
+                  <div
+                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                      filterCompatibleOnly
+                        ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                        : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span
+                        className={`font-semibold text-[10px] uppercase tracking-wider ${
+                          filterCompatibleOnly
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-zinc-500 dark:text-zinc-400"
+                        }`}
+                      >
+                        Compatibility Filter:
+                      </span>
+                      <code
+                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
+                          filterCompatibleOnly
+                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
+                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
+                        }`}
+                      >
+                        {motorCelFilter}
+                      </code>
+                    </div>
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={filterCompatibleOnly}
+                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                      />
+                      <span>Compatible only</span>
+                    </label>
+                  </div>
+                )}
 
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   {filteredMotors.map((m) => {

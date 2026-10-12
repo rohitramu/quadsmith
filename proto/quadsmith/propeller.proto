@@ -50,6 +50,9 @@ message Propeller {
   repeated ReferenceLink reference_links = 11;
   optional string primary_display_image = 12;
   repeated Media media = 13;
+
+  // Propeller shaft / center hub hole diameter (mm) - e.g. 5.0, 1.5, 1.0, 0.8
+  float shaft_diameter_mm = 14;
 }
 
 // ---------------------------------------------------------

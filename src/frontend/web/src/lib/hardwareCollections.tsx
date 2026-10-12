@@ -1348,6 +1348,12 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ["max_current_a <= 40.0", "max_current_a >= 30.0"],
       },
       {
+        name: "shaft_diameter_mm",
+        type: "number",
+        description: "Motor shaft diameter in millimeters",
+        examples: ["shaft_diameter_mm == 5.0", "shaft_diameter_mm == 1.5"],
+      },
+      {
         name: "description",
         type: "string",
         description: "Product description",
@@ -1391,6 +1397,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Max Current (A)",
         renderCell: (m) => (m.maxCurrentA ? `${m.maxCurrentA}A` : "-"),
       },
+      shaft_diameter_mm: {
+        id: "shaft_diameter_mm",
+        title: "Shaft (mm)",
+        renderCell: (m) => (m.shaftDiameterMm ? `${m.shaftDiameterMm}mm` : "-"),
+      },
     },
     highlights: [
       { label: "KV", value: (m) => m.kv || "N/A" },
@@ -1429,6 +1440,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         label: "Max Continuous Current (A)",
         value: (m) => (m.maxCurrentA ? `${m.maxCurrentA}A` : "-"),
+      },
+      {
+        label: "Shaft Diameter (mm)",
+        value: (m) => (m.shaftDiameterMm ? `${m.shaftDiameterMm}mm` : "-"),
       },
       { label: "Weight (g)", value: (m) => (m.weightG ? `${m.weightG}` : "-") },
     ],
@@ -1501,6 +1516,12 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ["weight_g < 4.0", "weight_g <= 1.0"],
       },
       {
+        name: "shaft_diameter_mm",
+        type: "number",
+        description: "Center shaft hole diameter in millimeters",
+        examples: ["shaft_diameter_mm == 5.0", "shaft_diameter_mm == 1.5"],
+      },
+      {
         name: "description",
         type: "string",
         description: "Product description",
@@ -1543,6 +1564,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Material",
         renderCell: (p) => p.material || "-",
       },
+      shaft_diameter_mm: {
+        id: "shaft_diameter_mm",
+        title: "Shaft (mm)",
+        renderCell: (p) => (p.shaftDiameterMm ? `${p.shaftDiameterMm}mm` : "-"),
+      },
     },
     highlights: [
       {
@@ -1577,6 +1603,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         label: "Blades",
         value: (p) => (p.blades ? `${p.blades} Blades` : "-"),
+      },
+      {
+        label: "Shaft Hole Diameter (mm)",
+        value: (p) => (p.shaftDiameterMm ? `${p.shaftDiameterMm}mm` : "-"),
       },
       { label: "Material", value: (p) => p.material || "-" },
       {
