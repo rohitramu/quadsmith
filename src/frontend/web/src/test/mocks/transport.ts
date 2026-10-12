@@ -23,6 +23,7 @@ import {
   SendEmailOtpResponseSchema,
   ArchivedUsernameSchema,
   OtpVerificationErrorSchema,
+  LoginChallengeStatus,
 } from "../../gen/quadsmith/auth_pb";
 import {
   UserService,
@@ -82,6 +83,7 @@ export interface MockTransportOptions {
   nextPageToken?: string;
   simulateError?: boolean;
   isAuthenticated?: boolean;
+  authService?: Record<string, any>;
 }
 
 export function createMockTransport(options: MockTransportOptions = {}) {
@@ -638,6 +640,29 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         user: mockUser,
         profile: mockProfile,
       }),
+      getLoginChallengeDetails: (req) => {
+        if (req.token === "invalid-token" || req.token === "expired-token") {
+          throw new ConnectError("invalid or expired magic link", Code.InvalidArgument);
+        }
+        return {
+          email: "alex@fpv.build",
+          ipAddress: "192.168.1.42",
+          locationHint: "Local Network",
+          deviceHint: "Chrome on macOS",
+          status: LoginChallengeStatus.PENDING,
+        };
+      },
+      approveLoginChallenge: () => ({
+        success: true,
+        message: "Login approved",
+      }),
+      denyLoginChallenge: () => ({
+        success: true,
+        message: "Login request denied",
+      }),
+      getLoginChallengeStatus: () => ({
+        status: LoginChallengeStatus.PENDING,
+      }),
       completeAccountSetup: (req) => {
         if (!req.setupToken) {
           throw new ConnectError("Setup token required", Code.InvalidArgument);
@@ -833,6 +858,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           nextAllowedArchiveRenameAt: undefined,
         };
       },
+      ...(options.authService || {}),
     });
 
     service(UserService, {

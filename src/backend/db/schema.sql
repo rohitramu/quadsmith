@@ -87,7 +87,13 @@ CREATE TABLE IF NOT EXISTS email_otps (
   created_at TIMESTAMPTZ,
   challenge_id_hash TEXT DEFAULT '' NOT NULL,
   purpose TEXT DEFAULT 'login' NOT NULL,
-  requested_by_user_uuid UUID
+  requested_by_user_uuid UUID,
+  ip_address TEXT DEFAULT '' NOT NULL,
+  user_agent TEXT DEFAULT '' NOT NULL,
+  location_hint TEXT DEFAULT '' NOT NULL,
+  status TEXT DEFAULT 'pending' NOT NULL,
+  approved_at TIMESTAMPTZ,
+  denied_at TIMESTAMPTZ
 );
 
 CREATE INDEX IF NOT EXISTS idx_email_otps_email ON email_otps (email);

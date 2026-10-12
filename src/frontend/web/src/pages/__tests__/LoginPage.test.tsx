@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { screen, waitFor, fireEvent, act } from "@testing-library/react";
 import { renderApp, renderWithProviders } from "../../test/test-utils";
 import { AppRoutes } from "../../App";
+import { LoginChallengeStatus } from "../../gen/quadsmith/auth_pb";
 
 function enterOtp(inputs: HTMLElement[], code: string) {
   code.split("").forEach((char, i) => {
@@ -44,10 +45,12 @@ describe("LoginPage Component", () => {
     // Verify transition to OTP step
     expect(screen.queryByText(/two ways to sign in/i)).not.toBeInTheDocument();
     expect(await screen.findByRole("heading", { name: /verify your email/i })).toBeInTheDocument();
-    expect(screen.getByText(/enter the/i)).toBeInTheDocument();
-    expect(screen.getByText(/6-digit code/i)).toBeInTheDocument();
-    expect(screen.getByText(/^or$/i)).toBeInTheDocument();
-    expect(screen.getByText(/click the link in the email/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/waiting for magic link approval on your other device/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/click the magic link in your email on your phone/i),
+    ).toBeInTheDocument();
 
     // Verify 6 OTP input boxes
     const inputs = screen.getAllByRole("textbox");
@@ -144,7 +147,7 @@ describe("LoginPage Component", () => {
     await user.click(submitBtn);
 
     // Verify OTP step reached
-    await screen.findByText(/click the link in the email/i);
+    await screen.findByText(/waiting for magic link approval on your other device/i);
     expect(screen.queryByText(/two ways to sign in/i)).not.toBeInTheDocument();
 
     // Ensure footer text is absent on step 2
@@ -531,5 +534,114 @@ describe("LoginPage Component", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it("renders Device B approval screen when token is present and approves login", async () => {
+    const { user } = renderApp("/login?token=valid-magic-token", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: /approve login request/i }),
+    ).toBeInTheDocument();
+    expect(await screen.findByText("alex@fpv.build")).toBeInTheDocument();
+    expect(screen.getByText("Chrome on macOS")).toBeInTheDocument();
+    expect(screen.getByText(/192.168.1.42 \(Local Network\)/i)).toBeInTheDocument();
+
+    const approveBtn = await screen.findByTestId("approve-login-btn");
+    await user.click(approveBtn);
+
+    expect(await screen.findByTestId("approval-success-card")).toBeInTheDocument();
+    expect(screen.getByText(/login approved!/i)).toBeInTheDocument();
+    expect(screen.getByText(/you can safely close this window now/i)).toBeInTheDocument();
+  });
+
+  it("renders Device B approval screen when token is present and denies request", async () => {
+    const { user } = renderApp("/login?token=valid-magic-token", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: /approve login request/i }),
+    ).toBeInTheDocument();
+    expect(await screen.findByText("alex@fpv.build")).toBeInTheDocument();
+
+    const denyBtn = await screen.findByTestId("deny-login-btn");
+    await user.click(denyBtn);
+
+    expect(await screen.findByTestId("approval-denied-card")).toBeInTheDocument();
+    expect(screen.getByText(/login request denied/i)).toBeInTheDocument();
+    expect(screen.getByText(/you can safely close this window now/i)).toBeInTheDocument();
+  });
+
+  it("polls and auto-logs in Device A when challenge is approved on Device B", async () => {
+    let polled = false;
+    const { user } = renderApp("/login", {
+      transportOptions: {
+        isAuthenticated: false,
+        authService: {
+          getLoginChallengeStatus: () => {
+            if (!polled) {
+              polled = true;
+              return { status: LoginChallengeStatus.PENDING };
+            }
+            return {
+              status: LoginChallengeStatus.APPROVED,
+              authResponse: {
+                accessToken: "cross-device-approved-token",
+                refreshToken: "cross-device-refresh-token",
+                user: { id: "pilot", email: "pilot@example.com" },
+                accountSetupRequired: false,
+              },
+            };
+          },
+        },
+      },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "pilot@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    await screen.findByText(/waiting for magic link approval on your other device/i);
+
+    await waitFor(
+      () => {
+        expect(localStorage.getItem("qs_access_token")).toBe("cross-device-approved-token");
+      },
+      { timeout: 8000 },
+    );
+  });
+
+  it("displays denial message and halts polling on Device A when challenge is denied on Device B", async () => {
+    const { user } = renderApp("/login", {
+      transportOptions: {
+        isAuthenticated: false,
+        authService: {
+          getLoginChallengeStatus: () => {
+            return {
+              status: LoginChallengeStatus.DENIED,
+            };
+          },
+        },
+      },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "pilot@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    await screen.findByText(/waiting for magic link approval on your other device/i);
+
+    await waitFor(
+      () => {
+        expect(screen.getByText(/login request was denied/i)).toBeInTheDocument();
+      },
+      { timeout: 8000 },
+    );
   });
 });

@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ConnectError, Code } from "@connectrpc/connect";
-import { Moon, Sun, Loader2, ArrowLeft, Mail, AlertTriangle, Lock } from "lucide-react";
+import { Moon, Sun, Loader2, ArrowLeft, Mail, AlertTriangle, Lock, Check } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
-import { OtpVerificationErrorSchema } from "../gen/quadsmith/auth_pb";
+import { OtpVerificationErrorSchema, LoginChallengeStatus } from "../gen/quadsmith/auth_pb";
+import type { GetLoginChallengeDetailsResponse } from "../gen/quadsmith/auth_pb";
 import { UsernameAvailabilityStatus } from "../gen/quadsmith/user_pb";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
@@ -16,7 +17,10 @@ export function LoginPage() {
     isAuthenticated,
     sendEmailOtp,
     verifyEmailOtp,
-    verifyMagicLink,
+    getLoginChallengeDetails,
+    approveLoginChallenge,
+    denyLoginChallenge,
+    getLoginChallengeStatus,
     completeAccountSetup,
     checkUsernameAvailable,
   } = useAuth();
@@ -30,7 +34,6 @@ export function LoginPage() {
   const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
   const [hintDigits, setHintDigits] = useState<string[]>(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
-  const [magicLinkLoading, setMagicLinkLoading] = useState(!!magicToken);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [isExhausted, setIsExhausted] = useState(false);
@@ -39,6 +42,18 @@ export function LoginPage() {
   const [cooldown, setCooldown] = useState(0);
   const [exhaustedCooldown, setExhaustedCooldown] = useState(0);
   const [rateLimitCooldown, setRateLimitCooldown] = useState(0);
+
+  // Device B: Magic Link Approval State
+  const [challengeDetails, setChallengeDetails] = useState<GetLoginChallengeDetailsResponse | null>(
+    null,
+  );
+  const [approvalState, setApprovalState] = useState<
+    "loading" | "prompt" | "approving" | "approved" | "denying" | "denied" | "error"
+  >(magicToken ? "loading" : "prompt");
+  const [approvalError, setApprovalError] = useState<string | null>(null);
+
+  // Device A: Denial State from Polling
+  const [isDenied, setIsDenied] = useState(false);
 
   // Account Setup State
   const [setupToken, setSetupToken] = useState("");
@@ -96,37 +111,122 @@ export function LoginPage() {
     }
   }, [isAuthenticated, navigate, redirectUrl]);
 
-  // Magic link auto-verification
+  // Device B: Load challenge details upon opening magic link
   useEffect(() => {
     const token = magicToken;
-    if (token && !isAuthenticated) {
-      async function handleMagicLink() {
-        if (!token) return;
-        setIsLoading(true);
-        setErrorMsg(null);
-        try {
-          const res = await verifyMagicLink(token);
-          if (res?.accountSetupRequired && res.setupToken) {
-            setSetupToken(res.setupToken);
+    if (!token) return;
+    const validToken: string = token;
+    let active = true;
+    async function loadDetails() {
+      try {
+        const details = await getLoginChallengeDetails(validToken);
+        if (!active) return;
+        setChallengeDetails(details);
+        if (details.status === LoginChallengeStatus.APPROVED) {
+          setApprovalState("approved");
+        } else if (details.status === LoginChallengeStatus.DENIED) {
+          setApprovalState("denied");
+        } else if (details.status === LoginChallengeStatus.EXPIRED) {
+          setApprovalState("error");
+          setApprovalError(
+            "This login challenge is invalid or has expired. Please request a new code.",
+          );
+        } else {
+          setApprovalState("prompt");
+        }
+      } catch (err: unknown) {
+        if (!active) return;
+        setApprovalState("error");
+        if (err instanceof Error) {
+          setApprovalError(err.message);
+        } else {
+          setApprovalError("Failed to load login request. It may be invalid or expired.");
+        }
+      }
+    }
+    loadDetails();
+    return () => {
+      active = false;
+    };
+  }, [magicToken, getLoginChallengeDetails]);
+
+  // Device A: Polling for approval status while on OTP step
+  useEffect(() => {
+    if (
+      step !== "otp" ||
+      isAuthenticated ||
+      magicToken ||
+      isDenied ||
+      isExhausted ||
+      isRateLimited
+    ) {
+      return;
+    }
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await getLoginChallengeStatus();
+        if (res.status === LoginChallengeStatus.APPROVED) {
+          if (res.authResponse?.accountSetupRequired && res.authResponse.setupToken) {
+            setSetupToken(res.authResponse.setupToken);
             setStep("setup");
           } else {
             setIsSuccess(true);
             navigate(redirectUrl, { replace: true });
           }
-        } catch (err: unknown) {
-          if (err instanceof Error) {
-            setErrorMsg(err.message);
-          } else {
-            setErrorMsg("Failed to verify magic link. Please request a new one.");
-          }
-          setMagicLinkLoading(false);
-        } finally {
-          setIsLoading(false);
+        } else if (res.status === LoginChallengeStatus.DENIED) {
+          setIsDenied(true);
+          setErrorMsg("Login request was denied.");
         }
+      } catch {
+        // Ignore transient polling network errors
       }
-      handleMagicLink();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [
+    step,
+    isAuthenticated,
+    magicToken,
+    isDenied,
+    isExhausted,
+    isRateLimited,
+    getLoginChallengeStatus,
+    navigate,
+    redirectUrl,
+  ]);
+
+  const handleApprove = async () => {
+    if (!magicToken || approvalState !== "prompt") return;
+    setApprovalState("approving");
+    try {
+      await approveLoginChallenge(magicToken);
+      setApprovalState("approved");
+    } catch (err: unknown) {
+      setApprovalState("error");
+      if (err instanceof Error) {
+        setApprovalError(err.message);
+      } else {
+        setApprovalError("Failed to approve login. Please try again.");
+      }
     }
-  }, [magicToken, isAuthenticated, verifyMagicLink, navigate, redirectUrl]);
+  };
+
+  const handleDeny = async () => {
+    if (!magicToken || approvalState !== "prompt") return;
+    setApprovalState("denying");
+    try {
+      await denyLoginChallenge(magicToken);
+      setApprovalState("denied");
+    } catch (err: unknown) {
+      setApprovalState("error");
+      if (err instanceof Error) {
+        setApprovalError(err.message);
+      } else {
+        setApprovalError("Failed to deny login request.");
+      }
+    }
+  };
 
   // Debounced server-side username availability check
   // The server decides whether the username is available, unavailable, or invalid.
@@ -187,6 +287,7 @@ export function LoginPage() {
       setCooldown(res.cooldownSeconds);
       setExhaustedCooldown(0);
       setRateLimitCooldown(0);
+      setIsDenied(false);
       setStep("otp");
       if (!isResend) {
         setRemainingAttempts(null);
@@ -392,6 +493,7 @@ export function LoginPage() {
     setUsernameMessage(null);
     setSetupError(null);
     setErrorMsg(null);
+    setIsDenied(false);
     setRemainingAttempts(null);
     setIsExhausted(false);
     setIsRateLimited(false);
@@ -457,28 +559,27 @@ export function LoginPage() {
         </p>
       </div>
 
-      {/* Magic Link Loading Banner */}
-      {magicLinkLoading && (
-        <div className="p-4 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center gap-3 text-xs">
-          <Loader2 size={18} className="animate-spin text-blue-500 shrink-0" />
-          <span>Verifying your magic link token...</span>
+      {/* Cross-Device Waiting Pulse Banner */}
+      {!isDenied && !isExhausted && !isRateLimited && (
+        <div
+          data-testid="waiting-for-approval-banner"
+          className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center gap-3 text-xs text-left"
+        >
+          <div className="relative flex items-center justify-center w-4 h-4 shrink-0">
+            <span className="absolute w-3.5 h-3.5 rounded-full bg-blue-400/40 animate-ping"></span>
+            <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+          </div>
+          <div className="space-y-0.5 flex-1">
+            <p className="font-semibold text-zinc-900 dark:text-zinc-100">
+              Waiting for magic link approval on your other device...
+            </p>
+            <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
+              Click the magic link in your email on your phone to instantly log in here, or enter
+              the 6-digit code below.
+            </p>
+          </div>
         </div>
       )}
-
-      {/* Dual-path instructions */}
-      <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-zinc-700 dark:text-zinc-300 text-xs space-y-2 text-center">
-        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-          Enter the <strong>6-digit code</strong> sent to your email below.
-        </p>
-        <div className="flex items-center justify-center gap-2">
-          <div className="h-px bg-blue-500/20 flex-1"></div>
-          <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-            OR
-          </span>
-          <div className="h-px bg-blue-500/20 flex-1"></div>
-        </div>
-        <p className="text-[11px] text-zinc-600 dark:text-zinc-400">Click the link in the email.</p>
-      </div>
 
       {/* 6 Digit Inputs */}
       <div>
@@ -759,6 +860,166 @@ export function LoginPage() {
     </div>
   );
 
+  const renderDeviceBApprovalScreen = () => (
+    <div className="w-full p-8 space-y-6">
+      {/* Header */}
+      <div className="text-center space-y-3">
+        <div className="flex justify-center">
+          <img
+            src={theme === "dark" ? logoDark : logoLight}
+            alt="Quadsmith"
+            className="h-10 w-auto"
+          />
+        </div>
+        <h1 className="text-xl font-bold tracking-tight">Approve Login Request</h1>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          A device is requesting to sign in to your Quadsmith account.
+        </p>
+      </div>
+
+      {approvalState === "loading" && (
+        <div
+          data-testid="approval-loading"
+          className="p-8 flex flex-col items-center justify-center gap-3 text-xs text-zinc-500"
+        >
+          <Loader2 size={24} className="animate-spin text-blue-500" />
+          <span>Loading request details...</span>
+        </div>
+      )}
+
+      {approvalState === "error" && (
+        <div
+          data-testid="approval-error-card"
+          className="p-4 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400 text-xs space-y-2"
+        >
+          <div className="flex items-center gap-2 font-semibold">
+            <AlertTriangle size={16} />
+            <span>Invalid or Expired Link</span>
+          </div>
+          <p className="text-[11px] opacity-90">
+            {approvalError || "This login challenge is invalid or has expired."}
+          </p>
+        </div>
+      )}
+
+      {approvalState === "approved" && (
+        <div
+          data-testid="approval-success-card"
+          className="p-6 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-center space-y-3"
+        >
+          <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto">
+            <Check size={24} />
+          </div>
+          <h2 className="text-lg font-bold text-emerald-700 dark:text-emerald-400">
+            Login Approved!
+          </h2>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400">
+            Your other device
+            {challengeDetails?.deviceHint ? ` (${challengeDetails.deviceHint})` : ""} has been
+            logged in.
+          </p>
+          <div className="pt-2 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+            ✓ You can safely close this window now.
+          </div>
+        </div>
+      )}
+
+      {approvalState === "denied" && (
+        <div
+          data-testid="approval-denied-card"
+          className="p-6 rounded-2xl border border-rose-500/30 bg-rose-500/10 text-center space-y-3"
+        >
+          <div className="w-12 h-12 rounded-full bg-rose-500/20 text-rose-500 flex items-center justify-center mx-auto">
+            <Lock size={24} />
+          </div>
+          <h2 className="text-lg font-bold text-rose-700 dark:text-rose-400">
+            Login Request Denied
+          </h2>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400">
+            The sign-in request has been canceled.
+          </p>
+          <div className="pt-2 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+            ✓ You can safely close this window now.
+          </div>
+        </div>
+      )}
+
+      {(approvalState === "prompt" ||
+        approvalState === "approving" ||
+        approvalState === "denying") &&
+        challengeDetails && (
+          <div className="space-y-6">
+            {/* Metadata Card */}
+            <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/60 space-y-3 text-xs">
+              <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
+                <span className="text-zinc-500 dark:text-zinc-400">Account</span>
+                <span className="font-mono font-medium text-zinc-900 dark:text-zinc-100">
+                  {challengeDetails.email}
+                </span>
+              </div>
+              <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
+                <span className="text-zinc-500 dark:text-zinc-400">Requesting Device</span>
+                <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                  {challengeDetails.deviceHint || "Web Browser"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
+                <span className="text-zinc-500 dark:text-zinc-400">IP & Location</span>
+                <span className="font-mono text-[11px] text-zinc-900 dark:text-zinc-100">
+                  {challengeDetails.ipAddress}
+                  {challengeDetails.locationHint ? ` (${challengeDetails.locationHint})` : ""}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-zinc-500 dark:text-zinc-400">Expires</span>
+                <span className="text-zinc-700 dark:text-zinc-300">Within 15 minutes</span>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-2.5">
+              <button
+                type="button"
+                data-testid="approve-login-btn"
+                disabled={approvalState !== "prompt"}
+                onClick={handleApprove}
+                className="w-full py-3 px-4 rounded-xl font-semibold text-xs text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:opacity-60 transition shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {approvalState === "approving" ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>Approving...</span>
+                  </>
+                ) : (
+                  <>
+                    <Check size={16} />
+                    <span>Approve Login</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                data-testid="deny-login-btn"
+                disabled={approvalState !== "prompt"}
+                onClick={handleDeny}
+                className="w-full py-2.5 px-4 rounded-xl font-medium text-xs text-rose-600 dark:text-rose-400 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 disabled:opacity-60 transition flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                {approvalState === "denying" ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    <span>Denying...</span>
+                  </>
+                ) : (
+                  <span>Deny Request</span>
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+    </div>
+  );
+
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans relative">
       <style>{`
@@ -781,8 +1042,15 @@ export function LoginPage() {
         {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
       </button>
 
-      {/* STEP 1: Email Form Modal */}
-      {step === "email" && (
+      {/* DEVICE B: Magic Link Approval Screen */}
+      {magicToken && (
+        <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden relative">
+          {renderDeviceBApprovalScreen()}
+        </div>
+      )}
+
+      {/* DEVICE A: STEP 1: Email Form Modal */}
+      {!magicToken && step === "email" && (
         <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-8 space-y-6">
           {/* Header Logo */}
           <div className="text-center space-y-3">
@@ -867,15 +1135,15 @@ export function LoginPage() {
         </div>
       )}
 
-      {/* STEP 2: Verify Email Modal */}
-      {step === "otp" && (
+      {/* DEVICE A: STEP 2: Verify Email Modal */}
+      {!magicToken && step === "otp" && (
         <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden relative">
           {renderVerifyEmailScreen(false)}
         </div>
       )}
 
-      {/* STEP 3: Sliding Transition into Account Setup */}
-      {step === "setup" && (
+      {/* DEVICE A: STEP 3: Sliding Transition into Account Setup */}
+      {!magicToken && step === "setup" && (
         <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden relative">
           <div
             data-testid="sliding-container"

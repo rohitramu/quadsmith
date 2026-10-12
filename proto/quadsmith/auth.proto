@@ -36,6 +36,55 @@ message VerifyMagicLinkRequest {
   string token = 1;
 }
 
+enum LoginChallengeStatus {
+  LOGIN_CHALLENGE_STATUS_UNSPECIFIED = 0;
+  LOGIN_CHALLENGE_STATUS_PENDING = 1;
+  LOGIN_CHALLENGE_STATUS_APPROVED = 2;
+  LOGIN_CHALLENGE_STATUS_DENIED = 3;
+  LOGIN_CHALLENGE_STATUS_EXPIRED = 4;
+}
+
+message GetLoginChallengeDetailsRequest {
+  string token = 1;
+}
+
+message GetLoginChallengeDetailsResponse {
+  string email = 1;
+  string ip_address = 2;
+  string location_hint = 3;
+  string device_hint = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp expires_at = 6;
+  LoginChallengeStatus status = 7;
+}
+
+message ApproveLoginChallengeRequest {
+  string token = 1;
+}
+
+message ApproveLoginChallengeResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message DenyLoginChallengeRequest {
+  string token = 1;
+}
+
+message DenyLoginChallengeResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetLoginChallengeStatusRequest {
+  string challenge_id = 1;
+}
+
+message GetLoginChallengeStatusResponse {
+  LoginChallengeStatus status = 1;
+  optional AuthResponse auth_response = 2;
+}
+
 message AuthResponse {
   string access_token = 1;
   string refresh_token = 2;
@@ -211,6 +260,10 @@ service AuthService {
   rpc SendEmailOtp(SendEmailOtpRequest) returns (SendEmailOtpResponse);
   rpc VerifyEmailOtp(VerifyEmailOtpRequest) returns (AuthResponse);
   rpc VerifyMagicLink(VerifyMagicLinkRequest) returns (AuthResponse);
+  rpc GetLoginChallengeDetails(GetLoginChallengeDetailsRequest) returns (GetLoginChallengeDetailsResponse);
+  rpc ApproveLoginChallenge(ApproveLoginChallengeRequest) returns (ApproveLoginChallengeResponse);
+  rpc DenyLoginChallenge(DenyLoginChallengeRequest) returns (DenyLoginChallengeResponse);
+  rpc GetLoginChallengeStatus(GetLoginChallengeStatusRequest) returns (GetLoginChallengeStatusResponse);
   rpc CompleteAccountSetup(CompleteAccountSetupRequest) returns (AuthResponse);
   rpc RefreshToken(RefreshTokenRequest) returns (AuthResponse);
   rpc GetCurrentUser(GetCurrentUserRequest) returns (User);

@@ -20,6 +20,26 @@ export const verifyEmailOtp = AuthService.method.verifyEmailOtp;
 export const verifyMagicLink = AuthService.method.verifyMagicLink;
 
 /**
+ * @generated from rpc quadsmith.AuthService.GetLoginChallengeDetails
+ */
+export const getLoginChallengeDetails = AuthService.method.getLoginChallengeDetails;
+
+/**
+ * @generated from rpc quadsmith.AuthService.ApproveLoginChallenge
+ */
+export const approveLoginChallenge = AuthService.method.approveLoginChallenge;
+
+/**
+ * @generated from rpc quadsmith.AuthService.DenyLoginChallenge
+ */
+export const denyLoginChallenge = AuthService.method.denyLoginChallenge;
+
+/**
+ * @generated from rpc quadsmith.AuthService.GetLoginChallengeStatus
+ */
+export const getLoginChallengeStatus = AuthService.method.getLoginChallengeStatus;
+
+/**
  * @generated from rpc quadsmith.AuthService.CompleteAccountSetup
  */
 export const completeAccountSetup = AuthService.method.completeAccountSetup;

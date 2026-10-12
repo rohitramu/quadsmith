@@ -2,8 +2,8 @@
 // @generated from file auth.proto (package quadsmith, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file__common } from "./_common_pb";
 import { file__sql } from "./_sql_pb";
 import { file__validate } from "./_validate_pb";
@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_auth: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CgphdXRoLnByb3RvEglxdWFkc21pdGgiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSKbAQoUU2VuZEVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhgKEGNvb2xkb3duX3NlY29uZHMYAyABKAUSGwoTaXNfZXhpc3RpbmdfYWNjb3VudBgEIAEoCBIZCgxjaGFsbGVuZ2VfaWQYBSABKAlIAIgBAUIPCg1fY2hhbGxlbmdlX2lkImAKFVZlcmlmeUVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEhkKDGNoYWxsZW5nZV9pZBgDIAEoCUgAiAEBQg8KDV9jaGFsbGVuZ2VfaWQiJwoWVmVyaWZ5TWFnaWNMaW5rUmVxdWVzdBINCgV0b2tlbhgBIAEoCSK4AQoMQXV0aFJlc3BvbnNlEhQKDGFjY2Vzc190b2tlbhgBIAEoCRIVCg1yZWZyZXNoX3Rva2VuGAIgASgJEh0KBHVzZXIYAyABKAsyDy5xdWFkc21pdGguVXNlchInCgdwcm9maWxlGAQgASgLMhYucXVhZHNtaXRoLlVzZXJQcm9maWxlEh4KFmFjY291bnRfc2V0dXBfcmVxdWlyZWQYBSABKAgSEwoLc2V0dXBfdG9rZW4YBiABKAki1AEKG0NvbXBsZXRlQWNjb3VudFNldHVwUmVxdWVzdBITCgtzZXR1cF90b2tlbhgBIAEoCRJ4Cgh1c2VybmFtZRgCIAEoCUJmgrIZYgpgCAMQFBoeXlthLXpdW2EtejAtOV9dezEsMTh9W2EtejAtOV0kIgVhZG1pbiIEcm9vdCIGc3lzdGVtIgNib3QiBXJvYm90KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoEhcKCmF2YXRhcl91cmwYAyABKAlIAIgBAUINCgtfYXZhdGFyX3VybCKJAQoUT3RwVmVyaWZpY2F0aW9uRXJyb3ISDwoHbWVzc2FnZRgBIAEoCRIaChJyZW1haW5pbmdfYXR0ZW1wdHMYAiABKAUSFAoMbWF4X2F0dGVtcHRzGAMgASgFEhQKDGlzX2V4aGF1c3RlZBgEIAEoCBIYChBjb29sZG93bl9zZWNvbmRzGAUgASgFIiwKE1JlZnJlc2hUb2tlblJlcXVlc3QSFQoNcmVmcmVzaF90b2tlbhgBIAEoCSIXChVHZXRDdXJyZW50VXNlclJlcXVlc3QiWAoUVXBkYXRlUHJvZmlsZVJlcXVlc3QSFwoKYXZhdGFyX3VybBgBIAEoCUgAiAEBEhAKA2JpbxgCIAEoCUgBiAEBQg0KC19hdmF0YXJfdXJsQgYKBF9iaW8iPQoNTG9nb3V0UmVxdWVzdBIaCg1yZWZyZXNoX3Rva2VuGAEgASgJSACIAQFCEAoOX3JlZnJlc2hfdG9rZW4iIQoOTG9nb3V0UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCIXChVMaXN0VXNlckVtYWlsc1JlcXVlc3QiPgoWTGlzdFVzZXJFbWFpbHNSZXNwb25zZRIkCgZlbWFpbHMYASADKAsyFC5xdWFkc21pdGguVXNlckVtYWlsIicKFlNlbmRBZGRFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkicgoYVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJEgwKBGNvZGUYAiABKAkSDQoFdG9rZW4YAyABKAkSGQoMY2hhbGxlbmdlX2lkGAQgASgJSACIAQFCDwoNX2NoYWxsZW5nZV9pZCKJAgoZVmVyaWZ5QWRkRW1haWxPdHBSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSFgoObWVyZ2VfcmVxdWlyZWQYAyABKAgSGwoTb3RoZXJfdXNlcl91c2VybmFtZRgEIAEoCRIZChFvdGhlcl9idWlsZF9jb3VudBgFIAEoBRIZChFvdGhlcl9idWlsZF9uYW1lcxgGIAMoCRIUCgxvdGhlcl9lbWFpbHMYByADKAkSHQoVb3RoZXJfb2F1dGhfcHJvdmlkZXJzGAggAygJEhkKDG1lcmdlX3RpY2tldBgJIAEoCUgAiAEBQg8KDV9tZXJnZV90aWNrZXQimQEKE01lcmdlQWNjb3VudFJlcXVlc3QSDQoFZW1haWwYASABKAkSDAoEY29kZRgCIAEoCRINCgV0b2tlbhgDIAEoCRIZCgxtZXJnZV90aWNrZXQYBCABKAlIAIgBARIZCgxjaGFsbGVuZ2VfaWQYBSABKAlIAYgBAUIPCg1fbWVyZ2VfdGlja2V0Qg8KDV9jaGFsbGVuZ2VfaWQiiQEKFE1lcmdlQWNjb3VudFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIfChd0cmFuc2ZlcnJlZF9idWlsZF9jb3VudBgDIAEoBRIXCg9tZXJnZWRfdXNlcm5hbWUYBCABKAkSFQoNbWVyZ2VkX2VtYWlscxgFIAMoCSInChZTZXRQcmltYXJ5RW1haWxSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJIjsKF1NldFByaW1hcnlFbWFpbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSInChZSZW1vdmVVc2VyRW1haWxSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJIjsKF1JlbW92ZVVzZXJFbWFpbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSKpAgoQQXJjaGl2ZWRVc2VybmFtZRIQCgh1c2VybmFtZRgBIAEoCRI1ChFmaXJzdF9hcmNoaXZlZF9hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKcmVuYW1lZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKcmVsZWFzZV9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASFgoOZGF5c19yZW1haW5pbmcYBSABKAUSFwoPY2FuX3JlY2xhaW1fbm93GAYgASgIEjsKF25leHRfcmVjbGFpbV9hbGxvd2VkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCKVAQoVQ2hhbmdlVXNlcm5hbWVSZXF1ZXN0EnwKDG5ld191c2VybmFtZRgBIAEoCUJmgrIZYgpgCAMQFBoeXlthLXpdW2EtejAtOV9dezEsMTh9W2EtejAtOV0kIgVhZG1pbiIEcm9vdCIGc3lzdGVtIgNib3QiBXJvYm90KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoIt0BChZDaGFuZ2VVc2VybmFtZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIdCgR1c2VyGAMgASgLMg8ucXVhZHNtaXRoLlVzZXISPgoabmV4dF9hbGxvd2VkX25ld19yZW5hbWVfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEkIKHm5leHRfYWxsb3dlZF9hcmNoaXZlX3JlbmFtZV9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiHgocTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVxdWVzdCLcAQodTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVzcG9uc2USNwoSYXJjaGl2ZWRfdXNlcm5hbWVzGAEgAygLMhsucXVhZHNtaXRoLkFyY2hpdmVkVXNlcm5hbWUSPgoabmV4dF9hbGxvd2VkX25ld19yZW5hbWVfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEkIKHm5leHRfYWxsb3dlZF9hcmNoaXZlX3JlbmFtZV9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAywAoKC0F1dGhTZXJ2aWNlEk8KDFNlbmRFbWFpbE90cBIeLnF1YWRzbWl0aC5TZW5kRW1haWxPdHBSZXF1ZXN0Gh8ucXVhZHNtaXRoLlNlbmRFbWFpbE90cFJlc3BvbnNlEksKDlZlcmlmeUVtYWlsT3RwEiAucXVhZHNtaXRoLlZlcmlmeUVtYWlsT3RwUmVxdWVzdBoXLnF1YWRzbWl0aC5BdXRoUmVzcG9uc2USTQoPVmVyaWZ5TWFnaWNMaW5rEiEucXVhZHNtaXRoLlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QaFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlElcKFENvbXBsZXRlQWNjb3VudFNldHVwEiYucXVhZHNtaXRoLkNvbXBsZXRlQWNjb3VudFNldHVwUmVxdWVzdBoXLnF1YWRzbWl0aC5BdXRoUmVzcG9uc2USRwoMUmVmcmVzaFRva2VuEh4ucXVhZHNtaXRoLlJlZnJlc2hUb2tlblJlcXVlc3QaFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlEkMKDkdldEN1cnJlbnRVc2VyEiAucXVhZHNtaXRoLkdldEN1cnJlbnRVc2VyUmVxdWVzdBoPLnF1YWRzbWl0aC5Vc2VyEkgKDVVwZGF0ZVByb2ZpbGUSHy5xdWFkc21pdGguVXBkYXRlUHJvZmlsZVJlcXVlc3QaFi5xdWFkc21pdGguVXNlclByb2ZpbGUSPQoGTG9nb3V0EhgucXVhZHNtaXRoLkxvZ291dFJlcXVlc3QaGS5xdWFkc21pdGguTG9nb3V0UmVzcG9uc2USVQoOTGlzdFVzZXJFbWFpbHMSIC5xdWFkc21pdGguTGlzdFVzZXJFbWFpbHNSZXF1ZXN0GiEucXVhZHNtaXRoLkxpc3RVc2VyRW1haWxzUmVzcG9uc2USVQoPU2VuZEFkZEVtYWlsT3RwEiEucXVhZHNtaXRoLlNlbmRBZGRFbWFpbE90cFJlcXVlc3QaHy5xdWFkc21pdGguU2VuZEVtYWlsT3RwUmVzcG9uc2USXgoRVmVyaWZ5QWRkRW1haWxPdHASIy5xdWFkc21pdGguVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0GiQucXVhZHNtaXRoLlZlcmlmeUFkZEVtYWlsT3RwUmVzcG9uc2USTwoMTWVyZ2VBY2NvdW50Eh4ucXVhZHNtaXRoLk1lcmdlQWNjb3VudFJlcXVlc3QaHy5xdWFkc21pdGguTWVyZ2VBY2NvdW50UmVzcG9uc2USWAoPU2V0UHJpbWFyeUVtYWlsEiEucXVhZHNtaXRoLlNldFByaW1hcnlFbWFpbFJlcXVlc3QaIi5xdWFkc21pdGguU2V0UHJpbWFyeUVtYWlsUmVzcG9uc2USWAoPUmVtb3ZlVXNlckVtYWlsEiEucXVhZHNtaXRoLlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QaIi5xdWFkc21pdGguUmVtb3ZlVXNlckVtYWlsUmVzcG9uc2USVQoOQ2hhbmdlVXNlcm5hbWUSIC5xdWFkc21pdGguQ2hhbmdlVXNlcm5hbWVSZXF1ZXN0GiEucXVhZHNtaXRoLkNoYW5nZVVzZXJuYW1lUmVzcG9uc2USagoVTGlzdEFyY2hpdmVkVXNlcm5hbWVzEicucXVhZHNtaXRoLkxpc3RBcmNoaXZlZFVzZXJuYW1lc1JlcXVlc3QaKC5xdWFkc21pdGguTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
+    "CgphdXRoLnByb3RvEglxdWFkc21pdGgiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSKbAQoUU2VuZEVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhgKEGNvb2xkb3duX3NlY29uZHMYAyABKAUSGwoTaXNfZXhpc3RpbmdfYWNjb3VudBgEIAEoCBIZCgxjaGFsbGVuZ2VfaWQYBSABKAlIAIgBAUIPCg1fY2hhbGxlbmdlX2lkImAKFVZlcmlmeUVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEhkKDGNoYWxsZW5nZV9pZBgDIAEoCUgAiAEBQg8KDV9jaGFsbGVuZ2VfaWQiJwoWVmVyaWZ5TWFnaWNMaW5rUmVxdWVzdBINCgV0b2tlbhgBIAEoCSIwCh9HZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIoICCiBHZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXNwb25zZRINCgVlbWFpbBgBIAEoCRISCgppcF9hZGRyZXNzGAIgASgJEhUKDWxvY2F0aW9uX2hpbnQYAyABKAkSEwoLZGV2aWNlX2hpbnQYBCABKAkSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLwoGc3RhdHVzGAcgASgOMh8ucXVhZHNtaXRoLkxvZ2luQ2hhbGxlbmdlU3RhdHVzIi0KHEFwcHJvdmVMb2dpbkNoYWxsZW5nZVJlcXVlc3QSDQoFdG9rZW4YASABKAkiQQodQXBwcm92ZUxvZ2luQ2hhbGxlbmdlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIioKGURlbnlMb2dpbkNoYWxsZW5nZVJlcXVlc3QSDQoFdG9rZW4YASABKAkiPgoaRGVueUxvZ2luQ2hhbGxlbmdlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIjYKHkdldExvZ2luQ2hhbGxlbmdlU3RhdHVzUmVxdWVzdBIUCgxjaGFsbGVuZ2VfaWQYASABKAkimQEKH0dldExvZ2luQ2hhbGxlbmdlU3RhdHVzUmVzcG9uc2USLwoGc3RhdHVzGAEgASgOMh8ucXVhZHNtaXRoLkxvZ2luQ2hhbGxlbmdlU3RhdHVzEjMKDWF1dGhfcmVzcG9uc2UYAiABKAsyFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlSACIAQFCEAoOX2F1dGhfcmVzcG9uc2UiuAEKDEF1dGhSZXNwb25zZRIUCgxhY2Nlc3NfdG9rZW4YASABKAkSFQoNcmVmcmVzaF90b2tlbhgCIAEoCRIdCgR1c2VyGAMgASgLMg8ucXVhZHNtaXRoLlVzZXISJwoHcHJvZmlsZRgEIAEoCzIWLnF1YWRzbWl0aC5Vc2VyUHJvZmlsZRIeChZhY2NvdW50X3NldHVwX3JlcXVpcmVkGAUgASgIEhMKC3NldHVwX3Rva2VuGAYgASgJItQBChtDb21wbGV0ZUFjY291bnRTZXR1cFJlcXVlc3QSEwoLc2V0dXBfdG9rZW4YASABKAkSeAoIdXNlcm5hbWUYAiABKAlCZoKyGWIKYAgDEBQaHl5bYS16XVthLXowLTlfXXsxLDE4fVthLXowLTldJCIFYWRtaW4iBHJvb3QiBnN5c3RlbSIDYm90IgVyb2JvdCoCX18qCXF1YWRzbWl0aCoKcXVhZF9zbWl0aBIXCgphdmF0YXJfdXJsGAMgASgJSACIAQFCDQoLX2F2YXRhcl91cmwiiQEKFE90cFZlcmlmaWNhdGlvbkVycm9yEg8KB21lc3NhZ2UYASABKAkSGgoScmVtYWluaW5nX2F0dGVtcHRzGAIgASgFEhQKDG1heF9hdHRlbXB0cxgDIAEoBRIUCgxpc19leGhhdXN0ZWQYBCABKAgSGAoQY29vbGRvd25fc2Vjb25kcxgFIAEoBSIsChNSZWZyZXNoVG9rZW5SZXF1ZXN0EhUKDXJlZnJlc2hfdG9rZW4YASABKAkiFwoVR2V0Q3VycmVudFVzZXJSZXF1ZXN0IlgKFFVwZGF0ZVByb2ZpbGVSZXF1ZXN0EhcKCmF2YXRhcl91cmwYASABKAlIAIgBARIQCgNiaW8YAiABKAlIAYgBAUINCgtfYXZhdGFyX3VybEIGCgRfYmlvIj0KDUxvZ291dFJlcXVlc3QSGgoNcmVmcmVzaF90b2tlbhgBIAEoCUgAiAEBQhAKDl9yZWZyZXNoX3Rva2VuIiEKDkxvZ291dFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiFwoVTGlzdFVzZXJFbWFpbHNSZXF1ZXN0Ij4KFkxpc3RVc2VyRW1haWxzUmVzcG9uc2USJAoGZW1haWxzGAEgAygLMhQucXVhZHNtaXRoLlVzZXJFbWFpbCInChZTZW5kQWRkRW1haWxPdHBSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJInIKGFZlcmlmeUFkZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEg0KBXRva2VuGAMgASgJEhkKDGNoYWxsZW5nZV9pZBgEIAEoCUgAiAEBQg8KDV9jaGFsbGVuZ2VfaWQiiQIKGVZlcmlmeUFkZEVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhYKDm1lcmdlX3JlcXVpcmVkGAMgASgIEhsKE290aGVyX3VzZXJfdXNlcm5hbWUYBCABKAkSGQoRb3RoZXJfYnVpbGRfY291bnQYBSABKAUSGQoRb3RoZXJfYnVpbGRfbmFtZXMYBiADKAkSFAoMb3RoZXJfZW1haWxzGAcgAygJEh0KFW90aGVyX29hdXRoX3Byb3ZpZGVycxgIIAMoCRIZCgxtZXJnZV90aWNrZXQYCSABKAlIAIgBAUIPCg1fbWVyZ2VfdGlja2V0IpkBChNNZXJnZUFjY291bnRSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJEgwKBGNvZGUYAiABKAkSDQoFdG9rZW4YAyABKAkSGQoMbWVyZ2VfdGlja2V0GAQgASgJSACIAQESGQoMY2hhbGxlbmdlX2lkGAUgASgJSAGIAQFCDwoNX21lcmdlX3RpY2tldEIPCg1fY2hhbGxlbmdlX2lkIokBChRNZXJnZUFjY291bnRSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSHwoXdHJhbnNmZXJyZWRfYnVpbGRfY291bnQYAyABKAUSFwoPbWVyZ2VkX3VzZXJuYW1lGAQgASgJEhUKDW1lcmdlZF9lbWFpbHMYBSADKAkiJwoWU2V0UHJpbWFyeUVtYWlsUmVxdWVzdBINCgVlbWFpbBgBIAEoCSI7ChdTZXRQcmltYXJ5RW1haWxSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkiJwoWUmVtb3ZlVXNlckVtYWlsUmVxdWVzdBINCgVlbWFpbBgBIAEoCSI7ChdSZW1vdmVVc2VyRW1haWxSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkiqQIKEEFyY2hpdmVkVXNlcm5hbWUSEAoIdXNlcm5hbWUYASABKAkSNQoRZmlyc3RfYXJjaGl2ZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnJlbmFtZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnJlbGVhc2VfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDmRheXNfcmVtYWluaW5nGAUgASgFEhcKD2Nhbl9yZWNsYWltX25vdxgGIAEoCBI7ChduZXh0X3JlY2xhaW1fYWxsb3dlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAilQEKFUNoYW5nZVVzZXJuYW1lUmVxdWVzdBJ8CgxuZXdfdXNlcm5hbWUYASABKAlCZoKyGWIKYAgDEBQaHl5bYS16XVthLXowLTlfXXsxLDE4fVthLXowLTldJCIFYWRtaW4iBHJvb3QiBnN5c3RlbSIDYm90IgVyb2JvdCoCX18qCXF1YWRzbWl0aCoKcXVhZF9zbWl0aCLdAQoWQ2hhbmdlVXNlcm5hbWVSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSHQoEdXNlchgDIAEoCzIPLnF1YWRzbWl0aC5Vc2VyEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIh4KHExpc3RBcmNoaXZlZFVzZXJuYW1lc1JlcXVlc3Qi3AEKHUxpc3RBcmNoaXZlZFVzZXJuYW1lc1Jlc3BvbnNlEjcKEmFyY2hpdmVkX3VzZXJuYW1lcxgBIAMoCzIbLnF1YWRzbWl0aC5BcmNoaXZlZFVzZXJuYW1lEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wKs4BChRMb2dpbkNoYWxsZW5nZVN0YXR1cxImCiJMT0dJTl9DSEFMTEVOR0VfU1RBVFVTX1VOU1BFQ0lGSUVEEAASIgoeTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19QRU5ESU5HEAESIwofTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19BUFBST1ZFRBACEiEKHUxPR0lOX0NIQUxMRU5HRV9TVEFUVVNfREVOSUVEEAMSIgoeTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19FWFBJUkVEEAQy9g0KC0F1dGhTZXJ2aWNlEk8KDFNlbmRFbWFpbE90cBIeLnF1YWRzbWl0aC5TZW5kRW1haWxPdHBSZXF1ZXN0Gh8ucXVhZHNtaXRoLlNlbmRFbWFpbE90cFJlc3BvbnNlEksKDlZlcmlmeUVtYWlsT3RwEiAucXVhZHNtaXRoLlZlcmlmeUVtYWlsT3RwUmVxdWVzdBoXLnF1YWRzbWl0aC5BdXRoUmVzcG9uc2USTQoPVmVyaWZ5TWFnaWNMaW5rEiEucXVhZHNtaXRoLlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QaFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlEnMKGEdldExvZ2luQ2hhbGxlbmdlRGV0YWlscxIqLnF1YWRzbWl0aC5HZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXF1ZXN0GisucXVhZHNtaXRoLkdldExvZ2luQ2hhbGxlbmdlRGV0YWlsc1Jlc3BvbnNlEmoKFUFwcHJvdmVMb2dpbkNoYWxsZW5nZRInLnF1YWRzbWl0aC5BcHByb3ZlTG9naW5DaGFsbGVuZ2VSZXF1ZXN0GigucXVhZHNtaXRoLkFwcHJvdmVMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEmEKEkRlbnlMb2dpbkNoYWxsZW5nZRIkLnF1YWRzbWl0aC5EZW55TG9naW5DaGFsbGVuZ2VSZXF1ZXN0GiUucXVhZHNtaXRoLkRlbnlMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEnAKF0dldExvZ2luQ2hhbGxlbmdlU3RhdHVzEikucXVhZHNtaXRoLkdldExvZ2luQ2hhbGxlbmdlU3RhdHVzUmVxdWVzdBoqLnF1YWRzbWl0aC5HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1Jlc3BvbnNlElcKFENvbXBsZXRlQWNjb3VudFNldHVwEiYucXVhZHNtaXRoLkNvbXBsZXRlQWNjb3VudFNldHVwUmVxdWVzdBoXLnF1YWRzbWl0aC5BdXRoUmVzcG9uc2USRwoMUmVmcmVzaFRva2VuEh4ucXVhZHNtaXRoLlJlZnJlc2hUb2tlblJlcXVlc3QaFy5xdWFkc21pdGguQXV0aFJlc3BvbnNlEkMKDkdldEN1cnJlbnRVc2VyEiAucXVhZHNtaXRoLkdldEN1cnJlbnRVc2VyUmVxdWVzdBoPLnF1YWRzbWl0aC5Vc2VyEkgKDVVwZGF0ZVByb2ZpbGUSHy5xdWFkc21pdGguVXBkYXRlUHJvZmlsZVJlcXVlc3QaFi5xdWFkc21pdGguVXNlclByb2ZpbGUSPQoGTG9nb3V0EhgucXVhZHNtaXRoLkxvZ291dFJlcXVlc3QaGS5xdWFkc21pdGguTG9nb3V0UmVzcG9uc2USVQoOTGlzdFVzZXJFbWFpbHMSIC5xdWFkc21pdGguTGlzdFVzZXJFbWFpbHNSZXF1ZXN0GiEucXVhZHNtaXRoLkxpc3RVc2VyRW1haWxzUmVzcG9uc2USVQoPU2VuZEFkZEVtYWlsT3RwEiEucXVhZHNtaXRoLlNlbmRBZGRFbWFpbE90cFJlcXVlc3QaHy5xdWFkc21pdGguU2VuZEVtYWlsT3RwUmVzcG9uc2USXgoRVmVyaWZ5QWRkRW1haWxPdHASIy5xdWFkc21pdGguVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0GiQucXVhZHNtaXRoLlZlcmlmeUFkZEVtYWlsT3RwUmVzcG9uc2USTwoMTWVyZ2VBY2NvdW50Eh4ucXVhZHNtaXRoLk1lcmdlQWNjb3VudFJlcXVlc3QaHy5xdWFkc21pdGguTWVyZ2VBY2NvdW50UmVzcG9uc2USWAoPU2V0UHJpbWFyeUVtYWlsEiEucXVhZHNtaXRoLlNldFByaW1hcnlFbWFpbFJlcXVlc3QaIi5xdWFkc21pdGguU2V0UHJpbWFyeUVtYWlsUmVzcG9uc2USWAoPUmVtb3ZlVXNlckVtYWlsEiEucXVhZHNtaXRoLlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QaIi5xdWFkc21pdGguUmVtb3ZlVXNlckVtYWlsUmVzcG9uc2USVQoOQ2hhbmdlVXNlcm5hbWUSIC5xdWFkc21pdGguQ2hhbmdlVXNlcm5hbWVSZXF1ZXN0GiEucXVhZHNtaXRoLkNoYW5nZVVzZXJuYW1lUmVzcG9uc2USagoVTGlzdEFyY2hpdmVkVXNlcm5hbWVzEicucXVhZHNtaXRoLkxpc3RBcmNoaXZlZFVzZXJuYW1lc1JlcXVlc3QaKC5xdWFkc21pdGguTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVzcG9uc2VCHVobcXVhZHNtaXRoL2FwaS9nZW4vcXVhZHNtaXRoYgZwcm90bzM",
     [file__common, file__sql, file__validate, file_google_protobuf_timestamp, file_user],
   );
 
@@ -126,6 +126,198 @@ export const VerifyMagicLinkRequestSchema: GenMessage<VerifyMagicLinkRequest> =
   messageDesc(file_auth, 3);
 
 /**
+ * @generated from message quadsmith.GetLoginChallengeDetailsRequest
+ */
+export type GetLoginChallengeDetailsRequest =
+  Message<"quadsmith.GetLoginChallengeDetailsRequest"> & {
+    /**
+     * @generated from field: string token = 1;
+     */
+    token: string;
+  };
+
+/**
+ * Describes the message quadsmith.GetLoginChallengeDetailsRequest.
+ * Use `create(GetLoginChallengeDetailsRequestSchema)` to create a new message.
+ */
+export const GetLoginChallengeDetailsRequestSchema: GenMessage<GetLoginChallengeDetailsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 4);
+
+/**
+ * @generated from message quadsmith.GetLoginChallengeDetailsResponse
+ */
+export type GetLoginChallengeDetailsResponse =
+  Message<"quadsmith.GetLoginChallengeDetailsResponse"> & {
+    /**
+     * @generated from field: string email = 1;
+     */
+    email: string;
+
+    /**
+     * @generated from field: string ip_address = 2;
+     */
+    ipAddress: string;
+
+    /**
+     * @generated from field: string location_hint = 3;
+     */
+    locationHint: string;
+
+    /**
+     * @generated from field: string device_hint = 4;
+     */
+    deviceHint: string;
+
+    /**
+     * @generated from field: google.protobuf.Timestamp created_at = 5;
+     */
+    createdAt?: Timestamp | undefined;
+
+    /**
+     * @generated from field: google.protobuf.Timestamp expires_at = 6;
+     */
+    expiresAt?: Timestamp | undefined;
+
+    /**
+     * @generated from field: quadsmith.LoginChallengeStatus status = 7;
+     */
+    status: LoginChallengeStatus;
+  };
+
+/**
+ * Describes the message quadsmith.GetLoginChallengeDetailsResponse.
+ * Use `create(GetLoginChallengeDetailsResponseSchema)` to create a new message.
+ */
+export const GetLoginChallengeDetailsResponseSchema: GenMessage<GetLoginChallengeDetailsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 5);
+
+/**
+ * @generated from message quadsmith.ApproveLoginChallengeRequest
+ */
+export type ApproveLoginChallengeRequest = Message<"quadsmith.ApproveLoginChallengeRequest"> & {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+};
+
+/**
+ * Describes the message quadsmith.ApproveLoginChallengeRequest.
+ * Use `create(ApproveLoginChallengeRequestSchema)` to create a new message.
+ */
+export const ApproveLoginChallengeRequestSchema: GenMessage<ApproveLoginChallengeRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 6);
+
+/**
+ * @generated from message quadsmith.ApproveLoginChallengeResponse
+ */
+export type ApproveLoginChallengeResponse = Message<"quadsmith.ApproveLoginChallengeResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.ApproveLoginChallengeResponse.
+ * Use `create(ApproveLoginChallengeResponseSchema)` to create a new message.
+ */
+export const ApproveLoginChallengeResponseSchema: GenMessage<ApproveLoginChallengeResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 7);
+
+/**
+ * @generated from message quadsmith.DenyLoginChallengeRequest
+ */
+export type DenyLoginChallengeRequest = Message<"quadsmith.DenyLoginChallengeRequest"> & {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+};
+
+/**
+ * Describes the message quadsmith.DenyLoginChallengeRequest.
+ * Use `create(DenyLoginChallengeRequestSchema)` to create a new message.
+ */
+export const DenyLoginChallengeRequestSchema: GenMessage<DenyLoginChallengeRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 8);
+
+/**
+ * @generated from message quadsmith.DenyLoginChallengeResponse
+ */
+export type DenyLoginChallengeResponse = Message<"quadsmith.DenyLoginChallengeResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.DenyLoginChallengeResponse.
+ * Use `create(DenyLoginChallengeResponseSchema)` to create a new message.
+ */
+export const DenyLoginChallengeResponseSchema: GenMessage<DenyLoginChallengeResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 9);
+
+/**
+ * @generated from message quadsmith.GetLoginChallengeStatusRequest
+ */
+export type GetLoginChallengeStatusRequest = Message<"quadsmith.GetLoginChallengeStatusRequest"> & {
+  /**
+   * @generated from field: string challenge_id = 1;
+   */
+  challengeId: string;
+};
+
+/**
+ * Describes the message quadsmith.GetLoginChallengeStatusRequest.
+ * Use `create(GetLoginChallengeStatusRequestSchema)` to create a new message.
+ */
+export const GetLoginChallengeStatusRequestSchema: GenMessage<GetLoginChallengeStatusRequest> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 10);
+
+/**
+ * @generated from message quadsmith.GetLoginChallengeStatusResponse
+ */
+export type GetLoginChallengeStatusResponse =
+  Message<"quadsmith.GetLoginChallengeStatusResponse"> & {
+    /**
+     * @generated from field: quadsmith.LoginChallengeStatus status = 1;
+     */
+    status: LoginChallengeStatus;
+
+    /**
+     * @generated from field: optional quadsmith.AuthResponse auth_response = 2;
+     */
+    authResponse?: AuthResponse | undefined;
+  };
+
+/**
+ * Describes the message quadsmith.GetLoginChallengeStatusResponse.
+ * Use `create(GetLoginChallengeStatusResponseSchema)` to create a new message.
+ */
+export const GetLoginChallengeStatusResponseSchema: GenMessage<GetLoginChallengeStatusResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 11);
+
+/**
  * @generated from message quadsmith.AuthResponse
  */
 export type AuthResponse = Message<"quadsmith.AuthResponse"> & {
@@ -164,7 +356,9 @@ export type AuthResponse = Message<"quadsmith.AuthResponse"> & {
  * Describes the message quadsmith.AuthResponse.
  * Use `create(AuthResponseSchema)` to create a new message.
  */
-export const AuthResponseSchema: GenMessage<AuthResponse> = /*@__PURE__*/ messageDesc(file_auth, 4);
+export const AuthResponseSchema: GenMessage<AuthResponse> =
+  /*@__PURE__*/
+  messageDesc(file_auth, 12);
 
 /**
  * @generated from message quadsmith.CompleteAccountSetupRequest
@@ -192,7 +386,7 @@ export type CompleteAccountSetupRequest = Message<"quadsmith.CompleteAccountSetu
  */
 export const CompleteAccountSetupRequestSchema: GenMessage<CompleteAccountSetupRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 5);
+  messageDesc(file_auth, 13);
 
 /**
  * @generated from message quadsmith.OtpVerificationError
@@ -230,7 +424,7 @@ export type OtpVerificationError = Message<"quadsmith.OtpVerificationError"> & {
  */
 export const OtpVerificationErrorSchema: GenMessage<OtpVerificationError> =
   /*@__PURE__*/
-  messageDesc(file_auth, 6);
+  messageDesc(file_auth, 14);
 
 /**
  * @generated from message quadsmith.RefreshTokenRequest
@@ -248,7 +442,7 @@ export type RefreshTokenRequest = Message<"quadsmith.RefreshTokenRequest"> & {
  */
 export const RefreshTokenRequestSchema: GenMessage<RefreshTokenRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 7);
+  messageDesc(file_auth, 15);
 
 /**
  * @generated from message quadsmith.GetCurrentUserRequest
@@ -261,7 +455,7 @@ export type GetCurrentUserRequest = Message<"quadsmith.GetCurrentUserRequest"> &
  */
 export const GetCurrentUserRequestSchema: GenMessage<GetCurrentUserRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 8);
+  messageDesc(file_auth, 16);
 
 /**
  * @generated from message quadsmith.UpdateProfileRequest
@@ -284,7 +478,7 @@ export type UpdateProfileRequest = Message<"quadsmith.UpdateProfileRequest"> & {
  */
 export const UpdateProfileRequestSchema: GenMessage<UpdateProfileRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 9);
+  messageDesc(file_auth, 17);
 
 /**
  * @generated from message quadsmith.LogoutRequest
@@ -302,7 +496,7 @@ export type LogoutRequest = Message<"quadsmith.LogoutRequest"> & {
  */
 export const LogoutRequestSchema: GenMessage<LogoutRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 10);
+  messageDesc(file_auth, 18);
 
 /**
  * @generated from message quadsmith.LogoutResponse
@@ -320,7 +514,7 @@ export type LogoutResponse = Message<"quadsmith.LogoutResponse"> & {
  */
 export const LogoutResponseSchema: GenMessage<LogoutResponse> =
   /*@__PURE__*/
-  messageDesc(file_auth, 11);
+  messageDesc(file_auth, 19);
 
 /**
  * @generated from message quadsmith.ListUserEmailsRequest
@@ -333,7 +527,7 @@ export type ListUserEmailsRequest = Message<"quadsmith.ListUserEmailsRequest"> &
  */
 export const ListUserEmailsRequestSchema: GenMessage<ListUserEmailsRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 12);
+  messageDesc(file_auth, 20);
 
 /**
  * @generated from message quadsmith.ListUserEmailsResponse
@@ -351,7 +545,7 @@ export type ListUserEmailsResponse = Message<"quadsmith.ListUserEmailsResponse">
  */
 export const ListUserEmailsResponseSchema: GenMessage<ListUserEmailsResponse> =
   /*@__PURE__*/
-  messageDesc(file_auth, 13);
+  messageDesc(file_auth, 21);
 
 /**
  * @generated from message quadsmith.SendAddEmailOtpRequest
@@ -369,7 +563,7 @@ export type SendAddEmailOtpRequest = Message<"quadsmith.SendAddEmailOtpRequest">
  */
 export const SendAddEmailOtpRequestSchema: GenMessage<SendAddEmailOtpRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 14);
+  messageDesc(file_auth, 22);
 
 /**
  * @generated from message quadsmith.VerifyAddEmailOtpRequest
@@ -402,7 +596,7 @@ export type VerifyAddEmailOtpRequest = Message<"quadsmith.VerifyAddEmailOtpReque
  */
 export const VerifyAddEmailOtpRequestSchema: GenMessage<VerifyAddEmailOtpRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 15);
+  messageDesc(file_auth, 23);
 
 /**
  * @generated from message quadsmith.VerifyAddEmailOtpResponse
@@ -460,7 +654,7 @@ export type VerifyAddEmailOtpResponse = Message<"quadsmith.VerifyAddEmailOtpResp
  */
 export const VerifyAddEmailOtpResponseSchema: GenMessage<VerifyAddEmailOtpResponse> =
   /*@__PURE__*/
-  messageDesc(file_auth, 16);
+  messageDesc(file_auth, 24);
 
 /**
  * @generated from message quadsmith.MergeAccountRequest
@@ -498,7 +692,7 @@ export type MergeAccountRequest = Message<"quadsmith.MergeAccountRequest"> & {
  */
 export const MergeAccountRequestSchema: GenMessage<MergeAccountRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 17);
+  messageDesc(file_auth, 25);
 
 /**
  * @generated from message quadsmith.MergeAccountResponse
@@ -536,7 +730,7 @@ export type MergeAccountResponse = Message<"quadsmith.MergeAccountResponse"> & {
  */
 export const MergeAccountResponseSchema: GenMessage<MergeAccountResponse> =
   /*@__PURE__*/
-  messageDesc(file_auth, 18);
+  messageDesc(file_auth, 26);
 
 /**
  * @generated from message quadsmith.SetPrimaryEmailRequest
@@ -554,7 +748,7 @@ export type SetPrimaryEmailRequest = Message<"quadsmith.SetPrimaryEmailRequest">
  */
 export const SetPrimaryEmailRequestSchema: GenMessage<SetPrimaryEmailRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 19);
+  messageDesc(file_auth, 27);
 
 /**
  * @generated from message quadsmith.SetPrimaryEmailResponse
@@ -577,7 +771,7 @@ export type SetPrimaryEmailResponse = Message<"quadsmith.SetPrimaryEmailResponse
  */
 export const SetPrimaryEmailResponseSchema: GenMessage<SetPrimaryEmailResponse> =
   /*@__PURE__*/
-  messageDesc(file_auth, 20);
+  messageDesc(file_auth, 28);
 
 /**
  * @generated from message quadsmith.RemoveUserEmailRequest
@@ -595,7 +789,7 @@ export type RemoveUserEmailRequest = Message<"quadsmith.RemoveUserEmailRequest">
  */
 export const RemoveUserEmailRequestSchema: GenMessage<RemoveUserEmailRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 21);
+  messageDesc(file_auth, 29);
 
 /**
  * @generated from message quadsmith.RemoveUserEmailResponse
@@ -618,7 +812,7 @@ export type RemoveUserEmailResponse = Message<"quadsmith.RemoveUserEmailResponse
  */
 export const RemoveUserEmailResponseSchema: GenMessage<RemoveUserEmailResponse> =
   /*@__PURE__*/
-  messageDesc(file_auth, 22);
+  messageDesc(file_auth, 30);
 
 /**
  * @generated from message quadsmith.ArchivedUsername
@@ -666,7 +860,7 @@ export type ArchivedUsername = Message<"quadsmith.ArchivedUsername"> & {
  */
 export const ArchivedUsernameSchema: GenMessage<ArchivedUsername> =
   /*@__PURE__*/
-  messageDesc(file_auth, 23);
+  messageDesc(file_auth, 31);
 
 /**
  * @generated from message quadsmith.ChangeUsernameRequest
@@ -684,7 +878,7 @@ export type ChangeUsernameRequest = Message<"quadsmith.ChangeUsernameRequest"> &
  */
 export const ChangeUsernameRequestSchema: GenMessage<ChangeUsernameRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 24);
+  messageDesc(file_auth, 32);
 
 /**
  * @generated from message quadsmith.ChangeUsernameResponse
@@ -722,7 +916,7 @@ export type ChangeUsernameResponse = Message<"quadsmith.ChangeUsernameResponse">
  */
 export const ChangeUsernameResponseSchema: GenMessage<ChangeUsernameResponse> =
   /*@__PURE__*/
-  messageDesc(file_auth, 25);
+  messageDesc(file_auth, 33);
 
 /**
  * @generated from message quadsmith.ListArchivedUsernamesRequest
@@ -735,7 +929,7 @@ export type ListArchivedUsernamesRequest = Message<"quadsmith.ListArchivedUserna
  */
 export const ListArchivedUsernamesRequestSchema: GenMessage<ListArchivedUsernamesRequest> =
   /*@__PURE__*/
-  messageDesc(file_auth, 26);
+  messageDesc(file_auth, 34);
 
 /**
  * @generated from message quadsmith.ListArchivedUsernamesResponse
@@ -763,7 +957,44 @@ export type ListArchivedUsernamesResponse = Message<"quadsmith.ListArchivedUsern
  */
 export const ListArchivedUsernamesResponseSchema: GenMessage<ListArchivedUsernamesResponse> =
   /*@__PURE__*/
-  messageDesc(file_auth, 27);
+  messageDesc(file_auth, 35);
+
+/**
+ * @generated from enum quadsmith.LoginChallengeStatus
+ */
+export enum LoginChallengeStatus {
+  /**
+   * @generated from enum value: LOGIN_CHALLENGE_STATUS_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: LOGIN_CHALLENGE_STATUS_PENDING = 1;
+   */
+  PENDING = 1,
+
+  /**
+   * @generated from enum value: LOGIN_CHALLENGE_STATUS_APPROVED = 2;
+   */
+  APPROVED = 2,
+
+  /**
+   * @generated from enum value: LOGIN_CHALLENGE_STATUS_DENIED = 3;
+   */
+  DENIED = 3,
+
+  /**
+   * @generated from enum value: LOGIN_CHALLENGE_STATUS_EXPIRED = 4;
+   */
+  EXPIRED = 4,
+}
+
+/**
+ * Describes the enum quadsmith.LoginChallengeStatus.
+ */
+export const LoginChallengeStatusSchema: GenEnum<LoginChallengeStatus> =
+  /*@__PURE__*/
+  enumDesc(file_auth, 0);
 
 /**
  * @generated from service quadsmith.AuthService
@@ -792,6 +1023,38 @@ export const AuthService: GenService<{
     methodKind: "unary";
     input: typeof VerifyMagicLinkRequestSchema;
     output: typeof AuthResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.GetLoginChallengeDetails
+   */
+  getLoginChallengeDetails: {
+    methodKind: "unary";
+    input: typeof GetLoginChallengeDetailsRequestSchema;
+    output: typeof GetLoginChallengeDetailsResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.ApproveLoginChallenge
+   */
+  approveLoginChallenge: {
+    methodKind: "unary";
+    input: typeof ApproveLoginChallengeRequestSchema;
+    output: typeof ApproveLoginChallengeResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.DenyLoginChallenge
+   */
+  denyLoginChallenge: {
+    methodKind: "unary";
+    input: typeof DenyLoginChallengeRequestSchema;
+    output: typeof DenyLoginChallengeResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.AuthService.GetLoginChallengeStatus
+   */
+  getLoginChallengeStatus: {
+    methodKind: "unary";
+    input: typeof GetLoginChallengeStatusRequestSchema;
+    output: typeof GetLoginChallengeStatusResponseSchema;
   };
   /**
    * @generated from rpc quadsmith.AuthService.CompleteAccountSetup

@@ -122,3 +122,56 @@ func TestIPAccountSignInThrottling(t *testing.T) {
 		t.Fatalf("after reset, sign-in should succeed: %v", err)
 	}
 }
+
+func TestDeviceHintParsing(t *testing.T) {
+	tests := []struct {
+		ua       string
+		expected string
+	}{
+		{"", "Web Browser"},
+		{"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", "Chrome on macOS"},
+		{"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0", "Edge on Windows"},
+		{"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15", "Safari on macOS"},
+		{"Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1", "Safari on iOS"},
+		{"Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0", "Firefox on Linux"},
+		{"Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36", "Chrome on Android"},
+	}
+
+	for _, tt := range tests {
+		got := parseDeviceHint(tt.ua)
+		if got != tt.expected {
+			t.Errorf("parseDeviceHint(%q) = %q; want %q", tt.ua, got, tt.expected)
+		}
+	}
+}
+
+func TestLocationHintAndLocalIP(t *testing.T) {
+	if !isPrivateOrLocalIP("127.0.0.1") {
+		t.Errorf("expected 127.0.0.1 to be local IP")
+	}
+	if !isPrivateOrLocalIP("::1") {
+		t.Errorf("expected ::1 to be local IP")
+	}
+	if !isPrivateOrLocalIP("192.168.1.1") {
+		t.Errorf("expected 192.168.1.1 to be private IP")
+	}
+	if !isPrivateOrLocalIP("10.0.0.1") {
+		t.Errorf("expected 10.0.0.1 to be private IP")
+	}
+	if isPrivateOrLocalIP("8.8.8.8") {
+		t.Errorf("expected 8.8.8.8 not to be private IP")
+	}
+
+	// Local Network hint for private IP
+	if loc := extractLocationHint(nil, "127.0.0.1"); loc != "Local Network" {
+		t.Errorf("expected 'Local Network', got %q", loc)
+	}
+
+	// Cloudflare headers for public IP
+	headers := make(map[string][]string)
+	headers["Cf-Ipcity"] = []string{"San Francisco"}
+	headers["Cf-Ipcountry"] = []string{"US"}
+	if loc := extractLocationHint(headers, "8.8.8.8"); loc != "San Francisco, US" {
+		t.Errorf("expected 'San Francisco, US', got %q", loc)
+	}
+}

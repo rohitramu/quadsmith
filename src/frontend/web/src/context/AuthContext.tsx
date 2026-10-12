@@ -1,10 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
-import { AuthService } from "../gen/quadsmith/auth_pb";
+import { AuthService, LoginChallengeStatus } from "../gen/quadsmith/auth_pb";
 import type {
   ChangeUsernameResponse,
   ListArchivedUsernamesResponse,
+  GetLoginChallengeDetailsResponse,
+  ApproveLoginChallengeResponse,
+  DenyLoginChallengeResponse,
+  GetLoginChallengeStatusResponse,
 } from "../gen/quadsmith/auth_pb";
 import { UserService } from "../gen/quadsmith/user_pb";
 import type {
@@ -36,6 +40,12 @@ export interface AuthContextType {
   verifyMagicLink: (
     token: string,
   ) => Promise<{ accountSetupRequired?: boolean; setupToken?: string }>;
+  getLoginChallengeDetails: (token: string) => Promise<GetLoginChallengeDetailsResponse>;
+  approveLoginChallenge: (token: string) => Promise<ApproveLoginChallengeResponse>;
+  denyLoginChallenge: (token: string) => Promise<DenyLoginChallengeResponse>;
+  getLoginChallengeStatus: (
+    challengeId?: string | null,
+  ) => Promise<GetLoginChallengeStatusResponse>;
   completeAccountSetup: (setupToken: string, username: string, avatarUrl?: string) => Promise<void>;
   updateProfile: (data: { avatarUrl?: string; bio?: string }) => Promise<void>;
   logout: () => Promise<void>;
@@ -283,6 +293,52 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   };
 
+  const getLoginChallengeDetails = async (token: string) => {
+    return await authClient.getLoginChallengeDetails({ token });
+  };
+
+  const approveLoginChallenge = async (token: string) => {
+    return await authClient.approveLoginChallenge({ token });
+  };
+
+  const denyLoginChallenge = async (token: string) => {
+    return await authClient.denyLoginChallenge({ token });
+  };
+
+  const getLoginChallengeStatus = async (explicitChallengeId?: string | null) => {
+    const cid =
+      explicitChallengeId ||
+      challengeId ||
+      (() => {
+        try {
+          return sessionStorage.getItem("qs_challenge_id");
+        } catch {
+          return null;
+        }
+      })() ||
+      undefined;
+
+    const res = await authClient.getLoginChallengeStatus({ challengeId: cid });
+    if (res.status === LoginChallengeStatus.APPROVED && res.authResponse) {
+      if (res.authResponse.accessToken) {
+        setAccessToken(res.authResponse.accessToken);
+      }
+      if (res.authResponse.user) {
+        setUser(res.authResponse.user);
+      }
+      if (res.authResponse.profile) {
+        setProfile(res.authResponse.profile);
+      }
+      setChallengeId(null);
+      try {
+        sessionStorage.removeItem("qs_challenge_id");
+      } catch {
+        // ignore
+      }
+    }
+    return res;
+  };
+
   const completeAccountSetup = async (setupToken: string, username: string, avatarUrl?: string) => {
     const res = await authClient.completeAccountSetup({
       setupToken,
@@ -473,6 +529,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         sendEmailOtp,
         verifyEmailOtp,
         verifyMagicLink,
+        getLoginChallengeDetails,
+        approveLoginChallenge,
+        denyLoginChallenge,
+        getLoginChallengeStatus,
         completeAccountSetup,
         updateProfile,
         logout,

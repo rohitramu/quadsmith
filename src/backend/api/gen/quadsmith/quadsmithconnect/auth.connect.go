@@ -42,6 +42,18 @@ const (
 	// AuthServiceVerifyMagicLinkProcedure is the fully-qualified name of the AuthService's
 	// VerifyMagicLink RPC.
 	AuthServiceVerifyMagicLinkProcedure = "/quadsmith.AuthService/VerifyMagicLink"
+	// AuthServiceGetLoginChallengeDetailsProcedure is the fully-qualified name of the AuthService's
+	// GetLoginChallengeDetails RPC.
+	AuthServiceGetLoginChallengeDetailsProcedure = "/quadsmith.AuthService/GetLoginChallengeDetails"
+	// AuthServiceApproveLoginChallengeProcedure is the fully-qualified name of the AuthService's
+	// ApproveLoginChallenge RPC.
+	AuthServiceApproveLoginChallengeProcedure = "/quadsmith.AuthService/ApproveLoginChallenge"
+	// AuthServiceDenyLoginChallengeProcedure is the fully-qualified name of the AuthService's
+	// DenyLoginChallenge RPC.
+	AuthServiceDenyLoginChallengeProcedure = "/quadsmith.AuthService/DenyLoginChallenge"
+	// AuthServiceGetLoginChallengeStatusProcedure is the fully-qualified name of the AuthService's
+	// GetLoginChallengeStatus RPC.
+	AuthServiceGetLoginChallengeStatusProcedure = "/quadsmith.AuthService/GetLoginChallengeStatus"
 	// AuthServiceCompleteAccountSetupProcedure is the fully-qualified name of the AuthService's
 	// CompleteAccountSetup RPC.
 	AuthServiceCompleteAccountSetupProcedure = "/quadsmith.AuthService/CompleteAccountSetup"
@@ -87,6 +99,10 @@ type AuthServiceClient interface {
 	SendEmailOtp(context.Context, *connect.Request[quadsmith.SendEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error)
 	VerifyEmailOtp(context.Context, *connect.Request[quadsmith.VerifyEmailOtpRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	VerifyMagicLink(context.Context, *connect.Request[quadsmith.VerifyMagicLinkRequest]) (*connect.Response[quadsmith.AuthResponse], error)
+	GetLoginChallengeDetails(context.Context, *connect.Request[quadsmith.GetLoginChallengeDetailsRequest]) (*connect.Response[quadsmith.GetLoginChallengeDetailsResponse], error)
+	ApproveLoginChallenge(context.Context, *connect.Request[quadsmith.ApproveLoginChallengeRequest]) (*connect.Response[quadsmith.ApproveLoginChallengeResponse], error)
+	DenyLoginChallenge(context.Context, *connect.Request[quadsmith.DenyLoginChallengeRequest]) (*connect.Response[quadsmith.DenyLoginChallengeResponse], error)
+	GetLoginChallengeStatus(context.Context, *connect.Request[quadsmith.GetLoginChallengeStatusRequest]) (*connect.Response[quadsmith.GetLoginChallengeStatusResponse], error)
 	CompleteAccountSetup(context.Context, *connect.Request[quadsmith.CompleteAccountSetupRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	RefreshToken(context.Context, *connect.Request[quadsmith.RefreshTokenRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	GetCurrentUser(context.Context, *connect.Request[quadsmith.GetCurrentUserRequest]) (*connect.Response[quadsmith.User], error)
@@ -129,6 +145,30 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			httpClient,
 			baseURL+AuthServiceVerifyMagicLinkProcedure,
 			connect.WithSchema(authServiceMethods.ByName("VerifyMagicLink")),
+			connect.WithClientOptions(opts...),
+		),
+		getLoginChallengeDetails: connect.NewClient[quadsmith.GetLoginChallengeDetailsRequest, quadsmith.GetLoginChallengeDetailsResponse](
+			httpClient,
+			baseURL+AuthServiceGetLoginChallengeDetailsProcedure,
+			connect.WithSchema(authServiceMethods.ByName("GetLoginChallengeDetails")),
+			connect.WithClientOptions(opts...),
+		),
+		approveLoginChallenge: connect.NewClient[quadsmith.ApproveLoginChallengeRequest, quadsmith.ApproveLoginChallengeResponse](
+			httpClient,
+			baseURL+AuthServiceApproveLoginChallengeProcedure,
+			connect.WithSchema(authServiceMethods.ByName("ApproveLoginChallenge")),
+			connect.WithClientOptions(opts...),
+		),
+		denyLoginChallenge: connect.NewClient[quadsmith.DenyLoginChallengeRequest, quadsmith.DenyLoginChallengeResponse](
+			httpClient,
+			baseURL+AuthServiceDenyLoginChallengeProcedure,
+			connect.WithSchema(authServiceMethods.ByName("DenyLoginChallenge")),
+			connect.WithClientOptions(opts...),
+		),
+		getLoginChallengeStatus: connect.NewClient[quadsmith.GetLoginChallengeStatusRequest, quadsmith.GetLoginChallengeStatusResponse](
+			httpClient,
+			baseURL+AuthServiceGetLoginChallengeStatusProcedure,
+			connect.WithSchema(authServiceMethods.ByName("GetLoginChallengeStatus")),
 			connect.WithClientOptions(opts...),
 		),
 		completeAccountSetup: connect.NewClient[quadsmith.CompleteAccountSetupRequest, quadsmith.AuthResponse](
@@ -214,22 +254,26 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	sendEmailOtp          *connect.Client[quadsmith.SendEmailOtpRequest, quadsmith.SendEmailOtpResponse]
-	verifyEmailOtp        *connect.Client[quadsmith.VerifyEmailOtpRequest, quadsmith.AuthResponse]
-	verifyMagicLink       *connect.Client[quadsmith.VerifyMagicLinkRequest, quadsmith.AuthResponse]
-	completeAccountSetup  *connect.Client[quadsmith.CompleteAccountSetupRequest, quadsmith.AuthResponse]
-	refreshToken          *connect.Client[quadsmith.RefreshTokenRequest, quadsmith.AuthResponse]
-	getCurrentUser        *connect.Client[quadsmith.GetCurrentUserRequest, quadsmith.User]
-	updateProfile         *connect.Client[quadsmith.UpdateProfileRequest, quadsmith.UserProfile]
-	logout                *connect.Client[quadsmith.LogoutRequest, quadsmith.LogoutResponse]
-	listUserEmails        *connect.Client[quadsmith.ListUserEmailsRequest, quadsmith.ListUserEmailsResponse]
-	sendAddEmailOtp       *connect.Client[quadsmith.SendAddEmailOtpRequest, quadsmith.SendEmailOtpResponse]
-	verifyAddEmailOtp     *connect.Client[quadsmith.VerifyAddEmailOtpRequest, quadsmith.VerifyAddEmailOtpResponse]
-	mergeAccount          *connect.Client[quadsmith.MergeAccountRequest, quadsmith.MergeAccountResponse]
-	setPrimaryEmail       *connect.Client[quadsmith.SetPrimaryEmailRequest, quadsmith.SetPrimaryEmailResponse]
-	removeUserEmail       *connect.Client[quadsmith.RemoveUserEmailRequest, quadsmith.RemoveUserEmailResponse]
-	changeUsername        *connect.Client[quadsmith.ChangeUsernameRequest, quadsmith.ChangeUsernameResponse]
-	listArchivedUsernames *connect.Client[quadsmith.ListArchivedUsernamesRequest, quadsmith.ListArchivedUsernamesResponse]
+	sendEmailOtp             *connect.Client[quadsmith.SendEmailOtpRequest, quadsmith.SendEmailOtpResponse]
+	verifyEmailOtp           *connect.Client[quadsmith.VerifyEmailOtpRequest, quadsmith.AuthResponse]
+	verifyMagicLink          *connect.Client[quadsmith.VerifyMagicLinkRequest, quadsmith.AuthResponse]
+	getLoginChallengeDetails *connect.Client[quadsmith.GetLoginChallengeDetailsRequest, quadsmith.GetLoginChallengeDetailsResponse]
+	approveLoginChallenge    *connect.Client[quadsmith.ApproveLoginChallengeRequest, quadsmith.ApproveLoginChallengeResponse]
+	denyLoginChallenge       *connect.Client[quadsmith.DenyLoginChallengeRequest, quadsmith.DenyLoginChallengeResponse]
+	getLoginChallengeStatus  *connect.Client[quadsmith.GetLoginChallengeStatusRequest, quadsmith.GetLoginChallengeStatusResponse]
+	completeAccountSetup     *connect.Client[quadsmith.CompleteAccountSetupRequest, quadsmith.AuthResponse]
+	refreshToken             *connect.Client[quadsmith.RefreshTokenRequest, quadsmith.AuthResponse]
+	getCurrentUser           *connect.Client[quadsmith.GetCurrentUserRequest, quadsmith.User]
+	updateProfile            *connect.Client[quadsmith.UpdateProfileRequest, quadsmith.UserProfile]
+	logout                   *connect.Client[quadsmith.LogoutRequest, quadsmith.LogoutResponse]
+	listUserEmails           *connect.Client[quadsmith.ListUserEmailsRequest, quadsmith.ListUserEmailsResponse]
+	sendAddEmailOtp          *connect.Client[quadsmith.SendAddEmailOtpRequest, quadsmith.SendEmailOtpResponse]
+	verifyAddEmailOtp        *connect.Client[quadsmith.VerifyAddEmailOtpRequest, quadsmith.VerifyAddEmailOtpResponse]
+	mergeAccount             *connect.Client[quadsmith.MergeAccountRequest, quadsmith.MergeAccountResponse]
+	setPrimaryEmail          *connect.Client[quadsmith.SetPrimaryEmailRequest, quadsmith.SetPrimaryEmailResponse]
+	removeUserEmail          *connect.Client[quadsmith.RemoveUserEmailRequest, quadsmith.RemoveUserEmailResponse]
+	changeUsername           *connect.Client[quadsmith.ChangeUsernameRequest, quadsmith.ChangeUsernameResponse]
+	listArchivedUsernames    *connect.Client[quadsmith.ListArchivedUsernamesRequest, quadsmith.ListArchivedUsernamesResponse]
 }
 
 // SendEmailOtp calls quadsmith.AuthService.SendEmailOtp.
@@ -245,6 +289,26 @@ func (c *authServiceClient) VerifyEmailOtp(ctx context.Context, req *connect.Req
 // VerifyMagicLink calls quadsmith.AuthService.VerifyMagicLink.
 func (c *authServiceClient) VerifyMagicLink(ctx context.Context, req *connect.Request[quadsmith.VerifyMagicLinkRequest]) (*connect.Response[quadsmith.AuthResponse], error) {
 	return c.verifyMagicLink.CallUnary(ctx, req)
+}
+
+// GetLoginChallengeDetails calls quadsmith.AuthService.GetLoginChallengeDetails.
+func (c *authServiceClient) GetLoginChallengeDetails(ctx context.Context, req *connect.Request[quadsmith.GetLoginChallengeDetailsRequest]) (*connect.Response[quadsmith.GetLoginChallengeDetailsResponse], error) {
+	return c.getLoginChallengeDetails.CallUnary(ctx, req)
+}
+
+// ApproveLoginChallenge calls quadsmith.AuthService.ApproveLoginChallenge.
+func (c *authServiceClient) ApproveLoginChallenge(ctx context.Context, req *connect.Request[quadsmith.ApproveLoginChallengeRequest]) (*connect.Response[quadsmith.ApproveLoginChallengeResponse], error) {
+	return c.approveLoginChallenge.CallUnary(ctx, req)
+}
+
+// DenyLoginChallenge calls quadsmith.AuthService.DenyLoginChallenge.
+func (c *authServiceClient) DenyLoginChallenge(ctx context.Context, req *connect.Request[quadsmith.DenyLoginChallengeRequest]) (*connect.Response[quadsmith.DenyLoginChallengeResponse], error) {
+	return c.denyLoginChallenge.CallUnary(ctx, req)
+}
+
+// GetLoginChallengeStatus calls quadsmith.AuthService.GetLoginChallengeStatus.
+func (c *authServiceClient) GetLoginChallengeStatus(ctx context.Context, req *connect.Request[quadsmith.GetLoginChallengeStatusRequest]) (*connect.Response[quadsmith.GetLoginChallengeStatusResponse], error) {
+	return c.getLoginChallengeStatus.CallUnary(ctx, req)
 }
 
 // CompleteAccountSetup calls quadsmith.AuthService.CompleteAccountSetup.
@@ -317,6 +381,10 @@ type AuthServiceHandler interface {
 	SendEmailOtp(context.Context, *connect.Request[quadsmith.SendEmailOtpRequest]) (*connect.Response[quadsmith.SendEmailOtpResponse], error)
 	VerifyEmailOtp(context.Context, *connect.Request[quadsmith.VerifyEmailOtpRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	VerifyMagicLink(context.Context, *connect.Request[quadsmith.VerifyMagicLinkRequest]) (*connect.Response[quadsmith.AuthResponse], error)
+	GetLoginChallengeDetails(context.Context, *connect.Request[quadsmith.GetLoginChallengeDetailsRequest]) (*connect.Response[quadsmith.GetLoginChallengeDetailsResponse], error)
+	ApproveLoginChallenge(context.Context, *connect.Request[quadsmith.ApproveLoginChallengeRequest]) (*connect.Response[quadsmith.ApproveLoginChallengeResponse], error)
+	DenyLoginChallenge(context.Context, *connect.Request[quadsmith.DenyLoginChallengeRequest]) (*connect.Response[quadsmith.DenyLoginChallengeResponse], error)
+	GetLoginChallengeStatus(context.Context, *connect.Request[quadsmith.GetLoginChallengeStatusRequest]) (*connect.Response[quadsmith.GetLoginChallengeStatusResponse], error)
 	CompleteAccountSetup(context.Context, *connect.Request[quadsmith.CompleteAccountSetupRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	RefreshToken(context.Context, *connect.Request[quadsmith.RefreshTokenRequest]) (*connect.Response[quadsmith.AuthResponse], error)
 	GetCurrentUser(context.Context, *connect.Request[quadsmith.GetCurrentUserRequest]) (*connect.Response[quadsmith.User], error)
@@ -355,6 +423,30 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		AuthServiceVerifyMagicLinkProcedure,
 		svc.VerifyMagicLink,
 		connect.WithSchema(authServiceMethods.ByName("VerifyMagicLink")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceGetLoginChallengeDetailsHandler := connect.NewUnaryHandler(
+		AuthServiceGetLoginChallengeDetailsProcedure,
+		svc.GetLoginChallengeDetails,
+		connect.WithSchema(authServiceMethods.ByName("GetLoginChallengeDetails")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceApproveLoginChallengeHandler := connect.NewUnaryHandler(
+		AuthServiceApproveLoginChallengeProcedure,
+		svc.ApproveLoginChallenge,
+		connect.WithSchema(authServiceMethods.ByName("ApproveLoginChallenge")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceDenyLoginChallengeHandler := connect.NewUnaryHandler(
+		AuthServiceDenyLoginChallengeProcedure,
+		svc.DenyLoginChallenge,
+		connect.WithSchema(authServiceMethods.ByName("DenyLoginChallenge")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceGetLoginChallengeStatusHandler := connect.NewUnaryHandler(
+		AuthServiceGetLoginChallengeStatusProcedure,
+		svc.GetLoginChallengeStatus,
+		connect.WithSchema(authServiceMethods.ByName("GetLoginChallengeStatus")),
 		connect.WithHandlerOptions(opts...),
 	)
 	authServiceCompleteAccountSetupHandler := connect.NewUnaryHandler(
@@ -443,6 +535,14 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceVerifyEmailOtpHandler.ServeHTTP(w, r)
 		case AuthServiceVerifyMagicLinkProcedure:
 			authServiceVerifyMagicLinkHandler.ServeHTTP(w, r)
+		case AuthServiceGetLoginChallengeDetailsProcedure:
+			authServiceGetLoginChallengeDetailsHandler.ServeHTTP(w, r)
+		case AuthServiceApproveLoginChallengeProcedure:
+			authServiceApproveLoginChallengeHandler.ServeHTTP(w, r)
+		case AuthServiceDenyLoginChallengeProcedure:
+			authServiceDenyLoginChallengeHandler.ServeHTTP(w, r)
+		case AuthServiceGetLoginChallengeStatusProcedure:
+			authServiceGetLoginChallengeStatusHandler.ServeHTTP(w, r)
 		case AuthServiceCompleteAccountSetupProcedure:
 			authServiceCompleteAccountSetupHandler.ServeHTTP(w, r)
 		case AuthServiceRefreshTokenProcedure:
@@ -488,6 +588,22 @@ func (UnimplementedAuthServiceHandler) VerifyEmailOtp(context.Context, *connect.
 
 func (UnimplementedAuthServiceHandler) VerifyMagicLink(context.Context, *connect.Request[quadsmith.VerifyMagicLinkRequest]) (*connect.Response[quadsmith.AuthResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.VerifyMagicLink is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) GetLoginChallengeDetails(context.Context, *connect.Request[quadsmith.GetLoginChallengeDetailsRequest]) (*connect.Response[quadsmith.GetLoginChallengeDetailsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.GetLoginChallengeDetails is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) ApproveLoginChallenge(context.Context, *connect.Request[quadsmith.ApproveLoginChallengeRequest]) (*connect.Response[quadsmith.ApproveLoginChallengeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.ApproveLoginChallenge is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) DenyLoginChallenge(context.Context, *connect.Request[quadsmith.DenyLoginChallengeRequest]) (*connect.Response[quadsmith.DenyLoginChallengeResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.DenyLoginChallenge is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) GetLoginChallengeStatus(context.Context, *connect.Request[quadsmith.GetLoginChallengeStatusRequest]) (*connect.Response[quadsmith.GetLoginChallengeStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.AuthService.GetLoginChallengeStatus is not implemented"))
 }
 
 func (UnimplementedAuthServiceHandler) CompleteAccountSetup(context.Context, *connect.Request[quadsmith.CompleteAccountSetupRequest]) (*connect.Response[quadsmith.AuthResponse], error) {

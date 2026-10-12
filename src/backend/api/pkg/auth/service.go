@@ -74,11 +74,13 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 	otpUUID := NewUUIDv7()
 	now := time.Now()
 	expiresAt := now.Add(MagicLinkTTL)
+	userAgent := req.Header().Get("User-Agent")
+	locationHint := extractLocationHint(req.Header(), clientIP)
 
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, expires_at, created_at, failed_attempts)
-		VALUES ($1, $2, $3, $4, 'login', $5, $6, 0)`,
-		otpUUID, email, challengeHash, codeHash, expiresAt, now)
+		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, expires_at, created_at, failed_attempts, ip_address, user_agent, location_hint, status)
+		VALUES ($1, $2, $3, $4, 'login', $5, $6, 0, $7, $8, $9, 'pending')`,
+		otpUUID, email, challengeHash, codeHash, expiresAt, now, clientIP, userAgent, locationHint)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save otp challenge: %w", err))
 	}
@@ -309,6 +311,209 @@ func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[
 	}
 
 	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
+}
+
+func (s *AuthService) GetLoginChallengeDetails(ctx context.Context, req *connect.Request[pb.GetLoginChallengeDetailsRequest]) (*connect.Response[pb.GetLoginChallengeDetailsResponse], error) {
+	token := strings.TrimSpace(req.Msg.GetToken())
+	if token == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link token required"))
+	}
+
+	claims, err := VerifyMagicLinkToken(token)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
+	}
+
+	var email, ipAddress, userAgent, locationHint, statusStr string
+	var createdAt, expiresAt time.Time
+	var usedAt *time.Time
+
+	err = s.db.QueryRow(ctx, `
+		SELECT email, ip_address, user_agent, location_hint, status, created_at, expires_at, used_at
+		FROM email_otps
+		WHERE uuid = $1`, claims.OtpUUID).Scan(&email, &ipAddress, &userAgent, &locationHint, &statusStr, &createdAt, &expiresAt, &usedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("login challenge not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	status := pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_PENDING
+	if usedAt != nil || time.Now().After(expiresAt) {
+		status = pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_EXPIRED
+	} else {
+		switch statusStr {
+		case "approved":
+			status = pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_APPROVED
+		case "denied":
+			status = pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_DENIED
+		default:
+			status = pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_PENDING
+		}
+	}
+
+	deviceHint := parseDeviceHint(userAgent)
+
+	return connect.NewResponse(&pb.GetLoginChallengeDetailsResponse{
+		Email:        email,
+		IpAddress:    ipAddress,
+		LocationHint: locationHint,
+		DeviceHint:   deviceHint,
+		CreatedAt:    timestamppb.New(createdAt),
+		ExpiresAt:    timestamppb.New(expiresAt),
+		Status:       status,
+	}), nil
+}
+
+func (s *AuthService) ApproveLoginChallenge(ctx context.Context, req *connect.Request[pb.ApproveLoginChallengeRequest]) (*connect.Response[pb.ApproveLoginChallengeResponse], error) {
+	token := strings.TrimSpace(req.Msg.GetToken())
+	if token == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link token required"))
+	}
+
+	claims, err := VerifyMagicLinkToken(token)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
+	}
+
+	tag, err := s.db.Exec(ctx, `
+		UPDATE email_otps
+		SET status = 'approved', approved_at = NOW()
+		WHERE uuid = $1 AND status = 'pending' AND used_at IS NULL AND expires_at > NOW()`, claims.OtpUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to approve login: %w", err))
+	}
+	if tag.RowsAffected() == 0 {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("login challenge is no longer valid, expired, or already answered"))
+	}
+
+	return connect.NewResponse(&pb.ApproveLoginChallengeResponse{
+		Success: true,
+		Message: "Login approved",
+	}), nil
+}
+
+func (s *AuthService) DenyLoginChallenge(ctx context.Context, req *connect.Request[pb.DenyLoginChallengeRequest]) (*connect.Response[pb.DenyLoginChallengeResponse], error) {
+	token := strings.TrimSpace(req.Msg.GetToken())
+	if token == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link token required"))
+	}
+
+	claims, err := VerifyMagicLinkToken(token)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
+	}
+
+	tag, err := s.db.Exec(ctx, `
+		UPDATE email_otps
+		SET status = 'denied', denied_at = NOW()
+		WHERE uuid = $1 AND status = 'pending' AND used_at IS NULL`, claims.OtpUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to deny login: %w", err))
+	}
+	if tag.RowsAffected() == 0 {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("login challenge is no longer valid or already answered"))
+	}
+
+	return connect.NewResponse(&pb.DenyLoginChallengeResponse{
+		Success: true,
+		Message: "Login request denied",
+	}), nil
+}
+
+func (s *AuthService) GetLoginChallengeStatus(ctx context.Context, req *connect.Request[pb.GetLoginChallengeStatusRequest]) (*connect.Response[pb.GetLoginChallengeStatusResponse], error) {
+	challengeID := extractChallengeID(req.Msg.GetChallengeId(), req.Header())
+	if challengeID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge session expired or missing"))
+	}
+	challengeHash := HashToken(challengeID)
+
+	var otpUUID, email, statusStr string
+	var expiresAt time.Time
+	var usedAt *time.Time
+
+	err := s.db.QueryRow(ctx, `
+		SELECT uuid, email, status, expires_at, used_at
+		FROM email_otps
+		WHERE challenge_id_hash = $1 AND purpose = 'login'
+		ORDER BY created_at DESC
+		LIMIT 1`, challengeHash).Scan(&otpUUID, &email, &statusStr, &expiresAt, &usedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return connect.NewResponse(&pb.GetLoginChallengeStatusResponse{
+				Status: pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_EXPIRED,
+			}), nil
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if time.Now().After(expiresAt) {
+		return connect.NewResponse(&pb.GetLoginChallengeStatusResponse{
+			Status: pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_EXPIRED,
+		}), nil
+	}
+
+	switch statusStr {
+	case "denied":
+		return connect.NewResponse(&pb.GetLoginChallengeStatusResponse{
+			Status: pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_DENIED,
+		}), nil
+	case "approved":
+		tag, err := s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1 AND used_at IS NULL`, otpUUID)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		if tag.RowsAffected() == 0 {
+			// Already consumed by another request
+			return connect.NewResponse(&pb.GetLoginChallengeStatusResponse{
+				Status: pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_EXPIRED,
+			}), nil
+		}
+
+		clientIP := getClientIP(req)
+		RecordIPSuccess(clientIP)
+		if err := CheckAndRecordIPSignIn(clientIP, email); err != nil {
+			return nil, connect.NewError(connect.CodeResourceExhausted, err)
+		}
+
+		exists, err := s.userExistsForEmail(ctx, email)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		if !exists {
+			setupToken, err := SignSetupToken(email)
+			if err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign setup token: %w", err))
+			}
+			return connect.NewResponse(&pb.GetLoginChallengeStatusResponse{
+				Status: pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_APPROVED,
+				AuthResponse: &pb.AuthResponse{
+					AccountSetupRequired: true,
+					SetupToken:           setupToken,
+				},
+			}), nil
+		}
+
+		authRes, err := s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
+		if err != nil {
+			return nil, err
+		}
+
+		res := connect.NewResponse(&pb.GetLoginChallengeStatusResponse{
+			Status:       pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_APPROVED,
+			AuthResponse: authRes.Msg,
+		})
+		for _, cookie := range authRes.Header().Values("Set-Cookie") {
+			res.Header().Add("Set-Cookie", cookie)
+		}
+		return res, nil
+
+	default:
+		return connect.NewResponse(&pb.GetLoginChallengeStatusResponse{
+			Status: pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_PENDING,
+		}), nil
+	}
 }
 
 func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Request[pb.CompleteAccountSetupRequest]) (*connect.Response[pb.AuthResponse], error) {
@@ -1592,6 +1797,81 @@ func getClientIP[T any](req *connect.Request[T]) string {
 		peerAddr = req.Peer().Addr
 	}
 	return extractClientIP(req.Header(), peerAddr)
+}
+
+func isPrivateOrLocalIP(ipStr string) bool {
+	if ipStr == "" || ipStr == "127.0.0.1" || ipStr == "::1" || ipStr == "localhost" {
+		return true
+	}
+	ip := net.ParseIP(ipStr)
+	if ip == nil {
+		return false
+	}
+	return ip.IsLoopback() || ip.IsPrivate() || ip.IsLinkLocalUnicast() || ip.IsLinkLocalMulticast()
+}
+
+func extractLocationHint(header http.Header, ipStr string) string {
+	if isPrivateOrLocalIP(ipStr) {
+		return "Local Network"
+	}
+	if header != nil {
+		city := strings.TrimSpace(header.Get("CF-IPCity"))
+		country := strings.TrimSpace(header.Get("CF-IPCountry"))
+		if city == "" {
+			city = strings.TrimSpace(header.Get("X-Geo-City"))
+		}
+		if country == "" {
+			country = strings.TrimSpace(header.Get("X-Geo-Country"))
+		}
+		if city != "" && country != "" {
+			return city + ", " + country
+		} else if country != "" {
+			return country
+		} else if city != "" {
+			return city
+		}
+	}
+	return "Unknown Location"
+}
+
+func parseDeviceHint(ua string) string {
+	if ua == "" {
+		return "Web Browser"
+	}
+	osName := ""
+	switch {
+	case strings.Contains(ua, "iPhone") || strings.Contains(ua, "iPad") || strings.Contains(ua, "iOS"):
+		osName = "iOS"
+	case strings.Contains(ua, "Macintosh") || strings.Contains(ua, "Mac OS X"):
+		osName = "macOS"
+	case strings.Contains(ua, "Windows"):
+		osName = "Windows"
+	case strings.Contains(ua, "Android"):
+		osName = "Android"
+	case strings.Contains(ua, "Linux"):
+		osName = "Linux"
+	}
+
+	browser := ""
+	switch {
+	case strings.Contains(ua, "Edg/"):
+		browser = "Edge"
+	case strings.Contains(ua, "Chrome/") && !strings.Contains(ua, "Edg/"):
+		browser = "Chrome"
+	case strings.Contains(ua, "Firefox/"):
+		browser = "Firefox"
+	case strings.Contains(ua, "Safari/") && !strings.Contains(ua, "Chrome/"):
+		browser = "Safari"
+	}
+
+	if osName != "" && browser != "" {
+		return fmt.Sprintf("%s on %s", browser, osName)
+	} else if osName != "" {
+		return osName
+	} else if browser != "" {
+		return browser
+	}
+	return "Web Browser"
 }
 
 func getBaseURL[T any](req *connect.Request[T]) string {

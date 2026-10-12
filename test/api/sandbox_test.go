@@ -927,6 +927,205 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 	}
 }
 
+func TestSandboxAuth_CrossDeviceMagicLinkApproval(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	authClient := quadsmithconnect.NewAuthServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+	ctx := context.Background()
+
+	dbUrl := os.Getenv("DATABASE_URL")
+	if dbUrl == "" {
+		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+	}
+	pool, err := pgxpool.New(ctx, dbUrl)
+	if err != nil {
+		t.Fatalf("failed to connect to db: %v", err)
+	}
+	defer pool.Close()
+
+	testEmail := "crossdev_pilot@fpv.build"
+	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE email = $1`, testEmail)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE LOWER(email) = LOWER($1)`, testEmail)
+
+	// 1. Device A sends OTP
+	deviceAIP := "192.168.1.105"
+	deviceAUA := "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+	sendReq := connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: testEmail,
+	})
+	sendReq.Header().Set("X-Forwarded-For", deviceAIP)
+	sendReq.Header().Set("User-Agent", deviceAUA)
+	sendRes, err := authClient.SendEmailOtp(ctx, sendReq)
+	if err != nil {
+		t.Fatalf("SendEmailOtp failed: %v", err)
+	}
+	challengeId := sendRes.Msg.GetChallengeId()
+	if challengeId == "" {
+		t.Fatal("expected challenge_id from SendEmailOtp")
+	}
+
+	// 2. Query DB to get otp UUID and verify metadata
+	var otpUUID, status, locationHint, ipAddress string
+	err = pool.QueryRow(ctx, `
+		SELECT uuid, status, location_hint, ip_address
+		FROM email_otps
+		WHERE email = $1 AND purpose = 'login'
+		ORDER BY created_at DESC LIMIT 1`, testEmail).Scan(&otpUUID, &status, &locationHint, &ipAddress)
+	if err != nil {
+		t.Fatalf("failed to query email_otps: %v", err)
+	}
+	if status != "pending" {
+		t.Errorf("expected pending status, got %s", status)
+	}
+	if ipAddress != deviceAIP {
+		t.Errorf("expected ip %s, got %s", deviceAIP, ipAddress)
+	}
+	if locationHint != "Local Network" {
+		t.Errorf("expected 'Local Network' location hint for private IP, got %s", locationHint)
+	}
+
+	// 3. Device A polls status initially -> PENDING
+	statusReq := connect.NewRequest(&pb.GetLoginChallengeStatusRequest{
+		ChallengeId: challengeId,
+	})
+	statusRes, err := authClient.GetLoginChallengeStatus(ctx, statusReq)
+	if err != nil {
+		t.Fatalf("GetLoginChallengeStatus failed: %v", err)
+	}
+	if statusRes.Msg.GetStatus() != pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_PENDING {
+		t.Errorf("expected PENDING status, got %v", statusRes.Msg.GetStatus())
+	}
+
+	// 4. Device B opens magic link token and fetches challenge details
+	magicToken, err := auth.SignMagicLinkToken(otpUUID, testEmail, "login", "", time.Now().Add(auth.MagicLinkTTL))
+	if err != nil {
+		t.Fatalf("failed to sign magic link token: %v", err)
+	}
+
+	detailsRes, err := authClient.GetLoginChallengeDetails(ctx, connect.NewRequest(&pb.GetLoginChallengeDetailsRequest{
+		Token: magicToken,
+	}))
+	if err != nil {
+		t.Fatalf("GetLoginChallengeDetails failed: %v", err)
+	}
+	if detailsRes.Msg.GetEmail() != testEmail {
+		t.Errorf("expected email %s, got %s", testEmail, detailsRes.Msg.GetEmail())
+	}
+	if detailsRes.Msg.GetIpAddress() != deviceAIP {
+		t.Errorf("expected ip %s, got %s", deviceAIP, detailsRes.Msg.GetIpAddress())
+	}
+	if detailsRes.Msg.GetLocationHint() != "Local Network" {
+		t.Errorf("expected 'Local Network', got %s", detailsRes.Msg.GetLocationHint())
+	}
+	if detailsRes.Msg.GetDeviceHint() != "Chrome on macOS" {
+		t.Errorf("expected 'Chrome on macOS', got %s", detailsRes.Msg.GetDeviceHint())
+	}
+	if detailsRes.Msg.GetStatus() != pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_PENDING {
+		t.Errorf("expected status PENDING, got %v", detailsRes.Msg.GetStatus())
+	}
+
+	// 5. Device B approves challenge
+	approveRes, err := authClient.ApproveLoginChallenge(ctx, connect.NewRequest(&pb.ApproveLoginChallengeRequest{
+		Token: magicToken,
+	}))
+	if err != nil {
+		t.Fatalf("ApproveLoginChallenge failed: %v", err)
+	}
+	if !approveRes.Msg.GetSuccess() {
+		t.Errorf("expected ApproveLoginChallenge success=true, got false")
+	}
+
+	// 6. Device B checks details again -> APPROVED
+	detailsRes2, err := authClient.GetLoginChallengeDetails(ctx, connect.NewRequest(&pb.GetLoginChallengeDetailsRequest{
+		Token: magicToken,
+	}))
+	if err != nil {
+		t.Fatalf("GetLoginChallengeDetails after approval failed: %v", err)
+	}
+	if detailsRes2.Msg.GetStatus() != pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_APPROVED {
+		t.Errorf("expected status APPROVED, got %v", detailsRes2.Msg.GetStatus())
+	}
+
+	// 7. Device A polls status -> APPROVED
+	statusRes2, err := authClient.GetLoginChallengeStatus(ctx, statusReq)
+	if err != nil {
+		t.Fatalf("GetLoginChallengeStatus after approval failed: %v", err)
+	}
+	if statusRes2.Msg.GetStatus() != pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_APPROVED {
+		t.Errorf("expected status APPROVED for Device A, got %v", statusRes2.Msg.GetStatus())
+	}
+	if statusRes2.Msg.GetAuthResponse() == nil {
+		t.Fatal("expected AuthResponse in statusRes2, got nil")
+	}
+	if !statusRes2.Msg.GetAuthResponse().GetAccountSetupRequired() {
+		t.Errorf("expected AccountSetupRequired=true for new user, got false")
+	}
+	if statusRes2.Msg.GetAuthResponse().GetSetupToken() == "" {
+		t.Errorf("expected SetupToken to be present, got empty")
+	}
+
+	// 8. Device A polling again after consumption -> EXPIRED
+	statusRes3, err := authClient.GetLoginChallengeStatus(ctx, statusReq)
+	if err != nil {
+		t.Fatalf("GetLoginChallengeStatus after consumption failed: %v", err)
+	}
+	if statusRes3.Msg.GetStatus() != pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_EXPIRED {
+		t.Errorf("expected status EXPIRED after consumed, got %v", statusRes3.Msg.GetStatus())
+	}
+
+	// 9. Now test Deny flow with a fresh request
+	testEmailDeny := "crossdev_deny@fpv.build"
+	sendDenyRes, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: testEmailDeny,
+	}))
+	if err != nil {
+		t.Fatalf("SendEmailOtp for deny test failed: %v", err)
+	}
+	challengeIdDeny := sendDenyRes.Msg.GetChallengeId()
+
+	var otpUUIDDeny string
+	err = pool.QueryRow(ctx, `
+		SELECT uuid FROM email_otps
+		WHERE email = $1 AND purpose = 'login'
+		ORDER BY created_at DESC LIMIT 1`, testEmailDeny).Scan(&otpUUIDDeny)
+	if err != nil {
+		t.Fatalf("failed to query email_otps for deny: %v", err)
+	}
+	magicTokenDeny, err := auth.SignMagicLinkToken(otpUUIDDeny, testEmailDeny, "login", "", time.Now().Add(auth.MagicLinkTTL))
+	if err != nil {
+		t.Fatalf("failed to sign deny magic link token: %v", err)
+	}
+
+	denyRes, err := authClient.DenyLoginChallenge(ctx, connect.NewRequest(&pb.DenyLoginChallengeRequest{
+		Token: magicTokenDeny,
+	}))
+	if err != nil {
+		t.Fatalf("DenyLoginChallenge failed: %v", err)
+	}
+	if !denyRes.Msg.GetSuccess() {
+		t.Errorf("expected DenyLoginChallenge success=true, got false")
+	}
+
+	// Device A polls status -> DENIED
+	statusResDeny, err := authClient.GetLoginChallengeStatus(ctx, connect.NewRequest(&pb.GetLoginChallengeStatusRequest{
+		ChallengeId: challengeIdDeny,
+	}))
+	if err != nil {
+		t.Fatalf("GetLoginChallengeStatus for denied challenge failed: %v", err)
+	}
+	if statusResDeny.Msg.GetStatus() != pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_DENIED {
+		t.Errorf("expected status DENIED, got %v", statusResDeny.Msg.GetStatus())
+	}
+}
+
 func TestSandboxCreateCollection(t *testing.T) {
 	apiUrl := getAPIURL()
 	socialClient := quadsmithconnect.NewSocialServiceClient(
