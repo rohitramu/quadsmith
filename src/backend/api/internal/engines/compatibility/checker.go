@@ -123,55 +123,6 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 	}
 
-	// Rule 7: Video Transmitter vs Flight Controller (Voltage & Ports)
-	if comp.FlightController != nil && comp.VideoTransmitter != nil {
-		fc := comp.FlightController
-		vtx := comp.VideoTransmitter
-
-		// Voltage check
-		if fc.VtxVoltageMaxV > 0 && vtx.InputVoltageMinV > 0 && vtx.InputVoltageMinV > fc.VtxVoltageMaxV {
-			messages = append(messages, &pb.CompatibilityMessage{
-				CheckerName:   "FlightControllerVtxVoltageChecker",
-				Components:    "Flight Controller and Video Transmitter",
-				SeverityLevel: 0,
-				SeverityName:  "DEFINITE_INCOMPATIBILITY",
-				Message:       fmt.Sprintf("Flight controller maximum VTX output voltage (%.1fV) cannot supply video transmitter minimum input voltage (%.1fV).", fc.VtxVoltageMaxV, vtx.InputVoltageMinV),
-				Resolution:    "Select a video transmitter with lower input voltage requirements or a flight controller with a higher-voltage BEC/output.",
-			})
-		} else if fc.VtxVoltageMinV > 0 && vtx.InputVoltageMaxV > 0 && vtx.InputVoltageMaxV < fc.VtxVoltageMinV {
-			messages = append(messages, &pb.CompatibilityMessage{
-				CheckerName:   "FlightControllerVtxVoltageChecker",
-				Components:    "Flight Controller and Video Transmitter",
-				SeverityLevel: 0,
-				SeverityName:  "DEFINITE_INCOMPATIBILITY",
-				Message:       fmt.Sprintf("Flight controller minimum VTX output voltage (%.1fV) exceeds video transmitter maximum input voltage (%.1fV).", fc.VtxVoltageMinV, vtx.InputVoltageMaxV),
-				Resolution:    "Select a video transmitter supporting higher input voltage or a flight controller with compatible output voltage.",
-			})
-		}
-
-		// Port / pin check
-		if len(fc.VtxPorts) > 0 && vtx.PortType != "" {
-			matched := false
-			for _, p := range fc.VtxPorts {
-				if strings.EqualFold(strings.TrimSpace(p), strings.TrimSpace(vtx.PortType)) ||
-					strings.EqualFold(strings.TrimSpace(p), "Solder Pads") {
-					matched = true
-					break
-				}
-			}
-			if !matched {
-				messages = append(messages, &pb.CompatibilityMessage{
-					CheckerName:   "FlightControllerVtxPortChecker",
-					Components:    "Flight Controller and Video Transmitter",
-					SeverityLevel: 0,
-					SeverityName:  "DEFINITE_INCOMPATIBILITY",
-					Message:       fmt.Sprintf("Video transmitter port interface (%s) is not supported by flight controller VTX ports (%s).", vtx.PortType, strings.Join(fc.VtxPorts, ", ")),
-					Resolution:    "Select a video transmitter with matching ports/pins or a flight controller with compatible VTX connectors.",
-				})
-			}
-		}
-	}
-
 	// Rule 8: Flight Controller vs Frame Board Mount Pattern
 	if comp.FlightController != nil && comp.Frame != nil {
 		if comp.FlightController.MountPattern != "" && len(comp.Frame.BoardMountPatterns) > 0 {
@@ -215,60 +166,6 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 					Resolution:    "Select a video transmitter matching the frame's board mounting pattern or choose a frame with compatible mounting holes.",
 				})
 			}
-		}
-	}
-
-	// Rule 10: Flight Controller vs Electronic Speed Controller Electrical / Voltage Compatibility
-	if comp.FlightController != nil && len(comp.ElectronicSpeedControllers) > 0 {
-		fc := comp.FlightController
-		for _, esc := range comp.ElectronicSpeedControllers {
-			if esc == nil {
-				continue
-			}
-			if fc.MaxVoltage > 0 && esc.MinVoltage > 0 && esc.MinVoltage > fc.MaxVoltage {
-				messages = append(messages, &pb.CompatibilityMessage{
-					CheckerName:   "FlightControllerElectronicSpeedControllerVoltageChecker",
-					Components:    "Flight Controller and Electronic Speed Controller",
-					SeverityLevel: 0,
-					SeverityName:  "DEFINITE_INCOMPATIBILITY",
-					Message:       fmt.Sprintf("Electronic speed controller minimum operating voltage (%.1fV) exceeds flight controller maximum input voltage (%.1fV).", esc.MinVoltage, fc.MaxVoltage),
-					Resolution:    "Select an electronic speed controller with a lower minimum operating voltage or a flight controller supporting higher input voltage.",
-				})
-			} else if fc.MinVoltage > 0 && esc.MaxVoltage > 0 && esc.MaxVoltage < fc.MinVoltage {
-				messages = append(messages, &pb.CompatibilityMessage{
-					CheckerName:   "FlightControllerElectronicSpeedControllerVoltageChecker",
-					Components:    "Flight Controller and Electronic Speed Controller",
-					SeverityLevel: 0,
-					SeverityName:  "DEFINITE_INCOMPATIBILITY",
-					Message:       fmt.Sprintf("Electronic speed controller maximum voltage rating (%.1fV) is below flight controller minimum operating voltage (%.1fV).", esc.MaxVoltage, fc.MinVoltage),
-					Resolution:    "Select an electronic speed controller supporting higher voltage or a flight controller with lower minimum voltage requirements.",
-				})
-			}
-		}
-	}
-
-	// Rule 11: Motor vs Flight Controller Electrical / Voltage Compatibility
-	if comp.FlightController != nil && comp.Motor != nil {
-		fc := comp.FlightController
-		m := comp.Motor
-		if fc.MaxVoltage > 0 && m.MinVoltage > 0 && m.MinVoltage > fc.MaxVoltage {
-			messages = append(messages, &pb.CompatibilityMessage{
-				CheckerName:   "MotorFlightControllerVoltageChecker",
-				Components:    "Motor and Flight Controller",
-				SeverityLevel: 0,
-				SeverityName:  "DEFINITE_INCOMPATIBILITY",
-				Message:       fmt.Sprintf("Motor minimum operating voltage (%.1fV) exceeds flight controller maximum input voltage (%.1fV).", m.MinVoltage, fc.MaxVoltage),
-				Resolution:    "Select a motor with lower operating voltage requirements or a flight controller supporting higher input voltage.",
-			})
-		} else if fc.MinVoltage > 0 && m.MaxVoltage > 0 && m.MaxVoltage < fc.MinVoltage {
-			messages = append(messages, &pb.CompatibilityMessage{
-				CheckerName:   "MotorFlightControllerVoltageChecker",
-				Components:    "Motor and Flight Controller",
-				SeverityLevel: 0,
-				SeverityName:  "DEFINITE_INCOMPATIBILITY",
-				Message:       fmt.Sprintf("Motor maximum voltage rating (%.1fV) is below flight controller minimum operating voltage (%.1fV).", m.MaxVoltage, fc.MinVoltage),
-				Resolution:    "Select a motor supporting higher voltage or a flight controller with lower minimum voltage requirements.",
-			})
 		}
 	}
 
@@ -763,9 +660,6 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 			}
 		}
 	case "motors":
-		if comp.Propeller != nil && comp.Propeller.PropMountInterface != "" {
-			conditions = append(conditions, fmt.Sprintf("prop_mount_interfaces.exists(i, i == %q)", comp.Propeller.PropMountInterface))
-		}
 		if comp.Frame != nil && len(comp.Frame.MotorMountPatterns) > 0 {
 			if len(comp.Frame.MotorMountPatterns) == 1 {
 				conditions = append(conditions, fmt.Sprintf("mount_pattern == %q", comp.Frame.MotorMountPatterns[0]))
@@ -775,42 +669,6 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 					parts = append(parts, fmt.Sprintf("mount_pattern == %q", p))
 				}
 				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
-			}
-		}
-		if comp.FlightController != nil {
-			fc := comp.FlightController
-			if fc.MaxVoltage > 0 {
-				conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", fc.MaxVoltage))
-			}
-			if fc.MinVoltage > 0 {
-				conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", fc.MinVoltage))
-			}
-		}
-		if len(comp.ElectronicSpeedControllers) > 0 {
-			var minEscCurrent float32 = 0
-			var minEscMaxV float32 = 0
-			var maxEscMinV float32 = 0
-			for _, esc := range comp.ElectronicSpeedControllers {
-				if esc != nil {
-					if esc.MotorCurrentMaxA > 0 && (minEscCurrent == 0 || esc.MotorCurrentMaxA < minEscCurrent) {
-						minEscCurrent = esc.MotorCurrentMaxA
-					}
-					if esc.MaxVoltage > 0 && (minEscMaxV == 0 || esc.MaxVoltage < minEscMaxV) {
-						minEscMaxV = esc.MaxVoltage
-					}
-					if esc.MinVoltage > 0 && esc.MinVoltage > maxEscMinV {
-						maxEscMinV = esc.MinVoltage
-					}
-				}
-			}
-			if minEscCurrent > 0 {
-				conditions = append(conditions, fmt.Sprintf("max_current_a <= %.1f", minEscCurrent))
-			}
-			if minEscMaxV > 0 {
-				conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", minEscMaxV))
-			}
-			if maxEscMinV > 0 {
-				conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", maxEscMinV))
 			}
 		}
 	case "cameras":
@@ -830,33 +688,6 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 					parts = append(parts, fmt.Sprintf("mount_pattern == %q", p))
 				}
 				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
-			}
-		}
-		if comp.VideoTransmitter != nil {
-			vtx := comp.VideoTransmitter
-			if vtx.InputVoltageMinV > 0 {
-				conditions = append(conditions, fmt.Sprintf("vtx_voltage_max_v >= %.1f", vtx.InputVoltageMinV))
-			}
-			if vtx.InputVoltageMaxV > 0 {
-				conditions = append(conditions, fmt.Sprintf("vtx_voltage_min_v <= %.1f", vtx.InputVoltageMaxV))
-			}
-		}
-		for _, esc := range comp.ElectronicSpeedControllers {
-			if esc != nil {
-				if esc.MaxVoltage > 0 {
-					conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", esc.MaxVoltage))
-				}
-				if esc.MinVoltage > 0 {
-					conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", esc.MinVoltage))
-				}
-			}
-		}
-		if comp.Motor != nil {
-			if comp.Motor.MaxVoltage > 0 {
-				conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", comp.Motor.MaxVoltage))
-			}
-			if comp.Motor.MinVoltage > 0 {
-				conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", comp.Motor.MinVoltage))
 			}
 		}
 	case "video_transmitters":

@@ -135,8 +135,8 @@ func TestGenerateCelFilter(t *testing.T) {
 		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{{MotorCurrentMaxA: 30.0}},
 		Frame:                      &pb.Frame{MotorMountPatterns: []string{"16x16mm", "19x19mm"}},
 	})
-	if motorFilter != `(mount_pattern == "16x16mm" || mount_pattern == "19x19mm") && max_current_a <= 30.0` {
-		t.Errorf(`expected '(mount_pattern == "16x16mm" || mount_pattern == "19x19mm") && max_current_a <= 30.0', got %q`, motorFilter)
+	if motorFilter != `(mount_pattern == "16x16mm" || mount_pattern == "19x19mm")` {
+		t.Errorf(`expected '(mount_pattern == "16x16mm" || mount_pattern == "19x19mm")', got %q`, motorFilter)
 	}
 }
 
@@ -503,14 +503,14 @@ func TestGenerateCelFilter_ConflictHandling(t *testing.T) {
 		t.Errorf("Expected 'max_voltage >= 18.00', got %q", escFilter)
 	}
 
-	// Test ESC max_voltage propagates to Motor filter
+	// Motors are only filtered based on frame, so ESC does not filter motors
 	motorFilter := GenerateCelFilter("motors", &Components{
 		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
 			{MaxVoltage: 17.4},
 		},
 	})
-	if motorFilter != "min_voltage <= 17.40" {
-		t.Errorf("Expected 'min_voltage <= 17.40', got %q", motorFilter)
+	if motorFilter != "" {
+		t.Errorf("Expected empty motor filter when no frame selected, got %q", motorFilter)
 	}
 }
 
@@ -602,13 +602,12 @@ func TestGenerateCelFilter_PropMountInterface(t *testing.T) {
 		t.Errorf("Expected %q, got %q", expectedCombined, propFilterCombined)
 	}
 
-	// Motors filter when propeller is selected
+	// Motors are NOT filtered when propeller is selected
 	motorFilter := GenerateCelFilter("motors", &Components{
 		Propeller: &pb.Propeller{PropMountInterface: "1.5mm T-Mount"},
 	})
-	expectedMotorFilter := `prop_mount_interfaces.exists(i, i == "1.5mm T-Mount")`
-	if motorFilter != expectedMotorFilter {
-		t.Errorf("Expected %q, got %q", expectedMotorFilter, motorFilter)
+	if motorFilter != "" {
+		t.Errorf("Expected empty motor filter when propeller is selected, got %q", motorFilter)
 	}
 }
 
@@ -678,119 +677,6 @@ func TestCameraFrameMountCompatibility(t *testing.T) {
 		}
 		if !found {
 			t.Errorf("Expected CameraFrameMountChecker message, got none")
-		}
-	})
-}
-
-func TestFlightControllerVtxCompatibility(t *testing.T) {
-	t.Run("Voltage and Port Compatible", func(t *testing.T) {
-		comp := &Components{
-			FlightController: &pb.FlightController{
-				VtxVoltageMinV: 7.4,
-				VtxVoltageMaxV: 12.0,
-				VtxPorts:       []string{"SH1.0-6P", "Solder Pads"},
-			},
-			VideoTransmitter: &pb.VideoTransmitter{
-				InputVoltageMinV: 7.0,
-				InputVoltageMaxV: 26.0,
-				PortType:         "SH1.0-6P",
-			},
-		}
-		msgs := CheckCompatibility(comp)
-		for _, m := range msgs {
-			if m.CheckerName == "FlightControllerVtxVoltageChecker" || m.CheckerName == "FlightControllerVtxPortChecker" {
-				t.Errorf("Unexpected FC-VTX compatibility message: %s", m.Message)
-			}
-		}
-	})
-
-	t.Run("FC Max Voltage below VTX Min Voltage", func(t *testing.T) {
-		comp := &Components{
-			FlightController: &pb.FlightController{
-				VtxVoltageMinV: 5.0,
-				VtxVoltageMaxV: 5.0,
-			},
-			VideoTransmitter: &pb.VideoTransmitter{
-				InputVoltageMinV: 7.4,
-				InputVoltageMaxV: 26.0,
-			},
-		}
-		msgs := CheckCompatibility(comp)
-		found := false
-		for _, m := range msgs {
-			if m.CheckerName == "FlightControllerVtxVoltageChecker" {
-				found = true
-				if m.SeverityLevel != 0 {
-					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
-				}
-			}
-		}
-		if !found {
-			t.Errorf("Expected FlightControllerVtxVoltageChecker message, got none")
-		}
-	})
-
-	t.Run("FC Min Voltage above VTX Max Voltage", func(t *testing.T) {
-		comp := &Components{
-			FlightController: &pb.FlightController{
-				VtxVoltageMinV: 12.0,
-				VtxVoltageMaxV: 12.0,
-			},
-			VideoTransmitter: &pb.VideoTransmitter{
-				InputVoltageMinV: 3.7,
-				InputVoltageMaxV: 5.0,
-			},
-		}
-		msgs := CheckCompatibility(comp)
-		found := false
-		for _, m := range msgs {
-			if m.CheckerName == "FlightControllerVtxVoltageChecker" {
-				found = true
-			}
-		}
-		if !found {
-			t.Errorf("Expected FlightControllerVtxVoltageChecker message, got none")
-		}
-	})
-
-	t.Run("Port Mismatch", func(t *testing.T) {
-		comp := &Components{
-			FlightController: &pb.FlightController{
-				VtxPorts: []string{"SH1.0-6P"},
-			},
-			VideoTransmitter: &pb.VideoTransmitter{
-				PortType: "JST-GH-4P",
-			},
-		}
-		msgs := CheckCompatibility(comp)
-		found := false
-		for _, m := range msgs {
-			if m.CheckerName == "FlightControllerVtxPortChecker" {
-				found = true
-				if m.SeverityLevel != 0 {
-					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
-				}
-			}
-		}
-		if !found {
-			t.Errorf("Expected FlightControllerVtxPortChecker message, got none")
-		}
-	})
-
-	t.Run("Solder Pads Fallback Matches Any Port", func(t *testing.T) {
-		comp := &Components{
-			FlightController: &pb.FlightController{
-				VtxPorts: []string{"Solder Pads"},
-			},
-			VideoTransmitter: &pb.VideoTransmitter{
-				PortType: "Direct Solder",
-			},
-		}
-		msgs := CheckCompatibility(comp)
-		for _, m := range msgs {
-			if m.CheckerName == "FlightControllerVtxPortChecker" {
-				t.Errorf("Unexpected FlightControllerVtxPortChecker message when FC has solder pads: %s", m.Message)
-			}
 		}
 	})
 }
@@ -914,88 +800,7 @@ func TestBoardMountCelFilters(t *testing.T) {
 	})
 }
 
-func TestFlightControllerElectronicSpeedControllerVoltageCompatibility(t *testing.T) {
-	t.Run("ESC requires higher min voltage than FC max voltage -> Incompatible", func(t *testing.T) {
-		comp := &Components{
-			FlightController: &pb.FlightController{
-				MinVoltage: 3.0,
-				MaxVoltage: 4.4, // 1S Whoop FC
-			},
-			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
-				{
-					MinVoltage: 7.4,  // Requires at least 2S
-					MaxVoltage: 25.2, // 6S ESC
-				},
-			},
-		}
-		messages := CheckCompatibility(comp)
-		found := false
-		for _, m := range messages {
-			if m.CheckerName == "FlightControllerElectronicSpeedControllerVoltageChecker" {
-				found = true
-				if m.SeverityName != "DEFINITE_INCOMPATIBILITY" {
-					t.Errorf("expected DEFINITE_INCOMPATIBILITY, got %s", m.SeverityName)
-				}
-				if !strings.Contains(m.Message, "Electronic speed controller minimum operating voltage") {
-					t.Errorf("unexpected message: %s", m.Message)
-				}
-			}
-		}
-		if !found {
-			t.Errorf("expected FlightControllerElectronicSpeedControllerVoltageChecker message, got none")
-		}
-	})
-
-	t.Run("ESC max voltage is below FC min voltage -> Incompatible", func(t *testing.T) {
-		comp := &Components{
-			FlightController: &pb.FlightController{
-				MinVoltage: 14.8, // 4S minimum
-				MaxVoltage: 25.2,
-			},
-			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
-				{
-					MinVoltage: 3.7,
-					MaxVoltage: 8.4, // 2S max
-				},
-			},
-		}
-		messages := CheckCompatibility(comp)
-		found := false
-		for _, m := range messages {
-			if m.CheckerName == "FlightControllerElectronicSpeedControllerVoltageChecker" {
-				found = true
-				if m.SeverityName != "DEFINITE_INCOMPATIBILITY" {
-					t.Errorf("expected DEFINITE_INCOMPATIBILITY, got %s", m.SeverityName)
-				}
-			}
-		}
-		if !found {
-			t.Errorf("expected FlightControllerElectronicSpeedControllerVoltageChecker message, got none")
-		}
-	})
-
-	t.Run("Overlapping voltages -> Compatible", func(t *testing.T) {
-		comp := &Components{
-			FlightController: &pb.FlightController{
-				MinVoltage: 11.1,
-				MaxVoltage: 25.2,
-			},
-			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
-				{
-					MinVoltage:       14.8,
-					MaxVoltage:       30.0,
-					MotorCurrentMaxA: 45.0,
-				},
-			},
-		}
-		messages := CheckCompatibility(comp)
-		for _, m := range messages {
-			if m.CheckerName == "FlightControllerElectronicSpeedControllerVoltageChecker" {
-				t.Errorf("unexpected incompatibility message: %s", m.Message)
-			}
-		}
-	})
-
+func TestEscFlightControllerVoltageFilter(t *testing.T) {
 	t.Run("GenerateCelFilter for ESC with FC selected", func(t *testing.T) {
 		comp := &Components{
 			FlightController: &pb.FlightController{
@@ -1010,7 +815,7 @@ func TestFlightControllerElectronicSpeedControllerVoltageCompatibility(t *testin
 		}
 	})
 
-	t.Run("GenerateCelFilter for FC with ESC selected", func(t *testing.T) {
+	t.Run("GenerateCelFilter for FC does not filter on ESC voltage", func(t *testing.T) {
 		comp := &Components{
 			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
 				{
@@ -1020,9 +825,8 @@ func TestFlightControllerElectronicSpeedControllerVoltageCompatibility(t *testin
 			},
 		}
 		fcFilter := GenerateCelFilter("flight_controllers", comp)
-		expected := "min_voltage <= 25.20 && max_voltage >= 14.80"
-		if fcFilter != expected {
-			t.Errorf("expected %q, got %q", expected, fcFilter)
+		if fcFilter != "" {
+			t.Errorf("expected empty filter for FC when no frame selected, got %q", fcFilter)
 		}
 	})
 }

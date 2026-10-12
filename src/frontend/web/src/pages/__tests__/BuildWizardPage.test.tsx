@@ -64,9 +64,9 @@ describe("BuildWizardPage Component", () => {
     // Initial dry weight is 0.00g across evaluator and selected parts list
     expect(screen.getAllByText("0.00g").length).toBeGreaterThanOrEqual(1);
 
-    // Selected Parts section under Evaluator
+    // Selected Parts section under Evaluator (4 optional parts default to None)
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
-    expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
+    expect(screen.getByText("4 / 11 Parts")).toBeInTheDocument();
   });
 
   it("allows searching for frames and filtering products in real time", async () => {
@@ -410,7 +410,7 @@ describe("BuildWizardPage Component", () => {
 
     // Verify Selected Parts card under Evaluator
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
-    expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
+    expect(screen.getByText("4 / 11 Parts")).toBeInTheDocument();
     expect(screen.getByText("BOM Total Dry Weight:")).toBeInTheDocument();
 
     // Verify Step 1 items are unlocked initially
@@ -440,8 +440,8 @@ describe("BuildWizardPage Component", () => {
     await user.click(await screen.findByText("ECO II 2207"));
     await user.click(await screen.findByText("Hurricane 51433"));
 
-    // Verify 3 / 11 parts are now selected and Step 1 is complete
-    expect(screen.getByText("3 / 11 Parts")).toBeInTheDocument();
+    // Verify 7 / 11 parts are now selected (3 propulsion + 4 default None) and Step 1 is complete
+    expect(screen.getByText("7 / 11 Parts")).toBeInTheDocument();
 
     // Now Step 2 is unlocked in the Selected Parts list
     const unlockedFcButton = screen.getByTitle("Go to Step 2: Flight Controller selection");
@@ -893,5 +893,60 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("TBS Immortal T V2 915MHz")).toBeInTheDocument();
     // RadioMaster T-Antenna 2.4GHz should NOT be visible
     expect(screen.queryByText("RadioMaster T-Antenna 2.4GHz")).not.toBeInTheDocument();
+  });
+
+  it("formats motor stator, prop diameter with mm/inch, VTX protocol chip, and defaults optional parts to None", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Advance to Step 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await user.click(await screen.findByText("Master 5 V2"));
+
+    // Verify motor card stator size format (2207 from formatStatorSize)
+    expect(screen.getByText("2207")).toBeInTheDocument();
+
+    // Verify propeller card diameter format: diameter in mm with inches in parentheses
+    expect(screen.getByText(/129\.5mm \(5\.1"\)/)).toBeInTheDocument();
+
+    await user.click(await screen.findByText("ECO II 2207"));
+    await user.click(await screen.findByText("Hurricane 51433"));
+
+    // Advance to Step 2
+    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+
+    // Verify GPS defaults to "No GPS (None)" selected
+    const noGpsCard = screen.getByText("No GPS (None)").closest(".cursor-pointer");
+    expect(noGpsCard).toHaveClass("border-blue-500");
+
+    // Select a GPS product
+    const gpsCard = await screen.findByText(/M8Q-5883/i);
+    await user.click(gpsCard);
+    expect(gpsCard.closest(".border-blue-500")).toBeInTheDocument();
+    expect(noGpsCard).not.toHaveClass("border-blue-500");
+
+    // Deselect the GPS product by clicking it again -> reverts to "No GPS (None)"
+    await user.click(gpsCard);
+    expect(gpsCard.closest(".border-blue-500")).toBeNull();
+    expect(noGpsCard).toHaveClass("border-blue-500");
+
+    // Select FC, ESC, RX, and RX antenna to complete Step 2
+    await user.click(await screen.findByText("F405 V4 FC"));
+    await user.click(await screen.findByText("SpeedyBee 50A 4-in-1 ESC"));
+    await user.click(await screen.findByText("Crossfire Nano RX"));
+    await user.click(await screen.findByText("TBS Immortal T V2 915MHz"));
+
+    // Advance to Step 3 (Video)
+    await user.click(screen.getByRole("button", { name: /Next: Video/i }));
+
+    // Verify optional components in Step 3 default to None
+    const noVtxAntCard = screen.getByText("No Antenna (None)").closest(".cursor-pointer");
+    expect(noVtxAntCard).toHaveClass("border-blue-500");
+    const noCamCard = screen.getByText("No Camera (None)").closest(".cursor-pointer");
+    expect(noCamCard).toHaveClass("border-blue-500");
+
+    // Verify VTX product card chip shows protocol ("SmartAudio"), not transmit power ("1000mW")
+    expect(screen.getByText("SmartAudio")).toBeInTheDocument();
+    expect(screen.queryByText("1000mW")).not.toBeInTheDocument();
   });
 });

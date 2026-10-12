@@ -73,7 +73,12 @@ import {
 import { CameraService, type Camera } from "../gen/quadsmith/camera_pb";
 import { AntennaService, type Antenna } from "../gen/quadsmith/antenna_pb";
 import { GpsReceiverService, type GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
-import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
+import {
+  getTwrDescription,
+  getTwrColor,
+  getHoverThrottleColor,
+  formatStatorSize,
+} from "../lib/format";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CompatibilityHoverCard } from "../components/CompatibilityHoverCard";
 
@@ -304,7 +309,12 @@ export function BuildWizardPage() {
     vtx?: boolean;
     camera?: boolean;
     vtxAntenna?: boolean;
-  }>({});
+  }>({
+    gps: true,
+    vtx: true,
+    camera: true,
+    vtxAntenna: true,
+  });
 
   // Search filter strings for component selectors
   const [searchFrame, setSearchFrame] = useState("");
@@ -363,15 +373,12 @@ export function BuildWizardPage() {
   }, [isWasmReady, selectedFrame, selectedMotor]);
 
   const motorCelFilter = useMemo(() => {
-    if (!isWasmReady || (!selectedEsc && !selectedProp && !selectedFrame && !selectedFc)) return "";
+    if (!isWasmReady || !selectedFrame) return "";
     const comps = create(AssembledComponentsSchema, {
-      electronicSpeedControllers: selectedEsc ? [selectedEsc] : [],
-      propeller: selectedProp || undefined,
       frame: selectedFrame || undefined,
-      flightController: selectedFc || undefined,
     });
     return wasmEngine.generateCelFilter("motors", comps);
-  }, [isWasmReady, selectedEsc, selectedProp, selectedFrame, selectedFc]);
+  }, [isWasmReady, selectedFrame]);
 
   const escCelFilter = useMemo(() => {
     if (!isWasmReady || (!selectedMotor && !selectedFc)) return "";
@@ -392,16 +399,12 @@ export function BuildWizardPage() {
   }, [isWasmReady, selectedVtx, selectedFrame]);
 
   const fcCelFilter = useMemo(() => {
-    if (!isWasmReady || (!selectedFrame && !selectedVtx && !selectedEsc && !selectedMotor))
-      return "";
+    if (!isWasmReady || !selectedFrame) return "";
     const comps = create(AssembledComponentsSchema, {
       frame: selectedFrame || undefined,
-      videoTransmitter: selectedVtx || undefined,
-      electronicSpeedControllers: selectedEsc ? [selectedEsc] : [],
-      motor: selectedMotor || undefined,
     });
     return wasmEngine.generateCelFilter("flight_controllers", comps);
-  }, [isWasmReady, selectedFrame, selectedVtx, selectedEsc, selectedMotor]);
+  }, [isWasmReady, selectedFrame]);
 
   const vtxCelFilter = useMemo(() => {
     if (!isWasmReady || (!selectedFc && !selectedFrame)) return "";
@@ -578,7 +581,7 @@ export function BuildWizardPage() {
     if (useIntegratedVtx && !fcHasIntegratedVtx) {
       setUseIntegratedVtx(false);
       setSelectedVtx(null);
-      setNoneSelections((prev) => ({ ...prev, vtx: false }));
+      setNoneSelections((prev) => ({ ...prev, vtx: true }));
     }
   }, [fcHasIntegratedVtx, useIntegratedVtx]);
 
@@ -616,9 +619,10 @@ export function BuildWizardPage() {
       }
 
       // Auto-select integrated VTX if available and no VTX is currently selected (or if integrated was active)
-      if (fcHasIntegratedVtx && (useIntegratedVtx || (!selectedVtx && !noneSelections.vtx))) {
+      if (fcHasIntegratedVtx && (useIntegratedVtx || !selectedVtx)) {
         setUseIntegratedVtx(true);
         setSelectedVtx(integratedVtx);
+        setNoneSelections((prev) => ({ ...prev, vtx: false }));
       }
     }
   }, [
@@ -1239,16 +1243,6 @@ export function BuildWizardPage() {
   const filteredMotors = useMemo(() => {
     let list = motors;
     if (isCompatibleOnly("motors")) {
-      if (selectedProp && selectedProp.propMountInterface) {
-        list = list.filter(
-          (m) =>
-            !m.propMountInterfaces ||
-            m.propMountInterfaces.length === 0 ||
-            m.propMountInterfaces.some(
-              (i) => i.toLowerCase() === selectedProp.propMountInterface?.toLowerCase(),
-            ),
-        );
-      }
       if (
         selectedFrame &&
         selectedFrame.motorMountPatterns &&
@@ -1270,7 +1264,7 @@ export function BuildWizardPage() {
         m.manufacturer.toLowerCase().includes(q) ||
         String(m.kv).includes(q),
     );
-  }, [motors, compatibleOnlyMap, selectedProp, selectedFrame, searchMotor]);
+  }, [motors, compatibleOnlyMap, selectedFrame, searchMotor]);
 
   const filteredProps = useMemo(() => {
     let list = props;
@@ -1314,29 +1308,13 @@ export function BuildWizardPage() {
           );
         });
       }
-      if (selectedEsc) {
-        if (selectedEsc.maxVoltage > 0) {
-          list = list.filter((fc) => !fc.minVoltage || fc.minVoltage <= selectedEsc.maxVoltage);
-        }
-        if (selectedEsc.minVoltage > 0) {
-          list = list.filter((fc) => !fc.maxVoltage || fc.maxVoltage >= selectedEsc.minVoltage);
-        }
-      }
-      if (selectedMotor) {
-        if (selectedMotor.maxVoltage > 0) {
-          list = list.filter((fc) => !fc.minVoltage || fc.minVoltage <= selectedMotor.maxVoltage);
-        }
-        if (selectedMotor.minVoltage > 0) {
-          list = list.filter((fc) => !fc.maxVoltage || fc.maxVoltage >= selectedMotor.minVoltage);
-        }
-      }
     }
     if (!searchFc.trim()) return list;
     const q = searchFc.toLowerCase();
     return list.filter(
       (fc) => fc.name.toLowerCase().includes(q) || fc.manufacturer.toLowerCase().includes(q),
     );
-  }, [fcs, compatibleOnlyMap, selectedFrame, selectedEsc, selectedMotor, searchFc]);
+  }, [fcs, compatibleOnlyMap, selectedFrame, searchFc]);
 
   const filteredEscs = useMemo(() => {
     let external = escs.filter((esc) => !esc.isInternalOnly);
@@ -1791,7 +1769,12 @@ export function BuildWizardPage() {
     setUseIntegratedVtx(false);
     setSelectedCam(null);
     setSelectedVtxAnt(null);
-    setNoneSelections({});
+    setNoneSelections({
+      gps: true,
+      vtx: true,
+      camera: true,
+      vtxAntenna: true,
+    });
   };
 
   // Reset all selections to zero and return to Step 0
@@ -2286,9 +2269,7 @@ export function BuildWizardPage() {
                           </div>
                         </div>
                         <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0">
-                          {m.statorDiameterMm
-                            ? `${m.statorDiameterMm}${m.statorHeightMm || ""}`
-                            : "Brushless"}
+                          {formatStatorSize(m.statorDiameterMm, m.statorHeightMm, "Brushless")}
                         </div>
                       </div>
                     );
@@ -2401,7 +2382,7 @@ export function BuildWizardPage() {
                               {p.name}
                             </span>
                             <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0">
-                              {diam}"
+                              {p.diameterMm ? `${p.diameterMm}mm (${diam}")` : `${diam}"`}
                             </span>
                             {isIncompatible && (
                               <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
@@ -3205,6 +3186,7 @@ export function BuildWizardPage() {
                         onClick={() => {
                           if (isSelected) {
                             setSelectedGps(null);
+                            setNoneSelections((prev) => ({ ...prev, gps: true }));
                           } else {
                             setSelectedGps(g);
                             setNoneSelections((prev) => ({ ...prev, gps: false }));
@@ -3363,6 +3345,7 @@ export function BuildWizardPage() {
                         if (useIntegratedVtx) {
                           setUseIntegratedVtx(false);
                           setSelectedVtx(null);
+                          setNoneSelections((prev) => ({ ...prev, vtx: true }));
                         } else {
                           setUseIntegratedVtx(true);
                           setSelectedVtx(integratedVtx);
@@ -3384,7 +3367,7 @@ export function BuildWizardPage() {
                             Integrated
                           </span>
                           <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20 shrink-0">
-                            {integratedVtx?.maxPowerMw || 400}mW
+                            {integratedVtx?.protocol || "Analog"}
                           </span>
                         </div>
                         <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
@@ -3427,6 +3410,7 @@ export function BuildWizardPage() {
                         onClick={() => {
                           if (isSelected) {
                             setSelectedVtx(null);
+                            setNoneSelections((prev) => ({ ...prev, vtx: true }));
                           } else {
                             setSelectedVtx(v);
                             setUseIntegratedVtx(false);
@@ -3446,9 +3430,9 @@ export function BuildWizardPage() {
                             <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                               {v.name}
                             </span>
-                            {v.maxPowerMw && (
+                            {v.protocol && (
                               <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-500/20 shrink-0">
-                                {v.maxPowerMw}mW
+                                {v.protocol}
                               </span>
                             )}
                             {v.mountPattern && (
@@ -3598,6 +3582,7 @@ export function BuildWizardPage() {
                         onClick={() => {
                           if (isSelected) {
                             setSelectedCam(null);
+                            setNoneSelections((prev) => ({ ...prev, camera: true }));
                           } else {
                             setSelectedCam(c);
                             setNoneSelections((prev) => ({ ...prev, camera: false }));
@@ -3774,6 +3759,7 @@ export function BuildWizardPage() {
                         onClick={() => {
                           if (isSelected) {
                             setSelectedVtxAnt(null);
+                            setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
                           } else {
                             setSelectedVtxAnt(a);
                             setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
