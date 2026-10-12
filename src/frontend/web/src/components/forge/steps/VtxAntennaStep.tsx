@@ -10,7 +10,7 @@ import {
   EyeOff,
   Check,
 } from "lucide-react";
-import { useForge } from "../ForgeContext";
+import { useForge, checkVtxAntennaCompatibility, formatFrequencyBand } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
@@ -47,11 +47,18 @@ export function VtxAntennaStep() {
   const isVtxNone = noneSelections.vtx || !activeVtx;
   const isAntennaNone = noneSelections.vtxAntenna || isVtxNone;
 
-  // 5.8GHz video antennas
+  // Video antennas matching active VTX frequency & connector
   const filteredAntennas = useMemo(() => {
-    let list = antennas.filter(
-      (a) => !a.isInternalOnly && (a.frequencyBandMhz === 0 || a.frequencyBandMhz >= 5000),
-    );
+    let list = antennas.filter((a) => !a.isInternalOnly);
+
+    if (isCompatibleOnly && activeVtx) {
+      list = list.filter(
+        (a) =>
+          a.uuid === selectedVtxAnt?.uuid ||
+          a.id === selectedVtxAnt?.id ||
+          checkVtxAntennaCompatibility(activeVtx, a, antennas).compatible,
+      );
+    }
 
     if (!search.trim()) return list;
     const q = search.toLowerCase();
@@ -61,7 +68,7 @@ export function VtxAntennaStep() {
         a.manufacturer.toLowerCase().includes(q) ||
         a.connector?.toLowerCase().includes(q),
     );
-  }, [antennas, search]);
+  }, [antennas, search, isCompatibleOnly, activeVtx, selectedVtxAnt]);
 
   return (
     <div className="space-y-4">
@@ -120,8 +127,8 @@ export function VtxAntennaStep() {
         </div>
 
         <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          The video transmitter antenna radiates 5.8GHz video transmission. LHCP/RHCP circular
-          polarization is recommended for analog and digital systems.
+          The video transmitter antenna radiates the video signal. The antenna must match the VTX
+          frequency band and connector type (e.g. SMA, U.FL, Dual U.FL).
         </p>
 
         {isVtxNone ? (
@@ -168,7 +175,7 @@ export function VtxAntennaStep() {
                   type="text"
                   value={search}
                   onChange={(e) => setSearchQuery("vtx_antennas", e.target.value)}
-                  placeholder="Search 5.8GHz video antennas by name, connector..."
+                  placeholder="Search antennas by name, connector..."
                   className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
                 {search && (
@@ -200,6 +207,8 @@ export function VtxAntennaStep() {
               {filteredAntennas.map((ant: Antenna) => {
                 const isSelected =
                   selectedVtxAnt?.uuid === ant.uuid || selectedVtxAnt?.id === ant.id;
+                const compat = checkVtxAntennaCompatibility(activeVtx, ant, antennas);
+                const isIncompatible = !compat.compatible;
 
                 return (
                   <ProductHoverCard
@@ -212,8 +221,12 @@ export function VtxAntennaStep() {
                     id={isSelected ? "selected-vtx-ant-item" : undefined}
                     className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       isSelected
-                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        ? isIncompatible
+                          ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                          : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                        : isIncompatible
+                          ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
+                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                     }`}
                   >
                     <div
@@ -241,9 +254,18 @@ export function VtxAntennaStep() {
                         )}
                         {ant.frequencyBandMhz ? (
                           <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 shrink-0">
-                            {(ant.frequencyBandMhz / 1000).toFixed(1)} GHz
+                            {formatFrequencyBand(ant.frequencyBandMhz)}
                           </span>
                         ) : null}
+                        {isIncompatible && (
+                          <span
+                            className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 shrink-0 flex items-center gap-1"
+                            title={compat.reason}
+                          >
+                            <AlertCircle size={10} />
+                            {compat.reason}
+                          </span>
+                        )}
                       </div>
                       <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 flex items-center gap-2 flex-wrap">
                         <span>by {ant.manufacturer}</span>
@@ -253,8 +275,18 @@ export function VtxAntennaStep() {
                     </div>
 
                     <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
-                      <div className="w-4 h-4 rounded-full border border-blue-500 flex items-center justify-center">
-                        {isSelected && <div className="w-2 h-2 rounded-full bg-blue-500" />}
+                      <div
+                        className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                          isIncompatible && isSelected ? "border-amber-500" : "border-blue-500"
+                        }`}
+                      >
+                        {isSelected && (
+                          <div
+                            className={`w-2 h-2 rounded-full ${
+                              isIncompatible ? "bg-amber-500" : "bg-blue-500"
+                            }`}
+                          />
+                        )}
                       </div>
                     </div>
                   </ProductHoverCard>

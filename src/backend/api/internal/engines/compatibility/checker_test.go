@@ -964,4 +964,122 @@ func TestAntennaCompatibility(t *testing.T) {
 			t.Errorf("expected %q, got %q", expected, filter)
 		}
 	})
+
+	t.Run("VTX 5.8GHz with 2.4GHz antenna -> Frequency Incompatible", func(t *testing.T) {
+		comp := &Components{
+			VideoTransmitter: &pb.VideoTransmitter{
+				Protocol:          "Analog",
+				Name:              "TBS Unify Pro32 HV",
+				FrequencyBandMhz:  5800,
+				AntennaConnectors: []string{"SMA"},
+			},
+			Antennas: []*pb.Antenna{
+				{
+					FrequencyBandMhz: 2400,
+					Connector:        "SMA",
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		found := false
+		for _, m := range messages {
+			if m.CheckerName == "VideoTransmitterAntennaFrequencyChecker" {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("expected VideoTransmitterAntennaFrequencyChecker message, got none")
+		}
+	})
+
+	t.Run("VTX SMA with U.FL antenna -> Connector Incompatible", func(t *testing.T) {
+		comp := &Components{
+			VideoTransmitter: &pb.VideoTransmitter{
+				Protocol:          "Analog",
+				Name:              "TBS Unify Pro32 HV",
+				FrequencyBandMhz:  5800,
+				AntennaConnectors: []string{"SMA"},
+			},
+			Antennas: []*pb.Antenna{
+				{
+					FrequencyBandMhz: 5800,
+					Connector:        "U.FL",
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		found := false
+		for _, m := range messages {
+			if m.CheckerName == "VideoTransmitterAntennaConnectorChecker" {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("expected VideoTransmitterAntennaConnectorChecker message, got none")
+		}
+	})
+
+	t.Run("VTX 5.8GHz SMA with 5.8GHz SMA antenna -> Compatible", func(t *testing.T) {
+		comp := &Components{
+			VideoTransmitter: &pb.VideoTransmitter{
+				Protocol:          "Analog",
+				Name:              "TBS Unify Pro32 HV",
+				FrequencyBandMhz:  5800,
+				AntennaConnectors: []string{"SMA"},
+			},
+			Antennas: []*pb.Antenna{
+				{
+					FrequencyBandMhz: 5800,
+					Connector:        "SMA",
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		for _, m := range messages {
+			if strings.HasPrefix(m.CheckerName, "VideoTransmitterAntenna") {
+				t.Errorf("unexpected incompatibility: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("VTX 3.3GHz SMA with 5.8GHz SMA antenna -> Frequency Incompatible", func(t *testing.T) {
+		comp := &Components{
+			VideoTransmitter: &pb.VideoTransmitter{
+				Protocol:          "Analog",
+				Name:              "3.3G 5W High-Power SMA VTX",
+				FrequencyBandMhz:  3300,
+				AntennaConnectors: []string{"SMA"},
+			},
+			Antennas: []*pb.Antenna{
+				{
+					FrequencyBandMhz: 5800,
+					Connector:        "SMA",
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		found := false
+		for _, m := range messages {
+			if m.CheckerName == "VideoTransmitterAntennaFrequencyChecker" {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("expected VideoTransmitterAntennaFrequencyChecker message, got none")
+		}
+	})
+
+	t.Run("GenerateCelFilter for vtx_antennas with SMA VTX", func(t *testing.T) {
+		comp := &Components{
+			VideoTransmitter: &pb.VideoTransmitter{
+				FrequencyBandMhz:  5800,
+				AntennaConnectors: []string{"SMA"},
+			},
+		}
+		filter := GenerateCelFilter("vtx_antennas", comp)
+		expected := "frequency_band_mhz == 5800 && connector == \"SMA\""
+		if filter != expected {
+			t.Errorf("expected %q, got %q", expected, filter)
+		}
+	})
 }

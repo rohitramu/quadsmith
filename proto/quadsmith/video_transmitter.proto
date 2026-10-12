@@ -58,6 +58,12 @@ message VideoTransmitter {
 
   // Board mounting pattern (e.g., "20x20mm", "25.5x25.5mm", "30.5x30.5mm")
   string mount_pattern = 17;
+
+  // Center frequency in MHz (e.g., 5800 for 5.8GHz, 3300 for 3.3GHz, 1200 for 1.2GHz)
+  uint32 frequency_band_mhz = 18;
+
+  // Supported antenna connector types (e.g., ["SMA"], ["U.FL"], ["Dual U.FL", "U.FL"], ["MMCX", "SMA"])
+  repeated string antenna_connectors = 19;
 }
 
 // ---------------------------------------------------------

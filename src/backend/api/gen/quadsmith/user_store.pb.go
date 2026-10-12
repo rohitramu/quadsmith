@@ -959,7 +959,7 @@ func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 }
 
 func CreateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
-	query := `INSERT INTO email_otps (uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
+	query := `INSERT INTO email_otps (uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid, ip_address, user_agent, location_hint, status, approved_at, denied_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -985,13 +985,23 @@ func CreateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
 			return nil
 		}
 		return *s
-	}(m.RequestedByUserUuid))
+	}(m.RequestedByUserUuid), m.IpAddress, m.UserAgent, m.LocationHint, m.Status, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.ApprovedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.DeniedAt))
 	return err
 }
 
 func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*EmailOtp, error) {
-	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true, "challenge_id_hash": true, "purpose": true, "requested_by_user_uuid": true}
-	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid"
+	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true, "challenge_id_hash": true, "purpose": true, "requested_by_user_uuid": true, "ip_address": true, "user_agent": true, "location_hint": true, "status": true, "approved_at": true, "denied_at": true}
+	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid, ip_address, user_agent, location_hint, status, approved_at, denied_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -1002,7 +1012,7 @@ func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "challenge_id_hash", "purpose", "requested_by_user_uuid"}
+		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "challenge_id_hash", "purpose", "requested_by_user_uuid", "ip_address", "user_agent", "location_hint", "status", "approved_at", "denied_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM email_otps WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -1048,6 +1058,30 @@ func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 			scanArgs[i] = &m.Purpose
 		case "requested_by_user_uuid":
 			scanArgs[i] = &m.RequestedByUserUuid
+		case "ip_address":
+			scanArgs[i] = &m.IpAddress
+		case "user_agent":
+			scanArgs[i] = &m.UserAgent
+		case "location_hint":
+			scanArgs[i] = &m.LocationHint
+		case "status":
+			scanArgs[i] = &m.Status
+		case "approved_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.ApprovedAt = timestamppb.New(*v)
+				}
+			})
+		case "denied_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.DeniedAt = timestamppb.New(*v)
+				}
+			})
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -1065,7 +1099,7 @@ func GetEmailOtp(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 }
 
 func UpdateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
-	query := `UPDATE email_otps SET email = $2, code_hash = $3, expires_at = $4, used_at = $5, failed_attempts = $6, created_at = $7, challenge_id_hash = $8, purpose = $9, requested_by_user_uuid = $10 WHERE uuid = $1`
+	query := `UPDATE email_otps SET email = $2, code_hash = $3, expires_at = $4, used_at = $5, failed_attempts = $6, created_at = $7, challenge_id_hash = $8, purpose = $9, requested_by_user_uuid = $10, ip_address = $11, user_agent = $12, location_hint = $13, status = $14, approved_at = $15, denied_at = $16 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Email, m.CodeHash, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
@@ -1086,7 +1120,17 @@ func UpdateEmailOtp(ctx context.Context, tx pgx.Tx, m *EmailOtp) error {
 			return nil
 		}
 		return *s
-	}(m.RequestedByUserUuid))
+	}(m.RequestedByUserUuid), m.IpAddress, m.UserAgent, m.LocationHint, m.Status, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.ApprovedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.DeniedAt))
 	return err
 }
 
@@ -1097,8 +1141,8 @@ func DeleteEmailOtp(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*EmailOtp, error) {
-	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true, "challenge_id_hash": true, "purpose": true, "requested_by_user_uuid": true}
-	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid"
+	validCols := map[string]bool{"uuid": true, "email": true, "code_hash": true, "expires_at": true, "used_at": true, "failed_attempts": true, "created_at": true, "challenge_id_hash": true, "purpose": true, "requested_by_user_uuid": true, "ip_address": true, "user_agent": true, "location_hint": true, "status": true, "approved_at": true, "denied_at": true}
+	colsStr := "uuid, email, code_hash, expires_at, used_at, failed_attempts, created_at, challenge_id_hash, purpose, requested_by_user_uuid, ip_address, user_agent, location_hint, status, approved_at, denied_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -1109,7 +1153,7 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "challenge_id_hash", "purpose", "requested_by_user_uuid"}
+		cols = []string{"uuid", "email", "code_hash", "expires_at", "used_at", "failed_attempts", "created_at", "challenge_id_hash", "purpose", "requested_by_user_uuid", "ip_address", "user_agent", "location_hint", "status", "approved_at", "denied_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM email_otps`
 	if whereClause != "" {
@@ -1196,6 +1240,30 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.Purpose
 			case "requested_by_user_uuid":
 				scanArgs[i] = &m.RequestedByUserUuid
+			case "ip_address":
+				scanArgs[i] = &m.IpAddress
+			case "user_agent":
+				scanArgs[i] = &m.UserAgent
+			case "location_hint":
+				scanArgs[i] = &m.LocationHint
+			case "status":
+				scanArgs[i] = &m.Status
+			case "approved_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.ApprovedAt = timestamppb.New(*v)
+					}
+				})
+			case "denied_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.DeniedAt = timestamppb.New(*v)
+					}
+				})
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

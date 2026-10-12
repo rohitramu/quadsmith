@@ -132,6 +132,12 @@ message EmailOtp {
   }];
   string purpose = 9 [(quadsmith.sql.column) = {default_value: "'login'"}];
   optional string requested_by_user_uuid = 10 [(quadsmith.sql.column) = {references: "users(uuid)"}];
+  string ip_address = 11 [(quadsmith.sql.column) = {default_value: "''"}];
+  string user_agent = 12 [(quadsmith.sql.column) = {default_value: "''"}];
+  string location_hint = 13 [(quadsmith.sql.column) = {default_value: "''"}];
+  string status = 14 [(quadsmith.sql.column) = {default_value: "'pending'"}];
+  google.protobuf.Timestamp approved_at = 15;
+  google.protobuf.Timestamp denied_at = 16;
 }
 
 message UsernameHistory {

@@ -16,6 +16,10 @@ import {
   mockReceiver1,
   mockReceiverCeramic,
 } from "../../test/mocks/fixtures";
+import { checkVtxAntennaCompatibility } from "../../components/forge/ForgeContext";
+import { create } from "@bufbuild/protobuf";
+import { VideoTransmitterSchema } from "../../gen/quadsmith/video_transmitter_pb";
+import { AntennaSchema } from "../../gen/quadsmith/antenna_pb";
 import type { RenderWithProvidersOptions } from "../../test/test-utils";
 
 function SavedProfile() {
@@ -810,5 +814,116 @@ describe("BuildWizardPage Component", () => {
 
     // Verify integrated analog VTX was NOT auto-selected
     expect(screen.queryByText("Use FC Integrated VTX")).toBeNull();
+  });
+
+  describe("VTX Antenna Compatibility Checks (checkVtxAntennaCompatibility)", () => {
+    it("returns compatible for matching frequency band and connector", () => {
+      const vtx = create(VideoTransmitterSchema, {
+        name: "Analog 5.8G VTX",
+        frequencyBandMhz: 5800,
+        antennaConnectors: ["SMA"],
+      });
+      const ant = create(AntennaSchema, {
+        name: "Lollipop 4 SMA",
+        frequencyBandMhz: 5800,
+        connector: "SMA",
+      });
+      const result = checkVtxAntennaCompatibility(vtx, ant);
+      expect(result.compatible).toBe(true);
+    });
+
+    it("flags frequency band mismatch between VTX and antenna", () => {
+      const vtx = create(VideoTransmitterSchema, {
+        name: "SpeedyBee TX800 5.8GHz VTX",
+        frequencyBandMhz: 5800,
+        antennaConnectors: ["SMA"],
+      });
+      const ant = create(AntennaSchema, {
+        name: "ELRS 2.4GHz Antenna",
+        frequencyBandMhz: 2400,
+        connector: "SMA",
+      });
+      const result = checkVtxAntennaCompatibility(vtx, ant);
+      expect(result.compatible).toBe(false);
+      expect(result.reason).toContain("Frequency mismatch");
+    });
+
+    it("flags connector type mismatch between VTX and antenna", () => {
+      const vtx = create(VideoTransmitterSchema, {
+        name: "DJI O3 Air Unit",
+        frequencyBandMhz: 5800,
+        antennaConnectors: ["Dual U.FL", "U.FL"],
+      });
+      const ant = create(AntennaSchema, {
+        name: "Foxeer Lollipop SMA",
+        frequencyBandMhz: 5800,
+        connector: "SMA",
+      });
+      const result = checkVtxAntennaCompatibility(vtx, ant);
+      expect(result.compatible).toBe(false);
+      expect(result.reason).toContain("Connector mismatch");
+    });
+  });
+
+  it("enforces frequency band and connector type compatibility for VTX antennas in Step 10", async () => {
+    vi.spyOn(wasmEngine, "getIsReady").mockReturnValue(true);
+    vi.spyOn(wasmEngine, "generateCelFilter").mockReturnValue("");
+    vi.spyOn(wasmEngine, "checkCompatibility").mockImplementation((req: any) => {
+      const messages: any[] = [];
+      const comp = req?.components;
+      if (comp?.videoTransmitter && comp?.antennas?.length > 0) {
+        const vtx = comp.videoTransmitter;
+        const vtxAnt = comp.antennas[comp.antennas.length - 1];
+        const res = checkVtxAntennaCompatibility(vtx, vtxAnt);
+        if (!res.compatible) {
+          messages.push({
+            checkerName: "VideoTransmitterAntennaFrequencyChecker",
+            message: res.reason,
+          });
+        }
+      }
+      return { messages } as any;
+    });
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Load template baseline so all steps are complete
+    const templateCard = await screen.findByText("Bando Basher 5 inch");
+    await user.click(templateCard);
+
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const step10Tab = within(stepNav).getByRole("button", { name: /^step 10:/i });
+    const step11Tab = within(stepNav).getByRole("button", { name: /^step 11:/i });
+    const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
+    await waitFor(() => expect(step10Tab).toBeEnabled());
+
+    // Navigate to Step 10 (VTX Antenna)
+    await user.click(step10Tab);
+    expect(await screen.findByText("10. VTX Antenna(s)")).toBeInTheDocument();
+
+    // Uncheck "Compatible only" to show all antennas
+    const compatCheckbox = screen.getByLabelText(/compatible only/i);
+    await user.click(compatCheckbox);
+
+    // Select incompatible 2.4GHz antenna
+    const incompatibleAnt = await screen.findByText("RadioMaster T-Antenna 2.4GHz");
+    await user.click(incompatibleAnt);
+
+    // Incompatibility banner should appear on Step 10
+    expect(await screen.findByText(/Incompatibility Detected/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Frequency mismatch/i).length).toBeGreaterThanOrEqual(1);
+
+    // Downstream steps should be locked
+    expect(step11Tab).toBeDisabled();
+    expect(step12Tab).toBeDisabled();
+
+    // Re-select compatible antenna (Lollipop 4 RHCP)
+    const compatibleAnt = await screen.findByText("Lollipop 4 RHCP");
+    await user.click(compatibleAnt);
+
+    // Incompatibility banner should be gone and downstream steps unlocked
+    await waitFor(() => expect(screen.queryByText(/Incompatibility Detected/i)).toBeNull());
+    expect(step11Tab).toBeEnabled();
+    expect(step12Tab).toBeEnabled();
   });
 });

@@ -528,6 +528,12 @@ type EmailOtp struct {
 	ChallengeIdHash     string                 `protobuf:"bytes,8,opt,name=challenge_id_hash,json=challengeIdHash,proto3" json:"challenge_id_hash,omitempty"`
 	Purpose             string                 `protobuf:"bytes,9,opt,name=purpose,proto3" json:"purpose,omitempty"`
 	RequestedByUserUuid *string                `protobuf:"bytes,10,opt,name=requested_by_user_uuid,json=requestedByUserUuid,proto3,oneof" json:"requested_by_user_uuid,omitempty"`
+	IpAddress           string                 `protobuf:"bytes,11,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	UserAgent           string                 `protobuf:"bytes,12,opt,name=user_agent,json=userAgent,proto3" json:"user_agent,omitempty"`
+	LocationHint        string                 `protobuf:"bytes,13,opt,name=location_hint,json=locationHint,proto3" json:"location_hint,omitempty"`
+	Status              string                 `protobuf:"bytes,14,opt,name=status,proto3" json:"status,omitempty"`
+	ApprovedAt          *timestamppb.Timestamp `protobuf:"bytes,15,opt,name=approved_at,json=approvedAt,proto3" json:"approved_at,omitempty"`
+	DeniedAt            *timestamppb.Timestamp `protobuf:"bytes,16,opt,name=denied_at,json=deniedAt,proto3" json:"denied_at,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -630,6 +636,48 @@ func (x *EmailOtp) GetRequestedByUserUuid() string {
 		return *x.RequestedByUserUuid
 	}
 	return ""
+}
+
+func (x *EmailOtp) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+func (x *EmailOtp) GetUserAgent() string {
+	if x != nil {
+		return x.UserAgent
+	}
+	return ""
+}
+
+func (x *EmailOtp) GetLocationHint() string {
+	if x != nil {
+		return x.LocationHint
+	}
+	return ""
+}
+
+func (x *EmailOtp) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *EmailOtp) GetApprovedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ApprovedAt
+	}
+	return nil
+}
+
+func (x *EmailOtp) GetDeniedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DeniedAt
+	}
+	return nil
 }
 
 type UsernameHistory struct {
@@ -1208,7 +1256,7 @@ const file_user_proto_rawDesc = "" +
 	"deviceHint\x129\n" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x14\xc2\xf3\x18\x10\n" +
-	"\x0erefresh_tokens\"\x99\x04\n" +
+	"\x0erefresh_tokens\"\xb9\x06\n" +
 	"\bEmailOtp\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x1c\n" +
 	"\x05email\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\x05email\x12\x1b\n" +
@@ -1223,7 +1271,16 @@ const file_user_proto_rawDesc = "" +
 	"\xc2\xf3\x18\x06(\x01:\x02''R\x0fchallengeIdHash\x12'\n" +
 	"\apurpose\x18\t \x01(\tB\r\xc2\xf3\x18\t:\a'login'R\apurpose\x12K\n" +
 	"\x16requested_by_user_uuid\x18\n" +
-	" \x01(\tB\x11\xc2\xf3\x18\r\x1a\vusers(uuid)H\x00R\x13requestedByUserUuid\x88\x01\x01:\x10\xc2\xf3\x18\f\n" +
+	" \x01(\tB\x11\xc2\xf3\x18\r\x1a\vusers(uuid)H\x00R\x13requestedByUserUuid\x88\x01\x01\x12'\n" +
+	"\n" +
+	"ip_address\x18\v \x01(\tB\b\xc2\xf3\x18\x04:\x02''R\tipAddress\x12'\n" +
+	"\n" +
+	"user_agent\x18\f \x01(\tB\b\xc2\xf3\x18\x04:\x02''R\tuserAgent\x12-\n" +
+	"\rlocation_hint\x18\r \x01(\tB\b\xc2\xf3\x18\x04:\x02''R\flocationHint\x12'\n" +
+	"\x06status\x18\x0e \x01(\tB\x0f\xc2\xf3\x18\v:\t'pending'R\x06status\x12;\n" +
+	"\vapproved_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"approvedAt\x127\n" +
+	"\tdenied_at\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\bdeniedAt:\x10\xc2\xf3\x18\f\n" +
 	"\n" +
 	"email_otpsB\x19\n" +
 	"\x17_requested_by_user_uuid\"\x89\x03\n" +
@@ -1324,24 +1381,26 @@ var file_user_proto_depIdxs = []int32{
 	15, // 11: quadsmith.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
 	15, // 12: quadsmith.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
 	15, // 13: quadsmith.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
-	15, // 14: quadsmith.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
-	15, // 15: quadsmith.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
-	15, // 16: quadsmith.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
-	15, // 17: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
-	15, // 18: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	0,  // 19: quadsmith.CheckUsernameAvailableResponse.status:type_name -> quadsmith.UsernameAvailabilityStatus
-	13, // 20: quadsmith.ListUsersResponse.users:type_name -> quadsmith.SeedUser
-	9,  // 21: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
-	10, // 22: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
-	11, // 23: quadsmith.UserService.CheckUsernameAvailable:input_type -> quadsmith.CheckUsernameAvailableRequest
-	1,  // 24: quadsmith.UserService.GetUser:output_type -> quadsmith.User
-	4,  // 25: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
-	12, // 26: quadsmith.UserService.CheckUsernameAvailable:output_type -> quadsmith.CheckUsernameAvailableResponse
-	24, // [24:27] is the sub-list for method output_type
-	21, // [21:24] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	15, // 14: quadsmith.EmailOtp.approved_at:type_name -> google.protobuf.Timestamp
+	15, // 15: quadsmith.EmailOtp.denied_at:type_name -> google.protobuf.Timestamp
+	15, // 16: quadsmith.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
+	15, // 17: quadsmith.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
+	15, // 18: quadsmith.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
+	15, // 19: quadsmith.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
+	15, // 20: quadsmith.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	0,  // 21: quadsmith.CheckUsernameAvailableResponse.status:type_name -> quadsmith.UsernameAvailabilityStatus
+	13, // 22: quadsmith.ListUsersResponse.users:type_name -> quadsmith.SeedUser
+	9,  // 23: quadsmith.UserService.GetUser:input_type -> quadsmith.GetUserRequest
+	10, // 24: quadsmith.UserService.GetPublicProfile:input_type -> quadsmith.GetPublicProfileRequest
+	11, // 25: quadsmith.UserService.CheckUsernameAvailable:input_type -> quadsmith.CheckUsernameAvailableRequest
+	1,  // 26: quadsmith.UserService.GetUser:output_type -> quadsmith.User
+	4,  // 27: quadsmith.UserService.GetPublicProfile:output_type -> quadsmith.PublicUserProfile
+	12, // 28: quadsmith.UserService.CheckUsernameAvailable:output_type -> quadsmith.CheckUsernameAvailableResponse
+	26, // [26:29] is the sub-list for method output_type
+	23, // [23:26] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_user_proto_init() }

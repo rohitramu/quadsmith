@@ -108,6 +108,123 @@ export function getVtxAntennaCount(vtx: VideoTransmitter | null | undefined): nu
   return 1;
 }
 
+export function getVtxFrequency(vtx?: VideoTransmitter | null): number {
+  if (!vtx) return 5800;
+  if (vtx.frequencyBandMhz && vtx.frequencyBandMhz > 0) {
+    return vtx.frequencyBandMhz;
+  }
+  const text = `${vtx.name} ${vtx.description || ""} ${vtx.protocol || ""}`.toLowerCase();
+  if (
+    text.includes("1.2g") ||
+    text.includes("1.3g") ||
+    text.includes("1.2 ghz") ||
+    text.includes("1.3 ghz")
+  ) {
+    return 1200;
+  }
+  if (text.includes("2.4g") || text.includes("2.4 ghz")) {
+    return 2400;
+  }
+  if (text.includes("3.3g") || text.includes("3.3 ghz")) {
+    return 3300;
+  }
+  return 5800;
+}
+
+export function getVtxConnectors(
+  vtx?: VideoTransmitter | null,
+  allAntennas: Antenna[] = [],
+): string[] {
+  if (!vtx) return [];
+  if (vtx.antennaConnectors && vtx.antennaConnectors.length > 0) {
+    return vtx.antennaConnectors;
+  }
+  if (vtx.antennaUuids && vtx.antennaUuids.length > 0) {
+    const connectors = new Set<string>();
+    for (const uuid of vtx.antennaUuids) {
+      const ant = allAntennas.find((a) => a.uuid === uuid);
+      if (ant && ant.connector) {
+        connectors.add(ant.connector);
+        if (ant.connector.toLowerCase() === "dual u.fl") {
+          connectors.add("U.FL");
+        }
+      }
+    }
+    if (connectors.size > 0) {
+      return Array.from(connectors);
+    }
+  }
+  const text = `${vtx.name} ${vtx.description || ""}`.toLowerCase();
+  const proto = (vtx.protocol || "").toLowerCase();
+  if (
+    text.includes("dji o3") ||
+    text.includes("o3 air unit") ||
+    text.includes("dji o4") ||
+    text.includes("o4 air unit") ||
+    proto.includes("o3") ||
+    proto.includes("o4") ||
+    text.includes("dual u.fl") ||
+    text.includes("dual ufl")
+  ) {
+    return ["Dual U.FL", "U.FL"];
+  }
+  if (text.includes("u.fl") || text.includes("ufl") || text.includes("ipex")) {
+    return ["U.FL"];
+  }
+  if (text.includes("mmcx")) {
+    return ["MMCX", "SMA"];
+  }
+  if (text.includes("rp-sma") || text.includes("rpsma")) {
+    return ["RP-SMA"];
+  }
+  if (text.includes("sma")) {
+    return ["SMA"];
+  }
+  return ["SMA", "U.FL"];
+}
+
+export function checkVtxAntennaCompatibility(
+  vtx: VideoTransmitter | null | undefined,
+  ant: Antenna,
+  allAntennas: Antenna[] = [],
+): { compatible: boolean; reason?: string } {
+  if (!vtx) return { compatible: true };
+
+  // 1. Frequency check
+  const vtxFreq = getVtxFrequency(vtx);
+  if (ant.frequencyBandMhz > 0 && Math.abs(ant.frequencyBandMhz - vtxFreq) > 500) {
+    return {
+      compatible: false,
+      reason: `Frequency mismatch: VTX operates at ${formatFrequencyBand(vtxFreq)}, antenna operates at ${formatFrequencyBand(ant.frequencyBandMhz)}.`,
+    };
+  }
+
+  // 2. Connector check
+  const vtxConnectors = getVtxConnectors(vtx, allAntennas);
+  if (vtxConnectors.length > 0 && ant.connector) {
+    const antConnLower = ant.connector.trim().toLowerCase();
+    const matched = vtxConnectors.some((vc) => {
+      const vcLower = vc.trim().toLowerCase();
+      if (antConnLower === vcLower) return true;
+      if (
+        (antConnLower.includes("u.fl") || antConnLower.includes("ipex")) &&
+        (vcLower.includes("u.fl") || vcLower.includes("ipex"))
+      ) {
+        return true;
+      }
+      return false;
+    });
+    if (!matched) {
+      return {
+        compatible: false,
+        reason: `Connector mismatch: VTX requires ${vtxConnectors.join(" or ")}, but selected antenna has a ${ant.connector} connector.`,
+      };
+    }
+  }
+
+  return { compatible: true };
+}
+
 export function formatFrequencyBand(mhz?: number): string {
   if (!mhz) return "2.4 GHz";
   if (mhz >= 1000) {
@@ -658,12 +775,12 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
                 ? [selectedRx]
                 : []
             : [],
-        antennas:
-          maxStep >= 4 && selectedRxAnt && !isRxAntennaIntegrated
-            ? [selectedRxAnt]
-            : maxStep >= 10 && selectedVtxAnt && !noneSelections.vtxAntenna
-              ? [selectedVtxAnt]
-              : [],
+        antennas: [
+          ...(maxStep >= 4 && selectedRxAnt && !isRxAntennaIntegrated ? [selectedRxAnt] : []),
+          ...(maxStep >= 10 && selectedVtxAnt && !noneSelections.vtxAntenna
+            ? [selectedVtxAnt]
+            : []),
+        ],
         electronicSpeedControllers:
           maxStep >= 5
             ? useIntegratedEsc && integratedEsc
@@ -819,8 +936,8 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           components: buildAssembledUpTo(4),
         }),
       );
-      const antConflict = msgs.messages.find(
-        (m: CompatibilityMessage) => m.checkerName === "ReceiverAntennaChecker",
+      const antConflict = msgs.messages.find((m: CompatibilityMessage) =>
+        m.checkerName.startsWith("ReceiverAntenna"),
       );
       if (antConflict) conflicts[4] = antConflict.message;
     }
@@ -911,10 +1028,18 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           components: buildAssembledUpTo(10),
         }),
       );
-      const antConflict = msgs.messages.find(
-        (m: CompatibilityMessage) => m.checkerName === "VideoTransmitterAntennaChecker",
+      const antConflict = msgs.messages.find((m: CompatibilityMessage) =>
+        m.checkerName.startsWith("VideoTransmitterAntenna"),
       );
-      if (antConflict) conflicts[10] = antConflict.message;
+      if (antConflict) {
+        conflicts[10] = antConflict.message;
+      } else {
+        const check = checkVtxAntennaCompatibility(activeV, selectedVtxAnt, antennas);
+        if (!check.compatible) {
+          conflicts[10] =
+            check.reason || "VTX antenna is incompatible with the selected video transmitter.";
+        }
+      }
     }
 
     // Battery Conflict Check against selected components
@@ -1067,7 +1192,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           case 3:
             return wasmEngine.generateCelFilter("receivers", buildAssembledUpTo(2));
           case 4:
-            return wasmEngine.generateCelFilter("antennas", buildAssembledUpTo(3));
+            return wasmEngine.generateCelFilter("rx_antennas", buildAssembledUpTo(3));
           case 5:
             return wasmEngine.generateCelFilter(
               "electronic_speed_controllers",
@@ -1082,7 +1207,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           case 9:
             return wasmEngine.generateCelFilter("video_transmitters", buildAssembledUpTo(8));
           case 10:
-            return wasmEngine.generateCelFilter("antennas", buildAssembledUpTo(9));
+            return wasmEngine.generateCelFilter("vtx_antennas", buildAssembledUpTo(9));
           case 11:
             return wasmEngine.generateCelFilter("gps_receivers", buildAssembledUpTo(10));
           default:

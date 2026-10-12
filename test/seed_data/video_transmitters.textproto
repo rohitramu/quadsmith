@@ -15,6 +15,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/diatone-tbs-unify-pro32-nano-adaptor-board-16-16"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -37,6 +40,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-camera-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -59,6 +64,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hdzero-freestyle-v2-20x20-25-1000mw-hd-vtx-kit-w-u-fl"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -87,6 +94,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hdzero-whoop-lite-v2-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -105,6 +114,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/heq-g-port-3-axis-gimbal-for-dji-o4-lite"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -123,6 +135,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/betafpv-meteor65-pro-ii-o4-hd-1s-70mm-brushless-whoop-quadcopter-with-dji-o4-wide-air-unit-choose-receiver"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -145,6 +160,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-zeus-800mw-smart-mounting-20-20-30-30-vtx-for-fpv-racing-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -167,6 +184,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-zeus-nano-350mw-16mm-20mm-25-5mm-vtx"
   }
+  frequency_band_mhz: 2400
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -181,6 +200,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "ReadyMadeRC RMRC Cricket Pro 5.8GHz VTX Analog video transmitter with up to 600mW output power, operating voltage 7.0-26.0V, weighing 110.0g."
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -203,6 +224,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-hd-nano-camera-v3-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -221,6 +244,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/5-8g-vtx-antenna-packet"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -243,6 +268,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/betafpv-c04-camera-and-vtx-module-cetus-v2"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -261,6 +288,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/cetus-lite-camera-and-vtx-module"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -279,6 +308,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/h01-fpv-aio-camera-5-8g-40ch-25mw-transmitter"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -297,6 +328,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-gimbal-gm3-v2"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -319,6 +352,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-ascent-lite-vtx-camera-kit-for-walksnail-ascent-goggles-vrx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -337,6 +372,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-gm3-with-pro-kit"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -359,6 +396,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/moonlight"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -381,6 +420,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-repeater"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -399,6 +440,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-gm1"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -417,6 +460,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-fpv-vrx-with-gt-kit"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -435,6 +480,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/5-2g-and-5-8g-antenna"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -457,6 +504,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-repeater"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -479,6 +528,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-vrx-kit-choose-version"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -501,6 +552,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/moonlight"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -519,6 +572,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-gm2-with-pro-kit"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -537,6 +592,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/caddxfpv-gm1-gm2-gm3"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -559,6 +616,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-hd-nano-camera-v3-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -581,6 +640,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/caddx-gm1-gimbal-pitch-120-for-19mm-fpv-camera-compatible-with-avatar-hd-goggles"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -599,6 +660,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-omnis-analog-vtx-series"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -617,6 +680,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-mini-rtf"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -635,6 +700,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-3-inch-drone-rtf"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -653,6 +720,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-hilink-hd-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -671,6 +740,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-3-inch-freestyle-fpv-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -689,6 +760,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-babyape-ⅲ-mini-2-inch-freestyle-fpv-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -707,6 +780,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-cineape20-rtf-kit"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -725,6 +800,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-cineape20-compatible-with-pavo20-2-inch-whoop-fpv-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -743,6 +820,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-toruk13-x-class-long-range-fpv-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -761,6 +840,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-5-8g-2-5w-waterproof-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -779,6 +860,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-akk-5-8g-1600mw-1-6w-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -797,6 +880,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-vt5804-hv-max-5-8g-1w-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -815,6 +900,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-hulk-ⅱ-waterproof-fpv-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -837,6 +924,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-cement-ultra-durable-5-8g-1000mw-vtx-30x30mm"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -855,6 +944,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-5-8g-40ch-hulk-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -873,6 +964,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-5-8g-40ch-400mw-800mw-1200mw-baby-ape-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -891,6 +984,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/darwinfpv-vt5804-5-8g-25-50-100-200-400mw-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -913,6 +1008,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-tinyape-freestyle-2-5-fpv-drone-pnp"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -935,6 +1032,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-acrobee75-hd-o4-pusher-2s-bnf-with-dji-o4-fpv-whoop-elrs-2-4ghz"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -957,6 +1057,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-acrobee65-v2-brushed-bnf-whoop-w-smartmax-vtx-elrs-2-4ghz"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -975,6 +1077,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-stingerbee-hd-o4-pro-upgrade-kit"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -993,6 +1098,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-savagebee-pusher-5-8ghz-vtx-antenna-u-fl"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1015,6 +1122,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/newbeedrone-acrobee75-hd-o4-pusher-2s-bnf-with-dji-o4-fpv-whoop-elrs-2-4ghz"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1037,6 +1147,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-beebrain-vtx-connector-type-u-fl-3mm-pack-of-4"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1059,6 +1171,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/newbeedrone-mmcx-to-sma-extensions-straight-mmcx-2-pack"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1073,6 +1187,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Reaper Extreme V4 VTX for Analog Video System"
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1091,6 +1207,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/cl2-4s-5-solder-free-built-tuned-drone-avatar-elrs"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1109,6 +1227,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tbs-unify-pro32-dp-mmcx-vtx-ndaa"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1127,6 +1248,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/tbs-crossfire-micro-tx-v2"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1141,6 +1264,9 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Noozle3D TANQ 2 DJI O4 Pro VTX Mount DJI O4 Pro video transmitter with up to 2000mW output power, operating voltage 3.1-5.5V, weighing 2.1g."
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1155,6 +1281,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Punch & Shorty Avatar V2/DJI O3 Camera Mount"
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1177,6 +1306,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/moonlight"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1191,6 +1322,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "GM Series FPV Gimbal for Avatar HD System - Choose Version"
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1205,6 +1338,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "G-Port 3 Axis Gimbal for DJI and Caddx - Choose Version"
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1219,6 +1354,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Flywoo X30 Super Hydrophobic Invisible Waterproofing Spray Analog video transmitter with up to 800mW output power, operating voltage 7.0-26.0V, weighing 67.2g."
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1233,6 +1370,8 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Noozle3D TANQ S Moonlight VTX Mount Analog video transmitter with up to 800mW output power, operating voltage 3.1-5.5V, weighing 2.5g."
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1247,6 +1386,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Noozle3D TANQ S O3 Air Unit Mount DJI O3 video transmitter with up to 2000mW output power, operating voltage 7.0-26.0V, weighing 36.4g."
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1261,6 +1403,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Divimath Freestyle V2 Kit For HDZero Video System HDZero video transmitter with up to 200mW output power, operating voltage 7.0-26.0V, weighing 5.5g."
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1283,6 +1427,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-camera-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1297,6 +1443,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "CL2 Avatar V2 Dual Long Antenna Mount"
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1315,6 +1463,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/moonlight"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1329,6 +1479,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "TANQ 2 Pro Spec DJI O3 VTX & Core Antenna Mount"
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1343,6 +1496,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Noozle3D TANQ 2 DJI O3 VTX Mount DJI O3 video transmitter with up to 2000mW output power, operating voltage 7.0-26.0V, weighing 68.0g."
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1357,6 +1513,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Noozle3D TANQ 2 Avatar V2 VTX Mount Walksnail Avatar video transmitter with up to 1200mW output power, operating voltage 7.0-26.0V, weighing 15.4g."
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1375,6 +1533,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/riot-wing-kit"
   }
+  frequency_band_mhz: 3300
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1389,6 +1549,8 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar Mini Lite 1S Replacement USB Cable"
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1407,6 +1569,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://rotorriot.com/products/u-fl-to-rp-sma-adapter"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1425,6 +1589,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/truerc-x-air-5-8-mk-ii-rhcp-rp-sma"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1443,6 +1609,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-flybee-20-2-drone-hd-w-walksnail-avatar-hd-mini-2s"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1457,6 +1625,9 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "TANQ 1 & 2 DJI O3 Antenna Mount - Choose Version"
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1471,6 +1642,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "X-Air 5.8 MKII & Stubby Antenna Set for Dominator HD Goggles"
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1489,6 +1662,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-draco-a1-a2-hd-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1507,6 +1682,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/5-8g-vtx-pro-1-6w-for-fpv-racing-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1525,6 +1702,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/3-3g-5w-high-power-vtx-adjustable-power-long-range-for-fpv-drone"
   }
+  frequency_band_mhz: 3300
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1543,6 +1722,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/4-9-6ghz-10w-high-power-vtx-for-aerial-photography-fpv-drone-racing"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1561,6 +1742,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/5-8g-5-5w-high-power-vtx-adjustable-power-aerial-photography-fpv-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1579,6 +1762,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-talon-2-inch-cinewhoop-analog-hd-fpv-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1597,6 +1782,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.hglrc.com/products/hglrc-specter-25a-aio-hd-analog-vtx-wireless-bluetooth-tuning-parameter-adjustment-integrated-aio"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1619,6 +1806,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/hglrc-zeus-800mw-smart-mounting-20-20-30-30-vtx-for-fpv-racing-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1641,6 +1830,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/hglrc-zeus-nano-25-350mw-5-8ghz-16x16-20x20-25x25-vtx-u-fl"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1659,6 +1850,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://www.diatone.us/products/mamba-ultra-tiny-vtx-pdb-2-pcs"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1681,6 +1874,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/flyfishrc-dual-band-5-8ghz-2-4ghz-antenna-for-dji-o3-u-fl-lhcp-red-choose-length"
   }
+  frequency_band_mhz: 2400
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1699,6 +1895,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/dji-o4-air-unit"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1721,6 +1920,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-send-t1600-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1743,6 +1944,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-oasisfly30-3-inches-hd-o4-pro-freestyle-quadcopter-without-o4-pro-choose-rx-type"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1765,6 +1969,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-dollyfly25-2-5-4s-cinewhoop-w-dji-o3-hd-camera-system-choose-rx-type"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1787,6 +1994,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-dollyfly25-2-5-4s-cinewhoop-w-dji-o3-hd-camera-system-choose-rx-type"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1805,6 +2015,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/dollyfly25-o3-4s-cinewhoop"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1827,6 +2040,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/sub250-send-t400-400mw-nano-vtx-ufl"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1845,6 +2060,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://sub250.com/products/whoopfly16-hd-zero-1s-tiny-whoop"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1864,6 +2081,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/air-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1883,6 +2102,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/p1-air-unit-hd-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1902,6 +2123,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/sub100g-whoop-drone-with-dji-o3-beta-test"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1921,6 +2145,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/a03-400mw-5-8g-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1940,6 +2166,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/m03-25-350mw-5-8g-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1959,6 +2187,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/a02-25-800mw-5-8g-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -1978,6 +2208,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/x-knight-3-toothpick-quad-hd-digital-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -1997,6 +2229,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/m02-aio-5-8g-vtxpin-connected"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2016,6 +2250,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/lite-2s-brushless-flight-controller-frsky"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2035,6 +2271,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/m01-aio-camera-5-8g-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2054,6 +2292,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/t01-aio-camera-25mw-5-8g"
   }
+  frequency_band_mhz: 3300
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2073,6 +2313,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/copy-of-z02-aio-camera-5-8g-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2092,6 +2334,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/copy-of-z02-aio-camera-5-8g-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2111,6 +2355,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/h02-aio-camera-5-8g-25mw-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2130,6 +2376,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://betafpv.com/products/z01-aio-fpv-5-8g-25mw-transmitter-camera"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2149,6 +2397,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/beta-test-walksnail-neuxs-aio-1s-flight-controller-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2168,6 +2418,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-gt-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2187,6 +2439,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-gt-kit-only"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2210,6 +2464,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/walksnail-avatar-hd-kit-v2-20x20-25x25-vtx-kit-w-micro-camera-v2-dual-antennas-version"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2233,6 +2489,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/walksnail-avatar-hd-kit-v2-20x20-25x25-vtx-kit-w-micro-camera-v2-dual-antennas-version"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2252,6 +2510,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/tinyape25-walksnail-avatar-hd-freestyle-fpv-drone"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2271,6 +2531,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://darwinfpv.com/products/25-200-400-600mw-tinyape-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2290,6 +2552,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://newbeedrone.com/products/newbeedrone-beebrain-brushed-v2-aio-flight-controller-expresslrselrs2-4g-with-25-400mw-vtx"
   }
+  frequency_band_mhz: 2400
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2305,6 +2569,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Aura VTX for Analog Video System (Internal Video Transmitter)"
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2324,6 +2590,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/flywoo-goku-ervt-5-in-1-aio-f405-fc-1s-5a-esc-400mw-vtx-elrs-rx-osd"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2339,6 +2607,8 @@ video_transmitters: {
   input_voltage_max_v: 26
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar GT Kit Dual Antenna with SD Card DVR & Gyro for Avatar HD Video System (Internal Video Transmitter)"
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2358,6 +2628,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-vtx-v2-only-dual-antennas"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2377,6 +2649,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-goggles-x-with-pro-kit-dual-and-gm3"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2396,6 +2670,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-kit-v2-dual-antenna"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2411,6 +2687,8 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000015"
   description: "Whoop Lite Bundle with Nano V3 Camera For HDZero Video System (Internal Video Transmitter)"
+  frequency_band_mhz: 5800
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2430,6 +2708,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-hd-mini-vtx-v3"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2453,6 +2733,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/walksnail-avatar-hd-kit-v2-20x20-25x25-vtx-kit-w-micro-camera-v2-dual-antennas-version"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2472,6 +2754,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://caddxfpv.com/products/walksnail-avatar-fpv-with-avatar-hd-nano-kit-v3-14cm"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2487,6 +2771,8 @@ video_transmitters: {
   input_voltage_max_v: 5.5
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Avatar Mini 1S VTX with Nano Camera For Avatar HD Video System (Internal Video Transmitter)"
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2506,6 +2792,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/walksnail-avatar-digital-hd-mini-1s-vtx-nano-camera-kit"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2525,6 +2813,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/walksnail-avatar-digital-hd-vtx-micro-camera-kit-的副本"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2544,6 +2834,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PRODUCT_PAGE
     url: "https://flyfish-rc.com/products/walksnail-avatar-digital-hd-vtx-micro-camera-kit"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2576,6 +2868,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/darwinfpv-dji-o3-air-unit-cnc-aluminum-waterproof-case"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2604,6 +2899,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/walksnail-avatar-hd-v2-vtx-module"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2636,6 +2933,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/walksnail-avatar-hd-mini-1s-lite-camera-for-walksnail-avatar-fatshark-dominator-hd-fpv-system"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2668,6 +2967,9 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.racedayquads.com/products/tbs-unify-pro32-hv-25-1000mw-5-8ghz-vtx-mmcx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "Dual U.FL"
+  antenna_connectors: "U.FL"
 }
 video_transmitters: {
 
@@ -2693,6 +2995,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/rushfpv-rush-tank-solo-5-8ghz-1-6w-37ch-vtx-us-version"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2717,6 +3021,8 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://www.getfpv.com/speedybee-tx800-5-8ghz-vtx.html"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }
 video_transmitters: {
 
@@ -2741,4 +3047,6 @@ video_transmitters: {
     types: REFERENCE_LINK_TYPE_PURCHASE
     url: "https://pyrodrone.com/products/foxeer-reaper-extreme-2-5w-5-8ghz-37ch-adjustable-analog-vtx"
   }
+  frequency_band_mhz: 5800
+  antenna_connectors: "SMA"
 }

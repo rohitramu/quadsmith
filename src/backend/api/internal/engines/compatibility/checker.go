@@ -10,6 +10,71 @@ import (
 // Components represents a resolved set of hardware components to check for compatibility.
 type Components = pb.AssembledComponents
 
+func getVtxFrequencyMhz(vtx *pb.VideoTransmitter) uint32 {
+	if vtx == nil {
+		return 5800
+	}
+	if vtx.FrequencyBandMhz > 0 {
+		return vtx.FrequencyBandMhz
+	}
+	desc := strings.ToLower(vtx.Name + " " + vtx.Description + " " + vtx.Protocol)
+	if strings.Contains(desc, "1.2g") || strings.Contains(desc, "1.3g") || strings.Contains(desc, "1.2 ghz") || strings.Contains(desc, "1.3 ghz") {
+		return 1200
+	}
+	if strings.Contains(desc, "2.4g") || strings.Contains(desc, "2.4 ghz") {
+		return 2400
+	}
+	if strings.Contains(desc, "3.3g") || strings.Contains(desc, "3.3 ghz") {
+		return 3300
+	}
+	return 5800
+}
+
+func getVtxAntennaConnectors(vtx *pb.VideoTransmitter) []string {
+	if vtx == nil {
+		return nil
+	}
+	if len(vtx.AntennaConnectors) > 0 {
+		return vtx.AntennaConnectors
+	}
+	desc := strings.ToLower(vtx.Name + " " + vtx.Description + " " + vtx.Protocol)
+	if strings.Contains(desc, "o3") || strings.Contains(desc, "o4") || strings.Contains(desc, "dual u.fl") || strings.Contains(desc, "dual ufl") {
+		return []string{"Dual U.FL", "U.FL"}
+	}
+	if strings.Contains(desc, "u.fl") || strings.Contains(desc, "ufl") || strings.Contains(desc, "ipex") {
+		return []string{"U.FL"}
+	}
+	if strings.Contains(desc, "mmcx") {
+		return []string{"MMCX", "SMA"}
+	}
+	if strings.Contains(desc, "rp-sma") || strings.Contains(desc, "rpsma") {
+		return []string{"RP-SMA"}
+	}
+	if strings.Contains(desc, "sma") {
+		return []string{"SMA"}
+	}
+	return nil
+}
+
+func formatFreqGhz(mhz uint32) string {
+	if mhz >= 1000 {
+		ghz := float64(mhz) / 1000.0
+		if ghz == float64(int(ghz)) {
+			return fmt.Sprintf("%.0f GHz", ghz)
+		}
+		return fmt.Sprintf("%.1f GHz", ghz)
+	}
+	return fmt.Sprintf("%d MHz", mhz)
+}
+
+func rxHasIntegratedAntennaProto(rx *pb.Receiver) bool {
+	if rx == nil {
+		return false
+	}
+	desc := strings.ToLower(rx.Name + " " + rx.Description)
+	return strings.Contains(desc, "ceramic") || strings.Contains(desc, "smd antenna") || strings.Contains(desc, "integrated antenna") || strings.Contains(desc, "built-in antenna")
+}
+
 // CheckCompatibility runs all compatibility rules against a given set of hardware components.
 func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	var messages []*pb.CompatibilityMessage
@@ -382,40 +447,81 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	// Rule 18: Video Transmitter vs Antenna (Frequency and Connector Compatibility)
 	if comp.VideoTransmitter != nil && len(comp.Antennas) > 0 {
 		vtx := comp.VideoTransmitter
-		for _, ant := range comp.Antennas {
+		vtxFreq := getVtxFrequencyMhz(vtx)
+		vtxConnectors := getVtxAntennaConnectors(vtx)
+
+		// Filter antennas: determine which antennas are intended for the VTX.
+		var vtxAntennas []*pb.Antenna
+		if len(comp.Receivers) == 0 || comp.Receivers[0] == nil {
+			vtxAntennas = comp.Antennas
+		} else {
+			rx := comp.Receivers[0]
+			if rxHasIntegratedAntennaProto(rx) {
+				vtxAntennas = comp.Antennas
+			} else {
+				// Multiple antennas: separate RX antenna from VTX antenna
+				for _, ant := range comp.Antennas {
+					if ant == nil {
+						continue
+					}
+					if ant.FrequencyBandMhz > 3000 {
+						vtxAntennas = append(vtxAntennas, ant)
+					}
+				}
+				if len(vtxAntennas) == 0 && len(comp.Antennas) > 1 {
+					vtxAntennas = append(vtxAntennas, comp.Antennas[len(comp.Antennas)-1])
+				}
+			}
+		}
+
+		for _, ant := range vtxAntennas {
 			if ant == nil {
 				continue
 			}
-			// Identify if this antenna is intended for VTX (frequency >= 4000 MHz)
-			if ant.FrequencyBandMhz >= 4000 {
-				if ant.FrequencyBandMhz < 5000 || ant.FrequencyBandMhz > 6000 {
+
+			// 1. Frequency Band Check
+			if ant.FrequencyBandMhz > 0 {
+				diff := int64(ant.FrequencyBandMhz) - int64(vtxFreq)
+				if diff < 0 {
+					diff = -diff
+				}
+				if diff > 500 {
 					messages = append(messages, &pb.CompatibilityMessage{
 						CheckerName:   "VideoTransmitterAntennaFrequencyChecker",
 						Components:    "Video Transmitter and Antenna",
 						SeverityLevel: 0,
 						SeverityName:  "DEFINITE_INCOMPATIBILITY",
-						Message:       fmt.Sprintf("Video transmitter operates at 5.8 GHz, but selected antenna operates at %d MHz.", ant.FrequencyBandMhz),
-						Resolution:    "Select a 5.8 GHz video antenna.",
+						Message:       fmt.Sprintf("Video transmitter operates at %s (%d MHz), but selected antenna operates at %d MHz.", formatFreqGhz(vtxFreq), vtxFreq, ant.FrequencyBandMhz),
+						Resolution:    fmt.Sprintf("Select a %s video antenna.", formatFreqGhz(vtxFreq)),
 					})
 				}
+			}
 
-				// Check connector matching for VTX
-				vtxProtoLower := strings.ToLower(vtx.Protocol)
-				vtxNameLower := strings.ToLower(vtx.Name)
+			// 2. Connector Type Check
+			if len(vtxConnectors) > 0 && strings.TrimSpace(ant.Connector) != "" {
 				antConnLower := strings.ToLower(strings.TrimSpace(ant.Connector))
-
-				// If DJI O3, it requires Dual U.FL or U.FL
-				if strings.Contains(vtxProtoLower, "o3") || strings.Contains(vtxNameLower, "o3") {
-					if !strings.Contains(antConnLower, "u.fl") && !strings.Contains(antConnLower, "ipex") {
-						messages = append(messages, &pb.CompatibilityMessage{
-							CheckerName:   "VideoTransmitterAntennaConnectorChecker",
-							Components:    "Video Transmitter and Antenna",
-							SeverityLevel: 0,
-							SeverityName:  "DEFINITE_INCOMPATIBILITY",
-							Message:       fmt.Sprintf("DJI O3 Air Unit requires a Dual U.FL or U.FL antenna, but selected antenna has a %s connector.", ant.Connector),
-							Resolution:    "Select an antenna with a Dual U.FL or U.FL connector.",
-						})
+				matched := false
+				for _, vc := range vtxConnectors {
+					vcLower := strings.ToLower(strings.TrimSpace(vc))
+					if antConnLower == vcLower {
+						matched = true
+						break
 					}
+					if (strings.Contains(antConnLower, "u.fl") || strings.Contains(antConnLower, "ipex")) &&
+						(strings.Contains(vcLower, "u.fl") || strings.Contains(vcLower, "ipex")) {
+						matched = true
+						break
+					}
+				}
+				if !matched {
+					messages = append(messages, &pb.CompatibilityMessage{
+						CheckerName:   "VideoTransmitterAntennaConnectorChecker",
+						Components:    "Video Transmitter and Antenna",
+						SeverityLevel: 0,
+						SeverityName:  "DEFINITE_INCOMPATIBILITY",
+						Message:       fmt.Sprintf("Video transmitter (%s) requires a %s antenna connector, but selected antenna has a %s connector.", vtx.Name, strings.Join(vtxConnectors, " or "), ant.Connector),
+						Resolution:    fmt.Sprintf("Select an antenna with a %s connector.", strings.Join(vtxConnectors, " or ")),
+					})
 				}
 			}
 		}
@@ -769,7 +875,23 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
 			}
 		}
-	case "antennas":
+	case "vtx_antennas":
+		if comp.VideoTransmitter != nil {
+			vtx := comp.VideoTransmitter
+			vtxFreq := getVtxFrequencyMhz(vtx)
+			conditions = append(conditions, fmt.Sprintf("frequency_band_mhz == %d", vtxFreq))
+			vtxConnectors := getVtxAntennaConnectors(vtx)
+			if len(vtxConnectors) == 1 {
+				conditions = append(conditions, fmt.Sprintf("connector == %q", vtxConnectors[0]))
+			} else if len(vtxConnectors) > 1 {
+				var parts []string
+				for _, c := range vtxConnectors {
+					parts = append(parts, fmt.Sprintf("connector == %q", c))
+				}
+				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
+			}
+		}
+	case "rx_antennas":
 		if len(comp.Receivers) > 0 && comp.Receivers[0] != nil {
 			rx := comp.Receivers[0]
 			if rx.FrequencyBandMhz >= 2400 && rx.FrequencyBandMhz <= 2500 {
@@ -778,14 +900,30 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 				conditions = append(conditions, "(frequency_band_mhz == 915 || frequency_band_mhz == 868 || frequency_band_mhz == 900)")
 			}
 			conditions = append(conditions, "(connector == \"U.FL\" || connector == \"IPEX\")")
-		} else if comp.VideoTransmitter != nil {
-			conditions = append(conditions, "frequency_band_mhz == 5800")
+		}
+	case "antennas":
+		if comp.VideoTransmitter != nil && (len(comp.Receivers) == 0 || comp.Receivers[0] == nil) {
 			vtx := comp.VideoTransmitter
-			protoLower := strings.ToLower(vtx.Protocol)
-			nameLower := strings.ToLower(vtx.Name)
-			if strings.Contains(protoLower, "o3") || strings.Contains(nameLower, "o3") {
-				conditions = append(conditions, "(connector == \"Dual U.FL\" || connector == \"U.FL\")")
+			vtxFreq := getVtxFrequencyMhz(vtx)
+			conditions = append(conditions, fmt.Sprintf("frequency_band_mhz == %d", vtxFreq))
+			vtxConnectors := getVtxAntennaConnectors(vtx)
+			if len(vtxConnectors) == 1 {
+				conditions = append(conditions, fmt.Sprintf("connector == %q", vtxConnectors[0]))
+			} else if len(vtxConnectors) > 1 {
+				var parts []string
+				for _, c := range vtxConnectors {
+					parts = append(parts, fmt.Sprintf("connector == %q", c))
+				}
+				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
 			}
+		} else if len(comp.Receivers) > 0 && comp.Receivers[0] != nil {
+			rx := comp.Receivers[0]
+			if rx.FrequencyBandMhz >= 2400 && rx.FrequencyBandMhz <= 2500 {
+				conditions = append(conditions, "frequency_band_mhz == 2400")
+			} else if rx.FrequencyBandMhz > 0 && rx.FrequencyBandMhz <= 1000 {
+				conditions = append(conditions, "(frequency_band_mhz == 915 || frequency_band_mhz == 868 || frequency_band_mhz == 900)")
+			}
+			conditions = append(conditions, "(connector == \"U.FL\" || connector == \"IPEX\")")
 		}
 	}
 

@@ -397,7 +397,9 @@ CREATE TABLE IF NOT EXISTS video_transmitters (
   primary_display_image TEXT,
   media JSONB,
   port_type TEXT NOT NULL,
-  mount_pattern TEXT NOT NULL
+  mount_pattern TEXT NOT NULL,
+  frequency_band_mhz INTEGER NOT NULL,
+  antenna_connectors TEXT[]
 );
 
 CREATE INDEX IF NOT EXISTS idx_video_transmitters_manufacturer ON video_transmitters (manufacturer);

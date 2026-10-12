@@ -630,6 +630,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"media",
 			"port_type",
 			"mount_pattern",
+			"frequency_band_mhz",
+			"antenna_connectors",
 		},
 	},
 	{
