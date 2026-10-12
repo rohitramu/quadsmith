@@ -99,6 +99,9 @@ describe("Social Interactions Components", () => {
       await user.click(cinewhoopBtn);
       expect(cinewhoopBtn.querySelector('[data-testid="plus-icon"]')).toBeInTheDocument();
 
+      // Public collection checkbox is removed from the quick create form
+      expect(screen.queryByLabelText(/public collection/i)).not.toBeInTheDocument();
+
       // Create new collection
       const input = screen.getByPlaceholderText(/Collection name/i);
       await user.type(input, "Racing Rigs");
@@ -106,12 +109,13 @@ describe("Social Interactions Components", () => {
       const createBtn = screen.getByRole("button", { name: /create/i });
       await user.click(createBtn);
 
-      // Newly created collection should appear with tick icon because item was auto-added
+      // Newly created collection should appear with tick icon because item was auto-added, and default to Public
       const racingRigsBtn = await screen.findByRole("button", {
         name: /remove.*from racing rigs/i,
       });
       expect(racingRigsBtn).toBeInTheDocument();
       expect(racingRigsBtn.querySelector('[data-testid="tick-icon"]')).toBeInTheDocument();
+      expect(racingRigsBtn).toHaveTextContent(/public\s*•\s*1\s*items/i);
     });
   });
 

@@ -28,7 +28,6 @@ export function SaveToCollectionModal({
 
   const [newColName, setNewColName] = useState("");
   const [newColDesc, setNewColDesc] = useState("");
-  const [newColIsPublic, setNewColIsPublic] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
 
@@ -114,7 +113,7 @@ export function SaveToCollectionModal({
       const created = await mutateCreateCollection({
         name: newColName.trim(),
         description: newColDesc.trim(),
-        isPublic: newColIsPublic,
+        isPublic: true,
       });
 
       // Optimistically record that the item is in the newly created collection
@@ -303,17 +302,6 @@ export function SaveToCollectionModal({
                 {isCreating && <Loader2 size={12} className="animate-spin" />}
                 <span>Create</span>
               </button>
-            </div>
-            <div className="flex items-center justify-between text-xs text-zinc-500 pt-1">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={newColIsPublic}
-                  onChange={(e) => setNewColIsPublic(e.target.checked)}
-                  className="rounded border-zinc-300 text-blue-600 focus:ring-blue-500"
-                />
-                <span>Public collection</span>
-              </label>
             </div>
           </form>
         )}
