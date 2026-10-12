@@ -61,6 +61,7 @@ interface BomComponentProps {
   queryMethod: any;
   icon?: React.ReactNode;
   subtitle?: (item: any) => string;
+  placement?: "left" | "right";
 }
 
 function BomComponentCard({
@@ -70,6 +71,7 @@ function BomComponentCard({
   queryMethod,
   icon,
   subtitle,
+  placement,
 }: BomComponentProps) {
   const {
     data: rawItem,
@@ -84,8 +86,8 @@ function BomComponentCard({
   const targetPath = col ? getCollectionPath(col) : `components/hardware/${collectionId}`;
   const colColor = col?.color || getCollectionColor(collectionId);
 
-  return (
-    <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+  const cardContent = (
+    <>
       <div className="flex items-center gap-3 min-w-0">
         <div
           className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 ${colColor.textClass}`}
@@ -107,18 +109,12 @@ function BomComponentCard({
             </div>
           ) : (
             <div>
-              <ProductHoverCard
-                collectionId={collectionId}
-                item={item}
-                productId={item.id || item.uuid}
+              <Link
+                to={`/${targetPath}/${item.id || item.uuid}`}
+                className="text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
               >
-                <Link
-                  to={`/${targetPath}/${item.id || item.uuid}`}
-                  className="text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
-                >
-                  {item.name || item.id}
-                </Link>
-              </ProductHoverCard>
+                {item.name || item.id}
+              </Link>
               {subtitle && <div className="text-xs text-zinc-500 truncate">{subtitle(item)}</div>}
             </div>
           )}
@@ -134,6 +130,30 @@ function BomComponentCard({
           <ExternalLink size={14} />
         </Link>
       )}
+    </>
+  );
+
+  const cardClasses =
+    "flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors";
+
+  if (item) {
+    return (
+      <ProductHoverCard
+        collectionId={collectionId}
+        item={item}
+        productId={item.id || item.uuid}
+        as="div"
+        placement={placement}
+        className={cardClasses}
+      >
+        {cardContent}
+      </ProductHoverCard>
+    );
+  }
+
+  return (
+    <div data-component-card className={cardClasses}>
+      {cardContent}
     </div>
   );
 }
@@ -283,6 +303,148 @@ export function BuildProfilePage() {
     }
     return compatibleBatteries;
   }, [activeBattery, compatibleBatteries]);
+
+  const bomComponents = useMemo(() => {
+    if (!build) return [];
+    const list: Array<{
+      key: string;
+      label: string;
+      collectionId: string;
+      uuid: string;
+      queryMethod: any;
+      icon?: React.ReactNode;
+      subtitle?: (item: any) => string;
+    }> = [];
+
+    if (build.frameUuid) {
+      list.push({
+        key: "frame",
+        label: "Frame",
+        collectionId: "frames",
+        uuid: build.frameUuid,
+        queryMethod: getFrame,
+        subtitle: (item) =>
+          `${item.manufacturer} • ${item.wheelbaseMm ? `${item.wheelbaseMm}mm wheelbase` : ""}`,
+      });
+    }
+
+    if (build.motorUuid) {
+      list.push({
+        key: "motor",
+        label: "Motors (4x)",
+        collectionId: "motors",
+        uuid: build.motorUuid,
+        queryMethod: getMotor,
+        subtitle: (item) =>
+          `${item.manufacturer} • ${item.kv ? `${item.kv}KV` : ""} • ${item.weightG ? `${item.weightG.toFixed(2)}g each` : ""}`,
+      });
+    }
+
+    if (build.flightControllerUuid) {
+      list.push({
+        key: "fc",
+        label: "Flight Controller",
+        collectionId: "flight-controllers",
+        uuid: build.flightControllerUuid,
+        queryMethod: getFlightController,
+        subtitle: (item) => `${item.manufacturer} • ${item.processor || "FC Board"}`,
+      });
+    }
+
+    build.electronicSpeedControllerUuids.forEach((escUuid, idx) => {
+      if (escUuid) {
+        list.push({
+          key: `esc-${escUuid}-${idx}`,
+          label:
+            build.electronicSpeedControllerUuids.length > 1
+              ? `ESC #${idx + 1}`
+              : "Electronic Speed Controller",
+          collectionId: "electronic-speed-controllers",
+          uuid: escUuid,
+          queryMethod: getElectronicSpeedController,
+          subtitle: (item) =>
+            `${item.manufacturer} • ${item.motorCurrentMaxA}A • ${item.maxMotors}x motors`,
+        });
+      }
+    });
+
+    if (build.propellerUuid) {
+      list.push({
+        key: "propeller",
+        label: "Propellers",
+        collectionId: "propellers",
+        uuid: build.propellerUuid,
+        queryMethod: getPropeller,
+        subtitle: (item) =>
+          `${item.manufacturer} • ${item.blades ? `${item.blades}-blade` : "Props"}`,
+      });
+    }
+
+    if (build.videoTransmitterUuid) {
+      list.push({
+        key: "vtx",
+        label: "Video Transmitter (VTX)",
+        collectionId: "video-transmitters",
+        uuid: build.videoTransmitterUuid,
+        queryMethod: getVideoTransmitter,
+        subtitle: (item) =>
+          `${item.manufacturer} • ${item.maxPowerMw ? `${item.maxPowerMw}mW` : ""} • ${item.protocol || ""}`,
+      });
+    }
+
+    build.cameraUuids.forEach((camUuid, idx) => {
+      if (camUuid) {
+        list.push({
+          key: `cam-${camUuid}-${idx}`,
+          label: build.cameraUuids.length > 1 ? `Camera #${idx + 1}` : "Camera",
+          collectionId: "cameras",
+          uuid: camUuid,
+          queryMethod: getCamera,
+          subtitle: (item) => `${item.manufacturer} • ${item.sensor || "FPV Camera"}`,
+        });
+      }
+    });
+
+    build.receiverUuids.forEach((rxUuid, idx) => {
+      if (rxUuid) {
+        list.push({
+          key: `rx-${rxUuid}-${idx}`,
+          label: build.receiverUuids.length > 1 ? `Receiver #${idx + 1}` : "Receiver",
+          collectionId: "receivers",
+          uuid: rxUuid,
+          queryMethod: getReceiver,
+          subtitle: (item) => `${item.manufacturer} • ${item.protocol || "RC Link"}`,
+        });
+      }
+    });
+
+    build.antennaUuids.forEach((antUuid, idx) => {
+      if (antUuid) {
+        list.push({
+          key: `ant-${antUuid}-${idx}`,
+          label: build.antennaUuids.length > 1 ? `Antenna #${idx + 1}` : "Antenna",
+          collectionId: "antennas",
+          uuid: antUuid,
+          queryMethod: getAntenna,
+          subtitle: (item) =>
+            `${item.manufacturer} • ${item.polarization || ""} ${item.frequencyBandMhz ? `${item.frequencyBandMhz}MHz` : ""}`,
+        });
+      }
+    });
+
+    if (build.gpsReceiverUuid) {
+      list.push({
+        key: "gps",
+        label: "GPS Receiver",
+        collectionId: "gps-receivers",
+        uuid: build.gpsReceiverUuid,
+        queryMethod: getGpsReceiver,
+        subtitle: (item) => `${item.manufacturer} • ${item.protocol || "GNSS"}`,
+      });
+    }
+
+    return list;
+  }, [build]);
 
   const {
     data: evaluation,
@@ -875,125 +1037,18 @@ export function BuildProfilePage() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {/* Frame */}
-          <BomComponentCard
-            label="Frame"
-            collectionId="frames"
-            uuid={build.frameUuid}
-            queryMethod={getFrame}
-            subtitle={(item) =>
-              `${item.manufacturer} • ${item.wheelbaseMm ? `${item.wheelbaseMm}mm wheelbase` : ""}`
-            }
-          />
-
-          {/* Motors */}
-          <BomComponentCard
-            label="Motors (4x)"
-            collectionId="motors"
-            uuid={build.motorUuid}
-            queryMethod={getMotor}
-            subtitle={(item) =>
-              `${item.manufacturer} • ${item.kv ? `${item.kv}KV` : ""} • ${item.weightG ? `${item.weightG.toFixed(2)}g each` : ""}`
-            }
-          />
-
-          {/* Flight Controller */}
-          <BomComponentCard
-            label="Flight Controller"
-            collectionId="flight-controllers"
-            uuid={build.flightControllerUuid}
-            queryMethod={getFlightController}
-            subtitle={(item) => `${item.manufacturer} • ${item.processor || "FC Board"}`}
-          />
-
-          {/* Electronic Speed Controller */}
-          {build.electronicSpeedControllerUuids.map((escUuid, idx) => (
+          {bomComponents.map((item, idx) => (
             <BomComponentCard
-              key={escUuid + idx}
-              label={
-                build.electronicSpeedControllerUuids.length > 1
-                  ? `ESC #${idx + 1}`
-                  : "Electronic Speed Controller"
-              }
-              collectionId="electronic-speed-controllers"
-              uuid={escUuid}
-              queryMethod={getElectronicSpeedController}
-              subtitle={(item) =>
-                `${item.manufacturer} • ${item.motorCurrentMaxA}A • ${item.maxMotors}x motors`
-              }
+              key={item.key}
+              label={item.label}
+              collectionId={item.collectionId}
+              uuid={item.uuid}
+              queryMethod={item.queryMethod}
+              subtitle={item.subtitle}
+              icon={item.icon}
+              placement={idx % 2 === 0 ? "left" : "right"}
             />
           ))}
-
-          {/* Propellers */}
-          <BomComponentCard
-            label="Propellers"
-            collectionId="propellers"
-            uuid={build.propellerUuid}
-            queryMethod={getPropeller}
-            subtitle={(item) =>
-              `${item.manufacturer} • ${item.blades ? `${item.blades}-blade` : "Props"}`
-            }
-          />
-
-          {/* Video Transmitter */}
-          <BomComponentCard
-            label="Video Transmitter (VTX)"
-            collectionId="video-transmitters"
-            uuid={build.videoTransmitterUuid}
-            queryMethod={getVideoTransmitter}
-            subtitle={(item) =>
-              `${item.manufacturer} • ${item.maxPowerMw ? `${item.maxPowerMw}mW` : ""} • ${item.protocol || ""}`
-            }
-          />
-
-          {/* Cameras */}
-          {build.cameraUuids.map((camUuid, idx) => (
-            <BomComponentCard
-              key={camUuid + idx}
-              label={build.cameraUuids.length > 1 ? `Camera #${idx + 1}` : "Camera"}
-              collectionId="cameras"
-              uuid={camUuid}
-              queryMethod={getCamera}
-              subtitle={(item) => `${item.manufacturer} • ${item.sensor || "FPV Camera"}`}
-            />
-          ))}
-
-          {/* Receivers */}
-          {build.receiverUuids.map((rxUuid, idx) => (
-            <BomComponentCard
-              key={rxUuid + idx}
-              label={build.receiverUuids.length > 1 ? `Receiver #${idx + 1}` : "Receiver"}
-              collectionId="receivers"
-              uuid={rxUuid}
-              queryMethod={getReceiver}
-              subtitle={(item) => `${item.manufacturer} • ${item.protocol || "RC Link"}`}
-            />
-          ))}
-
-          {/* Antennas */}
-          {build.antennaUuids.map((antUuid, idx) => (
-            <BomComponentCard
-              key={antUuid + idx}
-              label={build.antennaUuids.length > 1 ? `Antenna #${idx + 1}` : "Antenna"}
-              collectionId="antennas"
-              uuid={antUuid}
-              queryMethod={getAntenna}
-              subtitle={(item) =>
-                `${item.manufacturer} • ${item.polarization || ""} ${item.frequencyBandMhz ? `${item.frequencyBandMhz}MHz` : ""}`
-              }
-            />
-          ))}
-
-          {/* Optional GPS Receiver */}
-          {build.gpsReceiverUuid && (
-            <BomComponentCard
-              label="GPS Receiver"
-              collectionId="gps-receivers"
-              uuid={build.gpsReceiverUuid}
-              queryMethod={getGpsReceiver}
-              subtitle={(item) => `${item.manufacturer} • ${item.protocol || "GNSS"}`}
-            />
-          )}
         </div>
       </section>
 

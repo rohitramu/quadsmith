@@ -3,7 +3,6 @@ import { Search, X, ArrowRight, ArrowLeft, AlertCircle, Check } from "lucide-rea
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
-import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
 import type { Frame } from "../../../gen/quadsmith/frame_pb";
 
@@ -17,9 +16,6 @@ export function FrameStep() {
     searchQueries,
     setSearchQuery,
     stepConflicts,
-    compatibleOnlyMap,
-    toggleCompatibleOnly,
-    getCelFilterForStep,
   } = useForge();
 
   useEffect(() => {
@@ -33,10 +29,15 @@ export function FrameStep() {
 
   const search = searchQueries.frames || "";
   const conflictMsg = stepConflicts[1];
-  const isCompatibleOnly = compatibleOnlyMap.frames ?? true;
 
   const filteredFrames = useMemo(() => {
     let list = frames;
+    if (
+      selectedFrame &&
+      !list.some((f) => f.uuid === selectedFrame.uuid || f.id === selectedFrame.id)
+    ) {
+      list = [selectedFrame, ...list];
+    }
     if (!search.trim()) return list;
     const q = search.toLowerCase();
     return list.filter(
@@ -45,7 +46,7 @@ export function FrameStep() {
         f.manufacturer.toLowerCase().includes(q) ||
         f.geometry.toLowerCase().includes(q),
     );
-  }, [frames, search]);
+  }, [frames, selectedFrame, search]);
 
   return (
     <div className="space-y-4">
@@ -98,7 +99,7 @@ export function FrameStep() {
           camera width, and mounting bolt patterns.
         </p>
 
-        {/* Search & Compatible Only Toggle */}
+        {/* Search */}
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
@@ -119,18 +120,6 @@ export function FrameStep() {
               </button>
             )}
           </div>
-
-          <label className="flex items-center gap-1.5 cursor-pointer text-xs text-zinc-600 dark:text-zinc-400 select-none shrink-0">
-            <input
-              type="checkbox"
-              checked={isCompatibleOnly}
-              onChange={() => toggleCompatibleOnly("frames")}
-              className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5 cursor-pointer"
-            />
-            <CompatibilityHoverCard filter={getCelFilterForStep(1)}>
-              <span>Compatible only</span>
-            </CompatibilityHoverCard>
-          </label>
         </div>
 
         {/* List of Frames */}

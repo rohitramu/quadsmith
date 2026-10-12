@@ -18,7 +18,7 @@ export interface ProductHoverCardProps {
   children: React.ReactNode;
   className?: string;
   as?: React.ElementType;
-  placement?: "auto" | "side" | "top" | "bottom";
+  placement?: "auto" | "side" | "top" | "bottom" | "left" | "right";
   id?: string;
 }
 
@@ -29,7 +29,7 @@ interface ProductHoverCardPresenterProps {
   children: React.ReactNode;
   className?: string;
   as?: React.ElementType;
-  placement?: "auto" | "side" | "top" | "bottom";
+  placement?: "auto" | "side" | "top" | "bottom" | "left" | "right";
   id?: string;
 }
 
@@ -61,37 +61,69 @@ function ProductHoverCardPresenter({
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current) return;
-    const rect = triggerRef.current.getBoundingClientRect();
+    const triggerEl = triggerRef.current;
+    const cardEl = triggerEl.closest("[data-component-card]") as HTMLElement | null;
+    const anchor = cardEl || triggerEl;
+    const anchorRect = anchor.getBoundingClientRect();
+    const triggerRect = triggerEl.getBoundingClientRect();
     const cardWidth = 320;
     const estimatedHeight = 240;
 
-    let left = rect.left;
-    let top = rect.top;
+    let effectivePlacement = placement;
+    if (effectivePlacement === "auto" || !effectivePlacement) {
+      const grid = anchor.closest(".grid");
+      if (grid) {
+        const gridRect = grid.getBoundingClientRect();
+        if (gridRect.width > anchorRect.width * 1.5) {
+          const anchorCenter = anchorRect.left + anchorRect.width / 2;
+          const gridCenter = gridRect.left + gridRect.width / 2;
+          effectivePlacement = anchorCenter < gridCenter ? "left" : "right";
+        }
+      }
+    }
+
+    let left = triggerRect.left;
+    let top = triggerRect.top;
     let placeAbove = false;
 
-    if (placement === "side") {
-      const spaceRight = window.innerWidth - rect.right;
-      const spaceLeft = rect.left;
+    if (effectivePlacement === "left") {
+      left = Math.min(
+        Math.max(16, anchorRect.left - cardWidth - 8),
+        window.innerWidth - cardWidth - 16,
+      );
+      left = Math.max(16, left);
+      top = Math.max(16, Math.min(anchorRect.top, window.innerHeight - estimatedHeight - 16));
+      placeAbove = false;
+    } else if (effectivePlacement === "right") {
+      left = Math.min(anchorRect.right + 8, window.innerWidth - cardWidth - 16);
+      left = Math.max(16, left);
+      top = Math.max(16, Math.min(anchorRect.top, window.innerHeight - estimatedHeight - 16));
+      placeAbove = false;
+    } else if (effectivePlacement === "side") {
+      const spaceRight = window.innerWidth - triggerRect.right;
+      const spaceLeft = triggerRect.left;
 
       if (spaceRight >= cardWidth + 16) {
-        left = rect.right + 8;
+        left = triggerRect.right + 8;
       } else if (spaceLeft >= cardWidth + 16) {
-        left = rect.left - cardWidth - 8;
+        left = triggerRect.left - cardWidth - 8;
       } else {
         left =
           spaceRight >= spaceLeft
-            ? Math.min(rect.right + 8, window.innerWidth - cardWidth - 16)
-            : Math.max(16, rect.left - cardWidth - 8);
+            ? Math.min(triggerRect.right + 8, window.innerWidth - cardWidth - 16)
+            : Math.max(16, triggerRect.left - cardWidth - 8);
       }
 
       // Vertically align top of card with hovered element, clamped within viewport
-      top = Math.max(16, Math.min(rect.top, window.innerHeight - estimatedHeight - 16));
+      top = Math.max(16, Math.min(triggerRect.top, window.innerHeight - estimatedHeight - 16));
       placeAbove = false;
     } else {
-      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceBelow = window.innerHeight - triggerRect.bottom;
       placeAbove =
-        placement === "top" ||
-        (placement !== "bottom" && spaceBelow < estimatedHeight && rect.top > estimatedHeight);
+        effectivePlacement === "top" ||
+        (effectivePlacement !== "bottom" &&
+          spaceBelow < estimatedHeight &&
+          triggerRect.top > estimatedHeight);
 
       if (as === "tr" && lastMousePosRef.current) {
         left = lastMousePosRef.current.clientX - 40;
@@ -102,7 +134,7 @@ function ProductHoverCardPresenter({
       }
       if (left < 16) left = 16;
 
-      top = placeAbove ? rect.top - 8 : rect.bottom + 8;
+      top = placeAbove ? triggerRect.top - 8 : triggerRect.bottom + 8;
     }
 
     setCoords({

@@ -13,6 +13,7 @@ import { wasmEngine } from "../../lib/wasmEngine";
 import {
   mockBuild1,
   mockBuild2,
+  mockFrame1,
   mockReceiver1,
   mockReceiverCeramic,
 } from "../../test/mocks/fixtures";
@@ -49,7 +50,10 @@ describe("BuildWizardPage Component", () => {
 
   async function advanceToStep1(user: ReturnType<typeof userEvent.setup>) {
     await confirmScratchBaseline(user);
-    await user.click(screen.getByRole("button", { name: /Next: Frame/i }));
+    const nextBtn = await screen.findByRole("button", { name: /Next: Frame/i });
+    await waitFor(() => expect(nextBtn).toBeEnabled());
+    await user.click(nextBtn);
+    await screen.findByText("1. Frame Chassis");
   }
 
   it("renders with initial empty state: Step 0 active, Step 1 locked until baseline confirmation", async () => {
@@ -459,14 +463,45 @@ describe("BuildWizardPage Component", () => {
 
     await advanceToStep1(user);
 
+    // Frame step should NOT have a Compatible only checkbox
+    expect(screen.queryByRole("checkbox", { name: /compatible only/i })).toBeNull();
+
     // Select Frame (Master 5 V2 - 130mm max prop size)
     await user.click(await screen.findByText("Master 5 V2"));
 
-    // Check that Compatible only toggle works
+    // Advance to Step 2 (Flight Controller)
+    const nextBtn = screen.getByRole("button", { name: /next/i });
+    await user.click(nextBtn);
+
+    // Check that Compatible only toggle works in Step 2
     const compatibleCheckbox = screen.getByRole("checkbox", { name: /compatible only/i });
     expect(compatibleCheckbox).toBeChecked();
     await user.click(compatibleCheckbox);
     expect(compatibleCheckbox).not.toBeChecked();
+  });
+
+  it("renders the selected frame in the frame list when 'Bando Basher 5 inch' template is selected", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // In Step 0, select "Bando Basher 5 inch" template
+    const templateCard = await screen.findByText("Bando Basher 5 inch");
+    await user.click(templateCard);
+
+    // Advance to Step 1
+    await user.click(screen.getByRole("button", { name: /Next: Frame/i }));
+
+    // Verify Step 1 Frame step has no "Compatible only" toggle
+    expect(screen.queryByRole("checkbox", { name: /compatible only/i })).toBeNull();
+
+    // Verify the frame from the template is displayed in the list and selected
+    const selectedFrameName = mockFrame1.name;
+    const frameCards = await screen.findAllByText(selectedFrameName);
+    expect(frameCards.length).toBeGreaterThan(0);
+
+    // Verify that the selected frame element exists
+    const selectedItem = document.getElementById("selected-frame-item");
+    expect(selectedItem).not.toBeNull();
   });
 
   it("renders the selected parts list under the build evaluator and updates when components are selected", async () => {

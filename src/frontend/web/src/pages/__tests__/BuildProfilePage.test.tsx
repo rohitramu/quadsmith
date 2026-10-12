@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildProfilePage } from "../BuildProfilePage";
@@ -379,5 +379,74 @@ describe("BuildProfilePage Component", () => {
       screen.getByText(/no other builds in the database share 25% or more/i),
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /create build variant/i })).toBeInTheDocument();
+  });
+
+  it("displays hover card to the left for left-column components and to the right for right-column components in Hardware section", async () => {
+    vi.stubGlobal("innerWidth", 1600);
+    renderBuildProfile();
+
+    // Wait for components to load
+    const frameCard = (await screen.findByText("Master 5 V2")).closest(
+      "[data-testid='product-hover-trigger']",
+    ) as HTMLElement;
+    const motorCard = (await screen.findByText("ECO II 2207")).closest(
+      "[data-testid='product-hover-trigger']",
+    ) as HTMLElement;
+
+    expect(frameCard).not.toBeNull();
+    expect(motorCard).not.toBeNull();
+
+    // Mock bounding client rects:
+    // Left column (Frame) at left: 400, right: 800
+    vi.spyOn(frameCard, "getBoundingClientRect").mockReturnValue({
+      left: 400,
+      right: 800,
+      top: 300,
+      bottom: 370,
+      width: 400,
+      height: 70,
+      x: 400,
+      y: 300,
+      toJSON: () => {},
+    });
+
+    // Right column (Motors) at left: 820, right: 1220
+    vi.spyOn(motorCard, "getBoundingClientRect").mockReturnValue({
+      left: 820,
+      right: 1220,
+      top: 300,
+      bottom: 370,
+      width: 400,
+      height: 70,
+      x: 820,
+      y: 300,
+      toJSON: () => {},
+    });
+
+    // Hover frame card (left column)
+    fireEvent.mouseEnter(frameCard);
+    await waitFor(() => {
+      expect(screen.getByTestId("product-hover-card")).toBeInTheDocument();
+    });
+    const leftHoverCard = screen.getByTestId("product-hover-card");
+    // Left column: 400 - 320 - 8 = 72px (positioned to the left of the card)
+    expect(leftHoverCard.style.left).toBe("72px");
+    expect(leftHoverCard.style.top).toBe("300px");
+
+    // Mouse leave frame card
+    fireEvent.mouseLeave(frameCard);
+    await waitFor(() => {
+      expect(screen.queryByTestId("product-hover-card")).not.toBeInTheDocument();
+    });
+
+    // Hover motor card (right column)
+    fireEvent.mouseEnter(motorCard);
+    await waitFor(() => {
+      expect(screen.getByTestId("product-hover-card")).toBeInTheDocument();
+    });
+    const rightHoverCard = screen.getByTestId("product-hover-card");
+    // Right column: 1220 + 8 = 1228px (positioned to the right of the card)
+    expect(rightHoverCard.style.left).toBe("1228px");
+    expect(rightHoverCard.style.top).toBe("300px");
   });
 });

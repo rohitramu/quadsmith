@@ -36,18 +36,20 @@ import {
   type FlightController,
 } from "../../gen/quadsmith/flight_controller_pb";
 import {
+  ElectronicSpeedControllerService,
   ElectronicSpeedControllerSchema,
   type ElectronicSpeedController,
 } from "../../gen/quadsmith/electronic_speed_controller_pb";
-import { ReceiverSchema, type Receiver } from "../../gen/quadsmith/receiver_pb";
+import { ReceiverService, ReceiverSchema, type Receiver } from "../../gen/quadsmith/receiver_pb";
 import {
+  VideoTransmitterService,
   VideoTransmitterSchema,
   type VideoTransmitter,
 } from "../../gen/quadsmith/video_transmitter_pb";
-import { type Camera } from "../../gen/quadsmith/camera_pb";
-import { type Antenna } from "../../gen/quadsmith/antenna_pb";
-import { type GpsReceiver } from "../../gen/quadsmith/gps_receiver_pb";
-import { type Battery } from "../../gen/quadsmith/battery_pb";
+import { CameraService, type Camera } from "../../gen/quadsmith/camera_pb";
+import { AntennaService, type Antenna } from "../../gen/quadsmith/antenna_pb";
+import { GpsReceiverService, type GpsReceiver } from "../../gen/quadsmith/gps_receiver_pb";
+import { BatteryService, type Battery } from "../../gen/quadsmith/battery_pb";
 import {
   AssembledComponentsSchema,
   type AssembledComponents,
@@ -580,17 +582,262 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
   const { data: batteriesData } = useQuery(listBatteries, { pageSize: 100 });
   const { data: buildsData } = useQuery(listBuilds, { pageSize: 50 });
 
-  const frames = useMemo(() => framesData?.frames || [], [framesData]);
+  const [extraFrames, setExtraFrames] = useState<Frame[]>([]);
+  const [extraMotors, setExtraMotors] = useState<Motor[]>([]);
+  const [extraProps, setExtraProps] = useState<Propeller[]>([]);
+  const [extraVtxs, setExtraVtxs] = useState<VideoTransmitter[]>([]);
+  const [extraAntennas, setExtraAntennas] = useState<Antenna[]>([]);
+  const [extraBatteries, setExtraBatteries] = useState<Battery[]>([]);
+
+  // Multi-page catalog loading
+  useEffect(() => {
+    let active = true;
+    async function loadMoreFrames() {
+      if (!framesData?.nextPageToken) return;
+      const client = createClient(FrameService, transport);
+      let pageToken = framesData.nextPageToken;
+      const accumulated: Frame[] = [];
+      while (pageToken && active) {
+        try {
+          const res = await client.listFrames({ pageSize: 100, pageToken });
+          if (!active) break;
+          accumulated.push(...res.frames);
+          pageToken = res.nextPageToken;
+        } catch (err) {
+          console.error("Error fetching more frames:", err);
+          break;
+        }
+      }
+      if (active && accumulated.length > 0) {
+        setExtraFrames((prev) => {
+          const seen = new Set(prev.map((item) => item.uuid || item.id));
+          const toAdd = accumulated.filter((item) => !seen.has(item.uuid || item.id));
+          return [...prev, ...toAdd];
+        });
+      }
+    }
+    loadMoreFrames();
+    return () => {
+      active = false;
+    };
+  }, [framesData?.nextPageToken, transport]);
+
+  useEffect(() => {
+    let active = true;
+    async function loadMoreMotors() {
+      if (!motorsData?.nextPageToken) return;
+      const client = createClient(MotorService, transport);
+      let pageToken = motorsData.nextPageToken;
+      const accumulated: Motor[] = [];
+      while (pageToken && active) {
+        try {
+          const res = await client.listMotors({ pageSize: 100, pageToken });
+          if (!active) break;
+          accumulated.push(...res.motors);
+          pageToken = res.nextPageToken;
+        } catch (err) {
+          console.error("Error fetching more motors:", err);
+          break;
+        }
+      }
+      if (active && accumulated.length > 0) {
+        setExtraMotors((prev) => {
+          const seen = new Set(prev.map((item) => item.uuid || item.id));
+          const toAdd = accumulated.filter((item) => !seen.has(item.uuid || item.id));
+          return [...prev, ...toAdd];
+        });
+      }
+    }
+    loadMoreMotors();
+    return () => {
+      active = false;
+    };
+  }, [motorsData?.nextPageToken, transport]);
+
+  useEffect(() => {
+    let active = true;
+    async function loadMoreProps() {
+      if (!propsData?.nextPageToken) return;
+      const client = createClient(PropellerService, transport);
+      let pageToken = propsData.nextPageToken;
+      const accumulated: Propeller[] = [];
+      while (pageToken && active) {
+        try {
+          const res = await client.listPropellers({ pageSize: 100, pageToken });
+          if (!active) break;
+          accumulated.push(...res.propellers);
+          pageToken = res.nextPageToken;
+        } catch (err) {
+          console.error("Error fetching more propellers:", err);
+          break;
+        }
+      }
+      if (active && accumulated.length > 0) {
+        setExtraProps((prev) => {
+          const seen = new Set(prev.map((item) => item.uuid || item.id));
+          const toAdd = accumulated.filter((item) => !seen.has(item.uuid || item.id));
+          return [...prev, ...toAdd];
+        });
+      }
+    }
+    loadMoreProps();
+    return () => {
+      active = false;
+    };
+  }, [propsData?.nextPageToken, transport]);
+
+  useEffect(() => {
+    let active = true;
+    async function loadMoreVtxs() {
+      if (!vtxsData?.nextPageToken) return;
+      const client = createClient(VideoTransmitterService, transport);
+      let pageToken = vtxsData.nextPageToken;
+      const accumulated: VideoTransmitter[] = [];
+      while (pageToken && active) {
+        try {
+          const res = await client.listVideoTransmitters({ pageSize: 100, pageToken });
+          if (!active) break;
+          accumulated.push(...res.videoTransmitters);
+          pageToken = res.nextPageToken;
+        } catch (err) {
+          console.error("Error fetching more VTXs:", err);
+          break;
+        }
+      }
+      if (active && accumulated.length > 0) {
+        setExtraVtxs((prev) => {
+          const seen = new Set(prev.map((item) => item.uuid || item.id));
+          const toAdd = accumulated.filter((item) => !seen.has(item.uuid || item.id));
+          return [...prev, ...toAdd];
+        });
+      }
+    }
+    loadMoreVtxs();
+    return () => {
+      active = false;
+    };
+  }, [vtxsData?.nextPageToken, transport]);
+
+  useEffect(() => {
+    let active = true;
+    async function loadMoreAntennas() {
+      if (!antennasData?.nextPageToken) return;
+      const client = createClient(AntennaService, transport);
+      let pageToken = antennasData.nextPageToken;
+      const accumulated: Antenna[] = [];
+      while (pageToken && active) {
+        try {
+          const res = await client.listAntennas({ pageSize: 100, pageToken });
+          if (!active) break;
+          accumulated.push(...res.antennas);
+          pageToken = res.nextPageToken;
+        } catch (err) {
+          console.error("Error fetching more antennas:", err);
+          break;
+        }
+      }
+      if (active && accumulated.length > 0) {
+        setExtraAntennas((prev) => {
+          const seen = new Set(prev.map((item) => item.uuid || item.id));
+          const toAdd = accumulated.filter((item) => !seen.has(item.uuid || item.id));
+          return [...prev, ...toAdd];
+        });
+      }
+    }
+    loadMoreAntennas();
+    return () => {
+      active = false;
+    };
+  }, [antennasData?.nextPageToken, transport]);
+
+  useEffect(() => {
+    let active = true;
+    async function loadMoreBatteries() {
+      if (!batteriesData?.nextPageToken) return;
+      const client = createClient(BatteryService, transport);
+      let pageToken = batteriesData.nextPageToken;
+      const accumulated: Battery[] = [];
+      while (pageToken && active) {
+        try {
+          const res = await client.listBatteries({ pageSize: 100, pageToken });
+          if (!active) break;
+          accumulated.push(...res.batteries);
+          pageToken = res.nextPageToken;
+        } catch (err) {
+          console.error("Error fetching more batteries:", err);
+          break;
+        }
+      }
+      if (active && accumulated.length > 0) {
+        setExtraBatteries((prev) => {
+          const seen = new Set(prev.map((item) => item.uuid || item.id));
+          const toAdd = accumulated.filter((item) => !seen.has(item.uuid || item.id));
+          return [...prev, ...toAdd];
+        });
+      }
+    }
+    loadMoreBatteries();
+    return () => {
+      active = false;
+    };
+  }, [batteriesData?.nextPageToken, transport]);
+
+  const frames = useMemo(() => {
+    const base = framesData?.frames || [];
+    if (extraFrames.length === 0) return base;
+    const seen = new Set(base.map((item) => item.uuid || item.id));
+    const extras = extraFrames.filter((item) => !seen.has(item.uuid || item.id));
+    return [...base, ...extras];
+  }, [framesData, extraFrames]);
+
   const fcs = useMemo(() => fcsData?.flightControllers || [], [fcsData]);
   const rxs = useMemo(() => rxsData?.receivers || [], [rxsData]);
   const escs = useMemo(() => escsData?.electronicSpeedControllers || [], [escsData]);
-  const motors = useMemo(() => motorsData?.motors || [], [motorsData]);
-  const props = useMemo(() => propsData?.propellers || [], [propsData]);
+
+  const motors = useMemo(() => {
+    const base = motorsData?.motors || [];
+    if (extraMotors.length === 0) return base;
+    const seen = new Set(base.map((item) => item.uuid || item.id));
+    const extras = extraMotors.filter((item) => !seen.has(item.uuid || item.id));
+    return [...base, ...extras];
+  }, [motorsData, extraMotors]);
+
+  const props = useMemo(() => {
+    const base = propsData?.propellers || [];
+    if (extraProps.length === 0) return base;
+    const seen = new Set(base.map((item) => item.uuid || item.id));
+    const extras = extraProps.filter((item) => !seen.has(item.uuid || item.id));
+    return [...base, ...extras];
+  }, [propsData, extraProps]);
+
   const cams = useMemo(() => camsData?.cameras || [], [camsData]);
-  const vtxs = useMemo(() => vtxsData?.videoTransmitters || [], [vtxsData]);
-  const antennas = useMemo(() => antennasData?.antennas || [], [antennasData]);
+
+  const vtxs = useMemo(() => {
+    const base = vtxsData?.videoTransmitters || [];
+    if (extraVtxs.length === 0) return base;
+    const seen = new Set(base.map((item) => item.uuid || item.id));
+    const extras = extraVtxs.filter((item) => !seen.has(item.uuid || item.id));
+    return [...base, ...extras];
+  }, [vtxsData, extraVtxs]);
+
+  const antennas = useMemo(() => {
+    const base = antennasData?.antennas || [];
+    if (extraAntennas.length === 0) return base;
+    const seen = new Set(base.map((item) => item.uuid || item.id));
+    const extras = extraAntennas.filter((item) => !seen.has(item.uuid || item.id));
+    return [...base, ...extras];
+  }, [antennasData, extraAntennas]);
+
   const gpsList = useMemo(() => gpsData?.gpsReceivers || [], [gpsData]);
-  const batteries = useMemo(() => batteriesData?.batteries || [], [batteriesData]);
+
+  const batteries = useMemo(() => {
+    const base = batteriesData?.batteries || [];
+    if (extraBatteries.length === 0) return base;
+    const seen = new Set(base.map((item) => item.uuid || item.id));
+    const extras = extraBatteries.filter((item) => !seen.has(item.uuid || item.id));
+    return [...base, ...extras];
+  }, [batteriesData, extraBatteries]);
+
   const templateBuilds = useMemo(() => buildsData?.builds || [], [buildsData]);
 
   // Step 0 Baseline
@@ -1470,7 +1717,12 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           console.error("Failed to fetch template frame:", e);
         }
       }
-      if (f) setSelectedFrame(f);
+      if (f) {
+        setSelectedFrame(f);
+        setExtraFrames((prev) =>
+          prev.some((x) => x.uuid === f.uuid || x.id === f.id) ? prev : [f, ...prev],
+        );
+      }
 
       // Motor
       let m = build.motorUuid ? motors.find((x) => x.uuid === build.motorUuid) : null;
@@ -1482,7 +1734,12 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           console.error("Failed to fetch template motor:", e);
         }
       }
-      if (m) setSelectedMotor(m);
+      if (m) {
+        setSelectedMotor(m);
+        setExtraMotors((prev) =>
+          prev.some((x) => x.uuid === m.uuid || x.id === m.id) ? prev : [m, ...prev],
+        );
+      }
 
       // Propeller
       let p = build.propellerUuid ? props.find((x) => x.uuid === build.propellerUuid) : null;
@@ -1494,7 +1751,12 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           console.error("Failed to fetch template propeller:", e);
         }
       }
-      if (p) setSelectedProp(p);
+      if (p) {
+        setSelectedProp(p);
+        setExtraProps((prev) =>
+          prev.some((x) => x.uuid === p.uuid || x.id === p.id) ? prev : [p, ...prev],
+        );
+      }
 
       // FC
       let fc = build.flightControllerUuid
@@ -1514,6 +1776,16 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       let esc = build.electronicSpeedControllerUuids?.[0]
         ? escs.find((x) => x.uuid === build.electronicSpeedControllerUuids[0])
         : null;
+      if (!esc && build.electronicSpeedControllerUuids?.[0]) {
+        try {
+          const client = createClient(ElectronicSpeedControllerService, transport);
+          esc = await client.getElectronicSpeedController({
+            id: build.electronicSpeedControllerUuids[0],
+          });
+        } catch (e) {
+          console.error("Failed to fetch template ESC:", e);
+        }
+      }
       if (esc) {
         setSelectedEsc(esc);
         setUseIntegratedEsc(false);
@@ -1522,6 +1794,14 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
 
       // Receiver
       let rx = build.receiverUuids?.[0] ? rxs.find((x) => x.uuid === build.receiverUuids[0]) : null;
+      if (!rx && build.receiverUuids?.[0]) {
+        try {
+          const client = createClient(ReceiverService, transport);
+          rx = await client.getReceiver({ id: build.receiverUuids[0] });
+        } catch (e) {
+          console.error("Failed to fetch template receiver:", e);
+        }
+      }
       if (rx) {
         setSelectedRx(rx);
         setUseIntegratedRx(false);
@@ -1531,14 +1811,33 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       let v = build.videoTransmitterUuid
         ? vtxs.find((x) => x.uuid === build.videoTransmitterUuid)
         : null;
+      if (!v && build.videoTransmitterUuid) {
+        try {
+          const client = createClient(VideoTransmitterService, transport);
+          v = await client.getVideoTransmitter({ id: build.videoTransmitterUuid });
+        } catch (e) {
+          console.error("Failed to fetch template VTX:", e);
+        }
+      }
       if (v) {
         setSelectedVtx(v);
         setUseIntegratedVtx(false);
         setNoneSelections((prev) => ({ ...prev, vtx: false }));
+        setExtraVtxs((prev) =>
+          prev.some((x) => x.uuid === v.uuid || x.id === v.id) ? prev : [v, ...prev],
+        );
       }
 
       // Camera
       let cam = build.cameraUuids?.[0] ? cams.find((x) => x.uuid === build.cameraUuids[0]) : null;
+      if (!cam && build.cameraUuids?.[0]) {
+        try {
+          const client = createClient(CameraService, transport);
+          cam = await client.getCamera({ id: build.cameraUuids[0] });
+        } catch (e) {
+          console.error("Failed to fetch template camera:", e);
+        }
+      }
       if (cam) {
         setSelectedCam(cam);
         setNoneSelections((prev) => ({ ...prev, camera: false }));
@@ -1546,6 +1845,14 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
 
       // GPS
       let g = build.gpsReceiverUuid ? gpsList.find((x) => x.uuid === build.gpsReceiverUuid) : null;
+      if (!g && build.gpsReceiverUuid) {
+        try {
+          const client = createClient(GpsReceiverService, transport);
+          g = await client.getGpsReceiver({ id: build.gpsReceiverUuid });
+        } catch (e) {
+          console.error("Failed to fetch template GPS:", e);
+        }
+      }
       if (g) {
         setSelectedGps(g);
         setNoneSelections((prev) => ({ ...prev, gps: false }));
@@ -1557,8 +1864,19 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       // Antennas
       if (build.antennaUuids && build.antennaUuids.length > 0) {
         for (const antUuid of build.antennaUuids) {
-          const ant = antennas.find((x) => x.uuid === antUuid);
+          let ant = antennas.find((x) => x.uuid === antUuid);
+          if (!ant) {
+            try {
+              const client = createClient(AntennaService, transport);
+              ant = await client.getAntenna({ id: antUuid });
+            } catch (e) {
+              console.error("Failed to fetch template antenna:", e);
+            }
+          }
           if (ant) {
+            setExtraAntennas((prev) =>
+              prev.some((x) => x.uuid === ant.uuid || x.id === ant.id) ? prev : [ant, ...prev],
+            );
             if (isRxAntenna(ant)) {
               setSelectedRxAnt(ant);
             } else {
