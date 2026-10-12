@@ -643,5 +643,91 @@ describe("LoginPage Component", () => {
       },
       { timeout: 8000 },
     );
+
+    // Verify 6 OTP inputs are cleared and disabled
+    const inputs = screen.getAllByRole("textbox") as HTMLInputElement[];
+    expect(inputs).toHaveLength(6);
+    inputs.forEach((input) => {
+      expect(input.value).toBe("");
+      expect(input.placeholder).toBe("");
+      expect(input).toBeDisabled();
+    });
+
+    // Verify attempts counter is hidden
+    expect(screen.queryByText(/attempt.*left/i)).not.toBeInTheDocument();
+
+    // Verify Request New Verification Code button appears with cooldown timeout and is disabled
+    const reqBtn = screen.getByRole("button", {
+      name: /request new verification code/i,
+    });
+    expect(reqBtn).toBeInTheDocument();
+    expect(reqBtn).toBeDisabled();
+    expect(reqBtn.textContent).toMatch(/request new verification code \(\d+s\)/i);
+  });
+
+  it("enables Request New Verification Code button when cooldown reaches 0 after denial and allows re-requesting code", async () => {
+    let sendOtpCount = 0;
+    const { user } = renderApp("/login", {
+      transportOptions: {
+        isAuthenticated: false,
+        authService: {
+          sendEmailOtp: () => {
+            sendOtpCount++;
+            return {
+              success: true,
+              cooldownSeconds: 0,
+              challengeId: `cid-${sendOtpCount}`,
+            };
+          },
+          getLoginChallengeStatus: () => {
+            return {
+              status: LoginChallengeStatus.DENIED,
+            };
+          },
+        },
+      },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    await user.type(emailInput, "pilot@example.com");
+
+    const submitBtn = screen.getByRole("button", { name: /send verification code/i });
+    await user.click(submitBtn);
+
+    // Wait for denial
+    await waitFor(
+      () => {
+        expect(screen.getByText(/login request was denied/i)).toBeInTheDocument();
+      },
+      { timeout: 8000 },
+    );
+
+    // Inputs disabled and cleared
+    const inputs = screen.getAllByRole("textbox") as HTMLInputElement[];
+    expect(inputs).toHaveLength(6);
+    inputs.forEach((input) => {
+      expect(input).toBeDisabled();
+      expect(input.value).toBe("");
+    });
+
+    // Because cooldownSeconds was 0, the button is immediately enabled without cooldown timer
+    const reqBtn = screen.getByRole("button", {
+      name: /^request new verification code$/i,
+    });
+    expect(reqBtn).toBeEnabled();
+
+    // Click request new code
+    await user.click(reqBtn);
+
+    // Verify sendEmailOtp was called again
+    expect(sendOtpCount).toBe(2);
+
+    // Error banner is cleared and inputs are re-enabled
+    await waitFor(() => {
+      expect(screen.queryByText(/login request was denied/i)).not.toBeInTheDocument();
+      inputs.forEach((input) => {
+        expect(input).not.toBeDisabled();
+      });
+    });
   });
 });

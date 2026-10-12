@@ -176,6 +176,8 @@ export function LoginPage() {
           }
         } else if (res.status === LoginChallengeStatus.DENIED) {
           setIsDenied(true);
+          setOtpDigits(["", "", "", "", "", ""]);
+          setHintDigits(["", "", "", "", "", ""]);
           setErrorMsg("Login request was denied.");
         }
       } catch {
@@ -276,7 +278,7 @@ export function LoginPage() {
       return;
     }
 
-    const isResend = step === "otp" && !isExhausted && !isRateLimited;
+    const isResend = step === "otp" && !isExhausted && !isRateLimited && !isDenied;
 
     setIsLoading(true);
     if (!isResend) {
@@ -510,7 +512,7 @@ export function LoginPage() {
       <div
         data-testid="otp-error-banner"
         className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
-          isExhausted || isRateLimited
+          isExhausted || isRateLimited || isDenied
             ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
             : remainingAttempts === 2
               ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
@@ -519,7 +521,7 @@ export function LoginPage() {
                 : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
         }`}
       >
-        {isExhausted || isRateLimited ? (
+        {isExhausted || isRateLimited || isDenied ? (
           <Lock size={16} className="text-red-500 shrink-0 mt-0.5" />
         ) : remainingAttempts === 2 ? (
           <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
@@ -590,7 +592,8 @@ export function LoginPage() {
           {remainingAttempts !== null &&
             remainingAttempts > 0 &&
             !isExhausted &&
-            !isRateLimited && (
+            !isRateLimited &&
+            !isDenied && (
               <span
                 className={`text-[10px] font-mono font-bold ${
                   remainingAttempts === 1 ? "text-rose-500" : "text-amber-500"
@@ -615,12 +618,12 @@ export function LoginPage() {
               maxLength={1}
               placeholder={hintDigits[index] || ""}
               value={digit}
-              disabled={isSuccess || isExhausted || isRateLimited || isLoading}
+              disabled={isSuccess || isExhausted || isRateLimited || isDenied || isLoading}
               onChange={(e) => handleOtpChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               onPaste={handlePaste}
               className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition ${
-                isSuccess || isExhausted || isRateLimited
+                isSuccess || isExhausted || isRateLimited || isDenied
                   ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
                   : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               }`}
@@ -641,10 +644,14 @@ export function LoginPage() {
           </div>
         )}
 
-        {(isExhausted || isRateLimited) &&
+        {(isExhausted || isRateLimited || isDenied) &&
           (() => {
-            const isReqDisabled =
-              (isRateLimited ? rateLimitCooldown > 0 : exhaustedCooldown > 0) || isLoading;
+            const activeCooldown = isRateLimited
+              ? rateLimitCooldown
+              : isExhausted
+                ? exhaustedCooldown
+                : cooldown;
+            const isReqDisabled = activeCooldown > 0 || isLoading;
             return (
               <button
                 type="button"
@@ -657,12 +664,10 @@ export function LoginPage() {
                 }`}
               >
                 <span>
-                  {isRateLimited
-                    ? rateLimitCooldown > 0
-                      ? `Request New Verification Code (${Math.floor(rateLimitCooldown / 60)}m${rateLimitCooldown % 60}s)`
-                      : "Request New Verification Code"
-                    : exhaustedCooldown > 0
-                      ? `Request New Verification Code (${exhaustedCooldown}s)`
+                  {isRateLimited && rateLimitCooldown > 0
+                    ? `Request New Verification Code (${Math.floor(rateLimitCooldown / 60)}m${rateLimitCooldown % 60}s)`
+                    : activeCooldown > 0
+                      ? `Request New Verification Code (${activeCooldown}s)`
                       : "Request New Verification Code"}
                 </span>
               </button>

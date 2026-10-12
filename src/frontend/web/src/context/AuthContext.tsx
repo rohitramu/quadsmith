@@ -235,7 +235,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     return {
       success: res.success,
-      cooldownSeconds: res.cooldownSeconds || 20,
+      cooldownSeconds: res.cooldownSeconds ?? 20,
       message: res.message || "Verification code sent to your email",
       challengeId: res.challengeId,
     };
