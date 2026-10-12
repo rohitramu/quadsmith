@@ -359,7 +359,7 @@ export function BatteryPickerModal({
                       <span className="flex items-center gap-1">
                         <Weight size={12} className="text-zinc-400" />
                         <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                          {b.weightG}g
+                          {b.weightG.toFixed(1)}g
                         </span>
                       </span>
                     ) : null}

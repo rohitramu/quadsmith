@@ -182,11 +182,12 @@ import (
 	"fmt"
 	"io"
 	"os"
-		"reflect"
+	"reflect"
 	"regexp"
-		"sort"
-		"strings"
-		"text/tabwriter"
+	"sort"
+	"strconv"
+	"strings"
+	"text/tabwriter"
 
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
@@ -641,7 +642,11 @@ func newRootCmd() *cobra.Command {
 					details = append(details, m)
 				}
 				if wt, ok := item.Metadata["weight_g"]; ok && wt != "" {
-					details = append(details, wt+"g")
+					if f, err := strconv.ParseFloat(wt, 64); err == nil {
+						details = append(details, fmt.Sprintf("%.1fg", f))
+					} else {
+						details = append(details, wt+"g")
+					}
 				}
 				if c, ok := item.Metadata["cell_count_s"]; ok && c != "" {
 					details = append(details, c+"S")

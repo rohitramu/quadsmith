@@ -6,6 +6,7 @@ import {
   getTwrColor,
   getHoverThrottleColor,
   formatProductTitle,
+  formatWeight,
 } from "../format";
 
 describe("formatStatorSize", () => {
@@ -188,5 +189,28 @@ describe("getHoverThrottleColor", () => {
     expect(res.text).toContain("text-rose");
     expect(res.bar).toBe("bg-rose-500");
     expect(res.category).toContain("≥65%");
+  });
+});
+
+describe("formatWeight", () => {
+  it("formats numbers to 1 decimal place with default unit", () => {
+    expect(formatWeight(34)).toBe("34.0g");
+    expect(formatWeight(0)).toBe("0.0g");
+    expect(formatWeight(3.45)).toBe("3.5g");
+    expect(formatWeight(125.04)).toBe("125.0g");
+    expect(formatWeight(125.06)).toBe("125.1g");
+  });
+
+  it("formats numbers without unit when requested", () => {
+    expect(formatWeight(34, false)).toBe("34.0");
+    expect(formatWeight(0, false)).toBe("0.0");
+    expect(formatWeight(4.25, false)).toBe("4.3");
+  });
+
+  it("handles null, undefined, and NaN gracefully", () => {
+    expect(formatWeight(null)).toBe("-");
+    expect(formatWeight(undefined)).toBe("-");
+    expect(formatWeight(NaN)).toBe("-");
+    expect(formatWeight(null, true, "N/A")).toBe("N/A");
   });
 });

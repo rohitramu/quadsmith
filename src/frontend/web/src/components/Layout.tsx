@@ -203,9 +203,12 @@ export function Layout() {
                     if (item.metadata["manufacturer"]) details.push(item.metadata["manufacturer"]);
                     if (item.metadata["cell_count_s"])
                       details.push(`${item.metadata["cell_count_s"]}S`);
-                    if (item.metadata["capacity_mah"])
-                      details.push(`${item.metadata["capacity_mah"]}mAh`);
-                    if (item.metadata["weight_g"]) details.push(`${item.metadata["weight_g"]}g`);
+                    if (item.metadata["weight_g"]) {
+                      const wt = parseFloat(item.metadata["weight_g"]);
+                      details.push(
+                        isNaN(wt) ? `${item.metadata["weight_g"]}g` : `${wt.toFixed(1)}g`,
+                      );
+                    }
 
                     return (
                       <li key={`${item.path}-${item.id}`}>

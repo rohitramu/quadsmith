@@ -252,17 +252,17 @@ describe("BuildWizardPage Component", () => {
     // Click + button to add 10g
     const plusBtn = screen.getByRole("button", { name: /Add 10g/i });
     await user.click(plusBtn);
-    expect(screen.getByText("+10g")).toBeInTheDocument();
+    expect(screen.getByText("+10.0g")).toBeInTheDocument();
 
     // Click GoPro preset (+133g)
     const goproBtn = screen.getByRole("button", { name: /GoPro \(\+133g\)/i });
     await user.click(goproBtn);
-    expect(screen.getByText("+133g")).toBeInTheDocument();
+    expect(screen.getByText("+133.0g")).toBeInTheDocument();
 
     // Click Bare preset (0g)
     const bareBtn = screen.getByRole("button", { name: /Bare \(0g\)/i });
     await user.click(bareBtn);
-    expect(screen.getByText("+0g")).toBeInTheDocument();
+    expect(screen.getByText("+0.0g")).toBeInTheDocument();
   });
 
   it("allows selecting a template in Step 0, reviewing BOM in Step 4, and saving the build to PostgreSQL", async () => {

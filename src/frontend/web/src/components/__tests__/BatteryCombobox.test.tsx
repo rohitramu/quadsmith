@@ -31,7 +31,7 @@ describe("BatteryCombobox Component", () => {
     );
 
     const input = screen.getByRole("combobox", { name: /select battery/i });
-    expect(input).toHaveValue("Black Series 1500mAh 6S 100C (220g, 6S, 1500mAh)");
+    expect(input).toHaveValue("Black Series 1500mAh 6S 100C (220.0g, 6S, 1500mAh)");
   });
 
   it("opens dropdown on click and displays available batteries with specs", async () => {

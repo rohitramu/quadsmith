@@ -539,7 +539,7 @@ export function BuildProfilePage() {
                 {activeBattery && (
                   <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
                     <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono">
-                      {activeBattery.weightG}g
+                      {activeBattery.weightG.toFixed(1)}g
                     </span>
                     <span>•</span>
                     <span>
@@ -571,7 +571,7 @@ export function BuildProfilePage() {
                     Payload
                   </span>
                   <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                    +{payloadWeightG}g
+                    +{payloadWeightG.toFixed(1)}g
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 my-1.5">
@@ -700,12 +700,12 @@ export function BuildProfilePage() {
                     </div>
                     <div>
                       <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                        {Math.round(evaluation.allUpWeightG)}
+                        {evaluation.allUpWeightG.toFixed(1)}
                         <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
                       </div>
                       <div className="text-[11px] text-zinc-500 mt-1">
                         {payloadWeightG > 0
-                          ? `Includes +${payloadWeightG}g payload`
+                          ? `Includes +${payloadWeightG.toFixed(1)}g payload`
                           : "Quadcopter + LiPo"}
                       </div>
                     </div>
@@ -900,7 +900,7 @@ export function BuildProfilePage() {
             queryMethod={getMotor}
             icon={<Cpu size={18} />}
             subtitle={(item) =>
-              `${item.manufacturer} • ${item.kv ? `${item.kv}KV` : ""} • ${item.weightG ? `${item.weightG}g each` : ""}`
+              `${item.manufacturer} • ${item.kv ? `${item.kv}KV` : ""} • ${item.weightG ? `${item.weightG.toFixed(1)}g each` : ""}`
             }
           />
 

@@ -43,7 +43,7 @@ describe("BuildProfilePage Component", () => {
 
     // Check AUW, TWR, Max Accel, Top Speed, Hover Throttle, Flight Time metrics
     expect(await screen.findByText("All-Up Weight")).toBeInTheDocument();
-    expect(await screen.findByText("566")).toBeInTheDocument(); // 565.5 rounded to 566
+    expect(await screen.findByText("565.5")).toBeInTheDocument();
 
     expect(screen.getByText("Thrust / Weight")).toBeInTheDocument();
     expect(screen.getByText("6.4")).toBeInTheDocument(); // 3645 / 565.5 ~ 6.4
@@ -111,7 +111,7 @@ describe("BuildProfilePage Component", () => {
     expect(batterySelect).toBeInTheDocument();
     await waitFor(() => {
       expect(batterySelect).toHaveAttribute("data-battery-id", "cnhl-black-series-1500-6s");
-      expect(batterySelect).toHaveValue("Black Series 1500mAh 6S 100C (220g, 6S, 1500mAh)");
+      expect(batterySelect).toHaveValue("Black Series 1500mAh 6S 100C (220.0g, 6S, 1500mAh)");
     });
 
     // Click Browse button to open BatteryPickerModal
@@ -140,31 +140,31 @@ describe("BuildProfilePage Component", () => {
     await user.type(payloadInput, "50");
     expect(payloadInput).toHaveValue("50");
 
-    // AUW should update: 565.5 + 50 = 615.5 -> 616g
-    expect(await screen.findByText("616")).toBeInTheDocument();
-    expect(screen.getByText("+50g")).toBeInTheDocument();
+    // AUW should update: 565.5 + 50 = 615.5
+    expect(await screen.findByText("615.5")).toBeInTheDocument();
+    expect(screen.getByText("+50.0g")).toBeInTheDocument();
 
     // Click GoPro preset (+133g) to verify preset buttons update text box
     const goProButton = screen.getByRole("button", { name: "GoPro (+133g)" });
     await user.click(goProButton);
 
     expect(payloadInput).toHaveValue("133");
-    // AUW should update to include payload: 565.5 + 133 = 698.5 -> 699g
-    expect(await screen.findByText("699")).toBeInTheDocument();
-    expect(screen.getByText("+133g")).toBeInTheDocument();
-    expect(screen.getByText(/includes \+133g payload/i)).toBeInTheDocument();
+    // AUW should update to include payload: 565.5 + 133 = 698.5
+    expect(await screen.findByText("698.5")).toBeInTheDocument();
+    expect(screen.getByText("+133.0g")).toBeInTheDocument();
+    expect(screen.getByText(/includes \+133\.0g payload/i)).toBeInTheDocument();
 
     // Test + button to add 10 grams (133 + 10 = 143g)
     const plusButton = screen.getByRole("button", { name: /add 10 grams/i });
     await user.click(plusButton);
     expect(payloadInput).toHaveValue("143");
-    expect(screen.getByText("+143g")).toBeInTheDocument();
+    expect(screen.getByText("+143.0g")).toBeInTheDocument();
 
     // Test - button to remove 10 grams (143 - 10 = 133g)
     const minusButton = screen.getByRole("button", { name: /remove 10 grams/i });
     await user.click(minusButton);
     expect(payloadInput).toHaveValue("133");
-    expect(screen.getByText("+133g")).toBeInTheDocument();
+    expect(screen.getByText("+133.0g")).toBeInTheDocument();
 
     // Reset to Bare (0g) and verify - button is disabled
     const bareButton = screen.getByRole("button", { name: "Bare (0g)" });

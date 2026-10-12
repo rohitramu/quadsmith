@@ -232,3 +232,22 @@ export function formatProductTitle(
 
   return cleanName.toLowerCase() === mfg.toLowerCase() ? mfg : `${mfg} ${cleanName}`;
 }
+
+/**
+ * Formats a weight in grams to exactly 1 decimal point.
+ *
+ * Examples:
+ *   formatWeight(34) -> "34.0g"
+ *   formatWeight(34, false) -> "34.0"
+ *   formatWeight(0) -> "0.0g"
+ *   formatWeight(null) -> "-"
+ */
+export function formatWeight(
+  weight?: number | null,
+  includeUnit: boolean = true,
+  fallback: string = "-",
+): string {
+  if (weight == null || isNaN(weight)) return fallback;
+  const formatted = weight.toFixed(1);
+  return includeUnit ? `${formatted}g` : formatted;
+}

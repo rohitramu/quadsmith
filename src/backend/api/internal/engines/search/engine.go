@@ -250,12 +250,22 @@ func searchCollection(ctx context.Context, db *pgxpool.Pool, target CollectionTa
 			if err := json.Unmarshal(rawData, &rawMap); err == nil {
 				for _, colName := range col.DefaultColumns {
 					if val, ok := rawMap[colName]; ok && val != nil {
+						if colName == "weight_g" {
+							if f, ok := val.(float64); ok {
+								metadata[colName] = fmt.Sprintf("%.1f", f)
+								continue
+							}
+						}
 						metadata[colName] = fmt.Sprint(val)
 					}
 				}
 				// Also include weight_g if available and not already included
 				if val, ok := rawMap["weight_g"]; ok && val != nil && metadata["weight_g"] == "" {
-					metadata["weight_g"] = fmt.Sprint(val)
+					if f, ok := val.(float64); ok {
+						metadata["weight_g"] = fmt.Sprintf("%.1f", f)
+					} else {
+						metadata["weight_g"] = fmt.Sprint(val)
+					}
 				}
 				// Also include manufacturer if available
 				if val, ok := rawMap["manufacturer"]; ok && val != nil && metadata["manufacturer"] == "" {

@@ -125,7 +125,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       id: "weight_g",
       title: "Weight (g)",
       renderCell: (m) =>
-        m.weightG != null && (m.weightG > 0 || m.isInternalOnly) ? `${m.weightG}` : "-",
+        m.weightG != null && (m.weightG > 0 || m.isInternalOnly) ? m.weightG.toFixed(1) : "-",
     },
     description: {
       id: "description",
@@ -294,7 +294,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (a) => (a.weightG != null && a.weightG > 0 ? `${a.weightG}` : "N/A"),
+        value: (a) => (a.weightG != null && a.weightG > 0 ? a.weightG.toFixed(1) : "N/A"),
       },
       {
         label: "Length (mm)",
@@ -318,7 +318,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (a) => (a.weightG != null && a.weightG > 0 ? `${a.weightG}` : "-"),
+        value: (a) => (a.weightG != null && a.weightG > 0 ? a.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -477,7 +477,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Connector", value: (b) => b.connector || "N/A" },
       {
         label: "Weight (g)",
-        value: (b) => (b.weightG != null && b.weightG > 0 ? `${b.weightG}` : "N/A"),
+        value: (b) => (b.weightG != null && b.weightG > 0 ? b.weightG.toFixed(1) : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -501,7 +501,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Connector", value: (b) => b.connector || "-" },
       {
         label: "Weight (g)",
-        value: (b) => (b.weightG != null && b.weightG > 0 ? `${b.weightG}` : "-"),
+        value: (b) => (b.weightG != null && b.weightG > 0 ? b.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -635,7 +635,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (c) => (c.weightG != null && c.weightG > 0 ? `${c.weightG}` : "N/A"),
+        value: (c) => (c.weightG != null && c.weightG > 0 ? c.weightG.toFixed(1) : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -648,7 +648,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (c) => (c.weightG != null && c.weightG > 0 ? `${c.weightG}` : "-"),
+        value: (c) => (c.weightG != null && c.weightG > 0 ? c.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -798,7 +798,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Firmware", value: (e) => e.firmware || "N/A" },
       {
         label: "Weight (g)",
-        value: (e) => (e.weightG != null && e.weightG > 0 ? `${e.weightG}` : "N/A"),
+        value: (e) => (e.weightG != null && e.weightG > 0 ? e.weightG.toFixed(1) : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -824,7 +824,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Firmware", value: (e) => e.firmware || "-" },
       {
         label: "Weight (g)",
-        value: (e) => (e.weightG != null && e.weightG > 0 ? `${e.weightG}` : "-"),
+        value: (e) => (e.weightG != null && e.weightG > 0 ? e.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -968,7 +968,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Gyro", value: (f) => f.gyro || "N/A" },
       {
         label: "Weight (g)",
-        value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "N/A"),
+        value: (f) => (f.weightG != null && f.weightG > 0 ? f.weightG.toFixed(1) : "N/A"),
       },
       {
         label: "Integrated ESC",
@@ -1013,7 +1013,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "-"),
+        value: (f) => (f.weightG != null && f.weightG > 0 ? f.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -1153,7 +1153,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Geometry", value: (f) => f.geometry || "N/A" },
       {
         label: "Weight (g)",
-        value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "N/A"),
+        value: (f) => (f.weightG != null && f.weightG > 0 ? f.weightG.toFixed(1) : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -1179,7 +1179,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "-"),
+        value: (f) => (f.weightG != null && f.weightG > 0 ? f.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -1320,7 +1320,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (g) => (g.weightG != null && g.weightG > 0 ? `${g.weightG}` : "N/A"),
+        value: (g) => (g.weightG != null && g.weightG > 0 ? g.weightG.toFixed(1) : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -1340,7 +1340,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (g) => (g.weightG != null && g.weightG > 0 ? `${g.weightG}` : "-"),
+        value: (g) => (g.weightG != null && g.weightG > 0 ? g.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -1494,7 +1494,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "KV", value: (m) => m.kv || "N/A" },
       {
         label: "Weight (g)",
-        value: (m) => (m.weightG ? `${m.weightG}` : "N/A"),
+        value: (m) => (m.weightG ? m.weightG.toFixed(1) : "N/A"),
       },
       {
         label: "Stator Size",
@@ -1536,7 +1536,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         label: "Mount Pattern",
         value: (m) => m.mountPattern || "-",
       },
-      { label: "Weight (g)", value: (m) => (m.weightG ? `${m.weightG}` : "-") },
+      { label: "Weight (g)", value: (m) => (m.weightG ? m.weightG.toFixed(1) : "-") },
     ],
   },
 
@@ -1678,7 +1678,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Material", value: (p) => p.material || "N/A" },
       {
         label: "Weight (g)",
-        value: (p) => (p.weightG != null && p.weightG > 0 ? `${p.weightG}` : "N/A"),
+        value: (p) => (p.weightG != null && p.weightG > 0 ? p.weightG.toFixed(1) : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -1702,7 +1702,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Material", value: (p) => p.material || "-" },
       {
         label: "Weight (g)",
-        value: (p) => (p.weightG != null && p.weightG > 0 ? `${p.weightG}` : "-"),
+        value: (p) => (p.weightG != null && p.weightG > 0 ? p.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -1822,7 +1822,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (r) => (r.weightG != null && r.weightG > 0 ? `${r.weightG}` : "N/A"),
+        value: (r) => (r.weightG != null && r.weightG > 0 ? r.weightG.toFixed(1) : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -1837,7 +1837,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (r) => (r.weightG != null && r.weightG > 0 ? `${r.weightG}` : "-"),
+        value: (r) => (r.weightG != null && r.weightG > 0 ? r.weightG.toFixed(1) : "-"),
       },
     ],
   },
@@ -1988,7 +1988,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       },
       {
         label: "Weight (g)",
-        value: (v) => (v.weightG != null && v.weightG > 0 ? `${v.weightG}` : "N/A"),
+        value: (v) => (v.weightG != null && v.weightG > 0 ? v.weightG.toFixed(1) : "N/A"),
       },
     ],
     technicalSpecs: [
@@ -2008,7 +2008,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       { label: "Port Interface", value: (v) => v.portType || "-" },
       {
         label: "Weight (g)",
-        value: (v) => (v.weightG != null && v.weightG > 0 ? `${v.weightG}` : "-"),
+        value: (v) => (v.weightG != null && v.weightG > 0 ? v.weightG.toFixed(1) : "-"),
       },
     ],
   },
