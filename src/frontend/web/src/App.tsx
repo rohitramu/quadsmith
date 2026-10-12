@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TransportProvider } from "@connectrpc/connect-query";
 import type { Transport } from "@connectrpc/connect";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { transport as defaultTransport } from "./lib/api";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -20,6 +20,11 @@ import { BuildFeedPage } from "./pages/BuildFeedPage";
 
 const defaultQueryClient = new QueryClient();
 
+function UserCollectionsRedirect() {
+  const { id } = useParams<{ id: string }>();
+  return <Navigate to={`/users/${id}?tab=collections`} replace />;
+}
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -33,7 +38,7 @@ export function AppRoutes() {
           <Route index element={<HomePage />} />
           <Route path="account" element={<AccountSettingsPage />} />
           <Route path="users/:id" element={<UserProfilePage />} />
-          <Route path="users/:id/collections" element={<UserCollectionsPage />} />
+          <Route path="users/:id/collections" element={<UserCollectionsRedirect />} />
           <Route path="users/:id/collections/:collectionId" element={<UserCollectionsPage />} />
           <Route path="builds" element={<BuildFeedPage />} />
           <Route path="builds/new" element={<BuildWizardPage />} />

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { UserProfilePage } from "../UserProfilePage";
@@ -176,5 +176,75 @@ describe("UserProfilePage Component", () => {
         /when @test_pilot_empty creates and publishes quadcopter builds, they will appear here/i,
       ),
     ).toBeInTheDocument();
+  });
+
+  it("allows owner to create a collection via the subtle plus button in collections subheader", async () => {
+    const { user } = renderUserProfile("/users/fpv_pilot?tab=collections");
+
+    expect(
+      await screen.findByRole("heading", { level: 3, name: "Curated Collections" }),
+    ).toBeInTheDocument();
+
+    // Subtle plus button in header
+    const addColBtn = screen.getByRole("button", { name: /add collection/i });
+    expect(addColBtn).toBeInTheDocument();
+
+    await user.click(addColBtn);
+
+    // Modal opens
+    expect(
+      await screen.findByRole("heading", { level: 3, name: /create collection/i }),
+    ).toBeInTheDocument();
+
+    const nameInput = screen.getByRole("textbox", { name: /^name$/i });
+    await user.type(nameInput, "New Long Range Rigs");
+
+    const submitBtn = screen.getByRole("button", { name: /create collection/i });
+    await user.click(submitBtn);
+
+    // Modal closes
+    expect(
+      screen.queryByRole("heading", { level: 3, name: /create collection/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows Add Collection button in empty state when user has no collections and allows creation", async () => {
+    const { user } = renderWithProviders(
+      <Routes>
+        <Route path="/users/:id" element={<UserProfilePage />} />
+      </Routes>,
+      {
+        route: "/users/fpv_pilot?tab=collections",
+        transportOptions: {
+          collections: [],
+        },
+      },
+    );
+
+    expect(await screen.findByText(/no collections found/i)).toBeInTheDocument();
+
+    // Prominent "Add Collection" button in empty state
+    const addBtn = screen.getByRole("button", { name: /add collection/i });
+    expect(addBtn).toBeInTheDocument();
+
+    await user.click(addBtn);
+
+    expect(
+      await screen.findByRole("heading", { level: 3, name: /create collection/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("allows owner to delete a collection using the garbage bin icon on the card", async () => {
+    const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(true);
+    const { user } = renderUserProfile("/users/fpv_pilot?tab=collections");
+
+    expect(await screen.findByText("Cinewhoop Favorites")).toBeInTheDocument();
+
+    const deleteBtn = screen.getByRole("button", { name: /delete cinewhoop favorites/i });
+    expect(deleteBtn).toBeInTheDocument();
+
+    await user.click(deleteBtn);
+
+    expect(confirmSpy).toHaveBeenCalled();
   });
 });

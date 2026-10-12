@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams, Link, useSearchParams } from "react-router-dom";
-import { useQuery, useInfiniteQuery } from "@connectrpc/connect-query";
+import { useQuery, useInfiniteQuery, useMutation } from "@connectrpc/connect-query";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Loader2,
   Hammer,
@@ -15,10 +16,16 @@ import {
   Heart,
   RefreshCw,
   CheckCircle,
+  Trash2,
+  X,
 } from "lucide-react";
 import { getPublicProfile } from "../gen/quadsmith/user-UserService_connectquery";
 import { listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
-import { listUserCollections } from "../gen/quadsmith/social-SocialService_connectquery";
+import {
+  listUserCollections,
+  createCollection,
+  deleteCollection,
+} from "../gen/quadsmith/social-SocialService_connectquery";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 import { BuildCard } from "../components/BuildCard";
 import { useAuth } from "../context/AuthContext";
@@ -27,8 +34,17 @@ import { useDocumentMeta } from "../hooks/useDocumentMeta";
 export function UserProfilePage() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // Modal & action state for collections
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [newColName, setNewColName] = useState("");
+  const [newColDesc, setNewColDesc] = useState("");
+  const [newColIsPublic, setNewColIsPublic] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [deletingColId, setDeletingColId] = useState<string | null>(null);
 
   const activeTab = searchParams.get("tab") === "collections" ? "collections" : "builds";
 
@@ -102,6 +118,46 @@ export function UserProfilePage() {
 
   const isOwner = user?.id === id;
   const collections = collectionsData?.collections || [];
+
+  const { mutateAsync: mutateCreateCollection } = useMutation(createCollection);
+  const { mutateAsync: mutateDeleteCollection } = useMutation(deleteCollection);
+
+  async function handleCreateCollection(e: React.FormEvent) {
+    e.preventDefault();
+    if (!newColName.trim()) return;
+    setIsCreating(true);
+    try {
+      await mutateCreateCollection({
+        name: newColName.trim(),
+        description: newColDesc.trim(),
+        isPublic: newColIsPublic,
+      });
+      setNewColName("");
+      setNewColDesc("");
+      setNewColIsPublic(true);
+      setIsCreateOpen(false);
+      await refetchCollections();
+      await queryClient.invalidateQueries();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to create collection");
+    } finally {
+      setIsCreating(false);
+    }
+  }
+
+  async function handleDeleteCollection(colId: string) {
+    if (!window.confirm("Are you sure you want to delete this collection?")) return;
+    setDeletingColId(colId);
+    try {
+      await mutateDeleteCollection({ collectionId: colId });
+      await refetchCollections();
+      await queryClient.invalidateQueries();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to delete collection");
+    } finally {
+      setDeletingColId(null);
+    }
+  }
 
   useDocumentMeta({
     title: profile ? `@${profile.id} — Quadsmith Pilot Profile` : "User Profile | Quadsmith",
@@ -433,8 +489,8 @@ export function UserProfilePage() {
             aria-labelledby="tab-collections"
             className="space-y-6 animate-in fade-in duration-150"
           >
-            {/* Collections Section Subheader */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+            {/* Collections Section Subheader with subtle plus button */}
+            <div className="flex items-center justify-between gap-4 pb-2">
               <div>
                 <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                   <Bookmark size={18} className="text-blue-500" />
@@ -445,15 +501,17 @@ export function UserProfilePage() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-3">
-                <Link
-                  to={`/users/${profile.id}/collections`}
-                  className="text-xs font-semibold text-blue-500 hover:underline flex items-center gap-1"
+              {isOwner && collections.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setIsCreateOpen(true)}
+                  className="inline-flex items-center justify-center p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer self-start sm:self-auto"
+                  title="Add Collection"
+                  aria-label="Add Collection"
                 >
-                  <span>Browse All Collections</span>
-                  <ChevronRight size={14} />
-                </Link>
-              </div>
+                  <Plus size={16} />
+                </button>
+              )}
             </div>
 
             {/* Loading Skeleton */}
@@ -489,7 +547,7 @@ export function UserProfilePage() {
               </div>
             )}
 
-            {/* Empty State */}
+            {/* Empty State with "Add Collection" button */}
             {!isLoadingCollections && !collectionsError && collections.length === 0 && (
               <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-400 text-xs space-y-3">
                 <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
@@ -505,19 +563,20 @@ export function UserProfilePage() {
                 </p>
                 {isOwner && (
                   <div className="pt-2">
-                    <Link
-                      to={`/users/${profile.id}/collections`}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 transition-colors"
+                    <button
+                      type="button"
+                      onClick={() => setIsCreateOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 transition-colors cursor-pointer"
                     >
                       <Plus size={14} />
-                      <span>Manage Collections</span>
-                    </Link>
+                      <span>Add Collection</span>
+                    </button>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Scrollable Collections Grid */}
+            {/* Scrollable Collections Grid with garbage bin removal icon */}
             {collections.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {collections.map((col) => (
@@ -568,13 +627,31 @@ export function UserProfilePage() {
 
                     <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-100 dark:border-zinc-800">
                       <span className="font-mono">{col.itemCount} items</span>
-                      <Link
-                        to={`/users/${profile.id}/collections/${col.id}`}
-                        className="text-blue-500 hover:underline flex items-center gap-1 font-medium cursor-pointer"
-                      >
-                        <span>Explore</span>
-                        <ChevronRight size={13} />
-                      </Link>
+                      <div className="flex items-center gap-2">
+                        {isOwner && !col.isSystemCollection && (
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteCollection(col.id)}
+                            disabled={deletingColId === col.id}
+                            className="text-zinc-400 hover:text-rose-500 transition-colors p-1.5 rounded-lg hover:bg-rose-500/10 cursor-pointer"
+                            title="Delete collection"
+                            aria-label={`Delete ${col.name}`}
+                          >
+                            {deletingColId === col.id ? (
+                              <Loader2 size={13} className="animate-spin text-rose-500" />
+                            ) : (
+                              <Trash2 size={13} />
+                            )}
+                          </button>
+                        )}
+                        <Link
+                          to={`/users/${profile.id}/collections/${col.id}`}
+                          className="text-blue-500 hover:underline flex items-center gap-1 font-medium cursor-pointer"
+                        >
+                          <span>Explore</span>
+                          <ChevronRight size={13} />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -583,6 +660,141 @@ export function UserProfilePage() {
           </section>
         )}
       </div>
+
+      {/* Create Collection Modal */}
+      {isCreateOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="create-col-modal-title"
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in"
+        >
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
+              <h3
+                id="create-col-modal-title"
+                className="font-bold text-base text-zinc-900 dark:text-zinc-100 flex items-center gap-2"
+              >
+                <Bookmark size={18} className="text-blue-500" />
+                <span>Create Collection</span>
+              </h3>
+              <button
+                type="button"
+                onClick={() => setIsCreateOpen(false)}
+                className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1 rounded-lg cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateCollection} className="space-y-4">
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="new-col-name-input"
+                  className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300"
+                >
+                  Name
+                </label>
+                <input
+                  id="new-col-name-input"
+                  type="text"
+                  value={newColName}
+                  onChange={(e) => setNewColName(e.target.value)}
+                  placeholder="e.g. Cinematic Freestyle 6S Rigs"
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="new-col-desc-input"
+                  className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300"
+                >
+                  Description (optional)
+                </label>
+                <textarea
+                  id="new-col-desc-input"
+                  rows={3}
+                  value={newColDesc}
+                  onChange={(e) => setNewColDesc(e.target.value)}
+                  placeholder="Notes on what is collected here..."
+                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+                />
+              </div>
+
+              <div className="space-y-2 pt-1">
+                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                  Visibility
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setNewColIsPublic(true)}
+                    className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                      newColIsPublic
+                        ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-semibold"
+                        : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                    }`}
+                  >
+                    <Globe
+                      size={16}
+                      className={newColIsPublic ? "text-emerald-500" : "text-zinc-400"}
+                    />
+                    <div>
+                      <div className="text-xs">Public</div>
+                      <div className="text-[10px] text-zinc-500 font-normal">
+                        Visible on profile
+                      </div>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setNewColIsPublic(false)}
+                    className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                      !newColIsPublic
+                        ? "border-blue-500/50 bg-blue-500/10 text-blue-700 dark:text-blue-300 font-semibold"
+                        : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                    }`}
+                  >
+                    <Lock
+                      size={16}
+                      className={!newColIsPublic ? "text-blue-500" : "text-zinc-400"}
+                    />
+                    <div>
+                      <div className="text-xs">Private</div>
+                      <div className="text-[10px] text-zinc-500 font-normal">
+                        Only you can see it
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setIsCreateOpen(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCreating || !newColName.trim()}
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                >
+                  {isCreating && <Loader2 size={12} className="animate-spin" />}
+                  <span>Create Collection</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

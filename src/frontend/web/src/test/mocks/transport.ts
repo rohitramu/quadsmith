@@ -99,7 +99,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     defaultBatteryId = batteries.length > 0 ? batteries[0].id : "",
     reviews = [...(options.reviews ?? mockReviews)],
     questions = [...(options.questions ?? mockQuestions)],
-    collections = [...(options.collections ?? mockCollections)],
+    collections = (options.collections ?? mockCollections).map((c) => ({ ...c })),
     similarBuilds = [...(options.similarBuilds ?? mockSimilarBuilds)],
     entitySocialSummary = options.entitySocialSummary ?? mockEntitySocialSummary1,
     nextPageToken = "",
