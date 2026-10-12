@@ -27,9 +27,15 @@ export interface BuildCardProps {
   build: Build;
   similarityScore?: number;
   matchDetails?: ComponentMatchDetail[];
+  variant?: "vertical" | "horizontal";
 }
 
-export function BuildCard({ build, similarityScore, matchDetails }: BuildCardProps) {
+export function BuildCard({
+  build,
+  similarityScore,
+  matchDetails,
+  variant = "vertical",
+}: BuildCardProps) {
   const [copied, setCopied] = useState(false);
 
   // Fetch electrical limits to determine default lightest compatible battery
@@ -92,6 +98,174 @@ export function BuildCard({ build, similarityScore, matchDetails }: BuildCardPro
   ].filter(Boolean).length;
 
   const buildColor = getCollectionColor("builds");
+
+  if (variant === "horizontal") {
+    return (
+      <Link
+        to={`/builds/${build.id}`}
+        className="group relative flex flex-col sm:flex-row rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs hover:shadow-md hover:border-blue-500/50 dark:hover:border-blue-500/50 transition-all duration-200 cursor-pointer block no-underline text-inherit"
+      >
+        {/* Card trim line */}
+        <div className={`h-1 sm:h-auto w-full sm:w-1.5 ${buildColor.trimClass} shrink-0`} />
+
+        {/* Thumbnail area */}
+        <div className="relative sm:w-56 h-48 sm:h-auto shrink-0 bg-zinc-900 overflow-hidden">
+          {build.primaryDisplayImage ? (
+            <img
+              src={build.primaryDisplayImage}
+              alt=""
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full min-h-[140px] flex flex-col items-center justify-center p-4 bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-900 dark:to-zinc-800 text-zinc-400">
+              <Compass size={36} className="transform rotate-45 text-blue-500/60 mb-1" />
+              <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
+                Complete Build
+              </span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent sm:hidden" />
+          <div className="absolute bottom-2.5 left-3 sm:bottom-2 sm:left-2 flex items-center gap-1.5 text-white text-xs">
+            <span className="font-medium bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded text-[11px]">
+              {componentCount} components
+            </span>
+          </div>
+        </div>
+
+        {/* Card body */}
+        <div className="p-5 flex-1 flex flex-col justify-between min-w-0">
+          <div>
+            {/* Top row: Title, Category, Match Badge */}
+            <div className="flex items-start justify-between gap-3 mb-2">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  <h4 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {build.name}
+                  </h4>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                    {categoryTag}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
+                  <span>@{build.id}</span>
+                  <span>•</span>
+                  <CollectionBadge collection="builds" label="Build" size="xs" />
+                </div>
+              </div>
+
+              {similarityScore !== undefined && (
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-extrabold border shrink-0 ${
+                    similarityScore >= 80
+                      ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                      : similarityScore >= 50
+                        ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30"
+                        : "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                  }`}
+                >
+                  {Math.round(similarityScore)}% Match
+                </span>
+              )}
+            </div>
+
+            {/* Description */}
+            {build.description && (
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed mb-3">
+                {build.description}
+              </p>
+            )}
+
+            {/* Matching Specifications Breakdown Chips */}
+            {matchDetails && matchDetails.length > 0 && (
+              <div className="space-y-1.5 mb-3">
+                <div className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                  Matching Specifications
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {matchDetails.map((detail, idx) => (
+                    <span
+                      key={idx}
+                      className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg font-medium ${
+                        detail.exactMatch
+                          ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                      }`}
+                    >
+                      <span className="text-emerald-500 font-bold">✓</span>
+                      <span>{detail.description}</span>
+                      {detail.pointsAwarded > 0 && (
+                        <span className="text-[10px] opacity-75 font-mono">
+                          ({detail.pointsAwarded} pts)
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Bar: Evaluation Metrics Preview */}
+          <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+            {evaluation ? (
+              <div className="flex items-center gap-4 text-zinc-600 dark:text-zinc-400 flex-wrap">
+                <span className="flex items-center gap-1.5 font-medium" title="All Up Weight (AUW)">
+                  <Weight size={13} className="text-zinc-400" />
+                  <strong className="text-zinc-800 dark:text-zinc-200 font-mono">
+                    {evaluation.allUpWeightG.toFixed(2)}g
+                  </strong>{" "}
+                  AUW
+                </span>
+                <span
+                  className="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400"
+                  title="Thrust to Weight Ratio"
+                >
+                  <Gauge size={13} />
+                  <strong className="font-mono">
+                    {evaluation.thrustToWeightRatio.toFixed(1)}:1
+                  </strong>{" "}
+                  TWR
+                </span>
+                {evaluation.maxFlightTimeMin > 0 && (
+                  <span
+                    className="flex items-center gap-1.5 font-medium text-blue-600 dark:text-blue-400"
+                    title="Flight Time"
+                  >
+                    <Clock size={13} />
+                    <strong className="font-mono">
+                      {evaluation.minFlightTimeMin > 0
+                        ? `${evaluation.minFlightTimeMin.toFixed(1)}–${evaluation.maxFlightTimeMin.toFixed(1)} min`
+                        : `~${evaluation.maxFlightTimeMin.toFixed(1)} min`}
+                    </strong>
+                  </span>
+                )}
+                {evaluation.topSpeedKmh > 0 && (
+                  <span
+                    className="flex items-center gap-1.5 font-medium text-indigo-600 dark:text-indigo-400"
+                    title="Top Speed"
+                  >
+                    <Compass size={13} />
+                    <strong className="font-mono">{Math.round(evaluation.topSpeedKmh)}</strong> km/h
+                  </span>
+                )}
+              </div>
+            ) : !isLoadingLimits && !electricalLimits?.defaultBatteryId ? (
+              <div className="text-red-500/80 dark:text-red-400/80 text-xs italic">
+                No compatible battery
+              </div>
+            ) : (
+              <div className="text-zinc-400 text-xs italic">Evaluating build specs...</div>
+            )}
+
+            <div className="flex items-center gap-1 text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ml-auto">
+              <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+        </div>
+      </Link>
+    );
+  }
 
   return (
     <article className="group relative flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200">

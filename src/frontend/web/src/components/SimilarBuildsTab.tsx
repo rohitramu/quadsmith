@@ -50,18 +50,19 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
 
       {/* Loading Skeleton */}
       {isLoading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-4">
           {[1, 2, 3].map((n) => (
             <div
               key={n}
-              className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-zinc-900 animate-pulse space-y-4"
+              className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5 bg-white dark:bg-zinc-900 animate-pulse flex flex-col sm:flex-row gap-5"
             >
-              <div className="flex items-center justify-between">
-                <div className="w-10 h-10 rounded-xl bg-zinc-200 dark:bg-zinc-800" />
-                <div className="h-5 bg-zinc-200 dark:bg-zinc-800 rounded w-20" />
+              <div className="sm:w-56 h-40 rounded-xl bg-zinc-200 dark:bg-zinc-800 shrink-0" />
+              <div className="flex-1 space-y-3">
+                <div className="h-5 bg-zinc-200 dark:bg-zinc-800 rounded w-1/3" />
+                <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-2/3" />
+                <div className="h-8 bg-zinc-100 dark:bg-zinc-800/60 rounded w-1/2" />
+                <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-1/4 mt-4" />
               </div>
-              <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-2/3" />
-              <div className="h-20 bg-zinc-100 dark:bg-zinc-800/60 rounded" />
             </div>
           ))}
         </div>
@@ -111,15 +112,16 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
         </div>
       )}
 
-      {/* Results Grid */}
+      {/* Results List (Vertical stack of horizontal cards) */}
       {!isLoading && !error && similarBuilds.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-4">
           {similarBuilds.map(
             (sb, idx) =>
               sb.build && (
                 <BuildCard
                   key={sb.build.uuid || sb.build.id || idx}
                   build={sb.build}
+                  variant="horizontal"
                   similarityScore={sb.similarityScore}
                   matchDetails={sb.matchDetails}
                 />

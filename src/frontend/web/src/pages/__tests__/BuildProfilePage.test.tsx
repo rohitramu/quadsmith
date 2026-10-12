@@ -353,6 +353,12 @@ describe("BuildProfilePage Component", () => {
     expect(screen.getByText("Identical Master 5 V2 Frame")).toBeInTheDocument();
     expect(screen.getByText("Identical Unify Pro32 Nano VTX")).toBeInTheDocument();
     expect(screen.getByText("Same 2207 Stator & KV Band")).toBeInTheDocument();
+
+    // Verify the entire card is a link to the build profile page
+    const cardLink = screen.getByRole("link", { name: /Long Range Explorer 7 inch/i });
+    expect(cardLink).toHaveAttribute("href", "/builds/long-range-explorer");
+    // Verify there is no separate View Profile button
+    expect(screen.queryByRole("link", { name: /view profile/i })).not.toBeInTheDocument();
   });
 
   it("displays empty state when no similar builds meet the similarity threshold", async () => {
