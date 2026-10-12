@@ -374,10 +374,12 @@ describe("BuildWizardPage Component", () => {
     // Select Frame (Master 5 V2 - 130mm max prop size)
     await user.click(await screen.findByText("Master 5 V2"));
 
-    // Check that the dynamic CEL filter banner is rendered for propellers (in Step 1C and Sidebar)
-    const filterElements = await screen.findAllByText("diameter_mm <= 130.0");
-    expect(filterElements.length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText("Compatibility Filter:")).toBeInTheDocument();
+    // Check that the dynamic CEL filter banner is rendered with copy filter button
+    expect(await screen.findByText("Compatibility Filter:")).toBeInTheDocument();
+    const copyFilterBtn = screen.getByRole("button", { name: "Copy filter" });
+    expect(copyFilterBtn).toBeInTheDocument();
+    await user.hover(copyFilterBtn);
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("diameter_mm <= 130.0");
 
     // Toggle off Compatible Only
     const compatibleCheckbox = screen.getByLabelText("Compatible Only");

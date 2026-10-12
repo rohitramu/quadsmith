@@ -6,7 +6,8 @@ import { X, Search, Weight, Gauge, Check, ArrowUpDown, Filter } from "lucide-rea
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
 import { CollectionIcon } from "./CollectionIcon";
-import { buildBatteryCelFilter, formatBatteryFilterForDisplay } from "../lib/batteryFilter";
+import { buildBatteryCelFilter } from "../lib/batteryFilter";
+import { CopyFilterButton } from "./CopyFilterButton";
 
 export interface BatteryPickerModalProps {
   isOpen: boolean;
@@ -238,13 +239,13 @@ export function BatteryPickerModal({
             </div>
           )}
           {compatibleOnly && batteryFilter && (
-            <div className="mt-2 text-xs p-2 rounded-lg border bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-start gap-2">
-              <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">
-                Compatibility Filter:
-              </span>
-              <code className="font-mono text-[11px] whitespace-pre-wrap leading-relaxed text-emerald-800 dark:text-emerald-200">
-                {formatBatteryFilterForDisplay(batteryFilter)}
-              </code>
+            <div className="mt-2 text-xs px-2.5 py-1.5 rounded-lg border bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5">
+                <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 shrink-0">
+                  Compatibility Filter:
+                </span>
+                <CopyFilterButton filter={batteryFilter} />
+              </div>
             </div>
           )}
         </div>

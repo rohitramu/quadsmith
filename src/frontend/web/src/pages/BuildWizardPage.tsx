@@ -75,7 +75,7 @@ import { AntennaService, type Antenna } from "../gen/quadsmith/antenna_pb";
 import { GpsReceiverService, type GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
 import { getCollectionColor } from "../lib/collectionColors";
-import { formatBatteryFilterForDisplay } from "../lib/batteryFilter";
+import { CopyFilterButton } from "../components/CopyFilterButton";
 
 export function getVtxAntennaCount(vtx: VideoTransmitter | null | undefined): number {
   if (!vtx) return 1;
@@ -2050,7 +2050,7 @@ export function BuildWizardPage() {
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 flex-wrap">
+                    <div className="flex items-center gap-1.5">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
                           isCompatibleOnly("motors")
@@ -2060,15 +2060,7 @@ export function BuildWizardPage() {
                       >
                         Compatibility Filter:
                       </span>
-                      <code
-                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          isCompatibleOnly("motors")
-                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
-                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
-                        }`}
-                      >
-                        {motorCelFilter}
-                      </code>
+                      <CopyFilterButton filter={motorCelFilter} />
                     </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
@@ -2190,7 +2182,7 @@ export function BuildWizardPage() {
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 flex-wrap">
+                    <div className="flex items-center gap-1.5">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
                           isCompatibleOnly("propellers")
@@ -2200,15 +2192,7 @@ export function BuildWizardPage() {
                       >
                         Compatibility Filter:
                       </span>
-                      <code
-                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          isCompatibleOnly("propellers")
-                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
-                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
-                        }`}
-                      >
-                        {propCelFilter}
-                      </code>
+                      <CopyFilterButton filter={propCelFilter} />
                     </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
@@ -2359,7 +2343,7 @@ export function BuildWizardPage() {
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 flex-wrap">
+                    <div className="flex items-center gap-1.5">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
                           isCompatibleOnly("flight_controllers")
@@ -2369,15 +2353,7 @@ export function BuildWizardPage() {
                       >
                         Compatibility Filter:
                       </span>
-                      <code
-                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          isCompatibleOnly("flight_controllers")
-                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
-                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
-                        }`}
-                      >
-                        {fcCelFilter}
-                      </code>
+                      <CopyFilterButton filter={fcCelFilter} />
                     </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
@@ -2545,7 +2521,7 @@ export function BuildWizardPage() {
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 flex-wrap">
+                    <div className="flex items-center gap-1.5">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
                           isCompatibleOnly("electronic_speed_controllers")
@@ -2555,15 +2531,7 @@ export function BuildWizardPage() {
                       >
                         Compatibility Filter:
                       </span>
-                      <code
-                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          isCompatibleOnly("electronic_speed_controllers")
-                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
-                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
-                        }`}
-                      >
-                        {escCelFilter}
-                      </code>
+                      <CopyFilterButton filter={escCelFilter} />
                     </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
@@ -3250,7 +3218,7 @@ export function BuildWizardPage() {
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 flex-wrap">
+                    <div className="flex items-center gap-1.5">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
                           isCompatibleOnly("video_transmitters")
@@ -3260,15 +3228,7 @@ export function BuildWizardPage() {
                       >
                         Compatibility Filter:
                       </span>
-                      <code
-                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          isCompatibleOnly("video_transmitters")
-                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
-                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
-                        }`}
-                      >
-                        {vtxCelFilter}
-                      </code>
+                      <CopyFilterButton filter={vtxCelFilter} />
                     </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
@@ -3489,7 +3449,7 @@ export function BuildWizardPage() {
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 flex-wrap">
+                    <div className="flex items-center gap-1.5">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
                           isCompatibleOnly("cameras")
@@ -3499,15 +3459,7 @@ export function BuildWizardPage() {
                       >
                         Compatibility Filter:
                       </span>
-                      <code
-                        className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          isCompatibleOnly("cameras")
-                            ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
-                            : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
-                        }`}
-                      >
-                        {camCelFilter}
-                      </code>
+                      <CopyFilterButton filter={camCelFilter} />
                     </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
@@ -3952,13 +3904,13 @@ export function BuildWizardPage() {
                 ariaLabel="Select test battery"
               />
               {batteryCelFilter ? (
-                <div className="mt-1 text-[11px] p-2 rounded-lg bg-zinc-100/80 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
-                  <span className="font-semibold text-[10px] uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block mb-0.5">
-                    Filter:
-                  </span>
-                  <code className="font-mono text-[10px] whitespace-pre-wrap leading-relaxed text-zinc-700 dark:text-zinc-300">
-                    {formatBatteryFilterForDisplay(batteryCelFilter)}
-                  </code>
+                <div className="mt-1.5 flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-semibold text-[10px] uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                      Compatibility Filter:
+                    </span>
+                    <CopyFilterButton filter={batteryCelFilter} />
+                  </div>
                 </div>
               ) : null}
             </div>

@@ -23,7 +23,8 @@ import { SystemMessageSeverity } from "../gen/quadsmith/evaluator_pb";
 import type { Battery } from "../gen/quadsmith/battery_pb";
 import { MediaGallery } from "../components/MediaGallery";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
-import { buildBatteryCelFilter, formatBatteryFilterForDisplay } from "../lib/batteryFilter";
+import { buildBatteryCelFilter } from "../lib/batteryFilter";
+import { CopyFilterButton } from "../components/CopyFilterButton";
 import { CollectionIcon } from "../components/CollectionIcon";
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
 import { getHardwareCollection, getCollectionPath } from "../lib/hardwareCollections";
@@ -558,13 +559,13 @@ export function BuildProfilePage() {
                 )}
 
                 {batteryFilter ? (
-                  <div className="mt-2 text-[11px] p-2 rounded-lg bg-zinc-100/70 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
-                    <span className="font-semibold text-[10px] uppercase tracking-wider text-zinc-500 block mb-0.5">
-                      Compatibility Filter:
-                    </span>
-                    <code className="font-mono text-[10px] whitespace-pre-wrap leading-relaxed text-zinc-700 dark:text-zinc-300">
-                      {formatBatteryFilterForDisplay(batteryFilter)}
-                    </code>
+                  <div className="mt-2 text-[11px] px-2.5 py-1.5 rounded-lg bg-zinc-100/70 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-semibold text-[10px] uppercase tracking-wider text-zinc-500">
+                        Compatibility Filter:
+                      </span>
+                      <CopyFilterButton filter={batteryFilter} />
+                    </div>
                   </div>
                 ) : null}
               </div>

@@ -48,12 +48,17 @@ export function buildBatteryCelFilter(
 }
 
 /**
- * Formats a battery CEL filter string for UI display with a newline after each joining "&&".
+ * Formats a CEL filter string for UI display with a newline after each joining "&&".
  *
  * Example:
  * min_voltage >= 14.80 &&\nmax_voltage <= 25.20 &&\nmax_current_a >= 39.40 &&\nconnector == "XT60"
  */
-export function formatBatteryFilterForDisplay(filter?: string | null): string {
+export function formatCelFilterForDisplay(filter?: string | null): string {
   if (!filter) return "";
-  return filter.split(" && ").join(" &&\n");
+  return filter
+    .split(/\s*&&\s*\n?/)
+    .filter(Boolean)
+    .join(" &&\n");
 }
+
+export const formatBatteryFilterForDisplay = formatCelFilterForDisplay;
