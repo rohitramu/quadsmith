@@ -75,6 +75,84 @@ func rxHasIntegratedAntennaProto(rx *pb.Receiver) bool {
 	return strings.Contains(desc, "ceramic") || strings.Contains(desc, "smd antenna") || strings.Contains(desc, "integrated antenna") || strings.Contains(desc, "built-in antenna")
 }
 
+func normalizeMountTokens(pattern string) []string {
+	if pattern == "" {
+		return nil
+	}
+	parts := strings.FieldsFunc(pattern, func(r rune) bool {
+		return r == '/' || r == ',' || r == ';' || r == '|'
+	})
+	var tokens []string
+	for _, part := range parts {
+		cleaned := strings.ToLower(part)
+		cleaned = strings.ReplaceAll(cleaned, "mm", "")
+		cleaned = strings.ReplaceAll(cleaned, "φ", "")
+		cleaned = strings.ReplaceAll(cleaned, "ø", "")
+		cleaned = strings.ReplaceAll(cleaned, " ", "")
+		cleaned = strings.TrimSpace(cleaned)
+		if cleaned != "" {
+			tokens = append(tokens, cleaned)
+		}
+	}
+	return tokens
+}
+
+func isMountPatternCompatible(compPattern string, framePatterns []string) bool {
+	if compPattern == "" || len(framePatterns) == 0 {
+		return true
+	}
+	compTokens := normalizeMountTokens(compPattern)
+	if len(compTokens) == 0 {
+		return true
+	}
+	var frameTokens []string
+	for _, fp := range framePatterns {
+		frameTokens = append(frameTokens, normalizeMountTokens(fp)...)
+	}
+	for _, ct := range compTokens {
+		for _, ft := range frameTokens {
+			if ct == ft {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func isCameraMountCompatible(camInterface string, frameInterfaces []string) bool {
+	if camInterface == "" || len(frameInterfaces) == 0 {
+		return true
+	}
+	camLower := strings.ToLower(strings.TrimSpace(camInterface))
+	for _, fi := range frameInterfaces {
+		fiLower := strings.ToLower(strings.TrimSpace(fi))
+		if camLower == fiLower {
+			return true
+		}
+		// Match 14mm / nano
+		if (strings.Contains(camLower, "14") || strings.Contains(camLower, "nano")) &&
+			(strings.Contains(fiLower, "14") || strings.Contains(fiLower, "nano")) {
+			return true
+		}
+		// Match 19mm / micro
+		if (strings.Contains(camLower, "19") || strings.Contains(camLower, "micro")) &&
+			(strings.Contains(fiLower, "19") || strings.Contains(fiLower, "micro")) {
+			return true
+		}
+		// Match 20mm / o3
+		if (strings.Contains(camLower, "20") || strings.Contains(camLower, "o3")) &&
+			(strings.Contains(fiLower, "20") || strings.Contains(fiLower, "o3")) {
+			return true
+		}
+		// Match 28mm / full / standard
+		if (strings.Contains(camLower, "28") || strings.Contains(camLower, "full") || strings.Contains(camLower, "standard")) &&
+			(strings.Contains(fiLower, "28") || strings.Contains(fiLower, "full") || strings.Contains(fiLower, "standard")) {
+			return true
+		}
+	}
+	return false
+}
+
 // CheckCompatibility runs all compatibility rules against a given set of hardware components.
 func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	var messages []*pb.CompatibilityMessage
@@ -135,14 +213,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	// Rule 4: Motor vs Frame Mount Pattern
 	if comp.Motor != nil && comp.Frame != nil {
 		if comp.Motor.MountPattern != "" && len(comp.Frame.MotorMountPatterns) > 0 {
-			matched := false
-			for _, p := range comp.Frame.MotorMountPatterns {
-				if strings.EqualFold(strings.TrimSpace(comp.Motor.MountPattern), strings.TrimSpace(p)) {
-					matched = true
-					break
-				}
-			}
-			if !matched {
+			if !isMountPatternCompatible(comp.Motor.MountPattern, comp.Frame.MotorMountPatterns) {
 				messages = append(messages, &pb.CompatibilityMessage{
 					CheckerName:   "MotorFrameMountChecker",
 					Components:    "Motor and Frame",
@@ -159,14 +230,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	if comp.Frame != nil && len(comp.Cameras) > 0 {
 		cam := comp.Cameras[0]
 		if cam.CameraMountInterface != "" && len(comp.Frame.CameraMountInterfaces) > 0 {
-			matched := false
-			for _, iface := range comp.Frame.CameraMountInterfaces {
-				if strings.EqualFold(strings.TrimSpace(iface), strings.TrimSpace(cam.CameraMountInterface)) {
-					matched = true
-					break
-				}
-			}
-			if !matched {
+			if !isCameraMountCompatible(cam.CameraMountInterface, comp.Frame.CameraMountInterfaces) {
 				messages = append(messages, &pb.CompatibilityMessage{
 					CheckerName:   "CameraFrameMountChecker",
 					Components:    "Camera and Frame",
@@ -198,14 +262,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	// Rule 8: Flight Controller vs Frame Board Mount Pattern
 	if comp.FlightController != nil && comp.Frame != nil {
 		if comp.FlightController.MountPattern != "" && len(comp.Frame.BoardMountPatterns) > 0 {
-			matched := false
-			for _, p := range comp.Frame.BoardMountPatterns {
-				if strings.EqualFold(strings.TrimSpace(comp.FlightController.MountPattern), strings.TrimSpace(p)) {
-					matched = true
-					break
-				}
-			}
-			if !matched {
+			if !isMountPatternCompatible(comp.FlightController.MountPattern, comp.Frame.BoardMountPatterns) {
 				messages = append(messages, &pb.CompatibilityMessage{
 					CheckerName:   "FlightControllerFrameMountChecker",
 					Components:    "Flight Controller and Frame",
@@ -221,14 +278,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 	// Rule 9: Video Transmitter vs Frame Board Mount Pattern
 	if comp.VideoTransmitter != nil && comp.Frame != nil {
 		if comp.VideoTransmitter.MountPattern != "" && len(comp.Frame.BoardMountPatterns) > 0 {
-			matched := false
-			for _, p := range comp.Frame.BoardMountPatterns {
-				if strings.EqualFold(strings.TrimSpace(comp.VideoTransmitter.MountPattern), strings.TrimSpace(p)) {
-					matched = true
-					break
-				}
-			}
-			if !matched {
+			if !isMountPatternCompatible(comp.VideoTransmitter.MountPattern, comp.Frame.BoardMountPatterns) {
 				messages = append(messages, &pb.CompatibilityMessage{
 					CheckerName:   "VideoTransmitterFrameMountChecker",
 					Components:    "Video Transmitter and Frame",

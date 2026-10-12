@@ -659,6 +659,32 @@ func TestCameraFrameMountCompatibility(t *testing.T) {
 		}
 	})
 
+	t.Run("Camera size normalized matches (19mm vs 19mm (Micro))", func(t *testing.T) {
+		comp := &Components{
+			Frame:   &pb.Frame{CameraMountInterfaces: []string{"19mm (Micro)"}},
+			Cameras: []*pb.Camera{{CameraMountInterface: "19mm"}},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "CameraFrameMountChecker" {
+				t.Errorf("Unexpected CameraFrameMountChecker message: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("Camera size normalized matches (20mm vs 20mm (DJI O3))", func(t *testing.T) {
+		comp := &Components{
+			Frame:   &pb.Frame{CameraMountInterfaces: []string{"20mm"}},
+			Cameras: []*pb.Camera{{CameraMountInterface: "20mm (DJI O3)"}},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "CameraFrameMountChecker" {
+				t.Errorf("Unexpected CameraFrameMountChecker message: %s", m.Message)
+			}
+		}
+	})
+
 	t.Run("Camera does not match frame mount interface", func(t *testing.T) {
 		comp := &Components{
 			Frame:   &pb.Frame{CameraMountInterfaces: []string{"14mm (Nano)"}},
@@ -688,6 +714,40 @@ func TestFlightControllerFrameMountCompatibility(t *testing.T) {
 			},
 			FlightController: &pb.FlightController{
 				MountPattern: "30.5x30.5mm",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerFrameMountChecker" {
+				t.Errorf("Unexpected FlightControllerFrameMountChecker message: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("Normalized Board Mount Pattern (20x20 vs 20x20mm)", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				BoardMountPatterns: []string{"20x20mm"},
+			},
+			FlightController: &pb.FlightController{
+				MountPattern: "20x20",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerFrameMountChecker" {
+				t.Errorf("Unexpected FlightControllerFrameMountChecker message: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("Multi-mount Board Mount Pattern (20x20 / 25.5x25.5 vs 25.5x25.5mm)", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{
+				BoardMountPatterns: []string{"25.5x25.5mm"},
+			},
+			FlightController: &pb.FlightController{
+				MountPattern: "20x20 / 25.5x25.5",
 			},
 		}
 		msgs := CheckCompatibility(comp)
@@ -1082,4 +1142,34 @@ func TestAntennaCompatibility(t *testing.T) {
 			t.Errorf("expected %q, got %q", expected, filter)
 		}
 	})
+}
+
+func TestMountPatternNormalization(t *testing.T) {
+	if !isMountPatternCompatible("20x20", []string{"20x20mm"}) {
+		t.Errorf("expected 20x20 to be compatible with 20x20mm")
+	}
+	if !isMountPatternCompatible("20x20mm", []string{"20x20 / 25.5x25.5"}) {
+		t.Errorf("expected 20x20mm to be compatible with 20x20 / 25.5x25.5")
+	}
+	if !isMountPatternCompatible("25.5x25.5", []string{"20x20 / 25.5x25.5"}) {
+		t.Errorf("expected 25.5x25.5 to be compatible with 20x20 / 25.5x25.5")
+	}
+	if isMountPatternCompatible("30.5x30.5", []string{"20x20", "25.5x25.5"}) {
+		t.Errorf("expected 30.5x30.5 to NOT be compatible with 20x20, 25.5x25.5")
+	}
+}
+
+func TestCameraMountNormalization(t *testing.T) {
+	if !isCameraMountCompatible("19mm", []string{"19mm (Micro)"}) {
+		t.Errorf("expected 19mm to be compatible with 19mm (Micro)")
+	}
+	if !isCameraMountCompatible("19mm (Micro)", []string{"19mm", "20mm"}) {
+		t.Errorf("expected 19mm (Micro) to be compatible with 19mm")
+	}
+	if !isCameraMountCompatible("20mm (DJI O3)", []string{"20mm"}) {
+		t.Errorf("expected 20mm (DJI O3) to be compatible with 20mm")
+	}
+	if isCameraMountCompatible("14mm (Nano)", []string{"19mm (Micro)"}) {
+		t.Errorf("expected 14mm (Nano) to NOT be compatible with 19mm (Micro)")
+	}
 }

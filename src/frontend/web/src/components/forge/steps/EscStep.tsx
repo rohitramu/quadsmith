@@ -27,6 +27,7 @@ export function EscStep() {
     fcHasAdequateIntegratedEsc,
     selectedFrame,
     selectedFc,
+    activeBattery,
     handleNextStep,
     handlePrevStep,
     searchQueries,
@@ -52,21 +53,76 @@ export function EscStep() {
   const batteryConflict = stepBatteryConflicts[5];
   const isCompatibleOnly = compatibleOnlyMap.electronic_speed_controllers ?? true;
 
+  const checkEscCompatibility = (esc: ElectronicSpeedController) => {
+    // Channel count vs frame motor count
+    if (selectedFrame?.motorCount && esc.maxMotors && esc.maxMotors < selectedFrame.motorCount) {
+      return {
+        compatible: false,
+        reason: `ESC supports only ${esc.maxMotors} channels, but frame requires ${selectedFrame.motorCount} channels.`,
+      };
+    }
+
+    // Voltage limits with FC
+    if (selectedFc) {
+      if (
+        selectedFc.minVoltage > 0 &&
+        esc.maxVoltage > 0 &&
+        esc.maxVoltage < selectedFc.minVoltage
+      ) {
+        return {
+          compatible: false,
+          reason: `ESC max voltage (${esc.maxVoltage.toFixed(1)}V) is below FC min voltage (${selectedFc.minVoltage.toFixed(1)}V).`,
+        };
+      }
+      if (
+        selectedFc.maxVoltage > 0 &&
+        esc.minVoltage > 0 &&
+        esc.minVoltage > selectedFc.maxVoltage
+      ) {
+        return {
+          compatible: false,
+          reason: `ESC min voltage (${esc.minVoltage.toFixed(1)}V) exceeds FC max voltage (${selectedFc.maxVoltage.toFixed(1)}V).`,
+        };
+      }
+    }
+
+    // Battery voltage limits
+    if (activeBattery) {
+      if (
+        activeBattery.minVoltage > 0 &&
+        esc.maxVoltage > 0 &&
+        esc.maxVoltage < activeBattery.minVoltage
+      ) {
+        return {
+          compatible: false,
+          reason: `ESC max voltage (${esc.maxVoltage.toFixed(1)}V) is below battery min voltage (${activeBattery.minVoltage.toFixed(1)}V).`,
+        };
+      }
+      if (
+        activeBattery.maxVoltage > 0 &&
+        esc.minVoltage > 0 &&
+        esc.minVoltage > activeBattery.maxVoltage
+      ) {
+        return {
+          compatible: false,
+          reason: `ESC min voltage (${esc.minVoltage.toFixed(1)}V) exceeds battery max voltage (${activeBattery.maxVoltage.toFixed(1)}V).`,
+        };
+      }
+    }
+
+    return { compatible: true };
+  };
+
   const filteredEscs = useMemo(() => {
     let list = escs;
 
     if (isCompatibleOnly) {
-      if (selectedFrame && selectedFrame.motorCount) {
-        list = list.filter((e) => !e.maxMotors || e.maxMotors >= selectedFrame.motorCount);
-      }
-      if (selectedFc) {
-        if (selectedFc.minVoltage > 0) {
-          list = list.filter((e) => !e.maxVoltage || e.maxVoltage >= selectedFc.minVoltage);
-        }
-        if (selectedFc.maxVoltage > 0) {
-          list = list.filter((e) => !e.minVoltage || e.minVoltage <= selectedFc.maxVoltage);
-        }
-      }
+      list = list.filter(
+        (e) =>
+          e.uuid === selectedEsc?.uuid ||
+          e.id === selectedEsc?.id ||
+          checkEscCompatibility(e).compatible,
+      );
     }
 
     if (!search.trim()) return list;
@@ -77,7 +133,7 @@ export function EscStep() {
         e.manufacturer.toLowerCase().includes(q) ||
         e.firmware?.toLowerCase().includes(q),
     );
-  }, [escs, search, isCompatibleOnly, selectedFrame, selectedFc]);
+  }, [escs, search, isCompatibleOnly, selectedFrame, selectedFc, activeBattery, selectedEsc]);
 
   const isUsingIntegrated = useIntegratedEsc && !!integratedEsc;
 
@@ -240,6 +296,8 @@ export function EscStep() {
           {filteredEscs.map((esc: ElectronicSpeedController) => {
             const isSelected =
               !isUsingIntegrated && (selectedEsc?.uuid === esc.uuid || selectedEsc?.id === esc.id);
+            const compat = checkEscCompatibility(esc);
+            const isIncompatible = !compat.compatible;
 
             return (
               <ProductHoverCard
@@ -252,8 +310,12 @@ export function EscStep() {
                 id={isSelected ? "selected-esc-item" : undefined}
                 className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                   isSelected
-                    ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                    ? isIncompatible
+                      ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                      : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                    : isIncompatible
+                      ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
+                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                 }`}
               >
                 <div
@@ -269,6 +331,15 @@ export function EscStep() {
                     <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                       {esc.name}
                     </span>
+                    {isIncompatible && (
+                      <span
+                        title={compat.reason}
+                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                      >
+                        <AlertCircle size={10} />
+                        <span>Incompatible</span>
+                      </span>
+                    )}
                     {esc.motorCurrentMaxA ? (
                       <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
                         {esc.motorCurrentMaxA}A Cont.

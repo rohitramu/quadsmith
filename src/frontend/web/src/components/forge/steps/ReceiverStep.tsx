@@ -1,6 +1,6 @@
 import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, Sparkles, Check } from "lucide-react";
-import { useForge } from "../ForgeContext";
+import { useForge, checkRxAntennaCompatibility } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
@@ -13,6 +13,7 @@ export function ReceiverStep() {
     selectedRx,
     setSelectedRx,
     selectedFc,
+    selectedRxAnt,
     useIntegratedRx,
     setUseIntegratedRx,
     integratedRx,
@@ -43,6 +44,16 @@ export function ReceiverStep() {
 
   const filteredRxs = useMemo(() => {
     let list = rxs;
+
+    if (isCompatibleOnly && selectedRxAnt && !isRxAntennaIntegrated) {
+      list = list.filter(
+        (r) =>
+          r.uuid === selectedRx?.uuid ||
+          r.id === selectedRx?.id ||
+          checkRxAntennaCompatibility(r, selectedRxAnt).compatible,
+      );
+    }
+
     if (!search.trim()) return list;
     const q = search.toLowerCase();
     return list.filter(
@@ -51,7 +62,7 @@ export function ReceiverStep() {
         r.manufacturer.toLowerCase().includes(q) ||
         r.protocol?.toLowerCase().includes(q),
     );
-  }, [rxs, search]);
+  }, [rxs, search, isCompatibleOnly, selectedRxAnt, isRxAntennaIntegrated, selectedRx]);
 
   const isUsingIntegrated = useIntegratedRx && !!integratedRx;
 
@@ -199,6 +210,11 @@ export function ReceiverStep() {
           {filteredRxs.map((r: Receiver) => {
             const isSelected =
               !isUsingIntegrated && (selectedRx?.uuid === r.uuid || selectedRx?.id === r.id);
+            const compat =
+              selectedRxAnt && !isRxAntennaIntegrated
+                ? checkRxAntennaCompatibility(r, selectedRxAnt)
+                : { compatible: true };
+            const isIncompatible = !compat.compatible;
 
             return (
               <ProductHoverCard
@@ -211,8 +227,12 @@ export function ReceiverStep() {
                 id={isSelected ? "selected-rx-item" : undefined}
                 className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                   isSelected
-                    ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                    ? isIncompatible
+                      ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                      : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                    : isIncompatible
+                      ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
+                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                 }`}
               >
                 <div
@@ -228,6 +248,15 @@ export function ReceiverStep() {
                     <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                       {r.name}
                     </span>
+                    {isIncompatible && (
+                      <span
+                        title={compat.reason}
+                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                      >
+                        <AlertCircle size={10} />
+                        <span>Incompatible</span>
+                      </span>
+                    )}
                     {r.protocol && (
                       <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 shrink-0">
                         {r.protocol}

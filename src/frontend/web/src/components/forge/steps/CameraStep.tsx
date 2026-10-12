@@ -1,6 +1,6 @@
 import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, EyeOff, Check } from "lucide-react";
-import { useForge } from "../ForgeContext";
+import { useForge, isCameraMountCompatible } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
@@ -39,13 +39,29 @@ export function CameraStep() {
   const isCompatibleOnly = compatibleOnlyMap.cameras ?? true;
   const isOmitted = noneSelections.camera;
 
+  const checkCameraCompatibility = (c: Camera) => {
+    // Camera mount interface vs frame
+    if (selectedFrame?.cameraMountInterfaces?.length && c.cameraMountInterface) {
+      if (!isCameraMountCompatible(c.cameraMountInterface, selectedFrame.cameraMountInterfaces)) {
+        return {
+          compatible: false,
+          reason: `Camera mount interface (${c.cameraMountInterface}) is not supported by frame camera mounts (${selectedFrame.cameraMountInterfaces.join(", ")}).`,
+        };
+      }
+    }
+
+    return { compatible: true };
+  };
+
   const filteredCams = useMemo(() => {
     let list = cams;
 
-    if (isCompatibleOnly && selectedFrame?.cameraMountInterfaces?.length) {
-      const allowed = new Set(selectedFrame.cameraMountInterfaces);
-      list = list.filter((c) =>
-        c.cameraMountInterface ? allowed.has(c.cameraMountInterface) : true,
+    if (isCompatibleOnly) {
+      list = list.filter(
+        (c) =>
+          c.uuid === selectedCam?.uuid ||
+          c.id === selectedCam?.id ||
+          checkCameraCompatibility(c).compatible,
       );
     }
 
@@ -58,7 +74,7 @@ export function CameraStep() {
         c.protocol?.toLowerCase().includes(q) ||
         c.cameraMountInterface?.toLowerCase().includes(q),
     );
-  }, [cams, search, isCompatibleOnly, selectedFrame]);
+  }, [cams, search, isCompatibleOnly, selectedFrame, selectedCam]);
 
   return (
     <div className="space-y-4">
@@ -189,6 +205,8 @@ export function CameraStep() {
           {filteredCams.map((c: Camera) => {
             const isSelected =
               !isOmitted && (selectedCam?.uuid === c.uuid || selectedCam?.id === c.id);
+            const compat = checkCameraCompatibility(c);
+            const isIncompatible = !compat.compatible;
 
             return (
               <ProductHoverCard
@@ -201,8 +219,12 @@ export function CameraStep() {
                 id={isSelected ? "selected-cam-item" : undefined}
                 className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                   isSelected
-                    ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                    ? isIncompatible
+                      ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                      : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                    : isIncompatible
+                      ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
+                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                 }`}
               >
                 <div
@@ -218,6 +240,15 @@ export function CameraStep() {
                     <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                       {c.name}
                     </span>
+                    {isIncompatible && (
+                      <span
+                        title={compat.reason}
+                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                      >
+                        <AlertCircle size={10} />
+                        <span>Incompatible</span>
+                      </span>
+                    )}
                     {c.cameraMountInterface && (
                       <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
                         {c.cameraMountInterface}

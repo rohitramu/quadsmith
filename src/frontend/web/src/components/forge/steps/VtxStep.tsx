@@ -10,7 +10,7 @@ import {
   Check,
   Lock,
 } from "lucide-react";
-import { useForge } from "../ForgeContext";
+import { useForge, checkVtxAntennaCompatibility, isMountPatternCompatible } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
@@ -26,6 +26,9 @@ export function VtxStep() {
     setUseIntegratedVtx,
     integratedVtx,
     fcHasIntegratedVtx,
+    selectedFrame,
+    selectedVtxAnt,
+    antennas,
     isVtxAntennaIntegrated,
     noneSelections,
     setNoneSelections,
@@ -62,22 +65,60 @@ export function VtxStep() {
     return !proto.includes("analog");
   }, [selectedCam]);
 
+  const checkVtxCompatibility = (v: VideoTransmitter) => {
+    // Protocol matching with selected camera
+    if (selectedCam?.protocol && !noneSelections.camera && v.protocol) {
+      const camProto = selectedCam.protocol.toLowerCase();
+      const vProto = v.protocol.toLowerCase();
+      let match = false;
+      if (camProto.includes("analog")) match = vProto.includes("analog");
+      else if (camProto.includes("dji")) match = vProto.includes("dji");
+      else if (camProto.includes("walksnail") || camProto.includes("avatar")) {
+        match = vProto.includes("walksnail") || vProto.includes("avatar");
+      } else if (camProto.includes("hdzero")) {
+        match = vProto.includes("hdzero");
+      } else {
+        match = vProto === camProto;
+      }
+      if (!match) {
+        return {
+          compatible: false,
+          reason: `VTX protocol (${v.protocol}) is incompatible with selected camera (${selectedCam.protocol}).`,
+        };
+      }
+    }
+
+    // Frame board mount pattern
+    if (selectedFrame?.boardMountPatterns?.length && v.mountPattern) {
+      if (!isMountPatternCompatible(v.mountPattern, selectedFrame.boardMountPatterns)) {
+        return {
+          compatible: false,
+          reason: `VTX mounting pattern (${v.mountPattern}) is not supported by frame board mounts (${selectedFrame.boardMountPatterns.join(", ")}).`,
+        };
+      }
+    }
+
+    // VTX Antenna compatibility
+    if (selectedVtxAnt && !noneSelections.vtxAntenna && !isVtxAntennaIntegrated) {
+      const check = checkVtxAntennaCompatibility(v, selectedVtxAnt, antennas);
+      if (!check.compatible) {
+        return check;
+      }
+    }
+
+    return { compatible: true };
+  };
+
   const filteredVtxs = useMemo(() => {
     let list = vtxs;
 
-    if (isCompatibleOnly && selectedCam?.protocol) {
-      const camProto = selectedCam.protocol.toLowerCase();
-      list = list.filter((v) => {
-        if (!v.protocol) return true;
-        const vProto = v.protocol.toLowerCase();
-        if (camProto.includes("analog")) return vProto.includes("analog");
-        if (camProto.includes("dji")) return vProto.includes("dji");
-        if (camProto.includes("walksnail") || camProto.includes("avatar")) {
-          return vProto.includes("walksnail") || vProto.includes("avatar");
-        }
-        if (camProto.includes("hdzero")) return vProto.includes("hdzero");
-        return vProto === camProto;
-      });
+    if (isCompatibleOnly) {
+      list = list.filter(
+        (v) =>
+          v.uuid === selectedVtx?.uuid ||
+          v.id === selectedVtx?.id ||
+          checkVtxCompatibility(v).compatible,
+      );
     }
 
     if (!search.trim()) return list;
@@ -88,7 +129,19 @@ export function VtxStep() {
         v.manufacturer.toLowerCase().includes(q) ||
         v.protocol?.toLowerCase().includes(q),
     );
-  }, [vtxs, search, isCompatibleOnly, selectedCam]);
+  }, [
+    vtxs,
+    search,
+    isCompatibleOnly,
+    selectedCam,
+    noneSelections.camera,
+    selectedFrame,
+    selectedVtxAnt,
+    noneSelections.vtxAntenna,
+    isVtxAntennaIntegrated,
+    antennas,
+    selectedVtx,
+  ]);
 
   return (
     <div className="space-y-4">
@@ -284,6 +337,8 @@ export function VtxStep() {
                   !isOmitted &&
                   !isUsingIntegrated &&
                   (selectedVtx?.uuid === v.uuid || selectedVtx?.id === v.id);
+                const compat = checkVtxCompatibility(v);
+                const isIncompatible = !compat.compatible;
 
                 return (
                   <ProductHoverCard
@@ -296,8 +351,12 @@ export function VtxStep() {
                     id={isSelected ? "selected-vtx-item" : undefined}
                     className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       isSelected
-                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        ? isIncompatible
+                          ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                          : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                        : isIncompatible
+                          ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
+                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                     }`}
                   >
                     <div
@@ -314,6 +373,15 @@ export function VtxStep() {
                         <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                           {v.name}
                         </span>
+                        {isIncompatible && (
+                          <span
+                            title={compat.reason}
+                            className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                          >
+                            <AlertCircle size={10} />
+                            <span>Incompatible</span>
+                          </span>
+                        )}
                         {v.protocol && (
                           <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 shrink-0">
                             {v.protocol}

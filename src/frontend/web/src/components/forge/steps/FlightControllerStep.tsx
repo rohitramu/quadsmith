@@ -12,7 +12,7 @@ import {
   Video,
   Check,
 } from "lucide-react";
-import { useForge } from "../ForgeContext";
+import { useForge, isMountPatternCompatible } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
@@ -25,6 +25,7 @@ export function FlightControllerStep() {
     selectedFc,
     setSelectedFc,
     selectedFrame,
+    activeBattery,
     handleNextStep,
     handlePrevStep,
     searchQueries,
@@ -53,13 +54,49 @@ export function FlightControllerStep() {
   const batteryConflict = stepBatteryConflicts[2];
   const isCompatibleOnly = compatibleOnlyMap.flight_controllers ?? true;
 
+  const checkFcCompatibility = (fc: FlightController) => {
+    if (selectedFrame?.boardMountPatterns?.length && fc.mountPattern) {
+      if (!isMountPatternCompatible(fc.mountPattern, selectedFrame.boardMountPatterns)) {
+        return {
+          compatible: false,
+          reason: `Mounting pattern (${fc.mountPattern}) is not supported by frame board mounts (${selectedFrame.boardMountPatterns.join(", ")}).`,
+        };
+      }
+    }
+    if (activeBattery) {
+      if (
+        activeBattery.minVoltage > 0 &&
+        fc.maxVoltage > 0 &&
+        activeBattery.minVoltage > fc.maxVoltage
+      ) {
+        return {
+          compatible: false,
+          reason: `Battery minimum voltage (${activeBattery.minVoltage.toFixed(1)}V) exceeds FC maximum voltage (${fc.maxVoltage.toFixed(1)}V).`,
+        };
+      }
+      if (
+        activeBattery.maxVoltage > 0 &&
+        fc.minVoltage > 0 &&
+        activeBattery.maxVoltage < fc.minVoltage
+      ) {
+        return {
+          compatible: false,
+          reason: `Battery maximum voltage (${activeBattery.maxVoltage.toFixed(1)}V) is below FC minimum voltage (${fc.minVoltage.toFixed(1)}V).`,
+        };
+      }
+    }
+    return { compatible: true };
+  };
+
   const filteredFcs = useMemo(() => {
     let list = fcs;
 
-    if (isCompatibleOnly && selectedFrame && selectedFrame.boardMountPatterns?.length) {
-      const allowedMounts = new Set(selectedFrame.boardMountPatterns);
-      list = list.filter((fc: FlightController) =>
-        fc.mountPattern ? allowedMounts.has(fc.mountPattern) : true,
+    if (isCompatibleOnly) {
+      list = list.filter(
+        (fc: FlightController) =>
+          fc.uuid === selectedFc?.uuid ||
+          fc.id === selectedFc?.id ||
+          checkFcCompatibility(fc).compatible,
       );
     }
 
@@ -71,7 +108,7 @@ export function FlightControllerStep() {
         fc.manufacturer.toLowerCase().includes(q) ||
         fc.processor?.toLowerCase().includes(q),
     );
-  }, [fcs, search, isCompatibleOnly, selectedFrame]);
+  }, [fcs, search, isCompatibleOnly, selectedFrame, activeBattery, selectedFc]);
 
   return (
     <div className="space-y-4">
@@ -210,6 +247,8 @@ export function FlightControllerStep() {
         <div className="overflow-y-auto max-h-80 space-y-2 pr-1.5 focus:outline-none">
           {filteredFcs.map((fc: FlightController) => {
             const isSelected = selectedFc?.uuid === fc.uuid || selectedFc?.id === fc.id;
+            const compat = checkFcCompatibility(fc);
+            const isIncompatible = !compat.compatible;
 
             return (
               <ProductHoverCard
@@ -222,8 +261,12 @@ export function FlightControllerStep() {
                 id={isSelected ? "selected-fc-item" : undefined}
                 className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                   isSelected
-                    ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                    ? isIncompatible
+                      ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                      : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                    : isIncompatible
+                      ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
+                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                 }`}
               >
                 <div
@@ -236,6 +279,15 @@ export function FlightControllerStep() {
                     <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                       {fc.name}
                     </span>
+                    {isIncompatible && (
+                      <span
+                        title={compat.reason}
+                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                      >
+                        <AlertCircle size={10} />
+                        <span>Incompatible</span>
+                      </span>
+                    )}
                     {fc.processor && (
                       <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border border-zinc-500/20 shrink-0">
                         {fc.processor}

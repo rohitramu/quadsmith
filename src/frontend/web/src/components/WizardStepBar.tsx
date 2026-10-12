@@ -1,4 +1,6 @@
-import { Check, AlertTriangle, Lock } from "lucide-react";
+import { AlertTriangle, Sparkles, ClipboardCheck } from "lucide-react";
+import { CollectionIcon } from "./CollectionIcon";
+import { getCollectionColor } from "../lib/collectionColors";
 
 export interface WizardStepBarProps {
   currentStep: number;
@@ -10,20 +12,37 @@ export interface WizardStepBarProps {
   onSelectStep: (step: number) => void;
 }
 
-export const FORGE_STEPS = [
-  { step: 0, title: "Template", subtitle: "Baseline" },
-  { step: 1, title: "Frame", subtitle: "Airframe" },
-  { step: 2, title: "Flight Controller", subtitle: "Flight Logic" },
-  { step: 3, title: "RX", subtitle: "Radio Link" },
-  { step: 4, title: "RX Antennas", subtitle: "RC Signal" },
-  { step: 5, title: "ESC", subtitle: "Speed Control" },
-  { step: 6, title: "Motors", subtitle: "Propulsion" },
-  { step: 7, title: "Propellers", subtitle: "Thrust" },
-  { step: 8, title: "Camera", subtitle: "FPV Video" },
-  { step: 9, title: "VTX", subtitle: "Transmitter" },
-  { step: 10, title: "VTX Antennas", subtitle: "Video Signal" },
-  { step: 11, title: "GPS", subtitle: "Navigation" },
-  { step: 12, title: "Review & Save", subtitle: "Finalize" },
+export interface ForgeStepDef {
+  step: number;
+  title: string;
+  subtitle: string;
+  collectionId: string | null;
+}
+
+export const FORGE_STEPS: ForgeStepDef[] = [
+  { step: 0, title: "Template", subtitle: "Baseline", collectionId: null },
+  { step: 1, title: "Frame", subtitle: "Airframe", collectionId: "frames" },
+  {
+    step: 2,
+    title: "Flight Controller",
+    subtitle: "Flight Logic",
+    collectionId: "flight_controllers",
+  },
+  { step: 3, title: "RX", subtitle: "Radio Link", collectionId: "receivers" },
+  { step: 4, title: "RX Antennas", subtitle: "RC Signal", collectionId: "antennas" },
+  {
+    step: 5,
+    title: "ESC",
+    subtitle: "Speed Control",
+    collectionId: "electronic_speed_controllers",
+  },
+  { step: 6, title: "Motors", subtitle: "Propulsion", collectionId: "motors" },
+  { step: 7, title: "Propellers", subtitle: "Thrust", collectionId: "propellers" },
+  { step: 8, title: "Camera", subtitle: "FPV Video", collectionId: "cameras" },
+  { step: 9, title: "VTX", subtitle: "Transmitter", collectionId: "video_transmitters" },
+  { step: 10, title: "VTX Antennas", subtitle: "Video Signal", collectionId: "antennas" },
+  { step: 11, title: "GPS", subtitle: "Navigation", collectionId: "gps_receivers" },
+  { step: 12, title: "Review & Save", subtitle: "Finalize", collectionId: null },
 ];
 
 export function WizardStepBar({
@@ -88,28 +107,37 @@ export function WizardStepBar({
             >
               <div className="flex items-center justify-center shrink-0">
                 {hasConflict ? (
-                  <AlertTriangle size={13} className="text-amber-500" />
+                  <AlertTriangle size={14} className="text-amber-500 shrink-0" />
                 ) : hasBatteryConflict ? (
-                  <AlertTriangle size={13} className="text-amber-500" />
-                ) : !isUnlocked ? (
-                  <Lock size={12} className="text-zinc-400 dark:text-zinc-500" />
-                ) : isComplete ? (
-                  <Check
-                    size={13}
-                    strokeWidth={2.5}
-                    className="text-emerald-600 dark:text-emerald-400"
+                  <AlertTriangle size={14} className="text-amber-500 shrink-0" />
+                ) : s.step === 0 ? (
+                  <Sparkles
+                    size={14}
+                    className={
+                      isComplete
+                        ? "text-blue-500 shrink-0"
+                        : "text-zinc-400 dark:text-zinc-500 shrink-0"
+                    }
                   />
-                ) : (
-                  <span
-                    className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                      isActive
-                        ? "bg-blue-600 text-white"
-                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
-                    }`}
-                  >
-                    {s.step}
-                  </span>
-                )}
+                ) : s.step === 12 ? (
+                  <ClipboardCheck
+                    size={14}
+                    className={
+                      isComplete
+                        ? "text-emerald-500 shrink-0"
+                        : "text-zinc-400 dark:text-zinc-500 shrink-0"
+                    }
+                  />
+                ) : s.collectionId ? (
+                  <CollectionIcon
+                    collectionId={s.collectionId}
+                    size={15}
+                    color={isComplete ? getCollectionColor(s.collectionId).hex : undefined}
+                    className={
+                      isComplete ? "shrink-0" : "text-zinc-400 dark:text-zinc-500 shrink-0"
+                    }
+                  />
+                ) : null}
               </div>
 
               <div className="flex flex-col text-left">

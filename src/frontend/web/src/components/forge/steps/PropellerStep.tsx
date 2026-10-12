@@ -37,22 +37,43 @@ export function PropellerStep() {
   const conflictMsg = stepConflicts[7];
   const isCompatibleOnly = compatibleOnlyMap.propellers ?? true;
 
+  const checkPropCompatibility = (p: Propeller) => {
+    if (
+      selectedFrame &&
+      selectedFrame.maxPropSizeMm > 0 &&
+      p.diameterMm &&
+      p.diameterMm > selectedFrame.maxPropSizeMm
+    ) {
+      return {
+        compatible: false,
+        reason: `Exceeds max frame prop size (${selectedFrame.maxPropSizeMm}mm)`,
+      };
+    }
+    if (selectedMotor?.propMountInterfaces?.length && p.propMountInterface) {
+      const pIface = p.propMountInterface.trim().toLowerCase();
+      const matched = selectedMotor.propMountInterfaces.some(
+        (mIface) => mIface.trim().toLowerCase() === pIface,
+      );
+      if (!matched) {
+        return {
+          compatible: false,
+          reason: `Prop mount (${p.propMountInterface}) incompatible with motor (${selectedMotor.propMountInterfaces.join(", ")})`,
+        };
+      }
+    }
+    return { compatible: true };
+  };
+
   const filteredProps = useMemo(() => {
     let list = props;
 
     if (isCompatibleOnly) {
-      if (selectedFrame && selectedFrame.maxPropSizeMm > 0) {
-        list = list.filter(
-          (p: Propeller) => !p.diameterMm || p.diameterMm <= selectedFrame.maxPropSizeMm,
-        );
-      }
-
-      if (selectedMotor?.propMountInterfaces?.length) {
-        const allowedPropMounts = new Set(selectedMotor.propMountInterfaces);
-        list = list.filter(
-          (p: Propeller) => !p.propMountInterface || allowedPropMounts.has(p.propMountInterface),
-        );
-      }
+      list = list.filter(
+        (p: Propeller) =>
+          p.uuid === selectedProp?.uuid ||
+          p.id === selectedProp?.id ||
+          checkPropCompatibility(p).compatible,
+      );
     }
 
     if (!search.trim()) return list;
@@ -64,7 +85,7 @@ export function PropellerStep() {
         p.propMountInterface?.toLowerCase().includes(q) ||
         `${p.diameterMm}`.includes(q),
     );
-  }, [props, search, isCompatibleOnly, selectedFrame, selectedMotor]);
+  }, [props, search, isCompatibleOnly, selectedFrame, selectedMotor, selectedProp]);
 
   return (
     <div className="space-y-4">
@@ -160,12 +181,8 @@ export function PropellerStep() {
         <div className="overflow-y-auto max-h-80 space-y-2 pr-1.5 focus:outline-none">
           {filteredProps.map((p: Propeller) => {
             const isSelected = selectedProp?.uuid === p.uuid || selectedProp?.id === p.id;
-            const isIncompatible = Boolean(
-              selectedFrame &&
-              selectedFrame.maxPropSizeMm > 0 &&
-              p.diameterMm &&
-              p.diameterMm > selectedFrame.maxPropSizeMm,
-            );
+            const compat = checkPropCompatibility(p);
+            const isIncompatible = !compat.compatible;
 
             return (
               <ProductHoverCard
@@ -178,7 +195,9 @@ export function PropellerStep() {
                 id={isSelected ? "selected-prop-item" : undefined}
                 className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                   isSelected
-                    ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                    ? isIncompatible
+                      ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                      : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
                     : isIncompatible
                       ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
                       : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
@@ -194,14 +213,18 @@ export function PropellerStep() {
                     <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                       {p.name}
                     </span>
+                    {isIncompatible && (
+                      <span
+                        title={compat.reason}
+                        className="text-[10px] px-2 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                      >
+                        <AlertCircle size={10} />
+                        <span>{compat.reason}</span>
+                      </span>
+                    )}
                     {p.diameterMm && (
                       <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
                         {p.diameterMm}mm ({(p.diameterMm / 25.4).toFixed(1)}")
-                      </span>
-                    )}
-                    {isIncompatible && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
-                        Incompatible (Exceeds {selectedFrame?.maxPropSizeMm}mm)
                       </span>
                     )}
                     {p.pitchMm && (

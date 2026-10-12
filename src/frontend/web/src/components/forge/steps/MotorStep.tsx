@@ -1,6 +1,6 @@
 import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, AlertTriangle, Check } from "lucide-react";
-import { useForge } from "../ForgeContext";
+import { useForge, isMountPatternCompatible } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
@@ -18,6 +18,7 @@ export function MotorStep() {
     selectedEsc,
     useIntegratedEsc,
     integratedEsc,
+    activeBattery,
     handleNextStep,
     handlePrevStep,
     searchQueries,
@@ -44,33 +45,97 @@ export function MotorStep() {
   const isCompatibleOnly = compatibleOnlyMap.motors ?? true;
   const activeEsc = useIntegratedEsc ? integratedEsc : selectedEsc;
 
+  const checkMotorCompatibility = (m: Motor) => {
+    // Motor mount pattern match against frame
+    if (selectedFrame?.motorMountPatterns?.length && m.mountPattern) {
+      if (!isMountPatternCompatible(m.mountPattern, selectedFrame.motorMountPatterns)) {
+        return {
+          compatible: false,
+          reason: `Mounting pattern (${m.mountPattern}) is not supported by frame motor mounts (${selectedFrame.motorMountPatterns.join(", ")}).`,
+        };
+      }
+    }
+
+    // ESC Current rating
+    if (activeEsc?.motorCurrentMaxA) {
+      const escLimit = (activeEsc.motorCurrentBurstA || activeEsc.motorCurrentMaxA) * 1.15;
+      if (m.maxCurrentA && m.maxCurrentA > escLimit) {
+        return {
+          compatible: false,
+          reason: `Motor max current (${m.maxCurrentA}A) exceeds ESC rated current limit (${escLimit.toFixed(0)}A).`,
+        };
+      }
+    }
+
+    // ESC Voltage limits
+    if (activeEsc) {
+      if (activeEsc.maxVoltage > 0 && m.minVoltage > 0 && m.minVoltage > activeEsc.maxVoltage) {
+        return {
+          compatible: false,
+          reason: `Motor min voltage (${m.minVoltage.toFixed(1)}V) exceeds ESC max voltage (${activeEsc.maxVoltage.toFixed(1)}V).`,
+        };
+      }
+      if (activeEsc.minVoltage > 0 && m.maxVoltage > 0 && m.maxVoltage < activeEsc.minVoltage) {
+        return {
+          compatible: false,
+          reason: `Motor max voltage (${m.maxVoltage.toFixed(1)}V) is below ESC min voltage (${activeEsc.minVoltage.toFixed(1)}V).`,
+        };
+      }
+    }
+
+    // FC Voltage limits
+    if (selectedFc) {
+      if (selectedFc.minVoltage > 0 && m.maxVoltage > 0 && m.maxVoltage < selectedFc.minVoltage) {
+        return {
+          compatible: false,
+          reason: `Motor max voltage (${m.maxVoltage.toFixed(1)}V) is below FC min voltage (${selectedFc.minVoltage.toFixed(1)}V).`,
+        };
+      }
+      if (selectedFc.maxVoltage > 0 && m.minVoltage > 0 && m.minVoltage > selectedFc.maxVoltage) {
+        return {
+          compatible: false,
+          reason: `Motor min voltage (${m.minVoltage.toFixed(1)}V) exceeds FC max voltage (${selectedFc.maxVoltage.toFixed(1)}V).`,
+        };
+      }
+    }
+
+    // Battery Voltage limits
+    if (activeBattery) {
+      if (
+        activeBattery.minVoltage > 0 &&
+        m.maxVoltage > 0 &&
+        m.maxVoltage < activeBattery.minVoltage
+      ) {
+        return {
+          compatible: false,
+          reason: `Motor max voltage (${m.maxVoltage.toFixed(1)}V) is below battery min voltage (${activeBattery.minVoltage.toFixed(1)}V).`,
+        };
+      }
+      if (
+        activeBattery.maxVoltage > 0 &&
+        m.minVoltage > 0 &&
+        m.minVoltage > activeBattery.maxVoltage
+      ) {
+        return {
+          compatible: false,
+          reason: `Motor min voltage (${m.minVoltage.toFixed(1)}V) exceeds battery max voltage (${activeBattery.maxVoltage.toFixed(1)}V).`,
+        };
+      }
+    }
+
+    return { compatible: true };
+  };
+
   const filteredMotors = useMemo(() => {
     let list = motors;
 
     if (isCompatibleOnly) {
-      // Motor mount match against frame
-      if (selectedFrame?.motorMountPatterns?.length) {
-        const allowedMounts = new Set(selectedFrame.motorMountPatterns);
-        list = list.filter((m: Motor) =>
-          m.mountPattern ? allowedMounts.has(m.mountPattern) : true,
-        );
-      }
-
-      // ESC Current compatibility
-      if (activeEsc?.motorCurrentMaxA) {
-        const escLimit = (activeEsc.motorCurrentBurstA || activeEsc.motorCurrentMaxA) * 1.15;
-        list = list.filter((m: Motor) => !m.maxCurrentA || m.maxCurrentA <= escLimit);
-      }
-
-      // Voltage compatibility with FC
-      if (selectedFc) {
-        if (selectedFc.minVoltage > 0) {
-          list = list.filter((m: Motor) => !m.maxVoltage || m.maxVoltage >= selectedFc.minVoltage);
-        }
-        if (selectedFc.maxVoltage > 0) {
-          list = list.filter((m: Motor) => !m.minVoltage || m.minVoltage <= selectedFc.maxVoltage);
-        }
-      }
+      list = list.filter(
+        (m: Motor) =>
+          m.uuid === selectedMotor?.uuid ||
+          m.id === selectedMotor?.id ||
+          checkMotorCompatibility(m).compatible,
+      );
     }
 
     if (!search.trim()) return list;
@@ -82,7 +147,16 @@ export function MotorStep() {
         `${m.statorDiameterMm || ""}${m.statorHeightMm || ""}`.includes(q) ||
         `${m.kv}`.includes(q),
     );
-  }, [motors, search, isCompatibleOnly, selectedFrame, activeEsc, selectedFc]);
+  }, [
+    motors,
+    search,
+    isCompatibleOnly,
+    selectedFrame,
+    activeEsc,
+    selectedFc,
+    activeBattery,
+    selectedMotor,
+  ]);
 
   return (
     <div className="space-y-4">
@@ -184,11 +258,13 @@ export function MotorStep() {
           </label>
         </div>
 
-        {/* Motors Catalog List */}
+        {/* Motor Catalog List */}
         <div className="overflow-y-auto max-h-80 space-y-2 pr-1.5 focus:outline-none">
           {filteredMotors.map((m: Motor) => {
             const isSelected = selectedMotor?.uuid === m.uuid || selectedMotor?.id === m.id;
             const stator = formatStatorSize(m.statorDiameterMm, m.statorHeightMm);
+            const compat = checkMotorCompatibility(m);
+            const isIncompatible = !compat.compatible;
 
             return (
               <ProductHoverCard
@@ -201,8 +277,12 @@ export function MotorStep() {
                 id={isSelected ? "selected-motor-item" : undefined}
                 className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                   isSelected
-                    ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                    ? isIncompatible
+                      ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                      : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                    : isIncompatible
+                      ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
+                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                 }`}
               >
                 <div
@@ -215,6 +295,15 @@ export function MotorStep() {
                     <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                       {m.name}
                     </span>
+                    {isIncompatible && (
+                      <span
+                        title={compat.reason}
+                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                      >
+                        <AlertCircle size={10} />
+                        <span>Incompatible</span>
+                      </span>
+                    )}
                     {stator && (
                       <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border border-zinc-500/20 shrink-0 font-mono">
                         {stator}

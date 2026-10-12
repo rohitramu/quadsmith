@@ -225,6 +225,115 @@ export function checkVtxAntennaCompatibility(
   return { compatible: true };
 }
 
+export function checkRxAntennaCompatibility(
+  rx?: Receiver | null,
+  ant?: Antenna | null,
+): { compatible: boolean; reason?: string } {
+  if (!rx || !ant) return { compatible: true };
+
+  // 1. Frequency check
+  if (rx.frequencyBandMhz >= 2400 && rx.frequencyBandMhz <= 2500) {
+    if (ant.frequencyBandMhz && (ant.frequencyBandMhz < 2400 || ant.frequencyBandMhz > 2500)) {
+      return {
+        compatible: false,
+        reason: `Receiver operates at 2.4 GHz (${rx.frequencyBandMhz} MHz), but selected antenna operates at ${ant.frequencyBandMhz} MHz.`,
+      };
+    }
+  } else if (rx.frequencyBandMhz > 0 && rx.frequencyBandMhz <= 1000) {
+    if (ant.frequencyBandMhz && ant.frequencyBandMhz > 1000) {
+      return {
+        compatible: false,
+        reason: `Receiver operates at sub-GHz (${rx.frequencyBandMhz} MHz), but selected antenna operates at ${ant.frequencyBandMhz} MHz.`,
+      };
+    }
+  }
+
+  // 2. Connector check (micro-coaxial U.FL / IPEX)
+  const connLower = (ant.connector || "").toLowerCase().trim();
+  if (
+    connLower &&
+    !connLower.includes("u.fl") &&
+    !connLower.includes("ipex") &&
+    !connLower.includes("integrated")
+  ) {
+    return {
+      compatible: false,
+      reason: `Receiver requires a U.FL / IPEX antenna connector, but selected antenna has a ${ant.connector} connector.`,
+    };
+  }
+
+  return { compatible: true };
+}
+
+export function normalizeMountTokens(pattern?: string): string[] {
+  if (!pattern) return [];
+  const parts = pattern.split(/[/,;|]/);
+  const tokens: string[] = [];
+  for (const part of parts) {
+    const cleaned = part
+      .toLowerCase()
+      .replace(/mm\b/g, "")
+      .replace(/φ|ø/g, "")
+      .replace(/\s+/g, "")
+      .trim();
+    if (cleaned) {
+      tokens.push(cleaned);
+    }
+  }
+  return tokens;
+}
+
+export function isMountPatternCompatible(compMount?: string, frameMounts?: string[]): boolean {
+  if (!compMount || !frameMounts || frameMounts.length === 0) return true;
+  const compTokens = normalizeMountTokens(compMount);
+  if (compTokens.length === 0) return true;
+
+  const frameTokens = frameMounts.flatMap((fm) => normalizeMountTokens(fm));
+  return compTokens.some((ct) => frameTokens.includes(ct));
+}
+
+export function isCameraMountCompatible(
+  camInterface?: string,
+  frameInterfaces?: string[],
+): boolean {
+  if (!camInterface || !frameInterfaces || frameInterfaces.length === 0) return true;
+  const camLower = camInterface.trim().toLowerCase();
+  for (const fi of frameInterfaces) {
+    const fiLower = fi.trim().toLowerCase();
+    if (camLower === fiLower) return true;
+
+    // 14mm / nano
+    if (
+      (camLower.includes("14") || camLower.includes("nano")) &&
+      (fiLower.includes("14") || fiLower.includes("nano"))
+    ) {
+      return true;
+    }
+    // 19mm / micro
+    if (
+      (camLower.includes("19") || camLower.includes("micro")) &&
+      (fiLower.includes("19") || fiLower.includes("micro"))
+    ) {
+      return true;
+    }
+    // 20mm / o3
+    if (
+      (camLower.includes("20") || camLower.includes("o3")) &&
+      (fiLower.includes("20") || fiLower.includes("o3"))
+    ) {
+      return true;
+    }
+    // 28mm / full / standard
+    if (
+      (camLower.includes("28") || camLower.includes("full") || camLower.includes("standard")) &&
+      (fiLower.includes("28") || fiLower.includes("full") || fiLower.includes("standard"))
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export function formatFrequencyBand(mhz?: number): string {
   if (!mhz) return "2.4 GHz";
   if (mhz >= 1000) {

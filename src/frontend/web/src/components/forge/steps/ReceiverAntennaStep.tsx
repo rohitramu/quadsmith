@@ -9,7 +9,7 @@ import {
   Sparkles,
   Check,
 } from "lucide-react";
-import { useForge, isRxAntenna } from "../ForgeContext";
+import { useForge, isRxAntenna, checkRxAntennaCompatibility } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
@@ -51,12 +51,14 @@ export function ReceiverAntennaStep() {
   const isCompatibleOnly = compatibleOnlyMap.rx_antennas ?? true;
 
   const filteredAntennas = useMemo(() => {
-    let list = antennas.filter((a) => isRxAntenna(a));
+    let list = antennas.filter((a) => !a.isInternalOnly);
 
-    if (activeRx && activeRx.frequencyBandMhz) {
+    if (isCompatibleOnly) {
       list = list.filter(
         (a) =>
-          !a.frequencyBandMhz || Math.abs(a.frequencyBandMhz - activeRx.frequencyBandMhz) < 300,
+          a.uuid === selectedRxAnt?.uuid ||
+          a.id === selectedRxAnt?.id ||
+          (isRxAntenna(a) && checkRxAntennaCompatibility(activeRx, a).compatible),
       );
     }
 
@@ -68,7 +70,7 @@ export function ReceiverAntennaStep() {
         a.manufacturer.toLowerCase().includes(q) ||
         a.connector?.toLowerCase().includes(q),
     );
-  }, [antennas, activeRx, search]);
+  }, [antennas, activeRx, search, isCompatibleOnly, selectedRxAnt]);
 
   return (
     <div className="space-y-4">
@@ -191,6 +193,8 @@ export function ReceiverAntennaStep() {
             <div className="overflow-y-auto max-h-80 space-y-2 pr-1.5 focus:outline-none">
               {filteredAntennas.map((ant: Antenna) => {
                 const isSelected = selectedRxAnt?.uuid === ant.uuid || selectedRxAnt?.id === ant.id;
+                const compat = checkRxAntennaCompatibility(activeRx, ant);
+                const isIncompatible = !compat.compatible;
 
                 return (
                   <ProductHoverCard
@@ -203,8 +207,12 @@ export function ReceiverAntennaStep() {
                     id={isSelected ? "selected-rx-ant-item" : undefined}
                     className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       isSelected
-                        ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
-                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                        ? isIncompatible
+                          ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                          : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                        : isIncompatible
+                          ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
+                          : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
                     }`}
                   >
                     <div
@@ -217,6 +225,15 @@ export function ReceiverAntennaStep() {
                         <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
                           {ant.name}
                         </span>
+                        {isIncompatible && (
+                          <span
+                            title={compat.reason}
+                            className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                          >
+                            <AlertCircle size={10} />
+                            <span>Incompatible</span>
+                          </span>
+                        )}
                         {ant.connector && (
                           <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border border-zinc-500/20 shrink-0">
                             {ant.connector}
