@@ -374,15 +374,20 @@ describe("BuildWizardPage Component", () => {
     // Select Frame (Master 5 V2 - 130mm max prop size)
     await user.click(await screen.findByText("Master 5 V2"));
 
-    // Check that the dynamic CEL filter banner is rendered with copy filter button
-    expect(await screen.findByText("Compatibility Filter:")).toBeInTheDocument();
-    const copyFilterBtn = screen.getByRole("button", { name: "Copy filter" });
-    expect(copyFilterBtn).toBeInTheDocument();
-    await user.hover(copyFilterBtn);
-    expect(await screen.findByRole("tooltip")).toHaveTextContent("diameter_mm <= 130.0");
+    // Check that Compatible only has dotted underline and shows hover card with copy button on hover
+    const compatibleLabel = await screen.findByText(/compatible only/i);
+    expect(compatibleLabel).toBeInTheDocument();
+    expect(compatibleLabel.className).toContain("decoration-dotted");
+
+    // Hovering over "Compatible only" reveals the hover card
+    await user.hover(compatibleLabel);
+    const hoverCard = await screen.findByTestId("compatibility-hover-card");
+    expect(hoverCard).toBeInTheDocument();
+    expect(hoverCard.querySelector("pre")).toHaveTextContent("diameter_mm <= 130.0");
+    expect(screen.getByTestId("copy-filter-button")).toBeInTheDocument();
 
     // Toggle off Compatible Only
-    const compatibleCheckbox = screen.getByLabelText("Compatible Only");
+    const compatibleCheckbox = screen.getByRole("checkbox", { name: /compatible only/i });
     expect(compatibleCheckbox).toBeChecked();
     await user.click(compatibleCheckbox);
     expect(compatibleCheckbox).not.toBeChecked();
@@ -611,8 +616,8 @@ describe("BuildWizardPage Component", () => {
     // Select Frame (Master 5 V2 - maxPropSizeMm: 130)
     await user.click(await screen.findByText("Master 5 V2"));
 
-    // By default, "Compatible Only" is checked in 1C Propellers
-    const compatCheckbox = (await screen.findByLabelText("Compatible Only")) as HTMLInputElement;
+    // By default, "Compatible only" is checked in 1C Propellers
+    const compatCheckbox = (await screen.findByLabelText(/compatible only/i)) as HTMLInputElement;
     expect(compatCheckbox).toBeInTheDocument();
     expect(compatCheckbox.checked).toBe(true);
 

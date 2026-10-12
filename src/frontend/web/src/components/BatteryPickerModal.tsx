@@ -7,7 +7,7 @@ import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
 import { CollectionIcon } from "./CollectionIcon";
 import { buildBatteryCelFilter } from "../lib/batteryFilter";
-import { CopyFilterButton } from "./CopyFilterButton";
+import { CompatibilityHoverCard } from "./CompatibilityHoverCard";
 
 export interface BatteryPickerModalProps {
   isOpen: boolean;
@@ -238,16 +238,6 @@ export function BatteryPickerModal({
               ) : null}
             </div>
           )}
-          {compatibleOnly && batteryFilter && (
-            <div className="mt-2 text-xs px-2.5 py-1.5 rounded-lg border bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-between gap-2">
-              <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 shrink-0">
-                  Compatibility Filter:
-                </span>
-                <CopyFilterButton filter={batteryFilter} />
-              </div>
-            </div>
-          )}
         </div>
 
         <button
@@ -284,7 +274,7 @@ export function BatteryPickerModal({
               onChange={(e) => setCompatibleOnly(e.target.checked)}
               className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
             />
-            <span>Compatible only</span>
+            <CompatibilityHoverCard filter={batteryFilter}>Compatible only</CompatibilityHoverCard>
           </label>
 
           <div className="flex items-center gap-1.5">

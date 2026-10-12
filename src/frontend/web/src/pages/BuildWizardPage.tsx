@@ -75,7 +75,7 @@ import { AntennaService, type Antenna } from "../gen/quadsmith/antenna_pb";
 import { GpsReceiverService, type GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
 import { getCollectionColor } from "../lib/collectionColors";
-import { CopyFilterButton } from "../components/CopyFilterButton";
+import { CompatibilityHoverCard } from "../components/CompatibilityHoverCard";
 
 export function getVtxAntennaCount(vtx: VideoTransmitter | null | undefined): number {
   if (!vtx) return 1;
@@ -2044,24 +2044,12 @@ export function BuildWizardPage() {
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {motorCelFilter && (
                   <div
-                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
                       isCompatibleOnly("motors")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <span
-                        className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          isCompatibleOnly("motors")
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-zinc-500 dark:text-zinc-400"
-                        }`}
-                      >
-                        Compatibility Filter:
-                      </span>
-                      <CopyFilterButton filter={motorCelFilter} />
-                    </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
@@ -2069,7 +2057,9 @@ export function BuildWizardPage() {
                         onChange={() => toggleCompatibleOnly("motors")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
-                      <span>Compatible only</span>
+                      <CompatibilityHoverCard filter={motorCelFilter}>
+                        Compatible only
+                      </CompatibilityHoverCard>
                     </label>
                   </div>
                 )}
@@ -2176,24 +2166,12 @@ export function BuildWizardPage() {
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {propCelFilter && (
                   <div
-                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
                       isCompatibleOnly("propellers")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <span
-                        className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          isCompatibleOnly("propellers")
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-zinc-500 dark:text-zinc-400"
-                        }`}
-                      >
-                        Compatibility Filter:
-                      </span>
-                      <CopyFilterButton filter={propCelFilter} />
-                    </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
@@ -2201,7 +2179,9 @@ export function BuildWizardPage() {
                         onChange={() => toggleCompatibleOnly("propellers")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
-                      <span>Compatible Only</span>
+                      <CompatibilityHoverCard filter={propCelFilter}>
+                        Compatible only
+                      </CompatibilityHoverCard>
                     </label>
                   </div>
                 )}
@@ -2329,7 +2309,7 @@ export function BuildWizardPage() {
                           checked={isCompatibleOnly("flight_controllers")}
                           onChange={() => toggleCompatibleOnly("flight_controllers")}
                         />
-                        <span>Compatible Only</span>
+                        <span>Compatible only</span>
                       </label>
                     )}
                 </div>
@@ -2337,24 +2317,12 @@ export function BuildWizardPage() {
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {fcCelFilter && (
                   <div
-                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
                       isCompatibleOnly("flight_controllers")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <span
-                        className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          isCompatibleOnly("flight_controllers")
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-zinc-500 dark:text-zinc-400"
-                        }`}
-                      >
-                        Compatibility Filter:
-                      </span>
-                      <CopyFilterButton filter={fcCelFilter} />
-                    </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
@@ -2362,7 +2330,9 @@ export function BuildWizardPage() {
                         onChange={() => toggleCompatibleOnly("flight_controllers")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
-                      <span>Compatible Only</span>
+                      <CompatibilityHoverCard filter={fcCelFilter}>
+                        Compatible only
+                      </CompatibilityHoverCard>
                     </label>
                   </div>
                 )}
@@ -2515,24 +2485,12 @@ export function BuildWizardPage() {
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {escCelFilter && (
                   <div
-                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
                       isCompatibleOnly("electronic_speed_controllers")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <span
-                        className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          isCompatibleOnly("electronic_speed_controllers")
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-zinc-500 dark:text-zinc-400"
-                        }`}
-                      >
-                        Compatibility Filter:
-                      </span>
-                      <CopyFilterButton filter={escCelFilter} />
-                    </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
@@ -2540,7 +2498,9 @@ export function BuildWizardPage() {
                         onChange={() => toggleCompatibleOnly("electronic_speed_controllers")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
-                      <span>Compatible Only</span>
+                      <CompatibilityHoverCard filter={escCelFilter}>
+                        Compatible only
+                      </CompatibilityHoverCard>
                     </label>
                   </div>
                 )}
@@ -3212,24 +3172,12 @@ export function BuildWizardPage() {
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {vtxCelFilter && (
                   <div
-                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
                       isCompatibleOnly("video_transmitters")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <span
-                        className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          isCompatibleOnly("video_transmitters")
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-zinc-500 dark:text-zinc-400"
-                        }`}
-                      >
-                        Compatibility Filter:
-                      </span>
-                      <CopyFilterButton filter={vtxCelFilter} />
-                    </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
@@ -3237,7 +3185,9 @@ export function BuildWizardPage() {
                         onChange={() => toggleCompatibleOnly("video_transmitters")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
-                      <span>Compatible Only</span>
+                      <CompatibilityHoverCard filter={vtxCelFilter}>
+                        Compatible only
+                      </CompatibilityHoverCard>
                     </label>
                   </div>
                 )}
@@ -3443,24 +3393,12 @@ export function BuildWizardPage() {
                 {/* Dynamic WASM CEL Compatibility Filter Banner */}
                 {camCelFilter && (
                   <div
-                    className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
+                    className={`flex items-center justify-end text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
                       isCompatibleOnly("cameras")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
                   >
-                    <div className="flex items-center gap-1.5">
-                      <span
-                        className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          isCompatibleOnly("cameras")
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-zinc-500 dark:text-zinc-400"
-                        }`}
-                      >
-                        Compatibility Filter:
-                      </span>
-                      <CopyFilterButton filter={camCelFilter} />
-                    </div>
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
@@ -3468,7 +3406,9 @@ export function BuildWizardPage() {
                         onChange={() => toggleCompatibleOnly("cameras")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
-                      <span>Compatible Only</span>
+                      <CompatibilityHoverCard filter={camCelFilter}>
+                        Compatible only
+                      </CompatibilityHoverCard>
                     </label>
                   </div>
                 )}
@@ -3903,16 +3843,6 @@ export function BuildWizardPage() {
                 batteries={batteries}
                 ariaLabel="Select test battery"
               />
-              {batteryCelFilter ? (
-                <div className="mt-1.5 flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400">
-                  <div className="flex items-center gap-1.5">
-                    <span className="font-semibold text-[10px] uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                      Compatibility Filter:
-                    </span>
-                    <CopyFilterButton filter={batteryCelFilter} />
-                  </div>
-                </div>
-              ) : null}
             </div>
 
             {/* Runtime Payload Textbox with +/- and Quick Presets */}
