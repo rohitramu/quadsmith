@@ -78,7 +78,7 @@ export function SocialTabs({
 
   const reviewCount = summary?.reviewSummary?.totalReviews ?? 0;
   const questionCount = summary?.questionCount ?? 0;
-  const collections = userColsRes?.collections || [];
+  const collections = (userColsRes?.collections || []).filter((c) => !c.isSystemCollection);
   const isArchived = summary?.isArchived || false;
 
   return (
@@ -224,14 +224,14 @@ export function SocialTabs({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-xs">
-                        {col.isDefaultLiked ? "❤️" : col.name.slice(0, 2).toUpperCase()}
+                        {col.isSystemCollection ? "❤️" : col.name.slice(0, 2).toUpperCase()}
                       </div>
                       <div>
                         <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                           {col.name}
                         </h4>
                         <p className="text-[10px] text-zinc-500">
-                          {col.isDefaultLiked ? "Default Likes" : `@${col.authorUsername}`}
+                          {col.isSystemCollection ? "Default Likes" : `@${col.authorUsername}`}
                         </p>
                       </div>
                     </div>

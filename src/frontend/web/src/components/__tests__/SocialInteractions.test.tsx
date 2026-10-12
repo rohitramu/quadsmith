@@ -70,25 +70,30 @@ describe("Social Interactions Components", () => {
       // Should display modal title
       expect(screen.getByRole("heading", { name: /save to collection/i })).toBeInTheDocument();
 
-      // Should list user's collections
-      const likedBtn = await screen.findByRole("button", { name: /add.*to liked/i });
-      const cinewhoopBtn = screen.getByRole("button", {
+      // System collection "Liked" must NOT be displayed in Save to Collection modal
+      expect(screen.queryByRole("button", { name: /liked/i })).not.toBeInTheDocument();
+
+      // Should list user's custom collections
+      const cinewhoopBtn = await screen.findByRole("button", {
         name: /remove.*from cinewhoop favorites/i,
       });
+      const bandoBtn = screen.getByRole("button", {
+        name: /add.*to bando builds/i,
+      });
 
-      expect(likedBtn).toBeInTheDocument();
       expect(cinewhoopBtn).toBeInTheDocument();
+      expect(bandoBtn).toBeInTheDocument();
 
       // Cinewhoop Favorites already contains target: should have tick icon inside solid circle and Added badge
       expect(cinewhoopBtn.querySelector('[data-testid="tick-icon"]')).toBeInTheDocument();
       expect(screen.getByText("Added")).toBeInTheDocument();
 
-      // Liked does not yet contain target: should have plus icon
-      expect(likedBtn.querySelector('[data-testid="plus-icon"]')).toBeInTheDocument();
+      // Bando Builds does not yet contain target: should have plus icon
+      expect(bandoBtn.querySelector('[data-testid="plus-icon"]')).toBeInTheDocument();
 
-      // Click "Liked" to add build to Liked collection: plus icon changes to tick icon
-      await user.click(likedBtn);
-      expect(likedBtn.querySelector('[data-testid="tick-icon"]')).toBeInTheDocument();
+      // Click "Bando Builds" to add build to collection: plus icon changes to tick icon
+      await user.click(bandoBtn);
+      expect(bandoBtn.querySelector('[data-testid="tick-icon"]')).toBeInTheDocument();
 
       // Click "Cinewhoop Favorites" to remove build: tick icon changes to plus icon
       await user.click(cinewhoopBtn);
@@ -234,6 +239,7 @@ describe("Social Interactions Components", () => {
       const collectionsTab = screen.getByRole("button", { name: /collections/i });
       await user.click(collectionsTab);
       expect(await screen.findByText("Cinewhoop Favorites")).toBeInTheDocument();
+      expect(screen.queryByText("Liked")).not.toBeInTheDocument();
 
       // Verify reputation economy content card
       expect(screen.getByText(/Community Reputation Economy \(Karma Rules\)/i)).toBeInTheDocument();

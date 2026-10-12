@@ -560,7 +560,7 @@ export const mockCollectionLiked: Collection = create(CollectionSchema, {
   name: "Liked",
   description: "Default collection of liked builds and parts",
   isPublic: false,
-  isDefaultLiked: true,
+  isSystemCollection: true,
   createdAt: { seconds: 1716000000n, nanos: 0 },
   updatedAt: { seconds: 1716000000n, nanos: 0 },
   authorUsername: "fpv_pilot",
@@ -575,7 +575,7 @@ export const mockCollection1: Collection = create(CollectionSchema, {
   name: "Cinewhoop Favorites",
   description: "Curated parts for indoor sub-250g filming",
   isPublic: true,
-  isDefaultLiked: false,
+  isSystemCollection: false,
   createdAt: { seconds: 1716500000n, nanos: 0 },
   updatedAt: { seconds: 1716500000n, nanos: 0 },
   authorUsername: "fpv_pilot",
@@ -583,7 +583,22 @@ export const mockCollection1: Collection = create(CollectionSchema, {
   previewImages: [],
 });
 
-export const mockCollections = [mockCollectionLiked, mockCollection1];
+export const mockCollection2: Collection = create(CollectionSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000703",
+  id: "bando-builds",
+  userUuid: "018f0000-0000-7000-0000-000000000099",
+  name: "Bando Builds",
+  description: "Durable components for concrete bashing",
+  isPublic: false,
+  isSystemCollection: false,
+  createdAt: { seconds: 1716600000n, nanos: 0 },
+  updatedAt: { seconds: 1716600000n, nanos: 0 },
+  authorUsername: "fpv_pilot",
+  itemCount: 0,
+  previewImages: [],
+});
+
+export const mockCollections = [mockCollectionLiked, mockCollection1, mockCollection2];
 
 export const mockCollectionItem1: CollectionItem = create(CollectionItemSchema, {
   uuid: "018f0000-0000-7000-0000-000000000801",

@@ -357,7 +357,7 @@ export function UserCollectionsPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-2xl">
-                {singleCol.isDefaultLiked ? (
+                {singleCol.isSystemCollection ? (
                   <Heart size={28} className="fill-rose-500 text-rose-500" />
                 ) : (
                   <Bookmark size={28} />
@@ -370,7 +370,7 @@ export function UserCollectionsPage() {
                   </h1>
 
                   {/* Visibility control: interactive segmented toggle for owner, static badge for viewers */}
-                  {isOwner && !singleCol.isDefaultLiked ? (
+                  {isOwner && !singleCol.isSystemCollection ? (
                     <div
                       className="inline-flex items-center rounded-lg p-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
                       role="group"
@@ -429,7 +429,7 @@ export function UserCollectionsPage() {
               </div>
             </div>
 
-            {isOwner && !singleCol.isDefaultLiked && (
+            {isOwner && !singleCol.isSystemCollection && (
               <div className="flex items-center gap-2 self-start sm:self-auto">
                 <button
                   type="button"
@@ -678,18 +678,18 @@ export function UserCollectionsPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-xs">
-                      {col.isDefaultLiked ? "❤️" : <Bookmark size={15} />}
+                      {col.isSystemCollection ? "❤️" : <Bookmark size={15} />}
                     </div>
                     <div>
                       <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                         {col.name}
                       </h4>
                       <p className="text-[10px] text-zinc-400">
-                        {col.isDefaultLiked ? "System Collection" : `@${col.authorUsername}`}
+                        {col.isSystemCollection ? "System Collection" : `@${col.authorUsername}`}
                       </p>
                     </div>
                   </div>
-                  {isOwner && !col.isDefaultLiked ? (
+                  {isOwner && !col.isSystemCollection ? (
                     <div
                       className="inline-flex items-center rounded-lg p-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-[11px]"
                       role="group"
@@ -762,7 +762,7 @@ export function UserCollectionsPage() {
               <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-100 dark:border-zinc-800">
                 <span className="font-mono">{col.itemCount} items</span>
                 <div className="flex items-center gap-2">
-                  {isOwner && !col.isDefaultLiked && (
+                  {isOwner && !col.isSystemCollection && (
                     <button
                       type="button"
                       onClick={(e) => {

@@ -707,7 +707,7 @@ CREATE TABLE IF NOT EXISTS collections (
   name TEXT NOT NULL,
   description TEXT NOT NULL,
   is_public BOOLEAN DEFAULT false NOT NULL,
-  is_default_liked BOOLEAN DEFAULT false NOT NULL,
+  is_system_collection BOOLEAN DEFAULT false NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   author_username TEXT NOT NULL,
@@ -721,7 +721,7 @@ CREATE INDEX IF NOT EXISTS idx_collections_user_uuid ON collections (user_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_collections_is_public ON collections (is_public);
 
-CREATE INDEX IF NOT EXISTS idx_collections_is_default_liked ON collections (is_default_liked);
+CREATE INDEX IF NOT EXISTS idx_collections_is_system_collection ON collections (is_system_collection);
 
 CREATE TABLE IF NOT EXISTS collection_items (
   uuid UUID NOT NULL,

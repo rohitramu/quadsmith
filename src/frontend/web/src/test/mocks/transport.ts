@@ -1174,7 +1174,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           name: req.name,
           description: req.description,
           isPublic: req.isPublic,
-          isDefaultLiked: false,
+          isSystemCollection: false,
           authorUsername: mockUser.id,
           itemCount: 0,
           previewImages: [],

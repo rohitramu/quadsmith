@@ -1548,16 +1548,16 @@ func (x *UserReputation) GetUpdatedAt() *timestamppb.Timestamp {
 }
 
 type Collection struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id             string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	UserUuid       string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	Name           string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	Description    string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	IsPublic       bool                   `protobuf:"varint,6,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
-	IsDefaultLiked bool                   `protobuf:"varint,7,opt,name=is_default_liked,json=isDefaultLiked,proto3" json:"is_default_liked,omitempty"`
-	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Uuid               string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id                 string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	UserUuid           string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	Name               string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Description        string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	IsPublic           bool                   `protobuf:"varint,6,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
+	IsSystemCollection bool                   `protobuf:"varint,7,opt,name=is_system_collection,json=isSystemCollection,proto3" json:"is_system_collection,omitempty"`
+	CreatedAt          *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt          *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	// Resolved display fields
 	AuthorUsername string   `protobuf:"bytes,10,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
 	ItemCount      int32    `protobuf:"varint,11,opt,name=item_count,json=itemCount,proto3" json:"item_count,omitempty"`
@@ -1639,9 +1639,9 @@ func (x *Collection) GetIsPublic() bool {
 	return false
 }
 
-func (x *Collection) GetIsDefaultLiked() bool {
+func (x *Collection) GetIsSystemCollection() bool {
 	if x != nil {
-		return x.IsDefaultLiked
+		return x.IsSystemCollection
 	}
 	return false
 }
@@ -4462,7 +4462,7 @@ const file_social_proto_rawDesc = "" +
 	"\x05score\x18\x03 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x05score\x12F\n" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt:!\xc2\xf3\x18\x1d\n" +
-	"\x10user_reputations\x1a\tuser_uuid\"\xce\x04\n" +
+	"\x10user_reputations\x1a\tuser_uuid\"\xd6\x04\n" +
 	"\n" +
 	"Collection\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
@@ -4470,8 +4470,8 @@ const file_social_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12*\n" +
-	"\tis_public\x18\x06 \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\bisPublic\x127\n" +
-	"\x10is_default_liked\x18\a \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\x0eisDefaultLiked\x12F\n" +
+	"\tis_public\x18\x06 \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\bisPublic\x12?\n" +
+	"\x14is_system_collection\x18\a \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\x12isSystemCollection\x12F\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +

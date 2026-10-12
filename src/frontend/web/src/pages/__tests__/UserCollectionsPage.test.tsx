@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { UserCollectionsPage } from "../UserCollectionsPage";
 import { Route, Routes } from "react-router-dom";
@@ -22,6 +22,10 @@ describe("UserCollectionsPage", () => {
     expect(await screen.findByText(/Collections by @fpv_pilot/i)).toBeInTheDocument();
     expect(screen.getByText("Liked")).toBeInTheDocument();
     expect(screen.getByText("Cinewhoop Favorites")).toBeInTheDocument();
+
+    // Liked is a system collection: should have no visibility toggle group and no edit button
+    expect(screen.queryByRole("group", { name: /visibility for liked/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /edit liked/i })).not.toBeInTheDocument();
 
     // Create collection button is present for profile owner
     const newBtn = screen.getByRole("button", { name: /create collection/i });
@@ -58,8 +62,8 @@ describe("UserCollectionsPage", () => {
     const group = screen.getByRole("group", { name: /visibility for cinewhoop favorites/i });
     expect(group).toBeInTheDocument();
 
-    const publicBtn = screen.getByRole("button", { name: /^public$/i });
-    const privateBtn = screen.getByRole("button", { name: /^private$/i });
+    const publicBtn = within(group).getByRole("button", { name: /^public$/i });
+    const privateBtn = within(group).getByRole("button", { name: /^private$/i });
 
     expect(publicBtn).toHaveAttribute("aria-pressed", "true");
     expect(privateBtn).toHaveAttribute("aria-pressed", "false");
@@ -82,7 +86,7 @@ describe("UserCollectionsPage", () => {
     const group = screen.getByRole("group", { name: /collection visibility/i });
     expect(group).toBeInTheDocument();
 
-    const privateBtn = screen.getByRole("button", { name: /^private$/i });
+    const privateBtn = within(group).getByRole("button", { name: /^private$/i });
     await user.click(privateBtn);
 
     expect(privateBtn).toHaveAttribute("aria-pressed", "true");

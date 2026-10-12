@@ -74,7 +74,7 @@ export function SaveToCollectionModal({
 
   if (!isOpen) return null;
 
-  const collections = collectionsData?.collections || [];
+  const collections = (collectionsData?.collections || []).filter((c) => !c.isSystemCollection);
 
   async function handleToggleCollection(colId: string, currentlyInCollection: boolean) {
     setActionError(null);
@@ -243,12 +243,8 @@ export function SaveToCollectionModal({
                           )}
                         </div>
                         <div className="text-[11px] text-zinc-500">
-                          {col.isDefaultLiked
-                            ? "Default Likes"
-                            : col.isPublic
-                              ? "Public"
-                              : "Private"}{" "}
-                          • {Math.max(0, displayItemCount)} items
+                          {col.isPublic ? "Public" : "Private"} • {Math.max(0, displayItemCount)}{" "}
+                          items
                         </div>
                       </div>
                     </div>

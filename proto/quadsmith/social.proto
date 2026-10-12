@@ -350,7 +350,7 @@ message Collection {
     default_value: "false"
     create_index: true
   }];
-  bool is_default_liked = 7 [(quadsmith.sql.column) = {
+  bool is_system_collection = 7 [(quadsmith.sql.column) = {
     default_value: "false"
     create_index: true
   }];

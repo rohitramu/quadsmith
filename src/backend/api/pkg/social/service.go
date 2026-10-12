@@ -1661,7 +1661,7 @@ func (s *SocialService) DeleteAnswerComment(ctx context.Context, req *connect.Re
 
 func (s *SocialService) getOrCreateDefaultLikedCollection(ctx context.Context, userUUID string) (string, error) {
 	var colUUID string
-	err := s.db.QueryRow(ctx, "SELECT uuid FROM collections WHERE user_uuid = $1 AND is_default_liked = true LIMIT 1", userUUID).Scan(&colUUID)
+	err := s.db.QueryRow(ctx, "SELECT uuid FROM collections WHERE user_uuid = $1 AND is_system_collection = true AND name = 'Liked' LIMIT 1", userUUID).Scan(&colUUID)
 	if err == nil && colUUID != "" {
 		return colUUID, nil
 	}
@@ -1670,7 +1670,7 @@ func (s *SocialService) getOrCreateDefaultLikedCollection(ctx context.Context, u
 	colID := "liked-" + colUUID[:8]
 	username, _ := getUserDisplay(ctx, s.db, userUUID)
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO collections (uuid, id, user_uuid, name, description, is_public, is_default_liked, author_username, item_count, created_at, updated_at)
+		INSERT INTO collections (uuid, id, user_uuid, name, description, is_public, is_system_collection, author_username, item_count, created_at, updated_at)
 		VALUES ($1, $2, $3, 'Liked', 'Default collection of liked builds and components', true, true, $4, 0, NOW(), NOW())
 		ON CONFLICT (id) DO NOTHING
 	`, colUUID, colID, userUUID, username)
@@ -1727,7 +1727,7 @@ func (s *SocialService) ToggleLikeItem(ctx context.Context, req *connect.Request
 		SELECT count(*)
 		FROM collection_items ci
 		JOIN collections c ON c.uuid = ci.collection_uuid
-		WHERE c.is_default_liked = true AND ci.entity_uuid = $1
+		WHERE c.is_system_collection = true AND c.name = 'Liked' AND ci.entity_uuid = $1
 	`, entityUUID).Scan(&likeCount)
 
 	return connect.NewResponse(&pb.ToggleLikeItemResponse{
@@ -1760,7 +1760,7 @@ func (s *SocialService) CreateCollection(ctx context.Context, req *connect.Reque
 	username, _ := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO collections (uuid, id, user_uuid, name, description, is_public, is_default_liked, author_username, item_count, created_at, updated_at)
+		INSERT INTO collections (uuid, id, user_uuid, name, description, is_public, is_system_collection, author_username, item_count, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, false, $7, 0, NOW(), NOW())
 	`, colUUID, colID, u.UserUUID, name, req.Msg.GetDescription(), req.Msg.GetIsPublic(), username)
 	if err != nil {
@@ -1768,17 +1768,17 @@ func (s *SocialService) CreateCollection(ctx context.Context, req *connect.Reque
 	}
 
 	return connect.NewResponse(&pb.Collection{
-		Uuid:           colUUID,
-		Id:             colID,
-		UserUuid:       u.UserUUID,
-		AuthorUsername: username,
-		Name:           name,
-		Description:    req.Msg.GetDescription(),
-		IsPublic:       req.Msg.GetIsPublic(),
-		IsDefaultLiked: false,
-		ItemCount:      0,
-		CreatedAt:      timestamppb.Now(),
-		UpdatedAt:      timestamppb.Now(),
+		Uuid:               colUUID,
+		Id:                 colID,
+		UserUuid:           u.UserUUID,
+		AuthorUsername:     username,
+		Name:               name,
+		Description:        req.Msg.GetDescription(),
+		IsPublic:           req.Msg.GetIsPublic(),
+		IsSystemCollection: false,
+		ItemCount:          0,
+		CreatedAt:          timestamppb.Now(),
+		UpdatedAt:          timestamppb.Now(),
 	}), nil
 }
 
@@ -1793,8 +1793,8 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 	}
 
 	var colUUID, colID, userUUID, currentName, currentDesc string
-	var isDefault bool
-	err := s.db.QueryRow(ctx, "SELECT uuid, id, user_uuid, name, description, is_default_liked FROM collections WHERE id = $1 OR uuid::text = $1", req.Msg.GetCollectionId()).Scan(&colUUID, &colID, &userUUID, &currentName, &currentDesc, &isDefault)
+	var isSystem bool
+	err := s.db.QueryRow(ctx, "SELECT uuid, id, user_uuid, name, description, is_system_collection FROM collections WHERE id = $1 OR uuid::text = $1", req.Msg.GetCollectionId()).Scan(&colUUID, &colID, &userUUID, &currentName, &currentDesc, &isSystem)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
 	}
@@ -1807,8 +1807,8 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 	if name == "" {
 		name = currentName
 	}
-	if isDefault {
-		name = "Liked"
+	if isSystem {
+		name = currentName
 	}
 	if name == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("collection name cannot be empty"))
@@ -1831,15 +1831,15 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 	username, _ := getUserDisplay(ctx, s.db, userUUID)
 
 	return connect.NewResponse(&pb.Collection{
-		Uuid:           colUUID,
-		Id:             colID,
-		UserUuid:       userUUID,
-		AuthorUsername: username,
-		Name:           name,
-		Description:    desc,
-		IsPublic:       req.Msg.GetIsPublic(),
-		IsDefaultLiked: isDefault,
-		UpdatedAt:      timestamppb.Now(),
+		Uuid:               colUUID,
+		Id:                 colID,
+		UserUuid:           userUUID,
+		AuthorUsername:     username,
+		Name:               name,
+		Description:        desc,
+		IsPublic:           req.Msg.GetIsPublic(),
+		IsSystemCollection: isSystem,
+		UpdatedAt:          timestamppb.Now(),
 	}), nil
 }
 
@@ -1850,8 +1850,8 @@ func (s *SocialService) DeleteCollection(ctx context.Context, req *connect.Reque
 	}
 
 	var colUUID, userUUID string
-	var isDefault bool
-	err := s.db.QueryRow(ctx, "SELECT uuid, user_uuid, is_default_liked FROM collections WHERE id = $1 OR uuid::text = $1", req.Msg.GetCollectionId()).Scan(&colUUID, &userUUID, &isDefault)
+	var isSystem bool
+	err := s.db.QueryRow(ctx, "SELECT uuid, user_uuid, is_system_collection FROM collections WHERE id = $1 OR uuid::text = $1", req.Msg.GetCollectionId()).Scan(&colUUID, &userUUID, &isSystem)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
 	}
@@ -1860,8 +1860,8 @@ func (s *SocialService) DeleteCollection(ctx context.Context, req *connect.Reque
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot delete another user's collection"))
 	}
 
-	if isDefault {
-		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the system Liked collection cannot be deleted"))
+	if isSystem {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("system collections cannot be deleted"))
 	}
 
 	_, err = s.db.Exec(ctx, "DELETE FROM collections WHERE uuid = $1", colUUID)
@@ -1877,14 +1877,14 @@ func (s *SocialService) GetCollection(ctx context.Context, req *connect.Request[
 	var createdAt, updatedAt time.Time
 	err := s.db.QueryRow(ctx, `
 		SELECT
-			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_default_liked,
+			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_system_collection,
 			c.created_at, c.updated_at, u.id as author_username,
 			(SELECT count(*) FROM collection_items WHERE collection_uuid = c.uuid) as item_count
 		FROM collections c
 		JOIN users u ON u.uuid = c.user_uuid
 		WHERE c.id = $1 OR c.uuid::text = $1
 	`, req.Msg.GetId()).Scan(
-		&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsDefaultLiked,
+		&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsSystemCollection,
 		&createdAt, &updatedAt, &c.AuthorUsername, &c.ItemCount,
 	)
 	if err != nil {
@@ -1945,14 +1945,14 @@ func (s *SocialService) ListUserCollections(ctx context.Context, req *connect.Re
 
 	query := fmt.Sprintf(`
 		SELECT
-			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_default_liked,
+			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_system_collection,
 			c.created_at, c.updated_at, u.id as author_username,
 			(SELECT count(*) FROM collection_items WHERE collection_uuid = c.uuid) as item_count,
 			%s
 		FROM collections c
 		JOIN users u ON u.uuid = c.user_uuid
 		WHERE c.user_uuid = $1 %s
-		ORDER BY c.is_default_liked DESC, c.created_at DESC
+		ORDER BY c.is_system_collection DESC, c.created_at DESC
 	`, containsItemSelect, privacyFilter)
 
 	rows, err := s.db.Query(ctx, query, args...)
@@ -1966,7 +1966,7 @@ func (s *SocialService) ListUserCollections(ctx context.Context, req *connect.Re
 		var c pb.Collection
 		var createdAt, updatedAt time.Time
 		err := rows.Scan(
-			&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsDefaultLiked,
+			&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsSystemCollection,
 			&createdAt, &updatedAt, &c.AuthorUsername, &c.ItemCount, &c.ContainsItem,
 		)
 		if err != nil {
@@ -2059,13 +2059,13 @@ func (s *SocialService) ListCollectionItems(ctx context.Context, req *connect.Re
 	var createdAt, updatedAt time.Time
 	err := s.db.QueryRow(ctx, `
 		SELECT
-			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_default_liked,
+			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_system_collection,
 			c.created_at, c.updated_at, u.id as author_username
 		FROM collections c
 		JOIN users u ON u.uuid = c.user_uuid
 		WHERE c.id = $1 OR c.uuid::text = $1
 	`, req.Msg.GetCollectionId()).Scan(
-		&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsDefaultLiked,
+		&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsSystemCollection,
 		&createdAt, &updatedAt, &c.AuthorUsername,
 	)
 	if err != nil {
@@ -2143,7 +2143,7 @@ func (s *SocialService) GetEntitySocialSummary(ctx context.Context, req *connect
 		SELECT count(*)
 		FROM collection_items ci
 		JOIN collections c ON c.uuid = ci.collection_uuid
-		WHERE c.is_default_liked = true AND ci.entity_uuid = $1
+		WHERE c.is_system_collection = true AND c.name = 'Liked' AND ci.entity_uuid = $1
 	`, entityUUID).Scan(&likeCount)
 
 	if currentCallerUUID != "" {
@@ -2151,7 +2151,7 @@ func (s *SocialService) GetEntitySocialSummary(ctx context.Context, req *connect
 			SELECT EXISTS(
 				SELECT 1 FROM collection_items ci
 				JOIN collections c ON c.uuid = ci.collection_uuid
-				WHERE c.user_uuid = $1 AND c.is_default_liked = true AND ci.entity_uuid = $2
+				WHERE c.user_uuid = $1 AND c.is_system_collection = true AND c.name = 'Liked' AND ci.entity_uuid = $2
 			)
 		`, currentCallerUUID, entityUUID).Scan(&isLiked)
 	}

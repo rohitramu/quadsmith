@@ -338,13 +338,13 @@ model Collection {
   name          String
   description   String?
   isPublic      Boolean         @default(false)
-  isDefaultLiked Boolean        @default(false) // System collection for 1-click likes
+  isSystemCollection Boolean    @default(false) // System collection (e.g. 1-click likes)
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 
   items         CollectionItem[]
 
-  @@unique([userId, isDefaultLiked])
+  @@unique([userId, isSystemCollection])
   @@index([userId, isPublic])
 }
 
