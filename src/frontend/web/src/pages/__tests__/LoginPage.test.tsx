@@ -24,7 +24,9 @@ describe("LoginPage Component", () => {
     expect(
       await screen.findByRole("heading", { name: /sign in to quadsmith/i }),
     ).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/alex@quadsmith.dev/i)).toBeInTheDocument();
+    const emailInput = screen.getByPlaceholderText(/alex@quadsmith.dev/i);
+    expect(emailInput).toBeInTheDocument();
+    expect(emailInput).toHaveFocus();
 
     // Verify navbar / sidebar elements are NOT present
     expect(screen.queryByPlaceholderText(/search components/i)).not.toBeInTheDocument();
@@ -450,6 +452,19 @@ describe("LoginPage Component", () => {
     ).toBeInTheDocument();
     const resetEmailInput = screen.getByPlaceholderText(/alex@quadsmith.dev/i) as HTMLInputElement;
     expect(resetEmailInput.value).toBe("");
+    await waitFor(() => {
+      expect(resetEmailInput).toHaveFocus();
+    });
+  });
+
+  it("automatically focuses the email address text box when the sign-in page opens", async () => {
+    renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const emailInput = await screen.findByPlaceholderText(/alex@quadsmith.dev/i);
+    expect(emailInput).toBeInTheDocument();
+    expect(emailInput).toHaveFocus();
   });
 
   it("keeps Send Verification Code button disabled when email field is empty, before and after cooldown", async () => {

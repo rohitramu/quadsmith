@@ -67,6 +67,7 @@ export function LoginPage() {
   const [setupError, setSetupError] = useState<string | null>(null);
 
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   // Cooldown countdown timer
   useEffect(() => {
@@ -110,6 +111,13 @@ export function LoginPage() {
       navigate(redirectUrl, { replace: true });
     }
   }, [isAuthenticated, navigate, redirectUrl]);
+
+  // When sign-in page opens or returns to email step, focus email input
+  useEffect(() => {
+    if (step === "email" && !magicToken) {
+      emailInputRef.current?.focus();
+    }
+  }, [step, magicToken]);
 
   // Device B: Load challenge details upon opening magic link
   useEffect(() => {
@@ -504,6 +512,7 @@ export function LoginPage() {
     setRateLimitCooldown(0);
     setHintDigits(["", "", "", "", "", ""]);
     setOtpDigits(["", "", "", "", "", ""]);
+    setTimeout(() => emailInputRef.current?.focus(), 50);
   };
 
   const renderErrorBanner = () => {
@@ -1085,6 +1094,8 @@ export function LoginPage() {
                     size={16}
                   />
                   <input
+                    ref={emailInputRef}
+                    autoFocus
                     type="email"
                     required
                     placeholder="alex@quadsmith.dev"
