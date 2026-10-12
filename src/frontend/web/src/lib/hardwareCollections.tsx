@@ -1424,10 +1424,14 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ["max_current_a <= 40.0", "max_current_a >= 30.0"],
       },
       {
-        name: "shaft_diameter_mm",
-        type: "number",
-        description: "Motor shaft diameter in millimeters",
-        examples: ["shaft_diameter_mm == 5.0", "shaft_diameter_mm == 1.5"],
+        name: "prop_mount_interfaces",
+        type: "string",
+        description:
+          "Supported propeller mounting interfaces (e.g. M5, 1.5mm T-Mount, 1mm Press-Fit)",
+        examples: [
+          'prop_mount_interfaces.exists(x, x == "M5")',
+          'prop_mount_interfaces.exists(x, x == "1.5mm T-Mount")',
+        ],
       },
       {
         name: "mount_pattern",
@@ -1479,10 +1483,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Max Current (A)",
         renderCell: (m) => (m.maxCurrentA ? `${m.maxCurrentA}A` : "-"),
       },
-      shaft_diameter_mm: {
-        id: "shaft_diameter_mm",
-        title: "Shaft (mm)",
-        renderCell: (m) => (m.shaftDiameterMm ? `${m.shaftDiameterMm}mm` : "-"),
+      prop_mount_interfaces: {
+        id: "prop_mount_interfaces",
+        title: "Prop Mounts",
+        renderCell: (m) => m.propMountInterfaces?.join(", ") || "-",
       },
       mount_pattern: {
         id: "mount_pattern",
@@ -1529,8 +1533,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         value: (m) => (m.maxCurrentA ? `${m.maxCurrentA}A` : "-"),
       },
       {
-        label: "Shaft Diameter (mm)",
-        value: (m) => (m.shaftDiameterMm ? `${m.shaftDiameterMm}mm` : "-"),
+        label: "Prop Mount Interfaces",
+        value: (m) => m.propMountInterfaces?.join(", ") || "-",
       },
       {
         label: "Mount Pattern",
@@ -1607,10 +1611,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ["weight_g < 4.0", "weight_g <= 1.0"],
       },
       {
-        name: "shaft_diameter_mm",
-        type: "number",
-        description: "Center shaft hole diameter in millimeters",
-        examples: ["shaft_diameter_mm == 5.0", "shaft_diameter_mm == 1.5"],
+        name: "prop_mount_interface",
+        type: "string",
+        description:
+          "Propeller mounting interface (e.g. M5, 1.5mm T-Mount, 1.5mm Press-Fit, 1mm Press-Fit)",
+        examples: ['prop_mount_interface == "M5"', 'prop_mount_interface == "1.5mm T-Mount"'],
       },
       {
         name: "description",
@@ -1655,10 +1660,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Material",
         renderCell: (p) => p.material || "-",
       },
-      shaft_diameter_mm: {
-        id: "shaft_diameter_mm",
-        title: "Shaft (mm)",
-        renderCell: (p) => (p.shaftDiameterMm ? `${p.shaftDiameterMm}mm` : "-"),
+      prop_mount_interface: {
+        id: "prop_mount_interface",
+        title: "Prop Mount",
+        renderCell: (p) => p.propMountInterface || "-",
       },
     },
     highlights: [
@@ -1674,6 +1679,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         label: "Blades",
         value: (p) => (p.blades ? `${p.blades} Blades` : "N/A"),
+      },
+      {
+        label: "Prop Mount",
+        value: (p) => p.propMountInterface || "N/A",
       },
       { label: "Material", value: (p) => p.material || "N/A" },
       {
@@ -1696,8 +1705,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         value: (p) => (p.blades ? `${p.blades} Blades` : "-"),
       },
       {
-        label: "Shaft Hole Diameter (mm)",
-        value: (p) => (p.shaftDiameterMm ? `${p.shaftDiameterMm}mm` : "-"),
+        label: "Prop Mount Interface",
+        value: (p) => p.propMountInterface || "-",
       },
       { label: "Material", value: (p) => p.material || "-" },
       {

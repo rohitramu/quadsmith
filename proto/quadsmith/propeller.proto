@@ -51,8 +51,8 @@ message Propeller {
   optional string primary_display_image = 12;
   repeated Media media = 13;
 
-  // Propeller shaft / center hub hole diameter (mm) - e.g. 5.0, 1.5, 1.0, 0.8
-  float shaft_diameter_mm = 14;
+  // Propeller mounting interface (e.g., "M5", "1.5mm T-Mount", "2mm T-Mount", "1.5mm Press-Fit", "1mm Press-Fit", "0.8mm Press-Fit")
+  string prop_mount_interface = 14;
 }
 
 // ---------------------------------------------------------

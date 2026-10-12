@@ -511,7 +511,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"min_voltage",
 			"max_voltage",
 			"max_current_a",
-			"shaft_diameter_mm",
+			"prop_mount_interfaces",
 			"mount_pattern",
 		},
 	},
@@ -548,7 +548,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
-			"shaft_diameter_mm",
+			"prop_mount_interface",
 		},
 	},
 	{

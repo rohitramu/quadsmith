@@ -52,8 +52,8 @@ message Motor {
   // Maximum continuous current rating (amperes) - mandatory
   float max_current_a = 15;
 
-  // Motor shaft diameter (mm) - e.g. 5.0 for standard M5, 1.5, 1.0, 0.8 for micro/whoop
-  float shaft_diameter_mm = 16;
+  // Supported propeller mounting interfaces (e.g., ["M5"], ["1.5mm T-Mount", "1.5mm Press-Fit"], ["1mm Press-Fit"], ["0.8mm Press-Fit"])
+  repeated string prop_mount_interfaces = 16;
 
   // Motor mounting bolt pattern (e.g., "16x16mm", "19x19mm", "12x12mm", "9x9mm", "3-hole 6.6mm")
   string mount_pattern = 17;

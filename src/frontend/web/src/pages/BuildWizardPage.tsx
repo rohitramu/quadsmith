@@ -1239,10 +1239,14 @@ export function BuildWizardPage() {
   const filteredMotors = useMemo(() => {
     let list = motors;
     if (isCompatibleOnly("motors")) {
-      if (selectedProp && (selectedProp.shaftDiameterMm || 0) > 0) {
+      if (selectedProp && selectedProp.propMountInterface) {
         list = list.filter(
           (m) =>
-            !m.shaftDiameterMm || Math.abs(m.shaftDiameterMm - selectedProp.shaftDiameterMm) < 0.05,
+            !m.propMountInterfaces ||
+            m.propMountInterfaces.length === 0 ||
+            m.propMountInterfaces.some(
+              (i) => i.toLowerCase() === selectedProp.propMountInterface?.toLowerCase(),
+            ),
         );
       }
       if (
@@ -1274,11 +1278,17 @@ export function BuildWizardPage() {
       if (selectedFrame && selectedFrame.maxPropSizeMm > 0) {
         list = list.filter((p) => p.diameterMm <= selectedFrame.maxPropSizeMm);
       }
-      if (selectedMotor && (selectedMotor.shaftDiameterMm || 0) > 0) {
+      if (
+        selectedMotor &&
+        selectedMotor.propMountInterfaces &&
+        selectedMotor.propMountInterfaces.length > 0
+      ) {
         list = list.filter(
           (p) =>
-            !p.shaftDiameterMm ||
-            Math.abs(p.shaftDiameterMm - selectedMotor.shaftDiameterMm) < 0.05,
+            !p.propMountInterface ||
+            selectedMotor.propMountInterfaces.some(
+              (i) => i.toLowerCase() === p.propMountInterface?.toLowerCase(),
+            ),
         );
       }
     }
@@ -2151,7 +2161,7 @@ export function BuildWizardPage() {
                               {f.name}
                             </span>
                             <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 shrink-0">
-                              {f.motorCount || 4}x Motors
+                              {f.wheelbaseMm ? `${f.wheelbaseMm}mm Wheelbase` : "Standard"}
                             </span>
                           </div>
                           <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">

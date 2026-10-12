@@ -44,18 +44,24 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 	}
 
-	// Rule 3: Motor vs Propeller Shaft Compatibility
+	// Rule 3: Motor vs Propeller Mount Compatibility
 	if comp.Motor != nil && comp.Propeller != nil {
-		if comp.Motor.ShaftDiameterMm > 0 && comp.Propeller.ShaftDiameterMm > 0 {
-			diff := comp.Motor.ShaftDiameterMm - comp.Propeller.ShaftDiameterMm
-			if diff < -0.05 || diff > 0.05 {
+		if len(comp.Motor.PropMountInterfaces) > 0 && comp.Propeller.PropMountInterface != "" {
+			matched := false
+			for _, iface := range comp.Motor.PropMountInterfaces {
+				if strings.EqualFold(strings.TrimSpace(iface), strings.TrimSpace(comp.Propeller.PropMountInterface)) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
 				messages = append(messages, &pb.CompatibilityMessage{
-					CheckerName:   "MotorPropellerShaftChecker",
+					CheckerName:   "MotorPropellerMountChecker",
 					Components:    "Motor and Propeller",
 					SeverityLevel: 0,
 					SeverityName:  "DEFINITE_INCOMPATIBILITY",
-					Message:       fmt.Sprintf("Motor shaft diameter (%.1fmm) does not match propeller shaft diameter (%.1fmm).", comp.Motor.ShaftDiameterMm, comp.Propeller.ShaftDiameterMm),
-					Resolution:    "Select a propeller with a matching shaft diameter or a motor with compatible shaft size.",
+					Message:       fmt.Sprintf("Motor propeller mount interfaces (%s) do not match propeller mount interface (%s).", strings.Join(comp.Motor.PropMountInterfaces, ", "), comp.Propeller.PropMountInterface),
+					Resolution:    "Select a propeller with a matching mount interface or a motor supporting the propeller's mounting style.",
 				})
 			}
 		}
@@ -690,8 +696,16 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 		if comp.Frame != nil && comp.Frame.MaxPropSizeMm > 0 {
 			conditions = append(conditions, fmt.Sprintf("diameter_mm <= %.1f", comp.Frame.MaxPropSizeMm))
 		}
-		if comp.Motor != nil && comp.Motor.ShaftDiameterMm > 0 {
-			conditions = append(conditions, fmt.Sprintf("shaft_diameter_mm == %.1f", comp.Motor.ShaftDiameterMm))
+		if comp.Motor != nil && len(comp.Motor.PropMountInterfaces) > 0 {
+			if len(comp.Motor.PropMountInterfaces) == 1 {
+				conditions = append(conditions, fmt.Sprintf("prop_mount_interface == %q", comp.Motor.PropMountInterfaces[0]))
+			} else {
+				var ifaceChecks []string
+				for _, iface := range comp.Motor.PropMountInterfaces {
+					ifaceChecks = append(ifaceChecks, fmt.Sprintf("prop_mount_interface == %q", iface))
+				}
+				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(ifaceChecks, " || ")))
+			}
 		}
 	case "frames":
 		if comp.Propeller != nil && comp.Propeller.DiameterMm > 0 {
@@ -749,8 +763,8 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 			}
 		}
 	case "motors":
-		if comp.Propeller != nil && comp.Propeller.ShaftDiameterMm > 0 {
-			conditions = append(conditions, fmt.Sprintf("shaft_diameter_mm == %.1f", comp.Propeller.ShaftDiameterMm))
+		if comp.Propeller != nil && comp.Propeller.PropMountInterface != "" {
+			conditions = append(conditions, fmt.Sprintf("prop_mount_interfaces.exists(i, i == %q)", comp.Propeller.PropMountInterface))
 		}
 		if comp.Frame != nil && len(comp.Frame.MotorMountPatterns) > 0 {
 			if len(comp.Frame.MotorMountPatterns) == 1 {

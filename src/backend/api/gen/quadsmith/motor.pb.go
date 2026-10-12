@@ -45,8 +45,8 @@ type Motor struct {
 	MaxVoltage float32 `protobuf:"fixed32,14,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
 	// Maximum continuous current rating (amperes) - mandatory
 	MaxCurrentA float32 `protobuf:"fixed32,15,opt,name=max_current_a,json=maxCurrentA,proto3" json:"max_current_a,omitempty"`
-	// Motor shaft diameter (mm) - e.g. 5.0 for standard M5, 1.5, 1.0, 0.8 for micro/whoop
-	ShaftDiameterMm float32 `protobuf:"fixed32,16,opt,name=shaft_diameter_mm,json=shaftDiameterMm,proto3" json:"shaft_diameter_mm,omitempty"`
+	// Supported propeller mounting interfaces (e.g., ["M5"], ["1.5mm T-Mount", "1.5mm Press-Fit"], ["1mm Press-Fit"], ["0.8mm Press-Fit"])
+	PropMountInterfaces []string `protobuf:"bytes,16,rep,name=prop_mount_interfaces,json=propMountInterfaces,proto3" json:"prop_mount_interfaces,omitempty"`
 	// Motor mounting bolt pattern (e.g., "16x16mm", "19x19mm", "12x12mm", "9x9mm", "3-hole 6.6mm")
 	MountPattern  string `protobuf:"bytes,17,opt,name=mount_pattern,json=mountPattern,proto3" json:"mount_pattern,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -188,11 +188,11 @@ func (x *Motor) GetMaxCurrentA() float32 {
 	return 0
 }
 
-func (x *Motor) GetShaftDiameterMm() float32 {
+func (x *Motor) GetPropMountInterfaces() []string {
 	if x != nil {
-		return x.ShaftDiameterMm
+		return x.PropMountInterfaces
 	}
-	return 0
+	return nil
 }
 
 func (x *Motor) GetMountPattern() string {
@@ -392,7 +392,7 @@ var File_motor_proto protoreflect.FileDescriptor
 const file_motor_proto_rawDesc = "" +
 	"\n" +
 	"\vmotor.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x82\x06\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x8a\x06\n" +
 	"\x05Motor\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -411,8 +411,8 @@ const file_motor_proto_rawDesc = "" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x0e \x01(\x02R\n" +
 	"maxVoltage\x12\"\n" +
-	"\rmax_current_a\x18\x0f \x01(\x02R\vmaxCurrentA\x12*\n" +
-	"\x11shaft_diameter_mm\x18\x10 \x01(\x02R\x0fshaftDiameterMm\x12#\n" +
+	"\rmax_current_a\x18\x0f \x01(\x02R\vmaxCurrentA\x122\n" +
+	"\x15prop_mount_interfaces\x18\x10 \x03(\tR\x13propMountInterfaces\x12#\n" +
 	"\rmount_pattern\x18\x11 \x01(\tR\fmountPattern:c\x8a\xb5\x185\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +

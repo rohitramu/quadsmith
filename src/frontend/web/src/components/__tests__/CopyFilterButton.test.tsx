@@ -51,7 +51,7 @@ describe("CopyFilterButton Component", () => {
   it("copies the multiline filter string to clipboard and shows check icon on click", async () => {
     const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText");
 
-    const filter = "diameter_mm <= 127.00 && shaft_diameter_mm == 5.00";
+    const filter = 'diameter_mm <= 127.00 && prop_mount_interface == "M5"';
     renderWithProviders(<CopyFilterButton filter={filter} />);
 
     const button = screen.getByRole("button", { name: "Copy filter" });
@@ -59,7 +59,7 @@ describe("CopyFilterButton Component", () => {
 
     await waitFor(() => {
       expect(writeTextSpy).toHaveBeenCalledWith(
-        "diameter_mm <= 127.00 &&\nshaft_diameter_mm == 5.00",
+        'diameter_mm <= 127.00 &&\nprop_mount_interface == "M5"',
       );
     });
   });

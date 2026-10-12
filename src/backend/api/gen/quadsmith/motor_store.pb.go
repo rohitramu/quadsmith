@@ -11,19 +11,19 @@ import (
 )
 
 func CreateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
-	query := `INSERT INTO motors (uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, shaft_diameter_mm, mount_pattern) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`
+	query := `INSERT INTO motors (uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, prop_mount_interfaces, mount_pattern) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA, m.ShaftDiameterMm, m.MountPattern)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA, m.PropMountInterfaces, m.MountPattern)
 	return err
 }
 
 func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Motor, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "stator_diameter_mm": true, "stator_height_mm": true, "kv": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "shaft_diameter_mm": true, "mount_pattern": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, shaft_diameter_mm, mount_pattern"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "stator_diameter_mm": true, "stator_height_mm": true, "kv": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "prop_mount_interfaces": true, "mount_pattern": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, prop_mount_interfaces, mount_pattern"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,7 +34,7 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "shaft_diameter_mm", "mount_pattern"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "prop_mount_interfaces", "mount_pattern"}
 	}
 	query := `SELECT ` + colsStr + ` FROM motors WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -72,8 +72,8 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 			scanArgs[i] = &m.MaxVoltage
 		case "max_current_a":
 			scanArgs[i] = &m.MaxCurrentA
-		case "shaft_diameter_mm":
-			scanArgs[i] = &m.ShaftDiameterMm
+		case "prop_mount_interfaces":
+			scanArgs[i] = &m.PropMountInterfaces
 		case "mount_pattern":
 			scanArgs[i] = &m.MountPattern
 		default:
@@ -93,8 +93,8 @@ func GetMotor(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 }
 
 func UpdateMotor(ctx context.Context, tx pgx.Tx, m *Motor) error {
-	query := `UPDATE motors SET manufacturer = $2, name = $3, weight_g = $4, stator_diameter_mm = $5, stator_height_mm = $6, kv = $7, description = $8, reference_links = $9, primary_display_image = $10, media = $11, min_voltage = $12, max_voltage = $13, max_current_a = $14, shaft_diameter_mm = $15, mount_pattern = $16 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA, m.ShaftDiameterMm, m.MountPattern)
+	query := `UPDATE motors SET manufacturer = $2, name = $3, weight_g = $4, stator_diameter_mm = $5, stator_height_mm = $6, kv = $7, description = $8, reference_links = $9, primary_display_image = $10, media = $11, min_voltage = $12, max_voltage = $13, max_current_a = $14, prop_mount_interfaces = $15, mount_pattern = $16 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.StatorDiameterMm, m.StatorHeightMm, m.Kv, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA, m.PropMountInterfaces, m.MountPattern)
 	return err
 }
 
@@ -105,8 +105,8 @@ func DeleteMotor(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Motor, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "stator_diameter_mm": true, "stator_height_mm": true, "kv": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "shaft_diameter_mm": true, "mount_pattern": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, shaft_diameter_mm, mount_pattern"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "stator_diameter_mm": true, "stator_height_mm": true, "kv": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "prop_mount_interfaces": true, "mount_pattern": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, stator_diameter_mm, stator_height_mm, kv, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, prop_mount_interfaces, mount_pattern"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -117,7 +117,7 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "shaft_diameter_mm", "mount_pattern"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "prop_mount_interfaces", "mount_pattern"}
 	}
 	query := `SELECT ` + colsStr + ` FROM motors`
 	if whereClause != "" {
@@ -196,8 +196,8 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 				scanArgs[i] = &m.MaxVoltage
 			case "max_current_a":
 				scanArgs[i] = &m.MaxCurrentA
-			case "shaft_diameter_mm":
-				scanArgs[i] = &m.ShaftDiameterMm
+			case "prop_mount_interfaces":
+				scanArgs[i] = &m.PropMountInterfaces
 			case "mount_pattern":
 				scanArgs[i] = &m.MountPattern
 			default:

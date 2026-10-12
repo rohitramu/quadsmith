@@ -38,6 +38,7 @@ export const mockMotor1: Motor = create(MotorSchema, {
   statorDiameterMm: 22,
   statorHeightMm: 7,
   kv: 1900,
+  propMountInterfaces: ["M5"],
   description: "Durable and affordable 2207 brushless motor for 5-inch freestyle quadcopters.",
   referenceLinks: [
     {
@@ -73,11 +74,26 @@ export const mockMotor2: Motor = create(MotorSchema, {
   statorDiameterMm: 22,
   statorHeightMm: 7.5,
   kv: 2020,
+  propMountInterfaces: ["M5"],
   description: "High-performance racing and freestyle motor engineered for maximum output.",
   referenceLinks: [],
 });
 
-export const mockMotors: Motor[] = [mockMotor1, mockMotor2];
+export const mockMotorT: Motor = create(MotorSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000003",
+  id: "flywoo-robo-1202-5-5500kv",
+  manufacturer: "Flywoo",
+  name: "ROBO 1202.5 5500KV",
+  weightG: 4.2,
+  statorDiameterMm: 12,
+  statorHeightMm: 2.5,
+  kv: 5500,
+  propMountInterfaces: ["1.5mm T-Mount", "1.5mm Press-Fit"],
+  description: "Ultra-light toothpick motor with 1.5mm T-mount.",
+  referenceLinks: [],
+});
+
+export const mockMotors: Motor[] = [mockMotor1, mockMotor2, mockMotorT];
 
 export const mockFrame1: Frame = create(FrameSchema, {
   uuid: "018f0000-0000-7000-0000-000000000010",
@@ -227,6 +243,7 @@ export const mockPropeller1: Propeller = create(PropellerSchema, {
   diameterMm: 129.5,
   pitchMm: 109.2,
   blades: 3,
+  propMountInterface: "M5",
   description: "Crisp throttle response and durable polycarbonate construction.",
 });
 
@@ -239,10 +256,24 @@ export const mockPropeller2: Propeller = create(PropellerSchema, {
   diameterMm: 177.8,
   pitchMm: 101.6,
   blades: 3,
+  propMountInterface: "M5",
   description: "Heavy-duty 7-inch propeller for long range and cinematic quads.",
 });
 
-export const mockPropellers: Propeller[] = [mockPropeller1, mockPropeller2];
+export const mockPropellerT: Propeller = create(PropellerSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000052",
+  id: "hqprop-t2x2x3",
+  manufacturer: "HQProp",
+  name: "HQProp T2x2x3",
+  weightG: 0.75,
+  diameterMm: 50.8,
+  pitchMm: 50.8,
+  blades: 3,
+  propMountInterface: "1.5mm T-Mount",
+  description: "Durable 2-inch T-mount propeller for micro quads.",
+});
+
+export const mockPropellers: Propeller[] = [mockPropeller1, mockPropeller2, mockPropellerT];
 
 export const mockCamera1: Camera = create(CameraSchema, {
   uuid: "018f0000-0000-7000-0000-000000000060",

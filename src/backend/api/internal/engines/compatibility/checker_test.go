@@ -514,79 +514,101 @@ func TestGenerateCelFilter_ConflictHandling(t *testing.T) {
 	}
 }
 
-func TestCheckCompatibility_MotorPropellerShaft(t *testing.T) {
-	// 1. Matching shafts (5.0mm motor with 5.0mm prop) -> Compatible
+func TestCheckCompatibility_MotorPropellerMount(t *testing.T) {
+	// 1. Matching interface (M5 motor with M5 prop) -> Compatible
 	compMatch := &Components{
-		Motor:     &pb.Motor{ShaftDiameterMm: 5.0},
-		Propeller: &pb.Propeller{ShaftDiameterMm: 5.0},
+		Motor:     &pb.Motor{PropMountInterfaces: []string{"M5"}},
+		Propeller: &pb.Propeller{PropMountInterface: "M5"},
 	}
 	msgs := CheckCompatibility(compMatch)
 	for _, m := range msgs {
-		if m.CheckerName == "MotorPropellerShaftChecker" {
-			t.Errorf("Expected no shaft incompatibility for matching 5.0mm shafts, got: %v", m)
+		if m.CheckerName == "MotorPropellerMountChecker" {
+			t.Errorf("Expected no mount incompatibility for matching M5, got: %v", m)
 		}
 	}
 
-	// 2. Mismatched shafts (5.0mm motor with 1.5mm prop) -> Definite Incompatibility
+	// 2. Multi-mount motor (1.5mm T-Mount + 1.5mm Press-Fit) with 1.5mm T-Mount prop -> Compatible
+	compMulti := &Components{
+		Motor:     &pb.Motor{PropMountInterfaces: []string{"1.5mm T-Mount", "1.5mm Press-Fit"}},
+		Propeller: &pb.Propeller{PropMountInterface: "1.5mm T-Mount"},
+	}
+	msgsMulti := CheckCompatibility(compMulti)
+	for _, m := range msgsMulti {
+		if m.CheckerName == "MotorPropellerMountChecker" {
+			t.Errorf("Expected no mount incompatibility for multi-mount motor, got: %v", m)
+		}
+	}
+
+	// 3. Mismatched interfaces (M5 motor with 1.5mm T-Mount prop) -> Definite Incompatibility
 	compMismatch := &Components{
-		Motor:     &pb.Motor{ShaftDiameterMm: 5.0},
-		Propeller: &pb.Propeller{ShaftDiameterMm: 1.5},
+		Motor:     &pb.Motor{PropMountInterfaces: []string{"M5"}},
+		Propeller: &pb.Propeller{PropMountInterface: "1.5mm T-Mount"},
 	}
 	msgsMismatch := CheckCompatibility(compMismatch)
 	found := false
 	for _, m := range msgsMismatch {
-		if m.CheckerName == "MotorPropellerShaftChecker" {
+		if m.CheckerName == "MotorPropellerMountChecker" {
 			found = true
 			if m.SeverityLevel != 0 {
 				t.Errorf("Expected SeverityLevel 0 (DEFINITE_INCOMPATIBILITY), got %d", m.SeverityLevel)
 			}
-			if !strings.Contains(m.Message, "5.0mm") || !strings.Contains(m.Message, "1.5mm") {
-				t.Errorf("Message does not mention shaft sizes: %s", m.Message)
+			if !strings.Contains(m.Message, "M5") || !strings.Contains(m.Message, "1.5mm T-Mount") {
+				t.Errorf("Message does not mention mount interfaces: %s", m.Message)
 			}
 		}
 	}
 	if !found {
-		t.Errorf("Expected MotorPropellerShaftChecker message for 5.0mm vs 1.5mm, found none")
+		t.Errorf("Expected MotorPropellerMountChecker message for M5 vs 1.5mm T-Mount, found none")
 	}
 
-	// 3. Unspecified shaft (0.0 on motor or prop) -> No error
+	// 4. Unspecified interface -> No error
 	compUnspecified := &Components{
-		Motor:     &pb.Motor{ShaftDiameterMm: 0.0},
-		Propeller: &pb.Propeller{ShaftDiameterMm: 5.0},
+		Motor:     &pb.Motor{PropMountInterfaces: nil},
+		Propeller: &pb.Propeller{PropMountInterface: "M5"},
 	}
 	msgsUnspecified := CheckCompatibility(compUnspecified)
 	for _, m := range msgsUnspecified {
-		if m.CheckerName == "MotorPropellerShaftChecker" {
-			t.Errorf("Expected no incompatibility when motor shaft is unspecified, got: %v", m)
+		if m.CheckerName == "MotorPropellerMountChecker" {
+			t.Errorf("Expected no incompatibility when motor mount is unspecified, got: %v", m)
 		}
 	}
 }
 
-func TestGenerateCelFilter_ShaftDiameter(t *testing.T) {
-	// Propellers filter when motor is selected
-	propFilter := GenerateCelFilter("propellers", &Components{
-		Motor: &pb.Motor{ShaftDiameterMm: 5.0},
+func TestGenerateCelFilter_PropMountInterface(t *testing.T) {
+	// Propellers filter when single-mount motor is selected
+	propFilterSingle := GenerateCelFilter("propellers", &Components{
+		Motor: &pb.Motor{PropMountInterfaces: []string{"M5"}},
 	})
-	if propFilter != "shaft_diameter_mm == 5.0" {
-		t.Errorf("Expected 'shaft_diameter_mm == 5.0', got %q", propFilter)
+	if propFilterSingle != `prop_mount_interface == "M5"` {
+		t.Errorf("Expected 'prop_mount_interface == \"M5\"', got %q", propFilterSingle)
+	}
+
+	// Propellers filter when multi-mount motor is selected
+	propFilterMulti := GenerateCelFilter("propellers", &Components{
+		Motor: &pb.Motor{PropMountInterfaces: []string{"1.5mm T-Mount", "1.5mm Press-Fit"}},
+	})
+	expectedMulti := `(prop_mount_interface == "1.5mm T-Mount" || prop_mount_interface == "1.5mm Press-Fit")`
+	if propFilterMulti != expectedMulti {
+		t.Errorf("Expected %q, got %q", expectedMulti, propFilterMulti)
 	}
 
 	// Propellers filter with frame and motor
 	propFilterCombined := GenerateCelFilter("propellers", &Components{
 		Frame: &pb.Frame{MaxPropSizeMm: 127.0},
-		Motor: &pb.Motor{ShaftDiameterMm: 5.0},
+		Motor: &pb.Motor{PropMountInterfaces: []string{"M5"}},
 	})
-	expectedCombined := "diameter_mm <= 127.0 && shaft_diameter_mm == 5.0"
+	expectedCombined := `diameter_mm <= 127.0 && prop_mount_interface == "M5"`
 	if propFilterCombined != expectedCombined {
 		t.Errorf("Expected %q, got %q", expectedCombined, propFilterCombined)
 	}
 
 	// Motors filter when propeller is selected
 	motorFilter := GenerateCelFilter("motors", &Components{
-		Propeller: &pb.Propeller{ShaftDiameterMm: 1.5},
+		Propeller: &pb.Propeller{PropMountInterface: "1.5mm T-Mount"},
 	})
-	if motorFilter != "shaft_diameter_mm == 1.5" {
-		t.Errorf("Expected 'shaft_diameter_mm == 1.5', got %q", motorFilter)
+	expectedMotorFilter := `prop_mount_interfaces.exists(i, i == "1.5mm T-Mount")`
+	if motorFilter != expectedMotorFilter {
+		t.Errorf("Expected %q, got %q", expectedMotorFilter, motorFilter)
 	}
 }
 
