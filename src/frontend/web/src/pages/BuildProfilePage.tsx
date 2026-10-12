@@ -23,7 +23,8 @@ import { SystemMessageSeverity } from "../gen/quadsmith/evaluator_pb";
 import type { Battery } from "../gen/quadsmith/battery_pb";
 import { MediaGallery } from "../components/MediaGallery";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
-import { buildBatteryCelFilter } from "../lib/batteryFilter";
+import { buildBatteryCelFilter, formatBatteryFilterForDisplay } from "../lib/batteryFilter";
+import { CollectionIcon } from "../components/CollectionIcon";
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
 import { getHardwareCollection, getCollectionPath } from "../lib/hardwareCollections";
 import { getCollectionColor } from "../lib/collectionColors";
@@ -44,10 +45,6 @@ import {
   AlertOctagon,
   Sliders,
   Layers,
-  Cpu,
-  Radio,
-  Camera as CameraIcon,
-  Compass,
   Zap,
   Rocket,
   Wind,
@@ -62,7 +59,7 @@ interface BomComponentProps {
   collectionId: string;
   uuid: string;
   queryMethod: any;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   subtitle?: (item: any) => string;
 }
 
@@ -93,7 +90,7 @@ function BomComponentCard({
         <div
           className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 ${colColor.textClass}`}
         >
-          {icon}
+          {icon ?? <CollectionIcon collection={collectionId} size={18} />}
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 mb-0.5">
@@ -559,6 +556,17 @@ export function BuildProfilePage() {
                     ) : null}
                   </div>
                 )}
+
+                {batteryFilter ? (
+                  <div className="mt-2 text-[11px] p-2 rounded-lg bg-zinc-100/70 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
+                    <span className="font-semibold text-[10px] uppercase tracking-wider text-zinc-500 block mb-0.5">
+                      Compatibility Filter:
+                    </span>
+                    <code className="font-mono text-[10px] whitespace-pre-wrap leading-relaxed text-zinc-700 dark:text-zinc-300">
+                      {formatBatteryFilterForDisplay(batteryFilter)}
+                    </code>
+                  </div>
+                ) : null}
               </div>
 
               {/* Interactive Payload Weight Text Box */}
@@ -884,7 +892,6 @@ export function BuildProfilePage() {
             collectionId="frames"
             uuid={build.frameUuid}
             queryMethod={getFrame}
-            icon={<Layers size={18} />}
             subtitle={(item) =>
               `${item.manufacturer} • ${item.wheelbaseMm ? `${item.wheelbaseMm}mm wheelbase` : ""}`
             }
@@ -896,7 +903,6 @@ export function BuildProfilePage() {
             collectionId="motors"
             uuid={build.motorUuid}
             queryMethod={getMotor}
-            icon={<Cpu size={18} />}
             subtitle={(item) =>
               `${item.manufacturer} • ${item.kv ? `${item.kv}KV` : ""} • ${item.weightG ? `${item.weightG.toFixed(2)}g each` : ""}`
             }
@@ -905,10 +911,9 @@ export function BuildProfilePage() {
           {/* Flight Controller */}
           <BomComponentCard
             label="Flight Controller"
-            collectionId="flight_controllers"
+            collectionId="flight-controllers"
             uuid={build.flightControllerUuid}
             queryMethod={getFlightController}
-            icon={<Cpu size={18} />}
             subtitle={(item) => `${item.manufacturer} • ${item.processor || "FC Board"}`}
           />
 
@@ -921,10 +926,9 @@ export function BuildProfilePage() {
                   ? `ESC #${idx + 1}`
                   : "Electronic Speed Controller"
               }
-              collectionId="electronic_speed_controllers"
+              collectionId="electronic-speed-controllers"
               uuid={escUuid}
               queryMethod={getElectronicSpeedController}
-              icon={<Zap size={18} />}
               subtitle={(item) =>
                 `${item.manufacturer} • ${item.motorCurrentMaxA}A • ${item.maxMotors}x motors`
               }
@@ -937,7 +941,6 @@ export function BuildProfilePage() {
             collectionId="propellers"
             uuid={build.propellerUuid}
             queryMethod={getPropeller}
-            icon={<Compass size={18} />}
             subtitle={(item) =>
               `${item.manufacturer} • ${item.blades ? `${item.blades}-blade` : "Props"}`
             }
@@ -946,10 +949,9 @@ export function BuildProfilePage() {
           {/* Video Transmitter */}
           <BomComponentCard
             label="Video Transmitter (VTX)"
-            collectionId="video_transmitters"
+            collectionId="video-transmitters"
             uuid={build.videoTransmitterUuid}
             queryMethod={getVideoTransmitter}
-            icon={<Radio size={18} />}
             subtitle={(item) =>
               `${item.manufacturer} • ${item.maxPowerMw ? `${item.maxPowerMw}mW` : ""} • ${item.protocol || ""}`
             }
@@ -963,7 +965,6 @@ export function BuildProfilePage() {
               collectionId="cameras"
               uuid={camUuid}
               queryMethod={getCamera}
-              icon={<CameraIcon size={18} />}
               subtitle={(item) => `${item.manufacturer} • ${item.sensor || "FPV Camera"}`}
             />
           ))}
@@ -976,7 +977,6 @@ export function BuildProfilePage() {
               collectionId="receivers"
               uuid={rxUuid}
               queryMethod={getReceiver}
-              icon={<Radio size={18} />}
               subtitle={(item) => `${item.manufacturer} • ${item.protocol || "RC Link"}`}
             />
           ))}
@@ -989,7 +989,6 @@ export function BuildProfilePage() {
               collectionId="antennas"
               uuid={antUuid}
               queryMethod={getAntenna}
-              icon={<Radio size={18} />}
               subtitle={(item) =>
                 `${item.manufacturer} • ${item.polarization || ""} ${item.frequencyBandMhz ? `${item.frequencyBandMhz}MHz` : ""}`
               }
@@ -1000,10 +999,9 @@ export function BuildProfilePage() {
           {build.gpsReceiverUuid && (
             <BomComponentCard
               label="GPS Receiver"
-              collectionId="gps_receivers"
+              collectionId="gps-receivers"
               uuid={build.gpsReceiverUuid}
               queryMethod={getGpsReceiver}
-              icon={<Compass size={18} />}
               subtitle={(item) => `${item.manufacturer} • ${item.protocol || "GNSS"}`}
             />
           )}

@@ -12,7 +12,10 @@ export interface ElectricalLimits {
  *
  * Example: "min_voltage >= 14.80 && max_voltage <= 25.20 && max_current_a >= 39.40 && connector == \"XT60\""
  */
-export function buildBatteryCelFilter(limits?: ElectricalLimits | null): string {
+export function buildBatteryCelFilter(
+  limits?: ElectricalLimits | null,
+  options?: { multiline?: boolean },
+): string {
   if (!limits) return "";
 
   const conditions: string[] = [];
@@ -41,5 +44,16 @@ export function buildBatteryCelFilter(limits?: ElectricalLimits | null): string 
     conditions.push(`(${connClauses})`);
   }
 
-  return conditions.join(" && ");
+  return conditions.join(options?.multiline ? " &&\n" : " && ");
+}
+
+/**
+ * Formats a battery CEL filter string for UI display with a newline after each joining "&&".
+ *
+ * Example:
+ * min_voltage >= 14.80 &&\nmax_voltage <= 25.20 &&\nmax_current_a >= 39.40 &&\nconnector == "XT60"
+ */
+export function formatBatteryFilterForDisplay(filter?: string | null): string {
+  if (!filter) return "";
+  return filter.split(" && ").join(" &&\n");
 }

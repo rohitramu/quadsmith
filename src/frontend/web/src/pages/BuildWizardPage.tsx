@@ -75,6 +75,7 @@ import { AntennaService, type Antenna } from "../gen/quadsmith/antenna_pb";
 import { GpsReceiverService, type GpsReceiver } from "../gen/quadsmith/gps_receiver_pb";
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
 import { getCollectionColor } from "../lib/collectionColors";
+import { formatBatteryFilterForDisplay } from "../lib/batteryFilter";
 
 export function getVtxAntennaCount(vtx: VideoTransmitter | null | undefined): number {
   if (!vtx) return 1;
@@ -658,6 +659,7 @@ export function BuildWizardPage() {
   const bomItems = useMemo(() => {
     interface BomItem {
       id: string;
+      collectionId: string;
       label: string;
       weight: number;
       weightFormatted: string;
@@ -669,6 +671,7 @@ export function BuildWizardPage() {
     if (selectedFrame) {
       items.push({
         id: "frame",
+        collectionId: "frames",
         label: `Frame: ${selectedFrame.name}`,
         weight: selectedFrame.weightG || 0,
         weightFormatted: `${(selectedFrame.weightG || 0).toFixed(2)}g`,
@@ -679,6 +682,7 @@ export function BuildWizardPage() {
       const w = (selectedMotor.weightG || 0) * motorCount;
       items.push({
         id: "motors",
+        collectionId: "motors",
         label: `Motors: ${selectedMotor.name} (${motorCount}x)`,
         weight: w,
         weightFormatted: `${w.toFixed(2)}g`,
@@ -689,6 +693,7 @@ export function BuildWizardPage() {
       const w = (selectedProp.weightG || 0) * motorCount;
       items.push({
         id: "propellers",
+        collectionId: "propellers",
         label: `Propellers: ${selectedProp.name} (${motorCount}x)`,
         weight: w,
         weightFormatted: `${w.toFixed(2)}g`,
@@ -698,6 +703,7 @@ export function BuildWizardPage() {
     if (selectedFc) {
       items.push({
         id: "fc",
+        collectionId: "flight-controllers",
         label: `Flight Controller: ${selectedFc.name}`,
         weight: selectedFc.weightG || 0,
         weightFormatted: `${(selectedFc.weightG || 0).toFixed(2)}g`,
@@ -707,6 +713,7 @@ export function BuildWizardPage() {
     if (useIntegratedEsc) {
       items.push({
         id: "esc",
+        collectionId: "electronic-speed-controllers",
         label: `ESC: ${integratedEsc ? `${integratedEsc.name} (Integrated ${integratedEsc.motorCurrentMaxA || 20}A)` : "Using Integrated FC ESC"}`,
         weight: 0,
         weightFormatted: "0.00g",
@@ -715,6 +722,7 @@ export function BuildWizardPage() {
     } else if (selectedEsc && !noneSelections.esc) {
       items.push({
         id: "esc",
+        collectionId: "electronic-speed-controllers",
         label: `ESC: ${selectedEsc.name}`,
         weight: selectedEsc.weightG || 0,
         weightFormatted: `${(selectedEsc.weightG || 0).toFixed(2)}g`,
@@ -724,6 +732,7 @@ export function BuildWizardPage() {
     if (useIntegratedRx) {
       items.push({
         id: "rx",
+        collectionId: "receivers",
         label: `Receiver: ${integratedRx ? `${integratedRx.name} (Integrated ${integratedRx.protocol || "ExpressLRS"} @ ${formatFrequencyBand(integratedRx.frequencyBandMhz)})` : "Using Integrated FC Receiver"}`,
         weight: 0,
         weightFormatted: "0.00g",
@@ -732,6 +741,7 @@ export function BuildWizardPage() {
     } else if (selectedRx) {
       items.push({
         id: "rx",
+        collectionId: "receivers",
         label: `Receiver: ${selectedRx.name} (${selectedRx.protocol} @ ${formatFrequencyBand(selectedRx.frequencyBandMhz)})`,
         weight: selectedRx.weightG || 0,
         weightFormatted: `${(selectedRx.weightG || 0).toFixed(2)}g`,
@@ -742,6 +752,7 @@ export function BuildWizardPage() {
       const w = (selectedRxAnt.weightG || 0) * rxAntCount;
       items.push({
         id: "rx-antenna",
+        collectionId: "antennas",
         label: `RX Antenna: ${selectedRxAnt.name} (${rxAntCount}x)`,
         weight: w,
         weightFormatted: `${w.toFixed(2)}g`,
@@ -751,6 +762,7 @@ export function BuildWizardPage() {
     if (selectedGps && !noneSelections.gps) {
       items.push({
         id: "gps",
+        collectionId: "gps-receivers",
         label: `GPS: ${selectedGps.name}`,
         weight: selectedGps.weightG || 0,
         weightFormatted: `${(selectedGps.weightG || 0).toFixed(2)}g`,
@@ -760,6 +772,7 @@ export function BuildWizardPage() {
     if (useIntegratedVtx) {
       items.push({
         id: "vtx",
+        collectionId: "video-transmitters",
         label: `VTX: ${integratedVtx ? `${integratedVtx.name} (Integrated ${integratedVtx.maxPowerMw || 400}mW)` : "Using Integrated FC VTX"}`,
         weight: 0,
         weightFormatted: "0.00g",
@@ -768,6 +781,7 @@ export function BuildWizardPage() {
     } else if (selectedVtx && !noneSelections.vtx) {
       items.push({
         id: "vtx",
+        collectionId: "video-transmitters",
         label: `VTX: ${selectedVtx.name}`,
         weight: selectedVtx.weightG || 0,
         weightFormatted: `${(selectedVtx.weightG || 0).toFixed(2)}g`,
@@ -777,6 +791,7 @@ export function BuildWizardPage() {
     if (selectedCam && !noneSelections.camera) {
       items.push({
         id: "camera",
+        collectionId: "cameras",
         label: `Camera: ${selectedCam.name}`,
         weight: selectedCam.weightG || 0,
         weightFormatted: `${(selectedCam.weightG || 0).toFixed(2)}g`,
@@ -787,6 +802,7 @@ export function BuildWizardPage() {
       const w = (selectedVtxAnt.weightG || 0) * vtxAntCount;
       items.push({
         id: "vtx-antenna",
+        collectionId: "antennas",
         label: `VTX Antenna: ${selectedVtxAnt.name} (${vtxAntCount}x)`,
         weight: w,
         weightFormatted: `${w.toFixed(2)}g`,
@@ -3796,14 +3812,27 @@ export function BuildWizardPage() {
                   {bomItems.map((item) => (
                     <div
                       key={item.id}
-                      className={`py-1.5 px-2 flex justify-between ${
+                      className={`py-1.5 px-2 flex items-center justify-between gap-2 ${
                         item.isIntegrated ? "text-zinc-500" : ""
                       }`}
                     >
-                      <span className={item.isIntegrated ? "" : "text-zinc-700 dark:text-zinc-300"}>
-                        {item.label}
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-5 h-5 rounded bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shrink-0">
+                          <CollectionIcon
+                            collection={item.collectionId}
+                            size={12}
+                            className={getCollectionColor(item.collectionId).textClass}
+                          />
+                        </div>
+                        <span
+                          className={`truncate ${item.isIntegrated ? "" : "text-zinc-700 dark:text-zinc-300"}`}
+                        >
+                          {item.label}
+                        </span>
+                      </div>
+                      <span className="text-zinc-500 font-mono shrink-0">
+                        {item.weightFormatted}
                       </span>
-                      <span className="text-zinc-500 font-mono">{item.weightFormatted}</span>
                     </div>
                   ))}
                 </div>
@@ -3922,6 +3951,16 @@ export function BuildWizardPage() {
                 batteries={batteries}
                 ariaLabel="Select test battery"
               />
+              {batteryCelFilter ? (
+                <div className="mt-1 text-[11px] p-2 rounded-lg bg-zinc-100/80 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
+                  <span className="font-semibold text-[10px] uppercase tracking-wider text-zinc-500 dark:text-zinc-400 block mb-0.5">
+                    Filter:
+                  </span>
+                  <code className="font-mono text-[10px] whitespace-pre-wrap leading-relaxed text-zinc-700 dark:text-zinc-300">
+                    {formatBatteryFilterForDisplay(batteryCelFilter)}
+                  </code>
+                </div>
+              ) : null}
             </div>
 
             {/* Runtime Payload Textbox with +/- and Quick Presets */}
@@ -4149,7 +4188,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="frames"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("frames").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4196,7 +4235,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="motors"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("motors").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4245,7 +4284,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="propellers"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("propellers").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4298,7 +4337,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="flight-controllers"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("flight-controllers").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4352,7 +4391,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="electronic-speed-controllers"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("electronic-speed-controllers").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4418,7 +4457,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="receivers"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("receivers").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4482,7 +4521,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="antennas"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("antennas").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4542,7 +4581,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="video-transmitters"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("video-transmitters").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4608,7 +4647,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="cameras"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("cameras").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4668,7 +4707,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="antennas"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("antennas").textClass}
                       />
                     </div>
                     <div className="min-w-0">
@@ -4728,7 +4767,7 @@ export function BuildWizardPage() {
                       <CollectionIcon
                         collection="gps-receivers"
                         size={13}
-                        className="text-zinc-500 dark:text-zinc-400"
+                        className={getCollectionColor("gps-receivers").textClass}
                       />
                     </div>
                     <div className="min-w-0">

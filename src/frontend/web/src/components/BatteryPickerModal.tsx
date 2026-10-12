@@ -6,6 +6,7 @@ import { X, Search, Weight, Gauge, Check, ArrowUpDown, Filter } from "lucide-rea
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
 import { CollectionIcon } from "./CollectionIcon";
+import { buildBatteryCelFilter, formatBatteryFilterForDisplay } from "../lib/batteryFilter";
 
 export interface BatteryPickerModalProps {
   isOpen: boolean;
@@ -75,6 +76,10 @@ export function BatteryPickerModal({
   const compatibleIdSet = useMemo(() => {
     return new Set(compatibleBatteries.map((b) => b.id || b.uuid).filter(Boolean));
   }, [compatibleBatteries]);
+
+  const batteryFilter = useMemo(() => {
+    return buildBatteryCelFilter(limits);
+  }, [limits]);
 
   const getIncompatibilityReason = useCallback(
     (b: Battery): string | null => {
@@ -230,6 +235,16 @@ export function BatteryPickerModal({
                   {limits.connector} Connector
                 </span>
               ) : null}
+            </div>
+          )}
+          {compatibleOnly && batteryFilter && (
+            <div className="mt-2 text-xs p-2 rounded-lg border bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-start gap-2">
+              <span className="font-semibold text-[10px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5">
+                Compatibility Filter:
+              </span>
+              <code className="font-mono text-[11px] whitespace-pre-wrap leading-relaxed text-emerald-800 dark:text-emerald-200">
+                {formatBatteryFilterForDisplay(batteryFilter)}
+              </code>
             </div>
           )}
         </div>
