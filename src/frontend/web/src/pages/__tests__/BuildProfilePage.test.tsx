@@ -340,13 +340,6 @@ describe("BuildProfilePage Component", () => {
     expect(similarPanel).not.toBeNull();
     expect(similarPanel).not.toHaveClass("hidden");
 
-    // Verify Hardware Similarity Rating header & badges
-    expect(await screen.findByText("Hardware Similarity Rating")).toBeInTheDocument();
-    expect(screen.getByText("Frame: 50%")).toBeInTheDocument();
-    expect(screen.getByText("VTX: 25%")).toBeInTheDocument();
-    expect(screen.getByText("Camera: 15%")).toBeInTheDocument();
-    expect(screen.getByText("Motors: 10%")).toBeInTheDocument();
-
     // Verify similar build card renders
     expect(await screen.findByText("Long Range Explorer 7 inch")).toBeInTheDocument();
     expect(screen.getByText("85% Match")).toBeInTheDocument();

@@ -2,7 +2,7 @@ import { useQuery } from "@connectrpc/connect-query";
 import { listSimilarBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
 import { BuildCard } from "./BuildCard";
 import { Link } from "react-router-dom";
-import { Layers, Plus, Compass, Sparkles } from "lucide-react";
+import { Layers, Plus, Compass } from "lucide-react";
 
 export interface SimilarBuildsTabProps {
   buildId: string;
@@ -19,35 +19,6 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-150">
-      {/* Weight Breakdown & Information Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-2xs">
-        <div className="space-y-1">
-          <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-            <Sparkles size={16} className="text-blue-500" />
-            <span>Hardware Similarity Rating</span>
-          </h3>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
-            Similar builds are rated by shared components and specifications with this quadcopter.
-          </p>
-        </div>
-
-        {/* Priority Weight Badges */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-            Frame: 50%
-          </span>
-          <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-            VTX: 25%
-          </span>
-          <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-            Camera: 15%
-          </span>
-          <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">
-            Motors: 10%
-          </span>
-        </div>
-      </div>
-
       {/* Loading Skeleton */}
       {isLoading && (
         <div className="space-y-4">

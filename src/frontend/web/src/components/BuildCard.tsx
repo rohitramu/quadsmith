@@ -194,11 +194,6 @@ export function BuildCard({
                     >
                       <span className="text-emerald-500 font-bold">✓</span>
                       <span>{detail.description}</span>
-                      {detail.pointsAwarded > 0 && (
-                        <span className="text-[10px] opacity-75 font-mono">
-                          ({detail.pointsAwarded} pts)
-                        </span>
-                      )}
                     </span>
                   ))}
                 </div>
