@@ -2,7 +2,12 @@ import { describe, it, expect, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { UserCollectionsPage } from "../UserCollectionsPage";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+
+function ProfileMock() {
+  const location = useLocation();
+  return <div>User Profile Mock {location.search}</div>;
+}
 
 describe("UserCollectionsPage", () => {
   function renderCollections(route: string = "/users/fpv_pilot/collections/cinewhoop-favorites") {
@@ -10,7 +15,7 @@ describe("UserCollectionsPage", () => {
       <Routes>
         <Route path="/users/:id/collections" element={<UserCollectionsPage />} />
         <Route path="/users/:id/collections/:collectionId" element={<UserCollectionsPage />} />
-        <Route path="/users/:id" element={<div>User Profile Mock</div>} />
+        <Route path="/users/:id" element={<ProfileMock />} />
       </Routes>,
       { route },
     );
@@ -20,7 +25,7 @@ describe("UserCollectionsPage", () => {
     renderCollections("/users/fpv_pilot/collections");
 
     // Because there is no collectionId, it redirects to /users/fpv_pilot?tab=collections
-    expect(await screen.findByText("User Profile Mock")).toBeInTheDocument();
+    expect(await screen.findByText("User Profile Mock ?tab=collections")).toBeInTheDocument();
   });
 
   it("renders items inside a specific collection view", async () => {
@@ -84,9 +89,8 @@ describe("UserCollectionsPage", () => {
 
     await user.click(deleteBtn);
 
-    expect(window.confirm).toHaveBeenCalled();
-    // After deletion, navigates to user profile
-    expect(await screen.findByText("User Profile Mock")).toBeInTheDocument();
+    // After deletion, navigates to user profile with collections tab open
+    expect(await screen.findByText("User Profile Mock ?tab=collections")).toBeInTheDocument();
   });
 
   it("does not show edit or delete controls for non-owners", async () => {

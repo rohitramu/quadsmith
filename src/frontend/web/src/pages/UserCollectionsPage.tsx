@@ -35,6 +35,7 @@ export function UserCollectionsPage() {
   const [isRenameOpen, setIsRenameOpen] = useState(false);
   const [renameName, setRenameName] = useState("");
   const [isSavingRename, setIsSavingRename] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const isOwner = user?.id === userId;
 
@@ -91,13 +92,18 @@ export function UserCollectionsPage() {
     }
   }
 
-  async function handleDeleteCollection(colId: string) {
+  async function handleDeleteCollection(colId?: string) {
     if (!window.confirm("Are you sure you want to delete this collection?")) return;
+    const targetColId = colId || collectionId || singleCol?.id || singleCol?.uuid;
+    if (!targetColId) return;
+    setIsDeleting(true);
+    const targetUser = singleCol?.authorUsername || userId || user?.id || "";
     try {
-      await mutateDeleteCollection({ collectionId: colId });
+      await mutateDeleteCollection({ collectionId: targetColId });
+      navigate(`/users/${targetUser}?tab=collections`, { replace: true });
       await queryClient.invalidateQueries();
-      navigate(`/users/${userId}?tab=collections`);
     } catch (err: unknown) {
+      setIsDeleting(false);
       alert(err instanceof Error ? err.message : "Failed to delete collection");
     }
   }
@@ -201,12 +207,17 @@ export function UserCollectionsPage() {
               <button
                 type="button"
                 onClick={() => handleDeleteCollection(singleCol.id)}
-                className="px-3 py-2 rounded-xl text-xs text-rose-500 hover:bg-rose-500/10 border border-rose-500/20 flex items-center gap-1.5 transition-colors cursor-pointer"
+                disabled={isDeleting}
+                className="px-3 py-2 rounded-xl text-xs text-rose-500 hover:bg-rose-500/10 border border-rose-500/20 flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
                 title="Delete collection"
                 aria-label="Delete collection"
               >
-                <Trash2 size={14} />
-                <span>Delete Collection</span>
+                {isDeleting ? (
+                  <Loader2 size={14} className="animate-spin text-rose-500" />
+                ) : (
+                  <Trash2 size={14} />
+                )}
+                <span>{isDeleting ? "Deleting..." : "Delete Collection"}</span>
               </button>
             </div>
           )}
