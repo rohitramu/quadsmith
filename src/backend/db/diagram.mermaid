@@ -694,4 +694,27 @@ erDiagram
 
     background_jobs ||--o{ background_job_attempts : has
 
+    blobs {
+        UUID uuid PK
+        TEXT id UK
+        TEXT filename
+        TEXT mime_type
+        BIGINT size_bytes
+        BYTEA bytes
+        UUID user_uuid FK
+        TIMESTAMPTZ created_at
+    }
+
+    blob_references {
+        UUID uuid PK
+        TEXT id UK
+        UUID blob_uuid FK
+        TEXT entity_type
+        UUID entity_uuid
+        TIMESTAMPTZ created_at
+    }
+
+    users ||--o{ blobs : uploads
+    blobs ||--o{ blob_references : referenced_by
+
 

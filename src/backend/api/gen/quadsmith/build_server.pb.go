@@ -251,6 +251,32 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save build: %w", err))
 	}
 
+	var blobURLs []string
+	if b.PrimaryDisplayImage != nil && *b.PrimaryDisplayImage != "" {
+		blobURLs = append(blobURLs, *b.PrimaryDisplayImage)
+	}
+	for _, m := range b.Media {
+		if m != nil && m.Url != "" {
+			blobURLs = append(blobURLs, m.Url)
+		}
+	}
+	blobRegex := regexp.MustCompile(`(?i)(?:^|/blobs/)([a-f0-9]{64}|[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})`)
+	for _, u := range blobURLs {
+		if matches := blobRegex.FindStringSubmatch(strings.TrimSpace(u)); len(matches) > 1 {
+			key := strings.ToLower(matches[1])
+			refUUID := authcontext.NewUUIDv7()
+			if _, err := tx.Exec(ctx, `
+				INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, created_at)
+				SELECT $1::uuid, 'ref-' || $1::text, b.uuid, 'build', $2::uuid, NOW()
+				FROM blobs b
+				WHERE b.id = $3 OR b.uuid::text = $3
+				ON CONFLICT (blob_uuid, entity_type, entity_uuid) DO NOTHING;`,
+				refUUID, b.Uuid, key); err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to link blob reference: %w", err))
+			}
+		}
+	}
+
 	if err := tx.Commit(ctx); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -292,6 +318,9 @@ func (s *BuildServiceHandler) DeleteBuild(ctx context.Context, req *connect.Requ
 	`, b.Uuid).Scan(&activityCount)
 	isArchived := false
 	if activityCount == 0 {
+		if _, err := tx.Exec(ctx, "DELETE FROM blob_references WHERE entity_type = 'build' AND entity_uuid = $1", b.Uuid); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete blob references: %w", err))
+		}
 		if _, err := tx.Exec(ctx, "DELETE FROM builds WHERE uuid = $1", b.Uuid); err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete build: %w", err))
 		}

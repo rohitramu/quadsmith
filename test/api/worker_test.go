@@ -52,6 +52,7 @@ func TestWorkerDaemonStatusAndTrigger(t *testing.T) {
 		"auth.cleanup_expired_otps",
 		"auth.cleanup_expired_tokens",
 		"auth.username_release_warning",
+		"blob.cleanup_orphaned_blobs",
 		"worker.cleanup_completed_jobs",
 	}
 

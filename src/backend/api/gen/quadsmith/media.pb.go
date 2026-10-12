@@ -27,6 +27,8 @@ const (
 	MediaType_MEDIA_TYPE_UNSPECIFIED MediaType = 0
 	MediaType_MEDIA_TYPE_IMAGE       MediaType = 1
 	MediaType_MEDIA_TYPE_YOUTUBE     MediaType = 2
+	MediaType_MEDIA_TYPE_MODEL_3D    MediaType = 3
+	MediaType_MEDIA_TYPE_VIDEO       MediaType = 4
 )
 
 // Enum value maps for MediaType.
@@ -35,11 +37,15 @@ var (
 		0: "MEDIA_TYPE_UNSPECIFIED",
 		1: "MEDIA_TYPE_IMAGE",
 		2: "MEDIA_TYPE_YOUTUBE",
+		3: "MEDIA_TYPE_MODEL_3D",
+		4: "MEDIA_TYPE_VIDEO",
 	}
 	MediaType_value = map[string]int32{
 		"MEDIA_TYPE_UNSPECIFIED": 0,
 		"MEDIA_TYPE_IMAGE":       1,
 		"MEDIA_TYPE_YOUTUBE":     2,
+		"MEDIA_TYPE_MODEL_3D":    3,
+		"MEDIA_TYPE_VIDEO":       4,
 	}
 )
 
@@ -149,11 +155,13 @@ const file_media_proto_rawDesc = "" +
 	"\x05title\x18\x03 \x01(\tH\x00R\x05title\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x04 \x01(\tH\x01R\vdescription\x88\x01\x01B\b\n" +
 	"\x06_titleB\x0e\n" +
-	"\f_description*U\n" +
+	"\f_description*\x84\x01\n" +
 	"\tMediaType\x12\x1a\n" +
 	"\x16MEDIA_TYPE_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10MEDIA_TYPE_IMAGE\x10\x01\x12\x16\n" +
-	"\x12MEDIA_TYPE_YOUTUBE\x10\x02B\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\x12MEDIA_TYPE_YOUTUBE\x10\x02\x12\x17\n" +
+	"\x13MEDIA_TYPE_MODEL_3D\x10\x03\x12\x14\n" +
+	"\x10MEDIA_TYPE_VIDEO\x10\x04B\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_media_proto_rawDescOnce sync.Once

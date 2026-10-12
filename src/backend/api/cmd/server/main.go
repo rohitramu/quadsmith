@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"golang.org/x/net/http2"
@@ -18,12 +19,14 @@ import (
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	"quadsmith/api/internal/authcontext"
 	"quadsmith/api/internal/engines/compatibility"
 	"quadsmith/api/internal/engines/evaluator"
 	"quadsmith/api/internal/engines/linkpreview"
 	"quadsmith/api/internal/engines/search"
 	"quadsmith/api/internal/static"
 	"quadsmith/api/pkg/auth"
+	"quadsmith/api/pkg/blob"
 	"quadsmith/api/pkg/social"
 	bconfig "quadsmith/backend/config"
 	fconfig "quadsmith/frontend/config"
@@ -137,6 +140,14 @@ func main() {
 	path_NewSocialServiceHandler, h_NewSocialServiceHandler := quadsmithconnect.NewSocialServiceHandler(social.NewSocialService(pool), handlerOpts...)
 	mux.Handle(path_NewSocialServiceHandler, h_NewSocialServiceHandler)
 
+	// Blob storage & streaming endpoints
+	blobHandler := blob.NewHandler(pool, func(ctx context.Context, r *http.Request) *authcontext.UserContext {
+		return auth.AuthenticateHTTPRequest(ctx, pool, r)
+	})
+	mux.Handle("/api/blobs", blobHandler)
+	mux.Handle("/api/blobs/", blobHandler)
+	mux.Handle("/blobs/", blobHandler)
+
 	// Public config endpoint
 	mux.HandleFunc("/api/v1/config", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
@@ -162,8 +173,8 @@ func main() {
 		maxBytes = 2 << 20
 	}
 
-	// Wrap root handler with security headers and request body size limit
-	rootHandler := securityHeadersMiddleware(http.MaxBytesHandler(mux, maxBytes))
+	// Wrap root handler with security headers and route-aware request body size limit
+	rootHandler := securityHeadersMiddleware(dynamicMaxBytesHandler(mux, maxBytes))
 
 	server := &http.Server{
 		Addr:              ":" + port,
@@ -177,6 +188,16 @@ func main() {
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("Server failed: %v", err)
 	}
+}
+
+func dynamicMaxBytesHandler(next http.Handler, defaultLimit int64) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		limit := defaultLimit
+		if strings.HasPrefix(r.URL.Path, "/api/blobs") {
+			limit = 100 << 20 // 100MB for blob uploads
+		}
+		http.MaxBytesHandler(next, limit).ServeHTTP(w, r)
+	})
 }
 
 func securityHeadersMiddleware(next http.Handler) http.Handler {

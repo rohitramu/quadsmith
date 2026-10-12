@@ -17,6 +17,7 @@ import (
 
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 	"quadsmith/api/pkg/auth"
+	"quadsmith/api/pkg/blob"
 	"quadsmith/api/pkg/worker"
 	bconfig "quadsmith/backend/config"
 )
@@ -62,6 +63,7 @@ func main() {
 
 	// 2. Register Built-in Tasks
 	auth.RegisterWorkers(reg, pool)
+	blob.RegisterWorkers(reg, pool)
 
 	// Periodic 24h task: prune completed background jobs older than 7d and failed jobs older than 30d
 	worker.RegisterPeriodic(reg, "worker.cleanup_completed_jobs", 24*time.Hour, worker.EmptyPayload{}, func(ctx context.Context, job worker.Job[worker.EmptyPayload]) error {

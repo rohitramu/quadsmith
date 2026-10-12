@@ -691,6 +691,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(searchCmd)
 
 	initAuthCommands(rootCmd, targetURL, httpClient)
+	initBlobCommands(rootCmd, targetURL, httpClient)
 
 	return rootCmd
 }

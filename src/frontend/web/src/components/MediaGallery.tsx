@@ -1,6 +1,6 @@
 import { MediaType, type Media } from "../gen/quadsmith/media_pb";
 import { getYouTubeEmbedUrl } from "../lib/format";
-import { ExternalLink, Film, Image as ImageIcon } from "lucide-react";
+import { ExternalLink, Film, Image as ImageIcon, Box, Download, Video } from "lucide-react";
 
 export interface MediaGalleryProps {
   primaryDisplayImage?: string;
@@ -36,13 +36,20 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
         </div>
       )}
 
-      {/* Media Array (Images and YouTube Links) */}
+      {/* Media Array (Images, 3D Models, Videos, and YouTube Links) */}
       {hasMedia && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {media.map((item, index) => {
             const isYoutube =
               item.type === MediaType.YOUTUBE ||
               (item.url && (item.url.includes("youtube.com") || item.url.includes("youtu.be")));
+            const isModel3D =
+              item.type === MediaType.MODEL_3D ||
+              Boolean(item.url && /\.(stl|3mf|step|stp|obj)($|\?)/i.test(item.url));
+            const isVideo =
+              item.type === MediaType.VIDEO ||
+              (!isYoutube && Boolean(item.url && /\.(mp4|webm|mov)($|\?)/i.test(item.url)));
+
             const embedUrl = isYoutube ? getYouTubeEmbedUrl(item.url) : null;
 
             return (
@@ -79,6 +86,33 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                       <ExternalLink size={12} />
                     </a>
                   </div>
+                ) : isVideo ? (
+                  <div className="relative aspect-video w-full bg-black flex items-center justify-center overflow-hidden">
+                    <video
+                      src={item.url}
+                      controls
+                      preload="metadata"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                ) : isModel3D ? (
+                  <div className="relative aspect-video w-full bg-gradient-to-br from-indigo-900/30 to-blue-900/30 dark:from-indigo-950/50 dark:to-blue-950/50 border-b border-zinc-200 dark:border-zinc-800 flex flex-col items-center justify-center p-6 text-center">
+                    <Box className="w-14 h-14 text-indigo-500 dark:text-indigo-400 mb-3 animate-pulse" />
+                    <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                      {item.title || "3D Printable Model"}
+                    </span>
+                    <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                      STL / 3MF / STEP Part
+                    </span>
+                    <a
+                      href={item.url}
+                      download
+                      className="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-colors shadow-xs"
+                    >
+                      <Download size={13} />
+                      <span>Download 3D Part</span>
+                    </a>
+                  </div>
                 ) : (
                   <div className="relative aspect-video w-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
                     <img
@@ -96,11 +130,26 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                     <div className="flex items-center gap-2 mb-1">
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
                         {isYoutube ? (
-                          <Film size={11} className="text-red-500" />
+                          <>
+                            <Film size={11} className="text-red-500" />
+                            <span>YouTube</span>
+                          </>
+                        ) : isVideo ? (
+                          <>
+                            <Video size={11} className="text-blue-500" />
+                            <span>Video</span>
+                          </>
+                        ) : isModel3D ? (
+                          <>
+                            <Box size={11} className="text-indigo-500" />
+                            <span>3D Model</span>
+                          </>
                         ) : (
-                          <ImageIcon size={11} />
+                          <>
+                            <ImageIcon size={11} />
+                            <span>Image</span>
+                          </>
                         )}
-                        <span>{isYoutube ? "YouTube" : "Image"}</span>
                       </span>
                       {item.title && (
                         <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
@@ -121,7 +170,15 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                     rel="noopener noreferrer"
                     className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 self-start font-medium"
                   >
-                    <span>{isYoutube ? "Open in YouTube" : "View Full Image"}</span>
+                    <span>
+                      {isYoutube
+                        ? "Open in YouTube"
+                        : isModel3D
+                          ? "Download File"
+                          : isVideo
+                            ? "View Raw Video"
+                            : "View Full Image"}
+                    </span>
                     <ExternalLink size={12} />
                   </a>
                 </div>

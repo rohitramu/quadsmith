@@ -154,6 +154,37 @@ CREATE INDEX IF NOT EXISTS idx_batteries_manufacturer ON batteries (manufacturer
 
 CREATE INDEX IF NOT EXISTS idx_batteries_cell_count_s ON batteries (cell_count_s);
 
+CREATE TABLE IF NOT EXISTS blobs (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  filename TEXT NOT NULL,
+  mime_type TEXT NOT NULL,
+  size_bytes BIGINT NOT NULL,
+  bytes BYTEA NOT NULL,
+  user_uuid UUID NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_blobs_id ON blobs (id);
+
+CREATE INDEX IF NOT EXISTS idx_blobs_mime_type ON blobs (mime_type);
+
+CREATE TABLE IF NOT EXISTS blob_references (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  id TEXT UNIQUE NOT NULL,
+  blob_uuid UUID NOT NULL,
+  entity_type TEXT NOT NULL,
+  entity_uuid UUID NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (blob_uuid, entity_type, entity_uuid)
+);
+
+CREATE INDEX IF NOT EXISTS idx_blob_references_entity_type ON blob_references (entity_type);
+
+CREATE INDEX IF NOT EXISTS idx_blob_references_entity_uuid ON blob_references (entity_uuid);
+
 CREATE TABLE IF NOT EXISTS builds (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
@@ -864,6 +895,12 @@ ADD CONSTRAINT fk_username_histories_user_uuid FOREIGN KEY (user_uuid) REFERENCE
 
 ALTER TABLE oauth_accounts
 ADD CONSTRAINT fk_oauth_accounts_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE blobs
+ADD CONSTRAINT fk_blobs_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE blob_references
+ADD CONSTRAINT fk_blob_references_blob_uuid FOREIGN KEY (blob_uuid) REFERENCES blobs (uuid) ON DELETE CASCADE;
 
 ALTER TABLE builds
 ADD CONSTRAINT fk_builds_frame_uuid FOREIGN KEY (frame_uuid) REFERENCES frames (uuid);
