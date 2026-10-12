@@ -56,6 +56,7 @@ import {
   mockCollections,
   mockCollectionItem1,
   mockEntitySocialSummary1,
+  mockSimilarBuilds,
 } from "./fixtures";
 
 export interface MockTransportOptions {
@@ -68,6 +69,7 @@ export interface MockTransportOptions {
   reviews?: typeof mockReviews;
   questions?: typeof mockQuestions;
   collections?: typeof mockCollections;
+  similarBuilds?: typeof mockSimilarBuilds;
   entitySocialSummary?: typeof mockEntitySocialSummary1;
   defaultBatteryId?: string;
   minVoltage?: number;
@@ -97,6 +99,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     reviews = [...(options.reviews ?? mockReviews)],
     questions = [...(options.questions ?? mockQuestions)],
     collections = [...(options.collections ?? mockCollections)],
+    similarBuilds = [...(options.similarBuilds ?? mockSimilarBuilds)],
     entitySocialSummary = options.entitySocialSummary ?? mockEntitySocialSummary1,
     nextPageToken = "",
     simulateError = false,
@@ -282,6 +285,14 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         } as unknown as Build;
         builds.push(newBuild);
         return newBuild;
+      },
+      listSimilarBuilds(_req) {
+        if (simulateError) {
+          throw new ConnectError("Failed to fetch similar builds", Code.Internal);
+        }
+        return {
+          similarBuilds,
+        };
       },
     });
 

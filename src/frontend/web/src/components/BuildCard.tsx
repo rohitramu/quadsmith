@@ -4,7 +4,6 @@ import {
   evaluateBuild,
   getBuildElectricalLimits,
 } from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
-import type { Build } from "../gen/quadsmith/build_pb";
 import {
   Gauge,
   Clock,
@@ -22,11 +21,15 @@ import { useState } from "react";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";
 
+import type { Build, ComponentMatchDetail } from "../gen/quadsmith/build_pb";
+
 export interface BuildCardProps {
   build: Build;
+  similarityScore?: number;
+  matchDetails?: ComponentMatchDetail[];
 }
 
-export function BuildCard({ build }: BuildCardProps) {
+export function BuildCard({ build, similarityScore, matchDetails }: BuildCardProps) {
   const [copied, setCopied] = useState(false);
 
   // Fetch electrical limits to determine default lightest compatible battery
@@ -128,14 +131,29 @@ export function BuildCard({ build }: BuildCardProps) {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={handleShare}
-          title="Share build link"
-          className="p-2 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
-        >
-          {copied ? <Check size={16} className="text-emerald-500" /> : <Share2 size={16} />}
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          {similarityScore !== undefined && (
+            <span
+              className={`px-2.5 py-1 rounded-full text-xs font-extrabold border ${
+                similarityScore >= 80
+                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                  : similarityScore >= 50
+                    ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30"
+                    : "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30"
+              }`}
+            >
+              {Math.round(similarityScore)}% Match
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={handleShare}
+            title="Share build link"
+            className="p-2 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
+          >
+            {copied ? <Check size={16} className="text-emerald-500" /> : <Share2 size={16} />}
+          </button>
+        </div>
       </div>
 
       {/* Visual / Banner area with schematic styling or build photo */}
@@ -220,6 +238,30 @@ export function BuildCard({ build }: BuildCardProps) {
               </span>
             )}
           </div>
+
+          {/* Similarity Matching Breakdown Chips */}
+          {matchDetails && matchDetails.length > 0 && (
+            <div className="mb-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 space-y-1.5">
+              <div className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                Matching Specifications
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {matchDetails.map((detail, idx) => (
+                  <span
+                    key={idx}
+                    className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-md font-medium ${
+                      detail.exactMatch
+                        ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                    }`}
+                  >
+                    <span>✓</span>
+                    <span>{detail.description}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Evaluation Metrics Preview */}

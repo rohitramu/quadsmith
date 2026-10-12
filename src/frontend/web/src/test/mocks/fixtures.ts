@@ -144,7 +144,12 @@ import {
 import { ReceiverSchema, type Receiver } from "../../gen/quadsmith/receiver_pb";
 import { AntennaSchema, type Antenna } from "../../gen/quadsmith/antenna_pb";
 import { GpsReceiverSchema, type GpsReceiver } from "../../gen/quadsmith/gps_receiver_pb";
-import { BuildSchema, type Build } from "../../gen/quadsmith/build_pb";
+import {
+  BuildSchema,
+  type Build,
+  SimilarBuildSchema,
+  type SimilarBuild,
+} from "../../gen/quadsmith/build_pb";
 import {
   EvaluateBuildResponseSchema,
   type EvaluateBuildResponse,
@@ -406,6 +411,36 @@ export const mockBuild2: Build = create(BuildSchema, {
 });
 
 export const mockBuilds: Build[] = [mockBuild1, mockBuild2];
+
+export const mockSimilarBuild1: SimilarBuild = create(SimilarBuildSchema, {
+  build: mockBuild2,
+  similarityScore: 85,
+  matchDetails: [
+    {
+      component: "frame",
+      exactMatch: true,
+      description: "Identical Master 5 V2 Frame",
+      pointsAwarded: 50,
+      maxPoints: 50,
+    },
+    {
+      component: "video_transmitter",
+      exactMatch: true,
+      description: "Identical Unify Pro32 Nano VTX",
+      pointsAwarded: 25,
+      maxPoints: 25,
+    },
+    {
+      component: "motor",
+      exactMatch: false,
+      description: "Same 2207 Stator & KV Band",
+      pointsAwarded: 10,
+      maxPoints: 10,
+    },
+  ],
+});
+
+export const mockSimilarBuilds: SimilarBuild[] = [mockSimilarBuild1];
 
 export const mockEvaluation1: EvaluateBuildResponse = create(EvaluateBuildResponseSchema, {
   allUpWeightG: 565.5,

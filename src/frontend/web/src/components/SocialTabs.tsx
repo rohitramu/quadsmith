@@ -5,19 +5,23 @@ import {
   listUserCollections,
 } from "../gen/quadsmith/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
-import { ThumbsUp, HelpCircle, Bookmark, Star, ArrowUpRight, Plus, Archive } from "lucide-react";
+import { ThumbsUp, HelpCircle, Bookmark, Star, ArrowUpRight, Plus, Archive, Sparkles } from "lucide-react";
 import { SocialReviewSection } from "./SocialReviewSection";
 import { SocialQaSection } from "./SocialQaSection";
+import { SimilarBuildsTab } from "./SimilarBuildsTab";
 import { SaveToCollectionModal } from "./SaveToCollectionModal";
+import { listSimilarBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
 import { Link } from "react-router-dom";
+
+export type SocialTabType = "reviews" | "qa" | "similar" | "collections";
 
 export interface SocialTabsProps {
   target: { type?: "build" | "component"; id: string; collection?: string };
   targetAuthorUuid?: string;
   entityName?: string;
-  defaultTab?: "reviews" | "qa" | "collections";
-  activeTab?: "reviews" | "qa" | "collections";
-  onTabChange?: (tab: "reviews" | "qa" | "collections") => void;
+  defaultTab?: SocialTabType;
+  activeTab?: SocialTabType;
+  onTabChange?: (tab: SocialTabType) => void;
 }
 
 export function SocialTabs({
@@ -28,7 +32,7 @@ export function SocialTabs({
   activeTab: controlledActiveTab,
   onTabChange,
 }: SocialTabsProps) {
-  const [internalActiveTab, setInternalActiveTab] = useState<"reviews" | "qa" | "collections">(
+  const [internalActiveTab, setInternalActiveTab] = useState<SocialTabType>(
     controlledActiveTab || defaultTab,
   );
   const activeTab = controlledActiveTab !== undefined ? controlledActiveTab : internalActiveTab;
@@ -55,12 +59,20 @@ export function SocialTabs({
     });
   }, [activeTab]);
 
-  const handleTabSelect = (tab: "reviews" | "qa" | "collections") => {
+  const handleTabSelect = (tab: SocialTabType) => {
     if (controlledActiveTab === undefined) {
       setInternalActiveTab(tab);
     }
     onTabChange?.(tab);
   };
+
+  const isBuild = target.type === "build";
+  const { data: similarRes } = useQuery(
+    listSimilarBuilds,
+    { buildId: target.id, limit: 6 },
+    { enabled: isBuild && !!target.id, staleTime: 60_000 },
+  );
+  const similarCount = similarRes?.similarBuilds?.length ?? 0;
 
   const queryPayload = {
     entityId: target.id,
@@ -129,6 +141,24 @@ export function SocialTabs({
           </span>
         </button>
 
+        {isBuild && (
+          <button
+            type="button"
+            onClick={() => handleTabSelect("similar")}
+            className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+              activeTab === "similar"
+                ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+            }`}
+          >
+            <Sparkles size={16} />
+            <span>Similar Builds</span>
+            <span className="px-2 py-0.5 rounded-full text-[11px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono">
+              {similarCount}
+            </span>
+          </button>
+        )}
+
         <button
           type="button"
           onClick={() => handleTabSelect("collections")}
@@ -179,6 +209,16 @@ export function SocialTabs({
             entityName={entityName}
             isArchived={isArchived}
           />
+        </div>
+      )}
+
+      {/* Tab: Similar Builds */}
+      {isBuild && visitedTabs.has("similar") && (
+        <div
+          id="similar"
+          className={`animate-in fade-in duration-150 ${activeTab === "similar" ? "" : "hidden"}`}
+        >
+          <SimilarBuildsTab buildId={target.id} />
         </div>
       )}
 

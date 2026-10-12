@@ -43,6 +43,9 @@ const (
 	// BuildServiceDeleteBuildProcedure is the fully-qualified name of the BuildService's DeleteBuild
 	// RPC.
 	BuildServiceDeleteBuildProcedure = "/quadsmith.BuildService/DeleteBuild"
+	// BuildServiceListSimilarBuildsProcedure is the fully-qualified name of the BuildService's
+	// ListSimilarBuilds RPC.
+	BuildServiceListSimilarBuildsProcedure = "/quadsmith.BuildService/ListSimilarBuilds"
 )
 
 // BuildServiceClient is a client for the quadsmith.BuildService service.
@@ -51,6 +54,7 @@ type BuildServiceClient interface {
 	ListBuilds(context.Context, *connect.Request[quadsmith.ListBuildsRequest]) (*connect.Response[quadsmith.ListBuildsResponse], error)
 	CreateBuild(context.Context, *connect.Request[quadsmith.CreateBuildRequest]) (*connect.Response[quadsmith.Build], error)
 	DeleteBuild(context.Context, *connect.Request[quadsmith.DeleteBuildRequest]) (*connect.Response[quadsmith.DeleteBuildResponse], error)
+	ListSimilarBuilds(context.Context, *connect.Request[quadsmith.ListSimilarBuildsRequest]) (*connect.Response[quadsmith.ListSimilarBuildsResponse], error)
 }
 
 // NewBuildServiceClient constructs a client for the quadsmith.BuildService service. By default, it
@@ -88,15 +92,22 @@ func NewBuildServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(buildServiceMethods.ByName("DeleteBuild")),
 			connect.WithClientOptions(opts...),
 		),
+		listSimilarBuilds: connect.NewClient[quadsmith.ListSimilarBuildsRequest, quadsmith.ListSimilarBuildsResponse](
+			httpClient,
+			baseURL+BuildServiceListSimilarBuildsProcedure,
+			connect.WithSchema(buildServiceMethods.ByName("ListSimilarBuilds")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // buildServiceClient implements BuildServiceClient.
 type buildServiceClient struct {
-	getBuild    *connect.Client[quadsmith.GetBuildRequest, quadsmith.Build]
-	listBuilds  *connect.Client[quadsmith.ListBuildsRequest, quadsmith.ListBuildsResponse]
-	createBuild *connect.Client[quadsmith.CreateBuildRequest, quadsmith.Build]
-	deleteBuild *connect.Client[quadsmith.DeleteBuildRequest, quadsmith.DeleteBuildResponse]
+	getBuild          *connect.Client[quadsmith.GetBuildRequest, quadsmith.Build]
+	listBuilds        *connect.Client[quadsmith.ListBuildsRequest, quadsmith.ListBuildsResponse]
+	createBuild       *connect.Client[quadsmith.CreateBuildRequest, quadsmith.Build]
+	deleteBuild       *connect.Client[quadsmith.DeleteBuildRequest, quadsmith.DeleteBuildResponse]
+	listSimilarBuilds *connect.Client[quadsmith.ListSimilarBuildsRequest, quadsmith.ListSimilarBuildsResponse]
 }
 
 // GetBuild calls quadsmith.BuildService.GetBuild.
@@ -119,12 +130,18 @@ func (c *buildServiceClient) DeleteBuild(ctx context.Context, req *connect.Reque
 	return c.deleteBuild.CallUnary(ctx, req)
 }
 
+// ListSimilarBuilds calls quadsmith.BuildService.ListSimilarBuilds.
+func (c *buildServiceClient) ListSimilarBuilds(ctx context.Context, req *connect.Request[quadsmith.ListSimilarBuildsRequest]) (*connect.Response[quadsmith.ListSimilarBuildsResponse], error) {
+	return c.listSimilarBuilds.CallUnary(ctx, req)
+}
+
 // BuildServiceHandler is an implementation of the quadsmith.BuildService service.
 type BuildServiceHandler interface {
 	GetBuild(context.Context, *connect.Request[quadsmith.GetBuildRequest]) (*connect.Response[quadsmith.Build], error)
 	ListBuilds(context.Context, *connect.Request[quadsmith.ListBuildsRequest]) (*connect.Response[quadsmith.ListBuildsResponse], error)
 	CreateBuild(context.Context, *connect.Request[quadsmith.CreateBuildRequest]) (*connect.Response[quadsmith.Build], error)
 	DeleteBuild(context.Context, *connect.Request[quadsmith.DeleteBuildRequest]) (*connect.Response[quadsmith.DeleteBuildResponse], error)
+	ListSimilarBuilds(context.Context, *connect.Request[quadsmith.ListSimilarBuildsRequest]) (*connect.Response[quadsmith.ListSimilarBuildsResponse], error)
 }
 
 // NewBuildServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -158,6 +175,12 @@ func NewBuildServiceHandler(svc BuildServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(buildServiceMethods.ByName("DeleteBuild")),
 		connect.WithHandlerOptions(opts...),
 	)
+	buildServiceListSimilarBuildsHandler := connect.NewUnaryHandler(
+		BuildServiceListSimilarBuildsProcedure,
+		svc.ListSimilarBuilds,
+		connect.WithSchema(buildServiceMethods.ByName("ListSimilarBuilds")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.BuildService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case BuildServiceGetBuildProcedure:
@@ -168,6 +191,8 @@ func NewBuildServiceHandler(svc BuildServiceHandler, opts ...connect.HandlerOpti
 			buildServiceCreateBuildHandler.ServeHTTP(w, r)
 		case BuildServiceDeleteBuildProcedure:
 			buildServiceDeleteBuildHandler.ServeHTTP(w, r)
+		case BuildServiceListSimilarBuildsProcedure:
+			buildServiceListSimilarBuildsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -191,4 +216,8 @@ func (UnimplementedBuildServiceHandler) CreateBuild(context.Context, *connect.Re
 
 func (UnimplementedBuildServiceHandler) DeleteBuild(context.Context, *connect.Request[quadsmith.DeleteBuildRequest]) (*connect.Response[quadsmith.DeleteBuildResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.BuildService.DeleteBuild is not implemented"))
+}
+
+func (UnimplementedBuildServiceHandler) ListSimilarBuilds(context.Context, *connect.Request[quadsmith.ListSimilarBuildsRequest]) (*connect.Response[quadsmith.ListSimilarBuildsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.BuildService.ListSimilarBuilds is not implemented"))
 }

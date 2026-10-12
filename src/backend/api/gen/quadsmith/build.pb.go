@@ -537,6 +537,238 @@ func (x *DeleteBuildResponse) GetIsArchived() bool {
 	return false
 }
 
+type ComponentMatchDetail struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Component     string                 `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
+	ExactMatch    bool                   `protobuf:"varint,2,opt,name=exact_match,json=exactMatch,proto3" json:"exact_match,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	PointsAwarded float64                `protobuf:"fixed64,4,opt,name=points_awarded,json=pointsAwarded,proto3" json:"points_awarded,omitempty"`
+	MaxPoints     float64                `protobuf:"fixed64,5,opt,name=max_points,json=maxPoints,proto3" json:"max_points,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ComponentMatchDetail) Reset() {
+	*x = ComponentMatchDetail{}
+	mi := &file_build_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ComponentMatchDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ComponentMatchDetail) ProtoMessage() {}
+
+func (x *ComponentMatchDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_build_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ComponentMatchDetail.ProtoReflect.Descriptor instead.
+func (*ComponentMatchDetail) Descriptor() ([]byte, []int) {
+	return file_build_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ComponentMatchDetail) GetComponent() string {
+	if x != nil {
+		return x.Component
+	}
+	return ""
+}
+
+func (x *ComponentMatchDetail) GetExactMatch() bool {
+	if x != nil {
+		return x.ExactMatch
+	}
+	return false
+}
+
+func (x *ComponentMatchDetail) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *ComponentMatchDetail) GetPointsAwarded() float64 {
+	if x != nil {
+		return x.PointsAwarded
+	}
+	return 0
+}
+
+func (x *ComponentMatchDetail) GetMaxPoints() float64 {
+	if x != nil {
+		return x.MaxPoints
+	}
+	return 0
+}
+
+type SimilarBuild struct {
+	state           protoimpl.MessageState  `protogen:"open.v1"`
+	Build           *Build                  `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+	SimilarityScore float64                 `protobuf:"fixed64,2,opt,name=similarity_score,json=similarityScore,proto3" json:"similarity_score,omitempty"`
+	MatchDetails    []*ComponentMatchDetail `protobuf:"bytes,3,rep,name=match_details,json=matchDetails,proto3" json:"match_details,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SimilarBuild) Reset() {
+	*x = SimilarBuild{}
+	mi := &file_build_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SimilarBuild) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SimilarBuild) ProtoMessage() {}
+
+func (x *SimilarBuild) ProtoReflect() protoreflect.Message {
+	mi := &file_build_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SimilarBuild.ProtoReflect.Descriptor instead.
+func (*SimilarBuild) Descriptor() ([]byte, []int) {
+	return file_build_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *SimilarBuild) GetBuild() *Build {
+	if x != nil {
+		return x.Build
+	}
+	return nil
+}
+
+func (x *SimilarBuild) GetSimilarityScore() float64 {
+	if x != nil {
+		return x.SimilarityScore
+	}
+	return 0
+}
+
+func (x *SimilarBuild) GetMatchDetails() []*ComponentMatchDetail {
+	if x != nil {
+		return x.MatchDetails
+	}
+	return nil
+}
+
+type ListSimilarBuildsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BuildId       string                 `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSimilarBuildsRequest) Reset() {
+	*x = ListSimilarBuildsRequest{}
+	mi := &file_build_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSimilarBuildsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSimilarBuildsRequest) ProtoMessage() {}
+
+func (x *ListSimilarBuildsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_build_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSimilarBuildsRequest.ProtoReflect.Descriptor instead.
+func (*ListSimilarBuildsRequest) Descriptor() ([]byte, []int) {
+	return file_build_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ListSimilarBuildsRequest) GetBuildId() string {
+	if x != nil {
+		return x.BuildId
+	}
+	return ""
+}
+
+func (x *ListSimilarBuildsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type ListSimilarBuildsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SimilarBuilds []*SimilarBuild        `protobuf:"bytes,1,rep,name=similar_builds,json=similarBuilds,proto3" json:"similar_builds,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSimilarBuildsResponse) Reset() {
+	*x = ListSimilarBuildsResponse{}
+	mi := &file_build_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSimilarBuildsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSimilarBuildsResponse) ProtoMessage() {}
+
+func (x *ListSimilarBuildsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_build_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSimilarBuildsResponse.ProtoReflect.Descriptor instead.
+func (*ListSimilarBuildsResponse) Descriptor() ([]byte, []int) {
+	return file_build_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ListSimilarBuildsResponse) GetSimilarBuilds() []*SimilarBuild {
+	if x != nil {
+		return x.SimilarBuilds
+	}
+	return nil
+}
+
 var File_build_proto protoreflect.FileDescriptor
 
 const file_build_proto_rawDesc = "" +
@@ -593,13 +825,31 @@ const file_build_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"6\n" +
 	"\x13DeleteBuildResponse\x12\x1f\n" +
 	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived2\xa1\x02\n" +
+	"isArchived\"\xbd\x01\n" +
+	"\x14ComponentMatchDetail\x12\x1c\n" +
+	"\tcomponent\x18\x01 \x01(\tR\tcomponent\x12\x1f\n" +
+	"\vexact_match\x18\x02 \x01(\bR\n" +
+	"exactMatch\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12%\n" +
+	"\x0epoints_awarded\x18\x04 \x01(\x01R\rpointsAwarded\x12\x1d\n" +
+	"\n" +
+	"max_points\x18\x05 \x01(\x01R\tmaxPoints\"\xa7\x01\n" +
+	"\fSimilarBuild\x12&\n" +
+	"\x05build\x18\x01 \x01(\v2\x10.quadsmith.BuildR\x05build\x12)\n" +
+	"\x10similarity_score\x18\x02 \x01(\x01R\x0fsimilarityScore\x12D\n" +
+	"\rmatch_details\x18\x03 \x03(\v2\x1f.quadsmith.ComponentMatchDetailR\fmatchDetails\"K\n" +
+	"\x18ListSimilarBuildsRequest\x12\x19\n" +
+	"\bbuild_id\x18\x01 \x01(\tR\abuildId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"[\n" +
+	"\x19ListSimilarBuildsResponse\x12>\n" +
+	"\x0esimilar_builds\x18\x01 \x03(\v2\x17.quadsmith.SimilarBuildR\rsimilarBuilds2\x81\x03\n" +
 	"\fBuildService\x128\n" +
 	"\bGetBuild\x12\x1a.quadsmith.GetBuildRequest\x1a\x10.quadsmith.Build\x12I\n" +
 	"\n" +
 	"ListBuilds\x12\x1c.quadsmith.ListBuildsRequest\x1a\x1d.quadsmith.ListBuildsResponse\x12>\n" +
 	"\vCreateBuild\x12\x1d.quadsmith.CreateBuildRequest\x1a\x10.quadsmith.Build\x12L\n" +
-	"\vDeleteBuild\x12\x1d.quadsmith.DeleteBuildRequest\x1a\x1e.quadsmith.DeleteBuildResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"\vDeleteBuild\x12\x1d.quadsmith.DeleteBuildRequest\x1a\x1e.quadsmith.DeleteBuildResponse\x12^\n" +
+	"\x11ListSimilarBuilds\x12#.quadsmith.ListSimilarBuildsRequest\x1a$.quadsmith.ListSimilarBuildsResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
 
 var (
 	file_build_proto_rawDescOnce sync.Once
@@ -613,36 +863,45 @@ func file_build_proto_rawDescGZIP() []byte {
 	return file_build_proto_rawDescData
 }
 
-var file_build_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_build_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_build_proto_goTypes = []any{
-	(*Build)(nil),               // 0: quadsmith.Build
-	(*GetBuildRequest)(nil),     // 1: quadsmith.GetBuildRequest
-	(*ListBuildsRequest)(nil),   // 2: quadsmith.ListBuildsRequest
-	(*ListBuildsResponse)(nil),  // 3: quadsmith.ListBuildsResponse
-	(*CreateBuildRequest)(nil),  // 4: quadsmith.CreateBuildRequest
-	(*DeleteBuildRequest)(nil),  // 5: quadsmith.DeleteBuildRequest
-	(*DeleteBuildResponse)(nil), // 6: quadsmith.DeleteBuildResponse
-	(*ReferenceLink)(nil),       // 7: quadsmith.ReferenceLink
-	(*Media)(nil),               // 8: quadsmith.Media
+	(*Build)(nil),                     // 0: quadsmith.Build
+	(*GetBuildRequest)(nil),           // 1: quadsmith.GetBuildRequest
+	(*ListBuildsRequest)(nil),         // 2: quadsmith.ListBuildsRequest
+	(*ListBuildsResponse)(nil),        // 3: quadsmith.ListBuildsResponse
+	(*CreateBuildRequest)(nil),        // 4: quadsmith.CreateBuildRequest
+	(*DeleteBuildRequest)(nil),        // 5: quadsmith.DeleteBuildRequest
+	(*DeleteBuildResponse)(nil),       // 6: quadsmith.DeleteBuildResponse
+	(*ComponentMatchDetail)(nil),      // 7: quadsmith.ComponentMatchDetail
+	(*SimilarBuild)(nil),              // 8: quadsmith.SimilarBuild
+	(*ListSimilarBuildsRequest)(nil),  // 9: quadsmith.ListSimilarBuildsRequest
+	(*ListSimilarBuildsResponse)(nil), // 10: quadsmith.ListSimilarBuildsResponse
+	(*ReferenceLink)(nil),             // 11: quadsmith.ReferenceLink
+	(*Media)(nil),                     // 12: quadsmith.Media
 }
 var file_build_proto_depIdxs = []int32{
-	7, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
-	8, // 1: quadsmith.Build.media:type_name -> quadsmith.Media
-	0, // 2: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
-	0, // 3: quadsmith.CreateBuildRequest.build:type_name -> quadsmith.Build
-	1, // 4: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
-	2, // 5: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
-	4, // 6: quadsmith.BuildService.CreateBuild:input_type -> quadsmith.CreateBuildRequest
-	5, // 7: quadsmith.BuildService.DeleteBuild:input_type -> quadsmith.DeleteBuildRequest
-	0, // 8: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
-	3, // 9: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
-	0, // 10: quadsmith.BuildService.CreateBuild:output_type -> quadsmith.Build
-	6, // 11: quadsmith.BuildService.DeleteBuild:output_type -> quadsmith.DeleteBuildResponse
-	8, // [8:12] is the sub-list for method output_type
-	4, // [4:8] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	11, // 0: quadsmith.Build.reference_links:type_name -> quadsmith.ReferenceLink
+	12, // 1: quadsmith.Build.media:type_name -> quadsmith.Media
+	0,  // 2: quadsmith.ListBuildsResponse.builds:type_name -> quadsmith.Build
+	0,  // 3: quadsmith.CreateBuildRequest.build:type_name -> quadsmith.Build
+	0,  // 4: quadsmith.SimilarBuild.build:type_name -> quadsmith.Build
+	7,  // 5: quadsmith.SimilarBuild.match_details:type_name -> quadsmith.ComponentMatchDetail
+	8,  // 6: quadsmith.ListSimilarBuildsResponse.similar_builds:type_name -> quadsmith.SimilarBuild
+	1,  // 7: quadsmith.BuildService.GetBuild:input_type -> quadsmith.GetBuildRequest
+	2,  // 8: quadsmith.BuildService.ListBuilds:input_type -> quadsmith.ListBuildsRequest
+	4,  // 9: quadsmith.BuildService.CreateBuild:input_type -> quadsmith.CreateBuildRequest
+	5,  // 10: quadsmith.BuildService.DeleteBuild:input_type -> quadsmith.DeleteBuildRequest
+	9,  // 11: quadsmith.BuildService.ListSimilarBuilds:input_type -> quadsmith.ListSimilarBuildsRequest
+	0,  // 12: quadsmith.BuildService.GetBuild:output_type -> quadsmith.Build
+	3,  // 13: quadsmith.BuildService.ListBuilds:output_type -> quadsmith.ListBuildsResponse
+	0,  // 14: quadsmith.BuildService.CreateBuild:output_type -> quadsmith.Build
+	6,  // 15: quadsmith.BuildService.DeleteBuild:output_type -> quadsmith.DeleteBuildResponse
+	10, // 16: quadsmith.BuildService.ListSimilarBuilds:output_type -> quadsmith.ListSimilarBuildsResponse
+	12, // [12:17] is the sub-list for method output_type
+	7,  // [7:12] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_build_proto_init() }
@@ -661,7 +920,7 @@ func file_build_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_build_proto_rawDesc), len(file_build_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

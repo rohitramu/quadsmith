@@ -23,3 +23,8 @@ export const createBuild = BuildService.method.createBuild;
  * @generated from rpc quadsmith.BuildService.DeleteBuild
  */
 export const deleteBuild = BuildService.method.deleteBuild;
+
+/**
+ * @generated from rpc quadsmith.BuildService.ListSimilarBuilds
+ */
+export const listSimilarBuilds = BuildService.method.listSimilarBuilds;

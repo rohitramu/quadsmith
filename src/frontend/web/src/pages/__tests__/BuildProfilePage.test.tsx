@@ -320,4 +320,65 @@ describe("BuildProfilePage Component", () => {
       screen.queryByText(/no batteries in the database match the electrical requirements/i),
     ).not.toBeInTheDocument();
   });
+
+  it("renders Similar Builds tab in social section and displays similar build cards with match details", async () => {
+    const { user } = renderBuildProfile();
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
+    ).toBeInTheDocument();
+
+    // Verify Similar Builds tab is present
+    const similarTabBtn = screen.getByRole("button", { name: /Similar Builds/i });
+    expect(similarTabBtn).toBeInTheDocument();
+
+    // Click Similar Builds tab
+    await user.click(similarTabBtn);
+
+    // Verify Similar Builds panel is displayed
+    const similarPanel = document.getElementById("similar");
+    expect(similarPanel).not.toBeNull();
+    expect(similarPanel).not.toHaveClass("hidden");
+
+    // Verify Hardware Similarity Rating header & badges
+    expect(await screen.findByText("Hardware Similarity Rating")).toBeInTheDocument();
+    expect(screen.getByText("Frame: 50%")).toBeInTheDocument();
+    expect(screen.getByText("VTX: 25%")).toBeInTheDocument();
+    expect(screen.getByText("Camera: 15%")).toBeInTheDocument();
+    expect(screen.getByText("Motors: 10%")).toBeInTheDocument();
+
+    // Verify similar build card renders
+    expect(await screen.findByText("Long Range Explorer 7 inch")).toBeInTheDocument();
+    expect(screen.getByText("85% Match")).toBeInTheDocument();
+    expect(screen.getByText("Identical Master 5 V2 Frame")).toBeInTheDocument();
+    expect(screen.getByText("Identical Unify Pro32 Nano VTX")).toBeInTheDocument();
+    expect(screen.getByText("Same 2207 Stator & KV Band")).toBeInTheDocument();
+  });
+
+  it("displays empty state when no similar builds meet the similarity threshold", async () => {
+    const { user } = renderWithProviders(
+      <Routes>
+        <Route path="/builds/:buildId" element={<BuildProfilePage />} />
+      </Routes>,
+      {
+        route: `/builds/bando-basher-5-inch`,
+        transportOptions: {
+          similarBuilds: [],
+        },
+      },
+    );
+
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
+    ).toBeInTheDocument();
+
+    const similarTabBtn = screen.getByRole("button", { name: /Similar Builds/i });
+    await user.click(similarTabBtn);
+
+    expect(await screen.findByText("No Similar Builds Found")).toBeInTheDocument();
+    expect(
+      screen.getByText(/no other builds in the database share 25% or more/i),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /create build variant/i })).toBeInTheDocument();
+  });
 });

@@ -107,6 +107,29 @@ message DeleteBuildResponse {
   bool is_archived = 1;
 }
 
+message ComponentMatchDetail {
+  string component = 1;
+  bool exact_match = 2;
+  string description = 3;
+  double points_awarded = 4;
+  double max_points = 5;
+}
+
+message SimilarBuild {
+  Build build = 1;
+  double similarity_score = 2;
+  repeated ComponentMatchDetail match_details = 3;
+}
+
+message ListSimilarBuildsRequest {
+  string build_id = 1;
+  int32 limit = 2;
+}
+
+message ListSimilarBuildsResponse {
+  repeated SimilarBuild similar_builds = 1;
+}
+
 // ---------------------------------------------------------
 // gRPC Service
 // ---------------------------------------------------------
@@ -115,4 +138,5 @@ service BuildService {
   rpc ListBuilds(ListBuildsRequest) returns (ListBuildsResponse);
   rpc CreateBuild(CreateBuildRequest) returns (Build);
   rpc DeleteBuild(DeleteBuildRequest) returns (DeleteBuildResponse);
+  rpc ListSimilarBuilds(ListSimilarBuildsRequest) returns (ListSimilarBuildsResponse);
 }

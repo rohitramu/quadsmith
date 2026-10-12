@@ -9,11 +9,13 @@ import (
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"math"
 	"quadsmith/api/internal/authcontext"
 	"quadsmith/api/internal/buildid"
 	"quadsmith/api/internal/cel2sql"
 	"quadsmith/api/internal/pagination"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -306,4 +308,280 @@ func (s *BuildServiceHandler) DeleteBuild(ctx context.Context, req *connect.Requ
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	return connect.NewResponse(&DeleteBuildResponse{IsArchived: isArchived}), nil
+}
+
+// ScoreSimilarity calculates the tiered similarity score between a target build and a candidate build.
+func ScoreSimilarity(
+	target *Build,
+	targetFrame *Frame,
+	targetVtx *VideoTransmitter,
+	targetCam *Camera,
+	targetMotor *Motor,
+	cand *Build,
+	candFrame *Frame,
+	candVtx *VideoTransmitter,
+	candCam *Camera,
+	candMotor *Motor,
+) (float64, []*ComponentMatchDetail) {
+	var details []*ComponentMatchDetail
+	totalScore := 0.0
+
+	// 1. Frame scoring (max 50 pts)
+	if target.FrameUuid != "" && cand.FrameUuid != "" && target.FrameUuid == cand.FrameUuid {
+		totalScore += 50.0
+		desc := "Identical Frame"
+		if targetFrame != nil && targetFrame.Name != "" {
+			desc = fmt.Sprintf("Identical %s Frame", targetFrame.Name)
+		}
+		details = append(details, &ComponentMatchDetail{
+			Component:     "frame",
+			ExactMatch:    true,
+			Description:   desc,
+			PointsAwarded: 50.0,
+			MaxPoints:     50.0,
+		})
+	} else if targetFrame != nil && candFrame != nil {
+		samePropSize := math.Abs(float64(targetFrame.MaxPropSizeMm-candFrame.MaxPropSizeMm)) <= 10.0
+		sameGeometry := strings.EqualFold(strings.TrimSpace(targetFrame.Geometry), strings.TrimSpace(candFrame.Geometry)) && targetFrame.Geometry != ""
+		if samePropSize && sameGeometry {
+			totalScore += 25.0
+			details = append(details, &ComponentMatchDetail{
+				Component:     "frame",
+				ExactMatch:    false,
+				Description:   fmt.Sprintf("Same %s Frame Class", targetFrame.Geometry),
+				PointsAwarded: 25.0,
+				MaxPoints:     50.0,
+			})
+		} else if samePropSize {
+			totalScore += 15.0
+			propInches := float64(targetFrame.MaxPropSizeMm) / 25.4
+			details = append(details, &ComponentMatchDetail{
+				Component:     "frame",
+				ExactMatch:    false,
+				Description:   fmt.Sprintf("Same %.0f″ Prop Size Class", propInches),
+				PointsAwarded: 15.0,
+				MaxPoints:     50.0,
+			})
+		}
+	}
+
+	// 2. Video Transmitter scoring (max 25 pts)
+	if target.VideoTransmitterUuid != "" && cand.VideoTransmitterUuid != "" && target.VideoTransmitterUuid == cand.VideoTransmitterUuid {
+		totalScore += 25.0
+		desc := "Identical VTX"
+		if targetVtx != nil && targetVtx.Name != "" {
+			desc = fmt.Sprintf("Identical %s VTX", targetVtx.Name)
+		}
+		details = append(details, &ComponentMatchDetail{
+			Component:     "video_transmitter",
+			ExactMatch:    true,
+			Description:   desc,
+			PointsAwarded: 25.0,
+			MaxPoints:     25.0,
+		})
+	} else if targetVtx != nil && candVtx != nil {
+		sameProtocol := strings.EqualFold(strings.TrimSpace(targetVtx.Protocol), strings.TrimSpace(candVtx.Protocol)) && targetVtx.Protocol != ""
+		if sameProtocol {
+			totalScore += 15.0
+			details = append(details, &ComponentMatchDetail{
+				Component:     "video_transmitter",
+				ExactMatch:    false,
+				Description:   fmt.Sprintf("Same %s Video Protocol", targetVtx.Protocol),
+				PointsAwarded: 15.0,
+				MaxPoints:     25.0,
+			})
+		}
+	}
+
+	// 3. Camera scoring (max 15 pts)
+	exactCam := false
+	for _, tCam := range target.CameraUuids {
+		if tCam == "" {
+			continue
+		}
+		for _, cCam := range cand.CameraUuids {
+			if cCam == tCam {
+				exactCam = true
+				break
+			}
+		}
+		if exactCam {
+			break
+		}
+	}
+	if exactCam {
+		totalScore += 15.0
+		desc := "Identical Camera"
+		if targetCam != nil && targetCam.Name != "" {
+			desc = fmt.Sprintf("Identical %s Camera", targetCam.Name)
+		}
+		details = append(details, &ComponentMatchDetail{
+			Component:     "camera",
+			ExactMatch:    true,
+			Description:   desc,
+			PointsAwarded: 15.0,
+			MaxPoints:     15.0,
+		})
+	} else if targetCam != nil && candCam != nil {
+		sameProtocol := strings.EqualFold(strings.TrimSpace(targetCam.Protocol), strings.TrimSpace(candCam.Protocol)) && targetCam.Protocol != ""
+		if sameProtocol {
+			totalScore += 9.0
+			details = append(details, &ComponentMatchDetail{
+				Component:     "camera",
+				ExactMatch:    false,
+				Description:   fmt.Sprintf("Same %s Camera Protocol", targetCam.Protocol),
+				PointsAwarded: 9.0,
+				MaxPoints:     15.0,
+			})
+		} else if targetCam.WidthMm > 0 && candCam.WidthMm == targetCam.WidthMm {
+			totalScore += 5.0
+			details = append(details, &ComponentMatchDetail{
+				Component:     "camera",
+				ExactMatch:    false,
+				Description:   fmt.Sprintf("Same %dmm Camera Size", targetCam.WidthMm),
+				PointsAwarded: 5.0,
+				MaxPoints:     15.0,
+			})
+		}
+	}
+
+	// 4. Motor scoring (max 10 pts)
+	if target.MotorUuid != "" && cand.MotorUuid != "" && target.MotorUuid == cand.MotorUuid {
+		totalScore += 10.0
+		desc := "Identical Motors"
+		if targetMotor != nil && targetMotor.Name != "" {
+			desc = fmt.Sprintf("Identical %s Motors", targetMotor.Name)
+		}
+		details = append(details, &ComponentMatchDetail{
+			Component:     "motor",
+			ExactMatch:    true,
+			Description:   desc,
+			PointsAwarded: 10.0,
+			MaxPoints:     10.0,
+		})
+	} else if targetMotor != nil && candMotor != nil {
+		sameStator := targetMotor.StatorDiameterMm > 0 && targetMotor.StatorHeightMm > 0 && targetMotor.StatorDiameterMm == candMotor.StatorDiameterMm && targetMotor.StatorHeightMm == candMotor.StatorHeightMm
+		if sameStator {
+			statorStr := fmt.Sprintf("%.0f%.0f", targetMotor.StatorDiameterMm, targetMotor.StatorHeightMm*10)
+			if targetMotor.Kv > 0 && math.Abs(float64(targetMotor.Kv)-float64(candMotor.Kv)) <= float64(targetMotor.Kv)*0.20 {
+				totalScore += 6.0
+				details = append(details, &ComponentMatchDetail{
+					Component:     "motor",
+					ExactMatch:    false,
+					Description:   fmt.Sprintf("Same %s Stator & KV Band", statorStr),
+					PointsAwarded: 6.0,
+					MaxPoints:     10.0,
+				})
+			} else {
+				totalScore += 4.0
+				details = append(details, &ComponentMatchDetail{
+					Component:     "motor",
+					ExactMatch:    false,
+					Description:   fmt.Sprintf("Same %s Stator Size", statorStr),
+					PointsAwarded: 4.0,
+					MaxPoints:     10.0,
+				})
+			}
+		}
+	}
+
+	return totalScore, details
+}
+
+// ListSimilarBuilds returns similar builds rated by component specs
+func (s *BuildServiceHandler) ListSimilarBuilds(ctx context.Context, req *connect.Request[ListSimilarBuildsRequest]) (*connect.Response[ListSimilarBuildsResponse], error) {
+	buildId := strings.TrimSpace(req.Msg.GetBuildId())
+	if buildId == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("build_id is required"))
+	}
+	limit := int(req.Msg.GetLimit())
+	if limit <= 0 {
+		limit = 6
+	}
+	target, err := GetBuild(ctx, s.db, buildId, nil)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("build not found: %s", buildId))
+		}
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch target build: %w", err))
+	}
+	var targetFrame *Frame
+	if target.FrameUuid != "" {
+		targetFrame, _ = GetFrame(ctx, s.db, target.FrameUuid, nil)
+	}
+	var targetVtx *VideoTransmitter
+	if target.VideoTransmitterUuid != "" {
+		targetVtx, _ = GetVideoTransmitter(ctx, s.db, target.VideoTransmitterUuid, nil)
+	}
+	var targetCam *Camera
+	if len(target.CameraUuids) > 0 && target.CameraUuids[0] != "" {
+		targetCam, _ = GetCamera(ctx, s.db, target.CameraUuids[0], nil)
+	}
+	var targetMotor *Motor
+	if target.MotorUuid != "" {
+		targetMotor, _ = GetMotor(ctx, s.db, target.MotorUuid, nil)
+	}
+	candidates, err := ListBuilds(ctx, s.db, nil, nil, "uuid != $1", 200, 0, target.Uuid)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list candidate builds: %w", err))
+	}
+	frameMap := make(map[string]*Frame)
+	vtxMap := make(map[string]*VideoTransmitter)
+	camMap := make(map[string]*Camera)
+	motorMap := make(map[string]*Motor)
+	for _, cand := range candidates {
+		if cand.FrameUuid != "" && frameMap[cand.FrameUuid] == nil {
+			if f, err := GetFrame(ctx, s.db, cand.FrameUuid, nil); err == nil && f != nil {
+				frameMap[cand.FrameUuid] = f
+			}
+		}
+		if cand.VideoTransmitterUuid != "" && vtxMap[cand.VideoTransmitterUuid] == nil {
+			if v, err := GetVideoTransmitter(ctx, s.db, cand.VideoTransmitterUuid, nil); err == nil && v != nil {
+				vtxMap[cand.VideoTransmitterUuid] = v
+			}
+		}
+		for _, cUuid := range cand.CameraUuids {
+			if cUuid != "" && camMap[cUuid] == nil {
+				if c, err := GetCamera(ctx, s.db, cUuid, nil); err == nil && c != nil {
+					camMap[cUuid] = c
+				}
+			}
+		}
+		if cand.MotorUuid != "" && motorMap[cand.MotorUuid] == nil {
+			if m, err := GetMotor(ctx, s.db, cand.MotorUuid, nil); err == nil && m != nil {
+				motorMap[cand.MotorUuid] = m
+			}
+		}
+	}
+	var results []*SimilarBuild
+	for _, cand := range candidates {
+		candFrame := frameMap[cand.FrameUuid]
+		candVtx := vtxMap[cand.VideoTransmitterUuid]
+		var candCam *Camera
+		if len(cand.CameraUuids) > 0 {
+			candCam = camMap[cand.CameraUuids[0]]
+		}
+		candMotor := motorMap[cand.MotorUuid]
+		score, details := ScoreSimilarity(
+			target, targetFrame, targetVtx, targetCam, targetMotor,
+			cand, candFrame, candVtx, candCam, candMotor,
+		)
+		if score >= 25.0 {
+			results = append(results, &SimilarBuild{
+				Build:           cand,
+				SimilarityScore: score,
+				MatchDetails:    details,
+			})
+		}
+	}
+	sort.Slice(results, func(i, j int) bool {
+		if results[i].SimilarityScore != results[j].SimilarityScore {
+			return results[i].SimilarityScore > results[j].SimilarityScore
+		}
+		return results[i].Build.Name < results[j].Build.Name
+	})
+	if len(results) > limit {
+		results = results[:limit]
+	}
+	return connect.NewResponse(&ListSimilarBuildsResponse{SimilarBuilds: results}), nil
 }

@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_build: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CgtidWlsZC5wcm90bxIJcXVhZHNtaXRoIsEGCgVCdWlsZBIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEiYKCmZyYW1lX3V1aWQYBSABKAlCEsLzGA4aDGZyYW1lcyh1dWlkKRImCgptb3Rvcl91dWlkGAYgASgJQhLC8xgOGgxtb3RvcnModXVpZCkSPgoWZmxpZ2h0X2NvbnRyb2xsZXJfdXVpZBgIIAEoCUIewvMYGhoYZmxpZ2h0X2NvbnRyb2xsZXJzKHV1aWQpEikKIWVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkcxgJIAMoCRIWCg5yZWNlaXZlcl91dWlkcxgKIAMoCRIVCg1hbnRlbm5hX3V1aWRzGAsgAygJEi4KDnByb3BlbGxlcl91dWlkGAwgASgJQhbC8xgSGhBwcm9wZWxsZXJzKHV1aWQpEhQKDGNhbWVyYV91dWlkcxgNIAMoCRI+ChZ2aWRlb190cmFuc21pdHRlcl91dWlkGA4gASgJQh7C8xgaGhh2aWRlb190cmFuc21pdHRlcnModXVpZCkSOQoRZ3BzX3JlY2VpdmVyX3V1aWQYDyABKAlCGcLzGBUaE2dwc19yZWNlaXZlcnModXVpZClIAIgBARIxCg9yZWZlcmVuY2VfbGlua3MYECADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluaxIiChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYESABKAlIAYgBARIfCgVtZWRpYRgSIAMoCzIQLnF1YWRzbWl0aC5NZWRpYRIpCgl1c2VyX3V1aWQYEyABKAlCEcLzGA0aC3VzZXJzKHV1aWQpSAKIAQESHAoPYXV0aG9yX3VzZXJuYW1lGBQgASgJSAOIAQE6LYq1GBMKAmlkCgRuYW1lEgcjM2I4MmY2mrUYBmJ1aWxkc8LzGAgKBmJ1aWxkc0IUChJfZ3BzX3JlY2VpdmVyX3V1aWRCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiLgoPR2V0QnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdEJ1aWxkc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJPChJMaXN0QnVpbGRzUmVzcG9uc2USIAoGYnVpbGRzGAEgAygLMhAucXVhZHNtaXRoLkJ1aWxkEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI1ChJDcmVhdGVCdWlsZFJlcXVlc3QSHwoFYnVpbGQYASABKAsyEC5xdWFkc21pdGguQnVpbGQiIAoSRGVsZXRlQnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJIioKE0RlbGV0ZUJ1aWxkUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgyoQIKDEJ1aWxkU2VydmljZRI4CghHZXRCdWlsZBIaLnF1YWRzbWl0aC5HZXRCdWlsZFJlcXVlc3QaEC5xdWFkc21pdGguQnVpbGQSSQoKTGlzdEJ1aWxkcxIcLnF1YWRzbWl0aC5MaXN0QnVpbGRzUmVxdWVzdBodLnF1YWRzbWl0aC5MaXN0QnVpbGRzUmVzcG9uc2USPgoLQ3JlYXRlQnVpbGQSHS5xdWFkc21pdGguQ3JlYXRlQnVpbGRSZXF1ZXN0GhAucXVhZHNtaXRoLkJ1aWxkEkwKC0RlbGV0ZUJ1aWxkEh0ucXVhZHNtaXRoLkRlbGV0ZUJ1aWxkUmVxdWVzdBoeLnF1YWRzbWl0aC5EZWxldGVCdWlsZFJlc3BvbnNlQh1aG3F1YWRzbWl0aC9hcGkvZ2VuL3F1YWRzbWl0aGIGcHJvdG8z",
+    "CgtidWlsZC5wcm90bxIJcXVhZHNtaXRoIsEGCgVCdWlsZBIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEiYKCmZyYW1lX3V1aWQYBSABKAlCEsLzGA4aDGZyYW1lcyh1dWlkKRImCgptb3Rvcl91dWlkGAYgASgJQhLC8xgOGgxtb3RvcnModXVpZCkSPgoWZmxpZ2h0X2NvbnRyb2xsZXJfdXVpZBgIIAEoCUIewvMYGhoYZmxpZ2h0X2NvbnRyb2xsZXJzKHV1aWQpEikKIWVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkcxgJIAMoCRIWCg5yZWNlaXZlcl91dWlkcxgKIAMoCRIVCg1hbnRlbm5hX3V1aWRzGAsgAygJEi4KDnByb3BlbGxlcl91dWlkGAwgASgJQhbC8xgSGhBwcm9wZWxsZXJzKHV1aWQpEhQKDGNhbWVyYV91dWlkcxgNIAMoCRI+ChZ2aWRlb190cmFuc21pdHRlcl91dWlkGA4gASgJQh7C8xgaGhh2aWRlb190cmFuc21pdHRlcnModXVpZCkSOQoRZ3BzX3JlY2VpdmVyX3V1aWQYDyABKAlCGcLzGBUaE2dwc19yZWNlaXZlcnModXVpZClIAIgBARIxCg9yZWZlcmVuY2VfbGlua3MYECADKAsyGC5xdWFkc21pdGguUmVmZXJlbmNlTGluaxIiChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYESABKAlIAYgBARIfCgVtZWRpYRgSIAMoCzIQLnF1YWRzbWl0aC5NZWRpYRIpCgl1c2VyX3V1aWQYEyABKAlCEcLzGA0aC3VzZXJzKHV1aWQpSAKIAQESHAoPYXV0aG9yX3VzZXJuYW1lGBQgASgJSAOIAQE6LYq1GBMKAmlkCgRuYW1lEgcjM2I4MmY2mrUYBmJ1aWxkc8LzGAgKBmJ1aWxkc0IUChJfZ3BzX3JlY2VpdmVyX3V1aWRCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiLgoPR2V0QnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdEJ1aWxkc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJPChJMaXN0QnVpbGRzUmVzcG9uc2USIAoGYnVpbGRzGAEgAygLMhAucXVhZHNtaXRoLkJ1aWxkEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI1ChJDcmVhdGVCdWlsZFJlcXVlc3QSHwoFYnVpbGQYASABKAsyEC5xdWFkc21pdGguQnVpbGQiIAoSRGVsZXRlQnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJIioKE0RlbGV0ZUJ1aWxkUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgifwoUQ29tcG9uZW50TWF0Y2hEZXRhaWwSEQoJY29tcG9uZW50GAEgASgJEhMKC2V4YWN0X21hdGNoGAIgASgIEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhYKDnBvaW50c19hd2FyZGVkGAQgASgBEhIKCm1heF9wb2ludHMYBSABKAEigQEKDFNpbWlsYXJCdWlsZBIfCgVidWlsZBgBIAEoCzIQLnF1YWRzbWl0aC5CdWlsZBIYChBzaW1pbGFyaXR5X3Njb3JlGAIgASgBEjYKDW1hdGNoX2RldGFpbHMYAyADKAsyHy5xdWFkc21pdGguQ29tcG9uZW50TWF0Y2hEZXRhaWwiOwoYTGlzdFNpbWlsYXJCdWlsZHNSZXF1ZXN0EhAKCGJ1aWxkX2lkGAEgASgJEg0KBWxpbWl0GAIgASgFIkwKGUxpc3RTaW1pbGFyQnVpbGRzUmVzcG9uc2USLwoOc2ltaWxhcl9idWlsZHMYASADKAsyFy5xdWFkc21pdGguU2ltaWxhckJ1aWxkMoEDCgxCdWlsZFNlcnZpY2USOAoIR2V0QnVpbGQSGi5xdWFkc21pdGguR2V0QnVpbGRSZXF1ZXN0GhAucXVhZHNtaXRoLkJ1aWxkEkkKCkxpc3RCdWlsZHMSHC5xdWFkc21pdGguTGlzdEJ1aWxkc1JlcXVlc3QaHS5xdWFkc21pdGguTGlzdEJ1aWxkc1Jlc3BvbnNlEj4KC0NyZWF0ZUJ1aWxkEh0ucXVhZHNtaXRoLkNyZWF0ZUJ1aWxkUmVxdWVzdBoQLnF1YWRzbWl0aC5CdWlsZBJMCgtEZWxldGVCdWlsZBIdLnF1YWRzbWl0aC5EZWxldGVCdWlsZFJlcXVlc3QaHi5xdWFkc21pdGguRGVsZXRlQnVpbGRSZXNwb25zZRJeChFMaXN0U2ltaWxhckJ1aWxkcxIjLnF1YWRzbWl0aC5MaXN0U2ltaWxhckJ1aWxkc1JlcXVlc3QaJC5xdWFkc21pdGguTGlzdFNpbWlsYXJCdWlsZHNSZXNwb25zZUIdWhtxdWFkc21pdGgvYXBpL2dlbi9xdWFkc21pdGhiBnByb3RvMw",
     [file__common, file__sql, file_media, file_reference_link],
   );
 
@@ -295,6 +295,113 @@ export const DeleteBuildResponseSchema: GenMessage<DeleteBuildResponse> =
   messageDesc(file_build, 6);
 
 /**
+ * @generated from message quadsmith.ComponentMatchDetail
+ */
+export type ComponentMatchDetail = Message<"quadsmith.ComponentMatchDetail"> & {
+  /**
+   * @generated from field: string component = 1;
+   */
+  component: string;
+
+  /**
+   * @generated from field: bool exact_match = 2;
+   */
+  exactMatch: boolean;
+
+  /**
+   * @generated from field: string description = 3;
+   */
+  description: string;
+
+  /**
+   * @generated from field: double points_awarded = 4;
+   */
+  pointsAwarded: number;
+
+  /**
+   * @generated from field: double max_points = 5;
+   */
+  maxPoints: number;
+};
+
+/**
+ * Describes the message quadsmith.ComponentMatchDetail.
+ * Use `create(ComponentMatchDetailSchema)` to create a new message.
+ */
+export const ComponentMatchDetailSchema: GenMessage<ComponentMatchDetail> =
+  /*@__PURE__*/
+  messageDesc(file_build, 7);
+
+/**
+ * @generated from message quadsmith.SimilarBuild
+ */
+export type SimilarBuild = Message<"quadsmith.SimilarBuild"> & {
+  /**
+   * @generated from field: quadsmith.Build build = 1;
+   */
+  build?: Build | undefined;
+
+  /**
+   * @generated from field: double similarity_score = 2;
+   */
+  similarityScore: number;
+
+  /**
+   * @generated from field: repeated quadsmith.ComponentMatchDetail match_details = 3;
+   */
+  matchDetails: ComponentMatchDetail[];
+};
+
+/**
+ * Describes the message quadsmith.SimilarBuild.
+ * Use `create(SimilarBuildSchema)` to create a new message.
+ */
+export const SimilarBuildSchema: GenMessage<SimilarBuild> =
+  /*@__PURE__*/
+  messageDesc(file_build, 8);
+
+/**
+ * @generated from message quadsmith.ListSimilarBuildsRequest
+ */
+export type ListSimilarBuildsRequest = Message<"quadsmith.ListSimilarBuildsRequest"> & {
+  /**
+   * @generated from field: string build_id = 1;
+   */
+  buildId: string;
+
+  /**
+   * @generated from field: int32 limit = 2;
+   */
+  limit: number;
+};
+
+/**
+ * Describes the message quadsmith.ListSimilarBuildsRequest.
+ * Use `create(ListSimilarBuildsRequestSchema)` to create a new message.
+ */
+export const ListSimilarBuildsRequestSchema: GenMessage<ListSimilarBuildsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_build, 9);
+
+/**
+ * @generated from message quadsmith.ListSimilarBuildsResponse
+ */
+export type ListSimilarBuildsResponse = Message<"quadsmith.ListSimilarBuildsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.SimilarBuild similar_builds = 1;
+   */
+  similarBuilds: SimilarBuild[];
+};
+
+/**
+ * Describes the message quadsmith.ListSimilarBuildsResponse.
+ * Use `create(ListSimilarBuildsResponseSchema)` to create a new message.
+ */
+export const ListSimilarBuildsResponseSchema: GenMessage<ListSimilarBuildsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_build, 10);
+
+/**
  * ---------------------------------------------------------
  * gRPC Service
  * ---------------------------------------------------------
@@ -333,5 +440,13 @@ export const BuildService: GenService<{
     methodKind: "unary";
     input: typeof DeleteBuildRequestSchema;
     output: typeof DeleteBuildResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.BuildService.ListSimilarBuilds
+   */
+  listSimilarBuilds: {
+    methodKind: "unary";
+    input: typeof ListSimilarBuildsRequestSchema;
+    output: typeof ListSimilarBuildsResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_build, 0);

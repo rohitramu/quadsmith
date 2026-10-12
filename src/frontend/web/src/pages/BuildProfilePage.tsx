@@ -32,7 +32,7 @@ import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { ProductHoverCard } from "../components/ProductHoverCard";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { SocialToolbar } from "../components/SocialToolbar";
-import { SocialTabs } from "../components/SocialTabs";
+import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import {
   ChevronRight,
@@ -148,9 +148,7 @@ export function BuildProfilePage() {
 
   const [selectedBatteryId, setSelectedBatteryId] = useState<string>("");
   const [isBatteryModalOpen, setIsBatteryModalOpen] = useState(false);
-  const [activeSocialTab, setActiveSocialTab] = useState<"reviews" | "qa" | "collections">(
-    "reviews",
-  );
+  const [activeSocialTab, setActiveSocialTab] = useState<SocialTabType>("reviews");
 
   const {
     data: build,

@@ -11,7 +11,7 @@ import { CollectionBadge } from "../components/CollectionBadge";
 import { MediaGallery } from "../components/MediaGallery";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { SocialToolbar } from "../components/SocialToolbar";
-import { SocialTabs } from "../components/SocialTabs";
+import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { formatProductTitle } from "../lib/format";
 
@@ -30,9 +30,7 @@ function ProductDetailView({
     { enabled: !!productId },
   );
 
-  const [activeSocialTab, setActiveSocialTab] = useState<"reviews" | "qa" | "collections">(
-    "reviews",
-  );
+  const [activeSocialTab, setActiveSocialTab] = useState<SocialTabType>("reviews");
 
   const item = data as any;
 
