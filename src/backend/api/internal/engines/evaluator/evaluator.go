@@ -174,16 +174,9 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		if totalEscs < motorCount {
 			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("build is missing required ESCs (multirotor frame requires at least %d ESC channels, found %d)", motorCount, totalEscs))
 		}
-	} else {
-		if (len(b.ElectronicSpeedControllerUuids) > 0 || (fc != nil && fc.GetInternalElectronicSpeedControllerUuid() != "")) && totalEscs < motorCount {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-				Message:  fmt.Sprintf("Insufficient ESC channels: Frame requires %d ESC channels, but only %d configured", motorCount, totalEscs),
-			})
-		}
 	}
 
-	// 7. Calculate build electrical limits & compatibility checks
+	// 7. Calculate build electrical limits
 	electrical := ComputeElectricalLimits(fc, escs, motor, motorCount)
 	if frame != nil {
 		pConn, cConns := compatibility.DetermineBatteryConnector(&pb.AssembledComponents{
@@ -197,60 +190,24 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 			electrical.CompatibleConnectors = cConns
 		}
 	}
-	if electrical.MinVoltage > 0 && electrical.MaxVoltage > 0 && electrical.MinVoltage > electrical.MaxVoltage {
-		systemMessages = append(systemMessages, &pb.SystemMessage{
-			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-			Message:  fmt.Sprintf("Build electrical conflict: Minimum component voltage requirement (%.1fV) exceeds maximum component voltage rating (%.1fV)", electrical.MinVoltage, electrical.MaxVoltage),
-		})
-	}
 
-	if battery != nil {
-		// Voltage and current safety / compatibility checks
-		if electrical.MaxVoltage > 0 && battery.MaxVoltage > electrical.MaxVoltage {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-				Message:  fmt.Sprintf("Battery max voltage (%.1fV) exceeds build component limit (%.1fV)", battery.MaxVoltage, electrical.MaxVoltage),
-			})
-		}
-		if electrical.MinVoltage > 0 && battery.MinVoltage < electrical.MinVoltage {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-				Message:  fmt.Sprintf("Battery min voltage (%.1fV) is below build minimum operating voltage (%.1fV)", battery.MinVoltage, electrical.MinVoltage),
-			})
-		}
-		if electrical.MaxCurrentA > 0 && battery.MaxCurrentA > 0 && battery.MaxCurrentA < electrical.MaxCurrentA {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-				Message:  fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA)", battery.MaxCurrentA, electrical.MaxCurrentA),
-			})
-		}
-		if len(electrical.CompatibleConnectors) > 0 && battery.Connector != "" {
-			matched := false
-			for _, c := range electrical.CompatibleConnectors {
-				if strings.EqualFold(battery.Connector, c) {
-					matched = true
-					break
-				}
-			}
-			if !matched {
-				systemMessages = append(systemMessages, &pb.SystemMessage{
-					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-					Message:  fmt.Sprintf("Battery connector (%s) is incompatible with build connector (%s)", battery.Connector, electrical.Connector),
-				})
-			}
-		}
-	}
+	var videoTransmitter *pb.VideoTransmitter
+	var cameras []*pb.Camera
+	var receivers []*pb.Receiver
+	var antennas []*pb.Antenna
 
 	// 8. Fetch Video Transmitter (Standalone or Internal to FC)
 	if b.VideoTransmitterUuid != "" && s.db != nil {
-		videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, b.VideoTransmitterUuid, nil)
-		if err == nil && videoTransmitter != nil {
-			baseWeight += videoTransmitter.WeightG
+		vtx, err := pb.GetVideoTransmitter(ctx, s.db, b.VideoTransmitterUuid, nil)
+		if err == nil && vtx != nil {
+			videoTransmitter = vtx
+			baseWeight += vtx.WeightG
 		}
 	} else if fc != nil && fc.GetInternalVideoTransmitterUuid() != "" && s.db != nil {
-		videoTransmitter, err := pb.GetVideoTransmitter(ctx, s.db, fc.GetInternalVideoTransmitterUuid(), nil)
-		if err == nil && videoTransmitter != nil {
-			baseWeight += videoTransmitter.WeightG
+		vtx, err := pb.GetVideoTransmitter(ctx, s.db, fc.GetInternalVideoTransmitterUuid(), nil)
+		if err == nil && vtx != nil {
+			videoTransmitter = vtx
+			baseWeight += vtx.WeightG
 		}
 	}
 
@@ -259,6 +216,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		for _, cid := range b.CameraUuids {
 			cam, err := pb.GetCamera(ctx, s.db, cid, nil)
 			if err == nil && cam != nil {
+				cameras = append(cameras, cam)
 				baseWeight += cam.WeightG
 			}
 		}
@@ -267,6 +225,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		for _, rid := range b.ReceiverUuids {
 			rx, err := pb.GetReceiver(ctx, s.db, rid, nil)
 			if err == nil && rx != nil {
+				receivers = append(receivers, rx)
 				baseWeight += rx.WeightG
 			}
 		}
@@ -275,6 +234,7 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 		for _, aid := range b.AntennaUuids {
 			ant, err := pb.GetAntenna(ctx, s.db, aid, nil)
 			if err == nil && ant != nil {
+				antennas = append(antennas, ant)
 				baseWeight += ant.WeightG
 			}
 		}
@@ -286,6 +246,30 @@ func (s *EvaluatorServiceHandler) EvaluateBuild(ctx context.Context, req *connec
 				baseWeight += gps.WeightG
 			}
 		}
+	}
+
+	// 13. Delegate all compatibility checking to compatibility engine
+	assembledComp := &pb.AssembledComponents{
+		Frame:                      frame,
+		FlightController:           fc,
+		ElectronicSpeedControllers: escs,
+		Motor:                      motor,
+		Propeller:                  prop,
+		Battery:                    battery,
+		VideoTransmitter:           videoTransmitter,
+		Cameras:                    cameras,
+		Receivers:                  receivers,
+		Antennas:                   antennas,
+	}
+	for _, cm := range compatibility.CheckCompatibility(assembledComp) {
+		sev := pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING
+		if cm.SeverityLevel == 0 {
+			sev = pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR
+		}
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: sev,
+			Message:  cm.Message,
+		})
 	}
 
 	payloadWeight := req.Msg.GetPayloadWeightG()
@@ -422,13 +406,6 @@ func EvaluateComponentsDirect(comps *pb.AssembledComponents, payloadWeight float
 		baseWeight += comps.GpsReceiver.WeightG
 	}
 
-	if (len(escs) > 0 || (fc != nil && fc.GetInternalElectronicSpeedControllerUuid() != "")) && totalEscs < motorCount {
-		systemMessages = append(systemMessages, &pb.SystemMessage{
-			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-			Message:  fmt.Sprintf("Insufficient ESC channels: Frame requires %d ESC channels, but only %d configured", motorCount, totalEscs),
-		})
-	}
-
 	electrical := ComputeElectricalLimits(fc, escs, motor, motorCount)
 	if frame != nil {
 		pConn, cConns := compatibility.DetermineBatteryConnector(&pb.AssembledComponents{
@@ -442,47 +419,17 @@ func EvaluateComponentsDirect(comps *pb.AssembledComponents, payloadWeight float
 			electrical.CompatibleConnectors = cConns
 		}
 	}
-	if electrical.MinVoltage > 0 && electrical.MaxVoltage > 0 && electrical.MinVoltage > electrical.MaxVoltage {
-		systemMessages = append(systemMessages, &pb.SystemMessage{
-			Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-			Message:  fmt.Sprintf("Build electrical conflict: Minimum component voltage requirement (%.1fV) exceeds maximum component voltage rating (%.1fV)", electrical.MinVoltage, electrical.MaxVoltage),
-		})
-	}
 
-	if battery != nil {
-		if electrical.MaxVoltage > 0 && battery.MaxVoltage > electrical.MaxVoltage {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR,
-				Message:  fmt.Sprintf("Battery max voltage (%.1fV) exceeds build component limit (%.1fV)", battery.MaxVoltage, electrical.MaxVoltage),
-			})
+	// Delegate all compatibility checking to compatibility engine
+	for _, cm := range compatibility.CheckCompatibility(comps) {
+		sev := pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING
+		if cm.SeverityLevel == 0 {
+			sev = pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_ERROR
 		}
-		if electrical.MinVoltage > 0 && battery.MinVoltage < electrical.MinVoltage {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-				Message:  fmt.Sprintf("Battery min voltage (%.1fV) is below build minimum operating voltage (%.1fV)", battery.MinVoltage, electrical.MinVoltage),
-			})
-		}
-		if electrical.MaxCurrentA > 0 && battery.MaxCurrentA > 0 && battery.MaxCurrentA < electrical.MaxCurrentA {
-			systemMessages = append(systemMessages, &pb.SystemMessage{
-				Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-				Message:  fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA)", battery.MaxCurrentA, electrical.MaxCurrentA),
-			})
-		}
-		if len(electrical.CompatibleConnectors) > 0 && battery.Connector != "" {
-			matched := false
-			for _, c := range electrical.CompatibleConnectors {
-				if strings.EqualFold(battery.Connector, c) {
-					matched = true
-					break
-				}
-			}
-			if !matched {
-				systemMessages = append(systemMessages, &pb.SystemMessage{
-					Severity: pb.SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_WARNING,
-					Message:  fmt.Sprintf("Battery connector (%s) is incompatible with build connector (%s)", battery.Connector, electrical.Connector),
-				})
-			}
-		}
+		systemMessages = append(systemMessages, &pb.SystemMessage{
+			Severity: sev,
+			Message:  cm.Message,
+		})
 	}
 
 	if payloadWeight < 0 {

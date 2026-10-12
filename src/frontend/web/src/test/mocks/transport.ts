@@ -69,6 +69,16 @@ export interface MockTransportOptions {
   collections?: typeof mockCollections;
   entitySocialSummary?: typeof mockEntitySocialSummary1;
   defaultBatteryId?: string;
+  minVoltage?: number;
+  maxVoltage?: number;
+  compatibilityMessages?: Array<{
+    checkerName?: string;
+    components?: string;
+    severityLevel?: number;
+    severityName?: string;
+    message: string;
+    resolution?: string;
+  }>;
   nextPageToken?: string;
   simulateError?: boolean;
   isAuthenticated?: boolean;
@@ -363,8 +373,8 @@ export function createMockTransport(options: MockTransportOptions = {}) {
               ? req.buildSource.value.id
               : "";
         return {
-          minVoltage: 14.8,
-          maxVoltage: 25.2,
+          minVoltage: options.minVoltage !== undefined ? options.minVoltage : 14.8,
+          maxVoltage: options.maxVoltage !== undefined ? options.maxVoltage : 25.2,
           maxCurrentA: 39.4,
           defaultBatteryId:
             options.defaultBatteryId !== undefined ? options.defaultBatteryId : defaultBatteryId,
@@ -376,7 +386,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     service(CompatibilityService, {
       checkCompatibility(_req) {
         return {
-          messages: [],
+          messages: options.compatibilityMessages || [],
         };
       },
     });

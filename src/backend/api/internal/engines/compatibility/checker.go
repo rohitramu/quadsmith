@@ -60,9 +60,76 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 	}
 
-	// Rule 4: Battery Voltage Compatibility
+	// Rule 4: Component-to-Component Voltage Conflict
+	minV, maxV, maxA := CalculateElectricalLimits(comp)
+	if minV > 0 && maxV > 0 && minV > maxV {
+		messages = append(messages, &pb.CompatibilityMessage{
+			CheckerName:   "ComponentVoltageChecker",
+			Components:    "Flight Controller, Electronic Speed Controller, and Motor",
+			SeverityLevel: 0,
+			SeverityName:  "DEFINITE_INCOMPATIBILITY",
+			Message:       fmt.Sprintf("Build electrical conflict: Minimum component voltage requirement (%.1fV) exceeds maximum component voltage rating (%.1fV).", minV, maxV),
+			Resolution:    "Select motors, flight controllers, and ESCs with overlapping operating voltage ranges.",
+		})
+	}
+
+	// Rule 5: ESC Channels vs Frame Motor Count
+	if comp.Frame != nil && comp.Frame.MotorCount > 0 && len(comp.ElectronicSpeedControllers) > 0 {
+		var totalEscChannels uint32 = 0
+		for _, esc := range comp.ElectronicSpeedControllers {
+			if esc != nil {
+				if esc.MaxMotors > 0 {
+					totalEscChannels += esc.MaxMotors
+				} else {
+					totalEscChannels += 1
+				}
+			}
+		}
+		if totalEscChannels < comp.Frame.MotorCount {
+			messages = append(messages, &pb.CompatibilityMessage{
+				CheckerName:   "EscChannelCountChecker",
+				Components:    "Frame and Electronic Speed Controller",
+				SeverityLevel: 1,
+				SeverityName:  "HEURISTIC_INCOMPATIBILITY",
+				Message:       fmt.Sprintf("Insufficient ESC channels: Frame requires %d ESC channels, but only %d configured.", comp.Frame.MotorCount, totalEscChannels),
+				Resolution:    fmt.Sprintf("Select an ESC or combination of ESCs supporting at least %d motor channels.", comp.Frame.MotorCount),
+			})
+		}
+	}
+
+	// Rule 6: Battery Compatibility (Voltage, Current, Connector)
 	if comp.Battery != nil {
 		bat := comp.Battery
+		if maxV > 0 && bat.MaxVoltage > maxV {
+			messages = append(messages, &pb.CompatibilityMessage{
+				CheckerName:   "BatteryMaxVoltageChecker",
+				Components:    "Battery and Build Components",
+				SeverityLevel: 0,
+				SeverityName:  "DEFINITE_INCOMPATIBILITY",
+				Message:       fmt.Sprintf("Battery max voltage (%.1fV) exceeds build component limit (%.1fV).", bat.MaxVoltage, maxV),
+				Resolution:    "Select a battery with lower cell count or components rated for higher voltage.",
+			})
+		}
+		if minV > 0 && bat.MinVoltage < minV {
+			messages = append(messages, &pb.CompatibilityMessage{
+				CheckerName:   "BatteryMinVoltageChecker",
+				Components:    "Battery and Build Components",
+				SeverityLevel: 1,
+				SeverityName:  "HEURISTIC_INCOMPATIBILITY",
+				Message:       fmt.Sprintf("Battery min voltage (%.1fV) is below build minimum operating voltage (%.1fV).", bat.MinVoltage, minV),
+				Resolution:    "Select a battery with higher cell count to match the build's minimum operating voltage.",
+			})
+		}
+		if maxA > 0 && bat.MaxCurrentA > 0 && bat.MaxCurrentA < maxA {
+			messages = append(messages, &pb.CompatibilityMessage{
+				CheckerName:   "BatteryMaxCurrentChecker",
+				Components:    "Battery and Motors/ESCs",
+				SeverityLevel: 1,
+				SeverityName:  "HEURISTIC_INCOMPATIBILITY",
+				Message:       fmt.Sprintf("Battery max current (%.1fA) is below build recommended current rating (%.1fA).", bat.MaxCurrentA, maxA),
+				Resolution:    "Select a battery with a higher continuous discharge C-rating or higher capacity.",
+			})
+		}
 		if comp.FlightController != nil && comp.FlightController.MaxVoltage > 0 {
 			if bat.MinVoltage > comp.FlightController.MaxVoltage {
 				messages = append(messages, &pb.CompatibilityMessage{
@@ -77,7 +144,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 		if len(comp.ElectronicSpeedControllers) > 0 {
 			for _, esc := range comp.ElectronicSpeedControllers {
-				if esc.MaxVoltage > 0 && bat.MinVoltage > esc.MaxVoltage {
+				if esc != nil && esc.MaxVoltage > 0 && bat.MinVoltage > esc.MaxVoltage {
 					messages = append(messages, &pb.CompatibilityMessage{
 						CheckerName:   "BatteryEscVoltageChecker",
 						Components:    "Battery and Electronic Speed Controller",
@@ -90,8 +157,7 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 			}
 		}
 
-		// Rule 5: Battery Connector Compatibility
-		minV, maxV, maxA := CalculateElectricalLimits(comp)
+		// Battery Connector Compatibility
 		primaryConn, compatConns := DetermineBatteryConnector(comp, minV, maxV, maxA)
 		if len(compatConns) > 0 && bat.Connector != "" {
 			matched := false
@@ -299,6 +365,9 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 		}
 	case "batteries":
 		minV, maxV, maxA := CalculateElectricalLimits(comp)
+		if minV > 0 && maxV > 0 && minV > maxV {
+			return ""
+		}
 
 		if minV > 0 {
 			conditions = append(conditions, fmt.Sprintf("min_voltage >= %.2f", minV))
@@ -324,16 +393,28 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 		if comp.Motor != nil && comp.Motor.StatorDiameterMm > 20 {
 			conditions = append(conditions, "motor_current_max_a >= 20.0")
 		}
+		if comp.Motor != nil && comp.Motor.MinVoltage > 0 {
+			conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", comp.Motor.MinVoltage))
+		}
 	case "motors":
 		if len(comp.ElectronicSpeedControllers) > 0 {
 			var minEscCurrent float32 = 0
+			var minEscMaxV float32 = 0
 			for _, esc := range comp.ElectronicSpeedControllers {
-				if esc.MotorCurrentMaxA > 0 && (minEscCurrent == 0 || esc.MotorCurrentMaxA < minEscCurrent) {
-					minEscCurrent = esc.MotorCurrentMaxA
+				if esc != nil {
+					if esc.MotorCurrentMaxA > 0 && (minEscCurrent == 0 || esc.MotorCurrentMaxA < minEscCurrent) {
+						minEscCurrent = esc.MotorCurrentMaxA
+					}
+					if esc.MaxVoltage > 0 && (minEscMaxV == 0 || esc.MaxVoltage < minEscMaxV) {
+						minEscMaxV = esc.MaxVoltage
+					}
 				}
 			}
 			if minEscCurrent > 0 {
 				conditions = append(conditions, fmt.Sprintf("max_current_a <= %.1f", minEscCurrent))
+			}
+			if minEscMaxV > 0 {
+				conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", minEscMaxV))
 			}
 		}
 	case "cameras":

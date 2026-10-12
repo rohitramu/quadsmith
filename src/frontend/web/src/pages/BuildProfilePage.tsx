@@ -7,6 +7,7 @@ import {
   evaluateBuild,
   getBuildElectricalLimits,
 } from "../gen/quadsmith/evaluator-EvaluatorService_connectquery";
+import { checkCompatibility } from "../gen/quadsmith/compatibility-CompatibilityService_connectquery";
 import { getFrame } from "../gen/quadsmith/frame-FrameService_connectquery";
 import { getMotor } from "../gen/quadsmith/motor-MotorService_connectquery";
 import { listBatteries } from "../gen/quadsmith/battery-BatteryService_connectquery";
@@ -223,10 +224,48 @@ export function BuildProfilePage() {
     }
   }, [electricalLimits, compatibleBatteries, selectedBatteryId]);
 
-  const isBatteryLoading = isLoadingLimits || (!!electricalLimits && isLoadingBatteries);
-  const isBatteryLoaded = !isLoadingLimits && !isLoadingBatteries && !!electricalLimits;
+  const {
+    data: compatibilityResponse,
+    isLoading: isLoadingCompatibility,
+    error: compatibilityError,
+  } = useQuery(checkCompatibility, { build: build! }, { enabled: !!build });
+
+  const componentIncompatibilities = useMemo(() => {
+    const list: string[] = [];
+    if (
+      electricalLimits?.minVoltage &&
+      electricalLimits?.maxVoltage &&
+      electricalLimits.minVoltage > electricalLimits.maxVoltage
+    ) {
+      list.push(
+        `Component voltage conflict: Minimum required component operating voltage (${electricalLimits.minVoltage.toFixed(
+          1,
+        )}V) exceeds maximum component voltage rating (${electricalLimits.maxVoltage.toFixed(1)}V).`,
+      );
+    }
+    if (compatibilityResponse?.messages) {
+      for (const m of compatibilityResponse.messages) {
+        if (m.severityLevel === 0) {
+          if (m.checkerName === "ComponentVoltageChecker" && list.length > 0) {
+            continue;
+          }
+          list.push(m.message);
+        }
+      }
+    }
+    return list;
+  }, [electricalLimits, compatibilityResponse]);
+
+  const hasComponentConflict = componentIncompatibilities.length > 0;
+
+  const isBatteryLoading =
+    isLoadingLimits || isLoadingCompatibility || (!!electricalLimits && isLoadingBatteries);
+  const isBatteryLoaded =
+    !isLoadingLimits && !isLoadingCompatibility && !isLoadingBatteries && !!electricalLimits;
   const hasNoCompatibleBatteries =
-    isBatteryLoaded && (compatibleBatteries.length === 0 || !electricalLimits.defaultBatteryId);
+    !hasComponentConflict &&
+    isBatteryLoaded &&
+    (compatibleBatteries.length === 0 || !electricalLimits.defaultBatteryId);
 
   const activeBattery = useMemo(() => {
     return (
@@ -378,12 +417,36 @@ export function BuildProfilePage() {
           </p>
         </div>
 
-        {limitsError || batteryError ? (
+        {limitsError || batteryError || compatibilityError ? (
           <div
             role="alert"
             className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm"
           >
-            Failed to load electrical limits: {limitsError?.message || batteryError?.message}
+            Failed to load build parameters:{" "}
+            {limitsError?.message || batteryError?.message || compatibilityError?.message}
+          </div>
+        ) : hasComponentConflict ? (
+          <div
+            role="alert"
+            className="p-5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-300 flex items-start gap-3.5"
+          >
+            <AlertOctagon className="text-red-600 dark:text-red-400 shrink-0 mt-0.5" size={20} />
+            <div className="flex-1">
+              <h3 className="text-sm font-semibold text-red-900 dark:text-red-200">
+                Component Compatibility Conflict
+              </h3>
+              <p className="text-xs sm:text-sm mt-1 text-red-700 dark:text-red-300/90 leading-relaxed">
+                The components in this build are physically or electrically incompatible with each
+                other. Build evaluation cannot be calculated until these conflicts are resolved.
+              </p>
+              <ul className="list-disc list-inside text-xs sm:text-sm mt-2.5 space-y-1">
+                {componentIncompatibilities.map((msg, i) => (
+                  <li key={i} className="font-medium text-red-800 dark:text-red-200">
+                    {msg}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         ) : hasNoCompatibleBatteries ? (
           <div
@@ -397,7 +460,9 @@ export function BuildProfilePage() {
               </h3>
               <p className="text-xs sm:text-sm mt-1 text-red-700 dark:text-red-300/90 leading-relaxed">
                 No batteries in the database match the electrical requirements for this build
-                {electricalLimits?.minVoltage && electricalLimits?.maxVoltage
+                {electricalLimits?.minVoltage &&
+                electricalLimits?.maxVoltage &&
+                electricalLimits.minVoltage <= electricalLimits.maxVoltage
                   ? ` (${electricalLimits.minVoltage.toFixed(1)}–${electricalLimits.maxVoltage.toFixed(1)}V${
                       electricalLimits.maxCurrentA
                         ? `, ≥${electricalLimits.maxCurrentA.toFixed(0)}A`
@@ -433,7 +498,9 @@ export function BuildProfilePage() {
                   </span>
                   {electricalLimits ? (
                     <span className="text-[10px] text-zinc-400 font-mono">
-                      {electricalLimits.minVoltage && electricalLimits.maxVoltage
+                      {electricalLimits.minVoltage &&
+                      electricalLimits.maxVoltage &&
+                      electricalLimits.minVoltage <= electricalLimits.maxVoltage
                         ? `${electricalLimits.minVoltage.toFixed(1)}–${electricalLimits.maxVoltage.toFixed(1)}V`
                         : ""}
                       {electricalLimits.maxCurrentA

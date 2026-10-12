@@ -350,3 +350,157 @@ func TestDetermineBatteryConnector(t *testing.T) {
 		}
 	})
 }
+
+func TestComponentVoltageCompatibility(t *testing.T) {
+	t.Run("Conflict: Motor min exceeds ESC max", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{MinVoltage: 11.1, MaxVoltage: 26.0},
+			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+				{MinVoltage: 6.0, MaxVoltage: 17.4},
+			},
+			Motor: &pb.Motor{MinVoltage: 18.0, MaxVoltage: 34.8},
+		}
+
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "ComponentVoltageChecker" {
+				found = true
+				if m.SeverityLevel != 0 {
+					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("Expected ComponentVoltageChecker message, got none")
+		}
+	})
+
+	t.Run("Valid overlapping voltages", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{MinVoltage: 11.1, MaxVoltage: 26.0},
+			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+				{MinVoltage: 11.1, MaxVoltage: 34.0, MotorCurrentMaxA: 65},
+			},
+			Motor: &pb.Motor{MinVoltage: 18.0, MaxVoltage: 34.8},
+		}
+
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "ComponentVoltageChecker" {
+				t.Errorf("Unexpected ComponentVoltageChecker message: %s", m.Message)
+			}
+		}
+	})
+}
+
+func TestEscChannelCountCompatibility(t *testing.T) {
+	t.Run("Insufficient ESC channels", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{MotorCount: 4},
+			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+				{MaxMotors: 2},
+			},
+		}
+
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "EscChannelCountChecker" {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("Expected EscChannelCountChecker message, got none")
+		}
+	})
+
+	t.Run("Sufficient ESC channels", func(t *testing.T) {
+		comp := &Components{
+			Frame: &pb.Frame{MotorCount: 4},
+			ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+				{MaxMotors: 4},
+			},
+		}
+
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "EscChannelCountChecker" {
+				t.Errorf("Unexpected EscChannelCountChecker message: %s", m.Message)
+			}
+		}
+	})
+}
+
+func TestBatteryBoundsCompatibility(t *testing.T) {
+	comp := &Components{
+		FlightController: &pb.FlightController{MinVoltage: 11.1, MaxVoltage: 25.2},
+		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+			{MinVoltage: 11.1, MaxVoltage: 25.2, MotorCurrentMaxA: 40},
+		},
+		Motor: &pb.Motor{MinVoltage: 14.8, MaxVoltage: 25.2, MaxCurrentA: 30},
+		Battery: &pb.Battery{
+			MinVoltage:  10.0, // below 14.8
+			MaxVoltage:  30.0, // exceeds 25.2
+			MaxCurrentA: 50.0, // below 120.0 (30*4)
+		},
+	}
+
+	msgs := CheckCompatibility(comp)
+	hasMaxV := false
+	hasMinV := false
+	hasMaxA := false
+	for _, m := range msgs {
+		if m.CheckerName == "BatteryMaxVoltageChecker" {
+			hasMaxV = true
+		}
+		if m.CheckerName == "BatteryMinVoltageChecker" {
+			hasMinV = true
+		}
+		if m.CheckerName == "BatteryMaxCurrentChecker" {
+			hasMaxA = true
+		}
+	}
+
+	if !hasMaxV {
+		t.Errorf("Expected BatteryMaxVoltageChecker message, got none")
+	}
+	if !hasMinV {
+		t.Errorf("Expected BatteryMinVoltageChecker message, got none")
+	}
+	if !hasMaxA {
+		t.Errorf("Expected BatteryMaxCurrentChecker message, got none")
+	}
+}
+
+func TestGenerateCelFilter_ConflictHandling(t *testing.T) {
+	comp := &Components{
+		Motor: &pb.Motor{MinVoltage: 18.0, MaxVoltage: 34.8},
+		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+			{MinVoltage: 6.0, MaxVoltage: 17.4},
+		},
+	}
+
+	batFilter := GenerateCelFilter("batteries", comp)
+	if batFilter != "" {
+		t.Errorf("Expected empty battery filter for conflicting components, got %q", batFilter)
+	}
+
+	// Test motor min_voltage propagates to ESC filter
+	escFilter := GenerateCelFilter("electronic_speed_controllers", &Components{
+		Motor: &pb.Motor{MinVoltage: 18.0},
+	})
+	if escFilter != "max_voltage >= 18.00" {
+		t.Errorf("Expected 'max_voltage >= 18.00', got %q", escFilter)
+	}
+
+	// Test ESC max_voltage propagates to Motor filter
+	motorFilter := GenerateCelFilter("motors", &Components{
+		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
+			{MaxVoltage: 17.4},
+		},
+	})
+	if motorFilter != "min_voltage <= 17.40" {
+		t.Errorf("Expected 'min_voltage <= 17.40', got %q", motorFilter)
+	}
+}

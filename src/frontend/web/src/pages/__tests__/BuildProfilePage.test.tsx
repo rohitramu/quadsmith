@@ -285,4 +285,39 @@ describe("BuildProfilePage Component", () => {
     expect(document.getElementById("reviews")).not.toHaveClass("hidden");
     expect(document.getElementById("qa")).toHaveClass("hidden");
   });
+
+  it("prioritizes component compatibility conflict alert over battery matching error", async () => {
+    renderWithProviders(
+      <Routes>
+        <Route path="/builds/:buildId" element={<BuildProfilePage />} />
+      </Routes>,
+      {
+        route: `/builds/bando-basher-5-inch`,
+        transportOptions: {
+          minVoltage: 18.0,
+          maxVoltage: 17.4,
+          batteries: [],
+          defaultBatteryId: "",
+        },
+      },
+    );
+
+    // Component conflict alert should be displayed at Priority 1
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(screen.getByText("Component Compatibility Conflict")).toBeInTheDocument();
+    expect(
+      screen.getByText(/the components in this build are physically or electrically incompatible/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Component voltage conflict: Minimum required component operating voltage \(18.0V\) exceeds maximum component voltage rating \(17.4V\)/i,
+      ),
+    ).toBeInTheDocument();
+
+    // The misleading "No Compatible Batteries Found" message should NOT be shown
+    expect(screen.queryByText(/no compatible batteries found/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/no batteries in the database match the electrical requirements/i),
+    ).not.toBeInTheDocument();
+  });
 });
