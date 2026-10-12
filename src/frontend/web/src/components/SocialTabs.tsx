@@ -284,15 +284,6 @@ export function SocialTabs({
                         </p>
                       </div>
                     </div>
-                    <span
-                      className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                        col.isPublic
-                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
-                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700"
-                      }`}
-                    >
-                      {col.isPublic ? "Public" : "Private"}
-                    </span>
                   </div>
 
                   {col.description && (

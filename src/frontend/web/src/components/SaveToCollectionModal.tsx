@@ -8,7 +8,7 @@ import {
   removeCollectionItem,
 } from "../gen/quadsmith/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
-import { X, Plus, Check, Bookmark, Lock, Globe, Loader2 } from "lucide-react";
+import { X, Plus, Check, Bookmark, Loader2 } from "lucide-react";
 
 export interface SaveToCollectionModalProps {
   isOpen: boolean;
@@ -113,7 +113,6 @@ export function SaveToCollectionModal({
       const created = await mutateCreateCollection({
         name: newColName.trim(),
         description: newColDesc.trim(),
-        isPublic: true,
       });
 
       // Optimistically record that the item is in the newly created collection
@@ -230,7 +229,7 @@ export function SaveToCollectionModal({
                             : "bg-blue-500/10 text-blue-500"
                         }`}
                       >
-                        {col.isPublic ? <Globe size={14} /> : <Lock size={14} />}
+                        <Bookmark size={14} />
                       </div>
                       <div className="min-w-0">
                         <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate flex items-center gap-2">
@@ -242,8 +241,7 @@ export function SaveToCollectionModal({
                           )}
                         </div>
                         <div className="text-[11px] text-zinc-500">
-                          {col.isPublic ? "Public" : "Private"} • {Math.max(0, displayItemCount)}{" "}
-                          items
+                          {Math.max(0, displayItemCount)} items
                         </div>
                       </div>
                     </div>

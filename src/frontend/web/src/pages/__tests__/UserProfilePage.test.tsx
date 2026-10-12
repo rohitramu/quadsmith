@@ -129,10 +129,6 @@ describe("UserProfilePage Component", () => {
     expect(screen.getByText("Liked")).toBeInTheDocument();
     expect(screen.getByText("Cinewhoop Favorites")).toBeInTheDocument();
     expect(screen.getByText("Bando Builds")).toBeInTheDocument();
-
-    // Visibility badges
-    expect(screen.getByText("Public")).toBeInTheDocument();
-    expect(screen.getAllByText("Private").length).toBeGreaterThan(0);
   });
 
   it("deep links to Collections tab via URL search params ?tab=collections", async () => {

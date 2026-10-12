@@ -9,7 +9,7 @@ import {
   removeCollectionItem,
   updateCollection,
 } from "../gen/quadsmith/social-SocialService_connectquery";
-import type { Collection, CollectionItem } from "../gen/quadsmith/social_pb";
+import type { CollectionItem } from "../gen/quadsmith/social_pb";
 import { useAuth } from "../context/AuthContext";
 import {
   Bookmark,
@@ -21,8 +21,6 @@ import {
   Hammer,
   Cpu,
   Loader2,
-  Globe,
-  Lock,
   Edit3,
   X,
 } from "lucide-react";
@@ -33,8 +31,7 @@ export function UserCollectionsPage() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  // Quick visibility toggle and rename modal state
-  const [updatingColId, setUpdatingColId] = useState<string | null>(null);
+  // Rename modal state
   const [isRenameOpen, setIsRenameOpen] = useState(false);
   const [renameName, setRenameName] = useState("");
   const [isSavingRename, setIsSavingRename] = useState(false);
@@ -68,25 +65,6 @@ export function UserCollectionsPage() {
     return <Navigate to={`/users/${userId}?tab=collections`} replace />;
   }
 
-  async function handleSetVisibility(col: Collection, isPublic: boolean) {
-    if (col.isPublic === isPublic) return;
-    setUpdatingColId(col.id);
-    try {
-      await mutateUpdateCollection({
-        collectionId: col.id,
-        name: col.name,
-        description: col.description,
-        isPublic,
-      });
-      await refetchSingleCol();
-      await queryClient.invalidateQueries();
-    } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : "Failed to update collection visibility");
-    } finally {
-      setUpdatingColId(null);
-    }
-  }
-
   function openRenameModal() {
     if (!singleCol) return;
     setRenameName(singleCol.name);
@@ -102,7 +80,6 @@ export function UserCollectionsPage() {
         collectionId: singleCol.id,
         name: renameName.trim(),
         description: singleCol.description,
-        isPublic: singleCol.isPublic,
       });
       setIsRenameOpen(false);
       await refetchSingleCol();
@@ -210,60 +187,6 @@ export function UserCollectionsPage() {
                   >
                     <Edit3 size={18} />
                   </button>
-                )}
-
-                {/* Visibility control */}
-                {isOwner && !singleCol.isSystemCollection ? (
-                  <div
-                    className="inline-flex items-center rounded-lg p-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700"
-                    role="group"
-                    aria-label="Collection visibility"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => handleSetVisibility(singleCol, true)}
-                      disabled={updatingColId === singleCol.id}
-                      aria-pressed={singleCol.isPublic}
-                      className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                        singleCol.isPublic
-                          ? "bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-2xs"
-                          : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
-                      }`}
-                      title="Make collection public"
-                    >
-                      <Globe size={12} />
-                      <span>Public</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleSetVisibility(singleCol, false)}
-                      disabled={updatingColId === singleCol.id}
-                      aria-pressed={!singleCol.isPublic}
-                      className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                        !singleCol.isPublic
-                          ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-2xs"
-                          : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
-                      }`}
-                      title="Make collection private"
-                    >
-                      <Lock size={12} />
-                      <span>Private</span>
-                    </button>
-                    {updatingColId === singleCol.id && (
-                      <Loader2 size={12} className="animate-spin text-blue-500 mx-1" />
-                    )}
-                  </div>
-                ) : (
-                  <span
-                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                      singleCol.isPublic
-                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
-                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700"
-                    }`}
-                  >
-                    {singleCol.isPublic ? <Globe size={11} /> : <Lock size={11} />}
-                    <span>{singleCol.isPublic ? "Public" : "Private"}</span>
-                  </span>
                 )}
               </div>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">

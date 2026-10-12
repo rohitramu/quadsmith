@@ -726,7 +726,6 @@ CREATE TABLE IF NOT EXISTS collections (
   user_uuid UUID NOT NULL,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
-  is_public BOOLEAN DEFAULT false NOT NULL,
   is_system_collection BOOLEAN DEFAULT false NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
@@ -738,8 +737,6 @@ CREATE TABLE IF NOT EXISTS collections (
 CREATE INDEX IF NOT EXISTS idx_collections_id ON collections (id);
 
 CREATE INDEX IF NOT EXISTS idx_collections_user_uuid ON collections (user_uuid);
-
-CREATE INDEX IF NOT EXISTS idx_collections_is_public ON collections (is_public);
 
 CREATE INDEX IF NOT EXISTS idx_collections_is_system_collection ON collections (is_system_collection);
 

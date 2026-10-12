@@ -346,22 +346,18 @@ message Collection {
   }];
   string name = 4;
   string description = 5;
-  bool is_public = 6 [(quadsmith.sql.column) = {
+  bool is_system_collection = 6 [(quadsmith.sql.column) = {
     default_value: "false"
     create_index: true
   }];
-  bool is_system_collection = 7 [(quadsmith.sql.column) = {
-    default_value: "false"
-    create_index: true
-  }];
-  google.protobuf.Timestamp created_at = 8 [(quadsmith.sql.column) = {default_value: "NOW()"}];
-  google.protobuf.Timestamp updated_at = 9 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp created_at = 7 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp updated_at = 8 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
   // Resolved display fields
-  string author_username = 10;
-  int32 item_count = 11;
-  repeated string preview_images = 12;
-  bool contains_item = 13 [(quadsmith.sql.column) = {ignore: true}];
+  string author_username = 9;
+  int32 item_count = 10;
+  repeated string preview_images = 11;
+  bool contains_item = 12 [(quadsmith.sql.column) = {ignore: true}];
 }
 
 message CollectionItem {
@@ -568,14 +564,12 @@ message DeleteAnswerCommentRequest {
 message CreateCollectionRequest {
   string name = 1;
   string description = 2;
-  bool is_public = 3;
 }
 
 message UpdateCollectionRequest {
   string collection_id = 1;
   string name = 2;
   string description = 3;
-  bool is_public = 4;
 }
 
 message DeleteCollectionRequest {

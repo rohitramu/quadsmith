@@ -109,13 +109,13 @@ describe("Social Interactions Components", () => {
       const createBtn = screen.getByRole("button", { name: /create/i });
       await user.click(createBtn);
 
-      // Newly created collection should appear with tick icon because item was auto-added, and default to Public
+      // Newly created collection should appear with tick icon because item was auto-added
       const racingRigsBtn = await screen.findByRole("button", {
         name: /remove.*from racing rigs/i,
       });
       expect(racingRigsBtn).toBeInTheDocument();
       expect(racingRigsBtn.querySelector('[data-testid="tick-icon"]')).toBeInTheDocument();
-      expect(racingRigsBtn).toHaveTextContent(/public\s*•\s*1\s*items/i);
+      expect(racingRigsBtn).toHaveTextContent(/1\s*items/i);
     });
   });
 

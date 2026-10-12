@@ -1170,7 +1170,6 @@ func TestSandboxCreateCollection(t *testing.T) {
 	req := connect.NewRequest(&pb.CreateCollectionRequest{
 		Name:        "Speed Demons",
 		Description: "Collection of fast 5-inch quads",
-		IsPublic:    true,
 	})
 
 	res, err := socialClient.CreateCollection(ctx, req)
@@ -1207,7 +1206,7 @@ func TestSandboxCreateCollection(t *testing.T) {
 	}
 }
 
-func TestSandboxUpdateCollectionVisibility(t *testing.T) {
+func TestSandboxUpdateCollection(t *testing.T) {
 	apiUrl := getAPIURL()
 	socialClient := quadsmithconnect.NewSocialServiceClient(
 		http.DefaultClient,
@@ -1215,60 +1214,49 @@ func TestSandboxUpdateCollectionVisibility(t *testing.T) {
 	)
 
 	ctx := context.Background()
-	// 1. Create a public collection
+	// 1. Create a collection
 	createReq := connect.NewRequest(&pb.CreateCollectionRequest{
 		Name:        "Secret Quads",
-		Description: "Initially public collection",
-		IsPublic:    true,
+		Description: "Initial collection",
 	})
 	createRes, err := socialClient.CreateCollection(ctx, createReq)
 	if err != nil {
 		t.Fatalf("CreateCollection failed: %v", err)
 	}
 	colId := createRes.Msg.Id
-	if !createRes.Msg.IsPublic {
-		t.Fatalf("expected collection to be public initially")
+	if createRes.Msg.Name != "Secret Quads" {
+		t.Fatalf("expected collection name to be 'Secret Quads', got '%s'", createRes.Msg.Name)
 	}
 
-	// 2. Change visibility from public to private
+	// 2. Update collection name and description
 	updateReq := connect.NewRequest(&pb.UpdateCollectionRequest{
 		CollectionId: colId,
-		Name:         "Secret Quads",
-		Description:  "Now private collection",
-		IsPublic:     false,
+		Name:         "Renamed Quads",
+		Description:  "Updated description",
 	})
 	updateRes, err := socialClient.UpdateCollection(ctx, updateReq)
 	if err != nil {
-		t.Fatalf("UpdateCollection to private failed: %v", err)
+		t.Fatalf("UpdateCollection failed: %v", err)
 	}
-	if updateRes.Msg.IsPublic {
-		t.Errorf("expected collection is_public to be false, got true")
+	if updateRes.Msg.Name != "Renamed Quads" {
+		t.Errorf("expected collection name to be 'Renamed Quads', got '%s'", updateRes.Msg.Name)
+	}
+	if updateRes.Msg.Description != "Updated description" {
+		t.Errorf("expected collection description to be 'Updated description', got '%s'", updateRes.Msg.Description)
 	}
 
-	// 3. Confirm GetCollection returns is_public=false for owner
+	// 3. Confirm GetCollection returns updated values
 	getReq := connect.NewRequest(&pb.GetCollectionRequest{
 		Id: colId,
 	})
 	getRes, err := socialClient.GetCollection(ctx, getReq)
 	if err != nil {
-		t.Fatalf("GetCollection failed for owner: %v", err)
+		t.Fatalf("GetCollection failed: %v", err)
 	}
-	if getRes.Msg.IsPublic {
-		t.Errorf("expected GetCollection is_public to be false, got true")
+	if getRes.Msg.Name != "Renamed Quads" {
+		t.Errorf("expected GetCollection name to be 'Renamed Quads', got '%s'", getRes.Msg.Name)
 	}
-
-	// 4. Change visibility back from private to public
-	updateReqPublic := connect.NewRequest(&pb.UpdateCollectionRequest{
-		CollectionId: colId,
-		Name:         "Secret Quads",
-		Description:  "Back to public collection",
-		IsPublic:     true,
-	})
-	updateResPublic, err := socialClient.UpdateCollection(ctx, updateReqPublic)
-	if err != nil {
-		t.Fatalf("UpdateCollection back to public failed: %v", err)
-	}
-	if !updateResPublic.Msg.IsPublic {
-		t.Errorf("expected collection is_public to be true, got false")
+	if getRes.Msg.Description != "Updated description" {
+		t.Errorf("expected GetCollection description to be 'Updated description', got '%s'", getRes.Msg.Description)
 	}
 }

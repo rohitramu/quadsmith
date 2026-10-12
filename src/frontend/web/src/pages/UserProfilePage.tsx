@@ -10,8 +10,6 @@ import {
   Star,
   Bookmark,
   Plus,
-  Globe,
-  Lock,
   Heart,
   RefreshCw,
   CheckCircle,
@@ -42,7 +40,6 @@ export function UserProfilePage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [newColName, setNewColName] = useState("");
   const [newColDesc, setNewColDesc] = useState("");
-  const [newColIsPublic, setNewColIsPublic] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [deletingColId, setDeletingColId] = useState<string | null>(null);
 
@@ -130,11 +127,9 @@ export function UserProfilePage() {
       await mutateCreateCollection({
         name: newColName.trim(),
         description: newColDesc.trim(),
-        isPublic: newColIsPublic,
       });
       setNewColName("");
       setNewColDesc("");
-      setNewColIsPublic(true);
       setIsCreateOpen(false);
       await refetchCollections();
       await queryClient.invalidateQueries();
@@ -618,17 +613,6 @@ export function UserProfilePage() {
                             </p>
                           </div>
                         </div>
-
-                        <span
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold border shrink-0 ${
-                            col.isPublic
-                              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
-                              : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 border-zinc-200 dark:border-zinc-700"
-                          }`}
-                        >
-                          {col.isPublic ? <Globe size={10} /> : <Lock size={10} />}
-                          <span>{col.isPublic ? "Public" : "Private"}</span>
-                        </span>
                       </div>
 
                       {col.description && (
@@ -732,55 +716,6 @@ export function UserProfilePage() {
                   placeholder="Notes on what is collected here..."
                   className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
                 />
-              </div>
-
-              <div className="space-y-2 pt-1">
-                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                  Visibility
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setNewColIsPublic(true)}
-                    className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition-all ${
-                      newColIsPublic
-                        ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-semibold"
-                        : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-                    }`}
-                  >
-                    <Globe
-                      size={16}
-                      className={newColIsPublic ? "text-emerald-500" : "text-zinc-400"}
-                    />
-                    <div>
-                      <div className="text-xs">Public</div>
-                      <div className="text-[10px] text-zinc-500 font-normal">
-                        Visible on profile
-                      </div>
-                    </div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setNewColIsPublic(false)}
-                    className={`flex items-center gap-2.5 p-3 rounded-xl border text-left cursor-pointer transition-all ${
-                      !newColIsPublic
-                        ? "border-blue-500/50 bg-blue-500/10 text-blue-700 dark:text-blue-300 font-semibold"
-                        : "border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-                    }`}
-                  >
-                    <Lock
-                      size={16}
-                      className={!newColIsPublic ? "text-blue-500" : "text-zinc-400"}
-                    />
-                    <div>
-                      <div className="text-xs">Private</div>
-                      <div className="text-[10px] text-zinc-500 font-normal">
-                        Only you can see it
-                      </div>
-                    </div>
-                  </button>
-                </div>
               </div>
 
               <div className="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">

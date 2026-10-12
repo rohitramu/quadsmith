@@ -16,7 +16,7 @@
 | **Reputation Values** | Upvotes: `+5`, Downvotes: `-2`, Max `+100` per post | Asker accepting answer: `+10`; Answer accepted: `+30`; Build author endorsement: `+20` |
 | **Anti-Griefing & Downvote Cost** | Downvoting costs `-2` rep to voter; max 3 downvotes/day; 10 rep unlock threshold | Discourages brigading and throwaway accounts; downvoting has real stakes |
 | **Content Lifecycle & Deletion** | Knowledge Preservation (StackOverflow/Reddit hybrid) | Questions with accepted or upvoted answers cannot be destroyed; author can disassociate/mask as `[Deleted User]`; deleted comments with replies show `[Comment deleted]`; reviews can be deleted (score recalculates) |
-| **Favorites / Collections** | Instagram & Printables style | Default system collection: "Liked" (1-click Heart icon, public by default with privacy toggle); custom collections default to Private; mixed item support (Builds + Components) |
+| **Favorites / Collections** | Instagram & Printables style | Default system collection: "Liked" (1-click Heart icon); all collections are public; mixed item support (Builds + Components) |
 
 ---
 
@@ -127,15 +127,15 @@ To incentivize helpful answers and avoid toxic downvote spam:
   - Adds the item to the user's "Liked" collection.
   - Increments the public Like counter on that entity.
   - Clicking again removes it from "Liked" and decrements the counter.
-- **Default Privacy:** The "Liked" collection is **public by default (`isPublic = true`)** (displaying on the user's public profile), but can be toggled to private in profile settings.
+- **Public Visibility:** All collections are public and accessible to view on user profiles.
 
 ### 4.2 Custom Collections
 Users can create unlimited custom collections (e.g. *"Sub-250g Ideas"*, *"7-inch Long Range Inspo"*, *"Compatible Motors for Apex 5"*).
-- **Default Privacy:** Custom collections default to **private (`isPublic = false`)**.
+- **Public by Design:** All collections are public by design, simplifying sharing and discovery across the community.
 - **Item Flexibility:** Collections support **mixed items** — a single collection can contain both `Build` and `Component` entries.
 - **Many-to-Many:** An item can be added to multiple collections simultaneously.
-- **Metadata:** Name, description, `isPublic` (boolean, defaults to `false`), and optional cover image (or auto-preview from member items).
-- **Public Profile:** Public collections appear on the user's profile at `/@username/collections`. For this release, public collections are view-only (no collection following or collaborative editing).
+- **Metadata:** Name, description, and optional cover image (or auto-preview from member items).
+- **Public Profile:** Collections appear on the user's profile at `/@username/collections`. Collections are view-only for visitors (no collection following or collaborative editing).
 
 ---
 
@@ -337,7 +337,6 @@ model Collection {
   user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   name          String
   description   String?
-  isPublic      Boolean         @default(false)
   isSystemCollection Boolean    @default(false) // System collection (e.g. 1-click likes)
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
@@ -345,7 +344,6 @@ model Collection {
   items         CollectionItem[]
 
   @@unique([userId, isSystemCollection])
-  @@index([userId, isPublic])
 }
 
 model CollectionItem {

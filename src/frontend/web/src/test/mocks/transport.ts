@@ -1227,7 +1227,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           userUuid: mockUser.uuid,
           name: req.name,
           description: req.description,
-          isPublic: req.isPublic,
           isSystemCollection: false,
           authorUsername: mockUser.id,
           itemCount: 0,
@@ -1243,7 +1242,6 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (col) {
           if (req.name) col.name = req.name;
           if (req.description !== undefined) col.description = req.description;
-          col.isPublic = req.isPublic;
           return col;
         }
         throw new ConnectError("Collection not found", Code.NotFound);

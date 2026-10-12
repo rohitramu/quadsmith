@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { screen, within } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { UserCollectionsPage } from "../UserCollectionsPage";
 import { Route, Routes } from "react-router-dom";
@@ -71,22 +71,6 @@ describe("UserCollectionsPage", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("allows owner to toggle visibility in single collection view", async () => {
-    const { user } = renderCollections("/users/fpv_pilot/collections/cinewhoop-favorites");
-
-    expect(
-      await screen.findByRole("heading", { level: 1, name: "Cinewhoop Favorites" }),
-    ).toBeInTheDocument();
-
-    const group = screen.getByRole("group", { name: /collection visibility/i });
-    expect(group).toBeInTheDocument();
-
-    const privateBtn = within(group).getByRole("button", { name: /^private$/i });
-    await user.click(privateBtn);
-
-    expect(privateBtn).toHaveAttribute("aria-pressed", "true");
-  });
-
   it("allows owner to delete collection with garbage bin icon", async () => {
     vi.spyOn(window, "confirm").mockReturnValue(true);
     const { user } = renderCollections("/users/fpv_pilot/collections/cinewhoop-favorites");
@@ -105,11 +89,11 @@ describe("UserCollectionsPage", () => {
     expect(await screen.findByText("User Profile Mock")).toBeInTheDocument();
   });
 
-  it("shows read-only visibility badge for non-owners", async () => {
+  it("does not show edit or delete controls for non-owners", async () => {
     renderCollections("/users/other_pilot/collections/other-col");
 
-    // No visibility button groups and no rename button should exist for non-owners
-    expect(screen.queryByRole("group", { name: /visibility/i })).not.toBeInTheDocument();
+    // No rename or delete buttons should exist for non-owners
     expect(screen.queryByRole("button", { name: /rename collection/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /delete collection/i })).not.toBeInTheDocument();
   });
 });

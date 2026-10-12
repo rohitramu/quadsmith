@@ -1554,15 +1554,14 @@ type Collection struct {
 	UserUuid           string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
 	Name               string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	Description        string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	IsPublic           bool                   `protobuf:"varint,6,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
-	IsSystemCollection bool                   `protobuf:"varint,7,opt,name=is_system_collection,json=isSystemCollection,proto3" json:"is_system_collection,omitempty"`
-	CreatedAt          *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt          *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	IsSystemCollection bool                   `protobuf:"varint,6,opt,name=is_system_collection,json=isSystemCollection,proto3" json:"is_system_collection,omitempty"`
+	CreatedAt          *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt          *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	// Resolved display fields
-	AuthorUsername string   `protobuf:"bytes,10,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
-	ItemCount      int32    `protobuf:"varint,11,opt,name=item_count,json=itemCount,proto3" json:"item_count,omitempty"`
-	PreviewImages  []string `protobuf:"bytes,12,rep,name=preview_images,json=previewImages,proto3" json:"preview_images,omitempty"`
-	ContainsItem   bool     `protobuf:"varint,13,opt,name=contains_item,json=containsItem,proto3" json:"contains_item,omitempty"`
+	AuthorUsername string   `protobuf:"bytes,9,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
+	ItemCount      int32    `protobuf:"varint,10,opt,name=item_count,json=itemCount,proto3" json:"item_count,omitempty"`
+	PreviewImages  []string `protobuf:"bytes,11,rep,name=preview_images,json=previewImages,proto3" json:"preview_images,omitempty"`
+	ContainsItem   bool     `protobuf:"varint,12,opt,name=contains_item,json=containsItem,proto3" json:"contains_item,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1630,13 +1629,6 @@ func (x *Collection) GetDescription() string {
 		return x.Description
 	}
 	return ""
-}
-
-func (x *Collection) GetIsPublic() bool {
-	if x != nil {
-		return x.IsPublic
-	}
-	return false
 }
 
 func (x *Collection) GetIsSystemCollection() bool {
@@ -3545,7 +3537,6 @@ type CreateCollectionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	IsPublic      bool                   `protobuf:"varint,3,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3594,19 +3585,11 @@ func (x *CreateCollectionRequest) GetDescription() string {
 	return ""
 }
 
-func (x *CreateCollectionRequest) GetIsPublic() bool {
-	if x != nil {
-		return x.IsPublic
-	}
-	return false
-}
-
 type UpdateCollectionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	IsPublic      bool                   `protobuf:"varint,4,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3660,13 +3643,6 @@ func (x *UpdateCollectionRequest) GetDescription() string {
 		return x.Description
 	}
 	return ""
-}
-
-func (x *UpdateCollectionRequest) GetIsPublic() bool {
-	if x != nil {
-		return x.IsPublic
-	}
-	return false
 }
 
 type DeleteCollectionRequest struct {
@@ -4462,26 +4438,25 @@ const file_social_proto_rawDesc = "" +
 	"\x05score\x18\x03 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x05score\x12F\n" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt:!\xc2\xf3\x18\x1d\n" +
-	"\x10user_reputations\x1a\tuser_uuid\"\xd6\x04\n" +
+	"\x10user_reputations\x1a\tuser_uuid\"\xaa\x04\n" +
 	"\n" +
 	"Collection\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
 	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x120\n" +
 	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x05 \x01(\tR\vdescription\x12*\n" +
-	"\tis_public\x18\x06 \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\bisPublic\x12?\n" +
-	"\x14is_system_collection\x18\a \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\x12isSystemCollection\x12F\n" +
+	"\vdescription\x18\x05 \x01(\tR\vdescription\x12?\n" +
+	"\x14is_system_collection\x18\x06 \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\x12isSystemCollection\x12F\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\n" +
-	" \x01(\tR\x0eauthorUsername\x12\x1d\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
+	"\x0fauthor_username\x18\t \x01(\tR\x0eauthorUsername\x12\x1d\n" +
 	"\n" +
-	"item_count\x18\v \x01(\x05R\titemCount\x12%\n" +
-	"\x0epreview_images\x18\f \x03(\tR\rpreviewImages\x12+\n" +
-	"\rcontains_item\x18\r \x01(\bB\x06\xc2\xf3\x18\x02@\x01R\fcontainsItem:\x11\xc2\xf3\x18\r\n" +
+	"item_count\x18\n" +
+	" \x01(\x05R\titemCount\x12%\n" +
+	"\x0epreview_images\x18\v \x03(\tR\rpreviewImages\x12+\n" +
+	"\rcontains_item\x18\f \x01(\bB\x06\xc2\xf3\x18\x02@\x01R\fcontainsItem:\x11\xc2\xf3\x18\r\n" +
 	"\vcollections\"\xc5\x04\n" +
 	"\x0eCollectionItem\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12T\n" +
@@ -4633,16 +4608,14 @@ const file_social_proto_rawDesc = "" +
 	"answerUuid\x12\x12\n" +
 	"\x04body\x18\x02 \x01(\tR\x04body\"?\n" +
 	"\x1aDeleteAnswerCommentRequest\x12!\n" +
-	"\fcomment_uuid\x18\x01 \x01(\tR\vcommentUuid\"l\n" +
+	"\fcomment_uuid\x18\x01 \x01(\tR\vcommentUuid\"O\n" +
 	"\x17CreateCollectionRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1b\n" +
-	"\tis_public\x18\x03 \x01(\bR\bisPublic\"\x91\x01\n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\"t\n" +
 	"\x17UpdateCollectionRequest\x12#\n" +
 	"\rcollection_id\x18\x01 \x01(\tR\fcollectionId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1b\n" +
-	"\tis_public\x18\x04 \x01(\bR\bisPublic\">\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\">\n" +
 	"\x17DeleteCollectionRequest\x12#\n" +
 	"\rcollection_id\x18\x01 \x01(\tR\fcollectionId\"&\n" +
 	"\x14GetCollectionRequest\x12\x0e\n" +

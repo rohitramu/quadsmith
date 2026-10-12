@@ -1670,8 +1670,8 @@ func (s *SocialService) getOrCreateDefaultLikedCollection(ctx context.Context, u
 	colID := "liked-" + colUUID[:8]
 	username, _ := getUserDisplay(ctx, s.db, userUUID)
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO collections (uuid, id, user_uuid, name, description, is_public, is_system_collection, author_username, item_count, created_at, updated_at)
-		VALUES ($1, $2, $3, 'Liked', 'Default collection of liked builds and components', true, true, $4, 0, NOW(), NOW())
+		INSERT INTO collections (uuid, id, user_uuid, name, description, is_system_collection, author_username, item_count, created_at, updated_at)
+		VALUES ($1, $2, $3, 'Liked', 'Default collection of liked builds and components', true, $4, 0, NOW(), NOW())
 		ON CONFLICT (id) DO NOTHING
 	`, colUUID, colID, userUUID, username)
 	if err != nil {
@@ -1760,9 +1760,9 @@ func (s *SocialService) CreateCollection(ctx context.Context, req *connect.Reque
 	username, _ := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO collections (uuid, id, user_uuid, name, description, is_public, is_system_collection, author_username, item_count, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, false, $7, 0, NOW(), NOW())
-	`, colUUID, colID, u.UserUUID, name, req.Msg.GetDescription(), req.Msg.GetIsPublic(), username)
+		INSERT INTO collections (uuid, id, user_uuid, name, description, is_system_collection, author_username, item_count, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, false, $6, 0, NOW(), NOW())
+	`, colUUID, colID, u.UserUUID, name, req.Msg.GetDescription(), username)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1774,7 +1774,6 @@ func (s *SocialService) CreateCollection(ctx context.Context, req *connect.Reque
 		AuthorUsername:     username,
 		Name:               name,
 		Description:        req.Msg.GetDescription(),
-		IsPublic:           req.Msg.GetIsPublic(),
 		IsSystemCollection: false,
 		ItemCount:          0,
 		CreatedAt:          timestamppb.Now(),
@@ -1821,9 +1820,9 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 
 	_, err = s.db.Exec(ctx, `
 		UPDATE collections
-		SET name = $1, description = $2, is_public = $3, updated_at = NOW()
-		WHERE uuid = $4
-	`, name, desc, req.Msg.GetIsPublic(), colUUID)
+		SET name = $1, description = $2, updated_at = NOW()
+		WHERE uuid = $3
+	`, name, desc, colUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1837,7 +1836,6 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 		AuthorUsername:     username,
 		Name:               name,
 		Description:        desc,
-		IsPublic:           req.Msg.GetIsPublic(),
 		IsSystemCollection: isSystem,
 		UpdatedAt:          timestamppb.Now(),
 	}), nil
@@ -1877,14 +1875,14 @@ func (s *SocialService) GetCollection(ctx context.Context, req *connect.Request[
 	var createdAt, updatedAt time.Time
 	err := s.db.QueryRow(ctx, `
 		SELECT
-			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_system_collection,
+			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_system_collection,
 			c.created_at, c.updated_at, u.id as author_username,
 			(SELECT count(*) FROM collection_items WHERE collection_uuid = c.uuid) as item_count
 		FROM collections c
 		JOIN users u ON u.uuid = c.user_uuid
 		WHERE c.id = $1 OR c.uuid::text = $1
 	`, req.Msg.GetId()).Scan(
-		&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsSystemCollection,
+		&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsSystemCollection,
 		&createdAt, &updatedAt, &c.AuthorUsername, &c.ItemCount,
 	)
 	if err != nil {
@@ -1892,12 +1890,6 @@ func (s *SocialService) GetCollection(ctx context.Context, req *connect.Request[
 			return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
 		}
 		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-
-	// Privacy check
-	caller := authcontext.UserContextFromContext(ctx)
-	if !c.IsPublic && (caller == nil || (caller.UserUUID != c.UserUuid && caller.Role != "ADMIN")) {
-		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this collection is private"))
 	}
 
 	c.CreatedAt = timestamppb.New(createdAt)
@@ -1912,15 +1904,6 @@ func (s *SocialService) ListUserCollections(ctx context.Context, req *connect.Re
 	err := s.db.QueryRow(ctx, "SELECT uuid FROM users WHERE id = $1 OR uuid::text = $1", targetUserID).Scan(&targetUserUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
-	}
-
-	caller := authcontext.UserContextFromContext(ctx)
-	isOwner := caller != nil && caller.UserUUID == targetUserUUID
-
-	// If owner, list all collections; otherwise, only public ones
-	privacyFilter := "AND c.is_public = true"
-	if isOwner {
-		privacyFilter = ""
 	}
 
 	var filterEntityUUID string
@@ -1945,15 +1928,15 @@ func (s *SocialService) ListUserCollections(ctx context.Context, req *connect.Re
 
 	query := fmt.Sprintf(`
 		SELECT
-			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_system_collection,
+			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_system_collection,
 			c.created_at, c.updated_at, u.id as author_username,
 			(SELECT count(*) FROM collection_items WHERE collection_uuid = c.uuid) as item_count,
 			%s
 		FROM collections c
 		JOIN users u ON u.uuid = c.user_uuid
-		WHERE c.user_uuid = $1 %s
+		WHERE c.user_uuid = $1
 		ORDER BY c.is_system_collection DESC, c.created_at DESC
-	`, containsItemSelect, privacyFilter)
+	`, containsItemSelect)
 
 	rows, err := s.db.Query(ctx, query, args...)
 	if err != nil {
@@ -1966,7 +1949,7 @@ func (s *SocialService) ListUserCollections(ctx context.Context, req *connect.Re
 		var c pb.Collection
 		var createdAt, updatedAt time.Time
 		err := rows.Scan(
-			&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsSystemCollection,
+			&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsSystemCollection,
 			&createdAt, &updatedAt, &c.AuthorUsername, &c.ItemCount, &c.ContainsItem,
 		)
 		if err != nil {
@@ -2059,22 +2042,17 @@ func (s *SocialService) ListCollectionItems(ctx context.Context, req *connect.Re
 	var createdAt, updatedAt time.Time
 	err := s.db.QueryRow(ctx, `
 		SELECT
-			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_public, c.is_system_collection,
+			c.uuid, c.id, c.user_uuid, c.name, c.description, c.is_system_collection,
 			c.created_at, c.updated_at, u.id as author_username
 		FROM collections c
 		JOIN users u ON u.uuid = c.user_uuid
 		WHERE c.id = $1 OR c.uuid::text = $1
 	`, req.Msg.GetCollectionId()).Scan(
-		&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsPublic, &c.IsSystemCollection,
+		&c.Uuid, &c.Id, &c.UserUuid, &c.Name, &c.Description, &c.IsSystemCollection,
 		&createdAt, &updatedAt, &c.AuthorUsername,
 	)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
-	}
-
-	caller := authcontext.UserContextFromContext(ctx)
-	if !c.IsPublic && (caller == nil || (caller.UserUUID != c.UserUuid && caller.Role != "ADMIN")) {
-		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this collection is private"))
 	}
 
 	c.CreatedAt = timestamppb.New(createdAt)
