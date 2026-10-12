@@ -44,7 +44,7 @@ func newQSCommand(t *testing.T, args ...string) *exec.Cmd {
 	qsPath := resolveQSPath(t)
 	apiUrl := getAPIURL()
 	cmd := exec.Command(qsPath, args...)
-	cmd.Env = append(cmd.Environ(), "QS_API_URL="+apiUrl)
+	cmd.Env = append(cmd.Environ(), "QS_CLI_API_URL="+apiUrl, "QS_API_URL="+apiUrl)
 	if testAccessToken != "" {
 		cmd.Env = append(cmd.Env, "QS_ACCESS_TOKEN="+testAccessToken)
 	}

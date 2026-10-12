@@ -17,10 +17,23 @@ import (
 )
 
 func getAPIURL() string {
+	if url := os.Getenv("QS_CLI_API_URL"); url != "" {
+		return url
+	}
 	if url := os.Getenv("QS_API_URL"); url != "" {
 		return url
 	}
 	return "http://127.0.0.1:8080"
+}
+
+func getDBURL() string {
+	if url := os.Getenv("QS_DATABASE_URL"); url != "" {
+		return url
+	}
+	if url := os.Getenv("DATABASE_URL"); url != "" {
+		return url
+	}
+	return "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
 }
 
 func TestSandboxBuilds(t *testing.T) {
@@ -369,10 +382,7 @@ func TestSandboxAuth_ResendEmailOtpGeneratesFreshCodeAndBindsChallenge(t *testin
 	ctx := context.Background()
 	testEmail := "pilot-resend-test@example.com"
 
-	dbUrl := os.Getenv("DATABASE_URL")
-	if dbUrl == "" {
-		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
-	}
+	dbUrl := getDBURL()
 	pool, err := pgxpool.New(ctx, dbUrl)
 	if err != nil {
 		t.Fatalf("failed to connect to db: %v", err)
@@ -587,10 +597,7 @@ func TestSandboxAuth_LockoutAfter3FailedCodesPerIP(t *testing.T) {
 	testEmail1 := "ip-lockout-test-1@example.com"
 	testEmail2 := "ip-lockout-test-2@example.com"
 
-	dbUrl := os.Getenv("DATABASE_URL")
-	if dbUrl == "" {
-		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
-	}
+	dbUrl := getDBURL()
 	pool, err := pgxpool.New(ctx, dbUrl)
 	if err != nil {
 		t.Fatalf("failed to connect to db: %v", err)
@@ -741,10 +748,7 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 	)
 	ctx := context.Background()
 
-	dbUrl := os.Getenv("DATABASE_URL")
-	if dbUrl == "" {
-		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
-	}
+	dbUrl := getDBURL()
 	pool, err := pgxpool.New(ctx, dbUrl)
 	if err != nil {
 		t.Fatalf("failed to connect to db: %v", err)
@@ -941,10 +945,7 @@ func TestSandboxAuth_CrossDeviceMagicLinkApproval(t *testing.T) {
 	)
 	ctx := context.Background()
 
-	dbUrl := os.Getenv("DATABASE_URL")
-	if dbUrl == "" {
-		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
-	}
+	dbUrl := getDBURL()
 	pool, err := pgxpool.New(ctx, dbUrl)
 	if err != nil {
 		t.Fatalf("failed to connect to db: %v", err)

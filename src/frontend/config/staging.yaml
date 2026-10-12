@@ -1,0 +1,9 @@
+ui:
+  api_url: "https://staging.quadsmith.com"
+  app_name: "Quadsmith (Staging)"
+
+cli:
+  api_url: "https://staging.quadsmith.com"
+
+ops:
+  worker_url: "https://staging.quadsmith.com"

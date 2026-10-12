@@ -6,6 +6,7 @@ require (
 	connectrpc.com/connect v1.21.0
 	github.com/spf13/cobra v1.10.2
 	google.golang.org/protobuf v1.36.12
+	quadsmith/frontend/config v0.0.0
 	sigs.k8s.io/yaml v1.6.0
 )
 

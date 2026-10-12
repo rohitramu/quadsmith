@@ -44,7 +44,10 @@ func resolveSeedPath(t *testing.T) string {
 
 func setupTestServer(t *testing.T) (*httptest.Server, *pgxpool.Pool) {
 	t.Helper()
-	dbUrl := os.Getenv("DATABASE_URL")
+	dbUrl := os.Getenv("QS_DATABASE_URL")
+	if dbUrl == "" {
+		dbUrl = os.Getenv("DATABASE_URL")
+	}
 	if dbUrl == "" {
 		dbUrl = "postgres://postgres:postgres@localhost:5432/quadsmith"
 	}
@@ -436,7 +439,7 @@ func TestCLI_Pagination(t *testing.T) {
 
 	// 1. List with --limit, --filter, --sort
 	cmd := exec.Command(qsPath, "components", "hardware", "motors", "list", "--json", "--limit", "5", "--filter", `manufacturer == "BETAFPV"`, "--sort", "^kv")
-	cmd.Env = append(cmd.Env, "QS_API_URL="+srv.URL)
+	cmd.Env = append(cmd.Environ(), "QS_CLI_API_URL="+srv.URL, "QS_API_URL="+srv.URL)
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr

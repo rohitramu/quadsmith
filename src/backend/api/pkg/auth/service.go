@@ -23,6 +23,7 @@ import (
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	bconfig "quadsmith/backend/config"
 )
 
 // ---------------------------------------------------------
@@ -31,11 +32,34 @@ import (
 
 type AuthService struct {
 	quadsmithconnect.UnimplementedAuthServiceHandler
-	db *pgxpool.Pool
+	db  *pgxpool.Pool
+	cfg *bconfig.AuthConfig
 }
 
-func NewAuthService(db *pgxpool.Pool) *AuthService {
-	return &AuthService{db: db}
+func NewAuthService(db *pgxpool.Pool, cfg ...*bconfig.AuthConfig) *AuthService {
+	var authCfg *bconfig.AuthConfig
+	if len(cfg) > 0 && cfg[0] != nil {
+		authCfg = cfg[0]
+	} else {
+		authCfg = &bconfig.AuthConfig{
+			Secret:           string(getMasterSecret()),
+			DevPrintOTP:      os.Getenv("QS_DEV_PRINT_OTP") == "1" || os.Getenv("ENV") != "production",
+			SecureCookies:    os.Getenv("ENV") == "production" || os.Getenv("SECURE_COOKIES") == "true",
+			TrustedProxyHops: 0,
+			AccessTokenTTL:   AccessTokenTTL,
+			RefreshTokenTTL:  RefreshTokenTTL,
+			OtpTTL:           OtpTTL,
+			MagicLinkTTL:     MagicLinkTTL,
+			EmailCooldown:    EmailCooldown,
+		}
+	}
+	if authCfg.Secret != "" {
+		SetMasterSecret(authCfg.Secret)
+	}
+	if authCfg.AccessTokenTTL > 0 || authCfg.RefreshTokenTTL > 0 {
+		SetTokenTTLs(authCfg.AccessTokenTTL, authCfg.RefreshTokenTTL)
+	}
+	return &AuthService{db: db, cfg: authCfg}
 }
 
 func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.SendEmailOtpRequest]) (*connect.Response[pb.SendEmailOtpResponse], error) {
@@ -50,7 +74,7 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeResourceExhausted, err)
 	}
 
-	cooldown, err := CheckEmailCooldown(ctx, s.db, email)
+	cooldown, err := CheckEmailCooldown(ctx, s.db, email, s.cfg.EmailCooldown)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -83,7 +107,7 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 
 	otpUUID := NewUUIDv7()
 	now := time.Now()
-	expiresAt := now.Add(MagicLinkTTL)
+	expiresAt := now.Add(s.cfg.MagicLinkTTL)
 	userAgent := req.Header().Get("User-Agent")
 	locationHint := extractLocationHint(req.Header(), clientIP)
 
@@ -100,24 +124,24 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
 	}
 
-	baseURL := getBaseURL(req)
+	baseURL := s.getBaseURL(req)
 
-	// ConsoleMailer: controlled via QS_DEV_PRINT_OTP=1 (or non-production)
-	if os.Getenv("QS_DEV_PRINT_OTP") == "1" || os.Getenv("ENV") != "production" {
+	// ConsoleMailer: controlled via cfg.DevPrintOTP
+	if s.cfg.DevPrintOTP {
 		fmt.Printf("\n=======================================================\n")
-		fmt.Printf("[AUTH] Email OTP for %s: %s (valid for 3 minutes)\n", email, otpCode)
+		fmt.Printf("[AUTH] Email OTP for %s: %s (valid for %v)\n", email, otpCode, s.cfg.OtpTTL)
 		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
-		fmt.Printf("[AUTH] Magic Link: %s/login/verify?token=%s (valid for 15 minutes)\n", baseURL, magicToken)
+		fmt.Printf("[AUTH] Magic Link: %s/login/verify?token=%s (valid for %v)\n", baseURL, magicToken, s.cfg.MagicLinkTTL)
 		fmt.Printf("=======================================================\n\n")
 	}
 
 	res := connect.NewResponse(&pb.SendEmailOtpResponse{
 		Success:         true,
 		Message:         "Verification code sent to your email",
-		CooldownSeconds: int32(EmailCooldown.Seconds()),
+		CooldownSeconds: int32(s.cfg.EmailCooldown.Seconds()),
 		ChallengeId:     &challengeToken,
 	})
-	setChallengeCookie(res.Header(), challengeToken)
+	s.setChallengeCookie(res.Header(), challengeToken)
 	return res, nil
 }
 
@@ -206,10 +230,10 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	// Verify 3-minute OTP lifespan
-	if time.Since(createdAt) > OtpTTL {
+	// Verify OTP lifespan
+	if time.Since(createdAt) > s.cfg.OtpTTL {
 		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-		return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("verification code has expired (3-minute limit). Please request a new code"))
+		return nil, connect.NewError(connect.CodeDeadlineExceeded, fmt.Errorf("verification code has expired (%v limit). Please request a new code", s.cfg.OtpTTL))
 	}
 
 	if !VerifyOTP(code, codeHash) {
@@ -291,7 +315,7 @@ func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid magic link purpose"))
 	}
 
-	if time.Since(createdAt) > MagicLinkTTL {
+	if time.Since(createdAt) > s.cfg.MagicLinkTTL {
 		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, claims.OtpUUID)
 		return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("magic link has expired. Please request a new code"))
 	}
@@ -679,8 +703,8 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("session has expired. Please sign in again"))
 	}
 
-	// 5-day sliding window: roll expiration forward to NOW() + 5 days
-	newExpiresAt := time.Now().Add(RefreshTokenTTL)
+	// sliding window: roll expiration forward to NOW() + RefreshTokenTTL
+	newExpiresAt := time.Now().Add(s.cfg.RefreshTokenTTL)
 	_, err = s.db.Exec(ctx, `
 		UPDATE refresh_tokens
 		SET expires_at = $1, last_used_at = NOW()
@@ -738,9 +762,10 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 		Name:     "qs_session",
 		Value:    token,
 		Path:     "/",
-		MaxAge:   int(RefreshTokenTTL.Seconds()),
+		MaxAge:   int(s.cfg.RefreshTokenTTL.Seconds()),
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
+		Secure:   s.cfg.SecureCookies,
 	}
 	res.Header().Set("Set-Cookie", cookie.String())
 
@@ -944,7 +969,7 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 
 	otpUUID := NewUUIDv7()
 	now := time.Now()
-	expiresAt := now.Add(MagicLinkTTL)
+	expiresAt := now.Add(s.cfg.MagicLinkTTL)
 
 	_, err = s.db.Exec(ctx, `
 		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, requested_by_user_uuid, expires_at, created_at, failed_attempts)
@@ -959,25 +984,25 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
 	}
 
-	baseURL := getBaseURL(req)
+	baseURL := s.getBaseURL(req)
 
-	// ConsoleMailer: controlled via QS_DEV_PRINT_OTP=1 (or non-production)
-	if os.Getenv("QS_DEV_PRINT_OTP") == "1" || os.Getenv("ENV") != "production" {
+	// ConsoleMailer: controlled via cfg.DevPrintOTP
+	if s.cfg.DevPrintOTP {
 		fmt.Printf("\n=======================================================\n")
-		fmt.Printf("[AUTH] Add Email OTP for %s: %s (valid for 3 minutes)\n", email, otpCode)
+		fmt.Printf("[AUTH] Add Email OTP for %s: %s (valid for %v)\n", email, otpCode, s.cfg.OtpTTL)
 		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
-		fmt.Printf("[AUTH] Add Email Magic Link: %s/account?add_email_token=%s (valid for 15 minutes)\n", baseURL, magicToken)
+		fmt.Printf("[AUTH] Add Email Magic Link: %s/account?add_email_token=%s (valid for %v)\n", baseURL, magicToken, s.cfg.MagicLinkTTL)
 		fmt.Printf("=======================================================\n\n")
 	}
 
 	res := connect.NewResponse(&pb.SendEmailOtpResponse{
 		Success:           true,
 		Message:           "Verification code sent to email",
-		CooldownSeconds:   int32(EmailCooldown.Seconds()),
+		CooldownSeconds:   int32(s.cfg.EmailCooldown.Seconds()),
 		IsExistingAccount: false,
 		ChallengeId:       &challengeToken,
 	})
-	setChallengeCookie(res.Header(), challengeToken)
+	s.setChallengeCookie(res.Header(), challengeToken)
 	return res, nil
 }
 
@@ -1027,7 +1052,7 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		if usedAt != nil {
 			return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("this magic link has already been used"))
 		}
-		if time.Since(createdAt) > MagicLinkTTL {
+		if time.Since(createdAt) > s.cfg.MagicLinkTTL {
 			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
 			return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("magic link has expired"))
 		}
@@ -1060,7 +1085,7 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
 
-		if time.Since(createdAt) > OtpTTL {
+		if time.Since(createdAt) > s.cfg.OtpTTL {
 			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
 			return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("verification code has expired"))
 		}
@@ -1788,9 +1813,14 @@ func pluralAttempts(n int32) string {
 
 const ChallengeCookieName = "qs_challenge"
 
-func extractClientIP(header http.Header, peerAddr string) string {
-	hopsStr := os.Getenv("TRUSTED_PROXY_HOPS")
-	hops, _ := strconv.Atoi(hopsStr)
+func extractClientIP(header http.Header, peerAddr string, trustedHops ...int) string {
+	hops := 0
+	if len(trustedHops) > 0 {
+		hops = trustedHops[0]
+	} else {
+		hopsStr := os.Getenv("TRUSTED_PROXY_HOPS")
+		hops, _ = strconv.Atoi(hopsStr)
+	}
 	if hops > 0 || os.Getenv("ENV") != "production" {
 		xff := header.Get("X-Forwarded-For")
 		if xff != "" {
@@ -1809,6 +1839,18 @@ func extractClientIP(header http.Header, peerAddr string) string {
 		return peerAddr
 	}
 	return ""
+}
+
+func (s *AuthService) getClientIP[T any](req *connect.Request[T]) string {
+	peerAddr := ""
+	if req.Peer().Addr != "" {
+		peerAddr = req.Peer().Addr
+	}
+	hops := 0
+	if s != nil && s.cfg != nil {
+		hops = s.cfg.TrustedProxyHops
+	}
+	return extractClientIP(req.Header(), peerAddr, hops)
 }
 
 func getClientIP[T any](req *connect.Request[T]) string {
@@ -1894,6 +1936,19 @@ func parseDeviceHint(ua string) string {
 	return "Web Browser"
 }
 
+func (s *AuthService) getBaseURL[T any](req *connect.Request[T]) string {
+	secure := false
+	if s != nil && s.cfg != nil {
+		secure = s.cfg.SecureCookies
+	} else if os.Getenv("ENV") == "production" || os.Getenv("SECURE_COOKIES") == "true" {
+		secure = true
+	}
+	if req != nil {
+		return extractBaseURL(req.Header(), secure)
+	}
+	return extractBaseURL(nil, secure)
+}
+
 func getBaseURL[T any](req *connect.Request[T]) string {
 	if req != nil {
 		return extractBaseURL(req.Header())
@@ -1901,7 +1956,14 @@ func getBaseURL[T any](req *connect.Request[T]) string {
 	return extractBaseURL(nil)
 }
 
-func extractBaseURL(header http.Header) string {
+func extractBaseURL(header http.Header, isSecure ...bool) string {
+	secure := false
+	if len(isSecure) > 0 {
+		secure = isSecure[0]
+	} else if os.Getenv("ENV") == "production" || os.Getenv("SECURE_COOKIES") == "true" {
+		secure = true
+	}
+
 	// 1. Explicit environment variable configuration
 	for _, envKey := range []string{"APP_URL", "WEB_URL", "BASE_URL"} {
 		if val := strings.TrimRight(strings.TrimSpace(os.Getenv(envKey)), "/"); val != "" {
@@ -1936,7 +1998,7 @@ func extractBaseURL(header http.Header) string {
 			}
 			proto := header.Get("X-Forwarded-Proto")
 			if proto == "" {
-				if os.Getenv("ENV") == "production" || os.Getenv("SECURE_COOKIES") == "true" {
+				if secure {
 					proto = "https"
 				} else {
 					proto = "http"
@@ -1958,6 +2020,27 @@ func extractBaseURL(header http.Header) string {
 		return "https://localhost"
 	}
 	return fmt.Sprintf("http://localhost:%s", port)
+}
+
+func (s *AuthService) setChallengeCookie(header http.Header, challengeToken string) {
+	isSecure := false
+	maxAge := int(MagicLinkTTL.Seconds())
+	if s != nil && s.cfg != nil {
+		isSecure = s.cfg.SecureCookies
+		maxAge = int(s.cfg.MagicLinkTTL.Seconds())
+	} else if os.Getenv("ENV") == "production" || os.Getenv("SECURE_COOKIES") == "true" {
+		isSecure = true
+	}
+	cookie := http.Cookie{
+		Name:     ChallengeCookieName,
+		Value:    challengeToken,
+		Path:     "/",
+		MaxAge:   maxAge,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   isSecure,
+	}
+	header.Add("Set-Cookie", cookie.String())
 }
 
 func setChallengeCookie(header http.Header, challengeToken string) {
@@ -2094,7 +2177,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 	}
 
 	now := time.Now()
-	expiresAt := now.Add(RefreshTokenTTL)
+	expiresAt := now.Add(s.cfg.RefreshTokenTTL)
 	_, err = s.db.Exec(ctx, `
 		INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, created_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $5)`,
@@ -2119,9 +2202,10 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		Name:     "qs_session",
 		Value:    rawRefreshToken,
 		Path:     "/",
-		MaxAge:   int(RefreshTokenTTL.Seconds()),
+		MaxAge:   int(s.cfg.RefreshTokenTTL.Seconds()),
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
+		Secure:   s.cfg.SecureCookies,
 	}
 	res.Header().Set("Set-Cookie", cookie.String())
 

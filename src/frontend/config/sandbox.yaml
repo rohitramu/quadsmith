@@ -1,0 +1,9 @@
+ui:
+  api_url: "http://localhost:8080"
+  app_name: "Quadsmith (Sandbox)"
+
+cli:
+  api_url: "http://localhost:8080"
+
+ops:
+  worker_url: "http://localhost:8081"

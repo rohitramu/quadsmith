@@ -2,7 +2,9 @@ go 1.27.1
 
 use (
 	./backend/api
+	./backend/config/go
 	./frontend/cli
+	./frontend/config/go
 	./build_deps
 	../test
 )

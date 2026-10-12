@@ -15,9 +15,11 @@ import (
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	fconfig "quadsmith/frontend/config"
 )
 
 var (
+	envName   string
 	workerURL string
 	jsonOut   bool
 )
@@ -29,18 +31,29 @@ func main() {
 }
 
 func newRootCmd() *cobra.Command {
-	defaultURL := os.Getenv("QS_WORKER_URL")
-	if defaultURL == "" {
-		defaultURL = "http://localhost:8081"
-	}
-
 	rootCmd := &cobra.Command{
 		Use:   "qsops",
 		Short: "Quadsmith Operations & Developer CLI",
 		Long:  "Operational and developer tooling for background workers, queue management, and maintenance tasks.",
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			fcfg, err := fconfig.Load(envName)
+			if err != nil {
+				return err
+			}
+			if cmd.Flags().Lookup("worker-url").Changed {
+				fcfg.Ops.WorkerURL = workerURL
+			} else {
+				workerURL = fcfg.Ops.WorkerURL
+			}
+			if err := fcfg.ValidateOps(); err != nil {
+				return err
+			}
+			return nil
+		},
 	}
 
-	rootCmd.PersistentFlags().StringVar(&workerURL, "worker-url", defaultURL, "Worker service ConnectRPC base URL (env: QS_WORKER_URL)")
+	rootCmd.PersistentFlags().StringVar(&envName, "env", "", "Target environment (sandbox, test, staging, prod)")
+	rootCmd.PersistentFlags().StringVar(&workerURL, "worker-url", "", "Worker service ConnectRPC base URL (env: QS_OPS_WORKER_URL)")
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output results in JSON format")
 
 	rootCmd.AddCommand(newWorkersCmd())

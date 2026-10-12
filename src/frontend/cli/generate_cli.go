@@ -197,10 +197,12 @@ import (
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	fconfig "quadsmith/frontend/config"
 )
 
 var (
-	apiURL = "http://localhost:8080"
+	envName string
+	apiURL  string
 	jsonOut bool
 	yamlOut bool
 )
@@ -211,21 +213,37 @@ func newRootCmd() *cobra.Command {
 	if _, ok := os.LookupEnv("QS_COMPLETION_DESCRIPTIONS"); !ok {
 		_ = os.Setenv("QS_COMPLETION_DESCRIPTIONS", "false")
 	}
-	targetURL := apiURL
-	if url := os.Getenv("QS_API_URL"); url != "" {
-		targetURL = url
+	fcfg, _ := fconfig.Load(envName)
+	targetURL := "http://localhost:8080"
+	if fcfg != nil && fcfg.CLI.APIURL != "" {
+		targetURL = fcfg.CLI.APIURL
 	}
+	SetActiveTargetURL(targetURL)
 
 	rootCmd := &cobra.Command{
 		Use:   "qs",
 		Short: "Quadsmith CLI",
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			cmd.SilenceUsage = true
+			cfg, err := fconfig.Load(envName)
+			if err != nil {
+				return err
+			}
+			if cmd.Flags().Lookup("api-url").Changed {
+				cfg.CLI.APIURL = apiURL
+			}
+			if err := cfg.ValidateCLI(); err != nil {
+				return err
+			}
+			SetActiveTargetURL(cfg.CLI.APIURL)
+			return nil
+		},
 	}
 	rootCmd.CompletionOptions.DisableDescriptions = true
 
+	rootCmd.PersistentFlags().StringVar(&envName, "env", "", "Target environment (sandbox, test, staging, prod)")
+	rootCmd.PersistentFlags().StringVar(&apiURL, "api-url", "", "API server base URL (env: QS_CLI_API_URL)")
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
-	rootCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
-		cmd.SilenceUsage = true
-	}
 	httpClient := newCLIHTTPClient()
 `)
 

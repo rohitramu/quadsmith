@@ -30,6 +30,9 @@ func (rt *authRoundTripper) RoundTrip(req *http.Request) (*http.Response, error)
 var testAccessToken string
 
 func TestMain(m *testing.M) {
+	if secret := os.Getenv("QS_AUTH_SECRET"); secret != "" {
+		auth.SetMasterSecret(secret)
+	}
 	token, err := auth.SignAccessToken(
 		"018f0000-0000-7000-8000-000000000001",
 		"test_pilot",
@@ -51,7 +54,10 @@ func TestMain(m *testing.M) {
 
 	// Seed test user into DB if available
 	ctx := context.Background()
-	dbUrl := os.Getenv("DATABASE_URL")
+	dbUrl := os.Getenv("QS_DATABASE_URL")
+	if dbUrl == "" {
+		dbUrl = os.Getenv("DATABASE_URL")
+	}
 	if dbUrl == "" {
 		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
 	}

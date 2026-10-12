@@ -19,9 +19,10 @@ docker build -t quadsmith-sandbox -f test/Dockerfile .
 echo "--- Starting Quadsmith Sandbox (API on port $PORT, Worker on $WORKER_PORT, DB on $DB_PORT) ---"
 # Passing the PORT env var down into the container so the Go server listens on it
 docker run --rm --name quadsmith-sandbox-run \
-  -e PORT="$PORT" \
+  -e QS_SERVER_PORT="$PORT" \
+  -e QS_WORKER_PORT="$WORKER_PORT" \
   -p "$PORT":"$PORT" \
-  -p "$WORKER_PORT":8081 \
+  -p "$WORKER_PORT":"$WORKER_PORT" \
   -p "$DB_PORT":5432 \
   quadsmith-sandbox
 

@@ -9,6 +9,8 @@ require (
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/net v0.59.0
 	google.golang.org/protobuf v1.36.12
+	quadsmith/backend/config v0.0.0
+	quadsmith/frontend/config v0.0.0
 )
 
 require (

@@ -201,7 +201,7 @@ func RecordIPSuccess(ip string) {
 
 // CheckEmailCooldown verifies whether an email was sent within the 20-second cooldown window,
 // or if a previous challenge was exhausted (3 failed attempts) within the 60-second lockout window.
-func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (int32, error) {
+func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string, customCooldown ...time.Duration) (int32, error) {
 	var createdAt time.Time
 	var usedAt *time.Time
 	var failedAttempts int32
@@ -229,10 +229,15 @@ func CheckEmailCooldown(ctx context.Context, db *pgxpool.Pool, email string) (in
 		return 0, nil
 	}
 
-	// Enforce 20-second cooldown from when the email was sent
+	cd := EmailCooldown
+	if len(customCooldown) > 0 && customCooldown[0] > 0 {
+		cd = customCooldown[0]
+	}
+
+	// Enforce cooldown from when the email was sent
 	elapsed := time.Since(createdAt)
-	if elapsed < EmailCooldown {
-		remaining := int32((EmailCooldown - elapsed).Seconds())
+	if elapsed < cd {
+		remaining := int32((cd - elapsed).Seconds())
 		if remaining < 1 {
 			remaining = 1
 		}

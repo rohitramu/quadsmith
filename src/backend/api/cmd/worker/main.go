@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 	"net/http"
 	"os"
@@ -17,30 +18,40 @@ import (
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
 	"quadsmith/api/pkg/auth"
 	"quadsmith/api/pkg/worker"
+	bconfig "quadsmith/backend/config"
 )
 
 func main() {
-	dbUrl := os.Getenv("DATABASE_URL")
-	if dbUrl == "" {
-		dbUrl = "postgres://postgres:postgres@localhost:5432/quadsmith"
-	}
+	var configPath string
+	var envName string
+	flag.StringVar(&configPath, "config", "", "Path to backend configuration YAML file")
+	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
+	flag.Parse()
 
-	port := os.Getenv("WORKER_PORT")
-	if port == "" {
-		port = "8081"
-	}
-
-	concurrency := 5
-	if cStr := os.Getenv("WORKER_CONCURRENCY"); cStr != "" {
-		if c, err := strconv.Atoi(cStr); err == nil && c > 0 {
-			concurrency = c
+	if configPath == "" && envName != "" {
+		resolved, err := bconfig.FindBackendConfigFile(envName)
+		if err != nil {
+			log.Fatalf("Failed to locate config for environment %q: %v", envName, err)
 		}
+		configPath = resolved
 	}
+
+	cfg, err := bconfig.Load(configPath)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	if err := cfg.ValidateWorker(); err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	port := strconv.Itoa(cfg.Worker.Port)
+	concurrency := cfg.Worker.Concurrency
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	pool, err := pgxpool.New(ctx, dbUrl)
+	pool, err := pgxpool.New(ctx, cfg.Database.URL)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}

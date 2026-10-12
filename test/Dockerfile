@@ -23,10 +23,12 @@ FROM golang:1.27 AS builder
 WORKDIR /app
 
 # Copy go.work, go.mod files and vendor directory
-COPY src/go.work src/go.work.sum ./src/
-COPY src/build_deps/go.mod src/build_deps/go.sum ./src/build_deps/
-COPY src/backend/api/go.mod src/backend/api/go.sum ./src/backend/api/
+COPY src/go.work src/go.work.sum* ./src/
+COPY src/build_deps/go.mod src/build_deps/go.sum* ./src/build_deps/
+COPY src/backend/api/go.mod src/backend/api/go.sum* ./src/backend/api/
+COPY src/backend/config/go/go.mod src/backend/config/go/go.sum* ./src/backend/config/go/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
+COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
 COPY test/go.mod test/go.sum* ./test/
 COPY src/vendor/ ./src/vendor/
 
@@ -71,9 +73,10 @@ ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=postgres
 ENV POSTGRES_DB=quadsmith
 ENV PGDATA=/var/lib/postgresql/pgdata
-ENV DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
-ENV PORT=8080
-ENV STATIC_DIR="/app/web/dist"
+ENV QS_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+ENV QS_SERVER_PORT=8080
+ENV QS_SERVER_STATIC_DIR="/app/web/dist"
+ENV QS_ENV=sandbox
 
 EXPOSE 5432 8080 8081
 
@@ -86,16 +89,18 @@ COPY --from=builder /app/bin/seeder /app/seeder
 # Copy Web UI build from web-builder
 COPY --from=web-builder /app/dist /app/web/dist
 
-# Copy database schema and seeds
+# Copy database schema, seeds, and configs
 COPY src/backend/db/schema.sql /app/src/backend/db/schema.sql
 COPY test/seed_data /app/test/seed_data
+COPY src/backend/config /app/src/backend/config
+COPY src/frontend/config /app/src/frontend/config
 
 # Pre-populate PostgreSQL database with schema and seeds at image build time
 RUN docker-entrypoint.sh postgres & \
     pid=$! && \
     until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done && \
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql && \
-    ./seeder && \
+    ./seeder --config /app/src/backend/config/sandbox.yaml && \
     gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
     wait $pid
 
@@ -110,13 +115,13 @@ ROW_COUNT=$(psql -U postgres -d quadsmith -tAc "SELECT count(*) FROM motors;" 2>
 if [ "$ROW_COUNT" = "0" ]; then\n\
     echo "Applying Schema & Seeding Database..."\n\
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql\n\
-    ./seeder\n\
+    ./seeder --config /app/src/backend/config/sandbox.yaml\n\
 fi\n\
 echo "Starting Background Worker Daemon..."\n\
-./worker > /var/log/worker.log 2>&1 &\n\
+./worker --config /app/src/backend/config/sandbox.yaml > /var/log/worker.log 2>&1 &\n\
 echo "Pre-seeded users:"\n\
 psql -U postgres -d quadsmith -tAc "SELECT concat(\047  - \047, email, \047 (@\047, id, \047)\047) FROM users WHERE deleted_at IS NULL ORDER BY email;"\n\
-exec ./server\n' > /app/sandbox-entrypoint.sh
+exec ./server --config /app/src/backend/config/sandbox.yaml\n' > /app/sandbox-entrypoint.sh
 
 RUN chmod +x /app/sandbox-entrypoint.sh
 

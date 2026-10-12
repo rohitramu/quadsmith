@@ -10,9 +10,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"strings"
+	"sync"
 	"time"
+)
+
+var (
+	masterSecretMu  sync.RWMutex
+	masterSecret    = []byte("quadsmith-dev-secret-key-32bytes-long!")
+	accessTokenTTL  = 1 * time.Hour
+	refreshTokenTTL = 5 * 24 * time.Hour
 )
 
 const (
@@ -20,15 +27,29 @@ const (
 	RefreshTokenTTL = 5 * 24 * time.Hour // 5-day sliding window
 )
 
+// SetMasterSecret sets the master secret for token and key derivation.
+func SetMasterSecret(secret string) {
+	masterSecretMu.Lock()
+	defer masterSecretMu.Unlock()
+	masterSecret = []byte(secret)
+}
+
+// SetTokenTTLs sets the runtime token TTLs.
+func SetTokenTTLs(accessTTL, refreshTTL time.Duration) {
+	masterSecretMu.Lock()
+	defer masterSecretMu.Unlock()
+	if accessTTL > 0 {
+		accessTokenTTL = accessTTL
+	}
+	if refreshTTL > 0 {
+		refreshTokenTTL = refreshTTL
+	}
+}
+
 func getMasterSecret() []byte {
-	secret := os.Getenv("AUTH_SECRET")
-	if secret == "" {
-		secret = os.Getenv("JWT_SECRET")
-	}
-	if secret == "" {
-		secret = "quadsmith-dev-secret-key-32bytes-long!"
-	}
-	return []byte(secret)
+	masterSecretMu.RLock()
+	defer masterSecretMu.RUnlock()
+	return masterSecret
 }
 
 func deriveKey(purpose string) []byte {
@@ -57,6 +78,9 @@ type JWTClaims struct {
 // SignAccessToken signs a new 1-hour access JWT using HMAC-SHA256 with a dedicated subkey
 func SignAccessToken(userUUID, userID, email, role, sessionUUID string) (string, error) {
 	now := time.Now()
+	masterSecretMu.RLock()
+	ttl := accessTokenTTL
+	masterSecretMu.RUnlock()
 	claims := JWTClaims{
 		UserUUID:    userUUID,
 		UserID:      userID,
@@ -64,7 +88,7 @@ func SignAccessToken(userUUID, userID, email, role, sessionUUID string) (string,
 		Role:        role,
 		SessionUUID: sessionUUID,
 		Iat:         now.Unix(),
-		Exp:         now.Add(AccessTokenTTL).Unix(),
+		Exp:         now.Add(ttl).Unix(),
 	}
 
 	header := jwtHeader{Alg: "HS256", Typ: "JWT"}

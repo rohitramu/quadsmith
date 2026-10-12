@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
+	"strconv"
 	"time"
 
 	"golang.org/x/net/http2"
@@ -23,15 +25,37 @@ import (
 	"quadsmith/api/internal/static"
 	"quadsmith/api/pkg/auth"
 	"quadsmith/api/pkg/social"
+	bconfig "quadsmith/backend/config"
+	fconfig "quadsmith/frontend/config"
 )
 
 func main() {
-	dbUrl := os.Getenv("DATABASE_URL")
-	if dbUrl == "" {
-		dbUrl = "postgres://postgres:postgres@localhost:5432/quadsmith"
+	var configPath string
+	var envName string
+	flag.StringVar(&configPath, "config", "", "Path to backend configuration YAML file")
+	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
+	flag.Parse()
+
+	if configPath == "" && envName != "" {
+		resolved, err := bconfig.FindBackendConfigFile(envName)
+		if err != nil {
+			log.Fatalf("Failed to locate config for environment %q: %v", envName, err)
+		}
+		configPath = resolved
 	}
 
-	pool, err := pgxpool.New(context.Background(), dbUrl)
+	cfg, err := bconfig.Load(configPath)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	if err := cfg.ValidateServer(); err != nil {
+		log.Fatalf("%v", err)
+	}
+
+	fcfg, _ := fconfig.Load(cfg.Environment)
+
+	pool, err := pgxpool.New(context.Background(), cfg.Database.URL)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
@@ -47,7 +71,7 @@ func main() {
 		connect.WithReadMaxBytes(1 << 20), // 1MB limit for RPC payloads
 	}
 
-	path_NewAuthServiceHandler, h_NewAuthServiceHandler := quadsmithconnect.NewAuthServiceHandler(auth.NewAuthService(pool), handlerOpts...)
+	path_NewAuthServiceHandler, h_NewAuthServiceHandler := quadsmithconnect.NewAuthServiceHandler(auth.NewAuthService(pool, &cfg.Auth), handlerOpts...)
 	mux.Handle(path_NewAuthServiceHandler, h_NewAuthServiceHandler)
 
 	path_NewUserServiceHandler, h_NewUserServiceHandler := quadsmithconnect.NewUserServiceHandler(auth.NewUserService(pool), handlerOpts...)
@@ -113,30 +137,41 @@ func main() {
 	path_NewSocialServiceHandler, h_NewSocialServiceHandler := quadsmithconnect.NewSocialServiceHandler(social.NewSocialService(pool), handlerOpts...)
 	mux.Handle(path_NewSocialServiceHandler, h_NewSocialServiceHandler)
 
+	// Public config endpoint
+	mux.HandleFunc("/api/v1/config", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		resp := map[string]any{
+			"environment": cfg.Environment,
+			"ui":          fcfg.UI,
+		}
+		_ = json.NewEncoder(w).Encode(resp)
+	})
+
 	// Serve the React SPA for any unmatched paths
-	staticDir := os.Getenv("STATIC_DIR")
-	if staticDir == "" {
-		staticDir = "/app/web/dist"
-	}
-	mux.Handle("/", static.ServeSPA(staticDir, pool))
+	mux.Handle("/", static.ServeSPA(cfg.Server.StaticDir, pool))
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
+	port := strconv.Itoa(cfg.Server.Port)
 	fmt.Printf("Starting Quadsmith API Server on port %s...\n", port)
 
-	// Wrap root handler with security headers and request body size limit (2 MB)
-	rootHandler := securityHeadersMiddleware(http.MaxBytesHandler(mux, 2<<20))
+	maxBytes := cfg.Server.MaxRequestBytes
+	if maxBytes <= 0 {
+		maxBytes = 2 << 20
+	}
+
+	// Wrap root handler with security headers and request body size limit
+	rootHandler := securityHeadersMiddleware(http.MaxBytesHandler(mux, maxBytes))
 
 	server := &http.Server{
 		Addr:              ":" + port,
 		Handler:           h2c.NewHandler(rootHandler, &http2.Server{}),
 		ReadHeaderTimeout: 5 * time.Second,
-		ReadTimeout:       30 * time.Second,
-		WriteTimeout:      60 * time.Second,
-		IdleTimeout:       120 * time.Second,
+		ReadTimeout:       cfg.Server.ReadTimeout,
+		WriteTimeout:      cfg.Server.WriteTimeout,
+		IdleTimeout:       cfg.Server.IdleTimeout,
 	}
 
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {

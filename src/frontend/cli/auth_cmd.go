@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -70,11 +71,31 @@ func clearCLIConfig() error {
 	return nil
 }
 
+var activeTargetURL string
+
+func SetActiveTargetURL(url string) {
+	activeTargetURL = url
+}
+
+func GetActiveTargetURL() string {
+	return activeTargetURL
+}
+
 type authTransport struct {
 	base http.RoundTripper
 }
 
 func (t *authTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	if activeTargetURL != "" {
+		if target, err := url.Parse(activeTargetURL); err == nil {
+			req = req.Clone(req.Context())
+			req.URL.Scheme = target.Scheme
+			req.URL.Host = target.Host
+			if target.Path != "" && target.Path != "/" {
+				req.URL.Path = strings.TrimRight(target.Path, "/") + "/" + strings.TrimLeft(req.URL.Path, "/")
+			}
+		}
+	}
 	if req.Header.Get("Authorization") == "" {
 		if envToken := os.Getenv("QS_ACCESS_TOKEN"); envToken != "" {
 			req.Header.Set("Authorization", "Bearer "+envToken)

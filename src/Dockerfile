@@ -20,10 +20,12 @@ FROM golang:1.27 AS builder
 WORKDIR /app
 
 # Copy go.work, go.mod files and vendor directory
-COPY src/go.work src/go.work.sum ./src/
-COPY src/build_deps/go.mod src/build_deps/go.sum ./src/build_deps/
-COPY src/backend/api/go.mod src/backend/api/go.sum ./src/backend/api/
+COPY src/go.work src/go.work.sum* ./src/
+COPY src/build_deps/go.mod src/build_deps/go.sum* ./src/build_deps/
+COPY src/backend/api/go.mod src/backend/api/go.sum* ./src/backend/api/
+COPY src/backend/config/go/go.mod src/backend/config/go/go.sum* ./src/backend/config/go/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
+COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
 COPY test/go.mod test/go.sum* ./test/
 COPY src/vendor/ ./src/vendor/
 
@@ -55,12 +57,13 @@ WORKDIR /app
 
 RUN apk --no-cache add ca-certificates tzdata
 
-ENV PORT=8080
-ENV STATIC_DIR="/app/web/dist"
+ENV QS_SERVER_PORT=443
+ENV QS_SERVER_STATIC_DIR="/app/web/dist"
 
-EXPOSE 8080
+EXPOSE 443 8080
 
 COPY --from=builder /app/bin/server /app/server
 COPY --from=web-builder /app/dist /app/web/dist
+COPY src/backend/config /app/src/backend/config
 
-ENTRYPOINT ["/app/server"]
+ENTRYPOINT ["/app/server", "--config", "/app/src/backend/config/prod.yaml"]

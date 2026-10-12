@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"os"
 	"time"
@@ -12,16 +13,38 @@ import (
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/internal/authcontext"
 	"quadsmith/api/internal/validation"
+	bconfig "quadsmith/backend/config"
 )
 
 func main() {
-	dbURL := os.Getenv("DATABASE_URL")
-	if dbURL == "" {
-		dbURL = "postgres://postgres:postgres@localhost:5432/quadsmith?sslmode=disable"
+	var configPath string
+	var envName string
+	flag.StringVar(&configPath, "config", "", "Path to backend configuration YAML file")
+	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
+	flag.Parse()
+
+	if configPath == "" && envName != "" {
+		resolved, err := bconfig.FindBackendConfigFile(envName)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Failed to locate config for environment %q: %v\n", envName, err)
+			os.Exit(1)
+		}
+		configPath = resolved
+	}
+
+	cfg, err := bconfig.Load(configPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+
+	if err := cfg.ValidateSeeder(); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
 	}
 
 	ctx := context.Background()
-	db, err := pgxpool.New(ctx, dbURL)
+	db, err := pgxpool.New(ctx, cfg.Database.URL)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)

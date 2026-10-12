@@ -35,6 +35,7 @@ build: generate bin/qs bin/qsops
 	@echo "--- Building all Go binaries to bin/ ---"
 	@go build -mod=vendor -o bin/server ./src/backend/api/cmd/server/main.go
 	@go build -mod=vendor -o bin/worker ./src/backend/api/cmd/worker/main.go
+	@go build -mod=vendor -o bin/seeder ./src/backend/api/cmd/seeder
 	@echo "--- Building WebAssembly Core Engine ---"
 	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/public/wasm_exec.js
 	@GOOS=js GOARCH=wasm go build -mod=vendor -o src/frontend/web/public/quadsmith-engine.wasm ./src/backend/api/cmd/wasm/main.go
@@ -119,6 +120,8 @@ generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel
 test: generate
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 	@echo "--- Running Go Tests ---"
+	@cd src/backend/config/go && go test -mod=vendor -count=1 ./...
+	@cd src/frontend/config/go && go test -mod=vendor -count=1 ./...
 	@cd src/backend/api && go test -mod=vendor -count=1 ./...
 	@cd src/frontend/cli && go test -mod=vendor ./...
 	@echo "--- Running Web UI Tests ---"
@@ -142,7 +145,7 @@ clean:
 
 vendor:
 	@echo "--- Updating and vendoring dependencies ---"
-	@for mod in src/backend/api src/frontend/cli test; do \
+	@for mod in src/backend/api src/frontend/cli src/backend/config/go src/frontend/config/go test; do \
 		echo "Updating $$mod..."; \
 		(cd $$mod && go get -u ./... && go mod tidy) || exit 1; \
 	done
