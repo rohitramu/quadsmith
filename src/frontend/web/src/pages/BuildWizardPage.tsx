@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
@@ -76,6 +76,22 @@ import { GpsReceiverService, type GpsReceiver } from "../gen/quadsmith/gps_recei
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CompatibilityHoverCard } from "../components/CompatibilityHoverCard";
+
+export function getRxAntennaCount(rx: Receiver | null | undefined): number {
+  if (!rx) return 1;
+  const text = `${rx.name} ${rx.description} ${rx.protocol}`.toLowerCase();
+  if (
+    text.includes("true diversity") ||
+    text.includes("antenna diversity") ||
+    text.includes("diversity") ||
+    text.includes("gemini") ||
+    text.includes("dual") ||
+    (rx.antennaUuids && rx.antennaUuids.length >= 2)
+  ) {
+    return 2;
+  }
+  return 1;
+}
 
 export function getVtxAntennaCount(vtx: VideoTransmitter | null | undefined): number {
   if (!vtx) return 1;
@@ -253,14 +269,12 @@ export function BuildWizardPage() {
   const [selectedRx, setSelectedRx] = useState<Receiver | null>(null);
   const [useIntegratedRx, setUseIntegratedRx] = useState<boolean>(false);
   const [selectedRxAnt, setSelectedRxAnt] = useState<Antenna | null>(null);
-  const [rxAntCount, setRxAntCount] = useState<number>(1);
   const [selectedGps, setSelectedGps] = useState<GpsReceiver | null>(null);
 
   const [selectedVtx, setSelectedVtx] = useState<VideoTransmitter | null>(null);
   const [useIntegratedVtx, setUseIntegratedVtx] = useState<boolean>(false);
   const [selectedCam, setSelectedCam] = useState<Camera | null>(null);
   const [selectedVtxAnt, setSelectedVtxAnt] = useState<Antenna | null>(null);
-  const vtxAntCount = useMemo(() => getVtxAntennaCount(selectedVtx), [selectedVtx]);
 
   const scrollToSelectedProduct = (elementId: string, fallbackSectionId?: string) => {
     const el =
@@ -326,8 +340,11 @@ export function BuildWizardPage() {
   const [compatibleOnlyMap, setCompatibleOnlyMap] = useState<Record<string, boolean>>({
     motors: true,
     propellers: true,
+    flight_controllers: true,
     electronic_speed_controllers: true,
+    rx_antennas: true,
     video_transmitters: true,
+    vtx_antennas: true,
     cameras: true,
   });
 
@@ -546,6 +563,7 @@ export function BuildWizardPage() {
     if (useIntegratedEsc && !fcHasAdequateIntegratedEsc) {
       setUseIntegratedEsc(false);
       setSelectedEsc(null);
+      setNoneSelections((prev) => ({ ...prev, esc: false }));
     }
   }, [fcHasAdequateIntegratedEsc, useIntegratedEsc]);
 
@@ -560,8 +578,102 @@ export function BuildWizardPage() {
     if (useIntegratedVtx && !fcHasIntegratedVtx) {
       setUseIntegratedVtx(false);
       setSelectedVtx(null);
+      setNoneSelections((prev) => ({ ...prev, vtx: false }));
     }
   }, [fcHasIntegratedVtx, useIntegratedVtx]);
+
+  const activeRx = useIntegratedRx ? integratedRx : selectedRx;
+  const rxAntCount = useMemo(() => getRxAntennaCount(activeRx), [activeRx]);
+  const activeVtx = useIntegratedVtx ? integratedVtx : selectedVtx;
+  const vtxAntCount = useMemo(() => getVtxAntennaCount(activeVtx), [activeVtx]);
+
+  // Track the FC for which auto-selection was performed so manual deselect is respected
+  const lastAutoSelectedFcUuidRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedFc) {
+      lastAutoSelectedFcUuidRef.current = null;
+      return;
+    }
+    const fcKey = selectedFc.uuid || selectedFc.id;
+    if (lastAutoSelectedFcUuidRef.current !== fcKey) {
+      lastAutoSelectedFcUuidRef.current = fcKey;
+
+      // Auto-select integrated ESC if available and no ESC is currently selected (or if integrated was active)
+      if (
+        fcHasAdequateIntegratedEsc &&
+        (useIntegratedEsc || (!selectedEsc && !noneSelections.esc))
+      ) {
+        setUseIntegratedEsc(true);
+        setSelectedEsc(integratedEsc);
+        setNoneSelections((prev) => ({ ...prev, esc: true }));
+      }
+
+      // Auto-select integrated RX if available and no RX is currently selected (or if integrated was active)
+      if (fcHasIntegratedRx && (useIntegratedRx || !selectedRx)) {
+        setUseIntegratedRx(true);
+        setSelectedRx(integratedRx);
+      }
+
+      // Auto-select integrated VTX if available and no VTX is currently selected (or if integrated was active)
+      if (fcHasIntegratedVtx && (useIntegratedVtx || (!selectedVtx && !noneSelections.vtx))) {
+        setUseIntegratedVtx(true);
+        setSelectedVtx(integratedVtx);
+      }
+    }
+  }, [
+    selectedFc,
+    fcHasAdequateIntegratedEsc,
+    integratedEsc,
+    selectedEsc,
+    useIntegratedEsc,
+    noneSelections.esc,
+    fcHasIntegratedRx,
+    integratedRx,
+    selectedRx,
+    useIntegratedRx,
+    fcHasIntegratedVtx,
+    integratedVtx,
+    selectedVtx,
+    useIntegratedVtx,
+    noneSelections.vtx,
+  ]);
+
+  const rxAntCelFilter = useMemo(() => {
+    if (!activeRx) return "";
+    const conds: string[] = [];
+    if (activeRx.frequencyBandMhz >= 2400) {
+      conds.push("frequency_band_mhz == 2400");
+    } else if (activeRx.frequencyBandMhz > 0 && activeRx.frequencyBandMhz <= 1000) {
+      conds.push(
+        "(frequency_band_mhz == 915 || frequency_band_mhz == 868 || frequency_band_mhz == 900)",
+      );
+    }
+    const refAnt = ants.find((a) => activeRx.antennaUuids?.includes(a.uuid));
+    const conn = refAnt?.connector || "U.FL";
+    if (conn.toLowerCase().includes("u.fl") || conn.toLowerCase().includes("ipex")) {
+      conds.push('(connector == "U.FL" || connector == "IPEX")');
+    } else {
+      conds.push(`connector == "${conn}"`);
+    }
+    return conds.join(" &&\n");
+  }, [activeRx, ants]);
+
+  const vtxAntCelFilter = useMemo(() => {
+    if (!activeVtx) return "";
+    const conds: string[] = ["frequency_band_mhz == 5800"];
+    const refAnt = ants.find((a) => activeVtx.antennaUuids?.includes(a.uuid));
+    const conn =
+      refAnt?.connector || (activeVtx.protocol?.toLowerCase().includes("o3") ? "Dual U.FL" : "SMA");
+    if (conn.toLowerCase().includes("dual")) {
+      conds.push('(connector == "Dual U.FL" || connector == "U.FL")');
+    } else if (conn.toLowerCase().includes("sma")) {
+      conds.push('(connector == "SMA" || connector == "RP-SMA")');
+    } else {
+      conds.push(`connector == "${conn}"`);
+    }
+    return conds.join(" &&\n");
+  }, [activeVtx, ants]);
 
   // Step completion checks (when template is selected, all steps are complete)
   const step0Complete = true;
@@ -1339,7 +1451,31 @@ export function BuildWizardPage() {
   }, [cams, compatibleOnlyMap, selectedVtx, selectedFrame, searchCam]);
 
   const filteredRxAnts = useMemo(() => {
-    const rxAnts = ants.filter(isRxAntenna);
+    let rxAnts = ants.filter(isRxAntenna);
+    if (isCompatibleOnly("rx_antennas") && activeRx) {
+      const rxFreq = activeRx.frequencyBandMhz;
+      const refAnt = ants.find((a) => activeRx.antennaUuids?.includes(a.uuid));
+      const rxConn = (refAnt?.connector || "u.fl").toLowerCase();
+
+      rxAnts = rxAnts.filter((a) => {
+        // Frequency check
+        if (rxFreq >= 2400 && rxFreq <= 2500) {
+          if (a.frequencyBandMhz < 2400 || a.frequencyBandMhz > 2500) return false;
+        } else if (rxFreq > 0 && rxFreq <= 1000) {
+          if (a.frequencyBandMhz > 1000) return false;
+        }
+
+        // Connector check
+        const aConn = (a.connector || "").toLowerCase();
+        if (rxConn.includes("u.fl") || rxConn.includes("ipex")) {
+          if (!aConn.includes("u.fl") && !aConn.includes("ipex") && !aConn.includes("integrated"))
+            return false;
+        } else if (aConn !== rxConn) {
+          return false;
+        }
+        return true;
+      });
+    }
     if (!searchRxAnt.trim()) return rxAnts;
     const q = searchRxAnt.toLowerCase();
     return rxAnts.filter(
@@ -1349,10 +1485,37 @@ export function BuildWizardPage() {
         a.connector.toLowerCase().includes(q) ||
         a.polarization.toLowerCase().includes(q),
     );
-  }, [ants, searchRxAnt]);
+  }, [ants, compatibleOnlyMap, activeRx, searchRxAnt]);
 
   const filteredVtxAnts = useMemo(() => {
-    const vtxAnts = ants.filter(isVtxAntenna);
+    let vtxAnts = ants.filter(isVtxAntenna);
+    if (isCompatibleOnly("vtx_antennas") && activeVtx) {
+      const refAnt = ants.find((a) => activeVtx.antennaUuids?.includes(a.uuid));
+      const vtxConn = (
+        refAnt?.connector ||
+        (activeVtx.protocol?.toLowerCase().includes("o3") ? "dual u.fl" : "sma")
+      ).toLowerCase();
+
+      vtxAnts = vtxAnts.filter((a) => {
+        // Frequency check (5.8 GHz)
+        if (a.frequencyBandMhz > 0 && (a.frequencyBandMhz < 5000 || a.frequencyBandMhz > 6000)) {
+          return false;
+        }
+
+        // Connector check
+        const aConn = (a.connector || "").toLowerCase();
+        if (vtxConn.includes("dual")) {
+          if (!aConn.includes("dual") && !aConn.includes("u.fl")) return false;
+        } else if (vtxConn.includes("sma")) {
+          if (!aConn.includes("sma")) return false;
+        } else if (vtxConn.includes("u.fl")) {
+          if (!aConn.includes("u.fl") && !aConn.includes("ipex")) return false;
+        } else if (vtxConn.includes("mmcx")) {
+          if (!aConn.includes("mmcx")) return false;
+        }
+        return true;
+      });
+    }
     if (!searchVtxAnt.trim()) return vtxAnts;
     const q = searchVtxAnt.toLowerCase();
     return vtxAnts.filter(
@@ -1362,7 +1525,7 @@ export function BuildWizardPage() {
         a.connector.toLowerCase().includes(q) ||
         a.polarization.toLowerCase().includes(q),
     );
-  }, [ants, searchVtxAnt]);
+  }, [ants, compatibleOnlyMap, activeVtx, searchVtxAnt]);
 
   const filteredGps = useMemo(() => {
     if (!searchGps.trim()) return gpsList;
@@ -1528,8 +1691,6 @@ export function BuildWizardPage() {
       const rxAnt = fetchedAnts.find(isRxAntenna);
       if (rxAnt) {
         setSelectedRxAnt(rxAnt);
-        const count = build.antennaUuids.filter((u) => u === rxAnt.uuid).length;
-        setRxAntCount(count > 1 ? 2 : 1);
       }
 
       const vtxAnt = fetchedAnts.find(isVtxAntenna);
@@ -1615,7 +1776,6 @@ export function BuildWizardPage() {
     setSelectedRx(null);
     setUseIntegratedRx(false);
     setSelectedRxAnt(null);
-    setRxAntCount(1);
     setSelectedGps(null);
     setSelectedVtx(null);
     setUseIntegratedVtx(false);
@@ -1819,7 +1979,9 @@ export function BuildWizardPage() {
                     return (
                       <div
                         key={template.id || template.uuid}
-                        onClick={() => applyTemplate(template)}
+                        onClick={() =>
+                          isSelected ? setSelectedTemplateId(null) : applyTemplate(template)
+                        }
                         className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
@@ -1976,7 +2138,7 @@ export function BuildWizardPage() {
                       <div
                         key={f.uuid || f.id}
                         id={isSelected ? "selected-frame-item" : undefined}
-                        onClick={() => setSelectedFrame(f)}
+                        onClick={() => setSelectedFrame(isSelected ? null : f)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
@@ -2092,7 +2254,7 @@ export function BuildWizardPage() {
                       <div
                         key={m.uuid || m.id}
                         id={isSelected ? "selected-motor-item" : undefined}
-                        onClick={() => setSelectedMotor(m)}
+                        onClick={() => setSelectedMotor(isSelected ? null : m)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
@@ -2214,7 +2376,7 @@ export function BuildWizardPage() {
                       <div
                         key={p.uuid || p.id}
                         id={isSelected ? "selected-prop-item" : undefined}
-                        onClick={() => setSelectedProp(p)}
+                        onClick={() => setSelectedProp(isSelected ? null : p)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
@@ -2375,7 +2537,7 @@ export function BuildWizardPage() {
                       <div
                         key={fc.uuid || fc.id}
                         id={isSelected ? "selected-fc-item" : undefined}
-                        onClick={() => setSelectedFc(fc)}
+                        onClick={() => setSelectedFc(isSelected ? null : fc)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
@@ -2514,9 +2676,15 @@ export function BuildWizardPage() {
                     id={useIntegratedEsc ? "selected-esc-item" : undefined}
                     onClick={() => {
                       if (fcHasAdequateIntegratedEsc) {
-                        setUseIntegratedEsc(true);
-                        setSelectedEsc(integratedEsc);
-                        setNoneSelections((prev) => ({ ...prev, esc: true }));
+                        if (useIntegratedEsc) {
+                          setUseIntegratedEsc(false);
+                          setSelectedEsc(null);
+                          setNoneSelections((prev) => ({ ...prev, esc: false }));
+                        } else {
+                          setUseIntegratedEsc(true);
+                          setSelectedEsc(integratedEsc);
+                          setNoneSelections((prev) => ({ ...prev, esc: true }));
+                        }
                       }
                     }}
                     className={`p-3 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
@@ -2575,9 +2743,13 @@ export function BuildWizardPage() {
                         key={esc.uuid || esc.id}
                         id={isSelected ? "selected-esc-item" : undefined}
                         onClick={() => {
-                          setSelectedEsc(esc);
-                          setUseIntegratedEsc(false);
-                          setNoneSelections((prev) => ({ ...prev, esc: false }));
+                          if (isSelected) {
+                            setSelectedEsc(null);
+                          } else {
+                            setSelectedEsc(esc);
+                            setUseIntegratedEsc(false);
+                            setNoneSelections((prev) => ({ ...prev, esc: false }));
+                          }
                         }}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -2686,8 +2858,13 @@ export function BuildWizardPage() {
                     id={useIntegratedRx ? "selected-rx-item" : undefined}
                     onClick={() => {
                       if (fcHasIntegratedRx) {
-                        setUseIntegratedRx(true);
-                        setSelectedRx(integratedRx);
+                        if (useIntegratedRx) {
+                          setUseIntegratedRx(false);
+                          setSelectedRx(null);
+                        } else {
+                          setUseIntegratedRx(true);
+                          setSelectedRx(integratedRx);
+                        }
                       }
                     }}
                     className={`p-3 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
@@ -2741,8 +2918,12 @@ export function BuildWizardPage() {
                         key={rx.uuid || rx.id}
                         id={isSelected ? "selected-rx-item" : undefined}
                         onClick={() => {
-                          setSelectedRx(rx);
-                          setUseIntegratedRx(false);
+                          if (isSelected) {
+                            setSelectedRx(null);
+                          } else {
+                            setSelectedRx(rx);
+                            setUseIntegratedRx(false);
+                          }
                         }}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -2836,6 +3017,23 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
+                {/* Dynamic WASM CEL Compatibility Filter Banner */}
+                {rxAntCelFilter && (
+                  <div className="flex items-center justify-end text-xs py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={isCompatibleOnly("rx_antennas")}
+                        onChange={() => toggleCompatibleOnly("rx_antennas")}
+                        className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                      />
+                      <CompatibilityHoverCard filter={rxAntCelFilter}>
+                        Compatible only
+                      </CompatibilityHoverCard>
+                    </label>
+                  </div>
+                )}
+
                 {selectedRxAnt && (
                   <div className="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 text-xs">
                     <div className="flex items-center gap-2">
@@ -2844,34 +3042,13 @@ export function BuildWizardPage() {
                       </span>
                       <span className="text-zinc-500 dark:text-zinc-400">
                         {rxAntCount === 1
-                          ? "Single Antenna (Standard RX)"
-                          : "Dual Antennas (True Diversity / 90° mounting)"}
+                          ? "Single Antenna (Required by RX)"
+                          : "Dual Antennas (Required by Diversity RX)"}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 bg-white dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-2xs">
-                      <button
-                        type="button"
-                        onClick={() => setRxAntCount(1)}
-                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
-                          rxAntCount === 1
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
-                        }`}
-                      >
-                        1x Single
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setRxAntCount(2)}
-                        className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
-                          rxAntCount === 2
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
-                        }`}
-                      >
-                        2x Diversity
-                      </button>
-                    </div>
+                    <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                      {rxAntCount}x
+                    </span>
                   </div>
                 )}
 
@@ -2882,7 +3059,7 @@ export function BuildWizardPage() {
                       <div
                         key={a.uuid || a.id}
                         id={isSelected ? "selected-rx-ant-item" : undefined}
-                        onClick={() => setSelectedRxAnt(a)}
+                        onClick={() => setSelectedRxAnt(isSelected ? null : a)}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
                             ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
@@ -2983,8 +3160,12 @@ export function BuildWizardPage() {
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   <div
                     onClick={() => {
-                      setSelectedGps(null);
-                      setNoneSelections((prev) => ({ ...prev, gps: true }));
+                      if (noneSelections.gps) {
+                        setNoneSelections((prev) => ({ ...prev, gps: false }));
+                      } else {
+                        setSelectedGps(null);
+                        setNoneSelections((prev) => ({ ...prev, gps: true }));
+                      }
                     }}
                     className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.gps
@@ -3012,8 +3193,12 @@ export function BuildWizardPage() {
                         key={g.uuid || g.id}
                         id={isSelected ? "selected-gps-item" : undefined}
                         onClick={() => {
-                          setSelectedGps(g);
-                          setNoneSelections((prev) => ({ ...prev, gps: false }));
+                          if (isSelected) {
+                            setSelectedGps(null);
+                          } else {
+                            setSelectedGps(g);
+                            setNoneSelections((prev) => ({ ...prev, gps: false }));
+                          }
                         }}
                         className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -3137,9 +3322,13 @@ export function BuildWizardPage() {
                   {/* Explicit None Card */}
                   <div
                     onClick={() => {
-                      setSelectedVtx(null);
-                      setUseIntegratedVtx(false);
-                      setNoneSelections((prev) => ({ ...prev, vtx: true }));
+                      if (noneSelections.vtx) {
+                        setNoneSelections((prev) => ({ ...prev, vtx: false }));
+                      } else {
+                        setSelectedVtx(null);
+                        setUseIntegratedVtx(false);
+                        setNoneSelections((prev) => ({ ...prev, vtx: true }));
+                      }
                     }}
                     className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.vtx
@@ -3161,9 +3350,14 @@ export function BuildWizardPage() {
                     <div
                       id={useIntegratedVtx ? "selected-vtx-item" : undefined}
                       onClick={() => {
-                        setUseIntegratedVtx(true);
-                        setSelectedVtx(integratedVtx);
-                        setNoneSelections((prev) => ({ ...prev, vtx: false }));
+                        if (useIntegratedVtx) {
+                          setUseIntegratedVtx(false);
+                          setSelectedVtx(null);
+                        } else {
+                          setUseIntegratedVtx(true);
+                          setSelectedVtx(integratedVtx);
+                          setNoneSelections((prev) => ({ ...prev, vtx: false }));
+                        }
                       }}
                       className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                         useIntegratedVtx
@@ -3221,9 +3415,13 @@ export function BuildWizardPage() {
                         key={v.uuid || v.id}
                         id={isSelected ? "selected-vtx-item" : undefined}
                         onClick={() => {
-                          setSelectedVtx(v);
-                          setUseIntegratedVtx(false);
-                          setNoneSelections((prev) => ({ ...prev, vtx: false }));
+                          if (isSelected) {
+                            setSelectedVtx(null);
+                          } else {
+                            setSelectedVtx(v);
+                            setUseIntegratedVtx(false);
+                            setNoneSelections((prev) => ({ ...prev, vtx: false }));
+                          }
                         }}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -3351,8 +3549,12 @@ export function BuildWizardPage() {
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   <div
                     onClick={() => {
-                      setSelectedCam(null);
-                      setNoneSelections((prev) => ({ ...prev, camera: true }));
+                      if (noneSelections.camera) {
+                        setNoneSelections((prev) => ({ ...prev, camera: false }));
+                      } else {
+                        setSelectedCam(null);
+                        setNoneSelections((prev) => ({ ...prev, camera: true }));
+                      }
                     }}
                     className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.camera
@@ -3384,8 +3586,12 @@ export function BuildWizardPage() {
                         key={c.uuid || c.id}
                         id={isSelected ? "selected-cam-item" : undefined}
                         onClick={() => {
-                          setSelectedCam(c);
-                          setNoneSelections((prev) => ({ ...prev, camera: false }));
+                          if (isSelected) {
+                            setSelectedCam(null);
+                          } else {
+                            setSelectedCam(c);
+                            setNoneSelections((prev) => ({ ...prev, camera: false }));
+                          }
                         }}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected
@@ -3487,6 +3693,23 @@ export function BuildWizardPage() {
                   )}
                 </div>
 
+                {/* Dynamic WASM CEL Compatibility Filter Banner */}
+                {vtxAntCelFilter && (
+                  <div className="flex items-center justify-end text-xs py-1">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={isCompatibleOnly("vtx_antennas")}
+                        onChange={() => toggleCompatibleOnly("vtx_antennas")}
+                        className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                      />
+                      <CompatibilityHoverCard filter={vtxAntCelFilter}>
+                        Compatible only
+                      </CompatibilityHoverCard>
+                    </label>
+                  </div>
+                )}
+
                 {selectedVtxAnt && !noneSelections.vtxAntenna && (
                   <div className="flex items-center justify-between p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 text-xs">
                     <div className="flex items-center gap-2">
@@ -3508,8 +3731,12 @@ export function BuildWizardPage() {
                 <div className="overflow-y-auto max-h-64 sm:max-h-72 space-y-2 pr-1.5 focus:outline-none">
                   <div
                     onClick={() => {
-                      setSelectedVtxAnt(null);
-                      setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
+                      if (noneSelections.vtxAntenna) {
+                        setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
+                      } else {
+                        setSelectedVtxAnt(null);
+                        setNoneSelections((prev) => ({ ...prev, vtxAntenna: true }));
+                      }
                     }}
                     className={`p-3 rounded-xl border cursor-pointer text-xs transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                       noneSelections.vtxAntenna
@@ -3535,8 +3762,12 @@ export function BuildWizardPage() {
                         key={a.uuid || a.id}
                         id={isSelected ? "selected-vtx-ant-item" : undefined}
                         onClick={() => {
-                          setSelectedVtxAnt(a);
-                          setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
+                          if (isSelected) {
+                            setSelectedVtxAnt(null);
+                          } else {
+                            setSelectedVtxAnt(a);
+                            setNoneSelections((prev) => ({ ...prev, vtxAntenna: false }));
+                          }
                         }}
                         className={`p-3 rounded-xl border cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                           isSelected

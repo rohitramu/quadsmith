@@ -2,7 +2,12 @@ import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor, within, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
-import { BuildWizardPage, rxHasIntegratedAntenna, getVtxAntennaCount } from "../BuildWizardPage";
+import {
+  BuildWizardPage,
+  rxHasIntegratedAntenna,
+  getVtxAntennaCount,
+  getRxAntennaCount,
+} from "../BuildWizardPage";
 import { Route, Routes, useParams } from "react-router-dom";
 import { wasmEngine } from "../../lib/wasmEngine";
 import {
@@ -157,23 +162,31 @@ describe("BuildWizardPage Component", () => {
     await user.click(screen.getByText("Integrated FC AIO"));
     expect(screen.getAllByText(/✓ Available on selected FC/i).length).toBeGreaterThanOrEqual(1);
 
-    // Now Integrated FC ESC card is clickable and displays rich specs
+    // Integrated FC ESC card is automatically selected when AIO FC is chosen!
     expect(screen.getByText("BetaFPV Integrated 20A ESC")).toBeInTheDocument();
     expect(screen.getByText("20A")).toBeInTheDocument();
     expect(screen.getByText(/4x Motors • BLHeli_S/i)).toBeInTheDocument();
-    await user.click(screen.getByText("Use Integrated FC ESC"));
     expect(
       screen.getByText("Use Integrated FC ESC").closest(".border-emerald-500"),
     ).toBeInTheDocument();
 
-    // Integrated FC Receiver card is clickable and displays rich specs (protocol, frequency band, telemetry)
+    // Clicking the selected integrated ESC deselects it
+    await user.click(screen.getByText("Use Integrated FC ESC"));
+    expect(screen.getByText("Use Integrated FC ESC").closest(".border-emerald-500")).toBeNull();
+
+    // Integrated FC Receiver card is automatically selected when AIO FC is chosen!
     expect(screen.getByText("BetaFPV Integrated ELRS 2.4GHz RX")).toBeInTheDocument();
     expect(screen.getAllByText("ExpressLRS").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/2.4 GHz • Telemetry/i)).toBeInTheDocument();
-    await user.click(screen.getByText("Use Integrated FC Receiver"));
     expect(
       screen.getByText("Use Integrated FC Receiver").closest(".border-emerald-500"),
     ).toBeInTheDocument();
+
+    // Clicking the selected integrated RX deselects it
+    await user.click(screen.getByText("Use Integrated FC Receiver"));
+    expect(
+      screen.getByText("Use Integrated FC Receiver").closest(".border-emerald-500"),
+    ).toBeNull();
   });
 
   it("handles Step 2 RX antenna & GPS and Step 3 Video optional components with 'Set All to None'", async () => {
@@ -201,13 +214,11 @@ describe("BuildWizardPage Component", () => {
     await user.click(screen.getByText("SpeedyBee 50A 4-in-1 ESC"));
     await user.click(screen.getByText("Crossfire Nano RX"));
 
-    // Select RX Antenna & test diversity toggle
-    const rxAntCard = screen.getByText("RadioMaster T-Antenna 2.4GHz");
+    // Select compatible 915MHz RX Antenna for Crossfire Nano RX
+    const rxAntCard = screen.getByText("TBS Immortal T V2 915MHz");
     await user.click(rxAntCard);
     expect(screen.getByText("Antenna Quantity:")).toBeInTheDocument();
-    const divBtn = screen.getByRole("button", { name: /2x Diversity/i });
-    await user.click(divBtn);
-    expect(screen.getByText(/2x Selected \(Diversity\)/i)).toBeInTheDocument();
+    expect(screen.getByText("1x")).toBeInTheDocument();
 
     // Select GPS in Step 2
     const gpsCard = await screen.findByText(/M8Q-5883/i);
@@ -540,8 +551,8 @@ describe("BuildWizardPage Component", () => {
       const nextBtn = screen.getByRole("button", { name: /Next: Video/i });
       expect(nextBtn).toBeDisabled();
 
-      // 3. Select an RX antenna
-      await user.click(screen.getByText("RadioMaster T-Antenna 2.4GHz"));
+      // 3. Select a compatible 915MHz RX antenna
+      await user.click(screen.getByText("TBS Immortal T V2 915MHz"));
 
       // Section 2D now shows "Selected"
       expect(within(rxAntSection).getByText("Selected")).toBeInTheDocument();
@@ -711,5 +722,176 @@ describe("BuildWizardPage Component", () => {
         } as any),
       ).toBe(1);
     });
+  });
+
+  describe("getRxAntennaCount", () => {
+    it("returns 1 for null or undefined RX", () => {
+      expect(getRxAntennaCount(null)).toBe(1);
+      expect(getRxAntennaCount(undefined)).toBe(1);
+    });
+
+    it("returns 1 for standard single-antenna RX", () => {
+      expect(
+        getRxAntennaCount({
+          name: "Crossfire Nano RX",
+          protocol: "CRSF",
+        } as any),
+      ).toBe(1);
+      expect(
+        getRxAntennaCount({
+          name: "BetaFPV ELRS 2.4G",
+          protocol: "ExpressLRS",
+        } as any),
+      ).toBe(1);
+    });
+
+    it("returns 2 for diversity RX by name", () => {
+      expect(
+        getRxAntennaCount({
+          name: "RadioMaster RP3 Diversity Receiver",
+          protocol: "ExpressLRS",
+        } as any),
+      ).toBe(2);
+      expect(
+        getRxAntennaCount({
+          name: "BetaFPV SuperD Diversity RX",
+          protocol: "ExpressLRS",
+        } as any),
+      ).toBe(2);
+    });
+
+    it("returns 2 for Gemini / dual protocol RX", () => {
+      expect(
+        getRxAntennaCount({
+          name: "BetaFPV SuperG",
+          protocol: "Gemini",
+        } as any),
+      ).toBe(2);
+      expect(
+        getRxAntennaCount({
+          name: "TBS Crossfire Diversity RX",
+          protocol: "CRSF Dual",
+        } as any),
+      ).toBe(2);
+    });
+
+    it("respects explicit antennaUuids length when present", () => {
+      expect(
+        getRxAntennaCount({
+          name: "Custom RX",
+          antennaUuids: ["ant-1", "ant-2"],
+        } as any),
+      ).toBe(2);
+      expect(
+        getRxAntennaCount({
+          name: "Custom RX",
+          antennaUuids: ["ant-1"],
+        } as any),
+      ).toBe(1);
+    });
+  });
+
+  it("allows deselecting any component by clicking on the selected card", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Advance to Step 1
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+
+    // 1A. Select Frame then click again to deselect
+    const frameCard = await screen.findByText("Master 5 V2");
+    await user.click(frameCard);
+    expect(frameCard.closest(".border-blue-500")).toBeInTheDocument();
+    await user.click(frameCard);
+    expect(frameCard.closest(".border-blue-500")).toBeNull();
+
+    // Re-select frame for downstream steps
+    await user.click(frameCard);
+
+    // 1B. Select Motor then click again to deselect
+    const motorCard = await screen.findByText("ECO II 2207");
+    await user.click(motorCard);
+    expect(motorCard.closest(".border-blue-500")).toBeInTheDocument();
+    await user.click(motorCard);
+    expect(motorCard.closest(".border-blue-500")).toBeNull();
+
+    // Re-select motor
+    await user.click(motorCard);
+
+    // 1C. Select Propeller then click again to deselect
+    const propCard = await screen.findByText("Hurricane 51433");
+    await user.click(propCard);
+    expect(propCard.closest(".border-blue-500")).toBeInTheDocument();
+    await user.click(propCard);
+    expect(propCard.closest(".border-blue-500")).toBeNull();
+
+    // Re-select propeller
+    await user.click(propCard);
+
+    // Advance to Step 2
+    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+
+    // 2A. Select standalone FC then click again to deselect
+    const fcCard = await screen.findByText("F405 V4 FC");
+    await user.click(fcCard);
+    expect(fcCard.closest(".border-blue-500")).toBeInTheDocument();
+    await user.click(fcCard);
+    expect(fcCard.closest(".border-blue-500")).toBeNull();
+
+    // Re-select FC
+    await user.click(fcCard);
+
+    // 2B. Select Standalone ESC then click again to deselect
+    const escCard = await screen.findByText("SpeedyBee 50A 4-in-1 ESC");
+    await user.click(escCard);
+    expect(escCard.closest(".border-blue-500")).toBeInTheDocument();
+    await user.click(escCard);
+    expect(escCard.closest(".border-blue-500")).toBeNull();
+
+    // 2C. Select RX then click again to deselect
+    const rxCard = await screen.findByText("Crossfire Nano RX");
+    await user.click(rxCard);
+    expect(rxCard.closest(".border-blue-500")).toBeInTheDocument();
+    await user.click(rxCard);
+    expect(rxCard.closest(".border-blue-500")).toBeNull();
+
+    // Re-select RX
+    await user.click(rxCard);
+
+    // 2D. Select compatible 915MHz antenna then click again to deselect
+    const rxAntCard = await screen.findByText("TBS Immortal T V2 915MHz");
+    await user.click(rxAntCard);
+    expect(rxAntCard.closest(".border-blue-500")).toBeInTheDocument();
+    await user.click(rxAntCard);
+    expect(rxAntCard.closest(".border-blue-500")).toBeNull();
+
+    // 2E. Select GPS then click again to deselect
+    const gpsCard = await screen.findByText(/M8Q-5883/i);
+    await user.click(gpsCard);
+    expect(gpsCard.closest(".border-blue-500")).toBeInTheDocument();
+    await user.click(gpsCard);
+    expect(gpsCard.closest(".border-blue-500")).toBeNull();
+  });
+
+  it("filters RX antenna options by frequency matching the selected receiver", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Advance to Step 1 & complete baseline
+    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await user.click(await screen.findByText("Master 5 V2"));
+    await user.click(await screen.findByText("ECO II 2207"));
+    await user.click(await screen.findByText("Hurricane 51433"));
+    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+
+    // Select FC and Crossfire (915 MHz) RX
+    await user.click(await screen.findByText("F405 V4 FC"));
+    await user.click(await screen.findByText("Crossfire Nano RX"));
+
+    // In 915 MHz mode with Compatible Only active:
+    // TBS Immortal T V2 915MHz should be visible
+    expect(screen.getByText("TBS Immortal T V2 915MHz")).toBeInTheDocument();
+    // RadioMaster T-Antenna 2.4GHz should NOT be visible
+    expect(screen.queryByText("RadioMaster T-Antenna 2.4GHz")).not.toBeInTheDocument();
   });
 });

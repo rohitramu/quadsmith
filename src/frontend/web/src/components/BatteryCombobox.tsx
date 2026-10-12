@@ -97,7 +97,11 @@ export function BatteryCombobox({
 
   const handleSelect = (battery: any) => {
     const id = battery.id || battery.uuid;
-    onSelectBattery(id, battery);
+    if (selectedBatteryId === id) {
+      onSelectBattery("", undefined);
+    } else {
+      onSelectBattery(id, battery);
+    }
     setSearchQuery("");
     setIsOpen(false);
   };

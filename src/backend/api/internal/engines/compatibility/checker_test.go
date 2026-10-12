@@ -1004,3 +1004,139 @@ func TestFlightControllerElectronicSpeedControllerVoltageCompatibility(t *testin
 		}
 	})
 }
+
+func TestAntennaCompatibility(t *testing.T) {
+	t.Run("RX 2.4GHz with 915MHz antenna -> Incompatible", func(t *testing.T) {
+		comp := &Components{
+			Receivers: []*pb.Receiver{
+				{
+					FrequencyBandMhz: 2400,
+				},
+			},
+			Antennas: []*pb.Antenna{
+				{
+					FrequencyBandMhz: 915,
+					Connector:        "U.FL",
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		found := false
+		for _, m := range messages {
+			if m.CheckerName == "ReceiverAntennaFrequencyChecker" {
+				found = true
+				if m.SeverityName != "DEFINITE_INCOMPATIBILITY" {
+					t.Errorf("expected DEFINITE_INCOMPATIBILITY, got %s", m.SeverityName)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("expected ReceiverAntennaFrequencyChecker message, got none")
+		}
+	})
+
+	t.Run("RX with SMA antenna -> Connector Incompatible", func(t *testing.T) {
+		comp := &Components{
+			Receivers: []*pb.Receiver{
+				{
+					FrequencyBandMhz: 2400,
+				},
+			},
+			Antennas: []*pb.Antenna{
+				{
+					FrequencyBandMhz: 2400,
+					Connector:        "SMA",
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		found := false
+		for _, m := range messages {
+			if m.CheckerName == "ReceiverAntennaConnectorChecker" {
+				found = true
+				if m.SeverityName != "DEFINITE_INCOMPATIBILITY" {
+					t.Errorf("expected DEFINITE_INCOMPATIBILITY, got %s", m.SeverityName)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("expected ReceiverAntennaConnectorChecker message, got none")
+		}
+	})
+
+	t.Run("RX 2.4GHz with 2.4GHz U.FL antenna -> Compatible", func(t *testing.T) {
+		comp := &Components{
+			Receivers: []*pb.Receiver{
+				{
+					FrequencyBandMhz: 2400,
+				},
+			},
+			Antennas: []*pb.Antenna{
+				{
+					FrequencyBandMhz: 2400,
+					Connector:        "U.FL",
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		for _, m := range messages {
+			if strings.Contains(m.CheckerName, "Antenna") {
+				t.Errorf("unexpected antenna incompatibility: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("DJI O3 with SMA antenna -> Connector Incompatible", func(t *testing.T) {
+		comp := &Components{
+			VideoTransmitter: &pb.VideoTransmitter{
+				Protocol: "DJI O3",
+				Name:     "DJI O3 Air Unit",
+			},
+			Antennas: []*pb.Antenna{
+				{
+					FrequencyBandMhz: 5800,
+					Connector:        "SMA",
+				},
+			},
+		}
+		messages := CheckCompatibility(comp)
+		found := false
+		for _, m := range messages {
+			if m.CheckerName == "VideoTransmitterAntennaConnectorChecker" {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("expected VideoTransmitterAntennaConnectorChecker message, got none")
+		}
+	})
+
+	t.Run("GenerateCelFilter for Antennas with 2.4GHz RX", func(t *testing.T) {
+		comp := &Components{
+			Receivers: []*pb.Receiver{
+				{
+					FrequencyBandMhz: 2400,
+				},
+			},
+		}
+		filter := GenerateCelFilter("antennas", comp)
+		expected := "frequency_band_mhz == 2400 && (connector == \"U.FL\" || connector == \"IPEX\")"
+		if filter != expected {
+			t.Errorf("expected %q, got %q", expected, filter)
+		}
+	})
+
+	t.Run("GenerateCelFilter for Antennas with DJI O3 VTX", func(t *testing.T) {
+		comp := &Components{
+			VideoTransmitter: &pb.VideoTransmitter{
+				Protocol: "DJI O3",
+				Name:     "DJI O3 Air Unit",
+			},
+		}
+		filter := GenerateCelFilter("antennas", comp)
+		expected := "frequency_band_mhz == 5800 && (connector == \"Dual U.FL\" || connector == \"U.FL\")"
+		if filter != expected {
+			t.Errorf("expected %q, got %q", expected, filter)
+		}
+	})
+}

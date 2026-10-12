@@ -335,7 +335,20 @@ export const mockRxAntenna1: Antenna = create(AntennaSchema, {
   description: "Flexible T-style dipole receiver antenna for 2.4GHz receivers.",
 });
 
-export const mockAntennas: Antenna[] = [mockAntenna1, mockRxAntenna1];
+export const mockRxAntenna915: Antenna = create(AntennaSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000092",
+  id: "tbs-crossfire-immortal-t-v2",
+  manufacturer: "TBS",
+  name: "TBS Immortal T V2 915MHz",
+  weightG: 3.4,
+  frequencyBandMhz: 915,
+  gainDbi: 2.0,
+  polarization: "Linear",
+  connector: "U.FL",
+  description: "Durable dipole antenna for 915MHz Crossfire receivers.",
+});
+
+export const mockAntennas: Antenna[] = [mockAntenna1, mockRxAntenna1, mockRxAntenna915];
 
 export const mockGps1: GpsReceiver = create(GpsReceiverSchema, {
   uuid: "018f0000-0000-7000-0000-000000000095",

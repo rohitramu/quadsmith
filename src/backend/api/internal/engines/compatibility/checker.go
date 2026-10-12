@@ -415,6 +415,102 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 	}
 
+	// Rule 17: Receiver vs Antenna (Frequency and Connector Compatibility)
+	if len(comp.Receivers) > 0 && len(comp.Antennas) > 0 {
+		for _, rx := range comp.Receivers {
+			if rx == nil {
+				continue
+			}
+			for _, ant := range comp.Antennas {
+				if ant == nil {
+					continue
+				}
+				// Identify if this antenna is an RX antenna (frequency <= 3000 MHz)
+				if ant.FrequencyBandMhz > 0 && ant.FrequencyBandMhz <= 3000 {
+					// Check frequency matching
+					if rx.FrequencyBandMhz >= 2400 && rx.FrequencyBandMhz <= 2500 {
+						if ant.FrequencyBandMhz < 2400 || ant.FrequencyBandMhz > 2500 {
+							messages = append(messages, &pb.CompatibilityMessage{
+								CheckerName:   "ReceiverAntennaFrequencyChecker",
+								Components:    "Receiver and Antenna",
+								SeverityLevel: 0,
+								SeverityName:  "DEFINITE_INCOMPATIBILITY",
+								Message:       fmt.Sprintf("Receiver operates at 2.4 GHz (%d MHz), but selected antenna operates at %d MHz.", rx.FrequencyBandMhz, ant.FrequencyBandMhz),
+								Resolution:    "Select a 2.4 GHz receiver antenna.",
+							})
+						}
+					} else if rx.FrequencyBandMhz > 0 && rx.FrequencyBandMhz <= 1000 {
+						if ant.FrequencyBandMhz > 1000 {
+							messages = append(messages, &pb.CompatibilityMessage{
+								CheckerName:   "ReceiverAntennaFrequencyChecker",
+								Components:    "Receiver and Antenna",
+								SeverityLevel: 0,
+								SeverityName:  "DEFINITE_INCOMPATIBILITY",
+								Message:       fmt.Sprintf("Receiver operates at %d MHz sub-GHz, but selected antenna operates at %d MHz.", rx.FrequencyBandMhz, ant.FrequencyBandMhz),
+								Resolution:    "Select a sub-GHz (868/900/915 MHz) receiver antenna.",
+							})
+						}
+					}
+
+					// Check connector matching (receivers require micro-coaxial connectors U.FL / IPEX)
+					connLower := strings.ToLower(strings.TrimSpace(ant.Connector))
+					if connLower != "" && !strings.Contains(connLower, "u.fl") && !strings.Contains(connLower, "ipex") && !strings.Contains(connLower, "integrated") {
+						messages = append(messages, &pb.CompatibilityMessage{
+							CheckerName:   "ReceiverAntennaConnectorChecker",
+							Components:    "Receiver and Antenna",
+							SeverityLevel: 0,
+							SeverityName:  "DEFINITE_INCOMPATIBILITY",
+							Message:       fmt.Sprintf("Receiver requires a U.FL / IPEX antenna connector, but selected antenna has a %s connector.", ant.Connector),
+							Resolution:    "Select an antenna with a U.FL or IPEX connector.",
+						})
+					}
+				}
+			}
+		}
+	}
+
+	// Rule 18: Video Transmitter vs Antenna (Frequency and Connector Compatibility)
+	if comp.VideoTransmitter != nil && len(comp.Antennas) > 0 {
+		vtx := comp.VideoTransmitter
+		for _, ant := range comp.Antennas {
+			if ant == nil {
+				continue
+			}
+			// Identify if this antenna is intended for VTX (frequency >= 4000 MHz)
+			if ant.FrequencyBandMhz >= 4000 {
+				if ant.FrequencyBandMhz < 5000 || ant.FrequencyBandMhz > 6000 {
+					messages = append(messages, &pb.CompatibilityMessage{
+						CheckerName:   "VideoTransmitterAntennaFrequencyChecker",
+						Components:    "Video Transmitter and Antenna",
+						SeverityLevel: 0,
+						SeverityName:  "DEFINITE_INCOMPATIBILITY",
+						Message:       fmt.Sprintf("Video transmitter operates at 5.8 GHz, but selected antenna operates at %d MHz.", ant.FrequencyBandMhz),
+						Resolution:    "Select a 5.8 GHz video antenna.",
+					})
+				}
+
+				// Check connector matching for VTX
+				vtxProtoLower := strings.ToLower(vtx.Protocol)
+				vtxNameLower := strings.ToLower(vtx.Name)
+				antConnLower := strings.ToLower(strings.TrimSpace(ant.Connector))
+
+				// If DJI O3, it requires Dual U.FL or U.FL
+				if strings.Contains(vtxProtoLower, "o3") || strings.Contains(vtxNameLower, "o3") {
+					if !strings.Contains(antConnLower, "u.fl") && !strings.Contains(antConnLower, "ipex") {
+						messages = append(messages, &pb.CompatibilityMessage{
+							CheckerName:   "VideoTransmitterAntennaConnectorChecker",
+							Components:    "Video Transmitter and Antenna",
+							SeverityLevel: 0,
+							SeverityName:  "DEFINITE_INCOMPATIBILITY",
+							Message:       fmt.Sprintf("DJI O3 Air Unit requires a Dual U.FL or U.FL antenna, but selected antenna has a %s connector.", ant.Connector),
+							Resolution:    "Select an antenna with a Dual U.FL or U.FL connector.",
+						})
+					}
+				}
+			}
+		}
+	}
+
 	return messages
 }
 
@@ -777,6 +873,24 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 					parts = append(parts, fmt.Sprintf("mount_pattern == %q", p))
 				}
 				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
+			}
+		}
+	case "antennas":
+		if len(comp.Receivers) > 0 && comp.Receivers[0] != nil {
+			rx := comp.Receivers[0]
+			if rx.FrequencyBandMhz >= 2400 && rx.FrequencyBandMhz <= 2500 {
+				conditions = append(conditions, "frequency_band_mhz == 2400")
+			} else if rx.FrequencyBandMhz > 0 && rx.FrequencyBandMhz <= 1000 {
+				conditions = append(conditions, "(frequency_band_mhz == 915 || frequency_band_mhz == 868 || frequency_band_mhz == 900)")
+			}
+			conditions = append(conditions, "(connector == \"U.FL\" || connector == \"IPEX\")")
+		} else if comp.VideoTransmitter != nil {
+			conditions = append(conditions, "frequency_band_mhz == 5800")
+			vtx := comp.VideoTransmitter
+			protoLower := strings.ToLower(vtx.Protocol)
+			nameLower := strings.ToLower(vtx.Name)
+			if strings.Contains(protoLower, "o3") || strings.Contains(nameLower, "o3") {
+				conditions = append(conditions, "(connector == \"Dual U.FL\" || connector == \"U.FL\")")
 			}
 		}
 	}
