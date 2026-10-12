@@ -395,6 +395,9 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"media",
 			"min_voltage",
 			"max_voltage",
+			"vtx_ports",
+			"vtx_voltage_min_v",
+			"vtx_voltage_max_v",
 		},
 	},
 	{
@@ -429,6 +432,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"primary_display_image",
 			"media",
 			"motor_count",
+			"camera_mount_width_mm",
+			"motor_mount_patterns",
 		},
 	},
 	{
@@ -505,6 +510,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"max_voltage",
 			"max_current_a",
 			"shaft_diameter_mm",
+			"mount_pattern",
 		},
 	},
 	{
@@ -620,6 +626,7 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"port_type",
 		},
 	},
 	{

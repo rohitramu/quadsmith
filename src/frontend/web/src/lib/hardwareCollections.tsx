@@ -886,6 +886,24 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ['gyro.contains("MPU6000")', 'gyro.contains("BMI270")'],
       },
       {
+        name: "vtx_voltage_min_v",
+        type: "number",
+        description: "Minimum VTX BEC/output voltage (V)",
+        examples: ["vtx_voltage_min_v >= 5.0", "vtx_voltage_min_v >= 9.0"],
+      },
+      {
+        name: "vtx_voltage_max_v",
+        type: "number",
+        description: "Maximum VTX BEC/output voltage (V)",
+        examples: ["vtx_voltage_max_v <= 12.0", "vtx_voltage_max_v >= 9.0"],
+      },
+      {
+        name: "vtx_ports",
+        type: "string",
+        description: "VTX interface ports / connectors supported",
+        examples: ['vtx_ports.exists(p, p == "SH1.0-6P")'],
+      },
+      {
         name: "weight_g",
         type: "number",
         description: "Flight Controller weight in grams",
@@ -929,6 +947,21 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
             ? "Yes"
             : "No",
       },
+      vtx_voltage: {
+        id: "vtx_voltage",
+        title: "VTX Voltage (V)",
+        renderCell: (f) =>
+          f.vtxVoltageMinV && f.vtxVoltageMaxV
+            ? `${f.vtxVoltageMinV}-${f.vtxVoltageMaxV}V`
+            : f.vtxVoltageMaxV
+              ? `${f.vtxVoltageMaxV}V`
+              : "-",
+      },
+      vtx_ports: {
+        id: "vtx_ports",
+        title: "VTX Ports",
+        renderCell: (f) => (f.vtxPorts?.length ? f.vtxPorts.join(", ") : "-"),
+      },
     },
     highlights: [
       { label: "Processor", value: (f) => f.processor || "N/A" },
@@ -953,6 +986,19 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     technicalSpecs: [
       { label: "Processor (MCU)", value: (f) => f.processor || "-" },
       { label: "Gyro / IMU", value: (f) => f.gyro || "-" },
+      {
+        label: "VTX Output Voltage",
+        value: (f) =>
+          f.vtxVoltageMinV && f.vtxVoltageMaxV
+            ? `${f.vtxVoltageMinV}V - ${f.vtxVoltageMaxV}V`
+            : f.vtxVoltageMaxV
+              ? `${f.vtxVoltageMaxV}V`
+              : "-",
+      },
+      {
+        label: "VTX Ports / Connectors",
+        value: (f) => (f.vtxPorts?.length ? f.vtxPorts.join(", ") : "-"),
+      },
       {
         label: "Integrated ESC",
         value: (f) => (f.internalElectronicSpeedControllerUuid ? "Yes (AIO)" : "No"),
@@ -1027,6 +1073,18 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ['geometry == "Deadcat"', 'geometry == "True-X"'],
       },
       {
+        name: "camera_mount_width_mm",
+        type: "number",
+        description: "Maximum camera mount width supported in mm",
+        examples: ["camera_mount_width_mm >= 19.0", "camera_mount_width_mm == 14.0"],
+      },
+      {
+        name: "motor_mount_patterns",
+        type: "string",
+        description: "Motor mount screw patterns supported (e.g. 16x16mm, 19x19mm, 12x12mm)",
+        examples: ['motor_mount_patterns.exists(p, p == "16x16mm")'],
+      },
+      {
         name: "weight_g",
         type: "number",
         description: "Frame weight in grams",
@@ -1069,6 +1127,16 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Geometry",
         renderCell: (f) => f.geometry || "-",
       },
+      camera_mount_width_mm: {
+        id: "camera_mount_width_mm",
+        title: "Camera Mount (mm)",
+        renderCell: (f) => (f.cameraMountWidthMm ? `${f.cameraMountWidthMm}` : "-"),
+      },
+      motor_mount_patterns: {
+        id: "motor_mount_patterns",
+        title: "Motor Mount",
+        renderCell: (f) => (f.motorMountPatterns?.length ? f.motorMountPatterns.join(", ") : "-"),
+      },
     },
     highlights: [
       {
@@ -1101,6 +1169,14 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
             : "-",
       },
       { label: "Geometry", value: (f) => f.geometry || "-" },
+      {
+        label: "Camera Mount Width (mm)",
+        value: (f) => (f.cameraMountWidthMm ? `${f.cameraMountWidthMm} mm` : "-"),
+      },
+      {
+        label: "Motor Mount Patterns",
+        value: (f) => (f.motorMountPatterns?.length ? f.motorMountPatterns.join(", ") : "-"),
+      },
       {
         label: "Weight (g)",
         value: (f) => (f.weightG != null && f.weightG > 0 ? `${f.weightG}` : "-"),
@@ -1354,6 +1430,12 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ["shaft_diameter_mm == 5.0", "shaft_diameter_mm == 1.5"],
       },
       {
+        name: "mount_pattern",
+        type: "string",
+        description: "Motor screw mounting pattern (e.g. 16x16mm, 12x12mm, 9x9mm)",
+        examples: ['mount_pattern == "16x16mm"', 'mount_pattern == "12x12mm"'],
+      },
+      {
         name: "description",
         type: "string",
         description: "Product description",
@@ -1402,6 +1484,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Shaft (mm)",
         renderCell: (m) => (m.shaftDiameterMm ? `${m.shaftDiameterMm}mm` : "-"),
       },
+      mount_pattern: {
+        id: "mount_pattern",
+        title: "Mount Pattern",
+        renderCell: (m) => m.mountPattern || "-",
+      },
     },
     highlights: [
       { label: "KV", value: (m) => m.kv || "N/A" },
@@ -1444,6 +1531,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
       {
         label: "Shaft Diameter (mm)",
         value: (m) => (m.shaftDiameterMm ? `${m.shaftDiameterMm}mm` : "-"),
+      },
+      {
+        label: "Mount Pattern",
+        value: (m) => m.mountPattern || "-",
       },
       { label: "Weight (g)", value: (m) => (m.weightG ? `${m.weightG}` : "-") },
     ],
@@ -1825,6 +1916,12 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ["input_voltage_max_v >= 5.0"],
       },
       {
+        name: "port_type",
+        type: "string",
+        description: "Port/connector interface type (e.g. SH1.0-6P, Direct Solder, JST-GH-4P)",
+        examples: ['port_type == "SH1.0-6P"', 'port_type == "Direct Solder"'],
+      },
+      {
         name: "weight_g",
         type: "number",
         description: "Video Transmitter weight in grams",
@@ -1870,6 +1967,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
             ? `${v.inputVoltageMinV}-${v.inputVoltageMaxV}`
             : "-",
       },
+      port_type: {
+        id: "port_type",
+        title: "Port Interface",
+        renderCell: (v) => v.portType || "-",
+      },
     },
     highlights: [
       { label: "Protocol", value: (v) => v.protocol || "N/A" },
@@ -1903,6 +2005,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         label: "Max Input Voltage (V)",
         value: (v) => (v.inputVoltageMaxV ? `${v.inputVoltageMaxV}` : "-"),
       },
+      { label: "Port Interface", value: (v) => v.portType || "-" },
       {
         label: "Weight (g)",
         value: (v) => (v.weightG != null && v.weightG > 0 ? `${v.weightG}` : "-"),

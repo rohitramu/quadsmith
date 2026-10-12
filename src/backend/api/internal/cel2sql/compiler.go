@@ -106,6 +106,10 @@ func walk(node ast.Expr, argIdx int) (string, []any, error) {
 				op = "AND"
 			case "_||_":
 				op = "OR"
+			case "@in":
+				sql := fmt.Sprintf("(%s = ANY(%s))", lhs, rhs)
+				args := append(lhsArgs, rhsArgs...)
+				return sql, args, nil
 			default:
 				return "", nil, fmt.Errorf("unsupported binary function: %s", call.FunctionName())
 			}

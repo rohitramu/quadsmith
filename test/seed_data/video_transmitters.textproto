@@ -71,6 +71,7 @@ video_transmitters: {
   max_power_mw: 200
   input_voltage_min_v: 3.3
   input_voltage_max_v: 4.35
+  port_type: "Solder Pads"
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "Zero-latency digital video transmitter engineered for 1S racing whoops with standard 25.5x25.5mm mounting pattern."
   reference_links: {
@@ -2554,6 +2555,7 @@ video_transmitters: {
   max_power_mw: 2000
   input_voltage_min_v: 7.4
   input_voltage_max_v: 26.4
+  port_type: "SH1.0-6P"
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Flagship digital HD video transmission system with up to 10km range, 30ms latency, 4K/60fps D-Cinelike onboard recording, and RockSteady stabilization."
   reference_links: {
@@ -2584,6 +2586,7 @@ video_transmitters: {
   max_power_mw: 1200
   input_voltage_min_v: 6
   input_voltage_max_v: 25.2
+  port_type: "SH1.0-6P"
   antenna_uuids: "01923019-3009-7001-8001-000000000017"
   description: "High-power digital HD VTX featuring 32GB onboard storage, 1080p 60fps/120fps recording, and low-latency digital video transmission up to 4km."
   reference_links: {
@@ -2640,6 +2643,7 @@ video_transmitters: {
   max_power_mw: 1000
   input_voltage_min_v: 6
   input_voltage_max_v: 25.2
+  port_type: "Solder Pads"
   antenna_uuids: "01923019-3009-7001-8001-000000000018"
   description: "Legendary 1W high-voltage analog video transmitter with SmartAudio V2.1 and CleanSwitch technology."
   reference_links: {
@@ -2693,6 +2697,7 @@ video_transmitters: {
   max_power_mw: 800
   input_voltage_min_v: 3.7
   input_voltage_max_v: 5.5
+  port_type: "Solder Pads"
   antenna_uuids: "01923019-3009-7001-8001-000000000016"
   description: "Compact 20x20mm switchable 25/200/400/800mW analog VTX with IRC Tramp protocol and metal heat sink shield."
   reference_links: {

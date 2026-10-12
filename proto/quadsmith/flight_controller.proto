@@ -64,6 +64,15 @@ message FlightController {
 
   // Maximum operating input voltage (volts)
   float max_voltage = 17;
+
+  // Ports/pin interfaces available for VTX connection (e.g., ["JST-SH 6-Pin", "Solder Pads"], ["Analog Solder Pads"])
+  repeated string vtx_ports = 18;
+
+  // Minimum voltage available to power a VTX (volts) - e.g. 5.0 for 5V BEC, 3.1 for 1S
+  float vtx_voltage_min_v = 19;
+
+  // Maximum voltage available to power a VTX (volts) - e.g. 5.0 for 5V-only whoop FC, 10.0 or 26.0 for FC with 9V/10V BEC or VBAT
+  float vtx_voltage_max_v = 20;
 }
 
 // ---------------------------------------------------------

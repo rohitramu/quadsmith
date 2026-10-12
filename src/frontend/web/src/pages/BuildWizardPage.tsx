@@ -215,6 +215,7 @@ function SelectedPartHoverWrapper({ collectionId, item, children }: SelectedPart
       productId={item.id || item.uuid}
       as="div"
       className="w-full"
+      placement="side"
     >
       {children}
     </ProductHoverCard>
@@ -321,8 +322,18 @@ export function BuildWizardPage() {
     progress: wasmProgress,
   } = useWasmEngine();
 
-  // Intelligent compatibility filter toggle (default true)
-  const [filterCompatibleOnly, setFilterCompatibleOnly] = useState<boolean>(true);
+  // Per-list intelligent compatibility filter toggle (default true)
+  const [compatibleOnlyMap, setCompatibleOnlyMap] = useState<Record<string, boolean>>({
+    motors: true,
+    propellers: true,
+    electronic_speed_controllers: true,
+    video_transmitters: true,
+    cameras: true,
+  });
+
+  const isCompatibleOnly = (key: string) => compatibleOnlyMap[key] ?? true;
+  const toggleCompatibleOnly = (key: string) =>
+    setCompatibleOnlyMap((prev) => ({ ...prev, [key]: !(prev[key] ?? true) }));
 
   // Dynamic Tier 1 CEL filters generated client-side by WASM Engine
   const propCelFilter = useMemo(() => {
@@ -335,13 +346,14 @@ export function BuildWizardPage() {
   }, [isWasmReady, selectedFrame, selectedMotor]);
 
   const motorCelFilter = useMemo(() => {
-    if (!isWasmReady || (!selectedEsc && !selectedProp)) return "";
+    if (!isWasmReady || (!selectedEsc && !selectedProp && !selectedFrame)) return "";
     const comps = create(AssembledComponentsSchema, {
       electronicSpeedControllers: selectedEsc ? [selectedEsc] : [],
       propeller: selectedProp || undefined,
+      frame: selectedFrame || undefined,
     });
     return wasmEngine.generateCelFilter("motors", comps);
-  }, [isWasmReady, selectedEsc, selectedProp]);
+  }, [isWasmReady, selectedEsc, selectedProp, selectedFrame]);
 
   const escCelFilter = useMemo(() => {
     if (!isWasmReady || !selectedMotor) return "";
@@ -350,16 +362,21 @@ export function BuildWizardPage() {
   }, [isWasmReady, selectedMotor]);
 
   const camCelFilter = useMemo(() => {
-    if (!isWasmReady || !selectedVtx) return "";
-    const comps = create(AssembledComponentsSchema, { videoTransmitter: selectedVtx });
+    if (!isWasmReady || (!selectedVtx && !selectedFrame)) return "";
+    const comps = create(AssembledComponentsSchema, {
+      videoTransmitter: selectedVtx || undefined,
+      frame: selectedFrame || undefined,
+    });
     return wasmEngine.generateCelFilter("cameras", comps);
-  }, [isWasmReady, selectedVtx]);
+  }, [isWasmReady, selectedVtx, selectedFrame]);
 
   const vtxCelFilter = useMemo(() => {
-    if (!isWasmReady || !selectedCam) return "";
-    const comps = create(AssembledComponentsSchema, { cameras: [selectedCam] });
+    if (!isWasmReady || !selectedFc) return "";
+    const comps = create(AssembledComponentsSchema, {
+      flightController: selectedFc,
+    });
     return wasmEngine.generateCelFilter("video_transmitters", comps);
-  }, [isWasmReady, selectedCam]);
+  }, [isWasmReady, selectedFc]);
 
   const batteryCelFilter = useMemo(() => {
     if (!isWasmReady) return "";
@@ -620,6 +637,170 @@ export function BuildWizardPage() {
     selectedGps,
     selectedVtx,
     useIntegratedVtx,
+    selectedCam,
+    selectedVtxAnt,
+    vtxAntCount,
+    noneSelections,
+    motorCount,
+  ]);
+
+  // Sorted Bill of Materials items by weight (descending: heaviest at the top)
+  const bomItems = useMemo(() => {
+    interface BomItem {
+      id: string;
+      label: string;
+      weight: number;
+      weightFormatted: string;
+      isIntegrated?: boolean;
+    }
+
+    const items: BomItem[] = [];
+
+    if (selectedFrame) {
+      items.push({
+        id: "frame",
+        label: `Frame: ${selectedFrame.name}`,
+        weight: selectedFrame.weightG || 0,
+        weightFormatted: `${selectedFrame.weightG}g`,
+      });
+    }
+
+    if (selectedMotor) {
+      const w = (selectedMotor.weightG || 0) * motorCount;
+      items.push({
+        id: "motors",
+        label: `Motors: ${selectedMotor.name} (${motorCount}x)`,
+        weight: w,
+        weightFormatted: `${w.toFixed(1)}g`,
+      });
+    }
+
+    if (selectedProp) {
+      const w = (selectedProp.weightG || 0) * motorCount;
+      items.push({
+        id: "propellers",
+        label: `Propellers: ${selectedProp.name} (${motorCount}x)`,
+        weight: w,
+        weightFormatted: `${w.toFixed(1)}g`,
+      });
+    }
+
+    if (selectedFc) {
+      items.push({
+        id: "fc",
+        label: `Flight Controller: ${selectedFc.name}`,
+        weight: selectedFc.weightG || 0,
+        weightFormatted: `${selectedFc.weightG}g`,
+      });
+    }
+
+    if (useIntegratedEsc) {
+      items.push({
+        id: "esc",
+        label: `ESC: ${integratedEsc ? `${integratedEsc.name} (Integrated ${integratedEsc.motorCurrentMaxA || 20}A)` : "Using Integrated FC ESC"}`,
+        weight: 0,
+        weightFormatted: "0g",
+        isIntegrated: true,
+      });
+    } else if (selectedEsc && !noneSelections.esc) {
+      items.push({
+        id: "esc",
+        label: `ESC: ${selectedEsc.name}`,
+        weight: selectedEsc.weightG || 0,
+        weightFormatted: `${selectedEsc.weightG}g`,
+      });
+    }
+
+    if (useIntegratedRx) {
+      items.push({
+        id: "rx",
+        label: `Receiver: ${integratedRx ? `${integratedRx.name} (Integrated ${integratedRx.protocol || "ExpressLRS"} @ ${formatFrequencyBand(integratedRx.frequencyBandMhz)})` : "Using Integrated FC Receiver"}`,
+        weight: 0,
+        weightFormatted: "0g",
+        isIntegrated: true,
+      });
+    } else if (selectedRx) {
+      items.push({
+        id: "rx",
+        label: `Receiver: ${selectedRx.name} (${selectedRx.protocol} @ ${formatFrequencyBand(selectedRx.frequencyBandMhz)})`,
+        weight: selectedRx.weightG || 0,
+        weightFormatted: `${selectedRx.weightG}g`,
+      });
+    }
+
+    if (selectedRxAnt && !noneSelections.rxAntenna) {
+      const w = (selectedRxAnt.weightG || 0) * rxAntCount;
+      items.push({
+        id: "rx-antenna",
+        label: `RX Antenna: ${selectedRxAnt.name} (${rxAntCount}x)`,
+        weight: w,
+        weightFormatted: `${w.toFixed(1)}g`,
+      });
+    }
+
+    if (selectedGps && !noneSelections.gps) {
+      items.push({
+        id: "gps",
+        label: `GPS: ${selectedGps.name}`,
+        weight: selectedGps.weightG || 0,
+        weightFormatted: `${selectedGps.weightG}g`,
+      });
+    }
+
+    if (useIntegratedVtx) {
+      items.push({
+        id: "vtx",
+        label: `VTX: ${integratedVtx ? `${integratedVtx.name} (Integrated ${integratedVtx.maxPowerMw || 400}mW)` : "Using Integrated FC VTX"}`,
+        weight: 0,
+        weightFormatted: "0g",
+        isIntegrated: true,
+      });
+    } else if (selectedVtx && !noneSelections.vtx) {
+      items.push({
+        id: "vtx",
+        label: `VTX: ${selectedVtx.name}`,
+        weight: selectedVtx.weightG || 0,
+        weightFormatted: `${selectedVtx.weightG}g`,
+      });
+    }
+
+    if (selectedCam && !noneSelections.camera) {
+      items.push({
+        id: "camera",
+        label: `Camera: ${selectedCam.name}`,
+        weight: selectedCam.weightG || 0,
+        weightFormatted: `${selectedCam.weightG}g`,
+      });
+    }
+
+    if (selectedVtxAnt && !noneSelections.vtxAntenna) {
+      const w = (selectedVtxAnt.weightG || 0) * vtxAntCount;
+      items.push({
+        id: "vtx-antenna",
+        label: `VTX Antenna: ${selectedVtxAnt.name} (${vtxAntCount}x)`,
+        weight: w,
+        weightFormatted: `${w.toFixed(1)}g`,
+      });
+    }
+
+    return items.sort((a, b) => b.weight - a.weight);
+  }, [
+    selectedFrame,
+    selectedMotor,
+    selectedProp,
+    selectedFc,
+    selectedEsc,
+    useIntegratedEsc,
+    integratedEsc,
+    selectedRx,
+    useIntegratedRx,
+    integratedRx,
+    selectedRxAnt,
+    rxAntCount,
+    selectedGps,
+    selectedVtx,
+    useIntegratedVtx,
+    integratedVtx,
     selectedCam,
     selectedVtxAnt,
     vtxAntCount,
@@ -931,11 +1112,25 @@ export function BuildWizardPage() {
 
   const filteredMotors = useMemo(() => {
     let list = motors;
-    if (filterCompatibleOnly && selectedProp && (selectedProp.shaftDiameterMm || 0) > 0) {
-      list = list.filter(
-        (m) =>
-          !m.shaftDiameterMm || Math.abs(m.shaftDiameterMm - selectedProp.shaftDiameterMm) < 0.05,
-      );
+    if (isCompatibleOnly("motors")) {
+      if (selectedProp && (selectedProp.shaftDiameterMm || 0) > 0) {
+        list = list.filter(
+          (m) =>
+            !m.shaftDiameterMm || Math.abs(m.shaftDiameterMm - selectedProp.shaftDiameterMm) < 0.05,
+        );
+      }
+      if (
+        selectedFrame &&
+        selectedFrame.motorMountPatterns &&
+        selectedFrame.motorMountPatterns.length > 0
+      ) {
+        list = list.filter((m) => {
+          if (!m.mountPattern) return true;
+          return selectedFrame.motorMountPatterns.some(
+            (p) => p.toLowerCase().trim() === m.mountPattern.toLowerCase().trim(),
+          );
+        });
+      }
     }
     if (!searchMotor.trim()) return list;
     const q = searchMotor.toLowerCase();
@@ -945,25 +1140,28 @@ export function BuildWizardPage() {
         m.manufacturer.toLowerCase().includes(q) ||
         String(m.kv).includes(q),
     );
-  }, [motors, filterCompatibleOnly, selectedProp, searchMotor]);
+  }, [motors, compatibleOnlyMap, selectedProp, selectedFrame, searchMotor]);
 
   const filteredProps = useMemo(() => {
     let list = props;
-    if (filterCompatibleOnly && selectedFrame && selectedFrame.maxPropSizeMm > 0) {
-      list = list.filter((p) => p.diameterMm <= selectedFrame.maxPropSizeMm);
-    }
-    if (filterCompatibleOnly && selectedMotor && (selectedMotor.shaftDiameterMm || 0) > 0) {
-      list = list.filter(
-        (p) =>
-          !p.shaftDiameterMm || Math.abs(p.shaftDiameterMm - selectedMotor.shaftDiameterMm) < 0.05,
-      );
+    if (isCompatibleOnly("propellers")) {
+      if (selectedFrame && selectedFrame.maxPropSizeMm > 0) {
+        list = list.filter((p) => p.diameterMm <= selectedFrame.maxPropSizeMm);
+      }
+      if (selectedMotor && (selectedMotor.shaftDiameterMm || 0) > 0) {
+        list = list.filter(
+          (p) =>
+            !p.shaftDiameterMm ||
+            Math.abs(p.shaftDiameterMm - selectedMotor.shaftDiameterMm) < 0.05,
+        );
+      }
     }
     if (!searchProp.trim()) return list;
     const q = searchProp.toLowerCase();
     return list.filter(
       (p) => p.name.toLowerCase().includes(q) || p.manufacturer.toLowerCase().includes(q),
     );
-  }, [props, filterCompatibleOnly, selectedFrame, selectedMotor, searchProp]);
+  }, [props, compatibleOnlyMap, selectedFrame, selectedMotor, searchProp]);
 
   const filteredFcs = useMemo(() => {
     if (!searchFc.trim()) return fcs;
@@ -975,7 +1173,11 @@ export function BuildWizardPage() {
 
   const filteredEscs = useMemo(() => {
     let external = escs.filter((esc) => !esc.isInternalOnly);
-    if (filterCompatibleOnly && selectedMotor && selectedMotor.statorDiameterMm > 20) {
+    if (
+      isCompatibleOnly("electronic_speed_controllers") &&
+      selectedMotor &&
+      selectedMotor.statorDiameterMm > 20
+    ) {
       external = external.filter((esc) => esc.motorCurrentMaxA >= 20);
     }
     if (!searchEsc.trim()) return external;
@@ -983,7 +1185,7 @@ export function BuildWizardPage() {
     return external.filter(
       (esc) => esc.name.toLowerCase().includes(q) || esc.manufacturer.toLowerCase().includes(q),
     );
-  }, [escs, filterCompatibleOnly, selectedMotor, searchEsc]);
+  }, [escs, compatibleOnlyMap, selectedMotor, searchEsc]);
 
   const filteredRxs = useMemo(() => {
     const external = rxs.filter((rx) => !rx.isInternalOnly);
@@ -999,29 +1201,58 @@ export function BuildWizardPage() {
 
   const filteredVtxs = useMemo(() => {
     let external = vtxs.filter((vtx) => !vtx.isInternalOnly);
-    if (filterCompatibleOnly && selectedCam && selectedCam.protocol) {
-      external = external.filter(
-        (v) => v.protocol.toLowerCase() === selectedCam.protocol.toLowerCase(),
-      );
+    if (isCompatibleOnly("video_transmitters") && selectedFc) {
+      external = external.filter((vtx) => {
+        // Voltage check
+        if (
+          selectedFc.vtxVoltageMaxV > 0 &&
+          vtx.inputVoltageMinV > 0 &&
+          vtx.inputVoltageMinV > selectedFc.vtxVoltageMaxV
+        ) {
+          return false;
+        }
+        if (
+          selectedFc.vtxVoltageMinV > 0 &&
+          vtx.inputVoltageMaxV > 0 &&
+          vtx.inputVoltageMaxV < selectedFc.vtxVoltageMinV
+        ) {
+          return false;
+        }
+        // Port check
+        if (selectedFc.vtxPorts && selectedFc.vtxPorts.length > 0 && vtx.portType) {
+          const hasMatch = selectedFc.vtxPorts.some(
+            (p) =>
+              p.toLowerCase().trim() === vtx.portType.toLowerCase().trim() ||
+              p.toLowerCase().trim() === "solder pads",
+          );
+          if (!hasMatch) return false;
+        }
+        return true;
+      });
     }
     if (!searchVtx.trim()) return external;
     const q = searchVtx.toLowerCase();
     return external.filter(
       (v) => v.name.toLowerCase().includes(q) || v.manufacturer.toLowerCase().includes(q),
     );
-  }, [vtxs, filterCompatibleOnly, selectedCam, searchVtx]);
+  }, [vtxs, compatibleOnlyMap, selectedFc, searchVtx]);
 
   const filteredCams = useMemo(() => {
     let list = cams;
-    if (filterCompatibleOnly && selectedVtx && selectedVtx.protocol) {
-      list = list.filter((c) => c.protocol.toLowerCase() === selectedVtx.protocol.toLowerCase());
+    if (isCompatibleOnly("cameras")) {
+      if (selectedVtx && selectedVtx.protocol) {
+        list = list.filter((c) => c.protocol.toLowerCase() === selectedVtx.protocol.toLowerCase());
+      }
+      if (selectedFrame && selectedFrame.cameraMountWidthMm > 0) {
+        list = list.filter((c) => !c.widthMm || c.widthMm <= selectedFrame.cameraMountWidthMm);
+      }
     }
     if (!searchCam.trim()) return list;
     const q = searchCam.toLowerCase();
     return list.filter(
       (c) => c.name.toLowerCase().includes(q) || c.manufacturer.toLowerCase().includes(q),
     );
-  }, [cams, filterCompatibleOnly, selectedVtx, searchCam]);
+  }, [cams, compatibleOnlyMap, selectedVtx, selectedFrame, searchCam]);
 
   const filteredRxAnts = useMemo(() => {
     const rxAnts = ants.filter(isRxAntenna);
@@ -1758,7 +1989,7 @@ export function BuildWizardPage() {
                 {motorCelFilter && (
                   <div
                     className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      filterCompatibleOnly
+                      isCompatibleOnly("motors")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
@@ -1766,7 +1997,7 @@ export function BuildWizardPage() {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("motors")
                             ? "text-emerald-600 dark:text-emerald-400"
                             : "text-zinc-500 dark:text-zinc-400"
                         }`}
@@ -1775,7 +2006,7 @@ export function BuildWizardPage() {
                       </span>
                       <code
                         className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("motors")
                             ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
                             : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
                         }`}
@@ -1786,8 +2017,8 @@ export function BuildWizardPage() {
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
-                        checked={filterCompatibleOnly}
-                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        checked={isCompatibleOnly("motors")}
+                        onChange={() => toggleCompatibleOnly("motors")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible only</span>
@@ -1898,7 +2129,7 @@ export function BuildWizardPage() {
                 {propCelFilter && (
                   <div
                     className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      filterCompatibleOnly
+                      isCompatibleOnly("propellers")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
@@ -1906,7 +2137,7 @@ export function BuildWizardPage() {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("propellers")
                             ? "text-emerald-600 dark:text-emerald-400"
                             : "text-zinc-500 dark:text-zinc-400"
                         }`}
@@ -1915,7 +2146,7 @@ export function BuildWizardPage() {
                       </span>
                       <code
                         className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("propellers")
                             ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
                             : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
                         }`}
@@ -1926,8 +2157,8 @@ export function BuildWizardPage() {
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
-                        checked={filterCompatibleOnly}
-                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        checked={isCompatibleOnly("propellers")}
+                        onChange={() => toggleCompatibleOnly("propellers")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible Only</span>
@@ -2174,7 +2405,7 @@ export function BuildWizardPage() {
                 {escCelFilter && (
                   <div
                     className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      filterCompatibleOnly
+                      isCompatibleOnly("electronic_speed_controllers")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
@@ -2182,7 +2413,7 @@ export function BuildWizardPage() {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("electronic_speed_controllers")
                             ? "text-emerald-600 dark:text-emerald-400"
                             : "text-zinc-500 dark:text-zinc-400"
                         }`}
@@ -2191,7 +2422,7 @@ export function BuildWizardPage() {
                       </span>
                       <code
                         className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("electronic_speed_controllers")
                             ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
                             : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
                         }`}
@@ -2202,8 +2433,8 @@ export function BuildWizardPage() {
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
-                        checked={filterCompatibleOnly}
-                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        checked={isCompatibleOnly("electronic_speed_controllers")}
+                        onChange={() => toggleCompatibleOnly("electronic_speed_controllers")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible Only</span>
@@ -2877,7 +3108,7 @@ export function BuildWizardPage() {
                 {vtxCelFilter && (
                   <div
                     className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      filterCompatibleOnly
+                      isCompatibleOnly("video_transmitters")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
@@ -2885,7 +3116,7 @@ export function BuildWizardPage() {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("video_transmitters")
                             ? "text-emerald-600 dark:text-emerald-400"
                             : "text-zinc-500 dark:text-zinc-400"
                         }`}
@@ -2894,7 +3125,7 @@ export function BuildWizardPage() {
                       </span>
                       <code
                         className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("video_transmitters")
                             ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
                             : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
                         }`}
@@ -2905,8 +3136,8 @@ export function BuildWizardPage() {
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
-                        checked={filterCompatibleOnly}
-                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        checked={isCompatibleOnly("video_transmitters")}
+                        onChange={() => toggleCompatibleOnly("video_transmitters")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible Only</span>
@@ -3096,7 +3327,7 @@ export function BuildWizardPage() {
                 {camCelFilter && (
                   <div
                     className={`flex items-center justify-between text-xs px-2.5 py-1.5 rounded-lg border transition-colors ${
-                      filterCompatibleOnly
+                      isCompatibleOnly("cameras")
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300"
                         : "bg-zinc-100 dark:bg-zinc-800/60 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                     }`}
@@ -3104,7 +3335,7 @@ export function BuildWizardPage() {
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span
                         className={`font-semibold text-[10px] uppercase tracking-wider ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("cameras")
                             ? "text-emerald-600 dark:text-emerald-400"
                             : "text-zinc-500 dark:text-zinc-400"
                         }`}
@@ -3113,7 +3344,7 @@ export function BuildWizardPage() {
                       </span>
                       <code
                         className={`font-mono text-[11px] px-1.5 py-0.5 rounded ${
-                          filterCompatibleOnly
+                          isCompatibleOnly("cameras")
                             ? "bg-emerald-500/10 text-emerald-800 dark:text-emerald-200"
                             : "bg-zinc-200/60 dark:bg-zinc-700/60 text-zinc-700 dark:text-zinc-300 line-through opacity-70"
                         }`}
@@ -3124,8 +3355,8 @@ export function BuildWizardPage() {
                     <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-medium shrink-0">
                       <input
                         type="checkbox"
-                        checked={filterCompatibleOnly}
-                        onChange={(e) => setFilterCompatibleOnly(e.target.checked)}
+                        checked={isCompatibleOnly("cameras")}
+                        onChange={() => toggleCompatibleOnly("cameras")}
                         className="rounded border-zinc-400 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                       />
                       <span>Compatible Only</span>
@@ -3419,133 +3650,19 @@ export function BuildWizardPage() {
                   </span>
                 </div>
                 <div className="divide-y divide-zinc-200 dark:divide-zinc-800/60 p-2">
-                  {selectedFrame && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        Frame: {selectedFrame.name}
+                  {bomItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`py-1.5 px-2 flex justify-between ${
+                        item.isIntegrated ? "text-zinc-500" : ""
+                      }`}
+                    >
+                      <span className={item.isIntegrated ? "" : "text-zinc-700 dark:text-zinc-300"}>
+                        {item.label}
                       </span>
-                      <span className="text-zinc-500 font-mono">{selectedFrame.weightG}g</span>
+                      <span className="text-zinc-500 font-mono">{item.weightFormatted}</span>
                     </div>
-                  )}
-                  {selectedMotor && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        Motors: {selectedMotor.name} ({motorCount}x)
-                      </span>
-                      <span className="text-zinc-500 font-mono">
-                        {((selectedMotor.weightG || 0) * motorCount).toFixed(1)}g
-                      </span>
-                    </div>
-                  )}
-                  {selectedProp && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        Propellers: {selectedProp.name} ({motorCount}x)
-                      </span>
-                      <span className="text-zinc-500 font-mono">
-                        {((selectedProp.weightG || 0) * motorCount).toFixed(1)}g
-                      </span>
-                    </div>
-                  )}
-                  {selectedFc && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        Flight Controller: {selectedFc.name}
-                      </span>
-                      <span className="text-zinc-500 font-mono">{selectedFc.weightG}g</span>
-                    </div>
-                  )}
-                  {useIntegratedEsc ? (
-                    <div className="py-1.5 px-2 flex justify-between text-zinc-500">
-                      <span>
-                        ESC:{" "}
-                        {integratedEsc
-                          ? `${integratedEsc.name} (Integrated ${integratedEsc.motorCurrentMaxA || 20}A)`
-                          : "Using Integrated FC ESC"}
-                      </span>
-                      <span className="font-mono">0g</span>
-                    </div>
-                  ) : selectedEsc ? (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        ESC: {selectedEsc.name}
-                      </span>
-                      <span className="text-zinc-500 font-mono">{selectedEsc.weightG}g</span>
-                    </div>
-                  ) : null}
-                  {useIntegratedRx ? (
-                    <div className="py-1.5 px-2 flex justify-between text-zinc-500">
-                      <span>
-                        Receiver:{" "}
-                        {integratedRx
-                          ? `${integratedRx.name} (Integrated ${integratedRx.protocol || "ExpressLRS"} @ ${formatFrequencyBand(integratedRx.frequencyBandMhz)})`
-                          : "Using Integrated FC Receiver"}
-                      </span>
-                      <span className="font-mono">0g</span>
-                    </div>
-                  ) : selectedRx ? (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        Receiver: {selectedRx.name} ({selectedRx.protocol} @{" "}
-                        {formatFrequencyBand(selectedRx.frequencyBandMhz)})
-                      </span>
-                      <span className="text-zinc-500 font-mono">{selectedRx.weightG}g</span>
-                    </div>
-                  ) : null}
-                  {selectedRxAnt && !noneSelections.rxAntenna && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        RX Antenna: {selectedRxAnt.name} ({rxAntCount}x)
-                      </span>
-                      <span className="text-zinc-500 font-mono">
-                        {((selectedRxAnt.weightG || 0) * rxAntCount).toFixed(1)}g
-                      </span>
-                    </div>
-                  )}
-                  {selectedGps && !noneSelections.gps && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        GPS: {selectedGps.name}
-                      </span>
-                      <span className="text-zinc-500 font-mono">{selectedGps.weightG}g</span>
-                    </div>
-                  )}
-                  {useIntegratedVtx ? (
-                    <div className="py-1.5 px-2 flex justify-between text-zinc-500">
-                      <span>
-                        VTX:{" "}
-                        {integratedVtx
-                          ? `${integratedVtx.name} (Integrated ${integratedVtx.maxPowerMw || 400}mW)`
-                          : "Using Integrated FC VTX"}
-                      </span>
-                      <span className="font-mono">0g</span>
-                    </div>
-                  ) : selectedVtx && !noneSelections.vtx ? (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        VTX: {selectedVtx.name}
-                      </span>
-                      <span className="text-zinc-500 font-mono">{selectedVtx.weightG}g</span>
-                    </div>
-                  ) : null}
-                  {selectedCam && !noneSelections.camera && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        Camera: {selectedCam.name}
-                      </span>
-                      <span className="text-zinc-500 font-mono">{selectedCam.weightG}g</span>
-                    </div>
-                  )}
-                  {selectedVtxAnt && !noneSelections.vtxAntenna && (
-                    <div className="py-1.5 px-2 flex justify-between">
-                      <span className="text-zinc-700 dark:text-zinc-300">
-                        VTX Antenna: {selectedVtxAnt.name} ({vtxAntCount}x)
-                      </span>
-                      <span className="text-zinc-500 font-mono">
-                        {((selectedVtxAnt.weightG || 0) * vtxAntCount).toFixed(1)}g
-                      </span>
-                    </div>
-                  )}
+                  ))}
                 </div>
               </div>
 

@@ -1481,6 +1481,11 @@ flight_controllers: {
 
   min_voltage: 11.1
   max_voltage: 26.0
+
+  vtx_ports: "SH1.0-6P"
+  vtx_ports: "Solder Pads"
+  vtx_voltage_min_v: 5.0
+  vtx_voltage_max_v: 9.0
 }
 flight_controllers: {
 
@@ -1503,6 +1508,11 @@ flight_controllers: {
 
   min_voltage: 11.1
   max_voltage: 26.0
+
+  vtx_ports: "SH1.0-6P"
+  vtx_ports: "Solder Pads"
+  vtx_voltage_min_v: 5.0
+  vtx_voltage_max_v: 10.0
 }
 flight_controllers: {
 
@@ -1529,6 +1539,12 @@ flight_controllers: {
 
   min_voltage: 11.1
   max_voltage: 26.0
+
+  vtx_ports: "SH1.0-6P"
+  vtx_ports: "JST-GH-4P"
+  vtx_ports: "Solder Pads"
+  vtx_voltage_min_v: 5.0
+  vtx_voltage_max_v: 12.0
 }
 flight_controllers: {
 
@@ -1548,4 +1564,9 @@ flight_controllers: {
 
   min_voltage: 3.0
   max_voltage: 8.7
+
+  vtx_ports: "SH1.0-6P"
+  vtx_ports: "Solder Pads"
+  vtx_voltage_min_v: 3.3
+  vtx_voltage_max_v: 9.0
 }

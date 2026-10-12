@@ -49,9 +49,15 @@ type FlightController struct {
 	// Minimum operating input voltage (volts)
 	MinVoltage float32 `protobuf:"fixed32,16,opt,name=min_voltage,json=minVoltage,proto3" json:"min_voltage,omitempty"`
 	// Maximum operating input voltage (volts)
-	MaxVoltage    float32 `protobuf:"fixed32,17,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	MaxVoltage float32 `protobuf:"fixed32,17,opt,name=max_voltage,json=maxVoltage,proto3" json:"max_voltage,omitempty"`
+	// Ports/pin interfaces available for VTX connection (e.g., ["JST-SH 6-Pin", "Solder Pads"], ["Analog Solder Pads"])
+	VtxPorts []string `protobuf:"bytes,18,rep,name=vtx_ports,json=vtxPorts,proto3" json:"vtx_ports,omitempty"`
+	// Minimum voltage available to power a VTX (volts) - e.g. 5.0 for 5V BEC, 3.1 for 1S
+	VtxVoltageMinV float32 `protobuf:"fixed32,19,opt,name=vtx_voltage_min_v,json=vtxVoltageMinV,proto3" json:"vtx_voltage_min_v,omitempty"`
+	// Maximum voltage available to power a VTX (volts) - e.g. 5.0 for 5V-only whoop FC, 10.0 or 26.0 for FC with 9V/10V BEC or VBAT
+	VtxVoltageMaxV float32 `protobuf:"fixed32,20,opt,name=vtx_voltage_max_v,json=vtxVoltageMaxV,proto3" json:"vtx_voltage_max_v,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *FlightController) Reset() {
@@ -199,6 +205,27 @@ func (x *FlightController) GetMinVoltage() float32 {
 func (x *FlightController) GetMaxVoltage() float32 {
 	if x != nil {
 		return x.MaxVoltage
+	}
+	return 0
+}
+
+func (x *FlightController) GetVtxPorts() []string {
+	if x != nil {
+		return x.VtxPorts
+	}
+	return nil
+}
+
+func (x *FlightController) GetVtxVoltageMinV() float32 {
+	if x != nil {
+		return x.VtxVoltageMinV
+	}
+	return 0
+}
+
+func (x *FlightController) GetVtxVoltageMaxV() float32 {
+	if x != nil {
+		return x.VtxVoltageMaxV
 	}
 	return 0
 }
@@ -391,7 +418,7 @@ var File_flight_controller_proto protoreflect.FileDescriptor
 const file_flight_controller_proto_rawDesc = "" +
 	"\n" +
 	"\x17flight_controller.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xd4\b\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xc7\t\n" +
 	"\x10FlightController\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -412,7 +439,10 @@ const file_flight_controller_proto_rawDesc = "" +
 	"\vmin_voltage\x18\x10 \x01(\x02R\n" +
 	"minVoltage\x12\x1f\n" +
 	"\vmax_voltage\x18\x11 \x01(\x02R\n" +
-	"maxVoltage:~\x8a\xb5\x188\n" +
+	"maxVoltage\x12\x1b\n" +
+	"\tvtx_ports\x18\x12 \x03(\tR\bvtxPorts\x12)\n" +
+	"\x11vtx_voltage_min_v\x18\x13 \x01(\x02R\x0evtxVoltageMinV\x12)\n" +
+	"\x11vtx_voltage_max_v\x18\x14 \x01(\x02R\x0evtxVoltageMaxV:~\x8a\xb5\x188\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tprocessor\n" +

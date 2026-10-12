@@ -2886,6 +2886,7 @@ motors: {
   stator_diameter_mm: 28
   stator_height_mm: 6.5
   shaft_diameter_mm: 5.0
+  mount_pattern: "19x19mm"
   kv: 1300
   description: "FPVCycle FPVCycle 28mm 1300Kv - 7-8 Motor brushless motor with 1300 KV rating and 286 stator size, weighing 64.0g."
   reference_links: {
@@ -2952,6 +2953,7 @@ motors: {
   stator_diameter_mm: 22
   stator_height_mm: 7.5
   shaft_diameter_mm: 5.0
+  mount_pattern: "16x16mm"
   kv: 1950
   description: "Premium 5-inch freestyle and racing motor with high-temperature silver-core windings and titanium alloy shaft."
   reference_links: {
@@ -2978,6 +2980,7 @@ motors: {
   stator_diameter_mm: 22
   stator_height_mm: 7.5
   shaft_diameter_mm: 5.0
+  mount_pattern: "16x16mm"
   kv: 2020
   description: "High-power 6S FPV racing motor engineered for linear throttle response and extreme bursts."
   reference_links: {
@@ -3142,6 +3145,7 @@ motors: {
   stator_diameter_mm: 11
   stator_height_mm: 3
   shaft_diameter_mm: 1.5
+  mount_pattern: "9x9mm"
   kv: 11000
   description: "High-efficiency micro brushless motor tailored for 2S whoop and toothpick quadcopters."
   reference_links: {
@@ -3169,6 +3173,7 @@ motors: {
   stator_diameter_mm: 12
   stator_height_mm: 2.5
   shaft_diameter_mm: 1.5
+  mount_pattern: "9x9mm"
   kv: 5500
   description: "Sub-250g ultralight micro motor engineered for 4S toothpick and micro long-range drones."
   reference_links: {

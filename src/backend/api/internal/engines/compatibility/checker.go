@@ -61,7 +61,47 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 	}
 
-	// Rule 4: Camera vs Video Transmitter Protocol
+	// Rule 4: Motor vs Frame Mount Pattern
+	if comp.Motor != nil && comp.Frame != nil {
+		if comp.Motor.MountPattern != "" && len(comp.Frame.MotorMountPatterns) > 0 {
+			matched := false
+			for _, p := range comp.Frame.MotorMountPatterns {
+				if strings.EqualFold(strings.TrimSpace(comp.Motor.MountPattern), strings.TrimSpace(p)) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				messages = append(messages, &pb.CompatibilityMessage{
+					CheckerName:   "MotorFrameMountChecker",
+					Components:    "Motor and Frame",
+					SeverityLevel: 0,
+					SeverityName:  "DEFINITE_INCOMPATIBILITY",
+					Message:       fmt.Sprintf("Motor mounting pattern (%s) is not supported by frame motor mount holes (%s).", comp.Motor.MountPattern, strings.Join(comp.Frame.MotorMountPatterns, ", ")),
+					Resolution:    "Select a motor matching the frame's mounting pattern or choose a frame with compatible motor mount holes.",
+				})
+			}
+		}
+	}
+
+	// Rule 5: Camera vs Frame Camera Mount Width
+	if comp.Frame != nil && len(comp.Cameras) > 0 {
+		cam := comp.Cameras[0]
+		if cam.WidthMm > 0 && comp.Frame.CameraMountWidthMm > 0 {
+			if float32(cam.WidthMm) > comp.Frame.CameraMountWidthMm {
+				messages = append(messages, &pb.CompatibilityMessage{
+					CheckerName:   "CameraFrameMountChecker",
+					Components:    "Camera and Frame",
+					SeverityLevel: 0,
+					SeverityName:  "DEFINITE_INCOMPATIBILITY",
+					Message:       fmt.Sprintf("Camera width (%dmm) exceeds frame camera mount width (%.0fmm).", cam.WidthMm, comp.Frame.CameraMountWidthMm),
+					Resolution:    "Select a smaller camera (e.g. nano 14mm) or a frame supporting wider camera mounting.",
+				})
+			}
+		}
+	}
+
+	// Rule 6: Camera vs Video Transmitter Protocol
 	if comp.VideoTransmitter != nil && len(comp.Cameras) > 0 {
 		vtxProto := strings.TrimSpace(comp.VideoTransmitter.Protocol)
 		camProto := strings.TrimSpace(comp.Cameras[0].Protocol)
@@ -74,6 +114,55 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 				Message:       fmt.Sprintf("Camera protocol (%s) is incompatible with Video Transmitter protocol (%s).", camProto, vtxProto),
 				Resolution:    "Choose a camera and video transmitter that share the same transmission protocol (e.g. Analog, DJI O3, DJI O4 Pro, DJI O4 Lite, Walksnail, or HDZero).",
 			})
+		}
+	}
+
+	// Rule 7: Video Transmitter vs Flight Controller (Voltage & Ports)
+	if comp.FlightController != nil && comp.VideoTransmitter != nil {
+		fc := comp.FlightController
+		vtx := comp.VideoTransmitter
+
+		// Voltage check
+		if fc.VtxVoltageMaxV > 0 && vtx.InputVoltageMinV > 0 && vtx.InputVoltageMinV > fc.VtxVoltageMaxV {
+			messages = append(messages, &pb.CompatibilityMessage{
+				CheckerName:   "FlightControllerVtxVoltageChecker",
+				Components:    "Flight Controller and Video Transmitter",
+				SeverityLevel: 0,
+				SeverityName:  "DEFINITE_INCOMPATIBILITY",
+				Message:       fmt.Sprintf("Flight controller maximum VTX output voltage (%.1fV) cannot supply video transmitter minimum input voltage (%.1fV).", fc.VtxVoltageMaxV, vtx.InputVoltageMinV),
+				Resolution:    "Select a video transmitter with lower input voltage requirements or a flight controller with a higher-voltage BEC/output.",
+			})
+		} else if fc.VtxVoltageMinV > 0 && vtx.InputVoltageMaxV > 0 && vtx.InputVoltageMaxV < fc.VtxVoltageMinV {
+			messages = append(messages, &pb.CompatibilityMessage{
+				CheckerName:   "FlightControllerVtxVoltageChecker",
+				Components:    "Flight Controller and Video Transmitter",
+				SeverityLevel: 0,
+				SeverityName:  "DEFINITE_INCOMPATIBILITY",
+				Message:       fmt.Sprintf("Flight controller minimum VTX output voltage (%.1fV) exceeds video transmitter maximum input voltage (%.1fV).", fc.VtxVoltageMinV, vtx.InputVoltageMaxV),
+				Resolution:    "Select a video transmitter supporting higher input voltage or a flight controller with compatible output voltage.",
+			})
+		}
+
+		// Port / pin check
+		if len(fc.VtxPorts) > 0 && vtx.PortType != "" {
+			matched := false
+			for _, p := range fc.VtxPorts {
+				if strings.EqualFold(strings.TrimSpace(p), strings.TrimSpace(vtx.PortType)) ||
+					strings.EqualFold(strings.TrimSpace(p), "Solder Pads") {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				messages = append(messages, &pb.CompatibilityMessage{
+					CheckerName:   "FlightControllerVtxPortChecker",
+					Components:    "Flight Controller and Video Transmitter",
+					SeverityLevel: 0,
+					SeverityName:  "DEFINITE_INCOMPATIBILITY",
+					Message:       fmt.Sprintf("Video transmitter port interface (%s) is not supported by flight controller VTX ports (%s).", vtx.PortType, strings.Join(fc.VtxPorts, ", ")),
+					Resolution:    "Select a video transmitter with matching ports/pins or a flight controller with compatible VTX connectors.",
+				})
+			}
 		}
 	}
 
@@ -383,6 +472,9 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 		if comp.Propeller != nil && comp.Propeller.DiameterMm > 0 {
 			conditions = append(conditions, fmt.Sprintf("max_prop_size_mm >= %.1f", comp.Propeller.DiameterMm))
 		}
+		if len(comp.Cameras) > 0 && comp.Cameras[0].WidthMm > 0 {
+			conditions = append(conditions, fmt.Sprintf("camera_mount_width_mm >= %.1f", float32(comp.Cameras[0].WidthMm)))
+		}
 	case "batteries":
 		minV, maxV, maxA := CalculateElectricalLimits(comp)
 		if minV > 0 && maxV > 0 && minV > maxV {
@@ -420,6 +512,17 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 		if comp.Propeller != nil && comp.Propeller.ShaftDiameterMm > 0 {
 			conditions = append(conditions, fmt.Sprintf("shaft_diameter_mm == %.1f", comp.Propeller.ShaftDiameterMm))
 		}
+		if comp.Frame != nil && len(comp.Frame.MotorMountPatterns) > 0 {
+			if len(comp.Frame.MotorMountPatterns) == 1 {
+				conditions = append(conditions, fmt.Sprintf("mount_pattern == %q", comp.Frame.MotorMountPatterns[0]))
+			} else {
+				var parts []string
+				for _, p := range comp.Frame.MotorMountPatterns {
+					parts = append(parts, fmt.Sprintf("mount_pattern == %q", p))
+				}
+				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
+			}
+		}
 		if len(comp.ElectronicSpeedControllers) > 0 {
 			var minEscCurrent float32 = 0
 			var minEscMaxV float32 = 0
@@ -444,9 +547,27 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 		if comp.VideoTransmitter != nil && comp.VideoTransmitter.Protocol != "" {
 			conditions = append(conditions, fmt.Sprintf("protocol == %q", comp.VideoTransmitter.Protocol))
 		}
+		if comp.Frame != nil && comp.Frame.CameraMountWidthMm > 0 {
+			conditions = append(conditions, fmt.Sprintf("width_mm <= %d", uint32(comp.Frame.CameraMountWidthMm)))
+		}
 	case "video_transmitters":
-		if len(comp.Cameras) > 0 && comp.Cameras[0].Protocol != "" {
-			conditions = append(conditions, fmt.Sprintf("protocol == %q", comp.Cameras[0].Protocol))
+		if comp.FlightController != nil {
+			fc := comp.FlightController
+			if fc.VtxVoltageMaxV > 0 {
+				conditions = append(conditions, fmt.Sprintf("input_voltage_min_v <= %.1f", fc.VtxVoltageMaxV))
+			}
+			if fc.VtxVoltageMinV > 0 {
+				conditions = append(conditions, fmt.Sprintf("input_voltage_max_v >= %.1f", fc.VtxVoltageMinV))
+			}
+			if len(fc.VtxPorts) == 1 {
+				conditions = append(conditions, fmt.Sprintf("port_type == %q", fc.VtxPorts[0]))
+			} else if len(fc.VtxPorts) > 1 {
+				var parts []string
+				for _, p := range fc.VtxPorts {
+					parts = append(parts, fmt.Sprintf("port_type == %q", p))
+				}
+				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
+			}
 		}
 	}
 

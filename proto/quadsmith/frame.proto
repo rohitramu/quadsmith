@@ -49,6 +49,12 @@ message Frame {
 
   // Number of motors configured by this frame (e.g., 4 for standard quadcopters, 8 for coaxial X8 cinelifters)
   uint32 motor_count = 13 [(quadsmith.sql.column) = {default_value: "4"}];
+
+  // Camera mount width supported by frame in mm (e.g., 14 for nano, 19 for micro, 20 for DJI O3, 22 for standard)
+  float camera_mount_width_mm = 14;
+
+  // Motor mounting bolt patterns supported by this frame (e.g., ["16x16mm", "19x19mm"], ["9x9mm", "12x12mm"], ["3-hole 6.6mm"])
+  repeated string motor_mount_patterns = 15;
 }
 
 // ---------------------------------------------------------

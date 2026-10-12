@@ -113,23 +113,29 @@ func TestGenerateCelFilter(t *testing.T) {
 
 	camFilter := GenerateCelFilter("cameras", &Components{
 		VideoTransmitter: &pb.VideoTransmitter{Protocol: "DJI O3"},
+		Frame:            &pb.Frame{CameraMountWidthMm: 20},
 	})
-	if camFilter != `protocol == "DJI O3"` {
-		t.Errorf(`expected 'protocol == "DJI O3"', got %q`, camFilter)
+	if camFilter != `protocol == "DJI O3" && width_mm <= 20` {
+		t.Errorf(`expected 'protocol == "DJI O3" && width_mm <= 20', got %q`, camFilter)
 	}
 
 	vtxFilter := GenerateCelFilter("video_transmitters", &Components{
-		Cameras: []*pb.Camera{{Protocol: "Walksnail Avatar"}},
+		FlightController: &pb.FlightController{
+			VtxVoltageMinV: 9.0,
+			VtxVoltageMaxV: 12.0,
+			VtxPorts:       []string{"SH1.0-6P"},
+		},
 	})
-	if vtxFilter != `protocol == "Walksnail Avatar"` {
-		t.Errorf(`expected 'protocol == "Walksnail Avatar"', got %q`, vtxFilter)
+	if vtxFilter != `input_voltage_min_v <= 12.0 && input_voltage_max_v >= 9.0 && port_type == "SH1.0-6P"` {
+		t.Errorf(`expected 'input_voltage_min_v <= 12.0 && input_voltage_max_v >= 9.0 && port_type == "SH1.0-6P"', got %q`, vtxFilter)
 	}
 
 	motorFilter := GenerateCelFilter("motors", &Components{
 		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{{MotorCurrentMaxA: 30.0}},
+		Frame:                      &pb.Frame{MotorMountPatterns: []string{"16x16mm", "19x19mm"}},
 	})
-	if motorFilter != "max_current_a <= 30.0" {
-		t.Errorf("expected 'max_current_a <= 30.0', got %q", motorFilter)
+	if motorFilter != `(mount_pattern == "16x16mm" || mount_pattern == "19x19mm") && max_current_a <= 30.0` {
+		t.Errorf(`expected '(mount_pattern == "16x16mm" || mount_pattern == "19x19mm") && max_current_a <= 30.0', got %q`, motorFilter)
 	}
 }
 
@@ -581,4 +587,187 @@ func TestGenerateCelFilter_ShaftDiameter(t *testing.T) {
 	if motorFilter != "shaft_diameter_mm == 1.5" {
 		t.Errorf("Expected 'shaft_diameter_mm == 1.5', got %q", motorFilter)
 	}
+}
+
+func TestMotorFrameMountCompatibility(t *testing.T) {
+	t.Run("Matching mount pattern", func(t *testing.T) {
+		comp := &Components{
+			Motor: &pb.Motor{MountPattern: "16x16mm"},
+			Frame: &pb.Frame{MotorMountPatterns: []string{"16x16mm", "19x19mm"}},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "MotorFrameMountChecker" {
+				t.Errorf("Unexpected MotorFrameMountChecker message for matching pattern: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("Mismatched mount pattern", func(t *testing.T) {
+		comp := &Components{
+			Motor: &pb.Motor{MountPattern: "12x12mm"},
+			Frame: &pb.Frame{MotorMountPatterns: []string{"16x16mm", "19x19mm"}},
+		}
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "MotorFrameMountChecker" {
+				found = true
+				if m.SeverityLevel != 0 {
+					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("Expected MotorFrameMountChecker message, got none")
+		}
+	})
+}
+
+func TestCameraFrameMountCompatibility(t *testing.T) {
+	t.Run("Camera fits frame width", func(t *testing.T) {
+		comp := &Components{
+			Frame:   &pb.Frame{CameraMountWidthMm: 19.0},
+			Cameras: []*pb.Camera{{WidthMm: 19}},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "CameraFrameMountChecker" {
+				t.Errorf("Unexpected CameraFrameMountChecker message: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("Camera exceeds frame width", func(t *testing.T) {
+		comp := &Components{
+			Frame:   &pb.Frame{CameraMountWidthMm: 14.0},
+			Cameras: []*pb.Camera{{WidthMm: 19}},
+		}
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "CameraFrameMountChecker" {
+				found = true
+				if m.SeverityLevel != 0 {
+					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("Expected CameraFrameMountChecker message, got none")
+		}
+	})
+}
+
+func TestFlightControllerVtxCompatibility(t *testing.T) {
+	t.Run("Voltage and Port Compatible", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				VtxVoltageMinV: 7.4,
+				VtxVoltageMaxV: 12.0,
+				VtxPorts:       []string{"SH1.0-6P", "Solder Pads"},
+			},
+			VideoTransmitter: &pb.VideoTransmitter{
+				InputVoltageMinV: 7.0,
+				InputVoltageMaxV: 26.0,
+				PortType:         "SH1.0-6P",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerVtxVoltageChecker" || m.CheckerName == "FlightControllerVtxPortChecker" {
+				t.Errorf("Unexpected FC-VTX compatibility message: %s", m.Message)
+			}
+		}
+	})
+
+	t.Run("FC Max Voltage below VTX Min Voltage", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				VtxVoltageMinV: 5.0,
+				VtxVoltageMaxV: 5.0,
+			},
+			VideoTransmitter: &pb.VideoTransmitter{
+				InputVoltageMinV: 7.4,
+				InputVoltageMaxV: 26.0,
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerVtxVoltageChecker" {
+				found = true
+				if m.SeverityLevel != 0 {
+					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("Expected FlightControllerVtxVoltageChecker message, got none")
+		}
+	})
+
+	t.Run("FC Min Voltage above VTX Max Voltage", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				VtxVoltageMinV: 12.0,
+				VtxVoltageMaxV: 12.0,
+			},
+			VideoTransmitter: &pb.VideoTransmitter{
+				InputVoltageMinV: 3.7,
+				InputVoltageMaxV: 5.0,
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerVtxVoltageChecker" {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("Expected FlightControllerVtxVoltageChecker message, got none")
+		}
+	})
+
+	t.Run("Port Mismatch", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				VtxPorts: []string{"SH1.0-6P"},
+			},
+			VideoTransmitter: &pb.VideoTransmitter{
+				PortType: "JST-GH-4P",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		found := false
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerVtxPortChecker" {
+				found = true
+				if m.SeverityLevel != 0 {
+					t.Errorf("Expected DEFINITE_INCOMPATIBILITY (0), got %d", m.SeverityLevel)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("Expected FlightControllerVtxPortChecker message, got none")
+		}
+	})
+
+	t.Run("Solder Pads Fallback Matches Any Port", func(t *testing.T) {
+		comp := &Components{
+			FlightController: &pb.FlightController{
+				VtxPorts: []string{"Solder Pads"},
+			},
+			VideoTransmitter: &pb.VideoTransmitter{
+				PortType: "Direct Solder",
+			},
+		}
+		msgs := CheckCompatibility(comp)
+		for _, m := range msgs {
+			if m.CheckerName == "FlightControllerVtxPortChecker" {
+				t.Errorf("Unexpected FlightControllerVtxPortChecker message when FC has solder pads: %s", m.Message)
+			}
+		}
+	})
 }
