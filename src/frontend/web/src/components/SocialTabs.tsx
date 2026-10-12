@@ -5,7 +5,16 @@ import {
   listUserCollections,
 } from "../gen/quadsmith/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
-import { ThumbsUp, HelpCircle, Bookmark, Star, ArrowUpRight, Plus, Archive, Sparkles } from "lucide-react";
+import {
+  ThumbsUp,
+  HelpCircle,
+  Bookmark,
+  Star,
+  ArrowUpRight,
+  Plus,
+  Archive,
+  Sparkles,
+} from "lucide-react";
 import { SocialReviewSection } from "./SocialReviewSection";
 import { SocialQaSection } from "./SocialQaSection";
 import { SimilarBuildsTab } from "./SimilarBuildsTab";

@@ -11,12 +11,16 @@ import (
 )
 
 var publicProcedures = map[string]bool{
-	"/quadsmith.AuthService/SendEmailOtp":           true,
-	"/quadsmith.AuthService/VerifyEmailOtp":         true,
-	"/quadsmith.AuthService/VerifyMagicLink":        true,
-	"/quadsmith.AuthService/CompleteAccountSetup":   true,
-	"/quadsmith.AuthService/RefreshToken":           true,
-	"/quadsmith.UserService/CheckUsernameAvailable": true,
+	"/quadsmith.AuthService/SendEmailOtp":             true,
+	"/quadsmith.AuthService/VerifyEmailOtp":           true,
+	"/quadsmith.AuthService/VerifyMagicLink":          true,
+	"/quadsmith.AuthService/GetLoginChallengeDetails": true,
+	"/quadsmith.AuthService/ApproveLoginChallenge":    true,
+	"/quadsmith.AuthService/DenyLoginChallenge":       true,
+	"/quadsmith.AuthService/GetLoginChallengeStatus":  true,
+	"/quadsmith.AuthService/CompleteAccountSetup":     true,
+	"/quadsmith.AuthService/RefreshToken":             true,
+	"/quadsmith.UserService/CheckUsernameAvailable":   true,
 
 	// Public social queries
 	"/quadsmith.SocialService/ListReviews":            true,

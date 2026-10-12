@@ -175,3 +175,17 @@ func TestLocationHintAndLocalIP(t *testing.T) {
 		t.Errorf("expected 'San Francisco, US', got %q", loc)
 	}
 }
+
+func TestPublicProceduresIncludeCrossDeviceEndpoints(t *testing.T) {
+	required := []string{
+		"/quadsmith.AuthService/GetLoginChallengeDetails",
+		"/quadsmith.AuthService/ApproveLoginChallenge",
+		"/quadsmith.AuthService/DenyLoginChallenge",
+		"/quadsmith.AuthService/GetLoginChallengeStatus",
+	}
+	for _, proc := range required {
+		if !publicProcedures[proc] {
+			t.Errorf("expected procedure %q to be in publicProcedures, but was missing", proc)
+		}
+	}
+}

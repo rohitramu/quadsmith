@@ -88,8 +88,8 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
               No Similar Builds Found
             </h4>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
-              No other builds in the database share 25% or more of this quadcopter&apos;s components.
-              Be the first to build a variant!
+              No other builds in the database share 25% or more of this quadcopter&apos;s
+              components. Be the first to build a variant!
             </p>
           </div>
           <div className="flex items-center justify-center gap-3 pt-2">
@@ -114,16 +114,17 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
       {/* Results Grid */}
       {!isLoading && !error && similarBuilds.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {similarBuilds.map((sb, idx) => (
-            sb.build && (
-              <BuildCard
-                key={sb.build.uuid || sb.build.id || idx}
-                build={sb.build}
-                similarityScore={sb.similarityScore}
-                matchDetails={sb.matchDetails}
-              />
-            )
-          ))}
+          {similarBuilds.map(
+            (sb, idx) =>
+              sb.build && (
+                <BuildCard
+                  key={sb.build.uuid || sb.build.id || idx}
+                  build={sb.build}
+                  similarityScore={sb.similarityScore}
+                  matchDetails={sb.matchDetails}
+                />
+              ),
+          )}
         </div>
       )}
     </div>
