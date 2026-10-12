@@ -43,8 +43,8 @@ type Frame struct {
 	Media               []*Media         `protobuf:"bytes,12,rep,name=media,proto3" json:"media,omitempty"`
 	// Number of motors configured by this frame (e.g., 4 for standard quadcopters, 8 for coaxial X8 cinelifters)
 	MotorCount uint32 `protobuf:"varint,13,opt,name=motor_count,json=motorCount,proto3" json:"motor_count,omitempty"`
-	// Camera mount width supported by frame in mm (e.g., 14 for nano, 19 for micro, 20 for DJI O3, 22 for standard)
-	CameraMountWidthMm float32 `protobuf:"fixed32,14,opt,name=camera_mount_width_mm,json=cameraMountWidthMm,proto3" json:"camera_mount_width_mm,omitempty"`
+	// Camera mount interfaces supported by this frame (e.g., ["14mm (Nano)"], ["19mm (Micro)"], ["20mm (DJI O3)"])
+	CameraMountInterfaces []string `protobuf:"bytes,14,rep,name=camera_mount_interfaces,json=cameraMountInterfaces,proto3" json:"camera_mount_interfaces,omitempty"`
 	// Motor mounting bolt patterns supported by this frame (e.g., ["16x16mm", "19x19mm"], ["9x9mm", "12x12mm"], ["3-hole 6.6mm"])
 	MotorMountPatterns []string `protobuf:"bytes,15,rep,name=motor_mount_patterns,json=motorMountPatterns,proto3" json:"motor_mount_patterns,omitempty"`
 	// Board mounting patterns supported by this frame (e.g., ["30.5x30.5mm", "20x20mm"], ["25.5x25.5mm"], ["16x16mm"])
@@ -174,11 +174,11 @@ func (x *Frame) GetMotorCount() uint32 {
 	return 0
 }
 
-func (x *Frame) GetCameraMountWidthMm() float32 {
+func (x *Frame) GetCameraMountInterfaces() []string {
 	if x != nil {
-		return x.CameraMountWidthMm
+		return x.CameraMountInterfaces
 	}
-	return 0
+	return nil
 }
 
 func (x *Frame) GetMotorMountPatterns() []string {
@@ -383,7 +383,7 @@ var File_frame_proto protoreflect.FileDescriptor
 const file_frame_proto_rawDesc = "" +
 	"\n" +
 	"\vframe.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x84\x06\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\x89\x06\n" +
 	"\x05Frame\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -399,8 +399,8 @@ const file_frame_proto_rawDesc = "" +
 	"\x15primary_display_image\x18\v \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
 	"\x05media\x18\f \x03(\v2\x10.quadsmith.MediaR\x05media\x12(\n" +
 	"\vmotor_count\x18\r \x01(\rB\a\xc2\xf3\x18\x03:\x014R\n" +
-	"motorCount\x121\n" +
-	"\x15camera_mount_width_mm\x18\x0e \x01(\x02R\x12cameraMountWidthMm\x120\n" +
+	"motorCount\x126\n" +
+	"\x17camera_mount_interfaces\x18\x0e \x03(\tR\x15cameraMountInterfaces\x120\n" +
 	"\x14motor_mount_patterns\x18\x0f \x03(\tR\x12motorMountPatterns\x120\n" +
 	"\x14board_mount_patterns\x18\x10 \x03(\tR\x12boardMountPatterns:c\x8a\xb5\x185\n" +
 	"\fmanufacturer\n" +

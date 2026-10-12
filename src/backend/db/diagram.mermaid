@@ -55,7 +55,7 @@ erDiagram
         TEXT primary_display_image
         JSONB media
         INTEGER motor_count
-        DECIMAL camera_mount_width_mm
+        TEXT_ARRAY camera_mount_interfaces
         TEXT_ARRAY motor_mount_patterns
         TEXT_ARRAY board_mount_patterns
     }
@@ -203,7 +203,7 @@ erDiagram
         DECIMAL weight_g
         TEXT protocol
         TEXT sensor_size
-        INTEGER width_mm
+        TEXT camera_mount_interface
         DECIMAL lens_size_mm
         TEXT description
         JSONB reference_links

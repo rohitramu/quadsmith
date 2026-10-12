@@ -7,7 +7,7 @@ cameras: {
   weight_g: 8.9
   protocol: "Walksnail Avatar"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Walksnail Walksnail Moonlight Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Walksnail Avatar protocol)."
   reference_links: {
@@ -24,7 +24,7 @@ cameras: {
   weight_g: 3
   protocol: "DJI O4 Lite"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "DJI DJI O4 Lite Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (DJI O4 Lite protocol)."
 }
@@ -37,7 +37,7 @@ cameras: {
   weight_g: 3.0
   protocol: "DJI O4 Lite"
   sensor_size: "1/3\" CMOS"
-  width_mm: 20
+  camera_mount_interface: "20mm (DJI O3)"
   lens_size_mm: 2.1
   description: "DJI DJI O4 Wide Camera FPV camera featuring a 1/3\" CMOS sensor, 20mm width mounting pattern, and 2.1mm lens (DJI O4 Lite protocol)."
   reference_links: {
@@ -54,7 +54,7 @@ cameras: {
   weight_g: 2.1
   protocol: "DJI O4 Pro"
   sensor_size: "1/3\" CMOS"
-  width_mm: 25
+  camera_mount_interface: "20mm (DJI O3)"
   lens_size_mm: 2.1
   description: "DJI DJI O4 Pro Camera FPV camera featuring a 1/3\" CMOS sensor, 25mm width mounting pattern, and 2.1mm lens (DJI O4 Pro protocol)."
   reference_links: {
@@ -71,7 +71,7 @@ cameras: {
   weight_g: 5.9
   protocol: "Analog"
   sensor_size: "1/1.8 CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Renowned starlight low-light HDR micro camera with 1200TVL resolution, super low latency, and crystal clear night performance."
   reference_links: {
@@ -96,7 +96,7 @@ cameras: {
   weight_g: 1.45
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "BETAFPV C04 FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
@@ -117,7 +117,7 @@ cameras: {
   weight_g: 1.48
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "BETAFPV Air Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
@@ -138,7 +138,7 @@ cameras: {
   weight_g: 3
   protocol: "Analog"
   sensor_size: "1/1.8\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "Caddx Baby Ratel 14mm Nano 1200TVL 1.8mm FPV Camera"
   reference_links: {
@@ -155,7 +155,7 @@ cameras: {
   weight_g: 5.9
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Caddx Ratel 19mm Micro Starlight 1200TVL HDR Low-Light FPV Camera"
   reference_links: {
@@ -172,7 +172,7 @@ cameras: {
   weight_g: 3
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "BETAFPV Caddx Baby Turtle Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
@@ -189,7 +189,7 @@ cameras: {
   weight_g: 4.5
   protocol: "Analog"
   sensor_size: "1/2.7\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "BETAFPV Customized Runcam Split 3 Nano Camera FPV camera featuring a 1/2.7\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
@@ -206,7 +206,7 @@ cameras: {
   weight_g: 5.9
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "BETAFPV Customized Caddx Kangaroo Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -223,7 +223,7 @@ cameras: {
   weight_g: 1.48
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "BETAFPV BETAPFV Customized EOSV2 FPV Camera NTSC FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
@@ -240,7 +240,7 @@ cameras: {
   weight_g: 5.9
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "CADDXFPV CADDXFPV Ratel Ultra Analog Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -257,7 +257,7 @@ cameras: {
   weight_g: 9.5
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "CADDXFPV CADDXFPV Ratel Pro Analog Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -274,7 +274,7 @@ cameras: {
   weight_g: 1.7
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "CADDXFPV Ant Lite Analog Camera  (FPV Cycle Edition)"
   reference_links: {
@@ -291,7 +291,7 @@ cameras: {
   weight_g: 1.7
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "DarwinFPV DarwinFPV Caddx Ant  Micro FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -308,7 +308,7 @@ cameras: {
   weight_g: 27
   protocol: "Analog"
   sensor_size: "1/2.3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "DarwinFPV RunCam Thumb FPV camera featuring a 1/2.3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -325,7 +325,7 @@ cameras: {
   weight_g: 3
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "DarwinFPV Cement Ultra Durable FPV Drone Camera"
   reference_links: {
@@ -346,7 +346,7 @@ cameras: {
   weight_g: 1.8
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "DarwinFPV NANO 1 Mini Action FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
@@ -363,7 +363,7 @@ cameras: {
   weight_g: 3.5
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "DarwinFPV Darwin 129 Professional Customized Camera FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
@@ -380,7 +380,7 @@ cameras: {
   weight_g: 1.8
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "NewBeeDrone NewBeeDrone Whoop Training Camera x3 FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -397,7 +397,7 @@ cameras: {
   weight_g: 1.45
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "NewBeeDrone BeeEye V2 FPV Camera 10×10 – Ultra-Light 800 TVL"
   reference_links: {
@@ -414,7 +414,7 @@ cameras: {
   weight_g: 1.7
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "NewBeeDrone × CADDX Nano ANT Camera for BLV5 - Plug-and-Play Replacement"
 }
@@ -427,7 +427,7 @@ cameras: {
   weight_g: 1.45
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "NewBeeDrone NewBeeDrone BeeEye FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -448,7 +448,7 @@ cameras: {
   weight_g: 1.4
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Fat Shark Aura Analog FPV Camera FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
 }
@@ -461,7 +461,7 @@ cameras: {
   weight_g: 47.5
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Flywoo Naked Gopro 13 Pro Action Camera V2.1 FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
 }
@@ -474,7 +474,7 @@ cameras: {
   weight_g: 49
   protocol: "Analog"
   sensor_size: "1/2.3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Runcam Thumb 2 Action Camera with ND Filters FPV camera featuring a 1/2.3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
 }
@@ -487,7 +487,7 @@ cameras: {
   weight_g: 9.5
   protocol: "Analog"
   sensor_size: "1/1.8\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Caddx Baby Ratel 2 Camera - Black FPV camera featuring a 1/1.8\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -504,7 +504,7 @@ cameras: {
   weight_g: 9.8
   protocol: "Analog"
   sensor_size: "1/2\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Foxeer Toothless 2 Micro Camera - Black FPV camera featuring a 1/2\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
 }
@@ -517,7 +517,7 @@ cameras: {
   weight_g: 47.5
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Flywoo Naked Gopro 12 Pro Action Camera V2.1 FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
 }
@@ -530,7 +530,7 @@ cameras: {
   weight_g: 9.8
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Foxeer Micro Cat 3 Camera - Black FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
 }
@@ -543,7 +543,7 @@ cameras: {
   weight_g: 11.8
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "HGLRC L-series cameras low latency night vision for FPV Drone"
   reference_links: {
@@ -560,7 +560,7 @@ cameras: {
   weight_g: 5.9
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Sub250 Caddx  Camera for Whoopfly16 Nimble65 FPV camera featuring a 1/3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -577,7 +577,7 @@ cameras: {
   weight_g: 5.9
   protocol: "Analog"
   sensor_size: "1/2.3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Caddx Caddx Walnut FPV Action Camera FPV camera featuring a 1/2.3\" CMOS sensor, 19mm width mounting pattern, and 2.1mm lens (Analog protocol)."
   reference_links: {
@@ -598,7 +598,7 @@ cameras: {
   weight_g: 2
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "sub250 Caddx Ant Analog Camera for Nanofly16 FPV camera featuring a 1/3\" CMOS sensor, 14mm width mounting pattern, and 1.8mm lens (Analog protocol)."
   reference_links: {
@@ -615,7 +615,7 @@ cameras: {
   weight_g: 1.7
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "Caddx Ant Lite 4:3 FPV Camera - FPVCycle Edition"
   reference_links: {
@@ -633,7 +633,7 @@ cameras: {
   weight_g: 0
   protocol: "Analog"
   sensor_size: "1/3\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "H01 AIO Camera 5.8G 25mW VTX (Internal Camera)"
   reference_links: {
@@ -651,7 +651,7 @@ cameras: {
   weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "Walksnail Avatar HD Nano Camera  V3 (Internal Camera)"
   reference_links: {
@@ -673,7 +673,7 @@ cameras: {
   weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "Walksnail Avatar HD Camera V2 (Internal Camera)"
   reference_links: {
@@ -695,7 +695,7 @@ cameras: {
   weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "Avatar HD Moonlight Camera with Cable (Internal Camera)"
   reference_links: {
@@ -717,7 +717,7 @@ cameras: {
   weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "Avatar HD Lite Camera with Cable (Internal Camera)"
   reference_links: {
@@ -739,7 +739,7 @@ cameras: {
   weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/1.8\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Avatar HD Pro Camera with Cable (Internal Camera)"
   reference_links: {
@@ -761,7 +761,7 @@ cameras: {
   weight_g: 0
   protocol: "Walksnail Avatar"
   sensor_size: "1/2.7\" CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Avatar HD Camera V2 with Cable (Internal Camera)"
   reference_links: {
@@ -782,7 +782,7 @@ cameras: {
   weight_g: 2
   protocol: "Analog"
   sensor_size: "1/3 CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "Ultra-compact, lightweight 14x14mm nano camera engineered for whoops and toothpicks, with 1200TVL Global WDR."
   reference_links: {
@@ -807,7 +807,7 @@ cameras: {
   weight_g: 6.3
   protocol: "Analog"
   sensor_size: "1/3 CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 1.7
   description: "Race-proven 1000TVL micro analog camera featuring switchable 4:3 / 16:9 aspect ratio and multi-mode day/night presets."
   reference_links: {
@@ -828,7 +828,7 @@ cameras: {
   weight_g: 4.3
   protocol: "Analog"
   sensor_size: "1/3 CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.7
   description: "14x14mm nano version of the legendary Predator 5 with low latency, super WDR, and switchable aspect ratio."
   reference_links: {
@@ -849,7 +849,7 @@ cameras: {
   weight_g: 9
   protocol: "Analog"
   sensor_size: "1/2 CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Premium freestyle camera with large 1/2-inch image sensor, f/2.0 aperture lens, and vivid natural color reproduction."
   reference_links: {
@@ -870,7 +870,7 @@ cameras: {
   weight_g: 8.3
   protocol: "DJI O3"
   sensor_size: "1/1.7 CMOS"
-  width_mm: 20
+  camera_mount_interface: "20mm (DJI O3)"
   lens_size_mm: 2
   description: "Original DJI O3 4K/60fps camera module with 155-degree ultra-wide field of view and RockSteady EIS support."
   reference_links: {
@@ -899,7 +899,7 @@ cameras: {
   weight_g: 9.5
   protocol: "Walksnail Avatar"
   sensor_size: "1/1.8 CMOS"
-  width_mm: 19
+  camera_mount_interface: "19mm (Micro)"
   lens_size_mm: 2.1
   description: "Flagship digital HD camera featuring Sony Starvis II sensor for incredible low-light night flight and true 1080p video clarity."
   reference_links: {
@@ -921,7 +921,7 @@ cameras: {
   weight_g: 4.3
   protocol: "HDZero"
   sensor_size: "1/2 CMOS"
-  width_mm: 14
+  camera_mount_interface: "14mm (Nano)"
   lens_size_mm: 1.8
   description: "Zero-latency digital camera with custom high-sensitivity sensor offering 720p 60fps feed and sharp image definition."
   reference_links: {

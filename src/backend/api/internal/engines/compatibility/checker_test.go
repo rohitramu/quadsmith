@@ -100,7 +100,7 @@ func TestGenerateCelFilter(t *testing.T) {
 	}
 
 	escFilter := GenerateCelFilter("electronic_speed_controllers", comp)
-	expectedEsc := "motor_current_max_a >= 20.0 && motor_current_max_a >= 35.0 && min_voltage <= 25.20 && max_voltage >= 14.80"
+	expectedEsc := "max_motors >= 4 && min_voltage <= 25.20 && max_voltage >= 14.80"
 	if escFilter != expectedEsc {
 		t.Errorf("expected %q, got %q", expectedEsc, escFilter)
 	}
@@ -108,16 +108,15 @@ func TestGenerateCelFilter(t *testing.T) {
 	frameFilter := GenerateCelFilter("frames", &Components{
 		Propeller: &pb.Propeller{DiameterMm: 130.0},
 	})
-	if frameFilter != "max_prop_size_mm >= 130.0" {
-		t.Errorf("expected 'max_prop_size_mm >= 130.0', got %q", frameFilter)
+	if frameFilter != "" {
+		t.Errorf("expected empty frame filter, got %q", frameFilter)
 	}
 
 	camFilter := GenerateCelFilter("cameras", &Components{
-		VideoTransmitter: &pb.VideoTransmitter{Protocol: "DJI O3"},
-		Frame:            &pb.Frame{CameraMountWidthMm: 20},
+		Frame: &pb.Frame{CameraMountInterfaces: []string{"20mm (DJI O3)"}},
 	})
-	if camFilter != `protocol == "DJI O3" && width_mm <= 20` {
-		t.Errorf(`expected 'protocol == "DJI O3" && width_mm <= 20', got %q`, camFilter)
+	if camFilter != `camera_mount_interface == "20mm (DJI O3)"` {
+		t.Errorf(`expected 'camera_mount_interface == "20mm (DJI O3)"', got %q`, camFilter)
 	}
 
 	vtxFilter := GenerateCelFilter("video_transmitters", &Components{
@@ -135,8 +134,8 @@ func TestGenerateCelFilter(t *testing.T) {
 		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{{MotorCurrentMaxA: 30.0}},
 		Frame:                      &pb.Frame{MotorMountPatterns: []string{"16x16mm", "19x19mm"}},
 	})
-	if motorFilter != `(mount_pattern == "16x16mm" || mount_pattern == "19x19mm")` {
-		t.Errorf(`expected '(mount_pattern == "16x16mm" || mount_pattern == "19x19mm")', got %q`, motorFilter)
+	if motorFilter != `(mount_pattern == "16x16mm" || mount_pattern == "19x19mm") && max_current_a <= 30.0` {
+		t.Errorf(`expected motor filter with ESC current limit, got %q`, motorFilter)
 	}
 }
 
@@ -495,22 +494,22 @@ func TestGenerateCelFilter_ConflictHandling(t *testing.T) {
 		t.Errorf("Expected empty battery filter for conflicting components, got %q", batFilter)
 	}
 
-	// Test motor min_voltage propagates to ESC filter
+	// In unidirectional flow, ESC (Step 5) does not filter on Motor (Step 6)
 	escFilter := GenerateCelFilter("electronic_speed_controllers", &Components{
 		Motor: &pb.Motor{MinVoltage: 18.0},
 	})
-	if escFilter != "max_voltage >= 18.00" {
-		t.Errorf("Expected 'max_voltage >= 18.00', got %q", escFilter)
+	if escFilter != "" {
+		t.Errorf("Expected empty ESC filter when motor selected, got %q", escFilter)
 	}
 
-	// Motors are only filtered based on frame, so ESC does not filter motors
+	// Motors (Step 6) filter based on ESC (Step 5)
 	motorFilter := GenerateCelFilter("motors", &Components{
 		ElectronicSpeedControllers: []*pb.ElectronicSpeedController{
 			{MaxVoltage: 17.4},
 		},
 	})
-	if motorFilter != "" {
-		t.Errorf("Expected empty motor filter when no frame selected, got %q", motorFilter)
+	if motorFilter != "min_voltage <= 17.40" {
+		t.Errorf("Expected 'min_voltage <= 17.40', got %q", motorFilter)
 	}
 }
 
@@ -647,10 +646,10 @@ func TestMotorFrameMountCompatibility(t *testing.T) {
 }
 
 func TestCameraFrameMountCompatibility(t *testing.T) {
-	t.Run("Camera fits frame width", func(t *testing.T) {
+	t.Run("Camera fits frame mount interface", func(t *testing.T) {
 		comp := &Components{
-			Frame:   &pb.Frame{CameraMountWidthMm: 19.0},
-			Cameras: []*pb.Camera{{WidthMm: 19}},
+			Frame:   &pb.Frame{CameraMountInterfaces: []string{"19mm (Micro)", "20mm (DJI O3)"}},
+			Cameras: []*pb.Camera{{CameraMountInterface: "19mm (Micro)"}},
 		}
 		msgs := CheckCompatibility(comp)
 		for _, m := range msgs {
@@ -660,10 +659,10 @@ func TestCameraFrameMountCompatibility(t *testing.T) {
 		}
 	})
 
-	t.Run("Camera exceeds frame width", func(t *testing.T) {
+	t.Run("Camera does not match frame mount interface", func(t *testing.T) {
 		comp := &Components{
-			Frame:   &pb.Frame{CameraMountWidthMm: 14.0},
-			Cameras: []*pb.Camera{{WidthMm: 19}},
+			Frame:   &pb.Frame{CameraMountInterfaces: []string{"14mm (Nano)"}},
+			Cameras: []*pb.Camera{{CameraMountInterface: "19mm (Micro)"}},
 		}
 		msgs := CheckCompatibility(comp)
 		found := false

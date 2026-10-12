@@ -13,7 +13,7 @@ func TestScoreSimilarity_ExactMatch(t *testing.T) {
 	}
 	targetFrame := &Frame{Uuid: "frame-1", Name: "Source One V5", MaxPropSizeMm: 130, Geometry: "True X"}
 	targetVtx := &VideoTransmitter{Uuid: "vtx-1", Name: "TBS Unify", Protocol: "Analog"}
-	targetCam := &Camera{Uuid: "cam-1", Name: "Ratel 2", Protocol: "Analog", WidthMm: 19}
+	targetCam := &Camera{Uuid: "cam-1", Name: "Ratel 2", Protocol: "Analog", CameraMountInterface: "19mm (Micro)"}
 	targetMotor := &Motor{Uuid: "motor-1", Name: "F60 PRO V", StatorDiameterMm: 22, StatorHeightMm: 7.5, Kv: 2020}
 
 	cand := &Build{
@@ -52,7 +52,7 @@ func TestScoreSimilarity_TieredPartialMatches(t *testing.T) {
 	}
 	targetFrame := &Frame{Uuid: "frame-target", Name: "Target Frame", MaxPropSizeMm: 130, Geometry: "True X"}
 	targetVtx := &VideoTransmitter{Uuid: "vtx-target", Name: "Target VTX", Protocol: "Walksnail"}
-	targetCam := &Camera{Uuid: "cam-target", Name: "Target Cam", Protocol: "Walksnail", WidthMm: 19}
+	targetCam := &Camera{Uuid: "cam-target", Name: "Target Cam", Protocol: "Walksnail", CameraMountInterface: "19mm (Micro)"}
 	targetMotor := &Motor{Uuid: "motor-target", Name: "Target Motor", StatorDiameterMm: 22, StatorHeightMm: 7, Kv: 1950}
 
 	cand := &Build{
@@ -63,7 +63,7 @@ func TestScoreSimilarity_TieredPartialMatches(t *testing.T) {
 	}
 	candFrame := &Frame{Uuid: "frame-cand", Name: "Cand Frame", MaxPropSizeMm: 132, Geometry: "true x"}
 	candVtx := &VideoTransmitter{Uuid: "vtx-cand", Name: "Cand VTX", Protocol: "walksnail"}
-	candCam := &Camera{Uuid: "cam-cand", Name: "Cand Cam", Protocol: "walksnail", WidthMm: 14}
+	candCam := &Camera{Uuid: "cam-cand", Name: "Cand Cam", Protocol: "walksnail", CameraMountInterface: "14mm (Nano)"}
 	candMotor := &Motor{Uuid: "motor-cand", Name: "Cand Motor", StatorDiameterMm: 22, StatorHeightMm: 7, Kv: 2020}
 
 	score, details := ScoreSimilarity(
@@ -96,7 +96,7 @@ func TestScoreSimilarity_ThresholdFiltering(t *testing.T) {
 	}
 	targetFrame := &Frame{Uuid: "frame-5inch", MaxPropSizeMm: 130, Geometry: "True X"}
 	targetVtx := &VideoTransmitter{Uuid: "vtx-dji", Protocol: "DJI O3"}
-	targetCam := &Camera{Uuid: "cam-dji", Protocol: "DJI O3", WidthMm: 20}
+	targetCam := &Camera{Uuid: "cam-dji", Protocol: "DJI O3", CameraMountInterface: "20mm (DJI O3)"}
 	targetMotor := &Motor{Uuid: "motor-2207", StatorDiameterMm: 22, StatorHeightMm: 7, Kv: 1950}
 
 	cand := &Build{
@@ -107,7 +107,7 @@ func TestScoreSimilarity_ThresholdFiltering(t *testing.T) {
 	}
 	candFrame := &Frame{Uuid: "frame-whoop", MaxPropSizeMm: 52, Geometry: "Whoop"}
 	candVtx := &VideoTransmitter{Uuid: "vtx-analog", Protocol: "Analog"}
-	candCam := &Camera{Uuid: "cam-analog", Protocol: "Analog", WidthMm: 14}
+	candCam := &Camera{Uuid: "cam-analog", Protocol: "Analog", CameraMountInterface: "14mm (Nano)"}
 	candMotor := &Motor{Uuid: "motor-1103", StatorDiameterMm: 11, StatorHeightMm: 3, Kv: 10000}
 
 	score, details := ScoreSimilarity(

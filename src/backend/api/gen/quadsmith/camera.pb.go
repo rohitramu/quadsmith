@@ -36,8 +36,8 @@ type Camera struct {
 	Protocol string `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
 	SensorSize string `protobuf:"bytes,8,opt,name=sensor_size,json=sensorSize,proto3" json:"sensor_size,omitempty"`
-	// Width of the camera body in mm (e.g., 14 for nano, 19 for micro, 22 for standard)
-	WidthMm uint32 `protobuf:"varint,9,opt,name=width_mm,json=widthMm,proto3" json:"width_mm,omitempty"`
+	// Camera mounting interface (e.g., "14mm (Nano)", "19mm (Micro)", "20mm (DJI O3)")
+	CameraMountInterface string `protobuf:"bytes,9,opt,name=camera_mount_interface,json=cameraMountInterface,proto3" json:"camera_mount_interface,omitempty"`
 	// Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
 	LensSizeMm          float32          `protobuf:"fixed32,10,opt,name=lens_size_mm,json=lensSizeMm,proto3" json:"lens_size_mm,omitempty"`
 	Description         string           `protobuf:"bytes,11,opt,name=description,proto3" json:"description,omitempty"`
@@ -134,11 +134,11 @@ func (x *Camera) GetSensorSize() string {
 	return ""
 }
 
-func (x *Camera) GetWidthMm() uint32 {
+func (x *Camera) GetCameraMountInterface() string {
 	if x != nil {
-		return x.WidthMm
+		return x.CameraMountInterface
 	}
-	return 0
+	return ""
 }
 
 func (x *Camera) GetLensSizeMm() float32 {
@@ -364,7 +364,7 @@ var File_camera_proto protoreflect.FileDescriptor
 const file_camera_proto_rawDesc = "" +
 	"\n" +
 	"\fcamera.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xfe\x04\n" +
+	"_sql.proto\x1a\vmedia.proto\x1a\x14reference_link.proto\"\xa7\x05\n" +
 	"\x06Camera\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
 	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
@@ -374,19 +374,19 @@ const file_camera_proto_rawDesc = "" +
 	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x1a\n" +
 	"\bprotocol\x18\a \x01(\tR\bprotocol\x12\x1f\n" +
 	"\vsensor_size\x18\b \x01(\tR\n" +
-	"sensorSize\x12\x19\n" +
-	"\bwidth_mm\x18\t \x01(\rR\awidthMm\x12 \n" +
+	"sensorSize\x124\n" +
+	"\x16camera_mount_interface\x18\t \x01(\tR\x14cameraMountInterface\x12 \n" +
 	"\flens_size_mm\x18\n" +
 	" \x01(\x02R\n" +
 	"lensSizeMm\x12 \n" +
 	"\vdescription\x18\v \x01(\tR\vdescription\x12A\n" +
 	"\x0freference_links\x18\f \x03(\v2\x18.quadsmith.ReferenceLinkR\x0ereferenceLinks\x127\n" +
 	"\x15primary_display_image\x18\r \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12&\n" +
-	"\x05media\x18\x0e \x03(\v2\x10.quadsmith.MediaR\x05media:a\x8a\xb5\x181\n" +
+	"\x05media\x18\x0e \x03(\v2\x10.quadsmith.MediaR\x05media:o\x8a\xb5\x18?\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +
-	"\bwidth_mm\x12\a#06b6d4\x9a\xb5\x18\x1bcomponents/hardware/cameras\xc2\xf3\x18\t\n" +
+	"\x16camera_mount_interface\x12\a#06b6d4\x9a\xb5\x18\x1bcomponents/hardware/cameras\xc2\xf3\x18\t\n" +
 	"\acamerasB\x18\n" +
 	"\x16_primary_display_image\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +

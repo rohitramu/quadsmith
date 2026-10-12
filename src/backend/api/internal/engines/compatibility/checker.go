@@ -90,18 +90,25 @@ func CheckCompatibility(comp *Components) []*pb.CompatibilityMessage {
 		}
 	}
 
-	// Rule 5: Camera vs Frame Camera Mount Width
+	// Rule 5: Camera vs Frame Camera Mount Interface
 	if comp.Frame != nil && len(comp.Cameras) > 0 {
 		cam := comp.Cameras[0]
-		if cam.WidthMm > 0 && comp.Frame.CameraMountWidthMm > 0 {
-			if float32(cam.WidthMm) > comp.Frame.CameraMountWidthMm {
+		if cam.CameraMountInterface != "" && len(comp.Frame.CameraMountInterfaces) > 0 {
+			matched := false
+			for _, iface := range comp.Frame.CameraMountInterfaces {
+				if strings.EqualFold(strings.TrimSpace(iface), strings.TrimSpace(cam.CameraMountInterface)) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
 				messages = append(messages, &pb.CompatibilityMessage{
 					CheckerName:   "CameraFrameMountChecker",
 					Components:    "Camera and Frame",
 					SeverityLevel: 0,
 					SeverityName:  "DEFINITE_INCOMPATIBILITY",
-					Message:       fmt.Sprintf("Camera width (%dmm) exceeds frame camera mount width (%.0fmm).", cam.WidthMm, comp.Frame.CameraMountWidthMm),
-					Resolution:    "Select a smaller camera (e.g. nano 14mm) or a frame supporting wider camera mounting.",
+					Message:       fmt.Sprintf("Camera mount interface (%s) is not supported by frame camera mounts (%s).", cam.CameraMountInterface, strings.Join(comp.Frame.CameraMountInterfaces, ", ")),
+					Resolution:    "Select a camera matching the frame's supported camera mount interfaces or a frame with compatible camera mounting.",
 				})
 			}
 		}
@@ -605,12 +612,7 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 			}
 		}
 	case "frames":
-		if comp.Propeller != nil && comp.Propeller.DiameterMm > 0 {
-			conditions = append(conditions, fmt.Sprintf("max_prop_size_mm >= %.1f", comp.Propeller.DiameterMm))
-		}
-		if len(comp.Cameras) > 0 && comp.Cameras[0].WidthMm > 0 {
-			conditions = append(conditions, fmt.Sprintf("camera_mount_width_mm >= %.1f", float32(comp.Cameras[0].WidthMm)))
-		}
+		// Frame is Step 1; no previous component constraints.
 	case "batteries":
 		minV, maxV, maxA := CalculateElectricalLimits(comp)
 		if minV > 0 && maxV > 0 && minV > maxV {
@@ -637,18 +639,29 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 			}
 			conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(connParts, " || ")))
 		}
+	case "flight_controllers":
+		if comp.Frame != nil && len(comp.Frame.BoardMountPatterns) > 0 {
+			if len(comp.Frame.BoardMountPatterns) == 1 {
+				conditions = append(conditions, fmt.Sprintf("mount_pattern == %q", comp.Frame.BoardMountPatterns[0]))
+			} else {
+				var parts []string
+				for _, p := range comp.Frame.BoardMountPatterns {
+					parts = append(parts, fmt.Sprintf("mount_pattern == %q", p))
+				}
+				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
+			}
+		}
+		if comp.Battery != nil {
+			if comp.Battery.MinVoltage > 0 {
+				conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", comp.Battery.MinVoltage))
+			}
+			if comp.Battery.MaxVoltage > 0 {
+				conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", comp.Battery.MaxVoltage))
+			}
+		}
 	case "electronic_speed_controllers":
-		if comp.Motor != nil && comp.Motor.StatorDiameterMm > 20 {
-			conditions = append(conditions, "motor_current_max_a >= 20.0")
-		}
-		if comp.Motor != nil && comp.Motor.MaxCurrentA > 0 {
-			conditions = append(conditions, fmt.Sprintf("motor_current_max_a >= %.1f", comp.Motor.MaxCurrentA))
-		}
-		if comp.Motor != nil && comp.Motor.MinVoltage > 0 {
-			conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", comp.Motor.MinVoltage))
-		}
-		if comp.Motor != nil && comp.Motor.MaxVoltage > 0 {
-			conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", comp.Motor.MaxVoltage))
+		if comp.Frame != nil && comp.Frame.MotorCount > 0 {
+			conditions = append(conditions, fmt.Sprintf("max_motors >= %d", comp.Frame.MotorCount))
 		}
 		if comp.FlightController != nil {
 			fc := comp.FlightController
@@ -657,6 +670,14 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 			}
 			if fc.MinVoltage > 0 {
 				conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", fc.MinVoltage))
+			}
+		}
+		if comp.Battery != nil {
+			if comp.Battery.MinVoltage > 0 {
+				conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", comp.Battery.MinVoltage))
+			}
+			if comp.Battery.MaxVoltage > 0 {
+				conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", comp.Battery.MaxVoltage))
 			}
 		}
 	case "motors":
@@ -671,26 +692,54 @@ func GenerateCelFilter(targetCollection string, comp *Components) string {
 				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
 			}
 		}
+		if comp.FlightController != nil {
+			fc := comp.FlightController
+			if fc.MaxVoltage > 0 {
+				conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", fc.MaxVoltage))
+			}
+			if fc.MinVoltage > 0 {
+				conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", fc.MinVoltage))
+			}
+		}
+		if len(comp.ElectronicSpeedControllers) > 0 {
+			for _, esc := range comp.ElectronicSpeedControllers {
+				if esc != nil {
+					if esc.MotorCurrentMaxA > 0 {
+						conditions = append(conditions, fmt.Sprintf("max_current_a <= %.1f", esc.MotorCurrentMaxA))
+					}
+					if esc.MaxVoltage > 0 {
+						conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", esc.MaxVoltage))
+					}
+					if esc.MinVoltage > 0 {
+						conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", esc.MinVoltage))
+					}
+				}
+			}
+		}
+		if comp.Battery != nil {
+			if comp.Battery.MinVoltage > 0 {
+				conditions = append(conditions, fmt.Sprintf("max_voltage >= %.2f", comp.Battery.MinVoltage))
+			}
+			if comp.Battery.MaxVoltage > 0 {
+				conditions = append(conditions, fmt.Sprintf("min_voltage <= %.2f", comp.Battery.MaxVoltage))
+			}
+		}
 	case "cameras":
-		if comp.VideoTransmitter != nil && comp.VideoTransmitter.Protocol != "" {
-			conditions = append(conditions, fmt.Sprintf("protocol == %q", comp.VideoTransmitter.Protocol))
-		}
-		if comp.Frame != nil && comp.Frame.CameraMountWidthMm > 0 {
-			conditions = append(conditions, fmt.Sprintf("width_mm <= %d", uint32(comp.Frame.CameraMountWidthMm)))
-		}
-	case "flight_controllers":
-		if comp.Frame != nil && len(comp.Frame.BoardMountPatterns) > 0 {
-			if len(comp.Frame.BoardMountPatterns) == 1 {
-				conditions = append(conditions, fmt.Sprintf("mount_pattern == %q", comp.Frame.BoardMountPatterns[0]))
+		if comp.Frame != nil && len(comp.Frame.CameraMountInterfaces) > 0 {
+			if len(comp.Frame.CameraMountInterfaces) == 1 {
+				conditions = append(conditions, fmt.Sprintf("camera_mount_interface == %q", comp.Frame.CameraMountInterfaces[0]))
 			} else {
 				var parts []string
-				for _, p := range comp.Frame.BoardMountPatterns {
-					parts = append(parts, fmt.Sprintf("mount_pattern == %q", p))
+				for _, iface := range comp.Frame.CameraMountInterfaces {
+					parts = append(parts, fmt.Sprintf("camera_mount_interface == %q", iface))
 				}
 				conditions = append(conditions, fmt.Sprintf("(%s)", strings.Join(parts, " || ")))
 			}
 		}
 	case "video_transmitters":
+		if len(comp.Cameras) > 0 && comp.Cameras[0] != nil && comp.Cameras[0].Protocol != "" {
+			conditions = append(conditions, fmt.Sprintf("protocol == %q", comp.Cameras[0].Protocol))
+		}
 		if comp.FlightController != nil {
 			fc := comp.FlightController
 			if fc.VtxVoltageMaxV > 0 {

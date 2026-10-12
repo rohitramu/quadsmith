@@ -19,6 +19,7 @@ export interface ProductHoverCardProps {
   className?: string;
   as?: React.ElementType;
   placement?: "auto" | "side" | "top" | "bottom";
+  id?: string;
 }
 
 interface ProductHoverCardPresenterProps {
@@ -29,6 +30,7 @@ interface ProductHoverCardPresenterProps {
   className?: string;
   as?: React.ElementType;
   placement?: "auto" | "side" | "top" | "bottom";
+  id?: string;
 }
 
 function ProductHoverCardPresenter({
@@ -39,6 +41,7 @@ function ProductHoverCardPresenter({
   className = "",
   as,
   placement = "auto",
+  id,
 }: ProductHoverCardPresenterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number; placeAbove: boolean }>({
@@ -152,6 +155,7 @@ function ProductHoverCardPresenter({
 
   return (
     <Component
+      id={id}
       ref={triggerRef}
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
@@ -269,6 +273,7 @@ function ProductHoverCardWithQuery({
   className,
   as,
   placement,
+  id,
 }: ProductHoverCardProps & { getQuery: any }) {
   const { data: fetchedItem } = useQuery(getQuery, { id: productId }, { staleTime: 60_000 });
 
@@ -280,25 +285,24 @@ function ProductHoverCardWithQuery({
       className={className}
       as={as}
       placement={placement}
+      id={id}
     >
       {children}
     </ProductHoverCardPresenter>
   );
 }
 
-function ProductHoverCardFetcher({
-  collectionId,
-  productId,
-  children,
-  className,
-  as,
-  placement,
-}: ProductHoverCardProps) {
+function ProductHoverCardFetcher(props: ProductHoverCardProps) {
+  const { collectionId, productId, children, className, as, placement, id } = props;
   const collection = getHardwareCollection(collectionId);
 
   if (!collection?.getQuery || !productId) {
     const Component = (as || "div") as React.ElementType;
-    return <Component className={className}>{children}</Component>;
+    return (
+      <Component id={id} className={className}>
+        {children}
+      </Component>
+    );
   }
 
   return (
@@ -309,6 +313,7 @@ function ProductHoverCardFetcher({
       className={className}
       as={as}
       placement={placement}
+      id={id}
     >
       {children}
     </ProductHoverCardWithQuery>

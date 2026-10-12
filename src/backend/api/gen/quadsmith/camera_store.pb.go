@@ -11,19 +11,19 @@ import (
 )
 
 func CreateCamera(ctx context.Context, tx pgx.Tx, m *Camera) error {
-	query := `INSERT INTO cameras (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, sensor_size, width_mm, lens_size_mm, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+	query := `INSERT INTO cameras (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, sensor_size, camera_mount_interface, lens_size_mm, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.SensorSize, m.WidthMm, m.LensSizeMm, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.SensorSize, m.CameraMountInterface, m.LensSizeMm, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
 	return err
 }
 
 func GetCamera(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Camera, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "sensor_size": true, "width_mm": true, "lens_size_mm": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, sensor_size, width_mm, lens_size_mm, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "sensor_size": true, "camera_mount_interface": true, "lens_size_mm": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, sensor_size, camera_mount_interface, lens_size_mm, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,7 +34,7 @@ func GetCamera(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "sensor_size", "width_mm", "lens_size_mm", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "sensor_size", "camera_mount_interface", "lens_size_mm", "description", "reference_links", "primary_display_image", "media"}
 	}
 	query := `SELECT ` + colsStr + ` FROM cameras WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -58,8 +58,8 @@ func GetCamera(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 			scanArgs[i] = &m.Protocol
 		case "sensor_size":
 			scanArgs[i] = &m.SensorSize
-		case "width_mm":
-			scanArgs[i] = &m.WidthMm
+		case "camera_mount_interface":
+			scanArgs[i] = &m.CameraMountInterface
 		case "lens_size_mm":
 			scanArgs[i] = &m.LensSizeMm
 		case "description":
@@ -87,8 +87,8 @@ func GetCamera(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 }
 
 func UpdateCamera(ctx context.Context, tx pgx.Tx, m *Camera) error {
-	query := `UPDATE cameras SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, sensor_size = $7, width_mm = $8, lens_size_mm = $9, description = $10, reference_links = $11, primary_display_image = $12, media = $13 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.SensorSize, m.WidthMm, m.LensSizeMm, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE cameras SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, sensor_size = $7, camera_mount_interface = $8, lens_size_mm = $9, description = $10, reference_links = $11, primary_display_image = $12, media = $13 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.SensorSize, m.CameraMountInterface, m.LensSizeMm, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
 	return err
 }
 
@@ -99,8 +99,8 @@ func DeleteCamera(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Camera, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "sensor_size": true, "width_mm": true, "lens_size_mm": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, sensor_size, width_mm, lens_size_mm, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "sensor_size": true, "camera_mount_interface": true, "lens_size_mm": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, sensor_size, camera_mount_interface, lens_size_mm, description, reference_links, primary_display_image, media"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -111,7 +111,7 @@ func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "sensor_size", "width_mm", "lens_size_mm", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "sensor_size", "camera_mount_interface", "lens_size_mm", "description", "reference_links", "primary_display_image", "media"}
 	}
 	query := `SELECT ` + colsStr + ` FROM cameras`
 	if whereClause != "" {
@@ -176,8 +176,8 @@ func ListCameras(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 				scanArgs[i] = &m.Protocol
 			case "sensor_size":
 				scanArgs[i] = &m.SensorSize
-			case "width_mm":
-				scanArgs[i] = &m.WidthMm
+			case "camera_mount_interface":
+				scanArgs[i] = &m.CameraMountInterface
 			case "lens_size_mm":
 				scanArgs[i] = &m.LensSizeMm
 			case "description":

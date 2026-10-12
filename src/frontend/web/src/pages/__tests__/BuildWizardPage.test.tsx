@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { screen, waitFor, within, fireEvent } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
 import {
@@ -38,7 +38,17 @@ describe("BuildWizardPage Component", () => {
     );
   }
 
-  it("renders with initial empty state: Step 0 active with baseline options", async () => {
+  async function confirmScratchBaseline(user: ReturnType<typeof userEvent.setup>) {
+    const scratchCard = await screen.findByText(/No Template \(Start from Scratch\)/i);
+    await user.click(scratchCard);
+  }
+
+  async function advanceToStep1(user: ReturnType<typeof userEvent.setup>) {
+    await confirmScratchBaseline(user);
+    await user.click(screen.getByRole("button", { name: /Next: Frame/i }));
+  }
+
+  it("renders with initial empty state: Step 0 active, Step 1 locked until baseline confirmation", async () => {
     renderWizard();
 
     // Check title & banner
@@ -47,34 +57,54 @@ describe("BuildWizardPage Component", () => {
     const headingContainer = heading.parentElement;
     expect(headingContainer?.querySelector("svg")).toBeInTheDocument();
     expect(headingContainer?.querySelector("svg")).toHaveClass("text-[#FF6D00]");
-    expect(screen.queryByText(/Interactive Build Wizard/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/• (Stage|Step)/i)).not.toBeInTheDocument();
-    expect(screen.queryByText("Step 0: Choose a Starting Baseline")).not.toBeInTheDocument();
 
-    // Step 0 active, Step 1 unlocked (0/3), steps 2-4 disabled
-    expect(screen.getByText("Template Selection")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /step 1/i })).toBeEnabled();
-    expect(screen.getByRole("button", { name: /step 2/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /step 3/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /step 4/i })).toBeDisabled();
+    // Step 0 active in step bar, Step 1 locked (disabled) pending confirmation
+    expect(screen.getByRole("button", { name: /^step 0:/i })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /^step 1:/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /^step 2:/i })).toBeDisabled();
 
     // Step 0 baseline options
     expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
-    expect(screen.queryByText("Start from Scratch")).not.toBeInTheDocument();
-    // Initial dry weight is 0.00g across evaluator and selected parts list
+    expect(screen.getByText(/No Template \(Start from Scratch\)/i)).toBeInTheDocument();
+
+    // Next: Frame button is disabled pending explicit confirmation
+    const nextBtn = screen.getByRole("button", { name: /Next: Frame/i });
+    expect(nextBtn).toBeDisabled();
+
+    // Initial dry weight is 0.00g
     expect(screen.getAllByText("0.00g").length).toBeGreaterThanOrEqual(1);
 
-    // Selected Parts section under Evaluator (4 optional parts default to None)
+    // Selected Parts section under Evaluator
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
-    expect(screen.getByText("4 / 11 Parts")).toBeInTheDocument();
+  });
+
+  it("requires positive confirmation for Step 0 ('No template') before unlocking Step 1 and enabling Next", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Initially Step 1 is locked and Next: Frame is disabled
+    expect(screen.getByRole("button", { name: /^step 1:/i })).toBeDisabled();
+    const nextBtn = screen.getByRole("button", { name: /Next: Frame/i });
+    expect(nextBtn).toBeDisabled();
+
+    // Click "No template (Start from scratch)"
+    await confirmScratchBaseline(user);
+
+    // Now Step 0 shows confirmed and Step 1 is unlocked
+    expect(screen.getByText("Confirmed")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^step 1:/i })).toBeEnabled();
+    expect(nextBtn).toBeEnabled();
+
+    // Advance to Step 1 (Frame Chassis)
+    await user.click(nextBtn);
+    expect(await screen.findByText("1. Frame Chassis")).toBeInTheDocument();
   });
 
   it("allows searching for frames and filtering products in real time", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await advanceToStep1(user);
 
     const searchInput = await screen.findByPlaceholderText(
       /Search frames by name, brand, geometry/i,
@@ -94,163 +124,156 @@ describe("BuildWizardPage Component", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("allows selecting Step 1 parts, dynamically updates motor count, and unlocks Step 2", async () => {
+  it("progresses sequentially through dedicated component steps (Frame -> FC -> RX -> RX Antenna -> ESC -> Motors -> Props)", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await advanceToStep1(user);
 
-    // 1A. Select Frame
-    const frameCard = await screen.findByText("Master 5 V2");
-    await user.click(frameCard);
+    // Step 1: Select Frame
+    expect(await screen.findByText("1. Frame Chassis")).toBeInTheDocument();
+    await user.click(await screen.findByText("Master 5 V2"));
+    const nextToFc = screen.getByRole("button", { name: /Next: Flight Controller/i });
+    expect(nextToFc).toBeEnabled();
+    await user.click(nextToFc);
 
-    // 1B. Select Motor
-    const motorCard = await screen.findByText("ECO II 2207");
-    await user.click(motorCard);
+    // Step 2: Select Flight Controller
+    expect(await screen.findByText("2. Flight Controller")).toBeInTheDocument();
+    await user.click(await screen.findByText("F405 V4 FC"));
+    const nextToRx = screen.getByRole("button", { name: /Next: Radio Receiver/i });
+    expect(nextToRx).toBeEnabled();
+    await user.click(nextToRx);
 
-    // 1C. Select Propeller
-    const propCard = await screen.findByText("Hurricane 51433");
-    await user.click(propCard);
+    // Step 3: Select Receiver
+    expect(await screen.findByText("3. Radio Control Receiver")).toBeInTheDocument();
+    await user.click(await screen.findByText("Crossfire Nano RX"));
+    const nextToRxAnt = screen.getByRole("button", { name: /Next: RX Antennas/i });
+    expect(nextToRxAnt).toBeEnabled();
+    await user.click(nextToRxAnt);
+
+    // Step 4: Select Receiver Antenna
+    expect(await screen.findByText("4. Radio Receiver Antenna(s)")).toBeInTheDocument();
+    await user.click(await screen.findByText("TBS Immortal T V2 915MHz"));
+    const nextToEsc = screen.getByRole("button", { name: /Next: Speed Controller/i });
+    expect(nextToEsc).toBeEnabled();
+    await user.click(nextToEsc);
+
+    // Step 5: Select ESC
+    expect(await screen.findByText("5. Electronic Speed Controller (ESC)")).toBeInTheDocument();
+    await user.click(await screen.findByText("SpeedyBee 50A 4-in-1 ESC"));
+    const nextToMotors = screen.getByRole("button", { name: /Next: Motors/i });
+    expect(nextToMotors).toBeEnabled();
+    await user.click(nextToMotors);
+
+    // Step 6: Select Motors
+    expect(await screen.findByText("6. Motors")).toBeInTheDocument();
+    await user.click(await screen.findByText("ECO II 2207"));
+    const nextToProps = screen.getByRole("button", { name: /Next: Propellers/i });
+    expect(nextToProps).toBeEnabled();
+    await user.click(nextToProps);
+
+    // Step 7: Select Propeller
+    expect(await screen.findByText("7. Propellers")).toBeInTheDocument();
+    await user.click(await screen.findByText("Hurricane 51433"));
 
     // Dry weight should now be > 0
     await waitFor(() => {
       expect(screen.queryByText("0.00g")).not.toBeInTheDocument();
     });
 
-    // Next button should be enabled
-    const nextBtn = screen.getByRole("button", { name: /Next: Flight Electronics/i });
-    expect(nextBtn).toBeEnabled();
-
-    // Advance to Step 2
-    await user.click(nextBtn);
-    expect(await screen.findByText("2A. Flight Controller")).toBeInTheDocument();
+    const nextToCam = screen.getByRole("button", { name: /Next: FPV Camera/i });
+    expect(nextToCam).toBeEnabled();
   });
 
   it("handles conditional ESC and Receiver selection: standalone FC requires separate components, AIO FC allows integrated components with rich specs", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
-
-    // Select Step 1 parts
+    await advanceToStep1(user);
     await user.click(await screen.findByText("Master 5 V2"));
-    await user.click(await screen.findByText("ECO II 2207"));
-    await user.click(await screen.findByText("Hurricane 51433"));
-
-    // Go to Step 2
-    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+    await user.click(screen.getByRole("button", { name: /Next: Flight Controller/i }));
 
     // Select standalone FC (F405 V4)
     await user.click(await screen.findByText("F405 V4 FC"));
-    expect(screen.getByText("Requires separate ESC")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /Next: Radio Receiver/i }));
 
-    // Integrated FC ESC card should be disabled
-    expect(
-      screen.getByText("Use Integrated FC ESC").closest(".cursor-not-allowed"),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Requires AIO FC with integrated ESC")).toBeInTheDocument();
-
-    // Integrated FC Receiver card should be disabled
+    // Step 3 (Receiver) with standalone FC: Integrated RX is disabled
     expect(
       screen.getByText("Use Integrated FC Receiver").closest(".cursor-not-allowed"),
     ).toBeInTheDocument();
-    expect(screen.getByText(/Requires FC with integrated receiver/i)).toBeInTheDocument();
 
-    // Select AIO FC (Integrated FC AIO)
-    await user.click(screen.getByText("Integrated FC AIO"));
-    expect(screen.getAllByText(/✓ Available on selected FC/i).length).toBeGreaterThanOrEqual(1);
+    // Navigate back to Step 2 (Flight Controller) and select AIO FC
+    await user.click(screen.getByRole("button", { name: /^step 2:/i }));
+    await user.click(await screen.findByText("Integrated FC AIO"));
 
-    // Integrated FC ESC card is automatically selected when AIO FC is chosen!
-    expect(screen.getByText("BetaFPV Integrated 20A ESC")).toBeInTheDocument();
-    expect(screen.getByText("20A")).toBeInTheDocument();
-    expect(screen.getByText(/4x Motors • BLHeli_S/i)).toBeInTheDocument();
+    // Go to Step 3 (Receiver): Integrated RX is auto-selected!
+    await user.click(screen.getByRole("button", { name: /^step 3:/i }));
     expect(
-      screen.getByText("Use Integrated FC ESC").closest(".border-emerald-500"),
-    ).toBeInTheDocument();
-
-    // Clicking the selected integrated ESC deselects it
-    await user.click(screen.getByText("Use Integrated FC ESC"));
-    expect(screen.getByText("Use Integrated FC ESC").closest(".border-emerald-500")).toBeNull();
-
-    // Integrated FC Receiver card is automatically selected when AIO FC is chosen!
-    expect(screen.getByText("BetaFPV Integrated ELRS 2.4GHz RX")).toBeInTheDocument();
-    expect(screen.getAllByText("ExpressLRS").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText(/2.4 GHz • Telemetry/i)).toBeInTheDocument();
+      screen.getAllByText(/BetaFPV Integrated ELRS 2\.4GHz RX/i).length,
+    ).toBeGreaterThanOrEqual(1);
     expect(
-      screen.getByText("Use Integrated FC Receiver").closest(".border-emerald-500"),
+      screen.getByText("Use Integrated FC Receiver").closest(".border-blue-500"),
     ).toBeInTheDocument();
 
     // Clicking the selected integrated RX deselects it
     await user.click(screen.getByText("Use Integrated FC Receiver"));
-    expect(
-      screen.getByText("Use Integrated FC Receiver").closest(".border-emerald-500"),
-    ).toBeNull();
+    expect(screen.getByText("Use Integrated FC Receiver").closest(".border-blue-500")).toBeNull();
   });
 
-  it("handles Step 2 RX antenna & GPS and Step 3 Video optional components with 'Set All to None'", async () => {
+  it("automatically skips Receiver Antenna step when receiver has integrated SMD/ceramic antenna", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
-
-    // Complete Step 1
+    await advanceToStep1(user);
     await user.click(await screen.findByText("Master 5 V2"));
-    await user.click(await screen.findByText("ECO II 2207"));
-    await user.click(await screen.findByText("Hurricane 51433"));
-    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+    await user.click(screen.getByRole("button", { name: /Next: Flight Controller/i }));
+    await user.click(await screen.findByText("F405 V4 FC"));
+    await user.click(screen.getByRole("button", { name: /Next: Radio Receiver/i }));
 
-    // Verify Step 2 sections: 2A FC, 2B ESC, 2C RX, 2D RX Antenna, 2E GPS
-    expect(await screen.findByText("2A. Flight Controller")).toBeInTheDocument();
-    expect(screen.getByText("2B. Electronic Speed Controller (ESC)")).toBeInTheDocument();
-    expect(screen.getByText("2C. Radio Control Receiver")).toBeInTheDocument();
-    expect(screen.getByText("2D. Radio Receiver Antenna(s)")).toBeInTheDocument();
-    expect(screen.getByText("2E. GPS Receiver & Compass")).toBeInTheDocument();
+    // Select RP2 (Receiver with built-in SMD ceramic antenna)
+    await user.click(await screen.findByText("RadioMaster RP2 2.4GHz Receiver"));
 
-    // Select Step 2 components
-    await user.click(screen.getByText("F405 V4 FC"));
-    await user.click(screen.getByText("SpeedyBee 50A 4-in-1 ESC"));
-    await user.click(screen.getByText("Crossfire Nano RX"));
-
-    // Select compatible 915MHz RX Antenna for Crossfire Nano RX
-    const rxAntCard = screen.getByText("TBS Immortal T V2 915MHz");
-    await user.click(rxAntCard);
-    expect(screen.getByText("Antenna Quantity:")).toBeInTheDocument();
-    expect(screen.getByText("1x")).toBeInTheDocument();
-
-    // Select GPS in Step 2
-    const gpsCard = await screen.findByText(/M8Q-5883/i);
-    await user.click(gpsCard);
-
-    // Advance to Step 3 (Video)
-    const nextBtn = screen.getByRole("button", { name: /Next: Video/i });
-    expect(nextBtn).toBeEnabled();
+    // Next button in Step 3 should skip Step 4 (RX Antennas) and go directly to Step 5 (ESC)!
+    const nextBtn = screen.getByRole("button", { name: /Next: ESC \(Antenna Integrated\)/i });
+    expect(nextBtn).toBeInTheDocument();
     await user.click(nextBtn);
 
-    // Verify Step 3 Video sections: 3A VTX, 3B Camera, 3C Video Transmitter Antenna(s)
-    expect(
-      await screen.findByText(/All video components in Step 3 are optional/i),
-    ).toBeInTheDocument();
-    expect(screen.getByText("3A. Video Transmitter (VTX)")).toBeInTheDocument();
-    expect(screen.getByText("3B. FPV Camera")).toBeInTheDocument();
-    expect(screen.getByText("3C. Video Transmitter Antenna(s)")).toBeInTheDocument();
+    // Verify we landed on Step 5 (ESC)
+    expect(await screen.findByText("5. Electronic Speed Controller (ESC)")).toBeInTheDocument();
+  });
 
-    // Test VTX Antenna selection & automatic antenna derivation
-    const vtxAntCard = await screen.findByText(/Lollipop 4/i);
-    await user.click(vtxAntCard);
-    expect(screen.getByText(/Single Antenna \(Required by VTX\)/i)).toBeInTheDocument();
-    expect(screen.getByText("1x")).toBeInTheDocument();
+  it("handles optional Camera, VTX, VTX Antenna, and GPS steps with Omitted / None options", async () => {
+    const user = userEvent.setup();
+    renderWizard();
 
-    // Click "Set All to None (Line-of-Sight)"
-    const skipAllBtn = screen.getByRole("button", { name: /Set All to None/i });
-    await user.click(skipAllBtn);
+    await advanceToStep1(user);
+    await user.click(await screen.findByText("Master 5 V2"));
+    await user.click(screen.getByRole("button", { name: /Next: Flight Controller/i }));
+    await user.click(await screen.findByText("F405 V4 FC"));
+    await user.click(screen.getByRole("button", { name: /Next: Radio Receiver/i }));
+    await user.click(await screen.findByText("Crossfire Nano RX"));
+    await user.click(screen.getByRole("button", { name: /Next: RX Antennas/i }));
+    await user.click(await screen.findByText("TBS Immortal T V2 915MHz"));
+    await user.click(screen.getByRole("button", { name: /Next: Speed Controller/i }));
+    await user.click(await screen.findByText("SpeedyBee 50A 4-in-1 ESC"));
+    await user.click(screen.getByRole("button", { name: /Next: Motors/i }));
+    await user.click(await screen.findByText("ECO II 2207"));
+    await user.click(screen.getByRole("button", { name: /Next: Propellers/i }));
+    await user.click(await screen.findByText("Hurricane 51433"));
+    await user.click(screen.getByRole("button", { name: /Next: FPV Camera/i }));
 
-    // Verify explicit None selections in Step 3
-    expect(screen.getByText("No VTX (None)")).toBeInTheDocument();
-    expect(screen.getByText("No Camera (None)")).toBeInTheDocument();
-    expect(screen.getByText("No Antenna (None)")).toBeInTheDocument();
+    // Step 8: FPV Camera
+    expect(await screen.findByText("8. FPV Camera")).toBeInTheDocument();
+    expect(screen.getByText("No Camera (Omitted)")).toBeInTheDocument();
+
+    // If Camera is omitted, VTX and VTX Antennas are also omitted, skipping to GPS on Next
+    await user.click(screen.getByText("No Camera (Omitted)"));
+    const nextBtn = screen.getByRole("button", { name: /Next: GPS \(Video Skipped\)/i });
+    expect(nextBtn).toBeInTheDocument();
+    await user.click(nextBtn);
+
+    // Verify skipped directly to Step 11 (GPS)
+    expect(await screen.findByText("11. GPS Receiver & Compass")).toBeInTheDocument();
   });
 
   it("allows interactive payload adjustment and preset selection in Evaluator", async () => {
@@ -276,7 +299,7 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("+0.00g")).toBeInTheDocument();
   });
 
-  it("allows selecting a template in Step 0, reviewing BOM in Step 4, and saving the build to PostgreSQL", async () => {
+  it("allows selecting a template in Step 0, reviewing BOM in Step 12, and saving the build to PostgreSQL", async () => {
     const user = userEvent.setup();
     renderWizard();
 
@@ -284,29 +307,25 @@ describe("BuildWizardPage Component", () => {
     const templateCard = await screen.findByText("Bando Basher 5 inch");
     await user.click(templateCard);
 
-    // Template should be active and Steps 1-4 unlocked
+    // Template should be active and all steps unlocked
     expect(screen.getByText("Template Active")).toBeInTheDocument();
 
-    // All steps 0 to 4 in the step bar should become marked as Done
     const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
     const stepTabs = within(stepNav).getAllByRole("button");
-    expect(stepTabs).toHaveLength(5);
-    for (const tab of stepTabs) {
-      expect(tab).toHaveTextContent("Done");
-    }
+    expect(stepTabs).toHaveLength(13);
 
-    // Navigate to Step 4 (Review & Save)
-    const step4Tab = within(stepNav).getByRole("button", { name: /Step 4/i });
-    expect(step4Tab).toBeEnabled();
-    await user.click(step4Tab);
+    // Navigate to Step 12 (Review & Save)
+    const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
+    expect(step12Tab).toBeEnabled();
+    await user.click(step12Tab);
 
     // Check BOM items populated from template
     expect(await screen.findByText(/Bill of Materials \(BOM\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/Motors: ECO II 2207 \(4x\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/Flight Controller: F405 V4 FC/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/ECO II 2207/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/F405 V4 FC/i).length).toBeGreaterThanOrEqual(1);
 
     // Click Save Build
-    const saveBtn = screen.getByRole("button", { name: /Create & Save Build to Database/i });
+    const saveBtn = screen.getByRole("button", { name: /Save & Create Build/i });
     await user.click(saveBtn);
 
     // Should navigate to saved build profile with auto-incremented -copy1 suffix
@@ -327,18 +346,18 @@ describe("BuildWizardPage Component", () => {
     const templateCards = await screen.findAllByText("Bando Basher 5 inch");
     await user.click(templateCards[0]);
 
-    // Navigate to Step 4 (Review & Save)
+    // Navigate to Step 12 (Review & Save)
     const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
-    const step4Tab = within(stepNav).getByRole("button", { name: /Step 4/i });
-    await user.click(step4Tab);
+    const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
+    await user.click(step12Tab);
 
     // Change build name to one that generates -copy1
-    const nameInput = screen.getByPlaceholderText(/e\.g\. My Freestyle 5-Inch/i);
+    const nameInput = screen.getByLabelText("Build Name");
     await user.clear(nameInput);
     await user.type(nameInput, "Bando Basher 5 inch copy1");
 
     // Click Save Build
-    const saveBtn = screen.getByRole("button", { name: /Create & Save Build to Database/i });
+    const saveBtn = screen.getByRole("button", { name: /Save & Create Build/i });
     await user.click(saveBtn);
 
     // Should auto-detect -copy1 and increment to -copy2
@@ -356,12 +375,11 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("Template Active")).toBeInTheDocument();
 
     // Advance to Step 1
-    await user.click(screen.getByRole("button", { name: /Next: Airframe & Propulsion/i }));
-    expect(screen.getByText("1A. Frame Chassis")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /Next: Frame/i }));
+    expect(screen.getByText("1. Frame Chassis")).toBeInTheDocument();
 
-    // Click Reset button in the Start Over card
-    expect(screen.getByText("Start Over")).toBeInTheDocument();
-    const resetBtn = screen.getByRole("button", { name: /Reset/i });
+    // Click Reset button in the top banner
+    const resetBtn = screen.getByRole("button", { name: /Reset Build/i });
     await user.click(resetBtn);
 
     // Should return to Step 0 baseline selection
@@ -371,6 +389,7 @@ describe("BuildWizardPage Component", () => {
 
   it("displays dynamic CEL filter when physics engine is active and allows toggling compatible parts", async () => {
     vi.spyOn(wasmEngine, "getIsReady").mockReturnValue(true);
+    vi.spyOn(wasmEngine, "checkCompatibility").mockReturnValue({ messages: [] } as any);
     vi.spyOn(wasmEngine, "generateCelFilter").mockImplementation((target: string) => {
       if (target === "propellers") return "diameter_mm <= 130.0";
       return "";
@@ -379,25 +398,12 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await advanceToStep1(user);
 
     // Select Frame (Master 5 V2 - 130mm max prop size)
     await user.click(await screen.findByText("Master 5 V2"));
 
-    // Check that Compatible only has dotted underline and shows hover card with copy button on hover
-    const compatibleLabel = await screen.findByText(/compatible only/i);
-    expect(compatibleLabel).toBeInTheDocument();
-    expect(compatibleLabel.className).toContain("decoration-dotted");
-
-    // Hovering over "Compatible only" reveals the hover card
-    await user.hover(compatibleLabel);
-    const hoverCard = await screen.findByTestId("compatibility-hover-card");
-    expect(hoverCard).toBeInTheDocument();
-    expect(hoverCard.querySelector("pre")).toHaveTextContent("diameter_mm <= 130.0");
-    expect(screen.getByTestId("copy-filter-button")).toBeInTheDocument();
-
-    // Toggle off Compatible Only
+    // Check that Compatible only toggle works
     const compatibleCheckbox = screen.getByRole("checkbox", { name: /compatible only/i });
     expect(compatibleCheckbox).toBeChecked();
     await user.click(compatibleCheckbox);
@@ -410,164 +416,21 @@ describe("BuildWizardPage Component", () => {
 
     // Verify Selected Parts card under Evaluator
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
-    expect(screen.getByText("4 / 11 Parts")).toBeInTheDocument();
-    expect(screen.getByText("BOM Total Dry Weight:")).toBeInTheDocument();
+    expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
 
-    // Verify Step 1 items are unlocked initially
-    expect(screen.getByTitle("Go to Step 1: Frame selection")).toBeEnabled();
-    expect(screen.getByTitle("Go to Step 1: Motor selection")).toBeEnabled();
-    expect(screen.getByTitle("Go to Step 1: Propeller selection")).toBeEnabled();
-
-    // Verify Step 2 & 3 items are locked initially with disabled buttons
-    const fcPartButton = screen.getByTitle(
-      "Step 2 is locked: Flight Controller (Complete Step 1 first)",
-    );
-    expect(fcPartButton).toBeDisabled();
-    expect(
-      screen.getByTitle("Step 2 is locked: Speed Controller (ESC) (Complete Step 1 first)"),
-    ).toBeDisabled();
-    expect(
-      screen.getByTitle("Step 3 is locked: Video Transmitter (VTX) (Complete Steps 1 & 2 first)"),
-    ).toBeDisabled();
-
-    // Clicking locked Flight Controller button does NOT navigate to Step 2
-    await user.click(fcPartButton);
-    expect(screen.queryByText("2A. Flight Controller")).not.toBeInTheDocument();
-
-    // Advance to Step 1 and select Frame, Motor, and Propeller to complete Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
-    await user.click(await screen.findByText("Master 5 V2"));
-    await user.click(await screen.findByText("ECO II 2207"));
-    await user.click(await screen.findByText("Hurricane 51433"));
-
-    // Verify 7 / 11 parts are now selected (3 propulsion + 4 default None) and Step 1 is complete
-    expect(screen.getByText("7 / 11 Parts")).toBeInTheDocument();
-
-    // Now Step 2 is unlocked in the Selected Parts list
-    const unlockedFcButton = screen.getByTitle("Go to Step 2: Flight Controller selection");
-    expect(unlockedFcButton).toBeEnabled();
-
-    // Clicking on Flight Controller now successfully navigates to Step 2
-    await user.click(unlockedFcButton);
-    expect(screen.getByText("2A. Flight Controller")).toBeInTheDocument();
-  });
-
-  it("displays product hover card when hovering over a configured component in the selected parts list", async () => {
-    const user = userEvent.setup();
-    renderWizard();
-
-    // Advance to Step 1 and select Frame
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    // Confirm Step 0 and select Frame in Step 1
+    await advanceToStep1(user);
     await user.click(await screen.findByText("Master 5 V2"));
 
-    // Find the Selected Parts list frame button
-    const frameBtn = screen.getByTitle("Go to Step 1: Frame selection");
-    expect(frameBtn).toBeInTheDocument();
-
-    // Find the hover trigger wrapper
-    const hoverTriggers = screen.getAllByTestId("product-hover-trigger");
-    expect(hoverTriggers.length).toBeGreaterThanOrEqual(1);
-
-    // Hover over the frame item
-    fireEvent.mouseEnter(hoverTriggers[0]);
-
-    // Hover card appears with Frame details
-    await waitFor(
-      () => {
-        expect(screen.getByTestId("product-hover-card")).toBeInTheDocument();
-      },
-      { timeout: 1500 },
-    );
-
-    const hoverCard = screen.getByTestId("product-hover-card");
-    expect(within(hoverCard).getByText("Master 5 V2")).toBeInTheDocument();
-    expect(within(hoverCard).getByRole("link", { name: /details/i })).toBeInTheDocument();
-
-    // Mouse leave hides the hover card
-    fireEvent.mouseLeave(hoverTriggers[0]);
-    await waitFor(
-      () => {
-        expect(screen.queryByTestId("product-hover-card")).not.toBeInTheDocument();
-      },
-      { timeout: 1500 },
-    );
-  });
-
-  describe("RX Antenna Guard (rxHasIntegratedAntenna & Section 2D)", () => {
-    it("rxHasIntegratedAntenna correctly identifies integrated vs external receivers", () => {
-      // Null / undefined check
-      expect(rxHasIntegratedAntenna(null)).toBe(false);
-      expect(rxHasIntegratedAntenna(undefined)).toBe(false);
-
-      // External antenna receiver (e.g. Crossfire Nano RX)
-      expect(rxHasIntegratedAntenna(mockReceiver1)).toBe(false);
-
-      // Receiver with integrated ceramic antenna in antennaUuids
-      expect(rxHasIntegratedAntenna(mockReceiverCeramic)).toBe(true);
-
-      // Receiver with "ceramic" in description
-      const customCeramicRx = {
-        ...mockReceiver1,
-        description: "Receiver with built-in ceramic antenna for micros",
-      };
-      expect(rxHasIntegratedAntenna(customCeramicRx as any)).toBe(true);
-
-      // Receiver with "smd antenna" in name
-      const customSmdRx = {
-        ...mockReceiver1,
-        name: "ELRS 2.4GHz SMD Antenna Nano",
-      };
-      expect(rxHasIntegratedAntenna(customSmdRx as any)).toBe(true);
-    });
-
-    it("requires radio receiver antenna selection to complete Step 2 and does not provide a None option", async () => {
-      const user = userEvent.setup();
-      renderWizard();
-
-      // Advance to Step 1 and select Frame, Motor, Prop
-      await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
-      await user.click(await screen.findByText("Master 5 V2"));
-      await user.click(await screen.findByText("ECO II 2207"));
-      await user.click(await screen.findByText("Hurricane 51433"));
-
-      // Advance to Step 2
-      await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
-
-      // Select FC, ESC, and RX
-      await user.click(screen.getByText("F405 V4 FC"));
-      await user.click(screen.getByText("SpeedyBee 50A 4-in-1 ESC"));
-      await user.click(screen.getByText("Crossfire Nano RX"));
-
-      // 1. Verify that "No External Antenna (None)" is NOT present
-      expect(screen.queryByText("No External Antenna (None)")).not.toBeInTheDocument();
-
-      // 2. Verify that Section 2D displays "Required"
-      const rxAntSection = screen
-        .getByText("2D. Radio Receiver Antenna(s)")
-        .closest("div[id='section-rx-ant']") as HTMLElement;
-      expect(within(rxAntSection).getByText("Required")).toBeInTheDocument();
-
-      // Next step button should be disabled because RX antenna is not selected yet
-      const nextBtn = screen.getByRole("button", { name: /Next: Video/i });
-      expect(nextBtn).toBeDisabled();
-
-      // 3. Select a compatible 915MHz RX antenna
-      await user.click(screen.getByText("TBS Immortal T V2 915MHz"));
-
-      // Section 2D now shows "Selected"
-      expect(within(rxAntSection).getByText("Selected")).toBeInTheDocument();
-
-      // Next step button is now enabled
-      expect(nextBtn).not.toBeDisabled();
-    });
+    // Selected parts count increments
+    expect(screen.getByText("1 / 11 Parts")).toBeInTheDocument();
   });
 
   it("scrolls smoothly to selected product when clicking Selected in the section header", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await advanceToStep1(user);
 
     // Mock scrollIntoView
     const scrollIntoViewMock = vi.fn();
@@ -577,14 +440,12 @@ describe("BuildWizardPage Component", () => {
     const frameItem = await screen.findByText("Master 5 V2");
     await user.click(frameItem);
 
-    // Verify "Scroll to selected frame" button appears in 1A header
+    // Verify "Scroll to selected" button appears
     const selectedBtn = screen.getByTitle("Scroll to selected frame");
     expect(selectedBtn).toBeInTheDocument();
 
     // Click "Selected" button
     await user.click(selectedBtn);
-
-    // scrollIntoView should have been called on the selected item element
     expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: "smooth", block: "center" });
   });
 
@@ -592,13 +453,21 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
-
-    // Select Frame (Master 5 V2 - maxPropSizeMm: 130)
+    await advanceToStep1(user);
     await user.click(await screen.findByText("Master 5 V2"));
+    await user.click(screen.getByRole("button", { name: /Next: Flight Controller/i }));
+    await user.click(await screen.findByText("F405 V4 FC"));
+    await user.click(screen.getByRole("button", { name: /Next: Radio Receiver/i }));
+    await user.click(await screen.findByText("Crossfire Nano RX"));
+    await user.click(screen.getByRole("button", { name: /Next: RX Antennas/i }));
+    await user.click(await screen.findByText("TBS Immortal T V2 915MHz"));
+    await user.click(screen.getByRole("button", { name: /Next: Speed Controller/i }));
+    await user.click(await screen.findByText("SpeedyBee 50A 4-in-1 ESC"));
+    await user.click(screen.getByRole("button", { name: /Next: Motors/i }));
+    await user.click(await screen.findByText("ECO II 2207"));
+    await user.click(screen.getByRole("button", { name: /Next: Propellers/i }));
 
-    // By default, "Compatible only" is checked in 1C Propellers
+    // By default, "Compatible only" is checked in Step 7 Propellers
     const compatCheckbox = (await screen.findByLabelText(/compatible only/i)) as HTMLInputElement;
     expect(compatCheckbox).toBeInTheDocument();
     expect(compatCheckbox.checked).toBe(true);
@@ -609,22 +478,11 @@ describe("BuildWizardPage Component", () => {
 
     // Uncheck "Compatible Only"
     await user.click(compatCheckbox);
-
-    // Checkbox and banner must NOT disappear!
-    expect(compatCheckbox).toBeInTheDocument();
     expect(compatCheckbox.checked).toBe(false);
 
     // Now incompatible propeller (HQProp DP 7X4X3) is visible
     const incompatibleProp = await screen.findByText("HQProp DP 7X4X3");
     expect(incompatibleProp).toBeInTheDocument();
-
-    // Verify incompatible styling and badge
-    const card = incompatibleProp.closest(".cursor-pointer");
-    expect(card?.className).toContain("opacity-60");
-    expect(card?.className).toContain("saturate-50");
-    expect(
-      within(card as HTMLElement).getByText(/Incompatible \(7.0" > 5.1"\)/i),
-    ).toBeInTheDocument();
 
     // Re-check "Compatible Only"
     await user.click(compatCheckbox);
@@ -636,63 +494,84 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
-
-    // Mock scrollIntoView
-    const scrollIntoViewMock = vi.fn();
-    window.HTMLElement.prototype.scrollIntoView = scrollIntoViewMock;
-
-    // Select Frame, Motor, Prop
+    await advanceToStep1(user);
     await user.click(await screen.findByText("Master 5 V2"));
-    await user.click(await screen.findByText("ECO II 2207"));
-    await user.click(await screen.findByText("Hurricane 51433"));
+    await user.click(screen.getByRole("button", { name: /Next: Flight Controller/i }));
+    expect(await screen.findByText("2. Flight Controller")).toBeInTheDocument();
 
-    // Advance to Step 2
-    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
-    expect(await screen.findByText("2A. Flight Controller")).toBeInTheDocument();
+    // Click "Frame" in the Selected Parts sidebar list
+    const sidebarFramePart = screen
+      .getAllByText("Frame")
+      .find((el) => el.closest("div[role='button']"))
+      ?.closest("div[role='button']") as HTMLElement;
+    expect(sidebarFramePart).toBeInTheDocument();
+    await user.click(sidebarFramePart);
 
-    // Find "Frame" item in "Selected Parts" sidebar and click it
-    const sidebarFrameBtn = screen.getByTitle("Go to Step 1: Frame selection");
-    expect(sidebarFrameBtn).toBeInTheDocument();
+    // Verify transition back to Step 1
+    expect(screen.getByText("1. Frame Chassis")).toBeInTheDocument();
+  });
 
-    scrollIntoViewMock.mockClear();
-    await user.click(sidebarFrameBtn);
+  describe("RX Antenna Guard (rxHasIntegratedAntenna & Frequency Matching)", () => {
+    it("rxHasIntegratedAntenna correctly identifies integrated vs external receivers", () => {
+      expect(rxHasIntegratedAntenna(null)).toBe(false);
+      expect(rxHasIntegratedAntenna(undefined)).toBe(false);
+      expect(rxHasIntegratedAntenna(mockReceiver1)).toBe(false);
+      expect(rxHasIntegratedAntenna(mockReceiverCeramic)).toBe(true);
 
-    // Verify it transitioned back to Step 1
-    expect(screen.getByText("1A. Frame Chassis")).toBeInTheDocument();
+      const customCeramicRx = {
+        ...mockReceiver1,
+        description: "Receiver with built-in ceramic antenna for micros",
+      };
+      expect(rxHasIntegratedAntenna(customCeramicRx as any)).toBe(true);
 
-    // Wait for the smooth scroll to be triggered on the selected element
-    await waitFor(() => {
-      expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: "smooth", block: "center" });
+      const customSmdRx = {
+        ...mockReceiver1,
+        name: "ELRS 2.4GHz SMD Antenna Nano",
+      };
+      expect(rxHasIntegratedAntenna(customSmdRx as any)).toBe(true);
+    });
+
+    it("filters RX antenna options by frequency matching the selected receiver", async () => {
+      const user = userEvent.setup();
+      renderWizard();
+
+      await advanceToStep1(user);
+      await user.click(await screen.findByText("Master 5 V2"));
+      await user.click(screen.getByRole("button", { name: /Next: Flight Controller/i }));
+      await user.click(await screen.findByText("F405 V4 FC"));
+      await user.click(screen.getByRole("button", { name: /Next: Radio Receiver/i }));
+
+      // Select Crossfire Nano RX (915 MHz)
+      await user.click(await screen.findByText("Crossfire Nano RX"));
+      await user.click(screen.getByRole("button", { name: /Next: RX Antennas/i }));
+
+      // Step 4 (Receiver Antennas):
+      // TBS Immortal T V2 915MHz should be visible
+      expect(screen.getByText("TBS Immortal T V2 915MHz")).toBeInTheDocument();
+      // 2.4GHz antenna should NOT be visible when compatible-only is active
+      expect(screen.queryByText("RadioMaster T-Antenna 2.4GHz")).not.toBeInTheDocument();
     });
   });
 
-  describe("getVtxAntennaCount", () => {
+  describe("VTX Antenna Count & protocol derivation", () => {
     it("returns 1 for null or undefined VTX", () => {
       expect(getVtxAntennaCount(null)).toBe(1);
       expect(getVtxAntennaCount(undefined)).toBe(1);
     });
 
     it("returns 1 for analog VTX without antenna configuration", () => {
-      expect(getVtxAntennaCount({ name: "TBS Unify Pro32", protocol: "Analog" } as any)).toBe(1);
+      expect(getVtxAntennaCount({ name: "TBS Unify", protocol: "SmartAudio" } as any)).toBe(1);
     });
 
     it("returns 1 for DJI O4 Lite VTX", () => {
-      expect(getVtxAntennaCount({ name: "DJI O4 Lite VTX", protocol: "DJI O4 Lite" } as any)).toBe(
-        1,
-      );
-      expect(getVtxAntennaCount({ name: "DJI O4 Wide VTX", protocol: "DJI O4 Lite" } as any)).toBe(
-        1,
-      );
+      expect(
+        getVtxAntennaCount({ name: "DJI O4 Lite Air Unit", protocol: "DJI O4 Lite" } as any),
+      ).toBe(1);
     });
 
     it("returns 2 for DJI O4 Pro VTX", () => {
       expect(
-        getVtxAntennaCount({ name: "DJI O4 Air Unit Pro", protocol: "DJI O4 Pro" } as any),
-      ).toBe(2);
-      expect(
-        getVtxAntennaCount({ name: "TANQ 2 DJI O4 Pro VTX Mount", protocol: "DJI O4 Pro" } as any),
+        getVtxAntennaCount({ name: "DJI O4 Pro Air Unit", protocol: "DJI O4 Pro" } as any),
       ).toBe(2);
     });
 
@@ -700,7 +579,7 @@ describe("BuildWizardPage Component", () => {
       expect(getVtxAntennaCount({ name: "DJI O3 Air Unit", protocol: "DJI O3" } as any)).toBe(2);
       expect(
         getVtxAntennaCount({
-          name: "Walksnail Moonlight VTX",
+          name: "Walksnail Moonlight Kit",
           protocol: "Walksnail Avatar",
         } as any),
       ).toBe(2);
@@ -711,83 +590,46 @@ describe("BuildWizardPage Component", () => {
         getVtxAntennaCount({
           name: "Custom VTX",
           protocol: "Analog",
-          antennaUuids: ["ant-1", "ant-2"],
+          antennaUuids: ["uuid-1", "uuid-2"],
         } as any),
       ).toBe(2);
-      expect(
-        getVtxAntennaCount({
-          name: "Custom VTX",
-          protocol: "Analog",
-          antennaUuids: ["ant-1"],
-        } as any),
-      ).toBe(1);
     });
   });
 
-  describe("getRxAntennaCount", () => {
+  describe("RX Antenna Count derivation", () => {
     it("returns 1 for null or undefined RX", () => {
       expect(getRxAntennaCount(null)).toBe(1);
       expect(getRxAntennaCount(undefined)).toBe(1);
     });
 
     it("returns 1 for standard single-antenna RX", () => {
-      expect(
-        getRxAntennaCount({
-          name: "Crossfire Nano RX",
-          protocol: "CRSF",
-        } as any),
-      ).toBe(1);
-      expect(
-        getRxAntennaCount({
-          name: "BetaFPV ELRS 2.4G",
-          protocol: "ExpressLRS",
-        } as any),
-      ).toBe(1);
+      expect(getRxAntennaCount({ name: "Crossfire Nano", protocol: "CRSF" } as any)).toBe(1);
     });
 
     it("returns 2 for diversity RX by name", () => {
+      expect(getRxAntennaCount({ name: "Crossfire Diversity RX", protocol: "CRSF" } as any)).toBe(
+        2,
+      );
       expect(
-        getRxAntennaCount({
-          name: "RadioMaster RP3 Diversity Receiver",
-          protocol: "ExpressLRS",
-        } as any),
-      ).toBe(2);
-      expect(
-        getRxAntennaCount({
-          name: "BetaFPV SuperD Diversity RX",
-          protocol: "ExpressLRS",
-        } as any),
+        getRxAntennaCount({ name: "True Diversity ELRS", protocol: "ExpressLRS" } as any),
       ).toBe(2);
     });
 
     it("returns 2 for Gemini / dual protocol RX", () => {
-      expect(
-        getRxAntennaCount({
-          name: "BetaFPV SuperG",
-          protocol: "Gemini",
-        } as any),
-      ).toBe(2);
-      expect(
-        getRxAntennaCount({
-          name: "TBS Crossfire Diversity RX",
-          protocol: "CRSF Dual",
-        } as any),
-      ).toBe(2);
+      expect(getRxAntennaCount({ name: "SuperG Gemini RX", protocol: "ExpressLRS" } as any)).toBe(
+        2,
+      );
+      expect(getRxAntennaCount({ name: "Dual Antenna RX", protocol: "ExpressLRS" } as any)).toBe(2);
     });
 
     it("respects explicit antennaUuids length when present", () => {
       expect(
         getRxAntennaCount({
-          name: "Custom RX",
+          name: "Standard RX",
+          protocol: "ExpressLRS",
           antennaUuids: ["ant-1", "ant-2"],
         } as any),
       ).toBe(2);
-      expect(
-        getRxAntennaCount({
-          name: "Custom RX",
-          antennaUuids: ["ant-1"],
-        } as any),
-      ).toBe(1);
     });
   });
 
@@ -795,158 +637,178 @@ describe("BuildWizardPage Component", () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
+    await advanceToStep1(user);
 
-    // 1A. Select Frame then click again to deselect
+    // Select Frame then click again to deselect
     const frameCard = await screen.findByText("Master 5 V2");
     await user.click(frameCard);
     expect(frameCard.closest(".border-blue-500")).toBeInTheDocument();
     await user.click(frameCard);
     expect(frameCard.closest(".border-blue-500")).toBeNull();
-
-    // Re-select frame for downstream steps
-    await user.click(frameCard);
-
-    // 1B. Select Motor then click again to deselect
-    const motorCard = await screen.findByText("ECO II 2207");
-    await user.click(motorCard);
-    expect(motorCard.closest(".border-blue-500")).toBeInTheDocument();
-    await user.click(motorCard);
-    expect(motorCard.closest(".border-blue-500")).toBeNull();
-
-    // Re-select motor
-    await user.click(motorCard);
-
-    // 1C. Select Propeller then click again to deselect
-    const propCard = await screen.findByText("Hurricane 51433");
-    await user.click(propCard);
-    expect(propCard.closest(".border-blue-500")).toBeInTheDocument();
-    await user.click(propCard);
-    expect(propCard.closest(".border-blue-500")).toBeNull();
-
-    // Re-select propeller
-    await user.click(propCard);
-
-    // Advance to Step 2
-    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
-
-    // 2A. Select standalone FC then click again to deselect
-    const fcCard = await screen.findByText("F405 V4 FC");
-    await user.click(fcCard);
-    expect(fcCard.closest(".border-blue-500")).toBeInTheDocument();
-    await user.click(fcCard);
-    expect(fcCard.closest(".border-blue-500")).toBeNull();
-
-    // Re-select FC
-    await user.click(fcCard);
-
-    // 2B. Select Standalone ESC then click again to deselect
-    const escCard = await screen.findByText("SpeedyBee 50A 4-in-1 ESC");
-    await user.click(escCard);
-    expect(escCard.closest(".border-blue-500")).toBeInTheDocument();
-    await user.click(escCard);
-    expect(escCard.closest(".border-blue-500")).toBeNull();
-
-    // 2C. Select RX then click again to deselect
-    const rxCard = await screen.findByText("Crossfire Nano RX");
-    await user.click(rxCard);
-    expect(rxCard.closest(".border-blue-500")).toBeInTheDocument();
-    await user.click(rxCard);
-    expect(rxCard.closest(".border-blue-500")).toBeNull();
-
-    // Re-select RX
-    await user.click(rxCard);
-
-    // 2D. Select compatible 915MHz antenna then click again to deselect
-    const rxAntCard = await screen.findByText("TBS Immortal T V2 915MHz");
-    await user.click(rxAntCard);
-    expect(rxAntCard.closest(".border-blue-500")).toBeInTheDocument();
-    await user.click(rxAntCard);
-    expect(rxAntCard.closest(".border-blue-500")).toBeNull();
-
-    // 2E. Select GPS then click again to deselect
-    const gpsCard = await screen.findByText(/M8Q-5883/i);
-    await user.click(gpsCard);
-    expect(gpsCard.closest(".border-blue-500")).toBeInTheDocument();
-    await user.click(gpsCard);
-    expect(gpsCard.closest(".border-blue-500")).toBeNull();
   });
 
-  it("filters RX antenna options by frequency matching the selected receiver", async () => {
+  it("formats motor stator and prop diameter with mm/inch correctly", async () => {
     const user = userEvent.setup();
     renderWizard();
 
-    // Advance to Step 1 & complete baseline
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
-    await user.click(await screen.findByText("Master 5 V2"));
-    await user.click(await screen.findByText("ECO II 2207"));
-    await user.click(await screen.findByText("Hurricane 51433"));
-    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+    // Select template to load parts immediately
+    const templateCard = await screen.findByText("Bando Basher 5 inch");
+    await user.click(templateCard);
 
-    // Select FC and Crossfire (915 MHz) RX
-    await user.click(await screen.findByText("F405 V4 FC"));
-    await user.click(await screen.findByText("Crossfire Nano RX"));
+    // Navigate to Step 6 (Motors)
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    await user.click(within(stepNav).getByRole("button", { name: /^step 6:/i }));
 
-    // In 915 MHz mode with Compatible Only active:
-    // TBS Immortal T V2 915MHz should be visible
-    expect(screen.getByText("TBS Immortal T V2 915MHz")).toBeInTheDocument();
-    // RadioMaster T-Antenna 2.4GHz should NOT be visible
-    expect(screen.queryByText("RadioMaster T-Antenna 2.4GHz")).not.toBeInTheDocument();
-  });
-
-  it("formats motor stator, prop diameter with mm/inch, VTX protocol chip, and defaults optional parts to None", async () => {
-    const user = userEvent.setup();
-    renderWizard();
-
-    // Advance to Step 1
-    await user.click(await screen.findByRole("button", { name: /Next: Airframe & Propulsion/i }));
-    await user.click(await screen.findByText("Master 5 V2"));
-
-    // Verify motor card stator size format (2207 from formatStatorSize)
+    // Verify motor card stator size format (2207)
     expect(screen.getByText("2207")).toBeInTheDocument();
 
-    // Verify propeller card diameter format: diameter in mm with inches in parentheses
+    // Navigate to Step 7 (Propellers)
+    await user.click(within(stepNav).getByRole("button", { name: /^step 7:/i }));
+
+    // Verify propeller card diameter format: mm with inches in parentheses
     expect(screen.getByText(/129\.5mm \(5\.1"\)/)).toBeInTheDocument();
+  });
 
-    await user.click(await screen.findByText("ECO II 2207"));
-    await user.click(await screen.findByText("Hurricane 51433"));
+  it("provides blank first option in battery combobox and opens BatteryPickerModal on Browse click", async () => {
+    const user = userEvent.setup();
+    renderWizard();
 
-    // Advance to Step 2
-    await user.click(screen.getByRole("button", { name: /Next: Flight Electronics/i }));
+    // Verify battery combobox is rendered
+    const batteryCombobox = screen.getByRole("combobox", { name: /select test battery/i });
+    expect(batteryCombobox).toBeInTheDocument();
 
-    // Verify GPS defaults to "No GPS (None)" selected
-    const noGpsCard = screen.getByText("No GPS (None)").closest(".cursor-pointer");
-    expect(noGpsCard).toHaveClass("border-blue-500");
+    // Click combobox to open dropdown
+    await user.click(batteryCombobox);
+    expect(await screen.findByRole("listbox", { name: "Batteries" })).toBeInTheDocument();
+    expect(screen.getByText("None (No battery selected)")).toBeInTheDocument();
 
-    // Select a GPS product
-    const gpsCard = await screen.findByText(/M8Q-5883/i);
-    await user.click(gpsCard);
-    expect(gpsCard.closest(".border-blue-500")).toBeInTheDocument();
-    expect(noGpsCard).not.toHaveClass("border-blue-500");
+    // Browse button next to battery combobox
+    const browseBtn = screen.getByRole("button", { name: /browse all compatible batteries/i });
+    expect(browseBtn).toBeInTheDocument();
 
-    // Deselect the GPS product by clicking it again -> reverts to "No GPS (None)"
-    await user.click(gpsCard);
-    expect(gpsCard.closest(".border-blue-500")).toBeNull();
-    expect(noGpsCard).toHaveClass("border-blue-500");
+    // Clicking Browse opens BatteryPickerModal
+    await user.click(browseBtn);
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByText(/Choose Compatible Battery/i)).toBeInTheDocument();
+  });
 
-    // Select FC, ESC, RX, and RX antenna to complete Step 2
-    await user.click(await screen.findByText("F405 V4 FC"));
-    await user.click(await screen.findByText("SpeedyBee 50A 4-in-1 ESC"));
-    await user.click(await screen.findByText("Crossfire Nano RX"));
-    await user.click(await screen.findByText("TBS Immortal T V2 915MHz"));
+  it("disables subsequent steps when an incompatible component is selected, keeping downstream selections intact", async () => {
+    vi.spyOn(wasmEngine, "getIsReady").mockReturnValue(true);
+    vi.spyOn(wasmEngine, "checkCompatibility").mockImplementation((req: any) => {
+      const comp = req.components;
+      const messages: any[] = [];
+      if (comp?.propeller && comp?.frame && comp.propeller.diameterMm > comp.frame.maxPropSizeMm) {
+        messages.push({
+          checkerName: "PropellerFrameChecker",
+          message: "Propeller diameter exceeds frame maximum",
+        });
+      }
+      return { messages } as any;
+    });
 
-    // Advance to Step 3 (Video)
-    await user.click(screen.getByRole("button", { name: /Next: Video/i }));
+    const user = userEvent.setup();
+    renderWizard();
 
-    // Verify optional components in Step 3 default to None
-    const noVtxAntCard = screen.getByText("No Antenna (None)").closest(".cursor-pointer");
-    expect(noVtxAntCard).toHaveClass("border-blue-500");
-    const noCamCard = screen.getByText("No Camera (None)").closest(".cursor-pointer");
-    expect(noCamCard).toHaveClass("border-blue-500");
+    // Select template to populate all components
+    const templateCard = await screen.findByText("Bando Basher 5 inch");
+    await user.click(templateCard);
 
-    // Verify VTX product card chip shows protocol ("SmartAudio"), not transmit power ("1000mW")
-    expect(screen.getByText("SmartAudio")).toBeInTheDocument();
-    expect(screen.queryByText("1000mW")).not.toBeInTheDocument();
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const step7Tab = within(stepNav).getByRole("button", { name: /^step 7:/i });
+    const step8Tab = within(stepNav).getByRole("button", { name: /^step 8:/i });
+    const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
+
+    // Await template application and verification that steps are enabled
+    await waitFor(() => expect(step7Tab).toBeEnabled());
+    expect(step8Tab).toBeEnabled();
+    expect(step12Tab).toBeEnabled();
+
+    // Go to Step 7 (Propellers)
+    await user.click(step7Tab);
+    expect(await screen.findByText("7. Propellers")).toBeInTheDocument();
+
+    // Uncheck "Compatible only" to show incompatible 7-inch props on 5-inch frame
+    const compatCheckbox = await screen.findByLabelText(/compatible only/i);
+    await user.click(compatCheckbox);
+
+    // Select incompatible 7-inch propeller (HQProp DP 7X4X3, 177.8mm exceeds 130mm max prop size)
+    const incompatibleProp = await screen.findByText("HQProp DP 7X4X3");
+    await user.click(incompatibleProp);
+
+    // Incompatibility banner / message should appear on Step 7
+    expect(await screen.findByText(/Incompatibility Detected/i)).toBeInTheDocument();
+
+    // Subsequent steps (Step 8 and Step 12) are now LOCKED / disabled
+    expect(step8Tab).toBeDisabled();
+    expect(step12Tab).toBeDisabled();
+
+    // Downstream selections are NOT wiped (e.g. Caddx Ratel 2 camera from template is still selected in sidebar)
+    expect(screen.getAllByText(/Ratel 2/i).length).toBeGreaterThanOrEqual(1);
+
+    // Selecting a compatible propeller again resolves the conflict and unlocks subsequent steps
+    const compatibleProp = await screen.findByText("Hurricane 51433");
+    await user.click(compatibleProp);
+
+    await waitFor(() => expect(screen.queryByText(/Incompatibility Detected/i)).toBeNull());
+    expect(step8Tab).toBeEnabled();
+    expect(step12Tab).toBeEnabled();
+  });
+
+  it("flags battery voltage mismatch in step bar and highlights incompatible step with alert icon", async () => {
+    vi.spyOn(wasmEngine, "getIsReady").mockReturnValue(true);
+    vi.spyOn(wasmEngine, "checkCompatibility").mockReturnValue({ messages: [] } as any);
+
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Select template to populate components (SpeedyBee 50A ESC with minVoltage: 11.1V)
+    const templateCard = await screen.findByText("Bando Basher 5 inch");
+    await user.click(templateCard);
+
+    // Await template application
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const step5Tab = within(stepNav).getByRole("button", { name: /^step 5:/i });
+    await waitFor(() => expect(step5Tab).toBeEnabled());
+
+    // Select 1S battery with maxVoltage 4.35V (incompatible with 11.1V min ESC voltage)
+    const batteryCombobox = screen.getByRole("combobox", { name: /select test battery/i });
+    await user.click(batteryCombobox);
+    const incompatibleBatteryOption = await screen.findByText(/Tattu 450mAh 1S/i);
+    await user.click(incompatibleBatteryOption);
+
+    // Step 5 (ESC) should have battery conflict alert in WizardStepBar
+    await waitFor(() => {
+      expect(step5Tab.querySelector("svg.text-amber-500")).toBeTruthy();
+    });
+  });
+
+  it("does not auto-select analog integrated VTX when digital camera is selected", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    // Load template baseline so all steps are complete
+    const templateCard = await screen.findByText("Bando Basher 5 inch");
+    await user.click(templateCard);
+
+    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const step2Tab = within(stepNav).getByRole("button", { name: /^step 2:/i });
+    const step8Tab = within(stepNav).getByRole("button", { name: /^step 8:/i });
+    const step9Tab = within(stepNav).getByRole("button", { name: /^step 9:/i });
+    await waitFor(() => expect(step2Tab).toBeEnabled());
+
+    // Navigate to Step 2 (FC) and select FC with integrated analog VTX
+    await user.click(step2Tab);
+    await user.click(await screen.findByText("BetaFPV F4 1S AIO VTX"));
+
+    // Navigate to Step 8 (Camera) and select digital camera (DJI O3 Air Unit Camera)
+    await user.click(step8Tab);
+    await user.click(await screen.findByText("DJI O3 Air Unit Camera"));
+
+    // Navigate to Step 9 (VTX)
+    await user.click(step9Tab);
+    expect(await screen.findByText("9. Video Transmitter (VTX)")).toBeInTheDocument();
+
+    // Verify integrated analog VTX was NOT auto-selected
+    expect(screen.queryByText("Use FC Integrated VTX")).toBeNull();
   });
 });

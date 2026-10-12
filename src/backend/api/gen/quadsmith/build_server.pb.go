@@ -433,12 +433,12 @@ func ScoreSimilarity(
 				PointsAwarded: 9.0,
 				MaxPoints:     15.0,
 			})
-		} else if targetCam.WidthMm > 0 && candCam.WidthMm == targetCam.WidthMm {
+		} else if targetCam.CameraMountInterface != "" && candCam.CameraMountInterface == targetCam.CameraMountInterface {
 			totalScore += 5.0
 			details = append(details, &ComponentMatchDetail{
 				Component:     "camera",
 				ExactMatch:    false,
-				Description:   fmt.Sprintf("Same %dmm Camera Size", targetCam.WidthMm),
+				Description:   fmt.Sprintf("Same %s Camera Mount", targetCam.CameraMountInterface),
 				PointsAwarded: 5.0,
 				MaxPoints:     15.0,
 			})

@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS cameras (
   weight_g DECIMAL NOT NULL,
   protocol TEXT NOT NULL,
   sensor_size TEXT NOT NULL,
-  width_mm INTEGER NOT NULL,
+  camera_mount_interface TEXT NOT NULL,
   lens_size_mm DECIMAL NOT NULL,
   description TEXT NOT NULL,
   reference_links JSONB,
@@ -282,7 +282,7 @@ CREATE TABLE IF NOT EXISTS frames (
   primary_display_image TEXT,
   media JSONB,
   motor_count INTEGER DEFAULT 4 NOT NULL,
-  camera_mount_width_mm DECIMAL NOT NULL,
+  camera_mount_interfaces TEXT[],
   motor_mount_patterns TEXT[],
   board_mount_patterns TEXT[]
 );

@@ -1,0 +1,451 @@
+import { useMemo } from "react";
+import {
+  ArrowLeft,
+  Save,
+  AlertCircle,
+  Loader2,
+  Gauge,
+  ShieldCheck,
+  Lock,
+  Globe,
+} from "lucide-react";
+import { useForge } from "../ForgeContext";
+import { CollectionIcon } from "../../CollectionIcon";
+import { getCollectionColor } from "../../../lib/collectionColors";
+import { getTwrColor, getHoverThrottleColor } from "../../../lib/format";
+
+export function ReviewStep() {
+  const {
+    selectedFrame,
+    selectedFc,
+    selectedRx,
+    useIntegratedRx,
+    integratedRx,
+    selectedRxAnt,
+    isRxAntennaIntegrated,
+    rxAntCount,
+    selectedEsc,
+    useIntegratedEsc,
+    integratedEsc,
+    selectedMotor,
+    motorCount,
+    selectedProp,
+    selectedCam,
+    selectedVtx,
+    useIntegratedVtx,
+    integratedVtx,
+    selectedVtxAnt,
+    vtxAntCount,
+    selectedGps,
+    activeBattery,
+    noneSelections,
+    dryWeightG,
+    allUpWeightG,
+    evaluatedMetrics,
+    buildName,
+    setBuildName,
+    buildDesc,
+    setBuildDesc,
+    isPrivate,
+    setIsPrivate,
+    isSaving,
+    saveError,
+    handleSaveBuild,
+    handlePrevStep,
+  } = useForge();
+
+  const activeRx = useIntegratedRx ? integratedRx : selectedRx;
+  const activeEsc = useIntegratedEsc ? integratedEsc : selectedEsc;
+  const activeVtx = useIntegratedVtx ? integratedVtx : selectedVtx;
+
+  const bomItems = useMemo(() => {
+    return [
+      {
+        id: "frame",
+        collectionId: "frames",
+        label: "Airframe",
+        name: selectedFrame?.name || "None",
+        manufacturer: selectedFrame?.manufacturer,
+        qty: 1,
+        weightG: selectedFrame?.weightG || 0,
+        omitted: false,
+      },
+      {
+        id: "fc",
+        collectionId: "flight_controllers",
+        label: "Flight Controller",
+        name: selectedFc?.name || "None",
+        manufacturer: selectedFc?.manufacturer,
+        qty: 1,
+        weightG: selectedFc?.weightG || 0,
+        omitted: false,
+      },
+      {
+        id: "rx",
+        collectionId: "receivers",
+        label: "Radio Receiver",
+        name: isIntegrated(useIntegratedRx)
+          ? `${integratedRx?.name} (AIO Integrated)`
+          : activeRx?.name || "None",
+        manufacturer: activeRx?.manufacturer,
+        qty: 1,
+        weightG: useIntegratedRx ? 0 : activeRx?.weightG || 0,
+        omitted: false,
+      },
+      {
+        id: "rx_antenna",
+        collectionId: "antennas",
+        label: "RX Antenna",
+        name: isRxAntennaIntegrated
+          ? "Integrated Ceramic Antenna"
+          : selectedRxAnt
+            ? `${selectedRxAnt.name}`
+            : "None",
+        manufacturer: isRxAntennaIntegrated ? undefined : selectedRxAnt?.manufacturer,
+        qty: isRxAntennaIntegrated ? 0 : rxAntCount,
+        weightG: isRxAntennaIntegrated ? 0 : (selectedRxAnt?.weightG || 0) * rxAntCount,
+        omitted: isRxAntennaIntegrated,
+      },
+      {
+        id: "esc",
+        collectionId: "electronic_speed_controllers",
+        label: "Speed Controller",
+        name: useIntegratedEsc
+          ? `${integratedEsc?.name} (AIO Integrated)`
+          : activeEsc?.name || "None",
+        manufacturer: activeEsc?.manufacturer,
+        qty: 1,
+        weightG: useIntegratedEsc ? 0 : activeEsc?.weightG || 0,
+        omitted: false,
+      },
+      {
+        id: "motor",
+        collectionId: "motors",
+        label: "Motors",
+        name: selectedMotor?.name || "None",
+        manufacturer: selectedMotor?.manufacturer,
+        qty: motorCount,
+        weightG: (selectedMotor?.weightG || 0) * motorCount,
+        omitted: false,
+      },
+      {
+        id: "propeller",
+        collectionId: "propellers",
+        label: "Propellers",
+        name: selectedProp?.name || "None",
+        manufacturer: selectedProp?.manufacturer,
+        qty: motorCount,
+        weightG: (selectedProp?.weightG || 0) * motorCount,
+        omitted: false,
+      },
+      {
+        id: "camera",
+        collectionId: "cameras",
+        label: "FPV Camera",
+        name: noneSelections.camera ? "None (Omitted)" : selectedCam?.name || "None",
+        manufacturer: selectedCam?.manufacturer,
+        qty: noneSelections.camera ? 0 : 1,
+        weightG: noneSelections.camera ? 0 : selectedCam?.weightG || 0,
+        omitted: noneSelections.camera,
+      },
+      {
+        id: "vtx",
+        collectionId: "video_transmitters",
+        label: "Video Transmitter",
+        name: noneSelections.vtx
+          ? "None (Omitted)"
+          : useIntegratedVtx
+            ? `${integratedVtx?.name} (AIO Integrated)`
+            : activeVtx?.name || "None",
+        manufacturer: activeVtx?.manufacturer,
+        qty: noneSelections.vtx ? 0 : 1,
+        weightG: noneSelections.vtx || useIntegratedVtx ? 0 : activeVtx?.weightG || 0,
+        omitted: noneSelections.vtx,
+      },
+      {
+        id: "vtx_antenna",
+        collectionId: "antennas",
+        label: "VTX Antenna",
+        name:
+          noneSelections.vtx || noneSelections.vtxAntenna
+            ? "None (Omitted)"
+            : selectedVtxAnt
+              ? `${selectedVtxAnt.name}`
+              : "None",
+        manufacturer: selectedVtxAnt?.manufacturer,
+        qty: noneSelections.vtx || noneSelections.vtxAntenna ? 0 : vtxAntCount,
+        weightG:
+          noneSelections.vtx || noneSelections.vtxAntenna
+            ? 0
+            : (selectedVtxAnt?.weightG || 0) * vtxAntCount,
+        omitted: noneSelections.vtx || noneSelections.vtxAntenna,
+      },
+      {
+        id: "gps",
+        collectionId: "gps_receivers",
+        label: "GPS Module",
+        name: noneSelections.gps ? "None (Omitted)" : selectedGps?.name || "None",
+        manufacturer: selectedGps?.manufacturer,
+        qty: noneSelections.gps ? 0 : 1,
+        weightG: noneSelections.gps ? 0 : selectedGps?.weightG || 0,
+        omitted: noneSelections.gps,
+      },
+      {
+        id: "battery",
+        collectionId: "batteries",
+        label: "Test Battery",
+        name: activeBattery ? activeBattery.name : "None (No battery selected)",
+        manufacturer: activeBattery?.manufacturer,
+        qty: activeBattery ? 1 : 0,
+        weightG: activeBattery?.weightG || 0,
+        omitted: !activeBattery,
+      },
+    ];
+  }, [
+    selectedFrame,
+    selectedFc,
+    activeRx,
+    useIntegratedRx,
+    integratedRx,
+    selectedRxAnt,
+    isRxAntennaIntegrated,
+    rxAntCount,
+    activeEsc,
+    useIntegratedEsc,
+    integratedEsc,
+    selectedMotor,
+    motorCount,
+    selectedProp,
+    selectedCam,
+    activeVtx,
+    useIntegratedVtx,
+    integratedVtx,
+    selectedVtxAnt,
+    vtxAntCount,
+    selectedGps,
+    activeBattery,
+    noneSelections,
+  ]);
+
+  function isIntegrated(val: boolean) {
+    return val;
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Save Error Banner */}
+      {saveError && (
+        <div className="p-3.5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-800 dark:text-red-300 flex items-start gap-3 text-xs">
+          <AlertCircle size={16} className="text-red-500 mt-0.5 shrink-0" />
+          <div>
+            <span className="font-bold">Error Saving Build</span>
+            <p className="opacity-90 mt-0.5">{saveError}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Bill of Materials Card */}
+      <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={18} className="text-emerald-500" />
+            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+              Bill of Materials (BOM)
+            </h3>
+          </div>
+          <div className="text-xs font-mono font-bold text-zinc-600 dark:text-zinc-400">
+            Dry Weight:{" "}
+            <span className="text-blue-600 dark:text-blue-400">{dryWeightG.toFixed(1)}g</span>
+          </div>
+        </div>
+
+        <div className="divide-y divide-zinc-100 dark:divide-zinc-800 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
+          {bomItems.map((item) => (
+            <div
+              key={item.id}
+              className={`p-2.5 flex items-center justify-between gap-2 transition-colors ${
+                item.omitted
+                  ? "opacity-60 bg-zinc-50 dark:bg-zinc-950/40"
+                  : "bg-white dark:bg-zinc-900"
+              }`}
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <CollectionIcon
+                  collectionId={item.collectionId}
+                  size={14}
+                  color={getCollectionColor(item.collectionId)}
+                />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                      {item.name}
+                    </span>
+                    {item.qty > 1 && (
+                      <span className="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                        x{item.qty}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                    {item.label} {item.manufacturer ? `• by ${item.manufacturer}` : ""}
+                  </span>
+                </div>
+              </div>
+
+              <div className="text-right shrink-0">
+                <span className="font-mono text-zinc-700 dark:text-zinc-300 font-semibold text-xs">
+                  {item.weightG > 0 ? `${item.weightG.toFixed(1)}g` : "--"}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Physics / Telemetry Summary */}
+      <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+        <div className="flex items-center gap-2">
+          <Gauge size={16} className="text-blue-500" />
+          <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            Calculated Build Metrics
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
+            <span className="text-[11px] text-zinc-400">Thrust-to-Weight</span>
+            <div
+              className={`text-lg font-mono font-black mt-0.5 ${
+                evaluatedMetrics
+                  ? getTwrColor(evaluatedMetrics.thrustToWeightRatio).text
+                  : "text-zinc-400"
+              }`}
+            >
+              {evaluatedMetrics ? `${evaluatedMetrics.thrustToWeightRatio.toFixed(2)} : 1` : "--"}
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
+            <span className="text-[11px] text-zinc-400">All-Up Weight</span>
+            <div className="text-lg font-mono font-black text-zinc-900 dark:text-zinc-100 mt-0.5">
+              {allUpWeightG.toFixed(1)}g
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
+            <span className="text-[11px] text-zinc-400">Hover Throttle</span>
+            <div
+              className={`text-lg font-mono font-black mt-0.5 ${
+                evaluatedMetrics
+                  ? getHoverThrottleColor(evaluatedMetrics.hoverThrottlePercent).text
+                  : "text-zinc-400"
+              }`}
+            >
+              {evaluatedMetrics ? `${evaluatedMetrics.hoverThrottlePercent.toFixed(1)}%` : "--"}
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
+            <span className="text-[11px] text-zinc-400">Est. Flight Time</span>
+            <div className="text-lg font-mono font-black text-zinc-900 dark:text-zinc-100 mt-0.5">
+              {evaluatedMetrics ? `${evaluatedMetrics.flightTimeMinutes.toFixed(1)} min` : "--"}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Build Details Form */}
+      <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+        <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+          Build Metadata &amp; Visibility
+        </h3>
+
+        <div className="space-y-3 text-xs">
+          <div>
+            <label
+              htmlFor="build-name"
+              className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1"
+            >
+              Build Name
+            </label>
+            <input
+              id="build-name"
+              type="text"
+              value={buildName}
+              onChange={(e) => setBuildName(e.target.value)}
+              placeholder="e.g., Apex 5 Light Freestyle"
+              className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium"
+            />
+          </div>
+
+          <div>
+            <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+              Description
+            </label>
+            <textarea
+              rows={2}
+              value={buildDesc}
+              onChange={(e) => setBuildDesc(e.target.value)}
+              placeholder="Brief description of build purpose, PID tune, or custom 3D prints..."
+              className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+          </div>
+
+          <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center gap-2.5">
+              {isPrivate ? (
+                <Lock size={15} className="text-zinc-500" />
+              ) : (
+                <Globe size={15} className="text-blue-500" />
+              )}
+              <div>
+                <span className="font-bold text-zinc-800 dark:text-zinc-200">
+                  {isPrivate ? "Private Build" : "Public Build"}
+                </span>
+                <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                  {isPrivate
+                    ? "Only you can view and edit this build configuration."
+                    : "Visible in the community showcase and public search."}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setIsPrivate(!isPrivate)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                isPrivate
+                  ? "bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+                  : "bg-blue-600 text-white"
+              }`}
+            >
+              {isPrivate ? "Make Public" : "Make Private"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Footer */}
+      <div className="flex items-center justify-between">
+        <button
+          type="button"
+          onClick={handlePrevStep}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        >
+          <ArrowLeft size={14} />
+          <span>Back: GPS</span>
+        </button>
+
+        <button
+          type="button"
+          disabled={isSaving || !selectedFrame || !selectedFc || !selectedMotor || !selectedProp}
+          onClick={handleSaveBuild}
+          className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-all shadow-md cursor-pointer"
+        >
+          {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+          <span>{isSaving ? "Saving Build..." : "Save & Create Build"}</span>
+        </button>
+      </div>
+    </div>
+  );
+}

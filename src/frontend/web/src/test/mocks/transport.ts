@@ -40,7 +40,7 @@ import {
   mockUser,
   mockProfile,
   mockPropellers,
-  mockCamera1,
+  mockCameras,
   mockVTX1,
   mockReceivers,
   mockAntennas,
@@ -71,6 +71,7 @@ export interface MockTransportOptions {
   collections?: typeof mockCollections;
   similarBuilds?: typeof mockSimilarBuilds;
   entitySocialSummary?: typeof mockEntitySocialSummary1;
+  cameras?: typeof mockCameras;
   defaultBatteryId?: string;
   minVoltage?: number;
   maxVoltage?: number;
@@ -441,12 +442,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       },
     });
 
+    const camerasList = options.cameras || mockCameras;
     service(CameraService, {
-      listCameras: () => ({ cameras: [mockCamera1], nextPageToken: "" }),
+      listCameras: () => ({ cameras: camerasList, nextPageToken: "" }),
       getCamera: (req) => {
-        if (req.id === mockCamera1.id || req.id === mockCamera1.uuid) {
-          return mockCamera1;
-        }
+        const found = camerasList.find((c) => c.id === req.id || c.uuid === req.id);
+        if (found) return found;
         throw new ConnectError("Camera not found", Code.NotFound);
       },
     });

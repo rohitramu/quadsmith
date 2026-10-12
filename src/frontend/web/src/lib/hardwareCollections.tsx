@@ -517,7 +517,7 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     getQuery: getCamera,
     getDataList: (res, includeInternal = false) =>
       (res?.cameras ?? []).filter((item: any) => includeInternal || !item.isInternalOnly),
-    defaultColumnIds: ["manufacturer", "name", "protocol", "sensor_size", "width_mm"],
+    defaultColumnIds: ["manufacturer", "name", "protocol", "sensor_size", "camera_mount_interface"],
     fields: [
       {
         name: "is_internal_only",
@@ -567,10 +567,13 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ['sensor_size.contains("1/1.8")', 'sensor_size.contains("1/3")'],
       },
       {
-        name: "width_mm",
-        type: "number",
-        description: "Mounting width in mm (14 for nano, 19 for micro, 22 for standard)",
-        examples: ["width_mm == 19", "width_mm == 14"],
+        name: "camera_mount_interface",
+        type: "string",
+        description: "Mounting interface (14mm (Nano), 19mm (Micro), 20mm (DJI O3))",
+        examples: [
+          'camera_mount_interface == "19mm (Micro)"',
+          'camera_mount_interface == "14mm (Nano)"',
+        ],
       },
       {
         name: "lens_size_mm",
@@ -594,8 +597,8 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
     presets: [
       { label: "Digital Protocol", query: 'protocol != "Analog"' },
       { label: "Analog Protocol", query: 'protocol == "Analog"' },
-      { label: "19mm Width (Micro)", query: "width_mm == 19" },
-      { label: "14mm Width (Nano)", query: "width_mm == 14" },
+      { label: "19mm (Micro)", query: 'camera_mount_interface == "19mm (Micro)"' },
+      { label: "14mm (Nano)", query: 'camera_mount_interface == "14mm (Nano)"' },
       { label: '1/1.8" CMOS Sensor', query: 'sensor_size.contains("1/1.8")' },
       { label: "Under 10g", query: "weight_g < 10.0" },
     ],
@@ -611,10 +614,10 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Sensor Size",
         renderCell: (c) => c.sensorSize || "-",
       },
-      width_mm: {
-        id: "width_mm",
-        title: "Width (mm)",
-        renderCell: (c) => (c.widthMm ? `${c.widthMm}` : "-"),
+      camera_mount_interface: {
+        id: "camera_mount_interface",
+        title: "Mount Interface",
+        renderCell: (c) => c.cameraMountInterface || "-",
       },
       lens_size_mm: {
         id: "lens_size_mm",
@@ -1073,10 +1076,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         examples: ['geometry == "Deadcat"', 'geometry == "True-X"'],
       },
       {
-        name: "camera_mount_width_mm",
-        type: "number",
-        description: "Maximum camera mount width supported in mm",
-        examples: ["camera_mount_width_mm >= 19.0", "camera_mount_width_mm == 14.0"],
+        name: "camera_mount_interfaces",
+        type: "string",
+        description:
+          "Camera mount interfaces supported (e.g. 14mm (Nano), 19mm (Micro), 20mm (DJI O3))",
+        examples: ['camera_mount_interfaces.exists(i, i == "19mm (Micro)")'],
       },
       {
         name: "motor_mount_patterns",
@@ -1127,10 +1131,11 @@ export const HARDWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Geometry",
         renderCell: (f) => f.geometry || "-",
       },
-      camera_mount_width_mm: {
-        id: "camera_mount_width_mm",
-        title: "Camera Mount (mm)",
-        renderCell: (f) => (f.cameraMountWidthMm ? `${f.cameraMountWidthMm}` : "-"),
+      camera_mount_interfaces: {
+        id: "camera_mount_interfaces",
+        title: "Camera Mount",
+        renderCell: (f) =>
+          f.cameraMountInterfaces?.length ? f.cameraMountInterfaces.join(", ") : "-",
       },
       motor_mount_patterns: {
         id: "motor_mount_patterns",

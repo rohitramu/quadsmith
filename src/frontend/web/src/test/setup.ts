@@ -6,6 +6,7 @@ afterEach(() => {
   cleanup();
   localStorage.clear();
   document.documentElement.classList.remove("dark");
+  vi.restoreAllMocks();
 });
 
 // Mock window.matchMedia for theme detection and responsive queries

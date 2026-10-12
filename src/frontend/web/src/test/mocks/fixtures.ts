@@ -105,6 +105,7 @@ export const mockFrame1: Frame = create(FrameSchema, {
   maxPropSizeMm: 130,
   geometry: "True X",
   boardMountPatterns: ["30.5x30.5mm", "20x20mm"],
+  cameraMountInterfaces: ["19mm (Micro)", "20mm"],
   description:
     "Freestyle 5-inch frame featuring an innovative anti-vibration stack and CNC camera mount.",
   referenceLinks: [
@@ -144,7 +145,19 @@ export const mockFC2: FlightController = create(FlightControllerSchema, {
   referenceLinks: [],
 });
 
-export const mockFlightControllers: FlightController[] = [mockFC1, mockFC2];
+export const mockFcAioVtx: FlightController = create(FlightControllerSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000022",
+  id: "whoop-aio-vtx-fc",
+  manufacturer: "BetaFPV",
+  name: "BetaFPV F4 1S AIO VTX",
+  processor: "STM32F411",
+  weightG: 4.5,
+  isInternalOnly: false,
+  description: "Whoop AIO FC with built-in 400mW analog VTX and ELRS receiver.",
+  referenceLinks: [],
+});
+
+export const mockFlightControllers: FlightController[] = [mockFC1, mockFC2, mockFcAioVtx];
 
 import { BatterySchema, type Battery } from "../../gen/quadsmith/battery_pb";
 import {
@@ -215,6 +228,8 @@ export const mockESC1: ElectronicSpeedController = create(ElectronicSpeedControl
   motorCurrentMaxA: 50,
   motorCurrentBurstA: 60,
   firmware: "BLHeli_S",
+  minVoltage: 11.1,
+  maxVoltage: 25.2,
   description: "Durable 50A 4-in-1 BLHeli_S electronic speed controller.",
 });
 
@@ -282,9 +297,24 @@ export const mockCamera1: Camera = create(CameraSchema, {
   name: "Ratel 2",
   weightG: 5.9,
   protocol: "Analog",
+  cameraMountInterface: "19mm (Micro)",
   sensorSize: "1/1.8 Inch Starlight",
   description: "Great low light micro FPV analog camera.",
 });
+
+export const mockCameraDigital: Camera = create(CameraSchema, {
+  uuid: "018f0000-0000-7000-0000-000000000065",
+  id: "dji-o3-air-unit-camera",
+  manufacturer: "DJI",
+  name: "DJI O3 Air Unit Camera",
+  weightG: 8.3,
+  protocol: "DJI O3",
+  cameraMountInterface: "20mm",
+  sensorSize: "1/1.7 Inch CMOS",
+  description: "Digital HD camera for DJI O3 Air Unit.",
+});
+
+export const mockCameras: Camera[] = [mockCamera1, mockCameraDigital];
 
 export const mockVTX1: VideoTransmitter = create(VideoTransmitterSchema, {
   uuid: "018f0000-0000-7000-0000-000000000070",
@@ -408,7 +438,7 @@ export const mockBuild1: Build = create(BuildSchema, {
   cameraUuids: [mockCamera1.uuid],
   videoTransmitterUuid: mockVTX1.uuid,
   receiverUuids: [mockReceiver1.uuid],
-  antennaUuids: [mockAntenna1.uuid],
+  antennaUuids: [mockAntenna1.uuid, mockRxAntenna915.uuid],
   gpsReceiverUuid: mockGps1.uuid,
   referenceLinks: [
     {

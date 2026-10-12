@@ -96,6 +96,12 @@ export function BatteryCombobox({
   }, []);
 
   const handleSelect = (battery: any) => {
+    if (!battery) {
+      onSelectBattery("", undefined);
+      setSearchQuery("");
+      setIsOpen(false);
+      return;
+    }
     const id = battery.id || battery.uuid;
     if (selectedBatteryId === id) {
       onSelectBattery("", undefined);
@@ -250,6 +256,26 @@ export function BatteryCombobox({
 
           {/* List items */}
           <ul className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/40 text-xs">
+            {/* Blank / No Battery option */}
+            <li
+              role="option"
+              aria-selected={!selectedBatteryId}
+              onClick={() => handleSelect(null)}
+              className={`p-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer flex items-center justify-between transition-colors ${
+                !selectedBatteryId
+                  ? "bg-blue-50/80 dark:bg-blue-950/30 border-l-2 border-blue-500 font-medium text-zinc-900 dark:text-zinc-100"
+                  : "text-zinc-500 dark:text-zinc-400 italic"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full border border-dashed border-zinc-400 shrink-0" />
+                <span>None (No battery selected)</span>
+              </div>
+              {!selectedBatteryId && (
+                <Check size={13} className="text-blue-600 dark:text-blue-400 shrink-0" />
+              )}
+            </li>
+
             {displayItems.length === 0 ? (
               <li className="p-3 text-center text-xs text-zinc-400 dark:text-zinc-500">
                 {isSearching ? "Searching batteries..." : "No matching batteries found"}

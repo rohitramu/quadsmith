@@ -198,11 +198,18 @@ export function getCollectionIconComponent(collectionKey?: string | null): IconC
 
 export interface CollectionIconProps {
   collection?: string | null;
+  collectionId?: string | null;
   size?: number;
   className?: string;
+  color?: any;
 }
 
-export function CollectionIcon({ collection, size = 16, className = "" }: CollectionIconProps) {
-  const Component = getCollectionIconComponent(collection);
+export function CollectionIcon({
+  collection,
+  collectionId,
+  size = 16,
+  className = "",
+}: CollectionIconProps) {
+  const Component = getCollectionIconComponent(collection || collectionId);
   return <Component size={size} className={className} aria-hidden="true" />;
 }

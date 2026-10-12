@@ -323,7 +323,9 @@ frames: {
   wheelbase_mm: 93.9
   max_prop_size_mm: 50.8
   geometry: "Whoop"
-  camera_mount_width_mm: 20
+  camera_mount_interfaces: "14mm (Nano)"
+  camera_mount_interfaces: "19mm (Micro)"
+  camera_mount_interfaces: "20mm (DJI O3)"
   motor_mount_patterns: "9x9mm"
   board_mount_patterns: "25.5x25.5mm"
   board_mount_patterns: "20x20mm"
@@ -1712,7 +1714,8 @@ frames: {
   wheelbase_mm: 288
   max_prop_size_mm: 177.8
   geometry: "Deadcat"
-  camera_mount_width_mm: 20
+  camera_mount_interfaces: "19mm (Micro)"
+  camera_mount_interfaces: "20mm (DJI O3)"
   motor_mount_patterns: "19x19mm"
   board_mount_patterns: "30.5x30.5mm"
   board_mount_patterns: "20x20mm"
@@ -2672,7 +2675,7 @@ frames: {
   wheelbase_mm: 160
   max_prop_size_mm: 101.6
   geometry: "Squashed-X"
-  camera_mount_width_mm: 14
+  camera_mount_interfaces: "14mm (Nano)"
   motor_mount_patterns: "9x9mm"
   board_mount_patterns: "25.5x25.5mm"
   board_mount_patterns: "20x20mm"
@@ -2732,7 +2735,8 @@ frames: {
   wheelbase_mm: 226
   max_prop_size_mm: 132.08
   geometry: "True X"
-  camera_mount_width_mm: 19
+  camera_mount_interfaces: "19mm (Micro)"
+  camera_mount_interfaces: "20mm (DJI O3)"
   motor_mount_patterns: "16x16mm"
   motor_mount_patterns: "19x19mm"
   board_mount_patterns: "30.5x30.5mm"
@@ -2761,7 +2765,8 @@ frames: {
   wheelbase_mm: 227
   max_prop_size_mm: 129.54
   geometry: "Deadcat"
-  camera_mount_width_mm: 20
+  camera_mount_interfaces: "19mm (Micro)"
+  camera_mount_interfaces: "20mm (DJI O3)"
   motor_mount_patterns: "16x16mm"
   motor_mount_patterns: "19x19mm"
   board_mount_patterns: "30.5x30.5mm"
@@ -2786,7 +2791,8 @@ frames: {
   wheelbase_mm: 225
   max_prop_size_mm: 129.54
   geometry: "Squashed X"
-  camera_mount_width_mm: 20
+  camera_mount_interfaces: "19mm (Micro)"
+  camera_mount_interfaces: "20mm (DJI O3)"
   motor_mount_patterns: "16x16mm"
   motor_mount_patterns: "19x19mm"
   board_mount_patterns: "30.5x30.5mm"
@@ -2811,7 +2817,8 @@ frames: {
   wheelbase_mm: 225
   max_prop_size_mm: 129.54
   geometry: "Squashed X"
-  camera_mount_width_mm: 20
+  camera_mount_interfaces: "19mm (Micro)"
+  camera_mount_interfaces: "20mm (DJI O3)"
   motor_mount_patterns: "16x16mm"
   motor_mount_patterns: "19x19mm"
   board_mount_patterns: "30.5x30.5mm"
@@ -2836,7 +2843,8 @@ frames: {
   wheelbase_mm: 168
   max_prop_size_mm: 101.6
   geometry: "Deadcat"
-  camera_mount_width_mm: 19
+  camera_mount_interfaces: "19mm (Micro)"
+  camera_mount_interfaces: "20mm (DJI O3)"
   motor_mount_patterns: "9x9mm"
   motor_mount_patterns: "12x12mm"
   board_mount_patterns: "20x20mm"
