@@ -163,6 +163,21 @@ corroboration checks.
   for UX, performing the UUID translation internally in the backend SQL queries
   (falling back to UUID matching if the `id` isn't matched).
 
+## Protobuf Structure & Organization
+
+- **Top-Down Structural Invariant**: All Protobuf files (`.proto`) must be
+  organized strictly "top-down". Any definition (message, enum, service, etc.)
+  that is referenced or used by other definitions must appear below all the
+  definitions that use it.
+  - **Services First**: `service` definitions must appear at the top of the
+    file, preceding the request and response messages they call.
+  - **Callers / Parents Precede Callees / Children**: A message that embeds or
+    references other messages must be placed above the messages it references.
+  - **Shared Dependencies Below All Usages**: If a message or enum is referenced
+    by multiple messages, it must appear below all messages that reference it.
+  - **Enums & Leaf Types**: Enums and shared leaf records must appear below all
+    messages that reference them.
+
 ## Path Referencing
 
 - Whenever providing example commands, file paths, or directory references in
