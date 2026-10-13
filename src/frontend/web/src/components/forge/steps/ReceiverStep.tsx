@@ -5,7 +5,7 @@ import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Receiver } from "../../../gen/quadsmith/receiver_pb";
+import type { Receiver } from "../../../gen/quadsmith/api/receiver_pb";
 
 export function ReceiverStep() {
   const {

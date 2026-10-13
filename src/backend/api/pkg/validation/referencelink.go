@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 // ErrUnspecifiedReferenceLinkType is returned when a reference link explicitly contains REFERENCE_LINK_TYPE_UNSPECIFIED.

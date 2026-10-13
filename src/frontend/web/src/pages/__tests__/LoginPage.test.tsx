@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { screen, waitFor, fireEvent, act } from "@testing-library/react";
 import { renderApp, renderWithProviders } from "../../test/test-utils";
 import { AppRoutes } from "../../App";
-import { LoginChallengeStatus } from "../../gen/quadsmith/auth_pb";
+import { LoginChallengeStatus } from "../../gen/quadsmith/api/auth_pb";
 
 function enterOtp(inputs: HTMLElement[], code: string) {
   code.split("").forEach((char, i) => {

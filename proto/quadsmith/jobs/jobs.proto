@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package quadsmith.jobs;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith/jobs;jobs";
+
+enum JobExecutionStatus {
+  JOB_EXECUTION_STATUS_UNSPECIFIED = 0;
+  JOB_EXECUTION_STATUS_RUNNING = 1;
+  JOB_EXECUTION_STATUS_SUCCESS = 2;
+  JOB_EXECUTION_STATUS_FAILED = 3;
+}
+
+message JobExecutionRecord {
+  string uuid = 1;
+  string job_name = 2;
+  string procedure = 3;
+  JobExecutionStatus status = 4;
+  google.protobuf.Timestamp started_at = 5;
+  google.protobuf.Timestamp completed_at = 6;
+  int64 duration_ms = 7;
+  optional string error_message = 8;
+}

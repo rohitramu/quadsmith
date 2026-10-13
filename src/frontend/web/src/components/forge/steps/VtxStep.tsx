@@ -15,7 +15,7 @@ import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { VideoTransmitter } from "../../../gen/quadsmith/video_transmitter_pb";
+import type { VideoTransmitter } from "../../../gen/quadsmith/api/video_transmitter_pb";
 
 export function VtxStep() {
   const {

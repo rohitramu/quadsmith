@@ -7,27 +7,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-
-	"quadsmith/api/pkg/worker"
 )
-
-// RegisterWorkers registers all auth-related background tasks into the worker registry.
-func RegisterWorkers(r *worker.Registry, pool *pgxpool.Pool) {
-	// Periodic 1h task: username hold release warnings (7 days prior to release)
-	worker.RegisterPeriodic(r, "auth.username_release_warning", 1*time.Hour, worker.EmptyPayload{}, func(ctx context.Context, job worker.Job[worker.EmptyPayload]) error {
-		return HandleUsernameReleaseWarning(ctx, pool)
-	})
-
-	// Periodic 6h task: clean up used and expired email OTPs older than 24h
-	worker.RegisterPeriodic(r, "auth.cleanup_expired_otps", 6*time.Hour, worker.EmptyPayload{}, func(ctx context.Context, job worker.Job[worker.EmptyPayload]) error {
-		return HandleCleanupExpiredOTPs(ctx, pool)
-	})
-
-	// Periodic 12h task: clean up expired refresh tokens older than 7d
-	worker.RegisterPeriodic(r, "auth.cleanup_expired_tokens", 12*time.Hour, worker.EmptyPayload{}, func(ctx context.Context, job worker.Job[worker.EmptyPayload]) error {
-		return HandleCleanupExpiredTokens(ctx, pool)
-	})
-}
 
 // HandleUsernameReleaseWarning scans username_histories for archived usernames approaching the end of their 30-day hold window
 // (23 days elapsed, 7 days remaining) and dispatches warning notifications.
@@ -84,30 +64,32 @@ func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error
 }
 
 // HandleCleanupExpiredOTPs purges used OTPs and expired OTPs older than 24 hours.
-func HandleCleanupExpiredOTPs(ctx context.Context, pool *pgxpool.Pool) error {
+func HandleCleanupExpiredOTPs(ctx context.Context, pool *pgxpool.Pool) (int64, error) {
 	cmd, err := pool.Exec(ctx, `
 		DELETE FROM email_otps 
 		WHERE (used_at IS NOT NULL OR expires_at < NOW()) 
 		  AND created_at < NOW() - INTERVAL '24 hours';`)
 	if err != nil {
-		return fmt.Errorf("failed to clean up expired OTPs: %w", err)
+		return 0, fmt.Errorf("failed to clean up expired OTPs: %w", err)
 	}
-	if rows := cmd.RowsAffected(); rows > 0 {
+	rows := cmd.RowsAffected()
+	if rows > 0 {
 		log.Printf("[AuthWorker] Cleaned up %d expired/used OTPs", rows)
 	}
-	return nil
+	return rows, nil
 }
 
 // HandleCleanupExpiredTokens purges revoked or expired refresh tokens older than 7 days.
-func HandleCleanupExpiredTokens(ctx context.Context, pool *pgxpool.Pool) error {
+func HandleCleanupExpiredTokens(ctx context.Context, pool *pgxpool.Pool) (int64, error) {
 	cmd, err := pool.Exec(ctx, `
 		DELETE FROM refresh_tokens 
 		WHERE expires_at < NOW() - INTERVAL '7 days';`)
 	if err != nil {
-		return fmt.Errorf("failed to clean up expired refresh tokens: %w", err)
+		return 0, fmt.Errorf("failed to clean up expired refresh tokens: %w", err)
 	}
-	if rows := cmd.RowsAffected(); rows > 0 {
+	rows := cmd.RowsAffected()
+	if rows > 0 {
 		log.Printf("[AuthWorker] Cleaned up %d expired refresh tokens", rows)
 	}
-	return nil
+	return rows, nil
 }

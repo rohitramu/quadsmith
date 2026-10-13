@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 )
 
 func TestSearch_GlobalSearch(t *testing.T) {
@@ -20,7 +20,7 @@ func TestSearch_GlobalSearch(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
+	searchClient := apiconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
 	ctx := context.Background()
 
 	// 1. Search without selectors (global search across all collections)
@@ -51,7 +51,7 @@ func TestSearch_GlobalSearch(t *testing.T) {
 
 func TestSearch_SingleSelectorWithCELFilter(t *testing.T) {
 	apiUrl := getAPIURL()
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
+	searchClient := apiconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
 	ctx := context.Background()
 
 	filter := "cell_count_s == 6"
@@ -87,7 +87,7 @@ func TestSearch_SingleSelectorWithCELFilter(t *testing.T) {
 
 func TestSearch_DuplicatePath_FilterMerging(t *testing.T) {
 	apiUrl := getAPIURL()
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
+	searchClient := apiconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
 	ctx := context.Background()
 
 	filter1 := "cell_count_s == 6 || cell_count_s == 4"
@@ -127,7 +127,7 @@ func TestSearch_DuplicatePath_FilterMerging(t *testing.T) {
 
 func TestSearch_FuzzyTypoTolerance(t *testing.T) {
 	apiUrl := getAPIURL()
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
+	searchClient := apiconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
 	ctx := context.Background()
 
 	// "tatu" is a typo for "tattu"
@@ -155,7 +155,7 @@ func TestSearch_FuzzyTypoTolerance(t *testing.T) {
 
 func TestSearch_AllFieldSearch(t *testing.T) {
 	apiUrl := getAPIURL()
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
+	searchClient := apiconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
 	ctx := context.Background()
 
 	// Search for connector specification "XT60"
@@ -174,7 +174,7 @@ func TestSearch_AllFieldSearch(t *testing.T) {
 
 func TestSearch_EmptyQuery(t *testing.T) {
 	apiUrl := getAPIURL()
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
+	searchClient := apiconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
 	ctx := context.Background()
 
 	// Empty query targeting batteries returns initial items for combobox
@@ -202,7 +202,7 @@ func TestSearch_EmptyQuery(t *testing.T) {
 
 func TestSearch_UnknownPath_ReturnsInvalidArgument(t *testing.T) {
 	apiUrl := getAPIURL()
-	searchClient := quadsmithconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
+	searchClient := apiconnect.NewSearchServiceClient(http.DefaultClient, apiUrl)
 	ctx := context.Background()
 
 	_, err := searchClient.Search(ctx, connect.NewRequest(&pb.SearchRequest{

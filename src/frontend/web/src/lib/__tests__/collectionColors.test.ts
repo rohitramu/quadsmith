@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { getOption } from "@bufbuild/protobuf";
-import { frontend } from "../../gen/quadsmith/_common_pb";
-import { BatterySchema } from "../../gen/quadsmith/battery_pb";
-import { BuildSchema } from "../../gen/quadsmith/build_pb";
+import { frontend } from "../../gen/quadsmith/common/common_pb";
+import { BatterySchema } from "../../gen/quadsmith/api/battery_pb";
+import { BuildSchema } from "../../gen/quadsmith/api/build_pb";
 import {
   COLLECTION_COLORS,
   DEFAULT_COLLECTION_COLOR,

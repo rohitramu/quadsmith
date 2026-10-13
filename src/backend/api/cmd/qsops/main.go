@@ -2,9 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/tabwriter"
 	"time"
@@ -13,16 +15,106 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	pb "quadsmith/api/gen/quadsmith_internal"
-	"quadsmith/api/gen/quadsmith_internal/quadsmith_internalconnect"
-	fconfig "quadsmith/frontend/config"
+	pb "quadsmith/api/gen/quadsmith/ops"
+	"quadsmith/api/gen/quadsmith/ops/opsconnect"
+	bconfig "quadsmith/backend/pkg/config"
 )
 
 var (
-	envName   string
-	workerURL string
-	jsonOut   bool
+	envName      string
+	opsServerURL string
+	tokenFlag    string
+	jsonOut      bool
 )
+
+type SessionConfig struct {
+	Token     string    `json:"token"`
+	Operator  string    `json:"operator,omitempty"`
+	Group     string    `json:"group,omitempty"`
+	ExpiresAt time.Time `json:"expires_at,omitempty"`
+}
+
+func sessionFilePath() string {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		home = "."
+	}
+	return filepath.Join(home, ".quadsmith", "ops_session.json")
+}
+
+func loadSessionToken() string {
+	if tokenFlag != "" {
+		return tokenFlag
+	}
+	if v := os.Getenv("QS_OPS_TOKEN"); v != "" {
+		return v
+	}
+
+	path := sessionFilePath()
+	data, err := os.ReadFile(path)
+	if err == nil {
+		var s SessionConfig
+		if err := json.Unmarshal(data, &s); err == nil && s.Token != "" {
+			return s.Token
+		}
+	}
+
+	// Default fallback in sandbox/test environments
+	if envName == "sandbox" || envName == "test" || envName == "" {
+		return "qs_op_sandbox_token_12345"
+	}
+	return ""
+}
+
+func saveSession(token, operator, group string, expiresAt time.Time) error {
+	path := sessionFilePath()
+	if err := os.MkdirAll(filepath.Dir(path), 0700); err != nil {
+		return err
+	}
+	data, err := json.MarshalIndent(SessionConfig{
+		Token:     token,
+		Operator:  operator,
+		Group:     group,
+		ExpiresAt: expiresAt,
+	}, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(path, data, 0600)
+}
+
+func clearSession() error {
+	path := sessionFilePath()
+	if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	return nil
+}
+
+type bearerTransport struct {
+	token string
+	base  http.RoundTripper
+}
+
+func (t *bearerTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	if t.token != "" {
+		req.Header.Set("Authorization", "Bearer "+t.token)
+	}
+	return t.base.RoundTrip(req)
+}
+
+func getOpsClient() opsconnect.OpsServiceClient {
+	token := loadSessionToken()
+	transport := &bearerTransport{
+		token: token,
+		base:  http.DefaultTransport,
+	}
+	httpClient := &http.Client{
+		Transport: transport,
+		Timeout:   60 * time.Second,
+	}
+	return opsconnect.NewOpsServiceClient(httpClient, opsServerURL)
+}
 
 func main() {
 	if err := newRootCmd().Execute(); err != nil {
@@ -33,63 +125,106 @@ func main() {
 func newRootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "qsops",
-		Short: "Quadsmith Operations & Developer CLI",
-		Long:  "Operational and developer tooling for background workers, queue management, and maintenance tasks.",
+		Short: "Quadsmith Developer Operations CLI",
+		Long:  "Operational and developer tooling for system diagnostics, IAM, JIT elevation, DB maintenance, and scheduled jobs.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			fcfg, err := fconfig.Load(envName)
-			if err != nil {
-				return err
+			cfg, err := bconfig.LoadOpsCliConfig("", envName)
+			if err == nil && cfg != nil && opsServerURL == "" {
+				opsServerURL = cfg.OpsServerUrl
 			}
-			if cmd.Flags().Lookup("worker-url").Changed {
-				fcfg.Ops.WorkerURL = workerURL
-			} else {
-				workerURL = fcfg.Ops.WorkerURL
-			}
-			if err := fcfg.ValidateOps(); err != nil {
-				return err
+			if opsServerURL == "" {
+				opsServerURL = "http://127.0.0.1:8081"
 			}
 			return nil
 		},
 	}
 
 	rootCmd.PersistentFlags().StringVar(&envName, "env", "", "Target environment (sandbox, test, staging, prod)")
-	rootCmd.PersistentFlags().StringVar(&workerURL, "worker-url", "", "Worker service ConnectRPC base URL (env: QS_OPS_WORKER_URL)")
+	rootCmd.PersistentFlags().StringVar(&opsServerURL, "ops-url", "", "Ops server ConnectRPC URL (env: QS_OPS_SERVER_URL)")
+	rootCmd.PersistentFlags().StringVar(&tokenFlag, "token", "", "Operator session or bootstrap token (env: QS_OPS_TOKEN)")
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output results in JSON format")
 
-	rootCmd.AddCommand(newWorkersCmd())
+	// Auth & IAM commands
+	rootCmd.AddCommand(newLoginCmd())
+	rootCmd.AddCommand(newLogoutCmd())
+	rootCmd.AddCommand(newWhoamiCmd())
+	rootCmd.AddCommand(newIamCmd())
+
+	// Top-level aliases
+	rootCmd.AddCommand(newJitCmd())
+
+	// Domain operation commands
+	rootCmd.AddCommand(newSystemCmd())
+	rootCmd.AddCommand(newDbCmd())
+	rootCmd.AddCommand(newSeedCmd())
+	rootCmd.AddCommand(newJobsCmd())
 
 	return rootCmd
 }
 
-func getWorkerClient() quadsmith_internalconnect.WorkerServiceClient {
-	return quadsmith_internalconnect.NewWorkerServiceClient(http.DefaultClient, workerURL)
-}
+// ---------------------------------------------------------
+// Auth & Identity Commands
+// ---------------------------------------------------------
 
-func newWorkersCmd() *cobra.Command {
+func newLoginCmd() *cobra.Command {
+	var code string
 	cmd := &cobra.Command{
-		Use:     "workers",
-		Aliases: []string{"worker"},
-		Short:   "Inspect, trigger, and manage background workers and job queues",
+		Use:   "login",
+		Short: "Authenticate with GitHub OAuth to acquire a session token",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if code == "" {
+				code = "dev-sandbox-code"
+			}
+			client := getOpsClient()
+			resp, err := client.ExchangeOAuthCode(cmd.Context(), connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
+				Code: code,
+			}))
+			if err != nil {
+				return fmt.Errorf("login failed: %w", err)
+			}
+
+			token := resp.Msg.GetToken()
+			operator := resp.Msg.GetOperator()
+			group := resp.Msg.GetGroupName()
+			expiresAt := resp.Msg.GetExpiresAt().AsTime()
+
+			if err := saveSession(token, operator, group, expiresAt); err != nil {
+				return fmt.Errorf("failed to save session: %w", err)
+			}
+
+			fmt.Printf("✓ Successfully authenticated as %s (group: %s)\n", operator, group)
+			fmt.Printf("  Session token stored in ~/.quadsmith/ops_session.json (expires: %s)\n",
+				expiresAt.Format(time.RFC1123))
+			return nil
+		},
 	}
-
-	cmd.AddCommand(newWorkersStatusCmd())
-	cmd.AddCommand(newWorkersListCmd())
-	cmd.AddCommand(newWorkersViewCmd())
-	cmd.AddCommand(newWorkersTriggerCmd())
-	cmd.AddCommand(newWorkersRetryCmd())
-
+	cmd.Flags().StringVar(&code, "code", "", "OAuth authorization code (defaults to sandbox dev code)")
 	return cmd
 }
 
-func newWorkersStatusCmd() *cobra.Command {
+func newLogoutCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "status",
-		Short: "Display background worker daemon health and queue statistics",
+		Use:   "logout",
+		Short: "Log out and remove local operator credentials",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getWorkerClient()
-			resp, err := client.GetWorkerStatus(cmd.Context(), connect.NewRequest(&pb.GetWorkerStatusRequest{}))
+			if err := clearSession(); err != nil {
+				return fmt.Errorf("failed to clear session: %w", err)
+			}
+			fmt.Println("✓ Logged out successfully")
+			return nil
+		},
+	}
+}
+
+func newWhoamiCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "whoami",
+		Short: "Inspect current operator identity, role, and active JIT grants",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.GetCurrentOperator(cmd.Context(), connect.NewRequest(&pb.GetCurrentOperatorRequest{}))
 			if err != nil {
-				return fmt.Errorf("failed to get worker status: %w", err)
+				return fmt.Errorf("whoami failed: %w", err)
 			}
 
 			if jsonOut {
@@ -99,108 +234,52 @@ func newWorkersStatusCmd() *cobra.Command {
 			}
 
 			msg := resp.Msg
-			fmt.Printf("Worker Daemon Health: %s\n", formatHealth(msg.GetIsHealthy()))
-			fmt.Println("Queue Depths:")
-			fmt.Printf("  Pending: %d\n", msg.GetPendingJobs())
-			fmt.Printf("  Running: %d\n", msg.GetRunningJobs())
-			fmt.Printf("  Failed:  %d\n", msg.GetFailedJobs())
-			fmt.Println("\nRegistered Task Types:")
-			for _, t := range msg.GetRegisteredTasks() {
-				fmt.Printf("  - %s\n", t)
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "OPERATOR:\t%s\n", msg.GetOperator())
+			fmt.Fprintf(w, "TYPE:\t%s\n", msg.GetOperatorType())
+			fmt.Fprintf(w, "GROUP:\t%s\n", msg.GetGroupName())
+			if msg.GetSessionExpiresAt() != nil {
+				fmt.Fprintf(w, "EXPIRES:\t%s\n", msg.GetSessionExpiresAt().AsTime().Format(time.RFC3339))
 			}
-			return nil
-		},
-	}
-}
-
-func newWorkersListCmd() *cobra.Command {
-	var statusFilter string
-	var limit int32
-
-	cmd := &cobra.Command{
-		Use:   "list",
-		Short: "List recent background jobs",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getWorkerClient()
-
-			var statusEnum pb.JobStatus
-			switch strings.ToLower(statusFilter) {
-			case "pending":
-				statusEnum = pb.JobStatus_JOB_STATUS_PENDING
-			case "running":
-				statusEnum = pb.JobStatus_JOB_STATUS_RUNNING
-			case "completed":
-				statusEnum = pb.JobStatus_JOB_STATUS_COMPLETED
-			case "failed":
-				statusEnum = pb.JobStatus_JOB_STATUS_FAILED
-			case "cancelled":
-				statusEnum = pb.JobStatus_JOB_STATUS_CANCELLED
-			default:
-				statusEnum = pb.JobStatus_JOB_STATUS_UNSPECIFIED
-			}
-
-			req := &pb.ListJobsRequest{
-				StatusFilter: statusEnum,
-				Limit:        limit,
-			}
-
-			resp, err := client.ListJobs(cmd.Context(), connect.NewRequest(req))
-			if err != nil {
-				return fmt.Errorf("failed to list jobs: %w", err)
-			}
-
-			if jsonOut {
-				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
-				fmt.Println(string(out))
-				return nil
-			}
-
-			jobs := resp.Msg.GetJobs()
-			if len(jobs) == 0 {
-				fmt.Println("No jobs found matching the criteria.")
-				return nil
-			}
-
-			w := tabwriter.NewWriter(os.Stdout, 0, 4, 3, ' ', 0)
-			fmt.Fprintln(w, "UUID\tJOB TYPE\tSTATUS\tSCHEDULED\tCREATED")
-			for _, j := range jobs {
-				sched := "-"
-				if j.GetScheduledAt() != nil {
-					sched = j.GetScheduledAt().AsTime().Local().Format("2006-01-02 15:04:05")
-				}
-				created := "-"
-				if j.GetCreatedAt() != nil {
-					created = j.GetCreatedAt().AsTime().Local().Format("2006-01-02 15:04:05")
-				}
-
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
-					j.GetUuid(),
-					j.GetJobType(),
-					formatJobStatus(j.GetStatus()),
-					sched,
-					created,
-				)
+			if g := msg.GetActiveJitGrant(); g != nil {
+				fmt.Fprintf(w, "ACTIVE JIT:\t%s (Operation: %s, Expires: %s, Reason: %s)\n",
+					g.GetId(), g.GetOperation(), g.GetExpiresAt().AsTime().Format(time.RFC3339), g.GetReason())
+			} else {
+				fmt.Fprintf(w, "ACTIVE JIT:\tNone (Standard permissions)\n")
 			}
 			return w.Flush()
 		},
 	}
+}
 
-	cmd.Flags().StringVar(&statusFilter, "status", "", "Filter jobs by status (pending, running, completed, failed)")
-	cmd.Flags().Int32Var(&limit, "limit", 20, "Maximum number of jobs to list")
+// ---------------------------------------------------------
+// IAM Commands
+// ---------------------------------------------------------
+
+func newIamCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "iam",
+		Short: "Manage operator identities, declarative groups, tokens, and JIT leases",
+	}
+
+	cmd.AddCommand(newWhoamiCmd())
+	cmd.AddCommand(newIamUsersCmd())
+	cmd.AddCommand(newIamGroupsCmd())
+	cmd.AddCommand(newIamTokensCmd())
+	cmd.AddCommand(newJitCmd())
 
 	return cmd
 }
 
-func newWorkersViewCmd() *cobra.Command {
+func newIamUsersCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "view <job_uuid>",
-		Short: "Display full details and execution attempts for a background job",
-		Args:  cobra.ExactArgs(1),
+		Use:   "users",
+		Short: "List active developer identities and session tokens",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getWorkerClient()
-			resp, err := client.GetJob(cmd.Context(), connect.NewRequest(&pb.GetJobRequest{JobUuid: args[0]}))
+			client := getOpsClient()
+			resp, err := client.ListIamUsers(cmd.Context(), connect.NewRequest(&pb.ListIamUsersRequest{}))
 			if err != nil {
-				return fmt.Errorf("failed to get job %s: %w", args[0], err)
+				return fmt.Errorf("failed to list IAM users: %w", err)
 			}
 
 			if jsonOut {
@@ -209,158 +288,502 @@ func newWorkersViewCmd() *cobra.Command {
 				return nil
 			}
 
-			j := resp.Msg.GetJob()
-			fmt.Printf("Job UUID:     %s\n", j.GetUuid())
-			fmt.Printf("Job Type:     %s\n", j.GetJobType())
-			fmt.Printf("Status:       %s\n", formatJobStatus(j.GetStatus()))
-			if j.GetUniqueKey() != "" {
-				fmt.Printf("Unique Key:   %s\n", j.GetUniqueKey())
-			}
-			fmt.Printf("Max Attempts: %d\n", j.GetMaxAttempts())
-			if j.GetScheduledAt() != nil {
-				fmt.Printf("Scheduled At: %s\n", j.GetScheduledAt().AsTime().Local().Format(time.RFC3339))
-			}
-			if j.GetCreatedAt() != nil {
-				fmt.Printf("Created At:   %s\n", j.GetCreatedAt().AsTime().Local().Format(time.RFC3339))
-			}
-			if j.GetUpdatedAt() != nil {
-				fmt.Printf("Updated At:   %s\n", j.GetUpdatedAt().AsTime().Local().Format(time.RFC3339))
-			}
-
-			fmt.Println("\nPayload:")
-			var rawJSON map[string]any
-			if err := json.Unmarshal([]byte(j.GetPayloadJson()), &rawJSON); err == nil {
-				pretty, _ := json.MarshalIndent(rawJSON, "  ", "  ")
-				fmt.Printf("  %s\n", string(pretty))
-			} else {
-				fmt.Printf("  %s\n", j.GetPayloadJson())
-			}
-
-			fmt.Println("\nExecution Attempts:")
-			attempts := j.GetAttempts()
-			if len(attempts) == 0 {
-				fmt.Println("  (No attempts recorded yet)")
-			} else {
-				w := tabwriter.NewWriter(os.Stdout, 0, 4, 3, ' ', 0)
-				fmt.Fprintln(w, "  #\tWORKER ID\tSTATUS\tSTARTED\tDURATION\tERROR")
-				for _, att := range attempts {
-					duration := "-"
-					if att.GetCompletedAt() != nil && att.GetStartedAt() != nil {
-						d := att.GetCompletedAt().AsTime().Sub(att.GetStartedAt().AsTime())
-						duration = d.Round(time.Millisecond).String()
-					}
-					started := att.GetStartedAt().AsTime().Local().Format("15:04:05")
-					errMsg := att.GetErrorMessage()
-					if len(errMsg) > 50 {
-						errMsg = errMsg[:47] + "..."
-					}
-					if errMsg == "" {
-						errMsg = "-"
-					}
-					fmt.Fprintf(w, "  %d\t%s\t%s\t%s\t%s\t%s\n",
-						att.GetAttemptNumber(),
-						att.GetWorkerId(),
-						formatAttemptStatus(att.GetStatus()),
-						started,
-						duration,
-						errMsg,
-					)
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "OPERATOR\tTYPE\tGROUP\tACTIVE JIT\tLAST ACTIVE\n")
+			for _, u := range resp.Msg.GetUsers() {
+				lastActive := "-"
+				if u.GetLastActiveAt() != nil {
+					lastActive = u.GetLastActiveAt().AsTime().Format("2006-01-02 15:04:05")
 				}
-				_ = w.Flush()
+				jitStr := "No"
+				if u.GetHasActiveJit() {
+					jitStr = "YES"
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
+					u.GetOperator(), u.GetType(), u.GetGroupName(), jitStr, lastActive)
 			}
-
-			return nil
+			return w.Flush()
 		},
 	}
 }
 
-func newWorkersTriggerCmd() *cobra.Command {
-	var payloadStr string
-	var uniqueKey string
-
-	cmd := &cobra.Command{
-		Use:   "trigger <job_type>",
-		Short: "Dispatch or enqueue a background job for immediate execution",
-		Args:  cobra.ExactArgs(1),
+func newIamGroupsCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "groups",
+		Short: "List declarative IAM groups and allowed RPC methods",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getWorkerClient()
-			resp, err := client.TriggerJob(cmd.Context(), connect.NewRequest(&pb.TriggerJobRequest{
-				JobType:     args[0],
-				PayloadJson: payloadStr,
-				UniqueKey:   uniqueKey,
-			}))
+			client := getOpsClient()
+			resp, err := client.ListIamGroups(cmd.Context(), connect.NewRequest(&pb.ListIamGroupsRequest{}))
 			if err != nil {
-				return fmt.Errorf("failed to trigger job: %w", err)
+				return fmt.Errorf("failed to list IAM groups: %w", err)
 			}
 
-			fmt.Printf("Job triggered successfully! Job UUID: %s\n", resp.Msg.GetJobUuid())
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "GROUP\tDESCRIPTION\tALLOWED METHODS\n")
+			for _, g := range resp.Msg.GetGroups() {
+				methods := strings.Join(g.GetAllowedMethods(), ", ")
+				fmt.Fprintf(w, "%s\t%s\t%s\n", g.GetName(), g.GetDescription(), methods)
+			}
+			return w.Flush()
+		},
+	}
+}
+
+func newIamTokensCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "tokens",
+		Short: "Manage persistent operator and robot tokens",
+	}
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "list",
+		Short: "List issued internal tokens",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.ListInternalTokens(cmd.Context(), connect.NewRequest(&pb.ListInternalTokensRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to list tokens: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "TOKEN ID\tNAME\tTYPE\tGROUP\tEXPIRES\tSTATUS\n")
+			for _, t := range resp.Msg.GetTokens() {
+				status := "ACTIVE"
+				if t.GetRevokedAt() != nil {
+					status = "REVOKED"
+				} else if t.GetExpiresAt() != nil && t.GetExpiresAt().AsTime().Before(time.Now()) {
+					status = "EXPIRED"
+				}
+				expires := "Never"
+				if t.GetExpiresAt() != nil {
+					expires = t.GetExpiresAt().AsTime().Format("2006-01-02 15:04")
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\n",
+					t.GetId(), t.GetName(), t.GetType(), t.GetGroupName(), expires, status)
+			}
+			return w.Flush()
+		},
+	})
+
+	var name, tokenType, group string
+	var days int
+	createCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new internal operator or robot token",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if name == "" {
+				return errors.New("--name is required")
+			}
+			client := getOpsClient()
+			resp, err := client.CreateInternalToken(cmd.Context(), connect.NewRequest(&pb.CreateInternalTokenRequest{
+				Name:         name,
+				Type:         tokenType,
+				GroupName:    group,
+				DurationDays: int32(days),
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to create token: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			fmt.Println("✓ Internal token generated successfully:")
+			fmt.Printf("  Token ID:     %s\n", resp.Msg.GetTokenId())
+			fmt.Printf("  Token Secret: %s\n", resp.Msg.GetTokenSecret())
+			fmt.Println("  WARNING: Save the secret token immediately; it cannot be viewed again!")
 			return nil
 		},
 	}
+	createCmd.Flags().StringVar(&name, "name", "", "Descriptive name for the token")
+	createCmd.Flags().StringVar(&tokenType, "type", "HUMAN", "Token type ('HUMAN' or 'ROBOT')")
+	createCmd.Flags().StringVar(&group, "group", "operators", "IAM group for the token")
+	createCmd.Flags().IntVar(&days, "days", 30, "Duration in days")
+	cmd.AddCommand(createCmd)
 
-	cmd.Flags().StringVar(&payloadStr, "payload", "{}", "JSON payload string for the job")
-	cmd.Flags().StringVar(&uniqueKey, "unique-key", "", "Optional idempotency key")
+	cmd.AddCommand(&cobra.Command{
+		Use:   "revoke [token_id]",
+		Short: "Revoke an internal token",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.RevokeInternalToken(cmd.Context(), connect.NewRequest(&pb.RevokeInternalTokenRequest{
+				Id: args[0],
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to revoke token: %w", err)
+			}
+			if resp.Msg.GetSuccess() {
+				fmt.Printf("✓ Token %s successfully revoked\n", args[0])
+			} else {
+				fmt.Printf("Token %s not found or already revoked\n", args[0])
+			}
+			return nil
+		},
+	})
 
 	return cmd
 }
 
-func newWorkersRetryCmd() *cobra.Command {
-	return &cobra.Command{
-		Use:   "retry <job_uuid>",
-		Short: "Re-queue a failed job for execution",
-		Args:  cobra.ExactArgs(1),
+// ---------------------------------------------------------
+// JIT Elevation Commands
+// ---------------------------------------------------------
+
+func newJitCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "jit",
+		Short: "Request, inspect, extend, and revoke hour-based JIT elevations",
+	}
+
+	var hours int
+	var reason string
+	var operation string
+	requestCmd := &cobra.Command{
+		Use:   "request",
+		Short: "Acquire a temporary JIT elevation grant (1-12 hours)",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getWorkerClient()
-			resp, err := client.RetryJob(cmd.Context(), connect.NewRequest(&pb.RetryJobRequest{
-				JobUuid: args[0],
+			client := getOpsClient()
+			resp, err := client.AcquireJitGrant(cmd.Context(), connect.NewRequest(&pb.AcquireJitGrantRequest{
+				Hours:     int32(hours),
+				Reason:    reason,
+				Operation: operation,
 			}))
 			if err != nil {
-				return fmt.Errorf("failed to retry job: %w", err)
+				return fmt.Errorf("failed to acquire JIT grant: %w", err)
 			}
 
-			if resp.Msg.GetSuccess() {
-				fmt.Printf("Job %s successfully re-queued for execution.\n", args[0])
-			} else {
-				fmt.Printf("Failed to re-queue job %s.\n", args[0])
+			g := resp.Msg.GetGrant()
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(g)
+				fmt.Println(string(out))
+				return nil
 			}
+
+			fmt.Println("✓ JIT elevation grant acquired successfully:")
+			fmt.Printf("  Grant ID:  %s\n", g.GetId())
+			fmt.Printf("  Operator:  %s\n", g.GetOperator())
+			fmt.Printf("  Hours:     %d hours\n", g.GetHours())
+			fmt.Printf("  Expires:   %s\n", g.GetExpiresAt().AsTime().Format(time.RFC3339))
+			fmt.Printf("  Operation: %s\n", g.GetOperation())
+			fmt.Printf("  Reason:    %s\n", g.GetReason())
 			return nil
 		},
 	}
+	requestCmd.Flags().IntVar(&hours, "hours", 2, "Lease duration in integer hours (1 to 12)")
+	requestCmd.Flags().StringVar(&reason, "reason", "Operational maintenance", "Reason for elevation request")
+	requestCmd.Flags().StringVar(&operation, "operation", "*", "Target operation or '*' for all sensitive methods")
+	cmd.AddCommand(requestCmd)
+
+	var extendHours int
+	extendCmd := &cobra.Command{
+		Use:   "extend [grant_id]",
+		Short: "Extend an active JIT grant by additional hours (up to 12h from now)",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.ExtendJitGrant(cmd.Context(), connect.NewRequest(&pb.ExtendJitGrantRequest{
+				GrantId: args[0],
+				Hours:   int32(extendHours),
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to extend JIT grant: %w", err)
+			}
+
+			g := resp.Msg.GetGrant()
+			fmt.Printf("✓ JIT grant %s extended:\n", g.GetId())
+			fmt.Printf("  New Expiration: %s\n", g.GetExpiresAt().AsTime().Format(time.RFC3339))
+			return nil
+		},
+	}
+	extendCmd.Flags().IntVar(&extendHours, "hours", 2, "Additional hours to add (max 12h from current time)")
+	cmd.AddCommand(extendCmd)
+
+	var allGrants bool
+	listCmd := &cobra.Command{
+		Use:   "list",
+		Short: "List active or historic JIT elevation grants",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.ListJitGrants(cmd.Context(), connect.NewRequest(&pb.ListJitGrantsRequest{
+				ActiveOnly: !allGrants,
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to list JIT grants: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "GRANT ID\tOPERATOR\tOPERATION\tHOURS\tSTATUS\tEXPIRES\tREASON\n")
+			for _, g := range resp.Msg.GetGrants() {
+				fmt.Fprintf(w, "%s\t%s\t%s\t%d\t%s\t%s\t%s\n",
+					g.GetId(), g.GetOperator(), g.GetOperation(), g.GetHours(), g.GetStatus(),
+					g.GetExpiresAt().AsTime().Format("15:04:05"), g.GetReason())
+			}
+			return w.Flush()
+		},
+	}
+	listCmd.Flags().BoolVar(&allGrants, "all", false, "Include revoked and expired grants")
+	cmd.AddCommand(listCmd)
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "revoke [grant_id]",
+		Short: "Revoke an active JIT grant immediately",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.RevokeJitGrant(cmd.Context(), connect.NewRequest(&pb.RevokeJitGrantRequest{
+				GrantId: args[0],
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to revoke JIT grant: %w", err)
+			}
+			if resp.Msg.GetSuccess() {
+				fmt.Printf("✓ JIT grant %s successfully revoked\n", args[0])
+			} else {
+				fmt.Printf("JIT grant %s not found or already revoked\n", args[0])
+			}
+			return nil
+		},
+	})
+
+	return cmd
 }
 
-func formatHealth(healthy bool) string {
-	if healthy {
-		return "HEALTHY"
+// ---------------------------------------------------------
+// System Diagnostics & Database Commands
+// ---------------------------------------------------------
+
+func newSystemCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "system",
+		Short: "System and daemon diagnostics",
 	}
-	return "UNHEALTHY"
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "diag",
+		Short: "Display ops plane and API server runtime diagnostics",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.GetSystemDiagnostics(cmd.Context(), connect.NewRequest(&pb.GetSystemDiagnosticsRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to get diagnostics: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			msg := resp.Msg
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "VERSION:\t%s\n", msg.GetVersion())
+			fmt.Fprintf(w, "ENVIRONMENT:\t%s\n", msg.GetEnvironment())
+			fmt.Fprintf(w, "UPTIME:\t%s\n", time.Duration(msg.GetUptimeSeconds())*time.Second)
+			fmt.Fprintf(w, "MEMORY ALLOCATED:\t%.2f MB\n", float64(msg.GetMemoryAllocatedBytes())/(1024*1024))
+			fmt.Fprintf(w, "GOROUTINES:\t%d\n", msg.GetNumGoroutines())
+			fmt.Fprintf(w, "PUBLIC DB CONNS:\t%d\n", msg.GetActiveDatabaseConnections())
+			fmt.Fprintf(w, "OPS DB CONNS:\t%d\n", msg.GetActiveInternalConnections())
+			return w.Flush()
+		},
+	})
+
+	return cmd
 }
 
-func formatJobStatus(s pb.JobStatus) string {
-	switch s {
-	case pb.JobStatus_JOB_STATUS_PENDING:
-		return "PENDING"
-	case pb.JobStatus_JOB_STATUS_RUNNING:
-		return "RUNNING"
-	case pb.JobStatus_JOB_STATUS_COMPLETED:
-		return "COMPLETED"
-	case pb.JobStatus_JOB_STATUS_FAILED:
-		return "FAILED"
-	case pb.JobStatus_JOB_STATUS_CANCELLED:
-		return "CANCELLED"
-	default:
-		return "UNKNOWN"
+func newDbCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "db",
+		Short: "Public database statistics and maintenance",
 	}
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "stats",
+		Short: "Show table row counts and disk sizes in quadsmith_api",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.GetDatabaseStats(cmd.Context(), connect.NewRequest(&pb.GetDatabaseStatsRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to get database stats: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			msg := resp.Msg
+			fmt.Printf("Database: %s (Total Size: %.2f MB)\n\n",
+				msg.GetDatabaseName(), float64(msg.GetTotalSizeBytes())/(1024*1024))
+
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "TABLE NAME\tROWS\tSIZE (KB)\n")
+			for _, t := range msg.GetTables() {
+				fmt.Fprintf(w, "%s\t%d\t%.1f KB\n",
+					t.GetTableName(), t.GetRowCount(), float64(t.GetTotalSizeBytes())/1024)
+			}
+			return w.Flush()
+		},
+	})
+
+	var fullVacuum bool
+	pruneCmd := &cobra.Command{
+		Use:   "prune",
+		Short: "Run VACUUM ANALYZE maintenance on the database",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.RunDatabaseMaintenance(cmd.Context(), connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
+				FullVacuum: fullVacuum,
+			}))
+			if err != nil {
+				return fmt.Errorf("maintenance failed: %w", err)
+			}
+			fmt.Printf("✓ %s (duration: %d ms)\n", resp.Msg.GetMessage(), resp.Msg.GetDurationMs())
+			return nil
+		},
+	}
+	pruneCmd.Flags().BoolVar(&fullVacuum, "full", false, "Execute FULL vacuum (exclusive lock)")
+	cmd.AddCommand(pruneCmd)
+
+	return cmd
 }
 
-func formatAttemptStatus(s pb.AttemptStatus) string {
-	switch s {
-	case pb.AttemptStatus_ATTEMPT_STATUS_RUNNING:
-		return "RUNNING"
-	case pb.AttemptStatus_ATTEMPT_STATUS_COMPLETED:
-		return "COMPLETED"
-	case pb.AttemptStatus_ATTEMPT_STATUS_FAILED:
-		return "FAILED"
-	default:
-		return "UNKNOWN"
+func newSeedCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "seed",
+		Short: "Seed hardware catalog and sample fixtures into public database",
 	}
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "run",
+		Short: "Execute catalog seeding",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.SeedDatabase(cmd.Context(), connect.NewRequest(&pb.SeedDatabaseRequest{}))
+			if err != nil {
+				return fmt.Errorf("seeder failed: %w", err)
+			}
+			fmt.Printf("✓ %s\n", resp.Msg.GetMessage())
+			return nil
+		},
+	})
+
+	return cmd
+}
+
+// ---------------------------------------------------------
+// Jobs & Audit Commands
+// ---------------------------------------------------------
+
+func newJobsCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "jobs",
+		Short: "Inspect schedules, trigger manual jobs, and view internal audit logs",
+	}
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "list",
+		Short: "List scheduled maintenance jobs",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.ListScheduledJobs(cmd.Context(), connect.NewRequest(&pb.ListScheduledJobsRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to list scheduled jobs: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "JOB NAME\tPROCEDURE\tINTERVAL\tLAST STATUS\tLAST RUN\n")
+			for _, j := range resp.Msg.GetJobs() {
+				lastRun := "-"
+				if j.GetLastRunAt() != nil {
+					lastRun = j.GetLastRunAt().AsTime().Format("2006-01-02 15:04:05")
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
+					j.GetName(), j.GetProcedure(), j.GetInterval(), j.GetLastStatus(), lastRun)
+			}
+			return w.Flush()
+		},
+	})
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "trigger [job_name]",
+		Short: "Immediately trigger execution of a maintenance job",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.TriggerJob(cmd.Context(), connect.NewRequest(&pb.TriggerJobRequest{
+				JobName: args[0],
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to trigger job %s: %w", args[0], err)
+			}
+			fmt.Printf("✓ %s (call ID: %s)\n", resp.Msg.GetMessage(), resp.Msg.GetCallId())
+			return nil
+		},
+	})
+
+	var limit int
+	historyCmd := &cobra.Command{
+		Use:   "history",
+		Short: "View audit log of internal API calls and job executions",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.ListInternalApiCalls(cmd.Context(), connect.NewRequest(&pb.ListInternalApiCallsRequest{
+				Limit: int32(limit),
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to fetch audit log: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "TIMESTAMP\tCALLER\tGROUP\tMETHOD\tSTATUS\tDURATION\tJIT GRANT\n")
+			for _, c := range resp.Msg.GetCalls() {
+				ts := c.GetCreatedAt().AsTime().Format("15:04:05")
+				jit := "-"
+				if c.GetJitGrantId() != "" {
+					jit = c.GetJitGrantId()
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%d ms\t%s\n",
+					ts, c.GetCaller(), c.GetGroupName(), c.GetMethod(), c.GetStatus(), c.GetDurationMs(), jit)
+			}
+			return w.Flush()
+		},
+	}
+	historyCmd.Flags().IntVar(&limit, "limit", 50, "Maximum number of audit records to return")
+	cmd.AddCommand(historyCmd)
+
+	return cmd
 }

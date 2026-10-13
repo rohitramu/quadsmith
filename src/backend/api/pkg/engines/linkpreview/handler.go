@@ -5,7 +5,7 @@ import (
 
 	"connectrpc.com/connect"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 // LinkPreviewServiceHandler implements quadsmithconnect.LinkPreviewServiceHandler.

@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package quadsmith.api;
+
+import "quadsmith/api/media.proto";
+import "quadsmith/api/reference_link.proto";
+import "quadsmith/common/common.proto";
+import "quadsmith/sql/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith/api;api";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Receiver {
+  option (quadsmith.sql.table) = {name: "receivers"};
+  option (quadsmith.common.collection_path) = "components/hardware/receivers";
+  option (quadsmith.common.frontend) = {
+    color_code: "#a855f7"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "protocol",
+      "frequency_band_mhz",
+      "has_telemetry"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4;
+  bool is_internal_only = 5;
+
+  float weight_g = 6;
+
+  // E.g., "ExpressLRS", "Crossfire", "FrSky"
+  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
+
+  // E.g., 2.4, 0.9 (for 900MHz)
+  uint32 frequency_band_mhz = 8;
+
+  bool has_telemetry = 9;
+
+  // Array of antenna UUIDs included with or required by this receiver
+  repeated string antenna_uuids = 10;
+  string description = 11;
+  repeated ReferenceLink reference_links = 12;
+  optional string primary_display_image = 13;
+  repeated Media media = 14;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetReceiverRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListReceiversRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListReceiversResponse {
+  repeated Receiver receivers = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service ReceiverService {
+  rpc GetReceiver(GetReceiverRequest) returns (Receiver);
+  rpc ListReceivers(ListReceiversRequest) returns (ListReceiversResponse);
+}

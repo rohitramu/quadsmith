@@ -1,0 +1,42 @@
+erDiagram
+    jit_grants {
+        UUID uuid PK
+        TEXT id UK
+        TEXT token_hash
+        TEXT operator
+        TEXT operator_type
+        TEXT reason
+        TEXT operation
+        TEXT status
+        INTEGER hours
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ extended_at
+        TIMESTAMPTZ revoked_at
+    }
+
+    internal_tokens {
+        UUID uuid PK
+        TEXT id UK
+        TEXT name
+        TEXT type
+        TEXT group_name
+        TEXT token_hash
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ revoked_at
+    }
+
+    internal_api_calls {
+        UUID uuid PK
+        TEXT id UK
+        TEXT method
+        TEXT caller
+        TEXT caller_type
+        TEXT group_name
+        TEXT jit_grant_id
+        TEXT status
+        TEXT error_message
+        BIGINT duration_ms
+        TIMESTAMPTZ created_at
+    }

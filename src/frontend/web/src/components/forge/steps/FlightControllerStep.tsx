@@ -17,7 +17,7 @@ import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { FlightController } from "../../../gen/quadsmith/flight_controller_pb";
+import type { FlightController } from "../../../gen/quadsmith/api/flight_controller_pb";
 
 export function FlightControllerStep() {
   const {

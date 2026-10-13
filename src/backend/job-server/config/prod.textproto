@@ -1,0 +1,17 @@
+ops_server_url: "${QS_JOB_SERVER_OPS_URL}"
+auth_token: "${QS_JOB_SERVER_AUTH_TOKEN}"
+schedules {
+  name: "cleanup_expired_otps"
+  procedure: "CleanupExpiredOtps"
+  interval: "6h"
+}
+schedules {
+  name: "cleanup_expired_tokens"
+  procedure: "CleanupExpiredTokens"
+  interval: "12h"
+}
+schedules {
+  name: "cleanup_orphaned_blobs"
+  procedure: "CleanupOrphanedBlobs"
+  interval: "5m"
+}

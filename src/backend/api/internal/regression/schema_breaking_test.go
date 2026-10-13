@@ -23,24 +23,31 @@ func TestSchema_NoBreakingChangesAgainstGitBase(t *testing.T) {
 
 	t.Logf("Checking database schema backwards compatibility against base ref: %s", baseRef)
 
-	// 1. Read current quadsmith.sql
-	currPath := filepath.Join(gh.RepoRoot, "src/backend/db/quadsmith.sql")
+	// 1. Read current quadsmith_api.sql
+	currPath := filepath.Join(gh.RepoRoot, "src/backend/db/quadsmith_api.sql")
 	currContent, err := os.ReadFile(currPath)
 	if err != nil {
-		t.Fatalf("Failed to read current quadsmith.sql at %s: %v", currPath, err)
+		currPath = filepath.Join(gh.RepoRoot, "src/backend/db/quadsmith.sql")
+		currContent, err = os.ReadFile(currPath)
+		if err != nil {
+			t.Fatalf("Failed to read current quadsmith_api.sql at %s: %v", currPath, err)
+		}
 	}
 
 	currSchema, err := schemacheck.ParseSQL(string(currContent))
 	if err != nil {
-		t.Fatalf("Failed to parse current quadsmith.sql: %v", err)
+		t.Fatalf("Failed to parse current schema: %v", err)
 	}
 
-	// 2. Read baseline schema from git (quadsmith.sql or legacy schema.sql)
-	baseContent, err := gh.GetFileAtRef(baseRef, "src/backend/db/quadsmith.sql")
+	// 2. Read baseline schema from git (quadsmith_api.sql, quadsmith.sql, or legacy schema.sql)
+	baseContent, err := gh.GetFileAtRef(baseRef, "src/backend/db/quadsmith_api.sql")
 	if err != nil {
-		baseContent, err = gh.GetFileAtRef(baseRef, "src/backend/db/schema.sql")
+		baseContent, err = gh.GetFileAtRef(baseRef, "src/backend/db/quadsmith.sql")
 		if err != nil {
-			t.Fatalf("Failed to read baseline schema from git ref %s: %v", baseRef, err)
+			baseContent, err = gh.GetFileAtRef(baseRef, "src/backend/db/schema.sql")
+			if err != nil {
+				t.Fatalf("Failed to read baseline schema from git ref %s: %v", baseRef, err)
+			}
 		}
 	}
 

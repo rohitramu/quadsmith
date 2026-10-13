@@ -59,7 +59,7 @@ func TestMain(m *testing.M) {
 		dbUrl = os.Getenv("DATABASE_URL")
 	}
 	if dbUrl == "" {
-		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+		dbUrl = "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api"
 	}
 	if pool, err := pgxpool.New(ctx, dbUrl); err == nil {
 		if err := pool.Ping(ctx); err == nil {

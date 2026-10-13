@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 func TestExtractMetadata_FullOpenGraph(t *testing.T) {

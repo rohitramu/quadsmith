@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 func TestValidateReferenceLinks(t *testing.T) {

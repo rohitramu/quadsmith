@@ -13,8 +13,8 @@ import {
   endorseAnswer,
   createQuestionComment,
   createAnswerComment,
-} from "../gen/quadsmith/social-SocialService_connectquery";
-import type { Question } from "../gen/quadsmith/social_pb";
+} from "../gen/quadsmith/api/social-SocialService_connectquery";
+import type { Question } from "../gen/quadsmith/api/social_pb";
 import { useAuth } from "../context/AuthContext";
 import {
   ChevronUp,

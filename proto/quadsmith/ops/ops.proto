@@ -1,0 +1,331 @@
+syntax = "proto3";
+
+package quadsmith.ops;
+
+import "google/protobuf/timestamp.proto";
+import "quadsmith/sql/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith/ops;ops";
+
+// ---------------------------------------------------------
+// JIT Grants (SQL Table in quadsmith_ops)
+// ---------------------------------------------------------
+
+message JitGrantRecord {
+  option (quadsmith.sql.table) = {name: "jit_grants"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string token_hash = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string operator = 4;
+  string operator_type = 5; // 'HUMAN' or 'ROBOT'
+  string reason = 6;
+  string operation = 7 [(quadsmith.sql.column) = {default_value: "'*'"}];
+  string status = 8 [(quadsmith.sql.column) = {
+    create_index: true
+    default_value: "'ACTIVE'"
+  }];
+  int32 hours = 9;
+  google.protobuf.Timestamp expires_at = 10;
+  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp extended_at = 12;
+  google.protobuf.Timestamp revoked_at = 13;
+}
+
+// ---------------------------------------------------------
+// Internal Tokens (SQL Table in quadsmith_ops)
+// ---------------------------------------------------------
+
+message InternalTokenRecord {
+  option (quadsmith.sql.table) = {name: "internal_tokens"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string name = 3;
+  string type = 4; // 'HUMAN' or 'ROBOT'
+  string group_name = 5;
+  string token_hash = 6 [(quadsmith.sql.column) = {create_index: true}];
+  google.protobuf.Timestamp expires_at = 7;
+  google.protobuf.Timestamp created_at = 8 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp revoked_at = 9;
+}
+
+// ---------------------------------------------------------
+// Internal API Calls / Audit Log (SQL Table in quadsmith_ops)
+// ---------------------------------------------------------
+
+message InternalApiCallRecord {
+  option (quadsmith.sql.table) = {name: "internal_api_calls"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string method = 3;
+  string caller = 4 [(quadsmith.sql.column) = {create_index: true}];
+  string caller_type = 5;
+  string group_name = 6;
+  optional string jit_grant_id = 7;
+  string status = 8;
+  optional string error_message = 9;
+  int64 duration_ms = 10;
+  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {
+    create_index: true
+    default_value: "NOW()"
+  }];
+}
+
+// ---------------------------------------------------------
+// Ops Service Definition
+// ---------------------------------------------------------
+
+service OpsService {
+  // System Diagnostics
+  rpc GetSystemDiagnostics(GetSystemDiagnosticsRequest) returns (GetSystemDiagnosticsResponse);
+
+  // Database Maintenance & Stats (Public DB quadsmith_api)
+  rpc GetDatabaseStats(GetDatabaseStatsRequest) returns (GetDatabaseStatsResponse);
+  rpc RunDatabaseMaintenance(RunDatabaseMaintenanceRequest) returns (RunDatabaseMaintenanceResponse);
+
+  // Catalog Seeding
+  rpc SeedDatabase(SeedDatabaseRequest) returns (SeedDatabaseResponse);
+
+  // Maintenance & Cleanup
+  rpc CleanupExpiredOtps(CleanupExpiredOtpsRequest) returns (CleanupExpiredOtpsResponse);
+  rpc CleanupExpiredTokens(CleanupExpiredTokensRequest) returns (CleanupExpiredTokensResponse);
+  rpc CleanupOrphanedBlobs(CleanupOrphanedBlobsRequest) returns (CleanupOrphanedBlobsResponse);
+
+  // Scheduled Jobs & Audit
+  rpc ListScheduledJobs(ListScheduledJobsRequest) returns (ListScheduledJobsResponse);
+  rpc TriggerJob(TriggerJobRequest) returns (TriggerJobResponse);
+  rpc ListInternalApiCalls(ListInternalApiCallsRequest) returns (ListInternalApiCallsResponse);
+
+  // Authentication & IAM
+  rpc ExchangeOAuthCode(ExchangeOAuthCodeRequest) returns (ExchangeOAuthCodeResponse);
+  rpc GetCurrentOperator(GetCurrentOperatorRequest) returns (GetCurrentOperatorResponse);
+  rpc ListIamUsers(ListIamUsersRequest) returns (ListIamUsersResponse);
+  rpc ListIamGroups(ListIamGroupsRequest) returns (ListIamGroupsResponse);
+
+  // Dynamic Token Management
+  rpc CreateInternalToken(CreateInternalTokenRequest) returns (CreateInternalTokenResponse);
+  rpc ListInternalTokens(ListInternalTokensRequest) returns (ListInternalTokensResponse);
+  rpc RevokeInternalToken(RevokeInternalTokenRequest) returns (RevokeInternalTokenResponse);
+
+  // JIT Elevation
+  rpc AcquireJitGrant(AcquireJitGrantRequest) returns (AcquireJitGrantResponse);
+  rpc ExtendJitGrant(ExtendJitGrantRequest) returns (ExtendJitGrantResponse);
+  rpc ListJitGrants(ListJitGrantsRequest) returns (ListJitGrantsResponse);
+  rpc RevokeJitGrant(RevokeJitGrantRequest) returns (RevokeJitGrantResponse);
+}
+
+// ---------------------------------------------------------
+// Messages
+// ---------------------------------------------------------
+
+message GetSystemDiagnosticsRequest {}
+
+message GetSystemDiagnosticsResponse {
+  string version = 1;
+  string environment = 2;
+  int64 uptime_seconds = 3;
+  int64 memory_allocated_bytes = 4;
+  int32 num_goroutines = 5;
+  int32 active_database_connections = 6;
+  int32 active_internal_connections = 7;
+}
+
+message GetDatabaseStatsRequest {}
+
+message TableStat {
+  string table_name = 1;
+  int64 row_count = 2;
+  int64 total_size_bytes = 3;
+}
+
+message GetDatabaseStatsResponse {
+  string database_name = 1;
+  int64 total_size_bytes = 2;
+  repeated TableStat tables = 3;
+}
+
+message RunDatabaseMaintenanceRequest {
+  bool full_vacuum = 1;
+}
+
+message RunDatabaseMaintenanceResponse {
+  bool success = 1;
+  string message = 2;
+  int64 duration_ms = 3;
+}
+
+message SeedDatabaseRequest {
+  bool force = 1;
+}
+
+message SeedDatabaseResponse {
+  bool success = 1;
+  int32 records_seeded = 2;
+  string message = 3;
+}
+
+message CleanupExpiredOtpsRequest {}
+
+message CleanupExpiredOtpsResponse {
+  int64 cleaned_count = 1;
+}
+
+message CleanupExpiredTokensRequest {}
+
+message CleanupExpiredTokensResponse {
+  int64 cleaned_count = 1;
+}
+
+message CleanupOrphanedBlobsRequest {}
+
+message CleanupOrphanedBlobsResponse {
+  int64 cleaned_count = 1;
+}
+
+message ScheduledJobDef {
+  string name = 1;
+  string procedure = 2;
+  string interval = 3;
+  google.protobuf.Timestamp last_run_at = 4;
+  string last_status = 5;
+}
+
+message ListScheduledJobsRequest {}
+
+message ListScheduledJobsResponse {
+  repeated ScheduledJobDef jobs = 1;
+}
+
+message TriggerJobRequest {
+  string job_name = 1;
+  string payload_json = 2;
+}
+
+message TriggerJobResponse {
+  bool success = 1;
+  string message = 2;
+  string call_id = 3;
+}
+
+message ListInternalApiCallsRequest {
+  int32 limit = 1;
+  string caller_filter = 2;
+  string method_filter = 3;
+}
+
+message ListInternalApiCallsResponse {
+  repeated InternalApiCallRecord calls = 1;
+}
+
+message ExchangeOAuthCodeRequest {
+  string code = 1;
+  string code_verifier = 2;
+  string redirect_uri = 3;
+}
+
+message ExchangeOAuthCodeResponse {
+  string token = 1;
+  google.protobuf.Timestamp expires_at = 2;
+  string operator = 3;
+  string group_name = 4;
+}
+
+message GetCurrentOperatorRequest {}
+
+message GetCurrentOperatorResponse {
+  string operator = 1;
+  string operator_type = 2; // 'HUMAN' or 'ROBOT'
+  string group_name = 3;
+  google.protobuf.Timestamp session_expires_at = 4;
+  optional JitGrantRecord active_jit_grant = 5;
+}
+
+message IamUserSummary {
+  string operator = 1;
+  string type = 2;
+  string group_name = 3;
+  google.protobuf.Timestamp last_active_at = 4;
+  bool has_active_jit = 5;
+}
+
+message ListIamUsersRequest {}
+
+message ListIamUsersResponse {
+  repeated IamUserSummary users = 1;
+}
+
+message IamGroupSummary {
+  string name = 1;
+  string description = 2;
+  repeated string allowed_methods = 3;
+}
+
+message ListIamGroupsRequest {}
+
+message ListIamGroupsResponse {
+  repeated IamGroupSummary groups = 1;
+}
+
+message CreateInternalTokenRequest {
+  string name = 1;
+  string type = 2; // 'HUMAN' or 'ROBOT'
+  string group_name = 3;
+  int32 duration_days = 4;
+}
+
+message CreateInternalTokenResponse {
+  string token_id = 1;
+  string token_secret = 2;
+  InternalTokenRecord record = 3;
+}
+
+message ListInternalTokensRequest {}
+
+message ListInternalTokensResponse {
+  repeated InternalTokenRecord tokens = 1;
+}
+
+message RevokeInternalTokenRequest {
+  string id = 1;
+}
+
+message RevokeInternalTokenResponse {
+  bool success = 1;
+}
+
+message AcquireJitGrantRequest {
+  int32 hours = 1; // 1 to 12
+  string reason = 2;
+  string operation = 3; // optional, defaults to '*'
+}
+
+message AcquireJitGrantResponse {
+  JitGrantRecord grant = 1;
+}
+
+message ExtendJitGrantRequest {
+  string grant_id = 1;
+  int32 hours = 2; // 1 to 12
+}
+
+message ExtendJitGrantResponse {
+  JitGrantRecord grant = 1;
+}
+
+message ListJitGrantsRequest {
+  bool active_only = 1;
+}
+
+message ListJitGrantsResponse {
+  repeated JitGrantRecord grants = 1;
+}
+
+message RevokeJitGrantRequest {
+  string grant_id = 1;
+}
+
+message RevokeJitGrantResponse {
+  bool success = 1;
+}

@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 	"quadsmith/api/pkg/authcontext"
 	"quadsmith/api/pkg/validation"
 	bconfig "quadsmith/backend/pkg/config"

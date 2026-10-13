@@ -8,14 +8,16 @@
 # Included Components:
 #   - PostgreSQL 15 Database (runs locally inside the container)
 #   - psqldef (declarative schema management tool)
-#   - Database schema (src/backend/db/schema.sql) and initial seed data
+#   - Database schemas (quadsmith_api.sql, quadsmith_ops.sql) and initial seed data
 #   - Database Seeder binary (populates hardware catalog on startup)
 #   - Go Backend API Server (ConnectRPC on port 8080)
+#   - Go Backend Ops Server (ConnectRPC on port 8081)
+#   - Go Backend Job Server (Periodic jobs daemon)
 #   - React 19 SPA Web Frontend (served directly from the API server)
 #
 # Usage:
 #   - Automatically initializes Postgres, applies schema with psqldef, runs
-#     the seeder, and starts the API server and web UI on container boot.
+#     the seeder, and starts the API server, ops server, job server, and web UI.
 # ==============================================================================
 
 # Stage 1: Build the Go binaries
@@ -28,7 +30,8 @@ COPY src/go.work src/go.work.sum* ./src/
 COPY src/build_deps/go.mod src/build_deps/go.sum* ./src/build_deps/
 COPY src/backend/api/go.mod src/backend/api/go.sum* ./src/backend/api/
 COPY src/backend/api-server/go.mod src/backend/api-server/go.sum* ./src/backend/api-server/
-COPY src/backend/worker/go.mod src/backend/worker/go.sum* ./src/backend/worker/
+COPY src/backend/ops-server/go.mod src/backend/ops-server/go.sum* ./src/backend/ops-server/
+COPY src/backend/job-server/go.mod src/backend/job-server/go.sum* ./src/backend/job-server/
 COPY src/backend/pkg/config/go.mod src/backend/pkg/config/go.sum* ./src/backend/pkg/config/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
 COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
@@ -38,10 +41,11 @@ COPY src/vendor/ ./src/vendor/
 # Copy all source code (including pre-generated proto files)
 COPY . .
 
-# Build Server, Worker, Seeder, and qsops
+# Build Server, Ops Server, Job Server, Seeder, and qsops
 RUN --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./src/backend/api-server/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/worker ./src/backend/worker/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/ops-server ./src/backend/ops-server/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/job-server ./src/backend/job-server/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./src/backend/api/cmd/qsops/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./src/backend/api/cmd/seeder
 
@@ -61,7 +65,7 @@ COPY src/frontend/web/ .
 RUN npm run build
 
 
-# Stage 3: The Sandbox (Postgres + Go API + Web UI)
+# Stage 3: The Sandbox (Postgres + Go API + Ops Server + Job Server + Web UI)
 FROM postgres:15
 WORKDIR /app
 
@@ -73,11 +77,12 @@ RUN apt-get update && apt-get install -y wget && \
 # Environment Setup
 ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=postgres
-ENV POSTGRES_DB=quadsmith
+ENV POSTGRES_DB=quadsmith_api
 ENV PGDATA=/var/lib/postgresql/pgdata
-ENV QS_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
-ENV QS_INTERNAL_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_internal"
+ENV QS_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api"
+ENV QS_INTERNAL_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops"
 ENV QS_SERVER_PORT=8080
+ENV QS_OPS_SERVER_PORT=8081
 ENV QS_SERVER_STATIC_DIR="/app/web/dist"
 ENV QS_ENV=sandbox
 
@@ -85,7 +90,8 @@ EXPOSE 5432 8080 8081
 
 # Copy binaries from builder
 COPY --from=builder /app/bin/server /app/server
-COPY --from=builder /app/bin/worker /app/worker
+COPY --from=builder /app/bin/ops-server /app/ops-server
+COPY --from=builder /app/bin/job-server /app/job-server
 COPY --from=builder /app/bin/qsops /usr/local/bin/qsops
 COPY --from=builder /app/bin/seeder /app/seeder
 
@@ -93,20 +99,21 @@ COPY --from=builder /app/bin/seeder /app/seeder
 COPY --from=web-builder /app/dist /app/web/dist
 
 # Copy database schema, seeds, and configs
-COPY src/backend/db/quadsmith.sql /app/src/backend/db/quadsmith.sql
-COPY src/backend/db/quadsmith_internal.sql /app/src/backend/db/quadsmith_internal.sql
+COPY src/backend/db/quadsmith_api.sql /app/src/backend/db/quadsmith_api.sql
+COPY src/backend/db/quadsmith_ops.sql /app/src/backend/db/quadsmith_ops.sql
 COPY test/seed_data /app/test/seed_data
 COPY src/backend/api-server/config /app/src/backend/api-server/config
-COPY src/backend/worker/config /app/src/backend/worker/config
+COPY src/backend/ops-server/config /app/src/backend/ops-server/config
+COPY src/backend/job-server/config /app/src/backend/job-server/config
 COPY src/frontend/config /app/src/frontend/config
 
 # Pre-populate PostgreSQL database with schema and seeds at image build time
 RUN docker-entrypoint.sh postgres & \
     pid=$! && \
     until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done && \
-    psql -U postgres -c "CREATE DATABASE quadsmith_internal;" && \
-    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/quadsmith.sql && \
-    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_internal < /app/src/backend/db/quadsmith_internal.sql && \
+    psql -U postgres -c "CREATE DATABASE quadsmith_ops;" && \
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_api < /app/src/backend/db/quadsmith_api.sql && \
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < /app/src/backend/db/quadsmith_ops.sql && \
     ./seeder --config /app/src/backend/api-server/config/sandbox.textproto && \
     gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
     wait $pid
@@ -118,20 +125,22 @@ echo "Starting PostgreSQL..."\n\
 docker-entrypoint.sh postgres > /var/log/postgres.log 2>&1 &\n\
 echo "Waiting for PostgreSQL to be ready..."\n\
 until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done\n\
-psql -U postgres -c "CREATE DATABASE quadsmith_internal;" 2>/dev/null || true\n\
-ROW_COUNT=$(psql -U postgres -d quadsmith -tAc "SELECT count(*) FROM motors;" 2>/dev/null || echo "0")\n\
+psql -U postgres -c "CREATE DATABASE quadsmith_ops;" 2>/dev/null || true\n\
+ROW_COUNT=$(psql -U postgres -d quadsmith_api -tAc "SELECT count(*) FROM motors;" 2>/dev/null || echo "0")\n\
 if [ "$ROW_COUNT" = "0" ]; then\n\
     echo "Applying Schema & Seeding Database..."\n\
-    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/quadsmith.sql\n\
-    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_internal < /app/src/backend/db/quadsmith_internal.sql\n\
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_api < /app/src/backend/db/quadsmith_api.sql\n\
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < /app/src/backend/db/quadsmith_ops.sql\n\
     ./seeder --config /app/src/backend/api-server/config/sandbox.textproto\n\
 else\n\
-    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_internal < /app/src/backend/db/quadsmith_internal.sql 2>/dev/null || true\n\
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < /app/src/backend/db/quadsmith_ops.sql 2>/dev/null || true\n\
 fi\n\
-echo "Starting Background Worker Daemon..."\n\
-./worker --config /app/src/backend/worker/config/sandbox.textproto > /var/log/worker.log 2>&1 &\n\
+echo "Starting Ops Server (:8081)..."\n\
+./ops-server --config /app/src/backend/ops-server/config/sandbox.textproto > /var/log/ops-server.log 2>&1 &\n\
+echo "Starting Job Server..."\n\
+./job-server --config /app/src/backend/job-server/config/sandbox.textproto > /var/log/job-server.log 2>&1 &\n\
 echo "Pre-seeded users:"\n\
-psql -U postgres -d quadsmith -tAc "SELECT concat(\047  - \047, email, \047 (@\047, id, \047)\047) FROM users WHERE deleted_at IS NULL ORDER BY email;"\n\
+psql -U postgres -d quadsmith_api -tAc "SELECT concat(\047  - \047, email, \047 (@\047, id, \047)\047) FROM users WHERE deleted_at IS NULL ORDER BY email;"\n\
 exec ./server --config /app/src/backend/api-server/config/sandbox.textproto\n' > /app/sandbox-entrypoint.sh
 
 RUN chmod +x /app/sandbox-entrypoint.sh

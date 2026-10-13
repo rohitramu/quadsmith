@@ -8,8 +8,8 @@ import {
   deleteCollection,
   removeCollectionItem,
   updateCollection,
-} from "../gen/quadsmith/social-SocialService_connectquery";
-import type { CollectionItem } from "../gen/quadsmith/social_pb";
+} from "../gen/quadsmith/api/social-SocialService_connectquery";
+import type { CollectionItem } from "../gen/quadsmith/api/social_pb";
 import { useAuth } from "../context/AuthContext";
 import {
   Bookmark,

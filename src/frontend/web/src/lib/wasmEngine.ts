@@ -8,17 +8,17 @@ import {
   EvaluateBuildResponseSchema,
   GetComponentsElectricalLimitsRequestSchema,
   GetBuildElectricalLimitsResponseSchema,
-} from "../gen/quadsmith/evaluator_pb";
+} from "../gen/quadsmith/api/evaluator_pb";
 import {
   type CheckComponentsCompatibilityRequest,
   type CheckCompatibilityResponse,
   CheckComponentsCompatibilityRequestSchema,
   CheckCompatibilityResponseSchema,
-} from "../gen/quadsmith/compatibility_pb";
+} from "../gen/quadsmith/api/compatibility_pb";
 import {
   type AssembledComponents,
   AssembledComponentsSchema,
-} from "../gen/quadsmith/components_pb";
+} from "../gen/quadsmith/api/components_pb";
 import { useState, useEffect } from "react";
 
 export interface ProgressInfo {

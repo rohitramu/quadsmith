@@ -14,7 +14,7 @@ import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { ElectronicSpeedController } from "../../../gen/quadsmith/electronic_speed_controller_pb";
+import type { ElectronicSpeedController } from "../../../gen/quadsmith/api/electronic_speed_controller_pb";
 
 export function EscStep() {
   const {

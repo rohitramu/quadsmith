@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package quadsmith.api;
+
+import "quadsmith/api/media.proto";
+import "quadsmith/api/reference_link.proto";
+import "quadsmith/common/common.proto";
+import "quadsmith/sql/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith/api;api";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Frame {
+  option (quadsmith.sql.table) = {name: "frames"};
+  option (quadsmith.common.collection_path) = "components/hardware/frames";
+  option (quadsmith.common.frontend) = {
+    color_code: "#64748b"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "wheelbase_mm",
+      "geometry"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4;
+
+  float weight_g = 5;
+
+  // The diagonal distance between motors in millimeters
+  float wheelbase_mm = 6;
+
+  // Maximum propeller size supported
+  float max_prop_size_mm = 7;
+
+  // E.g., "True X", "Squashed X", "Deadcat"
+  string geometry = 8;
+  string description = 9;
+  repeated ReferenceLink reference_links = 10;
+  optional string primary_display_image = 11;
+  repeated Media media = 12;
+
+  // Number of motors configured by this frame (e.g., 4 for standard quadcopters, 8 for coaxial X8 cinelifters)
+  uint32 motor_count = 13 [(quadsmith.sql.column) = {default_value: "4"}];
+
+  // Camera mount interfaces supported by this frame (e.g., ["14mm (Nano)"], ["19mm (Micro)"], ["20mm (DJI O3)"])
+  repeated string camera_mount_interfaces = 14;
+
+  // Motor mounting bolt patterns supported by this frame (e.g., ["16x16mm", "19x19mm"], ["9x9mm", "12x12mm"], ["3-hole 6.6mm"])
+  repeated string motor_mount_patterns = 15;
+
+  // Board mounting patterns supported by this frame (e.g., ["30.5x30.5mm", "20x20mm"], ["25.5x25.5mm"], ["16x16mm"])
+  repeated string board_mount_patterns = 16;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetFrameRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListFramesRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListFramesResponse {
+  repeated Frame frames = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service FrameService {
+  rpc GetFrame(GetFrameRequest) returns (Frame);
+  rpc ListFrames(ListFramesRequest) returns (ListFramesResponse);
+}

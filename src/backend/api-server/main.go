@@ -17,8 +17,8 @@ import (
 	connect "connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 	"quadsmith/api/pkg/auth"
 	"quadsmith/api/pkg/authcontext"
 	"quadsmith/api/pkg/blob"
@@ -62,70 +62,70 @@ func main() {
 		connect.WithReadMaxBytes(1 << 20), // 1MB limit for RPC payloads
 	}
 
-	path_NewAuthServiceHandler, h_NewAuthServiceHandler := quadsmithconnect.NewAuthServiceHandler(auth.NewAuthService(pool, cfg.Auth), handlerOpts...)
+	path_NewAuthServiceHandler, h_NewAuthServiceHandler := apiconnect.NewAuthServiceHandler(auth.NewAuthService(pool, cfg.Auth), handlerOpts...)
 	mux.Handle(path_NewAuthServiceHandler, h_NewAuthServiceHandler)
 
-	path_NewUserServiceHandler, h_NewUserServiceHandler := quadsmithconnect.NewUserServiceHandler(auth.NewUserService(pool), handlerOpts...)
+	path_NewUserServiceHandler, h_NewUserServiceHandler := apiconnect.NewUserServiceHandler(auth.NewUserService(pool), handlerOpts...)
 	mux.Handle(path_NewUserServiceHandler, h_NewUserServiceHandler)
 
-	path_NewMotorServiceHandler, h_NewMotorServiceHandler := quadsmithconnect.NewMotorServiceHandler(pb.NewMotorServiceHandler(pool), handlerOpts...)
+	path_NewMotorServiceHandler, h_NewMotorServiceHandler := apiconnect.NewMotorServiceHandler(pb.NewMotorServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewMotorServiceHandler, h_NewMotorServiceHandler)
-	path_NewFrameServiceHandler, h_NewFrameServiceHandler := quadsmithconnect.NewFrameServiceHandler(pb.NewFrameServiceHandler(pool), handlerOpts...)
+	path_NewFrameServiceHandler, h_NewFrameServiceHandler := apiconnect.NewFrameServiceHandler(pb.NewFrameServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewFrameServiceHandler, h_NewFrameServiceHandler)
-	path_NewBatteryServiceHandler, h_NewBatteryServiceHandler := quadsmithconnect.NewBatteryServiceHandler(pb.NewBatteryServiceHandler(pool), handlerOpts...)
+	path_NewBatteryServiceHandler, h_NewBatteryServiceHandler := apiconnect.NewBatteryServiceHandler(pb.NewBatteryServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewBatteryServiceHandler, h_NewBatteryServiceHandler)
-	path_NewElectronicSpeedControllerServiceHandler, h_NewElectronicSpeedControllerServiceHandler := quadsmithconnect.NewElectronicSpeedControllerServiceHandler(pb.NewElectronicSpeedControllerServiceHandler(pool), handlerOpts...)
+	path_NewElectronicSpeedControllerServiceHandler, h_NewElectronicSpeedControllerServiceHandler := apiconnect.NewElectronicSpeedControllerServiceHandler(pb.NewElectronicSpeedControllerServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewElectronicSpeedControllerServiceHandler, h_NewElectronicSpeedControllerServiceHandler)
-	path_NewFlightControllerServiceHandler, h_NewFlightControllerServiceHandler := quadsmithconnect.NewFlightControllerServiceHandler(pb.NewFlightControllerServiceHandler(pool), handlerOpts...)
+	path_NewFlightControllerServiceHandler, h_NewFlightControllerServiceHandler := apiconnect.NewFlightControllerServiceHandler(pb.NewFlightControllerServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewFlightControllerServiceHandler, h_NewFlightControllerServiceHandler)
-	path_NewReceiverServiceHandler, h_NewReceiverServiceHandler := quadsmithconnect.NewReceiverServiceHandler(pb.NewReceiverServiceHandler(pool), handlerOpts...)
+	path_NewReceiverServiceHandler, h_NewReceiverServiceHandler := apiconnect.NewReceiverServiceHandler(pb.NewReceiverServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewReceiverServiceHandler, h_NewReceiverServiceHandler)
-	path_NewVideoTransmitterServiceHandler, h_NewVideoTransmitterServiceHandler := quadsmithconnect.NewVideoTransmitterServiceHandler(pb.NewVideoTransmitterServiceHandler(pool), handlerOpts...)
+	path_NewVideoTransmitterServiceHandler, h_NewVideoTransmitterServiceHandler := apiconnect.NewVideoTransmitterServiceHandler(pb.NewVideoTransmitterServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewVideoTransmitterServiceHandler, h_NewVideoTransmitterServiceHandler)
-	path_NewAntennaServiceHandler, h_NewAntennaServiceHandler := quadsmithconnect.NewAntennaServiceHandler(pb.NewAntennaServiceHandler(pool), handlerOpts...)
+	path_NewAntennaServiceHandler, h_NewAntennaServiceHandler := apiconnect.NewAntennaServiceHandler(pb.NewAntennaServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewAntennaServiceHandler, h_NewAntennaServiceHandler)
-	path_NewCameraServiceHandler, h_NewCameraServiceHandler := quadsmithconnect.NewCameraServiceHandler(pb.NewCameraServiceHandler(pool), handlerOpts...)
+	path_NewCameraServiceHandler, h_NewCameraServiceHandler := apiconnect.NewCameraServiceHandler(pb.NewCameraServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewCameraServiceHandler, h_NewCameraServiceHandler)
-	path_NewPropellerServiceHandler, h_NewPropellerServiceHandler := quadsmithconnect.NewPropellerServiceHandler(pb.NewPropellerServiceHandler(pool), handlerOpts...)
+	path_NewPropellerServiceHandler, h_NewPropellerServiceHandler := apiconnect.NewPropellerServiceHandler(pb.NewPropellerServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewPropellerServiceHandler, h_NewPropellerServiceHandler)
-	path_NewBuildServiceHandler, h_NewBuildServiceHandler := quadsmithconnect.NewBuildServiceHandler(pb.NewBuildServiceHandler(pool), handlerOpts...)
+	path_NewBuildServiceHandler, h_NewBuildServiceHandler := apiconnect.NewBuildServiceHandler(pb.NewBuildServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewBuildServiceHandler, h_NewBuildServiceHandler)
-	path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler := quadsmithconnect.NewGpsReceiverServiceHandler(pb.NewGpsReceiverServiceHandler(pool), handlerOpts...)
+	path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler := apiconnect.NewGpsReceiverServiceHandler(pb.NewGpsReceiverServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewGpsReceiverServiceHandler, h_NewGpsReceiverServiceHandler)
 
-	path_NewFcFirmwareServiceHandler, h_NewFcFirmwareServiceHandler := quadsmithconnect.NewFcFirmwareServiceHandler(pb.NewFcFirmwareServiceHandler(pool), handlerOpts...)
+	path_NewFcFirmwareServiceHandler, h_NewFcFirmwareServiceHandler := apiconnect.NewFcFirmwareServiceHandler(pb.NewFcFirmwareServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewFcFirmwareServiceHandler, h_NewFcFirmwareServiceHandler)
-	path_NewEscFirmwareServiceHandler, h_NewEscFirmwareServiceHandler := quadsmithconnect.NewEscFirmwareServiceHandler(pb.NewEscFirmwareServiceHandler(pool), handlerOpts...)
+	path_NewEscFirmwareServiceHandler, h_NewEscFirmwareServiceHandler := apiconnect.NewEscFirmwareServiceHandler(pb.NewEscFirmwareServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewEscFirmwareServiceHandler, h_NewEscFirmwareServiceHandler)
-	path_NewVtxFirmwareServiceHandler, h_NewVtxFirmwareServiceHandler := quadsmithconnect.NewVtxFirmwareServiceHandler(pb.NewVtxFirmwareServiceHandler(pool), handlerOpts...)
+	path_NewVtxFirmwareServiceHandler, h_NewVtxFirmwareServiceHandler := apiconnect.NewVtxFirmwareServiceHandler(pb.NewVtxFirmwareServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewVtxFirmwareServiceHandler, h_NewVtxFirmwareServiceHandler)
-	path_NewRadioFirmwareServiceHandler, h_NewRadioFirmwareServiceHandler := quadsmithconnect.NewRadioFirmwareServiceHandler(pb.NewRadioFirmwareServiceHandler(pool), handlerOpts...)
+	path_NewRadioFirmwareServiceHandler, h_NewRadioFirmwareServiceHandler := apiconnect.NewRadioFirmwareServiceHandler(pb.NewRadioFirmwareServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewRadioFirmwareServiceHandler, h_NewRadioFirmwareServiceHandler)
-	path_NewSoftwareToolServiceHandler, h_NewSoftwareToolServiceHandler := quadsmithconnect.NewSoftwareToolServiceHandler(pb.NewSoftwareToolServiceHandler(pool), handlerOpts...)
+	path_NewSoftwareToolServiceHandler, h_NewSoftwareToolServiceHandler := apiconnect.NewSoftwareToolServiceHandler(pb.NewSoftwareToolServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewSoftwareToolServiceHandler, h_NewSoftwareToolServiceHandler)
 
-	path_NewTransmitterServiceHandler, h_NewTransmitterServiceHandler := quadsmithconnect.NewTransmitterServiceHandler(pb.NewTransmitterServiceHandler(pool), handlerOpts...)
+	path_NewTransmitterServiceHandler, h_NewTransmitterServiceHandler := apiconnect.NewTransmitterServiceHandler(pb.NewTransmitterServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewTransmitterServiceHandler, h_NewTransmitterServiceHandler)
-	path_NewGogglesServiceHandler, h_NewGogglesServiceHandler := quadsmithconnect.NewGogglesServiceHandler(pb.NewGogglesServiceHandler(pool), handlerOpts...)
+	path_NewGogglesServiceHandler, h_NewGogglesServiceHandler := apiconnect.NewGogglesServiceHandler(pb.NewGogglesServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewGogglesServiceHandler, h_NewGogglesServiceHandler)
-	path_NewChargerServiceHandler, h_NewChargerServiceHandler := quadsmithconnect.NewChargerServiceHandler(pb.NewChargerServiceHandler(pool), handlerOpts...)
+	path_NewChargerServiceHandler, h_NewChargerServiceHandler := apiconnect.NewChargerServiceHandler(pb.NewChargerServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewChargerServiceHandler, h_NewChargerServiceHandler)
-	path_NewFieldToolServiceHandler, h_NewFieldToolServiceHandler := quadsmithconnect.NewFieldToolServiceHandler(pb.NewFieldToolServiceHandler(pool), handlerOpts...)
+	path_NewFieldToolServiceHandler, h_NewFieldToolServiceHandler := apiconnect.NewFieldToolServiceHandler(pb.NewFieldToolServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewFieldToolServiceHandler, h_NewFieldToolServiceHandler)
 
-	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := quadsmithconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool), handlerOpts...)
+	path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler := apiconnect.NewEvaluatorServiceHandler(evaluator.NewEvaluatorServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewEvaluatorServiceHandler, h_NewEvaluatorServiceHandler)
 
-	path_NewSearchServiceHandler, h_NewSearchServiceHandler := quadsmithconnect.NewSearchServiceHandler(search.NewSearchServiceHandler(pool), handlerOpts...)
+	path_NewSearchServiceHandler, h_NewSearchServiceHandler := apiconnect.NewSearchServiceHandler(search.NewSearchServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewSearchServiceHandler, h_NewSearchServiceHandler)
 
-	path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler := quadsmithconnect.NewLinkPreviewServiceHandler(linkpreview.NewLinkPreviewServiceHandler(), handlerOpts...)
+	path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler := apiconnect.NewLinkPreviewServiceHandler(linkpreview.NewLinkPreviewServiceHandler(), handlerOpts...)
 	mux.Handle(path_NewLinkPreviewServiceHandler, h_NewLinkPreviewServiceHandler)
 
-	path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler := quadsmithconnect.NewCompatibilityServiceHandler(compatibility.NewCompatibilityServiceHandler(pool), handlerOpts...)
+	path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler := apiconnect.NewCompatibilityServiceHandler(compatibility.NewCompatibilityServiceHandler(pool), handlerOpts...)
 	mux.Handle(path_NewCompatibilityServiceHandler, h_NewCompatibilityServiceHandler)
 
-	path_NewSocialServiceHandler, h_NewSocialServiceHandler := quadsmithconnect.NewSocialServiceHandler(social.NewSocialService(pool), handlerOpts...)
+	path_NewSocialServiceHandler, h_NewSocialServiceHandler := apiconnect.NewSocialServiceHandler(social.NewSocialService(pool), handlerOpts...)
 	mux.Handle(path_NewSocialServiceHandler, h_NewSocialServiceHandler)
 
 	// Blob storage & streaming endpoints

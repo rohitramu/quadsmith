@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package quadsmith.api;
+
+import "quadsmith/api/media.proto";
+import "quadsmith/api/reference_link.proto";
+import "quadsmith/common/common.proto";
+import "quadsmith/sql/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith/api;api";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message FieldTool {
+  option (quadsmith.sql.table) = {name: "field_tools"};
+  option (quadsmith.common.collection_path) = "components/gear/field-tools";
+  option (quadsmith.common.frontend) = {
+    color_code: "#f43f5e"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "tool_type",
+      "power_source",
+      "weight_g"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4;
+  float weight_g = 5;
+  string tool_type = 6;
+  string power_source = 7;
+  string description = 8;
+  repeated ReferenceLink reference_links = 9;
+  optional string primary_display_image = 10;
+  repeated Media media = 11;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetFieldToolRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListFieldToolsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListFieldToolsResponse {
+  repeated FieldTool field_tools = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service FieldToolService {
+  rpc GetFieldTool(GetFieldToolRequest) returns (FieldTool);
+  rpc ListFieldTools(ListFieldToolsRequest) returns (ListFieldToolsResponse);
+}

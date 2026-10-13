@@ -7,12 +7,12 @@ import (
 	"testing"
 
 	"connectrpc.com/connect"
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 )
 
 type mockMotorService struct {
-	quadsmithconnect.UnimplementedMotorServiceHandler
+	apiconnect.UnimplementedMotorServiceHandler
 	listMotorsFunc func(ctx context.Context, req *connect.Request[pb.ListMotorsRequest]) (*connect.Response[pb.ListMotorsResponse], error)
 	getMotorFunc   func(ctx context.Context, req *connect.Request[pb.GetMotorRequest]) (*connect.Response[pb.Motor], error)
 }
@@ -32,7 +32,7 @@ func (m *mockMotorService) GetMotor(ctx context.Context, req *connect.Request[pb
 }
 
 type mockBuildService struct {
-	quadsmithconnect.UnimplementedBuildServiceHandler
+	apiconnect.UnimplementedBuildServiceHandler
 	listBuildsFunc func(ctx context.Context, req *connect.Request[pb.ListBuildsRequest]) (*connect.Response[pb.ListBuildsResponse], error)
 	getBuildFunc   func(ctx context.Context, req *connect.Request[pb.GetBuildRequest]) (*connect.Response[pb.Build], error)
 }
@@ -52,7 +52,7 @@ func (m *mockBuildService) GetBuild(ctx context.Context, req *connect.Request[pb
 }
 
 type mockEvaluatorService struct {
-	quadsmithconnect.UnimplementedEvaluatorServiceHandler
+	apiconnect.UnimplementedEvaluatorServiceHandler
 	evaluateBuildFunc            func(ctx context.Context, req *connect.Request[pb.EvaluateBuildRequest]) (*connect.Response[pb.EvaluateBuildResponse], error)
 	getBuildElectricalLimitsFunc func(ctx context.Context, req *connect.Request[pb.GetBuildElectricalLimitsRequest]) (*connect.Response[pb.GetBuildElectricalLimitsResponse], error)
 }

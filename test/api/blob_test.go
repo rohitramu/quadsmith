@@ -16,8 +16,8 @@ import (
 
 	connect "connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 )
 
 func TestCLIBlobUploadAndGet(t *testing.T) {
@@ -224,7 +224,7 @@ func TestBlobBuildLifecycleLinking(t *testing.T) {
 
 	// 2. Create a Build linking this blob in its media
 	desc := "3D Printable Mount"
-	buildClient := quadsmithconnect.NewBuildServiceClient(http.DefaultClient, apiUrl)
+	buildClient := apiconnect.NewBuildServiceClient(http.DefaultClient, apiUrl)
 	createReq := connect.NewRequest(&pb.CreateBuildRequest{
 		Build: &pb.Build{
 			Name:                 "Blob Lifecycle Drone",

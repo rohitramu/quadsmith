@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useInfiniteQuery } from "@connectrpc/connect-query";
-import { listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
+import { listBuilds } from "../gen/quadsmith/api/build-BuildService_connectquery";
 import { BuildCard } from "../components/BuildCard";
 import { useMemo, useRef, useEffect } from "react";
 import { Sparkles, Layers, RefreshCw, CheckCircle, ArrowRight, Hammer } from "lucide-react";

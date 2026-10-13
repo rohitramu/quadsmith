@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   getEntitySocialSummary,
   toggleLikeItem,
-} from "../gen/quadsmith/social-SocialService_connectquery";
+} from "../gen/quadsmith/api/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
 import { Heart, Bookmark, Share2, ThumbsUp, HelpCircle, Check, Loader2 } from "lucide-react";
 import { getReviewTierBadgeClass, getReviewTierLabel } from "../lib/socialFormat";

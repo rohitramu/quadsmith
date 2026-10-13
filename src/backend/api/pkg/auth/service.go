@@ -21,9 +21,9 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
-	quadsmith_internal "quadsmith/api/gen/quadsmith_internal"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
+	config "quadsmith/api/gen/quadsmith/config"
 )
 
 // ---------------------------------------------------------
@@ -42,7 +42,7 @@ type AuthConfig struct {
 	EmailCooldown    time.Duration
 }
 
-func FromProtoAuthConfig(p *quadsmith_internal.AuthConfig) *AuthConfig {
+func FromProtoAuthConfig(p *config.AuthConfig) *AuthConfig {
 	if p == nil {
 		return nil
 	}
@@ -60,12 +60,12 @@ func FromProtoAuthConfig(p *quadsmith_internal.AuthConfig) *AuthConfig {
 }
 
 type AuthService struct {
-	quadsmithconnect.UnimplementedAuthServiceHandler
+	apiconnect.UnimplementedAuthServiceHandler
 	db  *pgxpool.Pool
 	cfg *AuthConfig
 }
 
-func NewAuthService(db *pgxpool.Pool, protoCfg ...*quadsmith_internal.AuthConfig) *AuthService {
+func NewAuthService(db *pgxpool.Pool, protoCfg ...*config.AuthConfig) *AuthService {
 	var authCfg *AuthConfig
 	if len(protoCfg) > 0 && protoCfg[0] != nil {
 		authCfg = FromProtoAuthConfig(protoCfg[0])
@@ -2333,7 +2333,7 @@ func (s *AuthService) generateUniqueUsername(ctx context.Context, email string) 
 // ---------------------------------------------------------
 
 type UserService struct {
-	quadsmithconnect.UnimplementedUserServiceHandler
+	apiconnect.UnimplementedUserServiceHandler
 	db *pgxpool.Pool
 }
 

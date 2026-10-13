@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package quadsmith.api;
+
+import "quadsmith/api/media.proto";
+import "quadsmith/api/reference_link.proto";
+import "quadsmith/common/common.proto";
+import "quadsmith/sql/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith/api;api";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message Battery {
+  option (quadsmith.sql.table) = {name: "batteries"};
+  option (quadsmith.common.collection_path) = "components/hardware/batteries";
+  option (quadsmith.common.frontend) = {
+    color_code: "#84cc16"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "cell_count_s",
+      "capacity_mah"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4;
+
+  float weight_g = 5;
+
+  // Total capacity in milliampere-hours (e.g., 1100, 1300)
+  uint32 capacity_mah = 6;
+
+  // Number of cells in series (e.g., 4 for 4S, 6 for 6S)
+  uint32 cell_count_s = 7 [(quadsmith.sql.column) = {create_index: true}];
+
+  // E.g., "LiPo", "LiHV", "Li-ion"
+  string chemistry = 8;
+
+  // E.g., "XT60", "XT30", "BT2.0"
+  string connector = 9;
+  string description = 10;
+  repeated ReferenceLink reference_links = 11;
+  optional string primary_display_image = 12;
+  repeated Media media = 13;
+
+  // Minimum operating / cutoff voltage (volts) - mandatory
+  float min_voltage = 14;
+
+  // Maximum fully charged voltage (volts) - mandatory
+  float max_voltage = 15;
+
+  // Maximum continuous discharge current rating (amperes) - mandatory
+  float max_current_a = 16;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetBatteryRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListBatteriesRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListBatteriesResponse {
+  repeated Battery batteries = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service BatteryService {
+  rpc GetBattery(GetBatteryRequest) returns (Battery);
+  rpc ListBatteries(ListBatteriesRequest) returns (ListBatteriesResponse);
+}

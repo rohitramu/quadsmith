@@ -1,35 +1,35 @@
 import { createRouterTransport } from "@connectrpc/connect";
 import { ConnectError, Code } from "@connectrpc/connect";
 import { create } from "@bufbuild/protobuf";
-import { MotorService } from "../../gen/quadsmith/motor_pb";
-import { FrameService } from "../../gen/quadsmith/frame_pb";
-import { FlightControllerService } from "../../gen/quadsmith/flight_controller_pb";
-import { BatteryService } from "../../gen/quadsmith/battery_pb";
-import { CameraService } from "../../gen/quadsmith/camera_pb";
-import { ElectronicSpeedControllerService } from "../../gen/quadsmith/electronic_speed_controller_pb";
-import { PropellerService } from "../../gen/quadsmith/propeller_pb";
-import { ReceiverService } from "../../gen/quadsmith/receiver_pb";
-import { VideoTransmitterService } from "../../gen/quadsmith/video_transmitter_pb";
-import { AntennaService } from "../../gen/quadsmith/antenna_pb";
-import { GpsReceiverService } from "../../gen/quadsmith/gps_receiver_pb";
-import { BuildService, type Build } from "../../gen/quadsmith/build_pb";
-import { EvaluatorService } from "../../gen/quadsmith/evaluator_pb";
-import { CompatibilityService } from "../../gen/quadsmith/compatibility_pb";
-import { LinkPreviewService } from "../../gen/quadsmith/link_preview_pb";
-import { SearchService } from "../../gen/quadsmith/search_pb";
-import { SocialService } from "../../gen/quadsmith/social_pb";
+import { MotorService } from "../../gen/quadsmith/api/motor_pb";
+import { FrameService } from "../../gen/quadsmith/api/frame_pb";
+import { FlightControllerService } from "../../gen/quadsmith/api/flight_controller_pb";
+import { BatteryService } from "../../gen/quadsmith/api/battery_pb";
+import { CameraService } from "../../gen/quadsmith/api/camera_pb";
+import { ElectronicSpeedControllerService } from "../../gen/quadsmith/api/electronic_speed_controller_pb";
+import { PropellerService } from "../../gen/quadsmith/api/propeller_pb";
+import { ReceiverService } from "../../gen/quadsmith/api/receiver_pb";
+import { VideoTransmitterService } from "../../gen/quadsmith/api/video_transmitter_pb";
+import { AntennaService } from "../../gen/quadsmith/api/antenna_pb";
+import { GpsReceiverService } from "../../gen/quadsmith/api/gps_receiver_pb";
+import { BuildService, type Build } from "../../gen/quadsmith/api/build_pb";
+import { EvaluatorService } from "../../gen/quadsmith/api/evaluator_pb";
+import { CompatibilityService } from "../../gen/quadsmith/api/compatibility_pb";
+import { LinkPreviewService } from "../../gen/quadsmith/api/link_preview_pb";
+import { SearchService } from "../../gen/quadsmith/api/search_pb";
+import { SocialService } from "../../gen/quadsmith/api/social_pb";
 import {
   AuthService,
   SendEmailOtpResponseSchema,
   ArchivedUsernameSchema,
   OtpVerificationErrorSchema,
   LoginChallengeStatus,
-} from "../../gen/quadsmith/auth_pb";
+} from "../../gen/quadsmith/api/auth_pb";
 import {
   UserService,
   UserEmailSchema,
   UsernameAvailabilityStatus,
-} from "../../gen/quadsmith/user_pb";
+} from "../../gen/quadsmith/api/user_pb";
 
 import {
   mockMotors,

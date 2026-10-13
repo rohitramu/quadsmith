@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"connectrpc.com/connect"
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 )
 
 func TestPrintTableTo_SliceWithRowNumbers(t *testing.T) {
@@ -235,7 +235,7 @@ func TestList_LimitApplied(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -273,7 +273,7 @@ func TestList_LimitJSON(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -360,7 +360,7 @@ func TestList_AutoPaging(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()

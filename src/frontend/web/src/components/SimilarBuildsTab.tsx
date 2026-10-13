@@ -1,5 +1,5 @@
 import { useQuery } from "@connectrpc/connect-query";
-import { listSimilarBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
+import { listSimilarBuilds } from "../gen/quadsmith/api/build-BuildService_connectquery";
 import { BuildCard } from "./BuildCard";
 import { Link } from "react-router-dom";
 import { Layers, Plus, Compass } from "lucide-react";

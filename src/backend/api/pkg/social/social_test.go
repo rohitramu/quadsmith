@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 func TestSlugify(t *testing.T) {

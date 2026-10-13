@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 
-	quadsmith "quadsmith/api/gen/quadsmith"
+	validate "quadsmith/api/gen/quadsmith/validate"
 )
 
 // VerifiedRegex records a regex pattern found and verified in the Protobuf schema.
@@ -30,9 +30,9 @@ func CheckAllProtoRegexPatterns() ([]VerifiedRegex, error) {
 		for i := 0; i < fields.Len(); i++ {
 			field := fields.Get(i)
 			opts := field.Options()
-			if proto.HasExtension(opts, quadsmith.E_Rules) {
-				ext := proto.GetExtension(opts, quadsmith.E_Rules)
-				if rules, ok := ext.(*quadsmith.FieldRules); ok && rules != nil && rules.GetString_() != nil {
+			if proto.HasExtension(opts, validate.E_Rules) {
+				ext := proto.GetExtension(opts, validate.E_Rules)
+				if rules, ok := ext.(*validate.FieldRules); ok && rules != nil && rules.GetString_() != nil {
 					pattern := rules.GetString_().GetPattern()
 					if pattern != "" {
 						if _, err := regexp.Compile(pattern); err != nil {

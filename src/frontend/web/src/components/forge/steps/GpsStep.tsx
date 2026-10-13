@@ -5,7 +5,7 @@ import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { GpsReceiver } from "../../../gen/quadsmith/gps_receiver_pb";
+import type { GpsReceiver } from "../../../gen/quadsmith/api/gps_receiver_pb";
 
 export function GpsStep() {
   const {

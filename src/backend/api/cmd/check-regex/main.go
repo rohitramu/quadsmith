@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	_ "quadsmith/api/gen/quadsmith"
+	_ "quadsmith/api/gen/quadsmith/api"
 	"quadsmith/api/pkg/schemacheck"
 )
 

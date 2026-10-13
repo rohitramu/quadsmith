@@ -4,7 +4,7 @@ import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Frame } from "../../../gen/quadsmith/frame_pb";
+import type { Frame } from "../../../gen/quadsmith/api/frame_pb";
 
 export function FrameStep() {
   const {

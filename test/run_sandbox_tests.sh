@@ -7,15 +7,15 @@ cd "$ROOT_DIR"
 
 PORT="${PORT:-8080}"
 DB_PORT="${DB_PORT:-5432}"
-WORKER_PORT="${WORKER_PORT:-8081}"
+OPS_PORT="${OPS_PORT:-8081}"
 
 API_URL="${QS_CLI_API_URL:-${QS_API_URL:-http://127.0.0.1:${PORT}}}"
-WORKER_URL="${QS_OPS_WORKER_URL:-${QS_WORKER_URL:-http://127.0.0.1:${WORKER_PORT}}}"
-DB_URL="${QS_DATABASE_URL:-${DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:${DB_PORT}/quadsmith}}"
-INTERNAL_DB_URL="${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:${DB_PORT}/quadsmith_internal}"
+OPS_URL="${QS_OPS_SERVER_URL:-${QS_OPS_URL:-http://127.0.0.1:${OPS_PORT}}}"
+DB_URL="${QS_DATABASE_URL:-${DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:${DB_PORT}/quadsmith_api}}"
+INTERNAL_DB_URL="${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:${DB_PORT}/quadsmith_ops}"
 
 is_sandbox_ready() {
-    curl -s -f -m 1 "${API_URL}" >/dev/null 2>&1 && curl -s -f -m 1 "${WORKER_URL}/healthz" >/dev/null 2>&1
+    curl -s -f -m 1 "${API_URL}" >/dev/null 2>&1 && curl -s -f -m 1 "${OPS_URL}/healthz" >/dev/null 2>&1
 }
 
 CONTAINER_NAME="quadsmith-sandbox-test-run"
@@ -37,13 +37,13 @@ fi
 echo "--- Building Sandbox Docker Image ---"
 docker build -t quadsmith-sandbox -f test/Dockerfile .
 
-echo "--- Starting fresh Sandbox container on port ${PORT} (Worker: ${WORKER_PORT}, DB: ${DB_PORT}) ---"
+echo "--- Starting fresh Sandbox container on port ${PORT} (Ops: ${OPS_PORT}, DB: ${DB_PORT}) ---"
 docker run -d --name "$CONTAINER_NAME" \
     -e QS_SERVER_PORT="$PORT" \
-    -e QS_WORKER_PORT="$WORKER_PORT" \
-    -e QS_INTERNAL_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_internal" \
+    -e QS_OPS_SERVER_PORT="$OPS_PORT" \
+    -e QS_INTERNAL_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops" \
     -p "${PORT}":"${PORT}" \
-    -p "${WORKER_PORT}":"${WORKER_PORT}" \
+    -p "${OPS_PORT}":"${OPS_PORT}" \
     -p "${DB_PORT}":5432 \
     quadsmith-sandbox
 
@@ -65,8 +65,9 @@ echo "--- Sandbox is ready! ---"
 echo "--- Running Sandbox Tests ---"
 export QS_CLI_API_URL="${API_URL}"
 export QS_API_URL="${API_URL}"
-export QS_OPS_WORKER_URL="${WORKER_URL}"
-export QS_WORKER_URL="${WORKER_URL}"
+export QS_OPS_SERVER_URL="${OPS_URL}"
+export QS_OPS_URL="${OPS_URL}"
+export QS_OPS_TOKEN="qs_op_sandbox_token_12345"
 export QS_DATABASE_URL="${DB_URL}"
 export DATABASE_URL="${DB_URL}"
 export QS_INTERNAL_DATABASE_URL="${INTERNAL_DB_URL}"

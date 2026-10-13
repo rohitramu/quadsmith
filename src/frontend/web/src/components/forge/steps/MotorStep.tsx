@@ -6,7 +6,7 @@ import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
 import { formatStatorSize } from "../../../lib/format";
-import type { Motor } from "../../../gen/quadsmith/motor_pb";
+import type { Motor } from "../../../gen/quadsmith/api/motor_pb";
 
 export function MotorStep() {
   const {

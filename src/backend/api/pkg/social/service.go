@@ -15,13 +15,13 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 	"quadsmith/api/pkg/authcontext"
 )
 
 type SocialService struct {
-	quadsmithconnect.UnimplementedSocialServiceHandler
+	apiconnect.UnimplementedSocialServiceHandler
 	db *pgxpool.Pool
 }
 

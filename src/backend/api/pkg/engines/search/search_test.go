@@ -3,7 +3,7 @@ package search
 import (
 	"testing"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 func TestResolveTargets_EmptySelectors(t *testing.T) {

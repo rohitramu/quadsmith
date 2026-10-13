@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	quadsmith_sql "quadsmith/api/gen/quadsmith"
+	quadsmith_sql "quadsmith/api/gen/quadsmith/sql"
 )
 
 func main() {

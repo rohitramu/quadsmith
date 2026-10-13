@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { ExternalLink, Globe } from "lucide-react";
-import { getLinkPreview } from "../gen/quadsmith/link_preview-LinkPreviewService_connectquery";
-import { ReferenceLinkType } from "../gen/quadsmith/reference_link_pb";
-import type { ReferenceLink } from "../gen/quadsmith/reference_link_pb";
+import { getLinkPreview } from "../gen/quadsmith/api/link_preview-LinkPreviewService_connectquery";
+import { ReferenceLinkType } from "../gen/quadsmith/api/reference_link_pb";
+import type { ReferenceLink } from "../gen/quadsmith/api/reference_link_pb";
 
 const LINK_TYPE_LABELS: Record<number, string> = {
   [ReferenceLinkType.PURCHASE]: "Purchase",

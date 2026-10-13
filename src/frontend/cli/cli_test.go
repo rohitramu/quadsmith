@@ -14,8 +14,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 )
 
 // --- OUTPUT FORMAT TESTS ---
@@ -32,7 +32,7 @@ func TestList_YAML(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -65,7 +65,7 @@ func TestList_EmptySlice_JSON(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -92,7 +92,7 @@ func TestList_EmptySlice_YAML(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -119,7 +119,7 @@ func TestList_EmptySlice_Table(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -151,7 +151,7 @@ func TestGet_JSON(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -200,7 +200,7 @@ func TestGet_DefaultYAML(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -484,7 +484,7 @@ func TestList_CustomColumns(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	cmd := newRootCmd()
@@ -620,7 +620,7 @@ func TestCompletion_GetValidArgs(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewMotorServiceHandler(mock))
+		mux.Handle(apiconnect.NewMotorServiceHandler(mock))
 	})
 
 	rootCmd := newRootCmd()
@@ -693,8 +693,8 @@ func TestEvaluate_Success(t *testing.T) {
 	}
 
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
-		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+		mux.Handle(apiconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(apiconnect.NewEvaluatorServiceHandler(mockEval))
 	})
 
 	cmd := newRootCmd()
@@ -765,8 +765,8 @@ func TestEvaluate_DefaultYAML(t *testing.T) {
 	}
 
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
-		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+		mux.Handle(apiconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(apiconnect.NewEvaluatorServiceHandler(mockEval))
 	})
 
 	cmd := newRootCmd()
@@ -822,8 +822,8 @@ func TestEvaluate_WithBatteryOverride(t *testing.T) {
 	}
 
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
-		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+		mux.Handle(apiconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(apiconnect.NewEvaluatorServiceHandler(mockEval))
 	})
 
 	cmd := newRootCmd()
@@ -892,8 +892,8 @@ func TestEvaluate_AliasEval(t *testing.T) {
 	}
 
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
-		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+		mux.Handle(apiconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(apiconnect.NewEvaluatorServiceHandler(mockEval))
 	})
 
 	cmd := newRootCmd()
@@ -925,8 +925,8 @@ func TestEvaluate_NoCompatibleBatteryError(t *testing.T) {
 	}
 
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
-		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+		mux.Handle(apiconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(apiconnect.NewEvaluatorServiceHandler(mockEval))
 	})
 
 	cmd := newRootCmd()
@@ -975,8 +975,8 @@ func TestEvaluate_AutoSelectLightestBattery(t *testing.T) {
 	}
 
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewBuildServiceHandler(mockBuild))
-		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+		mux.Handle(apiconnect.NewBuildServiceHandler(mockBuild))
+		mux.Handle(apiconnect.NewEvaluatorServiceHandler(mockEval))
 	})
 
 	cmd := newRootCmd()
@@ -1022,7 +1022,7 @@ func TestEvaluate_BuildNotFound(t *testing.T) {
 		},
 	}
 	setupMockServer(t, func(mux *http.ServeMux) {
-		mux.Handle(quadsmithconnect.NewEvaluatorServiceHandler(mockEval))
+		mux.Handle(apiconnect.NewEvaluatorServiceHandler(mockEval))
 	})
 
 	cmd := newRootCmd()

@@ -5,117 +5,61 @@ import (
 	"time"
 
 	"google.golang.org/protobuf/types/known/durationpb"
-	quadsmith_internal "quadsmith/api/gen/quadsmith_internal"
+	config "quadsmith/api/gen/quadsmith/config"
 )
 
-type APIServerOption func(*quadsmith_internal.ApiServerConfig)
+type APIServerOption func(*config.ApiServerConfig)
 
 func WithServerPort(port int32) APIServerOption {
-	return func(c *quadsmith_internal.ApiServerConfig) {
+	return func(c *config.ApiServerConfig) {
 		if c.Server == nil {
-			c.Server = &quadsmith_internal.ServerConfig{}
+			c.Server = &config.ServerConfig{}
 		}
 		c.Server.Port = port
 	}
 }
 
 func WithDatabaseURL(url string) APIServerOption {
-	return func(c *quadsmith_internal.ApiServerConfig) {
+	return func(c *config.ApiServerConfig) {
 		if c.Database == nil {
-			c.Database = &quadsmith_internal.DatabaseConfig{}
+			c.Database = &config.DatabaseConfig{}
 		}
 		c.Database.Url = url
 	}
 }
 
 func WithDatabaseName(name string) APIServerOption {
-	return func(c *quadsmith_internal.ApiServerConfig) {
+	return func(c *config.ApiServerConfig) {
 		if c.Database == nil {
-			c.Database = &quadsmith_internal.DatabaseConfig{}
+			c.Database = &config.DatabaseConfig{}
 		}
 		c.Database.Name = name
 	}
 }
 
 func WithAuthSecret(secret string) APIServerOption {
-	return func(c *quadsmith_internal.ApiServerConfig) {
+	return func(c *config.ApiServerConfig) {
 		if c.Auth == nil {
-			c.Auth = &quadsmith_internal.AuthConfig{}
+			c.Auth = &config.AuthConfig{}
 		}
 		c.Auth.Secret = secret
 	}
 }
 
 func WithEmailCooldown(d time.Duration) APIServerOption {
-	return func(c *quadsmith_internal.ApiServerConfig) {
+	return func(c *config.ApiServerConfig) {
 		if c.Auth == nil {
-			c.Auth = &quadsmith_internal.AuthConfig{}
+			c.Auth = &config.AuthConfig{}
 		}
 		c.Auth.EmailCooldown = durationpb.New(d)
 	}
 }
 
-type WorkerOption func(*quadsmith_internal.WorkerConfig)
-
-func WithWorkerPort(port int32) WorkerOption {
-	return func(c *quadsmith_internal.WorkerConfig) {
-		if c.Worker == nil {
-			c.Worker = &quadsmith_internal.WorkerDaemonConfig{}
-		}
-		c.Worker.Port = port
-	}
-}
-
-func WithWorkerConcurrency(concurrency int32) WorkerOption {
-	return func(c *quadsmith_internal.WorkerConfig) {
-		if c.Worker == nil {
-			c.Worker = &quadsmith_internal.WorkerDaemonConfig{}
-		}
-		c.Worker.Concurrency = concurrency
-	}
-}
-
-func WithWorkerDatabaseURL(url string) WorkerOption {
-	return func(c *quadsmith_internal.WorkerConfig) {
-		if c.Database == nil {
-			c.Database = &quadsmith_internal.DatabaseConfig{}
-		}
-		c.Database.Url = url
-	}
-}
-
-func WithWorkerDatabaseName(name string) WorkerOption {
-	return func(c *quadsmith_internal.WorkerConfig) {
-		if c.Database == nil {
-			c.Database = &quadsmith_internal.DatabaseConfig{}
-		}
-		c.Database.Name = name
-	}
-}
-
-func WithWorkerInternalDatabaseURL(url string) WorkerOption {
-	return func(c *quadsmith_internal.WorkerConfig) {
-		if c.InternalDatabase == nil {
-			c.InternalDatabase = &quadsmith_internal.DatabaseConfig{}
-		}
-		c.InternalDatabase.Url = url
-	}
-}
-
-func WithWorkerInternalDatabaseName(name string) WorkerOption {
-	return func(c *quadsmith_internal.WorkerConfig) {
-		if c.InternalDatabase == nil {
-			c.InternalDatabase = &quadsmith_internal.DatabaseConfig{}
-		}
-		c.InternalDatabase.Name = name
-	}
-}
-
-func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *quadsmith_internal.ApiServerConfig {
+func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *config.ApiServerConfig {
 	t.Helper()
-	cfg := &quadsmith_internal.ApiServerConfig{
+	cfg := &config.ApiServerConfig{
 		Environment: "test",
-		Server: &quadsmith_internal.ServerConfig{
+		Server: &config.ServerConfig{
 			Port:            8080,
 			StaticDir:       "src/frontend/web/dist",
 			ReadTimeout:     durationpb.New(30 * time.Second),
@@ -123,13 +67,13 @@ func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *quadsmith_in
 			IdleTimeout:     durationpb.New(120 * time.Second),
 			MaxRequestBytes: 2097152,
 		},
-		Database: &quadsmith_internal.DatabaseConfig{
-			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith?sslmode=disable",
-			Name:           "quadsmith",
+		Database: &config.DatabaseConfig{
+			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable",
+			Name:           "quadsmith_api",
 			MaxConnections: 25,
 			MinConnections: 2,
 		},
-		Auth: &quadsmith_internal.AuthConfig{
+		Auth: &config.AuthConfig{
 			Secret:           "quadsmith-test-secret-key-32bytes-long!",
 			DevPrintOtp:      false,
 			SecureCookies:    false,
@@ -149,25 +93,75 @@ func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *quadsmith_in
 	return cfg
 }
 
-func NewTestWorkerConfig(t testing.TB, opts ...WorkerOption) *quadsmith_internal.WorkerConfig {
+type OpsServerOption func(*config.OpsServerConfig)
+
+func WithOpsServerPort(port int32) OpsServerOption {
+	return func(c *config.OpsServerConfig) {
+		if c.Server == nil {
+			c.Server = &config.ServerConfig{}
+		}
+		c.Server.Port = port
+	}
+}
+
+func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *config.OpsServerConfig {
 	t.Helper()
-	cfg := &quadsmith_internal.WorkerConfig{
+	cfg := &config.OpsServerConfig{
 		Environment: "test",
-		Worker: &quadsmith_internal.WorkerDaemonConfig{
-			Port:        8081,
-			Concurrency: 2,
+		Server: &config.ServerConfig{
+			Port: 8081,
 		},
-		Database: &quadsmith_internal.DatabaseConfig{
-			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith?sslmode=disable",
-			Name:           "quadsmith",
+		Database: &config.DatabaseConfig{
+			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable",
+			Name:           "quadsmith_api",
 			MaxConnections: 25,
 			MinConnections: 2,
 		},
-		InternalDatabase: &quadsmith_internal.DatabaseConfig{
-			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_internal?sslmode=disable",
-			Name:           "quadsmith_internal",
+		InternalDatabase: &config.DatabaseConfig{
+			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops?sslmode=disable",
+			Name:           "quadsmith_ops",
 			MaxConnections: 25,
 			MinConnections: 2,
+		},
+		Groups: []*config.InternalGroupConfig{
+			{
+				Name:           "operators",
+				Description:    "Full developer ops permissions",
+				AllowedMethods: []string{"*"},
+			},
+			{
+				Name:           "robots",
+				Description:    "Automated scheduler and cron permissions",
+				AllowedMethods: []string{"*"},
+			},
+			{
+				Name:           "viewers",
+				Description:    "Read-only internal operator permissions",
+				AllowedMethods: []string{"Get*", "List*"},
+			},
+		},
+		BootstrapTokens: []*config.BootstrapTokenConfig{
+			{
+				Id:        "test-operator-token",
+				Name:      "Test Operator Token",
+				Token:     "qs_op_test_token_12345",
+				GroupName: "operators",
+				Type:      "HUMAN",
+			},
+			{
+				Id:        "test-robot-token",
+				Name:      "Test Robot Token",
+				Token:     "qs_robot_test_token_67890",
+				GroupName: "robots",
+				Type:      "ROBOT",
+			},
+		},
+		Jit: &config.JitPolicyConfig{
+			Enabled:          true,
+			AutoApprove:      true,
+			DefaultHours:     2,
+			MaxHours:         12,
+			SensitiveMethods: []string{"RunDatabaseMaintenance", "SeedDatabase"},
 		},
 	}
 
@@ -176,4 +170,20 @@ func NewTestWorkerConfig(t testing.TB, opts ...WorkerOption) *quadsmith_internal
 	}
 
 	return cfg
+}
+
+func NewTestJobServerConfig(t testing.TB) *config.JobServerConfig {
+	t.Helper()
+	return &config.JobServerConfig{
+		Environment:  "test",
+		OpsServerUrl: "http://127.0.0.1:8081",
+		AuthToken:    "qs_robot_test_token_67890",
+		Schedules: []*config.JobScheduleConfig{
+			{
+				Name:      "cleanup_expired_otps",
+				Procedure: "CleanupExpiredOtps",
+				Interval:  "6h",
+			},
+		},
+	}
 }

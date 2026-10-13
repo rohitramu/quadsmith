@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { getOption, hasOption } from "@bufbuild/protobuf";
-import { file_user } from "../gen/quadsmith/user_pb";
-import { file_auth } from "../gen/quadsmith/auth_pb";
-import { rules } from "../gen/quadsmith/_validate_pb";
+import { file_quadsmith_api_user } from "../gen/quadsmith/api/user_pb";
+import { file_quadsmith_api_auth } from "../gen/quadsmith/api/auth_pb";
+import { rules } from "../gen/quadsmith/validate/validate_pb";
 
 describe("Protobuf Regex Validation Build-Time Check (TypeScript)", () => {
   it("verifies that all Protobuf validation regex patterns compile successfully in JavaScript RegExp", () => {
     let verifiedCount = 0;
 
-    for (const file of [file_user, file_auth]) {
+    for (const file of [file_quadsmith_api_user, file_quadsmith_api_auth]) {
       for (const msg of file.messages) {
         for (const field of msg.fields) {
           if (hasOption(field, rules)) {

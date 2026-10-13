@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { Search, ChevronDown, X, Check, Loader2 } from "lucide-react";
-import { search } from "../gen/quadsmith/search-SearchService_connectquery";
+import { search } from "../gen/quadsmith/api/search-SearchService_connectquery";
 import { ProductHoverCard } from "./ProductHoverCard";
 
 export interface BatteryComboboxProps {

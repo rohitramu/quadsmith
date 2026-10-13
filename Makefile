@@ -34,7 +34,8 @@ build: generate bin/qs bin/qsops
 	@go run -mod=vendor ./src/backend/api/cmd/check-regex
 	@echo "--- Building all Go binaries to bin/ ---"
 	@go build -mod=vendor -o bin/server ./src/backend/api-server/main.go
-	@go build -mod=vendor -o bin/worker ./src/backend/worker/main.go
+	@go build -mod=vendor -o bin/ops-server ./src/backend/ops-server/main.go
+	@go build -mod=vendor -o bin/job-server ./src/backend/job-server/main.go
 	@go build -mod=vendor -o bin/seeder ./src/backend/api/cmd/seeder
 	@echo "--- Building WebAssembly Core Engine ---"
 	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/public/wasm_exec.js
@@ -64,8 +65,8 @@ sandbox: generate bin/qs
 
 db-migrate: generate
 	@echo "--- Applying Database Schemas with psqldef ---"
-	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < src/backend/db/quadsmith.sql
-	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_internal < src/backend/db/quadsmith_internal.sql
+	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_api < src/backend/db/quadsmith_api.sql
+	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < src/backend/db/quadsmith_ops.sql
 
 warn-breaking:
 	@if [ ! -s .tmp/breaking_warning.log ]; then \
@@ -110,13 +111,8 @@ bin/.generate_proto.sentinel: $(PROTO_FILES) $(VENDOR_PLUGINS) $(CUSTOM_PLUGINS)
 	@echo "--- Generating Protobuf & ConnectRPC Code ---"
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
-	@for f in src/backend/api/gen/quadsmith/_*.pb.go; do [ -f "$$f" ] && mv "$$f" "$$(echo $$f | sed 's|/_|/|')"; done || true
-	@if [ -d src/backend/api/gen/quadsmith/internal ]; then \
-		rm -rf src/backend/api/gen/quadsmith_internal; \
-		mv src/backend/api/gen/quadsmith/internal src/backend/api/gen/quadsmith_internal; \
-	fi
 	@gofmt -s -w src/backend/api/gen/
-	@npx --prefix src/frontend/web prettier --write "src/frontend/web/src/gen/**/*.{ts,tsx}"
+	@npx --prefix src/frontend/web prettier --write "src/frontend/web/src/gen/**/*.{ts,tsx}" || true
 	@touch bin/.generate_proto.sentinel
 
 bin/.format_sql.sentinel: $(wildcard src/backend/db/*.sql) .sql-formatter.json
@@ -144,7 +140,7 @@ breaking-change: generate
 
 test-breaking: breaking-change
 
-test-e2e: bin/qs
+test-e2e: bin/qs bin/qsops
 	@echo "--- Running E2E Sandbox Tests ---"
 	@./test/run_sandbox_tests.sh
 
@@ -154,7 +150,7 @@ clean:
 
 vendor:
 	@echo "--- Updating and vendoring dependencies ---"
-	@for mod in src/backend/api src/backend/api-server src/backend/worker src/backend/pkg/config src/frontend/cli src/frontend/config/go test; do \
+	@for mod in src/backend/api src/backend/api-server src/backend/ops-server src/backend/job-server src/backend/pkg/config src/frontend/cli src/frontend/config/go test; do \
 		echo "Updating $$mod..."; \
 		(cd $$mod && go get -u ./... && go mod tidy) || exit 1; \
 	done

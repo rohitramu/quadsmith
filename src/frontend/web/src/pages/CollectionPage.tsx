@@ -1,7 +1,7 @@
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { getOption } from "@bufbuild/protobuf";
-import { frontend as frontendOpt } from "../gen/quadsmith/_common_pb";
+import { frontend as frontendOpt } from "../gen/quadsmith/common/common_pb";
 import {
   ArrowUp,
   ArrowDown,

@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 // cacheEntry wraps a cached response with an expiration time.

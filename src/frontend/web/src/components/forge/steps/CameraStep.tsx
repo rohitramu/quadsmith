@@ -5,7 +5,7 @@ import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Camera } from "../../../gen/quadsmith/camera_pb";
+import type { Camera } from "../../../gen/quadsmith/api/camera_pb";
 
 export function CameraStep() {
   const {

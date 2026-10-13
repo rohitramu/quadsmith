@@ -13,55 +13,59 @@ import { create } from "@bufbuild/protobuf";
 import { useNavigate } from "react-router-dom";
 
 // ConnectQuery hooks for component listing
-import { listFrames } from "../../gen/quadsmith/frame-FrameService_connectquery";
-import { listMotors } from "../../gen/quadsmith/motor-MotorService_connectquery";
-import { listPropellers } from "../../gen/quadsmith/propeller-PropellerService_connectquery";
-import { listFlightControllers } from "../../gen/quadsmith/flight_controller-FlightControllerService_connectquery";
-import { listElectronicSpeedControllers } from "../../gen/quadsmith/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
-import { listReceivers } from "../../gen/quadsmith/receiver-ReceiverService_connectquery";
-import { listVideoTransmitters } from "../../gen/quadsmith/video_transmitter-VideoTransmitterService_connectquery";
-import { listCameras } from "../../gen/quadsmith/camera-CameraService_connectquery";
-import { listAntennas } from "../../gen/quadsmith/antenna-AntennaService_connectquery";
-import { listGpsReceivers } from "../../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
-import { listBatteries } from "../../gen/quadsmith/battery-BatteryService_connectquery";
-import { createBuild, listBuilds } from "../../gen/quadsmith/build-BuildService_connectquery";
+import { listFrames } from "../../gen/quadsmith/api/frame-FrameService_connectquery";
+import { listMotors } from "../../gen/quadsmith/api/motor-MotorService_connectquery";
+import { listPropellers } from "../../gen/quadsmith/api/propeller-PropellerService_connectquery";
+import { listFlightControllers } from "../../gen/quadsmith/api/flight_controller-FlightControllerService_connectquery";
+import { listElectronicSpeedControllers } from "../../gen/quadsmith/api/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
+import { listReceivers } from "../../gen/quadsmith/api/receiver-ReceiverService_connectquery";
+import { listVideoTransmitters } from "../../gen/quadsmith/api/video_transmitter-VideoTransmitterService_connectquery";
+import { listCameras } from "../../gen/quadsmith/api/camera-CameraService_connectquery";
+import { listAntennas } from "../../gen/quadsmith/api/antenna-AntennaService_connectquery";
+import { listGpsReceivers } from "../../gen/quadsmith/api/gps_receiver-GpsReceiverService_connectquery";
+import { listBatteries } from "../../gen/quadsmith/api/battery-BatteryService_connectquery";
+import { createBuild, listBuilds } from "../../gen/quadsmith/api/build-BuildService_connectquery";
 
 // Protobuf types & services
-import { BuildSchema, type Build } from "../../gen/quadsmith/build_pb";
-import { FrameService, type Frame } from "../../gen/quadsmith/frame_pb";
-import { MotorService, type Motor } from "../../gen/quadsmith/motor_pb";
-import { PropellerService, type Propeller } from "../../gen/quadsmith/propeller_pb";
+import { BuildSchema, type Build } from "../../gen/quadsmith/api/build_pb";
+import { FrameService, type Frame } from "../../gen/quadsmith/api/frame_pb";
+import { MotorService, type Motor } from "../../gen/quadsmith/api/motor_pb";
+import { PropellerService, type Propeller } from "../../gen/quadsmith/api/propeller_pb";
 import {
   FlightControllerService,
   type FlightController,
-} from "../../gen/quadsmith/flight_controller_pb";
+} from "../../gen/quadsmith/api/flight_controller_pb";
 import {
   ElectronicSpeedControllerService,
   ElectronicSpeedControllerSchema,
   type ElectronicSpeedController,
-} from "../../gen/quadsmith/electronic_speed_controller_pb";
-import { ReceiverService, ReceiverSchema, type Receiver } from "../../gen/quadsmith/receiver_pb";
+} from "../../gen/quadsmith/api/electronic_speed_controller_pb";
+import {
+  ReceiverService,
+  ReceiverSchema,
+  type Receiver,
+} from "../../gen/quadsmith/api/receiver_pb";
 import {
   VideoTransmitterService,
   VideoTransmitterSchema,
   type VideoTransmitter,
-} from "../../gen/quadsmith/video_transmitter_pb";
-import { CameraService, type Camera } from "../../gen/quadsmith/camera_pb";
-import { AntennaService, type Antenna } from "../../gen/quadsmith/antenna_pb";
-import { GpsReceiverService, type GpsReceiver } from "../../gen/quadsmith/gps_receiver_pb";
-import { BatteryService, type Battery } from "../../gen/quadsmith/battery_pb";
+} from "../../gen/quadsmith/api/video_transmitter_pb";
+import { CameraService, type Camera } from "../../gen/quadsmith/api/camera_pb";
+import { AntennaService, type Antenna } from "../../gen/quadsmith/api/antenna_pb";
+import { GpsReceiverService, type GpsReceiver } from "../../gen/quadsmith/api/gps_receiver_pb";
+import { BatteryService, type Battery } from "../../gen/quadsmith/api/battery_pb";
 import {
   AssembledComponentsSchema,
   type AssembledComponents,
-} from "../../gen/quadsmith/components_pb";
+} from "../../gen/quadsmith/api/components_pb";
 import {
   CheckComponentsCompatibilityRequestSchema,
   type CompatibilityMessage,
-} from "../../gen/quadsmith/compatibility_pb";
+} from "../../gen/quadsmith/api/compatibility_pb";
 import {
   EvaluateComponentsRequestSchema,
   GetComponentsElectricalLimitsRequestSchema,
-} from "../../gen/quadsmith/evaluator_pb";
+} from "../../gen/quadsmith/api/evaluator_pb";
 import { wasmEngine, useWasmEngine } from "../../lib/wasmEngine";
 
 export function getRxAntennaCount(rx: Receiver | null | undefined): number {

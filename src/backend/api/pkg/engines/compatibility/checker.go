@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 // Components represents a resolved set of hardware components to check for compatibility.

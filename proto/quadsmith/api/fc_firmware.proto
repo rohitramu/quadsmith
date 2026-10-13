@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package quadsmith.api;
+
+import "quadsmith/api/media.proto";
+import "quadsmith/api/reference_link.proto";
+import "quadsmith/common/common.proto";
+import "quadsmith/sql/sql.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith/api;api";
+
+// ---------------------------------------------------------
+// Domain Model
+// ---------------------------------------------------------
+message FcFirmware {
+  option (quadsmith.sql.table) = {name: "flight_controller_firmwares"};
+  option (quadsmith.common.collection_path) = "components/software/fc-firmware";
+  option (quadsmith.common.frontend) = {
+    color_code: "#3b82f6"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "version",
+      "target_architectures",
+      "is_open_source"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4;
+  string version = 5;
+  string target_architectures = 6;
+  string supported_protocols = 7;
+  bool is_open_source = 8;
+  string repository_url = 9;
+  string description = 10;
+  repeated ReferenceLink reference_links = 11;
+  optional string primary_display_image = 12;
+  repeated Media media = 13;
+}
+
+// ---------------------------------------------------------
+// RPC Requests & Responses
+// ---------------------------------------------------------
+message GetFcFirmwareRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListFcFirmwaresRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListFcFirmwaresResponse {
+  repeated FcFirmware fc_firmwares = 1;
+  string next_page_token = 2;
+}
+
+// ---------------------------------------------------------
+// gRPC Service
+// ---------------------------------------------------------
+service FcFirmwareService {
+  rpc GetFcFirmware(GetFcFirmwareRequest) returns (FcFirmware);
+  rpc ListFcFirmwares(ListFcFirmwaresRequest) returns (ListFcFirmwaresResponse);
+}

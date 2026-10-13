@@ -3,33 +3,33 @@ import { getCollectionColorFromSchema } from "./collectionColors";
 import { getCollectionPath } from "./hardwareCollections";
 
 // Protobuf Schemas
-import { FcFirmwareSchema } from "../gen/quadsmith/fc_firmware_pb";
-import { EscFirmwareSchema } from "../gen/quadsmith/esc_firmware_pb";
-import { VtxFirmwareSchema } from "../gen/quadsmith/vtx_firmware_pb";
-import { RadioFirmwareSchema } from "../gen/quadsmith/radio_firmware_pb";
-import { SoftwareToolSchema } from "../gen/quadsmith/software_tool_pb";
+import { FcFirmwareSchema } from "../gen/quadsmith/api/fc_firmware_pb";
+import { EscFirmwareSchema } from "../gen/quadsmith/api/esc_firmware_pb";
+import { VtxFirmwareSchema } from "../gen/quadsmith/api/vtx_firmware_pb";
+import { RadioFirmwareSchema } from "../gen/quadsmith/api/radio_firmware_pb";
+import { SoftwareToolSchema } from "../gen/quadsmith/api/software_tool_pb";
 
 // Connect Query Services
 import {
   listFcFirmwares,
   getFcFirmware,
-} from "../gen/quadsmith/fc_firmware-FcFirmwareService_connectquery";
+} from "../gen/quadsmith/api/fc_firmware-FcFirmwareService_connectquery";
 import {
   listEscFirmwares,
   getEscFirmware,
-} from "../gen/quadsmith/esc_firmware-EscFirmwareService_connectquery";
+} from "../gen/quadsmith/api/esc_firmware-EscFirmwareService_connectquery";
 import {
   listVtxFirmwares,
   getVtxFirmware,
-} from "../gen/quadsmith/vtx_firmware-VtxFirmwareService_connectquery";
+} from "../gen/quadsmith/api/vtx_firmware-VtxFirmwareService_connectquery";
 import {
   listRadioFirmwares,
   getRadioFirmware,
-} from "../gen/quadsmith/radio_firmware-RadioFirmwareService_connectquery";
+} from "../gen/quadsmith/api/radio_firmware-RadioFirmwareService_connectquery";
 import {
   listSoftwareTools,
   getSoftwareTool,
-} from "../gen/quadsmith/software_tool-SoftwareToolService_connectquery";
+} from "../gen/quadsmith/api/software_tool-SoftwareToolService_connectquery";
 
 function createStandardColumns(): Record<string, ColumnConfig> {
   return {

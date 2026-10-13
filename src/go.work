@@ -3,7 +3,8 @@ go 1.27.1
 use (
 	./backend/api
 	./backend/api-server
-	./backend/worker
+	./backend/ops-server
+	./backend/job-server
 	./backend/pkg/config
 	./frontend/cli
 	./frontend/config/go

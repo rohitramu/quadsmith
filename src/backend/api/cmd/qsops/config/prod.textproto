@@ -1,0 +1,4 @@
+ops_server_url: "${QS_OPS_SERVER_URL:-https://ops.quadsmith.com}"
+timeout {
+  seconds: 30
+}

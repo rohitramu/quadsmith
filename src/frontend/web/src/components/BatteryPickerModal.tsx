@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "@connectrpc/connect-query";
-import type { Battery } from "../gen/quadsmith/battery_pb";
-import { listBatteries } from "../gen/quadsmith/battery-BatteryService_connectquery";
+import type { Battery } from "../gen/quadsmith/api/battery_pb";
+import { listBatteries } from "../gen/quadsmith/api/battery-BatteryService_connectquery";
 import { X, Search, Weight, Gauge, Check, ArrowUpDown, Filter } from "lucide-react";
 import { getCollectionColor } from "../lib/collectionColors";
 import { CollectionBadge } from "./CollectionBadge";

@@ -10,7 +10,8 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
+	common "quadsmith/api/gen/quadsmith/common"
 )
 
 type Domain struct {
@@ -35,8 +36,8 @@ func (d Domain) PluralName() string {
 
 func (d Domain) Path() string {
 	opts := d.Message.ProtoReflect().Descriptor().Options()
-	if proto.HasExtension(opts, pb.E_CollectionPath) {
-		if p, ok := proto.GetExtension(opts, pb.E_CollectionPath).(string); ok && p != "" {
+	if proto.HasExtension(opts, common.E_CollectionPath) {
+		if p, ok := proto.GetExtension(opts, common.E_CollectionPath).(string); ok && p != "" {
 			return strings.Trim(p, "/")
 		}
 	}
@@ -195,8 +196,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
+	common "quadsmith/api/gen/quadsmith/common"
 	fconfig "quadsmith/frontend/config"
 )
 
@@ -304,7 +306,7 @@ func newRootCmd() *cobra.Command {
 		parentVar := createdCmds[prefix]
 
 		fmt.Fprintf(f, "\n\t// --- %s ---\n", pluralName)
-		fmt.Fprintf(f, "\t%s := quadsmithconnect.New%sServiceClient(httpClient, targetURL)\n", clientVar, msgName)
+		fmt.Fprintf(f, "\t%s := apiconnect.New%sServiceClient(httpClient, targetURL)\n", clientVar, msgName)
 		if len(aliasList) > 0 {
 			quoted := make([]string, len(aliasList))
 			for i, a := range aliasList {
@@ -461,7 +463,7 @@ func newRootCmd() *cobra.Command {
 
 	fmt.Fprintln(f, `
 	// --- EVALUATOR ---
-	evalClient := quadsmithconnect.NewEvaluatorServiceClient(httpClient, targetURL)
+	evalClient := apiconnect.NewEvaluatorServiceClient(httpClient, targetURL)
 	evalCmd := &cobra.Command{
 		Use: "evaluate [build-id]",
 		Aliases: []string{"eval"},
@@ -582,7 +584,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(completionCmd)
 
 	// --- SEARCH ---
-	searchClient := quadsmithconnect.NewSearchServiceClient(httpClient, targetURL)
+	searchClient := apiconnect.NewSearchServiceClient(httpClient, targetURL)
 	searchCmd := &cobra.Command{
 		Use:   "search [query]",
 		Short: "Fuzzy text completion search across collections",
@@ -705,8 +707,8 @@ func main() {
 
 func GetCollectionPath(m proto.Message) string {
 	opts := m.ProtoReflect().Descriptor().Options()
-	if proto.HasExtension(opts, pb.E_CollectionPath) {
-		if p, ok := proto.GetExtension(opts, pb.E_CollectionPath).(string); ok && p != "" {
+	if proto.HasExtension(opts, common.E_CollectionPath) {
+		if p, ok := proto.GetExtension(opts, common.E_CollectionPath).(string); ok && p != "" {
 			return strings.Trim(p, "/")
 		}
 	}
@@ -715,8 +717,8 @@ func GetCollectionPath(m proto.Message) string {
 
 func GetDefaultColumns(m proto.Message) []string {
 	opts := m.ProtoReflect().Descriptor().Options()
-	if proto.HasExtension(opts, pb.E_Frontend) {
-		if front, ok := proto.GetExtension(opts, pb.E_Frontend).(*pb.FrontendOptions); ok && front != nil && len(front.DefaultColumns) > 0 {
+	if proto.HasExtension(opts, common.E_Frontend) {
+		if front, ok := proto.GetExtension(opts, common.E_Frontend).(*common.FrontendOptions); ok && front != nil && len(front.DefaultColumns) > 0 {
 			return front.DefaultColumns
 		}
 	}

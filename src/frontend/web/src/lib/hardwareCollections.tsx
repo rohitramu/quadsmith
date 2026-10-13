@@ -4,47 +4,53 @@ import type { FieldDef } from "../components/SmartFilterInput";
 import { getCollectionColorFromSchema, type CollectionColorDef } from "./collectionColors";
 
 // Protobuf Schemas
-import { AntennaSchema } from "../gen/quadsmith/antenna_pb";
-import { BatterySchema } from "../gen/quadsmith/battery_pb";
-import { CameraSchema } from "../gen/quadsmith/camera_pb";
-import { ElectronicSpeedControllerSchema } from "../gen/quadsmith/electronic_speed_controller_pb";
-import { FlightControllerSchema } from "../gen/quadsmith/flight_controller_pb";
-import { FrameSchema } from "../gen/quadsmith/frame_pb";
-import { GpsReceiverSchema } from "../gen/quadsmith/gps_receiver_pb";
-import { MotorSchema } from "../gen/quadsmith/motor_pb";
-import { PropellerSchema } from "../gen/quadsmith/propeller_pb";
-import { ReceiverSchema } from "../gen/quadsmith/receiver_pb";
-import { VideoTransmitterSchema } from "../gen/quadsmith/video_transmitter_pb";
+import { AntennaSchema } from "../gen/quadsmith/api/antenna_pb";
+import { BatterySchema } from "../gen/quadsmith/api/battery_pb";
+import { CameraSchema } from "../gen/quadsmith/api/camera_pb";
+import { ElectronicSpeedControllerSchema } from "../gen/quadsmith/api/electronic_speed_controller_pb";
+import { FlightControllerSchema } from "../gen/quadsmith/api/flight_controller_pb";
+import { FrameSchema } from "../gen/quadsmith/api/frame_pb";
+import { GpsReceiverSchema } from "../gen/quadsmith/api/gps_receiver_pb";
+import { MotorSchema } from "../gen/quadsmith/api/motor_pb";
+import { PropellerSchema } from "../gen/quadsmith/api/propeller_pb";
+import { ReceiverSchema } from "../gen/quadsmith/api/receiver_pb";
+import { VideoTransmitterSchema } from "../gen/quadsmith/api/video_transmitter_pb";
 
 // Connect Query Services
-import { listAntennas, getAntenna } from "../gen/quadsmith/antenna-AntennaService_connectquery";
-import { listBatteries, getBattery } from "../gen/quadsmith/battery-BatteryService_connectquery";
-import { listCameras, getCamera } from "../gen/quadsmith/camera-CameraService_connectquery";
+import { listAntennas, getAntenna } from "../gen/quadsmith/api/antenna-AntennaService_connectquery";
+import {
+  listBatteries,
+  getBattery,
+} from "../gen/quadsmith/api/battery-BatteryService_connectquery";
+import { listCameras, getCamera } from "../gen/quadsmith/api/camera-CameraService_connectquery";
 import {
   listElectronicSpeedControllers,
   getElectronicSpeedController,
-} from "../gen/quadsmith/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
+} from "../gen/quadsmith/api/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
 import {
   listFlightControllers,
   getFlightController,
-} from "../gen/quadsmith/flight_controller-FlightControllerService_connectquery";
-import { listFrames, getFrame } from "../gen/quadsmith/frame-FrameService_connectquery";
+} from "../gen/quadsmith/api/flight_controller-FlightControllerService_connectquery";
+import { listFrames, getFrame } from "../gen/quadsmith/api/frame-FrameService_connectquery";
 import {
   listGpsReceivers,
   getGpsReceiver,
-} from "../gen/quadsmith/gps_receiver-GpsReceiverService_connectquery";
-import { listMotors, getMotor } from "../gen/quadsmith/motor-MotorService_connectquery";
+} from "../gen/quadsmith/api/gps_receiver-GpsReceiverService_connectquery";
+import { listMotors, getMotor } from "../gen/quadsmith/api/motor-MotorService_connectquery";
 import {
   listPropellers,
   getPropeller,
-} from "../gen/quadsmith/propeller-PropellerService_connectquery";
-import { listReceivers, getReceiver } from "../gen/quadsmith/receiver-ReceiverService_connectquery";
+} from "../gen/quadsmith/api/propeller-PropellerService_connectquery";
+import {
+  listReceivers,
+  getReceiver,
+} from "../gen/quadsmith/api/receiver-ReceiverService_connectquery";
 import {
   listVideoTransmitters,
   getVideoTransmitter,
-} from "../gen/quadsmith/video_transmitter-VideoTransmitterService_connectquery";
+} from "../gen/quadsmith/api/video_transmitter-VideoTransmitterService_connectquery";
 import { getOption } from "@bufbuild/protobuf";
-import { collection_path as collectionPathOpt } from "../gen/quadsmith/_common_pb";
+import { collection_path as collectionPathOpt } from "../gen/quadsmith/common/common_pb";
 
 export interface ColumnConfig {
   id: string;

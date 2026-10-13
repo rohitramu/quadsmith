@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 )
 
 func TestMotorEscCompatibility(t *testing.T) {

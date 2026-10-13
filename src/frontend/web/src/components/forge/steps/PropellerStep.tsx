@@ -5,7 +5,7 @@ import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Propeller } from "../../../gen/quadsmith/propeller_pb";
+import type { Propeller } from "../../../gen/quadsmith/api/propeller_pb";
 
 export function PropellerStep() {
   const {

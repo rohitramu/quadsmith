@@ -14,7 +14,7 @@ import { ProductHoverCard } from "../../ProductHoverCard";
 import { CollectionIcon } from "../../CollectionIcon";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
 import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Antenna } from "../../../gen/quadsmith/antenna_pb";
+import type { Antenna } from "../../../gen/quadsmith/api/antenna_pb";
 
 export function ReceiverAntennaStep() {
   const {

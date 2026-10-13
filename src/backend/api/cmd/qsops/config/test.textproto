@@ -1,0 +1,4 @@
+ops_server_url: "${QS_OPS_SERVER_URL:-http://127.0.0.1:8081}"
+timeout {
+  seconds: 30
+}

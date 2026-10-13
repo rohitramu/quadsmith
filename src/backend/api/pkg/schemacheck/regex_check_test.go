@@ -3,7 +3,7 @@ package schemacheck
 import (
 	"testing"
 
-	_ "quadsmith/api/gen/quadsmith"
+	_ "quadsmith/api/gen/quadsmith/api"
 )
 
 func TestCheckAllProtoRegexPatterns(t *testing.T) {

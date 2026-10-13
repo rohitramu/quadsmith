@@ -1,4 +1,4 @@
-import { MediaType, type Media } from "../gen/quadsmith/media_pb";
+import { MediaType, type Media } from "../gen/quadsmith/api/media_pb";
 import { getYouTubeEmbedUrl } from "../lib/format";
 import { ExternalLink, Film, Image as ImageIcon, Box, Download, Video } from "lucide-react";
 

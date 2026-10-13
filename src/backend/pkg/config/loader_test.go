@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	quadsmith_internal "quadsmith/api/gen/quadsmith_internal"
+	config "quadsmith/api/gen/quadsmith/config"
 )
 
 func TestExpandTemplates(t *testing.T) {
@@ -38,16 +38,16 @@ func TestExpandTemplates(t *testing.T) {
 func TestValidateDatabase(t *testing.T) {
 	tests := []struct {
 		name    string
-		db      *quadsmith_internal.DatabaseConfig
+		db      *config.DatabaseConfig
 		env     string
 		wantErr bool
 		errMsg  string
 	}{
 		{
 			name: "valid database config",
-			db: &quadsmith_internal.DatabaseConfig{
-				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith",
-				Name:           "quadsmith",
+			db: &config.DatabaseConfig{
+				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith_api",
+				Name:           "quadsmith_api",
 				MaxConnections: 20,
 				MinConnections: 5,
 			},
@@ -56,8 +56,8 @@ func TestValidateDatabase(t *testing.T) {
 		},
 		{
 			name: "missing database name",
-			db: &quadsmith_internal.DatabaseConfig{
-				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith",
+			db: &config.DatabaseConfig{
+				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith_api",
 				Name:           "",
 				MaxConnections: 20,
 			},
@@ -67,9 +67,9 @@ func TestValidateDatabase(t *testing.T) {
 		},
 		{
 			name: "database name mismatch with url path",
-			db: &quadsmith_internal.DatabaseConfig{
-				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith",
-				Name:           "quadsmith_internal",
+			db: &config.DatabaseConfig{
+				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith_api",
+				Name:           "quadsmith_ops",
 				MaxConnections: 20,
 			},
 			env:     "sandbox",
@@ -78,9 +78,9 @@ func TestValidateDatabase(t *testing.T) {
 		},
 		{
 			name: "min connections exceeds max connections",
-			db: &quadsmith_internal.DatabaseConfig{
-				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith",
-				Name:           "quadsmith",
+			db: &config.DatabaseConfig{
+				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith_api",
+				Name:           "quadsmith_api",
 				MaxConnections: 5,
 				MinConnections: 10,
 			},
@@ -90,9 +90,9 @@ func TestValidateDatabase(t *testing.T) {
 		},
 		{
 			name: "localhost rejected in production",
-			db: &quadsmith_internal.DatabaseConfig{
-				Url:            "postgres://user:pass@localhost:5432/quadsmith",
-				Name:           "quadsmith",
+			db: &config.DatabaseConfig{
+				Url:            "postgres://user:pass@localhost:5432/quadsmith_api",
+				Name:           "quadsmith_api",
 				MaxConnections: 20,
 			},
 			env:     "prod",
@@ -149,8 +149,8 @@ server {
   max_request_bytes: 1048576
 }
 database {
-  url: "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
-  name: "quadsmith"
+  url: "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api"
+  name: "quadsmith_api"
   max_connections: 10
 }
 auth {
@@ -166,7 +166,7 @@ auth {
 		t.Fatalf("failed to write test config: %v", err)
 	}
 
-	var cfg quadsmith_internal.ApiServerConfig
+	var cfg config.ApiServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		t.Fatalf("failed to load config: %v", err)
 	}
@@ -177,25 +177,12 @@ auth {
 	if cfg.Auth.Secret != "super-secret-key-12345678901234" {
 		t.Errorf("expected secret expanded, got %q", cfg.Auth.Secret)
 	}
-	if cfg.Database.Name != "quadsmith" {
-		t.Errorf("expected database name quadsmith, got %q", cfg.Database.Name)
+	if cfg.Database.Name != "quadsmith_api" {
+		t.Errorf("expected database name quadsmith_api, got %q", cfg.Database.Name)
 	}
 
 	if err := ValidateAPIServerConfig(&cfg); err != nil {
 		t.Fatalf("validation failed: %v", err)
-	}
-}
-
-func TestNewTestWorkerConfig(t *testing.T) {
-	wcfg := NewTestWorkerConfig(t, WithWorkerPort(9999), WithWorkerConcurrency(8))
-	if err := ValidateWorkerConfig(wcfg); err != nil {
-		t.Fatalf("unexpected validation error: %v", err)
-	}
-	if wcfg.Worker.Port != 9999 {
-		t.Errorf("expected port 9999, got %d", wcfg.Worker.Port)
-	}
-	if wcfg.Worker.Concurrency != 8 {
-		t.Errorf("expected concurrency 8, got %d", wcfg.Worker.Concurrency)
 	}
 }
 
@@ -205,16 +192,32 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server sandbox: %v", err)
 	}
-	if apiSandbox.Server.Port != 8080 || apiSandbox.Database.Name != "quadsmith" {
+	if apiSandbox.Server.Port != 8080 || apiSandbox.Database.Name != "quadsmith_api" {
 		t.Errorf("unexpected api-server sandbox config: %+v", apiSandbox)
 	}
 
-	workerSandbox, err := LoadWorkerConfig("", "sandbox")
+	opsSandbox, err := LoadOpsServerConfig("", "sandbox")
 	if err != nil {
-		t.Fatalf("failed to load worker sandbox: %v", err)
+		t.Fatalf("failed to load ops-server sandbox: %v", err)
 	}
-	if workerSandbox.Worker.Port != 8081 || workerSandbox.Database.Name != "quadsmith" || workerSandbox.InternalDatabase.Name != "quadsmith_internal" {
-		t.Errorf("unexpected worker sandbox config: %+v", workerSandbox)
+	if opsSandbox.Server.Port != 8081 || opsSandbox.Database.Name != "quadsmith_api" || opsSandbox.InternalDatabase.Name != "quadsmith_ops" {
+		t.Errorf("unexpected ops-server sandbox config: %+v", opsSandbox)
+	}
+
+	jobSandbox, err := LoadJobServerConfig("", "sandbox")
+	if err != nil {
+		t.Fatalf("failed to load job-server sandbox: %v", err)
+	}
+	if jobSandbox.OpsServerUrl != "http://127.0.0.1:8081" || len(jobSandbox.Schedules) != 3 {
+		t.Errorf("unexpected job-server sandbox config: %+v", jobSandbox)
+	}
+
+	opsCliSandbox, err := LoadOpsCliConfig("", "sandbox")
+	if err != nil {
+		t.Fatalf("failed to load ops cli sandbox: %v", err)
+	}
+	if opsCliSandbox.OpsServerUrl != "http://127.0.0.1:8081" {
+		t.Errorf("unexpected ops cli sandbox config: %+v", opsCliSandbox)
 	}
 
 	// Test
@@ -226,18 +229,20 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected api-server test config: %+v", apiTest)
 	}
 
-	workerTest, err := LoadWorkerConfig("", "test")
+	opsTest, err := LoadOpsServerConfig("", "test")
 	if err != nil {
-		t.Fatalf("failed to load worker test: %v", err)
+		t.Fatalf("failed to load ops-server test: %v", err)
 	}
-	if workerTest.Worker.Port != 8081 || workerTest.InternalDatabase.Name != "quadsmith_internal" {
-		t.Errorf("unexpected worker test config: %+v", workerTest)
+	if opsTest.Server.Port != 8081 || opsTest.InternalDatabase.Name != "quadsmith_ops" {
+		t.Errorf("unexpected ops-server test config: %+v", opsTest)
 	}
 
 	// Staging & Prod (require QS_DATABASE_URL, QS_INTERNAL_DATABASE_URL, and QS_AUTH_SECRET)
-	t.Setenv("QS_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith")
-	t.Setenv("QS_INTERNAL_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith_internal")
+	t.Setenv("QS_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith_api")
+	t.Setenv("QS_INTERNAL_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith_ops")
 	t.Setenv("QS_AUTH_SECRET", "super-secret-prod-auth-key-32bytes")
+	t.Setenv("QS_OAUTH_CLIENT_ID", "dummy-client-id")
+	t.Setenv("QS_OAUTH_CLIENT_SECRET", "dummy-client-secret")
 
 	apiStaging, err := LoadAPIServerConfig("", "staging")
 	if err != nil {
@@ -255,19 +260,19 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected api-server prod port: %d", apiProd.Server.Port)
 	}
 
-	workerStaging, err := LoadWorkerConfig("", "staging")
+	opsStaging, err := LoadOpsServerConfig("", "staging")
 	if err != nil {
-		t.Fatalf("failed to load worker staging: %v", err)
+		t.Fatalf("failed to load ops-server staging: %v", err)
 	}
-	if workerStaging.Worker.Port != 443 {
-		t.Errorf("unexpected worker staging port: %d", workerStaging.Worker.Port)
+	if opsStaging.Server.Port != 8081 {
+		t.Errorf("unexpected ops-server staging port: %d", opsStaging.Server.Port)
 	}
 
-	workerProd, err := LoadWorkerConfig("", "prod")
+	opsProd, err := LoadOpsServerConfig("", "prod")
 	if err != nil {
-		t.Fatalf("failed to load worker prod: %v", err)
+		t.Fatalf("failed to load ops-server prod: %v", err)
 	}
-	if workerProd.Worker.Port != 443 {
-		t.Errorf("unexpected worker prod port: %d", workerProd.Worker.Port)
+	if opsProd.Server.Port != 8081 {
+		t.Errorf("unexpected ops-server prod port: %d", opsProd.Server.Port)
 	}
 }

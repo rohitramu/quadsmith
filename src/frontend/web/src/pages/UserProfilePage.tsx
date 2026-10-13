@@ -16,13 +16,13 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { getPublicProfile } from "../gen/quadsmith/user-UserService_connectquery";
-import { listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
+import { getPublicProfile } from "../gen/quadsmith/api/user-UserService_connectquery";
+import { listBuilds } from "../gen/quadsmith/api/build-BuildService_connectquery";
 import {
   listUserCollections,
   createCollection,
   deleteCollection,
-} from "../gen/quadsmith/social-SocialService_connectquery";
+} from "../gen/quadsmith/api/social-SocialService_connectquery";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 import { BuildCard } from "../components/BuildCard";
 import { useAuth } from "../context/AuthContext";

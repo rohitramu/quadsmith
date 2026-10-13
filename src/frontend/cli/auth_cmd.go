@@ -17,8 +17,8 @@ import (
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 )
 
 type CLIConfig struct {
@@ -117,7 +117,7 @@ func newCLIHTTPClient() *http.Client {
 }
 
 func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http.Client) {
-	authClient := quadsmithconnect.NewAuthServiceClient(httpClient, targetURL)
+	authClient := apiconnect.NewAuthServiceClient(httpClient, targetURL)
 
 	// login
 	loginCmd := &cobra.Command{

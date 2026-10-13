@@ -17,8 +17,8 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/protobuf/encoding/prototext"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 )
 
 func resolveSeedPath(t *testing.T) string {
@@ -49,7 +49,7 @@ func setupTestServer(t *testing.T) (*httptest.Server, *pgxpool.Pool) {
 		dbUrl = os.Getenv("DATABASE_URL")
 	}
 	if dbUrl == "" {
-		dbUrl = "postgres://postgres:postgres@localhost:5432/quadsmith"
+		dbUrl = "postgres://postgres:postgres@localhost:5432/quadsmith_api"
 	}
 
 	ctx := context.Background()
@@ -64,10 +64,10 @@ func setupTestServer(t *testing.T) (*httptest.Server, *pgxpool.Pool) {
 	}
 
 	mux := http.NewServeMux()
-	path, handler := quadsmithconnect.NewMotorServiceHandler(pb.NewMotorServiceHandler(pool))
+	path, handler := apiconnect.NewMotorServiceHandler(pb.NewMotorServiceHandler(pool))
 	mux.Handle(path, handler)
 
-	pathFrame, handlerFrame := quadsmithconnect.NewFrameServiceHandler(pb.NewFrameServiceHandler(pool))
+	pathFrame, handlerFrame := apiconnect.NewFrameServiceHandler(pb.NewFrameServiceHandler(pool))
 	mux.Handle(pathFrame, handlerFrame)
 
 	srv := httptest.NewServer(h2c.NewHandler(mux, &http2.Server{}))
@@ -79,7 +79,7 @@ func TestPagination_BasicFlow(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	client := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
+	client := apiconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
 	ctx := context.Background()
 
 	// 1. Fetch first page of 5 motors
@@ -131,7 +131,7 @@ func TestPagination_FullIteration(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	client := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
+	client := apiconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
 	ctx := context.Background()
 
 	// Iterate through all pages with page_size=25
@@ -184,7 +184,7 @@ func TestPagination_WithSorting(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	client := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
+	client := apiconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
 	ctx := context.Background()
 
 	// Sort descending by KV (^kv)
@@ -218,7 +218,7 @@ func TestPagination_WithFiltering(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	client := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
+	client := apiconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
 	ctx := context.Background()
 
 	filter := `manufacturer == "T-Motor"`
@@ -260,7 +260,7 @@ func TestPagination_WithFilteringAndSorting(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	client := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
+	client := apiconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
 	ctx := context.Background()
 
 	filter := `kv >= 2000`
@@ -301,7 +301,7 @@ func TestPagination_TokenPreservesFilterAndSort(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	client := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
+	client := apiconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
 	ctx := context.Background()
 
 	filter := `manufacturer == "BETAFPV"`
@@ -343,7 +343,7 @@ func TestPagination_ValidationErrors(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	client := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
+	client := apiconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
 	ctx := context.Background()
 
 	// 1. Negative page_size
@@ -413,7 +413,7 @@ func TestPagination_DefaultPageSize(t *testing.T) {
 	defer srv.Close()
 	defer pool.Close()
 
-	client := quadsmithconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
+	client := apiconnect.NewMotorServiceClient(http.DefaultClient, srv.URL)
 	ctx := context.Background()
 
 	// Default page size (unspecified = 0) should return 20 items

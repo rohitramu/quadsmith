@@ -21,8 +21,8 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import type { ArchivedUsername } from "../gen/quadsmith/auth_pb";
-import { OtpVerificationErrorSchema } from "../gen/quadsmith/auth_pb";
+import type { ArchivedUsername } from "../gen/quadsmith/api/auth_pb";
+import { OtpVerificationErrorSchema } from "../gen/quadsmith/api/auth_pb";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";

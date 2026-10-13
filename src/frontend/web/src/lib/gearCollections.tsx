@@ -3,22 +3,22 @@ import { getCollectionColorFromSchema } from "./collectionColors";
 import { getCollectionPath } from "./hardwareCollections";
 
 // Protobuf Schemas
-import { TransmitterSchema } from "../gen/quadsmith/transmitter_pb";
-import { GogglesSchema } from "../gen/quadsmith/goggles_pb";
-import { ChargerSchema } from "../gen/quadsmith/charger_pb";
-import { FieldToolSchema } from "../gen/quadsmith/field_tool_pb";
+import { TransmitterSchema } from "../gen/quadsmith/api/transmitter_pb";
+import { GogglesSchema } from "../gen/quadsmith/api/goggles_pb";
+import { ChargerSchema } from "../gen/quadsmith/api/charger_pb";
+import { FieldToolSchema } from "../gen/quadsmith/api/field_tool_pb";
 
 // Connect Query Services
 import {
   listTransmitters,
   getTransmitter,
-} from "../gen/quadsmith/transmitter-TransmitterService_connectquery";
-import { listGoggles, getGoggles } from "../gen/quadsmith/goggles-GogglesService_connectquery";
-import { listChargers, getCharger } from "../gen/quadsmith/charger-ChargerService_connectquery";
+} from "../gen/quadsmith/api/transmitter-TransmitterService_connectquery";
+import { listGoggles, getGoggles } from "../gen/quadsmith/api/goggles-GogglesService_connectquery";
+import { listChargers, getCharger } from "../gen/quadsmith/api/charger-ChargerService_connectquery";
 import {
   listFieldTools,
   getFieldTool,
-} from "../gen/quadsmith/field_tool-FieldToolService_connectquery";
+} from "../gen/quadsmith/api/field_tool-FieldToolService_connectquery";
 
 function createStandardColumns(): Record<string, ColumnConfig> {
   return {

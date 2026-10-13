@@ -5,9 +5,9 @@ import { Moon, Sun, Loader2, ArrowLeft, Mail, AlertTriangle, Lock, Check } from 
 import { useAuth } from "../context/AuthContext";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
-import { OtpVerificationErrorSchema, LoginChallengeStatus } from "../gen/quadsmith/auth_pb";
-import type { GetLoginChallengeDetailsResponse } from "../gen/quadsmith/auth_pb";
-import { UsernameAvailabilityStatus } from "../gen/quadsmith/user_pb";
+import { OtpVerificationErrorSchema, LoginChallengeStatus } from "../gen/quadsmith/api/auth_pb";
+import type { GetLoginChallengeDetailsResponse } from "../gen/quadsmith/api/auth_pb";
+import { UsernameAvailabilityStatus } from "../gen/quadsmith/api/user_pb";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 
 export function LoginPage() {

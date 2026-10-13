@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
-import { search } from "../gen/quadsmith/search-SearchService_connectquery";
+import { search } from "../gen/quadsmith/api/search-SearchService_connectquery";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 import {

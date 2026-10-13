@@ -11,8 +11,8 @@ import (
 	"connectrpc.com/connect"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 	"quadsmith/api/pkg/auth"
 )
 
@@ -33,7 +33,7 @@ func getDBURL() string {
 	if url := os.Getenv("DATABASE_URL"); url != "" {
 		return url
 	}
-	return "postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+	return "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api"
 }
 
 func TestSandboxBuilds(t *testing.T) {
@@ -45,7 +45,7 @@ func TestSandboxBuilds(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	buildClient := quadsmithconnect.NewBuildServiceClient(
+	buildClient := apiconnect.NewBuildServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -73,7 +73,7 @@ func TestSandboxFrames(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	frameClient := quadsmithconnect.NewFrameServiceClient(
+	frameClient := apiconnect.NewFrameServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -101,7 +101,7 @@ func TestSandboxEvaluateBuild(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	evalClient := quadsmithconnect.NewEvaluatorServiceClient(
+	evalClient := apiconnect.NewEvaluatorServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -221,7 +221,7 @@ func TestSandboxCreateBuildDuplicateID(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	buildClient := quadsmithconnect.NewBuildServiceClient(
+	buildClient := apiconnect.NewBuildServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -297,7 +297,7 @@ func TestSandboxCreateBuild_RejectsUnspecifiedReferenceLink(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	buildClient := quadsmithconnect.NewBuildServiceClient(
+	buildClient := apiconnect.NewBuildServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -334,7 +334,7 @@ func TestSandboxCreateBuild_RejectsDuplicateReferenceLinkURL(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	buildClient := quadsmithconnect.NewBuildServiceClient(
+	buildClient := apiconnect.NewBuildServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -375,7 +375,7 @@ func TestSandboxAuth_ResendEmailOtpGeneratesFreshCodeAndBindsChallenge(t *testin
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	authClient := quadsmithconnect.NewAuthServiceClient(
+	authClient := apiconnect.NewAuthServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -587,7 +587,7 @@ func TestSandboxAuth_LockoutAfter3FailedCodesPerIP(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	authClient := quadsmithconnect.NewAuthServiceClient(
+	authClient := apiconnect.NewAuthServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -742,7 +742,7 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	authClient := quadsmithconnect.NewAuthServiceClient(
+	authClient := apiconnect.NewAuthServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -939,7 +939,7 @@ func TestSandboxAuth_CrossDeviceMagicLinkApproval(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	authClient := quadsmithconnect.NewAuthServiceClient(
+	authClient := apiconnect.NewAuthServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -1162,7 +1162,7 @@ func TestSandboxAuth_CrossDeviceMagicLinkApproval(t *testing.T) {
 
 func TestSandboxCreateCollection(t *testing.T) {
 	apiUrl := getAPIURL()
-	socialClient := quadsmithconnect.NewSocialServiceClient(
+	socialClient := apiconnect.NewSocialServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -1209,7 +1209,7 @@ func TestSandboxCreateCollection(t *testing.T) {
 
 func TestSandboxUpdateCollection(t *testing.T) {
 	apiUrl := getAPIURL()
-	socialClient := quadsmithconnect.NewSocialServiceClient(
+	socialClient := apiconnect.NewSocialServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)

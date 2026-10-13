@@ -1,0 +1,47 @@
+server {
+  port: 8081
+}
+database {
+  url: "${QS_DATABASE_URL}"
+  name: "quadsmith_api"
+  max_connections: 50
+  min_connections: 5
+}
+internal_database {
+  url: "${QS_INTERNAL_DATABASE_URL}"
+  name: "quadsmith_ops"
+  max_connections: 50
+  min_connections: 5
+}
+groups {
+  name: "operators"
+  description: "Full developer ops permissions"
+  allowed_methods: "*"
+}
+groups {
+  name: "robots"
+  description: "Automated scheduler and cron permissions"
+  allowed_methods: "*"
+}
+groups {
+  name: "viewers"
+  description: "Read-only internal operator permissions"
+  allowed_methods: "Get*"
+  allowed_methods: "List*"
+}
+jit {
+  enabled: true
+  auto_approve: false
+  default_hours: 2
+  max_hours: 12
+  sensitive_methods: "RunDatabaseMaintenance"
+  sensitive_methods: "SeedDatabase"
+  sensitive_methods: "RevokeInternalToken"
+}
+oauth {
+  provider: "github"
+  client_id: "${QS_OAUTH_CLIENT_ID}"
+  client_secret: "${QS_OAUTH_CLIENT_SECRET}"
+  allowed_orgs: "quadsmith"
+  default_group: "viewers"
+}

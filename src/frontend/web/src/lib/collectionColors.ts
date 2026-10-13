@@ -1,28 +1,28 @@
 import { getOption } from "@bufbuild/protobuf";
-import { frontend } from "../gen/quadsmith/_common_pb";
+import { frontend } from "../gen/quadsmith/common/common_pb";
 
 // Protobuf Schemas for Collections
-import { AntennaSchema } from "../gen/quadsmith/antenna_pb";
-import { BatterySchema } from "../gen/quadsmith/battery_pb";
-import { BuildSchema } from "../gen/quadsmith/build_pb";
-import { CameraSchema } from "../gen/quadsmith/camera_pb";
-import { ElectronicSpeedControllerSchema } from "../gen/quadsmith/electronic_speed_controller_pb";
-import { FlightControllerSchema } from "../gen/quadsmith/flight_controller_pb";
-import { FrameSchema } from "../gen/quadsmith/frame_pb";
-import { GpsReceiverSchema } from "../gen/quadsmith/gps_receiver_pb";
-import { MotorSchema } from "../gen/quadsmith/motor_pb";
-import { PropellerSchema } from "../gen/quadsmith/propeller_pb";
-import { ReceiverSchema } from "../gen/quadsmith/receiver_pb";
-import { VideoTransmitterSchema } from "../gen/quadsmith/video_transmitter_pb";
-import { FcFirmwareSchema } from "../gen/quadsmith/fc_firmware_pb";
-import { EscFirmwareSchema } from "../gen/quadsmith/esc_firmware_pb";
-import { VtxFirmwareSchema } from "../gen/quadsmith/vtx_firmware_pb";
-import { RadioFirmwareSchema } from "../gen/quadsmith/radio_firmware_pb";
-import { SoftwareToolSchema } from "../gen/quadsmith/software_tool_pb";
-import { TransmitterSchema } from "../gen/quadsmith/transmitter_pb";
-import { GogglesSchema } from "../gen/quadsmith/goggles_pb";
-import { ChargerSchema } from "../gen/quadsmith/charger_pb";
-import { FieldToolSchema } from "../gen/quadsmith/field_tool_pb";
+import { AntennaSchema } from "../gen/quadsmith/api/antenna_pb";
+import { BatterySchema } from "../gen/quadsmith/api/battery_pb";
+import { BuildSchema } from "../gen/quadsmith/api/build_pb";
+import { CameraSchema } from "../gen/quadsmith/api/camera_pb";
+import { ElectronicSpeedControllerSchema } from "../gen/quadsmith/api/electronic_speed_controller_pb";
+import { FlightControllerSchema } from "../gen/quadsmith/api/flight_controller_pb";
+import { FrameSchema } from "../gen/quadsmith/api/frame_pb";
+import { GpsReceiverSchema } from "../gen/quadsmith/api/gps_receiver_pb";
+import { MotorSchema } from "../gen/quadsmith/api/motor_pb";
+import { PropellerSchema } from "../gen/quadsmith/api/propeller_pb";
+import { ReceiverSchema } from "../gen/quadsmith/api/receiver_pb";
+import { VideoTransmitterSchema } from "../gen/quadsmith/api/video_transmitter_pb";
+import { FcFirmwareSchema } from "../gen/quadsmith/api/fc_firmware_pb";
+import { EscFirmwareSchema } from "../gen/quadsmith/api/esc_firmware_pb";
+import { VtxFirmwareSchema } from "../gen/quadsmith/api/vtx_firmware_pb";
+import { RadioFirmwareSchema } from "../gen/quadsmith/api/radio_firmware_pb";
+import { SoftwareToolSchema } from "../gen/quadsmith/api/software_tool_pb";
+import { TransmitterSchema } from "../gen/quadsmith/api/transmitter_pb";
+import { GogglesSchema } from "../gen/quadsmith/api/goggles_pb";
+import { ChargerSchema } from "../gen/quadsmith/api/charger_pb";
+import { FieldToolSchema } from "../gen/quadsmith/api/field_tool_pb";
 
 export interface CollectionColorDef {
   id: string;

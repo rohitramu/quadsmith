@@ -13,7 +13,7 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
-	quadsmith_internal "quadsmith/api/gen/quadsmith_internal"
+	config "quadsmith/api/gen/quadsmith/config"
 )
 
 var placeholderRegex = regexp.MustCompile(`\$\{([A-Za-z0-9_]+)(?::-([^}]*))?\}`)
@@ -79,13 +79,13 @@ func Load[M proto.Message](path string, msg M) error {
 }
 
 // LoadAPIServerConfig loads and validates the API server configuration from a path or environment name.
-func LoadAPIServerConfig(configPath, envName string) (*quadsmith_internal.ApiServerConfig, error) {
+func LoadAPIServerConfig(configPath, envName string) (*config.ApiServerConfig, error) {
 	resolvedPath, err := resolveConfigPath("api-server", configPath, envName)
 	if err != nil {
 		return nil, err
 	}
 
-	var cfg quadsmith_internal.ApiServerConfig
+	var cfg config.ApiServerConfig
 	if err := Load(resolvedPath, &cfg); err != nil {
 		return nil, err
 	}
@@ -103,14 +103,14 @@ func LoadAPIServerConfig(configPath, envName string) (*quadsmith_internal.ApiSer
 	return &cfg, nil
 }
 
-// LoadWorkerConfig loads and validates the background worker configuration from a path or environment name.
-func LoadWorkerConfig(configPath, envName string) (*quadsmith_internal.WorkerConfig, error) {
-	resolvedPath, err := resolveConfigPath("worker", configPath, envName)
+// LoadOpsServerConfig loads and validates the internal ops server configuration from a path or environment name.
+func LoadOpsServerConfig(configPath, envName string) (*config.OpsServerConfig, error) {
+	resolvedPath, err := resolveConfigPath("ops-server", configPath, envName)
 	if err != nil {
 		return nil, err
 	}
 
-	var cfg quadsmith_internal.WorkerConfig
+	var cfg config.OpsServerConfig
 	if err := Load(resolvedPath, &cfg); err != nil {
 		return nil, err
 	}
@@ -119,9 +119,84 @@ func LoadWorkerConfig(configPath, envName string) (*quadsmith_internal.WorkerCon
 		cfg.Environment = inferEnvironment(resolvedPath, envName)
 	}
 
-	applyWorkerEnvOverrides(&cfg)
+	applyOpsServerEnvOverrides(&cfg)
 
-	if err := ValidateWorkerConfig(&cfg); err != nil {
+	if err := ValidateOpsServerConfig(&cfg); err != nil {
+		return nil, err
+	}
+
+	return &cfg, nil
+}
+
+// LoadJobServerConfig loads and validates the job scheduler configuration from a path or environment name.
+func LoadJobServerConfig(configPath, envName string) (*config.JobServerConfig, error) {
+	resolvedPath, err := resolveConfigPath("job-server", configPath, envName)
+	if err != nil {
+		return nil, err
+	}
+
+	var cfg config.JobServerConfig
+	if err := Load(resolvedPath, &cfg); err != nil {
+		return nil, err
+	}
+
+	if cfg.GetEnvironment() == "" {
+		cfg.Environment = inferEnvironment(resolvedPath, envName)
+	}
+
+	applyJobServerEnvOverrides(&cfg)
+
+	if err := ValidateJobServerConfig(&cfg); err != nil {
+		return nil, err
+	}
+
+	return &cfg, nil
+}
+
+// LoadOpsCliConfig loads and validates configuration for the qsops operations CLI.
+func LoadOpsCliConfig(configPath, envName string) (*config.OpsCliConfig, error) {
+	resolvedPath, err := resolveConfigPath("api/cmd/qsops", configPath, envName)
+	if err != nil {
+		resolvedPath, err = resolveConfigPath("qsops", configPath, envName)
+	}
+
+	var cfg config.OpsCliConfig
+	if err == nil {
+		_ = Load(resolvedPath, &cfg)
+	}
+
+	if cfg.GetEnvironment() == "" {
+		cfg.Environment = inferEnvironment(resolvedPath, envName)
+	}
+
+	applyOpsCliEnvOverrides(&cfg)
+
+	if err := ValidateOpsCliConfig(&cfg); err != nil {
+		return nil, err
+	}
+
+	return &cfg, nil
+}
+
+// LoadCliConfig loads and validates configuration for the customer CLI.
+func LoadCliConfig(configPath, envName string) (*config.CliConfig, error) {
+	resolvedPath, err := resolveConfigPath("cli", configPath, envName)
+	if err != nil {
+		return nil, err
+	}
+
+	var cfg config.CliConfig
+	if err := Load(resolvedPath, &cfg); err != nil {
+		return nil, err
+	}
+
+	if cfg.GetEnvironment() == "" {
+		cfg.Environment = inferEnvironment(resolvedPath, envName)
+	}
+
+	applyCliEnvOverrides(&cfg)
+
+	if err := ValidateCliConfig(&cfg); err != nil {
 		return nil, err
 	}
 
@@ -208,9 +283,9 @@ func FindBinaryConfigFile(binaryName, envName string) (string, error) {
 	return "", fmt.Errorf("unable to locate configuration file %q for binary %q and environment %q", filename, binaryName, envName)
 }
 
-func applyAPIServerEnvOverrides(cfg *quadsmith_internal.ApiServerConfig) {
+func applyAPIServerEnvOverrides(cfg *config.ApiServerConfig) {
 	if cfg.Server == nil {
-		cfg.Server = &quadsmith_internal.ServerConfig{}
+		cfg.Server = &config.ServerConfig{}
 	}
 	if v := os.Getenv("QS_SERVER_PORT"); v != "" {
 		if p, err := strconv.Atoi(v); err == nil {
@@ -232,12 +307,12 @@ func applyAPIServerEnvOverrides(cfg *quadsmith_internal.ApiServerConfig) {
 	}
 
 	if cfg.Database == nil {
-		cfg.Database = &quadsmith_internal.DatabaseConfig{}
+		cfg.Database = &config.DatabaseConfig{}
 	}
 	applyDatabaseEnvOverrides(cfg.Database)
 
 	if cfg.Auth == nil {
-		cfg.Auth = &quadsmith_internal.AuthConfig{}
+		cfg.Auth = &config.AuthConfig{}
 	}
 	if v := os.Getenv("QS_AUTH_SECRET"); v != "" {
 		cfg.Auth.Secret = v
@@ -280,33 +355,70 @@ func applyAPIServerEnvOverrides(cfg *quadsmith_internal.ApiServerConfig) {
 	}
 }
 
-func applyWorkerEnvOverrides(cfg *quadsmith_internal.WorkerConfig) {
-	if cfg.Worker == nil {
-		cfg.Worker = &quadsmith_internal.WorkerDaemonConfig{}
+func applyOpsServerEnvOverrides(cfg *config.OpsServerConfig) {
+	if cfg.Server == nil {
+		cfg.Server = &config.ServerConfig{}
 	}
-	if v := os.Getenv("QS_WORKER_PORT"); v != "" {
+	if v := os.Getenv("QS_OPS_SERVER_PORT"); v != "" {
 		if p, err := strconv.Atoi(v); err == nil {
-			cfg.Worker.Port = int32(p)
-		}
-	}
-	if v := os.Getenv("QS_WORKER_CONCURRENCY"); v != "" {
-		if c, err := strconv.Atoi(v); err == nil {
-			cfg.Worker.Concurrency = int32(c)
+			cfg.Server.Port = int32(p)
 		}
 	}
 
 	if cfg.Database == nil {
-		cfg.Database = &quadsmith_internal.DatabaseConfig{}
+		cfg.Database = &config.DatabaseConfig{}
 	}
 	applyDatabaseEnvOverrides(cfg.Database)
 
 	if cfg.InternalDatabase == nil {
-		cfg.InternalDatabase = &quadsmith_internal.DatabaseConfig{}
+		cfg.InternalDatabase = &config.DatabaseConfig{}
 	}
 	applyInternalDatabaseEnvOverrides(cfg.InternalDatabase)
+
+	if cfg.Oauth == nil {
+		cfg.Oauth = &config.OAuthConfig{}
+	}
+	if v := os.Getenv("QS_OAUTH_CLIENT_ID"); v != "" {
+		cfg.Oauth.ClientId = v
+	}
+	if v := os.Getenv("QS_OAUTH_CLIENT_SECRET"); v != "" {
+		cfg.Oauth.ClientSecret = v
+	}
+	if v := os.Getenv("QS_OAUTH_ISSUER_URL"); v != "" {
+		cfg.Oauth.IssuerUrl = v
+	}
 }
 
-func applyInternalDatabaseEnvOverrides(db *quadsmith_internal.DatabaseConfig) {
+func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
+	if v := os.Getenv("QS_JOB_SERVER_OPS_URL"); v != "" {
+		cfg.OpsServerUrl = v
+	} else if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
+		cfg.OpsServerUrl = v
+	}
+	if v := os.Getenv("QS_JOB_SERVER_AUTH_TOKEN"); v != "" {
+		cfg.AuthToken = v
+	}
+}
+
+func applyOpsCliEnvOverrides(cfg *config.OpsCliConfig) {
+	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
+		cfg.OpsServerUrl = v
+	}
+	if cfg.OpsServerUrl == "" {
+		cfg.OpsServerUrl = "http://127.0.0.1:8081"
+	}
+}
+
+func applyCliEnvOverrides(cfg *config.CliConfig) {
+	if v := os.Getenv("QS_API_URL"); v != "" {
+		cfg.ApiUrl = v
+	}
+	if cfg.ApiUrl == "" {
+		cfg.ApiUrl = "http://127.0.0.1:8080"
+	}
+}
+
+func applyInternalDatabaseEnvOverrides(db *config.DatabaseConfig) {
 	if v := os.Getenv("QS_INTERNAL_DATABASE_URL"); v != "" {
 		db.Url = v
 	}
@@ -325,7 +437,7 @@ func applyInternalDatabaseEnvOverrides(db *quadsmith_internal.DatabaseConfig) {
 	}
 }
 
-func applyDatabaseEnvOverrides(db *quadsmith_internal.DatabaseConfig) {
+func applyDatabaseEnvOverrides(db *config.DatabaseConfig) {
 	if v := os.Getenv("QS_DATABASE_URL"); v != "" {
 		db.Url = v
 	}
@@ -345,7 +457,7 @@ func applyDatabaseEnvOverrides(db *quadsmith_internal.DatabaseConfig) {
 }
 
 // ValidateAPIServerConfig ensures all configuration required by the API server daemon is present and valid.
-func ValidateAPIServerConfig(c *quadsmith_internal.ApiServerConfig) error {
+func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 	var errs []string
 
 	if c.Server == nil {
@@ -386,8 +498,84 @@ func ValidateAPIServerConfig(c *quadsmith_internal.ApiServerConfig) error {
 	return nil
 }
 
+// ValidateOpsServerConfig ensures all configuration required by the internal ops server is present and valid.
+func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
+	var errs []string
+
+	if c.Server == nil {
+		errs = append(errs, "server configuration section is missing")
+	} else {
+		if c.Server.Port < 1 || c.Server.Port > 65535 {
+			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.Port))
+		}
+	}
+
+	if c.Database == nil {
+		errs = append(errs, "database configuration section is missing")
+	} else if err := ValidateDatabase(c.Database, c.GetEnvironment()); err != nil {
+		errs = append(errs, "database: "+err.Error())
+	}
+
+	if c.InternalDatabase == nil {
+		errs = append(errs, "internal_database configuration section is missing")
+	} else if err := ValidateDatabase(c.InternalDatabase, c.GetEnvironment()); err != nil {
+		errs = append(errs, "internal_database: "+err.Error())
+	}
+
+	if len(c.Groups) == 0 {
+		errs = append(errs, "at least one IAM group must be defined in groups")
+	}
+
+	if len(errs) > 0 {
+		return formatErrors("Ops Server", errs)
+	}
+	return nil
+}
+
+// ValidateJobServerConfig ensures all configuration required by the job server is present and valid.
+func ValidateJobServerConfig(c *config.JobServerConfig) error {
+	var errs []string
+
+	if strings.TrimSpace(c.GetOpsServerUrl()) == "" {
+		errs = append(errs, "ops_server_url cannot be empty")
+	}
+
+	if len(errs) > 0 {
+		return formatErrors("Job Server", errs)
+	}
+	return nil
+}
+
+// ValidateOpsCliConfig ensures configuration required by qsops is present and valid.
+func ValidateOpsCliConfig(c *config.OpsCliConfig) error {
+	var errs []string
+
+	if strings.TrimSpace(c.GetOpsServerUrl()) == "" {
+		errs = append(errs, "ops_server_url cannot be empty")
+	}
+
+	if len(errs) > 0 {
+		return formatErrors("Ops CLI", errs)
+	}
+	return nil
+}
+
+// ValidateCliConfig ensures configuration required by the customer CLI is present and valid.
+func ValidateCliConfig(c *config.CliConfig) error {
+	var errs []string
+
+	if strings.TrimSpace(c.GetApiUrl()) == "" {
+		errs = append(errs, "api_url cannot be empty")
+	}
+
+	if len(errs) > 0 {
+		return formatErrors("CLI", errs)
+	}
+	return nil
+}
+
 // ValidateSeeder validates database settings required by the seeder.
-func ValidateSeeder(db *quadsmith_internal.DatabaseConfig, env string) error {
+func ValidateSeeder(db *config.DatabaseConfig, env string) error {
 	if db == nil {
 		return formatErrors("Database Seeder", []string{"database configuration is missing"})
 	}
@@ -397,41 +585,8 @@ func ValidateSeeder(db *quadsmith_internal.DatabaseConfig, env string) error {
 	return nil
 }
 
-// ValidateWorkerConfig ensures all configuration required by the background worker daemon is present and valid.
-func ValidateWorkerConfig(c *quadsmith_internal.WorkerConfig) error {
-	var errs []string
-
-	if c.Worker == nil {
-		errs = append(errs, "worker configuration section is missing")
-	} else {
-		if c.Worker.Port < 1 || c.Worker.Port > 65535 {
-			errs = append(errs, fmt.Sprintf("worker.port must be between 1 and 65535 (got %d)", c.Worker.Port))
-		}
-		if c.Worker.Concurrency <= 0 {
-			errs = append(errs, fmt.Sprintf("worker.concurrency must be greater than 0 (got %d)", c.Worker.Concurrency))
-		}
-	}
-
-	if c.Database == nil {
-		errs = append(errs, "database configuration section is missing")
-	} else if err := ValidateDatabase(c.Database, c.GetEnvironment()); err != nil {
-		errs = append(errs, err.Error())
-	}
-
-	if c.InternalDatabase == nil {
-		errs = append(errs, "internal_database configuration section is missing")
-	} else if err := ValidateDatabase(c.InternalDatabase, c.GetEnvironment()); err != nil {
-		errs = append(errs, "internal_database: "+err.Error())
-	}
-
-	if len(errs) > 0 {
-		return formatErrors("Background Worker", errs)
-	}
-	return nil
-}
-
 // ValidateDatabase checks that the database configuration is well-formed and valid for the environment.
-func ValidateDatabase(db *quadsmith_internal.DatabaseConfig, env string) error {
+func ValidateDatabase(db *config.DatabaseConfig, env string) error {
 	if strings.TrimSpace(db.GetUrl()) == "" {
 		return fmt.Errorf("database.url cannot be empty")
 	}
@@ -465,7 +620,7 @@ func ValidateDatabase(db *quadsmith_internal.DatabaseConfig, env string) error {
 }
 
 // ValidateAuth checks authentication configuration settings.
-func ValidateAuth(auth *quadsmith_internal.AuthConfig, env string) error {
+func ValidateAuth(auth *config.AuthConfig, env string) error {
 	var errs []string
 	if strings.TrimSpace(auth.GetSecret()) == "" {
 		errs = append(errs, "auth.secret cannot be empty")

@@ -7,7 +7,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith/api"
 	"quadsmith/api/pkg/engines/compatibility"
 	"quadsmith/api/pkg/engines/evaluator"
 )

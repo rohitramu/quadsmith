@@ -13,8 +13,8 @@ server {
   max_request_bytes: 2097152
 }
 database {
-  url: "${QS_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith?sslmode=disable}"
-  name: "quadsmith"
+  url: "${QS_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable}"
+  name: "quadsmith_api"
   max_connections: 25
   min_connections: 2
 }

@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith/api"
+	"quadsmith/api/gen/quadsmith/api/apiconnect"
 	"quadsmith/api/pkg/auth"
 )
 
@@ -20,7 +20,7 @@ func TestSandboxSecurity_SQLInjectionRejectedOnColumns(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	buildClient := quadsmithconnect.NewBuildServiceClient(
+	buildClient := apiconnect.NewBuildServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -57,7 +57,7 @@ func TestSandboxSecurity_CreateBuildOwnershipEnforcement(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	buildClient := quadsmithconnect.NewBuildServiceClient(
+	buildClient := apiconnect.NewBuildServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -113,7 +113,7 @@ func TestSandboxSecurity_CreateBuildOwnershipEnforcement(t *testing.T) {
 
 	// Also verify unauthenticated build creation cannot spoof owner
 	unauthClient := &http.Client{Transport: http.DefaultTransport}
-	unauthBuildClient := quadsmithconnect.NewBuildServiceClient(unauthClient, apiUrl)
+	unauthBuildClient := apiconnect.NewBuildServiceClient(unauthClient, apiUrl)
 	unauthReq := connect.NewRequest(&pb.CreateBuildRequest{
 		Build: &pb.Build{
 			UserUuid:             &attackerUserUUID,
@@ -142,7 +142,7 @@ func TestSandboxSecurity_CreateBuildRejectsJavascriptSchemeAndLongURLs(t *testin
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	buildClient := quadsmithconnect.NewBuildServiceClient(
+	buildClient := apiconnect.NewBuildServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -195,7 +195,7 @@ func TestSandboxSecurity_GetUserRequiresAuthorization(t *testing.T) {
 		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
 	}
 
-	userClient := quadsmithconnect.NewUserServiceClient(
+	userClient := apiconnect.NewUserServiceClient(
 		http.DefaultClient,
 		apiUrl,
 	)
@@ -203,7 +203,7 @@ func TestSandboxSecurity_GetUserRequiresAuthorization(t *testing.T) {
 
 	// 1. Unauthenticated GetUser must be rejected with CodeUnauthenticated
 	unauthClient := &http.Client{Transport: http.DefaultTransport}
-	unauthUserClient := quadsmithconnect.NewUserServiceClient(unauthClient, apiUrl)
+	unauthUserClient := apiconnect.NewUserServiceClient(unauthClient, apiUrl)
 	_, err := unauthUserClient.GetUser(ctx, connect.NewRequest(&pb.GetUserRequest{
 		Id: "018f0000-0000-7000-8000-000000000001",
 	}))

@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@connectrpc/connect-query";
-import { listBuilds } from "../gen/quadsmith/build-BuildService_connectquery";
+import { listBuilds } from "../gen/quadsmith/api/build-BuildService_connectquery";
 import { BuildCard } from "../components/BuildCard";
 import { useMemo, useRef, useEffect } from "react";
 import { RefreshCw, CheckCircle, GalleryVertical } from "lucide-react";

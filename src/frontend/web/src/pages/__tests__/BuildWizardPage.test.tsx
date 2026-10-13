@@ -19,8 +19,8 @@ import {
 } from "../../test/mocks/fixtures";
 import { checkVtxAntennaCompatibility } from "../../components/forge/ForgeContext";
 import { create } from "@bufbuild/protobuf";
-import { VideoTransmitterSchema } from "../../gen/quadsmith/video_transmitter_pb";
-import { AntennaSchema } from "../../gen/quadsmith/antenna_pb";
+import { VideoTransmitterSchema } from "../../gen/quadsmith/api/video_transmitter_pb";
+import { AntennaSchema } from "../../gen/quadsmith/api/antenna_pb";
 import type { RenderWithProvidersOptions } from "../../test/test-utils";
 
 function SavedProfile() {

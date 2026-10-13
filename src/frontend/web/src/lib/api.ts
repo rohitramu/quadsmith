@@ -1,7 +1,7 @@
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { createClient } from "@connectrpc/connect";
-import { AuthService } from "../gen/quadsmith/auth_pb";
-import { UserService } from "../gen/quadsmith/user_pb";
+import { AuthService } from "../gen/quadsmith/api/auth_pb";
+import { UserService } from "../gen/quadsmith/api/user_pb";
 
 const isDev = import.meta.env.DEV;
 

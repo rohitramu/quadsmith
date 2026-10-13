@@ -1,4 +1,4 @@
-import { ReviewTier } from "../gen/quadsmith/social_pb";
+import { ReviewTier } from "../gen/quadsmith/api/social_pb";
 
 export function getReviewTierLabel(tier: ReviewTier): string {
   switch (tier) {

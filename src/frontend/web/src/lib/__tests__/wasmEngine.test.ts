@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { wasmEngine } from "../wasmEngine";
 import { create } from "@bufbuild/protobuf";
-import { AssembledComponentsSchema } from "../../gen/quadsmith/components_pb";
+import { AssembledComponentsSchema } from "../../gen/quadsmith/api/components_pb";
 
 describe("wasmEngine Client", () => {
   beforeEach(() => {
