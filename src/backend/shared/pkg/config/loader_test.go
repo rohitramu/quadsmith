@@ -143,7 +143,6 @@ func TestValidateServer(t *testing.T) {
 		},
 		StaticDir: proto.String(""),
 		ApiUrl:    proto.String("http://localhost:8080"),
-		AppName:   proto.String("Quadsmith"),
 	}
 	if err := ValidateWebServerConfig(webCfg); err == nil {
 		t.Error("expected error for empty static dir on web server, got nil")

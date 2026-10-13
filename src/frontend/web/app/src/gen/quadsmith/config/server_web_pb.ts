@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_server_web: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiFxdWFkc21pdGgvY29uZmlnL3NlcnZlcl93ZWIucHJvdG8SEHF1YWRzbWl0aC5jb25maWci2QEKD1dlYlNlcnZlckNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEi4KBnNlcnZlchgCIAEoCzIeLnF1YWRzbWl0aC5jb25maWcuU2VydmVyQ29uZmlnEhcKCnN0YXRpY19kaXIYAyABKAlIAYgBARIUCgdhcGlfdXJsGAQgASgJSAKIAQESFQoIYXBwX25hbWUYBSABKAlIA4gBAUIOCgxfZW52aXJvbm1lbnRCDQoLX3N0YXRpY19kaXJCCgoIX2FwaV91cmxCCwoJX2FwcF9uYW1lQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
+    "CiFxdWFkc21pdGgvY29uZmlnL3NlcnZlcl93ZWIucHJvdG8SEHF1YWRzbWl0aC5jb25maWcitQEKD1dlYlNlcnZlckNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEi4KBnNlcnZlchgCIAEoCzIeLnF1YWRzbWl0aC5jb25maWcuU2VydmVyQ29uZmlnEhcKCnN0YXRpY19kaXIYAyABKAlIAYgBARIUCgdhcGlfdXJsGAQgASgJSAKIAQFCDgoMX2Vudmlyb25tZW50Qg0KC19zdGF0aWNfZGlyQgoKCF9hcGlfdXJsQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
     [file_quadsmith_config_common],
   );
 
@@ -41,11 +41,6 @@ export type WebServerConfig = Message<"quadsmith.config.WebServerConfig"> & {
    * @generated from field: optional string api_url = 4;
    */
   apiUrl?: string | undefined;
-
-  /**
-   * @generated from field: optional string app_name = 5;
-   */
-  appName?: string | undefined;
 };
 
 /**

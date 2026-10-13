@@ -16,4 +16,3 @@ server {
 
 static_dir: "src/frontend/web/app/dist"
 api_url: "https://staging-api.quadsmith.com"
-app_name: "Quadsmith (Staging)"

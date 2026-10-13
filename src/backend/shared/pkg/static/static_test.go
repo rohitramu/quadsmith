@@ -203,8 +203,7 @@ func TestServeSPA_ServesRegularUser(t *testing.T) {
 		t.Fatalf("Failed to write index.html: %v", err)
 	}
 
-	clientCfgJSON := `{"environment":"sandbox","apiUrl":"http://127.0.0.1:8080","appName":"Quadsmith (Sandbox)"}`
-	handler := ServeSPAWithConfig(tempDir, "http://127.0.0.1:8080", clientCfgJSON)
+	handler := ServeSPA(tempDir, "http://127.0.0.1:8080")
 
 	req := httptest.NewRequest(http.MethodGet, "/builds/new", nil)
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
@@ -217,18 +216,7 @@ func TestServeSPA_ServesRegularUser(t *testing.T) {
 	}
 
 	body := rec.Body.String()
-	if !strings.Contains(body, "window.__QUADSMITH_CONFIG__") {
-		t.Errorf("Expected injected window.__QUADSMITH_CONFIG__ in response, got %s", body)
-	}
-}
-
-func TestInjectClientConfig(t *testing.T) {
-	htmlTemplate := `<!doctype html><html><head><title>Quadsmith</title></head><body>App</body></html>`
-	cfgJSON := `{"environment":"sandbox","apiUrl":"http://localhost:8080","appName":"Quadsmith (Sandbox)"}`
-	result := InjectClientConfig(htmlTemplate, cfgJSON)
-
-	expected := `<script>window.__QUADSMITH_CONFIG__ = {"environment":"sandbox","apiUrl":"http://localhost:8080","appName":"Quadsmith (Sandbox)"};</script>`
-	if !strings.Contains(result, expected) {
-		t.Errorf("Expected injected script tag, got:\n%s", result)
+	if !strings.Contains(body, "App") {
+		t.Errorf("Expected SPA HTML in response, got %s", body)
 	}
 }

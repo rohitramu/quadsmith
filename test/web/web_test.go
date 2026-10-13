@@ -1,7 +1,6 @@
 package web
 
 import (
-	"encoding/json"
 	"io"
 	"net/http"
 	"os"
@@ -34,32 +33,7 @@ func TestWeb_Healthz(t *testing.T) {
 	}
 }
 
-func TestWeb_ConfigEndpoint(t *testing.T) {
-	client := &http.Client{Timeout: 5 * time.Second}
-	resp, err := client.Get(getWebURL() + "/api/v1/config")
-	if err != nil {
-		t.Fatalf("failed to query web config endpoint: %v", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200 OK from web config, got %d", resp.StatusCode)
-	}
-
-	var data map[string]string
-	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
-		t.Fatalf("failed to decode web config json: %v", err)
-	}
-
-	if data["environment"] != "sandbox" {
-		t.Errorf("expected environment sandbox, got %q", data["environment"])
-	}
-	if data["apiUrl"] == "" {
-		t.Error("expected non-empty apiUrl")
-	}
-}
-
-func TestWeb_SPAInjection(t *testing.T) {
+func TestWeb_SPAFallback(t *testing.T) {
 	client := &http.Client{Timeout: 5 * time.Second}
 	resp, err := client.Get(getWebURL() + "/login")
 	if err != nil {
@@ -77,7 +51,7 @@ func TestWeb_SPAInjection(t *testing.T) {
 	}
 	body := string(bodyBytes)
 
-	if !strings.Contains(body, "window.__QUADSMITH_CONFIG__") {
-		t.Errorf("expected window.__QUADSMITH_CONFIG__ in index.html, got: %s", body)
+	if !strings.Contains(body, "Quadsmith") && !strings.Contains(body, "<!doctype html>") {
+		t.Errorf("expected SPA index.html in response, got: %s", body)
 	}
 }

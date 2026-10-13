@@ -15,5 +15,4 @@ message WebServerConfig {
   ServerConfig server = 2;
   optional string static_dir = 3;
   optional string api_url = 4;
-  optional string app_name = 5;
 }

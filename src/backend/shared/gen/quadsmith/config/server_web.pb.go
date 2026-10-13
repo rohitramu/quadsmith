@@ -27,7 +27,6 @@ type WebServerConfig struct {
 	Server        *ServerConfig          `protobuf:"bytes,2,opt,name=server,proto3" json:"server,omitempty"`
 	StaticDir     *string                `protobuf:"bytes,3,opt,name=static_dir,json=staticDir,proto3,oneof" json:"static_dir,omitempty"`
 	ApiUrl        *string                `protobuf:"bytes,4,opt,name=api_url,json=apiUrl,proto3,oneof" json:"api_url,omitempty"`
-	AppName       *string                `protobuf:"bytes,5,opt,name=app_name,json=appName,proto3,oneof" json:"app_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -90,30 +89,21 @@ func (x *WebServerConfig) GetApiUrl() string {
 	return ""
 }
 
-func (x *WebServerConfig) GetAppName() string {
-	if x != nil && x.AppName != nil {
-		return *x.AppName
-	}
-	return ""
-}
-
 var File_quadsmith_config_server_web_proto protoreflect.FileDescriptor
 
 const file_quadsmith_config_server_web_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/config/server_web.proto\x12\x10quadsmith.config\x1a\x1dquadsmith/config/common.proto\"\x8a\x02\n" +
+	"!quadsmith/config/server_web.proto\x12\x10quadsmith.config\x1a\x1dquadsmith/config/common.proto\"\xdd\x01\n" +
 	"\x0fWebServerConfig\x12%\n" +
 	"\venvironment\x18\x01 \x01(\tH\x00R\venvironment\x88\x01\x01\x126\n" +
 	"\x06server\x18\x02 \x01(\v2\x1e.quadsmith.config.ServerConfigR\x06server\x12\"\n" +
 	"\n" +
 	"static_dir\x18\x03 \x01(\tH\x01R\tstaticDir\x88\x01\x01\x12\x1c\n" +
-	"\aapi_url\x18\x04 \x01(\tH\x02R\x06apiUrl\x88\x01\x01\x12\x1e\n" +
-	"\bapp_name\x18\x05 \x01(\tH\x03R\aappName\x88\x01\x01B\x0e\n" +
+	"\aapi_url\x18\x04 \x01(\tH\x02R\x06apiUrl\x88\x01\x01B\x0e\n" +
 	"\f_environmentB\r\n" +
 	"\v_static_dirB\n" +
 	"\n" +
-	"\b_api_urlB\v\n" +
-	"\t_app_nameB.Z,quadsmith/shared/gen/quadsmith/config;configb\x06proto3"
+	"\b_api_urlB.Z,quadsmith/shared/gen/quadsmith/config;configb\x06proto3"
 
 var (
 	file_quadsmith_config_server_web_proto_rawDescOnce sync.Once

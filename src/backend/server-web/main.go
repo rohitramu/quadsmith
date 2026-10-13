@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -38,30 +37,12 @@ func main() {
 		log.Fatalf("server-web: configuration validation failed: %v", err)
 	}
 
-	clientCfg := map[string]string{
-		"environment": cfg.GetEnvironment(),
-		"apiUrl":      cfg.GetApiUrl(),
-		"appName":     cfg.GetAppName(),
-	}
-	clientCfgJSONBytes, _ := json.Marshal(clientCfg)
-	clientCfgJSON := string(clientCfgJSONBytes)
-
 	mux := http.NewServeMux()
 
 	// Health check
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte("ok\n"))
-	})
-
-	// Public config endpoint
-	mux.HandleFunc("/api/v1/config", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-			return
-		}
-		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write(clientCfgJSONBytes)
 	})
 
 	// Reverse proxy to API server
@@ -78,7 +59,7 @@ func main() {
 	}
 
 	// SPA & static asset handler
-	mux.Handle("/", static.ServeSPAWithConfig(cfg.GetStaticDir(), cfg.GetApiUrl(), clientCfgJSON))
+	mux.Handle("/", static.ServeSPA(cfg.GetStaticDir(), cfg.GetApiUrl()))
 
 	port := strconv.Itoa(int(cfg.Server.GetPort()))
 	fmt.Printf("Starting Quadsmith Web Server on port %s...\n", port)

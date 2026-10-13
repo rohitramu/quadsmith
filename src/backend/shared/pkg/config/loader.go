@@ -528,10 +528,6 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 		}
 	}
 
-	if strings.TrimSpace(c.GetAppName()) == "" {
-		errs = append(errs, "app_name cannot be empty")
-	}
-
 	if len(errs) > 0 {
 		return formatErrors("Web Server", errs)
 	}

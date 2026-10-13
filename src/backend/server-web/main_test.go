@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -50,23 +49,12 @@ func TestWebServer_Endpoints(t *testing.T) {
 		t.Fatalf("failed to write index.html: %v", err)
 	}
 
-	clientCfg := map[string]string{
-		"environment": "sandbox",
-		"apiUrl":      "http://127.0.0.1:8080",
-		"appName":     "Quadsmith (Sandbox)",
-	}
-	clientCfgBytes, _ := json.Marshal(clientCfg)
-
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte("ok\n"))
 	})
-	mux.HandleFunc("/api/v1/config", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write(clientCfgBytes)
-	})
-	mux.Handle("/", static.ServeSPAWithConfig(tempDir, "http://127.0.0.1:8080", string(clientCfgBytes)))
+	mux.Handle("/", static.ServeSPA(tempDir, "http://127.0.0.1:8080"))
 
 	// Test /healthz
 	reqHealth := httptest.NewRequest(http.MethodGet, "/healthz", nil)
@@ -79,18 +67,7 @@ func TestWebServer_Endpoints(t *testing.T) {
 		t.Errorf("expected 'ok\\n', got %q", recHealth.Body.String())
 	}
 
-	// Test /api/v1/config
-	reqCfg := httptest.NewRequest(http.MethodGet, "/api/v1/config", nil)
-	recCfg := httptest.NewRecorder()
-	mux.ServeHTTP(recCfg, reqCfg)
-	if recCfg.Code != http.StatusOK {
-		t.Errorf("expected status 200 for /api/v1/config, got %d", recCfg.Code)
-	}
-	if !strings.Contains(recCfg.Body.String(), "http://127.0.0.1:8080") {
-		t.Errorf("expected api_url in response, got %s", recCfg.Body.String())
-	}
-
-	// Test SPA injection on /login
+	// Test SPA fallback on /login
 	reqSPA := httptest.NewRequest(http.MethodGet, "/login", nil)
 	recSPA := httptest.NewRecorder()
 	mux.ServeHTTP(recSPA, reqSPA)
@@ -98,10 +75,7 @@ func TestWebServer_Endpoints(t *testing.T) {
 		t.Errorf("expected status 200 for /login, got %d", recSPA.Code)
 	}
 	body := recSPA.Body.String()
-	if !strings.Contains(body, "window.__QUADSMITH_CONFIG__") {
-		t.Errorf("expected injected window.__QUADSMITH_CONFIG__ in index.html, got: %s", body)
-	}
-	if !strings.Contains(body, "http://127.0.0.1:8080") {
-		t.Errorf("expected injected api url in window.__QUADSMITH_CONFIG__, got: %s", body)
+	if !strings.Contains(body, `<div id="root"></div>`) {
+		t.Errorf("expected SPA index.html in response, got: %s", body)
 	}
 }

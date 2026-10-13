@@ -66,12 +66,6 @@ func IsSocialCrawler(userAgent string) bool {
 // ServeSPA serves a Single Page Application, dynamically injecting Open Graph and Twitter
 // card tags into index.html for crawlers and browser visits.
 func ServeSPA(dir string, apiURL string) http.HandlerFunc {
-	return ServeSPAWithConfig(dir, apiURL, "")
-}
-
-// ServeSPAWithConfig serves a Single Page Application, dynamically injecting Open Graph,
-// Twitter card tags, and window.__QUADSMITH_CONFIG__ into index.html.
-func ServeSPAWithConfig(dir string, apiURL string, clientConfigJSON string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cleanPath := filepath.Clean(r.URL.Path)
 		fullPath := filepath.Join(dir, cleanPath)
@@ -101,23 +95,11 @@ func ServeSPAWithConfig(dir string, apiURL string, clientConfigJSON string) http
 		meta.Image = resolveAbsoluteURL(r, meta.Image)
 
 		renderedHTML := InjectMetaTags(string(indexBytes), meta)
-		if strings.TrimSpace(clientConfigJSON) != "" {
-			renderedHTML = InjectClientConfig(renderedHTML, clientConfigJSON)
-		}
 
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(renderedHTML))
 	}
-}
-
-// InjectClientConfig inserts window.__QUADSMITH_CONFIG__ script tag before </head>.
-func InjectClientConfig(htmlTemplate string, configJSON string) string {
-	if strings.TrimSpace(configJSON) == "" {
-		return htmlTemplate
-	}
-	scriptTag := fmt.Sprintf("\n    <script>window.__QUADSMITH_CONFIG__ = %s;</script>\n  </head>", configJSON)
-	return headTagRegex.ReplaceAllString(htmlTemplate, scriptTag)
 }
 
 // ResolvePageMeta resolves fallback metadata for the requested URL path.
