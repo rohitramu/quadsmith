@@ -77,6 +77,22 @@ if ! npx --prefix src/frontend/web prettier --check "src/frontend/web/index.html
     exit 1
 fi
 
+# Check Markdown formatting
+echo "Checking Markdown formatting..."
+if ! npx --prefix src/frontend/web prettier --ignore-path .prettierignore --check "**/*.md" > /dev/null 2>&1; then
+    echo "Error: Markdown files are not formatted."
+    echo "Please run 'npx --prefix src/frontend/web prettier --ignore-path .prettierignore --write \"**/*.md\"' before committing."
+    exit 1
+fi
+
+# Check Markdown linting
+echo "Checking Markdown linting..."
+if ! npx --prefix src/frontend/web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore "**/*.md" > /dev/null 2>&1; then
+    echo "Error: Markdown files have lint errors."
+    echo "Please run 'npx --prefix src/frontend/web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"' to inspect and fix."
+    exit 1
+fi
+
 # Check Protobuf formatting
 echo "Checking Protobuf formatting..."
 if ! (cd proto && ../bin/buf format -d --exit-code > /dev/null 2>&1); then
