@@ -1,6 +1,7 @@
 # User Identity, Authentication, and Account Lifecycle Design
 
 ## Table of Contents
+
 - [1. Goal](#1-goal)
 - [2. Proposal](#2-proposal)
   - [Passwordless Authentication via Email OTP and OAuth](#passwordless-authentication-via-email-otp-and-oauth)
@@ -28,6 +29,7 @@ Provide a secure, passwordless authentication, user management, and session arch
 ## 2. Proposal
 
 > **TL;DR:**
+>
 > - Eliminate passwords entirely in favor of passwordless Email OTP (3-minute TTL) and multi-provider OAuth (Google, GitHub, Discord, Microsoft).
 > - Deploy a hybrid session strategy: short-lived stateless JWT access tokens (1 hour) paired with database-backed revocable refresh tokens (30 days).
 > - Mitigate brute force attacks via two-tier throttling: 3 failed attempts per code, and 3 failed challenges per IP triggering a 60-minute lockout.
@@ -98,64 +100,93 @@ erDiagram
 ```
 
 ### Passwordless Authentication via Email OTP and OAuth
+
 Users authenticate without static passwords via two pathways:
+
 - **Email OTP**: A 6-digit cryptographic numeric code sent to the user's email address with a 3-minute time-to-live (TTL). Codes are hashed using Argon2 before database persistence. Users enter the code directly on the web application without navigating away.
 - **OAuth Providers**: Integrations with major developer and enthusiast platforms (Google, GitHub, Discord, Microsoft). OAuth accounts link provider account IDs and automatically ingest user avatars and verified email addresses.
 
 #### Alternatives considered
+
 Traditional password-based authentication with salt and bcrypt hashing.
+
 **Pros:**
+
 - Universal familiarity across legacy web applications.
+
 **Cons:**
+
 - Vulnerable to credential stuffing from external breaches and weak user passwords.
 - Requires complex password reset flows, email confirmation links, and progressive hashing upgrade mechanisms.
 
 ### Hybrid JWT Access Tokens and Revocable DB Refresh Tokens
+
 Session state uses a two-tier token model:
+
 - **Access Token (JWT, 1-hour TTL)**: Signed using a server secret (HMAC-SHA256 or asymmetric Ed25519). Validated purely by cryptographic signature without hitting the database, enabling low-latency API verification across distributed microservices.
 - **Refresh Token (DB-Stored, 30-day TTL)**: An opaque cryptographically random 256-bit secret stored as a SHA-256 hash in the `refresh_tokens` table. Used exclusively at `/auth/refresh` to issue new JWT access tokens.
 - **Revocation**: Deleting a user's refresh token rows instantly terminates their ability to obtain new access tokens, forcing re-authentication once the current 1-hour JWT expires.
 
 #### Alternatives considered
+
 Pure stateless JWTs without database-backed refresh tokens.
+
 **Pros:**
+
 - Completely removes database hits during both authentication and token refresh.
+
 **Cons:**
+
 - Cannot revoke compromised sessions or enforce immediate user bans without maintaining distributed token blocklists.
 
 ### Two-Tier Per-Code and Per-IP Throttling Safeguards
+
 To safeguard the OTP endpoint against brute-force attacks:
+
 - **Tier 1 (Per-Code Exhaustion)**: Each issued OTP permits a maximum of 3 failed verification attempts before it is permanently invalidated (`failed_attempts = 3`), requiring a 15-second cooldown before a replacement code can be requested.
 - **Tier 2 (Per-IP Lockout)**: If a client IP accumulates 3 exhausted challenges within a rolling 60-minute window, the server imposes an IP-wide 60-minute lockout on all OTP requests and verification attempts from that address.
 
 ### Unified Email Identity Auto-Merging
+
 To prevent split accounts when users sign in across different identity providers:
+
 - If a user signs in via OAuth with an email address that matches an existing verified `users` record, the platform automatically links the external `oauth_accounts` row to the existing user.
 - All subsequent logins through either Email OTP or any linked OAuth provider grant access to the identical account.
 
 ### Relational UUID v7 Database Architecture
+
 In adherence to Quadsmith schema standards:
+
 - All authentication tables ([`src/backend/db/quadsmith_api.sql`](../src/backend/db/quadsmith_api.sql)) utilize hidden UUID v7 primary keys (`uuid UUID PRIMARY KEY`).
 - Foreign keys explicitly reference `user_uuid UUID REFERENCES users(uuid) ON DELETE CASCADE`.
 - The public user handle is stored as a unique text column (`id TEXT UNIQUE NOT NULL`), which serves as the public username in all URLs (e.g., `/@roramu`).
 
 ### Public Username Holds and Rate-Limited Renaming
+
 To maintain consistent referencing across social interactions, forum threads, and build attribution:
+
 - **Rename Rate Limit**: Users may update their username handle at most once every 30 days (`last_renamed_at`).
 - **30-Day Redirect Hold**: Vacated usernames are recorded in `username_histories`. During the 30-day window, incoming requests for the old handle redirect to the user's new handle, preventing account impersonation while existing links update.
 - **Release to Pool**: After 30 days, vacated usernames expire from the hold window and return to the public pool for registration.
 
 ### Soft-Deletion, Account Banning, and Resurrection Lifecycle
+
 To balance privacy rights with community knowledge preservation:
+
 - **Soft-Deletion**: Users may delete their accounts at any time, setting `deleted_at`. User profile details are cleared, but published aircraft builds, questions, and answers remain intact with the author handle displayed as `[Deleted User]`.
 - **Administrative Ban**: Moderators can flag abusive accounts with `banned_at`, terminating active refresh tokens and presenting the account as `[Deleted User]` to public clients.
 - **Resurrection**: Re-authenticating with the verified email of a soft-deleted account clears `deleted_at` and restores profile ownership. Accounts marked with `banned_at` are permanently barred from resurrection.
 
 #### Alternatives considered
+
 Hard cascading deletion that purges user records and all associated builds, questions, and answers.
+
 **Pros:**
+
 - Immediate and complete removal of all user-generated rows from the database.
+
 **Cons:**
+
 - Corrupts community troubleshooting threads, creating orphaned replies, broken links, and missing build configurations.
 
 ---
@@ -171,13 +202,17 @@ Hard cascading deletion that purges user records and all associated builds, ques
 ## 4. Future work
 
 ### Meta OAuth Provider Support
+
 Expand social login capabilities to include Meta (Facebook/Instagram) OAuth once developer app credentials and review requirements are finalized.
 
 ### Automated OTP Pruning Worker
+
 Deploy an automated background task to periodically purge expired `email_otps` rows older than 1 hour, preventing table bloat while retaining data within the rolling throttle window.
 
 ### Active Sessions Management UI
+
 Provide a self-service session management dashboard in user account settings allowing users to inspect active login sessions (IP address, approximate location, device hints) and revoke individual refresh tokens.
 
 ### Fine-Grained Temporary Bans and Audit Trail
+
 Introduce structured administrative moderation models (`bans` table) recording suspension durations, infractions, and moderating admin identities to support automated ban expiries.

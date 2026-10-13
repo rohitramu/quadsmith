@@ -1,6 +1,7 @@
 # Build Evaluator Specification
 
 ## Table of Contents
+
 - [1. Goal](#1-goal)
 - [2. Proposal](#2-proposal)
   - [Point-Mass Mass, Inertia, and Center of Gravity Modeling](#point-mass-mass-inertia-and-center-of-gravity-modeling)
@@ -22,6 +23,7 @@ Provide an analytical flight dynamics evaluation engine that computes estimated 
 ## 2. Proposal
 
 > **TL;DR:**
+>
 > - Estimate total mass, center of gravity offset, and 3D [moments of inertia](https://en.wikipedia.org/wiki/Moment_of_inertia) ($I_{xx}, I_{yy}, I_{zz}$) using discrete point-mass approximations.
 > - Model battery [voltage sag](https://en.wikipedia.org/wiki/Internal_resistance) and loaded RPM to analytically evaluate static thrust and electrical power draw without requiring empirical lookup tables.
 > - Compute core flight metrics: [thrust-to-weight ratio (TWR)](https://en.wikipedia.org/wiki/Thrust-to-weight_ratio), aerodynamic top speed via the [drag equation](https://en.wikipedia.org/wiki/Drag_equation), multi-style flight times (hover, cruise, freestyle, race), and dual range limits (RF vs. aerodynamic).
@@ -30,6 +32,7 @@ Provide an analytical flight dynamics evaluation engine that computes estimated 
 The Build Evaluator acts as a pure domain logic service within the Quadsmith platform. It ingests an assembled quadcopter hardware configuration (frame geometry, motor stators and KV, propeller dimensions, component weights, and transmission specifications) alongside runtime inputs (selected battery profile and auxiliary payload mass like an action camera). The engine executes analytical physics formulas to evaluate electrical, aerodynamic, and inertial characteristics, producing a structured telemetry report for the frontend user interface.
 
 ### Point-Mass Mass, Inertia, and Center of Gravity Modeling
+
 The evaluator calculates total flying mass ($M_{total} = M_{dry} + M_{battery} + M_{payload}$) and resolves the center of gravity (CG) along three axes. Core electronics (Flight Controller, ESC, Receiver, Camera) are localized at the origin $(0, 0, 0)$, while arm masses (motor plus propeller) are distributed at a radial distance $r = \frac{\text{Wheelbase}}{2}$. Battery and auxiliary payload masses are offset along the vertical Z-axis (top-mount vs. bottom-mount) and longitudinal X-axis (forward/aft camera placement).
 
 When forward payload placement shifts the center of gravity away from the geometric center, the evaluator computes the required steady-state motor thrust differential. Rear motors must generate higher baseline thrust to maintain level pitch, diminishing available peak collective thrust. Agility in yaw ($I_{zz}$), roll ($I_{xx}$), and pitch ($I_{yy}$) is approximated using discrete point-mass inertia summations:
@@ -37,14 +40,20 @@ When forward payload placement shifts the center of gravity away from the geomet
 $$I_{zz} = 4 \times M_{arm} \times r^2 + I_{core}$$
 
 #### Alternatives considered
+
 Using full 3D CAD mesh geometry and finite element analysis (FEA) to compute exact volume and mass distributions.
+
 **Pros:**
+
 - Delivers mathematically precise mass distribution and rotational inertia tensors.
+
 **Cons:**
+
 - Impractical for community-driven catalogs where manufacturers rarely publish complete 3D STEP or STL models.
 - Computationally prohibitive for interactive web and API evaluations.
 
 ### Analytical Aerodynamic Thrust and Voltage Sag Modeling
+
 To evaluate static thrust across diverse motor and propeller combinations, the engine applies momentum theory and aerodynamic coefficients rather than static empirical databases. Air density is evaluated at standard sea level ($\rho = 1.225 \text{ kg/m}^3$). Effective operating voltage is modeled by incorporating internal battery cell resistance derived from capacity and discharge C-ratings, determining loaded voltage sag from nominal $S \times 3.7\text{V}$:
 
 $$\text{No-Load RPM} = KV \times V_{sagged}$$
@@ -56,14 +65,20 @@ $$T = C_T \times \rho \times n^2 \times D^4$$
 Configuration modifiers adjust static output: ducted propeller ducts grant a $+15\%$ static thrust increase, while pusher configurations apply a $-5\%$ penalty due to arm wake turbulence.
 
 #### Alternatives considered
+
 Empirical bench test lookup tables compiled from physical thrust stand measurements.
+
 **Pros:**
+
 - Captures real-world non-linearities and specific propeller blade airfoil efficiencies.
+
 **Cons:**
+
 - Fails completely for newly released, unmeasured, or uncommon motor-propeller combinations.
 - Requires maintaining massive, brittle external test datasets.
 
 ### Aerodynamic and Electrical Power Consumption Modeling
+
 Mechanical power required to turn the propeller blades is calculated based on pitch, diameter, blade count, rotational speed, and power coefficient ($C_P$):
 
 $$P_{mech} = C_P \times \rho \times n^3 \times D^5$$
@@ -75,7 +90,9 @@ $$P_{elec} = \frac{P_{mech}}{\eta_{motor}}$$
 Current draw ($I$) is subsequently resolved as $I = \frac{P_{elec}}{V_{sagged}}$, establishing baseline current consumption across throttle ranges.
 
 ### Multi-Profile Flight Time and Range Boundary Estimation
+
 Flight durations are calculated simultaneously across four standardized flight profiles rather than a single idealized hover figure:
+
 - **Hover**: Solves for the exact RPM and current required to satisfy $4 \times T = M_{total}$. $\text{Time} = \frac{\text{Capacity}}{\text{Hover Current}}$.
 - **Cruising / Cinematic**: Evaluated at $1.5 \times \text{Hover Current}$.
 - **Freestyle**: Evaluated at $3.0 \times \text{Hover Current}$, simulating aggressive throttle bursts alternating with zero-throttle inverted maneuvers.
@@ -86,14 +103,18 @@ Operational range is reported as the conservative minimum of two distinct limits
 2. **RF Telemetry Boundary**: Calculated from video transmitter output power (mW) and receiver protocol link budget (e.g., 25mW analog $\approx 500\text{m}$, 800mW digital $\approx 4\text{km}$, 2.4GHz ExpressLRS $\approx 15\text{km}$).
 
 ### Handling Quality via Disk Loading and Torque-to-Inertia Ratios
+
 To evaluate handling crispness and prop wash vulnerability, the engine calculates two fundamental physical ratios:
+
 - **Disk Loading ($DL$)**: Ratio of total mass to total propeller swept disk area ($\frac{M_{total}}{\pi \times r_{prop}^2 \times 4}$). Lower disk loading corresponds to superior grip, float, and prop wash recovery.
 - **Torque-to-Inertia Ratio**: Motor stator volume (serving as an analytical proxy for available magnetic torque) divided by yaw moment of inertia ($I_{zz}$).
 
 These metrics are reported as raw physical dimensions ($\text{g/cm}^2$) alongside a normalized dimensionless **Handling Score (1–10)**.
 
 ### Continuous Payload Capacity Curves and Threshold Markers
+
 Rather than computing a single payload cutoff weight, the engine models payload capacity as a continuous curve of auxiliary payload mass ($0\text{g}$ to $1000\text{g}$) against resulting thrust-to-weight ratio. The report overlays standardized benchmark thresholds:
+
 - **Cinematic Benchmark**: $2.0:1$ TWR (smooth, stable camera carrying).
 - **Freestyle Benchmark**: $4.5:1$ TWR (punchy acceleration and acrobatic authority).
 - **Absolute Usability Floor**: $1.5:1$ TWR (minimum threshold for reliable outdoor flight control).

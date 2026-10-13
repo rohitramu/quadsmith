@@ -28,8 +28,10 @@ Always check the manufacturer's official website and official spec sheets as the
 - **Direct Requests vs. Plans & Questions**:
   - When the user directly asks for something (e.g., a specific change, feature, or bugfix), implement it directly in the codebase without pausing to ask for approval.
   - Only ask for approval before modifying codebase files if:
+
     1. The user asked a question that needs to be answered/clarified before proceeding, or
     2. You are actively discussing a **plan** — defined specifically as either a **visual design** (iterating via preview artifacts) or a **planning document** (e.g., via the `/plan` action).
+
   - All iterations during plan discussion or visual design review must remain strictly confined to the plan or preview artifacts until approved.
 - **Prominent Approval Callouts**: Whenever waiting on user approval (when answering questions or discussing a plan), prominently display a dedicated callout at the end of the message. Title the callout using the format `Awaiting approval to <action>` (e.g., "Awaiting approval to Implement", "Awaiting approval to Execute"), making it immediately clear that progress is paused pending explicit confirmation.
 - **Plan Document Structure & Lifecycle**:
@@ -39,6 +41,7 @@ Always check the manufacturer's official website and official spec sheets as the
   - Every plan document must adhere to the standardized structure:
     - **Table of Contents**: Linked list of all Level 1 headings present in the doc, plus nested design decision headings.
     - **Horizontal Separators**: Use `---` only between Level 1 headings.
+    - **Blank Lines for Headings & Lists**: Bulleted lists and headings (except on the very first line of the file) must have a blank line before and after them.
     - **Omission of Empty Optional Sections**: Omit Background, Alternatives considered, Assumptions, Future work, or Open questions entirely if empty (do not include placeholders like "None", and exclude omitted sections from the Table of Contents).
     - **Document All Discussed Alternatives**: Document all alternatives explored during discussion, regardless of quality or viability.
     - **Concise Bulleted Summaries**: Use concise bulleted short items whenever helpful to explain complex concepts cleanly across plans, alternatives, and chat explanations.
@@ -92,10 +95,13 @@ Always check the manufacturer's official website and official spec sheets as the
 ## UI Changes & Visual Previews
 
 Whenever committing changes that modify the UI (such as frontend web components, pages, layouts, or styling):
+
 - **Dual Previews (Desktop & Mobile)**:
   - Generate **two separate self-contained HTML preview artifacts** for every UI change:
+
     1. **Desktop Preview** (`<name>_preview_desktop.html`): Built for the Antigravity Desktop studio/side-pane. Features the full layout, side-by-side builder controls, continuous interactive sliders (60 FPS), complete data tables/metrics dashboards, and interactive simulations.
     2. **Mobile Preview** (`<name>_preview_mobile.html`): Specifically optimized for the Android Antigravity app.
+
   - **Artifact Links Only (No Inline Embeds & No Repetitive Notes)**: Share direct clickable markdown links to both preview artifacts (e.g., `[Open Desktop Preview](file:///...)` and `[Open Mobile Preview](file:///...)`) for full-page viewing. Never embed preview iframes or `<agent-embed>` directly in the conversation. Do not include repetitive preview notes, technical constraints, or mobile limitation breakdowns in the message unless explicitly requested.
 - **Desktop Preview as Implementation Guide**:
   - When planning changes or translating designs into code, **always use the desktop preview** as the primary visual plan and implementation specification. Do not simplify the final codebase to match mobile preview compromises.
