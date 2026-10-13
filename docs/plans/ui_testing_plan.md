@@ -1,30 +1,33 @@
-# Quadsmith Web UI Testing Plan: Rendering & Navigation
+# Web UI Testing Architecture Plan
 
-## 1. Overview & Objectives
-
-This document establishes the UI testing strategy and implementation plan for the Quadsmith web frontend (`src/frontend/web`).
-
-The primary objectives are:
-1. **Rendering Integrity**: Verify that all core UI components, pages, data tables, specification cards, and interactive controls render accurately across various states (loading, loaded, empty, error, not found).
-2. **Navigation Reliability**: Ensure seamless routing and navigation across all views (top navbar, collapsible sidebar, category grids, data table row deep links, pagination controls, and multi-level breadcrumbs).
-3. **Developer Velocity & CI Safety**: Maintain sub-second test execution speeds and hermetic isolation so tests run reliably locally and are integrated directly into `make test`.
+## Table of Contents
+- [1. Goal](#1-goal)
+- [2. Proposal](#2-proposal)
+  - [In-Memory Headless DOM Execution with Vitest and JSDOM](#in-memory-headless-dom-execution-with-vitest-and-jsdom)
+  - [Type-Safe ConnectRPC In-Memory Mock Router Transports](#type-safe-connectrpc-in-memory-mock-router-transports)
+  - [Application Decoupling for Isolated Route Navigation Testing](#application-decoupling-for-isolated-route-navigation-testing)
+  - [Sub-Second Local and CI Integration Suite](#sub-second-local-and-ci-integration-suite)
+- [3. Assumptions](#3-assumptions)
+- [4. Future work](#4-future-work)
+  - [End-to-End Browser Testing with Playwright](#end-to-end-browser-testing-with-playwright)
 
 ---
 
-## 2. Testing Architecture & Decisions
+## 1. Goal
 
-### 2.1 Component & Route Integration Suite (Vitest + React Testing Library + JSDOM)
+Establish a robust, hermetic, sub-second automated testing architecture for the Quadsmith web frontend ([`src/frontend/web`](../src/frontend/web)), verifying rendering integrity, interactive state machines, column customization, and multi-page client routing without requiring live backend servers or browser binaries.
 
-For unit, component, and multi-page route navigation tests, the testing stack utilizes:
-- **Test Runner**: [Vitest](https://vitest.dev/) configured for Vite and TypeScript.
-- **DOM Environment**: `jsdom` for headless in-memory browser simulation.
-- **Component Testing**: `@testing-library/react` and `@testing-library/user-event` for user-centric interaction testing.
-- **DOM Assertions**: `@testing-library/jest-dom` for expressive DOM state matchers.
+---
 
-#### Key Architectural Benefits:
-- **Sub-Second Execution**: Tests run in milliseconds without requiring browser binary launches or Docker containers.
-- **Type-Safe RPC Mocking**: Leveraging ConnectRPC's `createRouterTransport` from `@connectrpc/connect`, we provide strongly typed, in-memory service mocks for queries like `ListMotors`, `GetMotor`, `ListFrames`, etc., without network traffic or fragile HTTP monkeypatching.
-- **Deep Routing Emulation**: Using `MemoryRouter` to test deep links, parameter resolution, breadcrumbs, and browser history navigation.
+## 2. Proposal
+
+> **TL;DR:**
+> - Execute component and routing tests headlessly in memory using [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/), and [JSDOM](https://github.com/jsdom/jsdom).
+> - Mock backend services at the protocol level using [ConnectRPC](https://connectrpc.com/)'s `createRouterTransport`, guaranteeing compile-time type safety against Protobuf definitions.
+> - Decouple application route definitions from the browser DOM to enable multi-page navigation testing via `MemoryRouter`.
+> - Embed UI tests directly into [`Makefile`](../Makefile)'s `make test` target, maintaining sub-second feedback loops in local development and continuous integration.
+
+The web UI testing architecture prioritizes developer velocity, deterministic execution, and tight alignment with Quadsmith's Protobuf contracts. Rather than driving heavyweight browser instances for basic component verification, the frontend leverages an in-memory DOM simulation coupled with type-safe RPC mock transports. This guarantees that UI regressions, broken deep links, missing table columns, or invalid filter inputs are surfaced instantly.
 
 ```mermaid
 flowchart TD
@@ -56,120 +59,60 @@ flowchart TD
     end
 ```
 
----
+### In-Memory Headless DOM Execution with Vitest and JSDOM
+Component and navigation tests execute within Vitest using JSDOM as the virtual DOM environment. Tests render components using `@testing-library/react` and dispatch user interactions via `@testing-library/user-event`. This architecture verifies layout rendering, theme switching (dark/light mode toggles and `localStorage` persistence), sidebar navigation, catalog grids, and data table interactions in milliseconds.
 
-## 3. Implementation Workstreams
+#### Alternatives considered
+Executing all unit, component, and routing tests inside real browser automation instances using tools like Playwright or Cypress.
+**Pros:**
+- Executes tests in genuine browser rendering engines with full layout, font rendering, and real Web APIs.
+**Cons:**
+- Introduces substantial startup latency (seconds vs. milliseconds), requiring browser binary management.
+- Requires running live backend daemon processes or web servers, impeding rapid iteration during standard development workflows.
 
-### Workstream 1: Testing Infrastructure & Test Utilities
+### Type-Safe ConnectRPC In-Memory Mock Router Transports
+Rather than intercepting network requests with raw HTTP mocks or JSON fixture files, the test harness utilizes ConnectRPC's native `createRouterTransport`. Test fixtures are constructed as strongly-typed Protobuf TypeScript messages. The router transport routes client RPC queries (`ListMotors`, `GetMotor`, `ListFrames`) directly to in-memory TypeScript handlers, returning valid responses, pagination tokens, or error codes.
 
-1. **Dependencies**:
-   - Add devDependencies to `src/frontend/web/package.json`: `vitest`, `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, `jsdom`.
-   - Add test scripts to `package.json`:
-     - `"test": "vitest run"`
-     - `"test:watch": "vitest"`
-     - `"test:coverage": "vitest run --coverage"`
-2. **Configuration (`vitest.config.ts`)**:
-   - Merge with `vite.config.ts`.
-   - Set `environment: "jsdom"`.
-   - Configure setup files: `src/test/setup.ts`.
-3. **Environment Setup (`src/frontend/web/src/test/setup.ts`)**:
-   - Register `@testing-library/jest-dom/vitest`.
-   - Clean up DOM and reset `localStorage` after each test run.
-   - Mock browser APIs not natively provided in JSDOM (e.g., `window.matchMedia`).
-4. **Mock Transport & Fixtures (`src/frontend/web/src/test/mocks/`)**:
-   - Create realistic protobuf message fixtures for Motors, Frames, Flight Controllers, etc.
-   - Implement `createRouterTransport` handlers for component services to serve mock responses for listing, filtering, pagination, and detail queries.
-5. **Render Utilities (`src/frontend/web/src/test/test-utils.tsx`)**:
-   - `renderWithProviders(ui, options)`: Helper wrapping components with `TransportProvider`, `QueryClientProvider`, and `MemoryRouter`.
-   - `renderApp(initialRoute, options)`: Mounts the full application routes starting at `initialRoute`.
+#### Alternatives considered
+Using network-level mocking libraries such as Mock Service Worker (MSW) or mocking `fetch` calls directly.
+**Pros:**
+- Intercepts requests at the network layer and simulates low-level HTTP headers and connection drops.
+**Cons:**
+- Requires maintaining loose JSON fixture files that silently drift from generated Protobuf contracts when schemas change.
+- Eliminates compile-time type safety across API boundaries.
 
----
+### Application Decoupling for Isolated Route Navigation Testing
+To test multi-step user navigation flows (such as navigating from the homepage to a hardware collection, clicking a component row, inspecting details, and following breadcrumbs back), application route hierarchies are decoupled from browser-dependent globals:
+- **`AppRoutes` Export**: The core `<Routes>` hierarchy is extracted and exported independently of `<BrowserRouter>`.
+- **`MemoryRouter` Harness**: Test utilities wrap routes inside React Router's `MemoryRouter`, allowing test assertions to simulate arbitrary initial paths (`/components/hardware/motors`), track navigation history, and verify breadcrumb transitions without a live URL bar.
 
-### Workstream 2: Application Decoupling for Testability
+### Sub-Second Local and CI Integration Suite
+The test runner is configured to ensure the entire test suite executes in under two seconds. Test execution is wired directly into the root [`Makefile`](../Makefile) under `make test`:
 
-To enable both production browser execution and isolated in-memory route testing:
-- **`src/frontend/web/src/App.tsx`**:
-  - Extract and export `AppRoutes` containing the `<Routes>` hierarchy.
-  - Allow `App` to accept optional `transport` and `queryClient` props.
-  - This allows tests to mount `<AppRoutes />` within a `MemoryRouter` and custom mock transport, while production uses `<BrowserRouter>` and the live backend transport.
-
----
-
-### Workstream 3: Test Suites
-
-#### 3.1 Layout & Theme Navigation (`Layout.test.tsx`)
-- **Header**:
-  - Logo rendering and link to `/`.
-  - Search input presence and placeholder.
-  - Theme Toggle: Verifies clicking the Sun/Moon button toggles the `dark` class on `<html>`, updates `localStorage`, and swaps the theme icon.
-- **Sidebar**:
-  - Expanding and collapsing the "Hardware" menu section via the chevron toggle.
-  - Verifying all 11 hardware collection links render with valid targets (`/components/hardware/motors`, etc.).
-  - Verifying "Software" and "Gear" navigation links.
-
-#### 3.2 Home Page (`HomePage.test.tsx`)
-- Heading, welcome copy, and intro cards.
-- "Browse Hardware" card links to `/components/hardware`.
-- "Build Planner (Coming Soon)" placeholder rendering.
-
-#### 3.3 Category Page (`CategoryPage.test.tsx`)
-- Heading and grid of hardware collection cards (Motors, Frames, Batteries, Propellers, Cameras, VTX, Antennas, Receivers, Flight Controllers, ESCs, GPS).
-- Clicking collection cards triggers navigation to `/components/hardware/:collectionId`.
-- Empty state message when accessing an undefined category.
-
-#### 3.4 Collection Table & Controls (`CollectionPage.test.tsx`)
-- **Breadcrumbs**: Hierarchical navigation (`Hardware > Motors`), with back-links.
-- **States**: Loading indicators, empty results banner, and error state display.
-- **Table Data**: Header labels, custom cell formatters (e.g. stator size, KV), and clickable rows linking to product details.
-- **Column Customization (`ColumnSelector`)**:
-  - Popover open/close behavior.
-  - Checkbox toggling to hide or show columns.
-  - Up/Down arrows to reorder visible columns.
-  - "Reset to Default" restoration.
-- **Sorting**: Header sort button clicks cycling through ascending (`field`), descending (`^field`), and neutral.
-- **Pagination**: Page size selector (10, 20, 50, 100), page number display, Next/Previous page buttons, and token-based pagination state.
-- **SmartFilterInput**: Filter input typing, preset suggestions, and applying filter queries.
-
-#### 3.5 Product Detail Page (`ProductPage.test.tsx`)
-- Breadcrumb navigation (`Hardware > Motors > [Product Name]`).
-- Spec highlight cards (Stator Size, KV, Weight, Max Thrust).
-- Technical specifications table key-value rendering.
-- Reference links with external link icons and correct labels (Purchase, Official Product Page, Review, etc.).
-- Fallback for nonexistent or not-found products.
-
-#### 3.6 Full Navigation Flow (`NavigationFlow.test.tsx`)
-Integration test validating an entire continuous user flow:
-1. Start at `/` (Home).
-2. Click "Browse Hardware" -> Navigates to `/components/hardware`.
-3. Click "Motors" collection card -> Navigates to `/components/hardware/motors`.
-4. Click row for "EMAX ECO II 2207" -> Navigates to `/components/hardware/motors/emax-eco-ii-2207`.
-5. Click "Motors" in breadcrumbs -> Returns to `/components/hardware/motors`.
-6. Click "Hardware" in sidebar -> Returns to `/components/hardware`.
-
----
-
-### Workstream 4: Makefile & CI Integration
-
-Update `Makefile` to include frontend UI tests in `make test`:
 ```makefile
 test: generate
 	@echo "--- Running Go Tests ---"
-	@cd src/backend/api && go test -mod=vendor ./...
-	@cd src/frontend/cli && go test -mod=vendor ./...
+	@cd src/backend/shared && go test -mod=vendor ./...
 	@echo "--- Running Web UI Tests ---"
 	@cd src/frontend/web && npm test
 ```
 
+Any breaking UI change, failed assertion, or type mismatch blocks the build immediately.
+
 ---
 
-## 4. Future Work: End-to-End (E2E) Browser Testing with Playwright
+## 3. Assumptions
 
-To complement the in-memory test suite, full end-to-end browser testing using **Playwright** is planned as a future initiative.
+1. Vitest and JSDOM provide sufficient DOM fidelity for React component interaction, event simulation, and client-side routing tests.
+2. ConnectRPC's `createRouterTransport` faithfully models backend RPC handlers in memory without network traffic.
+3. Tests run hermetically in local development and inside CI sandbox containers.
 
-### High-Level Scope (To be specced in a separate document):
-- **Directory Location (`test/web`)**: All future browser tests will be located in the `test/web` directory at the root of the repository, keeping them alongside the sandbox API/CLI integration tests in `test/api`.
-- **Real Browser Environment**: Running tests against real headless Chromium, WebKit, and Firefox instances.
-- **True CSS Layout & Visual Checks**: Validating Tailwind layout responsiveness, sticky headers, z-index layers, and popover positioning.
-- **Live Sandbox Integration**: Running tests against the live Docker Postgres + Go API backend sandbox (`make sandbox`).
-- **Visual Regression Testing**: Screenshot comparison testing (`expect(page).toHaveScreenshot()`) for critical components and dark/light modes.
-- **Separate Dedicated Target**: Configured under `make test-e2e` so daily unit testing and quick commits remain instant while full E2E tests can run in pre-release or CI pipelines.
+---
+
+## 4. Future work
+
+### End-to-End Browser Testing with Playwright
+To complement the fast in-memory test suite, a dedicated end-to-end browser testing suite using Playwright is planned:
+- **Sandbox Integration**: Tests will execute against the live Docker Postgres and Go backend sandbox (`make sandbox`).
+- **Visual Regression Testing**: Screenshot comparisons (`toHaveScreenshot()`) to detect unintended visual styling or CSS regressions across viewport breakpoints and color themes.
+- **Dedicated Target**: Isolated under `make test-e2e` to prevent slowing down daily commit workflows while ensuring thorough pre-release validation.
