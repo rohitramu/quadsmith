@@ -4,7 +4,7 @@ package quadsmith.jobs;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/jobs;jobs";
+option go_package = "quadsmith/shared/gen/quadsmith/jobs;jobs";
 
 enum JobExecutionStatus {
   JOB_EXECUTION_STATUS_UNSPECIFIED = 0;

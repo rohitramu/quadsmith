@@ -4,7 +4,7 @@ package quadsmith.common;
 
 import "google/protobuf/descriptor.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/common;common";
+option go_package = "quadsmith/shared/gen/quadsmith/common;common";
 
 // ---------------------------------------------------------
 // Frontend Options

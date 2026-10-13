@@ -10,8 +10,8 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	pb "quadsmith/api/gen/quadsmith/api"
-	common "quadsmith/api/gen/quadsmith/common"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	common "quadsmith/shared/gen/quadsmith/common"
 )
 
 type Domain struct {
@@ -196,9 +196,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
-	pb "quadsmith/api/gen/quadsmith/api"
-	"quadsmith/api/gen/quadsmith/api/apiconnect"
-	common "quadsmith/api/gen/quadsmith/common"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
+	common "quadsmith/shared/gen/quadsmith/common"
 	fconfig "quadsmith/frontend/config"
 )
 

@@ -5,7 +5,7 @@ package quadsmith.api;
 import "quadsmith/api/build.proto";
 import "quadsmith/api/components.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 message CheckCompatibilityRequest {
   Build build = 1;

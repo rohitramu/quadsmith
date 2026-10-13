@@ -23,11 +23,12 @@ ENV GOWORK=/app/src/go.work
 # Copy go.work, go.mod files and vendor directory
 COPY src/go.work src/go.work.sum* ./src/
 COPY src/build_deps/go.mod src/build_deps/go.sum* ./src/build_deps/
-COPY src/backend/api/go.mod src/backend/api/go.sum* ./src/backend/api/
-COPY src/backend/api-server/go.mod src/backend/api-server/go.sum* ./src/backend/api-server/
-COPY src/backend/worker/go.mod src/backend/worker/go.sum* ./src/backend/worker/
-COPY src/backend/pkg/config/go.mod src/backend/pkg/config/go.sum* ./src/backend/pkg/config/
+COPY src/backend/shared/go.mod src/backend/shared/go.sum* ./src/backend/shared/
+COPY src/backend/server-api/go.mod src/backend/server-api/go.sum* ./src/backend/server-api/
+COPY src/backend/server-ops/go.mod src/backend/server-ops/go.sum* ./src/backend/server-ops/
+COPY src/backend/server-jobs/go.mod src/backend/server-jobs/go.sum* ./src/backend/server-jobs/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
+COPY src/frontend/cli-ops/go.mod src/frontend/cli-ops/go.sum* ./src/frontend/cli-ops/
 COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
 COPY test/go.mod test/go.sum* ./test/
 COPY src/vendor/ ./src/vendor/
@@ -36,7 +37,7 @@ COPY src/vendor/ ./src/vendor/
 COPY . .
 
 # Build Server binary
-RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-w -s" -o /app/bin/server ./src/backend/api-server/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-w -s" -o /app/bin/server ./src/backend/server-api/main.go
 
 
 # Stage 2: Build the Web UI
@@ -67,6 +68,6 @@ EXPOSE 443 8080
 
 COPY --from=builder /app/bin/server /app/server
 COPY --from=web-builder /app/dist /app/web/dist
-COPY src/backend/api-server/config /app/src/backend/api-server/config
-
-ENTRYPOINT ["/app/server", "--config", "/app/src/backend/api-server/config/prod.textproto"]
+COPY src/backend/server-api/config /app/src/backend/server-api/config
+ 
+ENTRYPOINT ["/app/server", "--config", "/app/src/backend/server-api/config/prod.textproto"]

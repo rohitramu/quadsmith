@@ -14,7 +14,7 @@ import "quadsmith/api/propeller.proto";
 import "quadsmith/api/receiver.proto";
 import "quadsmith/api/video_transmitter.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 message AssembledComponents {
   Frame frame = 1;

@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "quadsmith/api/user.proto";
 import "quadsmith/validate/validate.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
 // Authentication Requests & Responses

@@ -12,8 +12,8 @@ import (
 	connect "connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	pb "quadsmith/api/gen/quadsmith/ops"
-	"quadsmith/api/gen/quadsmith/ops/opsconnect"
+	pb "quadsmith/shared/gen/quadsmith/ops"
+	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
 
 func getOpsURL() string {

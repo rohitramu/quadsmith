@@ -1,0 +1,133 @@
+package validation
+
+import (
+	"errors"
+	"testing"
+
+	pb "quadsmith/shared/gen/quadsmith/api"
+)
+
+func TestValidateReferenceLinks(t *testing.T) {
+	tests := []struct {
+		name      string
+		links     []*pb.ReferenceLink
+		wantErr   bool
+		wantErrIs error
+	}{
+		{
+			name:    "nil links slice is valid",
+			links:   nil,
+			wantErr: false,
+		},
+		{
+			name:    "empty links slice is valid",
+			links:   []*pb.ReferenceLink{},
+			wantErr: false,
+		},
+		{
+			name: "link with empty types array is valid ('Other')",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{},
+					Url:   "https://example.com",
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "link with valid types",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{
+						pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PRODUCT_PAGE,
+						pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PURCHASE,
+					},
+					Url: "https://example.com/product",
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "link containing UNSPECIFIED returns error",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{
+						pb.ReferenceLinkType_REFERENCE_LINK_TYPE_UNSPECIFIED,
+					},
+					Url: "https://example.com/invalid",
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "multi-type link containing UNSPECIFIED among valid types returns error",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{
+						pb.ReferenceLinkType_REFERENCE_LINK_TYPE_DOCUMENTATION,
+						pb.ReferenceLinkType_REFERENCE_LINK_TYPE_UNSPECIFIED,
+					},
+					Url: "https://example.com/docs",
+				},
+			},
+			wantErr:   true,
+			wantErrIs: ErrUnspecifiedReferenceLinkType,
+		},
+		{
+			name: "multiple links with distinct URLs are valid",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PRODUCT_PAGE},
+					Url:   "https://example.com/product",
+				},
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PURCHASE},
+					Url:   "https://example.com/store/item",
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "duplicate URLs across multiple links return error",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PRODUCT_PAGE},
+					Url:   "https://example.com/product",
+				},
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_PURCHASE},
+					Url:   "https://example.com/product",
+				},
+			},
+			wantErr:   true,
+			wantErrIs: ErrDuplicateReferenceLinkURL,
+		},
+		{
+			name: "duplicate URLs with trailing slash variation return error",
+			links: []*pb.ReferenceLink{
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_DOCUMENTATION},
+					Url:   "https://example.com/docs/",
+				},
+				{
+					Types: []pb.ReferenceLinkType{pb.ReferenceLinkType_REFERENCE_LINK_TYPE_FORUM_POST},
+					Url:   "https://example.com/docs",
+				},
+			},
+			wantErr:   true,
+			wantErrIs: ErrDuplicateReferenceLinkURL,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := ValidateReferenceLinks(tt.links)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ValidateReferenceLinks() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if tt.wantErrIs != nil && !errors.Is(err, tt.wantErrIs) {
+				t.Errorf("expected %v, got: %v", tt.wantErrIs, err)
+			}
+		})
+	}
+}

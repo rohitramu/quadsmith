@@ -14,8 +14,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
-	pb "quadsmith/api/gen/quadsmith/api"
-	"quadsmith/api/gen/quadsmith/api/apiconnect"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )
 
 // --- OUTPUT FORMAT TESTS ---

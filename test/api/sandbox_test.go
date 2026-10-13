@@ -11,9 +11,9 @@ import (
 	"connectrpc.com/connect"
 	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
-	pb "quadsmith/api/gen/quadsmith/api"
-	"quadsmith/api/gen/quadsmith/api/apiconnect"
-	"quadsmith/api/pkg/auth"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
+	"quadsmith/shared/pkg/auth"
 )
 
 func getAPIURL() string {

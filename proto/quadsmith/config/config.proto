@@ -4,7 +4,7 @@ package quadsmith.config;
 
 import "google/protobuf/duration.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/config;config";
+option go_package = "quadsmith/shared/gen/quadsmith/config;config";
 
 // ---------------------------------------------------------
 // Shared Infrastructure Configs

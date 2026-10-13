@@ -19,10 +19,10 @@ import (
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
-	pb "quadsmith/api/gen/quadsmith/api"
-	"quadsmith/api/gen/quadsmith/api/apiconnect"
-	common "quadsmith/api/gen/quadsmith/common"
 	fconfig "quadsmith/frontend/config"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
+	common "quadsmith/shared/gen/quadsmith/common"
 )
 
 var (

@@ -6,7 +6,7 @@ import "quadsmith/api/battery.proto";
 import "quadsmith/api/build.proto";
 import "quadsmith/api/components.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 enum SystemMessageSeverity {
   SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED = 0;

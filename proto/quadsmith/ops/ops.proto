@@ -5,7 +5,7 @@ package quadsmith.ops;
 import "google/protobuf/timestamp.proto";
 import "quadsmith/sql/sql.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/ops;ops";
+option go_package = "quadsmith/shared/gen/quadsmith/ops;ops";
 
 // ---------------------------------------------------------
 // JIT Grants (SQL Table in quadsmith_ops)

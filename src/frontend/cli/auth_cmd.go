@@ -17,8 +17,8 @@ import (
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
 
-	pb "quadsmith/api/gen/quadsmith/api"
-	"quadsmith/api/gen/quadsmith/api/apiconnect"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )
 
 type CLIConfig struct {

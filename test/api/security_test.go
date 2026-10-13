@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	pb "quadsmith/api/gen/quadsmith/api"
-	"quadsmith/api/gen/quadsmith/api/apiconnect"
-	"quadsmith/api/pkg/auth"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
+	"quadsmith/shared/pkg/auth"
 )
 
 func TestSandboxSecurity_SQLInjectionRejectedOnColumns(t *testing.T) {

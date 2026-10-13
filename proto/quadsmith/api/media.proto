@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package quadsmith.api;
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 enum MediaType {
   MEDIA_TYPE_UNSPECIFIED = 0;

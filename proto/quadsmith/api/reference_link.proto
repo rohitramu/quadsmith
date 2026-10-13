@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package quadsmith.api;
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 enum ReferenceLinkType {
   // Retained for proto3 enum zero-value requirement, but invalid in practice.

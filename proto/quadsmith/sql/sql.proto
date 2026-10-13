@@ -4,7 +4,7 @@ package quadsmith.sql;
 
 import "google/protobuf/descriptor.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/sql;sql";
+option go_package = "quadsmith/shared/gen/quadsmith/sql;sql";
 
 // ---------------------------------------------------------
 // Table Options

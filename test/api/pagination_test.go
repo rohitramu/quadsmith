@@ -17,8 +17,8 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/protobuf/encoding/prototext"
 
-	pb "quadsmith/api/gen/quadsmith/api"
-	"quadsmith/api/gen/quadsmith/api/apiconnect"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )
 
 func resolveSeedPath(t *testing.T) string {

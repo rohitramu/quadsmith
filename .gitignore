@@ -14,6 +14,32 @@ node_modules/
 *.test
 *.out
 
+# Binary executables produced by local go build
+/server
+/server-api
+/server-ops
+/server-jobs
+/api-server
+/ops-server
+/job-server
+/worker
+/seeder
+/qsops
+/qs
+/check-regex
+/wasm
+
+# In-package binary executables if 'go build' is run inside package/module folders
+**/server-api/server-api
+**/server-ops/server-ops
+**/server-jobs/server-jobs
+**/cli-ops/cli-ops
+**/cli-ops/qsops
+**/cli/cli
+**/cli/qs
+**/cmd/seeder/seeder
+**/cmd/check-regex/check-regex
+
 # Editor & OS Files
 .vscode/
 .idea/

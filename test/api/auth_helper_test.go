@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"quadsmith/api/pkg/auth"
+	"quadsmith/shared/pkg/auth"
 )
 
 type authRoundTripper struct {

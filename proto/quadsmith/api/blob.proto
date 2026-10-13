@@ -5,7 +5,7 @@ package quadsmith.api;
 import "google/protobuf/timestamp.proto";
 import "quadsmith/sql/sql.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
 // Domain Models

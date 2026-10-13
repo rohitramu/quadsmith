@@ -4,7 +4,7 @@ package quadsmith.validate;
 
 import "google/protobuf/descriptor.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/validate;validate";
+option go_package = "quadsmith/shared/gen/quadsmith/validate;validate";
 
 // ---------------------------------------------------------
 // Validation Rules

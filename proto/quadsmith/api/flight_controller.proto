@@ -7,7 +7,7 @@ import "quadsmith/api/reference_link.proto";
 import "quadsmith/common/common.proto";
 import "quadsmith/sql/sql.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
 // Domain Model

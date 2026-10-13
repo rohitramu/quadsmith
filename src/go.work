@@ -1,12 +1,12 @@
 go 1.27.1
 
 use (
-	./backend/api
-	./backend/api-server
-	./backend/ops-server
-	./backend/job-server
-	./backend/pkg/config
+	./backend/shared
+	./backend/server-api
+	./backend/server-ops
+	./backend/server-jobs
 	./frontend/cli
+	./frontend/cli-ops
 	./frontend/config/go
 	./build_deps
 	../test

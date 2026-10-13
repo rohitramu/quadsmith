@@ -7,7 +7,7 @@ import "quadsmith/api/media.proto";
 import "quadsmith/api/reference_link.proto";
 import "quadsmith/sql/sql.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
 // Unified Entity Registry (Builds & Components Supertype)

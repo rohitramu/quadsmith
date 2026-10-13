@@ -28,12 +28,12 @@ ENV GOWORK=/app/src/go.work
 # Copy go.work, go.mod files and vendor directory
 COPY src/go.work src/go.work.sum* ./src/
 COPY src/build_deps/go.mod src/build_deps/go.sum* ./src/build_deps/
-COPY src/backend/api/go.mod src/backend/api/go.sum* ./src/backend/api/
-COPY src/backend/api-server/go.mod src/backend/api-server/go.sum* ./src/backend/api-server/
-COPY src/backend/ops-server/go.mod src/backend/ops-server/go.sum* ./src/backend/ops-server/
-COPY src/backend/job-server/go.mod src/backend/job-server/go.sum* ./src/backend/job-server/
-COPY src/backend/pkg/config/go.mod src/backend/pkg/config/go.sum* ./src/backend/pkg/config/
+COPY src/backend/shared/go.mod src/backend/shared/go.sum* ./src/backend/shared/
+COPY src/backend/server-api/go.mod src/backend/server-api/go.sum* ./src/backend/server-api/
+COPY src/backend/server-ops/go.mod src/backend/server-ops/go.sum* ./src/backend/server-ops/
+COPY src/backend/server-jobs/go.mod src/backend/server-jobs/go.sum* ./src/backend/server-jobs/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
+COPY src/frontend/cli-ops/go.mod src/frontend/cli-ops/go.sum* ./src/frontend/cli-ops/
 COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
 COPY test/go.mod test/go.sum* ./test/
 COPY src/vendor/ ./src/vendor/
@@ -43,11 +43,11 @@ COPY . .
 
 # Build Server, Ops Server, Job Server, Seeder, and qsops
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./src/backend/api-server/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/ops-server ./src/backend/ops-server/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/job-server ./src/backend/job-server/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./src/backend/api/cmd/qsops/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./src/backend/api/cmd/seeder
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-api ./src/backend/server-api/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-ops ./src/backend/server-ops/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-jobs ./src/backend/server-jobs/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./src/frontend/cli-ops/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./src/backend/shared/cmd/seeder
 
 
 # Stage 2: Build the Web UI
@@ -89,9 +89,9 @@ ENV QS_ENV=sandbox
 EXPOSE 5432 8080 8081
 
 # Copy binaries from builder
-COPY --from=builder /app/bin/server /app/server
-COPY --from=builder /app/bin/ops-server /app/ops-server
-COPY --from=builder /app/bin/job-server /app/job-server
+COPY --from=builder /app/bin/server-api /app/server-api
+COPY --from=builder /app/bin/server-ops /app/server-ops
+COPY --from=builder /app/bin/server-jobs /app/server-jobs
 COPY --from=builder /app/bin/qsops /usr/local/bin/qsops
 COPY --from=builder /app/bin/seeder /app/seeder
 
@@ -102,10 +102,11 @@ COPY --from=web-builder /app/dist /app/web/dist
 COPY src/backend/db/quadsmith_api.sql /app/src/backend/db/quadsmith_api.sql
 COPY src/backend/db/quadsmith_ops.sql /app/src/backend/db/quadsmith_ops.sql
 COPY test/seed_data /app/test/seed_data
-COPY src/backend/api-server/config /app/src/backend/api-server/config
-COPY src/backend/ops-server/config /app/src/backend/ops-server/config
-COPY src/backend/job-server/config /app/src/backend/job-server/config
+COPY src/backend/server-api/config /app/src/backend/server-api/config
+COPY src/backend/server-ops/config /app/src/backend/server-ops/config
+COPY src/backend/server-jobs/config /app/src/backend/server-jobs/config
 COPY src/frontend/config /app/src/frontend/config
+COPY src/frontend/cli-ops/config /app/src/frontend/cli-ops/config
 
 # Pre-populate PostgreSQL database with schema and seeds at image build time
 RUN docker-entrypoint.sh postgres & \
@@ -114,7 +115,7 @@ RUN docker-entrypoint.sh postgres & \
     psql -U postgres -c "CREATE DATABASE quadsmith_ops;" && \
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_api < /app/src/backend/db/quadsmith_api.sql && \
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < /app/src/backend/db/quadsmith_ops.sql && \
-    ./seeder --config /app/src/backend/api-server/config/sandbox.textproto && \
+    ./seeder --config /app/src/backend/server-api/config/sandbox.textproto && \
     gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
     wait $pid
 
@@ -131,17 +132,17 @@ if [ "$ROW_COUNT" = "0" ]; then\n\
     echo "Applying Schema & Seeding Database..."\n\
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_api < /app/src/backend/db/quadsmith_api.sql\n\
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < /app/src/backend/db/quadsmith_ops.sql\n\
-    ./seeder --config /app/src/backend/api-server/config/sandbox.textproto\n\
+    ./seeder --config /app/src/backend/server-api/config/sandbox.textproto\n\
 else\n\
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < /app/src/backend/db/quadsmith_ops.sql 2>/dev/null || true\n\
 fi\n\
 echo "Starting Ops Server (:8081)..."\n\
-./ops-server --config /app/src/backend/ops-server/config/sandbox.textproto > /var/log/ops-server.log 2>&1 &\n\
+./server-ops --config /app/src/backend/server-ops/config/sandbox.textproto > /var/log/server-ops.log 2>&1 &\n\
 echo "Starting Job Server..."\n\
-./job-server --config /app/src/backend/job-server/config/sandbox.textproto > /var/log/job-server.log 2>&1 &\n\
+./server-jobs --config /app/src/backend/server-jobs/config/sandbox.textproto > /var/log/server-jobs.log 2>&1 &\n\
 echo "Pre-seeded users:"\n\
 psql -U postgres -d quadsmith_api -tAc "SELECT concat(\047  - \047, email, \047 (@\047, id, \047)\047) FROM users WHERE deleted_at IS NULL ORDER BY email;"\n\
-exec ./server --config /app/src/backend/api-server/config/sandbox.textproto\n' > /app/sandbox-entrypoint.sh
+exec ./server-api --config /app/src/backend/server-api/config/sandbox.textproto\n' > /app/sandbox-entrypoint.sh
 
 RUN chmod +x /app/sandbox-entrypoint.sh
 

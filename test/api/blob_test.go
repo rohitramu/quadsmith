@@ -16,8 +16,8 @@ import (
 
 	connect "connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
-	pb "quadsmith/api/gen/quadsmith/api"
-	"quadsmith/api/gen/quadsmith/api/apiconnect"
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )
 
 func TestCLIBlobUploadAndGet(t *testing.T) {

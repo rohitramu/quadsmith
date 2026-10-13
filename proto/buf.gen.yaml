@@ -1,20 +1,20 @@
 version: v1
 plugins:
   - plugin: go
-    out: ../src/backend/api/gen
+    out: ../src/backend/shared/gen
     opt: paths=source_relative
   - plugin: connect-go
-    out: ../src/backend/api/gen
+    out: ../src/backend/shared/gen
     opt: paths=source_relative
   - plugin: sql
     out: ../src/backend/db
     path: ../bin/protoc-gen-sql
   - plugin: store
-    out: ../src/backend/api/gen
+    out: ../src/backend/shared/gen
     path: ../bin/protoc-gen-store
     opt: paths=source_relative
   - plugin: server
-    out: ../src/backend/api/gen
+    out: ../src/backend/shared/gen
     path: ../bin/protoc-gen-server
     opt: paths=source_relative
   - plugin: es
