@@ -449,7 +449,6 @@ CREATE TABLE IF NOT EXISTS entities (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   user_uuid UUID,
-  author_username TEXT,
   UNIQUE (collection, id)
 );
 
@@ -473,12 +472,6 @@ CREATE TABLE IF NOT EXISTS reviews (
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
-  author_username TEXT NOT NULL,
-  author_avatar_url TEXT NOT NULL,
-  helpful_count INTEGER NOT NULL,
-  unhelpful_count INTEGER NOT NULL,
-  comment_count INTEGER NOT NULL,
-  current_user_vote INTEGER NOT NULL,
   is_author_verified_owner BOOLEAN NOT NULL,
   collection TEXT NOT NULL,
   entity_id TEXT NOT NULL,
@@ -513,9 +506,7 @@ CREATE TABLE IF NOT EXISTS review_comments (
   body TEXT NOT NULL,
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  author_username TEXT NOT NULL,
-  author_avatar_url TEXT NOT NULL
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_review_comments_review_uuid ON review_comments (review_uuid);
@@ -535,13 +526,6 @@ CREATE TABLE IF NOT EXISTS questions (
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
-  author_username TEXT NOT NULL,
-  author_avatar_url TEXT NOT NULL,
-  upvote_count INTEGER NOT NULL,
-  downvote_count INTEGER NOT NULL,
-  answer_count INTEGER NOT NULL,
-  has_accepted_answer BOOLEAN NOT NULL,
-  current_user_vote INTEGER NOT NULL,
   comments JSONB,
   collection TEXT NOT NULL,
   entity_id TEXT NOT NULL
@@ -570,12 +554,6 @@ CREATE TABLE IF NOT EXISTS answers (
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   accepted_at TIMESTAMPTZ,
   endorsed_at TIMESTAMPTZ,
-  author_username TEXT NOT NULL,
-  author_avatar_url TEXT NOT NULL,
-  upvote_count INTEGER NOT NULL,
-  downvote_count INTEGER NOT NULL,
-  current_user_vote INTEGER NOT NULL,
-  comment_count INTEGER NOT NULL,
   comments JSONB
 );
 
@@ -621,9 +599,7 @@ CREATE TABLE IF NOT EXISTS question_comments (
   body TEXT NOT NULL,
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  author_username TEXT NOT NULL,
-  author_avatar_url TEXT NOT NULL
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_question_comments_question_uuid ON question_comments (question_uuid);
@@ -638,9 +614,7 @@ CREATE TABLE IF NOT EXISTS answer_comments (
   body TEXT NOT NULL,
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  author_username TEXT NOT NULL,
-  author_avatar_url TEXT NOT NULL
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_answer_comments_answer_uuid ON answer_comments (answer_uuid);
@@ -667,10 +641,7 @@ CREATE TABLE IF NOT EXISTS collections (
   description TEXT NOT NULL,
   is_system_collection BOOLEAN DEFAULT false NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  author_username TEXT NOT NULL,
-  item_count INTEGER NOT NULL,
-  preview_images TEXT[]
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_collections_id ON collections (id);

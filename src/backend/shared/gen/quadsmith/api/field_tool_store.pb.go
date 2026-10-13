@@ -36,7 +36,7 @@ func GetFieldTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "tool_type", "power_source", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM field_tools INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM field_tools INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &FieldTool{}
@@ -111,7 +111,7 @@ func ListFieldTools(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "tool_type", "power_source", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM field_tools INNER JOIN entities USING (uuid)`
+	query := `SELECT ` + colsStr + ` FROM field_tools INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
 	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
 		query += " AND (" + whereClause + ")"

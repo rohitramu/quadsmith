@@ -218,11 +218,11 @@ func searchCollection(ctx context.Context, db *pgxpool.Pool, target CollectionTa
 		whereSQL = "WHERE " + strings.Join(whereClauses, " AND ")
 	}
 
-	fromClause := fmt.Sprintf("%s t INNER JOIN entities USING (uuid)", tableName)
-	jsonbExpr := "(to_jsonb(t.*) || to_jsonb(entities.*))"
+	fromClause := fmt.Sprintf("%s t INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid", tableName)
+	jsonbExpr := "(to_jsonb(t.*) || to_jsonb(entities.*) || jsonb_build_object('author_username', COALESCE(u.author_username, '')))"
 	if tableName == "entities" {
-		fromClause = "entities t"
-		jsonbExpr = "to_jsonb(t.*)"
+		fromClause = "entities t LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = t.user_uuid"
+		jsonbExpr = "(to_jsonb(t.*) || jsonb_build_object('author_username', COALESCE(u.author_username, '')))"
 	}
 
 	querySQL := fmt.Sprintf(`SELECT

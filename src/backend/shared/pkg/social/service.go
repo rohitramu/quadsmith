@@ -276,12 +276,10 @@ func (s *SocialService) CreateReview(ctx context.Context, req *connect.Request[p
 	_, err = s.db.Exec(ctx, `
 		INSERT INTO reviews (
 			uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited,
-			author_username, author_avatar_url, helpful_count, unhelpful_count,
-			comment_count, current_user_vote, is_author_verified_owner,
-			collection, entity_id, created_at, updated_at
+			is_author_verified_owner, collection, entity_id, created_at, updated_at
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, false, $7, $8, 0, 0, 0, 0, false, $9, $10, NOW(), NOW())
-	`, reviewUUID, reviewID, u.UserUUID, entityUUID, req.Msg.GetIsRecommended(), body, username, avatar, resolvedCol, req.Msg.GetEntityId())
+		VALUES ($1, $2, $3, $4, $5, $6, false, false, $7, $8, NOW(), NOW())
+	`, reviewUUID, reviewID, u.UserUUID, entityUUID, req.Msg.GetIsRecommended(), body, resolvedCol, req.Msg.GetEntityId())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -614,9 +612,9 @@ func (s *SocialService) CreateReviewComment(ctx context.Context, req *connect.Re
 	commentUUID := authcontext.NewUUIDv7()
 	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO review_comments (uuid, review_uuid, user_uuid, body, author_username, author_avatar_url, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
-	`, commentUUID, revUUID, u.UserUUID, body, username, avatar)
+		INSERT INTO review_comments (uuid, review_uuid, user_uuid, body, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, NOW(), NOW())
+	`, commentUUID, revUUID, u.UserUUID, body)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -749,12 +747,10 @@ func (s *SocialService) CreateQuestion(ctx context.Context, req *connect.Request
 	_, err = s.db.Exec(ctx, `
 		INSERT INTO questions (
 			uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited,
-			author_username, author_avatar_url, upvote_count, downvote_count,
-			answer_count, has_accepted_answer, current_user_vote,
 			collection, entity_id, created_at, updated_at
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, 0, false, $7, $8, 0, 0, 0, false, 0, $9, $10, NOW(), NOW())
-	`, qUUID, qID, u.UserUUID, entityUUID, title, body, username, avatar, resolvedCol, req.Msg.GetEntityId())
+		VALUES ($1, $2, $3, $4, $5, $6, 0, false, $7, $8, NOW(), NOW())
+	`, qUUID, qID, u.UserUUID, entityUUID, title, body, resolvedCol, req.Msg.GetEntityId())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1088,12 +1084,10 @@ func (s *SocialService) CreateAnswer(ctx context.Context, req *connect.Request[p
 		INSERT INTO answers (
 			uuid, question_uuid, user_uuid, body, net_score,
 			is_accepted_by_asker, is_author_endorsed, is_edited,
-			author_username, author_avatar_url, upvote_count,
-			downvote_count, current_user_vote, comment_count,
 			created_at, updated_at
 		)
-		VALUES ($1, $2, $3, $4, 0, false, false, false, $5, $6, 0, 0, 0, 0, NOW(), NOW())
-	`, ansUUID, qUUID, u.UserUUID, body, username, avatar)
+		VALUES ($1, $2, $3, $4, 0, false, false, false, NOW(), NOW())
+	`, ansUUID, qUUID, u.UserUUID, body)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1538,9 +1532,9 @@ func (s *SocialService) CreateQuestionComment(ctx context.Context, req *connect.
 	commentUUID := authcontext.NewUUIDv7()
 	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO question_comments (uuid, question_uuid, user_uuid, body, author_username, author_avatar_url, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
-	`, commentUUID, qUUID, u.UserUUID, body, username, avatar)
+		INSERT INTO question_comments (uuid, question_uuid, user_uuid, body, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, NOW(), NOW())
+	`, commentUUID, qUUID, u.UserUUID, body)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1609,9 +1603,9 @@ func (s *SocialService) CreateAnswerComment(ctx context.Context, req *connect.Re
 	commentUUID := authcontext.NewUUIDv7()
 	username, avatar := getUserDisplay(ctx, s.db, u.UserUUID)
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO answer_comments (uuid, answer_uuid, user_uuid, body, author_username, author_avatar_url, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
-	`, commentUUID, ansUUID, u.UserUUID, body, username, avatar)
+		INSERT INTO answer_comments (uuid, answer_uuid, user_uuid, body, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, NOW(), NOW())
+	`, commentUUID, ansUUID, u.UserUUID, body)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1669,12 +1663,11 @@ func (s *SocialService) getOrCreateDefaultLikedCollection(ctx context.Context, u
 
 	colUUID = authcontext.NewUUIDv7()
 	colID := "liked-" + colUUID[:8]
-	username, _ := getUserDisplay(ctx, s.db, userUUID)
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO collections (uuid, id, user_uuid, name, description, is_system_collection, author_username, item_count, created_at, updated_at)
-		VALUES ($1, $2, $3, 'Liked', 'Default collection of liked builds and components', true, $4, 0, NOW(), NOW())
+		INSERT INTO collections (uuid, id, user_uuid, name, description, is_system_collection, created_at, updated_at)
+		VALUES ($1, $2, $3, 'Liked', 'Default collection of liked builds and components', true, NOW(), NOW())
 		ON CONFLICT (id) DO NOTHING
-	`, colUUID, colID, userUUID, username)
+	`, colUUID, colID, userUUID)
 	if err != nil {
 		return "", err
 	}
@@ -1761,9 +1754,9 @@ func (s *SocialService) CreateCollection(ctx context.Context, req *connect.Reque
 	username, _ := getUserDisplay(ctx, s.db, u.UserUUID)
 
 	_, err := s.db.Exec(ctx, `
-		INSERT INTO collections (uuid, id, user_uuid, name, description, is_system_collection, author_username, item_count, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, false, $6, 0, NOW(), NOW())
-	`, colUUID, colID, u.UserUUID, name, req.Msg.GetDescription(), username)
+		INSERT INTO collections (uuid, id, user_uuid, name, description, is_system_collection, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, false, NOW(), NOW())
+	`, colUUID, colID, u.UserUUID, name, req.Msg.GetDescription())
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

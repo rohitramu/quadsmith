@@ -336,7 +336,6 @@ erDiagram
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
         UUID user_uuid FK
-        TEXT author_username
     }
 
     reviews {
@@ -350,12 +349,6 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
-        TEXT author_username
-        TEXT author_avatar_url
-        INTEGER helpful_count
-        INTEGER unhelpful_count
-        INTEGER comment_count
-        INTEGER current_user_vote
         BOOLEAN is_author_verified_owner
         TEXT collection
         TEXT entity_id
@@ -377,8 +370,6 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
-        TEXT author_username
-        TEXT author_avatar_url
     }
 
     questions {
@@ -393,13 +384,6 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
-        TEXT author_username
-        TEXT author_avatar_url
-        INTEGER upvote_count
-        INTEGER downvote_count
-        INTEGER answer_count
-        BOOLEAN has_accepted_answer
-        INTEGER current_user_vote
         JSONB comments
         TEXT collection
         TEXT entity_id
@@ -419,12 +403,6 @@ erDiagram
         TIMESTAMPTZ updated_at
         TIMESTAMPTZ accepted_at
         TIMESTAMPTZ endorsed_at
-        TEXT author_username
-        TEXT author_avatar_url
-        INTEGER upvote_count
-        INTEGER downvote_count
-        INTEGER current_user_vote
-        INTEGER comment_count
         JSONB comments
     }
 
@@ -452,8 +430,6 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
-        TEXT author_username
-        TEXT author_avatar_url
     }
 
     answer_comments {
@@ -464,8 +440,6 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
-        TEXT author_username
-        TEXT author_avatar_url
     }
 
     user_reputations {
@@ -484,9 +458,6 @@ erDiagram
         BOOLEAN is_system_collection
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
-        TEXT author_username
-        INTEGER item_count
-        TEXT_ARRAY preview_images
     }
 
     collection_items {

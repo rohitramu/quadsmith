@@ -38,7 +38,7 @@ message Entity {
     references: "users(uuid)"
     create_index: true
   }];
-  optional string author_username = 14;
+  optional string author_username = 14 [(quadsmith.sql.column) = {ignore: true}];
 }
 
 // ---------------------------------------------------------
@@ -98,12 +98,12 @@ message Review {
   google.protobuf.Timestamp updated_at = 10 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
   // Denormalized / resolved fields for UI display
-  string author_username = 11;
-  string author_avatar_url = 12;
-  int32 helpful_count = 13;
-  int32 unhelpful_count = 14;
-  int32 comment_count = 15;
-  ReviewVoteType current_user_vote = 16;
+  string author_username = 11 [(quadsmith.sql.column) = {ignore: true}];
+  string author_avatar_url = 12 [(quadsmith.sql.column) = {ignore: true}];
+  int32 helpful_count = 13 [(quadsmith.sql.column) = {ignore: true}];
+  int32 unhelpful_count = 14 [(quadsmith.sql.column) = {ignore: true}];
+  int32 comment_count = 15 [(quadsmith.sql.column) = {ignore: true}];
+  ReviewVoteType current_user_vote = 16 [(quadsmith.sql.column) = {ignore: true}];
   bool is_author_verified_owner = 17;
   string collection = 18;
   string entity_id = 19;
@@ -146,8 +146,8 @@ message ReviewComment {
   google.protobuf.Timestamp updated_at = 7 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
   // Resolved display fields
-  string author_username = 8;
-  string author_avatar_url = 9;
+  string author_username = 8 [(quadsmith.sql.column) = {ignore: true}];
+  string author_avatar_url = 9 [(quadsmith.sql.column) = {ignore: true}];
 }
 
 // ---------------------------------------------------------
@@ -184,13 +184,13 @@ message Question {
   google.protobuf.Timestamp updated_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
   // Resolved display fields
-  string author_username = 12;
-  string author_avatar_url = 13;
-  int32 upvote_count = 14;
-  int32 downvote_count = 15;
-  int32 answer_count = 16;
-  bool has_accepted_answer = 17;
-  int32 current_user_vote = 18; // +1, -1, or 0
+  string author_username = 12 [(quadsmith.sql.column) = {ignore: true}];
+  string author_avatar_url = 13 [(quadsmith.sql.column) = {ignore: true}];
+  int32 upvote_count = 14 [(quadsmith.sql.column) = {ignore: true}];
+  int32 downvote_count = 15 [(quadsmith.sql.column) = {ignore: true}];
+  int32 answer_count = 16 [(quadsmith.sql.column) = {ignore: true}];
+  bool has_accepted_answer = 17 [(quadsmith.sql.column) = {ignore: true}];
+  int32 current_user_vote = 18 [(quadsmith.sql.column) = {ignore: true}];
   repeated QuestionComment comments = 19;
   string collection = 20;
   string entity_id = 21;
@@ -224,12 +224,12 @@ message Answer {
   optional google.protobuf.Timestamp endorsed_at = 13;
 
   // Resolved display fields
-  string author_username = 14;
-  string author_avatar_url = 15;
-  int32 upvote_count = 16;
-  int32 downvote_count = 17;
-  int32 current_user_vote = 18;
-  int32 comment_count = 19;
+  string author_username = 14 [(quadsmith.sql.column) = {ignore: true}];
+  string author_avatar_url = 15 [(quadsmith.sql.column) = {ignore: true}];
+  int32 upvote_count = 16 [(quadsmith.sql.column) = {ignore: true}];
+  int32 downvote_count = 17 [(quadsmith.sql.column) = {ignore: true}];
+  int32 current_user_vote = 18 [(quadsmith.sql.column) = {ignore: true}];
+  int32 comment_count = 19 [(quadsmith.sql.column) = {ignore: true}];
   repeated AnswerComment comments = 20;
 }
 
@@ -288,8 +288,8 @@ message QuestionComment {
   google.protobuf.Timestamp created_at = 6 [(quadsmith.sql.column) = {default_value: "NOW()"}];
   google.protobuf.Timestamp updated_at = 7 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
-  string author_username = 8;
-  string author_avatar_url = 9;
+  string author_username = 8 [(quadsmith.sql.column) = {ignore: true}];
+  string author_avatar_url = 9 [(quadsmith.sql.column) = {ignore: true}];
 }
 
 message AnswerComment {
@@ -309,8 +309,8 @@ message AnswerComment {
   google.protobuf.Timestamp created_at = 6 [(quadsmith.sql.column) = {default_value: "NOW()"}];
   google.protobuf.Timestamp updated_at = 7 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
-  string author_username = 8;
-  string author_avatar_url = 9;
+  string author_username = 8 [(quadsmith.sql.column) = {ignore: true}];
+  string author_avatar_url = 9 [(quadsmith.sql.column) = {ignore: true}];
 }
 
 // ---------------------------------------------------------
@@ -358,9 +358,9 @@ message Collection {
   google.protobuf.Timestamp updated_at = 8 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 
   // Resolved display fields
-  string author_username = 9;
-  int32 item_count = 10;
-  repeated string preview_images = 11;
+  string author_username = 9 [(quadsmith.sql.column) = {ignore: true}];
+  int32 item_count = 10 [(quadsmith.sql.column) = {ignore: true}];
+  repeated string preview_images = 11 [(quadsmith.sql.column) = {ignore: true}];
   bool contains_item = 12 [(quadsmith.sql.column) = {ignore: true}];
 }
 

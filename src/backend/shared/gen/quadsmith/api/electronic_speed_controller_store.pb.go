@@ -36,7 +36,7 @@ func GetElectronicSpeedController(ctx context.Context, db *pgxpool.Pool, idOrUui
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM electronic_speed_controllers INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM electronic_speed_controllers INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &ElectronicSpeedController{}
@@ -121,7 +121,7 @@ func ListElectronicSpeedControllers(ctx context.Context, db *pgxpool.Pool, cols 
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "max_motors", "motor_current_max_a", "motor_current_burst_a", "firmware", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM electronic_speed_controllers INNER JOIN entities USING (uuid)`
+	query := `SELECT ` + colsStr + ` FROM electronic_speed_controllers INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
 	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
 		query += " AND (" + whereClause + ")"

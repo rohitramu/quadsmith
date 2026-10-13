@@ -746,7 +746,7 @@ type Question struct {
 	DownvoteCount     int32              `protobuf:"varint,15,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
 	AnswerCount       int32              `protobuf:"varint,16,opt,name=answer_count,json=answerCount,proto3" json:"answer_count,omitempty"`
 	HasAcceptedAnswer bool               `protobuf:"varint,17,opt,name=has_accepted_answer,json=hasAcceptedAnswer,proto3" json:"has_accepted_answer,omitempty"`
-	CurrentUserVote   int32              `protobuf:"varint,18,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"` // +1, -1, or 0
+	CurrentUserVote   int32              `protobuf:"varint,18,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"`
 	Comments          []*QuestionComment `protobuf:"bytes,19,rep,name=comments,proto3" json:"comments,omitempty"`
 	Collection        string             `protobuf:"bytes,20,opt,name=collection,proto3" json:"collection,omitempty"`
 	EntityId          string             `protobuf:"bytes,21,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
@@ -4254,7 +4254,7 @@ var File_quadsmith_api_social_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
-	"\x1aquadsmith/api/social.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x17quadsmith/sql/sql.proto\"\xfd\x05\n" +
+	"\x1aquadsmith/api/social.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x17quadsmith/sql/sql.proto\"\x85\x06\n" +
 	"\x06Entity\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12&\n" +
 	"\n" +
@@ -4274,8 +4274,8 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
 	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x125\n" +
-	"\tuser_uuid\x18\r \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01H\x01R\buserUuid\x88\x01\x01\x12,\n" +
-	"\x0fauthor_username\x18\x0e \x01(\tH\x02R\x0eauthorUsername\x88\x01\x01:\x1e\xc2\xf3\x18\x1a\n" +
+	"\tuser_uuid\x18\r \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
+	"\x0fauthor_username\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:\x1e\xc2\xf3\x18\x1a\n" +
 	"\bentities\x1a\x0ecollection, idB\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
@@ -4285,7 +4285,7 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\rtotal_reviews\x18\x01 \x01(\x05R\ftotalReviews\x12+\n" +
 	"\x11recommended_count\x18\x02 \x01(\x05R\x10recommendedCount\x12)\n" +
 	"\x10score_percentage\x18\x03 \x01(\x02R\x0fscorePercentage\x12-\n" +
-	"\x04tier\x18\x04 \x01(\x0e2\x19.quadsmith.api.ReviewTierR\x04tier\"\xaf\a\n" +
+	"\x04tier\x18\x04 \x01(\x0e2\x19.quadsmith.api.ReviewTierR\x04tier\"\xdf\a\n" +
 	"\x06Review\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
 	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x120\n" +
@@ -4301,13 +4301,13 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\v \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\f \x01(\tR\x0fauthorAvatarUrl\x12#\n" +
-	"\rhelpful_count\x18\r \x01(\x05R\fhelpfulCount\x12'\n" +
-	"\x0funhelpful_count\x18\x0e \x01(\x05R\x0eunhelpfulCount\x12#\n" +
-	"\rcomment_count\x18\x0f \x01(\x05R\fcommentCount\x12I\n" +
-	"\x11current_user_vote\x18\x10 \x01(\x0e2\x1d.quadsmith.api.ReviewVoteTypeR\x0fcurrentUserVote\x127\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
+	"\x0fauthor_username\x18\v \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
+	"\x11author_avatar_url\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl\x12+\n" +
+	"\rhelpful_count\x18\r \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\fhelpfulCount\x12/\n" +
+	"\x0funhelpful_count\x18\x0e \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\x0eunhelpfulCount\x12+\n" +
+	"\rcomment_count\x18\x0f \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\fcommentCount\x12Q\n" +
+	"\x11current_user_vote\x18\x10 \x01(\x0e2\x1d.quadsmith.api.ReviewVoteTypeB\x06\xc2\xf3\x18\x02@\x01R\x0fcurrentUserVote\x127\n" +
 	"\x18is_author_verified_owner\x18\x11 \x01(\bR\x15isAuthorVerifiedOwner\x12\x1e\n" +
 	"\n" +
 	"collection\x18\x12 \x01(\tR\n" +
@@ -4325,7 +4325,7 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"is_helpful\x18\x04 \x01(\bR\tisHelpful\x12F\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:*\xc2\xf3\x18&\n" +
-	"\freview_votes\x1a\x16user_uuid, review_uuid\"\x86\x04\n" +
+	"\freview_votes\x1a\x16user_uuid, review_uuid\"\x96\x04\n" +
 	"\rReviewComment\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
 	"\vreview_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1freviews(uuid) ON DELETE CASCADE(\x01R\n" +
@@ -4337,11 +4337,11 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\b \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\t \x01(\tR\x0fauthorAvatarUrl:\x15\xc2\xf3\x18\x11\n" +
+	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
+	"\x0fauthor_username\x18\b \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
+	"\x11author_avatar_url\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl:\x15\xc2\xf3\x18\x11\n" +
 	"\x0freview_commentsB\r\n" +
-	"\v_deleted_at\"\xc0\a\n" +
+	"\v_deleted_at\"\xf8\a\n" +
 	"\bQuestion\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
 	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x120\n" +
@@ -4358,21 +4358,21 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"created_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\f \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\r \x01(\tR\x0fauthorAvatarUrl\x12!\n" +
-	"\fupvote_count\x18\x0e \x01(\x05R\vupvoteCount\x12%\n" +
-	"\x0edownvote_count\x18\x0f \x01(\x05R\rdownvoteCount\x12!\n" +
-	"\fanswer_count\x18\x10 \x01(\x05R\vanswerCount\x12.\n" +
-	"\x13has_accepted_answer\x18\x11 \x01(\bR\x11hasAcceptedAnswer\x12*\n" +
-	"\x11current_user_vote\x18\x12 \x01(\x05R\x0fcurrentUserVote\x12:\n" +
+	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
+	"\x0fauthor_username\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
+	"\x11author_avatar_url\x18\r \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl\x12)\n" +
+	"\fupvote_count\x18\x0e \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\vupvoteCount\x12-\n" +
+	"\x0edownvote_count\x18\x0f \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\rdownvoteCount\x12)\n" +
+	"\fanswer_count\x18\x10 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\vanswerCount\x126\n" +
+	"\x13has_accepted_answer\x18\x11 \x01(\bB\x06\xc2\xf3\x18\x02@\x01R\x11hasAcceptedAnswer\x122\n" +
+	"\x11current_user_vote\x18\x12 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\x0fcurrentUserVote\x12:\n" +
 	"\bcomments\x18\x13 \x03(\v2\x1e.quadsmith.api.QuestionCommentR\bcomments\x12\x1e\n" +
 	"\n" +
 	"collection\x18\x14 \x01(\tR\n" +
 	"collection\x12\x1b\n" +
 	"\tentity_id\x18\x15 \x01(\tR\bentityId:\x0f\xc2\xf3\x18\v\n" +
 	"\tquestionsB\r\n" +
-	"\v_deleted_at\"\xc1\b\n" +
+	"\v_deleted_at\"\xf1\b\n" +
 	"\x06Answer\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12N\n" +
 	"\rquestion_uuid\x18\x02 \x01(\tB)\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01R\fquestionUuid\x120\n" +
@@ -4392,13 +4392,13 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\vaccepted_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampH\x01R\n" +
 	"acceptedAt\x88\x01\x01\x12@\n" +
 	"\vendorsed_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampH\x02R\n" +
-	"endorsedAt\x88\x01\x01\x12'\n" +
-	"\x0fauthor_username\x18\x0e \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\x0f \x01(\tR\x0fauthorAvatarUrl\x12!\n" +
-	"\fupvote_count\x18\x10 \x01(\x05R\vupvoteCount\x12%\n" +
-	"\x0edownvote_count\x18\x11 \x01(\x05R\rdownvoteCount\x12*\n" +
-	"\x11current_user_vote\x18\x12 \x01(\x05R\x0fcurrentUserVote\x12#\n" +
-	"\rcomment_count\x18\x13 \x01(\x05R\fcommentCount\x128\n" +
+	"endorsedAt\x88\x01\x01\x12/\n" +
+	"\x0fauthor_username\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
+	"\x11author_avatar_url\x18\x0f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl\x12)\n" +
+	"\fupvote_count\x18\x10 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\vupvoteCount\x12-\n" +
+	"\x0edownvote_count\x18\x11 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\rdownvoteCount\x122\n" +
+	"\x11current_user_vote\x18\x12 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\x0fcurrentUserVote\x12+\n" +
+	"\rcomment_count\x18\x13 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\fcommentCount\x128\n" +
 	"\bcomments\x18\x14 \x03(\v2\x1c.quadsmith.api.AnswerCommentR\bcomments:\r\xc2\xf3\x18\t\n" +
 	"\aanswersB\r\n" +
 	"\v_deleted_atB\x0e\n" +
@@ -4421,7 +4421,7 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\tis_upvote\x18\x04 \x01(\bR\bisUpvote\x12F\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:*\xc2\xf3\x18&\n" +
-	"\fanswer_votes\x1a\x16user_uuid, answer_uuid\"\x90\x04\n" +
+	"\fanswer_votes\x1a\x16user_uuid, answer_uuid\"\xa0\x04\n" +
 	"\x0fQuestionComment\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12N\n" +
 	"\rquestion_uuid\x18\x02 \x01(\tB)\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01R\fquestionUuid\x120\n" +
@@ -4432,11 +4432,11 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\b \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\t \x01(\tR\x0fauthorAvatarUrl:\x17\xc2\xf3\x18\x13\n" +
+	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
+	"\x0fauthor_username\x18\b \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
+	"\x11author_avatar_url\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl:\x17\xc2\xf3\x18\x13\n" +
 	"\x11question_commentsB\r\n" +
-	"\v_deleted_at\"\x86\x04\n" +
+	"\v_deleted_at\"\x96\x04\n" +
 	"\rAnswerComment\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
 	"\vanswer_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1fanswers(uuid) ON DELETE CASCADE(\x01R\n" +
@@ -4448,9 +4448,9 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\b \x01(\tR\x0eauthorUsername\x12*\n" +
-	"\x11author_avatar_url\x18\t \x01(\tR\x0fauthorAvatarUrl:\x15\xc2\xf3\x18\x11\n" +
+	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
+	"\x0fauthor_username\x18\b \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
+	"\x11author_avatar_url\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl:\x15\xc2\xf3\x18\x11\n" +
 	"\x0fanswer_commentsB\r\n" +
 	"\v_deleted_at\"\xe8\x01\n" +
 	"\x0eUserReputation\x12\x1a\n" +
@@ -4459,7 +4459,7 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\x05score\x18\x03 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x05score\x12F\n" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt:!\xc2\xf3\x18\x1d\n" +
-	"\x10user_reputations\x1a\tuser_uuid\"\xaa\x04\n" +
+	"\x10user_reputations\x1a\tuser_uuid\"\xc2\x04\n" +
 	"\n" +
 	"Collection\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
@@ -4471,12 +4471,12 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12'\n" +
-	"\x0fauthor_username\x18\t \x01(\tR\x0eauthorUsername\x12\x1d\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
+	"\x0fauthor_username\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x12%\n" +
 	"\n" +
 	"item_count\x18\n" +
-	" \x01(\x05R\titemCount\x12%\n" +
-	"\x0epreview_images\x18\v \x03(\tR\rpreviewImages\x12+\n" +
+	" \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\titemCount\x12-\n" +
+	"\x0epreview_images\x18\v \x03(\tB\x06\xc2\xf3\x18\x02@\x01R\rpreviewImages\x12+\n" +
 	"\rcontains_item\x18\f \x01(\bB\x06\xc2\xf3\x18\x02@\x01R\fcontainsItem:\x11\xc2\xf3\x18\r\n" +
 	"\vcollections\"\xc5\x04\n" +
 	"\x0eCollectionItem\x12\x1a\n" +

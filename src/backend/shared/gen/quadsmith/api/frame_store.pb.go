@@ -36,7 +36,7 @@ func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links", "primary_display_image", "media", "motor_count", "camera_mount_interfaces", "motor_mount_patterns", "board_mount_patterns", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM frames INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM frames INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Frame{}
@@ -121,7 +121,7 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links", "primary_display_image", "media", "motor_count", "camera_mount_interfaces", "motor_mount_patterns", "board_mount_patterns", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM frames INNER JOIN entities USING (uuid)`
+	query := `SELECT ` + colsStr + ` FROM frames INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
 	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
 		query += " AND (" + whereClause + ")"

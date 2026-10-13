@@ -1380,9 +1380,9 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 	// 2. Reassign builds and components to current user
 	_, err = tx.Exec(ctx, `
 		UPDATE entities
-		SET user_uuid = $1, author_username = $2
-		WHERE user_uuid = $3`,
-		userCtx.UserUUID, userCtx.UserID, otherUserUUID)
+		SET user_uuid = $1
+		WHERE user_uuid = $2`,
+		userCtx.UserUUID, otherUserUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to transfer builds: %w", err))
 	}

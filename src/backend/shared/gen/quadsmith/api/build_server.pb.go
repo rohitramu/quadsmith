@@ -238,11 +238,11 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 		authorStr = *b.AuthorUsername
 	}
 	_, err = tx.Exec(ctx, `
-		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, user_uuid, author_username, is_archived, created_at, updated_at)
-		VALUES ($1, 'builds', $2, $3, $4, $5, $6, $7, $8, $9, $10, false, NOW(), NOW())
+		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, user_uuid, is_archived, created_at, updated_at)
+		VALUES ($1, 'builds', $2, $3, $4, $5, $6, $7, $8, $9, false, NOW(), NOW())
 		ON CONFLICT (collection, id) DO UPDATE
-		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, user_uuid = EXCLUDED.user_uuid, author_username = EXCLUDED.author_username, updated_at = NOW()
-	`, b.Uuid, b.Id, b.Name, b.Description, b.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorStr, b.UserUuid, b.AuthorUsername)
+		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, user_uuid = EXCLUDED.user_uuid, updated_at = NOW()
+	`, b.Uuid, b.Id, b.Name, b.Description, b.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorStr, b.UserUuid)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save entity: %w", err))
 	}

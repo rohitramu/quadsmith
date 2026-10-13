@@ -140,7 +140,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 
 	// readableFields: fields accessible for SELECT (Get and List)
 	var readableFields []*protogen.Field
-	if hasEntitiesJoin {
+	if hasEntitiesJoin || tableName == "entities" {
 		readableFields = msg.Fields
 	} else {
 		readableFields = activeFields
@@ -232,7 +232,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 
 	fromClause := tableName
 	if hasEntitiesJoin {
-		fromClause = tableName + " INNER JOIN entities USING (uuid)"
+		fromClause = tableName + " INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid"
+	} else if tableName == "entities" {
+		fromClause = tableName + " LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid"
 	}
 
 	// --- GET ---

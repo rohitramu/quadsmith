@@ -36,7 +36,7 @@ func GetCharger(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "channels", "max_charge_power_w", "max_charge_current_a", "input_voltage_range", "supported_chemistries", "max_cells_s", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM chargers INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM chargers INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Charger{}
@@ -119,7 +119,7 @@ func ListChargers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "channels", "max_charge_power_w", "max_charge_current_a", "input_voltage_range", "supported_chemistries", "max_cells_s", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM chargers INNER JOIN entities USING (uuid)`
+	query := `SELECT ` + colsStr + ` FROM chargers INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
 	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
 		query += " AND (" + whereClause + ")"

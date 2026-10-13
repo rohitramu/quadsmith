@@ -77,7 +77,7 @@ func TestParseSQL_QuadsmithSchema(t *testing.T) {
 	if !ok {
 		t.Fatal("entities table not found")
 	}
-	expectedEntityCols := []string{"uuid", "collection", "id", "name", "description", "primary_display_image", "reference_links", "media", "author_or_manufacturer", "is_archived", "user_uuid", "author_username"}
+	expectedEntityCols := []string{"uuid", "collection", "id", "name", "description", "primary_display_image", "reference_links", "media", "author_or_manufacturer", "is_archived", "user_uuid"}
 	for _, c := range expectedEntityCols {
 		if _, hasCol := entities.Columns[c]; !hasCol {
 			t.Errorf("Expected entities column %q not found", c)

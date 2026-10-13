@@ -41,7 +41,7 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &VideoTransmitter{}
@@ -137,7 +137,7 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 	} else {
 		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid)`
+	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
 	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
 		query += " AND (" + whereClause + ")"

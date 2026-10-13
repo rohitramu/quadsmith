@@ -65,7 +65,7 @@ rules.
 > - Eliminate redundant columns (`name`, `description`, `media`, `user_uuid`,
 >   `links`) across `builds` and all 20 component tables.
 > - Authorize operations via creator-ownership with admin overrides, logging
->   `user_uuid` and `author_username` on `entities`.
+>   `user_uuid` on `entities`.
 > - Implement Steam-style hybrid deletion: hard delete if unreferenced, or
 >   delist/archive via `entities.is_archived` if referenced.
 > - Provide schema-driven modal editors in the web UI, quick-add shortcuts in
@@ -81,7 +81,6 @@ rules.
                | name, description                          |
                | author_or_manufacturer                     |
                | user_uuid (FK -> users.uuid)               | <--- Single Source of Truth
-               | author_username                            |
                | is_archived, created_at, updated_at        |
                +---------------------+----------------------+
                                      | 1:1 (Shared UUID)
@@ -106,19 +105,20 @@ acts as the base entity for every catalog component and user build:
 
 - **Canonical Base Metadata in `entities`**: `uuid` (PK), `collection`, `id`,
   `name`, `description`, `primary_display_image`, `reference_links`, `media`,
-  `author_or_manufacturer`, `user_uuid` (FK to `users(uuid)`),
-  `author_username`, `is_archived`, `created_at`, `updated_at`.
+  `author_or_manufacturer`, `user_uuid` (FK to `users(uuid)`), `is_archived`,
+  `created_at`, `updated_at`.
 - **Pure Domain Subtype Tables**: The 20 component tables (`motors`, `frames`,
   `batteries`, etc.) and the `builds` table drop their redundant copies of
   `name`, `description`, `primary_display_image`, `reference_links`, `media`,
-  `user_uuid`, and `author_username`. They retain **only** their domain-specific
-  specifications and foreign keys, keyed by `uuid` referencing
-  `entities(uuid) ON DELETE CASCADE`.
+  and `user_uuid`. They retain **only** their domain-specific specifications and
+  foreign keys, keyed by `uuid` referencing `entities(uuid) ON DELETE CASCADE`.
 - **Sub-Millisecond 1:1 Primary Key Joins**: When querying a component or build
   (`Get` and `List`), the database performs an
-  `INNER JOIN entities USING (uuid)`. Because both tables share the identical
-  UUID primary key in memory, PostgreSQL executes an in-memory index scan adding
-  less than **0.2 milliseconds** to query latency while eliminating thousands of
+  `INNER JOIN entities USING (uuid)` and
+  `LEFT JOIN users ON users.uuid = entities.user_uuid` to dynamically project
+  `users.id AS author_username`. Because both tables share the identical UUID
+  primary key in memory, PostgreSQL executes an in-memory index scan adding less
+  than **0.2 milliseconds** to query latency while eliminating thousands of
   lines of duplicated data.
 - **Unified Cross-Collection Profile Queries**: Fetching all components created
   by a user executes in $O(1)$ time with an indexed query against `entities`:
@@ -134,8 +134,8 @@ ORDER BY created_at DESC;
 
 ##### <a id="denormalized-dual-write" >Denormalized Dual-Write Mirroring</a>
 
-Store `name`, `description`, `user_uuid`, `author_username`, and `is_archived`
-redundantly on both the specific component tables and `entities`.
+Store `name`, `description`, `user_uuid`, and `is_archived` redundantly on both
+the specific component tables and `entities`.
 
 **Pros:**
 
@@ -167,8 +167,9 @@ social collections by joining polymorphic table references.
 
 Every component and build in Quadsmith is created by a user and records the
 author's identity on the base `entities` record (`user_uuid` referencing
-`users(uuid)` and `author_username`). The seeder acts as a user (e.g. `@alex`),
-as all catalog items in production originate from user contributions.
+`users(uuid)`, with `author_username` projected dynamically on query). The
+seeder acts as a user (e.g. `@alex`), as all catalog items in production
+originate from user contributions.
 
 - **Creation**: Any authenticated user can create new components. Anonymous
   requests are rejected with `CodeUnauthenticated`.
@@ -213,6 +214,24 @@ approval by an administrator before becoming visible.
 - Severe administrative bottleneck that discourages community contributions.
 - Blocks users from completing custom aircraft configurations in the Forge
   wizard while waiting for approval.
+
+##### <a id="denormalized-author-username-columns" >Denormalized Author Username Columns</a>
+
+Store `author_username` redundantly alongside `user_uuid` in `entities`,
+`reviews`, `questions`, and `collections`.
+
+**Pros:**
+
+- Avoids joining the `users` table to project the author's handle.
+
+**Cons:**
+
+- Violates the Single Source of Truth rule; usernames permanently go stale when
+  a user changes their handle via `AuthService.ChangeUsername`.
+- Violates the `AGENTS.md` architecture convention requiring all database user
+  references to use foreign key UUIDs.
+- Unnecessary write-side overhead because read queries already join `users` to
+  project avatar URLs and active profiles.
 
 ### <a id="20-collection-scope-and-per-resource-connectrpc-crud-api" >20-Collection Scope and Per-Resource ConnectRPC CRUD API</a>
 
