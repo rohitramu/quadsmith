@@ -1,6 +1,6 @@
-# Build Evaluator Specification
+# Build Evaluator Specification {#build-evaluator-specification}
 
-## Table of Contents
+## Table of Contents {#table-of-contents}
 
 - [1. Goal](#1-goal)
 - [2. Proposal](#2-proposal)
@@ -14,13 +14,13 @@
 
 ---
 
-## 1. Goal
+## 1. Goal {#1-goal}
 
 Provide an analytical flight dynamics evaluation engine that computes estimated flight performance, mass distribution, agility, flight times, and operational limits for any arbitrary quadcopter build configuration paired with runtime battery and payload parameters.
 
 ---
 
-## 2. Proposal
+## 2. Proposal {#2-proposal}
 
 > **TL;DR:**
 >
@@ -31,7 +31,7 @@ Provide an analytical flight dynamics evaluation engine that computes estimated 
 
 The Build Evaluator acts as a pure domain logic service within the Quadsmith platform. It ingests an assembled quadcopter hardware configuration (frame geometry, motor stators and KV, propeller dimensions, component weights, and transmission specifications) alongside runtime inputs (selected battery profile and auxiliary payload mass like an action camera). The engine executes analytical physics formulas to evaluate electrical, aerodynamic, and inertial characteristics, producing a structured telemetry report for the frontend user interface.
 
-### Point-Mass Mass, Inertia, and Center of Gravity Modeling
+### Point-Mass Mass, Inertia, and Center of Gravity Modeling {#point-mass-mass-inertia-and-center-of-gravity-modeling}
 
 The evaluator calculates total flying mass ($M_{total} = M_{dry} + M_{battery} + M_{payload}$) and resolves the center of gravity (CG) along three axes. Core electronics (Flight Controller, ESC, Receiver, Camera) are localized at the origin $(0, 0, 0)$, while arm masses (motor plus propeller) are distributed at a radial distance $r = \frac{\text{Wheelbase}}{2}$. Battery and auxiliary payload masses are offset along the vertical Z-axis (top-mount vs. bottom-mount) and longitudinal X-axis (forward/aft camera placement).
 
@@ -39,7 +39,7 @@ When forward payload placement shifts the center of gravity away from the geomet
 
 $$I_{zz} = 4 \times M_{arm} \times r^2 + I_{core}$$
 
-#### Alternatives considered
+#### Alternatives considered {#alternatives-considered-point-mass-modeling}
 
 Using full 3D CAD mesh geometry and finite element analysis (FEA) to compute exact volume and mass distributions.
 
@@ -52,7 +52,7 @@ Using full 3D CAD mesh geometry and finite element analysis (FEA) to compute exa
 - Impractical for community-driven catalogs where manufacturers rarely publish complete 3D STEP or STL models.
 - Computationally prohibitive for interactive web and API evaluations.
 
-### Analytical Aerodynamic Thrust and Voltage Sag Modeling
+### Analytical Aerodynamic Thrust and Voltage Sag Modeling {#analytical-aerodynamic-thrust-and-voltage-sag-modeling}
 
 To evaluate static thrust across diverse motor and propeller combinations, the engine applies momentum theory and aerodynamic coefficients rather than static empirical databases. Air density is evaluated at standard sea level ($\rho = 1.225 \text{ kg/m}^3$). Effective operating voltage is modeled by incorporating internal battery cell resistance derived from capacity and discharge C-ratings, determining loaded voltage sag from nominal $S \times 3.7\text{V}$:
 
@@ -64,7 +64,7 @@ $$T = C_T \times \rho \times n^2 \times D^4$$
 
 Configuration modifiers adjust static output: ducted propeller ducts grant a $+15\%$ static thrust increase, while pusher configurations apply a $-5\%$ penalty due to arm wake turbulence.
 
-#### Alternatives considered
+#### Alternatives considered {#alternatives-considered-aerodynamic-thrust-modeling}
 
 Empirical bench test lookup tables compiled from physical thrust stand measurements.
 
@@ -77,7 +77,7 @@ Empirical bench test lookup tables compiled from physical thrust stand measureme
 - Fails completely for newly released, unmeasured, or uncommon motor-propeller combinations.
 - Requires maintaining massive, brittle external test datasets.
 
-### Aerodynamic and Electrical Power Consumption Modeling
+### Aerodynamic and Electrical Power Consumption Modeling {#aerodynamic-and-electrical-power-consumption-modeling}
 
 Mechanical power required to turn the propeller blades is calculated based on pitch, diameter, blade count, rotational speed, and power coefficient ($C_P$):
 
@@ -89,7 +89,7 @@ $$P_{elec} = \frac{P_{mech}}{\eta_{motor}}$$
 
 Current draw ($I$) is subsequently resolved as $I = \frac{P_{elec}}{V_{sagged}}$, establishing baseline current consumption across throttle ranges.
 
-### Multi-Profile Flight Time and Range Boundary Estimation
+### Multi-Profile Flight Time and Range Boundary Estimation {#multi-profile-flight-time-and-range-boundary-estimation}
 
 Flight durations are calculated simultaneously across four standardized flight profiles rather than a single idealized hover figure:
 
@@ -99,10 +99,11 @@ Flight durations are calculated simultaneously across four standardized flight p
 - **Racing**: Evaluated at $0.4 \times \text{Max Current}$, simulating sustained high-speed forward flight.
 
 Operational range is reported as the conservative minimum of two distinct limits:
+
 1. **Aerodynamic Endurance Range**: Forward cruise speed multiplied by cruising flight duration ($v_{cruise} \times \text{Time}_{cinematic}$).
 2. **RF Telemetry Boundary**: Calculated from video transmitter output power (mW) and receiver protocol link budget (e.g., 25mW analog $\approx 500\text{m}$, 800mW digital $\approx 4\text{km}$, 2.4GHz ExpressLRS $\approx 15\text{km}$).
 
-### Handling Quality via Disk Loading and Torque-to-Inertia Ratios
+### Handling Quality via Disk Loading and Torque-to-Inertia Ratios {#handling-quality-via-disk-loading-and-torque-to-inertia-ratios}
 
 To evaluate handling crispness and prop wash vulnerability, the engine calculates two fundamental physical ratios:
 
@@ -111,7 +112,7 @@ To evaluate handling crispness and prop wash vulnerability, the engine calculate
 
 These metrics are reported as raw physical dimensions ($\text{g/cm}^2$) alongside a normalized dimensionless **Handling Score (1–10)**.
 
-### Continuous Payload Capacity Curves and Threshold Markers
+### Continuous Payload Capacity Curves and Threshold Markers {#continuous-payload-capacity-curves-and-threshold-markers}
 
 Rather than computing a single payload cutoff weight, the engine models payload capacity as a continuous curve of auxiliary payload mass ($0\text{g}$ to $1000\text{g}$) against resulting thrust-to-weight ratio. The report overlays standardized benchmark thresholds:
 
@@ -121,7 +122,7 @@ Rather than computing a single payload cutoff weight, the engine models payload 
 
 ---
 
-## 3. Assumptions
+## 3. Assumptions {#3-assumptions}
 
 1. Air density ($\rho$) is evaluated at standard International Standard Atmosphere (ISA) sea-level conditions ($1.225 \text{ kg/m}^3$).
 2. Nominal battery cell voltage is assumed to be $3.7\text{V}$ per cell ($S \times 3.7\text{V}$).
