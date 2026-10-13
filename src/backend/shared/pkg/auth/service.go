@@ -24,6 +24,7 @@ import (
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 	config "quadsmith/shared/gen/quadsmith/config"
+	"quadsmith/shared/pkg/email"
 )
 
 // ---------------------------------------------------------
@@ -40,6 +41,7 @@ type AuthConfig struct {
 	OtpTTL           time.Duration
 	MagicLinkTTL     time.Duration
 	EmailCooldown    time.Duration
+	Email            *config.EmailConfig
 }
 
 func FromProtoAuthConfig(p *config.AuthConfig) *AuthConfig {
@@ -56,13 +58,15 @@ func FromProtoAuthConfig(p *config.AuthConfig) *AuthConfig {
 		OtpTTL:           p.GetOtpTtl().AsDuration(),
 		MagicLinkTTL:     p.GetMagicLinkTtl().AsDuration(),
 		EmailCooldown:    p.GetEmailCooldown().AsDuration(),
+		Email:            p.GetEmail(),
 	}
 }
 
 type AuthService struct {
 	apiconnect.UnimplementedAuthServiceHandler
-	db  *pgxpool.Pool
-	cfg *AuthConfig
+	db          *pgxpool.Pool
+	cfg         *AuthConfig
+	emailSender email.EmailSender
 }
 
 func NewAuthService(db *pgxpool.Pool, protoCfg ...*config.AuthConfig) *AuthService {
@@ -88,7 +92,24 @@ func NewAuthService(db *pgxpool.Pool, protoCfg ...*config.AuthConfig) *AuthServi
 	if authCfg.AccessTokenTTL > 0 || authCfg.RefreshTokenTTL > 0 {
 		SetTokenTTLs(authCfg.AccessTokenTTL, authCfg.RefreshTokenTTL)
 	}
-	return &AuthService{db: db, cfg: authCfg}
+
+	var sender email.EmailSender
+	if authCfg.Email != nil {
+		sender = email.NewEmailSender(authCfg.Email)
+	} else {
+		sender = email.NewConsoleEmailSender()
+	}
+
+	return &AuthService{
+		db:          db,
+		cfg:         authCfg,
+		emailSender: sender,
+	}
+}
+
+// SetEmailSender overrides the active EmailSender implementation (useful for tests).
+func (s *AuthService) SetEmailSender(sender email.EmailSender) {
+	s.emailSender = sender
 }
 
 func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.SendEmailOtpRequest]) (*connect.Response[pb.SendEmailOtpResponse], error) {
@@ -154,13 +175,20 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 	}
 
 	baseURL := s.getBaseURL(req)
+	magicLinkURL := fmt.Sprintf("%s/login/verify?token=%s", baseURL, magicToken)
 
-	// ConsoleMailer: controlled via cfg.DevPrintOTP
-	if s.cfg.DevPrintOTP {
+	ctxTimeout, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	if s.emailSender != nil {
+		if err := s.emailSender.SendVerification(ctxTimeout, email, otpCode, magicLinkURL, "login", s.cfg.OtpTTL); err != nil {
+			return nil, connect.NewError(connect.CodeUnavailable, fmt.Errorf("unable to deliver verification email: %w", err))
+		}
+	} else if s.cfg.DevPrintOTP {
 		fmt.Printf("\n=======================================================\n")
 		fmt.Printf("[AUTH] Email OTP for %s: %s (valid for %v)\n", email, otpCode, s.cfg.OtpTTL)
 		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
-		fmt.Printf("[AUTH] Magic Link: %s/login/verify?token=%s (valid for %v)\n", baseURL, magicToken, s.cfg.MagicLinkTTL)
+		fmt.Printf("[AUTH] Magic Link: %s (valid for %v)\n", magicLinkURL, s.cfg.MagicLinkTTL)
 		fmt.Printf("=======================================================\n\n")
 	}
 
@@ -659,8 +687,8 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 
 	emailUUID := NewUUIDv7()
 	_, err = tx.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
-		VALUES ($1, $2, $3, true, $4)`,
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+		VALUES ($1, $2, $3, true, true, $4)`,
 		emailUUID, userUUID, email, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user email: %w", err))
@@ -905,17 +933,21 @@ func (s *AuthService) ListUserEmails(ctx context.Context, req *connect.Request[p
 	if userCtx.Email != "" {
 		emailUUID := NewUUIDv7()
 		_, _ = s.db.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
-			VALUES ($1, $2, $3, true, NOW())
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+			VALUES ($1, $2, $3, true, true, NOW())
 			ON CONFLICT (email) DO NOTHING`,
 			emailUUID, userCtx.UserUUID, userCtx.Email)
 	}
 
 	rows, err := s.db.Query(ctx, `
-		SELECT uuid, user_uuid, email, is_primary, created_at
-		FROM user_emails
-		WHERE user_uuid = $1
-		ORDER BY is_primary DESC, created_at ASC`, userCtx.UserUUID)
+		SELECT ue.uuid, ue.user_uuid, ue.email, ue.is_primary, ue.created_at, ue.verified_via_otp,
+		       COALESCE(ARRAY_AGG(DISTINCT oa.provider) FILTER (WHERE oa.provider IS NOT NULL), '{}') AS oauth_providers
+		FROM user_emails ue
+		LEFT JOIN user_email_oauth_accounts uea ON ue.uuid = uea.user_email_uuid
+		LEFT JOIN oauth_accounts oa ON uea.oauth_account_uuid = oa.uuid
+		WHERE ue.user_uuid = $1
+		GROUP BY ue.uuid, ue.user_uuid, ue.email, ue.is_primary, ue.created_at, ue.verified_via_otp
+		ORDER BY ue.is_primary DESC, ue.created_at ASC`, userCtx.UserUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to list user emails: %w", err))
 	}
@@ -925,12 +957,14 @@ func (s *AuthService) ListUserEmails(ctx context.Context, req *connect.Request[p
 	for rows.Next() {
 		var em pb.UserEmail
 		var createdAt *time.Time
-		if err := rows.Scan(&em.Uuid, &em.UserUuid, &em.Email, &em.IsPrimary, &createdAt); err != nil {
+		var providers []string
+		if err := rows.Scan(&em.Uuid, &em.UserUuid, &em.Email, &em.IsPrimary, &createdAt, &em.VerifiedViaOtp, &providers); err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to scan email: %w", err))
 		}
 		if createdAt != nil {
 			em.CreatedAt = timestamppb.New(*createdAt)
 		}
+		em.OauthProviders = providers
 		emails = append(emails, &em)
 	}
 
@@ -1014,13 +1048,20 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 	}
 
 	baseURL := s.getBaseURL(req)
+	magicLinkURL := fmt.Sprintf("%s/account?add_email_token=%s", baseURL, magicToken)
 
-	// ConsoleMailer: controlled via cfg.DevPrintOTP
-	if s.cfg.DevPrintOTP {
+	ctxTimeout, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	if s.emailSender != nil {
+		if err := s.emailSender.SendVerification(ctxTimeout, email, otpCode, magicLinkURL, "add_email", s.cfg.OtpTTL); err != nil {
+			return nil, connect.NewError(connect.CodeUnavailable, fmt.Errorf("unable to deliver verification email: %w", err))
+		}
+	} else if s.cfg.DevPrintOTP {
 		fmt.Printf("\n=======================================================\n")
 		fmt.Printf("[AUTH] Add Email OTP for %s: %s (valid for %v)\n", email, otpCode, s.cfg.OtpTTL)
 		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
-		fmt.Printf("[AUTH] Add Email Magic Link: %s/account?add_email_token=%s (valid for %v)\n", baseURL, magicToken, s.cfg.MagicLinkTTL)
+		fmt.Printf("[AUTH] Add Email Magic Link: %s (valid for %v)\n", magicLinkURL, s.cfg.MagicLinkTTL)
 		fmt.Printf("=======================================================\n\n")
 	}
 
@@ -1219,9 +1260,9 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 	// No other account found -> Add directly to current user's emails
 	newUUID := NewUUIDv7()
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
-		VALUES ($1, $2, $3, false, NOW())
-		ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false`,
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+		VALUES ($1, $2, $3, false, true, NOW())
+		ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_via_otp = true`,
 		newUUID, userCtx.UserUUID, email)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to add email: %w", err))
@@ -1374,8 +1415,8 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		}
 		newEmailUUID := NewUUIDv7()
 		_, err = tx.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
-			VALUES ($1, $2, $3, false, NOW())
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+			VALUES ($1, $2, $3, false, true, NOW())
 			ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false`,
 			newEmailUUID, userCtx.UserUUID, emLower)
 		if err != nil {
@@ -1533,6 +1574,172 @@ func (s *AuthService) RemoveUserEmail(ctx context.Context, req *connect.Request[
 		Success: true,
 		Message: "Email removed from your account",
 	}), nil
+}
+
+// LinkOAuthAccount associates an external OAuth provider account with a user and links its email in user_email_oauth_accounts.
+func (s *AuthService) LinkOAuthAccount(ctx context.Context, userUUID, provider, providerAccountID, email string) error {
+	provider = strings.ToLower(strings.TrimSpace(provider))
+	email = strings.ToLower(strings.TrimSpace(email))
+	if userUUID == "" || provider == "" || providerAccountID == "" || email == "" {
+		return errors.New("userUUID, provider, providerAccountID, and email are required")
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+
+	// 1. Upsert oauth_accounts
+	var oauthUUID string
+	err = tx.QueryRow(ctx, `
+		SELECT uuid FROM oauth_accounts WHERE user_uuid = $1 AND LOWER(provider) = $2`,
+		userUUID, provider).Scan(&oauthUUID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		oauthUUID = NewUUIDv7()
+		_, err = tx.Exec(ctx, `
+			INSERT INTO oauth_accounts (uuid, user_uuid, provider, provider_account_id, created_at)
+			VALUES ($1, $2, $3, $4, NOW())`,
+			oauthUUID, userUUID, provider, providerAccountID)
+		if err != nil {
+			return fmt.Errorf("failed to insert oauth account: %w", err)
+		}
+	} else if err != nil {
+		return fmt.Errorf("failed to query oauth account: %w", err)
+	} else {
+		_, err = tx.Exec(ctx, `
+			UPDATE oauth_accounts
+			SET provider_account_id = $1
+			WHERE uuid = $2`,
+			providerAccountID, oauthUUID)
+		if err != nil {
+			return fmt.Errorf("failed to update oauth account: %w", err)
+		}
+	}
+
+	// 2. Ensure user_emails has this email
+	var emailUUID string
+	err = tx.QueryRow(ctx, `
+		SELECT uuid FROM user_emails WHERE LOWER(email) = $1`, email).Scan(&emailUUID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		emailUUID = NewUUIDv7()
+		_, err = tx.Exec(ctx, `
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+			VALUES ($1, $2, $3, false, false, NOW())`,
+			emailUUID, userUUID, email)
+		if err != nil {
+			return fmt.Errorf("failed to insert user email: %w", err)
+		}
+	} else if err != nil {
+		return fmt.Errorf("failed to query user email: %w", err)
+	}
+
+	// 3. Link in user_email_oauth_accounts
+	linkUUID := NewUUIDv7()
+	_, err = tx.Exec(ctx, `
+		INSERT INTO user_email_oauth_accounts (uuid, user_email_uuid, oauth_account_uuid, created_at)
+		VALUES ($1, $2, $3, NOW())
+		ON CONFLICT (user_email_uuid, oauth_account_uuid) DO NOTHING`,
+		linkUUID, emailUUID, oauthUUID)
+	if err != nil {
+		return fmt.Errorf("failed to link oauth account to email: %w", err)
+	}
+
+	return tx.Commit(ctx)
+}
+
+// UnlinkOAuthAccount unlinks an OAuth provider from a user, enforcing primary email safeguards
+// and pruning orphaned secondary emails.
+func (s *AuthService) UnlinkOAuthAccount(ctx context.Context, userUUID, provider string) error {
+	provider = strings.ToLower(strings.TrimSpace(provider))
+	if userUUID == "" || provider == "" {
+		return errors.New("userUUID and provider are required")
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(ctx)
+
+	var oauthUUID string
+	err = tx.QueryRow(ctx, `
+		SELECT uuid FROM oauth_accounts WHERE user_uuid = $1 AND LOWER(provider) = $2`,
+		userUUID, provider).Scan(&oauthUUID)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return connect.NewError(connect.CodeNotFound, errors.New("oauth provider not linked"))
+	} else if err != nil {
+		return connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Total emails on account
+	var totalEmails int
+	err = tx.QueryRow(ctx, `SELECT COUNT(*) FROM user_emails WHERE user_uuid = $1`, userUUID).Scan(&totalEmails)
+	if err != nil {
+		return connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Inspect all emails associated with this oauth account
+	rows, err := tx.Query(ctx, `
+		SELECT ue.uuid, ue.email, ue.is_primary, ue.verified_via_otp,
+		       COUNT(uea2.uuid) AS other_links
+		FROM user_email_oauth_accounts uea
+		JOIN user_emails ue ON uea.user_email_uuid = ue.uuid
+		LEFT JOIN user_email_oauth_accounts uea2 ON uea2.user_email_uuid = ue.uuid AND uea2.oauth_account_uuid != uea.oauth_account_uuid
+		WHERE uea.oauth_account_uuid = $1
+		GROUP BY ue.uuid, ue.email, ue.is_primary, ue.verified_via_otp`, oauthUUID)
+	if err != nil {
+		return connect.NewError(connect.CodeInternal, err)
+	}
+	defer rows.Close()
+
+	type linkedEmailInfo struct {
+		uuid           string
+		email          string
+		isPrimary      bool
+		verifiedViaOTP bool
+		otherLinks     int
+	}
+	var emails []linkedEmailInfo
+	for rows.Next() {
+		var em linkedEmailInfo
+		if err := rows.Scan(&em.uuid, &em.email, &em.isPrimary, &em.verifiedViaOTP, &em.otherLinks); err != nil {
+			return connect.NewError(connect.CodeInternal, err)
+		}
+		emails = append(emails, em)
+	}
+	if err := rows.Err(); err != nil {
+		return connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Primary and sole email safeguards
+	for _, em := range emails {
+		solelyVerifiedByThis := !em.verifiedViaOTP && em.otherLinks == 0
+		if solelyVerifiedByThis {
+			if em.isPrimary || totalEmails <= 1 {
+				return connect.NewError(connect.CodeFailedPrecondition, errors.New("Cannot unlink this provider because it supplies your primary email. Please designate another verified email as primary before unlinking."))
+			}
+		}
+	}
+
+	// Delete oauth_account (cascades to delete user_email_oauth_accounts)
+	_, err = tx.Exec(ctx, `DELETE FROM oauth_accounts WHERE uuid = $1`, oauthUUID)
+	if err != nil {
+		return connect.NewError(connect.CodeInternal, err)
+	}
+
+	// Prune secondary emails solely verified by this provider
+	for _, em := range emails {
+		solelyVerifiedByThis := !em.verifiedViaOTP && em.otherLinks == 0
+		if solelyVerifiedByThis && !em.isPrimary {
+			_, err = tx.Exec(ctx, `DELETE FROM user_emails WHERE uuid = $1`, em.uuid)
+			if err != nil {
+				return connect.NewError(connect.CodeInternal, err)
+			}
+		}
+	}
+
+	return tx.Commit(ctx)
 }
 
 func (s *AuthService) ListArchivedUsernames(ctx context.Context, _ *connect.Request[pb.ListArchivedUsernamesRequest]) (*connect.Response[pb.ListArchivedUsernamesResponse], error) {
@@ -2153,8 +2360,8 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 
 		emailUUID := NewUUIDv7()
 		_, _ = s.db.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
-			VALUES ($1, $2, $3, true, $4)
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+			VALUES ($1, $2, $3, true, true, $4)
 			ON CONFLICT (email) DO NOTHING`,
 			emailUUID, userUUID, email, now)
 
@@ -2170,8 +2377,8 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		// Ensure user_emails has this email
 		emailUUID := NewUUIDv7()
 		_, _ = s.db.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at)
-			VALUES ($1, $2, $3, true, NOW())
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+			VALUES ($1, $2, $3, true, true, NOW())
 			ON CONFLICT (email) DO NOTHING`,
 			emailUUID, userUUID, email)
 

@@ -41,4 +41,7 @@ auth {
   email_cooldown {
     seconds: 20
   }
+  email {
+    provider: "console"
+  }
 }

@@ -166,6 +166,150 @@ func (x *ServerConfig) GetMaxRequestBytes() int64 {
 	return 0
 }
 
+type SmtpConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Host          string                 `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`
+	Port          int32                  `protobuf:"varint,2,opt,name=port,proto3" json:"port,omitempty"` // e.g. 587 (STARTTLS) or 465 (TLS)
+	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	Password      string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
+	FromAddress   string                 `protobuf:"bytes,5,opt,name=from_address,json=fromAddress,proto3" json:"from_address,omitempty"` // e.g. "Quadsmith Auth <auth@quadsmith.net>"
+	ReplyTo       string                 `protobuf:"bytes,6,opt,name=reply_to,json=replyTo,proto3" json:"reply_to,omitempty"`
+	RequireTls    bool                   `protobuf:"varint,7,opt,name=require_tls,json=requireTls,proto3" json:"require_tls,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SmtpConfig) Reset() {
+	*x = SmtpConfig{}
+	mi := &file_quadsmith_config_config_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SmtpConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SmtpConfig) ProtoMessage() {}
+
+func (x *SmtpConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_config_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SmtpConfig.ProtoReflect.Descriptor instead.
+func (*SmtpConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SmtpConfig) GetHost() string {
+	if x != nil {
+		return x.Host
+	}
+	return ""
+}
+
+func (x *SmtpConfig) GetPort() int32 {
+	if x != nil {
+		return x.Port
+	}
+	return 0
+}
+
+func (x *SmtpConfig) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *SmtpConfig) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+func (x *SmtpConfig) GetFromAddress() string {
+	if x != nil {
+		return x.FromAddress
+	}
+	return ""
+}
+
+func (x *SmtpConfig) GetReplyTo() string {
+	if x != nil {
+		return x.ReplyTo
+	}
+	return ""
+}
+
+func (x *SmtpConfig) GetRequireTls() bool {
+	if x != nil {
+		return x.RequireTls
+	}
+	return false
+}
+
+type EmailConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Provider      string                 `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"` // "console", "smtp"
+	Smtp          *SmtpConfig            `protobuf:"bytes,2,opt,name=smtp,proto3" json:"smtp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmailConfig) Reset() {
+	*x = EmailConfig{}
+	mi := &file_quadsmith_config_config_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmailConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmailConfig) ProtoMessage() {}
+
+func (x *EmailConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_config_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmailConfig.ProtoReflect.Descriptor instead.
+func (*EmailConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *EmailConfig) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *EmailConfig) GetSmtp() *SmtpConfig {
+	if x != nil {
+		return x.Smtp
+	}
+	return nil
+}
+
 type AuthConfig struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Secret           string                 `protobuf:"bytes,1,opt,name=secret,proto3" json:"secret,omitempty"`
@@ -177,13 +321,14 @@ type AuthConfig struct {
 	OtpTtl           *durationpb.Duration   `protobuf:"bytes,7,opt,name=otp_ttl,json=otpTtl,proto3" json:"otp_ttl,omitempty"`
 	MagicLinkTtl     *durationpb.Duration   `protobuf:"bytes,8,opt,name=magic_link_ttl,json=magicLinkTtl,proto3" json:"magic_link_ttl,omitempty"`
 	EmailCooldown    *durationpb.Duration   `protobuf:"bytes,9,opt,name=email_cooldown,json=emailCooldown,proto3" json:"email_cooldown,omitempty"`
+	Email            *EmailConfig           `protobuf:"bytes,10,opt,name=email,proto3" json:"email,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
 
 func (x *AuthConfig) Reset() {
 	*x = AuthConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[2]
+	mi := &file_quadsmith_config_config_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -195,7 +340,7 @@ func (x *AuthConfig) String() string {
 func (*AuthConfig) ProtoMessage() {}
 
 func (x *AuthConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[2]
+	mi := &file_quadsmith_config_config_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -208,7 +353,7 @@ func (x *AuthConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthConfig.ProtoReflect.Descriptor instead.
 func (*AuthConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{2}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AuthConfig) GetSecret() string {
@@ -274,6 +419,13 @@ func (x *AuthConfig) GetEmailCooldown() *durationpb.Duration {
 	return nil
 }
 
+func (x *AuthConfig) GetEmail() *EmailConfig {
+	if x != nil {
+		return x.Email
+	}
+	return nil
+}
+
 type ApiServerConfig struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Environment        string                 `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
@@ -287,7 +439,7 @@ type ApiServerConfig struct {
 
 func (x *ApiServerConfig) Reset() {
 	*x = ApiServerConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[3]
+	mi := &file_quadsmith_config_config_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -299,7 +451,7 @@ func (x *ApiServerConfig) String() string {
 func (*ApiServerConfig) ProtoMessage() {}
 
 func (x *ApiServerConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[3]
+	mi := &file_quadsmith_config_config_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -312,7 +464,7 @@ func (x *ApiServerConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApiServerConfig.ProtoReflect.Descriptor instead.
 func (*ApiServerConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{3}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ApiServerConfig) GetEnvironment() string {
@@ -363,7 +515,7 @@ type WebServerConfig struct {
 
 func (x *WebServerConfig) Reset() {
 	*x = WebServerConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[4]
+	mi := &file_quadsmith_config_config_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -375,7 +527,7 @@ func (x *WebServerConfig) String() string {
 func (*WebServerConfig) ProtoMessage() {}
 
 func (x *WebServerConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[4]
+	mi := &file_quadsmith_config_config_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -388,7 +540,7 @@ func (x *WebServerConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebServerConfig.ProtoReflect.Descriptor instead.
 func (*WebServerConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *WebServerConfig) GetEnvironment() string {
@@ -437,7 +589,7 @@ type CliConfig struct {
 
 func (x *CliConfig) Reset() {
 	*x = CliConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[5]
+	mi := &file_quadsmith_config_config_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -449,7 +601,7 @@ func (x *CliConfig) String() string {
 func (*CliConfig) ProtoMessage() {}
 
 func (x *CliConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[5]
+	mi := &file_quadsmith_config_config_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -462,7 +614,7 @@ func (x *CliConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CliConfig.ProtoReflect.Descriptor instead.
 func (*CliConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CliConfig) GetEnvironment() string {
@@ -497,7 +649,7 @@ type InternalGroupConfig struct {
 
 func (x *InternalGroupConfig) Reset() {
 	*x = InternalGroupConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[6]
+	mi := &file_quadsmith_config_config_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -509,7 +661,7 @@ func (x *InternalGroupConfig) String() string {
 func (*InternalGroupConfig) ProtoMessage() {}
 
 func (x *InternalGroupConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[6]
+	mi := &file_quadsmith_config_config_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -522,7 +674,7 @@ func (x *InternalGroupConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InternalGroupConfig.ProtoReflect.Descriptor instead.
 func (*InternalGroupConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *InternalGroupConfig) GetName() string {
@@ -559,7 +711,7 @@ type BootstrapTokenConfig struct {
 
 func (x *BootstrapTokenConfig) Reset() {
 	*x = BootstrapTokenConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[7]
+	mi := &file_quadsmith_config_config_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -571,7 +723,7 @@ func (x *BootstrapTokenConfig) String() string {
 func (*BootstrapTokenConfig) ProtoMessage() {}
 
 func (x *BootstrapTokenConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[7]
+	mi := &file_quadsmith_config_config_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -584,7 +736,7 @@ func (x *BootstrapTokenConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BootstrapTokenConfig.ProtoReflect.Descriptor instead.
 func (*BootstrapTokenConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *BootstrapTokenConfig) GetId() string {
@@ -635,7 +787,7 @@ type JitPolicyConfig struct {
 
 func (x *JitPolicyConfig) Reset() {
 	*x = JitPolicyConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[8]
+	mi := &file_quadsmith_config_config_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -647,7 +799,7 @@ func (x *JitPolicyConfig) String() string {
 func (*JitPolicyConfig) ProtoMessage() {}
 
 func (x *JitPolicyConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[8]
+	mi := &file_quadsmith_config_config_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -660,7 +812,7 @@ func (x *JitPolicyConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JitPolicyConfig.ProtoReflect.Descriptor instead.
 func (*JitPolicyConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{8}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *JitPolicyConfig) GetEnabled() bool {
@@ -708,7 +860,7 @@ type DeveloperMapping struct {
 
 func (x *DeveloperMapping) Reset() {
 	*x = DeveloperMapping{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[9]
+	mi := &file_quadsmith_config_config_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -720,7 +872,7 @@ func (x *DeveloperMapping) String() string {
 func (*DeveloperMapping) ProtoMessage() {}
 
 func (x *DeveloperMapping) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[9]
+	mi := &file_quadsmith_config_config_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -733,7 +885,7 @@ func (x *DeveloperMapping) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeveloperMapping.ProtoReflect.Descriptor instead.
 func (*DeveloperMapping) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{9}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *DeveloperMapping) GetEmail() string {
@@ -768,7 +920,7 @@ type OAuthConfig struct {
 
 func (x *OAuthConfig) Reset() {
 	*x = OAuthConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[10]
+	mi := &file_quadsmith_config_config_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -780,7 +932,7 @@ func (x *OAuthConfig) String() string {
 func (*OAuthConfig) ProtoMessage() {}
 
 func (x *OAuthConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[10]
+	mi := &file_quadsmith_config_config_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -793,7 +945,7 @@ func (x *OAuthConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OAuthConfig.ProtoReflect.Descriptor instead.
 func (*OAuthConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{10}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *OAuthConfig) GetProvider() string {
@@ -882,7 +1034,7 @@ type OpsServerConfig struct {
 
 func (x *OpsServerConfig) Reset() {
 	*x = OpsServerConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[11]
+	mi := &file_quadsmith_config_config_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -894,7 +1046,7 @@ func (x *OpsServerConfig) String() string {
 func (*OpsServerConfig) ProtoMessage() {}
 
 func (x *OpsServerConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[11]
+	mi := &file_quadsmith_config_config_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -907,7 +1059,7 @@ func (x *OpsServerConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpsServerConfig.ProtoReflect.Descriptor instead.
 func (*OpsServerConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{11}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *OpsServerConfig) GetEnvironment() string {
@@ -977,7 +1129,7 @@ type OpsCliConfig struct {
 
 func (x *OpsCliConfig) Reset() {
 	*x = OpsCliConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[12]
+	mi := &file_quadsmith_config_config_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -989,7 +1141,7 @@ func (x *OpsCliConfig) String() string {
 func (*OpsCliConfig) ProtoMessage() {}
 
 func (x *OpsCliConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[12]
+	mi := &file_quadsmith_config_config_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1002,7 +1154,7 @@ func (x *OpsCliConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpsCliConfig.ProtoReflect.Descriptor instead.
 func (*OpsCliConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{12}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *OpsCliConfig) GetEnvironment() string {
@@ -1038,7 +1190,7 @@ type JobScheduleConfig struct {
 
 func (x *JobScheduleConfig) Reset() {
 	*x = JobScheduleConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[13]
+	mi := &file_quadsmith_config_config_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1050,7 +1202,7 @@ func (x *JobScheduleConfig) String() string {
 func (*JobScheduleConfig) ProtoMessage() {}
 
 func (x *JobScheduleConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[13]
+	mi := &file_quadsmith_config_config_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1063,7 +1215,7 @@ func (x *JobScheduleConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobScheduleConfig.ProtoReflect.Descriptor instead.
 func (*JobScheduleConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{13}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *JobScheduleConfig) GetName() string {
@@ -1106,7 +1258,7 @@ type JobServerConfig struct {
 
 func (x *JobServerConfig) Reset() {
 	*x = JobServerConfig{}
-	mi := &file_quadsmith_config_config_proto_msgTypes[14]
+	mi := &file_quadsmith_config_config_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1118,7 +1270,7 @@ func (x *JobServerConfig) String() string {
 func (*JobServerConfig) ProtoMessage() {}
 
 func (x *JobServerConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_config_proto_msgTypes[14]
+	mi := &file_quadsmith_config_config_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1131,7 +1283,7 @@ func (x *JobServerConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JobServerConfig.ProtoReflect.Descriptor instead.
 func (*JobServerConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{14}
+	return file_quadsmith_config_config_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *JobServerConfig) GetEnvironment() string {
@@ -1177,7 +1329,20 @@ const file_quadsmith_config_config_proto_rawDesc = "" +
 	"\fread_timeout\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\vreadTimeout\x12>\n" +
 	"\rwrite_timeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\x12<\n" +
 	"\fidle_timeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\vidleTimeout\x12*\n" +
-	"\x11max_request_bytes\x18\x05 \x01(\x03R\x0fmaxRequestBytes\"\xe0\x03\n" +
+	"\x11max_request_bytes\x18\x05 \x01(\x03R\x0fmaxRequestBytes\"\xcb\x01\n" +
+	"\n" +
+	"SmtpConfig\x12\x12\n" +
+	"\x04host\x18\x01 \x01(\tR\x04host\x12\x12\n" +
+	"\x04port\x18\x02 \x01(\x05R\x04port\x12\x1a\n" +
+	"\busername\x18\x03 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x04 \x01(\tR\bpassword\x12!\n" +
+	"\ffrom_address\x18\x05 \x01(\tR\vfromAddress\x12\x19\n" +
+	"\breply_to\x18\x06 \x01(\tR\areplyTo\x12\x1f\n" +
+	"\vrequire_tls\x18\a \x01(\bR\n" +
+	"requireTls\"[\n" +
+	"\vEmailConfig\x12\x1a\n" +
+	"\bprovider\x18\x01 \x01(\tR\bprovider\x120\n" +
+	"\x04smtp\x18\x02 \x01(\v2\x1c.quadsmith.config.SmtpConfigR\x04smtp\"\x95\x04\n" +
 	"\n" +
 	"AuthConfig\x12\x16\n" +
 	"\x06secret\x18\x01 \x01(\tR\x06secret\x12\"\n" +
@@ -1188,7 +1353,9 @@ const file_quadsmith_config_config_proto_rawDesc = "" +
 	"\x11refresh_token_ttl\x18\x06 \x01(\v2\x19.google.protobuf.DurationR\x0frefreshTokenTtl\x122\n" +
 	"\aotp_ttl\x18\a \x01(\v2\x19.google.protobuf.DurationR\x06otpTtl\x12?\n" +
 	"\x0emagic_link_ttl\x18\b \x01(\v2\x19.google.protobuf.DurationR\fmagicLinkTtl\x12@\n" +
-	"\x0eemail_cooldown\x18\t \x01(\v2\x19.google.protobuf.DurationR\remailCooldown\"\x8d\x02\n" +
+	"\x0eemail_cooldown\x18\t \x01(\v2\x19.google.protobuf.DurationR\remailCooldown\x123\n" +
+	"\x05email\x18\n" +
+	" \x01(\v2\x1d.quadsmith.config.EmailConfigR\x05email\"\x8d\x02\n" +
 	"\x0fApiServerConfig\x12 \n" +
 	"\venvironment\x18\x01 \x01(\tR\venvironment\x126\n" +
 	"\x06server\x18\x02 \x01(\v2\x1e.quadsmith.config.ServerConfigR\x06server\x12<\n" +
@@ -1277,54 +1444,58 @@ func file_quadsmith_config_config_proto_rawDescGZIP() []byte {
 	return file_quadsmith_config_config_proto_rawDescData
 }
 
-var file_quadsmith_config_config_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_quadsmith_config_config_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_quadsmith_config_config_proto_goTypes = []any{
 	(*DatabaseConfig)(nil),       // 0: quadsmith.config.DatabaseConfig
 	(*ServerConfig)(nil),         // 1: quadsmith.config.ServerConfig
-	(*AuthConfig)(nil),           // 2: quadsmith.config.AuthConfig
-	(*ApiServerConfig)(nil),      // 3: quadsmith.config.ApiServerConfig
-	(*WebServerConfig)(nil),      // 4: quadsmith.config.WebServerConfig
-	(*CliConfig)(nil),            // 5: quadsmith.config.CliConfig
-	(*InternalGroupConfig)(nil),  // 6: quadsmith.config.InternalGroupConfig
-	(*BootstrapTokenConfig)(nil), // 7: quadsmith.config.BootstrapTokenConfig
-	(*JitPolicyConfig)(nil),      // 8: quadsmith.config.JitPolicyConfig
-	(*DeveloperMapping)(nil),     // 9: quadsmith.config.DeveloperMapping
-	(*OAuthConfig)(nil),          // 10: quadsmith.config.OAuthConfig
-	(*OpsServerConfig)(nil),      // 11: quadsmith.config.OpsServerConfig
-	(*OpsCliConfig)(nil),         // 12: quadsmith.config.OpsCliConfig
-	(*JobScheduleConfig)(nil),    // 13: quadsmith.config.JobScheduleConfig
-	(*JobServerConfig)(nil),      // 14: quadsmith.config.JobServerConfig
-	(*durationpb.Duration)(nil),  // 15: google.protobuf.Duration
+	(*SmtpConfig)(nil),           // 2: quadsmith.config.SmtpConfig
+	(*EmailConfig)(nil),          // 3: quadsmith.config.EmailConfig
+	(*AuthConfig)(nil),           // 4: quadsmith.config.AuthConfig
+	(*ApiServerConfig)(nil),      // 5: quadsmith.config.ApiServerConfig
+	(*WebServerConfig)(nil),      // 6: quadsmith.config.WebServerConfig
+	(*CliConfig)(nil),            // 7: quadsmith.config.CliConfig
+	(*InternalGroupConfig)(nil),  // 8: quadsmith.config.InternalGroupConfig
+	(*BootstrapTokenConfig)(nil), // 9: quadsmith.config.BootstrapTokenConfig
+	(*JitPolicyConfig)(nil),      // 10: quadsmith.config.JitPolicyConfig
+	(*DeveloperMapping)(nil),     // 11: quadsmith.config.DeveloperMapping
+	(*OAuthConfig)(nil),          // 12: quadsmith.config.OAuthConfig
+	(*OpsServerConfig)(nil),      // 13: quadsmith.config.OpsServerConfig
+	(*OpsCliConfig)(nil),         // 14: quadsmith.config.OpsCliConfig
+	(*JobScheduleConfig)(nil),    // 15: quadsmith.config.JobScheduleConfig
+	(*JobServerConfig)(nil),      // 16: quadsmith.config.JobServerConfig
+	(*durationpb.Duration)(nil),  // 17: google.protobuf.Duration
 }
 var file_quadsmith_config_config_proto_depIdxs = []int32{
-	15, // 0: quadsmith.config.ServerConfig.read_timeout:type_name -> google.protobuf.Duration
-	15, // 1: quadsmith.config.ServerConfig.write_timeout:type_name -> google.protobuf.Duration
-	15, // 2: quadsmith.config.ServerConfig.idle_timeout:type_name -> google.protobuf.Duration
-	15, // 3: quadsmith.config.AuthConfig.access_token_ttl:type_name -> google.protobuf.Duration
-	15, // 4: quadsmith.config.AuthConfig.refresh_token_ttl:type_name -> google.protobuf.Duration
-	15, // 5: quadsmith.config.AuthConfig.otp_ttl:type_name -> google.protobuf.Duration
-	15, // 6: quadsmith.config.AuthConfig.magic_link_ttl:type_name -> google.protobuf.Duration
-	15, // 7: quadsmith.config.AuthConfig.email_cooldown:type_name -> google.protobuf.Duration
-	1,  // 8: quadsmith.config.ApiServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	0,  // 9: quadsmith.config.ApiServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
-	2,  // 10: quadsmith.config.ApiServerConfig.auth:type_name -> quadsmith.config.AuthConfig
-	1,  // 11: quadsmith.config.WebServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	15, // 12: quadsmith.config.CliConfig.timeout:type_name -> google.protobuf.Duration
-	9,  // 13: quadsmith.config.OAuthConfig.developer_mappings:type_name -> quadsmith.config.DeveloperMapping
-	1,  // 14: quadsmith.config.OpsServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	0,  // 15: quadsmith.config.OpsServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
-	0,  // 16: quadsmith.config.OpsServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
-	6,  // 17: quadsmith.config.OpsServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
-	7,  // 18: quadsmith.config.OpsServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
-	8,  // 19: quadsmith.config.OpsServerConfig.jit:type_name -> quadsmith.config.JitPolicyConfig
-	10, // 20: quadsmith.config.OpsServerConfig.oauth:type_name -> quadsmith.config.OAuthConfig
-	15, // 21: quadsmith.config.OpsCliConfig.timeout:type_name -> google.protobuf.Duration
-	13, // 22: quadsmith.config.JobServerConfig.schedules:type_name -> quadsmith.config.JobScheduleConfig
-	23, // [23:23] is the sub-list for method output_type
-	23, // [23:23] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	17, // 0: quadsmith.config.ServerConfig.read_timeout:type_name -> google.protobuf.Duration
+	17, // 1: quadsmith.config.ServerConfig.write_timeout:type_name -> google.protobuf.Duration
+	17, // 2: quadsmith.config.ServerConfig.idle_timeout:type_name -> google.protobuf.Duration
+	2,  // 3: quadsmith.config.EmailConfig.smtp:type_name -> quadsmith.config.SmtpConfig
+	17, // 4: quadsmith.config.AuthConfig.access_token_ttl:type_name -> google.protobuf.Duration
+	17, // 5: quadsmith.config.AuthConfig.refresh_token_ttl:type_name -> google.protobuf.Duration
+	17, // 6: quadsmith.config.AuthConfig.otp_ttl:type_name -> google.protobuf.Duration
+	17, // 7: quadsmith.config.AuthConfig.magic_link_ttl:type_name -> google.protobuf.Duration
+	17, // 8: quadsmith.config.AuthConfig.email_cooldown:type_name -> google.protobuf.Duration
+	3,  // 9: quadsmith.config.AuthConfig.email:type_name -> quadsmith.config.EmailConfig
+	1,  // 10: quadsmith.config.ApiServerConfig.server:type_name -> quadsmith.config.ServerConfig
+	0,  // 11: quadsmith.config.ApiServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
+	4,  // 12: quadsmith.config.ApiServerConfig.auth:type_name -> quadsmith.config.AuthConfig
+	1,  // 13: quadsmith.config.WebServerConfig.server:type_name -> quadsmith.config.ServerConfig
+	17, // 14: quadsmith.config.CliConfig.timeout:type_name -> google.protobuf.Duration
+	11, // 15: quadsmith.config.OAuthConfig.developer_mappings:type_name -> quadsmith.config.DeveloperMapping
+	1,  // 16: quadsmith.config.OpsServerConfig.server:type_name -> quadsmith.config.ServerConfig
+	0,  // 17: quadsmith.config.OpsServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
+	0,  // 18: quadsmith.config.OpsServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
+	8,  // 19: quadsmith.config.OpsServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
+	9,  // 20: quadsmith.config.OpsServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
+	10, // 21: quadsmith.config.OpsServerConfig.jit:type_name -> quadsmith.config.JitPolicyConfig
+	12, // 22: quadsmith.config.OpsServerConfig.oauth:type_name -> quadsmith.config.OAuthConfig
+	17, // 23: quadsmith.config.OpsCliConfig.timeout:type_name -> google.protobuf.Duration
+	15, // 24: quadsmith.config.JobServerConfig.schedules:type_name -> quadsmith.config.JobScheduleConfig
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_config_config_proto_init() }
@@ -1338,7 +1509,7 @@ func file_quadsmith_config_config_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_config_config_proto_rawDesc), len(file_quadsmith_config_config_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

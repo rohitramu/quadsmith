@@ -54,12 +54,26 @@ CREATE TABLE IF NOT EXISTS user_emails (
   user_uuid UUID NOT NULL,
   email TEXT UNIQUE NOT NULL,
   is_primary BOOLEAN DEFAULT false NOT NULL,
-  created_at TIMESTAMPTZ
+  created_at TIMESTAMPTZ,
+  verified_via_otp BOOLEAN DEFAULT false NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_emails_user_uuid ON user_emails (user_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_user_emails_email ON user_emails (email);
+
+CREATE TABLE IF NOT EXISTS user_email_oauth_accounts (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_email_uuid UUID NOT NULL,
+  oauth_account_uuid UUID NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_email_uuid, oauth_account_uuid)
+);
+
+CREATE INDEX IF NOT EXISTS idx_user_email_oauth_accounts_user_email_uuid ON user_email_oauth_accounts (user_email_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_user_email_oauth_accounts_oauth_account_uuid ON user_email_oauth_accounts (oauth_account_uuid);
 
 CREATE TABLE IF NOT EXISTS refresh_tokens (
   uuid UUID NOT NULL,
@@ -850,6 +864,12 @@ ADD CONSTRAINT fk_user_profiles_user_uuid FOREIGN KEY (user_uuid) REFERENCES use
 
 ALTER TABLE user_emails
 ADD CONSTRAINT fk_user_emails_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE user_email_oauth_accounts
+ADD CONSTRAINT fk_user_email_oauth_accounts_user_email_uuid FOREIGN KEY (user_email_uuid) REFERENCES user_emails (uuid) ON DELETE CASCADE;
+
+ALTER TABLE user_email_oauth_accounts
+ADD CONSTRAINT fk_user_email_oauth_accounts_oauth_account_uuid FOREIGN KEY (oauth_account_uuid) REFERENCES oauth_accounts (uuid) ON DELETE CASCADE;
 
 ALTER TABLE refresh_tokens
 ADD CONSTRAINT fk_refresh_tokens_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);

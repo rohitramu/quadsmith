@@ -25,6 +25,21 @@ message ServerConfig {
   int64 max_request_bytes = 5;
 }
 
+message SmtpConfig {
+  string host = 1;
+  int32 port = 2; // e.g. 587 (STARTTLS) or 465 (TLS)
+  string username = 3;
+  string password = 4;
+  string from_address = 5; // e.g. "Quadsmith Auth <auth@quadsmith.net>"
+  string reply_to = 6;
+  bool require_tls = 7;
+}
+
+message EmailConfig {
+  string provider = 1; // "console", "smtp"
+  SmtpConfig smtp = 2;
+}
+
 message AuthConfig {
   string secret = 1;
   bool dev_print_otp = 2;
@@ -35,6 +50,7 @@ message AuthConfig {
   google.protobuf.Duration otp_ttl = 7;
   google.protobuf.Duration magic_link_ttl = 8;
   google.protobuf.Duration email_cooldown = 9;
+  EmailConfig email = 10;
 }
 
 // ---------------------------------------------------------

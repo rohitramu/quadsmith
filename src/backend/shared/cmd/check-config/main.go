@@ -224,6 +224,9 @@ func isAllowedSecretPlaceholder(component, line string) bool {
 	if strings.HasPrefix(line, "client_id:") || strings.HasPrefix(line, "client_secret:") {
 		return true
 	}
+	if strings.HasPrefix(line, "password:") {
+		return true
+	}
 	return false
 }
 
@@ -256,6 +259,8 @@ func expandTemplatesForCheck(content []byte) ([]byte, error) {
 			return []byte("dummy-client-id")
 		case strings.Contains(varName, "CLIENT_SECRET"):
 			return []byte("dummy-client-secret")
+		case strings.Contains(varName, "SMTP_PASSWORD") || strings.Contains(varName, "SMTP_PASS"):
+			return []byte("dummy-smtp-password")
 		default:
 			return []byte("dummy-val")
 		}

@@ -286,6 +286,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	t.Setenv("QS_AUTH_SECRET", "super-secret-prod-auth-key-32bytes")
 	t.Setenv("QS_OAUTH_CLIENT_ID", "dummy-client-id")
 	t.Setenv("QS_OAUTH_CLIENT_SECRET", "dummy-client-secret")
+	t.Setenv("QS_SMTP_PASSWORD", "dummy-smtp-password")
 
 	apiStagingPath := filepath.Join("..", "..", "..", "server-api", "config", "staging.textproto")
 	apiStaging, err := LoadAPIServerConfig(apiStagingPath)

@@ -307,6 +307,11 @@ func applyAPIServerEnvOverrides(cfg *config.ApiServerConfig) {
 		if v := os.Getenv("QS_AUTH_SECRET"); v != "" {
 			cfg.Auth.Secret = v
 		}
+		if cfg.Auth.Email != nil && cfg.Auth.Email.Smtp != nil {
+			if v := os.Getenv("QS_SMTP_PASSWORD"); v != "" {
+				cfg.Auth.Email.Smtp.Password = v
+			}
+		}
 	}
 }
 
@@ -640,6 +645,28 @@ func ValidateAuth(auth *config.AuthConfig, env string) error {
 	}
 	if auth.GetEmailCooldown() != nil && auth.GetEmailCooldown().AsDuration() <= 0 {
 		errs = append(errs, "auth.email_cooldown must be greater than 0")
+	}
+	if auth.GetEmail() != nil {
+		provider := strings.ToLower(strings.TrimSpace(auth.GetEmail().GetProvider()))
+		if provider != "" && provider != "console" && provider != "smtp" {
+			errs = append(errs, fmt.Sprintf("auth.email.provider must be 'console' or 'smtp' (got %q)", auth.GetEmail().GetProvider()))
+		}
+		if provider == "smtp" {
+			if auth.GetEmail().GetSmtp() == nil {
+				errs = append(errs, "auth.email.smtp must be specified when provider is 'smtp'")
+			} else {
+				smtp := auth.GetEmail().GetSmtp()
+				if strings.TrimSpace(smtp.GetHost()) == "" {
+					errs = append(errs, "auth.email.smtp.host cannot be empty")
+				}
+				if smtp.GetPort() <= 0 || smtp.GetPort() > 65535 {
+					errs = append(errs, "auth.email.smtp.port must be between 1 and 65535")
+				}
+				if strings.TrimSpace(smtp.GetFromAddress()) == "" {
+					errs = append(errs, "auth.email.smtp.from_address cannot be empty")
+				}
+			}
+		}
 	}
 	if len(errs) > 0 {
 		return fmt.Errorf("%s", strings.Join(errs, "; "))

@@ -41,4 +41,16 @@ auth {
   email_cooldown {
     seconds: 20
   }
+  email {
+    provider: "smtp"
+    smtp {
+      host: "smtp.resend.com"
+      port: 587
+      username: "resend"
+      password: "${QS_SMTP_PASSWORD}"
+      from_address: "Quadsmith Auth <auth@quadsmith.net>"
+      reply_to: "support@quadsmith.net"
+      require_tls: true
+    }
+  }
 }

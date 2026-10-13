@@ -86,6 +86,27 @@ message UserEmail {
   }];
   bool is_primary = 4 [(quadsmith.sql.column) = {default_value: "false"}];
   google.protobuf.Timestamp created_at = 5;
+
+  bool verified_via_otp = 6 [(quadsmith.sql.column) = {default_value: "false"}];
+  repeated string oauth_providers = 7 [(quadsmith.sql.column) = {ignore: true}];
+}
+
+message UserEmailOAuthAccount {
+  option (quadsmith.sql.table) = {
+    name: "user_email_oauth_accounts"
+    unique_constraints: "user_email_uuid, oauth_account_uuid"
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string user_email_uuid = 2 [(quadsmith.sql.column) = {
+    references: "user_emails(uuid) ON DELETE CASCADE"
+    create_index: true
+  }];
+  string oauth_account_uuid = 3 [(quadsmith.sql.column) = {
+    references: "oauth_accounts(uuid) ON DELETE CASCADE"
+    create_index: true
+  }];
+  google.protobuf.Timestamp created_at = 4 [(quadsmith.sql.column) = {default_value: "NOW()"}];
 }
 
 message PublicUserProfile {

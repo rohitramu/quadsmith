@@ -316,6 +316,14 @@ erDiagram
         UUID user_uuid FK
         TEXT email UK
         BOOLEAN is_primary
+        BOOLEAN verified_via_otp
+        TIMESTAMPTZ created_at
+    }
+
+    user_email_oauth_accounts {
+        UUID uuid PK
+        UUID user_email_uuid FK
+        UUID oauth_account_uuid FK
         TIMESTAMPTZ created_at
     }
 
@@ -638,6 +646,8 @@ erDiagram
 
     users ||--o| user_profiles : has
     users ||--o{ user_emails : has
+    user_emails ||--o{ user_email_oauth_accounts : links
+    oauth_accounts ||--o{ user_email_oauth_accounts : links
     users ||--o{ refresh_tokens : has
     users ||--o{ username_histories : has
     users ||--o{ oauth_accounts : has
