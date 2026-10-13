@@ -51,13 +51,13 @@ In [AGENTS.md](../../AGENTS.md) under `## Project Planning`, prescribe the follo
 
 - **Table of Contents**: A linked list directly under the title containing all Level 1 headings (Sections 1 through 7) present in the document, plus the design decision headings nested under Proposal.
 - **Horizontal Separators**: Only add horizontal rules (`---`) between Level 1 headings (never between sub-headings or design decisions).
-- **Blank Lines for Headings & Lists**: Bulleted lists and headings (except on the very first line of the file) must have a blank line before and after them.
+- **Blank Lines for Headings, Lists & Code Blocks**: Bulleted lists, headings (except on the very first line of the file), and code blocks must have a blank line before and after them.
 - **Custom Anchors for All Headings**: Every heading must have a unique anchor formatted as `<hN><a id="anchor-text" >Header text</a></hN>` (e.g., `## <a id="anchor-text" >Header text</a>`), picking an appropriate, unique heading ID.
 - **Omission of Empty Optional Sections**: If an optional section (Background, Alternatives considered, Assumptions, Future work, Open questions) contains no entries or content, omit it completely from the document and do not include it in the Table of Contents.
 - **Documenting All Discussed Alternatives**: When discussing a plan, document all alternatives explored during the discussion regardless of their quality or viability.
 - **Concise Bulleted Summaries**: Use concise bulleted lists of short items whenever helpful to explain complex concepts cleanly and concisely — across TL;DR sections, design decisions, alternative descriptions, and chat responses.
 - **Evidence & Clickable Reference Links**: Include as many clickable reference links where appropriate (ideally not bare links, but descriptive anchor text linking as evidence for statements).
-  - For file and code references in committed git plans, always use relative paths from the repository root or file location (e.g. `[AGENTS.md](../../AGENTS.md#L19-L28)` or `[docs/plans/archive/mvp_plan.md](archive/mvp_plan.md)`).
+  - For file and code references in committed git plans, always use relative paths from the repository root or file location (e.g. `[AGENTS.md](../../AGENTS.md#L26-L65)` or `[docs/plans/archive/mvp_plan.md](archive/mvp_plan.md)`).
   - Prioritize external links by utility:
 
     1. [Official documentation](https://www.w3.org/standards/) (most useful)
@@ -79,6 +79,7 @@ In [AGENTS.md](../../AGENTS.md) under `## Project Planning`, prescribe the follo
 7. **Open questions (optional)**: A numbered list of any unknowns, subjective decisions, or undecided tradeoffs.
 
 Snippet to add to [AGENTS.md](../../AGENTS.md#L37-L57) under `## Project Planning`:
+
 ```markdown
 - **Plan Document Structure & Lifecycle**:
   - Author and iterate on plans within the agent artifact directory (`<appDataDir>/brain/<conversation-id>/<plan_name>.md`) during review.
@@ -87,7 +88,7 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L37-L57) under `## Project Plannin
   - Every plan document must adhere to the standardized structure:
     - **Table of Contents**: Linked list of all Level 1 headings present in the doc, plus nested design decision headings.
     - **Horizontal Separators**: Use `---` only between Level 1 headings.
-    - **Blank Lines for Headings & Lists**: Bulleted lists and headings (except on the very first line of the file) must have a blank line before and after them.
+    - **Blank Lines for Headings, Lists & Code Blocks**: Bulleted lists, headings (except on the very first line of the file), and code blocks must have a blank line before and after them.
     - **Custom Anchors for All Headings**: Every heading must have a unique anchor formatted as `<hN><a id="anchor-text" >Header text</a></hN>` (e.g., `## <a id="anchor-text" >Header text</a>`), picking an appropriate, unique heading ID.
     - **Omission of Empty Optional Sections**: Omit Background, Alternatives considered, Assumptions, Future work, or Open questions entirely if empty (do not include placeholders like "None", and exclude omitted sections from the Table of Contents).
     - **Document All Discussed Alternatives**: Document all alternatives explored during discussion, regardless of quality or viability.
@@ -177,6 +178,7 @@ In [AGENTS.md](../../AGENTS.md) under `## Git Workflow & Commit Messages`, defin
    - If the follow-up commit is for a plan implemented in the latest commit on the branch: amend the commit via [`git commit --amend`](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---amend) with the changes (and make any corresponding updates to the plan document and commit message). If already pushed to remote, ask the user before force-pushing via [`git push --force-with-lease`](https://git-scm.com/docs/git-push#Documentation/git-push.txt---force-with-leaseltrefnamegt).
 
 Snippet to add to [AGENTS.md](../../AGENTS.md#L12-L18) under `## Git Workflow & Commit Messages`:
+
 ```markdown
 - **Plan Implementation & Commits**:
   - Implement plans in a single commit that saves the finalized plan to `docs/plans/<plan_name>.md`.
@@ -230,6 +232,7 @@ In [AGENTS.md](../../AGENTS.md) under `## Project Planning`, define the rules fo
 3. **Clarifying Uncertainty**: If unsure whether to archive an existing plan or update it to match new changes, explicitly ask the user.
 
 Snippet to add to [AGENTS.md](../../AGENTS.md#L58-L65) under `## Project Planning`:
+
 ```markdown
 - **Plan Maintenance & Archival**:
   - Keep all non-archived plans in `docs/plans/` up-to-date with every new commit.
