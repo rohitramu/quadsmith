@@ -19,13 +19,13 @@ import (
 	"quadsmith/api/pkg/auth"
 	"quadsmith/api/pkg/blob"
 	"quadsmith/api/pkg/worker"
-	bconfig "quadsmith/backend/config"
+	bconfig "quadsmith/backend/pkg/config"
 )
 
 func main() {
 	var configPath string
 	var envName string
-	flag.StringVar(&configPath, "config", "", "Path to backend configuration YAML file")
+	flag.StringVar(&configPath, "config", "", "Path to backend configuration textproto file")
 	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
 	flag.Parse()
 
@@ -34,17 +34,13 @@ func main() {
 		log.Fatalf("%v", err)
 	}
 
-	if err := cfg.Validate(); err != nil {
-		log.Fatalf("%v", err)
-	}
-
-	port := strconv.Itoa(cfg.Worker.Port)
-	concurrency := cfg.Worker.Concurrency
+	port := strconv.Itoa(int(cfg.Worker.Port))
+	concurrency := int(cfg.Worker.Concurrency)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	pool, err := pgxpool.New(ctx, cfg.Database.URL)
+	pool, err := pgxpool.New(ctx, cfg.Database.Url)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
@@ -100,40 +96,33 @@ func main() {
 		Addr:              ":" + port,
 		Handler:           h2c.NewHandler(mux, &http2.Server{}),
 		ReadHeaderTimeout: 5 * time.Second,
-		ReadTimeout:       30 * time.Second,
-		WriteTimeout:      60 * time.Second,
-		IdleTimeout:       120 * time.Second,
 	}
 
-	serverErr := make(chan error, 1)
+	// Graceful shutdown handling
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
 	go func() {
-		log.Printf("[WorkerDaemon] Listening on port %s...", port)
+		log.Printf("[WorkerDaemon] Starting Worker ConnectRPC server on port %s...", port)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			serverErr <- err
+			log.Fatalf("[WorkerDaemon] HTTP server error: %v", err)
 		}
 	}()
 
-	// 6. Graceful Shutdown on SIGINT / SIGTERM
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
+	<-stop
+	log.Println("[WorkerDaemon] Shutting down background worker daemon...")
 
-	select {
-	case err := <-serverErr:
-		log.Fatalf("[WorkerDaemon] HTTP server error: %v", err)
-	case sig := <-sigChan:
-		log.Printf("[WorkerDaemon] Received signal %v, shutting down gracefully...", sig)
-	}
-
+	// Stop scheduler and pool first
 	cancel()
-
-	// Drain HTTP server
-	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer shutdownCancel()
-	_ = server.Shutdown(shutdownCtx)
-
-	// Stop scheduler and wait for active jobs to complete
 	scheduler.Stop()
 	workerPool.Stop()
 
-	log.Printf("[WorkerDaemon] Shutdown complete.")
+	// Shutdown HTTP server with 5s timeout
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer shutdownCancel()
+	if err := server.Shutdown(shutdownCtx); err != nil {
+		log.Printf("[WorkerDaemon] Server shutdown warning: %v", err)
+	}
+
+	log.Println("[WorkerDaemon] Worker daemon stopped gracefully")
 }

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"quadsmith/api/internal/authcontext"
+	"quadsmith/api/pkg/authcontext"
 )
 
 type UserContext = authcontext.UserContext

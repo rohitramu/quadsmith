@@ -23,25 +23,54 @@ import (
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
-	bconfig "quadsmith/backend/config"
+	quadsmith_internal "quadsmith/api/gen/quadsmith_internal"
 )
 
 // ---------------------------------------------------------
 // AuthService
 // ---------------------------------------------------------
 
+type AuthConfig struct {
+	Secret           string
+	DevPrintOTP      bool
+	SecureCookies    bool
+	TrustedProxyHops int
+	AccessTokenTTL   time.Duration
+	RefreshTokenTTL  time.Duration
+	OtpTTL           time.Duration
+	MagicLinkTTL     time.Duration
+	EmailCooldown    time.Duration
+}
+
+func FromProtoAuthConfig(p *quadsmith_internal.AuthConfig) *AuthConfig {
+	if p == nil {
+		return nil
+	}
+	return &AuthConfig{
+		Secret:           p.GetSecret(),
+		DevPrintOTP:      p.GetDevPrintOtp(),
+		SecureCookies:    p.GetSecureCookies(),
+		TrustedProxyHops: int(p.GetTrustedProxyHops()),
+		AccessTokenTTL:   p.GetAccessTokenTtl().AsDuration(),
+		RefreshTokenTTL:  p.GetRefreshTokenTtl().AsDuration(),
+		OtpTTL:           p.GetOtpTtl().AsDuration(),
+		MagicLinkTTL:     p.GetMagicLinkTtl().AsDuration(),
+		EmailCooldown:    p.GetEmailCooldown().AsDuration(),
+	}
+}
+
 type AuthService struct {
 	quadsmithconnect.UnimplementedAuthServiceHandler
 	db  *pgxpool.Pool
-	cfg *bconfig.AuthConfig
+	cfg *AuthConfig
 }
 
-func NewAuthService(db *pgxpool.Pool, cfg ...*bconfig.AuthConfig) *AuthService {
-	var authCfg *bconfig.AuthConfig
-	if len(cfg) > 0 && cfg[0] != nil {
-		authCfg = cfg[0]
+func NewAuthService(db *pgxpool.Pool, protoCfg ...*quadsmith_internal.AuthConfig) *AuthService {
+	var authCfg *AuthConfig
+	if len(protoCfg) > 0 && protoCfg[0] != nil {
+		authCfg = FromProtoAuthConfig(protoCfg[0])
 	} else {
-		authCfg = &bconfig.AuthConfig{
+		authCfg = &AuthConfig{
 			Secret:           string(getMasterSecret()),
 			DevPrintOTP:      os.Getenv("QS_DEV_PRINT_OTP") == "1" || os.Getenv("ENV") != "production",
 			SecureCookies:    os.Getenv("ENV") == "production" || os.Getenv("SECURE_COOKIES") == "true",

@@ -1,0 +1,41 @@
+server {
+  port: 8080
+  static_dir: "src/frontend/web/dist"
+  read_timeout {
+    seconds: 30
+  }
+  write_timeout {
+    seconds: 60
+  }
+  idle_timeout {
+    seconds: 120
+  }
+  max_request_bytes: 2097152
+}
+database {
+  url: "${QS_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith?sslmode=disable}"
+  name: "quadsmith"
+  max_connections: 25
+  min_connections: 2
+}
+auth {
+  secret: "${QS_AUTH_SECRET:-quadsmith-test-secret-key-32bytes-long!}"
+  dev_print_otp: false
+  secure_cookies: false
+  trusted_proxy_hops: 0
+  access_token_ttl {
+    seconds: 3600
+  }
+  refresh_token_ttl {
+    seconds: 432000
+  }
+  otp_ttl {
+    seconds: 180
+  }
+  magic_link_ttl {
+    seconds: 900
+  }
+  email_cooldown {
+    seconds: 1
+  }
+}

@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/internal/engines/compatibility"
+	"quadsmith/api/pkg/engines/compatibility"
 )
 
 type EvaluatorServiceHandler struct {

@@ -8,8 +8,8 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/internal/engines/compatibility"
-	"quadsmith/api/internal/engines/evaluator"
+	"quadsmith/api/pkg/engines/compatibility"
+	"quadsmith/api/pkg/engines/evaluator"
 )
 
 func evaluateComponents(this js.Value, args []js.Value) any {

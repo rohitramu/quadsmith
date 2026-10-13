@@ -11,7 +11,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 
-	"quadsmith/api/internal/authcontext"
+	"quadsmith/api/pkg/authcontext"
 )
 
 // DBTX abstracts database operations so Enqueue works with both *pgxpool.Pool and pgx.Tx.

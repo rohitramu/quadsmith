@@ -11,15 +11,15 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/internal/authcontext"
 	"quadsmith/api/internal/validation"
-	bconfig "quadsmith/backend/config"
+	"quadsmith/api/pkg/authcontext"
+	bconfig "quadsmith/backend/pkg/config"
 )
 
 func main() {
 	var configPath string
 	var envName string
-	flag.StringVar(&configPath, "config", "", "Path to backend configuration YAML file")
+	flag.StringVar(&configPath, "config", "", "Path to backend configuration textproto file")
 	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
 	flag.Parse()
 
@@ -29,13 +29,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := cfg.ValidateSeeder(); err != nil {
+	if err := bconfig.ValidateSeeder(cfg.Database, cfg.Environment); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 
 	ctx := context.Background()
-	db, err := pgxpool.New(ctx, cfg.Database.URL)
+	db, err := pgxpool.New(ctx, cfg.Database.Url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)

@@ -26,5 +26,5 @@ require (
 )
 
 replace quadsmith/api => ../src/backend/api
-replace quadsmith/backend/config => ../src/backend/config/go
+replace quadsmith/backend/pkg/config => ../src/backend/pkg/config
 replace quadsmith/frontend/config => ../src/frontend/config/go

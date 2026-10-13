@@ -17,7 +17,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"quadsmith/api/internal/authcontext"
+	"quadsmith/api/pkg/authcontext"
 )
 
 var (

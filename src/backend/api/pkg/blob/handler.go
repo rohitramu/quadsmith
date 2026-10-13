@@ -10,7 +10,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"quadsmith/api/internal/authcontext"
+	"quadsmith/api/pkg/authcontext"
 )
 
 // Authenticator validates an incoming HTTP request and returns UserContext if valid.

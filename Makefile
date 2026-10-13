@@ -33,8 +33,8 @@ build: generate bin/qs bin/qsops
 	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
 	@go run -mod=vendor ./src/backend/api/cmd/check-regex
 	@echo "--- Building all Go binaries to bin/ ---"
-	@go build -mod=vendor -o bin/server ./src/backend/api/cmd/server/main.go
-	@go build -mod=vendor -o bin/worker ./src/backend/api/cmd/worker/main.go
+	@go build -mod=vendor -o bin/server ./src/backend/api-server/main.go
+	@go build -mod=vendor -o bin/worker ./src/backend/worker/main.go
 	@go build -mod=vendor -o bin/seeder ./src/backend/api/cmd/seeder
 	@echo "--- Building WebAssembly Core Engine ---"
 	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/public/wasm_exec.js
@@ -106,13 +106,17 @@ bin/.generate_proto.sentinel: $(PROTO_FILES) $(VENDOR_PLUGINS) $(CUSTOM_PLUGINS)
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@for f in src/backend/api/gen/quadsmith/_*.pb.go; do [ -f "$$f" ] && mv "$$f" "$$(echo $$f | sed 's|/_|/|')"; done || true
+	@if [ -d src/backend/api/gen/quadsmith/internal ]; then \
+		rm -rf src/backend/api/gen/quadsmith_internal; \
+		mv src/backend/api/gen/quadsmith/internal src/backend/api/gen/quadsmith_internal; \
+	fi
 	@gofmt -s -w src/backend/api/gen/
 	@npx --prefix src/frontend/web prettier --write "src/frontend/web/src/gen/**/*.{ts,tsx}"
 	@touch bin/.generate_proto.sentinel
 
-bin/.format_sql.sentinel: src/backend/db/schema.sql .sql-formatter.json
+bin/.format_sql.sentinel: $(wildcard src/backend/db/*.sql) .sql-formatter.json
 	@mkdir -p bin
-	@npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/schema.sql
+	@npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/*.sql
 	@touch bin/.format_sql.sentinel
 
 generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel
@@ -120,7 +124,7 @@ generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel
 test: generate
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 	@echo "--- Running Go Tests ---"
-	@cd src/backend/config/go && go test -mod=vendor -count=1 ./...
+	@cd src/backend/pkg/config && go test -mod=vendor -count=1 ./...
 	@cd src/frontend/config/go && go test -mod=vendor -count=1 ./...
 	@cd src/backend/api && go test -mod=vendor -count=1 ./...
 	@cd src/frontend/cli && go test -mod=vendor ./...
@@ -145,7 +149,7 @@ clean:
 
 vendor:
 	@echo "--- Updating and vendoring dependencies ---"
-	@for mod in src/backend/api src/frontend/cli src/backend/config/go src/frontend/config/go test; do \
+	@for mod in src/backend/api src/backend/api-server src/backend/worker src/backend/pkg/config src/frontend/cli src/frontend/config/go test; do \
 		echo "Updating $$mod..."; \
 		(cd $$mod && go get -u ./... && go mod tidy) || exit 1; \
 	done

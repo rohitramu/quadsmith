@@ -1,8 +1,10 @@
-worker:
+worker {
   port: 8081
   concurrency: 5
-
-database:
+}
+database {
   url: "${QS_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith?sslmode=disable}"
+  name: "quadsmith"
   max_connections: 25
   min_connections: 2
+}

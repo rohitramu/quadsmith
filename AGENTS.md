@@ -28,8 +28,8 @@ Always check the manufacturer's official website and official spec sheets as the
 
 ## Database & Schema Maintenance
 
-- Whenever `backend/db/schema.sql` is modified, update `backend/db/diagram.mermaid` to match, ensuring no existing entities or relationships (such as `Build` links) are dropped or abbreviated.
-- The local Postgres database is managed declaratively via `psqldef` (from the `sqldef` project). We maintain a single desired state in `backend/db/schema.sql` rather than sequential migration files. Never use Prisma commands.
+- Whenever `backend/db/quadsmith.sql` (or any `<database>.sql`) is modified, update `backend/db/quadsmith.mermaid` (or `<database>.mermaid`) to match, ensuring no existing entities or relationships (such as `Build` links) are dropped or abbreviated.
+- The local Postgres database is managed declaratively via `psqldef` (from the `sqldef` project). We maintain a single desired state per database in `backend/db/<database>.sql` (e.g., `backend/db/quadsmith.sql`) rather than sequential migration files. Never use Prisma commands.
 - Apply schema changes by running `psqldef` against the local database. Ensure the `go.work` structure reflects any module changes.
 
 ## Database IDs & Resource Names

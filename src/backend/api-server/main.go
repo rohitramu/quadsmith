@@ -19,23 +19,23 @@ import (
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
-	"quadsmith/api/internal/authcontext"
-	"quadsmith/api/internal/engines/compatibility"
-	"quadsmith/api/internal/engines/evaluator"
-	"quadsmith/api/internal/engines/linkpreview"
-	"quadsmith/api/internal/engines/search"
-	"quadsmith/api/internal/static"
 	"quadsmith/api/pkg/auth"
+	"quadsmith/api/pkg/authcontext"
 	"quadsmith/api/pkg/blob"
+	"quadsmith/api/pkg/engines/compatibility"
+	"quadsmith/api/pkg/engines/evaluator"
+	"quadsmith/api/pkg/engines/linkpreview"
+	"quadsmith/api/pkg/engines/search"
 	"quadsmith/api/pkg/social"
-	bconfig "quadsmith/backend/config"
+	"quadsmith/api/pkg/static"
+	bconfig "quadsmith/backend/pkg/config"
 	fconfig "quadsmith/frontend/config"
 )
 
 func main() {
 	var configPath string
 	var envName string
-	flag.StringVar(&configPath, "config", "", "Path to backend configuration YAML file")
+	flag.StringVar(&configPath, "config", "", "Path to backend configuration textproto file")
 	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
 	flag.Parse()
 
@@ -44,13 +44,9 @@ func main() {
 		log.Fatalf("%v", err)
 	}
 
-	if err := cfg.Validate(); err != nil {
-		log.Fatalf("%v", err)
-	}
-
 	fcfg, _ := fconfig.Load(cfg.Environment)
 
-	pool, err := pgxpool.New(context.Background(), cfg.Database.URL)
+	pool, err := pgxpool.New(context.Background(), cfg.Database.Url)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
@@ -66,7 +62,7 @@ func main() {
 		connect.WithReadMaxBytes(1 << 20), // 1MB limit for RPC payloads
 	}
 
-	path_NewAuthServiceHandler, h_NewAuthServiceHandler := quadsmithconnect.NewAuthServiceHandler(auth.NewAuthService(pool, &cfg.Auth), handlerOpts...)
+	path_NewAuthServiceHandler, h_NewAuthServiceHandler := quadsmithconnect.NewAuthServiceHandler(auth.NewAuthService(pool, cfg.Auth), handlerOpts...)
 	mux.Handle(path_NewAuthServiceHandler, h_NewAuthServiceHandler)
 
 	path_NewUserServiceHandler, h_NewUserServiceHandler := quadsmithconnect.NewUserServiceHandler(auth.NewUserService(pool), handlerOpts...)
@@ -157,7 +153,7 @@ func main() {
 	// Serve the React SPA for any unmatched paths
 	mux.Handle("/", static.ServeSPA(cfg.Server.StaticDir, pool))
 
-	port := strconv.Itoa(cfg.Server.Port)
+	port := strconv.Itoa(int(cfg.Server.Port))
 	fmt.Printf("Starting Quadsmith API Server on port %s...\n", port)
 
 	maxBytes := cfg.Server.MaxRequestBytes
@@ -168,13 +164,26 @@ func main() {
 	// Wrap root handler with security headers and route-aware request body size limit
 	rootHandler := securityHeadersMiddleware(dynamicMaxBytesHandler(mux, maxBytes))
 
+	readTimeout := 30 * time.Second
+	if cfg.Server.ReadTimeout != nil && cfg.Server.ReadTimeout.AsDuration() > 0 {
+		readTimeout = cfg.Server.ReadTimeout.AsDuration()
+	}
+	writeTimeout := 60 * time.Second
+	if cfg.Server.WriteTimeout != nil && cfg.Server.WriteTimeout.AsDuration() > 0 {
+		writeTimeout = cfg.Server.WriteTimeout.AsDuration()
+	}
+	idleTimeout := 120 * time.Second
+	if cfg.Server.IdleTimeout != nil && cfg.Server.IdleTimeout.AsDuration() > 0 {
+		idleTimeout = cfg.Server.IdleTimeout.AsDuration()
+	}
+
 	server := &http.Server{
 		Addr:              ":" + port,
 		Handler:           h2c.NewHandler(rootHandler, &http2.Server{}),
 		ReadHeaderTimeout: 5 * time.Second,
-		ReadTimeout:       cfg.Server.ReadTimeout,
-		WriteTimeout:      cfg.Server.WriteTimeout,
-		IdleTimeout:       cfg.Server.IdleTimeout,
+		ReadTimeout:       readTimeout,
+		WriteTimeout:      writeTimeout,
+		IdleTimeout:       idleTimeout,
 	}
 
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {

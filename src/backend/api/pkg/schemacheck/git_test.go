@@ -35,10 +35,13 @@ func TestGitHelper(t *testing.T) {
 		}
 	}
 
-	// Test reading schema.sql from the resolved baseRef
-	content, err := gh.GetFileAtRef(baseRef, "src/backend/db/schema.sql")
+	// Test reading schema from the resolved baseRef
+	content, err := gh.GetFileAtRef(baseRef, "src/backend/db/quadsmith.sql")
 	if err != nil {
-		t.Fatalf("Failed to read schema.sql at base ref %s: %v", baseRef, err)
+		content, err = gh.GetFileAtRef(baseRef, "src/backend/db/schema.sql")
+		if err != nil {
+			t.Fatalf("Failed to read schema at base ref %s: %v", baseRef, err)
+		}
 	}
 
 	if len(content) == 0 {

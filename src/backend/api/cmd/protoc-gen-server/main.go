@@ -72,7 +72,7 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 		g.P(`	"math"`)
 		g.P(`	"sort"`)
 		g.P(`	"quadsmith/api/internal/buildid"`)
-		g.P(`	"quadsmith/api/internal/authcontext"`)
+		g.P(`	"quadsmith/api/pkg/authcontext"`)
 	}
 	g.P(`	"connectrpc.com/connect"`)
 	g.P(`	"github.com/jackc/pgx/v5"`)

@@ -1,0 +1,41 @@
+server {
+  port: 443
+  static_dir: "/app/web/dist"
+  read_timeout {
+    seconds: 30
+  }
+  write_timeout {
+    seconds: 60
+  }
+  idle_timeout {
+    seconds: 120
+  }
+  max_request_bytes: 2097152
+}
+database {
+  url: "${QS_DATABASE_URL}"
+  name: "quadsmith"
+  max_connections: 50
+  min_connections: 5
+}
+auth {
+  secret: "${QS_AUTH_SECRET}"
+  dev_print_otp: false
+  secure_cookies: true
+  trusted_proxy_hops: 1
+  access_token_ttl {
+    seconds: 3600
+  }
+  refresh_token_ttl {
+    seconds: 432000
+  }
+  otp_ttl {
+    seconds: 180
+  }
+  magic_link_ttl {
+    seconds: 900
+  }
+  email_cooldown {
+    seconds: 20
+  }
+}

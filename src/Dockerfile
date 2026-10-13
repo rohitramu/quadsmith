@@ -18,12 +18,15 @@
 # Stage 1: Build the Go server binary
 FROM golang:1.27 AS builder
 WORKDIR /app
+ENV GOWORK=/app/src/go.work
 
 # Copy go.work, go.mod files and vendor directory
 COPY src/go.work src/go.work.sum* ./src/
 COPY src/build_deps/go.mod src/build_deps/go.sum* ./src/build_deps/
 COPY src/backend/api/go.mod src/backend/api/go.sum* ./src/backend/api/
-COPY src/backend/config/go/go.mod src/backend/config/go/go.sum* ./src/backend/config/go/
+COPY src/backend/api-server/go.mod src/backend/api-server/go.sum* ./src/backend/api-server/
+COPY src/backend/worker/go.mod src/backend/worker/go.sum* ./src/backend/worker/
+COPY src/backend/pkg/config/go.mod src/backend/pkg/config/go.sum* ./src/backend/pkg/config/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
 COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
 COPY test/go.mod test/go.sum* ./test/
@@ -33,7 +36,7 @@ COPY src/vendor/ ./src/vendor/
 COPY . .
 
 # Build Server binary
-RUN cd src/backend/api && CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-w -s" -o /app/bin/server ./cmd/server/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-w -s" -o /app/bin/server ./src/backend/api-server/main.go
 
 
 # Stage 2: Build the Web UI
@@ -64,6 +67,6 @@ EXPOSE 443 8080
 
 COPY --from=builder /app/bin/server /app/server
 COPY --from=web-builder /app/dist /app/web/dist
-COPY src/backend/config /app/src/backend/config
+COPY src/backend/api-server/config /app/src/backend/api-server/config
 
-ENTRYPOINT ["/app/server", "--config", "/app/src/backend/config/api-server/prod.yaml"]
+ENTRYPOINT ["/app/server", "--config", "/app/src/backend/api-server/config/prod.textproto"]

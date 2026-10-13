@@ -17,7 +17,7 @@ import (
 
 	pb "quadsmith/api/gen/quadsmith"
 	"quadsmith/api/gen/quadsmith/quadsmithconnect"
-	"quadsmith/api/internal/authcontext"
+	"quadsmith/api/pkg/authcontext"
 )
 
 type SocialService struct {

@@ -21,12 +21,15 @@
 # Stage 1: Build the Go binaries
 FROM golang:1.27 AS builder
 WORKDIR /app
+ENV GOWORK=/app/src/go.work
 
 # Copy go.work, go.mod files and vendor directory
 COPY src/go.work src/go.work.sum* ./src/
 COPY src/build_deps/go.mod src/build_deps/go.sum* ./src/build_deps/
 COPY src/backend/api/go.mod src/backend/api/go.sum* ./src/backend/api/
-COPY src/backend/config/go/go.mod src/backend/config/go/go.sum* ./src/backend/config/go/
+COPY src/backend/api-server/go.mod src/backend/api-server/go.sum* ./src/backend/api-server/
+COPY src/backend/worker/go.mod src/backend/worker/go.sum* ./src/backend/worker/
+COPY src/backend/pkg/config/go.mod src/backend/pkg/config/go.sum* ./src/backend/pkg/config/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
 COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
 COPY test/go.mod test/go.sum* ./test/
@@ -37,11 +40,10 @@ COPY . .
 
 # Build Server, Worker, Seeder, and qsops
 RUN --mount=type=cache,target=/root/.cache/go-build \
-    cd src/backend/api && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./cmd/server/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/worker ./cmd/worker/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./cmd/qsops/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./cmd/seeder
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server ./src/backend/api-server/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/worker ./src/backend/worker/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./src/backend/api/cmd/qsops/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./src/backend/api/cmd/seeder
 
 
 # Stage 2: Build the Web UI
@@ -90,17 +92,18 @@ COPY --from=builder /app/bin/seeder /app/seeder
 COPY --from=web-builder /app/dist /app/web/dist
 
 # Copy database schema, seeds, and configs
-COPY src/backend/db/schema.sql /app/src/backend/db/schema.sql
+COPY src/backend/db/quadsmith.sql /app/src/backend/db/quadsmith.sql
 COPY test/seed_data /app/test/seed_data
-COPY src/backend/config /app/src/backend/config
+COPY src/backend/api-server/config /app/src/backend/api-server/config
+COPY src/backend/worker/config /app/src/backend/worker/config
 COPY src/frontend/config /app/src/frontend/config
 
 # Pre-populate PostgreSQL database with schema and seeds at image build time
 RUN docker-entrypoint.sh postgres & \
     pid=$! && \
     until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done && \
-    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql && \
-    ./seeder --config /app/src/backend/config/api-server/sandbox.yaml && \
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/quadsmith.sql && \
+    ./seeder --config /app/src/backend/api-server/config/sandbox.textproto && \
     gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
     wait $pid
 
@@ -114,14 +117,14 @@ until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done\n\
 ROW_COUNT=$(psql -U postgres -d quadsmith -tAc "SELECT count(*) FROM motors;" 2>/dev/null || echo "0")\n\
 if [ "$ROW_COUNT" = "0" ]; then\n\
     echo "Applying Schema & Seeding Database..."\n\
-    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/schema.sql\n\
-    ./seeder --config /app/src/backend/config/api-server/sandbox.yaml\n\
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/quadsmith.sql\n\
+    ./seeder --config /app/src/backend/api-server/config/sandbox.textproto\n\
 fi\n\
 echo "Starting Background Worker Daemon..."\n\
-./worker --config /app/src/backend/config/worker/sandbox.yaml > /var/log/worker.log 2>&1 &\n\
+./worker --config /app/src/backend/worker/config/sandbox.textproto > /var/log/worker.log 2>&1 &\n\
 echo "Pre-seeded users:"\n\
 psql -U postgres -d quadsmith -tAc "SELECT concat(\047  - \047, email, \047 (@\047, id, \047)\047) FROM users WHERE deleted_at IS NULL ORDER BY email;"\n\
-exec ./server --config /app/src/backend/config/api-server/sandbox.yaml\n' > /app/sandbox-entrypoint.sh
+exec ./server --config /app/src/backend/api-server/config/sandbox.textproto\n' > /app/sandbox-entrypoint.sh
 
 RUN chmod +x /app/sandbox-entrypoint.sh
 

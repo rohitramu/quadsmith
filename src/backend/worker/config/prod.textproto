@@ -1,0 +1,10 @@
+worker {
+  port: 443
+  concurrency: 10
+}
+database {
+  url: "${QS_DATABASE_URL}"
+  name: "quadsmith"
+  max_connections: 50
+  min_connections: 5
+}

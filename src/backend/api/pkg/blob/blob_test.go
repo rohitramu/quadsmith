@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"quadsmith/api/internal/authcontext"
+	"quadsmith/api/pkg/authcontext"
 )
 
 func TestNormalizeMIMEType(t *testing.T) {
