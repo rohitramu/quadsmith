@@ -103,19 +103,27 @@ corroboration checks.
     - **1. Background (optional)**: Context, and explicit references to any
       superseded plans.
     - **2. Goal**
-    - **3. Proposal**: Starts with `> **TL;DR:** <explanation>` blockquote
-      (short 1-2 sentence summary or concise bulleted list of short items),
-      followed by a high-level concept explanation paragraph, then 1 sub-heading
-      per design decision
-      (`### <a id="custom-anchor-text" >Design Decision</a>`) with the proposal
-      explanation directly under it (using diagrams, tables, images, UI
+    - **3. Proposal**: Starts with `> **TL;DR:** <explanation>` blockquote (at
+      most 5 statements, with each statement 20 words or less, formatted as
+      either a short paragraph or concise bulleted list), followed by a
+      high-level concept explanation paragraph, then 1 sub-heading per design
+      decision (`### <a id="custom-anchor-text" >Design Decision</a>`) with the
+      proposal explanation directly under it (using diagrams, tables, images, UI
       screenshots, UI concept images, artifacts, or code snippets with path
       references as appropriate), and nested
-      `#### <a id="custom-anchor-text" >Alternatives considered</a>` (unbulleted
-      ~2 sentence summary, unbulleted `**Pros:**` and `**Cons:**` labels with
-      bulleted items).
+      `#### <a id="custom-anchor-text" >Alternatives considered</a>` containing
+      1 sub-heading per alternative
+      (`##### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
+      unbulleted ~2 sentence summary explaining the alternative, an unbulleted
+      `**Pros:**` label followed by a bulleted list of pros compared to the
+      proposal, and an unbulleted `**Cons:**` label followed by a bulleted list
+      of cons compared to the proposal.
     - **4. Alternatives considered (optional)**: High-level conceptual
-      alternatives.
+      alternatives, containing 1 sub-heading per alternative
+      (`### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
+      unbulleted ~2 sentence summary explaining the alternative, an unbulleted
+      `**Pros:**` label followed by a bulleted list of pros, and an unbulleted
+      `**Cons:**` label followed by a bulleted list of cons.
     - **5. Assumptions (optional)**: Numbered list.
     - **6. Future work (optional)**: 1 sub-heading per idea.
     - **7. Open questions (optional)**: Numbered list.
