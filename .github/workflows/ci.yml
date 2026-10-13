@@ -59,7 +59,7 @@ jobs:
         uvx ruff format tools/
         
         # Format SQL
-        npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/*.sql
+        for f in src/backend/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$f"; done
         
         # Ensure that no files were modified by the formatters
         git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, HTML, CSS, Protobuf, and Textproto files." && exit 1)

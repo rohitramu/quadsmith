@@ -213,7 +213,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load worker sandbox: %v", err)
 	}
-	if workerSandbox.Worker.Port != 8081 || workerSandbox.Database.Name != "quadsmith" {
+	if workerSandbox.Worker.Port != 8081 || workerSandbox.Database.Name != "quadsmith" || workerSandbox.InternalDatabase.Name != "quadsmith_internal" {
 		t.Errorf("unexpected worker sandbox config: %+v", workerSandbox)
 	}
 
@@ -230,12 +230,13 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load worker test: %v", err)
 	}
-	if workerTest.Worker.Port != 8081 {
+	if workerTest.Worker.Port != 8081 || workerTest.InternalDatabase.Name != "quadsmith_internal" {
 		t.Errorf("unexpected worker test config: %+v", workerTest)
 	}
 
-	// Staging & Prod (require QS_DATABASE_URL and QS_AUTH_SECRET)
+	// Staging & Prod (require QS_DATABASE_URL, QS_INTERNAL_DATABASE_URL, and QS_AUTH_SECRET)
 	t.Setenv("QS_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith")
+	t.Setenv("QS_INTERNAL_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith_internal")
 	t.Setenv("QS_AUTH_SECRET", "super-secret-prod-auth-key-32bytes")
 
 	apiStaging, err := LoadAPIServerConfig("", "staging")

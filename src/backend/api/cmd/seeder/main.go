@@ -11,8 +11,8 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/internal/validation"
 	"quadsmith/api/pkg/authcontext"
+	"quadsmith/api/pkg/validation"
 	bconfig "quadsmith/backend/pkg/config"
 )
 

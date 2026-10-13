@@ -8,3 +8,10 @@ database {
   max_connections: 25
   min_connections: 2
 }
+internal_database {
+  url: "${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith_internal?sslmode=disable}"
+  name: "quadsmith_internal"
+  max_connections: 25
+  min_connections: 2
+}
+

@@ -2,14 +2,15 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: worker.proto
+// source: internal/worker.proto
 
-package quadsmith
+package quadsmith_internal
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	_ "quadsmith/api/gen/quadsmith"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -64,11 +65,11 @@ func (x JobStatus) String() string {
 }
 
 func (JobStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_worker_proto_enumTypes[0].Descriptor()
+	return file_internal_worker_proto_enumTypes[0].Descriptor()
 }
 
 func (JobStatus) Type() protoreflect.EnumType {
-	return &file_worker_proto_enumTypes[0]
+	return &file_internal_worker_proto_enumTypes[0]
 }
 
 func (x JobStatus) Number() protoreflect.EnumNumber {
@@ -77,7 +78,7 @@ func (x JobStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use JobStatus.Descriptor instead.
 func (JobStatus) EnumDescriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{0}
+	return file_internal_worker_proto_rawDescGZIP(), []int{0}
 }
 
 type AttemptStatus int32
@@ -116,11 +117,11 @@ func (x AttemptStatus) String() string {
 }
 
 func (AttemptStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_worker_proto_enumTypes[1].Descriptor()
+	return file_internal_worker_proto_enumTypes[1].Descriptor()
 }
 
 func (AttemptStatus) Type() protoreflect.EnumType {
-	return &file_worker_proto_enumTypes[1]
+	return &file_internal_worker_proto_enumTypes[1]
 }
 
 func (x AttemptStatus) Number() protoreflect.EnumNumber {
@@ -129,7 +130,7 @@ func (x AttemptStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use AttemptStatus.Descriptor instead.
 func (AttemptStatus) EnumDescriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{1}
+	return file_internal_worker_proto_rawDescGZIP(), []int{1}
 }
 
 type BackgroundJobRecord struct {
@@ -149,7 +150,7 @@ type BackgroundJobRecord struct {
 
 func (x *BackgroundJobRecord) Reset() {
 	*x = BackgroundJobRecord{}
-	mi := &file_worker_proto_msgTypes[0]
+	mi := &file_internal_worker_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -161,7 +162,7 @@ func (x *BackgroundJobRecord) String() string {
 func (*BackgroundJobRecord) ProtoMessage() {}
 
 func (x *BackgroundJobRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[0]
+	mi := &file_internal_worker_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -174,7 +175,7 @@ func (x *BackgroundJobRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BackgroundJobRecord.ProtoReflect.Descriptor instead.
 func (*BackgroundJobRecord) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{0}
+	return file_internal_worker_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *BackgroundJobRecord) GetUuid() string {
@@ -256,7 +257,7 @@ type BackgroundJobAttemptRecord struct {
 
 func (x *BackgroundJobAttemptRecord) Reset() {
 	*x = BackgroundJobAttemptRecord{}
-	mi := &file_worker_proto_msgTypes[1]
+	mi := &file_internal_worker_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -268,7 +269,7 @@ func (x *BackgroundJobAttemptRecord) String() string {
 func (*BackgroundJobAttemptRecord) ProtoMessage() {}
 
 func (x *BackgroundJobAttemptRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[1]
+	mi := &file_internal_worker_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -281,7 +282,7 @@ func (x *BackgroundJobAttemptRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BackgroundJobAttemptRecord.ProtoReflect.Descriptor instead.
 func (*BackgroundJobAttemptRecord) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{1}
+	return file_internal_worker_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *BackgroundJobAttemptRecord) GetUuid() string {
@@ -348,7 +349,7 @@ type BackgroundJobAttempt struct {
 	WorkerId      string                 `protobuf:"bytes,4,opt,name=worker_id,json=workerId,proto3" json:"worker_id,omitempty"`
 	StartedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
 	CompletedAt   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=completed_at,json=completedAt,proto3" json:"completed_at,omitempty"`
-	Status        AttemptStatus          `protobuf:"varint,7,opt,name=status,proto3,enum=quadsmith.AttemptStatus" json:"status,omitempty"`
+	Status        AttemptStatus          `protobuf:"varint,7,opt,name=status,proto3,enum=quadsmith.internal.AttemptStatus" json:"status,omitempty"`
 	ErrorMessage  string                 `protobuf:"bytes,8,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -356,7 +357,7 @@ type BackgroundJobAttempt struct {
 
 func (x *BackgroundJobAttempt) Reset() {
 	*x = BackgroundJobAttempt{}
-	mi := &file_worker_proto_msgTypes[2]
+	mi := &file_internal_worker_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -368,7 +369,7 @@ func (x *BackgroundJobAttempt) String() string {
 func (*BackgroundJobAttempt) ProtoMessage() {}
 
 func (x *BackgroundJobAttempt) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[2]
+	mi := &file_internal_worker_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -381,7 +382,7 @@ func (x *BackgroundJobAttempt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BackgroundJobAttempt.ProtoReflect.Descriptor instead.
 func (*BackgroundJobAttempt) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{2}
+	return file_internal_worker_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *BackgroundJobAttempt) GetUuid() string {
@@ -445,7 +446,7 @@ type BackgroundJob struct {
 	Uuid          string                  `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	JobType       string                  `protobuf:"bytes,2,opt,name=job_type,json=jobType,proto3" json:"job_type,omitempty"`
 	PayloadJson   string                  `protobuf:"bytes,3,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
-	Status        JobStatus               `protobuf:"varint,4,opt,name=status,proto3,enum=quadsmith.JobStatus" json:"status,omitempty"`
+	Status        JobStatus               `protobuf:"varint,4,opt,name=status,proto3,enum=quadsmith.internal.JobStatus" json:"status,omitempty"`
 	UniqueKey     string                  `protobuf:"bytes,5,opt,name=unique_key,json=uniqueKey,proto3" json:"unique_key,omitempty"`
 	MaxAttempts   int32                   `protobuf:"varint,6,opt,name=max_attempts,json=maxAttempts,proto3" json:"max_attempts,omitempty"`
 	ScheduledAt   *timestamppb.Timestamp  `protobuf:"bytes,7,opt,name=scheduled_at,json=scheduledAt,proto3" json:"scheduled_at,omitempty"`
@@ -458,7 +459,7 @@ type BackgroundJob struct {
 
 func (x *BackgroundJob) Reset() {
 	*x = BackgroundJob{}
-	mi := &file_worker_proto_msgTypes[3]
+	mi := &file_internal_worker_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -470,7 +471,7 @@ func (x *BackgroundJob) String() string {
 func (*BackgroundJob) ProtoMessage() {}
 
 func (x *BackgroundJob) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[3]
+	mi := &file_internal_worker_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -483,7 +484,7 @@ func (x *BackgroundJob) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BackgroundJob.ProtoReflect.Descriptor instead.
 func (*BackgroundJob) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{3}
+	return file_internal_worker_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *BackgroundJob) GetUuid() string {
@@ -558,7 +559,7 @@ func (x *BackgroundJob) GetAttempts() []*BackgroundJobAttempt {
 
 type ListJobsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	StatusFilter  JobStatus              `protobuf:"varint,1,opt,name=status_filter,json=statusFilter,proto3,enum=quadsmith.JobStatus" json:"status_filter,omitempty"`
+	StatusFilter  JobStatus              `protobuf:"varint,1,opt,name=status_filter,json=statusFilter,proto3,enum=quadsmith.internal.JobStatus" json:"status_filter,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -566,7 +567,7 @@ type ListJobsRequest struct {
 
 func (x *ListJobsRequest) Reset() {
 	*x = ListJobsRequest{}
-	mi := &file_worker_proto_msgTypes[4]
+	mi := &file_internal_worker_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -578,7 +579,7 @@ func (x *ListJobsRequest) String() string {
 func (*ListJobsRequest) ProtoMessage() {}
 
 func (x *ListJobsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[4]
+	mi := &file_internal_worker_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -591,7 +592,7 @@ func (x *ListJobsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListJobsRequest.ProtoReflect.Descriptor instead.
 func (*ListJobsRequest) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{4}
+	return file_internal_worker_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListJobsRequest) GetStatusFilter() JobStatus {
@@ -617,7 +618,7 @@ type ListJobsResponse struct {
 
 func (x *ListJobsResponse) Reset() {
 	*x = ListJobsResponse{}
-	mi := &file_worker_proto_msgTypes[5]
+	mi := &file_internal_worker_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -629,7 +630,7 @@ func (x *ListJobsResponse) String() string {
 func (*ListJobsResponse) ProtoMessage() {}
 
 func (x *ListJobsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[5]
+	mi := &file_internal_worker_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -642,7 +643,7 @@ func (x *ListJobsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListJobsResponse.ProtoReflect.Descriptor instead.
 func (*ListJobsResponse) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{5}
+	return file_internal_worker_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListJobsResponse) GetJobs() []*BackgroundJob {
@@ -661,7 +662,7 @@ type GetJobRequest struct {
 
 func (x *GetJobRequest) Reset() {
 	*x = GetJobRequest{}
-	mi := &file_worker_proto_msgTypes[6]
+	mi := &file_internal_worker_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -673,7 +674,7 @@ func (x *GetJobRequest) String() string {
 func (*GetJobRequest) ProtoMessage() {}
 
 func (x *GetJobRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[6]
+	mi := &file_internal_worker_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -686,7 +687,7 @@ func (x *GetJobRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetJobRequest.ProtoReflect.Descriptor instead.
 func (*GetJobRequest) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{6}
+	return file_internal_worker_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *GetJobRequest) GetJobUuid() string {
@@ -705,7 +706,7 @@ type GetJobResponse struct {
 
 func (x *GetJobResponse) Reset() {
 	*x = GetJobResponse{}
-	mi := &file_worker_proto_msgTypes[7]
+	mi := &file_internal_worker_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -717,7 +718,7 @@ func (x *GetJobResponse) String() string {
 func (*GetJobResponse) ProtoMessage() {}
 
 func (x *GetJobResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[7]
+	mi := &file_internal_worker_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -730,7 +731,7 @@ func (x *GetJobResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetJobResponse.ProtoReflect.Descriptor instead.
 func (*GetJobResponse) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{7}
+	return file_internal_worker_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetJobResponse) GetJob() *BackgroundJob {
@@ -751,7 +752,7 @@ type TriggerJobRequest struct {
 
 func (x *TriggerJobRequest) Reset() {
 	*x = TriggerJobRequest{}
-	mi := &file_worker_proto_msgTypes[8]
+	mi := &file_internal_worker_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -763,7 +764,7 @@ func (x *TriggerJobRequest) String() string {
 func (*TriggerJobRequest) ProtoMessage() {}
 
 func (x *TriggerJobRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[8]
+	mi := &file_internal_worker_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -776,7 +777,7 @@ func (x *TriggerJobRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TriggerJobRequest.ProtoReflect.Descriptor instead.
 func (*TriggerJobRequest) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{8}
+	return file_internal_worker_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TriggerJobRequest) GetJobType() string {
@@ -809,7 +810,7 @@ type TriggerJobResponse struct {
 
 func (x *TriggerJobResponse) Reset() {
 	*x = TriggerJobResponse{}
-	mi := &file_worker_proto_msgTypes[9]
+	mi := &file_internal_worker_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -821,7 +822,7 @@ func (x *TriggerJobResponse) String() string {
 func (*TriggerJobResponse) ProtoMessage() {}
 
 func (x *TriggerJobResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[9]
+	mi := &file_internal_worker_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -834,7 +835,7 @@ func (x *TriggerJobResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TriggerJobResponse.ProtoReflect.Descriptor instead.
 func (*TriggerJobResponse) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{9}
+	return file_internal_worker_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *TriggerJobResponse) GetJobUuid() string {
@@ -853,7 +854,7 @@ type RetryJobRequest struct {
 
 func (x *RetryJobRequest) Reset() {
 	*x = RetryJobRequest{}
-	mi := &file_worker_proto_msgTypes[10]
+	mi := &file_internal_worker_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -865,7 +866,7 @@ func (x *RetryJobRequest) String() string {
 func (*RetryJobRequest) ProtoMessage() {}
 
 func (x *RetryJobRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[10]
+	mi := &file_internal_worker_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -878,7 +879,7 @@ func (x *RetryJobRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RetryJobRequest.ProtoReflect.Descriptor instead.
 func (*RetryJobRequest) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{10}
+	return file_internal_worker_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *RetryJobRequest) GetJobUuid() string {
@@ -897,7 +898,7 @@ type RetryJobResponse struct {
 
 func (x *RetryJobResponse) Reset() {
 	*x = RetryJobResponse{}
-	mi := &file_worker_proto_msgTypes[11]
+	mi := &file_internal_worker_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -909,7 +910,7 @@ func (x *RetryJobResponse) String() string {
 func (*RetryJobResponse) ProtoMessage() {}
 
 func (x *RetryJobResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[11]
+	mi := &file_internal_worker_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -922,7 +923,7 @@ func (x *RetryJobResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RetryJobResponse.ProtoReflect.Descriptor instead.
 func (*RetryJobResponse) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{11}
+	return file_internal_worker_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *RetryJobResponse) GetSuccess() bool {
@@ -940,7 +941,7 @@ type GetWorkerStatusRequest struct {
 
 func (x *GetWorkerStatusRequest) Reset() {
 	*x = GetWorkerStatusRequest{}
-	mi := &file_worker_proto_msgTypes[12]
+	mi := &file_internal_worker_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -952,7 +953,7 @@ func (x *GetWorkerStatusRequest) String() string {
 func (*GetWorkerStatusRequest) ProtoMessage() {}
 
 func (x *GetWorkerStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[12]
+	mi := &file_internal_worker_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -965,7 +966,7 @@ func (x *GetWorkerStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorkerStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetWorkerStatusRequest) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{12}
+	return file_internal_worker_proto_rawDescGZIP(), []int{12}
 }
 
 type GetWorkerStatusResponse struct {
@@ -981,7 +982,7 @@ type GetWorkerStatusResponse struct {
 
 func (x *GetWorkerStatusResponse) Reset() {
 	*x = GetWorkerStatusResponse{}
-	mi := &file_worker_proto_msgTypes[13]
+	mi := &file_internal_worker_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -993,7 +994,7 @@ func (x *GetWorkerStatusResponse) String() string {
 func (*GetWorkerStatusResponse) ProtoMessage() {}
 
 func (x *GetWorkerStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_worker_proto_msgTypes[13]
+	mi := &file_internal_worker_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1006,7 +1007,7 @@ func (x *GetWorkerStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWorkerStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetWorkerStatusResponse) Descriptor() ([]byte, []int) {
-	return file_worker_proto_rawDescGZIP(), []int{13}
+	return file_internal_worker_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetWorkerStatusResponse) GetIsHealthy() bool {
@@ -1044,12 +1045,12 @@ func (x *GetWorkerStatusResponse) GetRegisteredTasks() []string {
 	return nil
 }
 
-var File_worker_proto protoreflect.FileDescriptor
+var File_internal_worker_proto protoreflect.FileDescriptor
 
-const file_worker_proto_rawDesc = "" +
+const file_internal_worker_proto_rawDesc = "" +
 	"\n" +
-	"\fworker.proto\x12\tquadsmith\x1a\r_common.proto\x1a\n" +
-	"_sql.proto\x1a\x0f_validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x80\x04\n" +
+	"\x15internal/worker.proto\x12\x12quadsmith.internal\x1a\n" +
+	"_sql.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x80\x04\n" +
 	"\x13BackgroundJobRecord\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12!\n" +
 	"\bjob_type\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\ajobType\x12+\n" +
@@ -1076,7 +1077,7 @@ const file_worker_proto_rawDesc = "" +
 	"\x06status\x18\a \x01(\tB\x0f\xc2\xf3\x18\v:\t'running'R\x06status\x12(\n" +
 	"\rerror_message\x18\b \x01(\tH\x00R\ferrorMessage\x88\x01\x01:\x1d\xc2\xf3\x18\x19\n" +
 	"\x17background_job_attemptsB\x10\n" +
-	"\x0e_error_message\"\xda\x02\n" +
+	"\x0e_error_message\"\xe3\x02\n" +
 	"\x14BackgroundJobAttempt\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x19\n" +
 	"\bjob_uuid\x18\x02 \x01(\tR\ajobUuid\x12%\n" +
@@ -1084,14 +1085,14 @@ const file_worker_proto_rawDesc = "" +
 	"\tworker_id\x18\x04 \x01(\tR\bworkerId\x129\n" +
 	"\n" +
 	"started_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tstartedAt\x12=\n" +
-	"\fcompleted_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\vcompletedAt\x120\n" +
-	"\x06status\x18\a \x01(\x0e2\x18.quadsmith.AttemptStatusR\x06status\x12#\n" +
-	"\rerror_message\x18\b \x01(\tR\ferrorMessage\"\xc3\x03\n" +
+	"\fcompleted_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\vcompletedAt\x129\n" +
+	"\x06status\x18\a \x01(\x0e2!.quadsmith.internal.AttemptStatusR\x06status\x12#\n" +
+	"\rerror_message\x18\b \x01(\tR\ferrorMessage\"\xd5\x03\n" +
 	"\rBackgroundJob\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x19\n" +
 	"\bjob_type\x18\x02 \x01(\tR\ajobType\x12!\n" +
-	"\fpayload_json\x18\x03 \x01(\tR\vpayloadJson\x12,\n" +
-	"\x06status\x18\x04 \x01(\x0e2\x14.quadsmith.JobStatusR\x06status\x12\x1d\n" +
+	"\fpayload_json\x18\x03 \x01(\tR\vpayloadJson\x125\n" +
+	"\x06status\x18\x04 \x01(\x0e2\x1d.quadsmith.internal.JobStatusR\x06status\x12\x1d\n" +
 	"\n" +
 	"unique_key\x18\x05 \x01(\tR\tuniqueKey\x12!\n" +
 	"\fmax_attempts\x18\x06 \x01(\x05R\vmaxAttempts\x12=\n" +
@@ -1099,18 +1100,18 @@ const file_worker_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12;\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12D\n" +
 	"\battempts\x18\n" +
-	" \x03(\v2\x1f.quadsmith.BackgroundJobAttemptR\battempts\"b\n" +
-	"\x0fListJobsRequest\x129\n" +
-	"\rstatus_filter\x18\x01 \x01(\x0e2\x14.quadsmith.JobStatusR\fstatusFilter\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"@\n" +
-	"\x10ListJobsResponse\x12,\n" +
-	"\x04jobs\x18\x01 \x03(\v2\x18.quadsmith.BackgroundJobR\x04jobs\"*\n" +
+	" \x03(\v2(.quadsmith.internal.BackgroundJobAttemptR\battempts\"k\n" +
+	"\x0fListJobsRequest\x12B\n" +
+	"\rstatus_filter\x18\x01 \x01(\x0e2\x1d.quadsmith.internal.JobStatusR\fstatusFilter\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"I\n" +
+	"\x10ListJobsResponse\x125\n" +
+	"\x04jobs\x18\x01 \x03(\v2!.quadsmith.internal.BackgroundJobR\x04jobs\"*\n" +
 	"\rGetJobRequest\x12\x19\n" +
-	"\bjob_uuid\x18\x01 \x01(\tR\ajobUuid\"<\n" +
-	"\x0eGetJobResponse\x12*\n" +
-	"\x03job\x18\x01 \x01(\v2\x18.quadsmith.BackgroundJobR\x03job\"p\n" +
+	"\bjob_uuid\x18\x01 \x01(\tR\ajobUuid\"E\n" +
+	"\x0eGetJobResponse\x123\n" +
+	"\x03job\x18\x01 \x01(\v2!.quadsmith.internal.BackgroundJobR\x03job\"p\n" +
 	"\x11TriggerJobRequest\x12\x19\n" +
 	"\bjob_type\x18\x01 \x01(\tR\ajobType\x12!\n" +
 	"\fpayload_json\x18\x02 \x01(\tR\vpayloadJson\x12\x1d\n" +
@@ -1142,75 +1143,75 @@ const file_worker_proto_rawDesc = "" +
 	"\x1aATTEMPT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16ATTEMPT_STATUS_RUNNING\x10\x01\x12\x1c\n" +
 	"\x18ATTEMPT_STATUS_COMPLETED\x10\x02\x12\x19\n" +
-	"\x15ATTEMPT_STATUS_FAILED\x10\x032\xfd\x02\n" +
-	"\rWorkerService\x12C\n" +
-	"\bListJobs\x12\x1a.quadsmith.ListJobsRequest\x1a\x1b.quadsmith.ListJobsResponse\x12=\n" +
-	"\x06GetJob\x12\x18.quadsmith.GetJobRequest\x1a\x19.quadsmith.GetJobResponse\x12I\n" +
+	"\x15ATTEMPT_STATUS_FAILED\x10\x032\xd7\x03\n" +
+	"\rWorkerService\x12U\n" +
+	"\bListJobs\x12#.quadsmith.internal.ListJobsRequest\x1a$.quadsmith.internal.ListJobsResponse\x12O\n" +
+	"\x06GetJob\x12!.quadsmith.internal.GetJobRequest\x1a\".quadsmith.internal.GetJobResponse\x12[\n" +
 	"\n" +
-	"TriggerJob\x12\x1c.quadsmith.TriggerJobRequest\x1a\x1d.quadsmith.TriggerJobResponse\x12C\n" +
-	"\bRetryJob\x12\x1a.quadsmith.RetryJobRequest\x1a\x1b.quadsmith.RetryJobResponse\x12X\n" +
-	"\x0fGetWorkerStatus\x12!.quadsmith.GetWorkerStatusRequest\x1a\".quadsmith.GetWorkerStatusResponseB\x1dZ\x1bquadsmith/api/gen/quadsmithb\x06proto3"
+	"TriggerJob\x12%.quadsmith.internal.TriggerJobRequest\x1a&.quadsmith.internal.TriggerJobResponse\x12U\n" +
+	"\bRetryJob\x12#.quadsmith.internal.RetryJobRequest\x1a$.quadsmith.internal.RetryJobResponse\x12j\n" +
+	"\x0fGetWorkerStatus\x12*.quadsmith.internal.GetWorkerStatusRequest\x1a+.quadsmith.internal.GetWorkerStatusResponseB9Z7quadsmith/api/gen/quadsmith_internal;quadsmith_internalb\x06proto3"
 
 var (
-	file_worker_proto_rawDescOnce sync.Once
-	file_worker_proto_rawDescData []byte
+	file_internal_worker_proto_rawDescOnce sync.Once
+	file_internal_worker_proto_rawDescData []byte
 )
 
-func file_worker_proto_rawDescGZIP() []byte {
-	file_worker_proto_rawDescOnce.Do(func() {
-		file_worker_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_worker_proto_rawDesc), len(file_worker_proto_rawDesc)))
+func file_internal_worker_proto_rawDescGZIP() []byte {
+	file_internal_worker_proto_rawDescOnce.Do(func() {
+		file_internal_worker_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_internal_worker_proto_rawDesc), len(file_internal_worker_proto_rawDesc)))
 	})
-	return file_worker_proto_rawDescData
+	return file_internal_worker_proto_rawDescData
 }
 
-var file_worker_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_worker_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
-var file_worker_proto_goTypes = []any{
-	(JobStatus)(0),                     // 0: quadsmith.JobStatus
-	(AttemptStatus)(0),                 // 1: quadsmith.AttemptStatus
-	(*BackgroundJobRecord)(nil),        // 2: quadsmith.BackgroundJobRecord
-	(*BackgroundJobAttemptRecord)(nil), // 3: quadsmith.BackgroundJobAttemptRecord
-	(*BackgroundJobAttempt)(nil),       // 4: quadsmith.BackgroundJobAttempt
-	(*BackgroundJob)(nil),              // 5: quadsmith.BackgroundJob
-	(*ListJobsRequest)(nil),            // 6: quadsmith.ListJobsRequest
-	(*ListJobsResponse)(nil),           // 7: quadsmith.ListJobsResponse
-	(*GetJobRequest)(nil),              // 8: quadsmith.GetJobRequest
-	(*GetJobResponse)(nil),             // 9: quadsmith.GetJobResponse
-	(*TriggerJobRequest)(nil),          // 10: quadsmith.TriggerJobRequest
-	(*TriggerJobResponse)(nil),         // 11: quadsmith.TriggerJobResponse
-	(*RetryJobRequest)(nil),            // 12: quadsmith.RetryJobRequest
-	(*RetryJobResponse)(nil),           // 13: quadsmith.RetryJobResponse
-	(*GetWorkerStatusRequest)(nil),     // 14: quadsmith.GetWorkerStatusRequest
-	(*GetWorkerStatusResponse)(nil),    // 15: quadsmith.GetWorkerStatusResponse
+var file_internal_worker_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_internal_worker_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_internal_worker_proto_goTypes = []any{
+	(JobStatus)(0),                     // 0: quadsmith.internal.JobStatus
+	(AttemptStatus)(0),                 // 1: quadsmith.internal.AttemptStatus
+	(*BackgroundJobRecord)(nil),        // 2: quadsmith.internal.BackgroundJobRecord
+	(*BackgroundJobAttemptRecord)(nil), // 3: quadsmith.internal.BackgroundJobAttemptRecord
+	(*BackgroundJobAttempt)(nil),       // 4: quadsmith.internal.BackgroundJobAttempt
+	(*BackgroundJob)(nil),              // 5: quadsmith.internal.BackgroundJob
+	(*ListJobsRequest)(nil),            // 6: quadsmith.internal.ListJobsRequest
+	(*ListJobsResponse)(nil),           // 7: quadsmith.internal.ListJobsResponse
+	(*GetJobRequest)(nil),              // 8: quadsmith.internal.GetJobRequest
+	(*GetJobResponse)(nil),             // 9: quadsmith.internal.GetJobResponse
+	(*TriggerJobRequest)(nil),          // 10: quadsmith.internal.TriggerJobRequest
+	(*TriggerJobResponse)(nil),         // 11: quadsmith.internal.TriggerJobResponse
+	(*RetryJobRequest)(nil),            // 12: quadsmith.internal.RetryJobRequest
+	(*RetryJobResponse)(nil),           // 13: quadsmith.internal.RetryJobResponse
+	(*GetWorkerStatusRequest)(nil),     // 14: quadsmith.internal.GetWorkerStatusRequest
+	(*GetWorkerStatusResponse)(nil),    // 15: quadsmith.internal.GetWorkerStatusResponse
 	(*timestamppb.Timestamp)(nil),      // 16: google.protobuf.Timestamp
 }
-var file_worker_proto_depIdxs = []int32{
-	16, // 0: quadsmith.BackgroundJobRecord.scheduled_at:type_name -> google.protobuf.Timestamp
-	16, // 1: quadsmith.BackgroundJobRecord.created_at:type_name -> google.protobuf.Timestamp
-	16, // 2: quadsmith.BackgroundJobRecord.updated_at:type_name -> google.protobuf.Timestamp
-	16, // 3: quadsmith.BackgroundJobAttemptRecord.started_at:type_name -> google.protobuf.Timestamp
-	16, // 4: quadsmith.BackgroundJobAttemptRecord.completed_at:type_name -> google.protobuf.Timestamp
-	16, // 5: quadsmith.BackgroundJobAttempt.started_at:type_name -> google.protobuf.Timestamp
-	16, // 6: quadsmith.BackgroundJobAttempt.completed_at:type_name -> google.protobuf.Timestamp
-	1,  // 7: quadsmith.BackgroundJobAttempt.status:type_name -> quadsmith.AttemptStatus
-	0,  // 8: quadsmith.BackgroundJob.status:type_name -> quadsmith.JobStatus
-	16, // 9: quadsmith.BackgroundJob.scheduled_at:type_name -> google.protobuf.Timestamp
-	16, // 10: quadsmith.BackgroundJob.created_at:type_name -> google.protobuf.Timestamp
-	16, // 11: quadsmith.BackgroundJob.updated_at:type_name -> google.protobuf.Timestamp
-	4,  // 12: quadsmith.BackgroundJob.attempts:type_name -> quadsmith.BackgroundJobAttempt
-	0,  // 13: quadsmith.ListJobsRequest.status_filter:type_name -> quadsmith.JobStatus
-	5,  // 14: quadsmith.ListJobsResponse.jobs:type_name -> quadsmith.BackgroundJob
-	5,  // 15: quadsmith.GetJobResponse.job:type_name -> quadsmith.BackgroundJob
-	6,  // 16: quadsmith.WorkerService.ListJobs:input_type -> quadsmith.ListJobsRequest
-	8,  // 17: quadsmith.WorkerService.GetJob:input_type -> quadsmith.GetJobRequest
-	10, // 18: quadsmith.WorkerService.TriggerJob:input_type -> quadsmith.TriggerJobRequest
-	12, // 19: quadsmith.WorkerService.RetryJob:input_type -> quadsmith.RetryJobRequest
-	14, // 20: quadsmith.WorkerService.GetWorkerStatus:input_type -> quadsmith.GetWorkerStatusRequest
-	7,  // 21: quadsmith.WorkerService.ListJobs:output_type -> quadsmith.ListJobsResponse
-	9,  // 22: quadsmith.WorkerService.GetJob:output_type -> quadsmith.GetJobResponse
-	11, // 23: quadsmith.WorkerService.TriggerJob:output_type -> quadsmith.TriggerJobResponse
-	13, // 24: quadsmith.WorkerService.RetryJob:output_type -> quadsmith.RetryJobResponse
-	15, // 25: quadsmith.WorkerService.GetWorkerStatus:output_type -> quadsmith.GetWorkerStatusResponse
+var file_internal_worker_proto_depIdxs = []int32{
+	16, // 0: quadsmith.internal.BackgroundJobRecord.scheduled_at:type_name -> google.protobuf.Timestamp
+	16, // 1: quadsmith.internal.BackgroundJobRecord.created_at:type_name -> google.protobuf.Timestamp
+	16, // 2: quadsmith.internal.BackgroundJobRecord.updated_at:type_name -> google.protobuf.Timestamp
+	16, // 3: quadsmith.internal.BackgroundJobAttemptRecord.started_at:type_name -> google.protobuf.Timestamp
+	16, // 4: quadsmith.internal.BackgroundJobAttemptRecord.completed_at:type_name -> google.protobuf.Timestamp
+	16, // 5: quadsmith.internal.BackgroundJobAttempt.started_at:type_name -> google.protobuf.Timestamp
+	16, // 6: quadsmith.internal.BackgroundJobAttempt.completed_at:type_name -> google.protobuf.Timestamp
+	1,  // 7: quadsmith.internal.BackgroundJobAttempt.status:type_name -> quadsmith.internal.AttemptStatus
+	0,  // 8: quadsmith.internal.BackgroundJob.status:type_name -> quadsmith.internal.JobStatus
+	16, // 9: quadsmith.internal.BackgroundJob.scheduled_at:type_name -> google.protobuf.Timestamp
+	16, // 10: quadsmith.internal.BackgroundJob.created_at:type_name -> google.protobuf.Timestamp
+	16, // 11: quadsmith.internal.BackgroundJob.updated_at:type_name -> google.protobuf.Timestamp
+	4,  // 12: quadsmith.internal.BackgroundJob.attempts:type_name -> quadsmith.internal.BackgroundJobAttempt
+	0,  // 13: quadsmith.internal.ListJobsRequest.status_filter:type_name -> quadsmith.internal.JobStatus
+	5,  // 14: quadsmith.internal.ListJobsResponse.jobs:type_name -> quadsmith.internal.BackgroundJob
+	5,  // 15: quadsmith.internal.GetJobResponse.job:type_name -> quadsmith.internal.BackgroundJob
+	6,  // 16: quadsmith.internal.WorkerService.ListJobs:input_type -> quadsmith.internal.ListJobsRequest
+	8,  // 17: quadsmith.internal.WorkerService.GetJob:input_type -> quadsmith.internal.GetJobRequest
+	10, // 18: quadsmith.internal.WorkerService.TriggerJob:input_type -> quadsmith.internal.TriggerJobRequest
+	12, // 19: quadsmith.internal.WorkerService.RetryJob:input_type -> quadsmith.internal.RetryJobRequest
+	14, // 20: quadsmith.internal.WorkerService.GetWorkerStatus:input_type -> quadsmith.internal.GetWorkerStatusRequest
+	7,  // 21: quadsmith.internal.WorkerService.ListJobs:output_type -> quadsmith.internal.ListJobsResponse
+	9,  // 22: quadsmith.internal.WorkerService.GetJob:output_type -> quadsmith.internal.GetJobResponse
+	11, // 23: quadsmith.internal.WorkerService.TriggerJob:output_type -> quadsmith.internal.TriggerJobResponse
+	13, // 24: quadsmith.internal.WorkerService.RetryJob:output_type -> quadsmith.internal.RetryJobResponse
+	15, // 25: quadsmith.internal.WorkerService.GetWorkerStatus:output_type -> quadsmith.internal.GetWorkerStatusResponse
 	21, // [21:26] is the sub-list for method output_type
 	16, // [16:21] is the sub-list for method input_type
 	16, // [16:16] is the sub-list for extension type_name
@@ -1218,32 +1219,29 @@ var file_worker_proto_depIdxs = []int32{
 	0,  // [0:16] is the sub-list for field type_name
 }
 
-func init() { file_worker_proto_init() }
-func file_worker_proto_init() {
-	if File_worker_proto != nil {
+func init() { file_internal_worker_proto_init() }
+func file_internal_worker_proto_init() {
+	if File_internal_worker_proto != nil {
 		return
 	}
-	file___common_proto_init()
-	file___sql_proto_init()
-	file___validate_proto_init()
-	file_worker_proto_msgTypes[0].OneofWrappers = []any{}
-	file_worker_proto_msgTypes[1].OneofWrappers = []any{}
+	file_internal_worker_proto_msgTypes[0].OneofWrappers = []any{}
+	file_internal_worker_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_worker_proto_rawDesc), len(file_worker_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_internal_worker_proto_rawDesc), len(file_internal_worker_proto_rawDesc)),
 			NumEnums:      2,
 			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_worker_proto_goTypes,
-		DependencyIndexes: file_worker_proto_depIdxs,
-		EnumInfos:         file_worker_proto_enumTypes,
-		MessageInfos:      file_worker_proto_msgTypes,
+		GoTypes:           file_internal_worker_proto_goTypes,
+		DependencyIndexes: file_internal_worker_proto_depIdxs,
+		EnumInfos:         file_internal_worker_proto_enumTypes,
+		MessageInfos:      file_internal_worker_proto_msgTypes,
 	}.Build()
-	File_worker_proto = out.File
-	file_worker_proto_goTypes = nil
-	file_worker_proto_depIdxs = nil
+	File_internal_worker_proto = out.File
+	file_internal_worker_proto_goTypes = nil
+	file_internal_worker_proto_depIdxs = nil
 }

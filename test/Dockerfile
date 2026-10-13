@@ -76,6 +76,7 @@ ENV POSTGRES_PASSWORD=postgres
 ENV POSTGRES_DB=quadsmith
 ENV PGDATA=/var/lib/postgresql/pgdata
 ENV QS_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith"
+ENV QS_INTERNAL_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_internal"
 ENV QS_SERVER_PORT=8080
 ENV QS_SERVER_STATIC_DIR="/app/web/dist"
 ENV QS_ENV=sandbox
@@ -93,6 +94,7 @@ COPY --from=web-builder /app/dist /app/web/dist
 
 # Copy database schema, seeds, and configs
 COPY src/backend/db/quadsmith.sql /app/src/backend/db/quadsmith.sql
+COPY src/backend/db/quadsmith_internal.sql /app/src/backend/db/quadsmith_internal.sql
 COPY test/seed_data /app/test/seed_data
 COPY src/backend/api-server/config /app/src/backend/api-server/config
 COPY src/backend/worker/config /app/src/backend/worker/config
@@ -102,7 +104,9 @@ COPY src/frontend/config /app/src/frontend/config
 RUN docker-entrypoint.sh postgres & \
     pid=$! && \
     until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done && \
+    psql -U postgres -c "CREATE DATABASE quadsmith_internal;" && \
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/quadsmith.sql && \
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_internal < /app/src/backend/db/quadsmith_internal.sql && \
     ./seeder --config /app/src/backend/api-server/config/sandbox.textproto && \
     gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
     wait $pid
@@ -114,11 +118,15 @@ echo "Starting PostgreSQL..."\n\
 docker-entrypoint.sh postgres > /var/log/postgres.log 2>&1 &\n\
 echo "Waiting for PostgreSQL to be ready..."\n\
 until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done\n\
+psql -U postgres -c "CREATE DATABASE quadsmith_internal;" 2>/dev/null || true\n\
 ROW_COUNT=$(psql -U postgres -d quadsmith -tAc "SELECT count(*) FROM motors;" 2>/dev/null || echo "0")\n\
 if [ "$ROW_COUNT" = "0" ]; then\n\
     echo "Applying Schema & Seeding Database..."\n\
     psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < /app/src/backend/db/quadsmith.sql\n\
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_internal < /app/src/backend/db/quadsmith_internal.sql\n\
     ./seeder --config /app/src/backend/api-server/config/sandbox.textproto\n\
+else\n\
+    psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_internal < /app/src/backend/db/quadsmith_internal.sql 2>/dev/null || true\n\
 fi\n\
 echo "Starting Background Worker Daemon..."\n\
 ./worker --config /app/src/backend/worker/config/sandbox.textproto > /var/log/worker.log 2>&1 &\n\

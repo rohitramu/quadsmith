@@ -299,6 +299,30 @@ func applyWorkerEnvOverrides(cfg *quadsmith_internal.WorkerConfig) {
 		cfg.Database = &quadsmith_internal.DatabaseConfig{}
 	}
 	applyDatabaseEnvOverrides(cfg.Database)
+
+	if cfg.InternalDatabase == nil {
+		cfg.InternalDatabase = &quadsmith_internal.DatabaseConfig{}
+	}
+	applyInternalDatabaseEnvOverrides(cfg.InternalDatabase)
+}
+
+func applyInternalDatabaseEnvOverrides(db *quadsmith_internal.DatabaseConfig) {
+	if v := os.Getenv("QS_INTERNAL_DATABASE_URL"); v != "" {
+		db.Url = v
+	}
+	if v := os.Getenv("QS_INTERNAL_DATABASE_NAME"); v != "" {
+		db.Name = v
+	}
+	if v := os.Getenv("QS_INTERNAL_DATABASE_MAX_CONNECTIONS"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil {
+			db.MaxConnections = int32(n)
+		}
+	}
+	if v := os.Getenv("QS_INTERNAL_DATABASE_MIN_CONNECTIONS"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil {
+			db.MinConnections = int32(n)
+		}
+	}
 }
 
 func applyDatabaseEnvOverrides(db *quadsmith_internal.DatabaseConfig) {
@@ -392,6 +416,12 @@ func ValidateWorkerConfig(c *quadsmith_internal.WorkerConfig) error {
 		errs = append(errs, "database configuration section is missing")
 	} else if err := ValidateDatabase(c.Database, c.GetEnvironment()); err != nil {
 		errs = append(errs, err.Error())
+	}
+
+	if c.InternalDatabase == nil {
+		errs = append(errs, "internal_database configuration section is missing")
+	} else if err := ValidateDatabase(c.InternalDatabase, c.GetEnvironment()); err != nil {
+		errs = append(errs, "internal_database: "+err.Error())
 	}
 
 	if len(errs) > 0 {

@@ -13,8 +13,8 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/encoding/protojson"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith_internal"
+	"quadsmith/api/gen/quadsmith_internal/quadsmith_internalconnect"
 	fconfig "quadsmith/frontend/config"
 )
 
@@ -61,8 +61,8 @@ func newRootCmd() *cobra.Command {
 	return rootCmd
 }
 
-func getWorkerClient() quadsmithconnect.WorkerServiceClient {
-	return quadsmithconnect.NewWorkerServiceClient(http.DefaultClient, workerURL)
+func getWorkerClient() quadsmith_internalconnect.WorkerServiceClient {
+	return quadsmith_internalconnect.NewWorkerServiceClient(http.DefaultClient, workerURL)
 }
 
 func newWorkersCmd() *cobra.Command {

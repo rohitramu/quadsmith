@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	pb "quadsmith/api/gen/quadsmith"
+	pb "quadsmith/api/gen/quadsmith_internal"
 )
 
 type samplePayload struct {

@@ -4,12 +4,12 @@ set -e
 # Check that generated files are up to date
 echo "Checking that generated files are up to date..."
 make generate
-if ! git diff --exit-code -- src/backend/api/gen src/frontend/web/src/gen src/backend/db/quadsmith.sql src/frontend/cli/main.go > /dev/null 2>&1; then
+if ! git diff --exit-code -- src/backend/api/gen src/frontend/web/src/gen src/backend/db/quadsmith.sql src/backend/db/quadsmith_internal.sql src/frontend/cli/main.go > /dev/null 2>&1; then
     echo "Error: Generated files are out of sync with source definitions or unstaged."
     echo "Please run 'make generate' and stage all generated changes before committing."
     exit 1
 fi
-UNTRACKED_GEN=$(git status --porcelain -- src/backend/api/gen src/frontend/web/src/gen src/backend/db/quadsmith.sql src/frontend/cli/main.go | grep '^??' || true)
+UNTRACKED_GEN=$(git status --porcelain -- src/backend/api/gen src/frontend/web/src/gen src/backend/db/quadsmith.sql src/backend/db/quadsmith_internal.sql src/frontend/cli/main.go | grep '^??' || true)
 if [ -n "$UNTRACKED_GEN" ]; then
     echo "Error: Found untracked generated files. Please stage all generated files before committing:"
     echo "$UNTRACKED_GEN"

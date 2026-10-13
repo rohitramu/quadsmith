@@ -1,13 +1,11 @@
 syntax = "proto3";
 
-package quadsmith;
+package quadsmith.internal;
 
-import "_common.proto";
 import "_sql.proto";
-import "_validate.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "quadsmith/api/gen/quadsmith";
+option go_package = "quadsmith/api/gen/quadsmith_internal;quadsmith_internal";
 
 // ---------------------------------------------------------
 // Job Status Enums

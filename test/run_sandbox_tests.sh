@@ -12,6 +12,7 @@ WORKER_PORT="${WORKER_PORT:-8081}"
 API_URL="${QS_CLI_API_URL:-${QS_API_URL:-http://127.0.0.1:${PORT}}}"
 WORKER_URL="${QS_OPS_WORKER_URL:-${QS_WORKER_URL:-http://127.0.0.1:${WORKER_PORT}}}"
 DB_URL="${QS_DATABASE_URL:-${DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:${DB_PORT}/quadsmith}}"
+INTERNAL_DB_URL="${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:${DB_PORT}/quadsmith_internal}"
 
 is_sandbox_ready() {
     curl -s -f -m 1 "${API_URL}" >/dev/null 2>&1 && curl -s -f -m 1 "${WORKER_URL}/healthz" >/dev/null 2>&1
@@ -40,10 +41,12 @@ echo "--- Starting fresh Sandbox container on port ${PORT} (Worker: ${WORKER_POR
 docker run -d --name "$CONTAINER_NAME" \
     -e QS_SERVER_PORT="$PORT" \
     -e QS_WORKER_PORT="$WORKER_PORT" \
+    -e QS_INTERNAL_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_internal" \
     -p "${PORT}":"${PORT}" \
     -p "${WORKER_PORT}":"${WORKER_PORT}" \
     -p "${DB_PORT}":5432 \
     quadsmith-sandbox
+
 
 echo "--- Waiting for Sandbox to become healthy ---"
 MAX_RETRIES=40
@@ -66,6 +69,7 @@ export QS_OPS_WORKER_URL="${WORKER_URL}"
 export QS_WORKER_URL="${WORKER_URL}"
 export QS_DATABASE_URL="${DB_URL}"
 export DATABASE_URL="${DB_URL}"
+export QS_INTERNAL_DATABASE_URL="${INTERNAL_DB_URL}"
 export GOWORK="${ROOT_DIR}/src/go.work"
 
 go test -count=1 -v ./test/...

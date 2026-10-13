@@ -93,6 +93,24 @@ func WithWorkerDatabaseName(name string) WorkerOption {
 	}
 }
 
+func WithWorkerInternalDatabaseURL(url string) WorkerOption {
+	return func(c *quadsmith_internal.WorkerConfig) {
+		if c.InternalDatabase == nil {
+			c.InternalDatabase = &quadsmith_internal.DatabaseConfig{}
+		}
+		c.InternalDatabase.Url = url
+	}
+}
+
+func WithWorkerInternalDatabaseName(name string) WorkerOption {
+	return func(c *quadsmith_internal.WorkerConfig) {
+		if c.InternalDatabase == nil {
+			c.InternalDatabase = &quadsmith_internal.DatabaseConfig{}
+		}
+		c.InternalDatabase.Name = name
+	}
+}
+
 func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *quadsmith_internal.ApiServerConfig {
 	t.Helper()
 	cfg := &quadsmith_internal.ApiServerConfig{
@@ -142,6 +160,12 @@ func NewTestWorkerConfig(t testing.TB, opts ...WorkerOption) *quadsmith_internal
 		Database: &quadsmith_internal.DatabaseConfig{
 			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith?sslmode=disable",
 			Name:           "quadsmith",
+			MaxConnections: 25,
+			MinConnections: 2,
+		},
+		InternalDatabase: &quadsmith_internal.DatabaseConfig{
+			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_internal?sslmode=disable",
+			Name:           "quadsmith_internal",
 			MaxConnections: 25,
 			MinConnections: 2,
 		},

@@ -13,11 +13,11 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith_internal"
+	"quadsmith/api/gen/quadsmith_internal/quadsmith_internalconnect"
 )
 
-var _ quadsmithconnect.WorkerServiceHandler = (*WorkerService)(nil)
+var _ quadsmith_internalconnect.WorkerServiceHandler = (*WorkerService)(nil)
 
 // WorkerService implements the ConnectRPC quadsmith.WorkerService.
 type WorkerService struct {

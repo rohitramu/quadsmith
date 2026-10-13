@@ -81,7 +81,7 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 	if hasTimestamp {
 		g.P(`	"google.golang.org/protobuf/types/known/timestamppb"`)
 	}
-	g.P(`	"quadsmith/api/internal/pagination"`)
+	g.P(`	"quadsmith/api/pkg/pagination"`)
 	g.P(`)`)
 	g.P()
 

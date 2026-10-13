@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"quadsmith/api/internal/pagination"
+	"quadsmith/api/pkg/pagination"
 	"strings"
 	"time"
 )

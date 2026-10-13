@@ -8,3 +8,10 @@ database {
   max_connections: 50
   min_connections: 5
 }
+internal_database {
+  url: "${QS_INTERNAL_DATABASE_URL}"
+  name: "quadsmith_internal"
+  max_connections: 50
+  min_connections: 5
+}
+

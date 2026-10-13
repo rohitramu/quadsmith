@@ -62,6 +62,11 @@ sandbox: generate bin/qs
 	@echo "--- Starting Quadsmith Sandbox (Docker) ---"
 	@./test/start_sandbox.sh $(PORT) || if [ $$? -eq 130 ]; then exit 0; else exit $$?; fi
 
+db-migrate: generate
+	@echo "--- Applying Database Schemas with psqldef ---"
+	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith < src/backend/db/quadsmith.sql
+	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_internal < src/backend/db/quadsmith_internal.sql
+
 warn-breaking:
 	@if [ ! -s .tmp/breaking_warning.log ]; then \
 		rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log; \
@@ -116,7 +121,7 @@ bin/.generate_proto.sentinel: $(PROTO_FILES) $(VENDOR_PLUGINS) $(CUSTOM_PLUGINS)
 
 bin/.format_sql.sentinel: $(wildcard src/backend/db/*.sql) .sql-formatter.json
 	@mkdir -p bin
-	@npx -y sql-formatter --config .sql-formatter.json --fix src/backend/db/*.sql
+	@for f in src/backend/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$$f"; done
 	@touch bin/.format_sql.sentinel
 
 generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel

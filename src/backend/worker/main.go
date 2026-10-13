@@ -15,7 +15,7 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	"quadsmith/api/gen/quadsmith_internal/quadsmith_internalconnect"
 	"quadsmith/api/pkg/auth"
 	"quadsmith/api/pkg/blob"
 	"quadsmith/api/pkg/worker"
@@ -40,26 +40,32 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	pool, err := pgxpool.New(ctx, cfg.Database.Url)
+	publicPool, err := pgxpool.New(ctx, cfg.Database.Url)
 	if err != nil {
-		log.Fatalf("Unable to connect to database: %v\n", err)
+		log.Fatalf("Unable to connect to public database (%s): %v\n", cfg.Database.Name, err)
 	}
-	defer pool.Close()
+	defer publicPool.Close()
+
+	internalPool, err := pgxpool.New(ctx, cfg.InternalDatabase.Url)
+	if err != nil {
+		log.Fatalf("Unable to connect to internal database (%s): %v\n", cfg.InternalDatabase.Name, err)
+	}
+	defer internalPool.Close()
 
 	// 1. Initialize Task Registry
 	reg := worker.NewRegistry()
 
-	// 2. Register Built-in Tasks
-	auth.RegisterWorkers(reg, pool)
-	blob.RegisterWorkers(reg, pool)
+	// 2. Register Built-in Tasks (domain tasks operate on public database)
+	auth.RegisterWorkers(reg, publicPool)
+	blob.RegisterWorkers(reg, publicPool)
 
-	// Periodic 24h task: prune completed background jobs older than 7d and failed jobs older than 30d
+	// Periodic 24h task: prune completed background jobs older than 7d and failed jobs older than 30d (internal database)
 	worker.RegisterPeriodic(reg, "worker.cleanup_completed_jobs", 24*time.Hour, worker.EmptyPayload{}, func(ctx context.Context, job worker.Job[worker.EmptyPayload]) error {
-		cmd1, err1 := pool.Exec(ctx, `DELETE FROM background_jobs WHERE status = 'completed' AND updated_at < NOW() - INTERVAL '7 days';`)
+		cmd1, err1 := internalPool.Exec(ctx, `DELETE FROM background_jobs WHERE status = 'completed' AND updated_at < NOW() - INTERVAL '7 days';`)
 		if err1 != nil {
 			log.Printf("[WorkerCleanup] Error pruning completed jobs: %v", err1)
 		}
-		cmd2, err2 := pool.Exec(ctx, `DELETE FROM background_jobs WHERE status = 'failed' AND updated_at < NOW() - INTERVAL '30 days';`)
+		cmd2, err2 := internalPool.Exec(ctx, `DELETE FROM background_jobs WHERE status = 'failed' AND updated_at < NOW() - INTERVAL '30 days';`)
 		if err2 != nil {
 			log.Printf("[WorkerCleanup] Error pruning failed jobs: %v", err2)
 		}
@@ -69,9 +75,9 @@ func main() {
 		return nil
 	})
 
-	// 3. Initialize Worker Pool & Scheduler
-	workerPool := worker.NewPool(pool, reg, worker.WithConcurrency(concurrency))
-	scheduler := worker.NewScheduler(pool, reg)
+	// 3. Initialize Worker Pool & Scheduler (operate on internal database)
+	workerPool := worker.NewPool(internalPool, reg, worker.WithConcurrency(concurrency))
+	scheduler := worker.NewScheduler(internalPool, reg)
 
 	// 4. Start execution loops
 	workerPool.Start(ctx)
@@ -82,8 +88,8 @@ func main() {
 
 	// 5. ConnectRPC Service HTTP Server
 	mux := http.NewServeMux()
-	workerService := worker.NewWorkerService(pool, reg, workerPool)
-	path, handler := quadsmithconnect.NewWorkerServiceHandler(workerService)
+	workerService := worker.NewWorkerService(internalPool, reg, workerPool)
+	path, handler := quadsmith_internalconnect.NewWorkerServiceHandler(workerService)
 	mux.Handle(path, handler)
 
 	// Simple healthcheck endpoint

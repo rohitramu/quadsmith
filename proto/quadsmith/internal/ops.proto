@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package quadsmith.internal;
+
+import "_sql.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "quadsmith/api/gen/quadsmith_internal;quadsmith_internal";
+
+// ---------------------------------------------------------
+// JIT Grants
+// ---------------------------------------------------------
+
+message JitGrantRecord {
+  option (quadsmith.sql.table) = {name: "jit_grants"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string token_hash = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string operator = 4;
+  string operator_type = 5; // 'HUMAN' or 'ROBOT'
+  string reason = 6;
+  string operation = 7 [(quadsmith.sql.column) = {default_value: "'*'"}];
+  string status = 8 [(quadsmith.sql.column) = {
+    create_index: true
+    default_value: "'ACTIVE'"
+  }];
+  int32 hours = 9;
+  google.protobuf.Timestamp expires_at = 10;
+  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp extended_at = 12;
+  google.protobuf.Timestamp revoked_at = 13;
+}
+
+// ---------------------------------------------------------
+// Internal Tokens
+// ---------------------------------------------------------
+
+message InternalTokenRecord {
+  option (quadsmith.sql.table) = {name: "internal_tokens"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string name = 3;
+  string type = 4; // 'HUMAN' or 'ROBOT'
+  string group_name = 5;
+  string token_hash = 6 [(quadsmith.sql.column) = {create_index: true}];
+  google.protobuf.Timestamp expires_at = 7;
+  google.protobuf.Timestamp created_at = 8 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp revoked_at = 9;
+}
+
+// ---------------------------------------------------------
+// Internal API Calls (Audit Log)
+// ---------------------------------------------------------
+
+message InternalApiCallRecord {
+  option (quadsmith.sql.table) = {name: "internal_api_calls"};
+
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string method = 3;
+  string caller = 4 [(quadsmith.sql.column) = {create_index: true}];
+  string caller_type = 5;
+  string group_name = 6;
+  optional string jit_grant_id = 7;
+  string status = 8;
+  optional string error_message = 9;
+  int64 duration_ms = 10;
+  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {
+    create_index: true
+    default_value: "NOW()"
+  }];
+}

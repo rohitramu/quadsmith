@@ -10,9 +10,10 @@ import (
 	"time"
 
 	connect "connectrpc.com/connect"
+	"github.com/jackc/pgx/v5/pgxpool"
 
-	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/gen/quadsmith/quadsmithconnect"
+	pb "quadsmith/api/gen/quadsmith_internal"
+	"quadsmith/api/gen/quadsmith_internal/quadsmith_internalconnect"
 )
 
 func getWorkerURL() string {
@@ -30,7 +31,7 @@ func TestWorkerDaemonStatusAndTrigger(t *testing.T) {
 		t.Fatalf("Worker daemon not running at %s: %v", workerUrl, err)
 	}
 
-	workerClient := quadsmithconnect.NewWorkerServiceClient(
+	workerClient := quadsmith_internalconnect.NewWorkerServiceClient(
 		http.DefaultClient,
 		workerUrl,
 	)
@@ -106,6 +107,31 @@ func TestWorkerDaemonStatusAndTrigger(t *testing.T) {
 		attempt := job.GetAttempts()[0]
 		if attempt.GetStatus() != pb.AttemptStatus_ATTEMPT_STATUS_COMPLETED {
 			t.Errorf("Expected attempt status COMPLETED, got %v (error: %s)", attempt.GetStatus(), attempt.GetErrorMessage())
+		}
+	}
+
+	// 4. Verify Database Isolation: Job lives in quadsmith_internal, NOT in quadsmith
+	if internalDBURL := os.Getenv("QS_INTERNAL_DATABASE_URL"); internalDBURL != "" {
+		internalPool, err := pgxpool.New(ctx, internalDBURL)
+		if err == nil {
+			defer internalPool.Close()
+			var jobCount int
+			_ = internalPool.QueryRow(ctx, "SELECT count(*) FROM background_jobs WHERE uuid = $1", jobUUID).Scan(&jobCount)
+			if jobCount != 1 {
+				t.Errorf("Expected job %s to exist in quadsmith_internal background_jobs, found count %d", jobUUID, jobCount)
+			}
+		}
+	}
+
+	if publicDBURL := os.Getenv("QS_DATABASE_URL"); publicDBURL != "" {
+		publicPool, err := pgxpool.New(ctx, publicDBURL)
+		if err == nil {
+			defer publicPool.Close()
+			var tableCount int
+			_ = publicPool.QueryRow(ctx, "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'background_jobs'").Scan(&tableCount)
+			if tableCount != 0 {
+				t.Errorf("Expected background_jobs table to NOT exist in quadsmith public database, found %d", tableCount)
+			}
 		}
 	}
 }

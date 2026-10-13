@@ -50,4 +50,5 @@ message WorkerConfig {
   string environment = 1;
   WorkerDaemonConfig worker = 2;
   DatabaseConfig database = 3;
+  DatabaseConfig internal_database = 4;
 }

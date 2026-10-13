@@ -8,8 +8,8 @@ import (
 
 	"google.golang.org/protobuf/encoding/prototext"
 	pb "quadsmith/api/gen/quadsmith"
-	"quadsmith/api/internal/validation"
 	"quadsmith/api/pkg/schemacheck"
+	"quadsmith/api/pkg/validation"
 )
 
 func TestSeeds_UnmarshalWithoutErrors(t *testing.T) {

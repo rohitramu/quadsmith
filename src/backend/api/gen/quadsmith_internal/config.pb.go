@@ -403,12 +403,13 @@ func (x *ApiServerConfig) GetAuth() *AuthConfig {
 }
 
 type WorkerConfig struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Environment   string                 `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
-	Worker        *WorkerDaemonConfig    `protobuf:"bytes,2,opt,name=worker,proto3" json:"worker,omitempty"`
-	Database      *DatabaseConfig        `protobuf:"bytes,3,opt,name=database,proto3" json:"database,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Environment      string                 `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
+	Worker           *WorkerDaemonConfig    `protobuf:"bytes,2,opt,name=worker,proto3" json:"worker,omitempty"`
+	Database         *DatabaseConfig        `protobuf:"bytes,3,opt,name=database,proto3" json:"database,omitempty"`
+	InternalDatabase *DatabaseConfig        `protobuf:"bytes,4,opt,name=internal_database,json=internalDatabase,proto3" json:"internal_database,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *WorkerConfig) Reset() {
@@ -462,6 +463,13 @@ func (x *WorkerConfig) GetDatabase() *DatabaseConfig {
 	return nil
 }
 
+func (x *WorkerConfig) GetInternalDatabase() *DatabaseConfig {
+	if x != nil {
+		return x.InternalDatabase
+	}
+	return nil
+}
+
 var File_internal_config_proto protoreflect.FileDescriptor
 
 const file_internal_config_proto_rawDesc = "" +
@@ -498,11 +506,12 @@ const file_internal_config_proto_rawDesc = "" +
 	"\venvironment\x18\x01 \x01(\tR\venvironment\x128\n" +
 	"\x06server\x18\x02 \x01(\v2 .quadsmith.internal.ServerConfigR\x06server\x12>\n" +
 	"\bdatabase\x18\x03 \x01(\v2\".quadsmith.internal.DatabaseConfigR\bdatabase\x122\n" +
-	"\x04auth\x18\x04 \x01(\v2\x1e.quadsmith.internal.AuthConfigR\x04auth\"\xb0\x01\n" +
+	"\x04auth\x18\x04 \x01(\v2\x1e.quadsmith.internal.AuthConfigR\x04auth\"\x81\x02\n" +
 	"\fWorkerConfig\x12 \n" +
 	"\venvironment\x18\x01 \x01(\tR\venvironment\x12>\n" +
 	"\x06worker\x18\x02 \x01(\v2&.quadsmith.internal.WorkerDaemonConfigR\x06worker\x12>\n" +
-	"\bdatabase\x18\x03 \x01(\v2\".quadsmith.internal.DatabaseConfigR\bdatabaseB9Z7quadsmith/api/gen/quadsmith_internal;quadsmith_internalb\x06proto3"
+	"\bdatabase\x18\x03 \x01(\v2\".quadsmith.internal.DatabaseConfigR\bdatabase\x12O\n" +
+	"\x11internal_database\x18\x04 \x01(\v2\".quadsmith.internal.DatabaseConfigR\x10internalDatabaseB9Z7quadsmith/api/gen/quadsmith_internal;quadsmith_internalb\x06proto3"
 
 var (
 	file_internal_config_proto_rawDescOnce sync.Once
@@ -540,11 +549,12 @@ var file_internal_config_proto_depIdxs = []int32{
 	2,  // 10: quadsmith.internal.ApiServerConfig.auth:type_name -> quadsmith.internal.AuthConfig
 	3,  // 11: quadsmith.internal.WorkerConfig.worker:type_name -> quadsmith.internal.WorkerDaemonConfig
 	0,  // 12: quadsmith.internal.WorkerConfig.database:type_name -> quadsmith.internal.DatabaseConfig
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	0,  // 13: quadsmith.internal.WorkerConfig.internal_database:type_name -> quadsmith.internal.DatabaseConfig
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_internal_config_proto_init() }
