@@ -5,9 +5,9 @@ use (
 	./backend/server-api
 	./backend/server-ops
 	./backend/server-jobs
+	./backend/server-web
 	./frontend/cli
 	./frontend/cli-ops
-	./frontend/config/go
 	./build_deps
 	../test
 )

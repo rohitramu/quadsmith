@@ -18,12 +18,19 @@ import (
 
 func main() {
 	var configPath string
-	var envName string
-	flag.StringVar(&configPath, "config", "", "Path to backend configuration textproto file")
-	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
+	flag.StringVar(&configPath, "config", "", "Path to API server configuration textproto file (required)")
 	flag.Parse()
 
-	cfg, err := bconfig.LoadAPIServerConfig(configPath, envName)
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			fmt.Fprintln(os.Stderr, "seeder: --config flag is required; no auto-resolution allowed")
+			os.Exit(1)
+		}
+	}
+
+	cfg, err := bconfig.LoadAPIServerConfig(configPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)

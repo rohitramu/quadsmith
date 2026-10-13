@@ -27,9 +27,9 @@ COPY src/backend/shared/go.mod src/backend/shared/go.sum* ./src/backend/shared/
 COPY src/backend/server-api/go.mod src/backend/server-api/go.sum* ./src/backend/server-api/
 COPY src/backend/server-ops/go.mod src/backend/server-ops/go.sum* ./src/backend/server-ops/
 COPY src/backend/server-jobs/go.mod src/backend/server-jobs/go.sum* ./src/backend/server-jobs/
+COPY src/backend/server-web/go.mod src/backend/server-web/go.sum* ./src/backend/server-web/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
 COPY src/frontend/cli-ops/go.mod src/frontend/cli-ops/go.sum* ./src/frontend/cli-ops/
-COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
 COPY test/go.mod test/go.sum* ./test/
 COPY src/vendor/ ./src/vendor/
 
@@ -45,13 +45,13 @@ FROM node:22 AS web-builder
 WORKDIR /app
 
 # Copy package files
-COPY src/frontend/web/package.json src/frontend/web/package-lock.json* ./
+COPY src/frontend/web/app/package.json src/frontend/web/app/package-lock.json* ./
 
 # Install dependencies
 RUN npm install
 
 # Copy source and build
-COPY src/frontend/web/ .
+COPY src/frontend/web/app/ .
 RUN npm run build
 
 

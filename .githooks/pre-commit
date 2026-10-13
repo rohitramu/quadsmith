@@ -21,12 +21,12 @@ done
 # Check that generated files are up to date
 echo "Checking that generated files are up to date..."
 make generate
-if ! git diff --exit-code -- src/backend/shared/gen src/backend/api/gen src/frontend/web/src/gen src/backend/db/quadsmith_api.sql src/backend/db/quadsmith_ops.sql src/frontend/cli/main.go > /dev/null 2>&1; then
+if ! git diff --exit-code -- src/backend/shared/gen src/frontend/web/app/src/gen src/backend/db/quadsmith_api.sql src/backend/db/quadsmith_ops.sql src/frontend/cli/main.go > /dev/null 2>&1; then
     echo "Error: Generated files are out of sync with source definitions or unstaged."
     echo "Please run 'make generate' and stage all generated changes before committing."
     exit 1
 fi
-UNTRACKED_GEN=$(git status --porcelain -- src/backend/shared/gen src/backend/api/gen src/frontend/web/src/gen src/backend/db/quadsmith_api.sql src/backend/db/quadsmith_ops.sql src/frontend/cli/main.go | grep '^??' || true)
+UNTRACKED_GEN=$(git status --porcelain -- src/backend/shared/gen src/frontend/web/app/src/gen src/backend/db/quadsmith_api.sql src/backend/db/quadsmith_ops.sql src/frontend/cli/main.go | grep '^??' || true)
 if [ -n "$UNTRACKED_GEN" ]; then
     echo "Error: Found untracked generated files. Please stage all generated files before committing:"
     echo "$UNTRACKED_GEN"
@@ -71,25 +71,25 @@ fi
 
 # Check TypeScript, HTML, and CSS formatting
 echo "Checking TypeScript, HTML, and CSS formatting..."
-if ! npx --prefix src/frontend/web prettier --check "src/frontend/web/index.html" "src/frontend/web/src/**/*.{ts,tsx,css,html}" > /dev/null 2>&1; then
+if ! npx --prefix src/frontend/web/app prettier --check "src/frontend/web/app/index.html" "src/frontend/web/app/src/**/*.{ts,tsx,css,html}" > /dev/null 2>&1; then
     echo "Error: TypeScript, HTML, or CSS files are not formatted."
-    echo "Please run 'npx --prefix src/frontend/web prettier --write \"src/frontend/web/index.html\" \"src/frontend/web/src/**/*.{ts,tsx,css,html}\"' before committing."
+    echo "Please run 'npx --prefix src/frontend/web/app prettier --write \"src/frontend/web/app/index.html\" \"src/frontend/web/app/src/**/*.{ts,tsx,css,html}\"' before committing."
     exit 1
 fi
 
 # Check Markdown formatting
 echo "Checking Markdown formatting..."
-if ! npx --prefix src/frontend/web prettier --ignore-path .prettierignore --check "**/*.md" > /dev/null 2>&1; then
+if ! npx --prefix src/frontend/web/app prettier --ignore-path .prettierignore --check "**/*.md" > /dev/null 2>&1; then
     echo "Error: Markdown files are not formatted."
-    echo "Please run 'npx --prefix src/frontend/web prettier --ignore-path .prettierignore --write \"**/*.md\"' before committing."
+    echo "Please run 'npx --prefix src/frontend/web/app prettier --ignore-path .prettierignore --write \"**/*.md\"' before committing."
     exit 1
 fi
 
 # Check Markdown linting
 echo "Checking Markdown linting..."
-if ! npx --prefix src/frontend/web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore "**/*.md" > /dev/null 2>&1; then
+if ! npx --prefix src/frontend/web/app markdownlint -c .markdownlint.json --ignore-path .markdownlintignore "**/*.md" > /dev/null 2>&1; then
     echo "Error: Markdown files have lint errors."
-    echo "Please run 'npx --prefix src/frontend/web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"' to inspect and fix."
+    echo "Please run 'npx --prefix src/frontend/web/app markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"' to inspect and fix."
     exit 1
 fi
 

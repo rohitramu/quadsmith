@@ -78,20 +78,23 @@ func Load[M proto.Message](path string, msg M) error {
 	return nil
 }
 
-// LoadAPIServerConfig loads and validates the API server configuration from a path or environment name.
-func LoadAPIServerConfig(configPath, envName string) (*config.ApiServerConfig, error) {
-	resolvedPath, err := resolveConfigPath("server-api", configPath, envName)
-	if err != nil {
-		return nil, err
+// LoadAPIServerConfig loads and validates the API server configuration from an explicit file path.
+func LoadAPIServerConfig(configPath string) (*config.ApiServerConfig, error) {
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			return nil, fmt.Errorf("configuration file path must be explicitly provided (use --config flag or QS_CONFIG env var)")
+		}
 	}
 
 	var cfg config.ApiServerConfig
-	if err := Load(resolvedPath, &cfg); err != nil {
+	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
 
 	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(resolvedPath, envName)
+		cfg.Environment = inferEnvironment(configPath, "")
 	}
 
 	applyAPIServerEnvOverrides(&cfg)
@@ -103,20 +106,23 @@ func LoadAPIServerConfig(configPath, envName string) (*config.ApiServerConfig, e
 	return &cfg, nil
 }
 
-// LoadOpsServerConfig loads and validates the internal ops server configuration from a path or environment name.
-func LoadOpsServerConfig(configPath, envName string) (*config.OpsServerConfig, error) {
-	resolvedPath, err := resolveConfigPath("server-ops", configPath, envName)
-	if err != nil {
-		return nil, err
+// LoadOpsServerConfig loads and validates the internal ops server configuration from an explicit file path.
+func LoadOpsServerConfig(configPath string) (*config.OpsServerConfig, error) {
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			return nil, fmt.Errorf("configuration file path must be explicitly provided (use --config flag or QS_CONFIG env var)")
+		}
 	}
 
 	var cfg config.OpsServerConfig
-	if err := Load(resolvedPath, &cfg); err != nil {
+	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
 
 	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(resolvedPath, envName)
+		cfg.Environment = inferEnvironment(configPath, "")
 	}
 
 	applyOpsServerEnvOverrides(&cfg)
@@ -128,25 +134,56 @@ func LoadOpsServerConfig(configPath, envName string) (*config.OpsServerConfig, e
 	return &cfg, nil
 }
 
-// LoadJobServerConfig loads and validates the job scheduler configuration from a path or environment name.
-func LoadJobServerConfig(configPath, envName string) (*config.JobServerConfig, error) {
-	resolvedPath, err := resolveConfigPath("server-jobs", configPath, envName)
-	if err != nil {
-		return nil, err
+// LoadJobServerConfig loads and validates the job scheduler configuration from an explicit file path.
+func LoadJobServerConfig(configPath string) (*config.JobServerConfig, error) {
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			return nil, fmt.Errorf("configuration file path must be explicitly provided (use --config flag or QS_CONFIG env var)")
+		}
 	}
 
 	var cfg config.JobServerConfig
-	if err := Load(resolvedPath, &cfg); err != nil {
+	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
 
 	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(resolvedPath, envName)
+		cfg.Environment = inferEnvironment(configPath, "")
 	}
 
 	applyJobServerEnvOverrides(&cfg)
 
 	if err := ValidateJobServerConfig(&cfg); err != nil {
+		return nil, err
+	}
+
+	return &cfg, nil
+}
+
+// LoadWebServerConfig loads and validates the web server configuration from an explicit file path.
+func LoadWebServerConfig(configPath string) (*config.WebServerConfig, error) {
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			return nil, fmt.Errorf("configuration file path must be explicitly provided (use --config flag or QS_CONFIG env var)")
+		}
+	}
+
+	var cfg config.WebServerConfig
+	if err := Load(configPath, &cfg); err != nil {
+		return nil, err
+	}
+
+	if cfg.GetEnvironment() == "" {
+		cfg.Environment = inferEnvironment(configPath, "")
+	}
+
+	applyWebServerEnvOverrides(&cfg)
+
+	if err := ValidateWebServerConfig(&cfg); err != nil {
 		return nil, err
 	}
 
@@ -410,6 +447,35 @@ func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
 	}
 }
 
+func applyWebServerEnvOverrides(cfg *config.WebServerConfig) {
+	if cfg.Server == nil {
+		cfg.Server = &config.ServerConfig{}
+	}
+	if v := os.Getenv("QS_WEB_SERVER_PORT"); v != "" {
+		if p, err := strconv.Atoi(v); err == nil {
+			cfg.Server.Port = int32(p)
+		}
+	}
+	if v := os.Getenv("QS_WEB_SERVER_STATIC_DIR"); v != "" {
+		cfg.Server.StaticDir = v
+	}
+	if v := os.Getenv("QS_API_URL"); v != "" {
+		cfg.ApiUrl = v
+	}
+	if v := os.Getenv("QS_APP_NAME"); v != "" {
+		cfg.AppName = v
+	}
+	if cfg.Database != nil {
+		if cfg.Database.MaxConnections <= 0 {
+			cfg.Database.MaxConnections = 10
+		}
+		if cfg.Database.MinConnections <= 0 {
+			cfg.Database.MinConnections = 1
+		}
+		applyDatabaseEnvOverrides(cfg.Database)
+	}
+}
+
 func applyOpsCliEnvOverrides(cfg *config.OpsCliConfig) {
 	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
 		cfg.OpsServerUrl = v
@@ -420,7 +486,9 @@ func applyOpsCliEnvOverrides(cfg *config.OpsCliConfig) {
 }
 
 func applyCliEnvOverrides(cfg *config.CliConfig) {
-	if v := os.Getenv("QS_API_URL"); v != "" {
+	if v := os.Getenv("QS_CLI_API_URL"); v != "" {
+		cfg.ApiUrl = v
+	} else if v := os.Getenv("QS_API_URL"); v != "" {
 		cfg.ApiUrl = v
 	}
 	if cfg.ApiUrl == "" {
@@ -476,9 +544,6 @@ func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 		if c.Server.Port < 1 || c.Server.Port > 65535 {
 			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.Port))
 		}
-		if c.Server.StaticDir == "" {
-			errs = append(errs, "server.static_dir cannot be empty")
-		}
 		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.read_timeout must be greater than 0")
 		}
@@ -504,6 +569,48 @@ func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 
 	if len(errs) > 0 {
 		return formatErrors("API Server", errs)
+	}
+	return nil
+}
+
+// ValidateWebServerConfig ensures all configuration required by the web server daemon is present and valid.
+func ValidateWebServerConfig(c *config.WebServerConfig) error {
+	var errs []string
+
+	if c.Server == nil {
+		errs = append(errs, "server configuration section is missing")
+	} else {
+		if c.Server.Port < 1 || c.Server.Port > 65535 {
+			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.Port))
+		}
+		if strings.TrimSpace(c.Server.StaticDir) == "" {
+			errs = append(errs, "server.static_dir cannot be empty")
+		}
+		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.read_timeout must be greater than 0")
+		}
+		if c.Server.WriteTimeout != nil && c.Server.WriteTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.write_timeout must be greater than 0")
+		}
+	}
+
+	if strings.TrimSpace(c.ApiUrl) == "" {
+		errs = append(errs, "api_url cannot be empty")
+	} else {
+		u, err := url.Parse(c.ApiUrl)
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+			errs = append(errs, fmt.Sprintf("api_url must be a valid HTTP or HTTPS URL (got %q)", c.ApiUrl))
+		}
+	}
+
+	if c.Database != nil && c.Database.Url != "" {
+		if err := ValidateDatabase(c.Database, c.GetEnvironment()); err != nil {
+			errs = append(errs, err.Error())
+		}
+	}
+
+	if len(errs) > 0 {
+		return formatErrors("Web Server", errs)
 	}
 	return nil
 }

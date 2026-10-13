@@ -19,6 +19,7 @@ node_modules/
 /server-api
 /server-ops
 /server-jobs
+/server-web
 /api-server
 /ops-server
 /job-server
@@ -33,6 +34,7 @@ node_modules/
 **/server-api/server-api
 **/server-ops/server-ops
 **/server-jobs/server-jobs
+**/server-web/server-web
 **/cli-ops/cli-ops
 **/cli-ops/qsops
 **/cli/cli

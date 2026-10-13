@@ -9,6 +9,7 @@ cd "$ROOT_DIR"
 PORT="${1:-8080}"
 DB_PORT="${DB_PORT:-5432}"
 OPS_PORT="${OPS_PORT:-8081}"
+WEB_PORT="${WEB_PORT:-3001}"
 
 echo "--- Stopping any existing sandbox instance ---"
 docker rm -f quadsmith-sandbox-run test-pg >/dev/null 2>&1 || true
@@ -16,12 +17,13 @@ docker rm -f quadsmith-sandbox-run test-pg >/dev/null 2>&1 || true
 echo "--- Building Sandbox Docker Image ---"
 docker build -t quadsmith-sandbox -f test/Dockerfile .
 
-echo "--- Starting Quadsmith Sandbox (API on port $PORT, Ops Server on $OPS_PORT, DB on $DB_PORT) ---"
+echo "--- Starting Quadsmith Sandbox (API: $PORT, Ops: $OPS_PORT, Web: $WEB_PORT, DB: $DB_PORT) ---"
 # Passing the PORT env var down into the container so the Go server listens on it
 docker run --rm --name quadsmith-sandbox-run \
   -e QS_SERVER_PORT="$PORT" \
   -e QS_OPS_SERVER_PORT="$OPS_PORT" \
   -p "$PORT":"$PORT" \
   -p "$OPS_PORT":"$OPS_PORT" \
+  -p "$WEB_PORT":3000 \
   -p "$DB_PORT":5432 \
   quadsmith-sandbox

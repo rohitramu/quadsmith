@@ -11,13 +11,13 @@ import (
 	"text/tabwriter"
 	"time"
 
-	connect "connectrpc.com/connect"
+	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/encoding/protojson"
 
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
-	bconfig "quadsmith/shared/pkg/config"
+	"quadsmith/shared/pkg/config"
 )
 
 var (
@@ -128,7 +128,7 @@ func newRootCmd() *cobra.Command {
 		Short: "Quadsmith Developer Operations CLI",
 		Long:  "Operational and developer tooling for system diagnostics, IAM, JIT elevation, DB maintenance, and scheduled jobs.",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			cfg, err := bconfig.LoadOpsCliConfig("", envName)
+			cfg, err := config.LoadOpsCliConfig("", envName)
 			if err == nil && cfg != nil && opsServerURL == "" {
 				opsServerURL = cfg.OpsServerUrl
 			}

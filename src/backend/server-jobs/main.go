@@ -29,14 +29,20 @@ func (t *bearerAuthTransport) RoundTrip(req *http.Request) (*http.Response, erro
 
 func main() {
 	var configPath string
-	var envName string
-	flag.StringVar(&configPath, "config", "", "Path to job server configuration textproto file")
-	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
+	flag.StringVar(&configPath, "config", "", "Path to job server configuration textproto file (required)")
 	flag.Parse()
 
-	cfg, err := bconfig.LoadJobServerConfig(configPath, envName)
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			log.Fatal("server-jobs: --config flag is required; no auto-resolution allowed")
+		}
+	}
+
+	cfg, err := bconfig.LoadJobServerConfig(configPath)
 	if err != nil {
-		log.Fatalf("Failed to load job server config: %v", err)
+		log.Fatalf("server-jobs: configuration validation failed: %v", err)
 	}
 
 	transport := &bearerAuthTransport{

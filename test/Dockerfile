@@ -32,20 +32,21 @@ COPY src/backend/shared/go.mod src/backend/shared/go.sum* ./src/backend/shared/
 COPY src/backend/server-api/go.mod src/backend/server-api/go.sum* ./src/backend/server-api/
 COPY src/backend/server-ops/go.mod src/backend/server-ops/go.sum* ./src/backend/server-ops/
 COPY src/backend/server-jobs/go.mod src/backend/server-jobs/go.sum* ./src/backend/server-jobs/
+COPY src/backend/server-web/go.mod src/backend/server-web/go.sum* ./src/backend/server-web/
 COPY src/frontend/cli/go.mod src/frontend/cli/go.sum* ./src/frontend/cli/
 COPY src/frontend/cli-ops/go.mod src/frontend/cli-ops/go.sum* ./src/frontend/cli-ops/
-COPY src/frontend/config/go/go.mod src/frontend/config/go/go.sum* ./src/frontend/config/go/
 COPY test/go.mod test/go.sum* ./test/
 COPY src/vendor/ ./src/vendor/
 
 # Copy all source code (including pre-generated proto files)
 COPY . .
 
-# Build Server, Ops Server, Job Server, Seeder, and qsops
+# Build Server, Ops Server, Job Server, Web Server, Seeder, and qsops
 RUN --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-api ./src/backend/server-api/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-ops ./src/backend/server-ops/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-jobs ./src/backend/server-jobs/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-web ./src/backend/server-web/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./src/frontend/cli-ops/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./src/backend/shared/cmd/seeder
 
@@ -55,13 +56,13 @@ FROM node:22 AS web-builder
 WORKDIR /app
 
 # Copy package files
-COPY src/frontend/web/package.json src/frontend/web/package-lock.json* ./
+COPY src/frontend/web/app/package.json src/frontend/web/app/package-lock.json* ./
 
 # Install dependencies
 RUN --mount=type=cache,target=/root/.npm npm install
 
 # Copy source and build
-COPY src/frontend/web/ .
+COPY src/frontend/web/app/ .
 RUN npm run build
 
 
@@ -83,20 +84,21 @@ ENV QS_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api"
 ENV QS_INTERNAL_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops"
 ENV QS_SERVER_PORT=8080
 ENV QS_OPS_SERVER_PORT=8081
-ENV QS_SERVER_STATIC_DIR="/app/web/dist"
+ENV QS_WEB_SERVER_PORT=3000
 ENV QS_ENV=sandbox
 
-EXPOSE 5432 8080 8081
+EXPOSE 5432 8080 8081 3000
 
 # Copy binaries from builder
 COPY --from=builder /app/bin/server-api /app/server-api
 COPY --from=builder /app/bin/server-ops /app/server-ops
 COPY --from=builder /app/bin/server-jobs /app/server-jobs
+COPY --from=builder /app/bin/server-web /app/server-web
 COPY --from=builder /app/bin/qsops /usr/local/bin/qsops
 COPY --from=builder /app/bin/seeder /app/seeder
 
 # Copy Web UI build from web-builder
-COPY --from=web-builder /app/dist /app/web/dist
+COPY --from=web-builder /app/dist /app/src/frontend/web/app/dist
 
 # Copy database schema, seeds, and configs
 COPY src/backend/db/quadsmith_api.sql /app/src/backend/db/quadsmith_api.sql
@@ -105,7 +107,8 @@ COPY test/seed_data /app/test/seed_data
 COPY src/backend/server-api/config /app/src/backend/server-api/config
 COPY src/backend/server-ops/config /app/src/backend/server-ops/config
 COPY src/backend/server-jobs/config /app/src/backend/server-jobs/config
-COPY src/frontend/config /app/src/frontend/config
+COPY src/frontend/web/config /app/src/frontend/web/config
+COPY src/frontend/cli/config /app/src/frontend/cli/config
 COPY src/frontend/cli-ops/config /app/src/frontend/cli-ops/config
 
 # Pre-populate PostgreSQL database with schema and seeds at image build time
@@ -140,6 +143,8 @@ echo "Starting Ops Server (:8081)..."\n\
 ./server-ops --config /app/src/backend/server-ops/config/sandbox.textproto > /var/log/server-ops.log 2>&1 &\n\
 echo "Starting Job Server..."\n\
 ./server-jobs --config /app/src/backend/server-jobs/config/sandbox.textproto > /var/log/server-jobs.log 2>&1 &\n\
+echo "Starting Web Server (:3000)..."\n\
+./server-web --config /app/src/frontend/web/config/sandbox.textproto > /var/log/server-web.log 2>&1 &\n\
 echo "Pre-seeded users:"\n\
 psql -U postgres -d quadsmith_api -tAc "SELECT concat(\047  - \047, email, \047 (@\047, id, \047)\047) FROM users WHERE deleted_at IS NULL ORDER BY email;"\n\
 exec ./server-api --config /app/src/backend/server-api/config/sandbox.textproto\n' > /app/sandbox-entrypoint.sh

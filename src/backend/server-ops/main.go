@@ -23,14 +23,20 @@ import (
 
 func main() {
 	var configPath string
-	var envName string
-	flag.StringVar(&configPath, "config", "", "Path to ops server configuration textproto file")
-	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
+	flag.StringVar(&configPath, "config", "", "Path to ops server configuration textproto file (required)")
 	flag.Parse()
 
-	cfg, err := bconfig.LoadOpsServerConfig(configPath, envName)
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			log.Fatal("server-ops: --config flag is required; no auto-resolution allowed")
+		}
+	}
+
+	cfg, err := bconfig.LoadOpsServerConfig(configPath)
 	if err != nil {
-		log.Fatalf("Failed to load ops server config: %v", err)
+		log.Fatalf("server-ops: configuration validation failed: %v", err)
 	}
 
 	port := 8081

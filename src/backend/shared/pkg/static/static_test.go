@@ -200,3 +200,14 @@ func TestServeSPA_ServesLogin_Unauthenticated(t *testing.T) {
 		t.Fatalf("Expected status 200 for /login without auth, got %d", rec.Code)
 	}
 }
+
+func TestInjectClientConfig(t *testing.T) {
+	htmlTemplate := `<!doctype html><html><head><title>Quadsmith</title></head><body>App</body></html>`
+	cfgJSON := `{"environment":"sandbox","apiUrl":"http://localhost:8080","appName":"Quadsmith (Sandbox)"}`
+	result := InjectClientConfig(htmlTemplate, cfgJSON)
+
+	expected := `<script>window.__QUADSMITH_CONFIG__ = {"environment":"sandbox","apiUrl":"http://localhost:8080","appName":"Quadsmith (Sandbox)"};</script>`
+	if !strings.Contains(result, expected) {
+		t.Errorf("Expected injected script tag, got:\n%s", result)
+	}
+}

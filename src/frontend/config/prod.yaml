@@ -1,9 +1,0 @@
-ui:
-  api_url: "https://quadsmith.com"
-  app_name: "Quadsmith"
-
-cli:
-  api_url: "https://quadsmith.com"
-
-ops:
-  worker_url: "https://quadsmith.com"

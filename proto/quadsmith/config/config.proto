@@ -50,6 +50,18 @@ message ApiServerConfig {
   repeated string cors_allowed_origins = 5;
 }
 
+// ---------------------------------------------------------
+// Web Server & Customer CLI Configs
+// ---------------------------------------------------------
+
+message WebServerConfig {
+  string environment = 1;
+  ServerConfig server = 2;
+  string api_url = 3;
+  string app_name = 4;
+  DatabaseConfig database = 5;
+}
+
 message CliConfig {
   string environment = 1;
   string api_url = 2;

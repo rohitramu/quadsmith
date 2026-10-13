@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -17,7 +18,6 @@ import (
 	connect "connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	fconfig "quadsmith/frontend/config"
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 	"quadsmith/shared/pkg/auth"
@@ -29,22 +29,25 @@ import (
 	"quadsmith/shared/pkg/engines/linkpreview"
 	"quadsmith/shared/pkg/engines/search"
 	"quadsmith/shared/pkg/social"
-	"quadsmith/shared/pkg/static"
 )
 
 func main() {
 	var configPath string
-	var envName string
-	flag.StringVar(&configPath, "config", "", "Path to backend configuration textproto file")
-	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
+	flag.StringVar(&configPath, "config", "", "Path to API server configuration textproto file (required)")
 	flag.Parse()
 
-	cfg, err := bconfig.LoadAPIServerConfig(configPath, envName)
-	if err != nil {
-		log.Fatalf("%v", err)
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			log.Fatal("server-api: --config flag is required; no auto-resolution allowed")
+		}
 	}
 
-	fcfg, _ := fconfig.Load(cfg.Environment)
+	cfg, err := bconfig.LoadAPIServerConfig(configPath)
+	if err != nil {
+		log.Fatalf("server-api: configuration validation failed: %v", err)
+	}
 
 	pool, err := pgxpool.New(context.Background(), cfg.Database.Url)
 	if err != nil {
@@ -136,6 +139,12 @@ func main() {
 	mux.Handle("/api/blobs/", blobHandler)
 	mux.Handle("/blobs/", blobHandler)
 
+	// Health check
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("ok\n"))
+	})
+
 	// Public config endpoint
 	mux.HandleFunc("/api/v1/config", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
@@ -145,13 +154,19 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		resp := map[string]any{
 			"environment": cfg.Environment,
-			"ui":          fcfg.UI,
 		}
 		_ = json.NewEncoder(w).Encode(resp)
 	})
 
-	// Serve the React SPA for any unmatched paths
-	mux.Handle("/", static.ServeSPA(cfg.Server.StaticDir, pool))
+	// Root path handler for API server
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "text/plain")
+		_, _ = w.Write([]byte("Quadsmith API Server\n"))
+	})
 
 	port := strconv.Itoa(int(cfg.Server.Port))
 	fmt.Printf("Starting Quadsmith API Server on port %s...\n", port)

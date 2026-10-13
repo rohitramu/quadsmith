@@ -125,10 +125,16 @@ func TestValidateServer(t *testing.T) {
 		t.Error("expected error for invalid port, got nil")
 	}
 
-	cfg.Server.Port = 8080
-	cfg.Server.StaticDir = ""
-	if err := ValidateAPIServerConfig(cfg); err == nil {
-		t.Error("expected error for empty static dir, got nil")
+	webCfg := &config.WebServerConfig{
+		Environment: "sandbox",
+		Server: &config.ServerConfig{
+			Port:      3000,
+			StaticDir: "",
+		},
+		ApiUrl: "http://localhost:8080",
+	}
+	if err := ValidateWebServerConfig(webCfg); err == nil {
+		t.Error("expected error for empty static dir on web server, got nil")
 	}
 }
 
@@ -186,9 +192,26 @@ auth {
 	}
 }
 
+func TestLoadServerConfigs_ExplicitPathRequired(t *testing.T) {
+	t.Setenv("QS_CONFIG", "")
+	if _, err := LoadAPIServerConfig(""); err == nil {
+		t.Fatal("expected error when configPath is empty for LoadAPIServerConfig")
+	}
+	if _, err := LoadOpsServerConfig(""); err == nil {
+		t.Fatal("expected error when configPath is empty for LoadOpsServerConfig")
+	}
+	if _, err := LoadJobServerConfig(""); err == nil {
+		t.Fatal("expected error when configPath is empty for LoadJobServerConfig")
+	}
+	if _, err := LoadWebServerConfig(""); err == nil {
+		t.Fatal("expected error when configPath is empty for LoadWebServerConfig")
+	}
+}
+
 func TestLoadBinaryConfigFiles(t *testing.T) {
 	// Sandbox
-	apiSandbox, err := LoadAPIServerConfig("", "sandbox")
+	apiSandboxPath := filepath.Join("..", "..", "..", "server-api", "config", "sandbox.textproto")
+	apiSandbox, err := LoadAPIServerConfig(apiSandboxPath)
 	if err != nil {
 		t.Fatalf("failed to load api-server sandbox: %v", err)
 	}
@@ -196,7 +219,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected api-server sandbox config: %+v", apiSandbox)
 	}
 
-	opsSandbox, err := LoadOpsServerConfig("", "sandbox")
+	opsSandboxPath := filepath.Join("..", "..", "..", "server-ops", "config", "sandbox.textproto")
+	opsSandbox, err := LoadOpsServerConfig(opsSandboxPath)
 	if err != nil {
 		t.Fatalf("failed to load ops-server sandbox: %v", err)
 	}
@@ -204,12 +228,22 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected ops-server sandbox config: %+v", opsSandbox)
 	}
 
-	jobSandbox, err := LoadJobServerConfig("", "sandbox")
+	jobSandboxPath := filepath.Join("..", "..", "..", "server-jobs", "config", "sandbox.textproto")
+	jobSandbox, err := LoadJobServerConfig(jobSandboxPath)
 	if err != nil {
 		t.Fatalf("failed to load job-server sandbox: %v", err)
 	}
 	if jobSandbox.OpsServerUrl != "http://127.0.0.1:8081" || len(jobSandbox.Schedules) != 3 {
 		t.Errorf("unexpected job-server sandbox config: %+v", jobSandbox)
+	}
+
+	webSandboxPath := filepath.Join("..", "..", "..", "..", "frontend", "web", "config", "sandbox.textproto")
+	webSandbox, err := LoadWebServerConfig(webSandboxPath)
+	if err != nil {
+		t.Fatalf("failed to load web-server sandbox: %v", err)
+	}
+	if webSandbox.Server.Port != 3000 || webSandbox.Database.Name != "quadsmith_api" {
+		t.Errorf("unexpected web-server sandbox config: %+v", webSandbox)
 	}
 
 	opsCliSandbox, err := LoadOpsCliConfig("", "sandbox")
@@ -220,8 +254,17 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected ops cli sandbox config: %+v", opsCliSandbox)
 	}
 
+	cliSandbox, err := LoadCliConfig("", "sandbox")
+	if err != nil {
+		t.Fatalf("failed to load cli sandbox: %v", err)
+	}
+	if cliSandbox.ApiUrl != "http://localhost:8080" {
+		t.Errorf("unexpected cli sandbox config: %+v", cliSandbox)
+	}
+
 	// Test
-	apiTest, err := LoadAPIServerConfig("", "test")
+	apiTestPath := filepath.Join("..", "..", "..", "server-api", "config", "test.textproto")
+	apiTest, err := LoadAPIServerConfig(apiTestPath)
 	if err != nil {
 		t.Fatalf("failed to load api-server test: %v", err)
 	}
@@ -229,7 +272,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected api-server test config: %+v", apiTest)
 	}
 
-	opsTest, err := LoadOpsServerConfig("", "test")
+	opsTestPath := filepath.Join("..", "..", "..", "server-ops", "config", "test.textproto")
+	opsTest, err := LoadOpsServerConfig(opsTestPath)
 	if err != nil {
 		t.Fatalf("failed to load ops-server test: %v", err)
 	}
@@ -244,7 +288,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	t.Setenv("QS_OAUTH_CLIENT_ID", "dummy-client-id")
 	t.Setenv("QS_OAUTH_CLIENT_SECRET", "dummy-client-secret")
 
-	apiStaging, err := LoadAPIServerConfig("", "staging")
+	apiStagingPath := filepath.Join("..", "..", "..", "server-api", "config", "staging.textproto")
+	apiStaging, err := LoadAPIServerConfig(apiStagingPath)
 	if err != nil {
 		t.Fatalf("failed to load api-server staging: %v", err)
 	}
@@ -252,7 +297,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected api-server staging port: %d", apiStaging.Server.Port)
 	}
 
-	apiProd, err := LoadAPIServerConfig("", "prod")
+	apiProdPath := filepath.Join("..", "..", "..", "server-api", "config", "prod.textproto")
+	apiProd, err := LoadAPIServerConfig(apiProdPath)
 	if err != nil {
 		t.Fatalf("failed to load api-server prod: %v", err)
 	}
@@ -260,7 +306,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected api-server prod port: %d", apiProd.Server.Port)
 	}
 
-	opsStaging, err := LoadOpsServerConfig("", "staging")
+	opsStagingPath := filepath.Join("..", "..", "..", "server-ops", "config", "staging.textproto")
+	opsStaging, err := LoadOpsServerConfig(opsStagingPath)
 	if err != nil {
 		t.Fatalf("failed to load ops-server staging: %v", err)
 	}
@@ -268,7 +315,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected ops-server staging port: %d", opsStaging.Server.Port)
 	}
 
-	opsProd, err := LoadOpsServerConfig("", "prod")
+	opsProdPath := filepath.Join("..", "..", "..", "server-ops", "config", "prod.textproto")
+	opsProd, err := LoadOpsServerConfig(opsProdPath)
 	if err != nil {
 		t.Fatalf("failed to load ops-server prod: %v", err)
 	}

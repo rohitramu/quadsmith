@@ -19,17 +19,18 @@ import (
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
-	fconfig "quadsmith/frontend/config"
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 	common "quadsmith/shared/gen/quadsmith/common"
+	bconfig "quadsmith/shared/pkg/config"
 )
 
 var (
-	envName string
-	apiURL  string
-	jsonOut bool
-	yamlOut bool
+	configPath string
+	envName    string
+	apiURL     string
+	jsonOut    bool
+	yamlOut    bool
 )
 
 func newRootCmd() *cobra.Command {
@@ -38,10 +39,10 @@ func newRootCmd() *cobra.Command {
 	if _, ok := os.LookupEnv("QS_COMPLETION_DESCRIPTIONS"); !ok {
 		_ = os.Setenv("QS_COMPLETION_DESCRIPTIONS", "false")
 	}
-	fcfg, _ := fconfig.Load(envName)
+	cfg, err := bconfig.LoadCliConfig(configPath, envName)
 	targetURL := "http://localhost:8080"
-	if fcfg != nil && fcfg.CLI.APIURL != "" {
-		targetURL = fcfg.CLI.APIURL
+	if err == nil && cfg != nil && cfg.ApiUrl != "" {
+		targetURL = cfg.ApiUrl
 	}
 	SetActiveTargetURL(targetURL)
 
@@ -50,22 +51,23 @@ func newRootCmd() *cobra.Command {
 		Short: "Quadsmith CLI",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			cfg, err := fconfig.Load(envName)
+			cfg, err := bconfig.LoadCliConfig(configPath, envName)
 			if err != nil {
 				return err
 			}
 			if cmd.Flags().Lookup("api-url").Changed {
-				cfg.CLI.APIURL = apiURL
+				cfg.ApiUrl = apiURL
 			}
-			if err := cfg.ValidateCLI(); err != nil {
+			if err := bconfig.ValidateCliConfig(cfg); err != nil {
 				return err
 			}
-			SetActiveTargetURL(cfg.CLI.APIURL)
+			SetActiveTargetURL(cfg.ApiUrl)
 			return nil
 		},
 	}
 	rootCmd.CompletionOptions.DisableDescriptions = true
 
+	rootCmd.PersistentFlags().StringVar(&configPath, "config", "", "Path to CLI configuration textproto file")
 	rootCmd.PersistentFlags().StringVar(&envName, "env", "", "Target environment (sandbox, test, staging, prod)")
 	rootCmd.PersistentFlags().StringVar(&apiURL, "api-url", "", "API server base URL (env: QS_CLI_API_URL)")
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")

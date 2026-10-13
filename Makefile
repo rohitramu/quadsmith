@@ -36,12 +36,13 @@ build: generate bin/qs bin/qsops
 	@go build -mod=vendor -o bin/server-api ./src/backend/server-api/main.go
 	@go build -mod=vendor -o bin/server-ops ./src/backend/server-ops/main.go
 	@go build -mod=vendor -o bin/server-jobs ./src/backend/server-jobs/main.go
+	@go build -mod=vendor -o bin/server-web ./src/backend/server-web/main.go
 	@go build -mod=vendor -o bin/seeder ./src/backend/shared/cmd/seeder
 	@echo "--- Building WebAssembly Core Engine ---"
-	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/public/wasm_exec.js
-	@GOOS=js GOARCH=wasm go build -mod=vendor -o src/frontend/web/public/quadsmith-engine.wasm ./src/backend/shared/cmd/wasm/main.go
+	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/app/public/wasm_exec.js
+	@GOOS=js GOARCH=wasm go build -mod=vendor -o src/frontend/web/app/public/quadsmith-engine.wasm ./src/backend/shared/cmd/wasm/main.go
 	@echo "--- Building Web UI ---"
-	@cd src/frontend/web && npm run build
+	@cd src/frontend/web/app && npm run build
 
 bin/qsops: $(wildcard src/frontend/cli-ops/*.go) bin/.generate_proto.sentinel
 	@mkdir -p bin
@@ -112,7 +113,7 @@ bin/.generate_proto.sentinel: $(PROTO_FILES) $(VENDOR_PLUGINS) $(CUSTOM_PLUGINS)
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@gofmt -s -w src/backend/shared/gen/
-	@npx --prefix src/frontend/web prettier --write "src/frontend/web/src/gen/**/*.{ts,tsx}" || true
+	@npx --prefix src/frontend/web/app prettier --write "src/frontend/web/app/src/gen/**/*.{ts,tsx}" || true
 	@touch bin/.generate_proto.sentinel
 
 bin/.format_sql.sentinel: $(wildcard src/backend/db/*.sql) .sql-formatter.json
@@ -125,15 +126,15 @@ generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel
 test: generate
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 	@echo "--- Running Go Tests ---"
-	@cd src/frontend/config/go && go test -mod=vendor -count=1 ./...
 	@cd src/backend/shared && go test -mod=vendor -count=1 ./...
 	@cd src/backend/server-api && go test -mod=vendor -count=1 ./...
 	@cd src/backend/server-ops && go test -mod=vendor -count=1 ./...
 	@cd src/backend/server-jobs && go test -mod=vendor -count=1 ./...
+	@cd src/backend/server-web && go test -mod=vendor -count=1 ./...
 	@cd src/frontend/cli && go test -mod=vendor ./...
 	@cd src/frontend/cli-ops && go test -mod=vendor ./...
 	@echo "--- Running Web UI Tests ---"
-	@cd src/frontend/web && npm test
+	@cd src/frontend/web/app && npm test
 	@$(MAKE) --no-print-directory test-e2e
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 
@@ -153,7 +154,7 @@ clean:
 
 vendor:
 	@echo "--- Updating and vendoring dependencies ---"
-	@for mod in src/backend/shared src/backend/server-api src/backend/server-ops src/backend/server-jobs src/frontend/cli src/frontend/cli-ops src/frontend/config/go test; do \
+	@for mod in src/backend/shared src/backend/server-api src/backend/server-ops src/backend/server-jobs src/backend/server-web src/frontend/cli src/frontend/cli-ops test; do \
 		echo "Updating $$mod..."; \
 		(cd $$mod && go get -u ./... && go mod tidy) || exit 1; \
 	done

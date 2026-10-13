@@ -1,0 +1,5 @@
+environment: "staging"
+api_url: "https://staging-api.quadsmith.com"
+timeout {
+  seconds: 30
+}
