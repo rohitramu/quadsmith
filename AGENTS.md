@@ -42,6 +42,7 @@ Always check the manufacturer's official website and official spec sheets as the
     - **Table of Contents**: Linked list of all Level 1 headings present in the doc, plus nested design decision headings.
     - **Horizontal Separators**: Use `---` only between Level 1 headings.
     - **Blank Lines for Headings, Lists & Code Blocks**: Bulleted lists, headings (except on the very first line of the file), and code blocks must have a blank line before and after them.
+    - **Line Wrapping at 80 Characters**: Lines should wrap at 80 characters whenever possible.
     - **Custom Anchors for All Headings**: Every heading must have a unique anchor formatted as `<hN><a id="anchor-text" >Header text</a></hN>` (e.g., `## <a id="anchor-text" >Header text</a>`), picking an appropriate, unique heading ID.
     - **Omission of Empty Optional Sections**: Omit Background, Alternatives considered, Assumptions, Future work, or Open questions entirely if empty (do not include placeholders like "None", and exclude omitted sections from the Table of Contents).
     - **Document All Discussed Alternatives**: Document all alternatives explored during discussion, regardless of quality or viability.
