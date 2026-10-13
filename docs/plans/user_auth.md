@@ -1,262 +1,183 @@
-# User Table & Authentication Design
+# User Identity, Authentication, and Account Lifecycle Design
 
-## Summary of Decisions
-
-| Decision | Choice |
-|---|---|
-| User purpose | Manage builds + contribute to catalog; favorites, comments, upvotes, edit suggestions |
-| Auth methods | Email OTP + OAuth providers |
-| OAuth providers | Google, GitHub, Discord, Microsoft/Azure AD (Meta to consider) |
-| Profile import | Pull avatarUrl from OAuth provider at signup |
-| Roles | `ADMIN`, `USER` (moderator can be added later when needed) |
-| Email verification | Required before any write operation |
-| Session strategy | Hybrid: short-lived JWT (1h) + long-lived refresh token in DB (30 days) |
-| Account deletion | Soft-delete with `deletedAt` timestamp; appears as `[Deleted User]` to clients |
-| Account ban | `bannedAt` timestamp; appears identical to deletion to clients; blocks resurrection until cleared by mod/admin |
-| User ID type | Sequential integer (`autoincrement()`); never exposed to clients |
-| Public user identifier | `username` — used in all URLs and API responses instead of ID |
-| Username renames | Allowed; rate-limited once per 30 days |
-| Old username hold | 30-day redirect window (same timeframe as rename limit), then released |
-| Username hold on delete/ban | Same 30-day hold via `UsernameHistory` row written at delete/ban time |
-| Locale/timezone | Not stored; always UTC in DB, client handles display |
-| Table structure | Split: `User` (auth) + `UserProfile` (public display data) |
-| Email identity merging | Accounts with the same verified email are auto-merged across providers |
-| Account resurrection | Re-registering with same email undeletes the row; blocked if `bannedAt` is set |
+## Table of Contents
+- [1. Goal](#1-goal)
+- [2. Proposal](#2-proposal)
+  - [Passwordless Authentication via Email OTP and OAuth](#passwordless-authentication-via-email-otp-and-oauth)
+  - [Hybrid JWT Access Tokens and Revocable DB Refresh Tokens](#hybrid-jwt-access-tokens-and-revocable-db-refresh-tokens)
+  - [Two-Tier Per-Code and Per-IP Throttling Safeguards](#two-tier-per-code-and-per-ip-throttling-safeguards)
+  - [Unified Email Identity Auto-Merging](#unified-email-identity-auto-merging)
+  - [Relational UUID v7 Database Architecture](#relational-uuid-v7-database-architecture)
+  - [Public Username Holds and Rate-Limited Renaming](#public-username-holds-and-rate-limited-renaming)
+  - [Soft-Deletion, Account Banning, and Resurrection Lifecycle](#soft-deletion-account-banning-and-resurrection-lifecycle)
+- [3. Assumptions](#3-assumptions)
+- [4. Future work](#4-future-work)
+  - [Meta OAuth Provider Support](#meta-oauth-provider-support)
+  - [Automated OTP Pruning Worker](#automated-otp-pruning-worker)
+  - [Active Sessions Management UI](#active-sessions-management-ui)
+  - [Fine-Grained Temporary Bans and Audit Trail](#fine-grained-temporary-bans-and-audit-trail)
 
 ---
 
-## Authentication Flows
+## 1. Goal
 
-### 1. Email OTP
-
-**Sign-up / Sign-in flow:**
-1. User submits their email address.
-2. A 6-digit OTP is generated, hashed, and stored in an `EmailOtp` row. The plaintext code is emailed to the user.
-3. User types the code into the app (no context switch — they stay on the page).
-4. Server validates the code: not expired (3 min TTL), not already used, not exhausted by failed attempts.
-5. On success: mark `usedAt`, then check if a `User` row exists for this email.
-   - **Exists, not deleted/banned:** log in, issue tokens.
-   - **Exists, soft-deleted (`deletedAt` set, `bannedAt` null):** undelete the row (clear `deletedAt`), log in — account resurrection.
-   - **Exists, banned (`bannedAt` set):** reject — "this account has been suspended."
-   - **Does not exist:** create a new `User` + `UserProfile`, set `emailVerifiedAt`, log in.
-6. Issue a DB-stored refresh token (30-day TTL) + short-lived JWT access token (1h).
-
-**Two-tier throttling (per-IP isolation):**
-- **Tier 1 — per code:** 3 failed attempts → code is exhausted, `failedAttempts = 3`. User must request a new code (subject to 15-second cooldown).
-- **Tier 2 — per IP (60-minute lockout):** 3 failed codes (exhausted challenges) from the same client IP address within 1 hour triggers a 60-minute lockout across all verification requests and new code requests from that IP address.
-- **Reset:** once the 60-minute lockout window passes (or failures age out over 1 hour), the count drops back to zero naturally. A successful login also resets the failure count for that IP.
-
-> [!NOTE]
-> IP rate limiting tracks failed challenges per client IP address over a rolling 1-hour window. Expired failures older than 1 hour age out automatically.
-
-> [!IMPORTANT]
-> The OTP code itself must be stored as an Argon2/bcrypt hash. A DB breach must not expose usable codes.
+Provide a secure, passwordless authentication, user management, and session architecture for Quadsmith that supports multi-provider OAuth, email verification, instant token revocation, rate-limited username management, and soft-delete content preservation.
 
 ---
 
-### 2. OAuth (Google, GitHub, Discord, Microsoft, [Meta])
+## 2. Proposal
 
-**Sign-up / Sign-in flow:**
-1. User clicks "Sign in with X" → redirected to provider's OAuth consent screen.
-2. Provider redirects back with an authorization code.
-3. Server exchanges code for an access token + profile data (email, name, avatar).
-4. Server looks up `OAuthAccount` by `(provider, providerAccountId)`.
-   - **Found:** log in the linked `User`.
-   - **Not found, email matches existing `User`:** auto-link this provider to the existing account (merge on email) and log in.
-   - **Not found, no email match:** create a new `User` + `UserProfile` (pre-populated from provider data) + `OAuthAccount` row.
-5. `emailVerifiedAt` is set to now (provider email is considered pre-verified).
-6. Issue refresh token (DB) + JWT access token (1h).
+> **TL;DR:**
+> - Eliminate passwords entirely in favor of passwordless Email OTP (3-minute TTL) and multi-provider OAuth (Google, GitHub, Discord, Microsoft).
+> - Deploy a hybrid session strategy: short-lived stateless JWT access tokens (1 hour) paired with database-backed revocable refresh tokens (30 days).
+> - Mitigate brute force attacks via two-tier throttling: 3 failed attempts per code, and 3 failed challenges per IP triggering a 60-minute lockout.
+> - Anchor database models to hidden UUID v7 primary keys with unique public username handles (`id`) matching project conventions.
+> - Safeguard communal knowledge during account deletion or administrative bans by soft-deleting user records and masking public attributions as `[Deleted User]`.
 
-> [!IMPORTANT]
-> Store OAuth access/refresh tokens encrypted at rest. They grant API access to the provider on behalf of the user.
-
----
-
-### 3. Session Strategy: Hybrid JWT + DB Refresh Token
-
-**Access token (JWT, 1h TTL):**
-- Signed by server secret; verified by signature alone — no DB hit on every request.
-- Contains: `userId`, `role`, `refreshTokenId` (ties it to the refresh token row).
-- Not stored in DB.
-
-**Refresh token (DB-stored, 30-day TTL):**
-- Opaque random 256-bit string, stored as a hash in DB.
-- Used only to issue new access tokens at `/auth/refresh`.
-- Revocable instantly — delete the row → user must re-login after current JWT expires (max 1h).
-- One row per active device/session.
-
-**Forced logout / ban:**
-- Delete all `RefreshToken` rows for a user → they cannot renew access after their current JWT expires (at most 1h).
-
----
-
-## Proposed Schema
-
-### `User` (auth-only, kept lean)
-
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `Int` (`autoincrement()`) | PK; internal only, never exposed to clients |
-| `email` | `String` | Unique, normalized to lowercase |
-| `username` | `String` | Unique, URL-safe, public handle (e.g. `@roramu`) |
-| `role` | `UserRole` enum | `USER`, `ADMIN` |
-| `emailVerifiedAt` | `DateTime?` | Null = unverified; set on first successful OTP/OAuth verification |
-| `lastRenamedAt` | `DateTime?` | Used to enforce 30-day rename rate limit |
-| `deletedAt` | `DateTime?` | Soft-delete; set by user action; cleared on resurrection |
-| `bannedAt` | `DateTime?` | Set by mod/admin; blocks resurrection until cleared |
-| `createdAt` | `DateTime` | `@default(now())` |
-| `updatedAt` | `DateTime` | `@updatedAt` |
-
-> [!NOTE]
-> Client-facing anonymization rule: return `[Deleted User]` whenever `deletedAt IS NOT NULL OR bannedAt IS NOT NULL`. Resurrection is only allowed when `bannedAt IS NULL`.
-
-### `UsernameHistory` (tracks vacated names during 30-day hold window)
-
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `Int` (`autoincrement()`) | PK |
-| `userId` | `Int` | FK → User |
-| `oldUsername` | `String` | The name that was vacated |
-| `renamedAt` | `DateTime` | `@default(now())` — hold expires 30 days after this |
-
-`@@index([oldUsername, renamedAt])` — for fast redirect and availability lookups
-
-> [!NOTE]
-> **Availability check:** name must not appear in `User.username` (current names) AND must not appear in `UsernameHistory.oldUsername` WHERE `renamedAt > NOW() - 30 days` (in hold window).
-> **URL resolution:** check `User.username` first → if not found, check `UsernameHistory` for a live redirect (30-day window) → else 404.
-> **On delete or ban:** write a `UsernameHistory` row for the vacated username, same as a rename.
-
-### `UserProfile` (public display data, 1:1 with User)
-
-| Column | Type | Notes |
-|---|---|---|
-| `userId` | `Int` | PK, FK → User (cascade delete) |
-| `avatarUrl` | `String?` | Editable; pre-populated from OAuth provider at signup |
-| `updatedAt` | `DateTime` | `@updatedAt` |
-
-### `OAuthAccount` (one row per provider per user)
-
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `Int` (`autoincrement()`) | PK |
-| `userId` | `Int` | FK → User |
-| `provider` | `OAuthProvider` enum | `GOOGLE`, `GITHUB`, `DISCORD`, `MICROSOFT`, `META` |
-| `providerAccountId` | `String` | The user's ID at the provider |
-| `accessToken` | `String?` | Encrypted at rest |
-| `refreshToken` | `String?` | Encrypted at rest |
-| `tokenExpiresAt` | `DateTime?` | |
-| `createdAt` | `DateTime` | `@default(now())` |
-
-`@@unique([provider, providerAccountId])`
-
-### `EmailOtp`
-
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `Int` (`autoincrement()`) | PK |
-| `email` | `String` | Address the code was sent to |
-| `codeHash` | `String` | Argon2/bcrypt hash of the 6-digit code |
-| `expiresAt` | `DateTime` | 3 minutes from creation |
-| `usedAt` | `DateTime?` | Set on successful verification; null = not yet used |
-| `failedAttempts` | `Int` | `@default(0)`; code exhausted when ≥ 3 |
-| `createdAt` | `DateTime` | `@default(now())` |
-
-`@@index([email, createdAt])` — for tier-2 throttle count query
-
-### `RefreshToken`
-
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `Int` (`autoincrement()`) | PK |
-| `userId` | `Int` | FK → User |
-| `tokenHash` | `String` | Hash of the actual 256-bit opaque token |
-| `expiresAt` | `DateTime` | 30 days from issuance |
-| `lastUsedAt` | `DateTime?` | Updated on each `/auth/refresh` call |
-| `deviceHint` | `String?` | Optional user-agent snippet for "My Sessions" UI |
-| `createdAt` | `DateTime` | `@default(now())` |
-
----
-
-## Entity Relationships
+The authentication architecture balances user convenience with robust security safeguards. By avoiding legacy password storage, Quadsmith eliminates credential stuffing vulnerabilities, password resets, and hash maintenance. The session architecture pairs fast, stateless JWT verification on API routes with centralized session revocation in PostgreSQL, ensuring administrative actions (such as bans or forced logouts) propagate promptly without burdening every API request with database lookups.
 
 ```mermaid
 erDiagram
-    User {
-        Int id PK
-        String email
-        String username
-        UserRole role
-        DateTime emailVerifiedAt
-        DateTime lastRenamedAt
-        DateTime deletedAt
-        DateTime bannedAt
-        DateTime createdAt
-        DateTime updatedAt
+    users {
+        uuid uuid PK
+        text id UK
+        text email UK
+        text role
+        timestamptz last_renamed_at
+        timestamptz deleted_at
+        timestamptz banned_at
+        timestamptz created_at
+        timestamptz updated_at
     }
-    UserProfile {
-        Int userId PK
-        String avatarUrl
-        DateTime updatedAt
+    user_profiles {
+        uuid uuid PK
+        uuid user_uuid FK
+        text avatar_url
+        text bio
+        timestamptz updated_at
     }
-    UsernameHistory {
-        Int id PK
-        Int userId FK
-        String oldUsername
-        DateTime renamedAt
+    username_histories {
+        uuid uuid PK
+        uuid user_uuid FK
+        text old_username
+        timestamptz renamed_at
     }
-    OAuthAccount {
-        Int id PK
-        Int userId FK
-        String provider
-        String providerAccountId
-        String accessToken
-        String refreshToken
-        DateTime tokenExpiresAt
-        DateTime createdAt
+    oauth_accounts {
+        uuid uuid PK
+        uuid user_uuid FK
+        text provider
+        text provider_account_id
+        text access_token
+        text refresh_token
+        timestamptz token_expires_at
+        timestamptz created_at
     }
-    EmailOtp {
-        Int id PK
-        String email
-        String codeHash
-        DateTime expiresAt
-        DateTime usedAt
-        Int failedAttempts
-        DateTime createdAt
+    email_otps {
+        uuid uuid PK
+        text email
+        text code_hash
+        timestamptz expires_at
+        timestamptz used_at
+        int failed_attempts
+        timestamptz created_at
     }
-    RefreshToken {
-        Int id PK
-        Int userId FK
-        String tokenHash
-        DateTime expiresAt
-        DateTime lastUsedAt
-        String deviceHint
-        DateTime createdAt
+    refresh_tokens {
+        uuid uuid PK
+        uuid user_uuid FK
+        text token_hash
+        timestamptz expires_at
+        timestamptz last_used_at
+        text device_hint
+        timestamptz created_at
     }
 
-    User ||--|| UserProfile : "has"
-    User ||--o{ UsernameHistory : "previous names"
-    User ||--o{ OAuthAccount : "linked via"
-    User ||--o{ RefreshToken : "has active sessions"
+    users ||--|| user_profiles : "has profile"
+    users ||--o{ username_histories : "tracks vacated handles"
+    users ||--o{ oauth_accounts : "links external credentials"
+    users ||--o{ refresh_tokens : "maintains active sessions"
 ```
 
+### Passwordless Authentication via Email OTP and OAuth
+Users authenticate without static passwords via two pathways:
+- **Email OTP**: A 6-digit cryptographic numeric code sent to the user's email address with a 3-minute time-to-live (TTL). Codes are hashed using Argon2 before database persistence. Users enter the code directly on the web application without navigating away.
+- **OAuth Providers**: Integrations with major developer and enthusiast platforms (Google, GitHub, Discord, Microsoft). OAuth accounts link provider account IDs and automatically ingest user avatars and verified email addresses.
+
+#### Alternatives considered
+Traditional password-based authentication with salt and bcrypt hashing.
+**Pros:**
+- Universal familiarity across legacy web applications.
+**Cons:**
+- Vulnerable to credential stuffing from external breaches and weak user passwords.
+- Requires complex password reset flows, email confirmation links, and progressive hashing upgrade mechanisms.
+
+### Hybrid JWT Access Tokens and Revocable DB Refresh Tokens
+Session state uses a two-tier token model:
+- **Access Token (JWT, 1-hour TTL)**: Signed using a server secret (HMAC-SHA256 or asymmetric Ed25519). Validated purely by cryptographic signature without hitting the database, enabling low-latency API verification across distributed microservices.
+- **Refresh Token (DB-Stored, 30-day TTL)**: An opaque cryptographically random 256-bit secret stored as a SHA-256 hash in the `refresh_tokens` table. Used exclusively at `/auth/refresh` to issue new JWT access tokens.
+- **Revocation**: Deleting a user's refresh token rows instantly terminates their ability to obtain new access tokens, forcing re-authentication once the current 1-hour JWT expires.
+
+#### Alternatives considered
+Pure stateless JWTs without database-backed refresh tokens.
+**Pros:**
+- Completely removes database hits during both authentication and token refresh.
+**Cons:**
+- Cannot revoke compromised sessions or enforce immediate user bans without maintaining distributed token blocklists.
+
+### Two-Tier Per-Code and Per-IP Throttling Safeguards
+To safeguard the OTP endpoint against brute-force attacks:
+- **Tier 1 (Per-Code Exhaustion)**: Each issued OTP permits a maximum of 3 failed verification attempts before it is permanently invalidated (`failed_attempts = 3`), requiring a 15-second cooldown before a replacement code can be requested.
+- **Tier 2 (Per-IP Lockout)**: If a client IP accumulates 3 exhausted challenges within a rolling 60-minute window, the server imposes an IP-wide 60-minute lockout on all OTP requests and verification attempts from that address.
+
+### Unified Email Identity Auto-Merging
+To prevent split accounts when users sign in across different identity providers:
+- If a user signs in via OAuth with an email address that matches an existing verified `users` record, the platform automatically links the external `oauth_accounts` row to the existing user.
+- All subsequent logins through either Email OTP or any linked OAuth provider grant access to the identical account.
+
+### Relational UUID v7 Database Architecture
+In adherence to Quadsmith schema standards:
+- All authentication tables ([`src/backend/db/quadsmith_api.sql`](../src/backend/db/quadsmith_api.sql)) utilize hidden UUID v7 primary keys (`uuid UUID PRIMARY KEY`).
+- Foreign keys explicitly reference `user_uuid UUID REFERENCES users(uuid) ON DELETE CASCADE`.
+- The public user handle is stored as a unique text column (`id TEXT UNIQUE NOT NULL`), which serves as the public username in all URLs (e.g., `/@roramu`).
+
+### Public Username Holds and Rate-Limited Renaming
+To maintain consistent referencing across social interactions, forum threads, and build attribution:
+- **Rename Rate Limit**: Users may update their username handle at most once every 30 days (`last_renamed_at`).
+- **30-Day Redirect Hold**: Vacated usernames are recorded in `username_histories`. During the 30-day window, incoming requests for the old handle redirect to the user's new handle, preventing account impersonation while existing links update.
+- **Release to Pool**: After 30 days, vacated usernames expire from the hold window and return to the public pool for registration.
+
+### Soft-Deletion, Account Banning, and Resurrection Lifecycle
+To balance privacy rights with community knowledge preservation:
+- **Soft-Deletion**: Users may delete their accounts at any time, setting `deleted_at`. User profile details are cleared, but published aircraft builds, questions, and answers remain intact with the author handle displayed as `[Deleted User]`.
+- **Administrative Ban**: Moderators can flag abusive accounts with `banned_at`, terminating active refresh tokens and presenting the account as `[Deleted User]` to public clients.
+- **Resurrection**: Re-authenticating with the verified email of a soft-deleted account clears `deleted_at` and restores profile ownership. Accounts marked with `banned_at` are permanently barred from resurrection.
+
+#### Alternatives considered
+Hard cascading deletion that purges user records and all associated builds, questions, and answers.
+**Pros:**
+- Immediate and complete removal of all user-generated rows from the database.
+**Cons:**
+- Corrupts community troubleshooting threads, creating orphaned replies, broken links, and missing build configurations.
+
 ---
 
-## Future Tables (referenced by User, not designed yet)
+## 3. Assumptions
 
-These will need `userId` FKs added when implemented:
-
-| Feature | Table(s) |
-|---|---|
-| Builds owned by a user | `Build.userId` |
-| Favorites (components & builds) | `UserFavorite { userId, targetType, targetId }` |
-| Comments + replies + upvotes | `Comment`, `CommentVote` |
-| Edit suggestions on component fields | `FieldEditSuggestion { userId, componentId, fieldName, suggestedValue, status }` |
+1. Users authenticate via a verified email address, confirmed either through direct Email OTP or pre-verified OAuth provider profile metadata.
+2. Accounts sharing an identical verified email address are merged under a single unified user record.
+3. Access tokens (JWT) are verified statelessly by API handlers using signature validation without querying PostgreSQL on each request.
 
 ---
 
-## Open Questions / Deferred
+## 4. Future work
 
-- **Meta (Facebook) OAuth** — confirmed as a candidate; needs app registration. Add `META` to the `OAuthProvider` enum when ready.
-- **OTP cleanup job** — expired `EmailOtp` rows older than 1 hour can be safely pruned (they no longer affect throttle logic). Implement as a scheduled job at the infrastructure layer; no schema impact.
-- **"My Sessions" UI** — `deviceHint` in `RefreshToken` supports showing active sessions to users, but the UI is out of scope for the schema work.
-- **Temporary bans** — `bannedAt` captures when a ban was issued but not an expiry. A future `Ban` table (with `reason`, `bannedBy`, `expiresAt`) could support time-limited bans and audit history without changing the core auth logic.
+### Meta OAuth Provider Support
+Expand social login capabilities to include Meta (Facebook/Instagram) OAuth once developer app credentials and review requirements are finalized.
+
+### Automated OTP Pruning Worker
+Deploy an automated background task to periodically purge expired `email_otps` rows older than 1 hour, preventing table bloat while retaining data within the rolling throttle window.
+
+### Active Sessions Management UI
+Provide a self-service session management dashboard in user account settings allowing users to inspect active login sessions (IP address, approximate location, device hints) and revoke individual refresh tokens.
+
+### Fine-Grained Temporary Bans and Audit Trail
+Introduce structured administrative moderation models (`bans` table) recording suspension durations, infractions, and moderating admin identities to support automated ban expiries.
