@@ -1,0 +1,8 @@
+worker:
+  port: 443
+  concurrency: 5
+
+database:
+  url: "${QS_DATABASE_URL}" # Injected via environment
+  max_connections: 25
+  min_connections: 2

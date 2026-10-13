@@ -21,7 +21,3 @@ auth:
   otp_ttl: 3m
   magic_link_ttl: 15m
   email_cooldown: 20s
-
-worker:
-  port: 8081
-  concurrency: 5

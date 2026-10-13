@@ -2,13 +2,19 @@ package config
 
 import "time"
 
-// Config represents the complete backend runtime configuration.
-type Config struct {
+// APIServerConfig represents configuration for the public API server.
+type APIServerConfig struct {
 	Environment string         `yaml:"environment"`
 	Server      ServerConfig   `yaml:"server"`
 	Database    DatabaseConfig `yaml:"database"`
 	Auth        AuthConfig     `yaml:"auth"`
-	Worker      WorkerConfig   `yaml:"worker"`
+}
+
+// WorkerConfig represents configuration for the background worker daemon.
+type WorkerConfig struct {
+	Environment string             `yaml:"environment"`
+	Worker      WorkerDaemonConfig `yaml:"worker"`
+	Database    DatabaseConfig     `yaml:"database"`
 }
 
 // ServerConfig configures the API HTTP server.
@@ -19,6 +25,12 @@ type ServerConfig struct {
 	WriteTimeout    time.Duration `yaml:"write_timeout"`
 	IdleTimeout     time.Duration `yaml:"idle_timeout"`
 	MaxRequestBytes int64         `yaml:"max_request_bytes"`
+}
+
+// WorkerDaemonConfig configures background worker execution and ConnectRPC worker service.
+type WorkerDaemonConfig struct {
+	Port        int `yaml:"port"`
+	Concurrency int `yaml:"concurrency"`
 }
 
 // DatabaseConfig configures PostgreSQL connection pooling.
@@ -39,10 +51,4 @@ type AuthConfig struct {
 	OtpTTL           time.Duration `yaml:"otp_ttl"`
 	MagicLinkTTL     time.Duration `yaml:"magic_link_ttl"`
 	EmailCooldown    time.Duration `yaml:"email_cooldown"`
-}
-
-// WorkerConfig configures background worker execution and ConnectRPC worker service.
-type WorkerConfig struct {
-	Port        int `yaml:"port"`
-	Concurrency int `yaml:"concurrency"`
 }

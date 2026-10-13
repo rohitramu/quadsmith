@@ -8,8 +8,8 @@ server:
 
 database:
   url: "${QS_DATABASE_URL}" # Injected via environment
-  max_connections: 50
-  min_connections: 5
+  max_connections: 25
+  min_connections: 2
 
 auth:
   secret: "${QS_AUTH_SECRET}" # Injected via environment
@@ -21,7 +21,3 @@ auth:
   otp_ttl: 3m
   magic_link_ttl: 15m
   email_cooldown: 20s
-
-worker:
-  port: 443
-  concurrency: 10

@@ -23,16 +23,7 @@ func main() {
 	flag.StringVar(&envName, "env", "", "Active environment (sandbox, test, staging, prod)")
 	flag.Parse()
 
-	if configPath == "" && envName != "" {
-		resolved, err := bconfig.FindBackendConfigFile(envName)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to locate config for environment %q: %v\n", envName, err)
-			os.Exit(1)
-		}
-		configPath = resolved
-	}
-
-	cfg, err := bconfig.Load(configPath)
+	cfg, err := bconfig.LoadAPIServerConfig(configPath, envName)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)

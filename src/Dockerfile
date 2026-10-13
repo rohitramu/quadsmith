@@ -66,4 +66,4 @@ COPY --from=builder /app/bin/server /app/server
 COPY --from=web-builder /app/dist /app/web/dist
 COPY src/backend/config /app/src/backend/config
 
-ENTRYPOINT ["/app/server", "--config", "/app/src/backend/config/prod.yaml"]
+ENTRYPOINT ["/app/server", "--config", "/app/src/backend/config/api-server/prod.yaml"]
