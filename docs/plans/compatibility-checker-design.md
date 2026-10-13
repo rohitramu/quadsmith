@@ -1,80 +1,100 @@
-# Quadsmith Compatibility Checker Architecture
+# Compatibility Checker Architecture
 
-## 1. Overview
-The compatibility checker evaluates an arbitrary set of components and produces a set of human-readable messages indicating physical, electrical, or software issues.
-
-**Output Format**
-The overall output is an array of evaluation result objects, grouping messages by the specific subset of components that generated them. This provides the UI with exact context and numerical telemetry to render visualizations (like gauges, sliders, or match lists).
-
-- **`components`**: The specific subset of components evaluated together (e.g., the Motor and the ESC).
-- **`checkerName`**: The name of the rule/checker that ran (e.g., `MotorEscElectricalChecker`).
-- **`metrics`**: A strictly typed object containing the raw telemetry for this specific checker. Because the frontend explicitly knows about each checker's metrics, it maps these keys to bespoke UI components (e.g., `estimatedCurrentDraw: { value: 45, max: 40, unit: "A" }` or `fcMountMatch: { expected: ["20x20"], actual: ["30.5x30.5"] }`).
-- **`messages`**: An array of issues found by this checker for these components.
-  - **`severityLevel`**: Integer representing priority/severity (e.g., `0` for highest severity).
-  - **`severityName`**: Human-readable enum string (e.g., `"DEFINITE_INCOMPATIBILITY"`, `"HEURISTIC_INCOMPATIBILITY"`, `"PARTIAL_COMPATIBILITY"`, `"INFORMATIONAL"`).
-  - **`message`**: A clear, human-readable explanation of the issue.
-  - **`resolution`**: An actionable suggestion to fix the problem.
-
-**Save Behavior**
-We prioritize user freedom. If a build has **`DEFINITE_INCOMPATIBILITY`** messages, the system will prominently display them, but will **allow the user to save the build anyway**. This accounts for custom modifications or missing data specs that we might not know about.
+## Table of Contents
+- [1. Goal](#1-goal)
+- [2. Proposal](#2-proposal)
+  - [Permissive Non-Blocking Build Persistence](#permissive-non-blocking-build-persistence)
+  - [Stateless Arbitrary Component Evaluation API](#stateless-arbitrary-component-evaluation-api)
+  - [Modular Rule Checker Encapsulation and Telemetry Grouping](#modular-rule-checker-encapsulation-and-telemetry-grouping)
+  - [Physical Dimensional Fit Rules](#physical-dimensional-fit-rules)
+  - [Electrical and Thermal Power Constraints](#electrical-and-thermal-power-constraints)
+  - [Software, Firmware, and Ecosystem Compatibility](#software-firmware-and-ecosystem-compatibility)
+  - [RF Protocol and Antenna Compatibility](#rf-protocol-and-antenna-compatibility)
+  - [Hardware Overrides and Peripheral UART Budgeting](#hardware-overrides-and-peripheral-uart-budgeting)
+- [3. Assumptions](#3-assumptions)
 
 ---
 
-## 2. API & Data Loading
-**Single Source of Truth**
-The compatibility logic lives entirely in the backend to ensure consistency.
+## 1. Goal
 
-**API Operation**
-The API exposes a standalone endpoint (e.g., `POST /api/compatibility/check`) that accepts an arbitrary array of component IDs. It does not require a saved `Build` entity—users can send any random assortment of components to see how they interact. 
-1. **Batch Fetch**: The backend makes a single optimized query to fetch all specifications for the provided component IDs, alongside any explicit overrides from the `IncompatibilityIssue` table.
-2. **Synchronous Evaluation**: The loaded data is passed into an array of in-memory Go rules.
-3. **Response**: The API returns an array of evaluated messages.
+Provide an extensible, backend-driven compatibility evaluation engine that analyzes arbitrary combinations of quadcopter components, verifying physical fitment, electrical boundaries, software ecosystems, and peripheral interconnects while returning rich numerical telemetry and actionable resolution guidance.
 
 ---
 
-## 3. Codebase Structure
-The engine will expose a single, flexible method that accepts an **arbitrary number of components** (from a single pair up to an entire build).
+## 2. Proposal
 
-1. **Dynamic Instantiation:** Internally, the engine analyzes the provided list of components and dynamically generates a list of relevant "compatibility checker objects" (e.g., `MotorEscChecker`, `FcPeripheralVoltageChecker`) for all applicable pairs or sets within the input.
-2. **Evaluation:** The engine then calls `.evaluate()` on each instantiated checker object.
-3. **Aggregation:** The engine collects the `messages` returned from each checker and bundles them with the checker's name and the specific component subset it evaluated. The final output is an array of these grouped result objects.
+> **TL;DR:**
+> - Evaluate arbitrary sets of components statelessly on the backend without requiring a pre-existing saved build.
+> - Emit structured result objects grouping severity-coded messages, actionable resolution tips, and typed metrics for UI gauges.
+> - Verify physical dimensions (stack mounts, propeller clearance, camera width), electrical limits (voltage ranges, current headroom), software protocols (video links, control links), and UART peripheral budgets.
+> - Permit permissive saving of builds flagged with definite incompatibilities to support custom hardware modifications.
 
-This object-oriented pattern keeps rules encapsulated while allowing the frontend to send either pairwise checks or complete builds through the exact same pipeline.
+The Compatibility Checker operates as a centralized backend evaluation service. Rather than embedding validation logic across frontend interfaces, the backend serves as the single source of truth. The engine dynamically instantiates specialized checker objects based on the input component selection, executes deterministic validation checks, and returns categorized diagnostics alongside typed telemetry metrics that drive rich visual components in the user interface.
+
+### Permissive Non-Blocking Build Persistence
+When the compatibility engine identifies issues flagged with `DEFINITE_INCOMPATIBILITY`, the platform highlights the errors prominently in the UI but allows the user to save the build configuration. FPV builders routinely deploy 3D-printed adapter brackets, custom carbon drillings, soft-mount spacers, and bespoke wiring harnesses that overcome catalog physical or electrical constraints. The system acts as an advisory assistant rather than a restrictive gatekeeper.
+
+#### Alternatives considered
+Strict persistence gating that rejects saving or publishing builds containing unresolved `DEFINITE_INCOMPATIBILITY` diagnostics.
+**Pros:**
+- Guarantees that every build stored in the public registry is guaranteed to be physically and electrically operable out of the box.
+**Cons:**
+- Blocks valid custom hardware builds, prototype work, and work-in-progress configurations.
+- Frustrates users when catalog specifications contain minor discrepancies or unlisted hardware tolerances.
+
+### Stateless Arbitrary Component Evaluation API
+The backend exposes a standalone endpoint (e.g., `POST /api/compatibility/check`) accepting an arbitrary array of component IDs. The endpoint does not require a persistent `Build` entity, allowing client applications to run lightweight pre-selection checks (such as verifying if a specific motor fits a chosen frame before adding it to an aircraft). The backend executes a single batch query to resolve specifications and known override issues, runs the evaluation in memory, and returns the diagnostics payload.
+
+#### Alternatives considered
+Requiring a persistent `Build` record in the database before running compatibility checks.
+**Pros:**
+- Direct foreign key joins on existing build tables without handling loose component arrays.
+**Cons:**
+- Prevents real-time compatibility feedback during the component selection stage in the frontend builder.
+- Disallows ad-hoc pairwise component checking (e.g., comparing a motor and an ESC in isolation).
+
+### Modular Rule Checker Encapsulation and Telemetry Grouping
+The evaluation pipeline accepts an arbitrary list of components and dynamically instantiates modular checker instances (e.g., `MotorEscChecker`, `FcPeripheralVoltageChecker`). Each checker returns an evaluation result containing:
+- **`components`**: The subset of evaluated components.
+- **`checkerName`**: Explicit identifier for the executing rule.
+- **`metrics`**: Typed numerical and categorical telemetry (e.g., `fcMountMatch: { expected: ["20x20"], actual: ["30.5x30.5"] }`).
+- **`messages`**: Array of issues containing severity levels (`DEFINITE_INCOMPATIBILITY`, `HEURISTIC_INCOMPATIBILITY`, `PARTIAL_COMPATIBILITY`, `INFORMATIONAL`), human-readable descriptions, and concrete remediation steps.
+
+### Physical Dimensional Fit Rules
+The engine enforces mechanical boundary constraints across hardware components:
+- **Propeller Clearance**: Verifies that the frame's `maxPropSizeMm` satisfies the propeller's `diameterMm`.
+- **Mount Patterns**: Ensures frame `BoardMountPattern` sets intersect with Flight Controller, ESC, and Video Transmitter mounting patterns (e.g., $20\text{mm} \times 20\text{mm}$, $30.5\text{mm} \times 30.5\text{mm}$), and frame `MotorMountPattern` sets match motor base hole patterns (e.g., $16\text{mm} \times 16\text{mm}$, $12\text{mm} \times 12\text{mm}$).
+- **Camera Bracket Fit**: Compares camera chassis width against the frame's camera mounting bracket spacing, emitting `PARTIAL_COMPATIBILITY` if standard adapter brackets exist.
+- **Stack Height Clearance**: Sums component board thicknesses and heatsink profiles against available vertical frame standoff clearance.
+
+### Electrical and Thermal Power Constraints
+Power supply and current tolerances are verified across the power distribution tree:
+- **Voltage Limits**: Verifies nominal and maximum battery voltage against input voltage ratings for the ESC, Flight Controller, and VTX. Checks peripheral operating voltages against Flight Controller onboard Battery Elimination Circuit (BEC) outputs before falling back to raw battery voltage ($V_{BAT}$).
+- **Motor vs. ESC Current**: Evaluates maximum expected motor burst current against ESC continuous and burst ratings, emitting `HEURISTIC_INCOMPATIBILITY` if ESC limits are exceeded.
+- **Battery Discharge Capacity**: Compares estimated total multi-motor draw against battery rated continuous discharge capacity ($C \times \text{Capacity}$).
+
+### Software, Firmware, and Ecosystem Compatibility
+Digital interconnects and firmware configurations are validated for protocol parity:
+- **Video Transmission Ecosystem**: Ensures the camera, video transmitter, and goggles operate within matching digital or analog ecosystems (e.g., DJI O3, Walksnail Avatar, HDZero, or Analog).
+- **Video Signal Interfacing**: Verifies the physical cable connection (e.g., MIPI digital ribbon vs. composite analog video). If analog, emits an `INFORMATIONAL` notice recommending routing video signals through the flight controller for On-Screen Display (OSD) overlay.
+- **Control Link Protocols**: Confirms the radio receiver and handheld radio transmitter share a compatible radio frequency protocol (e.g., ExpressLRS, TBS Crossfire).
+- **Firmware Ecosystems**: Validates interoperability between flight controller firmware targets and ESC communication protocols (e.g., DShot300/600 on Betaflight, Bluejay, or AM32).
+
+### RF Protocol and Antenna Compatibility
+Radio transmission and reception interfaces must align across spectrum and connector mechanics:
+- **Operating Frequency**: Ensures video transmitters and goggles, as well as transmitters and receivers, share matched operational bands (e.g., 5.8GHz, 2.4GHz, 900MHz).
+- **Antenna Connector Interfaces**: Matches female/male connector standards (e.g., SMA, RP-SMA, U.FL/IPEX, MMCX).
+- **Antenna Polarization**: Compares video transmitter antenna polarization (RHCP, LHCP, or Linear) against receiver goggles antennas. Polarization mismatches emit `HEURISTIC_INCOMPATIBILITY` due to severe attenuation ($> 20\text{ dB}$ cross-polarization rejection).
+
+### Hardware Overrides and Peripheral UART Budgeting
+To account for hardware revisions, silicon quirks, and bus contention:
+- **Catalog Incompatibility Overrides**: Queries the database `IncompatibilityIssue` table for documented component pairings with known hardware conflicts (e.g., electrical noise on specific gyro revisions when paired with unbuffered ESCs).
+- **UART Allocation Budget**: Tallies required serial UART peripherals across connected devices (Receiver $\approx 1$, GPS $\approx 1$, Digital VTX MSP/OSD $\approx 1$) and validates against the flight controller's available hardware `uartConnections`.
 
 ---
 
-## 4. Rules & Checkers
+## 3. Assumptions
 
-### 4.1. Electrical Compatibility
-- **Voltage Limits:** Primary power (ESC, FC) checked against battery voltage. Peripheral power (Video Transmitter, Camera, RX, GPS) checked against FC BEC outputs first, then VBAT. (Outputs `DEFINITE_INCOMPATIBILITY`).
-- **Motor vs. ESC Current:** Heuristic calculation of peak motor draw compared against ESC limits. (Outputs `HEURISTIC_INCOMPATIBILITY`).
-- **Battery Discharge Limits:** Calculated total system draw compared against battery C-Rating capacity. (Outputs `HEURISTIC_INCOMPATIBILITY`).
-
-### 4.2. Physical Compatibility
-- **Propeller Clearance:** Frame `maxPropSizeMm` must be $\ge$ Propeller `diameterMm`. (Outputs `DEFINITE_INCOMPATIBILITY`).
-- **Mount Patterns:**
-  - **Stack:** Frame `BoardMountPattern` must intersect with FC, ESC, and Video Transmitter mount patterns (e.g., 20x20mm, 30.5x30.5mm).
-  - **Motors:** Frame `MotorMountPattern` must intersect with Motor mount patterns (e.g., 16x16mm).
-- **Camera Fit:** Camera `widthMm` vs Frame `cameraMountWidthMm`. (Outputs `DEFINITE_INCOMPATIBILITY`, or `PARTIAL_COMPATIBILITY` if known adapters exist).
-- **Spatial / Stack Clearance:** Heuristic sum of FC, ESC, and Video Transmitter `boardHeightMm` vs the frame's available height.
-
-### 4.3. Software & Ecosystem Compatibility
-- **Video Ecosystem:** Camera, Video Transmitter, and Goggles must all share the same Video Ecosystem (e.g., DJI O3, Walksnail, Analog). (Outputs `DEFINITE_INCOMPATIBILITY`).
-- **Camera-Video Transmitter Connection:** Matches the `videoConnectionStandard` between the Camera and Video Transmitter. For proprietary digital systems (MIPI cables), a mismatch is a `DEFINITE_INCOMPATIBILITY`. If both are "Analog", it passes but outputs an `INFORMATIONAL` Note reminding the user to wire them through the FC for OSD.
-- **Control Link:** Receiver and Transmitter must share an intersecting `RfProtocol` (e.g., ExpressLRS, Crossfire).
-- **Firmware Matching:** FC and ESC target firmwares (e.g., Betaflight, Bluejay, AM32).
-
-### 4.4. RF & Antenna Compatibility
-- **Frequency Matching:** Video Transmitter/Goggles and RX/TX must operate on the same `RfFrequency` (e.g., 5.8GHz, 2.4GHz, 900MHz).
-- **Antenna Connectors:** Video Transmitter/RX connector type (e.g., SMA, MMCX, U.FL) must exactly match the selected Antenna's connector.
-- **Antenna Polarization:** Video Transmitter antenna (e.g., RHCP, LHCP, Linear) must match Goggles antenna polarization. (Mismatch outputs `HEURISTIC_INCOMPATIBILITY` as it causes massive signal loss, though video still technically works at close range).
-
-### 4.5. Database Overrides
-- **Known Incompatibilities:** Queries the `IncompatibilityIssue` table. If the evaluated components trigger a specific override record (e.g., "This specific FC has a noisy gyro when paired with this specific ESC"), it outputs the issue's defined message and severity.
-
-### 4.6. Peripheral Connectivity
-- **UART Availability:** Calculates the total number of UARTs required by the selected peripherals:
-  - **Receiver:** Typically requires 1 full UART.
-  - **GPS:** Requires 1 full UART.
-  - **Digital Video Transmitter:** Requires 1 full UART for OSD/MSP (Analog usually does not).
-- **Validation:** Compares the total required UARTs against the Flight Controller's available `uartConnections`. (Outputs `DEFINITE_INCOMPATIBILITY` if there are not enough UARTs).
+1. Compatibility rules execute purely in backend memory using fetched catalog specifications and override rules.
+2. Component specifications accurately reflect manufacturer tolerances, pinouts, and physical mount measurements.
+3. Permissive build persistence allows builders to document customized hardware modifications without system rejection.
