@@ -61,7 +61,6 @@ func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *config.ApiSe
 		Environment: "test",
 		Server: &config.ServerConfig{
 			Port:            8080,
-			StaticDir:       "src/frontend/web/dist",
 			ReadTimeout:     durationpb.New(30 * time.Second),
 			WriteTimeout:    durationpb.New(60 * time.Second),
 			IdleTimeout:     durationpb.New(120 * time.Second),

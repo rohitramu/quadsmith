@@ -1,19 +1,18 @@
 package static
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"html"
+	"io"
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
-
-	"github.com/jackc/pgx/v5/pgxpool"
-
-	"quadsmith/shared/pkg/auth"
+	"time"
 )
 
 // PageMeta defines the Open Graph, Twitter, and SEO metadata for a page.
@@ -35,6 +34,28 @@ var (
 	titleTagRegex = regexp.MustCompile(`(?i)<title[^>]*>.*?</title>`)
 	headTagRegex  = regexp.MustCompile(`(?i)</head>`)
 	crawlerRegex  = regexp.MustCompile(`(?i)(bot|crawler|spider|crawling|facebookexternalhit|facebot|slackbot|telegrambot|whatsapp|twitterbot|discordbot|applebot|pinterest|linkedinbot)`)
+
+	crawlerHTTPClient = &http.Client{
+		Timeout: 3 * time.Second,
+	}
+
+	collectionServiceMap = map[string]string{
+		"motors":                       "MotorService/GetMotor",
+		"frames":                       "FrameService/GetFrame",
+		"batteries":                    "BatteryService/GetBattery",
+		"electronic-speed-controllers": "ElectronicSpeedControllerService/GetElectronicSpeedController",
+		"electronic_speed_controllers": "ElectronicSpeedControllerService/GetElectronicSpeedController",
+		"flight-controllers":           "FlightControllerService/GetFlightController",
+		"flight_controllers":           "FlightControllerService/GetFlightController",
+		"cameras":                      "CameraService/GetCamera",
+		"video-transmitters":           "VideoTransmitterService/GetVideoTransmitter",
+		"video_transmitters":           "VideoTransmitterService/GetVideoTransmitter",
+		"receivers":                    "ReceiverService/GetReceiver",
+		"antennas":                     "AntennaService/GetAntenna",
+		"propellers":                   "PropellerService/GetPropeller",
+		"gps-receivers":                "GpsReceiverService/GetGpsReceiver",
+		"gps_receivers":                "GpsReceiverService/GetGpsReceiver",
+	}
 )
 
 // IsSocialCrawler detects if a request is coming from a social media crawler
@@ -42,56 +63,15 @@ func IsSocialCrawler(userAgent string) bool {
 	return crawlerRegex.MatchString(userAgent)
 }
 
-func isAuthenticated(r *http.Request, pool *pgxpool.Pool) bool {
-	authHeader := r.Header.Get("Authorization")
-	if strings.HasPrefix(strings.ToLower(authHeader), "bearer ") {
-		tokenStr := strings.TrimSpace(authHeader[7:])
-		if claims, err := auth.VerifyAccessToken(tokenStr); err == nil && claims != nil {
-			return true
-		}
-	}
-	if c, err := r.Cookie("qs_session"); err == nil && c.Value != "" && pool != nil {
-		tokenHash := auth.HashToken(c.Value)
-		var exists bool
-		_ = pool.QueryRow(r.Context(), `
-			SELECT EXISTS(
-				SELECT 1 FROM refresh_tokens r
-				JOIN users u ON u.uuid = r.user_uuid
-				WHERE r.token_hash = $1 AND r.expires_at > NOW() AND u.deleted_at IS NULL
-			)`, tokenHash).Scan(&exists)
-		return exists
-	}
-	return false
-}
-
-// Collection table mapping from collection slug to SQL table name.
-var collectionTableMap = map[string]string{
-	"motors":                       "motors",
-	"frames":                       "frames",
-	"batteries":                    "batteries",
-	"electronic-speed-controllers": "electronic_speed_controllers",
-	"electronic_speed_controllers": "electronic_speed_controllers",
-	"flight-controllers":           "flight_controllers",
-	"flight_controllers":           "flight_controllers",
-	"cameras":                      "cameras",
-	"video-transmitters":           "video_transmitters",
-	"video_transmitters":           "video_transmitters",
-	"receivers":                    "receivers",
-	"antennas":                     "antennas",
-	"propellers":                   "propellers",
-	"gps-receivers":                "gps_receivers",
-	"gps_receivers":                "gps_receivers",
-}
-
 // ServeSPA serves a Single Page Application, dynamically injecting Open Graph and Twitter
 // card tags into index.html for crawlers and browser visits.
-func ServeSPA(dir string, pool *pgxpool.Pool) http.HandlerFunc {
-	return ServeSPAWithConfig(dir, pool, "")
+func ServeSPA(dir string, apiURL string) http.HandlerFunc {
+	return ServeSPAWithConfig(dir, apiURL, "")
 }
 
 // ServeSPAWithConfig serves a Single Page Application, dynamically injecting Open Graph,
 // Twitter card tags, and window.__QUADSMITH_CONFIG__ into index.html.
-func ServeSPAWithConfig(dir string, pool *pgxpool.Pool, clientConfigJSON string) http.HandlerFunc {
+func ServeSPAWithConfig(dir string, apiURL string, clientConfigJSON string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cleanPath := filepath.Clean(r.URL.Path)
 		fullPath := filepath.Join(dir, cleanPath)
@@ -99,17 +79,6 @@ func ServeSPAWithConfig(dir string, pool *pgxpool.Pool, clientConfigJSON string)
 		if err == nil && !info.IsDir() {
 			// Static asset exists on disk (JS, CSS, images, etc.)
 			http.FileServer(http.Dir(dir)).ServeHTTP(w, r)
-			return
-		}
-
-		// Allow /login and /login/* without authentication
-		isLoginRoute := strings.HasPrefix(r.URL.Path, "/login")
-		isCrawler := IsSocialCrawler(r.UserAgent())
-
-		// If unauthenticated browser visit to protected route, redirect to /login
-		if !isLoginRoute && !isCrawler && !isAuthenticated(r, pool) {
-			target := "/login?redirect=" + url.QueryEscape(r.RequestURI)
-			http.Redirect(w, r, target, http.StatusFound)
 			return
 		}
 
@@ -121,7 +90,13 @@ func ServeSPAWithConfig(dir string, pool *pgxpool.Pool, clientConfigJSON string)
 			return
 		}
 
-		meta := ResolvePageMeta(r.Context(), pool, r.URL.Path)
+		var meta PageMeta
+		if IsSocialCrawler(r.UserAgent()) && apiURL != "" {
+			meta = ResolvePageMetaFromAPI(r.Context(), apiURL, r.URL.Path)
+		} else {
+			meta = ResolvePageMeta(r.Context(), r.URL.Path)
+		}
+
 		meta.Canonical = resolveAbsoluteURL(r, r.URL.Path)
 		meta.Image = resolveAbsoluteURL(r, meta.Image)
 
@@ -145,8 +120,8 @@ func InjectClientConfig(htmlTemplate string, configJSON string) string {
 	return headTagRegex.ReplaceAllString(htmlTemplate, scriptTag)
 }
 
-// ResolvePageMeta resolves metadata for the requested URL path from PostgreSQL.
-func ResolvePageMeta(ctx context.Context, pool *pgxpool.Pool, path string) PageMeta {
+// ResolvePageMeta resolves fallback metadata for the requested URL path.
+func ResolvePageMeta(ctx context.Context, path string) PageMeta {
 	meta := PageMeta{
 		Title:       DefaultTitle,
 		Description: DefaultDescription,
@@ -160,87 +135,6 @@ func ResolvePageMeta(ctx context.Context, pool *pgxpool.Pool, path string) PageM
 	}
 
 	parts := strings.Split(trimmed, "/")
-
-	// Route: /users/:id
-	if len(parts) == 2 && parts[0] == "users" && pool != nil {
-		userId := parts[1]
-		var handle, bio string
-		var avatarUrl *string
-
-		err := pool.QueryRow(ctx, `
-			SELECT u.id, COALESCE(p.bio, ''), p.avatar_url
-			FROM users u
-			LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
-			WHERE (u.id = $1 OR u.uuid::text = $1) AND u.deleted_at IS NULL
-			LIMIT 1`, userId).Scan(&handle, &bio, &avatarUrl)
-		if err == nil {
-			meta.Title = fmt.Sprintf("@%s — User Profile — Quadsmith", handle)
-			if strings.TrimSpace(bio) != "" {
-				meta.Description = bio
-			} else {
-				meta.Description = fmt.Sprintf("View FPV drone builds and user stats for @%s on Quadsmith.", handle)
-			}
-			if avatarUrl != nil && strings.TrimSpace(*avatarUrl) != "" {
-				meta.Image = *avatarUrl
-			}
-			meta.Type = "profile"
-			return meta
-		}
-	}
-
-	// Route: /builds/:buildId
-	if len(parts) == 2 && parts[0] == "builds" && pool != nil {
-		buildId := parts[1]
-		var name, desc string
-		var primaryDisplayImage *string
-
-		err := pool.QueryRow(ctx, `
-			SELECT name, description, primary_display_image 
-			FROM builds 
-			WHERE id = $1 OR uuid::text = $1 
-			LIMIT 1`, buildId).Scan(&name, &desc, &primaryDisplayImage)
-		if err == nil {
-			meta.Title = fmt.Sprintf("%s — FPV Drone Build — Quadsmith", name)
-			if strings.TrimSpace(desc) != "" {
-				meta.Description = desc
-			}
-			if primaryDisplayImage != nil && strings.TrimSpace(*primaryDisplayImage) != "" {
-				meta.Image = *primaryDisplayImage
-			}
-			meta.Type = "article"
-			return meta
-		}
-	}
-
-	// Route: /components/:categoryId/:collectionId/:productId
-	if len(parts) >= 4 && parts[0] == "components" && pool != nil {
-		collectionSlug := parts[2]
-		productId := parts[3]
-		tableName, exists := collectionTableMap[collectionSlug]
-		if exists {
-			var manufacturer, name, desc string
-			var primaryDisplayImage *string
-
-			query := fmt.Sprintf(`
-				SELECT manufacturer, name, description, primary_display_image 
-				FROM %s 
-				WHERE id = $1 OR uuid::text = $1 
-				LIMIT 1`, tableName)
-
-			err := pool.QueryRow(ctx, query, productId).Scan(&manufacturer, &name, &desc, &primaryDisplayImage)
-			if err == nil {
-				meta.Title = fmt.Sprintf("%s %s — Quadsmith", manufacturer, name)
-				if strings.TrimSpace(desc) != "" {
-					meta.Description = desc
-				}
-				if primaryDisplayImage != nil && strings.TrimSpace(*primaryDisplayImage) != "" {
-					meta.Image = *primaryDisplayImage
-				}
-				meta.Type = "article"
-				return meta
-			}
-		}
-	}
 
 	// Route: /components/:categoryId/:collectionId
 	if len(parts) == 3 && parts[0] == "components" {
@@ -259,6 +153,134 @@ func ResolvePageMeta(ctx context.Context, pool *pgxpool.Pool, path string) PageM
 	}
 
 	return meta
+}
+
+// ResolvePageMetaFromAPI queries server-api over HTTP to populate rich Open Graph and
+// Twitter metadata for social crawlers requesting specific users, builds, or components.
+func ResolvePageMetaFromAPI(ctx context.Context, apiURL string, path string) PageMeta {
+	fallback := ResolvePageMeta(ctx, path)
+	if strings.TrimSpace(apiURL) == "" {
+		return fallback
+	}
+
+	trimmed := strings.Trim(strings.TrimSpace(path), "/")
+	if trimmed == "" {
+		return fallback
+	}
+	parts := strings.Split(trimmed, "/")
+
+	baseURL := strings.TrimRight(apiURL, "/")
+
+	// Route: /users/:id
+	if len(parts) == 2 && parts[0] == "users" {
+		userId := parts[1]
+		endpoint := baseURL + "/quadsmith.api.UserService/GetPublicProfile"
+		reqBody, _ := json.Marshal(map[string]string{"id": userId})
+		respBytes, err := fetchConnectRPC(ctx, endpoint, reqBody)
+		if err == nil {
+			var profile struct {
+				Id        string `json:"id"`
+				Bio       string `json:"bio"`
+				AvatarUrl string `json:"avatar_url"`
+			}
+			if err := json.Unmarshal(respBytes, &profile); err == nil && profile.Id != "" {
+				fallback.Title = fmt.Sprintf("@%s — User Profile — Quadsmith", profile.Id)
+				if strings.TrimSpace(profile.Bio) != "" {
+					fallback.Description = profile.Bio
+				} else {
+					fallback.Description = fmt.Sprintf("View FPV drone builds and user stats for @%s on Quadsmith.", profile.Id)
+				}
+				if strings.TrimSpace(profile.AvatarUrl) != "" {
+					fallback.Image = profile.AvatarUrl
+				}
+				fallback.Type = "profile"
+				return fallback
+			}
+		}
+	}
+
+	// Route: /builds/:buildId
+	if len(parts) == 2 && parts[0] == "builds" {
+		buildId := parts[1]
+		endpoint := baseURL + "/quadsmith.api.BuildService/GetBuild"
+		reqBody, _ := json.Marshal(map[string]string{"id": buildId})
+		respBytes, err := fetchConnectRPC(ctx, endpoint, reqBody)
+		if err == nil {
+			var b struct {
+				Name                string `json:"name"`
+				Description         string `json:"description"`
+				PrimaryDisplayImage string `json:"primary_display_image"`
+			}
+			if err := json.Unmarshal(respBytes, &b); err == nil && b.Name != "" {
+				fallback.Title = fmt.Sprintf("%s — FPV Drone Build — Quadsmith", b.Name)
+				if strings.TrimSpace(b.Description) != "" {
+					fallback.Description = b.Description
+				}
+				if strings.TrimSpace(b.PrimaryDisplayImage) != "" {
+					fallback.Image = b.PrimaryDisplayImage
+				}
+				fallback.Type = "article"
+				return fallback
+			}
+		}
+	}
+
+	// Route: /components/:categoryId/:collectionId/:productId
+	if len(parts) >= 4 && parts[0] == "components" {
+		collectionSlug := parts[2]
+		productId := parts[3]
+		serviceMethod, exists := collectionServiceMap[collectionSlug]
+		if exists {
+			endpoint := fmt.Sprintf("%s/quadsmith.api.%s", baseURL, serviceMethod)
+			reqBody, _ := json.Marshal(map[string]string{"id": productId})
+			respBytes, err := fetchConnectRPC(ctx, endpoint, reqBody)
+			if err == nil {
+				var comp struct {
+					Manufacturer        string `json:"manufacturer"`
+					Name                string `json:"name"`
+					Description         string `json:"description"`
+					PrimaryDisplayImage string `json:"primary_display_image"`
+				}
+				if err := json.Unmarshal(respBytes, &comp); err == nil && comp.Name != "" {
+					if comp.Manufacturer != "" {
+						fallback.Title = fmt.Sprintf("%s %s — Quadsmith", comp.Manufacturer, comp.Name)
+					} else {
+						fallback.Title = fmt.Sprintf("%s — Quadsmith", comp.Name)
+					}
+					if strings.TrimSpace(comp.Description) != "" {
+						fallback.Description = comp.Description
+					}
+					if strings.TrimSpace(comp.PrimaryDisplayImage) != "" {
+						fallback.Image = comp.PrimaryDisplayImage
+					}
+					fallback.Type = "article"
+					return fallback
+				}
+			}
+		}
+	}
+
+	return fallback
+}
+
+func fetchConnectRPC(ctx context.Context, endpoint string, body []byte) ([]byte, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, bytes.NewReader(body))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := crawlerHTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status %d from %s", resp.StatusCode, endpoint)
+	}
+
+	return io.ReadAll(resp.Body)
 }
 
 // InjectMetaTags replaces the <title> tag and inserts Open Graph and Twitter Card tags before </head>.

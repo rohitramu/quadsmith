@@ -93,11 +93,10 @@ func (x *DatabaseConfig) GetMinConnections() int32 {
 type ServerConfig struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Port            int32                  `protobuf:"varint,1,opt,name=port,proto3" json:"port,omitempty"`
-	StaticDir       string                 `protobuf:"bytes,2,opt,name=static_dir,json=staticDir,proto3" json:"static_dir,omitempty"`
-	ReadTimeout     *durationpb.Duration   `protobuf:"bytes,3,opt,name=read_timeout,json=readTimeout,proto3" json:"read_timeout,omitempty"`
-	WriteTimeout    *durationpb.Duration   `protobuf:"bytes,4,opt,name=write_timeout,json=writeTimeout,proto3" json:"write_timeout,omitempty"`
-	IdleTimeout     *durationpb.Duration   `protobuf:"bytes,5,opt,name=idle_timeout,json=idleTimeout,proto3" json:"idle_timeout,omitempty"`
-	MaxRequestBytes int64                  `protobuf:"varint,6,opt,name=max_request_bytes,json=maxRequestBytes,proto3" json:"max_request_bytes,omitempty"`
+	ReadTimeout     *durationpb.Duration   `protobuf:"bytes,2,opt,name=read_timeout,json=readTimeout,proto3" json:"read_timeout,omitempty"`
+	WriteTimeout    *durationpb.Duration   `protobuf:"bytes,3,opt,name=write_timeout,json=writeTimeout,proto3" json:"write_timeout,omitempty"`
+	IdleTimeout     *durationpb.Duration   `protobuf:"bytes,4,opt,name=idle_timeout,json=idleTimeout,proto3" json:"idle_timeout,omitempty"`
+	MaxRequestBytes int64                  `protobuf:"varint,5,opt,name=max_request_bytes,json=maxRequestBytes,proto3" json:"max_request_bytes,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -137,13 +136,6 @@ func (x *ServerConfig) GetPort() int32 {
 		return x.Port
 	}
 	return 0
-}
-
-func (x *ServerConfig) GetStaticDir() string {
-	if x != nil {
-		return x.StaticDir
-	}
-	return ""
 }
 
 func (x *ServerConfig) GetReadTimeout() *durationpb.Duration {
@@ -362,9 +354,9 @@ type WebServerConfig struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Environment   string                 `protobuf:"bytes,1,opt,name=environment,proto3" json:"environment,omitempty"`
 	Server        *ServerConfig          `protobuf:"bytes,2,opt,name=server,proto3" json:"server,omitempty"`
-	ApiUrl        string                 `protobuf:"bytes,3,opt,name=api_url,json=apiUrl,proto3" json:"api_url,omitempty"`
-	AppName       string                 `protobuf:"bytes,4,opt,name=app_name,json=appName,proto3" json:"app_name,omitempty"`
-	Database      *DatabaseConfig        `protobuf:"bytes,5,opt,name=database,proto3" json:"database,omitempty"`
+	StaticDir     string                 `protobuf:"bytes,3,opt,name=static_dir,json=staticDir,proto3" json:"static_dir,omitempty"`
+	ApiUrl        string                 `protobuf:"bytes,4,opt,name=api_url,json=apiUrl,proto3" json:"api_url,omitempty"`
+	AppName       string                 `protobuf:"bytes,5,opt,name=app_name,json=appName,proto3" json:"app_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -413,6 +405,13 @@ func (x *WebServerConfig) GetServer() *ServerConfig {
 	return nil
 }
 
+func (x *WebServerConfig) GetStaticDir() string {
+	if x != nil {
+		return x.StaticDir
+	}
+	return ""
+}
+
 func (x *WebServerConfig) GetApiUrl() string {
 	if x != nil {
 		return x.ApiUrl
@@ -425,13 +424,6 @@ func (x *WebServerConfig) GetAppName() string {
 		return x.AppName
 	}
 	return ""
-}
-
-func (x *WebServerConfig) GetDatabase() *DatabaseConfig {
-	if x != nil {
-		return x.Database
-	}
-	return nil
 }
 
 type CliConfig struct {
@@ -1179,15 +1171,13 @@ const file_quadsmith_config_config_proto_rawDesc = "" +
 	"\x03url\x18\x01 \x01(\tR\x03url\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12'\n" +
 	"\x0fmax_connections\x18\x03 \x01(\x05R\x0emaxConnections\x12'\n" +
-	"\x0fmin_connections\x18\x04 \x01(\x05R\x0eminConnections\"\xa9\x02\n" +
+	"\x0fmin_connections\x18\x04 \x01(\x05R\x0eminConnections\"\x8a\x02\n" +
 	"\fServerConfig\x12\x12\n" +
-	"\x04port\x18\x01 \x01(\x05R\x04port\x12\x1d\n" +
-	"\n" +
-	"static_dir\x18\x02 \x01(\tR\tstaticDir\x12<\n" +
-	"\fread_timeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\vreadTimeout\x12>\n" +
-	"\rwrite_timeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\x12<\n" +
-	"\fidle_timeout\x18\x05 \x01(\v2\x19.google.protobuf.DurationR\vidleTimeout\x12*\n" +
-	"\x11max_request_bytes\x18\x06 \x01(\x03R\x0fmaxRequestBytes\"\xe0\x03\n" +
+	"\x04port\x18\x01 \x01(\x05R\x04port\x12<\n" +
+	"\fread_timeout\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\vreadTimeout\x12>\n" +
+	"\rwrite_timeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\fwriteTimeout\x12<\n" +
+	"\fidle_timeout\x18\x04 \x01(\v2\x19.google.protobuf.DurationR\vidleTimeout\x12*\n" +
+	"\x11max_request_bytes\x18\x05 \x01(\x03R\x0fmaxRequestBytes\"\xe0\x03\n" +
 	"\n" +
 	"AuthConfig\x12\x16\n" +
 	"\x06secret\x18\x01 \x01(\tR\x06secret\x12\"\n" +
@@ -1204,13 +1194,14 @@ const file_quadsmith_config_config_proto_rawDesc = "" +
 	"\x06server\x18\x02 \x01(\v2\x1e.quadsmith.config.ServerConfigR\x06server\x12<\n" +
 	"\bdatabase\x18\x03 \x01(\v2 .quadsmith.config.DatabaseConfigR\bdatabase\x120\n" +
 	"\x04auth\x18\x04 \x01(\v2\x1c.quadsmith.config.AuthConfigR\x04auth\x120\n" +
-	"\x14cors_allowed_origins\x18\x05 \x03(\tR\x12corsAllowedOrigins\"\xdd\x01\n" +
+	"\x14cors_allowed_origins\x18\x05 \x03(\tR\x12corsAllowedOrigins\"\xbe\x01\n" +
 	"\x0fWebServerConfig\x12 \n" +
 	"\venvironment\x18\x01 \x01(\tR\venvironment\x126\n" +
-	"\x06server\x18\x02 \x01(\v2\x1e.quadsmith.config.ServerConfigR\x06server\x12\x17\n" +
-	"\aapi_url\x18\x03 \x01(\tR\x06apiUrl\x12\x19\n" +
-	"\bapp_name\x18\x04 \x01(\tR\aappName\x12<\n" +
-	"\bdatabase\x18\x05 \x01(\v2 .quadsmith.config.DatabaseConfigR\bdatabase\"{\n" +
+	"\x06server\x18\x02 \x01(\v2\x1e.quadsmith.config.ServerConfigR\x06server\x12\x1d\n" +
+	"\n" +
+	"static_dir\x18\x03 \x01(\tR\tstaticDir\x12\x17\n" +
+	"\aapi_url\x18\x04 \x01(\tR\x06apiUrl\x12\x19\n" +
+	"\bapp_name\x18\x05 \x01(\tR\aappName\"{\n" +
 	"\tCliConfig\x12 \n" +
 	"\venvironment\x18\x01 \x01(\tR\venvironment\x12\x17\n" +
 	"\aapi_url\x18\x02 \x01(\tR\x06apiUrl\x123\n" +
@@ -1318,23 +1309,22 @@ var file_quadsmith_config_config_proto_depIdxs = []int32{
 	0,  // 9: quadsmith.config.ApiServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
 	2,  // 10: quadsmith.config.ApiServerConfig.auth:type_name -> quadsmith.config.AuthConfig
 	1,  // 11: quadsmith.config.WebServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	0,  // 12: quadsmith.config.WebServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
-	15, // 13: quadsmith.config.CliConfig.timeout:type_name -> google.protobuf.Duration
-	9,  // 14: quadsmith.config.OAuthConfig.developer_mappings:type_name -> quadsmith.config.DeveloperMapping
-	1,  // 15: quadsmith.config.OpsServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	0,  // 16: quadsmith.config.OpsServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
-	0,  // 17: quadsmith.config.OpsServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
-	6,  // 18: quadsmith.config.OpsServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
-	7,  // 19: quadsmith.config.OpsServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
-	8,  // 20: quadsmith.config.OpsServerConfig.jit:type_name -> quadsmith.config.JitPolicyConfig
-	10, // 21: quadsmith.config.OpsServerConfig.oauth:type_name -> quadsmith.config.OAuthConfig
-	15, // 22: quadsmith.config.OpsCliConfig.timeout:type_name -> google.protobuf.Duration
-	13, // 23: quadsmith.config.JobServerConfig.schedules:type_name -> quadsmith.config.JobScheduleConfig
-	24, // [24:24] is the sub-list for method output_type
-	24, // [24:24] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	15, // 12: quadsmith.config.CliConfig.timeout:type_name -> google.protobuf.Duration
+	9,  // 13: quadsmith.config.OAuthConfig.developer_mappings:type_name -> quadsmith.config.DeveloperMapping
+	1,  // 14: quadsmith.config.OpsServerConfig.server:type_name -> quadsmith.config.ServerConfig
+	0,  // 15: quadsmith.config.OpsServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
+	0,  // 16: quadsmith.config.OpsServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
+	6,  // 17: quadsmith.config.OpsServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
+	7,  // 18: quadsmith.config.OpsServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
+	8,  // 19: quadsmith.config.OpsServerConfig.jit:type_name -> quadsmith.config.JitPolicyConfig
+	10, // 20: quadsmith.config.OpsServerConfig.oauth:type_name -> quadsmith.config.OAuthConfig
+	15, // 21: quadsmith.config.OpsCliConfig.timeout:type_name -> google.protobuf.Duration
+	13, // 22: quadsmith.config.JobServerConfig.schedules:type_name -> quadsmith.config.JobScheduleConfig
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_config_config_proto_init() }

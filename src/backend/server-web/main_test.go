@@ -33,6 +33,9 @@ func TestWebServer_ConfigValidation(t *testing.T) {
 	if cfg.ApiUrl != "http://127.0.0.1:8080" {
 		t.Errorf("expected apiUrl http://127.0.0.1:8080, got %s", cfg.ApiUrl)
 	}
+	if cfg.StaticDir != "src/frontend/web/app/dist" {
+		t.Errorf("expected staticDir src/frontend/web/app/dist, got %s", cfg.StaticDir)
+	}
 }
 
 func TestWebServer_Endpoints(t *testing.T) {
@@ -63,7 +66,7 @@ func TestWebServer_Endpoints(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write(clientCfgBytes)
 	})
-	mux.Handle("/", static.ServeSPAWithConfig(tempDir, nil, string(clientCfgBytes)))
+	mux.Handle("/", static.ServeSPAWithConfig(tempDir, "http://127.0.0.1:8080", string(clientCfgBytes)))
 
 	// Test /healthz
 	reqHealth := httptest.NewRequest(http.MethodGet, "/healthz", nil)

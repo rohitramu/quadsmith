@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -14,7 +13,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
@@ -38,17 +36,6 @@ func main() {
 	cfg, err := bconfig.LoadWebServerConfig(configPath)
 	if err != nil {
 		log.Fatalf("server-web: configuration validation failed: %v", err)
-	}
-
-	var pool *pgxpool.Pool
-	if cfg.Database != nil && cfg.Database.Url != "" {
-		p, err := pgxpool.New(context.Background(), cfg.Database.Url)
-		if err != nil {
-			log.Printf("server-web: warning: unable to connect to database (%s): %v; dynamic meta tags and session verification disabled", cfg.Database.Name, err)
-		} else {
-			pool = p
-			defer pool.Close()
-		}
 	}
 
 	clientCfg := map[string]string{
@@ -91,7 +78,7 @@ func main() {
 	}
 
 	// SPA & static asset handler
-	mux.Handle("/", static.ServeSPAWithConfig(cfg.Server.StaticDir, pool, clientCfgJSON))
+	mux.Handle("/", static.ServeSPAWithConfig(cfg.StaticDir, cfg.ApiUrl, clientCfgJSON))
 
 	port := strconv.Itoa(int(cfg.Server.Port))
 	fmt.Printf("Starting Quadsmith Web Server on port %s...\n", port)

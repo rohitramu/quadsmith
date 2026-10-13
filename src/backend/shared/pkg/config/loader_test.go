@@ -128,10 +128,10 @@ func TestValidateServer(t *testing.T) {
 	webCfg := &config.WebServerConfig{
 		Environment: "sandbox",
 		Server: &config.ServerConfig{
-			Port:      3000,
-			StaticDir: "",
+			Port: 3000,
 		},
-		ApiUrl: "http://localhost:8080",
+		StaticDir: "",
+		ApiUrl:    "http://localhost:8080",
 	}
 	if err := ValidateWebServerConfig(webCfg); err == nil {
 		t.Error("expected error for empty static dir on web server, got nil")
@@ -149,7 +149,6 @@ func TestLoadTextproto(t *testing.T) {
 environment: "sandbox"
 server {
   port: ${PORT_VAR:-8080}
-  static_dir: "dist"
   read_timeout { seconds: 30 }
   write_timeout { seconds: 30 }
   max_request_bytes: 1048576
@@ -242,7 +241,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load web-server sandbox: %v", err)
 	}
-	if webSandbox.Server.Port != 3000 || webSandbox.Database.Name != "quadsmith_api" {
+	if webSandbox.Server.Port != 3000 || webSandbox.StaticDir != "src/frontend/web/app/dist" {
 		t.Errorf("unexpected web-server sandbox config: %+v", webSandbox)
 	}
 

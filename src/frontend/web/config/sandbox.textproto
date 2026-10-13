@@ -2,7 +2,6 @@ environment: "sandbox"
 
 server {
   port: 3000
-  static_dir: "src/frontend/web/app/dist"
   read_timeout {
     seconds: 15
   }
@@ -15,12 +14,6 @@ server {
   max_request_bytes: 10485760
 }
 
+static_dir: "src/frontend/web/app/dist"
 api_url: "http://127.0.0.1:8080"
 app_name: "Quadsmith (Sandbox)"
-
-database {
-  url: "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api"
-  name: "quadsmith_api"
-  max_connections: 10
-  min_connections: 1
-}

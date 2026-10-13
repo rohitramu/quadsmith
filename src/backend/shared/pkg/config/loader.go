@@ -334,9 +334,7 @@ func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
 }
 
 func applyWebServerEnvOverrides(cfg *config.WebServerConfig) {
-	if cfg.Database != nil {
-		applyDatabaseEnvOverrides(cfg.Database)
-	}
+	// WebServerConfig contains no secrets or secret environment variable overrides.
 }
 
 func applyInternalDatabaseEnvOverrides(db *config.DatabaseConfig) {
@@ -411,9 +409,6 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 		if c.Server.Port < 1 || c.Server.Port > 65535 {
 			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.Port))
 		}
-		if strings.TrimSpace(c.Server.StaticDir) == "" {
-			errs = append(errs, "server.static_dir cannot be empty")
-		}
 		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.read_timeout must be greater than 0")
 		}
@@ -423,6 +418,10 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.idle_timeout must be greater than 0")
 		}
+	}
+
+	if strings.TrimSpace(c.StaticDir) == "" {
+		errs = append(errs, "static_dir cannot be empty")
 	}
 
 	if strings.TrimSpace(c.ApiUrl) == "" {
@@ -436,12 +435,6 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 
 	if strings.TrimSpace(c.AppName) == "" {
 		errs = append(errs, "app_name cannot be empty")
-	}
-
-	if c.Database != nil && c.Database.Url != "" {
-		if err := ValidateDatabase(c.Database, c.GetEnvironment()); err != nil {
-			errs = append(errs, err.Error())
-		}
 	}
 
 	if len(errs) > 0 {

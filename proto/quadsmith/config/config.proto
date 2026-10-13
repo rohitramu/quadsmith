@@ -19,11 +19,10 @@ message DatabaseConfig {
 
 message ServerConfig {
   int32 port = 1;
-  string static_dir = 2;
-  google.protobuf.Duration read_timeout = 3;
-  google.protobuf.Duration write_timeout = 4;
-  google.protobuf.Duration idle_timeout = 5;
-  int64 max_request_bytes = 6;
+  google.protobuf.Duration read_timeout = 2;
+  google.protobuf.Duration write_timeout = 3;
+  google.protobuf.Duration idle_timeout = 4;
+  int64 max_request_bytes = 5;
 }
 
 message AuthConfig {
@@ -57,9 +56,9 @@ message ApiServerConfig {
 message WebServerConfig {
   string environment = 1;
   ServerConfig server = 2;
-  string api_url = 3;
-  string app_name = 4;
-  DatabaseConfig database = 5;
+  string static_dir = 3;
+  string api_url = 4;
+  string app_name = 5;
 }
 
 message CliConfig {
