@@ -9,8 +9,9 @@ import (
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/pkg/engines/compatibility"
+
+	pb "quadsmith/shared/gen/quadsmith/api"
 )
 
 type EvaluatorServiceHandler struct {

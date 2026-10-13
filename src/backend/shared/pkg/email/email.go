@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	config "quadsmith/shared/gen/quadsmith/config"
+	"quadsmith/shared/gen/quadsmith/config"
 )
 
 // EmailSender defines the standard interface for outbound transactional emails.

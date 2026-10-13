@@ -12,7 +12,8 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
-	config "quadsmith/shared/gen/quadsmith/config"
+
+	"quadsmith/shared/gen/quadsmith/config"
 )
 
 type OpsInterceptor struct {

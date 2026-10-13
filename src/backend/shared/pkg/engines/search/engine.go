@@ -11,8 +11,9 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/sync/errgroup"
 
-	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/internal/cel2sql"
+
+	pb "quadsmith/shared/gen/quadsmith/api"
 )
 
 // CollectionTarget represents a resolved collection with its merged CEL filter.

@@ -5,8 +5,9 @@ import (
 	"time"
 
 	"google.golang.org/protobuf/proto"
+
 	"google.golang.org/protobuf/types/known/durationpb"
-	config "quadsmith/shared/gen/quadsmith/config"
+	"quadsmith/shared/gen/quadsmith/config"
 )
 
 type APIServerOption func(*config.ApiServerConfig)

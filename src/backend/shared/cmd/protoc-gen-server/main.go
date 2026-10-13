@@ -8,8 +8,9 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/pluginpb"
-	quadsmith_common "quadsmith/shared/gen/quadsmith/common"
-	quadsmith_sql "quadsmith/shared/gen/quadsmith/sql"
+
+	commonpb "quadsmith/shared/gen/quadsmith/common"
+	sqlpb "quadsmith/shared/gen/quadsmith/sql"
 )
 
 func main() {
@@ -28,8 +29,8 @@ func main() {
 
 func getTableName(msg *protogen.Message) string {
 	opts := msg.Desc.Options()
-	if proto.HasExtension(opts, quadsmith_sql.E_Table) {
-		if tblOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Table).(*quadsmith_sql.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
+	if proto.HasExtension(opts, sqlpb.E_Table) {
+		if tblOpts, ok := proto.GetExtension(opts, sqlpb.E_Table).(*sqlpb.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
 			return tblOpts.Name
 		}
 	}
@@ -709,8 +710,8 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 
 func getCollectionPath(msg *protogen.Message) string {
 	opts := msg.Desc.Options()
-	if proto.HasExtension(opts, quadsmith_common.E_CollectionPath) {
-		if p, ok := proto.GetExtension(opts, quadsmith_common.E_CollectionPath).(string); ok && p != "" {
+	if proto.HasExtension(opts, commonpb.E_CollectionPath) {
+		if p, ok := proto.GetExtension(opts, commonpb.E_CollectionPath).(string); ok && p != "" {
 			return strings.Trim(p, "/")
 		}
 	}
@@ -719,8 +720,8 @@ func getCollectionPath(msg *protogen.Message) string {
 
 func getDefaultColumns(msg *protogen.Message) []string {
 	opts := msg.Desc.Options()
-	if proto.HasExtension(opts, quadsmith_common.E_Frontend) {
-		if fe, ok := proto.GetExtension(opts, quadsmith_common.E_Frontend).(*quadsmith_common.FrontendOptions); ok && fe != nil {
+	if proto.HasExtension(opts, commonpb.E_Frontend) {
+		if fe, ok := proto.GetExtension(opts, commonpb.E_Frontend).(*commonpb.FrontendOptions); ok && fe != nil {
 			return fe.DefaultColumns
 		}
 	}
@@ -729,8 +730,8 @@ func getDefaultColumns(msg *protogen.Message) []string {
 
 func getColorCode(msg *protogen.Message) string {
 	opts := msg.Desc.Options()
-	if proto.HasExtension(opts, quadsmith_common.E_Frontend) {
-		if fe, ok := proto.GetExtension(opts, quadsmith_common.E_Frontend).(*quadsmith_common.FrontendOptions); ok && fe != nil {
+	if proto.HasExtension(opts, commonpb.E_Frontend) {
+		if fe, ok := proto.GetExtension(opts, commonpb.E_Frontend).(*commonpb.FrontendOptions); ok && fe != nil {
 			return fe.ColorCode
 		}
 	}

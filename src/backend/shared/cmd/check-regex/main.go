@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	_ "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/pkg/schemacheck"
+
+	_ "quadsmith/shared/gen/quadsmith/api"
 )
 
 func main() {

@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"connectrpc.com/connect"
+
 	pb "quadsmith/shared/gen/quadsmith/api"
 )
 

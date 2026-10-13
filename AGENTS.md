@@ -43,6 +43,32 @@ corroboration checks.
   tags, or deprecated database columns. Design all schemas, APIs, Protobuf
   messages, and data models cleanly and directly as if building from scratch.
 
+## Go Import Conventions
+
+- **Aliasing Rules**:
+  - Avoid using import aliases in Go files unless:
+    - The import is for a generated Protobuf package, in which case use a `*pb`
+      suffix or alias (e.g., `pb`, `apipb`, `configpb`, `timestamppb`).
+    - There is a package naming conflict or collision between multiple imports
+      in the same file (e.g., disambiguating
+      `quadsmith/shared/gen/quadsmith/config` and
+      `quadsmith/shared/pkg/config`).
+    - Standard blank imports (`_ "embed"`) or side-effect registrations are
+      strictly required.
+  - Never use redundant import aliases where the alias matches the imported
+    package's default identifier (e.g., do not write
+    `connect "connectrpc.com/connect"`).
+- **Import Grouping**:
+  - Separate import groups with a single blank line and order them as follows:
+    1. Standard library imports (e.g., `"context"`, `"fmt"`).
+    2. Third-party external dependencies (e.g., `"connectrpc.com/connect"`).
+    3. Other internal `quadsmith` packages (e.g., `"quadsmith/shared/pkg/..."`)
+       as the second-to-last group.
+    4. Protobuf (`pb`) packages (e.g.,
+       `pb "quadsmith/shared/gen/quadsmith/api"`,
+       `"quadsmith/shared/gen/quadsmith/..."`, or `*pb` types) as the last
+       group.
+
 ## Project Planning
 
 - **Direct Requests vs. Plans & Questions**:

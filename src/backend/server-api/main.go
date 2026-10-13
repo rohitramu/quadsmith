@@ -11,23 +11,23 @@ import (
 	"strings"
 	"time"
 
+	"connectrpc.com/connect"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	connect "connectrpc.com/connect"
-	"github.com/jackc/pgx/v5/pgxpool"
-
-	pb "quadsmith/shared/gen/quadsmith/api"
-	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 	"quadsmith/shared/pkg/auth"
 	"quadsmith/shared/pkg/authcontext"
 	"quadsmith/shared/pkg/blob"
-	bconfig "quadsmith/shared/pkg/config"
+	"quadsmith/shared/pkg/config"
 	"quadsmith/shared/pkg/engines/compatibility"
 	"quadsmith/shared/pkg/engines/evaluator"
 	"quadsmith/shared/pkg/engines/linkpreview"
 	"quadsmith/shared/pkg/engines/search"
 	"quadsmith/shared/pkg/social"
+
+	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )
 
 func main() {
@@ -43,7 +43,7 @@ func main() {
 		}
 	}
 
-	cfg, err := bconfig.LoadAPIServerConfig(configPath)
+	cfg, err := config.LoadAPIServerConfig(configPath)
 	if err != nil {
 		log.Fatalf("server-api: configuration validation failed: %v", err)
 	}

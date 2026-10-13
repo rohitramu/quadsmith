@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	connect "connectrpc.com/connect"
+	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

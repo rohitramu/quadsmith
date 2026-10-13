@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	quadsmith_sql "quadsmith/shared/gen/quadsmith/sql"
+	sqlpb "quadsmith/shared/gen/quadsmith/sql"
 )
 
 func main() {
@@ -67,10 +67,10 @@ func main() {
 	})
 }
 
-func getTableOptions(msg *protogen.Message) *quadsmith_sql.TableOptions {
+func getTableOptions(msg *protogen.Message) *sqlpb.TableOptions {
 	opts := msg.Desc.Options()
-	if proto.HasExtension(opts, quadsmith_sql.E_Table) {
-		if tblOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Table).(*quadsmith_sql.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
+	if proto.HasExtension(opts, sqlpb.E_Table) {
+		if tblOpts, ok := proto.GetExtension(opts, sqlpb.E_Table).(*sqlpb.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
 			return tblOpts
 		}
 	}
@@ -92,9 +92,9 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 	for _, field := range msg.Fields {
 		fOpts := field.Desc.Options()
 
-		var colOpt *quadsmith_sql.ColumnOptions
-		if proto.HasExtension(fOpts, quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(fOpts, quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+		var colOpt *sqlpb.ColumnOptions
+		if proto.HasExtension(fOpts, sqlpb.E_Column) {
+			if co, ok := proto.GetExtension(fOpts, sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
 				colOpt = co
 			}
 		}
@@ -154,8 +154,8 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 	// Generate indexes
 	for _, field := range msg.Fields {
 		fOpts := field.Desc.Options()
-		if proto.HasExtension(fOpts, quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(fOpts, quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil && !co.Ignore && co.CreateIndex {
+		if proto.HasExtension(fOpts, sqlpb.E_Column) {
+			if co, ok := proto.GetExtension(fOpts, sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil && !co.Ignore && co.CreateIndex {
 				colName := string(field.Desc.Name())
 				if co.Name != "" {
 					colName = co.Name

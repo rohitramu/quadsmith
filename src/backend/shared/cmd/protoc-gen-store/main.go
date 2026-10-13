@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/pluginpb"
 
-	quadsmith_sql "quadsmith/shared/gen/quadsmith/sql"
+	sqlpb "quadsmith/shared/gen/quadsmith/sql"
 )
 
 func main() {
@@ -27,8 +27,8 @@ func main() {
 
 func getTableName(msg *protogen.Message) string {
 	opts := msg.Desc.Options()
-	if proto.HasExtension(opts, quadsmith_sql.E_Table) {
-		if tblOpts, ok := proto.GetExtension(opts, quadsmith_sql.E_Table).(*quadsmith_sql.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
+	if proto.HasExtension(opts, sqlpb.E_Table) {
+		if tblOpts, ok := proto.GetExtension(opts, sqlpb.E_Table).(*sqlpb.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
 			return tblOpts.Name
 		}
 	}
@@ -106,9 +106,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 
 	var activeFields []*protogen.Field
 	for _, field := range msg.Fields {
-		var colOpt *quadsmith_sql.ColumnOptions
-		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+		var colOpt *sqlpb.ColumnOptions
+		if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
+			if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
 				colOpt = co
 			}
 		}
@@ -124,8 +124,8 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	for i, field := range activeFields {
 		colName := string(field.Desc.Name())
 		colType := ""
-		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+		if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
+			if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
 				if co.Name != "" {
 					colName = co.Name
 				}
@@ -165,8 +165,8 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	hasId := false
 	for _, f := range activeFields {
 		fCol := string(f.Desc.Name())
-		if proto.HasExtension(f.Desc.Options(), quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(f.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+		if proto.HasExtension(f.Desc.Options(), sqlpb.E_Column) {
+			if co, ok := proto.GetExtension(f.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
 				if co.Name != "" {
 					fCol = co.Name
 				}
@@ -267,8 +267,8 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	for i, field := range activeFields {
 		colName := colNames[i]
 		colType := ""
-		if proto.HasExtension(field.Desc.Options(), quadsmith_sql.E_Column) {
-			if co, ok := proto.GetExtension(field.Desc.Options(), quadsmith_sql.E_Column).(*quadsmith_sql.ColumnOptions); ok && co != nil {
+		if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
+			if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
 				if co.ColumnType != "" {
 					colType = co.ColumnType
 				}

@@ -15,7 +15,7 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	bconfig "quadsmith/shared/pkg/config"
+	"quadsmith/shared/pkg/config"
 	"quadsmith/shared/pkg/static"
 )
 
@@ -32,7 +32,7 @@ func main() {
 		}
 	}
 
-	cfg, err := bconfig.LoadWebServerConfig(configPath)
+	cfg, err := config.LoadWebServerConfig(configPath)
 	if err != nil {
 		log.Fatalf("server-web: configuration validation failed: %v", err)
 	}

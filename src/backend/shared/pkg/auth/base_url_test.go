@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	connect "connectrpc.com/connect"
+	"connectrpc.com/connect"
 )
 
 func TestExtractBaseURL_EnvOverrides(t *testing.T) {

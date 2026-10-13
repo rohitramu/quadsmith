@@ -1,10 +1,11 @@
 package cel2sql
 
 import (
+	"fmt"
+
 	"cel.dev/cel-go/cel"
 	"cel.dev/cel-go/common/ast"
 	"cel.dev/cel-go/common/types/ref"
-	"fmt"
 )
 
 type ConvertOptions struct {

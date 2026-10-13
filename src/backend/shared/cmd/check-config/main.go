@@ -9,8 +9,9 @@ import (
 
 	"google.golang.org/protobuf/encoding/prototext"
 
+	"quadsmith/shared/pkg/config"
+
 	pb "quadsmith/shared/gen/quadsmith/config"
-	bconfig "quadsmith/shared/pkg/config"
 )
 
 var envVarPattern = regexp.MustCompile(`\$\{([A-Za-z0-9_]+)(?::-([^}]*))?\}`)
@@ -108,7 +109,7 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if cfg.GetEnvironment() != check.env {
 			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
 		}
-		if err := bconfig.ValidateAPIServerConfig(&cfg); err != nil {
+		if err := config.ValidateAPIServerConfig(&cfg); err != nil {
 			return err
 		}
 		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
@@ -126,7 +127,7 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if cfg.GetEnvironment() != check.env {
 			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
 		}
-		if err := bconfig.ValidateOpsServerConfig(&cfg); err != nil {
+		if err := config.ValidateOpsServerConfig(&cfg); err != nil {
 			return err
 		}
 		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
@@ -147,7 +148,7 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if cfg.GetEnvironment() != check.env {
 			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
 		}
-		if err := bconfig.ValidateJobServerConfig(&cfg); err != nil {
+		if err := config.ValidateJobServerConfig(&cfg); err != nil {
 			return err
 		}
 
@@ -159,7 +160,7 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if cfg.GetEnvironment() != check.env {
 			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
 		}
-		if err := bconfig.ValidateWebServerConfig(&cfg); err != nil {
+		if err := config.ValidateWebServerConfig(&cfg); err != nil {
 			return err
 		}
 		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
@@ -177,7 +178,7 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if cfg.GetEnvironment() != check.env {
 			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
 		}
-		if err := bconfig.ValidateCliConfig(&cfg); err != nil {
+		if err := config.ValidateCliConfig(&cfg); err != nil {
 			return err
 		}
 		if cfg.Timeout == nil || cfg.Timeout.AsDuration() <= 0 {
@@ -192,7 +193,7 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if cfg.GetEnvironment() != check.env {
 			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
 		}
-		if err := bconfig.ValidateOpsCliConfig(&cfg); err != nil {
+		if err := config.ValidateOpsCliConfig(&cfg); err != nil {
 			return err
 		}
 		if cfg.Timeout == nil || cfg.Timeout.AsDuration() <= 0 {

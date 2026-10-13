@@ -1,8 +1,9 @@
 package cel2sql
 
 import (
-	"cel.dev/cel-go/cel"
 	"fmt"
+
+	"cel.dev/cel-go/cel"
 )
 
 func Explore() {

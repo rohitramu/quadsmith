@@ -11,7 +11,8 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	config "quadsmith/shared/gen/quadsmith/config"
+
+	"quadsmith/shared/gen/quadsmith/config"
 )
 
 var placeholderRegex = regexp.MustCompile(`\$\{([A-Za-z0-9_]+)(?::-([^}]*))?\}`)

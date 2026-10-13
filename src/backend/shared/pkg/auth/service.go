@@ -16,15 +16,16 @@ import (
 	"strings"
 	"time"
 
-	connect "connectrpc.com/connect"
+	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"quadsmith/shared/pkg/email"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
-	config "quadsmith/shared/gen/quadsmith/config"
-	"quadsmith/shared/pkg/email"
+	"quadsmith/shared/gen/quadsmith/config"
 )
 
 // ---------------------------------------------------------

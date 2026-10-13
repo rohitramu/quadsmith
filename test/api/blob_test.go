@@ -14,8 +14,9 @@ import (
 	"testing"
 	"time"
 
-	connect "connectrpc.com/connect"
+	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
+
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )

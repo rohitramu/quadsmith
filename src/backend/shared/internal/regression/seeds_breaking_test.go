@@ -7,9 +7,11 @@ import (
 	"testing"
 
 	"google.golang.org/protobuf/encoding/prototext"
-	pb "quadsmith/shared/gen/quadsmith/api"
+
 	"quadsmith/shared/pkg/schemacheck"
 	"quadsmith/shared/pkg/validation"
+
+	pb "quadsmith/shared/gen/quadsmith/api"
 )
 
 func TestSeeds_UnmarshalWithoutErrors(t *testing.T) {

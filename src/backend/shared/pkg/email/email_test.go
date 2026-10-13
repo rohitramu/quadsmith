@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	config "quadsmith/shared/gen/quadsmith/config"
+	"quadsmith/shared/gen/quadsmith/config"
 )
 
 func TestConsoleEmailSender(t *testing.T) {

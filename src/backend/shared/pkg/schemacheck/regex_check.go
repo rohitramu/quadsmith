@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/reflect/protoregistry"
 
-	validate "quadsmith/shared/gen/quadsmith/validate"
+	"quadsmith/shared/gen/quadsmith/validate"
 )
 
 // VerifiedRegex records a regex pattern found and verified in the Protobuf schema.

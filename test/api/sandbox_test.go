@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -9,11 +10,12 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	"fmt"
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	"quadsmith/shared/pkg/auth"
+
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
-	"quadsmith/shared/pkg/auth"
 )
 
 func getAPIURL() string {

@@ -11,7 +11,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	pb "quadsmith/shared/gen/quadsmith/api"
-	common "quadsmith/shared/gen/quadsmith/common"
+	"quadsmith/shared/gen/quadsmith/common"
 )
 
 type Domain struct {
@@ -193,15 +193,16 @@ import (
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"sigs.k8s.io/yaml"
 
+	"quadsmith/shared/pkg/config"
+
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
-	common "quadsmith/shared/gen/quadsmith/common"
-	config "quadsmith/shared/gen/quadsmith/config"
-	bconfig "quadsmith/shared/pkg/config"
-	"google.golang.org/protobuf/encoding/prototext"
+	"quadsmith/shared/gen/quadsmith/common"
+	configpb "quadsmith/shared/gen/quadsmith/config"
 )
 
 var (
@@ -210,13 +211,13 @@ var (
 	overrideTargetURL string
 )
 
-func getEmbeddedConfig() *config.CliConfig {
-	var cfg config.CliConfig
+func getEmbeddedConfig() *configpb.CliConfig {
+	var cfg configpb.CliConfig
 	opts := prototext.UnmarshalOptions{DiscardUnknown: false}
 	if err := opts.Unmarshal(embeddedConfigRaw, &cfg); err != nil {
 		panic(fmt.Sprintf("failed to parse embedded CLI configuration: %v", err))
 	}
-	if err := bconfig.ValidateCliConfig(&cfg); err != nil {
+	if err := config.ValidateCliConfig(&cfg); err != nil {
 		panic(fmt.Sprintf("invalid embedded CLI configuration: %v", err))
 	}
 	return &cfg

@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/durationpb"
 
-	config "quadsmith/shared/gen/quadsmith/config"
+	"google.golang.org/protobuf/types/known/durationpb"
+	"quadsmith/shared/gen/quadsmith/config"
 )
 
 func TestExpandTemplates(t *testing.T) {

@@ -11,14 +11,15 @@ import (
 	"syscall"
 	"time"
 
-	connect "connectrpc.com/connect"
+	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
 	"quadsmith/server-ops/pkg/ops"
+	"quadsmith/shared/pkg/config"
+
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
-	bconfig "quadsmith/shared/pkg/config"
 )
 
 func main() {
@@ -34,7 +35,7 @@ func main() {
 		}
 	}
 
-	cfg, err := bconfig.LoadOpsServerConfig(configPath)
+	cfg, err := config.LoadOpsServerConfig(configPath)
 	if err != nil {
 		log.Fatalf("server-ops: configuration validation failed: %v", err)
 	}

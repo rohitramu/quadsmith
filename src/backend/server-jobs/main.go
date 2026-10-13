@@ -11,10 +11,12 @@ import (
 	"syscall"
 	"time"
 
-	connect "connectrpc.com/connect"
+	"connectrpc.com/connect"
+
+	"quadsmith/shared/pkg/config"
+
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
-	bconfig "quadsmith/shared/pkg/config"
 )
 
 type bearerAuthTransport struct {
@@ -40,7 +42,7 @@ func main() {
 		}
 	}
 
-	cfg, err := bconfig.LoadJobServerConfig(configPath)
+	cfg, err := config.LoadJobServerConfig(configPath)
 	if err != nil {
 		log.Fatalf("server-jobs: configuration validation failed: %v", err)
 	}

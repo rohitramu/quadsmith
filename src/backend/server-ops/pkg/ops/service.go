@@ -12,16 +12,17 @@ import (
 	"strings"
 	"time"
 
-	connect "connectrpc.com/connect"
+	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
-	config "quadsmith/shared/gen/quadsmith/config"
-	pb "quadsmith/shared/gen/quadsmith/ops"
-	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 	"quadsmith/shared/pkg/auth"
 	"quadsmith/shared/pkg/blob"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"quadsmith/shared/gen/quadsmith/config"
+	pb "quadsmith/shared/gen/quadsmith/ops"
+	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
 
 type OpsService struct {

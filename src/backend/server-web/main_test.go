@@ -8,21 +8,21 @@ import (
 	"strings"
 	"testing"
 
-	bconfig "quadsmith/shared/pkg/config"
+	"quadsmith/shared/pkg/config"
 	"quadsmith/shared/pkg/static"
 )
 
 func TestWebServer_ConfigValidation(t *testing.T) {
 	// Empty config path without QS_CONFIG should fail
 	t.Setenv("QS_CONFIG", "")
-	_, err := bconfig.LoadWebServerConfig("")
+	_, err := config.LoadWebServerConfig("")
 	if err == nil {
 		t.Fatal("expected error when config path is empty")
 	}
 
 	// Valid sandbox config should load
 	cfgPath := filepath.Join("..", "..", "frontend", "web", "config", "sandbox.textproto")
-	cfg, err := bconfig.LoadWebServerConfig(cfgPath)
+	cfg, err := config.LoadWebServerConfig(cfgPath)
 	if err != nil {
 		t.Fatalf("failed to load web server sandbox config: %v", err)
 	}

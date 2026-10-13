@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"cel.dev/cel-go/cel"
+
 	"quadsmith/shared/pkg/cel2sql"
 )
 

@@ -9,11 +9,13 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/encoding/prototext"
+
+	"quadsmith/shared/pkg/authcontext"
+	"quadsmith/shared/pkg/config"
+	"quadsmith/shared/pkg/validation"
+
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "quadsmith/shared/gen/quadsmith/api"
-	"quadsmith/shared/pkg/authcontext"
-	bconfig "quadsmith/shared/pkg/config"
-	"quadsmith/shared/pkg/validation"
 )
 
 func main() {
@@ -30,13 +32,13 @@ func main() {
 		}
 	}
 
-	cfg, err := bconfig.LoadAPIServerConfig(configPath)
+	cfg, err := config.LoadAPIServerConfig(configPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 
-	if err := bconfig.ValidateSeeder(cfg.Database, cfg.GetEnvironment()); err != nil {
+	if err := config.ValidateSeeder(cfg.Database, cfg.GetEnvironment()); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}

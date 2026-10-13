@@ -14,23 +14,24 @@ import (
 	"connectrpc.com/connect"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/encoding/protojson"
-
 	"google.golang.org/protobuf/encoding/prototext"
-	bconfig "quadsmith/shared/gen/quadsmith/config"
+
+	"quadsmith/shared/pkg/config"
+
+	configpb "quadsmith/shared/gen/quadsmith/config"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
-	"quadsmith/shared/pkg/config"
 )
 
 var (
-	embeddedConfig *bconfig.OpsCliConfig
+	embeddedConfig *configpb.OpsCliConfig
 	opsServerURL   string
 	tokenFlag      string
 	jsonOut        bool
 )
 
 func init() {
-	var cfg bconfig.OpsCliConfig
+	var cfg configpb.OpsCliConfig
 	opts := prototext.UnmarshalOptions{DiscardUnknown: false}
 	if err := opts.Unmarshal(embeddedConfigRaw, &cfg); err != nil {
 		panic(fmt.Sprintf("failed to parse embedded ops CLI configuration: %v", err))
