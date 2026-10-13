@@ -1,6 +1,6 @@
-# Compatibility Checker Architecture {#compatibility-checker-architecture}
+# <a id="compatibility-checker-architecture" >Compatibility Checker Architecture</a>
 
-## Table of Contents {#table-of-contents}
+## <a id="table-of-contents" >Table of Contents</a>
 
 - [1. Goal](#1-goal)
 - [2. Proposal](#2-proposal)
@@ -16,13 +16,13 @@
 
 ---
 
-## 1. Goal {#1-goal}
+## <a id="1-goal" >1. Goal</a>
 
 Provide an extensible, backend-driven compatibility evaluation engine that analyzes arbitrary combinations of quadcopter components, verifying physical fitment, electrical boundaries, software ecosystems, and peripheral interconnects while returning rich numerical telemetry and actionable resolution guidance.
 
 ---
 
-## 2. Proposal {#2-proposal}
+## <a id="2-proposal" >2. Proposal</a>
 
 > **TL;DR:**
 >
@@ -33,11 +33,11 @@ Provide an extensible, backend-driven compatibility evaluation engine that analy
 
 The Compatibility Checker operates as a centralized backend evaluation service. Rather than embedding validation logic across frontend interfaces, the backend serves as the single source of truth. The engine dynamically instantiates specialized checker objects based on the input component selection, executes deterministic validation checks, and returns categorized diagnostics alongside typed telemetry metrics that drive rich visual components in the user interface.
 
-### Permissive Non-Blocking Build Persistence {#permissive-non-blocking-build-persistence}
+### <a id="permissive-non-blocking-build-persistence" >Permissive Non-Blocking Build Persistence</a>
 
 When the compatibility engine identifies issues flagged with `DEFINITE_INCOMPATIBILITY`, the platform highlights the errors prominently in the UI but allows the user to save the build configuration. FPV builders routinely deploy 3D-printed adapter brackets, custom carbon drillings, soft-mount spacers, and bespoke wiring harnesses that overcome catalog physical or electrical constraints. The system acts as an advisory assistant rather than a restrictive gatekeeper.
 
-#### Alternatives considered {#alternatives-considered-permissive-build-persistence}
+#### <a id="alternatives-considered-permissive-build-persistence" >Alternatives considered</a>
 
 Strict persistence gating that rejects saving or publishing builds containing unresolved `DEFINITE_INCOMPATIBILITY` diagnostics.
 
@@ -50,11 +50,11 @@ Strict persistence gating that rejects saving or publishing builds containing un
 - Blocks valid custom hardware builds, prototype work, and work-in-progress configurations.
 - Frustrates users when catalog specifications contain minor discrepancies or unlisted hardware tolerances.
 
-### Stateless Arbitrary Component Evaluation API {#stateless-arbitrary-component-evaluation-api}
+### <a id="stateless-arbitrary-component-evaluation-api" >Stateless Arbitrary Component Evaluation API</a>
 
 The backend exposes a standalone endpoint (e.g., `POST /api/compatibility/check`) accepting an arbitrary array of component IDs. The endpoint does not require a persistent `Build` entity, allowing client applications to run lightweight pre-selection checks (such as verifying if a specific motor fits a chosen frame before adding it to an aircraft). The backend executes a single batch query to resolve specifications and known override issues, runs the evaluation in memory, and returns the diagnostics payload.
 
-#### Alternatives considered {#alternatives-considered-stateless-evaluation-api}
+#### <a id="alternatives-considered-stateless-evaluation-api" >Alternatives considered</a>
 
 Requiring a persistent `Build` record in the database before running compatibility checks.
 
@@ -67,7 +67,7 @@ Requiring a persistent `Build` record in the database before running compatibili
 - Prevents real-time compatibility feedback during the component selection stage in the frontend builder.
 - Disallows ad-hoc pairwise component checking (e.g., comparing a motor and an ESC in isolation).
 
-### Modular Rule Checker Encapsulation and Telemetry Grouping {#modular-rule-checker-encapsulation-and-telemetry-grouping}
+### <a id="modular-rule-checker-encapsulation-and-telemetry-grouping" >Modular Rule Checker Encapsulation and Telemetry Grouping</a>
 
 The evaluation pipeline accepts an arbitrary list of components and dynamically instantiates modular checker instances (e.g., `MotorEscChecker`, `FcPeripheralVoltageChecker`). Each checker returns an evaluation result containing:
 
@@ -76,7 +76,7 @@ The evaluation pipeline accepts an arbitrary list of components and dynamically 
 - **`metrics`**: Typed numerical and categorical telemetry (e.g., `fcMountMatch: { expected: ["20x20"], actual: ["30.5x30.5"] }`).
 - **`messages`**: Array of issues containing severity levels (`DEFINITE_INCOMPATIBILITY`, `HEURISTIC_INCOMPATIBILITY`, `PARTIAL_COMPATIBILITY`, `INFORMATIONAL`), human-readable descriptions, and concrete remediation steps.
 
-### Physical Dimensional Fit Rules {#physical-dimensional-fit-rules}
+### <a id="physical-dimensional-fit-rules" >Physical Dimensional Fit Rules</a>
 
 The engine enforces mechanical boundary constraints across hardware components:
 
@@ -85,7 +85,7 @@ The engine enforces mechanical boundary constraints across hardware components:
 - **Camera Bracket Fit**: Compares camera chassis width against the frame's camera mounting bracket spacing, emitting `PARTIAL_COMPATIBILITY` if standard adapter brackets exist.
 - **Stack Height Clearance**: Sums component board thicknesses and heatsink profiles against available vertical frame standoff clearance.
 
-### Electrical and Thermal Power Constraints {#electrical-and-thermal-power-constraints}
+### <a id="electrical-and-thermal-power-constraints" >Electrical and Thermal Power Constraints</a>
 
 Power supply and current tolerances are verified across the power distribution tree:
 
@@ -93,7 +93,7 @@ Power supply and current tolerances are verified across the power distribution t
 - **Motor vs. ESC Current**: Evaluates maximum expected motor burst current against ESC continuous and burst ratings, emitting `HEURISTIC_INCOMPATIBILITY` if ESC limits are exceeded.
 - **Battery Discharge Capacity**: Compares estimated total multi-motor draw against battery rated continuous discharge capacity ($C \times \text{Capacity}$).
 
-### Software, Firmware, and Ecosystem Compatibility {#software-firmware-and-ecosystem-compatibility}
+### <a id="software-firmware-and-ecosystem-compatibility" >Software, Firmware, and Ecosystem Compatibility</a>
 
 Digital interconnects and firmware configurations are validated for protocol parity:
 
@@ -102,7 +102,7 @@ Digital interconnects and firmware configurations are validated for protocol par
 - **Control Link Protocols**: Confirms the radio receiver and handheld radio transmitter share a compatible radio frequency protocol (e.g., ExpressLRS, TBS Crossfire).
 - **Firmware Ecosystems**: Validates interoperability between flight controller firmware targets and ESC communication protocols (e.g., DShot300/600 on Betaflight, Bluejay, or AM32).
 
-### RF Protocol and Antenna Compatibility {#rf-protocol-and-antenna-compatibility}
+### <a id="rf-protocol-and-antenna-compatibility" >RF Protocol and Antenna Compatibility</a>
 
 Radio transmission and reception interfaces must align across spectrum and connector mechanics:
 
@@ -110,7 +110,7 @@ Radio transmission and reception interfaces must align across spectrum and conne
 - **Antenna Connector Interfaces**: Matches female/male connector standards (e.g., SMA, RP-SMA, U.FL/IPEX, MMCX).
 - **Antenna Polarization**: Compares video transmitter antenna polarization (RHCP, LHCP, or Linear) against receiver goggles antennas. Polarization mismatches emit `HEURISTIC_INCOMPATIBILITY` due to severe attenuation ($> 20\text{ dB}$ cross-polarization rejection).
 
-### Hardware Overrides and Peripheral UART Budgeting {#hardware-overrides-and-peripheral-uart-budgeting}
+### <a id="hardware-overrides-and-peripheral-uart-budgeting" >Hardware Overrides and Peripheral UART Budgeting</a>
 
 To account for hardware revisions, silicon quirks, and bus contention:
 
@@ -119,7 +119,7 @@ To account for hardware revisions, silicon quirks, and bus contention:
 
 ---
 
-## 3. Assumptions {#3-assumptions}
+## <a id="3-assumptions" >3. Assumptions</a>
 
 1. Compatibility rules execute purely in backend memory using fetched catalog specifications and override rules.
 2. Component specifications accurately reflect manufacturer tolerances, pinouts, and physical mount measurements.

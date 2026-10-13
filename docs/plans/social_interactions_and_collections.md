@@ -1,6 +1,6 @@
-# Social Interactions, Q&A, Reviews, and Collections Design {#social-interactions-qa-reviews-and-collections-design}
+# <a id="social-interactions-qa-reviews-and-collections-design" >Social Interactions, Q&A, Reviews, and Collections Design</a>
 
-## Table of Contents {#table-of-contents}
+## <a id="table-of-contents" >Table of Contents</a>
 
 - [1. Goal](#1-goal)
 - [2. Proposal](#2-proposal)
@@ -16,13 +16,13 @@
 
 ---
 
-## 1. Goal {#1-goal}
+## <a id="1-goal" >1. Goal</a>
 
 Provide a structured, community-driven social architecture for Quadsmith that separates evaluative opinions from technical troubleshooting, incentivizes helpful contributions through a balanced karma economy, preserves communal knowledge, and enables flexible curating across aircraft builds and catalog components.
 
 ---
 
-## 2. Proposal {#2-proposal}
+## <a id="2-proposal" >2. Proposal</a>
 
 > **TL;DR:**
 >
@@ -34,7 +34,7 @@ Provide a structured, community-driven social architecture for Quadsmith that se
 
 The social interaction architecture addresses the distinct needs of FPV builders: sharing flight impressions, seeking technical troubleshooting advice (wiring, betaflight tuning, standoff spacing), and bookmarking components for future projects. By architecturally decoupling opinion reviews from Q&A troubleshooting and backing all interactions with relational database constraints, Quadsmith maintains high content quality while eliminating common comment-section toxicity.
 
-### Polymorphic Relational Foreign Key Strategy {#polymorphic-relational-foreign-key-strategy}
+### <a id="polymorphic-relational-foreign-key-strategy" >Polymorphic Relational Foreign Key Strategy</a>
 
 Social entities (`Review`, `Question`, `CollectionItem`) associate polymorphically with both assembled `Build` records and individual catalog `Component` entities. Rather than employing unconstrained generic string targets, tables maintain explicit nullable foreign keys (`build_uuid`, `entity_uuid`) enforced by PostgreSQL check constraints:
 
@@ -44,7 +44,7 @@ CHECK (num_nonnulls(build_uuid, entity_uuid) = 1)
 
 This guarantees referential integrity, supports native cascading deletes, and allows foreign key joins without dynamic table lookups.
 
-#### Alternatives considered {#alternatives-considered-polymorphic-relational-fk}
+#### <a id="alternatives-considered-polymorphic-relational-fk" >Alternatives considered</a>
 
 Generic polymorphic target columns storing a string `target_type` (e.g., `'BUILD'`, `'COMPONENT'`) and a target UUID.
 
@@ -57,7 +57,7 @@ Generic polymorphic target columns storing a string `target_type` (e.g., `'BUILD
 - Destroys PostgreSQL relational integrity and precludes foreign key constraints.
 - Prevents database-level cascading deletes when builds or catalog components are pruned.
 
-### Steam-Style Binary Review Subsystem {#steam-style-binary-review-subsystem}
+### <a id="steam-style-binary-review-subsystem" >Steam-Style Binary Review Subsystem</a>
 
 Subjective evaluations are structured as Steam-style recommendations rather than numerical star ratings:
 
@@ -79,7 +79,7 @@ Displayed alongside qualitative tiers:
 
 Review readers can flag reviews as **Helpful** or **Unhelpful** to drive "Most Helpful" sorting without influencing the target entity's positive percentage.
 
-#### Alternatives considered {#alternatives-considered-steam-style-binary-reviews}
+#### <a id="alternatives-considered-steam-style-binary-reviews" >Alternatives considered</a>
 
 Traditional 1-to-5 star rating systems.
 
@@ -92,7 +92,7 @@ Traditional 1-to-5 star rating systems.
 - Suffers from chronic 5-star inflation, rendering intermediate 2, 3, and 4-star ratings ambiguous and difficult to calibrate.
 - Blurs the line between general satisfaction and specific technical defects.
 
-### StackOverflow-Style Technical Q&A Subsystem {#stackoverflow-style-technical-qa-subsystem}
+### <a id="stackoverflow-style-technical-qa-subsystem" >StackOverflow-Style Technical Q&A Subsystem</a>
 
 To prevent technical troubleshooting and fitment guidance from being lost in conversational chatter, technical questions are housed in a dedicated Q&A section:
 
@@ -104,7 +104,7 @@ To prevent technical troubleshooting and fitment guidance from being lost in con
   3. Net score ($\text{Upvotes} - \text{Downvotes}$)
   4. Chronological recency
 
-#### Alternatives considered {#alternatives-considered-stackoverflow-style-qa}
+#### <a id="alternatives-considered-stackoverflow-style-qa" >Alternatives considered</a>
 
 A single, flat chronological comments thread beneath builds and components.
 
@@ -117,7 +117,7 @@ A single, flat chronological comments thread beneath builds and components.
 - Causes valuable wiring solutions, PID tuning tips, and fitment answers to be buried under casual comments.
 - Lacks mechanisms to elevate proven solutions or endorse technical accuracy.
 
-### Dual-Authority Answer Endorsement Badges {#dual-authority-answer-endorsement-badges}
+### <a id="dual-authority-answer-endorsement-badges" >Dual-Authority Answer Endorsement Badges</a>
 
 To balance the perspective of the user who experienced the problem with the technical authority of the builder:
 
@@ -126,7 +126,7 @@ To balance the perspective of the user who experienced the problem with the tech
 
 An answer may receive either, both, or neither badge.
 
-### Lightweight Clarification Micro-Comments {#lightweight-clarification-micro-comments}
+### <a id="lightweight-clarification-micro-comments" >Lightweight Clarification Micro-Comments</a>
 
 Questions and Answers each support flat, chronological micro-comments:
 
@@ -134,7 +134,7 @@ Questions and Answers each support flat, chronological micro-comments:
 - Flat hierarchy without nested replies to prevent recursive discussion trees.
 - Micro-comments do not support voting, minimizing overhead and keeping focus on primary answers.
 
-### Reputation Karma Economy and Anti-Griefing Safeguards {#reputation-karma-economy-and-anti-griefing-safeguards}
+### <a id="reputation-karma-economy-and-anti-griefing-safeguards" >Reputation Karma Economy and Anti-Griefing Safeguards</a>
 
 User reputation reflects accumulated helpfulness across the community. Points are derived directly from relational vote records and endorsement events:
 
@@ -156,7 +156,7 @@ User reputation reflects accumulated helpfulness across the community. Points ar
 - **Daily Rate Ceiling**: Strict limit of 3 downvotes per user in any rolling 24-hour window.
 - **Reputation Floor**: Total reputation cannot drop below `0`.
 
-#### Alternatives considered {#alternatives-considered-reputation-karma-economy}
+#### <a id="alternatives-considered-reputation-karma-economy" >Alternatives considered</a>
 
 Free, unconstrained downvoting with zero voter cost and no unlock threshold.
 
@@ -168,7 +168,7 @@ Free, unconstrained downvoting with zero voter cost and no unlock threshold.
 
 - Encourages retaliatory vote brigading and toxic pile-ons from throwaway accounts.
 
-### Public Multi-Item Collections and System Likes {#public-multi-item-collections-and-system-likes}
+### <a id="public-multi-item-collections-and-system-likes" >Public Multi-Item Collections and System Likes</a>
 
 Users can organize and curate builds and components into collections:
 
@@ -176,7 +176,7 @@ Users can organize and curate builds and components into collections:
 - **Custom Collections**: Users can create named collections (e.g., *"Sub-250g Cinematic Builds"*, *"6S Freestyle Motors"*) containing mixed item types (both builds and catalog components).
 - **Public Visibility**: All collections are public by design and exposed on the user's public profile (`/@username/collections`).
 
-### Knowledge Preservation and Soft-Deletion Lifecycle {#knowledge-preservation-and-soft-deletion-lifecycle}
+### <a id="knowledge-preservation-and-soft-deletion-lifecycle" >Knowledge Preservation and Soft-Deletion Lifecycle</a>
 
 To protect communal troubleshooting history:
 
@@ -186,7 +186,7 @@ To protect communal troubleshooting history:
 
 ---
 
-## 3. Assumptions {#3-assumptions}
+## <a id="3-assumptions" >3. Assumptions</a>
 
 1. Social interactions are restricted to authenticated users with verified email addresses.
 2. Aircraft builds and catalog components can receive reviews, questions, and collections polymorphically.

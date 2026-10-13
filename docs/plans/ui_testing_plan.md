@@ -1,6 +1,6 @@
-# Web UI Testing Architecture Plan {#web-ui-testing-architecture-plan}
+# <a id="web-ui-testing-architecture-plan" >Web UI Testing Architecture Plan</a>
 
-## Table of Contents {#table-of-contents}
+## <a id="table-of-contents" >Table of Contents</a>
 
 - [1. Goal](#1-goal)
 - [2. Proposal](#2-proposal)
@@ -14,20 +14,20 @@
 
 ---
 
-## 1. Goal {#1-goal}
+## <a id="1-goal" >1. Goal</a>
 
-Establish a robust, hermetic, sub-second automated testing architecture for the Quadsmith web frontend ([`src/frontend/web`](../src/frontend/web)), verifying rendering integrity, interactive state machines, column customization, and multi-page client routing without requiring live backend servers or browser binaries.
+Establish a robust, hermetic, sub-second automated testing architecture for the Quadsmith web frontend ([`src/frontend/web`](../../src/frontend/web)), verifying rendering integrity, interactive state machines, column customization, and multi-page client routing without requiring live backend servers or browser binaries.
 
 ---
 
-## 2. Proposal {#2-proposal}
+## <a id="2-proposal" >2. Proposal</a>
 
 > **TL;DR:**
 >
 > - Execute component and routing tests headlessly in memory using [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/), and [JSDOM](https://github.com/jsdom/jsdom).
 > - Mock backend services at the protocol level using [ConnectRPC](https://connectrpc.com/)'s `createRouterTransport`, guaranteeing compile-time type safety against Protobuf definitions.
 > - Decouple application route definitions from the browser DOM to enable multi-page navigation testing via `MemoryRouter`.
-> - Embed UI tests directly into [`Makefile`](../Makefile)'s `make test` target, maintaining sub-second feedback loops in local development and continuous integration.
+> - Embed UI tests directly into [`Makefile`](../../Makefile)'s `make test` target, maintaining sub-second feedback loops in local development and continuous integration.
 
 The web UI testing architecture prioritizes developer velocity, deterministic execution, and tight alignment with Quadsmith's Protobuf contracts. Rather than driving heavyweight browser instances for basic component verification, the frontend leverages an in-memory DOM simulation coupled with type-safe RPC mock transports. This guarantees that UI regressions, broken deep links, missing table columns, or invalid filter inputs are surfaced instantly.
 
@@ -61,11 +61,11 @@ flowchart TD
     end
 ```
 
-### In-Memory Headless DOM Execution with Vitest and JSDOM {#in-memory-headless-dom-execution-with-vitest-and-jsdom}
+### <a id="in-memory-headless-dom-execution-with-vitest-and-jsdom" >In-Memory Headless DOM Execution with Vitest and JSDOM</a>
 
 Component and navigation tests execute within Vitest using JSDOM as the virtual DOM environment. Tests render components using `@testing-library/react` and dispatch user interactions via `@testing-library/user-event`. This architecture verifies layout rendering, theme switching (dark/light mode toggles and `localStorage` persistence), sidebar navigation, catalog grids, and data table interactions in milliseconds.
 
-#### Alternatives considered {#alternatives-considered-headless-dom-execution}
+#### <a id="alternatives-considered-headless-dom-execution" >Alternatives considered</a>
 
 Executing all unit, component, and routing tests inside real browser automation instances using tools like Playwright or Cypress.
 
@@ -78,11 +78,11 @@ Executing all unit, component, and routing tests inside real browser automation 
 - Introduces substantial startup latency (seconds vs. milliseconds), requiring browser binary management.
 - Requires running live backend daemon processes or web servers, impeding rapid iteration during standard development workflows.
 
-### Type-Safe ConnectRPC In-Memory Mock Router Transports {#type-safe-connectrpc-in-memory-mock-router-transports}
+### <a id="type-safe-connectrpc-in-memory-mock-router-transports" >Type-Safe ConnectRPC In-Memory Mock Router Transports</a>
 
 Rather than intercepting network requests with raw HTTP mocks or JSON fixture files, the test harness utilizes ConnectRPC's native `createRouterTransport`. Test fixtures are constructed as strongly-typed Protobuf TypeScript messages. The router transport routes client RPC queries (`ListMotors`, `GetMotor`, `ListFrames`) directly to in-memory TypeScript handlers, returning valid responses, pagination tokens, or error codes.
 
-#### Alternatives considered {#alternatives-considered-mock-router-transports}
+#### <a id="alternatives-considered-mock-router-transports" >Alternatives considered</a>
 
 Using network-level mocking libraries such as Mock Service Worker (MSW) or mocking `fetch` calls directly.
 
@@ -95,16 +95,16 @@ Using network-level mocking libraries such as Mock Service Worker (MSW) or mocki
 - Requires maintaining loose JSON fixture files that silently drift from generated Protobuf contracts when schemas change.
 - Eliminates compile-time type safety across API boundaries.
 
-### Application Decoupling for Isolated Route Navigation Testing {#application-decoupling-for-isolated-route-navigation-testing}
+### <a id="application-decoupling-for-isolated-route-navigation-testing" >Application Decoupling for Isolated Route Navigation Testing</a>
 
 To test multi-step user navigation flows (such as navigating from the homepage to a hardware collection, clicking a component row, inspecting details, and following breadcrumbs back), application route hierarchies are decoupled from browser-dependent globals:
 
 - **`AppRoutes` Export**: The core `<Routes>` hierarchy is extracted and exported independently of `<BrowserRouter>`.
 - **`MemoryRouter` Harness**: Test utilities wrap routes inside React Router's `MemoryRouter`, allowing test assertions to simulate arbitrary initial paths (`/components/hardware/motors`), track navigation history, and verify breadcrumb transitions without a live URL bar.
 
-### Sub-Second Local and CI Integration Suite {#sub-second-local-and-ci-integration-suite}
+### <a id="sub-second-local-and-ci-integration-suite" >Sub-Second Local and CI Integration Suite</a>
 
-The test runner is configured to ensure the entire test suite executes in under two seconds. Test execution is wired directly into the root [`Makefile`](../Makefile) under `make test`:
+The test runner is configured to ensure the entire test suite executes in under two seconds. Test execution is wired directly into the root [`Makefile`](../../Makefile) under `make test`:
 
 ```makefile
 test: generate
@@ -118,7 +118,7 @@ Any breaking UI change, failed assertion, or type mismatch blocks the build imme
 
 ---
 
-## 3. Assumptions {#3-assumptions}
+## <a id="3-assumptions" >3. Assumptions</a>
 
 1. Vitest and JSDOM provide sufficient DOM fidelity for React component interaction, event simulation, and client-side routing tests.
 2. ConnectRPC's `createRouterTransport` faithfully models backend RPC handlers in memory without network traffic.
@@ -126,9 +126,9 @@ Any breaking UI change, failed assertion, or type mismatch blocks the build imme
 
 ---
 
-## 4. Future work {#4-future-work}
+## <a id="4-future-work" >4. Future work</a>
 
-### End-to-End Browser Testing with Playwright {#end-to-end-browser-testing-with-playwright}
+### <a id="end-to-end-browser-testing-with-playwright" >End-to-End Browser Testing with Playwright</a>
 
 To complement the fast in-memory test suite, a dedicated end-to-end browser testing suite using Playwright is planned:
 
