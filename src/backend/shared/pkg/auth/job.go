@@ -38,7 +38,7 @@ func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error
 	for rows.Next() {
 		var item expiringUsername
 		if err := rows.Scan(&item.uuid, &item.username, &item.userUUID, &item.firstArchivedAt, &item.email); err != nil {
-			log.Printf("[UsernameReleaseWorker] Failed to scan row: %v", err)
+			log.Printf("[UsernameReleaseJob] Failed to scan row: %v", err)
 			continue
 		}
 		items = append(items, item)
@@ -56,7 +56,7 @@ func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error
 			SET release_warning_sent_at = NOW()
 			WHERE uuid = $1`, item.uuid)
 		if err != nil {
-			log.Printf("[UsernameReleaseWorker] Failed to mark release warning sent for %s: %v", item.uuid, err)
+			log.Printf("[UsernameReleaseJob] Failed to mark release warning sent for %s: %v", item.uuid, err)
 		}
 	}
 
@@ -74,7 +74,7 @@ func HandleCleanupExpiredOTPs(ctx context.Context, pool *pgxpool.Pool) (int64, e
 	}
 	rows := cmd.RowsAffected()
 	if rows > 0 {
-		log.Printf("[AuthWorker] Cleaned up %d expired/used OTPs", rows)
+		log.Printf("[AuthJob] Cleaned up %d expired/used OTPs", rows)
 	}
 	return rows, nil
 }
@@ -89,7 +89,7 @@ func HandleCleanupExpiredTokens(ctx context.Context, pool *pgxpool.Pool) (int64,
 	}
 	rows := cmd.RowsAffected()
 	if rows > 0 {
-		log.Printf("[AuthWorker] Cleaned up %d expired refresh tokens", rows)
+		log.Printf("[AuthJob] Cleaned up %d expired refresh tokens", rows)
 	}
 	return rows, nil
 }
@@ -114,7 +114,7 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 	for rows.Next() {
 		var u expiredUser
 		if err := rows.Scan(&u.uuid, &u.id); err != nil {
-			log.Printf("[PurgeWorker] Failed to scan user: %v", err)
+			log.Printf("[PurgeJob] Failed to scan user: %v", err)
 			continue
 		}
 		users = append(users, u)
@@ -127,7 +127,7 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 	for _, u := range users {
 		tx, err := pool.Begin(ctx)
 		if err != nil {
-			log.Printf("[PurgeWorker] Failed to begin transaction for %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to begin transaction for %s: %v", u.uuid, err)
 			continue
 		}
 
@@ -136,7 +136,7 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 		_, err = tx.Exec(ctx, `UPDATE users SET id = $1, email = $2, updated_at = NOW() WHERE uuid = $3`, newHandle, newHandle+"@deleted.quadsmith.internal", u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
-			log.Printf("[PurgeWorker] Failed to anonymize user %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to anonymize user %s: %v", u.uuid, err)
 			continue
 		}
 
@@ -144,7 +144,7 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 		_, err = tx.Exec(ctx, `UPDATE user_profiles SET bio = '', avatar_url = '', updated_at = NOW() WHERE user_uuid = $1`, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
-			log.Printf("[PurgeWorker] Failed to clear profile for %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to clear profile for %s: %v", u.uuid, err)
 			continue
 		}
 
@@ -154,14 +154,14 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 			WHERE user_email_uuid IN (SELECT uuid FROM user_emails WHERE user_uuid = $1)`, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
-			log.Printf("[PurgeWorker] Failed to delete user_email_oauth_accounts for %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to delete user_email_oauth_accounts for %s: %v", u.uuid, err)
 			continue
 		}
 
 		_, err = tx.Exec(ctx, `DELETE FROM user_emails WHERE user_uuid = $1`, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
-			log.Printf("[PurgeWorker] Failed to delete user_emails for %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to delete user_emails for %s: %v", u.uuid, err)
 			continue
 		}
 
@@ -169,7 +169,7 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 		_, err = tx.Exec(ctx, `DELETE FROM oauth_accounts WHERE user_uuid = $1`, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
-			log.Printf("[PurgeWorker] Failed to delete oauth_accounts for %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to delete oauth_accounts for %s: %v", u.uuid, err)
 			continue
 		}
 
@@ -177,7 +177,7 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 		_, err = tx.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid = $1`, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
-			log.Printf("[PurgeWorker] Failed to delete refresh_tokens for %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to delete refresh_tokens for %s: %v", u.uuid, err)
 			continue
 		}
 
@@ -185,16 +185,16 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 		_, err = tx.Exec(ctx, `DELETE FROM email_otps WHERE requested_by_user_uuid = $1`, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
-			log.Printf("[PurgeWorker] Failed to delete email_otps for %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to delete email_otps for %s: %v", u.uuid, err)
 			continue
 		}
 
 		if err := tx.Commit(ctx); err != nil {
-			log.Printf("[PurgeWorker] Failed to commit purge for %s: %v", u.uuid, err)
+			log.Printf("[PurgeJob] Failed to commit purge for %s: %v", u.uuid, err)
 			continue
 		}
 
-		log.Printf("[PurgeWorker] Successfully purged user %s (@%s), released handle", u.uuid, u.id)
+		log.Printf("[PurgeJob] Successfully purged user %s (@%s), released handle", u.uuid, u.id)
 		purgedCount++
 	}
 

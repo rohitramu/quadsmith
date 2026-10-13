@@ -16,7 +16,7 @@ func HandleCleanupOrphanedBlobs(ctx context.Context, pool *pgxpool.Pool) (int64,
 		return 0, fmt.Errorf("failed to prune orphaned blobs: %w", err)
 	}
 	if pruned > 0 {
-		log.Printf("[BlobCleanupWorker] Pruned %d orphaned blobs", pruned)
+		log.Printf("[BlobCleanupJob] Pruned %d orphaned blobs", pruned)
 	}
 	return pruned, nil
 }
